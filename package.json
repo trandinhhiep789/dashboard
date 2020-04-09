@@ -1,0 +1,63 @@
+{
+  "name": "pimweb",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --mode development --open",
+    "build": "webpack --mode development",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "chart.js": "^2.8.0",
+    "draft-js": "^0.10.5",
+    "draftjs-to-html": "^0.8.4",
+    "html-webpack-plugin": "^3.2.0",
+    "idb": "^2.1.3",
+    "jodit-react": "^1.0.42",
+    "moment": "^2.24.0",
+    "node-sass": "^4.11.0",
+    "react": "^16.13.1",
+    "react-chartjs-2": "^2.7.6",
+    "react-collapsible": "^2.6.0",
+    "react-datetime": "^2.16.3",
+    "react-dom": "^16.13.1",
+    "react-draft-wysiwyg": "^1.13.1",
+    "react-dropzone": "^4.3.0",
+    "react-dynamic-modal": "^1.1.1",
+    "react-html-parser": "^2.0.2",
+    "react-image-gallery": "^0.8.16",
+    "react-media": "^1.10.0",
+    "react-notifications-component": "^1.0.1",
+    "react-player": "^1.9.3",
+    "react-redux": "^5.0.7",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "react-select": "^3.1.0",
+    "react-stepper-horizontal": "^1.0.11",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^3.4.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "css-loader": "^1.0.0",
+    "file-loader": "^1.1.11",
+    "sass-loader": "^7.0.3",
+    "style-loader": "^0.21.0",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.16.1",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.4"
+  },
+  "script": {
+    "build": "webpack -d && copy src\\index.html dist\\index.html /y && webpack-dev-server --content-base src --inline --port 3000"
+  }
+}

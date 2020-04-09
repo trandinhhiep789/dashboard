@@ -1,0 +1,41 @@
+.page-product {
+    .default-image-product{
+        .image-product{
+            .defaultImage{
+                background-repeat: no-repeat;
+                background-size: contain;
+                background-position: center;
+            }
+        }
+    }
+    .card-body {
+        &.tab-product {
+            padding: 0;
+
+            .nav-tabs {
+                .nav-link {
+                    padding: 0px 16px;
+                    &.active {
+                        color: #fff;
+                        border-color: #33cabb;
+                        background: #33cabb;
+
+                        &:focus,
+                        &:hover {
+                            color: #fff;
+                            border-color: #33cabb;
+                            background: #33cabb;
+                        }
+                    }
+
+                    &:hover {
+                        color: #fff;
+                        border-color: #33cabb;
+                        background: #33cabb;
+                    }
+
+                }
+            }
+        }
+    }
+}

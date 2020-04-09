@@ -1,0 +1,37 @@
+.Collapsible{
+    background-color: white;
+    margin-bottom: 25px;
+    .Collapsible__contentInner {
+        padding: 10px;
+        border: 1px solid #ebebeb;
+        border-top: 0; 
+    }
+    .Collapsible__trigger {
+        display: block;
+        font-weight: 400;
+        text-decoration: none;
+        color: #333333;
+        position: relative;
+        border: 1px solid white;
+        padding: 10px;
+        background: #46cdb8;
+        color: white; 
+        &::after{
+            font-family: 'FontAwesome';
+            content: '\f107';
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            display: block;
+            transition: transform 300ms;
+        }
+        &.is-open {
+            &::after{
+                transform: rotateZ(180deg); 
+            }
+        }
+        &.is-disabled {
+            opacity: 0.5;
+            background-color: grey; }
+    }
+}

@@ -1,0 +1,31 @@
+.table{
+    thead{
+        th{
+            line-height: 20px;
+            .checkbox {
+                width: 21px;
+                height: 21px;
+                line-height: 33px;
+                float: none;
+                margin: 0 auto;
+            }
+        }
+    }
+    tbody{
+        td{
+            .checkbox {
+                width: 21px;
+                height: 21px;
+                line-height: 33px;
+                float: none;
+                margin: 0 auto;
+                label{
+                    margin-bottom: 0;
+                }
+            }
+            label{
+                margin-bottom: 0;
+            }
+        }
+    }
+}

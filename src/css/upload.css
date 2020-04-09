@@ -1,0 +1,100 @@
+.upload.onlyupload {
+    position: relative;
+    max-width: 215px;
+    height: 215px;
+}
+.upload.onlyupload .dropzone{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    z-index: 99;
+    overflow: hidden;
+    cursor: pointer;
+}
+.upload.onlyupload .dropzone .txt {
+    opacity: 0;
+    font-size: 25px;
+    color: #fff;
+    text-align: center;
+    margin-top: 50%;
+    transform: translateY(-50%);
+    display: block;
+}
+.upload.onlyupload .dropzone:hover {
+    background: #1f191963;
+}
+.upload.onlyupload .dropzone:hover .txt{
+    opacity: 1;
+}
+.upload.onlyupload .uploadfile {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 9;
+}
+.upload.onlyupload .uploadfile .filedefauld{
+    background-image: url("/src/img/avatar/default.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 215px;
+    height: 215px;
+    position: absolute;
+}
+.upload.onlyupload .uploadfile .accepted-files-title,
+.upload.onlyupload .uploadfile .rejected-files-title {
+    display: none;
+}
+.upload.onlyupload .uploadfile .accepted-files .filename {
+    display: none;
+}
+.upload.multiple{
+    position: relative;
+    min-height: 215px;
+    border: 2px dashed #0087F7;
+    border-radius: 5px;
+    height: 100%;
+}
+.upload.multiple .dropzone{
+    position: absolute;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 5px;
+    background: white;
+    border: 0;
+}
+.upload.multiple .dropzone .frmupload {
+    position: absolute;
+    width: 100%;
+    height: 215px;
+    z-index: 999;
+    margin: 0;
+    top: 0;
+}
+.upload.multiple .uploadfile {
+
+}
+.upload.multiple .uploadfile .rejected-files-title,
+.upload.multiple .uploadfile .accepted-files-title {
+    display: none;
+}
+.upload.multiple .uploadfile .lstfilemutile{
+    position: relative;
+}
+.upload.multiple .uploadfile .lstfilemutile .accepted-files {
+    width: 22%;
+    height: 210px;
+    float: left;
+    margin-right: 3%;
+    text-align: center;
+}
+.upload.multiple .uploadfile .lstfilemutile .accepted-files:last-child {
+    margin-right: 0;
+}
+.upload.multiple .uploadfile .lstfilemutile .accepted-files .filename {
+    color: #070707;
+    font-size: 15px;
+}

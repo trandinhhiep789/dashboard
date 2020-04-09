@@ -1,0 +1,456 @@
+import React, { Component, PropTypes } from 'react';
+import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+import { formatDate } from "../../../../../../library/CommonLib.js";
+import { callGetCache } from "../../../../../../../actions/cacheAction";
+import { ValidationField } from "../../../../../../library/validation.js";
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+class InputGridCellCom extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            Listoption: [],
+            IsDisabled: false
+        };
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleInputChangeALL = this.handleInputChangeALL.bind(this);
+        this.handleonClickEdit = this.handleonClickEdit.bind(this);
+        this.handleEditClick = this.handleEditClick.bind(this);
+        this.previewMedia = this.previewMedia.bind(this);
+        this.handleInputFocus = this.handleInputFocus.bind(this);
+    }
+
+    componentDidMount() {
+        const validatonDisabled = this.props.isDisabled;
+        if (validatonDisabled) {
+            this.setState({
+                IsDisabled: true
+            })
+        }
+        
+        if (this.props.type == "combobox" || this.props.type == "comboboxCus") {
+            let listOption = [];
+            //  console.log("componentDidMount: ", this.props.IsAutoLoadItemFromCache)
+            if (this.props.IsAutoLoadItemFromCache) {
+                const cacheKeyID = this.props.LoadItemCacheKeyID;
+                const valueMember = this.props.ValueMember;
+                const nameMember = this.props.NameMember;
+                // console.log("componentDidMount: ", cacheKeyID,valueMember,nameMember)
+                const keyFilter = this.props.KeyFilter;
+                const valueFilter = this.props.ValueFilter;
+                const isCategory = this.props.isCategory;
+                const CategoryTypeID = this.props.CategoryTypeID;
+                this.props.callGetCache(cacheKeyID).then((result) => {
+
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+
+                        if (!isCategory) {
+                            if (this.props.IsFilterData) {
+                                result.ResultObject.CacheData.map((cacheItem) => {
+                                    if (cacheItem[keyFilter] === valueFilter) {
+                                        listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
+                                    }
+                                }
+                                );
+                            }
+                            else {
+                                result.ResultObject.CacheData.map((cacheItem) => {
+                                    listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
+                                }
+                                );
+                            }
+                            this.setState({ Listoption: listOption });
+                        }
+                        else {
+
+                            const filterdata = result.ResultObject.CacheData.filter(a => a.CategoryTypeID == CategoryTypeID);
+                            console.log("filterdata", CategoryTypeID, filterdata);
+                            const categoryTree = this.createCategoryTree(filterdata, 0, 0);
+                            console.log("categoryTree", CategoryTypeID, filterdata, categoryTree);
+                            this.setState({ Listoption: categoryTree });
+                        }
+
+
+                    }
+                }
+                );
+            }
+            else {
+                listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                this.setState({ Listoption: listOption });
+            }
+            //console.log("FormElement listOption 2: ", listOption)
+        }
+    }
+
+    categoryNamePrefix(categoryLevel) {
+        let resultStr = "";
+        for (let i = 0; i < categoryLevel; i++) {
+            resultStr += "---";
+        }
+        return resultStr;
+    }
+
+    createCategoryTree(originListItem) {
+        let childListItem = originListItem.filter(item => item.ParentID == 0);
+        //  console.log("createCategoryTree childListItem:", childListItem);
+        let itemListResult = [{ value: -1, label: "--Vui lòng chọn--" }];
+        for (let i = 0; i < childListItem.length; i++) {
+            itemListResult.push({ value: childListItem[i].CategoryID, label: childListItem[i].CategoryName });
+            let childItemTree = this.createChildCategoryTree(originListItem, childListItem[i].CategoryID, 1);
+            // console.log("createCategoryTree childItemTree:", childItemTree);
+            for (let j = 0; j < childItemTree.length; j++) {
+                //itemListResult.push(childItemTree[j]);
+                itemListResult.push({ value: childItemTree[j].CategoryID, label: childItemTree[j].CategoryName });
+            }
+        }
+        return itemListResult;
+    }
+    createChildCategoryTree(originListItem, parentID, categoryLevel) {
+        let childListItem = originListItem.filter(item => item.ParentID == parentID);
+        // console.log("createChildCategoryTree childListItem:", childListItem);
+        let itemListResult = []
+        for (let i = 0; i < childListItem.length; i++) {
+            let item = childListItem[i];
+            item.CategoryName = this.categoryNamePrefix(categoryLevel) + item.CategoryName;
+            //   console.log("createChildCategoryTree childListItem:",item);
+            itemListResult.push(item);
+            //itemListResult.push({ value: item.CategoryID, label: item.CategoryName });
+            const newCategoryLevel = categoryLevel + 1;
+            let childListItem2 = originListItem.filter(item => item.ParentID == item.CategoryID);
+            //  console.log("createChildCategoryTree childListItem2:",childListItem2);
+            if (childListItem2.length > 0) {
+                const childItemTree2 = this.createChildCategoryTree(originListItem, item.CategoryID, newCategoryLevel);
+                for (j = 0; j < childItemTree2.length; j++) {
+                    itemListResult.push(childItemTree2[j]);
+                    itemListResult.push({ value: childItemTree2[j].CategoryID, label: childItemTree2[j].CategoryName });
+                }
+            }
+        }
+        return itemListResult;
+    }
+
+    formatNumeric(value) {
+        value = value.replace(/\D/g, '');
+        if (isNaN(value)) {
+            value = 0;
+        }
+        return parseInt(value);
+    }
+
+    handleonClickEdit(e) {
+        if (this.props.IsSystem) {
+            return;
+        }
+        const id = e.currentTarget.dataset.id;
+        //console.log("cellhandleonClickEdit inputname",id)
+        this.props.onInsertClickEdit(this.props.index);
+    }
+
+    handleInputChange(e) {
+        this.validateInput(e);
+        // this.props.onValueChange(elementdata, this.props.index);
+    }
+
+    handleInputFocus(e) {
+        let OldCategoryID = "";
+        this.setState({
+            OldCategoryID: e.target.value
+        })
+    }
+
+    validateInput(e) {
+        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
+        let inputvalue = e.target.value;
+        // if (e.target.type == 'checkbox') {
+        //   inputvalue = ischecked;
+        // }
+        if (this.props.type == 'numeric') {
+            inputvalue = this.formatNumeric(inputvalue);
+        }
+        const inputname = e.target.name;
+        let elementdata = { Name: inputname, Value: inputvalue, IsChecked: ischecked, HasChanged: true };
+        let isVavalidatonError = false;
+        let validationErrorMessage = "";
+        if (this.props.validatonList != null) {
+            if (this.props.validatonList.length > 0) {
+                const validation = ValidationField(this.props.validatonList, elementdata.Value, this.props.label)
+                if (validation.IsError) {
+                    this.setState({ ValidationError: validation.Message });
+                    isVavalidatonError = true;
+                    validationErrorMessage = validation.Message;
+                    e.target.focus();
+                }
+                else {
+                    this.setState({ ValidationError: "" });
+                }
+                elementdata.Value = validation.fieldValue;
+            }
+        }
+        if (e.target.type == 'checkbox') {
+            elementdata = { Name: inputname, DataSourceMember: this.props.value, IsChecked: ischecked, Value: ischecked }
+        }
+        if (this.props.onValueChangeCustom) {
+            this.props.onValueChangeCustom(elementdata, this.props.index, this.state.OldCategoryID, isVavalidatonError, validationErrorMessage);
+        } else {
+            this.props.onValueChange(elementdata, this.props.index, isVavalidatonError, validationErrorMessage);
+        }
+    }
+
+    handleInputChangeALL(e) {
+        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
+        let inputvalue = e.target.value;
+        // if (e.target.type == 'checkboxAll') {
+        //   inputvalue = ischecked;
+        // }
+        // const inputvalue  =  e.target.value;
+        this.props.onValueChangeALL(inputvalue, this.props.index);
+    }
+
+    handleEditClick() {
+        if (this.props.IsSystem) {
+            return;
+        }
+        if (this.props.onHandleEditClick != null)
+            this.props.onHandleEditClick(this.props.index);
+        // const elementdata = { Name: this.props.name, DataSourceMember: this.props.value }
+        // if (this.props.onHandleEditClick != null)
+        //     this.props.onHandleEditClick(elementdata, this.props.DataSourceMember);
+    }
+
+    previewMedia() {
+        if (this.props.previewMedia != null)
+            this.props.previewMedia(this.props.type, this.props.filePath);
+    }
+
+    checkValidation(control, frmGroupclassName) {
+        let formGroupclassName = frmGroupclassName;
+        let divControl = control;
+        if (this.props.validationErrorMessage != null) {
+            if (this.props.validationErrorMessage.length > 0) {
+                divControl = (
+                    <React.Fragment>
+                        {/* <div className="form-group col-md-2">
+                            <label className="col-form-label 11">{this.props.label}</label>
+                             </div> */}
+                        <div className={formGroupclassName}>
+                            {control}
+                            <div className="invalid-feedback">
+                                <ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul>
+                            </div>
+                        </div>
+
+                    </React.Fragment>
+                );
+            }
+        }
+
+        return divControl;
+
+    }
+
+    render() {
+        let link = this.props.link;
+        const type = this.props.type;
+        const text = this.props.text;
+        const listValue = this.props.value;
+        // const to = this.props.to + text;
+        const linkText = this.props.linkText;
+        let filePathMedia;
+        let linkTo;
+        if (this.props.filePath) {
+            filePathMedia = this.props.filePath.substring(this.props.filePath.indexOf('\\'));
+        }
+
+        //check issystem
+        let isSystem = false;
+        if (this.props.readOnly) {
+            isSystem = true;
+        } else if (this.props.IsSystem) {
+            isSystem = true
+        }
+
+
+        switch (type) {
+            case "text":
+                return <label>{ReactHtmlParser(text)}</label>;
+            case "date":
+                {
+                    const datestring = formatDate(text);
+                    return <label>{datestring}</label>;
+                }
+
+            case "checkicon":
+                {
+                    if (text) {
+                        return <span className="fa fa-check"></span>;
+                    }
+                    return null;
+                }
+
+            case "checkbox":
+                {
+                    let className = "form-control form-control-sm";
+                    if (this.props.CSSClassName != null)
+                        className = this.props.CSSClassName;
+
+                    return <input type="checkbox" name={this.props.name} className={className} readOnly={isSystem}
+                        onChange={this.handleInputChange} value={text} checked={this.props.isChecked} disabled={this.state.IsDisabled} />;
+                }
+            case "checkboxAll":
+                {
+                    let className = "form-control form-control-sm";
+                    if (this.props.CSSClassName != null)
+                        className = this.props.CSSClassName;
+                    return <input type="checkbox" name={this.props.name} className={className} readOnly={isSystem}
+                        onChange={this.handleInputChangeALL} value={text} checked={this.props.isChecked} />;
+                }
+            case "textbox":
+                {
+                    let className = "form-control form-control-sm";
+                    if (this.props.CSSClassName != null)
+                        className = this.props.CSSClassName;
+
+                    let disabled = false;
+                    if (this.props.disabled)
+                        disabled = this.props.disabled;
+
+                    //validation
+                    let formGroupclassName = "";
+                    if (this.props.validationErrorMessage != null) {
+                        if (this.props.validationErrorMessage.length > 0) {
+                            formGroupclassName += " has-error has-danger";
+                            className += " is-invalid";
+                        }
+                    }
+
+                    let control = <input type="text" name={this.props.name} className={className} readOnly={isSystem}
+                        onChange={this.handleInputChange} defaultValue={text} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} />;
+
+                    return this.checkValidation(control, formGroupclassName);
+
+                }
+            case "number":
+                {
+                    let className = "form-control form-control-sm";
+                    if (this.props.CSSClassName != null)
+                        className = this.props.CSSClassName;
+                    return <input type="number" name={this.props.name} className={className} readOnly={isSystem}
+                        onChange={this.handleInputChange} defaultValue={this.props.text} disabled={this.state.IsDisabled}
+                        min={this.props.min} max={this.props.max}
+                    />;
+                }
+            case "numeric":
+                {
+                    let className = "form-control form-control-sm";
+                    if (this.props.CSSClassName != null)
+                        className = this.props.CSSClassName;
+                    let valueFormat = this.props.text ? Number(this.props.text).toLocaleString() : 0;
+                    return <input className={className} name={this.props.name} value={valueFormat} type="text" placeholder={this.props.placeholder} onChange={this.handleInputChange} readOnly={isSystem} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} onKeyUp={(e) => { e.target.value = Number(this.formatNumeric(e.target.value)).toLocaleString() }} />;
+                }
+            case "textarea":
+                {
+                    let className = "form-control form-control-sm";
+                    if (this.props.CSSClassName != null)
+                        className = this.props.CSSClassName;
+
+                    return <textarea name={this.props.name} className={className} readOnly={isSystem}
+                        onChange={this.handleInputChange} defaultValue={text} maxLength={this.props.maxSize} />;
+                }
+            case "combobox":
+                {
+                    let className = "form-control form-control-sm";
+                    if (this.props.CSSClassName != null)
+                        className = this.props.CSSClassName;
+
+                    let listOption = this.state.Listoption;
+                    return (
+                        <select className={this.props.CSSClassName} name={this.props.name} readOnly={isSystem} disabled={isSystem ? "disabled" : ""}
+                            onChange={this.handleInputChange} value={this.props.text}
+                            className={className} >
+                            {
+                                listOption && listOption.map((optionItem) => {
+                                    return (
+                                        <option value={optionItem.value} key={optionItem.value} >{optionItem.label}</option>
+                                    )
+                                }
+                                )}
+                        </select>
+                    );
+                }
+
+            case "comboboxCus":
+                {
+                    let className = "form-control form-control-sm";
+                    if (this.props.CSSClassName != null)
+                        className = this.props.CSSClassName;
+                    let listOption = this.state.Listoption;
+                    console.log("listOption", listOption);
+                    return (
+                        <select className={this.props.CSSClassName}
+                            name={this.props.name}
+                            readOnly={isSystem}
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}
+                            value={this.props.text}
+                            className={className}>
+                            {
+                                listOption && listOption.map((optionItem) => {
+                                    return (
+                                        <option value={optionItem.value} key={optionItem.value}>{optionItem.label}</option>
+                                    )
+                                }
+                                )}
+                        </select>
+                    );
+                }
+            case "link":
+                if (link) {
+                    linkTo = listValue.reduce((link, item, index, listValue) => {
+                        return link + item.value.toString().trim() + "/"
+                    }, link)
+                }
+                return <Link to={linkTo}>{linkText}</Link>;
+            case "edit":
+                return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.value} title="Edit"><i className="ti-pencil"></i></a>;
+            case "editnew":
+                return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>;
+            case "buttonEdit":
+                return (
+                    // <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleEditClick}>
+                    //   <span className="ti-pencil"> Chỉnh sửa</span>
+                    // </button>
+                    <a className="nav-link hover-primary" onClick={this.handleEditClick} data-id={this.props.value} title="Edit"><i className="ti-pencil"></i></a>
+                );
+            case "image":
+                return (
+                    <a target='_blank' className='nav-link hover-primary' onClick={this.previewMedia}>{filePathMedia}</a>
+                )
+            case "video":
+                return (
+                    <a target='_blank' className='nav-link hover-primary' onClick={this.previewMedia}>{filePathMedia}</a>
+                )
+            default:
+                return <label>{text}</label>;
+        }
+        return null;
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        AppInfo: state
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
+        }
+    }
+}
+
+const InputGridCell = connect(mapStateToProps, mapDispatchToProps)(InputGridCellCom);
+export default InputGridCell;

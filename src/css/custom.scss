@@ -1,0 +1,246 @@
+@import "components/index";
+@import '_SearchForm';
+@import '_comment';
+@import '_tooltip';
+@import '_ModalConfirm';
+@import '_notification';
+@import 'inputgroup';
+@import 'collapsible';
+@import "attached.scss";
+@import "Images.scss";
+@import "editor.scss";
+@import "./table";
+
+// Css menu trang sản phẩm
+.sidebar-left{
+    transition: margin-left 0.3s ease;
+    background-color: #fff;
+    box-shadow: 4px 0 5px rgba(0,0,0,0.08);
+    padding: 0;
+    .nav{
+        &.flex-column{
+            &.nav-pills{
+                .nav-item{
+                    padding: 0;
+                    
+                }
+                .nav-item{
+                    &>*{
+                        margin: 0;
+                        padding: 0 12px;
+                    }
+                    .nav-link{
+                        &.active{
+                            color: #ffffff;
+                            font-weight: 500;
+                            background-color: #868181e0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.input-footer-button-group{
+    float: right;
+}
+.modal-label-right{
+    float: right;
+}
+.modal-label-left{
+    float: left;
+}
+.editEditor
+{
+    text-align: left;
+}
+.mfp-zoom-out {
+  
+  /* start state */
+    .mfp-with-anim {
+        opacity: 0;
+        transition: all 0.3s ease-in-out; 
+        transform: scale(1.3); 
+    }
+    &.mfp-bg {
+        opacity: 0;
+        transition: all 0.3s ease-out;
+    }
+    /* animate in */
+    &.mfp-ready {
+        .mfp-with-anim {
+            opacity: 1;
+            transform: scale(1); 
+        }
+        &.mfp-bg {
+            opacity: 0.8;
+        }
+    }
+    /* animate out */
+    &.mfp-removing {
+        .mfp-with-anim {
+            transform: scale(1.3); 
+            opacity: 0;
+        }
+        &.mfp-bg {
+            opacity: 0;
+        }
+        
+    }
+  
+}
+
+/* cus modal */
+.modal-custom{
+    .modal-footer{
+        border-top: 1px solid #f1f2f3;
+    }
+}
+/* cus checkbox */
+.custom-controls-stacked{
+    .custom-checkbox{
+        .custom-control-label{
+            &:empty{
+                &::after{
+                    top: 0px;
+                }
+            }
+        }
+    }
+}
+// cus file-group
+.file-group{
+    .form-control{
+        &.file-value{
+            height: 36px;
+        }
+    }
+}
+.checkbox{
+    float: left;
+    text-align: left;
+}
+
+.checkbox label:after, 
+.radio label:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.checkbox .cr,
+.radio .cr {
+    position: relative;
+    display: inline-block;
+    border: 1px solid #ebebeb;
+    border-radius: .2em;
+    width: 22px;
+    height: 22px;
+    margin-right: .5em;
+    color: #33cabb;
+    font-size: 15px;
+    background-color: #fff;
+}
+
+.radio .cr {
+    border-radius: 50%;
+}
+
+.checkbox .cr .cr-icon,
+.radio .cr .cr-icon {
+    position: absolute;
+    font-size: .8em;
+    line-height: 0;
+    top: 50%;
+    left: 20%;
+}
+
+.radio .cr .cr-icon {
+    margin-left: 0.04em;
+}
+
+.checkbox label input[type="checkbox"],
+.radio label input[type="radio"] {
+    display: none;
+}
+
+.checkbox label input[type="checkbox"] + .cr > .cr-icon,
+.radio label input[type="radio"] + .cr > .cr-icon {
+    transform: scale(3) rotateZ(-20deg);
+    opacity: 0;
+    transition: all .3s ease-in;
+}
+
+.checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
+.radio label input[type="radio"]:checked + .cr > .cr-icon {
+    transform: scale(1) rotateZ(0deg);
+    opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:disabled + .cr,
+.radio label input[type="radio"]:disabled + .cr {
+    opacity: .5;
+}
+.player-wrapper {
+  position: relative;
+  padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */
+  .react-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+.btnsubmit{
+    button{
+        margin-top: 15px;
+    }
+}
+
+.frminfo{
+    .form-row {
+        > [class*=col-]{
+            margin-bottom: 0px;
+            label{
+                margin-bottom: 0;
+            }
+        }
+    }
+    .btnback{
+        color: #4d5259 !important;
+    }
+}
+
+
+::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -moz-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+	width: 8px;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    -moz-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background: -moz-linear-gradient(-45deg, rgba(76,76,76,0.77) 0%, rgba(84,84,84,0.77) 100%);
+	background: -webkit-linear-gradient(-45deg, rgba(76,76,76,0.77) 0%,rgba(84,84,84,0.77) 100%);
+	background: linear-gradient(135deg, rgba(76,76,76,0.77) 0%,rgba(84,84,84,0.77) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c44c4c4c', endColorstr='#c4545454',GradientType=1 );
+}
+
+.fa-6x{
+    font-size: 6em !important;
+}
+
+.de-active{
+    pointer-events: none;
+}

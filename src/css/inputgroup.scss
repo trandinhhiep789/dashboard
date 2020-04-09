@@ -1,0 +1,89 @@
+.input-group-cus{
+    .input-group{
+        .item-group {
+            background-color: hsl(0,0%,90%);
+            border-radius: 2px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            margin: 2px;
+            min-width: 0;
+            box-sizing: border-box;
+            float: left;
+            label {
+                border-radius: 2px;
+                color: #222;
+                font-size: 85%;
+                overflow: hidden;
+                padding: 3px;
+                padding-left: 6px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                box-sizing: border-box;
+                margin-bottom: 0;
+            }
+            .icon-delete {
+                -webkit-align-items: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                border-radius: 2px;
+                display: -webkit-box;
+                display: -webkit-flex;
+                display: -ms-flexbox;
+                display: flex;
+                padding-left: 4px;
+                padding-right: 4px;
+                box-sizing: border-box;
+                cursor: pointer;
+                &:hover{
+                    background-color: #FFBDAD;
+                    color: #DE350B;
+                }
+            }
+        }
+    }
+}
+.group-text-select {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-align: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    width: 100%;
+    border: 1px solid #ebebeb;
+    .txtKeyword {
+        width: 60%;
+        float: left;
+        border-radius: 4px 0 0 4px;
+        height: 35px;
+        border: 0;
+        border-right: 1px solid #ebebeb;
+    }
+    .cboption {
+        width: 40%;
+        float: right;
+        border-radius: 0 4px 4px 0;
+        height: 35px !important;
+        border: 0;
+    }
+}
+
+.input-group{
+    input{
+        line-height: 27px;
+    }
+}
+.form-group{
+    input{
+        line-height: 27px;
+    }
+    select{
+        height: 36px !important;
+    }
+}

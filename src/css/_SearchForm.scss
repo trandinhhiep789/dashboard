@@ -1,0 +1,84 @@
+.SearchForm {
+    .rdt {
+        width: 78%;
+
+        @media (max-width: 1557px) {
+            width: 65%;
+        }
+
+        @media (max-width: 1278px) {
+            width: 60%;
+        }
+
+        input {
+            position: absolute;
+            z-index: 99;
+            background: transparent
+        }
+
+        &::after {
+            content: "\F073";
+            position: absolute;
+            top: 0;
+            right: 0;
+            color: #fff;
+            background-color: #4c5c68;
+            font: normal normal normal 18px/1 FontAwesome;
+            width: 37px;
+            height: 37px;
+            border-radius: 0px 3px 3px 0px;
+            text-align: center;
+            cursor: pointer;
+            padding: 8px 0;
+        }
+
+        &.rdtOpen {
+            .rdtPicker {
+                margin-top: 36px;
+            }
+        }
+    }
+
+    .col-form-label {
+        padding-right: 10px;
+        width: 22%;
+
+        @media (max-width: 1557px) {
+            width: 100%;
+        }
+
+        @media (max-width: 1278px) {}
+    }
+
+
+    .item {
+        clear: both;
+        position: relative;
+
+        .input-group {
+            input {
+                border-radius: 5px;
+
+                @media (min-width: 768px) {
+                    height: 35px;
+                }
+            }
+
+            select {
+                height: 35px  !important;
+            }
+        }
+
+        .btnSearch {
+            width: 100%;
+            position: absolute;
+            left: 15px;
+            bottom: 0;
+            margin: 0 auto;
+            @media (max-width: 767px) {
+                margin-top: 20px;
+                position: static;
+            }
+        }
+    }
+}
