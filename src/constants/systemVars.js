@@ -12,7 +12,7 @@ export const API_HOST_LIST = {
     },
     PIMAPI: {
         HostName: "PIMAPI",
-        HostBaseURL: 'http://pimapi.mwg.vn/'
+            HostBaseURL: 'http://pimapi.mwg.vn/'
         // HostBaseURL: 'http://devpimapi.mwg.vn/'
 
 
