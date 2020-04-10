@@ -13,7 +13,7 @@ export const API_HOST_LIST = {
     PIMAPI: {
         HostName: "PIMAPI",
             //HostBaseURL: 'http://tmsapi.tterpbeta.vn/'
-              HostBaseURL: 'https://localhost:44338/'
+              HostBaseURL: 'http://devtmsapi.tterpbeta.vn/'
     },
     CacheAPI: {
         HostName: "CacheAPI",
