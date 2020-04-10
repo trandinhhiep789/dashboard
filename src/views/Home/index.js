@@ -55,6 +55,7 @@ import PieRequestAdd from '../../views/PIM/PieRequest/PieRequest/Add/index';
 import CacheManager from '../../views/System/CacheManager';
 import Dashboard from '../../views/Dashboard';
 import AccountInfo from '../../views/Account';
+import PartnerType from '../../views/TMS/PartnerType';
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -213,10 +214,12 @@ class HomeCom extends React.Component {
                                 {/* Danh sách loại bảng mã sản phẩm của đối tác */}
                                 <PrivateRoute path="/PartnerProductMapType" component={PartnerProductMapType} isLoggedIn={isLoggedIn} />
 
-
+                                
                                 <PrivateRoute path="/PieRequestProduct/:action/:id/:pierequestlistid" component={PieRequestProduct} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/CacheManager" component={CacheManager} isLoggedIn={isLoggedIn} />
                                 {/* <PrivateRoute path="*" component={Category} isLoggedIn={isLoggedIn} /> */}
+
+                                <PrivateRoute path="/PartnerType" component={PartnerType} isLoggedIn={isLoggedIn} />
 
                             </Switch>
                         </div>

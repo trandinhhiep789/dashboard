@@ -430,6 +430,21 @@ const AppMenu = [
                 SubMenu: []
             }
         ]
+    },
+    {
+        MenuName: 'MD',
+        MenuTitle: 'Khai báo thông tin chung TT',
+        LinkTo: '',
+        MenuIcon: '',
+        SubMenu: [
+            {
+                MenuName: 'PartnerType',
+                MenuTitle: 'Danh sách loại đối tác',
+                LinkTo: '/PartnerType',
+                MenuIcon: '',
+                SubMenu: []
+            }
+        ]
     }
 ];
 
