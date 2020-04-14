@@ -443,6 +443,13 @@ const AppMenu = [
                 LinkTo: '/PartnerType',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'CancelDeliveryReason',
+                MenuTitle: 'Danh sách lý do hủy giao hàng',
+                LinkTo: '/CancelDeliveryReason',
+                MenuIcon: '',
+                SubMenu: []
             }
         ]
     }

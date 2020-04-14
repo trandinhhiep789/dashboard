@@ -45,6 +45,7 @@ import AccountInfo from '../views/Account';
 
 
 
+
 import PrivateRoute from './PrivateRoute'
 const isLoggedIn = true;
 
@@ -130,6 +131,10 @@ export default class AppRoute extends React.Component {
                 <PrivateRoute path="/PieRequestProduct/:action/:id/:pierequestlistid" component={PieRequestProduct} isLoggedIn={isLoggedIn} />
                 <PrivateRoute path="/CacheManager" component={CacheManager} isLoggedIn={isLoggedIn} />
                 {/* <PrivateRoute path="*" component={Category} isLoggedIn={isLoggedIn} /> */}
+
+
+               
+
 
             </Switch>
 
