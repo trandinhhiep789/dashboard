@@ -33,9 +33,9 @@ const store = createStore(authenticationReducer,
 );
 const Index = () => {
     return (<Provider store={store}><div>Test App</div>
-      </Provider>
+    </Provider>
     );
-  };
+};
 
 ReactDOM.render(
 
