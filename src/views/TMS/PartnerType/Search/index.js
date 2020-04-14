@@ -118,15 +118,12 @@ class SearchCom extends React.Component {
         ];
         this.setState({ SearchData: postData });
         this.callSearchData(postData);
-        this.gridref.current.clearData();
     }
 
     callSearchData(searchData) {
-        debugger;
         this.props
             .callFetchAPI(APIHostName, SearchAPIPath, searchData)
             .then(apiResult => {
-                debugger;
                 if (apiResult && !apiResult.IsError) {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,

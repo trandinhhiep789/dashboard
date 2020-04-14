@@ -1039,9 +1039,9 @@ class FormContainerCom extends Component {
         if (this.state.IsPermision == false) {
             return <p className="col-md-12">Bạn không có quyền</p>
         }
-        if (this.state.IsPermision === 'error') {
-            return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
-        }
+        // if (this.state.IsPermision === 'error') {
+        //     return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
+        // }
         if (this.props.IsAutoLayout) {
             return this.autoLayoutForm();
         }
