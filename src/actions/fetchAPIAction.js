@@ -46,7 +46,6 @@ export function callFetchAPI(hostname,apiPath,postData)
 {
     return (dispatch, getState) => {
         const state = getState();
-        debugger;
         if(state.FetchAPIInfo.IsFetchAPIRequest)
         {
             // return  {

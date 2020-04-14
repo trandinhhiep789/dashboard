@@ -458,6 +458,14 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             }
+            ,
+            {
+                MenuName: 'PackageType',
+                MenuTitle: 'Danh sách loại đóng gói hàng hóa vận chuyển',
+                LinkTo: '/PackageType',
+                MenuIcon: '',
+                SubMenu: []
+            }
         ]
     }
 ];

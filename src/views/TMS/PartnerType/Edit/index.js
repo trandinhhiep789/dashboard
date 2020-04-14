@@ -30,7 +30,6 @@ class EditCom extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
-        this.valueChangeInputGrid = this.valueChangeInputGrid.bind(this);
         this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
         this.handleGetCache = this.handleGetCache.bind(this);
         this.state = {
@@ -51,6 +50,7 @@ class EditCom extends React.Component {
         this.props.updatePagePath(EditPagePath);
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
+            debugger;
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: apiResult.IsError
@@ -58,9 +58,7 @@ class EditCom extends React.Component {
                 this.showMessage(apiResult.Message);
             } else {
                 if (apiResult.ResultObject) {
-                    const ResultLanguage = Object.assign([], this.state.ResultLanguage, apiResult.ResultObject.ResultLanguage);
-                    const DataSource = Object.assign([], this.state.DataSource, apiResult.ResultObject);
-                    this.setState({ DataSource, ResultLanguage });
+                    this.setState({ DataSource:apiResult.ResultObject});
                 }
             }
             this.setState({
@@ -69,37 +67,20 @@ class EditCom extends React.Component {
         });
     }
 
-    valueChangeInputGrid(elementdata, index) {
-        const rowGridData = Object.assign({}, this.state.ResultLanguage[index], { [elementdata.Name]: elementdata.Value }, { HasChanged: true });
-        const dataSource = Object.assign([], this.state.ResultLanguage, { [index]: rowGridData });
-        this.setState({ ResultLanguage: dataSource });
-    }
+   
 
-    handleSubmitInsertLog(MLObject) {
-        MLObject.ActivityTitle = `Cập nhật nhãn hiệu: ${MLObject.BrandName}`;
-        MLObject.ActivityDetail = `Cập nhật nhãn hiệu: ${MLObject.BrandName} ${"\n"}Mô tả: ${MLObject.Description}`;
-        MLObject.ObjectID = "PIM_BRAND";
-        MLObject.ActivityUser = MLObject.UpdatedUser;
-        this.props.callFetchAPI(APIHostName, AddLogAPIPath, MLObject);
-    }
-
+    
     handleSubmit(formData, MLObject) {
         let ResultLanguage = this.state.ResultLanguage.filter(x => x.HasChanged == true && x.BrandName !== null);
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.ResultLanguage = ResultLanguage;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        if (this.state.IsDeletedFile) {
-            MLObject.LogoImageURL = "";
-        }
-        let data = new FormData();
-        data.append("LogoImageURL", this.state.Files.LogoImageURL);
-        data.append("BrandObj", JSON.stringify(MLObject));
-        this.props.callFetchAPI(APIHostName, UpdateAPIPath, data).then(apiResult => {
+       
+        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
             if(!apiResult.IsError){
                 this.handleClearLocalCache();
-                this.handleSubmitInsertLog(MLObject);
             }
         });
     }
@@ -168,16 +149,6 @@ class EditCom extends React.Component {
                     RequirePermission={BRAND_UPDATE}
                     BackLink={BackLink}
                 >
-                    <InputGrid
-                        name="ResultLanguage"
-                        controltype="InputControl"
-                        isHideHeaderToolbar={true}
-                        listColumn={InputLanguageColumnList}
-                        dataSource={this.state.ResultLanguage}
-                        MLObjectDefinition={GridMLObjectDefinition}
-                        colspan="12"
-                        onValueChangeInputGrid={this.valueChangeInputGrid}
-                    />
                 </FormContainer>
             );
         }
