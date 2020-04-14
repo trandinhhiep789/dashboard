@@ -450,6 +450,13 @@ const AppMenu = [
                 LinkTo: '/CancelDeliveryReason',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'CarrierType',
+                MenuTitle: 'Danh sách loại phương tiện vận chuyển',
+                LinkTo: '/CarrierType',
+                MenuIcon: '',
+                SubMenu: []
             }
         ]
     }

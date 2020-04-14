@@ -1,31 +1,31 @@
 export const APIHostName = "PIMAPI";
-export const SearchAPIPath = "api/CancelDeliveryReason/Search";
-export const LoadAPIPath = "api/CancelDeliveryReason/Load";
-export const AddAPIPath = "api/CancelDeliveryReason/Add";
-export const UpdateAPIPath = "api/CancelDeliveryReason/Update";
-export const DeleteAPIPath = "api/CancelDeliveryReason/Delete";
-export const UpdateOrderAPIPath = "api/CancelDeliveryReason/UpdateOrder";
-export const BackLink = "/CancelDeliveryReason";
-export const AddLink = "/CancelDeliveryReason/Add";
+export const SearchAPIPath = "api/CarrierType/Search";
+export const LoadAPIPath = "api/CarrierType/Load";
+export const AddAPIPath = "api/CarrierType/Add";
+export const UpdateAPIPath = "api/CarrierType/Update";
+export const DeleteAPIPath = "api/CarrierType/Delete";
+export const UpdateOrderAPIPath = "api/CarrierType/UpdateOrder";
+export const BackLink = "/CarrierType";
+export const AddLink = "/CarrierType/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "CancelDeliveryReasonID";
+export const PKColumnName = "CarrierTypeID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "", Title: "Danh sách lý do hủy giao hàng" }
+    { Link: "", Title: "Danh sách loại phương tiện vận chuyển" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/CancelDeliveryReason", Title: "Danh sách lý do hủy giao hàng" },
+    { Link: "/CarrierType", Title: "Danh sách loại phương tiện vận chuyển" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/CancelDeliveryReason", Title: "Danh sách lý do hủy giao hàng" },
+    { Link: "/CarrierType", Title: "Danh sách loại phương tiện vận chuyển" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -44,27 +44,27 @@ export const SearchElementList = [
 export const AddElementList = [
     {
         type: "numeric",
-        name: "txtCancelDeliveryReasonID",
-        label: "Mã lý do hủy giao hàng",
+        name: "txtCarrierTypeID",
+        label: "Mã loại phương tiện vận chuyển",
         value: "",
-        maxSize: "10",
+        maxSize: "5",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "CancelDeliveryReasonID",
+        DataSourceMember: "CarrierTypeID",
         readonly: false,
         validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtCancelDeliveryReasonName",
-        label: "Tên lý do hủy giao hàng",
+        name: "txtCarrierTypeName",
+        label: "Tên loại phương tiện vận chuyển",
         value: "",
         maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "CancelDeliveryReasonName",
+        DataSourceMember: "CarrierTypeName",
         readonly: false,
         validatonList: ["required"],
     },
@@ -122,27 +122,27 @@ export const AddElementList = [
 export const EditElementList = [
     {
         type: "numeric",
-        name: "txtCancelDeliveryReasonID",
-        label: "Mã lý do hủy giao hàng",
+        name: "txtCarrierTypeID",
+        label: "Mã loại phương tiện vận chuyển",
         value: "",
-        maxSize: "10",
+        maxSize: "5",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "CancelDeliveryReasonID",
+        DataSourceMember: "CarrierTypeID",
         readonly: true,
         validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtCancelDeliveryReasonName",
-        label: "Tên lý do hủy giao hàng",
+        name: "txtCarrierTypeName",
+        label: "Tên loại phương tiện vận chuyển",
         value: "",
         maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "CancelDeliveryReasonName",
+        DataSourceMember: "CarrierTypeName",
         readonly: false,
         validatonList: ["required"],
     },
@@ -209,16 +209,16 @@ export const SearchMLObjectDefinition = [
 
 export const MLObjectDefinition = [
     {
-        Name: "CancelDeliveryReasonID",
+        Name: "CarrierTypeID",
         DefaultValue: "",
-        BindControlName: "txtCancelDeliveryReasonID",
-        DataSourceMember: "CancelDeliveryReasonID"
+        BindControlName: "txtCarrierTypeID",
+        DataSourceMember: "CarrierTypeID"
     },
     {
-        Name: "CancelDeliveryReasonName",
+        Name: "CarrierTypeName",
         DefaultValue: "",
-        BindControlName: "txtCancelDeliveryReasonName",
-        DataSourceMember: "CancelDeliveryReasonName"
+        BindControlName: "txtCarrierTypeName",
+        DataSourceMember: "CarrierTypeName"
     },
     {
         Name: "Description",
@@ -269,29 +269,29 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "CancelDeliveryReasonID",
+        DataSourceMember: "CarrierTypeID",
         Width: 60
     },
     {
-        Name: "CancelDeliveryReasonID",
+        Name: "CarrierTypeID",
         Type: "text",
-        Caption: "Mã lý do hủy giao hàng",
-        DataSourceMember: "CancelDeliveryReasonID",
-        Width: 200
+        Caption: "Mã loại phương tiện vận chuyển",
+        DataSourceMember: "CarrierTypeID",
+        Width: 250
     },
     {
-        Name: "CancelDeliveryReasonName",
+        Name: "CarrierTypeName",
         Type: "text",
-        Caption: "Tên lý do hủy giao hàng",
-        DataSourceMember: "CancelDeliveryReasonName",
-        Width: 200
+        Caption: "Tên loại phương tiện vận chuyển",
+        DataSourceMember: "CarrierTypeName",
+        Width: 250
     },
     {
         Name: "Description",
         Type: "text",
         Caption: "Mô tả",
         DataSourceMember: "Description",
-        Width: 200
+        Width: 250
     },
     {
         Name: "IsActived",
@@ -325,9 +325,9 @@ export const DataGridColumnList = [
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "CancelDeliveryReasonID",
+        DataSourceMember: "CarrierTypeID",
         Width: 200,
-        Link: "/CancelDeliveryReason/Edit/",
+        Link: "/CarrierType/Edit/",
         LinkText: "Chỉnh sửa"
     }
 ];

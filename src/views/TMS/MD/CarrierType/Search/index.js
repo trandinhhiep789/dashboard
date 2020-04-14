@@ -189,7 +189,7 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    FormName="Tìm kiếm danh sách lý do hủy giao hàng"
+                    FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
