@@ -227,6 +227,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/CarrierType" component={CarrierType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerType" component={PartnerType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PackageType" component={PackageType} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/ShipmentFeePaymentMethod" component={ShipmentFeePaymentMethod} isLoggedIn={isLoggedIn} />
                                 
                             </Switch>
                         </div>
