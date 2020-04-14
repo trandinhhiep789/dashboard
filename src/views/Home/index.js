@@ -59,6 +59,7 @@ import PartnerType from '../../views/TMS/PartnerType';
 import CancelDeliveryReason from '../../views/TMS/MD/CancelDeliveryReason';
 import CarrierType from '../../views/TMS/MD/CarrierType';
 import PackageType from '../../views/TMS/MD/PackageType';
+import ShipmentFeePaymentMethod from '../../views/TMS/MD/ShipmentFeePaymentMethod';
 
 class HomeCom extends React.Component {
     constructor(props) {
