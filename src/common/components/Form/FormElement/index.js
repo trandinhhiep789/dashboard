@@ -8,7 +8,7 @@ import Datetime from 'react-datetime';
 import MultiSelectComboBox from "../AdvanceForm/FormControl/MultiSelectComboBox";
 import "../../../../../node_modules/react-datetime/css/react-datetime.css";
 import JoditEditor from "jodit-react";
-import { debug } from 'webpack';
+
 
 const singleFileUploadImage = {
     maxWidth: "100px",
