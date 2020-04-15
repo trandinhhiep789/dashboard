@@ -15,18 +15,18 @@ import { CDN_LOGO_IMAGE } from '../../../../constants/systemVars';
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "", Title: "Nhãn hiệu" }
+    { Link: "", Title: "Loại đối tác" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/PartnerType", Title: "Nhãn hiệu" },
+    { Link: "/PartnerType", Title: "Loại đối tác" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/PartnerType", Title: "Nhãn hiệu" },
+    { Link: "/PartnerType", Title: "Loại đối tác" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -59,24 +59,136 @@ export const SearchMLObjectDefinition = [
     }
 ];
 
+
+export const AddElementList = [
+    {
+        type: "text",
+        name: "txtPartnerTypeName",
+        label: "Tên đối tác:",
+        value: "",
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "PartnerTypeName",
+        readonly: false,
+        validatonList: ["required"]
+    },
+
+    {
+        type: "textarea",
+        name: "txtDescription",
+        label: "Mô tả:",
+        value: "",
+        maxSize: "2000",
+        placeholder: "",
+        rows: "6",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "Description",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "checkbox",
+        name: "chkIsActived",
+        label: "Kích hoạt:",
+        value: true,
+        placeholder: "",
+        icon: "",
+        DataSourceMember: "IsActived",
+        listoption: [],
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "checkbox",
+        name: "chkIsSystem",
+        label: "Hệ thống:",
+        value: false,
+        placeholder: "",
+        icon: "",
+        DataSourceMember: "IsSystem",
+        listoption: [],
+        readonly: false,
+        validatonList: []
+    }
+];
+
+export const EditElementList = [
+    {
+        type: "text",
+        name: "txtPartnerTypeID",
+        label: "Mã đối tác:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        readonly: true,
+        DataSourceMember: "PartnerTypeID",
+        validatonList: ["required", "number"],
+    },
+    {
+        type: "text",
+        name: "txtPartnerTypeName",
+        label: "Tên đối tác:",
+        value: "",
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "PartnerTypeName",
+        readonly: false,
+        validatonList: ["required"]
+    },
+
+    {
+        type: "textarea",
+        name: "txtDescription",
+        label: "Mô tả:",
+        value: "",
+        maxSize: "2000",
+        placeholder: "",
+        rows: "6",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "Description",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "checkbox",
+        name: "chkIsActived",
+        label: "Kích hoạt:",
+        value: true,
+        placeholder: "",
+        icon: "",
+        DataSourceMember: "IsActived",
+        listoption: [],
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "checkbox",
+        name: "chkIsSystem",
+        label: "Hệ thống:",
+        value: false,
+        placeholder: "",
+        icon: "",
+        DataSourceMember: "IsSystem",
+        listoption: [],
+        readonly: false,
+        validatonList: []
+    }
+];
+
+
 export const MLObjectDefinition = [
     {
         Name: "PartnerTypeID",
         DefaultValue: "",
         BindControlName: "txtPartnerTypeID",
         DataSourceMember: "PartnerTypeID"
-    },
-    {
-        Name: "ManufacturerID",
-        DefaultValue: "",
-        BindControlName: "txtManufacturerID",
-        DataSourceMember: "ManufacturerID"
-    },
-    {
-        Name: "LogoImageURL",
-        DefaultValue: "",
-        BindControlName: "txtLogoImageURL",
-        DataSourceMember: "LogoImageURL"
     },
     {
         Name: "PartnerTypeName",
@@ -113,12 +225,6 @@ export const MLObjectDefinition = [
         DefaultValue: "administrator",
         BindControlName: "",
         DataSourceMember: "CreatedUser"
-    },
-    {
-        Name: "PartnerTypeLang",
-        DefaultValue: {},
-        BindControlName: "inputGridPartnerTypeLang",
-        DataSourceMember: "inputGridPartnerTypeLang"
     }
 ];
 
@@ -160,7 +266,7 @@ export const InputLanguageColumnList = [
     {
         Name: "PartnerTypeName",
         Type: "textbox",
-        Caption: "Tên nhãn hiệu",
+        Caption: "Tên đối tác",
         DataSourceMember: "PartnerTypeName",
         Width: 200,
         maxSize: "400",
@@ -188,14 +294,14 @@ export const DataGridColumnList = [
     {
         Name: "PartnerTypeID",
         Type: "text",
-        Caption: "Nhãn hiệu",
+        Caption: "đối tác",
         DataSourceMember: "PartnerTypeID",
         Width: 100
     },
     {
         Name: "PartnerTypeName",
         Type: "text",
-        Caption: "Tên nhãn hiệu",
+        Caption: "Tên đối tác",
         DataSourceMember: "PartnerTypeName",
         Width: 300
     },

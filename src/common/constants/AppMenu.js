@@ -459,12 +459,20 @@ const AppMenu = [
                 SubMenu: []
             },
             {
-                MenuName: 'Partner',
-                MenuTitle: 'Danh sách đối tác',
-                LinkTo: '/Partner',
+                MenuName: 'PackageType',
+                MenuTitle: 'Danh sách loại đóng gói hàng hóa vận chuyển',
+                LinkTo: '/PackageType',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'ShipmentFeePaymentMethod',
+                MenuTitle: 'Danh sách phương thức thanh toán chi phí vận chuyển',
+                LinkTo: '/ShipmentFeePaymentMethod',
                 MenuIcon: '',
                 SubMenu: []
             }
+            
         ]
     }
 ];

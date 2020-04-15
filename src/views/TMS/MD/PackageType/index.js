@@ -1,12 +1,16 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import { Route } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Route,
+    Link,
+    Redirect
+} from "react-router-dom";
 import { connect } from "react-redux";
-import { callFetchAPI } from "../../../actions/fetchAPIAction";
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
-class PartnerTypeCom extends React.Component {
+class PackageTypeCom extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -14,10 +18,10 @@ class PartnerTypeCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Route exact path="/PartnerType" component={Search} />
-                <Route path="/PartnerType/Add" component={Add} />
-                <Route path="/PartnerType/Edit/:id" component={Edit} />
-              
+                <Route exact path="/PackageType" component={Search} />
+                <Route path="/PackageType/Add" component={Add} />
+                <Route path="/PackageType/Edit/:id" component={Edit}
+                />
             </React.Fragment>
         );
     }
@@ -38,8 +42,8 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const PartnerType = connect(
+const PackageType = connect(
     mapStateToProps,
     mapDispatchToProps
-)(PartnerTypeCom);
-export default PartnerType;
+)(PackageTypeCom);
+export default PackageType;
