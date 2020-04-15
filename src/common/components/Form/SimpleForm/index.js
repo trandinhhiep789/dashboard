@@ -185,6 +185,9 @@ class SimpleFormCom extends Component {
             FormValidation: formValidation
         });
         //console.log(this.state);
+        if (this.props.onValueChange) {
+            this.props.onValueChange(elementname, elementvalue);
+        }
     }
 
     validationForm() {
@@ -216,10 +219,10 @@ class SimpleFormCom extends Component {
 
     //file upload
     handleSelectedFile(file, nameValue, isDeletetedFile) {
-        if (this.props.onHandleSelectedFile != null){
+        if (this.props.onHandleSelectedFile != null) {
             this.props.onHandleSelectedFile(file, nameValue, isDeletetedFile);
         }
-        
+
     }
 
     checkInput(formValidation) {

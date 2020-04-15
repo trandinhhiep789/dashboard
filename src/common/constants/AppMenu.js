@@ -445,6 +445,13 @@ const AppMenu = [
                 SubMenu: []
             },
             {
+                MenuName: 'Partner',
+                MenuTitle: 'Danh sách đối tác',
+                LinkTo: '/Partner',
+                MenuIcon: '',
+                SubMenu: []
+            },          
+            {
                 MenuName: 'CancelDeliveryReason',
                 MenuTitle: 'Danh sách lý do hủy giao hàng',
                 LinkTo: '/CancelDeliveryReason',
