@@ -61,6 +61,7 @@ import CarrierType from '../../views/TMS/MD/CarrierType';
 import Partner from '../../views/TMS/MD/Partner';
 import PackageType from '../../views/TMS/MD/PackageType';
 import ShipmentFeePaymentMethod from '../../views/TMS/MD/ShipmentFeePaymentMethod';
+import ShipmentServiceType from '../../views/TMS/MD/ShipmentServiceType';
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -231,6 +232,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/PartnerType" component={PartnerType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PackageType" component={PackageType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentFeePaymentMethod" component={ShipmentFeePaymentMethod} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/ShipmentServiceType" component={ShipmentServiceType} isLoggedIn={isLoggedIn} />
                                 
                             </Switch>
                         </div>
