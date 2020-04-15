@@ -125,6 +125,7 @@ class SimpleFormCom extends Component {
         super(props);
         this.onValueChange = this.onValueChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSelectedFile = this.handleSelectedFile.bind(this);
         let formData = {};
         //let formVavalidaton = {};
         const listElement = bindDataToControl(this.props.listelement, this.props.dataSource);
@@ -213,6 +214,13 @@ class SimpleFormCom extends Component {
 
     }
 
+    //file upload
+    handleSelectedFile(file, nameValue, isDeletetedFile) {
+        if (this.props.onHandleSelectedFile != null){
+            this.props.onHandleSelectedFile(file, nameValue, isDeletetedFile);
+        }
+        
+    }
 
     checkInput(formValidation) {
         //console.log("checkInput formValidation: ", formValidation);
@@ -267,6 +275,7 @@ class SimpleFormCom extends Component {
                                     icon={elementItem.icon}
                                     rows={elementItem.rows}
                                     onValueChange={this.onValueChange}
+                                    onHandleSelectedFile={this.handleSelectedFile}
                                     listoption={elementItem.listoption}
                                     key={elementItem.name}
                                     readonly={elementItem.readonly}

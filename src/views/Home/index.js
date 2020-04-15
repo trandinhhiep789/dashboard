@@ -58,6 +58,7 @@ import AccountInfo from '../../views/Account';
 import PartnerType from '../../views/TMS/PartnerType';
 import CancelDeliveryReason from '../../views/TMS/MD/CancelDeliveryReason';
 import CarrierType from '../../views/TMS/MD/CarrierType';
+import Partner from '../../views/TMS/MD/Partner';
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -224,6 +225,7 @@ class HomeCom extends React.Component {
                                 {/*menu tận tâm*/}
                                 <PrivateRoute path="/CancelDeliveryReason" component={CancelDeliveryReason} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/CarrierType" component={CarrierType} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/Partner" component={Partner} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerType" component={PartnerType} isLoggedIn={isLoggedIn} />
 
                             </Switch>

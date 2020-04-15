@@ -457,6 +457,13 @@ const AppMenu = [
                 LinkTo: '/CarrierType',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'Partner',
+                MenuTitle: 'Danh sách đối tác',
+                LinkTo: '/Partner',
+                MenuIcon: '',
+                SubMenu: []
             }
         ]
     }
