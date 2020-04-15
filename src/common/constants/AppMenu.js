@@ -471,6 +471,13 @@ const AppMenu = [
                 LinkTo: '/ShipmentFeePaymentMethod',
                 MenuIcon: '',
                 SubMenu: []
+            } ,
+            {
+                MenuName: 'ShipmentServiceType',
+                MenuTitle: 'Danh sách loại dịch vụ vận chuyển',
+                LinkTo: '/ShipmentServiceType',
+                MenuIcon: '',
+                SubMenu: []
             }
             
         ]
