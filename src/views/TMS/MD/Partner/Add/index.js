@@ -45,7 +45,7 @@ class AddCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(AddPagePath);
-        //this.initCombobox();
+        this.initCombobox();
     }
 
 
@@ -81,23 +81,32 @@ class AddCom extends React.Component {
     //     this.props.callFetchAPI(APIHostName, AddLogAPIPath, MLObject);
     // }
 
-    getDataCombobox(cacheKeyID, valueMember, nameMember, conditionName, conditionValue) {
+    // getCacheDataCombobox(cacheKeyID) {
+    //     let listOption = [];
+    //     this.props.callGetCache(cacheKeyID).then((result) => {
+    //         //console.log("FormElement callGetCache: ", result)     
+    //         if (!result.IsError && result.ResultObject.CacheData != null) {
+    //             //console.log("FormElement listOption: ", listOption)
+    //             listOption = result.ResultObject.CacheData;
+    //         }
+    //         else {
+    //             console.log("ghi log cache lỗi", cacheKeyID);
+    //         }
+    //     });
+    //     return listOption;
+    // }
+
+    getDataCombobox(data, valueMember, nameMember, conditionName, conditionValue) {
         let listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
-        this.props.callGetCache(cacheKeyID).then((result) => {
-            //console.log("FormElement callGetCache: ", result)     
-            if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
-                result.ResultObject.CacheData.map((cacheItem) => {
-                    if (conditionName && cacheItem[conditionName] == conditionValue) {
-                        listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
-                    }
-                    else {
-                        listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
-                    }
-                });
+        data.map((cacheItem) => {
+            if (conditionName) {
+                if (cacheItem[conditionName] == conditionValue) {
+                    debugger;
+                    listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+                }
             }
             else {
-                console.log("ghi log cache lỗi", cacheKeyID);
+                listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
             }
         });
         return listOption;
@@ -107,29 +116,47 @@ class AddCom extends React.Component {
         var country, province, district, ward = [];
 
         // quốc gia
-        country = this.getDataCombobox("ERPCOMMONCACHE.COUNTRY", "CountryID", "CountryName");
-        this.setState({
-            Country: country,
+        this.props.callGetCache("ERPCOMMONCACHE.COUNTRY").then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                //console.log("FormElement listOption: ", listOption)
+                this.setState({
+                    Country: result.ResultObject.CacheData
+                });
+            }
         });
 
         // tỉnh thành phố
-        province = this.getDataCombobox("ERPCOMMONCACHE.PROVINCE", "ProvinceID", "ProvinceName");
-        this.setState({
-            Province: province,
+        this.props.callGetCache("ERPCOMMONCACHE.PROVINCE").then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                //console.log("FormElement listOption: ", listOption)
+                this.setState({
+                    Province: result.ResultObject.CacheData
+                });
+            }
         });
 
         // quận huyện
-        district = this.getDataCombobox("ERPCOMMONCACHE.PROVINCE", "ProvinceID", "ProvinceName");
-        this.setState({
-            District: district,
+        this.props.callGetCache("ERPCOMMONCACHE.DISTRICT").then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                //console.log("FormElement listOption: ", listOption)
+                this.setState({
+                    District: result.ResultObject.CacheData
+                });
+            }
         });
+
 
         // phường xã
-        ward = this.getDataCombobox("ERPCOMMONCACHE.PROVINCE", "ProvinceID", "ProvinceName");
-        this.setState({
-            Ward: ward,
+        this.props.callGetCache("ERPCOMMONCACHE.WARD").then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                //console.log("FormElement listOption: ", listOption)
+                this.setState({
+                    Ward: result.ResultObject.CacheData
+                });
+            }
         });
 
+       
     }
 
     onValueChange(elementname, elementvalue) {
@@ -141,34 +168,45 @@ class AddCom extends React.Component {
         _AddElementList.forEach(function (objElement) {
             if (elementname == "txtCountryID") {
                 if (objElement.name == "txtCountryID") {
-                    objElement.listoption = this.state.Country;
+                    country = this.getDataCombobox(this.state.Country, "CountryID", "CountryName");
+                    objElement.listoption = country;
                     objElement.value = elementvalue;
                 } else if (objElement.name == "txtProvinceID") {
-                    province = this.getDataCombobox("ERPCOMMONCACHE.PROVINCE", "ProvinceID", "ProvinceName", "CountryID", elementvalue);
+                    province = this.getDataCombobox(this.state.Province, "ProvinceID", "ProvinceName", "CountryID", elementvalue);
                     objElement.listoption = province;
                 } else if (objElement.name == "txtDistrictID") {
                     objElement.listoption = district;
                 } else if (objElement.name == "txtWardID") {
                     objElement.listoption = ward;
                 }
+            } else if (elementname == "txtProvinceID") {
+                if (objElement.name == "txtProvinceID") {
+                    province = this.getDataCombobox(this.state.Province, "ProvinceID", "ProvinceName");
+                    objElement.listoption = province;
+                    objElement.value = elementvalue;
+                } else if (objElement.name == "txtDistrictID") {
+                    district = this.getDataCombobox(this.state.District, "DistrictID", "DistrictName", "ProvinceID", elementvalue);
+                    objElement.listoption = district;
+                } else if (objElement.name == "txtWardID") {
+                    objElement.listoption = ward;
+                }
 
-                // this.setState({
-                //     Province: province,
-                // });
-            } 
+            } else if (elementname == "txtDistrictID") {
+                if (objElement.name == "txtDistrictID") {
+                    district = this.getDataCombobox(this.state.District, "DistrictID", "DistrictName");
+                    objElement.listoption = district;
+                    objElement.value = elementvalue;
+                } else if (objElement.name == "txtWardID") {
+                    ward = this.getDataCombobox(this.state.Ward, "WardID", "WardName", "DistrictID", elementvalue);
+                    objElement.listoption = ward;
+                }
+
+            }
 
         }.bind(this));
         this.setState({
             AddElementList: _AddElementList
         });
-        console.log("this.state._AddElementList", _AddElementList);
-
-        // if(elementname == "txtCountryID"){
-
-        //     this.setState({
-        //         AddElementList: null
-        //     })
-        // }
     }
 
 
@@ -181,6 +219,11 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+
+        var myDate = new Date(MLObject.IncorporationDate);
+        myDate.setDate(myDate.getDate() + 1);
+        MLObject.IncorporationDate = myDate;
+
         var data = new FormData();
         data.append("LogoImageURL", this.state.Files.PictureURL);
         data.append("PartnerObj", JSON.stringify(MLObject));

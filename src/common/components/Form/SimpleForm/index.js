@@ -293,6 +293,7 @@ class SimpleFormCom extends Component {
                                     maxSize={elementItem.maxSize}
                                     minSize={elementItem.minSize}
                                     isDisabled={this.state.isDisabled}
+                                    cdn={elementItem.cdn}
                                 />
                             </div>);
                     }
