@@ -10,6 +10,7 @@
 @import "Images.scss";
 @import "editor.scss";
 @import "./table";
+@import "./page404";
 
 // Css menu trang sản phẩm
 .sidebar-left{
@@ -243,4 +244,38 @@
 
 .de-active{
     pointer-events: none;
+}
+
+.col-form-label{
+    &.showMask {
+        color: #f96868;
+        font-size: 13px;
+        font-weight: 300;
+    }
+}
+.checkbox{
+    &.customCheckbox{
+        label{
+            margin-bottom: 0;
+            padding-top: 5px;
+        }
+    }
+}
+
+
+input.form-control:-webkit-autofill,
+input.form-control:-webkit-autofill:hover,
+input.form-control:-webkit-autofill:focus,
+textarea.form-control:-webkit-autofill,
+textarea.form-control:-webkit-autofill:hover,
+textarea.form-control:-webkit-autofill:focus,
+select.form-control:-webkit-autofill,
+select.form-control:-webkit-autofill:hover,
+select.form-control:-webkit-autofill:focus {
+    -webkit-text-fill-color: #3a3a3a;
+    -webkit-box-shadow: 0 0 0px 1000px #e2e2e2 inset;
+    transition: background-color 5000s ease-in-out 0s;
+    outline: 0;
+    outline: 0;
+    box-shadow: none;
 }

@@ -201,7 +201,7 @@ class SimpleFormCom extends Component {
                 //console.log("inputvalue:", inputvalue);
                 //console.log("elementItem.Name:", elementItem.name);
 
-                const validation = ValidationField(validatonList, inputvalue, elementItem.label)
+                const validation = ValidationField(validatonList, inputvalue, elementItem.label, elementItem)
                 const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
                 //console.log("validation:", validation);
                 formValidation = Object.assign({}, formValidation, { [elementItem.name]: validationObject });
@@ -294,6 +294,7 @@ class SimpleFormCom extends Component {
                                     minSize={elementItem.minSize}
                                     isDisabled={this.state.isDisabled}
                                     cdn={elementItem.cdn}
+                                    elementItem={elementItem}
                                 />
                             </div>);
                     }
@@ -337,6 +338,8 @@ class SimpleFormCom extends Component {
                                     maxSize={elementItem.maxSize}
                                     minSize={elementItem.minSize}
                                     isDisabled={this.state.isDisabled}
+                                    elementItem={elementItem}
+
                                 />
                             </div>)
                         }
@@ -360,6 +363,7 @@ class SimpleFormCom extends Component {
                                 maxSize={elementItem.maxSize}
                                 minSize={elementItem.minSize}
                                 isDisabled={this.state.isDisabled}
+                                elementItem={elementItem}
                             />
                             <FormElement type={elementItem.Item2.type} name={elementItem.Item2.name}
                                 CSSClassName="form-control form-control-sm"
@@ -380,6 +384,7 @@ class SimpleFormCom extends Component {
                                 maxSize={elementItem.maxSize}
                                 minSize={elementItem.minSize}
                                 isDisabled={this.state.isDisabled}
+                                elementItem={elementItem}
                             />
                         </div>);
                     }
@@ -436,6 +441,7 @@ class SimpleFormCom extends Component {
                                     maxSize={elementItem.maxSize}
                                     minSize={elementItem.minSize}
                                     isDisabled={this.state.isDisabled}
+                                    elementItem={elementItem}
                                 />
                                 <div className="form-group col-md-2"></div>
                                 <div className="form-group col-md-2"> </div>
@@ -469,6 +475,7 @@ class SimpleFormCom extends Component {
                                     maxSize={elementItem.maxSize}
                                     minSize={elementItem.minSize}
                                     isDisabled={this.state.isDisabled}
+                                    elementItem={elementItem}
                                 />
                                 <FormElement type={elementItem.Item2.type} name={elementItem.Item2.name}
                                     CSSClassName="form-control form-control-sm"
@@ -490,6 +497,7 @@ class SimpleFormCom extends Component {
                                     maxSize={elementItem.maxSize}
                                     minSize={elementItem.minSize}
                                     isDisabled={this.state.isDisabled}
+                                    elementItem={elementItem}
 
 
                                 />
@@ -519,6 +527,7 @@ class SimpleFormCom extends Component {
                                 maxSize={elementItem.maxSize}
                                 minSize={elementItem.minSize}
                                 isDisabled={this.state.isDisabled}
+                                elementItem={elementItem}
 
                             />
                             <FormElement type={elementItem.Item2.type} name={elementItem.Item2.name}
@@ -541,6 +550,7 @@ class SimpleFormCom extends Component {
                                 maxSize={elementItem.maxSize}
                                 minSize={elementItem.minSize}
                                 isDisabled={this.state.isDisabled}
+                                elementItem={elementItem}
 
                             />
                             <FormElement type={elementItem.Item3.type} name={elementItem.Item3.name}
@@ -563,6 +573,7 @@ class SimpleFormCom extends Component {
                                 maxSize={elementItem.maxSize}
                                 minSize={elementItem.minSize}
                                 isDisabled={this.state.isDisabled}
+                                elementItem={elementItem}
 
                             />
                         </div>);

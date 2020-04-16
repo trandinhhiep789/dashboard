@@ -1,13 +1,27 @@
-export function ValidationField(typelist, fieldValue, fieldCaption) {
+export function ValidationField(typelist, fieldValue, fieldCaption, elementItem) {
+    console.log("aa", typelist, fieldValue, fieldCaption, elementItem)
     let IsEr = 0;
     let result;
     if (typelist.includes("required") && IsEr == 0) {
-        if ((fieldValue == undefined || fieldValue.length == 0) || (typelist.includes("number") && parseInt(fieldValue) == 0)) {
+        // if ((fieldValue == undefined || fieldValue.length == 0) || (typelist.includes("number") && parseInt(fieldValue) == 0)) {
+        if (fieldValue == undefined || fieldValue.length == 0 || String(fieldValue).trim() == "") {
             IsEr = 1;
+            //console.log("ValidationField", typelist, fieldValue, fieldCaption);
+
+            let messError = "";
+            if (elementItem.labelError != undefined) {
+
+                messError = elementItem.labelError
+            }
+            else {
+
+                messError = fieldCaption
+            }
+            // console.log("elementItem", elementItem, messError);
             result = {
                 IsError: true,
                 fieldValue: fieldValue,
-                Message: "Vui lòng nhập " + fieldCaption.toLowerCase()
+                Message: "Vui lòng nhập " + messError //fieldCaption.toLowerCase()
             }
         }
         else {
@@ -21,12 +35,13 @@ export function ValidationField(typelist, fieldValue, fieldCaption) {
     }
 
     if (typelist.includes("Comborequired") && IsEr == 0) {
+
         if (fieldValue == undefined || parseInt(fieldValue) < 0) {
             IsEr = 1;
             result = {
                 IsError: true,
                 fieldValue: fieldValue,
-                Message: "Vui lòng chọn " + fieldCaption.toLowerCase()
+                Message: "Vui lòng chọn 111 " + fieldCaption.toLowerCase()
             }
         }
         else {
@@ -40,9 +55,11 @@ export function ValidationField(typelist, fieldValue, fieldCaption) {
     }
 
     if (typelist.includes("number") && IsEr == 0) {
+        // debugger
+        // console.log("fieldValue", fieldValue);
         if (fieldValue) {
             if (fieldValue.toString().length > 1) {
-                if (/^[1-9][0-9]*$/.test(fieldValue)) {
+                if (/^[0-9][0-9]*$/.test(fieldValue)) {
                     IsEr = 0;
                     result = {
                         IsError: false,

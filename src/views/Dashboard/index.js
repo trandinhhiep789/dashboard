@@ -1,11 +1,4 @@
 import React, { Component } from 'react';
-import Product from "./Product";
-import Category from "./Category";
-import Brand from "./Brand";
-import PieRequest from "./PieRequest";
-import TopProducts from "./TopProducts";
-import UserActivity from "./UserActivity";
-import PieRequestList from "./PieRequest/list.js";
 import { connect } from 'react-redux';
 import { callFetchAPI } from "../../actions/fetchAPIAction";
 import { updatePagePath } from "../../actions/pageAction";
@@ -27,13 +20,7 @@ class DashboardCom extends Component {
         return (
             <div className="col-lg-12 dashboard">
                 <div className="row">
-                    <Product />
-                    <Category />
-                    <Brand />
-                    <PieRequest />
-                    <TopProducts />
-                    <UserActivity />
-                    <PieRequestList />
+                   Chưa có thông tin
                 </div>
             </div>
         );

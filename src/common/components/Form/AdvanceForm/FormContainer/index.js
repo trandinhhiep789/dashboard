@@ -139,7 +139,7 @@ class FormContainerCom extends Component {
                             const inputvalue = row[elementItem.Name];
                             //console.log("inputvalue:", inputvalue);
                             //console.log("elementItem.Name:", elementItem.name);
-                            const validation = ValidationField(validatonList, inputvalue, elementItem.Caption)
+                            const validation = ValidationField(validatonList, inputvalue, elementItem.Caption, elementItem)
                             const validationObject = { IsValidationError: validation.IsError, ValidationErrorMessage: validation.Message };
                             //console.log("validation:", validation);
                             formValidation = Object.assign({}, formValidation, { [`${elementItem.Name}_${indexRow}`]: validationObject });
@@ -178,7 +178,7 @@ class FormContainerCom extends Component {
                 const inputvalue = tabMLData[elementItem.Name];
                 //console.log("inputvalue:", inputvalue);
                 //console.log("elementItem.Name:", elementItem.name);
-                const validation = ValidationField(validationList, inputvalue, elementItem.Label)
+                const validation = ValidationField(validationList, inputvalue, elementItem.Label, elementItem)
                 const validationObject = { IsValidationError: validation.IsError, ValidationErrorMessage: validation.Message };
                 //console.log("validation:", validation);
                 formValidation = Object.assign({}, formValidation, { [elementItem.Name]: validationObject });
@@ -210,7 +210,7 @@ class FormContainerCom extends Component {
                 const inputvalue = formdata[elementItem.name];
                 //console.log("inputvalue:", inputvalue);
                 //console.log("elementItem.Name:", elementItem.name);
-                const validation = ValidationField(validatonList, inputvalue, elementItem.label)
+                const validation = ValidationField(validatonList, inputvalue, elementItem.label, elementItem)
                 const validationObject = { IsValidationError: validation.IsError, ValidationErrorMessage: validation.Message };
                 //console.log("validation:", validation);
                 formValidation = Object.assign({}, formValidation, { [elementItem.name]: validationObject });
@@ -532,6 +532,7 @@ class FormContainerCom extends Component {
                     minSize={elementItem.minSize}
                     isDisabled={this.state.isDisabled}
                     inputRef={ref => this.elementItemRefs[index] = ref}
+                    elementItem={elementItem}
                 />
             </div>);
         }
@@ -564,6 +565,7 @@ class FormContainerCom extends Component {
                         maxSize={elementItem.maxSize}
                         minSize={elementItem.minSize}
                         isDisabled={this.state.isDisabled}
+                        elementItem={elementItem}
                     />
                 </div>)
             }
@@ -587,6 +589,7 @@ class FormContainerCom extends Component {
                     maxSize={elementItem.maxSize}
                     minSize={elementItem.minSize}
                     isDisabled={this.state.isDisabled}
+                    elementItem={elementItem}
                 />
                 <FormElement type={elementItem.Item2.type} name={elementItem.Item2.name}
                     CSSClassName="form-control form-control-sm"
@@ -607,6 +610,7 @@ class FormContainerCom extends Component {
                     maxSize={elementItem.maxSize}
                     minSize={elementItem.minSize}
                     isDisabled={this.state.isDisabled}
+                    elementItem={elementItem}
                 />
             </div>);
         }
@@ -650,6 +654,7 @@ class FormContainerCom extends Component {
                         multiple={elementItem.multiple}
                         maxSize={elementItem.maxSize}
                         minSize={elementItem.minSize}
+                        elementItem={elementItem}
                     />
                     <div className="form-group col-md-2"></div>
                     <div className="form-group col-md-2"> </div>
@@ -680,6 +685,7 @@ class FormContainerCom extends Component {
                         multiple={elementItem.multiple}
                         maxSize={elementItem.maxSize}
                         minSize={elementItem.minSize}
+                        elementItem={elementItem}
                     />
                     <FormElement type={elementItem.Item2.type} name={elementItem.Item2.name}
                         CSSClassName="form-control form-control-sm"
@@ -700,6 +706,7 @@ class FormContainerCom extends Component {
                         multiple={elementItem.multiple}
                         maxSize={elementItem.maxSize}
                         minSize={elementItem.minSize}
+                        elementItem={elementItem}
                     />
                     <div className="form-group col-md-2"></div>
                     <div className="form-group col-md-2"> </div>
@@ -726,6 +733,7 @@ class FormContainerCom extends Component {
                     multiple={elementItem.multiple}
                     maxSize={elementItem.maxSize}
                     minSize={elementItem.minSize}
+                    elementItem={elementItem}
                 />
                 <FormElement type={elementItem.Item2.type} name={elementItem.Item2.name}
                     CSSClassName="form-control form-control-sm"
@@ -746,6 +754,7 @@ class FormContainerCom extends Component {
                     multiple={elementItem.multiple}
                     maxSize={elementItem.maxSize}
                     minSize={elementItem.minSize}
+                    elementItem={elementItem}
                 />
                 <FormElement type={elementItem.Item3.type} name={elementItem.Item3.name}
                     CSSClassName="form-control form-control-sm"
@@ -766,6 +775,7 @@ class FormContainerCom extends Component {
                     multiple={elementItem.multiple}
                     maxSize={elementItem.maxSize}
                     minSize={elementItem.minSize}
+                    elementItem={elementItem}
                 />
             </div>);
         }
