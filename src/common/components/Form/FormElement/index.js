@@ -151,7 +151,7 @@ class FormElementCom extends Component {
         let validationErrorMessage = "";
         if (this.props.validatonList != null) {
             if (this.props.validatonList.length > 0) {
-                const validation = ValidationField(this.props.validatonList, inputvalue, this.props.label)
+                const validation = ValidationField(this.props.validatonList, inputvalue, this.props.label, this.props.elementItem)
                 if (validation.IsError) {
                     this.setState({ ValidationError: validation.Message });
                     isVavalidatonError = true;
@@ -230,6 +230,10 @@ class FormElementCom extends Component {
                 formGroupclassName += " has-error has-danger";
                 controlCSSClassName += " is-invalid";
             }
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
         }
 
 
@@ -402,7 +406,9 @@ class FormElementCom extends Component {
         let divControl = (
             <React.Fragment>
                 <div className="form-group col-md-2">
-                    <label className="col-form-label 11">{this.props.label}:</label>
+                    <label className="col-form-label 11">
+                        {this.props.label}<span className="text-danger"> {star}</span>
+                    </label>
                 </div>
                 <div className={formGroupclassName}>
                     {control}
