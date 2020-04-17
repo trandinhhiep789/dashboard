@@ -31,8 +31,7 @@ import ShipmentFeePaymentMethod from '../../views/TMS/MD/ShipmentFeePaymentMetho
 import ShipmentServiceType from '../../views/TMS/MD/ShipmentServiceType';
 import ShipmentOrderStatus from '../../views/TMS/MD/ShipmentOrderStatus';
 import ShipmentGoodsType from '../../views/TMS/MD/ShipmentGoodsType';
-
-
+import NotFound from '../NotFound'
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -119,7 +118,7 @@ class HomeCom extends React.Component {
                             <Switch>
                                 <PrivateRoute exact path="/" component={Dashboard} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/accountinfo" component={AccountInfo} isLoggedIn={isLoggedIn} />
-                               
+
                                 <PrivateRoute path="/TestModal" component={TestModal} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/TestCache" component={TestCache} isLoggedIn={isLoggedIn} />
@@ -128,7 +127,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/TestPageLayout" component={TestPageLayout} isLoggedIn={isLoggedIn} />
 
 
-                              
+
                                 <PrivateRoute path="/CacheManager" component={CacheManager} isLoggedIn={isLoggedIn} />
                                 {/* <PrivateRoute path="*" component={Category} isLoggedIn={isLoggedIn} /> */}
 
@@ -142,7 +141,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/ShipmentServiceType" component={ShipmentServiceType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentGoodsType" component={ShipmentGoodsType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentOrderStatus" component={ShipmentOrderStatus} isLoggedIn={isLoggedIn} />
-                                
+                                <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} />
+
                             </Switch>
                         </div>
                     </div>
