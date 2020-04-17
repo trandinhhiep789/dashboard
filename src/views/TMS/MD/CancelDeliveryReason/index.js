@@ -10,6 +10,7 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
+import NotFound from '../../../NotFound'
 class CancelDeliveryReasonCom extends React.Component {
     constructor(props) {
         super(props);
@@ -19,9 +20,9 @@ class CancelDeliveryReasonCom extends React.Component {
         return (
             <React.Fragment>
                 <Route exact path="/CancelDeliveryReason" component={Search} />
-                <Route path="/CancelDeliveryReason/Add" component={Add} />
-                <Route path="/CancelDeliveryReason/Edit/:id" component={Edit}
-                />
+                <Route exact path="/CancelDeliveryReason/Add" component={Add} />
+                <Route exact path="/CancelDeliveryReason/Edit/:id" component={Edit} />
+                <Route path="*" component={NotFound} />
             </React.Fragment>
         );
     }

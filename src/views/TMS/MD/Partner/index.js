@@ -10,6 +10,7 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
+import NotFound from '../../../NotFound'
 class PartnerCom extends React.Component {
     constructor(props) {
         super(props);
@@ -19,9 +20,9 @@ class PartnerCom extends React.Component {
         return (
             <React.Fragment>
                 <Route exact path="/Partner" component={Search} />
-                <Route path="/Partner/Add" component={Add} />
-                <Route path="/Partner/Edit/:id" component={Edit}
-                />
+                <Route exact path="/Partner/Add" component={Add} />
+                <Route exact path="/Partner/Edit/:id" component={Edit} />
+                <Route path="*" component={NotFound} />
             </React.Fragment>
         );
     }

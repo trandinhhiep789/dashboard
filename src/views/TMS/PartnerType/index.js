@@ -6,6 +6,7 @@ import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
+import NotFound from '../../NotFound'
 class PartnerTypeCom extends React.Component {
     constructor(props) {
         super(props);
@@ -15,9 +16,9 @@ class PartnerTypeCom extends React.Component {
         return (
             <React.Fragment>
                 <Route exact path="/PartnerType" component={Search} />
-                <Route path="/PartnerType/Add" component={Add} />
-                <Route path="/PartnerType/Edit/:id" component={Edit} />
-              
+                <Route exact path="/PartnerType/Add" component={Add} />
+                <Route exact path="/PartnerType/Edit/:id" component={Edit} />
+                <Route path="*" component={NotFound} />
             </React.Fragment>
         );
     }

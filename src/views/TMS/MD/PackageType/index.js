@@ -10,6 +10,7 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
+import NotFound from '../../../NotFound'
 class PackageTypeCom extends React.Component {
     constructor(props) {
         super(props);
@@ -19,9 +20,9 @@ class PackageTypeCom extends React.Component {
         return (
             <React.Fragment>
                 <Route exact path="/PackageType" component={Search} />
-                <Route path="/PackageType/Add" component={Add} />
-                <Route path="/PackageType/Edit/:id" component={Edit}
-                />
+                <Route exact path="/PackageType/Add" component={Add} />
+                <Route exact path="/PackageType/Edit/:id" component={Edit} />
+                <Route path="*" component={NotFound} />
             </React.Fragment>
         );
     }
