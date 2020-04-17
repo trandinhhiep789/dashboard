@@ -9,11 +9,9 @@ import { MessageModal } from "../../../../common/components/Modal";
 import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
 import FormControl from "../../../../common/components/Form/AdvanceForm/FormControl";
 import { callGetCache } from "../../../../actions/cacheAction";
-
 import Datetime from 'react-datetime';
 import "../../../../../node_modules/react-datetime/css/react-datetime.css";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
+import { showToastAlert } from '../../../../common/library/ultils'
 
 import {
     InputProductAttrColumnList,
@@ -59,11 +57,8 @@ class AttributeCom extends React.Component {
             LstCacheAttribute: [],
             LstCacheAttributeValueID: [],
             PieRequestDate: "",
-            cssNotification: "",
-            iconNotification: "",
             DataSourcePieRequest: []
         };
-        this.notificationDOMRef = React.createRef();
         this.searchref = React.createRef();
     }
 
@@ -117,38 +112,6 @@ class AttributeCom extends React.Component {
             }
         }
         );
-    }
-
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            })
-        }
-        else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            })
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close"><span>×</span></div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 2000 },
-            dismissable: { click: true }
-        });
     }
 
     handleCloseMessage() {
@@ -239,7 +202,7 @@ class AttributeCom extends React.Component {
                 if (!apiResult.IsError) {
                     this.setState({ IsCallAPIError: apiResult.IsError });
                 }
-                this.addNotification(apiResult.Message, apiResult.IsError);
+                showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                 ModalManager.close();
                 this.callSearchData();
             });
@@ -251,7 +214,7 @@ class AttributeCom extends React.Component {
                 if (!apiResult.IsError) {
                     this.setState({ IsCallAPIError: apiResult.IsError });
                 }
-                this.addNotification(apiResult.Message, apiResult.IsError);
+                showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                 ModalManager.close();
                 this.callSearchData();
             });
@@ -321,7 +284,7 @@ class AttributeCom extends React.Component {
         });
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listProductAttribute).then((apiResult) => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
             this.callSearchData();
         });
     }
@@ -376,7 +339,6 @@ class AttributeCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <div className="col-md-9 col-lg-10">
                     <div className="card">
                         <header className="card-header">
@@ -401,8 +363,8 @@ class AttributeCom extends React.Component {
                                 colspan="12"
                                 IsAutoPaging={true}
                                 RowsPerPage={10}
-                                IsAdd={ this.CheckPermissionUser(12)}
-                                IsDelete={ this.CheckPermissionUser(12) }
+                                IsAdd={this.CheckPermissionUser(12)}
+                                IsDelete={this.CheckPermissionUser(12)}
                             />
                         </div>
                     </div>

@@ -77,7 +77,7 @@ export default class GridCell extends Component {
                 control = <Link to={linkTo}>{text}</Link>;
                 break;
             case "popuplink":
-                control = <a href="javascript:;" onClick={() => { this.onShowPopup(name, popupContent) }}>{text}</a>
+                control = <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => { this.onShowPopup(name, popupContent) }}>{text}</a>
                 break;
 
             case "date":

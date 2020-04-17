@@ -1,10 +1,11 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
+import NotFound from '../../NotFound'
 class ProductOprerationCom extends React.Component {
     constructor(props) {
         super(props);
@@ -13,12 +14,12 @@ class ProductOprerationCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Route exact path="/ProductOperation" component={Search} />
-                <Route path="/ProductOperation/Add" component={Add} />
-                <Route
-                    path="/ProductOperation/Edit/:id"
-                    component={Edit}
-                />
+                <Switch>
+                    <Route exact path="/ProductOperation" component={Search} />
+                    <Route exact path="/ProductOperation/Add" component={Add} />
+                    <Route exact path="/ProductOperation/Edit/:id" component={Edit} />
+                    <Route path="*" component={NotFound} />
+                </Switch>
             </React.Fragment>
         );
     }

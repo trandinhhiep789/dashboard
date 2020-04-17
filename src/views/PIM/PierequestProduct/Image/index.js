@@ -17,8 +17,7 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import EditImage from './components';
 import "../../../../../node_modules/react-datetime/css/react-datetime.css";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
+import { showToastAlert } from '../../../../common/library/ultils'
 
 class ImageCom extends React.Component {
     constructor(props) {
@@ -41,12 +40,11 @@ class ImageCom extends React.Component {
             ListProductImage: [],
             FormData: {},
             SearchData: InitSearchParams,
-            Listoption:"",
+            Listoption: "",
             ListAlbum: [],
-            DataSourcePieRequest:[]
+            DataSourcePieRequest: []
         };
         this.searchref = React.createRef();
-        this.notificationDOMRef = React.createRef();
     }
 
     handleCloseMessage() {
@@ -60,9 +58,9 @@ class ImageCom extends React.Component {
             onCloseModal={this.handleCloseMessage}
         />);
     }
-    componentWillMount(){
+    componentWillMount() {
         this.getListAlbum();
-    } 
+    }
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
@@ -168,38 +166,6 @@ class ImageCom extends React.Component {
         });
     }
 
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            })
-        }
-        else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            })
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close"><span>×</span></div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
     //Xóa 
     handleInputGridDelete(deleteList) {
         let listProductImage = [];
@@ -224,7 +190,7 @@ class ImageCom extends React.Component {
         });
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listProductImage).then((apiResult) => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
             this.callSearchData(this.state.SearchData);
         });
     }
@@ -245,7 +211,7 @@ class ImageCom extends React.Component {
                         IsEdit={IsEdit}
                         ListAlbum={this.state.ListAlbum}
                         PieRequestListID={PieRequestListID}
-                        OnComplete={(message,isError) => this.handleSearchSubmit(message, isError)}
+                        OnComplete={(message, isError) => this.handleSearchSubmit(message, isError)}
                     >
                     </EditImage>
             }
@@ -253,14 +219,13 @@ class ImageCom extends React.Component {
     }
 
     handleSearchSubmit(message, isError) {
-        this.addNotification(message, isError);
+        showToastAlert(message, isError ? 'error' : 'success');
         this.callSearchData(this.state.SearchData);
     }
 
     render() {
         return (
             <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <div className="col-md-9 col-lg-10">
                     <div className="card">
                         <header className="card-header">
@@ -282,10 +247,10 @@ class ImageCom extends React.Component {
                                 MLObjectDefinition={GridMLObjectProductImageDefinition}
                                 //RequirePermission={PIE_REQUEST_PRODUCT_BARCODE_VIEW}
                                 colspan="12"
-                                 IsAdd={true}
-                                 IsDelete={true}
-                                // IsAdd={ this.CheckPermissionUser(19)}
-                                // IsDelete={ this.CheckPermissionUser(19) }
+                                IsAdd={true}
+                                IsDelete={true}
+                            // IsAdd={ this.CheckPermissionUser(19)}
+                            // IsDelete={ this.CheckPermissionUser(19) }
                             />
                         </div>
                     </div>

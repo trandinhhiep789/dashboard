@@ -38,18 +38,14 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
             if (apiResult.IsError) {
                 this.setState({
-                    IsCallAPIError: apiResult.IsError
+                    IsCallAPIError: !apiResult.IsError
                 });
                 this.showMessage(apiResult.Message);
             }
             else {
                 apiResult.ResultObject.RequestDate = new Date(apiResult.ResultObject.RequestDate);
-                this.setState({ DataSource: apiResult.ResultObject });
-              //  console.log("EditComDataSource ", apiResult.ResultObject);
+                this.setState({ DataSource: apiResult.ResultObject, sLoadDataComplete: true });
             }
-            this.setState({
-                IsLoadDataComplete: true
-            })
 
         });
         this.props.updatePagePath(EditPagePath);
@@ -63,8 +59,8 @@ class EditCom extends React.Component {
 
             if (this.state.DataSource.LstPieRequestType_WF_PermIs.some(a => a.PiePermissionID === id)) {
                 return true;
-              }
-          //  console.log("this.state.DataSource.LstPieRequestType_WF_PermIs ", this.state.DataSource.LstPieRequestType_WF_PermIs);
+            }
+            //  console.log("this.state.DataSource.LstPieRequestType_WF_PermIs ", this.state.DataSource.LstPieRequestType_WF_PermIs);
         }
         return false;
     }

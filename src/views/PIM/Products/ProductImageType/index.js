@@ -1,15 +1,14 @@
 import React from "react";
 import {
-    BrowserRouter as Router,
     Route,
-    Link,
-    Redirect
+    Switch
 } from "react-router-dom";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
+import NotFound from '../../../NotFound'
 class ProductImageTypeCom extends React.Component {
     constructor(props) {
         super(props);
@@ -17,12 +16,12 @@ class ProductImageTypeCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Route exact path="/ProductImageType" component={Search} />
-                <Route path="/ProductImageType/Add" component={Add} />
-                <Route
-                    path="/ProductImageType/Edit/:id"
-                    component={Edit}
-                />
+                <Switch>
+                    <Route exact path="/ProductImageType" component={Search} />
+                    <Route exact path="/ProductImageType/Add" component={Add} />
+                    <Route exact path="/ProductImageType/Edit/:id" component={Edit} />
+                    <Route path="*" component={NotFound} />
+                </Switch>
             </React.Fragment>
         );
     }

@@ -12,23 +12,20 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import ModelContainer from "../../../common/components/Modal/ModelContainer";
 import { checkPermission } from '../../../actions/permissionAction';
 import { showModal, hideModal } from '../../../actions/modal';
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
-import { PIEREQUEST_ADD,  PIEREQUEST_VIEW, PIEREQUEST_DELETE  } from "../../../constants/functionLists";
+import { PIEREQUEST_ADD, PIEREQUEST_VIEW, PIEREQUEST_DELETE } from "../../../constants/functionLists";
 import { callGetCache } from "../../../actions/cacheAction";
 import { formatDate } from "../../../common/library/CommonLib.js";
+import { showToastAlert } from '../../../common/library/ultils'
 
 class ListPieRequestCom extends Component {
     constructor(props) {
         super(props);
-        this.addNotification = this.addNotification.bind(this);
         this.state = {
             gridDataSource: [],
             LstCachePieRequestType: [],
             PieRequest: {},
             editorState: EditorState.createEmpty(),
         };
-        this.notificationDOMRef = React.createRef();
     }
 
     getCachePieRequestType() {
@@ -38,39 +35,6 @@ class ListPieRequestCom extends Component {
                     LstCachePieRequestType: apiResult.ResultObject.CacheData,
                 });
             }
-        });
-    }
-
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            })
-
-        }
-        else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            })
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close"><span>×</span></div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
         });
     }
 
@@ -169,12 +133,8 @@ class ListPieRequestCom extends Component {
             if (!apiResult.IsError) {
                 ModalManager.close();
                 this.getData();
-                this.addNotification(apiResult.Message, apiResult.IsError);
-
             }
-            else {
-                this.addNotification(apiResult.Message, apiResult.IsError);
-            }
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
         });
     }
 
@@ -226,7 +186,6 @@ class ListPieRequestCom extends Component {
     render() {
         return (
             <div className="col-md-12">
-                <ReactNotification ref={this.notificationDOMRef} />
                 <div className="card">
                     <div className="card-header">
                         <h5 className="card-title">Danh sách yêu cầu chưa hoàn thành</h5>

@@ -40,7 +40,7 @@ export const SearchElementList = [
     {
         type: "text",
         name: "txtKeyword",
-        label: "Từ khóa:",
+        label: "Từ khóa",
         value: "",
         placeholder: "",
         icon: "",
@@ -50,9 +50,9 @@ export const SearchElementList = [
 
 export const AddElementList = [
     {
-        type: "numeric",
+        type: "text",
         name: "txtProductTypeID",
-        label: "Mã Loại sản phẩm:",
+        label: "Mã Loại sản phẩm",
         value: "",
         maxSize: "5",
         placeholder: "",
@@ -65,7 +65,7 @@ export const AddElementList = [
     {
         type: "select",
         name: "txtParentID",
-        label: "Loại sản phẩm cha:",
+        label: "Loại sản phẩm cha",
         value: "",
         placeholder: "",
         icon: "",
@@ -81,7 +81,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtProductTypeName",
-        label: "Tên Loại sản phẩm:",
+        label: "Tên Loại sản phẩm",
         value: "",
         maxSize: "200",
         placeholder: "",
@@ -95,7 +95,7 @@ export const AddElementList = [
     {
         type: "textarea",
         name: "txtDescription",
-        label: "Mô tả:",
+        label: "Mô tả",
         value: "",
         maxSize: "2000",
         placeholder: "Mô tả",
@@ -109,7 +109,7 @@ export const AddElementList = [
     {
         type: "checkbox",
         name: "chkIsphysical",
-        label: "Sản phẩm vật lý:",
+        label: "Sản phẩm vật lý",
         value: false,
         placeholder: "",
         icon: "",
@@ -120,7 +120,7 @@ export const AddElementList = [
     {
         type: "checkbox",
         name: "chkIsdigital",
-        label: "Sản phẩm kỹ thuật số:",
+        label: "Sản phẩm kỹ thuật số",
         value: false,
         placeholder: "",
         icon: "",
@@ -131,7 +131,7 @@ export const AddElementList = [
     {
         type: "checkbox",
         name: "chkIsservice",
-        label: "Sản phẩm dịch vụ:",
+        label: "Sản phẩm dịch vụ",
         value: false,
         placeholder: "",
         icon: "",
@@ -142,7 +142,7 @@ export const AddElementList = [
     {
         type: "checkbox",
         name: "chkIsisgiftvoucher",
-        label: "Sản phẩm phiếu quà tặng:",
+        label: "Sản phẩm phiếu quà tặng",
         value: false,
         placeholder: "",
         icon: "",
@@ -153,7 +153,7 @@ export const AddElementList = [
     {
         type: "checkbox",
         name: "chkIsActived",
-        label: "Kích hoạt:",
+        label: "Kích hoạt",
         value: true,
         placeholder: "",
         icon: "",
@@ -164,7 +164,7 @@ export const AddElementList = [
     {
         type: "checkbox",
         name: "chkIsSystem",
-        label: "Hệ thống:",
+        label: "Hệ thống",
         value: false,
         placeholder: "",
         icon: "",
@@ -178,7 +178,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtProductTypeID",
-        label: "Mã Loại sản phẩm:",
+        label: "Mã Loại sản phẩm",
         value: "",
         placeholder: "",
         icon: "",
@@ -190,7 +190,7 @@ export const EditElementList = [
     {
         type: "select",
         name: "txtParentID",
-        label: "Loại sản phẩm cha:",
+        label: "Loại sản phẩm cha",
         value: "",
         placeholder: "",
         icon: "",
@@ -206,7 +206,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtProductTypeName",
-        label: "Tên Loại sản phẩm:",
+        label: "Tên Loại sản phẩm",
         value: "",
         maxSize: "200",
         placeholder: "",
@@ -220,7 +220,7 @@ export const EditElementList = [
     {
         type: "textarea",
         name: "txtDescription",
-        label: "Mô tả:",
+        label: "Mô tả",
         value: "",
         maxSize: "2000",
         placeholder: "Mô tả",
@@ -234,7 +234,7 @@ export const EditElementList = [
     {
         type: "checkbox",
         name: "chkIsphysical",
-        label: "Sản phẩm vật lý:",
+        label: "Sản phẩm vật lý",
         value: false,
         placeholder: "",
         icon: "",
@@ -246,7 +246,7 @@ export const EditElementList = [
     {
         type: "checkbox",
         name: "chkIsdigital",
-        label: "Sản phẩm kỹ thuật số:",
+        label: "Sản phẩm kỹ thuật số",
         value: false,
         placeholder: "",
         icon: "",
@@ -258,7 +258,7 @@ export const EditElementList = [
     {
         type: "checkbox",
         name: "chkIsservice",
-        label: "Sản phẩm dịch vụ:",
+        label: "Sản phẩm dịch vụ",
         value: false,
         placeholder: "",
         icon: "",
@@ -270,7 +270,7 @@ export const EditElementList = [
     {
         type: "checkbox",
         name: "chkIsisgiftvoucher",
-        label: "Sản phẩm phiếu quà tặng:",
+        label: "Sản phẩm phiếu quà tặng",
         value: "",
         placeholder: "",
         icon: "",
@@ -282,7 +282,7 @@ export const EditElementList = [
     {
         type: "checkbox",
         name: "chkIsActived",
-        label: "Kích hoạt:",
+        label: "Kích hoạt",
         value: "",
         placeholder: "",
         icon: "",
@@ -294,7 +294,7 @@ export const EditElementList = [
     {
         type: "checkbox",
         name: "chkIsSystem",
-        label: "Hệ thống:",
+        label: "Hệ thống",
         value: "",
         placeholder: "",
         icon: "",

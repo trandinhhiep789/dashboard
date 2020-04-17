@@ -21,17 +21,15 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { PRODUCT_TYPE_ADD } from "../../../../../constants/functionLists";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { PIMCACHE_PRODUCTTYPE } from "../../../../../constants/keyCache";
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.valueChangeInputGrid = this.valueChangeInputGrid.bind(this);
-        this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
-        this.handleGetCache = this.handleGetCache.bind(this);
+
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -84,8 +82,6 @@ class AddCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddLogAPIPath, MLObject);
     }
 
-
-
     handleSubmit(formData, MLObject) {
         let ResultLanguage = this.state.ResultLanguage.filter(x => x.HasChanged == true && x.ProductTypeName !== null);
         MLObject.ResultLanguage = ResultLanguage;
@@ -100,35 +96,9 @@ class AddCom extends React.Component {
                     Message: "Lỗi kết nối đến máy chủ, Vui lòng kiểm tra lại kết nối mạng"
                 };
             } else if (!apiResult.IsError) {
-                this.handleClearLocalCache(apiResult.Message);
+                this.props.callClearLocalCache(PIMCACHE_PRODUCTTYPE)
                 this.handleSubmitInsertLog(MLObject);
             }
-
-
-
-        });
-    }
-
-    handleClearLocalCache() {
-        const cacheKeyID = "PIMCACHE.PRODUCTTYPE";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(cacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: cacheKeyID,
-                UserName: this.props.AppInfo.LoginInfo.Username,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                //console.log("apiResult cache", apiResult);
-                this.handleGetCache();
-            });
-        }
-        );
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.PRODUCTTYPE").then((result) => {
-            //console.log("handleGetCache: ", result);
         });
     }
 
@@ -196,6 +166,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
     };
 };

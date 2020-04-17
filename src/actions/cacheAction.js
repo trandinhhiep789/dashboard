@@ -2,6 +2,7 @@ import { GET_CACHE_REQUEST, GET_CACHE_SUCCESS, GET_CACHE_FAILURE, GET_CACHE_FROM
 import { CACHE_HOSTNAME, API_HOST_LIST, CACHE_OBJECT_STORENAME } from "../constants/systemVars.js";
 import { callFetchAPI } from "./fetchAPIAction";
 import indexedDBLib from "../common/library/indexedDBLib.js";
+import { toast } from 'react-toastify';
 
 export function getCacheRequest(cacheKeyID) {
     //  console.log(GET_CACHE_REQUEST);
@@ -120,7 +121,25 @@ export function callGetCacheFromServer(cacheKeyID) {
             UserName: userName,
             AdditionParamList: []
         };
+        const toastId = toast.warn(`Loading cache in progress, please Wait...${cacheKeyID}`,
+            {
+                closeOnClick: false,
+                autoClose: false,
+                closeButton: false
+            });
         return dispatch(callFetchAPI(CACHE_HOSTNAME, apiPath, postData)).then((apiResult) => {
+            toast.update(toastId, {
+                render: "Loading cache complete",
+                type: toast.TYPE.SUCCESS,
+                autoClose: 3000,
+                closeButton: true,
+                className: 'rotateY(360deg) transform 0.6s animated',
+
+                // className: css({
+                //     transform: "rotateY(360deg)",
+                //     transition: "transform 0.6s"
+                // })
+            });
             if (!apiResult.IsError) {
                 const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
                 db.set(cacheKeyID, apiResult.ResultObject).then((result) => {
@@ -145,5 +164,49 @@ export function callGetCacheFromServer(cacheKeyID) {
     }
 
 }
+
+export function callClearLocalCache(cacheKeyID) {
+    return (dispatch, getState) => {
+        const state = getState();
+        const LoginInfo = localStorage.getItem('LoginInfo');
+        let userName = ''
+        if (LoginInfo) {
+            const LoginInfo1 = JSON.parse(LoginInfo)
+            userName = LoginInfo1.LoginUserInfo.UserName;
+        }
+        const toastId = toast.warn(`Clear cache in progress, please Wait...${cacheKeyID}`,
+            {
+                closeOnClick: false,
+                autoClose: false,
+                closeButton: false
+            });
+
+        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
+        return db.delete(cacheKeyID).then((result) => {
+            const apiPath = "api/Cache/ClearCache";
+            const postData = {
+                CacheKeyID: cacheKeyID,
+                UserName: userName,
+                AdditionParamList: []
+            };
+            return dispatch(callFetchAPI(CACHE_HOSTNAME, apiPath, postData)).then((apiResult) => {
+                toast.update(toastId, {
+                    render: "Clear cache complete",
+                    type: toast.TYPE.SUCCESS,
+                    autoClose: 3000,
+                    closeButton: true,
+                    className: 'rotateY(360deg) transform 0.6s animated',
+
+                    // className: css({
+                    //     transform: "rotateY(360deg)",
+                    //     transition: "transform 0.6s"
+                    // })
+                });
+                return dispatch(callGetCache(cacheKeyID));
+            });
+        });
+    }
+}
+
 
 

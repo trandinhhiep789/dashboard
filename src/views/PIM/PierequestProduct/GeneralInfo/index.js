@@ -20,8 +20,7 @@ import {
     MLObjectDefinition
 
 } from "./constants";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
+import { showToastAlert } from '../../../../common/library/ultils'
 
 class GeneralInfoCom extends React.Component {
     constructor(props) {
@@ -29,9 +28,7 @@ class GeneralInfoCom extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChangeList = this.handleInputChangeList.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.addNotification = this.addNotification.bind(this);
         this.searchref = React.createRef();
-        this.notificationDOMRef = React.createRef();
 
         this.state = {
             CallAPIMessage: "",
@@ -45,8 +42,6 @@ class GeneralInfoCom extends React.Component {
             Product_Article: {},
             Product_Video: {},
             Isedit: false,
-            cssNotification: "",
-            iconNotification: "",
             CategoryDataSource: [],
             DataSourcePieRequest: []
         };
@@ -63,7 +58,7 @@ class GeneralInfoCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-             //   console.log("apiResult.ResultObject ", apiResult.ResultObject)
+                //   console.log("apiResult.ResultObject ", apiResult.ResultObject)
                 if (apiResult.ResultObject != null)
                     this.setState({ DataSource: apiResult.ResultObject });
             }
@@ -81,7 +76,7 @@ class GeneralInfoCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-             //   console.log(" apiResult.ResultObject", apiResult.ResultObject)
+                //   console.log(" apiResult.ResultObject", apiResult.ResultObject)
                 this.setState({ DataSourcePieRequest: apiResult.ResultObject });
             }
         });
@@ -111,37 +106,6 @@ class GeneralInfoCom extends React.Component {
             onCloseModal={this.handleCloseMessage}
         />);
     }
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            })
-        }
-        else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            })
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close"><span>×</span></div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
     handleInputChangeList(formDataTemp, tabNameList, tabMLObjectDefinitionList) {
         this.setState({ FormData: formDataTemp });
     }
@@ -155,13 +119,13 @@ class GeneralInfoCom extends React.Component {
             MLObject.UpDatedUser = this.props.AppInfo.LoginInfo.Username;
             this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then((apiResult) => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
-                this.addNotification(apiResult.Message, apiResult.IsError);
+                showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
             });
         }
         else {
             this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then((apiResult) => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
-                this.addNotification(apiResult.Message, apiResult.IsError);
+                showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
             });
         }
     }
@@ -176,7 +140,6 @@ class GeneralInfoCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
-                    <ReactNotification ref={this.notificationDOMRef} />
                     <div className="col-md-9 col-lg-10">
 
                         <div className="row">
@@ -191,25 +154,25 @@ class GeneralInfoCom extends React.Component {
                                         <FormControl.TextBox name="txtProductName" colspan="8" labelcolspan="4" label="Tên sản phẩm:" placeholder="Tên sản phẩm" readonly={this.CheckPermissionUser(7) == false ? true : false}
                                             controltype="InputControl" value={this.state.DataSource != [] ? this.state.DataSource.ProductName : ""} datasourcemember="ProductName" />
 
-                                        <FormControl.TextBox name="txtProductShortName" colspan="8" labelcolspan="4" label="Tên rút gọn sản phẩm:" placeholder="Tên rút gọn sản phẩm"  readonly={this.CheckPermissionUser(7) == false ? true : false}
+                                        <FormControl.TextBox name="txtProductShortName" colspan="8" labelcolspan="4" label="Tên rút gọn sản phẩm:" placeholder="Tên rút gọn sản phẩm" readonly={this.CheckPermissionUser(7) == false ? true : false}
                                             controltype="InputControl" value={this.state.DataSource != [] ? this.state.DataSource.ProductShortName : ""} datasourcemember="ProductShortName" />
 
                                         <FormControl.ComboBox name="cboProductTypeID" value={this.state.DataSource != [] ? this.state.DataSource.ProductTypeID : -1} colspan="8" labelcolspan="4" type="select" isautoloaditemfromcache={true} loaditemcachekeyid="PIMCACHE.PRODUCTTYPE"
-                                            valuemember="ProductTypeID" nameMember="ProductTypeName" label="Loại sản phẩm:" controltype="InputControl" listoption={null} datasourcemember="ProductTypeID"  disabled={this.CheckPermissionUser(7) == false ? true : false} />
+                                            valuemember="ProductTypeID" nameMember="ProductTypeName" label="Loại sản phẩm:" controltype="InputControl" listoption={null} datasourcemember="ProductTypeID" disabled={this.CheckPermissionUser(7) == false ? true : false} />
 
                                         <FormControl.ComboBox name="cboDefaultCategoryID" value={this.state.DataSource != [] ? this.state.DataSource.DefaultCategoryID : -1} colspan="8" isautoloaditemfromcache={true} isCategory={true} loaditemcachekeyid="PIMCACHE.CATEGORY" valuemember="CategoryID" listoption={this.state.CategoryDataSource}
-                                            nameMember="CategoryName" labelcolspan="4" label="Danh mục mặc định:" controltype="InputControl" datasourcemember="DefaultCategoryID"  disabled={this.CheckPermissionUser(7) == false ? true : false} />
+                                            nameMember="CategoryName" labelcolspan="4" label="Danh mục mặc định:" controltype="InputControl" datasourcemember="DefaultCategoryID" disabled={this.CheckPermissionUser(7) == false ? true : false} />
 
                                         <FormControl.ComboBox name="cboBrandID" value={this.state.DataSource != [] ? this.state.DataSource.BrandID : -1} colspan="8" labelcolspan="4" label="Nhãn hiệu:" controltype="InputControl" isautoloaditemfromcache={true} loaditemcachekeyid="PIMCACHE.BRAND"
                                             valuemember="BrandID" nameMember="BrandName" listoption={null} datasourcemember="BrandID" disabled={this.CheckPermissionUser(7) == false ? true : false} />
 
                                         <FormControl.ComboBox name="cboDefaultQuantityUnitID" value={this.state.DataSource != [] ? this.state.DataSource.DefaultQuantityUnitID : -1} colspan="8" labelcolspan="4" label="Đơn vị tính mặc định:"
                                             isautoloaditemfromcache={true} loaditemcachekeyid="PIMCACHE.QUANTITYUNIT" valuemember="QuantityUnitID" nameMember="QuantityUnitName"
-                                            controltype="InputControl" listoption={null} datasourcemember="DefaultQuantityUnitID"  disabled={this.CheckPermissionUser(7) == false ? true : false} />
+                                            controltype="InputControl" listoption={null} datasourcemember="DefaultQuantityUnitID" disabled={this.CheckPermissionUser(7) == false ? true : false} />
 
                                         <FormControl.MultiSelectComboBox name="ArryProduct_Feature" colspan="8" labelcolspan="4" label="Đặc điểm sản phẩm:"
                                             controltype="InputControl" value={this.state.DataSource != [] ? this.state.DataSource.ArryProduct_Feature : -1}
-                                            listoption={null} datasourcemember="ArryProduct_Feature"  disabled={this.CheckPermissionUser(7) == false ? true : false}
+                                            listoption={null} datasourcemember="ArryProduct_Feature" disabled={this.CheckPermissionUser(7) == false ? true : false}
                                             IsLabelDiv={true} isautoloaditemfromcache={true} loaditemcachekeyid="PIMCACHE.PRODUCTFEATURE" valuemember="ProductFeatureID" nameMember="ProductFeatureName"
                                         />
                                         <div className="form-row">
@@ -253,8 +216,8 @@ class GeneralInfoCom extends React.Component {
                                             listoption={[]} datasourcemember="ArryProduct_Ship"
                                             disabled={this.CheckPermissionUser(7) == false ? true : false}
                                         />
-                                        
-                    
+
+
                                         <div className="form-row">
                                             <FormControl.ComboBox name="cboPovat" isautoloaditemfromcache={false}
                                                 label="VAT mua hàng(%)"

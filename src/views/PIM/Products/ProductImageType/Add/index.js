@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import { ModalManager } from "react-dynamic-modal";
 import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
@@ -16,45 +16,20 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { PRODUCT_IMAGETYPE_ADD } from "../../../../../constants/functionLists.js";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../../actions/cacheAction";
-
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { PIMCACHE_PRODUCTIMAGETYPE } from "../../../../../constants/keyCache";
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
-        this.handleGetCache = this.handleGetCache.bind(this);
+
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false
         };
         this.searchref = React.createRef();
-    }
-
-    handleClearLocalCache() {
-        const CacheKeyID = "PIMCACHE.PRODUCTIMAGETYPE";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(CacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: CacheKeyID,
-                UserName: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                this.handleGetCache();
-                //console.log("apiResult cache", apiResult);
-            });
-        });
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.PRODUCTIMAGETYPE").then((result) => {
-            //console.log("handleGetCache: ", result);
-        });
     }
 
     componentDidMount() {
@@ -78,7 +53,7 @@ class AddCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
-                this.handleClearLocalCache();
+                this.props.callClearLocalCache(PIMCACHE_PRODUCTIMAGETYPE)
                 this.handleSubmitInsertLog(MLObject);
             }
         });
@@ -135,6 +110,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
     };
 };

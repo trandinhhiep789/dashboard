@@ -1,10 +1,11 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
+import NotFound from '../../../NotFound'
 class ContentTypeCom extends React.Component {
     constructor(props) {
         super(props);
@@ -13,9 +14,12 @@ class ContentTypeCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Route exact path="/ContentType" component={Search} />
-                <Route path="/ContentType/Add" component={Add} />
-                <Route path="/ContentType/Edit/:id" component={Edit} />
+                <Switch>
+                    <Route exact path="/ContentType" component={Search} />
+                    <Route exact path="/ContentType/Add" component={Add} />
+                    <Route exact path="/ContentType/Edit/:id" component={Edit} />
+                    <Route path="*" component={NotFound} />
+                </Switch>
             </React.Fragment>
         );
     }

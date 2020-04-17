@@ -1,24 +1,17 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
-import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
-import MD5Digest from "../../../../../common/library/cryptography/MD5Digest.js";
-import SearchForm from "../../../../../common/components/Form/SearchForm";
+import { ModalManager } from 'react-dynamic-modal';
 import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
-import FormControl from "../../../../../common/components/Form/AdvanceForm/FormControl";
 import InputGrid from "../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
-import SimpleForm from "../../../../../common/components/Form/SimpleForm";
-import DataGrid from "../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../common/components/Modal";
-import { APIHostName, LoadAPIPath, UpdateAPIPath, EditElementList, MLObjectDefinition, BackLink, EditPagePath, GetAttributeCategoryParentAPIPath, GridMLObjectDefinition, InputLanguageColumnList, AddLogAPIPath } from "../constants"
+import { APIHostName, LoadAPIPath, UpdateAPIPath, EditElementList, MLObjectDefinition, BackLink, EditPagePath, GetActivedAttributeCategoryTypeAPIPath, GetAttributeCategoryParentAPIPath, GridMLObjectDefinition, InputLanguageColumnList, AddLogAPIPath } from "../constants"
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { Z_DEFAULT_COMPRESSION } from "zlib";
 import { ATTRIBUTE_CATEGORY_UPDATE } from "../../../../../constants/functionLists";
-import { callGetCache } from "../../../../../actions/cacheAction";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { PIMCACHE_ATTRIBUTECATEGORY } from "../../../../../constants/keyCache";
+
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
@@ -52,23 +45,19 @@ class EditCom extends React.Component {
             //     objElement.readonly=true;
             // });
             document.querySelectorAll('[type=submit]').disabled = "disafdfdf";
-
         }
-
     }
 
     componentDidMount() {
-
         this.props.updatePagePath(EditPagePath);
         const id = this.props.match.params.id;
         this.getAttributeCategoryParentList(id);
+        this.getActivedAttributeCategoryTypeList(id);
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
             //console.log("componentDidMount:", apiResult);
-
             if (apiResult.IsError) {
                 this.setState({
-                    IsCallAPIError: apiResult.IsError
-
+                    IsCallAPIError: !apiResult.IsError
                 });
                 this.showMessage(apiResult.Message);
             }
@@ -76,17 +65,10 @@ class EditCom extends React.Component {
                 if (apiResult.ResultObject) {
                     const ResultLanguage = Object.assign([], this.state.ResultLanguage, apiResult.ResultObject.ResultLanguage);
                     const DataSource = Object.assign([], this.state.DataSource, apiResult.ResultObject);
-                    this.setState({ DataSource, ResultLanguage });
+                    this.setState({ DataSource, ResultLanguage, IsLoadDataComplete: true });
                 }
             }
-
             this.handleIsSystemData(apiResult.ResultObject.IsSystem);
-
-
-            this.setState({
-                IsLoadDataComplete: true
-            })
-
         });
     }
 
@@ -103,29 +85,6 @@ class EditCom extends React.Component {
         this.setState({ ResultLanguage: dataSource });
     }
 
-    handleClearLocalCache() {
-        const cacheKeyID = "PIMCACHE.ATTRIBUTECATEGORY";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(cacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: cacheKeyID,
-                UserName: this.props.AppInfo.LoginInfo.Username,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                this.handleGetCache();
-                //console.log("apiResult", apiResult)
-            });
-        }
-        );
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.ATTRIBUTECATEGORY").then((result) => {
-            console.log("handleGetCache: ", result);
-        });
-    }
-
     handleSubmitInsertLog(MLObject) {
         MLObject.ActivityTitle = `Cập nhật danh mục thuộc tính: ${MLObject.AttributeCategoryName}`;
         MLObject.ActivityDetail = `Cập nhật danh mục thuộc tính: ${MLObject.AttributeCategoryName} ${"\n"}Mô tả: ${MLObject.Description}`;
@@ -137,31 +96,22 @@ class EditCom extends React.Component {
     handleSubmit(formData, MLObject) {
         // console.log("formData:", formData);
         // console.log("MLObject:", MLObject);
-
-
         let ResultLanguage = this.state.ResultLanguage.filter(
             x => x.HasChanged == true && x.ProductFeatureGroupName !== null
         );
         MLObject.ResultLanguage = ResultLanguage;
-
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then((apiResult) => {
             //console.log("apiResult:", apiResult);
-
             //this.searchref.current.changeLoadComplete();
             this.setState({ IsCallAPIError: apiResult.IsError });
-            if(!apiResult.IsError){
-                this.handleClearLocalCache();
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(PIMCACHE_ATTRIBUTECATEGORY)
                 this.handleSubmitInsertLog(MLObject);
             }
             this.showMessage(apiResult.Message);
-
-        }
-
-        );
-
+        });
     }
 
     //lấy combobox mã danh muc thuộc tính cha
@@ -176,9 +126,8 @@ class EditCom extends React.Component {
                     if (objData.AttributeCategoryID === -1) {
                         return {};
                     }
-                    return { value: objData.AttributeCategoryID, name: `${objData.AttributeCategoryID}. ${objData.AttributeCategoryName}`, label: objData.AttributeCategoryName }
+                    return { value: objData.AttributeCategoryID, ParentID: objData.ParentID, name: `${objData.AttributeCategoryID}. ${objData.AttributeCategoryName}`, label: objData.AttributeCategoryName }
                 });
-                comboParentIDList.unshift({ value: -1, name: "Vuilongchon", label: "--Vui lòng chọn--" });
                 comboParentIDList = comboParentIDList.filter(value => Object.keys(value).length !== 0);
                 let _EditElementList = this.state.EditElementList;
                 _EditElementList.forEach(function (objElement) {
@@ -186,14 +135,38 @@ class EditCom extends React.Component {
                         objElement.listoption = comboParentIDList;
                         objElement.value = comboParentIDList[0].value;
                     }
-
                 });
                 this.setState({
                     EditElementList: _EditElementList,
                 });
             }
-        }
-        );
+        });
+    }
+
+    //lấy combobox loại danh muc thuộc tính (không lấy mã chưa active)
+    getActivedAttributeCategoryTypeList(id) {
+        this.props.callFetchAPI(APIHostName, GetActivedAttributeCategoryTypeAPIPath, id).then((apiResult) => {
+            if (!apiResult.IsError) {
+                let activeAttributeCategoryTypeList = apiResult.ResultObject.map(function (objData) {
+                    if (objData.AttributeCategoryTypeID === -1) {
+                        return {};
+                    }
+                    return { value: objData.AttributeCategoryTypeID, name: `${objData.AttributeCategoryTypeID}. ${objData.AttributeCategoryName}`, label: objData.AttributeCategoryTypeName }
+                });
+                activeAttributeCategoryTypeList.unshift({ value: -1, name: "Vuilongchon", label: "--Vui lòng chọn--" });
+                activeAttributeCategoryTypeList = activeAttributeCategoryTypeList.filter(value => Object.keys(value).length !== 0);
+                let _EditElementList = this.state.EditElementList;
+                _EditElementList.forEach(function (objElement) {
+                    if (objElement.DataSourceMember == 'AttributeCategoryTypeID' && activeAttributeCategoryTypeList.length > 0) {
+                        objElement.listoption = activeAttributeCategoryTypeList;
+                        objElement.value = activeAttributeCategoryTypeList[0].value;
+                    }
+                });
+                this.setState({
+                    EditElementList: _EditElementList,
+                });
+            }
+        });
     }
     render() {
         //let listElement1 = SearchElementList;
@@ -205,10 +178,8 @@ class EditCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
 
-
         if (this.state.IsLoadDataComplete) {
             return (
-
                 // <SimpleForm FormName="Cập nhật danh mục thuộc tính sản phẩm" MLObjectDefinition={MLObjectDefinition} listelement={EditElementList} url="http://localhost:8910/api/contact" onSubmit={this.handleSubmit}
                 //     FormMessage={this.state.CallAPIMessage} IsErrorMessage={this.state.IsCallAPIError}
                 //     dataSource={this.state.DataSource}
@@ -240,18 +211,11 @@ class EditCom extends React.Component {
 
             );
         }
-
-
-
-        return (<div>
-
-            <label>Đang nạp dữ liệu...</label>
-
-
-        </div>
+        return (
+            <div>
+                <label>Đang nạp dữ liệu...</label>
+            </div>
         );
-
-
     }
 }
 
@@ -273,11 +237,12 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
-
     }
 }
-
 
 const Edit = connect(mapStateToProps, mapDispatchToProps)(EditCom);
 export default Edit;

@@ -11,8 +11,6 @@ import { GetMLObjectData, } from "../../../../common/library/form/FormLib";
 import "../../../../../node_modules/react-datetime/css/react-datetime.css";
 import { showModal } from '../../../../actions/modal';
 import { MODAL_TYPE_NOTIFICATION, MODAL_TYPE_CONFIRMATION } from '../../../../constants/actionTypes';
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
 
 import {
     GridColumnList,
@@ -31,7 +29,7 @@ import {
     ModifyModalColumnList,
 } from "./constants";
 import { PIE_REQUEST_PRODUCT_PART_VIEW, PIE_REQUEST_PRODUCT_PART_DELETE } from "../../../../constants/functionLists";
-
+import { showToastAlert } from '../../../../common/library/ultils'
 class PartnerCom extends React.Component {
     constructor(props) {
         super(props);
@@ -40,7 +38,6 @@ class PartnerCom extends React.Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
-        this.addNotification = this.addNotification.bind(this);
         this.state = {
             gridDataSource: [],
             IsCallAPIError: false,
@@ -48,9 +45,8 @@ class PartnerCom extends React.Component {
             FormData: {},
             SearchData: InitSearchParams,
             PieRequestListID: "",
-            DataSourcePieRequest:[]
+            DataSourcePieRequest: []
         };
-        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
@@ -108,7 +104,7 @@ class PartnerCom extends React.Component {
                                 this.callSearchData(this.state.SearchData);
                             }
                             this.setState({ IsCallAPIError: apiResult.IsError });
-                            this.addNotification(apiResult.Message, apiResult.IsError);
+                            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                             //this.showMessage(apiResult.Message);
                         });
                     }
@@ -132,7 +128,7 @@ class PartnerCom extends React.Component {
                             this.callSearchData(this.state.SearchData);
                         }
                         this.setState({ IsCallAPIError: apiResult.IsError });
-                        this.addNotification(apiResult.Message, apiResult.IsError);
+                        showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                         //this.showMessage(apiResult.Message);
                     });
                 }
@@ -169,7 +165,7 @@ class PartnerCom extends React.Component {
                 this.callSearchData(this.state.SearchData);
             }
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
         });
     }
 
@@ -179,9 +175,8 @@ class PartnerCom extends React.Component {
                 this.callSearchData(this.state.SearchData);
             }
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
-        }
-        );
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
+        });
     }
 
     valueChangeInputGrid() {
@@ -211,40 +206,9 @@ class PartnerCom extends React.Component {
         />);
     }
 
-    addNotification(message1, IsError) {
-        let cssNotification = "";
-        let iconNotification = "";
-        if (!IsError) {
-            cssNotification = "notification-custom-success";
-            iconNotification = "fa fa-check";
-        }
-        else {
-            cssNotification = "notification-danger";
-            iconNotification = "fa fa-exclamation";
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close"><span>×</span></div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
     render() {
         return (
             <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <div className="col-md-9 col-lg-10">
                     <div className="card">
                         <header className="card-header">
@@ -272,8 +236,8 @@ class PartnerCom extends React.Component {
                                 IsShowRowNull={true}
                                 isHideHeaderToolbar={false}
                                 IsAutoPaging={false}
-                                IsAdd={ this.CheckPermissionUser(16)}
-                                IsDelete={ this.CheckPermissionUser(16) }
+                                IsAdd={this.CheckPermissionUser(16)}
+                                IsDelete={this.CheckPermissionUser(16)}
                             />
                         </div>
                     </div>

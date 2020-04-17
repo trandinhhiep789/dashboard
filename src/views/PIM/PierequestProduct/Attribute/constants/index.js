@@ -163,7 +163,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtAttributeID",
-        label: "Mã loại bảng mã sản phẩm của đối tác:",
+        label: "Mã loại bảng mã sản phẩm của đối tác",
         value: "",
         placeholder: "",
         icon: "",
@@ -176,7 +176,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtAttributeName",
-        label: "Tên loại bảng mã sản phẩm của đối tác:",
+        label: "Tên loại bảng mã sản phẩm của đối tác",
         value: "",
         placeholder: "",
         icon: "",
@@ -189,7 +189,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtAttributeValueName",
-        label: "Mô tả:",
+        label: "Mô tả",
         value: "",
         placeholder: "",
         icon: "",
@@ -203,7 +203,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtAttributeCategoryName",
-        label: "Kích hoạt:",
+        label: "Kích hoạt",
         value: "",
         placeholder: "",
         icon: "",
@@ -216,7 +216,7 @@ export const AddElementList = [
     {
         type: "checkbox",
         name: "chkIsVariantAttribute",
-        label: "Hệ thống:",
+        label: "Hệ thống",
         value: "",
         placeholder: "",
         icon: "",

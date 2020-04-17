@@ -34,11 +34,10 @@ class ProductTypeInventoryStatusCom extends Component {
         ];
         this.callSearchData(searchData);
         this.setState({ SearchData: searchData });
-        
     }
 
     callSearchData(searchData) {
-        this.setState({IsLoadComplete:false});
+        this.setState({ IsLoadComplete: false });
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then((apiResult) => {
             if (!apiResult.IsError) {
                 this.setState({ DataSource: apiResult.ResultObject, IsCallAPIError: apiResult.IsError, IsLoadComplete: true })
@@ -75,15 +74,10 @@ class ProductTypeInventoryStatusCom extends Component {
             if (!apiResult.IsError) {
                 this.props.hideModal();
                 this.callSearchData(this.state.SearchData);
-
-                // this.handleClearLocalCache();
-                // this.handleSubmitInsertLog(MLObject);
             }
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-
         });
-
     }
 
     //cập nhật
@@ -95,36 +89,24 @@ class ProductTypeInventoryStatusCom extends Component {
             if (!apiResult.IsError) {
                 this.props.hideModal();
                 this.callSearchData(this.state.SearchData);
-
-                // this.handleClearLocalCache();
-                // this.handleSubmitInsertLog(MLObject);
             }
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-
         });
-
     }
     //xóa
     handleDelete(formData) {
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, formData).then(apiResult => {
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-
-                // this.handleClearLocalCache();
-                // this.handleSubmitInsertLog(MLObject);
             }
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-
         });
-
-        //console.log("handleDelete",formData);
-
     }
 
     render() {
-        if(this.state.IsLoadComplete){
+        if (this.state.IsLoadComplete) {
             return (
                 <Collapsible trigger="Trạng thái tồn kho của một loại sản phẩm" easing="ease-in" open={true}>
                     <InputGrid name="GridProductTypeAttribute" controltype="GridControl"
@@ -143,14 +125,13 @@ class ProductTypeInventoryStatusCom extends Component {
                         isSystem={this.props.isSystem}
                         onInsertPermanently={this.handleInsert}
                         onUpdatePermanently={this.handleUpdate}
-                        onDeleteClick ={this.handleDelete}
+                        onDeleteClick={this.handleDelete}
                     />
                 </Collapsible>
             );
-        }else{
-            return("Đang nạp dữ liệu");
+        } else {
+            return ("Đang nạp dữ liệu");
         }
-        
     }
 }
 

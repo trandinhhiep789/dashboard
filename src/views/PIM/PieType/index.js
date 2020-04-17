@@ -1,10 +1,11 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
+import NotFound from '../../NotFound'
 
 class PieTypeCom extends React.Component {
     constructor(props) {
@@ -14,9 +15,12 @@ class PieTypeCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Route exact path="/PieType" component={Search} />
-                <Route path="/PieType/Add" component={Add} />
-                <Route path="/PieType/Edit/:id" component={Edit} />
+                <Switch>
+                    <Route exact path="/PieType" component={Search} />
+                    <Route exact path="/PieType/Add" component={Add} />
+                    <Route exact path="/PieType/Edit/:id" component={Edit} />
+                    <Route path="*" component={NotFound} />
+                </Switch>
             </React.Fragment>
         );
     }

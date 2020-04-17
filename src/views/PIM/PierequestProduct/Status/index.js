@@ -8,8 +8,7 @@ import { callGetCache } from "../../../../actions/cacheAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import InputGridCell from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid/InputGridCell";
 import { LIST_COMPANY_CACHE, LIST_STATUS_PRODUCT_CACHE, APIHostName, AddAPIPath, UpdateAPIPath, LoadAPIPath, BackLink, PagePath } from "./constants";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
+import { showToastAlert } from '../../../../common/library/ultils'
 
 class StatusCom extends React.Component {
     constructor(props) {
@@ -26,7 +25,6 @@ class StatusCom extends React.Component {
             DataSource: [],
             DataSourcePieRequest: []
         };
-        this.notificationDOMRef = React.createRef();
     }
 
     handleCloseMessage() {
@@ -57,7 +55,7 @@ class StatusCom extends React.Component {
             }
         });
     }
-    
+
     CheckPermissionUser(id) {
         if (this.state.DataSourcePieRequest.LstPieRequestType_WF_PermIs && this.state.DataSourcePieRequest.LstPieRequestType_WF_PermIs.length > 0) {
             if (this.state.DataSourcePieRequest.LstPieRequestType_WF_PermIs[0].IsFinishStep == true) {
@@ -69,38 +67,6 @@ class StatusCom extends React.Component {
             }
         }
         return false;
-    }
-
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            })
-        }
-        else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            })
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close"><span>×</span></div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
     }
 
     handleSubmit() {
@@ -124,7 +90,7 @@ class StatusCom extends React.Component {
             if (!apiResult.IsError) {
                 this.setState({ ExistData: 1 });
             }
-            this.addNotification(apiResult.Message, apiResult.IsError);
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
         });
     }
 
@@ -188,7 +154,6 @@ class StatusCom extends React.Component {
         }
         return (
             <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <div className="col-md-9 col-lg-10">
                     <div className="card">
                         <header className="card-header">
@@ -229,8 +194,7 @@ class StatusCom extends React.Component {
                             </table>
                         </div>
                         <footer className="card-footer text-right">
-                         
-                            {this.CheckPermissionUser(12) == true ?   <button className="btn btn-w-md btn-bold btn-info" onClick={this.handleSubmit}>Cập nhật</button>
+                            {this.CheckPermissionUser(12) == true ? <button className="btn btn-w-md btn-bold btn-info" onClick={this.handleSubmit}>Cập nhật</button>
                                 : <button className="btn btn-w-md btn-bold btn-info" disabled title="Bạn Không có quyền xử lý!" >Cập nhật</button>
                             }
                         </footer>

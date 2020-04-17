@@ -16,17 +16,14 @@ import {
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { PIE_TYPE_ADD } from "../../../../constants/functionLists";
-import indexedDBLib from "../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../actions/cacheAction";
-
+import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
+import { PIMCACHE_PIETYPE } from "../../../../constants/keyCache";
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
-        this.handleGetCache = this.handleGetCache.bind(this);
+
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -64,7 +61,7 @@ class AddCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
-                this.handleClearLocalCache();
+                this.props.callClearLocalCache(PIMCACHE_PIETYPE)
                 this.handleSubmitInsertLog(MLObject);
             }
         });
@@ -83,28 +80,6 @@ class AddCom extends React.Component {
                 onCloseModal={this.handleCloseMessage}
             />
         );
-    }
-
-    handleClearLocalCache() {
-        const CacheKeyID = "PIMCACHE.PIETYPE";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(CacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: CacheKeyID,
-                UserName: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                console.log("apiResult cache", apiResult);
-                this.handleGetCache();
-            });
-        });
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.PIETYPE").then((result) => {
-            console.log("handleGetCache: ", result);
-        });
     }
 
     render() {
@@ -146,6 +121,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
     };
 };

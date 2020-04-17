@@ -35,7 +35,7 @@ export const SearchElementList = [
     {
         type: "text",
         name: "txtKeyword",
-        label: "Từ khóa:",
+        label: "Từ khóa",
         value: "",
         placeholder: "",
         icon: "",
@@ -59,7 +59,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtPartnerProductMapTypeID",
-        label: "Mã loại bảng mã sản phẩm của đối tác:",
+        label: "Mã loại bảng mã sản phẩm của đối tác",
         value: "",
         placeholder: "",
         icon: "",
@@ -72,7 +72,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtPartnerProductMapTypeName",
-        label: "Tên loại bảng mã sản phẩm của đối tác:",
+        label: "Tên loại bảng mã sản phẩm của đối tác",
         value: "",
         placeholder: "",
         icon: "",
@@ -85,7 +85,7 @@ export const AddElementList = [
     {
         type: "textarea",
         name: "txtDescription",
-        label: "Mô tả:",
+        label: "Mô tả",
         value: "",
         placeholder: "",
         icon: "",
@@ -99,7 +99,7 @@ export const AddElementList = [
     {
         type: "checkbox",
         name: "chkIsActived",
-        label: "Kích hoạt:",
+        label: "Kích hoạt",
         value: "",
         placeholder: "",
         icon: "",
@@ -114,7 +114,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtPartnerProductMapTypeID",
-        label: "Mã loại bảng mã sản phẩm của đối tác:",
+        label: "Mã loại bảng mã sản phẩm của đối tác",
         value: "",
         placeholder: "",
         icon: "",
@@ -127,7 +127,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtPartnerProductMapTypeName",
-        label: "Tên loại bảng mã sản phẩm của đối tác:",
+        label: "Tên loại bảng mã sản phẩm của đối tác",
         value: "",
         placeholder: "",
         icon: "",
@@ -140,7 +140,7 @@ export const EditElementList = [
     {
         type: "textarea",
         name: "txtDescription",
-        label: "Mô tả:",
+        label: "Mô tả",
         value: "",
         placeholder: "",
         icon: "",
@@ -153,7 +153,7 @@ export const EditElementList = [
     {
         type: "checkbox",
         name: "chkIsActived",
-        label: "Kích hoạt:",
+        label: "Kích hoạt",
         value: "",
         placeholder: "",
         icon: "",
@@ -166,7 +166,7 @@ export const EditElementList = [
     {
         type: "checkbox",
         name: "chkIsSystem",
-        label: "Hệ thống:",
+        label: "Hệ thống",
         value: "",
         placeholder: "",
         icon: "",

@@ -66,19 +66,16 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, LoadAPIPathNew, id).then((apiResult) => {
             if (apiResult.IsError) {
                 this.setState({
-                    IsCallAPIError: apiResult.IsError
+                    IsCallAPIError: !apiResult.IsError
                 });
                 this.showMessage(apiResult.Message);
             }
             else {
                 if (apiResult.ResultObject.ModelID != "")
                     this.setState({ lstOptionInputMultiple: [{ value: apiResult.ResultObject.ModelID, label: apiResult.ResultObject.ModelName }] });
-                this.setState({ DataSource: apiResult.ResultObject });
+                this.setState({ DataSource: apiResult.ResultObject, IsLoadDataComplete: true });
 
             }
-            this.setState({
-                IsLoadDataComplete: true
-            })
         });
     }
 

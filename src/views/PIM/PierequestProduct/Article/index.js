@@ -31,8 +31,7 @@ import {
     AddElementList,
     MLObjectDefinition
 } from "./constants";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
+import { showToastAlert } from '../../../../common/library/ultils'
 
 class ArticleCom extends React.Component {
     constructor(props) {
@@ -44,8 +43,6 @@ class ArticleCom extends React.Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.onChange1 = this.onChange1.bind(this);
         this.searchref = React.createRef();
-        this.addNotification = this.addNotification.bind(this);
-        this.notificationDOMRef = React.createRef();
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -58,7 +55,7 @@ class ArticleCom extends React.Component {
             PieRequest_Product_Article: {},
             Isedit: false,
             editorState: EditorState.createEmpty(),
-            DataSourcePieRequest:[]
+            DataSourcePieRequest: []
         };
     }
 
@@ -101,14 +98,14 @@ class ArticleCom extends React.Component {
         ];
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-                if (!apiResult.IsError) {
-                    this.setState({
-                        IsCallAPIError: apiResult.IsError,
-                        gridDataSource: apiResult.ResultObject,
-                        LstPieRequest_Product_Article: apiResult.ResultObject
-                    });
-                }
-            });
+            if (!apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: apiResult.IsError,
+                    gridDataSource: apiResult.ResultObject,
+                    LstPieRequest_Product_Article: apiResult.ResultObject
+                });
+            }
+        });
     }
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
@@ -159,7 +156,7 @@ class ArticleCom extends React.Component {
             this.props.callFetchAPI(APIHostName, UpdateAPIPath, this.state.PieRequest_Product_Article).then(apiResult => {
                 if (!apiResult.IsError) {
                     this.callSearchData(this.state.SearchData);
-                    this.addNotification(apiResult.Message, apiResult.IsError);
+                    showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                     ModalManager.close();
                 }
 
@@ -168,7 +165,7 @@ class ArticleCom extends React.Component {
             this.props.callFetchAPI(APIHostName, AddAPIPath, this.state.PieRequest_Product_Article).then(apiResult => {
                 if (!apiResult.IsError) {
                     this.callSearchData(this.state.SearchData);
-                    this.addNotification(apiResult.Message, apiResult.IsError);
+                    showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                     ModalManager.close();
                 }
             });
@@ -343,37 +340,7 @@ class ArticleCom extends React.Component {
                 this.callSearchData(this.state.SearchData);
             }
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
-        });
-    }
-
-    addNotification(message1, IsError) {
-        let cssNotification = "";
-        let iconNotification = "";
-        if (!IsError) {
-            cssNotification = "notification-custom-success";
-            iconNotification = "fa fa-check";
-        }
-        else {
-            cssNotification = "notification-danger";
-            iconNotification = "fa fa-exclamation";
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close"><span>×</span></div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
         });
     }
 
@@ -382,7 +349,6 @@ class ArticleCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <div className="col-md-9 col-lg-10">
                     <div className="card">
                         <header className="card-header">
@@ -403,8 +369,8 @@ class ArticleCom extends React.Component {
                                 onDeleteClick_Customize={this.handleDelete}
                                 MLObjectDefinition={GridMLObjectArticleDefinition}
                                 colspan="12"
-                                IsAdd={ this.CheckPermissionUser(17)}
-                                IsDelete={ this.CheckPermissionUser(17) }
+                                IsAdd={this.CheckPermissionUser(17)}
+                                IsDelete={this.CheckPermissionUser(17)}
                             />
                         </div>
                     </div>

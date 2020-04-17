@@ -47,7 +47,7 @@ export const SearchElementList = [
 
 export const AddElementList = [
     {
-        type: "numeric",
+        type: "text",
         name: "txtInventoryStatusID",
         label: "Mã trạng thái tồn kho",
         value: "",
@@ -122,7 +122,7 @@ export const AddElementList = [
         validatonList: []
     },
     {
-        type: "numeric",
+        type: "text",
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: 0,
@@ -132,7 +132,7 @@ export const AddElementList = [
         listoption: {},
         DataSourceMember: "OrderIndex",
         readonly: false,
-        validatonList: ["required"]
+        validatonList: ["required", "number"]
     },
     {
         type: "text",
@@ -225,7 +225,7 @@ export const EditElementList = [
         validatonList: []
     },
     {
-        type: "numeric",
+        type: "text",
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: "",
@@ -235,7 +235,7 @@ export const EditElementList = [
         listoption: {},
         DataSourceMember: "OrderIndex",
         readonly: false,
-        validatonList: ["required"]
+        validatonList: ["required","number"]
     },
     {
         type: "text",

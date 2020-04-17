@@ -19,10 +19,7 @@ import {
     ColumnListNumber
 } from "./constants";
 import { PIE_REQUEST_PRODUCT_LIMIT_VIEW, PIE_REQUEST_PRODUCT_LIMIT_DELETE } from "../../../../constants/functionLists";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
-
-
+import { showToastAlert } from '../../../../common/library/ultils'
 class LimitCom extends React.Component {
     constructor(props) {
         super(props);
@@ -30,7 +27,6 @@ class LimitCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
         this.valueChangeInputGrid = this.valueChangeInputGrid.bind(this);
-        this.addNotification = this.addNotification.bind(this);
         this.state = {
             gridDataSource: GridDataSource,
             IsCallAPIError: false,
@@ -39,8 +35,6 @@ class LimitCom extends React.Component {
             PieRequestListID: "",
             DataSourcePieRequest: []
         };
-        this.notificationDOMRef = React.createRef();
-
     }
     componentDidMount() {
         this.props.updatePagePath(PagePath);
@@ -81,37 +75,6 @@ class LimitCom extends React.Component {
         return false;
     }
 
-    addNotification(message1, IsError) {
-        let cssNotification = "";
-        let iconNotification = "";
-        if (!IsError) {
-            cssNotification = "notification-custom-success";
-            iconNotification = "fa fa-check";
-        }
-        else {
-            cssNotification = "notification-danger";
-            iconNotification = "fa fa-exclamation";
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close"><span>×</span></div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
-
     valueChangeInputGrid(elementdata, index) {
         const rowGridData = Object.assign({}, this.state.gridDataSource[index], { [elementdata.Name]: elementdata.Value }, { "HasChanged": true });
         const dataSource = Object.assign([], this.state.gridDataSource, { [index]: rowGridData })
@@ -136,11 +99,11 @@ class LimitCom extends React.Component {
                     this.callSearchData(this.state.SearchData);
                 }
                 this.setState({ IsCallAPIError: apiResult.IsError });
-                this.addNotification(apiResult.Message, apiResult.IsError);
+                showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
             });
         }
         else {
-            this.addNotification("Không tồn tại data chỉnh sửa.", true);
+            showToastAlert("Không tồn tại data chỉnh sửa", 'error');
         }
     }
 
@@ -180,7 +143,6 @@ class LimitCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <div className="col-md-9 col-lg-10">
                     <div className="card">
                         <header className="card-header">

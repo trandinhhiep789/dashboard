@@ -6,8 +6,6 @@ import Home from "./Home";
 import Login from "./Login";
 import Logout from "./Logout";
 import ModalRoot from '../common/components/Modal/ModalRoot';
-// import { createBrowserHistory } from "history";
-// const history = createBrowserHistory()
 
 class AppCom extends React.Component {
     constructor(props) {
@@ -19,14 +17,6 @@ class AppCom extends React.Component {
             <Router>
                 <div id="mainRouter">
                     <ModalRoot />
-                    {/* <Route exact path="/" render={() =>
-                        (
-                            !isLoginSuccess ? (
-                                <Redirect to="/login" />
-                            ) : (
-                                    <div></div>
-                                )
-                        )} /> */}
                     <Switch>
                         <Route exact path="/" component={Home} />
                         <Route path="/login" component={Login} />
@@ -37,7 +27,6 @@ class AppCom extends React.Component {
             </Router>
         );
     }
-
 }
 
 const mapStateToProps = state => {
@@ -45,8 +34,6 @@ const mapStateToProps = state => {
         AuthenticationInfo: state
     }
 }
-
-
 
 const App = connect(mapStateToProps, null)(AppCom);
 export default App;

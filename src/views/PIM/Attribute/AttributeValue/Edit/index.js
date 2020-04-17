@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import { ModalManager } from "react-dynamic-modal";
 import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
@@ -17,9 +17,8 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { ATTRIBUTE_VALUE_UPDATE } from "../../../../../constants/functionLists";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { PIMCACHE_ATTRIBUTEVALUE } from "../../../../../constants/keyCache";
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
@@ -42,39 +41,13 @@ class EditCom extends React.Component {
             .then(apiResult => {
                 if (apiResult.IsError) {
                     this.setState({
-                        IsCallAPIError: apiResult.IsError
+                        IsCallAPIError: !apiResult.IsError
                     });
                     this.showMessage(apiResult.Message);
                 } else {
-                    this.setState({ DataSource: apiResult.ResultObject });
+                    this.setState({ DataSource: apiResult.ResultObject, IsLoadDataComplete: true });
                 }
-                this.setState({
-                    IsLoadDataComplete: true
-                });
             });
-    }
-
-    handleClearLocalCache() {
-        const cacheKeyID = "PIMCACHE.ATTRIBUTEVALUE";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(cacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: cacheKeyID,
-                UserName: this.props.AppInfo.LoginInfo.Username,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                this.handleGetCache();
-                //console.log("apiResult", apiResult)
-            });
-        }
-        );
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.ATTRIBUTEVALUE").then((result) => {
-            console.log("handleGetCache: ", result);
-        });
     }
 
     handleSubmitInsertLog(MLObject) {
@@ -89,13 +62,13 @@ class EditCom extends React.Component {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                if(!apiResult.IsError){
-                    this.handleClearLocalCache();
-                    this.handleSubmitInsertLog(MLObject);
-                }    
-                this.showMessage(apiResult.Message);
-            });
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(PIMCACHE_ATTRIBUTEVALUE)
+                this.handleSubmitInsertLog(MLObject);
+            }
+            this.showMessage(apiResult.Message);
+        });
     }
 
     handleCloseMessage() {
@@ -157,6 +130,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
     };
 };

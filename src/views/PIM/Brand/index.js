@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
+import NotFound from '../../NotFound'
 class BrandCom extends React.Component {
     constructor(props) {
         super(props);
@@ -14,9 +15,12 @@ class BrandCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Route exact path="/Brand" component={Search} />
-                <Route path="/Brand/Add" component={Add} />
-                <Route path="/Brand/Edit/:id" component={Edit} />
+                <Switch>
+                    <Route exact path="/Brand" component={Search} />
+                    <Route exact path="/Brand/Add" component={Add} />
+                    <Route exact path="/Brand/Edit/:id" component={Edit} />
+                    <Route path="*" component={NotFound} />
+                </Switch>
             </React.Fragment>
         );
     }

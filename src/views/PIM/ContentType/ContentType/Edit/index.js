@@ -49,12 +49,11 @@ class EditCom extends React.Component {
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
             if (apiResult.IsError) {
-                this.setState({ IsCallAPIError: apiResult.IsError });
+                this.setState({ IsCallAPIError: !apiResult.IsError });
                 this.showMessage(apiResult.Message);
             } else {
-                this.setState({ DataSource: apiResult.ResultObject });
+                this.setState({ DataSource: apiResult.ResultObject, IsLoadDataComplete: true });
             }
-            this.setState({ IsLoadDataComplete: true });
         });
         this.props.updatePagePath(EditPagePath);
     }
@@ -79,7 +78,7 @@ class EditCom extends React.Component {
             }
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-            if(!apiResult.IsError){
+            if (!apiResult.IsError) {
                 this.handleSubmitInsertLog(MLObject);
             }
         });

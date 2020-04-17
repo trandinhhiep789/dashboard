@@ -16,9 +16,8 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { ATTRIBUTE_VALUE_ADD } from "../../../../../constants/functionLists";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { PIMCACHE_ATTRIBUTEVALUE } from "../../../../../constants/keyCache";
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -36,29 +35,6 @@ class AddCom extends React.Component {
         this.props.updatePagePath(AddPagePath);
     }
 
-    handleClearLocalCache() {
-        const cacheKeyID = "PIMCACHE.ATTRIBUTEVALUE";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(cacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: cacheKeyID,
-                UserName: this.props.AppInfo.LoginInfo.Username,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                this.handleGetCache();
-                //console.log("apiResult", apiResult)
-            });
-        }
-        );
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.ATTRIBUTEVALUE").then((result) => {
-            console.log("handleGetCache: ", result);
-        });
-    }
-
     handleSubmitInsertLog(MLObject) {
         MLObject.ActivityTitle = `Thêm mới giá trị thuộc tính: ${MLObject.AttributeValueName}`;
         MLObject.ActivityDetail = `Thêm mới giá trị thuộc tính: ${MLObject.AttributeValueName} ${"\n"}Mô tả: ${MLObject.Description}`;
@@ -72,13 +48,13 @@ class AddCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                if(!apiResult.IsError){
-                    this.handleClearLocalCache();
-                    this.handleSubmitInsertLog(MLObject);
-                }    
-                this.showMessage(apiResult.Message);
-            });
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(PIMCACHE_ATTRIBUTEVALUE)
+                this.handleSubmitInsertLog(MLObject);
+            }
+            this.showMessage(apiResult.Message);
+        });
     }
 
     handleCloseMessage() {
@@ -138,6 +114,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
     };
 };

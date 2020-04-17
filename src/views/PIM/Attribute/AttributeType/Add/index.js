@@ -1,8 +1,7 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import { ModalManager } from "react-dynamic-modal";
 import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
@@ -47,12 +46,12 @@ class AddCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                this.showMessage(apiResult.Message);
-                if(!apiResult.IsError){
-                    this.handleSubmitInsertLog(MLObject);
-                }
-            });
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
+            if (!apiResult.IsError) {
+                this.handleSubmitInsertLog(MLObject);
+            }
+        });
     }
 
     handleCloseMessage() {

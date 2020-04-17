@@ -28,9 +28,7 @@ import {
     ModifyModalColumnList,
 } from "./constants";
 import { PIE_REQUEST_PRODUCT_VIDEO_VIEW, PIE_REQUEST_PRODUCT_VIDEO_DELETE } from "../../../../constants/functionLists";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
-
+import { showToastAlert } from '../../../../common/library/ultils'
 
 class VideoCom extends React.Component {
     constructor(props) {
@@ -42,8 +40,6 @@ class VideoCom extends React.Component {
         this.previewMedia = this.previewMedia.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
-        this.addNotification = this.addNotification.bind(this);
-        this.notificationDOMRef = React.createRef();
         this.state = {
             gridDataSource: [],
             IsCallAPIError: false,
@@ -51,38 +47,8 @@ class VideoCom extends React.Component {
             FormData: {},
             SearchData: InitSearchParams,
             PieRequestListID: "",
-            DataSourcePieRequest:[]
+            DataSourcePieRequest: []
         };
-    }
-
-    addNotification(message1, IsError) {
-        let cssNotification = "";
-        let iconNotification = "";
-        if (!IsError) {
-            cssNotification = "notification-custom-success";
-            iconNotification = "fa fa-check";
-        }
-        else {
-            cssNotification = "notification-danger";
-            iconNotification = "fa fa-exclamation";
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close"><span>×</span></div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
     }
 
     componentDidMount() {
@@ -146,7 +112,7 @@ class VideoCom extends React.Component {
                                 this.callSearchData(this.state.SearchData);
                             }
                             this.setState({ IsCallAPIError: apiResult.IsError });
-                            this.addNotification(apiResult.Message, apiResult.IsError);
+                            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                         });
                     }
                 }
@@ -177,7 +143,7 @@ class VideoCom extends React.Component {
                                 this.callSearchData(this.state.SearchData);
                             }
                             this.setState({ IsCallAPIError: apiResult.IsError });
-                            this.addNotification(apiResult.Message, apiResult.IsError);
+                            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                         });
                     }
                 }
@@ -212,7 +178,7 @@ class VideoCom extends React.Component {
                 this.callSearchData(this.state.SearchData);
             }
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
         });
     }
 
@@ -222,7 +188,7 @@ class VideoCom extends React.Component {
                 this.callSearchData(this.state.SearchData);
             }
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
         });
     }
 
@@ -266,7 +232,6 @@ class VideoCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <div className="col-md-9 col-lg-10">
                     <div className="card">
                         <header className="card-header">
@@ -296,8 +261,8 @@ class VideoCom extends React.Component {
                                 IsAutoPaging={false}
                                 isHideHeaderToolbar={false}
                                 IsShowRowNull={true}
-                                IsAdd={ this.CheckPermissionUser(20)}
-                                IsDelete={ this.CheckPermissionUser(20) }
+                                IsAdd={this.CheckPermissionUser(20)}
+                                IsDelete={this.CheckPermissionUser(20)}
                             />
                         </div>
                     </div>

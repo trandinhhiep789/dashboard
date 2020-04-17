@@ -39,7 +39,7 @@ export const SearchElementList = [
     {
         type: "text",
         name: "txtKeyword",
-        label: "Từ khóa:",
+        label: "Từ khóa",
         value: "",
         placeholder: "",
         icon: "",
@@ -49,9 +49,9 @@ export const SearchElementList = [
 
 export const AddElementList = [
     {
-        type: "numeric",
+        type: "text",
         name: "txtContentTypeID",
-        label: "Mã Loại nội dung:",
+        label: "Mã Loại nội dung",
         value: "",
         maxSize: "5",
         placeholder: "",
@@ -64,7 +64,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtContentTypeKey",
-        label: "Key loại nội dung:",
+        label: "Key loại nội dung",
         value: "",
         maxSize: "100",
         placeholder: "",
@@ -77,7 +77,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtContentTypeName",
-        label: "Tên loại nội dung:",
+        label: "Tên loại nội dung",
         value: "",
         maxSize: "200",
         placeholder: "",
@@ -91,7 +91,7 @@ export const AddElementList = [
     {
         type: "textarea",
         name: "txtDescription",
-        label: "Mô tả:",
+        label: "Mô tả",
         value: "",
         maxSize: "2000",
         placeholder: "Mô tả",
@@ -105,7 +105,7 @@ export const AddElementList = [
     {
         type: "checkbox",
         name: "chkIsActived",
-        label: "Kích hoạt:",
+        label: "Kích hoạt",
         value: true,
         placeholder: "",
         icon: "",
@@ -116,7 +116,7 @@ export const AddElementList = [
     {
         type: "checkbox",
         name: "chkIsSystem",
-        label: "Hệ thống:",
+        label: "Hệ thống",
         value: false,
         placeholder: "",
         icon: "",
@@ -130,7 +130,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtContentTypeID",
-        label: "Mã Loại nội dung:",
+        label: "Mã Loại nội dung",
         value: "",
         placeholder: "",
         icon: "",
@@ -142,7 +142,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtContentTypeKey",
-        label: "Key loại nội dung:",
+        label: "Key loại nội dung",
         value: "",
         maxSize: "100",
         placeholder: "",
@@ -155,7 +155,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtContentTypeName",
-        label: "Tên loại nội dung:",
+        label: "Tên loại nội dung",
         value: "",
         maxSize: "200",
         placeholder: "",
@@ -169,7 +169,7 @@ export const EditElementList = [
     {
         type: "textarea",
         name: "txtDescription",
-        label: "Mô tả:",
+        label: "Mô tả",
         value: "",
         maxSize: "2000",
         placeholder: "Mô tả",
@@ -183,7 +183,7 @@ export const EditElementList = [
     {
         type: "checkbox",
         name: "chkIsActived",
-        label: "Kích hoạt:",
+        label: "Kích hoạt",
         value: "",
         placeholder: "",
         icon: "",
@@ -195,7 +195,7 @@ export const EditElementList = [
     {
         type: "checkbox",
         name: "chkIsSystem",
-        label: "Hệ thống:",
+        label: "Hệ thống",
         value: "",
         placeholder: "",
         icon: "",

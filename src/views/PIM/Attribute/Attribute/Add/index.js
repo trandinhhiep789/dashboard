@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import { ModalManager } from "react-dynamic-modal";
 import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
 import InputGrid from "../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
 import { MessageModal } from "../../../../../common/components/Modal";
@@ -22,9 +22,9 @@ import {
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { ATTRIBUTE_ADD } from "../../../../../constants/functionLists";
-import { callGetCache } from "../../../../../actions/cacheAction";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
+import { PIMCACHE_PIMATTRIBUTE } from "../../../../../constants/keyCache";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -83,30 +83,6 @@ class AddCom extends React.Component {
         this.setState({ Files: filelist });
     }
 
-    handleClearLocalCache() {
-        const cacheKeyID = "PIMCACHE.PIMATTRIBUTE";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(cacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: cacheKeyID,
-                UserName: this.props.AppInfo.LoginInfo.Username,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                this.handleGetCache();
-                //console.log("apiResult", apiResult)
-            });
-        }
-        );
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.PIMATTRIBUTE").then((result) => {
-            console.log("handleGetCache: ", result);
-        });
-    }
-
-
     handleSubmitInsertLog(MLObject) {
         MLObject.ActivityTitle = `Thêm mới thuộc tính: ${MLObject.AttributeName}`;
         MLObject.ActivityDetail = `Thêm mới thuộc tính: ${MLObject.AttributeName} ${"\n"}Mô tả: ${MLObject.Description}`;
@@ -123,15 +99,15 @@ class AddCom extends React.Component {
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.ResultLanguage = ResultLanguage;
         MLObject.AttributeID = -1;
-        
+
         var data = new FormData();
         data.append("AttributeImageURL", this.state.Files.AttributeImageURL);
         data.append("AttributeObj", JSON.stringify(MLObject));
         this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-            if(!apiResult.IsError){
-                this.handleClearLocalCache();
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(PIMCACHE_PIMATTRIBUTE)
                 this.handleSubmitInsertLog(MLObject);
             }
         });
@@ -231,7 +207,6 @@ class AddCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
         return (
-    
             <FormContainer
                 FormName="Thêm thuộc tính sản phẩm"
                 MLObjectDefinition={MLObjectDefinition}
@@ -245,7 +220,6 @@ class AddCom extends React.Component {
                 onHandleSelectedFile={this.handleSelectedFile}
                 onSubmit={this.handleSubmit}
             >
-
                 <InputGrid
                     name="ResultLanguage"
                     controltype="InputControl"
@@ -287,9 +261,12 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: cacheKeyID => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
     };
 };
 
-const Add = connect(mapStateToProps,mapDispatchToProps)(AddCom);
+const Add = connect(mapStateToProps, mapDispatchToProps)(AddCom);
 export default Add;

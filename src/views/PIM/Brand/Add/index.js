@@ -20,9 +20,8 @@ import {
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { BRAND_ADD } from "../../../../constants/functionLists";
-import indexedDBLib from "../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
+import { PIMCACHE_BRAND } from "../../../../constants/keyCache";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -31,8 +30,6 @@ class AddCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
         this.valueChangeInputGrid = this.valueChangeInputGrid.bind(this);
-        this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
-        this.handleGetCache = this.handleGetCache.bind(this);
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -102,20 +99,20 @@ class AddCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-            if(!apiResult.IsError){
-                this.handleClearLocalCache();
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(PIMCACHE_BRAND)
                 this.handleSubmitInsertLog(MLObject);
             }
-            
+
         });
     }
 
-     //file upload
-     handleSelectedFile(file, nameValue, isDeletetedFile) {
+    //file upload
+    handleSelectedFile(file, nameValue, isDeletetedFile) {
         const filelist = { [nameValue]: file };
         this.setState({ Files: filelist });
     }
-    
+
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
     }
@@ -129,28 +126,6 @@ class AddCom extends React.Component {
                 onCloseModal={this.handleCloseMessage}
             />
         );
-    }
-
-    handleClearLocalCache() {
-        const CacheKeyID = "PIMCACHE.BRAND";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(CacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: CacheKeyID,
-                UserName: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                //console.log("apiResult cache", apiResult);
-                this.handleGetCache();
-            });
-        });
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.BRAND").then((result) => {
-            console.log("handleGetCache: ", result);
-        });
     }
 
     render() {
@@ -203,6 +178,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
     };
 };

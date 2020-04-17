@@ -17,8 +17,7 @@ import {
     GridMLObjectContentDefinition, InputProductContentColumnList,
     AddElementList, MLObjectDefinition
 } from "./constants";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
+import { showToastAlert } from '../../../../common/library/ultils'
 
 class ContentCom extends React.Component {
     constructor(props) {
@@ -28,9 +27,7 @@ class ContentCom extends React.Component {
         this.handleContentInsert = this.handleContentInsert.bind(this);
         this.handleInputGridEdit = this.handleInputGridEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.addNotification = this.addNotification.bind(this);
         this.searchref = React.createRef();
-        this.notificationDOMRef = React.createRef();
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -43,7 +40,7 @@ class ContentCom extends React.Component {
             PieRequest_Product_Content: {},
             Isedit: false,
             editorState: EditorState.createEmpty(),
-            DataSourcePieRequest:[]
+            DataSourcePieRequest: []
         };
     }
     componentDidMount() {
@@ -113,36 +110,6 @@ class ContentCom extends React.Component {
         });
     }
 
-    addNotification(message1, IsError) {
-        let cssNotification = "";
-        let iconNotification = "";
-        if (!IsError) {
-            cssNotification = "notification-custom-success";
-            iconNotification = "fa fa-check";
-        }
-        else {
-            cssNotification = "notification-danger";
-            iconNotification = "fa fa-exclamation";
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close"><span>×</span></div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
     handleContentInsert() {
         let PieRequestListID = this.props.match.params.pierequestlistid;
         let IsOldValue = 0;
@@ -161,7 +128,7 @@ class ContentCom extends React.Component {
             this.props.callFetchAPI(APIHostName, UpdateAPIPath, this.state.PieRequest_Product_Content).then((apiResult) => {
                 if (!apiResult.IsError) {
                     this.setState({ IsCallAPIError: apiResult.IsError });
-                    this.addNotification(apiResult.Message, apiResult.IsError);
+                    showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                     ModalManager.close();
                     this.callSearchData(this.state.SearchData);
                 }
@@ -171,7 +138,7 @@ class ContentCom extends React.Component {
             this.props.callFetchAPI(APIHostName, AddAPIPath, this.state.PieRequest_Product_Content).then((apiResult) => {
                 if (!apiResult.IsError) {
                     this.setState({ IsCallAPIError: apiResult.IsError });
-                    this.addNotification(apiResult.Message, apiResult.IsError);
+                    showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                     ModalManager.close();
                     this.callSearchData(this.state.SearchData);
                 }
@@ -286,7 +253,7 @@ class ContentCom extends React.Component {
         });
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listProductContent).then((apiResult) => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
             this.callSearchData(this.state.SearchData);
         });
     }
@@ -294,7 +261,6 @@ class ContentCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <div className="col-md-9 col-lg-10">
                     <div className="card">
                         <header className="card-header">
@@ -315,8 +281,8 @@ class ContentCom extends React.Component {
                                 onDeleteClick_Customize={this.handleDelete}
                                 MLObjectDefinition={GridMLObjectContentDefinition}
                                 colspan="12"
-                                IsAdd={ this.CheckPermissionUser(21)}
-                                IsDelete={ this.CheckPermissionUser(21) }
+                                IsAdd={this.CheckPermissionUser(21)}
+                                IsDelete={this.CheckPermissionUser(21)}
                             />
                         </div>
                     </div>

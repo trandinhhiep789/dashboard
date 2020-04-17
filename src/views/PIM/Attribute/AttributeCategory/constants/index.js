@@ -8,7 +8,7 @@ export const DeleteAPIPath = "api/AttributeCategory/Delete";
 export const UpdateOrderAPIPath = "api/AttributeCategory/UpdateOrder";
 export const BackLink = "/AttributeCategory";
 export const AddLink = "/AttributeCategory/Add";
-export const ComboAttributeCategoryTypeID = "api/AttributeCategoryType/Search";
+export const GetActivedAttributeCategoryTypeAPIPath = "api/AttributeCategoryType/GetActivedAttributeCategoryType";
 export const GetAttributeCategoryParentAPIPath = "api/AttributeCategory/GetParentAttributeCategory";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
@@ -46,7 +46,7 @@ export const SearchElementList = [
     {
         type: "text",
         name: "txtKeyword",
-        label: "Từ khóa:",
+        label: "Từ khóa",
         value: "",
         placeholder: "",
         icon: "",
@@ -55,7 +55,7 @@ export const SearchElementList = [
     {
         type: "select",
         name: "slAttributeCategoryTypeID",
-        label: "Loại danh mục:",
+        label: "Loại danh mục",
         value: -1,
         placeholder: "",
         icon: "",
@@ -85,9 +85,10 @@ export const SearchMLObjectDefinition = [
 
 export const AddElementList = [
     {
-        type: "numeric",
+        type: "text",
         name: "txtAttributeCategoryID",
         label: "Mã danh mục thuộc tính",
+        labelError: "mã danh mục thuộc tính",
         value: "",
         maxSize: "10",
         placeholder: "",
@@ -100,7 +101,122 @@ export const AddElementList = [
     {
         type: "select",
         name: "comboParentID",
-        label: "Danh mục cha:",
+        label: "Danh mục cha",
+        value: -1,
+        labelError: "Vui lòng chọn danh mục cha",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "ParentID",
+        readonly: false,
+        IsAutoLoadItemFromCache: false,
+        validatonList: [],
+        isCategory:true
+        // LoadItemCacheKeyID: "PIMCACHE.ATTRIBUTECATEGORY",
+        // ValueMember: "AttributeCategoryID",
+        // NameMember: "AttributeCategoryName"
+    },
+    {
+        type: "text",
+        name: "txtAttributeCategoryName",
+        label: "Tên danh mục thuộc tính",
+        labelError: "tên danh mục thuộc tính",
+        value: "",
+        maxSize: "200",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "AttributeCategoryName",
+        readonly: false,
+        validatonList: ["required"]
+    },
+    {
+        type: "select",
+        name: "comboAttributeCategoryTypeID",
+        label: "loại danh mục thuộc tính",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "AttributeCategoryTypeID",
+        readonly: false,
+        validatonList: ["required", "number"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "PIMCACHE.PIMATTRIBUTECATEGORYTYPE",
+        ValueMember: "AttributeCategoryTypeID",
+        NameMember: "AttributeCategoryTypeName"
+    },
+    {
+        type: "textarea",
+        name: "txtDescription",
+        label: "Mô tả",
+        value: "",
+        maxSize: "2000",
+        placeholder: "",
+        icon: "",
+        rows: "6",
+        listoption: {},
+        DataSourceMember: "Description",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "text",
+        name: "txtOrderIndex",
+        label: "Thứ tự hiển thị",
+        value: "",
+        maxSize: "10",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "OrderIndex",
+        readonly: false,
+        validatonList: ["number"],
+    },
+    {
+        type: "checkbox",
+        name: "chkIsActived",
+        label: "Kích hoạt",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "IsActived",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "checkbox",
+        name: "chkIsSystem",
+        label: "Hệ thống",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "IsSystem",
+        readonly: false,
+        validatonList: []
+    }
+];
+
+export const EditElementList = [
+    {
+        type: "text",
+        name: "txtAttributeCategoryID",
+        label: "Mã danh mục thuộc tính",
+        value: "",
+        maxSize: "10",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "AttributeCategoryID",
+        readonly: true,
+        validatonList: ["required", "number"]
+    },
+    {
+        type: "select",
+        name: "comboParentID",
+        label: "Danh mục cha",
         value: "",
         placeholder: "",
         icon: "",
@@ -108,10 +224,8 @@ export const AddElementList = [
         DataSourceMember: "ParentID",
         readonly: false,
         IsAutoLoadItemFromCache: false,
-        validatonList: ["required", "number"]
-        // LoadItemCacheKeyID: "PIMCACHE.ATTRIBUTECATEGORY",
-        // ValueMember: "AttributeCategoryID",
-        // NameMember: "AttributeCategoryName"
+        validatonList: ["required", "number"],
+        isCategory:true
     },
     {
         type: "text",
@@ -129,7 +243,7 @@ export const AddElementList = [
     {
         type: "select",
         name: "comboAttributeCategoryTypeID",
-        label: "Loại danh mục thuộc tính:",
+        label: "Mã loại danh mục thuộc tính",
         value: "",
         placeholder: "",
         icon: "",
@@ -145,7 +259,7 @@ export const AddElementList = [
     {
         type: "textarea",
         name: "txtDescription",
-        label: "Mô tả:",
+        label: "Mô tả",
         value: "",
         maxSize: "2000",
         placeholder: "",
@@ -155,120 +269,11 @@ export const AddElementList = [
         DataSourceMember: "Description",
         readonly: false,
         validatonList: []
-    },
-    {
-        type: "numeric",
-        name: "txtOrderIndex",
-        label: "Thứ tự hiển thị:",
-        value: "",
-        maxSize: "10",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "OrderIndex",
-        readonly: false,
-        validatonList: []
-    },
-    {
-        type: "checkbox",
-        name: "chkIsActived",
-        label: "Kích hoạt:",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "IsActived",
-        readonly: false,
-        validatonList: []
-    },
-    {
-        type: "checkbox",
-        name: "chkIsSystem",
-        label: "Hệ thống:",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "IsSystem",
-        readonly: false,
-        validatonList: []
-    }
-];
-
-export const EditElementList = [
-    {
-        type: "numeric",
-        name: "txtAttributeCategoryID",
-        label: "Mã danh mục thuộc tính:",
-        value: "",
-        maxSize: "10",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "AttributeCategoryID",
-        readonly: true,
-        validatonList: ["required", "number"]
-    },
-    {
-        type: "select",
-        name: "comboParentID",
-        label: "Danh mục cha:",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "ParentID",
-        readonly: false,
-        IsAutoLoadItemFromCache: false,
-        validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtAttributeCategoryName",
-        label: "Tên danh mục thuộc tính:",
-        value: "",
-        maxSize: "200",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "AttributeCategoryName",
-        readonly: false,
-        validatonList: ["required"]
-    },
-    {
-        type: "select",
-        name: "comboAttributeCategoryTypeID",
-        label: "Mã loại danh mục thuộc tính:",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "AttributeCategoryTypeID",
-        readonly: false,
-        validatonList: ["required", "number"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "PIMCACHE.PIMATTRIBUTECATEGORYTYPE",
-        ValueMember: "AttributeCategoryTypeID",
-        NameMember: "AttributeCategoryTypeName"
-    },
-    {
-        type: "textarea",
-        name: "txtDescription",
-        label: "Mô tả:",
-        value: "",
-        maxSize: "2000",
-        placeholder: "",
-        icon: "",
-        rows: "6",
-        listoption: {},
-        DataSourceMember: "Description",
-        readonly: false,
-        validatonList: []
-    },
-    {
-        type: "numeric",
         name: "txtOrderIndex",
-        label: "Thứ tự hiển thị:",
+        label: "Thứ tự hiển thị",
         value: "",
         maxSize: "10",
         placeholder: "",
@@ -276,12 +281,12 @@ export const EditElementList = [
         listoption: {},
         DataSourceMember: "OrderIndex",
         readonly: false,
-        validatonList: []
+        validatonList: ["number"],
     },
     {
         type: "checkbox",
         name: "chkIsActived",
-        label: "Kích hoạt:",
+        label: "Kích hoạt",
         value: "",
         placeholder: "",
         icon: "",
@@ -293,7 +298,7 @@ export const EditElementList = [
     {
         type: "checkbox",
         name: "chkIsSystem",
-        label: "Hệ thống:",
+        label: "Hệ thống",
         value: "",
         placeholder: "",
         icon: "",

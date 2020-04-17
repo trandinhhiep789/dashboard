@@ -46,7 +46,7 @@ export const SearchMLObjectDefinition = [
 export const AddModalColumnList = [
     {
         Name: "PieRequestTypeID",
-        type: "numeric",
+        type: "text",
         label: "Mã loại yêu cầu",
         maxSize: "10",
         DataSourceMember: "PieRequestTypeID",
@@ -93,7 +93,7 @@ export const AddModalColumnList = [
         validatonList: []
     },
     {
-        type: "numeric",
+        type: "text",
         Name: "OrderIndex",
         label: "Thứ tự hiển thị:",
         value: 0,
@@ -103,7 +103,7 @@ export const AddModalColumnList = [
         listoption: {},
         DataSourceMember: "OrderIndex",
         readonly: false,
-        validatonList: []
+        validatonList: ["number"],
     },
     {
         Name: "IsActived",

@@ -7,9 +7,8 @@ import { APIHostName, BackLink } from '../constants';
 import Stepper from 'react-stepper-horizontal';
 import ModelContainer from "../../../../../common/components/Modal/ModelContainer";
 import { formatDate } from "../../../../../common/library/CommonLib.js";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
 import { checkPermission } from '../../../../../actions/permissionAction';
+import { showToastAlert } from '../../../../../common/library/ultils'
 
 class PieRequestAction extends React.Component {
     constructor(props) {
@@ -18,8 +17,6 @@ class PieRequestAction extends React.Component {
         this._handleUpdateNextPieRequestStep = this._handleUpdateNextPieRequestStep.bind(this);
         this.handleSubmitStep = this.handleSubmitStep.bind(this);
         this.handleSubmitViewStep = this.handleSubmitViewStep.bind(this);
-        this.addNotification = this.addNotification.bind(this);
-        this.notification = this.notification.bind(this);
         this.state = {
             PieRequestType_WF_Next: [],
             lstPieRequest_WorkFlow: [],
@@ -29,13 +26,10 @@ class PieRequestAction extends React.Component {
             Permission: {},
             Steps: [],
             ActiveStep: -1,
-            cssNotification: "",
-            iconNotification: "",
             validationErrorMessage: null
         }
         this._loadPieRequestTypeWF(this.props.PieRequestTypeID, this.props.PieRequestID);
         this.loadPieRequestWFNext(this.props.CurrentPieRequestStepID);
-        this.notificationDOMRef = React.createRef();
     }
     componentWillReceiveProps(nextProps) {
         // console.log("componentWillReceiveProps", nextProps.CurrentPieRequestStepID,nextProps,this.state.CurrentPieRequestStepID);
@@ -97,11 +91,7 @@ class PieRequestAction extends React.Component {
             if (parseInt(this.state.intPieRequestStepID) > 0) {
                 this._handleUpdateNextPieRequestStep(parseInt(this.state.intPieRequestStepID));
             }
-
         }
-
-        // ModalManager.close();
-        // this.addNotification("thah cong",false);
     }
     _handleUpdateNextPieRequestStep(intNextPieRequestStepID) {
         //     console.log("_handleUpdateNextPieRequestStep", intNextPieRequestStepID);
@@ -117,13 +107,9 @@ class PieRequestAction extends React.Component {
                 if (!apiResult.IsError) {
                     this.setState({ IsCallAPIError: apiResult.IsError });
                     ModalManager.close();
-                    this.addNotification(apiResult.Message, apiResult.IsError);
                     this._reloadAfterUpdateNextStep(intNextPieRequestStepID);
                 }
-                else {
-                    this.addNotification(apiResult.Message, apiResult.IsError);
-                }
-
+                showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
             });
         }
     }
@@ -280,52 +266,6 @@ class PieRequestAction extends React.Component {
         );
     }
 
-    // Notification
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            })
-        }
-        else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            })
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close"><span>×</span></div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 3000 },
-            dismissable: { click: true }
-        });
-    }
-    notification() {
-        this.notificationDOMRef.current.addNotification({
-            title: "Awesomeness",
-            message: "Awesome Notifications!",
-            type: "danger",
-            insert: "top",
-            container: "top-right",
-            animationIn: ["animated", "fadeIn"],
-            animationOut: ["animated", "fadeOut"]
-        });
-    }
-    //End Notification
-
-
     handleonClickStep(id) {
         // console.log("handleonClickStep", id)
         this.loadPieRequestWFNext(this.state.CurrentPieRequestStepID);
@@ -341,7 +281,6 @@ class PieRequestAction extends React.Component {
     render() {
         return (
             <div>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <div className='col-md-12'>
                     <div className="card">
                         <div className='row'>

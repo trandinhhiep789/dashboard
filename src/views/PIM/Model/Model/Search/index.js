@@ -23,12 +23,10 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-
 import { showModal } from "../../../../../actions/modal";
 import { MODAL_TYPE_CONFIRMATION } from "../../../../../constants/actionTypes";
 import { GetMLObjectData } from "../../../../../common/library/form/FormLib";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
+import { showToastAlert } from '../../../../../common/library/ultils'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -37,7 +35,6 @@ class SearchCom extends React.Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleInputGridInsert = this.handleInputGridInsert.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.addNotification = this.addNotification.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -45,7 +42,6 @@ class SearchCom extends React.Component {
             SearchData: InitSearchParams
         };
         this.gridref = React.createRef();
-        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
@@ -75,7 +71,7 @@ class SearchCom extends React.Component {
         });
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
                 this.handleDeleteInsertLog();
@@ -96,7 +92,7 @@ class SearchCom extends React.Component {
             title: "Thêm mới Model",
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
-                    let MLObject = GetMLObjectData(MLObjectDefinition,formData,dataSource);
+                    let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
                     if (MLObject) {
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
@@ -106,7 +102,7 @@ class SearchCom extends React.Component {
                                 this.handleSubmitInsertLog(MLObject);
                             }
                             this.setState({ IsCallAPIError: apiResult.IsError });
-                            this.addNotification(apiResult.Message, apiResult.IsError);
+                            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                         });
                     }
                 }
@@ -122,39 +118,6 @@ class SearchCom extends React.Component {
         }];
         this.setState({ SearchData: postData });
         this.callSearchData(postData);
-    }
-
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
-        } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close">
-                            <span>×</span>
-                        </div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
     }
 
     callSearchData(searchData) {
@@ -191,7 +154,6 @@ class SearchCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
                     FormName="Model"
                     MLObjectDefinition={SearchMLObjectDefinition}

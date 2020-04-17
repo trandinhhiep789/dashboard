@@ -19,13 +19,11 @@ import {
     AddLogAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { CATEGORYTYPE_VIEW, CATEGORYTYPE_DELETE } from "../../../../../constants/functionLists";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../../actions/cacheAction";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { PIMCACHE_CATEGORYTYPE } from "../../../../../constants/keyCache";
+import { showToastAlert } from '../../../../../common/library/ultils'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -33,46 +31,19 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.addNotification = this.addNotification.bind(this);
-        this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
-        this.handleGetCache = this.handleGetCache.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
-            cssNotification: "",
-            iconNotification: ""
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
-        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
         this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
-    }
-
-    handleClearLocalCache() {
-        const CacheKeyID = "PIMCACHE.CATEGORYTYPE";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(CacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: CacheKeyID,
-                UserName: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                console.log("apiResult cache", apiResult);
-            });
-        });
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.CATEGORYTYPE").then((result) => {
-            console.log("handleGetCache: ", result);
-        });
     }
 
     handleSubmitInsertLog() {
@@ -89,17 +60,16 @@ class SearchCom extends React.Component {
         let listMLObject = [];
         deleteList.map((row, index) => {
             let MLObject = {};
-            pkColumnName.map((pkItem, pkIndex) => {MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;});
+            pkColumnName.map((pkItem, pkIndex) => { MLObject[pkItem.key] = row.pkColumnName[pkIndex].value; });
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
-            if(!apiResult.IsError){
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
+            if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                this.handleClearLocalCache();
-                this.handleGetCache();
+                this.props.callClearLocalCache(PIMCACHE_CATEGORYTYPE)
                 this.handleSubmitInsertLog();
             }
         });
@@ -118,13 +88,13 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-                if (!apiResult.IsError) {
-                    this.setState({
-                        gridDataSource: apiResult.ResultObject,
-                        IsCallAPIError: apiResult.IsError
-                    });
-                }
-            });
+            if (!apiResult.IsError) {
+                this.setState({
+                    gridDataSource: apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError
+                });
+            }
+        });
     }
 
     handleCloseMessage() {
@@ -144,43 +114,9 @@ class SearchCom extends React.Component {
         );
     }
 
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
-        } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close">
-                            <span>×</span>
-                        </div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
     render() {
         return (
             <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
                     FormName="Danh mục sản phẩm"
                     MLObjectDefinition={SearchMLObjectDefinition}
@@ -198,12 +134,11 @@ class SearchCom extends React.Component {
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
                         IsAutoPaging={true}
-                        RowsPerPage={20}
+                        RowsPerPage={10}
                         RequirePermission={CATEGORYTYPE_VIEW}
                         DeletePermission={CATEGORYTYPE_DELETE}
                     />
                 </div>
-                <div>{this.state.CallAPIMessage}</div>
             </React.Fragment>
         );
     }
@@ -226,9 +161,12 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
     };
 };
 
-const Search = connect(mapStateToProps, mapDispatchToProps)(SearchCom); 
+const Search = connect(mapStateToProps, mapDispatchToProps)(SearchCom);
 export default Search;

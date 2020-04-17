@@ -152,7 +152,7 @@ export const AddElementList = [
         NameMember: "QuantityUnitName"
     },
     {
-        type: "numeric",
+        type: "text",
         Name: "txtVAT",
         label: "VAT(%)",
         value: "",
@@ -176,7 +176,7 @@ export const AddElementList = [
         validatonList: []
     },
     {
-        type: "numeric",
+        type: "text",
         Name: "txtPOVAT",
         label: "VAT mua(%)",
         value: "",
@@ -315,7 +315,7 @@ export const EditElementList = [
         NameMember: "QuantityUnitName"
     },
     {
-        type: "numeric",
+        type: "text",
         Name: "txtVAT",
         label: "VAT(%)",
         value: "",
@@ -340,7 +340,7 @@ export const EditElementList = [
         validatonList: []
     },
     {
-        type: "numeric",
+        type: "text",
         Name: "txtPOVAT",
         label: "VAT mua(%)",
         value: "",
@@ -1011,7 +1011,7 @@ export const AddModelUnitColumnList = [
     },
     {
         Name: "ExchangeQuantity",
-        type: "numeric",
+        type: "text",
         value: 0,
         maxSize: "10",
         label: "SL quy đổi",
@@ -1063,7 +1063,7 @@ export const ModifyModalColumnList = [
     },
     {
         Name: "ExchangeQuantity",
-        type: "numeric",
+        type: "text",
         label: "SL quy đổi",
         maxSize: "10",
         DataSourceMember: "ExchangeQuantity",

@@ -20,8 +20,7 @@ import {
     InputProductAlbumColumnList,
     AddElementList, MLObjectDefinition
 } from "./constants";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
+import { showToastAlert } from '../../../../common/library/ultils'
 
 class AlbumCom extends React.Component {
     constructor(props) {
@@ -31,9 +30,7 @@ class AlbumCom extends React.Component {
         this.handleInputGridEdit = this.handleInputGridEdit.bind(this);
         this.handleAttrInsert = this.handleAttrInsert.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.addNotification = this.addNotification.bind(this);
         this.searchref = React.createRef();
-        this.notificationDOMRef = React.createRef();
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -44,7 +41,7 @@ class AlbumCom extends React.Component {
             PieRequest_Product_Album: {},
             LstPieRequest_Product_Album: [],
             Isedit: false,
-            DataSourcePieRequest:[]
+            DataSourcePieRequest: []
         };
     }
 
@@ -95,36 +92,6 @@ class AlbumCom extends React.Component {
         );
     }
 
-    addNotification(message1, IsError) {
-        let cssNotification = "";
-        let iconNotification = "";
-        if (!IsError) {
-            cssNotification = "notification-custom-success";
-            iconNotification = "fa fa-check";
-        }
-        else {
-            cssNotification = "notification-danger";
-            iconNotification = "fa fa-exclamation";
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close"><span>×</span></div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
     handleCloseMessage() {
         if (!this.state.IsCallAPIError)
             this.setState({ IsCloseForm: true });
@@ -161,7 +128,7 @@ class AlbumCom extends React.Component {
             this.props.callFetchAPI(APIHostName, UpdateAPIPath, this.state.PieRequest_Product_Album).then((apiResult) => {
                 if (!apiResult.IsError) {
                     this.setState({ IsCallAPIError: apiResult.IsError });
-                    this.addNotification(apiResult.Message, apiResult.IsError);
+                    showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                     ModalManager.close();
                     this.callSearchData(this.state.SearchData);
                 }
@@ -171,7 +138,7 @@ class AlbumCom extends React.Component {
             this.props.callFetchAPI(APIHostName, AddAPIPath, this.state.PieRequest_Product_Album).then((apiResult) => {
                 if (!apiResult.IsError) {
                     this.setState({ IsCallAPIError: apiResult.IsError });
-                    this.addNotification(apiResult.Message, apiResult.IsError);
+                    showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                     ModalManager.close();
                     this.callSearchData(this.state.SearchData);
                 }
@@ -273,7 +240,7 @@ class AlbumCom extends React.Component {
     handleSubmit(formData, MLObject) {
 
     }
-    
+
     handleDelete(deleteList) {
         let listProductAlbum = [];
         deleteList.map((selectItem) => {
@@ -300,7 +267,7 @@ class AlbumCom extends React.Component {
                 this.callSearchData(this.state.SearchData);
             }
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
         }
         );
     }
@@ -308,7 +275,6 @@ class AlbumCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <div className="col-md-9 col-lg-10">
                     <div className="card">
                         <header className="card-header">
@@ -329,8 +295,8 @@ class AlbumCom extends React.Component {
                                 onDeleteClick_Customize={this.handleDelete}
                                 MLObjectDefinition={GridMLObjectAlbumDefinition}
                                 colspan="12"
-                                IsAdd={ this.CheckPermissionUser(16)}
-                                IsDelete={ this.CheckPermissionUser(16) }
+                                IsAdd={this.CheckPermissionUser(16)}
+                                IsDelete={this.CheckPermissionUser(16)}
                             />
                         </div>
                     </div>

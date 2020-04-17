@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import { ModalManager } from "react-dynamic-modal";
 import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
@@ -17,17 +17,15 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { PRODUCT_IMAGETYPE_UPDATE } from "../../../../../constants/functionLists.js";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { PIMCACHE_PRODUCTIMAGETYPE } from "../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
-        this.handleGetCache = this.handleGetCache.bind(this);
+
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -38,46 +36,19 @@ class EditCom extends React.Component {
         this.searchref = React.createRef();
     }
 
-    handleClearLocalCache() {
-        const CacheKeyID = "PIMCACHE.PRODUCTIMAGETYPE";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(CacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: CacheKeyID,
-                UserName: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                //console.log("apiResult cache", apiResult);
-                this.handleGetCache();
-            });
-        });
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.PRODUCTIMAGETYPE").then((result) => {
-            //console.log("handleGetCache: ", result);
-        });
-    }
-
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
         const id = this.props.match.params.id;
-        this.props
-            .callFetchAPI(APIHostName, LoadAPIPath, id)
-            .then(apiResult => {
-                if (apiResult.IsError) {
-                    this.setState({
-                        IsCallAPIError: apiResult.IsError
-                    });
-                    this.showMessage(apiResult.Message);
-                } else {
-                    this.setState({ DataSource: apiResult.ResultObject });
-                }
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
+            if (apiResult.IsError) {
                 this.setState({
-                    IsLoadDataComplete: true
+                    IsCallAPIError: !apiResult.IsError
                 });
-            });
+                this.showMessage(apiResult.Message);
+            } else {
+                this.setState({ DataSource: apiResult.ResultObject, IsLoadDataComplete: true });
+            }
+        });
     }
 
     handleSubmitInsertLog(MLObject) {
@@ -92,14 +63,14 @@ class EditCom extends React.Component {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                this.showMessage(apiResult.Message);
-                if(!apiResult.IsError){
-                    this.handleClearLocalCache();
-                    this.handleSubmitInsertLog(MLObject);
-                }
-               
-            });
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(PIMCACHE_PRODUCTIMAGETYPE)
+                this.handleSubmitInsertLog(MLObject);
+            }
+
+        });
     }
 
     handleCloseMessage() {
@@ -161,6 +132,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
     };
 };

@@ -66,7 +66,7 @@ export const SearchElementList = [
     {
         type: "groupTextAndSelect",
         name: "txtKeyword",
-        label: "",
+        label: "Từ khóa",
         value: "",
         placeholder: "Từ khóa",
         icon: "",
@@ -114,7 +114,7 @@ export const SearchElementList = [
     {
         type: "date",
         name: "dtFromDate",
-        label: "Từ ngày:",
+        label: "Từ ngày",
         value: dtFromdate,
         placeholder: "",
         icon: "",
@@ -125,7 +125,7 @@ export const SearchElementList = [
     {
         type: "date",
         name: "dtToDate",
-        label: "Đến ngày:",
+        label: "Đến ngày",
         value: new Date(),
         placeholder: "",
         icon: "",
@@ -139,7 +139,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtPieRequestID",
-        label: "Mã yêu cầu:",
+        label: "Mã yêu cầu",
         value: "",
         placeholder: "Mã tự động",
         icon: "",
@@ -150,7 +150,7 @@ export const AddElementList = [
     {
         type: "datetime",
         name: "txtRequestDate",
-        label: "Ngày yêu cầu:",
+        label: "Ngày yêu cầu",
         value: "",
         placeholder: "",
         icon: "",
@@ -161,7 +161,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtPieRequestName",
-        label: "Tiêu đề:",
+        label: "Tiêu đề",
         value: "",
         placeholder: "",
         icon: "",
@@ -174,7 +174,7 @@ export const AddElementList = [
     {
         type: "select",
         name: "txtPieRequestTypeID",
-        label: "Loại yêu cầu:",
+        label: "Loại yêu cầu",
         value: "",
         placeholder: "",
         icon: "",
@@ -191,7 +191,7 @@ export const AddElementList = [
     {
         type: "textarea",
         name: "txtDescription",
-        label: "Mô tả:",
+        label: "Mô tả",
         value: "",
         placeholder: "",
         icon: "",
@@ -206,7 +206,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtPieRequestID",
-        label: "Mã Yêu cầu:",
+        label: "Mã Yêu cầu",
         value: "",
         placeholder: "",
         icon: "",
@@ -219,7 +219,7 @@ export const EditElementList = [
     {
         type: "datetime",
         name: "txtRequestDate",
-        label: "Ngày yêu cầu:",
+        label: "Ngày yêu cầu",
         value: "",
         placeholder: "",
         icon: "",
@@ -230,7 +230,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtPieRequestName",
-        label: "Tiêu đề:",
+        label: "Tiêu đề",
         value: "",
         placeholder: "",
         icon: "",
@@ -243,7 +243,7 @@ export const EditElementList = [
     {
         type: "select",
         name: "txtPieRequestTypeID",
-        label: "Loại yêu cầu:",
+        label: "Loại yêu cầu",
         value: "",
         placeholder: "",
         icon: "",
@@ -260,7 +260,7 @@ export const EditElementList = [
     {
         type: "textarea",
         name: "txtDescription",
-        label: "Mô tả:",
+        label: "Mô tả",
         value: "",
         placeholder: "",
         icon: "",
@@ -489,7 +489,7 @@ export const SearchElementListPro = [
     {
         type: "text",
         name: "txtKeyword",
-        label: "Từ khóa:",
+        label: "Từ khóa",
         value: "",
         placeholder: "",
         icon: "",

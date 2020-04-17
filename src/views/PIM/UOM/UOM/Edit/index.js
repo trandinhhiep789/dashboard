@@ -44,19 +44,16 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
             if (apiResult.IsError) {
                 this.setState({
-                    IsCallAPIError: apiResult.IsError
+                    IsCallAPIError: !apiResult.IsError
                 });
                 this.showMessage(apiResult.Message);
             } else {
                 if (apiResult.ResultObject) {
                     const ResultLanguage = Object.assign([], this.state.ResultLanguage, apiResult.ResultObject.ResultLanguage);
                     const DataSource = Object.assign([], this.state.DataSource, apiResult.ResultObject);
-                    this.setState({ DataSource, ResultLanguage });
+                    this.setState({ DataSource, ResultLanguage, IsLoadDataComplete: true });
                 }
             }
-            this.setState({
-                IsLoadDataComplete: true
-            });
         });
     }
 
@@ -93,7 +90,7 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-            if(!apiResult.IsError){
+            if (!apiResult.IsError) {
                 this.handleSubmitInsertLog(MLObject);
             }
         });

@@ -11,8 +11,7 @@ import {
 import { PRODUCT_VIEW, PRODUCT_DELETE } from "../../../../../constants/functionLists";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
+import { showToastAlert } from '../../../../../common/library/ultils'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -20,11 +19,9 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.addNotification = this.addNotification.bind(this);
         this.state = { CallAPIMessage: "", gridDataSource: [], IsCallAPIError: false, SearchData: InitSearchParams };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
-        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
@@ -56,7 +53,7 @@ class SearchCom extends React.Component {
         console.log("listMLObject", listMLObject, deleteList, PKColumnName, this.state.gridDataSource)
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then((apiResult) => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
                 this.handleSubmitInsertLog();
@@ -104,42 +101,9 @@ class SearchCom extends React.Component {
         />);
     }
 
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            })
-        }
-        else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            })
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close"><span>×</span></div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
     render() {
         return (
             <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm FormName="Danh sách  sản phẩm"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}

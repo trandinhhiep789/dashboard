@@ -16,17 +16,14 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { PIMCACHE_CATEGORYTYPE } from "../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
-        this.handleGetCache = this.handleGetCache.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -41,12 +38,11 @@ class EditCom extends React.Component {
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
             if (apiResult.IsError) {
-                this.setState({ IsCallAPIError: apiResult.IsError });
+                this.setState({ IsCallAPIError: !apiResult.IsError });
                 this.showMessage(apiResult.Message);
             } else {
-                this.setState({ DataSource: apiResult.ResultObject });
+                this.setState({ DataSource: apiResult.ResultObject, IsLoadDataComplete: true });
             }
-            this.setState({ IsLoadDataComplete: true });
         });
         this.props.updatePagePath(EditPagePath);
     }
@@ -65,9 +61,8 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-            if(!apiResult.IsError){
-                this.handleClearLocalCache();
-                this.handleGetCache();
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(PIMCACHE_CATEGORYTYPE)
                 this.handleSubmitInsertLog(MLObject);
             }
         });
@@ -86,28 +81,6 @@ class EditCom extends React.Component {
                 onCloseModal={this.handleCloseMessage}
             />
         );
-    }
-
-    handleClearLocalCache() {
-        const CacheKeyID = "PIMCACHE.CATEGORYTYPE";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(CacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: CacheKeyID,
-                UserName: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                console.log("apiResult cache", apiResult);
-                this.handleGetCache();
-            });
-        });
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.CATEGORYTYPE").then((result) => {
-            console.log("handleGetCache: ", result);
-        });
     }
 
     render() {
@@ -149,6 +122,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
     };
 };

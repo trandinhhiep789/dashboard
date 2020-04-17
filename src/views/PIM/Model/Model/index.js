@@ -1,14 +1,13 @@
 import React from "react";
 import {
-    BrowserRouter as Router,
     Route,
-    Link,
-    Redirect
+    Switch
 } from "react-router-dom";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Edit from "./Edit";
+import NotFound from '../../../NotFound'
 class ModelCom extends React.Component {
     constructor(props) {
         super(props);
@@ -17,8 +16,11 @@ class ModelCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Route exact path="/Model" component={Search} />
-                <Route path="/Model/Edit/:id" component={Edit} />
+                <Switch>
+                    <Route exact path="/Model" component={Search} />
+                    <Route exact path="/Model/Edit/:id" component={Edit} />
+                    <Route path="*" component={NotFound} />
+                </Switch>
             </React.Fragment>
         );
     }

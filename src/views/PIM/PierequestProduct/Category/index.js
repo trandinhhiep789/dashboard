@@ -14,16 +14,13 @@ import {
     PagePath
 } from "./constants";
 import InputGridCell from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid/InputGridCell";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
-
+import { showToastAlert } from '../../../../common/library/ultils'
 class CategoryCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onInputChange = this.onInputChange.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.addNotification = this.addNotification.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -37,13 +34,10 @@ class CategoryCom extends React.Component {
             IsCloseForm: false,
             SearchData: InitSearchParams,
             cacheCategoryType: [],
-            cssNotification: "",
-            iconNotification: "",
             DataSourcePieRequest: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
-        this.notificationDOMRef = React.createRef();
     }
 
     handleCloseMessage() {
@@ -61,7 +55,7 @@ class CategoryCom extends React.Component {
 
     componentDidMount() {
         this.GetAllCategoryType();
-       // this.getCacheCategory();
+        // this.getCacheCategory();
         this._getPieRequestDateByID();
         this.props.updatePagePath(PagePath);
 
@@ -219,47 +213,14 @@ class CategoryCom extends React.Component {
                     IsCallAPIError: apiResult.IsError
                 });
             }
-            this.addNotification(apiResult.Message, apiResult.IsError);
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
             this.GetAllCategoryType();
-        });
-    }
-
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            })
-        }
-        else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            })
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close"><span>×</span></div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
         });
     }
 
     render() {
         return (
             <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <div className="col-md-9 col-lg-10">
                     <div className="card">
                         <header className="card-header">
@@ -274,7 +235,7 @@ class CategoryCom extends React.Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
+
                                     {
                                         this.state.gridDataSource.map((data, index) => {
                                             if (data != null) {
@@ -293,14 +254,14 @@ class CategoryCom extends React.Component {
                                                             <InputGridCell type="comboboxCus"
                                                                 index={index}
                                                                 text={data.CategoryID}
-                                                                isCategory ={true}
+                                                                isCategory={true}
                                                                 CategoryTypeID={data.CategoryTypeID}
                                                                 // filterName="CategoryTypeID"
                                                                 // filterValue={data.CategoryTypeID}
                                                                 value={data.CategoryID}
                                                                 name={`CategoryID${index}`}
                                                                 onValueChangeCustom={this.onInputChange}
-                                                                IsAutoLoadItemFromCache= {true}
+                                                                IsAutoLoadItemFromCache={true}
                                                                 LoadItemCacheKeyID="PIMCACHE.CATEGORY"
                                                                 ValueMember="CategoryID"
                                                                 NameMember="CategoryName"

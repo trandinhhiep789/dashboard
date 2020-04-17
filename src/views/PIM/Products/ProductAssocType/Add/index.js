@@ -1,12 +1,9 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import { ModalManager } from "react-dynamic-modal";
 import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
-import FormControl from "../../../../../common/components/Form/AdvanceForm/FormControl";
 import InputGrid from "../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
-import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
@@ -24,9 +21,8 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { PRODUCT_ASSOC_TYPE_ADD } from "../../../../../constants/functionLists";
-import { callGetCache } from "../../../../../actions/cacheAction";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { PIMCACHE_PRODUCTASSOCTYPE } from "../../../../../constants/keyCache";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -49,10 +45,10 @@ class AddCom extends React.Component {
         this.searchref = React.createRef();
     }
 
-
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
     }
+
     showMessage(message) {
         ModalManager.open(
             <MessageModal
@@ -101,29 +97,6 @@ class AddCom extends React.Component {
         });
     }
 
-    handleClearLocalCache() {
-        const cacheKeyID = "PIMCACHE.PRODUCTASSOCTYPE";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(cacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: cacheKeyID,
-                UserName: this.props.AppInfo.LoginInfo.Username,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                //console.log("apiResult", apiResult)
-                this.handleGetCache();
-            });
-        }
-        );
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.PRODUCTASSOCTYPE").then((result) => {
-            console.log("handleGetCache: ", result);
-        });
-    }
-
     handleSubmitInsertLog(MLObject) {
         MLObject.ActivityTitle = `Thêm mới loại kết hợp sản phẩm: ${MLObject.ProductAssocTypeName}`;
         MLObject.ActivityDetail = `Thêm mới loại kết hợp sản phẩm: ${MLObject.ProductAssocTypeName} ${"\n"}Mô tả: ${MLObject.Description}`;
@@ -144,7 +117,7 @@ class AddCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
-                this.handleClearLocalCache();
+                this.props.callClearLocalCache(PIMCACHE_PRODUCTASSOCTYPE)
                 this.handleSubmitInsertLog(MLObject);
             }
 
@@ -200,6 +173,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: cacheKeyID => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
     };
 };

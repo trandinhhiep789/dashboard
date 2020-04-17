@@ -1,34 +1,30 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { connect } from 'react-redux';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import PieRequestAdd from "./Add";
 import Edit from "./Edit";
 import AddProduct from "../../PierequestProduct/PierequestProduct";
-// import EditProduct from "../../PierequestProduct/PierequestProduct/Edit";
 
+import NotFound from '../../../NotFound'
 class PieRequestCom extends React.Component {
     constructor(props) {
         super(props);
     }
 
-
     render() {
-
         return (
             <React.Fragment>
-
-                <Route exact path="/PieRequest" component={Search} />
-                <Route path="/PieRequest/Add" component={PieRequestAdd} />
-                <Route path="/PieRequest/Edit/:id" component={Edit} />
-                <Route path="/PierequestProduct/Add/:id" component={AddProduct} />
-                {/* <Route path="/PierequestProduct/Edit/:id" component={EditProduct} /> */}
-
+                <Switch>
+                    <Route exact path="/PieRequest" component={Search} />
+                    <Route exact path="/PieRequest/Add" component={PieRequestAdd} />
+                    <Route exact path="/PieRequest/Edit/:id" component={Edit} />
+                    <Route exact path="/PierequestProduct/Add/:id" component={AddProduct} />
+                    <Route path="*" component={NotFound} />
+                </Switch>
             </React.Fragment>
         );
-
-
     }
 }
 

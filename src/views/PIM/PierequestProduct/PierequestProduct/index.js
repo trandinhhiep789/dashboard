@@ -21,8 +21,6 @@ import Image from "../Image";
 import Video from "../Video";
 
 import { APIHostName, SearchPieRequestListAPIPath } from "./constants";
-
-
 class PieRequestProductCom extends React.Component {
     constructor(props) {
         super(props);

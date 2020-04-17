@@ -24,8 +24,7 @@ import {
     CONTENTTYPE_VIEW,
     CONTENTTYPE_DELETE
 } from "../../../../../constants/functionLists";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
+import { showToastAlert } from '../../../../../common/library/ultils'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -33,21 +32,16 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.addNotification = this.addNotification.bind(this);
-
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             SearchElementList: SearchElementList,
-            cssNotification: "",
-            iconNotification: "",
             IsLoading: true
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
-        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
@@ -76,8 +70,8 @@ class SearchCom extends React.Component {
         });
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
-            if(!apiResult.IsError){
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
+            if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
                 this.handleSubmitInsertLog();
             }
@@ -130,44 +124,9 @@ class SearchCom extends React.Component {
             />
         );
     }
-
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
-        } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close">
-                            <span>×</span>
-                        </div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
     render() {
         return (
             <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={this.state.SearchElementList}
@@ -187,7 +146,6 @@ class SearchCom extends React.Component {
                     RequirePermission={CONTENTTYPE_VIEW}
                     DeletePermission={CONTENTTYPE_DELETE}
                 />
-                <div>{this.state.CallAPIMessage}</div>
             </React.Fragment>
         );
     }

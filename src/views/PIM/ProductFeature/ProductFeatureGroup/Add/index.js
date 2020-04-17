@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import { ModalManager } from "react-dynamic-modal";
 import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
 import InputGrid from "../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
 import { MessageModal } from "../../../../../common/components/Modal";
@@ -20,9 +20,8 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { PRODUCT_FEATURE_GROUP_ADD } from "../../../../../constants/functionLists";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { PIMCACHE_PRODUCTFEATUREGROUP } from "../../../../../constants/keyCache";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -30,8 +29,7 @@ class AddCom extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.valueChangeInputGrid = this.valueChangeInputGrid.bind(this);
-        this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
-        this.handleGetCache = this.handleGetCache.bind(this);
+
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -94,31 +92,9 @@ class AddCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
-                this.handleClearLocalCache();
+                this.props.callClearLocalCache(PIMCACHE_PRODUCTFEATUREGROUP)
                 this.handleSubmitInsertLog(MLObject);
             }
-        });
-    }
-
-    handleClearLocalCache() {
-        const cacheKeyID = "PIMCACHE.PRODUCTFEATUREGROUP";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(cacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: cacheKeyID,
-                UserName: this.props.AppInfo.LoginInfo.Username,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                this.handleGetCache();
-            });
-        }
-        );
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.PRODUCTFEATUREGROUP").then((result) => {
-            console.log("handleGetCache: ", result);
         });
     }
 
@@ -185,6 +161,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: cacheKeyID => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
     };
 };

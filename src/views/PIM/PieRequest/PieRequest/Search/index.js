@@ -23,8 +23,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { formatDate } from "../../../../../common/library/CommonLib.js";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { Redirect, Router } from "react-router-dom";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
+import { showToastAlert } from '../../../../../common/library/ultils'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -34,16 +33,13 @@ class SearchCom extends React.Component {
         this.handleSearchEvent = this.handleSearchEvent.bind(this);
         this.openAddPieRequestPopup = this.openAddPieRequestPopup.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.addNotification = this.addNotification.bind(this);
         this.handleInputGridEdit = this.handleInputGridEdit.bind(this);
         this.state = {
             CallAPIMessage: "", gridDataSource: [], IsCallAPIError: false, SearchData: InitSearchParams, LstCachePieRequestType: [],
             SearchElementList: SearchElementList, PieRequest: {}, PieRequestID: -1, Isedit: false, IsNextPage: false, editorState: EditorState.createEmpty(),
-            cssNotification: "", iconNotification: ""
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
-        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
@@ -122,40 +118,6 @@ class SearchCom extends React.Component {
             onCloseModal={this.handleCloseMessage}
         />);
     }
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            })
-
-        }
-        else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            })
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close"><span>×</span></div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 4000 },
-            dismissable: { click: true }
-        });
-    }
-    //End modoe showMessage
-
     //Add and edit pieRquest
     openAddPieRequestPopup() {
         this.props.checkPermission(PIEREQUEST_ADD).then((apiResult) => {
@@ -308,9 +270,9 @@ class SearchCom extends React.Component {
                     this.handleSubmitInsertLog("Cập nhật yêu cầu chỉnh sủa thông tin sản phẩm");
                 }
                 else {
-                    this.addNotification(apiResult.Message, apiResult.IsError);
+                    showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                 }
-           });
+            });
         }
         else {
             this.props.callFetchAPI(APIHostName, AddAPIPath, this.state.PieRequest).then((apiResult) => {
@@ -321,7 +283,7 @@ class SearchCom extends React.Component {
                     this.handleSubmitInsertLog("Thêm yêu cầu chỉnh sủa thông tin sản phẩm");
                 }
                 else {
-                    this.addNotification(apiResult.Message, apiResult.IsError);
+                    showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                 }
             });
         }
@@ -348,7 +310,6 @@ class SearchCom extends React.Component {
                 onSubmit={this.handleSearchSubmit}
                 ref={this.searchref} />
             <div className='col-md-12'>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <DataGrid listColumn={DataGridColumnList}
                     dataSource={this.state.gridDataSource}
                     hasHeaderToolbar={true}
@@ -366,7 +327,6 @@ class SearchCom extends React.Component {
                     RowsPerPage={20}
                     onInsertClickEdit={this.handleInputGridEdit}
                 />
-                <div>{this.state.CallAPIMessage}</div>
             </div>
         </React.Fragment>
         );

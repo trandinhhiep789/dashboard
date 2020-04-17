@@ -39,15 +39,12 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
             if (apiResult.IsError) {
                 this.setState({
-                    IsCallAPIError: apiResult.IsError
+                    IsCallAPIError: !apiResult.IsError
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                this.setState({ DataSource: apiResult.ResultObject });
+                this.setState({ DataSource: apiResult.ResultObject, IsLoadDataComplete: true });
             }
-            this.setState({
-                IsLoadDataComplete: true
-            });
         });
     }
 
@@ -65,7 +62,7 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-            if(!apiResult.IsError){
+            if (!apiResult.IsError) {
                 this.handleSubmitInsertLog(MLObject);
             }
         });

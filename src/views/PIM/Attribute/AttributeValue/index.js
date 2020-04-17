@@ -1,15 +1,14 @@
 import React from "react";
 import {
-    BrowserRouter as Router,
     Route,
-    Link,
-    Redirect
+    Switch
 } from "react-router-dom";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
+import NotFound from '../../../NotFound'
 class AttributeValueCom extends React.Component {
     constructor(props) {
         super(props);
@@ -18,9 +17,12 @@ class AttributeValueCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Route exact path="/AttributeValue" component={Search} />
-                <Route path="/AttributeValue/Add" component={Add} />
-                <Route path="/AttributeValue/Edit/:id" component={Edit} />
+                <Switch>
+                    <Route exact path="/AttributeValue" component={Search} />
+                    <Route exact path="/AttributeValue/Add" component={Add} />
+                    <Route exact path="/AttributeValue/Edit/:id" component={Edit} />
+                    <Route path="*" component={NotFound} />
+                </Switch>
             </React.Fragment>
         );
     }

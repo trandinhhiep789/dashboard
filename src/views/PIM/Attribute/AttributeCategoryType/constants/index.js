@@ -36,7 +36,7 @@ export const SearchElementList = [
     {
         type: "text",
         name: "txtKeyword",
-        label: "Từ khóa:",
+        label: "Từ khóa",
         value: "",
         placeholder: "",
         icon: "",
@@ -46,7 +46,7 @@ export const SearchElementList = [
 
 export const AddElementList = [
     {
-        type: "numeric",
+        type: "text",
         name: "txtAttributeCategoryTypeID",
         label: "Mã loại danh mục thuộc tính",
         value: "",
@@ -74,7 +74,7 @@ export const AddElementList = [
     {
         type: "textarea",
         name: "txtDescription",
-        label: "Mô tả:",
+        label: "Mô tả",
         value: "",
         maxSize: "2000",
         placeholder: "",
@@ -86,9 +86,9 @@ export const AddElementList = [
         validatonList: []
     },
     {
-        type: "numeric",
+        type: "text",
         name: "txtOrderIndex",
-        label: "Thứ tự hiển thị:",
+        label: "Thứ tự hiển thị",
         value: "",
         maxSize: "10",
         placeholder: "",
@@ -96,12 +96,12 @@ export const AddElementList = [
         listoption: {},
         DataSourceMember: "OrderIndex",
         readonly: false,
-        validatonList: []
+        validatonList: ["number"],
     },
     {
         type: "checkbox",
         name: "chkIsActived",
-        label: "Kích hoạt:",
+        label: "Kích hoạt",
         value: 1,
         placeholder: "",
         icon: "",
@@ -112,7 +112,7 @@ export const AddElementList = [
     {
         type: "checkbox",
         name: "chkIsSystem",
-        label: "Hệ thống:",
+        label: "Hệ thống",
         value: "",
         placeholder: "",
         icon: "",
@@ -124,7 +124,7 @@ export const AddElementList = [
 
 export const EditElementList = [
     {
-        type: "numeric",
+        type: "text",
         name: "txtAttributeCategoryTypeID",
         label: "Mã loại danh mục thuộc tính",
         value: "",
@@ -152,7 +152,7 @@ export const EditElementList = [
     {
         type: "textarea",
         name: "txtDescription",
-        label: "Mô tả:",
+        label: "Mô tả",
         value: "",
         maxSize: "2000",
         placeholder: "",
@@ -164,9 +164,9 @@ export const EditElementList = [
         validatonList: []
     },
     {
-        type: "numeric",
+        type: "text",
         name: "txtOrderIndex",
-        label: "Thứ tự hiển thị:",
+        label: "Thứ tự hiển thị",
         value: "",
         maxSize: "10",
         placeholder: "",
@@ -174,12 +174,12 @@ export const EditElementList = [
         listoption: {},
         DataSourceMember: "OrderIndex",
         readonly: false,
-        validatonList: []
+        validatonList: ["number"],
     },
     {
         type: "checkbox",
         name: "chkIsActived",
-        label: "Kích hoạt:",
+        label: "Kích hoạt",
         value: "",
         placeholder: "",
         icon: "",
@@ -191,7 +191,7 @@ export const EditElementList = [
     {
         type: "checkbox",
         name: "chkIsSystem",
-        label: "Hệ thống:",
+        label: "Hệ thống",
         value: "",
         placeholder: "",
         icon: "",

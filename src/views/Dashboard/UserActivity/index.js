@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import DataGrid from "../../../common/components/DataGrid";
 import { APIHostName, SearchAPIPath, DataGridColumnList, PKColumnName } from './Constants';
-
+import { showToastAlert } from '../../../common/library/ultils'
 
 class UserActivityCom extends Component {
     constructor(props) {
@@ -24,8 +24,8 @@ class UserActivityCom extends Component {
                 this.setState({
                     gridDataSource: apiResult.ResultObject
                 })
+                showToastAlert('Lấy danh sách Thao tác gần đây thành công', 'success')
             }
-
         });
     }
 

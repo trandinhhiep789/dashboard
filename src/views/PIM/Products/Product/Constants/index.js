@@ -43,7 +43,7 @@ export const SearchElementList = [
     {
         type: "text",
         name: "txtKeyword",
-        label: "Từ khóa:",
+        label: "Từ khóa",
         value: "",
         placeholder: "",
         icon: "",
@@ -53,7 +53,7 @@ export const SearchElementList = [
     {
         type: "select",
         name: "slProductTypeID",
-        label: "Loại sản phẩm:",
+        label: "Loại sản phẩm",
         value: -1,
         placeholder: "",
         icon: "",
@@ -87,7 +87,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtProductImageTypeID",
-        label: "Mã loại ảnh sản phẩm:",
+        label: "Mã loại ảnh sản phẩm",
         value: "",
         placeholder: "",
         icon: "",
@@ -100,7 +100,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtProductImageTypeName",
-        label: "Tên loại ảnh sản phẩm:",
+        label: "Tên loại ảnh sản phẩm",
         value: "",
         placeholder: "",
         icon: "",
@@ -113,7 +113,7 @@ export const EditElementList = [
     {
         type: "textarea",
         name: "txtDescription",
-        label: "Mô tả:",
+        label: "Mô tả",
         value: "",
         placeholder: "",
         icon: "",
@@ -126,7 +126,7 @@ export const EditElementList = [
     {
         type: "checkbox",
         name: "chkIsActived",
-        label: "Kích hoạt:",
+        label: "Kích hoạt",
         value: "",
         placeholder: "",
         icon: "",
@@ -139,7 +139,7 @@ export const EditElementList = [
     {
         type: "checkbox",
         name: "chkIsSystem",
-        label: "Hệ thống:",
+        label: "Hệ thống",
         value: "",
         placeholder: "",
         icon: "",

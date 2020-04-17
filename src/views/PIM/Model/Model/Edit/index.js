@@ -51,8 +51,7 @@ import { callGetCache } from "../../../../../actions/cacheAction";
 
 import { showModal, hideModal } from "../../../../../actions/modal";
 import { MODAL_TYPE_CONFIRMATION, MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
+import { showToastAlert } from '../../../../../common/library/ultils'
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
@@ -69,7 +68,6 @@ class EditCom extends React.Component {
         this.closeVariant = this.closeVariant.bind(this);
         this.handleDeleteModelUnit = this.handleDeleteModelUnit.bind(this);
         this.handleDeleteModelVariant = this.handleDeleteModelVariant.bind(this);
-        this.addNotification = this.addNotification.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -90,28 +88,25 @@ class EditCom extends React.Component {
             IsShowSubmitButton: true,
             FocusTabName: "ResultModel"
         };
-        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
         const ModelID = this.props.match.params.id.trim();
+        this.setState({ ModelID });
         this.props.callFetchAPI(APIHostName, LoadAPIPath, ModelID).then(apiResult => {
             if (apiResult.IsError) {
                 this.setState({
-                    IsCallAPIError: apiResult.IsError
+                    IsCallAPIError: !apiResult.IsError
                 });
                 this.showMessage(apiResult.Message);
             } else {
                 this.setState({
                     ResultModel: apiResult.ResultObject,
-                    OldResultModel: apiResult.ResultObject
+                    OldResultModel: apiResult.ResultObject,
+                    IsLoadDataComplete: true
                 });
             }
-            this.setState({
-                IsLoadDataComplete: true,
-                ModelID
-            });
         });
         this.props.callGetCache("PIMCACHE.ATTRIBUTEVALUE").then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
@@ -136,7 +131,7 @@ class EditCom extends React.Component {
         if (resuleName == "ResultModel") {
             if (!this.state.ResultModel.HasChanged) {
                 // this.showMessage("Không thể thực hiện update dữ liệu khi chưa có sự thay đổi.");
-                this.addNotification("Không thể thực hiện update dữ liệu khi chưa có sự thay đổi.", true);
+                showToastAlert("Không thể thực hiện update dữ liệu khi chưa có sự thay đổi", 'error');
                 return false;
             }
             formData.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
@@ -144,7 +139,7 @@ class EditCom extends React.Component {
             formData = this.state[resuleName].filter(x => x.HasChanged == true);
             if (formData.length == 0) {
                 // this.showMessage("Không thể thực hiện update dữ liệu khi chưa có sự thay đổi.");
-                this.addNotification("Không thể thực hiện update dữ liệu khi chưa có sự thay đổi.", true);
+                showToastAlert("Không thể thực hiện update dữ liệu khi chưa có sự thay đổi", 'error');
                 return false;
             }
             formData.map(element => {
@@ -187,10 +182,10 @@ class EditCom extends React.Component {
                 if (!apiResult.IsError) {
                 }
                 this.setState({ IsCallAPIError: apiResult.IsError });
-                this.addNotification(apiResult.Message, apiResult.IsError);
+                showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
             });
         } else {
-            this.addNotification("Không tồn tại data chỉnh sửa.", true);
+            showToastAlert("Không tồn tại data chỉnh sửa", 'error');
             // this.showMessage("Không tồn tại data chỉnh sửa.");
         }
     }
@@ -290,7 +285,7 @@ class EditCom extends React.Component {
                             });
                         }
                         this.setState({ IsCallAPIError: apiResult.IsError });
-                        this.addNotification(apiResult.Message, apiResult.IsError);
+                        showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                     });
                 }
             },
@@ -341,7 +336,7 @@ class EditCom extends React.Component {
                             });
                         }
                         this.setState({ IsCallAPIError: apiResult.IsError });
-                        this.addNotification(apiResult.Message, apiResult.IsError);
+                        showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
                     });
                 }
             },
@@ -386,7 +381,7 @@ class EditCom extends React.Component {
     closeVariant(IsError, Message) {
         this.props.hideModal();
         this.setState({ IsCallAPIError: IsError });
-        this.addNotification(Message, IsError);
+        showToastAlert(Message, IsError ? 'error' : 'success');
         const searchParams = [
             {
                 SearchKey: "@MODELID",
@@ -518,7 +513,7 @@ class EditCom extends React.Component {
                 });
             }
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
         });
     }
 
@@ -563,40 +558,7 @@ class EditCom extends React.Component {
                 });
             }
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
-        });
-    }
-
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
-        } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close">
-                            <span>×</span>
-                        </div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
         });
     }
 
@@ -622,7 +584,6 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
-                    <ReactNotification ref={this.notificationDOMRef} />
                     <TabContainer
                         defaultActiveTabIndex={0}
                         controltype="TabContainer"

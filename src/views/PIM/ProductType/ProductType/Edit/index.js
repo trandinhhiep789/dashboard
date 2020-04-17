@@ -20,9 +20,8 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { PRODUCT_TYPE_UPDATE } from "../../../../../constants/functionLists";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { PIMCACHE_PRODUCTTYPE } from "../../../../../constants/keyCache";
 import ProductTypeAttibute from "../../ProductTypeAttibute/index";
 import ProductTypeImeiFormat from "../../ProductTypeImeiFormat/index";
 import ProductTypeInventoryStatus from "../../ProductTypeInventoryStatus/index";
@@ -33,8 +32,7 @@ class EditCom extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.valueChangeInputGrid = this.valueChangeInputGrid.bind(this);
-        this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
-        this.handleGetCache = this.handleGetCache.bind(this);
+
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -51,19 +49,16 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
             if (apiResult.IsError) {
                 this.setState({
-                    IsCallAPIError: apiResult.IsError
+                    IsCallAPIError: !apiResult.IsError
                 });
                 this.showMessage(apiResult.Message);
             } else {
                 if (apiResult.ResultObject) {
                     const ResultLanguage = Object.assign([], this.state.ResultLanguage, apiResult.ResultObject.ResultLanguage);
                     const DataSource = Object.assign([], this.state.DataSource, apiResult.ResultObject);
-                    this.setState({ DataSource, ResultLanguage });
+                    this.setState({ DataSource, ResultLanguage, IsLoadDataComplete: true });
                 }
             }
-            this.setState({
-                IsLoadDataComplete: true
-            });
         });
         this.props.updatePagePath(EditPagePath);
     }
@@ -72,29 +67,6 @@ class EditCom extends React.Component {
         const rowGridData = Object.assign({}, this.state.ResultLanguage[index], { [elementdata.Name]: elementdata.Value }, { HasChanged: true });
         const dataSource = Object.assign([], this.state.ResultLanguage, { [index]: rowGridData });
         this.setState({ ResultLanguage: dataSource });
-    }
-
-    handleClearLocalCache() {
-        const cacheKeyID = "PIMCACHE.PRODUCTTYPE";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(cacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: cacheKeyID,
-                UserName: this.props.AppInfo.LoginInfo.Username,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                //console.log("apiResult cache", apiResult);
-                this.handleGetCache();
-            });
-        }
-        );
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.PRODUCTTYPE").then((result) => {
-            //console.log("handleGetCache: ", result);
-        });
     }
 
     handleSubmitInsertLog(MLObject) {
@@ -114,13 +86,11 @@ class EditCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
-                this.handleClearLocalCache();
+                this.props.callClearLocalCache(PIMCACHE_PRODUCTTYPE)
                 this.handleSubmitInsertLog(MLObject);
             }
         });
     }
-
-
 
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
@@ -171,9 +141,9 @@ class EditCom extends React.Component {
                         />
                     </FormContainer>
                     <div className="Col-12 col-md-12 col-lg-12 product-detail">
-                        <ProductTypeAttibute ProductTypeID={ProductTypeID} isSystem={this.state.DataSource.IsSystem}/>
-                        <ProductTypeImeiFormat ProductTypeID={ProductTypeID} isSystem={this.state.DataSource.IsSystem}/>
-                        <ProductTypeInventoryStatus ProductTypeID={ProductTypeID} isSystem={this.state.DataSource.IsSystem}/>
+                        <ProductTypeAttibute ProductTypeID={ProductTypeID} isSystem={this.state.DataSource.IsSystem} />
+                        <ProductTypeImeiFormat ProductTypeID={ProductTypeID} isSystem={this.state.DataSource.IsSystem} />
+                        <ProductTypeInventoryStatus ProductTypeID={ProductTypeID} isSystem={this.state.DataSource.IsSystem} />
                     </div>
                 </React.Fragment>
             );
@@ -203,6 +173,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
     };
 };

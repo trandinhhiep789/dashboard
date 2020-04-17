@@ -20,9 +20,8 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { MANUFACTURER_UPDATE } from "../../../../../constants/functionLists";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { PIMCACHE_MANUFACTURER } from "../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -30,9 +29,8 @@ class EditCom extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.valueChangeInputGrid = this.valueChangeInputGrid.bind(this);
-        this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
-        this.handleGetCache = this.handleGetCache.bind(this);
+
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -50,19 +48,16 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
             if (apiResult.IsError) {
                 this.setState({
-                    IsCallAPIError: apiResult.IsError
+                    IsCallAPIError: !apiResult.IsError
                 });
                 this.showMessage(apiResult.Message);
             } else {
                 if (apiResult.ResultObject) {
                     const ResultLanguage = Object.assign([], this.state.ResultLanguage, apiResult.ResultObject.ResultLanguage);
                     const DataSource = Object.assign([], this.state.DataSource, apiResult.ResultObject);
-                    this.setState({ DataSource, ResultLanguage });
+                    this.setState({ DataSource, ResultLanguage, IsLoadDataComplete: true });
                 }
             }
-            this.setState({
-                IsLoadDataComplete: true
-            });
         });
         this.props.updatePagePath(EditPagePath);
     }
@@ -81,8 +76,8 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddLogAPIPath, MLObject);
     }
 
-     //file upload
-     handleSelectedFile(file, nameValue, isDeletetedFile) {
+    //file upload
+    handleSelectedFile(file, nameValue, isDeletetedFile) {
         const filelist = { [nameValue]: file };
         this.setState({ Files: filelist, IsDeletedFile: isDeletetedFile });
     }
@@ -107,10 +102,10 @@ class EditCom extends React.Component {
             }
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-            if(!apiResult.IsError){
-                this.handleClearLocalCache();
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(PIMCACHE_MANUFACTURER)
                 this.handleSubmitInsertLog(MLObject);
-            }     
+            }
         });
     }
 
@@ -127,28 +122,6 @@ class EditCom extends React.Component {
                 onCloseModal={this.handleCloseMessage}
             />
         );
-    }
-
-    handleClearLocalCache() {
-        const CacheKeyID = "PIMCACHE.MANUFACTURER";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(CacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: CacheKeyID,
-                UserName: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                console.log("apiResult cache", apiResult);
-                this.handleGetCache();
-            });
-        });
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.MANUFACTURER").then((result) => {
-            console.log("handleGetCache: ", result);
-        });
     }
 
     render() {
@@ -207,6 +180,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
     };
 };

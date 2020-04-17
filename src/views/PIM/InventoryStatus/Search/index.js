@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import { ModalManager } from "react-dynamic-modal";
 import SearchForm from "../../../../common/components/Form/SearchForm";
 import DataGrid from "../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../common/components/Modal";
@@ -24,11 +24,9 @@ import {
     INVENTORY_STATUS_VIEW,
     INVENTORY_STATUS_DELETE
 } from "../../../../constants/functionLists";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
-import indexedDBLib from "../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
+import { PIMCACHE_INVENTORYSTATUS } from "../../../../constants/keyCache";
+import { showToastAlert } from '../../../../common/library/ultils'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -36,43 +34,15 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.addNotification = this.addNotification.bind(this);
-        this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
-        this.handleGetCache = this.handleGetCache.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             SearchElementList: SearchElementList,
-            cssNotification: "",
-            iconNotification: ""
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
-        this.notificationDOMRef = React.createRef();
-    }
-
-    handleClearLocalCache() {
-        const CacheKeyID = "PIMCACHE.INVENTORYSTATUS";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(CacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: CacheKeyID,
-                UserName: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                console.log("apiResult cache", apiResult);
-                this.handleGetCache();
-            });
-        });
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.INVENTORYSTATUS").then((result) => {
-            console.log("handleGetCache: ", result);
-        });
     }
 
     componentDidMount() {
@@ -103,13 +73,13 @@ class SearchCom extends React.Component {
         });
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
-            if(!apiResult.IsError){
-                this.handleClearLocalCache();
+            showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(PIMCACHE_INVENTORYSTATUS)
                 this.callSearchData(this.state.SearchData);
                 this.handleSubmitInsertLog();
             }
-           
+
         });
     }
 
@@ -155,43 +125,9 @@ class SearchCom extends React.Component {
         );
     }
 
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
-        } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close">
-                            <span>×</span>
-                        </div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
     render() {
         return (
             <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
                     FormName="Tim kiếm trạng thái tồn kho"
                     MLObjectDefinition={SearchMLObjectDefinition}
@@ -234,6 +170,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
     };
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import { ModalManager } from "react-dynamic-modal";
 import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
@@ -16,17 +16,14 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { ATTRIBUTE_CATEGORY_TYPE_ADD } from "../../../../../constants/functionLists";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { PIMCACHE_PIMATTRIBUTECATEGORYTYPE } from "../../../../../constants/keyCache";
 
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.handleGetCache = this.handleGetCache.bind(this);
-        this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -36,30 +33,6 @@ class AddCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(AddPagePath);
-    }
-
-    handleClearLocalCache() {
-        const cacheKeyID = "PIMCACHE.PIMATTRIBUTECATEGORYTYPE";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(cacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: cacheKeyID,
-                UserName: this.props.AppInfo.LoginInfo.Username,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                this.handleGetCache();
-                //console.log("apiResult", apiResult)
-            });
-        }
-        );
-    }
-    
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.PIMATTRIBUTECATEGORYTYPE").then((result) => {
-            console.log("handleGetCache: ", result);
-        });
     }
 
     handleSubmitInsertLog(MLObject) {
@@ -75,11 +48,12 @@ class AddCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+            //console.log("handleSubmit", apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
-            if(!apiResult.IsError){
-                this.handleClearLocalCache();
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(PIMCACHE_PIMATTRIBUTECATEGORYTYPE)
                 this.handleSubmitInsertLog(MLObject);
-            }            
+            }
             this.showMessage(apiResult.Message);
         });
     }
@@ -140,6 +114,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
     };
 };

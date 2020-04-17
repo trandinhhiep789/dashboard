@@ -45,7 +45,7 @@ export const SearchElementList = [
     {
         type: "text",
         name: "txtKeyword",
-        label: "Từ khóa:",
+        label: "Từ khóa",
         value: "",
         placeholder: "",
         icon: "",
@@ -55,7 +55,7 @@ export const SearchElementList = [
     {
         type: "select",
         name: "slManufacturerID",
-        label: "Nhà sản xuất:",
+        label: "Nhà sản xuất",
         value: -1,
         placeholder: "",
         icon: "",
@@ -74,7 +74,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtBrandName",
-        label: "Tên nhãn hiệu:",
+        label: "Tên nhãn hiệu",
         value: "",
         maxSize: "400",
         placeholder: "",
@@ -87,7 +87,7 @@ export const AddElementList = [
     {
         type: "select",
         name: "txtManufacturerID",
-        label: "Nhà sản xuất:",
+        label: "Nhà sản xuất",
         value: "",
         placeholder: "",
         icon: "",
@@ -104,7 +104,7 @@ export const AddElementList = [
         type: "singleFileUpload",
         name: "txtLogoImageURL",
         NameMember: "LogoImageURL",
-        label: "Logo nhãn hiệu:",
+        label: "Logo nhãn hiệu",
         value: "",
         placeholder: "",
         icon: "",
@@ -117,7 +117,7 @@ export const AddElementList = [
     {
         type: "textarea",
         name: "txtDescription",
-        label: "Mô tả:",
+        label: "Mô tả",
         value: "",
         maxSize: "2000",
         placeholder: "",
@@ -131,7 +131,7 @@ export const AddElementList = [
     {
         type: "checkbox",
         name: "chkIsActived",
-        label: "Kích hoạt:",
+        label: "Kích hoạt",
         value: true,
         placeholder: "",
         icon: "",
@@ -143,7 +143,7 @@ export const AddElementList = [
     {
         type: "checkbox",
         name: "chkIsSystem",
-        label: "Hệ thống:",
+        label: "Hệ thống",
         value: false,
         placeholder: "",
         icon: "",
@@ -158,7 +158,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtBrandID",
-        label: "Nhãn hiệu:",
+        label: "Nhãn hiệu",
         value: "",
         placeholder: "",
         icon: "",
@@ -170,7 +170,7 @@ export const EditElementList = [
     {
         type: "select",
         name: "txtManufacturerID",
-        label: "Nhà sản xuất:",
+        label: "Nhà sản xuất",
         value: "",
         placeholder: "",
         icon: "",
@@ -186,7 +186,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtBrandName",
-        label: "Tên nhãn hiệu:",
+        label: "Tên nhãn hiệu",
         value: "",
         maxSize: "400",
         placeholder: "",
@@ -200,7 +200,7 @@ export const EditElementList = [
         type: "singleFileUpload",
         name: "txtLogoImageURL",
         NameMember: "LogoImageURL",
-        label: "Logo nhãn hiệu:",
+        label: "Logo nhãn hiệu",
         value: "",
         placeholder: "",
         icon: "",
@@ -213,7 +213,7 @@ export const EditElementList = [
     {
         type: "textarea",
         name: "txtDescription",
-        label: "Mô tả:",
+        label: "Mô tả",
         value: "",
         maxSize: "2000",
         placeholder: "",
@@ -227,7 +227,7 @@ export const EditElementList = [
     {
         type: "checkbox",
         name: "chkIsActived",
-        label: "Kích hoạt:",
+        label: "Kích hoạt",
         value: "",
         placeholder: "",
         icon: "",
@@ -239,7 +239,7 @@ export const EditElementList = [
     {
         type: "checkbox",
         name: "chkIsSystem",
-        label: "Hệ thống:",
+        label: "Hệ thống",
         value: "",
         placeholder: "",
         icon: "",
