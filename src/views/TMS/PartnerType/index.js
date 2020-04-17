@@ -1,6 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import Search from "./Search";
@@ -14,12 +13,12 @@ class PartnerTypeCom extends React.Component {
 
     render() {
         return (
-            <React.Fragment>
+            <Switch>
                 <Route exact path="/PartnerType" component={Search} />
                 <Route exact path="/PartnerType/Add" component={Add} />
                 <Route exact path="/PartnerType/Edit/:id" component={Edit} />
                 <Route path="*" component={NotFound} />
-            </React.Fragment>
+            </Switch>
         );
     }
 }

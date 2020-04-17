@@ -2,8 +2,7 @@ import React from "react";
 import {
     BrowserRouter as Router,
     Route,
-    Link,
-    Redirect
+    Switch
 } from "react-router-dom";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -18,12 +17,12 @@ class PartnerCom extends React.Component {
 
     render() {
         return (
-            <React.Fragment>
+            <Switch>
                 <Route exact path="/Partner" component={Search} />
                 <Route exact path="/Partner/Add" component={Add} />
                 <Route exact path="/Partner/Edit/:id" component={Edit} />
                 <Route path="*" component={NotFound} />
-            </React.Fragment>
+            </Switch>
         );
     }
 }
