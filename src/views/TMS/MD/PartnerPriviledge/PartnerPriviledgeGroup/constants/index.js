@@ -1,29 +1,29 @@
-export const APIHostName = "EWalletAPI";
+export const APIHostName = "PIMAPI";
 export const SearchAPIPath = "api/PartnerPriviledgeGroup/Search";
 export const LoadAPIPath = "api/PartnerPriviledgeGroup/Load";
 export const AddAPIPath = "api/PartnerPriviledgeGroup/Add";
 export const UpdateAPIPath = "api/PartnerPriviledgeGroup/Update";
 export const DeleteAPIPath = "api/PartnerPriviledgeGroup/Delete";
 export const UpdateOrderAPIPath = "api/PartnerPriviledgeGroup/UpdateOrder";
-export const BackLink = "/home/PartnerPriviledgeGroup";
-export const AddLink = "/home/PartnerPriviledgeGroup/Add";
+export const BackLink = "/PartnerPriviledgeGroup";
+export const AddLink = "/PartnerPriviledgeGroup/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "PartnerPriviledgeGroupID";
 
 export const PagePath = [
-    { Link: "/home/", Title: "Trang chủ" },
-    { Link: "/home/PartnerPriviledgeGroup", Title: "Nhóm quyền nhà cung cấp" }
+    { Link: "/", Title: "Trang chủ" },
+    { Link: "/PartnerPriviledgeGroup", Title: "Nhóm quyền nhà cung cấp" }
 ];
 
 export const EditPagePath = [
-    { Link: "/home/", Title: "Trang chủ" },
-    { Link: "/home/PartnerPriviledgeGroup", Title: "Nhóm quyền nhà cung cấp" },
+    { Link: "/", Title: "Trang chủ" },
+    { Link: "/PartnerPriviledgeGroup", Title: "Nhóm quyền nhà cung cấp" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
-    { Link: "/home/", Title: "Trang chủ" },
-    { Link: "/home/PartnerPriviledgeGroup", Title: "Nhóm quyền nhà cung cấp" },
+    { Link: "/", Title: "Trang chủ" },
+    { Link: "/PartnerPriviledgeGroup", Title: "Nhóm quyền nhà cung cấp" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -286,7 +286,7 @@ export const DataGridColumnList = [
         Caption: "Tác vụ",
         DataSourceMember: "PartnerPriviledgeGroupID",
         Width: 200,
-        Link: "/home/PartnerPriviledgeGroup/Edit/",
+        Link: "/PartnerPriviledgeGroup/Edit/",
         LinkText: "Chỉnh sửa"
     }
 ];
