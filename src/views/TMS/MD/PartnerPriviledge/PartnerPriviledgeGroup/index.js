@@ -14,9 +14,9 @@ class PartnerPriviledgeGroupCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Route exact path="/home/PartnerPriviledgeGroup" component={Search} />
-                <Route path="/home/PartnerPriviledgeGroup/Add" component={Add} />
-                <Route path="/home/PartnerPriviledgeGroup/Edit/:id" component={Edit} />
+                <Route exact path="/PartnerPriviledgeGroup" component={Search} />
+                <Route path="/PartnerPriviledgeGroup/Add" component={Add} />
+                <Route path="/PartnerPriviledgeGroup/Edit/:id" component={Edit} />
             </React.Fragment>
         );
     }

@@ -291,7 +291,6 @@ class SimpleFormCom extends Component {
                             validationErrorMessage = this.state.FormValidation[elementItem.name].ValidatonErrorMessage;
                         }
 
-                        console.log("validationErrorMessage:", validationErrorMessage);
                         return (
                             <div className="form-row" key={"div" + elementItem.name}>
                                 <FormElement type={elementItem.type} name={elementItem.name}
@@ -322,11 +321,8 @@ class SimpleFormCom extends Component {
                                 />
                             </div>);
                     }
-
-
                     )
                 }
-
             </div>
         );
     }

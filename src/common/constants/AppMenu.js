@@ -87,6 +87,22 @@ const AppMenu = [
             
         ]
     }
+    ,
+    {
+        MenuName: 'PartnerPriviledge',
+        MenuTitle: 'Khai báo thông tin nhà cung cấp',
+        LinkTo: '',
+        MenuIcon: '',
+        SubMenu: [
+            {
+                MenuName: 'PartnerPriviledgeGroup',
+                MenuTitle: 'Danh sách nhóm quyền nhà cung cấp',
+                LinkTo: '/PartnerPriviledgeGroup',
+                MenuIcon: '',
+                SubMenu: []
+            }
+        ]
+    }
 ];
 
 export default AppMenu;

@@ -59,7 +59,7 @@ export const AddElementList = [
         listoption: [],
         DataSourceMember: "PartnerPriviledgeGroupName",
         readonly: false,
-        validatonList: ["required","special"]
+        validatonList: ["required"]
     },
     {
         type: "textarea",
@@ -136,7 +136,7 @@ export const EditElementList = [
         listoption: [],
         readonly: false,
         DataSourceMember: "PartnerPriviledgeGroupName",
-        validatonList: ["required","special"]
+        validatonList: ["required"]
     },
     {
         type: "textarea",
