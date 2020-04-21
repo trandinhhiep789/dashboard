@@ -30,6 +30,8 @@ import ShipmentFeePaymentMethod from '../../views/TMS/MD/ShipmentFeePaymentMetho
 import ShipmentServiceType from '../../views/TMS/MD/ShipmentServiceType';
 import ShipmentOrderStatus from '../../views/TMS/MD/ShipmentOrderStatus';
 import ShipmentGoodsType from '../../views/TMS/MD/ShipmentGoodsType';
+import ShipmentOrderStep from '../../views/TMS/MD/ShipmentOrderStep';
+
 import NotFound from '../NotFound'
 
 class HomeCom extends React.Component {
@@ -69,31 +71,7 @@ class HomeCom extends React.Component {
     }
 
     render() {
-        // const { match } = this.props;
         let isShowAppPath = true;
-        // if (this.props.location.pathname == "/dashboard") {
-        //     isShowAppPath = false;
-        // }
-        // let isLoggedIn = this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess;
-        // if (!isLoginSuccess) {
-        //     <Redirect to="/login" />
-        // }
-        //console.log("Home", isLoginSuccess);
-        //console.log(isLoginSuccess);
-        // let fullName = "";
-        // if (isLoggedIn) {
-        //     fullName = this.props.AuthenticationInfo.LoginInfo.LoginUserInfo.FullName;
-        // }
-        // if (this.props.location.pathname.toUpperCase() != "/LOGIN" && window.isReload != true) {
-        //     return <Redirect
-        //         to={{
-        //             pathname: '/login',
-        //             state: { from: this.props.location }
-        //         }}
-        //     />
-        // }
-        // isLoggedIn = true
-        // console.log({ isLoggedIn })
         const { isLoggedIn } = this.state
         return (
             <React.Fragment>
@@ -105,27 +83,14 @@ class HomeCom extends React.Component {
                         }
                         <div className="row">
                             {this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL ? <div className="preloader"><div className="spinner-linear"><div className="line"></div></div></div> : ''}
-                            {/* <Route path="/home" render={() => (
-                                !isLoginSuccess ? (
-                                    <Redirect to="/login" />
-                                ) : (
-                                        <React.Fragment>
-                                            <AppRoute isLoginSuccess/>
-                                        </React.Fragment>
-                                    )
-                            )} /> */}
                             <Switch>
                                 <PrivateRoute exact path="/" component={Dashboard} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/accountinfo" component={AccountInfo} isLoggedIn={isLoggedIn} />
-
                                 <PrivateRoute path="/TestModal" component={TestModal} isLoggedIn={isLoggedIn} />
-
                                 <PrivateRoute path="/TestCache" component={TestCache} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/TestFormContainer" component={TestFormContainer} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/TestTabs" component={TestTabs} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/TestPageLayout" component={TestPageLayout} isLoggedIn={isLoggedIn} />
-
-
 
                                 <PrivateRoute path="/CacheManager" component={CacheManager} isLoggedIn={isLoggedIn} />
                                 {/* <PrivateRoute path="*" component={Category} isLoggedIn={isLoggedIn} /> */}
@@ -140,6 +105,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/ShipmentServiceType" component={ShipmentServiceType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentGoodsType" component={ShipmentGoodsType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentOrderStatus" component={ShipmentOrderStatus} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/ShipmentOrderStep" component={ShipmentOrderStep} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} />
 
                             </Switch>
