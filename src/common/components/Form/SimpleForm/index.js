@@ -127,6 +127,7 @@ class SimpleFormCom extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
         let formData = {};
+        this.elementItemRefs = [];
         //let formVavalidaton = {};
         const listElement = bindDataToControl(this.props.listelement, this.props.dataSource);
         listElement.map((elementItem) => {
@@ -225,18 +226,36 @@ class SimpleFormCom extends Component {
 
     }
 
+    // checkInput(formValidation) {
+    //     //console.log("checkInput formValidation: ", formValidation);
+    //     for (const key in formValidation) {
+    //         //console.log("key: ", key);
+    //         //console.log("this.state.FormVavalidaton[key]: ", this.state.FormVavalidaton[key]);
+    //         if (formValidation[key].IsValidatonError)
+    //             return false;
+    //     }
+
+    //     return true;
+
+    // }
     checkInput(formValidation) {
         //console.log("checkInput formValidation: ", formValidation);
+        let index = 0;
         for (const key in formValidation) {
             //console.log("key: ", key);
-            //console.log("this.state.FormVavalidaton[key]: ", this.state.FormVavalidaton[key]);
-            if (formValidation[key].IsValidatonError)
+            //console.log("this.refs.child.refs: ", this.elementItemRefs);
+           // console.log("this.state.FormVavalidaton[key]: ", formValidation,key);
+            if (formValidation[key].IsValidatonError) {
+                this.elementItemRefs[key].focus();
+                index++;
                 return false;
+            }
+            index++;
         }
-
         return true;
 
     }
+
     handleSubmit(event) {
         //console.log(this.state);
         //this.setState({XYZ: "UUU"});
@@ -246,7 +265,11 @@ class SimpleFormCom extends Component {
         const formValidation = this.validationForm();
         if (!this.checkInput(formValidation))
             return;
-        this.props.onSubmit(this.state.FormData, MLObject);
+
+        if (this.props.onSubmit != null) {
+            this.props.onSubmit(this.state.FormData, MLObject);
+        }
+
 
     }
 
@@ -295,6 +318,7 @@ class SimpleFormCom extends Component {
                                     isDisabled={this.state.isDisabled}
                                     cdn={elementItem.cdn}
                                     elementItem={elementItem}
+                                    inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                 />
                             </div>);
                     }
