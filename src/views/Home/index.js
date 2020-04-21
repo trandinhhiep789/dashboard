@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Link, Redirect, Switch } from "react-router-dom";
-import AppRoute from '../../Route/AppRoute';
 import Header from '../Layout/Header';
 import Footer from '../Layout/Footer';
 import AppPath from '../Layout/AppPath';
