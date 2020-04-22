@@ -35,13 +35,12 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
     }
 
     if (typelist.includes("Comborequired") && IsEr == 0) {
-
         if (fieldValue == undefined || parseInt(fieldValue) < 0) {
             IsEr = 1;
             result = {
                 IsError: true,
                 fieldValue: fieldValue,
-                Message: "Vui lòng chọn 111 " + fieldCaption.toLowerCase()
+                Message: "Vui lòng chọn " + fieldCaption.toLowerCase()
             }
         }
         else {

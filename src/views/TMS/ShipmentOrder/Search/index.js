@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SearchForm from "../../../../common/components/Form/SearchForm";
+import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import DataGrid from "../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../common/components/Modal";
 import {
@@ -80,7 +80,7 @@ class SearchCom extends React.Component {
             }
         ];
         this.setState({ SearchData: postData });
-        this.callSearchData(postData);
+       // this.callSearchData(postData);
         //this.gridref.current.clearData();
     }
 
@@ -147,6 +147,130 @@ class SearchCom extends React.Component {
     }
 
     render() {
+        const SearchElementList = [
+            {
+                type: "text",
+                name: "txtKeyword",
+                label: "Từ khóa",
+                value: "",
+                colspan:2,
+                placeholder: "Từ khóa",
+                icon: "",
+                validatonList: ["required"]
+            },
+            {
+                type: "ComboBox",
+                name: "cbContryid",
+                label: "Công ty",
+                colspan:2,
+                value: -1,
+                isMultiSelect: false,
+                validatonList: ["Comborequired"],
+                placeholder:"---Vui lòng chọn---",
+                listoption: [
+                    { value: -1, label: '---Vui lòng chọn---' },
+                    { value: 1, label: 'Việt Nam' },
+                    { value: 2, label: 'Hoa kỳ' },
+                    { value: 3, label: 'Trung Quốc' }
+                ]
+                
+            },
+            // {
+            //     type: "Datetime",
+            //     name: "dtDategeto",
+            //     label: "Từ ngày",
+            //     value: "",
+            //     timeFormat:false,
+            //     dateFormat:"DD/MM/YYYY",
+            //     colspan:2,
+            //     validatonList: ["required"]
+            // },
+            // {
+            //     type: "Datetime",
+            //     name: "dtDategetfo",
+            //     label: "Đến ngày",
+            //     value: "",
+            //     timeFormat:false,
+            //     dateFormat:"DD/MM/YYYY",
+            //     colspan:2,
+            //     validatonList: ["required"]
+            // },
+            // {
+            //     type: "ComboBox",
+            //     name: "cbContryid56",
+            //     label: "Tỉnh /thành phố",
+            //     colspan:2,
+            //     value: -1,
+            //     isMultiSelect: false,
+            //     placeholder:"---Vui lòng chọn---",
+            //     listoption: [
+            //         { value: -1, label: '---Vui lòng chọn---' },
+            //         { value: 1, label: 'Việt Nam' },
+            //         { value: 2, label: 'Hoa kỳ' },
+            //         { value: 3, label: 'Trung Quốc' }
+            //     ]
+            // },
+            // {
+            //     type: "ComboBox",
+            //     name: "cbContryid14",
+            //     label: "Quận/huyện",
+            //     colspan:2,
+            //     value: -1,
+            //     isMultiSelect: false,
+            //     placeholder:"---Vui lòng chọn---",
+            //     listoption: [
+            //         { value: -1, label: '---Vui lòng chọn---' },
+            //         { value: 1, label: 'Việt Nam' },
+            //         { value: 2, label: 'Hoa kỳ' },
+            //         { value: 3, label: 'Trung Quốc' }
+            //     ]
+            // },
+            // {
+            //     type: "ComboBox",
+            //     name: "cbContryid12",
+            //     label: "Kho giao",
+            //     colspan:2,
+            //     value: -1,
+            //     isMultiSelect: false,
+            //     placeholder:"---Vui lòng chọn---",
+            //     listoption: [
+            //         { value: -1, label: '---Vui lòng chọn---' },
+            //         { value: 1, label: 'Việt Nam' },
+            //         { value: 2, label: 'Hoa kỳ' },
+            //         { value: 3, label: 'Trung Quốc' }
+            //     ]
+            // },
+            // {
+            //     type: "ComboBox",
+            //     name: "cbContryid1",
+            //     label: "Trạng thái",
+            //     colspan:2,
+            //     value: -1,
+            //     isMultiSelect: false,
+            //     placeholder:"---Vui lòng chọn---",
+            //     listoption: [
+            //         { value: -1, label: '---Vui lòng chọn---' },
+            //         { value: 1, label: 'Việt Nam' },
+            //         { value: 2, label: 'Hoa kỳ' },
+            //         { value: 3, label: 'Trung Quốc' }
+            //     ]
+            // },
+           
+
+        ];
+        const SearchMLObjectDefinition = [
+            {
+                Name: "Keyword",
+                DefaultValue: "",
+                BindControlName: "txtKeyword"
+            },
+            {
+                Name: "Contryid",
+                DefaultValue: "",
+                BindControlName: "cbContryid",
+                DataSourceMember: "Contryid"
+            }
+        ];
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -157,6 +281,7 @@ class SearchCom extends React.Component {
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                     className="multiple"
+                   
                 />
                 <DataGrid
                     listColumn={DataGridColumnList}
