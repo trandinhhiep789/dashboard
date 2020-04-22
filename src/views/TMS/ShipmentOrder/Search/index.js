@@ -156,6 +156,7 @@ class SearchCom extends React.Component {
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
+                    className="multiple"
                 />
                 <DataGrid
                     listColumn={DataGridColumnList}

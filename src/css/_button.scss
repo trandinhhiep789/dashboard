@@ -1,0 +1,14 @@
+button {
+    &.btnEditCard {
+        background-color: #48b0f7;
+        border-color: #48b0f7;
+        color: #fff;
+        border-radius: 4px;
+        text-transform: capitalize;
+        line-height: 30px;
+        height: 30px;
+        padding: 0px 5px;
+        margin-top: 5px;
+        font-size: 12px;
+    }
+}

@@ -44,10 +44,10 @@
 
     .col-form-label {
         padding-right: 10px;
-        width: 22%;
+        width: 100%;
 
         @media (max-width: 1557px) {
-            width: 100%;
+            // width: 100%;
         }
 
         @media (max-width: 1278px) {}
@@ -57,7 +57,7 @@
     .item {
         clear: both;
         position: relative;
-
+        margin-bottom: 10px;
         .input-group {
             input {
                 border-radius: 5px;
@@ -78,10 +78,16 @@
             left: 15px;
             bottom: 0;
             margin: 0 auto;
-
             @media (max-width: 767px) {
                 margin-top: 20px;
                 position: static;
+            }
+        }
+    }
+    &.multiple{
+        .item{
+            .btnSearch {
+                display: contents;
             }
         }
     }
