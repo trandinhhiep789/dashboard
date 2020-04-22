@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SearchForm from "../../../../common/components/Form/SearchForm";
+import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import DataGrid from "../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../common/components/Modal";
 import {
@@ -147,15 +147,118 @@ class SearchCom extends React.Component {
     }
 
     render() {
+        const SearchElementList = [
+            {
+                type: "text",
+                dropdownName: "txtTypename",
+                name: "txtKeyword",
+                label: "Từ khóa",
+                value: "",
+                colspan:2,
+                placeholder: "Từ khóa",
+                icon: "",
+                validatonList: ["required"]
+            },
+            // {
+            //     type: "text",
+            //     name: "txtName",
+            //     label: "",
+            //     value: "",
+            //     placeholder: "Name",
+            //     icon: "",
+            //     validatonList: ["required"]
+            // },
+            // {
+            //     type: "ComboBox",
+            //     name: "cbContryid",
+            //     label: "",
+            //     value: -1,
+            //     isMultiSelect: true,
+            //     listoption: [
+            //         { value: 1, label: 'Việt Nam' },
+            //         { value: 2, label: 'Hoa kỳ' },
+            //         { value: 3, label: 'Trung Quốc' }
+            //     ]
+            // },
+            // {
+            //     type: "Datetime",
+            //     name: "dtDateget",
+            //     label: "",
+            //     value: "",
+            //     timeFormat:false,
+            //     dateFormat:"DD/MM/YYYY",
+            //     colspan:2,
+            //     validatonList: ["required"]
+            // },
+            {
+                type: "DatetimeFromTo",
+                name: "dtfromDateget",
+                label: "Từ ngày-Đến ngày",
+                value: "",
+                nameOption: "dttoDateget",
+                labelOption: "",
+                valueOption: "",
+                timeFormat: false,
+                dateFormat: "DD/MM/YYYY",
+            },
+            {
+                type: "checkbox",
+                name: "chkIsActived",
+                label: "Nâng cao",
+                value: false
+            }
+
+        ];
+        const SearchMLObjectDefinition = [
+            {
+                Name: "Keyword",
+                DefaultValue: "",
+                BindControlName: "txtKeyword"
+            },
+            {
+                Name: "Typename",
+                DefaultValue: "",
+                BindControlName: "txtTypename"
+            },
+            {
+                Name: "Name",
+                DefaultValue: "",
+                BindControlName: "txtName"
+            },
+            {
+                Name: "IsActived",
+                DefaultValue: true,
+                BindControlName: "chkIsActived",
+                DataSourceMember: "IsActived"
+            },
+            {
+                Name: "Contryid",
+                DefaultValue: "",
+                BindControlName: "cbContryid",
+                DataSourceMember: "Contryid"
+            },
+            {
+                Name: "fromDateget",
+                DefaultValue: "",
+                BindControlName: "dtfromDateget",
+                DataSourceMember: "fromDateget"
+            }
+            ,
+            {
+                Name: "toDateget",
+                DefaultValue: "",
+                BindControlName: "dttoDateget",
+                DataSourceMember: "toDateget"
+            }
+        ];
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
-                    onSubmit={this.handleSearchSubmit}
-                    ref={this.searchref}
+                   FormName="Tìm "
+                   MLObjectDefinition={SearchMLObjectDefinition}
+                   listelement={SearchElementList}
+                   onSubmit={this.handleSearchSubmit}
                 />
                 <DataGrid
                     listColumn={DataGridColumnList}
