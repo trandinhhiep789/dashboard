@@ -1,5 +1,5 @@
 export function ValidationField(typelist, fieldValue, fieldCaption, elementItem) {
-    console.log("aa", typelist, fieldValue, fieldCaption, elementItem)
+    //console.log("aa", typelist, fieldValue, fieldCaption, elementItem)
     let IsEr = 0;
     let result;
     if (typelist.includes("required") && IsEr == 0) {
@@ -9,7 +9,7 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
             //console.log("ValidationField", typelist, fieldValue, fieldCaption);
 
             let messError = "";
-            if (elementItem.labelError != undefined) {
+            if (elementItem && elementItem.labelError != undefined) {
 
                 messError = elementItem.labelError
             }

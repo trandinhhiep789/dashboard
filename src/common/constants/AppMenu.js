@@ -76,6 +76,13 @@ const AppMenu = [
                 LinkTo: '/ShipmentOrderStatus',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'ShipmentOrderType',
+                MenuTitle: 'Loại yêu cầu vận chuyển',
+                LinkTo: '/ShipmentOrderType',
+                MenuIcon: '',
+                SubMenu: []
             }
             
         ]

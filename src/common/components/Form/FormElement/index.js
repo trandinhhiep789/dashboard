@@ -112,7 +112,7 @@ class FormElementCom extends Component {
         //console.log("FormElement componentWillReceiveProps:", nextProps);
         //this.setState({value: this.props.value});
         if (nextProps.type == "select") {
-            console.log("FormElement componentWillReceiveProps:", nextProps);
+            //console.log("FormElement componentWillReceiveProps:", nextProps);
             let listOption = nextProps.listoption;
             this.setState({ Listoption: listOption });
         }

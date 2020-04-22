@@ -31,6 +31,7 @@ import ShipmentFeePaymentMethod from '../../views/TMS/MD/ShipmentFeePaymentMetho
 import ShipmentServiceType from '../../views/TMS/MD/ShipmentServiceType';
 import ShipmentOrderStatus from '../../views/TMS/MD/ShipmentOrderStatus';
 import ShipmentGoodsType from '../../views/TMS/MD/ShipmentGoodsType';
+import ShipmentOrderType from '../../views/TMS/MD/ShipmentOrder/ShipmentOrderType';
 
 
 
@@ -142,7 +143,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/ShipmentServiceType" component={ShipmentServiceType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentGoodsType" component={ShipmentGoodsType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentOrderStatus" component={ShipmentOrderStatus} isLoggedIn={isLoggedIn} />
-                                
+                                <PrivateRoute path="/ShipmentOrderType" component={ShipmentOrderType} isLoggedIn={isLoggedIn} />
                             </Switch>
                         </div>
                     </div>
