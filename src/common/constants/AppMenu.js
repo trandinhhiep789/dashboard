@@ -83,8 +83,31 @@ const AppMenu = [
                 LinkTo: '/ShipmentOrderType',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'ShipmentOrderStep',
+                MenuTitle: 'Danh sách bước xử lý yêu cầu vận chuyển',
+                LinkTo: '/ShipmentOrderStep',
+                MenuIcon: '',
+                SubMenu: []
             }
             
+        ]
+    }
+    ,
+    {
+        MenuName: 'PartnerPriviledge',
+        MenuTitle: 'Khai báo thông tin nhà cung cấp',
+        LinkTo: '',
+        MenuIcon: '',
+        SubMenu: [
+            {
+                MenuName: 'PartnerPriviledgeGroup',
+                MenuTitle: 'Danh sách nhóm quyền nhà cung cấp',
+                LinkTo: '/PartnerPriviledgeGroup',
+                MenuIcon: '',
+                SubMenu: []
+            }
         ]
     }
 ];

@@ -201,7 +201,7 @@ export default class TabContainer extends Component {
     }
 
     layoutFormControl(child) {
-        //console.log("this.props.tabPageValidation", this.props.tabPageValidation, Object.hasOwnProperty.bind(this.props.tabPageValidation)(index));
+       // console.log("this.props.tabPageValidation", this.props.tabPageValidation, Object.hasOwnProperty.bind(this.props.tabPageValidation)(index));
         const controltype = child.props.controltype;
         if (controltype == "InputControl" || controltype == "GridControl") {
             const controlname = child.props.name;

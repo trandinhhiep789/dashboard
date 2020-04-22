@@ -27,7 +27,6 @@ class FormContainerCom extends Component {
         this.handleInputChangeList = this.handleInputChangeList.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         const formData = this.bindData();
-console.log("formData",formData);
         this.state = {
             FormData: formData,
             FormValidation: {},

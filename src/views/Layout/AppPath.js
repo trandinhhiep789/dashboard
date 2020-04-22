@@ -1,12 +1,24 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 class AppPathCom extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            pagePath: this.props.PageInfo.PagePath ? this.props.PageInfo.PagePath : ""
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.PageInfo) !== JSON.stringify(nextProps.PageInfo)) {
+            this.setState({
+                pagePath: nextProps.PageInfo.PagePath
+            })
+        }
+    }
+
     render() {
-        // console.log("AppPathCom props:",this.props);
-        let pagePath = this.props.PageInfo.PagePath;
-        if (pagePath.length == 0) {
+        let { pagePath } = this.state;
+        if (!pagePath || pagePath.length == 0) {
             pagePath = [{ Link: "/", Title: "Trang chủ" }];
         }
         return (
@@ -23,17 +35,13 @@ class AppPathCom extends React.Component {
                                         else {
                                             return <li className="breadcrumb-item active" key={"li" + index}>{item.Title}</li>
                                         }
-
                                     }
                                     else {
                                         return <li className="breadcrumb-item" key={"li" + index}><Link key={index} to={item.Link}>{item.Title}</Link></li>
                                     }
                                 }
-
-
                                 )
                             }
-
                         </ol>
                     </nav>
                 </div>
@@ -41,7 +49,6 @@ class AppPathCom extends React.Component {
         );
     }
 }
-
 
 const mapStateToProps = state => {
     return {

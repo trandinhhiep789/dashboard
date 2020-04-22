@@ -13,7 +13,7 @@ export default class DropdownButton extends React.Component
     }
     handleItemClick(value)
     {
-        console.log("DropdownButton.handleItemClick", value);
+        //console.log("DropdownButton.handleItemClick", value);
         if (this.props.onItemClick != null)
             this.props.onItemClick(value);
     }

@@ -11,16 +11,12 @@ import {
     IDSelectColumnName,
     IDSelectColumnNameMultiple
 } from './constants';
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
-
-
+import { showToastAlert } from '../../../../../../common/library/ultils'
 class SearchModalCom extends Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-        this.addNotification = this.addNotification.bind(this);
-        
+
         this.state = {
             DataSource: {},
             GridDataSource: [],
@@ -28,40 +24,6 @@ class SearchModalCom extends Component {
             SearchData: InitSearchParams
         }
         this.gridref = React.createRef();
-        this.notificationDOMRef = React.createRef();
-    }
-
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
-        } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close">
-                            <span>×</span>
-                        </div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
     }
 
     componentDidMount() {
@@ -92,28 +54,25 @@ class SearchModalCom extends Component {
                 })
             }
             else {
-                this.addNotification(apiResult.Message, apiResult.IsError);
+                showToastAlert(apiResult.Message, apiResult.IsError ? 'error' : 'success');
             }
         });
     }
 
-    handleInsertItem(listMLObject){
+    handleInsertItem(listMLObject) {
         let selectedOption = [];
         if (listMLObject !== null && listMLObject !== undefined) {
             for (let i = 0; i < listMLObject.length; i++) {
-                selectedOption.push({ value: listMLObject[i][this.props.value], label: listMLObject[i][this.props.name]});
+                selectedOption.push({ value: listMLObject[i][this.props.value], label: listMLObject[i][this.props.name] });
             }
         }
         this.props.onClickInsertItem(selectedOption)
-        
     }
-
 
     render() {
 
         return (
             <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
                     FormName="Tìm kiếm"
                     MLObjectDefinition={this.props.SearchMLObjectDefinition}
@@ -134,7 +93,7 @@ class SearchModalCom extends Component {
                     ref={this.gridref}
                     onSubmitItem={this.handleInsertItem.bind(this)}
                 />
-              
+
             </React.Fragment>
         )
     }

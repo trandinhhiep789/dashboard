@@ -2,14 +2,14 @@ import React from "react";
 import {
     BrowserRouter as Router,
     Route,
-    Link,
-    Redirect
+    Switch
 } from "react-router-dom";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
+import NotFound from '../../../NotFound'
 class ShipmentFeePaymentMethodCom extends React.Component {
     constructor(props) {
         super(props);
@@ -17,12 +17,12 @@ class ShipmentFeePaymentMethodCom extends React.Component {
 
     render() {
         return (
-            <React.Fragment>
+            <Switch>
                 <Route exact path="/ShipmentFeePaymentMethod" component={Search} />
-                <Route path="/ShipmentFeePaymentMethod/Add" component={Add} />
-                <Route path="/ShipmentFeePaymentMethod/Edit/:id" component={Edit}
-                />
-            </React.Fragment>
+                <Route exact path="/ShipmentFeePaymentMethod/Add" component={Add} />
+                <Route exact path="/ShipmentFeePaymentMethod/Edit/:id" component={Edit} />
+                <Route path="*" component={NotFound} />
+            </Switch>
         );
     }
 }

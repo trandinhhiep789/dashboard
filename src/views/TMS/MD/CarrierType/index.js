@@ -2,14 +2,14 @@ import React from "react";
 import {
     BrowserRouter as Router,
     Route,
-    Link,
-    Redirect
+    Switch
 } from "react-router-dom";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
+import NotFound from '../../../NotFound'
 class CarrierTypeCom extends React.Component {
     constructor(props) {
         super(props);
@@ -17,12 +17,12 @@ class CarrierTypeCom extends React.Component {
 
     render() {
         return (
-            <React.Fragment>
+            <Switch>
                 <Route exact path="/CarrierType" component={Search} />
-                <Route path="/CarrierType/Add" component={Add} />
-                <Route path="/CarrierType/Edit/:id" component={Edit}
-                />
-            </React.Fragment>
+                <Route exact path="/CarrierType/Add" component={Add} />
+                <Route exact path="/CarrierType/Edit/:id" component={Edit} />
+                <Route path="*" component={NotFound} />
+            </Switch>
         );
     }
 }

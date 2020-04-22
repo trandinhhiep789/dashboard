@@ -2,10 +2,7 @@ export const APIHostName = "PIMAPI";
 export const SearchAPIPath = "api/UserActivity/GetAll";
 export const PKColumnName = "UserActivityID";
 
-
-
 export const DataGridColumnList = [
-   
     {
         Name: "ActivityDate",
         Type: "date",

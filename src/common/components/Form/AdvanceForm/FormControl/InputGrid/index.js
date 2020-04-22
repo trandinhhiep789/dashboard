@@ -14,7 +14,7 @@ import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../../../constants/functi
 
 function bindDataToControl(listElement, formData) {
 	let listElement1 = listElement;
-	console.log("formData:", formData);
+	//"formData:", formData);
 	if (typeof formData != "undefined") {
 		listElement1 = listElement.map((elementItem) => {
 			const elementvalue = formData[elementItem.DataSourceMember];

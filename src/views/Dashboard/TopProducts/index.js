@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import { SearchAPIPath, APIHostName } from './Constants';
 import { HorizontalBar } from 'react-chartjs-2';
+import { showToastAlert } from '../../../common/library/ultils'
 
 class TopProductsCom extends Component {
     constructor(props) {
@@ -24,11 +25,11 @@ class TopProductsCom extends Component {
                 this.setState({
                     dataSource: apiResult.ResultObject
                 })
+                showToastAlert('Top 10 danh mục có số lượng sản phẩm nhiều', 'success')
             }
 
         });
     }
-
 
     render() {
         let dataSource = this.state.dataSource;
@@ -39,10 +40,9 @@ class TopProductsCom extends Component {
                 label.push(item.CategoryName)
                 data1.push(item.CountProduct)
             })
-            
         }
         const data = {
-            labels:label,
+            labels: label,
             datasets: [{
                 label: 'Top 10 danh mục có sản phẩm nhiều nhất',
                 data: data1,

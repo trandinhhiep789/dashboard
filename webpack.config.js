@@ -1,3 +1,4 @@
+
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -16,7 +17,7 @@ module.exports = {
     //         template: 'app/index.html'
     //     })
     // ],
-    //  devServer: {
+    // 	devServer: {
     //     historyApiFallback: true,
     //     contentBase: './',
     //     hot: true
