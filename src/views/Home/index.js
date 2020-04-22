@@ -33,6 +33,8 @@ import ShipmentGoodsType from '../../views/TMS/MD/ShipmentGoodsType';
 import ShipmentOrderType from '../../views/TMS/MD/ShipmentOrder/ShipmentOrderType';
 import ShipmentOrderStep from '../../views/TMS/MD/ShipmentOrderStep';
 import PartnerPriviledgeGroup from '../../views/TMS/MD/PartnerPriviledge/PartnerPriviledgeGroup';
+import ShipmentOrder from '../../views/TMS/ShipmentOrder';
+
 
 import NotFound from '../NotFound'
 
@@ -110,6 +112,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/ShipmentOrderType" component={ShipmentOrderType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentOrderStep" component={ShipmentOrderStep} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerPriviledgeGroup" component={PartnerPriviledgeGroup} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
                                 
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} />
 
