@@ -14,7 +14,7 @@ class ElementTextCom extends Component {
             this.props.onValueChange(e.target.name, e.target.value);
     }
     render() {
-        let { Name, label, placeholder, icon, colspan, value, readonly, ValidatonErrorMessage } = this.props;
+        let { name, label, placeholder, icon, colspan, value, readonly, ValidatonErrorMessage } = this.props;
         let className = "form-control form-control-sm";
         let colspanClassName = "col-md-3";
         if (colspan) {
@@ -33,7 +33,8 @@ class ElementTextCom extends Component {
                     {labeldiv}
                     <input type="text"
                         className={className}
-                        name={Name}
+                        ref={this.props.inputRef}
+                        name={name}
                         onChange={this.handleValueChange}
                         readOnly={readonly}
                         defaultValue={value}
@@ -210,7 +211,7 @@ class ElementComboBoxCom extends Component {
                 values.push(selectedOption[i].value);
             }
         } else {
-            return selectedOption;
+            return selectedOption.value;
         }
 
         return values;
@@ -221,7 +222,7 @@ class ElementComboBoxCom extends Component {
             this.props.onValueChange(this.props.name, comboValues);
     }
     render() {
-        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, listoption,placeholder} = this.props;
+        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, listoption, placeholder } = this.props;
         let className = "form-control form-control-sm";
         let colspanClassName = "col-md-3";
         if (colspan) {
@@ -231,16 +232,20 @@ class ElementComboBoxCom extends Component {
         if (label) {
             labeldiv = <label className="col-form-label" htmlFor="input-normal">{label}</label>;
         }
+
         if (ValidatonErrorMessage && ValidatonErrorMessage != "") {
+
             className += " is-invalid";
         }
         return (
             <div className={colspanClassName}  >
-                <div className="form-group form-group-input form-group-input-select">
+                <div className="input-group">
                     {labeldiv}
+                    <div className="group-text-select">
                     <Select
                         value={this.state.selectedOption}
                         name={name}
+                        ref={this.props.inputRef}
                         onChange={this.handleValueChange}
                         options={listoption}
                         isMulti={isMultiSelect}
@@ -248,6 +253,8 @@ class ElementComboBoxCom extends Component {
                         placeholder={placeholder}
                         className="select"
                     />
+                      <div className="invalid-feedback">{ValidatonErrorMessage}</div>
+                      </div>
                 </div>
             </div>
         );
