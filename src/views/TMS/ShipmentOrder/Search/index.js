@@ -159,54 +159,102 @@ class SearchCom extends React.Component {
                 icon: "",
                 validatonList: ["required"]
             },
-            // {
-            //     type: "text",
-            //     name: "txtName",
-            //     label: "",
-            //     value: "",
-            //     placeholder: "Name",
-            //     icon: "",
-            //     validatonList: ["required"]
-            // },
-            // {
-            //     type: "ComboBox",
-            //     name: "cbContryid",
-            //     label: "",
-            //     value: -1,
-            //     isMultiSelect: true,
-            //     listoption: [
-            //         { value: 1, label: 'Việt Nam' },
-            //         { value: 2, label: 'Hoa kỳ' },
-            //         { value: 3, label: 'Trung Quốc' }
-            //     ]
-            // },
-            // {
-            //     type: "Datetime",
-            //     name: "dtDateget",
-            //     label: "",
-            //     value: "",
-            //     timeFormat:false,
-            //     dateFormat:"DD/MM/YYYY",
-            //     colspan:2,
-            //     validatonList: ["required"]
-            // },
             {
-                type: "DatetimeFromTo",
-                name: "dtfromDateget",
-                label: "Từ ngày-Đến ngày",
-                value: "",
-                nameOption: "dttoDateget",
-                labelOption: "",
-                valueOption: "",
-                timeFormat: false,
-                dateFormat: "DD/MM/YYYY",
+                type: "ComboBox",
+                name: "cbContryid",
+                label: "Công ty",
+                colspan:2,
+                value: -1,
+                isMultiSelect: false,
+                placeholder:"---Vui lòng chọn---",
+                listoption: [
+                    { value: -1, label: '---Vui lòng chọn---' },
+                    { value: 1, label: 'Việt Nam' },
+                    { value: 2, label: 'Hoa kỳ' },
+                    { value: 3, label: 'Trung Quốc' }
+                ]
             },
             {
-                type: "checkbox",
-                name: "chkIsActived",
-                label: "Nâng cao",
-                value: false
-            }
+                type: "Datetime",
+                name: "dtDategeto",
+                label: "Từ ngày",
+                value: "",
+                timeFormat:false,
+                dateFormat:"DD/MM/YYYY",
+                colspan:2,
+                validatonList: ["required"]
+            },
+            {
+                type: "Datetime",
+                name: "dtDategetfo",
+                label: "Đến ngày",
+                value: "",
+                timeFormat:false,
+                dateFormat:"DD/MM/YYYY",
+                colspan:2,
+                validatonList: ["required"]
+            },
+            {
+                type: "ComboBox",
+                name: "cbContryid",
+                label: "Tỉnh /thành phố",
+                colspan:2,
+                value: -1,
+                isMultiSelect: false,
+                placeholder:"---Vui lòng chọn---",
+                listoption: [
+                    { value: -1, label: '---Vui lòng chọn---' },
+                    { value: 1, label: 'Việt Nam' },
+                    { value: 2, label: 'Hoa kỳ' },
+                    { value: 3, label: 'Trung Quốc' }
+                ]
+            },
+            {
+                type: "ComboBox",
+                name: "cbContryid",
+                label: "Quận/huyện",
+                colspan:2,
+                value: -1,
+                isMultiSelect: false,
+                placeholder:"---Vui lòng chọn---",
+                listoption: [
+                    { value: -1, label: '---Vui lòng chọn---' },
+                    { value: 1, label: 'Việt Nam' },
+                    { value: 2, label: 'Hoa kỳ' },
+                    { value: 3, label: 'Trung Quốc' }
+                ]
+            },
+            {
+                type: "ComboBox",
+                name: "cbContryid",
+                label: "Kho giao",
+                colspan:2,
+                value: -1,
+                isMultiSelect: false,
+                placeholder:"---Vui lòng chọn---",
+                listoption: [
+                    { value: -1, label: '---Vui lòng chọn---' },
+                    { value: 1, label: 'Việt Nam' },
+                    { value: 2, label: 'Hoa kỳ' },
+                    { value: 3, label: 'Trung Quốc' }
+                ]
+            },
+            {
+                type: "ComboBox",
+                name: "cbContryid",
+                label: "Trạng thái",
+                colspan:2,
+                value: -1,
+                isMultiSelect: false,
+                placeholder:"---Vui lòng chọn---",
+                listoption: [
+                    { value: -1, label: '---Vui lòng chọn---' },
+                    { value: 1, label: 'Việt Nam' },
+                    { value: 2, label: 'Hoa kỳ' },
+                    { value: 3, label: 'Trung Quốc' }
+                ]
+            },
+           
 
         ];
         const SearchMLObjectDefinition = [

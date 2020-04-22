@@ -175,7 +175,7 @@ export default class SearchForm extends Component {
 
                 <div className="col-md-2 item">
                     <div className="btnSearch">
-                        <button className="btn btn-primary" type="submit">{cssSearchButton}
+                        <button className="btn btn-primary" type="submit">
                             <span className="fa fa-search"> Tìm Kiếm</span>
                         </button>
                     </div>

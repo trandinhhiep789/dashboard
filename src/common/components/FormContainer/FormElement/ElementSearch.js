@@ -22,7 +22,7 @@ class ElementTextCom extends Component {
         }
         let labeldiv;
         if (label) {
-            labeldiv = <label  className="col-form-label" htmlFor="input-normal">{label}</label>;
+            labeldiv = <label className="col-form-label" htmlFor="input-normal">{label}</label>;
         }
         if (ValidatonErrorMessage && ValidatonErrorMessage != "") {
             className += " is-invalid";
@@ -73,7 +73,7 @@ class ElementTextdropdownCom extends Component {
         }
         let labeldiv;
         if (label) {
-            labeldiv = <label  className="col-form-label" htmlFor="input-normal">{label}</label>;
+            labeldiv = <label className="col-form-label" htmlFor="input-normal">{label}</label>;
         }
         if (ValidatonErrorMessage && ValidatonErrorMessage != "") {
             className += " is-invalid";
@@ -121,7 +121,7 @@ class ElementCheckboxCom extends Component {
             this.props.onValueChange(e.target.name, e.target.value);
     }
     render() {
-        let { name, label, value ,colspan} = this.props;
+        let { name, label, value, colspan } = this.props;
         let colspanClassName = "col-md-1";
         if (colspan) {
             colspanClassName = "col-md-" + this.props.colspan;
@@ -154,7 +154,7 @@ class ElementCheckLDivboxCom extends Component {
             this.props.onValueChange(e.target.name, e.target.value);
     }
     render() {
-        let { name, label, value ,colspan} = this.props;
+        let { name, label, value, colspan } = this.props;
         let colspanClassName = "col-md-4";
         if (colspan) {
             colspanClassName = "col-md-" + this.props.colspan;
@@ -166,9 +166,9 @@ class ElementCheckLDivboxCom extends Component {
         }
         return (
             <div className={colspanClassName}  >
-                
+
                 <div className="custom-control custom-checkbox">
-                {labeldiv}
+                    {labeldiv}
                     <input type="checkbox" id="search-avd" className="custom-control-input" defaultChecked />
                 </div>
             </div>
@@ -221,15 +221,15 @@ class ElementComboBoxCom extends Component {
             this.props.onValueChange(this.props.name, comboValues);
     }
     render() {
-        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, listoption } = this.props;
-        let className = "form-control";
+        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, listoption,placeholder} = this.props;
+        let className = "form-control form-control-sm";
         let colspanClassName = "col-md-3";
         if (colspan) {
             colspanClassName = "col-md-" + this.props.colspan;
         }
         let labeldiv;
         if (label) {
-            labeldiv = <label htmlFor="input-normal">{label}</label>;
+            labeldiv = <label className="col-form-label" htmlFor="input-normal">{label}</label>;
         }
         if (ValidatonErrorMessage && ValidatonErrorMessage != "") {
             className += " is-invalid";
@@ -237,6 +237,7 @@ class ElementComboBoxCom extends Component {
         return (
             <div className={colspanClassName}  >
                 <div className="form-group form-group-input form-group-input-select">
+                    {labeldiv}
                     <Select
                         value={this.state.selectedOption}
                         name={name}
@@ -244,7 +245,7 @@ class ElementComboBoxCom extends Component {
                         options={listoption}
                         isMulti={isMultiSelect}
                         isSearchable={true}
-                        placeholder={"----Chọn -----"}
+                        placeholder={placeholder}
                         className="select"
                     />
                 </div>
@@ -320,7 +321,7 @@ class ElementDatetimeFromToCom extends Component {
         }
         let labeldiv;
         if (label) {
-            labeldiv = <label  className="col-form-label" htmlFor="input-normal">{label}</label>;
+            labeldiv = <label className="col-form-label" htmlFor="input-normal">{label}</label>;
         }
         if (ValidatonErrorMessage && ValidatonErrorMessage != "") {
             className += " is-invalid";
@@ -363,5 +364,5 @@ class ElementDatetimeFromToCom extends Component {
 }
 const ElementDatetimeFromTo = connect(null, null)(ElementDatetimeFromToCom);
 
-export default { ElementText, ElementTextdropdown, ElementCheckbox, ElementComboBox, ElementDatetime, ElementDatetimeFromTo,ElementCheckLDivbox };
+export default { ElementText, ElementTextdropdown, ElementCheckbox, ElementComboBox, ElementDatetime, ElementDatetimeFromTo, ElementCheckLDivbox };
 
