@@ -164,15 +164,14 @@ class SearchCom extends React.Component {
                 label: "Công ty",
                 colspan:2,
                 value: -1,
-                isMultiSelect: false,
+                isMultiSelect: true,
                 validatonList: ["Comborequired"],
                 placeholder:"---Vui lòng chọn---",
-                listoption: [
-                    { value: -1, label: '---Vui lòng chọn---' },
-                    { value: 1, label: 'Việt Nam' },
-                    { value: 2, label: 'Hoa kỳ' },
-                    { value: 3, label: 'Trung Quốc' }
-                ]
+                listoption: [],
+                IsAutoLoadItemFromCache: true,
+                LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
+                ValueMember: "ProvinceID",
+                NameMember: "ProvinceName"
                 
             },
             // {

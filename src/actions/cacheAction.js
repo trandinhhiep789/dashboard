@@ -63,7 +63,7 @@ export function callGetCache(cacheKeyID) {
                 Message: "Đang gọi cache"
             };
         }
-
+        debugger;
         const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
         return db.get(cacheKeyID).then((result) => {
             if (result != null) {

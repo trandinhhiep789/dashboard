@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Datetime from 'react-datetime';
 import Select from 'react-select';
+import { callGetCache } from "../../../../actions/cacheAction";
 
 class ElementTextCom extends Component {
     constructor(props) {
@@ -202,6 +203,33 @@ class ElementComboBoxCom extends Component {
         }
         return selectedOption;
     }
+    componentDidMount() {
+        let { listoption,IsAutoLoadItemFromCache,LoadItemCacheKeyID,ValueMember,NameMember} = this.props;
+        // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
+        if (IsAutoLoadItemFromCache) {
+            this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
+                //  console.log("this.props.isautoloaditemfromcach2: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                listoption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                   
+
+                        result.ResultObject.CacheData.map((cacheItem) => {
+                            listOption.push({ value: cacheItem[ValueMember], label: cacheItem[NameMember] });
+                        }
+                        );
+                        this.setState({ ListOption: listoption });
+                }
+                else {
+                    this.setState({ ListOption: listoption });
+                }
+                //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+            });
+        }
+        else {
+            //console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
+            this.setState({ ListOption: listoption });
+        }
+    }
     getComboValue(selectedOption) {
         let values = [];
         if (selectedOption == null)
@@ -222,7 +250,7 @@ class ElementComboBoxCom extends Component {
             this.props.onValueChange(this.props.name, comboValues);
     }
     render() {
-        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, listoption, placeholder } = this.props;
+        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder } = this.props;
         let className = "form-control form-control-sm";
         let colspanClassName = "col-md-3";
         if (colspan) {
@@ -239,15 +267,14 @@ class ElementComboBoxCom extends Component {
         }
         return (
             <div className={colspanClassName}  >
-                <div className="input-group">
+                 <div className="form-group form-group-input form-group-input-select">
                     {labeldiv}
-                    <div className="group-text-select">
                     <Select
                         value={this.state.selectedOption}
                         name={name}
                         ref={this.props.inputRef}
                         onChange={this.handleValueChange}
-                        options={listoption}
+                        options={this.state.ListOption}
                         isMulti={isMultiSelect}
                         isSearchable={true}
                         placeholder={placeholder}
@@ -255,12 +282,19 @@ class ElementComboBoxCom extends Component {
                     />
                       <div className="invalid-feedback">{ValidatonErrorMessage}</div>
                       </div>
-                </div>
             </div>
         );
     }
 }
-const ElementComboBox = connect(null, null)(ElementComboBoxCom);
+
+const mapDispatchToProps = dispatch => {
+    return {
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
+        }
+    }
+}
+const ElementComboBox = connect(null, mapDispatchToProps)(ElementComboBoxCom);
 
 class ElementDatetimeCom extends Component {
     constructor(props) {
