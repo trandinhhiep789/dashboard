@@ -17,6 +17,7 @@ input {
 }
 
 .form-group {
+    margin-bottom: 0.5rem !important;
     &.form-group-input {
         .custom-control {
             min-width: 18px;
@@ -157,6 +158,9 @@ input {
                             display: block;
                             position: absolute;
                             top: 35px;
+                            @media (max-width: 768px) {
+                                position: static;
+                            }
                         }
                     }
                 }
@@ -167,6 +171,9 @@ input {
 
                     .input-date {
                         width: 45%;
+                        @media (max-width: 480px) {
+                            width: 100%;
+                        }
                     }
 
                     .date-to {
@@ -174,6 +181,9 @@ input {
                         font-size: 12px;
                         text-align: center;
                         line-height: 30px;
+                        @media (max-width: 480px) {
+                            width: 100%;
+                        }
                     }
 
                     .from-date {}
@@ -191,6 +201,9 @@ input {
                             display: block;
                             position: absolute;
                             top: 35px;
+                            @media (max-width: 768px) {
+                                position: static;
+                            }
                         }
                     }
                 }
