@@ -221,7 +221,7 @@ class ElementComboBoxCom extends Component {
 
 
                     result.ResultObject.CacheData.map((cacheItem) => {
-                        listOption.push({ value: cacheItem[ValueMember], label: cacheItem[NameMember] });
+                        listoption.push({ value: cacheItem[ValueMember], label: cacheItem[NameMember] });
                     }
                     );
                     this.setState({ ListOption: listoption });
