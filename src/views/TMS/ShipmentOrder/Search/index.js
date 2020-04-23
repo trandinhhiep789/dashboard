@@ -174,86 +174,103 @@ class SearchCom extends React.Component {
                 NameMember: "ProvinceName"
                 
             },
-            // {
-            //     type: "Datetime",
-            //     name: "dtDategeto",
-            //     label: "Từ ngày",
-            //     value: "",
-            //     timeFormat:false,
-            //     dateFormat:"DD/MM/YYYY",
-            //     colspan:2,
-            //     validatonList: ["required"]
-            // },
-            // {
-            //     type: "Datetime",
-            //     name: "dtDategetfo",
-            //     label: "Đến ngày",
-            //     value: "",
-            //     timeFormat:false,
-            //     dateFormat:"DD/MM/YYYY",
-            //     colspan:2,
-            //     validatonList: ["required"]
-            // },
-            // {
-            //     type: "ComboBox",
-            //     name: "cbContryid56",
-            //     label: "Tỉnh /thành phố",
-            //     colspan:2,
-            //     value: -1,
-            //     isMultiSelect: false,
-            //     placeholder:"---Vui lòng chọn---",
-            //     listoption: [
-            //         { value: -1, label: '---Vui lòng chọn---' },
-            //         { value: 1, label: 'Việt Nam' },
-            //         { value: 2, label: 'Hoa kỳ' },
-            //         { value: 3, label: 'Trung Quốc' }
-            //     ]
-            // },
-            // {
-            //     type: "ComboBox",
-            //     name: "cbContryid14",
-            //     label: "Quận/huyện",
-            //     colspan:2,
-            //     value: -1,
-            //     isMultiSelect: false,
-            //     placeholder:"---Vui lòng chọn---",
-            //     listoption: [
-            //         { value: -1, label: '---Vui lòng chọn---' },
-            //         { value: 1, label: 'Việt Nam' },
-            //         { value: 2, label: 'Hoa kỳ' },
-            //         { value: 3, label: 'Trung Quốc' }
-            //     ]
-            // },
-            // {
-            //     type: "ComboBox",
-            //     name: "cbContryid12",
-            //     label: "Kho giao",
-            //     colspan:2,
-            //     value: -1,
-            //     isMultiSelect: false,
-            //     placeholder:"---Vui lòng chọn---",
-            //     listoption: [
-            //         { value: -1, label: '---Vui lòng chọn---' },
-            //         { value: 1, label: 'Việt Nam' },
-            //         { value: 2, label: 'Hoa kỳ' },
-            //         { value: 3, label: 'Trung Quốc' }
-            //     ]
-            // },
-            // {
-            //     type: "ComboBox",
-            //     name: "cbContryid1",
-            //     label: "Trạng thái",
-            //     colspan:2,
-            //     value: -1,
-            //     isMultiSelect: false,
-            //     placeholder:"---Vui lòng chọn---",
-            //     listoption: [
-            //         { value: -1, label: '---Vui lòng chọn---' },
-            //         { value: 1, label: 'Việt Nam' },
-            //         { value: 2, label: 'Hoa kỳ' },
-            //         { value: 3, label: 'Trung Quốc' }
-            //     ]
-            // },
+            {
+                type: "Datetime",
+                name: "dtDategeto",
+                label: "Từ ngày",
+                value: "",
+                timeFormat:false,
+                dateFormat:"DD/MM/YYYY",
+                colspan:2,
+                validatonList: ["required"]
+            },
+            {
+                type: "Datetime",
+                name: "dtDategetfo",
+                label: "Đến ngày",
+                value: "",
+                timeFormat:false,
+                dateFormat:"DD/MM/YYYY",
+                colspan:2,
+                validatonList: ["required"]
+            },
+            {
+                type: "ComboBox",
+                name: "cbContryid56",
+                label: "Tỉnh /thành phố",
+                colspan:2,
+                value: -1,
+                isMultiSelect: false,
+                placeholder:"---Vui lòng chọn---",
+                listoption: [
+                    { value: -1, label: '---Vui lòng chọn---' },
+                    { value: 1, label: 'Việt Nam' },
+                    { value: 2, label: 'Hoa kỳ' },
+                    { value: 3, label: 'Trung Quốc' }
+                ]
+            },
+            {
+                type: "ComboBox",
+                name: "cbContryid14",
+                label: "Quận/huyện",
+                colspan:2,
+                value: -1,
+                isMultiSelect: false,
+                placeholder:"---Vui lòng chọn---",
+                listoption: [
+                    { value: -1, label: '---Vui lòng chọn---' },
+                    { value: 1, label: 'Việt Nam' },
+                    { value: 2, label: 'Hoa kỳ' },
+                    { value: 3, label: 'Trung Quốc' }
+                ]
+            },
+            {
+                type: "ComboBox",
+                name: "cbContryid12",
+                label: "Kho giao",
+                colspan:2,
+                value: -1,
+                isMultiSelect: false,
+                placeholder:"---Vui lòng chọn---",
+                listoption: [
+                    { value: -1, label: '---Vui lòng chọn---' },
+                    { value: 1, label: 'Việt Nam' },
+                    { value: 2, label: 'Hoa kỳ' },
+                    { value: 3, label: 'Trung Quốc' }
+                ]
+            },
+            {
+                type: "ComboBox",
+                name: "cbContryid1",
+                label: "Trạng thái",
+                colspan:2,
+                value: -1,
+                isMultiSelect: false,
+                placeholder:"---Vui lòng chọn---",
+                listoption: [
+                    { value: -1, label: '---Vui lòng chọn---' },
+                    { value: 1, label: 'Việt Nam' },
+                    { value: 2, label: 'Hoa kỳ' },
+                    { value: 3, label: 'Trung Quốc' }
+                ]
+            },
+            {
+                type: "DatetimeFromTo",
+                name: "dtfromDateget",
+                label: "",
+                value: "",
+                nameOption: "dttoDateget",
+                labelOption: "",
+                valueOption: "",
+                timeFormat: false,
+                dateFormat: "DD/MM/YYYY",
+            },
+            {
+                type: "checkbox",
+                name: "chkIsActived",
+                label: "Nâng cao",
+                value: false
+            }
            
 
         ];
