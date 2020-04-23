@@ -135,9 +135,16 @@ class ElementCheckboxCom extends Component {
         }
         return (
             <div className={colspanClassName}  >
-                <div className="custom-control custom-checkbox">
+                {/* <div className="custom-control custom-checkbox">
                     <input type="checkbox" id="search-avd" className="custom-control-input" defaultChecked />
                     {labeldiv}
+                </div> */}
+                <div class="form-group form-group-input">
+                    <label>&nbsp;</label>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" id="search-avd" className="custom-control-input" defaultChecked />
+                        {labeldiv}
+                    </div>
                 </div>
             </div>
         );
@@ -204,20 +211,20 @@ class ElementComboBoxCom extends Component {
         return selectedOption;
     }
     componentDidMount() {
-        let { listoption,IsAutoLoadItemFromCache,LoadItemCacheKeyID,ValueMember,NameMember} = this.props;
+        let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember } = this.props;
         // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
         if (IsAutoLoadItemFromCache) {
             this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
                 //  console.log("this.props.isautoloaditemfromcach2: ",this.props.loaditemcachekeyid, this.state.Listoption);
                 listoption = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
-                   
 
-                        result.ResultObject.CacheData.map((cacheItem) => {
-                            listOption.push({ value: cacheItem[ValueMember], label: cacheItem[NameMember] });
-                        }
-                        );
-                        this.setState({ ListOption: listoption });
+
+                    result.ResultObject.CacheData.map((cacheItem) => {
+                        listOption.push({ value: cacheItem[ValueMember], label: cacheItem[NameMember] });
+                    }
+                    );
+                    this.setState({ ListOption: listoption });
                 }
                 else {
                     this.setState({ ListOption: listoption });
@@ -267,7 +274,7 @@ class ElementComboBoxCom extends Component {
         }
         return (
             <div className={colspanClassName}  >
-                 <div className="form-group form-group-input form-group-input-select">
+                <div className="form-group form-group-input form-group-input-select">
                     {labeldiv}
                     <Select
                         value={this.state.selectedOption}
@@ -280,8 +287,8 @@ class ElementComboBoxCom extends Component {
                         placeholder={placeholder}
                         className="select"
                     />
-                      <div className="invalid-feedback">{ValidatonErrorMessage}</div>
-                      </div>
+                    <div className="invalid-feedback">{ValidatonErrorMessage}</div>
+                </div>
             </div>
         );
     }
@@ -361,6 +368,7 @@ class ElementDatetimeFromToCom extends Component {
             colspanClassName = "col-md-" + this.props.colspan;
         }
         let labeldiv;
+        console.log("zzzz",label)
         if (label) {
             labeldiv = <label className="col-form-label" htmlFor="input-normal">{label}</label>;
         }
@@ -369,7 +377,7 @@ class ElementDatetimeFromToCom extends Component {
         }
         return (
             <div className={colspanClassName}  >
-                <div className="input-group">
+                {/* <div className="form-group form-group-input form-group-input-date form-group-input-dates">
                     {labeldiv}
                     <div className="input-group ">
                         <div className="rdt rdtOpen">
@@ -386,6 +394,36 @@ class ElementDatetimeFromToCom extends Component {
                         </div>
                         <span className="date-to">To</span>
                         <div className="rdt rdtOpen">
+                            <Datetime
+                                className={className}
+                                name={nameOption}
+                                onChange={this.handleValueChange}
+                                onChange={(moment) => this.handleValueChange(name, moment)}
+                                defaultValue={valueOption}
+                                timeFormat={timeFormat}
+                                dateFormat={dateFormat} >
+                            </Datetime>
+                            <div className="invalid-feedback">{ValidatonErrorMessage}</div>
+                        </div>
+                    </div>
+                </div> */}
+                <div className="form-group form-group-input form-group-input-date form-group-input-dates">
+                    {labeldiv}
+                    <div className="input-group">
+                        <div className="input-date from-date">
+                            <Datetime
+                                className={className}
+                                name={name}
+                                onChange={this.handleValueChange}
+                                onChange={(moment) => this.handleValueChange(name, moment)}
+                                defaultValue={value}
+                                timeFormat={timeFormat}
+                                dateFormat={dateFormat} >
+                            </Datetime>
+                            <div className="invalid-feedback">{ValidatonErrorMessage}</div>
+                        </div>
+                        <span className="date-to">To</span>
+                        <div className="input-date to-date">
                             <Datetime
                                 className={className}
                                 name={nameOption}

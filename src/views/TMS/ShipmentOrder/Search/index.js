@@ -257,7 +257,7 @@ class SearchCom extends React.Component {
             {
                 type: "DatetimeFromTo",
                 name: "dtfromDateget",
-                label: "",
+                label: "Ngày",
                 value: "",
                 nameOption: "dttoDateget",
                 labelOption: "",
