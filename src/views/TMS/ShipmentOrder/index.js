@@ -18,9 +18,9 @@ class ShipmentOrderCom extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/ShipmentOrder/Detail" component={Detail} />
+                {/* <Route exact path="/ShipmentOrder/Detail" component={Detail} /> */}
                 <Route exact path="/ShipmentOrder" component={Search} />
-                {/* <Route exact path="/ShipmentOrder/Detail/:id" component={Detail} /> */}
+                <Route exact path="/ShipmentOrder/Detail/:id" component={Detail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );

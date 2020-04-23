@@ -258,7 +258,7 @@ class ElementComboBoxCom extends Component {
     }
     render() {
         let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder } = this.props;
-        let className = "form-control form-control-sm";
+        let className = "select";
         let colspanClassName = "col-md-3";
         if (colspan) {
             colspanClassName = "col-md-" + this.props.colspan;
@@ -285,10 +285,9 @@ class ElementComboBoxCom extends Component {
                         isMulti={isMultiSelect}
                         isSearchable={true}
                         placeholder={placeholder}
-                        className="select is-invalid"
+                        className={className}
                     />
-                    {/* <div className="invalid-feedback">{ValidatonErrorMessage}</div> */}
-                    <div className="invalid-feedback">Vui lòng chọn</div>
+                    <div className="invalid-feedback">{ValidatonErrorMessage}</div>
                 </div>
             </div>
         );

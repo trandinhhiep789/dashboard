@@ -452,62 +452,6 @@ export const MLObjectDefinition = [
 
 export const DataGridColumnList = [
     {
-        Name: "chkSelect",
-        Type: "checkbox",
-        Caption: "Chọn",
-        DataSourceMember: "ShipmentOrderID",
-        Width: 60
-    },
-    {
-        Name: "ShipmentOrderID",
-        Type: "text",
-        Caption: "Mã bước xử lý yêu cầu vận chuyển",
-        DataSourceMember: "ShipmentOrderID",
-        Width: 250
-    },
-    {
-        Name: "ShipmentOrderName",
-        Type: "text",
-        Caption: "Tên bước xử lý yêu cầu vận chuyển",
-        DataSourceMember: "ShipmentOrderName",
-        Width: 250
-    },
-    {
-        Name: "Description",
-        Type: "text",
-        Caption: "Mô tả",
-        DataSourceMember: "Description",
-        Width: 250
-    },
-    {
-        Name: "IsActived",
-        Type: "checkicon",
-        Caption: "Kích hoạt",
-        DataSourceMember: "IsActived",
-        Width: 80
-    },
-    // {
-    //     Name: "IsSystem",
-    //     Type: "checkicon",
-    //     Caption: "Hệ thống",
-    //     DataSourceMember: "IsSystem",
-    //     Width: 200
-    // },
-    {
-        Name: "CreatedDate",
-        Type: "date",
-        Caption: "Ngày tạo",
-        DataSourceMember: "CreatedDate",
-        Width: 200
-    },
-    {
-        Name: "CreatedUserFullName",
-        Type: "text",
-        Caption: "Người tạo",
-        DataSourceMember: "CreatedUserFullName",
-        Width: 200
-    },
-    {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
@@ -515,5 +459,62 @@ export const DataGridColumnList = [
         Width: 200,
         Link: "/ShipmentOrder/Edit/",
         LinkText: "Chỉnh sửa"
+    },
+    {
+        Name: "ShipmentOrderID",
+        Type: "texttolink",
+        Caption: "Mã yêu cầu",
+        DataSourceMember: "ShipmentOrderID",
+        Link: "/ShipmentOrder/Detail/",
+        Width: 250
+    },
+    {
+        Name: "ShipmentOrderName",
+        Type: "text",
+        Caption: "Ngày yêu cầu",
+        DataSourceMember: "ShipmentOrderName",
+        Width: 250
+    },
+    {
+        Name: "Description",
+        Type: "text",
+        Caption: "Kho gửi",
+        DataSourceMember: "Description",
+        Width: 250
+    },
+    {
+        Name: "Description",
+        Type: "text",
+        Caption: "Người nhận",
+        DataSourceMember: "Description",
+        Width: 250
+    },
+    {
+        Name: "Description",
+        Type: "text",
+        Caption: "Địa chỉ nhận",
+        DataSourceMember: "Description",
+        Width: 250
+    },
+    {
+        Name: "Description",
+        Type: "text",
+        Caption: "Loại sản phẩm",
+        DataSourceMember: "Description",
+        Width: 250
+    },
+    {
+        Name: "CreatedUserFullName",
+        Type: "text",
+        Caption: "Số kiện",
+        DataSourceMember: "CreatedUserFullName",
+        Width: 200
+    },
+    {
+        Name: "CreatedUserFullName",
+        Type: "text",
+        Caption: "Trạng thái",
+        DataSourceMember: "CreatedUserFullName",
+        Width: 200
     }
 ];
