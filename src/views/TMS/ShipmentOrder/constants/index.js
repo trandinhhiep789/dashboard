@@ -487,7 +487,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Người nhận",
         DataSourceMember: "ReceiverFullName",
-        Width: 250
+        Width: 100
     },
     {
         Name: "ReceiverFullAddress",
@@ -501,7 +501,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Loại sản phẩm",
         DataSourceMember: "ShipmentGoodsTypeName",
-        Width: 250
+        Width: 150
     },
     {
         Name: "NumberOfPackages",
