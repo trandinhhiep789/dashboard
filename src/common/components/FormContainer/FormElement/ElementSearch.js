@@ -285,9 +285,10 @@ class ElementComboBoxCom extends Component {
                         isMulti={isMultiSelect}
                         isSearchable={true}
                         placeholder={placeholder}
-                        className="select"
+                        className="select is-invalid"
                     />
-                    <div className="invalid-feedback">{ValidatonErrorMessage}</div>
+                    {/* <div className="invalid-feedback">{ValidatonErrorMessage}</div> */}
+                    <div className="invalid-feedback">Vui lòng chọn</div>
                 </div>
             </div>
         );
