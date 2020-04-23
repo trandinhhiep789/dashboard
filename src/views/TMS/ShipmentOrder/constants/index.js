@@ -453,10 +453,10 @@ export const MLObjectDefinition = [
 export const DataGridColumnList = [
     {
         Name: "Action",
-        Type: "link",
+        Type: "editnew",
         Caption: "Tác vụ",
         DataSourceMember: "ShipmentOrderID",
-        Width: 200,
+        Width: 70,
         Link: "/ShipmentOrder/Edit/",
         LinkText: "Chỉnh sửa"
     },
@@ -466,55 +466,55 @@ export const DataGridColumnList = [
         Caption: "Mã yêu cầu",
         DataSourceMember: "ShipmentOrderID",
         Link: "/ShipmentOrder/Detail/",
-        Width: 250
+        Width: 140
     },
     {
-        Name: "ShipmentOrderName",
-        Type: "text",
+        Name: "CreatedOrderTime",
+        Type: "date",
         Caption: "Ngày yêu cầu",
-        DataSourceMember: "ShipmentOrderName",
-        Width: 250
+        DataSourceMember: "CreatedOrderTime",
+        Width: 130
     },
     {
-        Name: "Description",
+        Name: "StoreName",
         Type: "text",
         Caption: "Kho gửi",
-        DataSourceMember: "Description",
+        DataSourceMember: "StoreName",
         Width: 250
     },
     {
-        Name: "Description",
+        Name: "ReceiverFullName",
         Type: "text",
         Caption: "Người nhận",
-        DataSourceMember: "Description",
+        DataSourceMember: "ReceiverFullName",
         Width: 250
     },
     {
-        Name: "Description",
+        Name: "ReceiverFullAddress",
         Type: "text",
         Caption: "Địa chỉ nhận",
-        DataSourceMember: "Description",
+        DataSourceMember: "ReceiverFullAddress",
         Width: 250
     },
     {
-        Name: "Description",
+        Name: "ShipmentGoodsTypeName",
         Type: "text",
         Caption: "Loại sản phẩm",
-        DataSourceMember: "Description",
+        DataSourceMember: "ShipmentGoodsTypeName",
         Width: 250
     },
     {
-        Name: "CreatedUserFullName",
+        Name: "NumberOfPackages",
         Type: "text",
         Caption: "Số kiện",
-        DataSourceMember: "CreatedUserFullName",
-        Width: 200
+        DataSourceMember: "NumberOfPackages",
+        Width: 70
     },
     {
-        Name: "CreatedUserFullName",
+        Name: "ShipmentOrderStatusName",
         Type: "text",
         Caption: "Trạng thái",
-        DataSourceMember: "CreatedUserFullName",
-        Width: 200
+        DataSourceMember: "ShipmentOrderStatusName",
+        Width: 150
     }
 ];
