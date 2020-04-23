@@ -196,11 +196,17 @@ export default class SearchForm extends Component {
         //this.renderTwoColumnForm();
         const listElement = this.props.listelement;
         let elmentRender = this.renderSearchForm();
+        let classNameCustom;
+        if(this.props.className== undefined && this.props.className==''){
+            classNameCustom= "col-lg-12 SearchForm";
+        }else{
+            classNameCustom= "col-lg-12 SearchForm "+ this.props.className;
+        }
         return (
             // <form action="" onSubmit={this.handleSearchSubmit}>
             //     {elmentRender}
             // </form>
-            <div className="col-lg-12 SearchForm">
+            <div className={classNameCustom}>
                 <form className="card" action="" onSubmit={this.handleSearchSubmit}>
                     <div className="card-body">
                         {elmentRender}
