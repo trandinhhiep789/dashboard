@@ -1,0 +1,83 @@
+.stepper {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    .stepper-item {
+        flex: 1;
+        position: relative;
+        padding-left: 8px;
+        padding-right: 8px;
+        .step-line {
+            top: 22px;
+            left: calc(-50% + 20px);
+            right: calc(50% + 20px);
+            position: absolute;
+            flex: 1 1 auto;
+            .stepConnector-line{
+                border: 0;
+                height: 3px;
+                border-radius: 1px;
+                background-color: #eaeaf0;
+                display: block;
+            }
+        }
+        .stepLabel {
+            flex-direction: column;
+            display: flex;
+            align-items: center;
+            .step-icon {
+                color: #fff;
+                width: 45px;
+                height: 45px;
+                display: flex;
+                z-index: 1;
+                align-items: center;
+                border-radius: 50%;
+                justify-content: center;
+                background-color: #ccc;
+                .icon{
+                    line-height: 35px;
+                    i{
+                        font-size: 20px;
+                    }
+                }
+            }
+            .step-label {
+                width: 100%;
+                margin-top: 15px;
+                text-align: center;
+                color: rgba(0, 0, 0, 0.87);
+                font-weight: 500;
+                font-size: 0.875rem;
+                font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+                line-height: 1.43;
+                letter-spacing: 0.01071em;
+            }
+            .step-time {
+                border: 1px dashed #bbbbbb;
+                padding: 0 20px;
+                margin-top: 15px;
+                text-align: center;
+                color: rgba(0, 0, 0, 0.87);
+                @media (max-width: 767px) {
+                   display: none;
+                }
+            }
+        }
+        &.step-completed{
+            .stepLabel {
+                .step-icon {
+                    background-image: linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%);
+                }
+                
+            }
+        }
+        &.step-waiting{
+            .step-line {
+                .stepConnector-line{
+                    background-image: linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%);
+                }
+            }
+        }
+    }
+}
