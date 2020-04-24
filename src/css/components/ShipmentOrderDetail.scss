@@ -1,0 +1,141 @@
+.page-detail {
+    .card {
+        margin-bottom: 15px;
+
+        .card-title {
+            padding: 6px 20px;
+        }
+
+        .col-form-label {
+            &.icon {
+                i {
+                    font-size: 20px;
+                }
+            }
+        }
+
+        .mapslink {
+            margin-left: 20px;
+            color: #0e82ff;
+            font-size: 12px;
+        }
+
+        .title {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .table {
+            tr {
+                .img-product {
+                    width: 100px;
+                    max-width: 100%;
+                }
+            }
+        }
+    }
+
+    .listpersonnel {
+        position: relative;
+        box-sizing: border-box;
+
+        .content {
+            -webkit-align-items: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            background-color: hsl(0, 0%, 100%);
+            border-color: hsl(0, 0%, 80%);
+            border-radius: 4px;
+            border-style: solid;
+            border-width: 1px;
+            cursor: default;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: space-between;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            min-height: 38px;
+            outline: 0 !important;
+            position: relative;
+            -webkit-transition: all 100ms;
+            transition: all 100ms;
+            box-sizing: border-box;
+
+            .list-item {
+                -webkit-align-items: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                display: -webkit-box;
+                display: -webkit-flex;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-flex: 1;
+                -ms-flex: 1;
+                flex: 1;
+                -webkit-flex-wrap: wrap;
+                -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+                padding: 2px 8px;
+                -webkit-overflow-scrolling: touch;
+                position: relative;
+                overflow: hidden;
+                box-sizing: border-box;
+
+                .item {
+                    background-color: hsl(0, 0%, 90%);
+                    border-radius: 2px;
+                    display: -webkit-box;
+                    display: -webkit-flex;
+                    display: -ms-flexbox;
+                    display: flex;
+                    margin: 2px;
+                    min-width: 0;
+                    box-sizing: border-box;
+
+                    .full-name {
+                        border-radius: 2px;
+                        color: hsl(0, 0%, 20%);
+                        font-size: 85%;
+                        overflow: hidden;
+                        padding: 3px;
+                        padding-left: 6px;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        box-sizing: border-box;
+                    }
+
+                    .icon-del {
+                        -webkit-align-items: center;
+                        -webkit-box-align: center;
+                        -ms-flex-align: center;
+                        align-items: center;
+                        border-radius: 2px;
+                        display: -webkit-box;
+                        display: -webkit-flex;
+                        display: -ms-flexbox;
+                        display: flex;
+                        padding-left: 7px;
+                        padding-right: 7px;
+                        font-size: 13px;
+                        box-sizing: border-box;
+                        
+                        &:hover{
+                            background-color: #FFBDAD;
+                            color: #DE350B;
+                            font-weight: 500;
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+}

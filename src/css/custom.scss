@@ -6,11 +6,16 @@
 @import '_notification';
 @import 'inputgroup';
 @import 'collapsible';
-@import "attached.scss";
+@import "./attached";
 @import "Images.scss";
 @import "editor.scss";
 @import "./table";
 @import "./page404";
+@import "./card";
+@import "./button";
+@import "./input";
+@import "./stepper";
+@import "./select";
 
 // Css menu trang sản phẩm
 .sidebar-left{
@@ -247,6 +252,9 @@
 }
 
 .col-form-label{
+    &.bold{
+        font-weight: 500;
+    }
     &.showMask {
         color: #f96868;
         font-size: 13px;

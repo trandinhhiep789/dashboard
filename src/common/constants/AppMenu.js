@@ -93,8 +93,7 @@ const AppMenu = [
             }
             
         ]
-    }
-    ,
+    },
     {
         MenuName: 'PartnerPriviledge',
         MenuTitle: 'Khai báo thông tin nhà cung cấp',
@@ -105,6 +104,21 @@ const AppMenu = [
                 MenuName: 'PartnerPriviledgeGroup',
                 MenuTitle: 'Danh sách nhóm quyền nhà cung cấp',
                 LinkTo: '/PartnerPriviledgeGroup',
+                MenuIcon: '',
+                SubMenu: []
+            }
+        ]
+    },
+    {
+        MenuName: 'ShipmentOrder',
+        MenuTitle: 'Vận chuyển',
+        LinkTo: '',
+        MenuIcon: '',
+        SubMenu: [
+            {
+                MenuName: 'ShipmentOrder',
+                MenuTitle: 'Danh sách yêu cầu vận chuyển',
+                LinkTo: '/ShipmentOrder',
                 MenuIcon: '',
                 SubMenu: []
             }
