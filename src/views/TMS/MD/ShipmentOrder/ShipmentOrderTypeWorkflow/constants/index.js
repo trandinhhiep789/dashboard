@@ -196,7 +196,7 @@ export const MLPieRequestType_WF_Permis = [
 
 export const InputNextColumnList = [
     {
-        Name: "chkNextShipmentOrderStep",
+        Name: "chkSelectNextShipmentOrderStep",
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "NextShipmentOrderStep",

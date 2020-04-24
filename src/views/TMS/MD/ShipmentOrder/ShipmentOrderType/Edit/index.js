@@ -52,7 +52,7 @@ class EditCom extends React.Component {
         this.callLoadData();
         // this.getCachePiePermission();
         // this.getCacheSysUser();
-        console.log("formdata", this.state.FormData);
+        //console.log("formdata", this.state.FormData);
     }
 
     addShipmentOrderTypeWorkflowPopup() {
@@ -102,7 +102,7 @@ class EditCom extends React.Component {
         //     }
         // }
         // dataSource = Object.assign({}, objPieRequestTypeWorkflow, { PieRequestType_WF_Permis: ListPieRequestType_WF_Permis })
-        
+        dataSource = objShipmentOrderTypeWorkflow;
         let totalStepCompletePercent = shipmentOrderTypeWorkflowNext.reduce((StepCompletePercent, rowItem) => {
             return StepCompletePercent += rowItem.StepCompletePercent
         }, 0);
@@ -112,7 +112,7 @@ class EditCom extends React.Component {
                 text: <ShipmentOrderTypeWorkflow
                     ShipmentOrderTypeWorkflow={shipmentOrderTypeWorkflowNext}
                     dataSource={dataSource}
-                    onAddPieRequestTypeWorkflowComplete={(data) => this.onWorkflowPopupSubmit(data)}
+                    onAddShipmentOrderTypeWorkflowComplete={(data) => this.onWorkflowPopupSubmit(data)}
                     // PiePermissionCache={this.state.PiePermissionCache}
                     // SysUserCache={this.state.SysUserCache}
                     IsUpdateData={true}
@@ -175,7 +175,7 @@ class EditCom extends React.Component {
         });
         const newFormData = Object.assign({}, this.state.FormData, { ShipmentOrderType: formDataTemp })
         this.setState({ FormData: newFormData });
-        console.log("this.state.FormData", this.state.FormData);
+        //console.log("this.state.FormData", this.state.FormData);
     }
 
     handleSubmitInsertLog(MLObject) {
@@ -187,7 +187,7 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        console.log("handleSubmit", MLObject, formData);
+        //console.log("handleSubmit", MLObject, formData);
         let param = Object.assign({}, this.state.FormData.ShipmentOrderType, { ShipmentOrderTypeWorkflow: this.state.FormData.ShipmentOrderTypeWorkflow });
         param.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         param.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
@@ -235,7 +235,7 @@ class EditCom extends React.Component {
     callLoadData() {
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("apiResult", apiResult);
+            //console.log("apiResult", apiResult);
             if (apiResult) {
                 if (apiResult.IsError) {
                     this.setState({ IsCallAPIError: apiResult.IsError });

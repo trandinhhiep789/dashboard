@@ -37,7 +37,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
             },
             //PieRequestType_WF_PermisData: [],
             ShipmentOrderType_WF_NextData: [],
-            PieRequestType_WF_Permis: [],
+            //PieRequestType_WF_Permis: [],
             //SelectedOption: [],
             NextShipmentOrderStepListOption: []
         };
@@ -159,6 +159,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         const ShipmentOrderType_WF_Next = this.state.FormData.ShipmentOrderType_WF_Next.filter(f => !list.includes(f[listDataSourceMember[0].key]));
         const FormData = Object.assign({}, this.state.FormData, { ShipmentOrderType_WF_Next });
         this.setState({ FormData });
+        //console.log("formData", this.state.FormData);
     }
 
     valueChangeInputGridNextData(elementdata, index) {
@@ -170,11 +171,11 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     }
 
     handleInputChangeList(formData, tabNameList, tabMLObjectDefinitionList) {
-        console.log("formData", formData);
-        console.log("formData", this.state.FormData);
+         //console.log("handleInputChangeList_wf", formData);
+        // console.log("formData", this.state.FormData);
         let keys = []
-        formData.ShipmentOrderType_WF_Next = this.state.FormData.ShipmentOrderType_WF_Next;
-        formData.PieRequestType_WF_Permis = this.state.PieRequestType_WF_PermisData;
+        //formData.ShipmentOrderType_WF_Next = this.state.FormData.ShipmentOrderType_WF_Next;
+        //formData.PieRequestType_WF_Permis = this.state.PieRequestType_WF_PermisData;
         if (this.state.FormData.ShipmentOrderTypeWorkflow) keys = Object.keys(this.state.FormData.ShipmentOrderTypeWorkflow);
         if (formData.ShipmentOrderTypeWorkflow) {
             Object.keys(formData.ShipmentOrderTypeWorkflow).map((key) => {
@@ -496,7 +497,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                 controltype="GridControl"
                                 colspan="12"
                                 isUseValueInputControl={true}
-                                IDSelectColumnName="chkNextShipmentOrderStep"
+                                IDSelectColumnName="chkSelectNextShipmentOrderStep"
                                 PKColumnName="NextShipmentOrderStep"
                                 MLObjectDefinition={GridMLObjectModelNext}
                                 listColumn={InputNextColumnList}
