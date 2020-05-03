@@ -518,3 +518,57 @@ export const DataGridColumnList = [
         Width: 150
     }
 ];
+
+
+export const DataGridColumnItemList = [
+
+    {
+        Name: "ProductName",
+        Type: "text",
+        Caption: "Tên sản phẩm",
+        DataSourceMember: "ProductName",
+        Width: 250
+    },
+    {
+        Name: "Quantity",
+        Type: "text",
+        Caption: "Kiện",
+        DataSourceMember: "Quantity",
+        Width: 100
+    },
+    {
+        Name: "Price",
+        Type: "text",
+        Caption: "Giá",
+        DataSourceMember: "Price",
+        Width: 250
+    },
+    {
+        Name: "Quantity",
+        Type: "text",
+        Caption: "Số lượng",
+        DataSourceMember: "Quantity",
+        Width: 150
+    },
+    {
+        Name: "QuantityUnitID",
+        Type: "text",
+        Caption: "Đơn vị tính",
+        DataSourceMember: "QuantityUnitID",
+        Width: 70
+    },
+    {
+        Name: "SizeItem",
+        Type: "text",
+        Caption: "Kích thước",
+        DataSourceMember: "SizeItem",
+        Width: 150
+    },
+    {
+        Name: "Weight",
+        Type: "text",
+        Caption: "Khối lượng",
+        DataSourceMember: "Weight",
+        Width: 150
+    }
+];
