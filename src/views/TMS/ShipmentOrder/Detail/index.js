@@ -82,7 +82,7 @@ class DetailCom extends React.Component {
 
                     <InfoCoordinator
                         ShipmentOrderID={this.props.match.params.id}
-                        InfoProduct={this.state.DataSource}
+                        InfoCoordinator={this.state.DataSource}
                     />
 
 
