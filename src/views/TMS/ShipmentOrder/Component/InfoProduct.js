@@ -125,8 +125,10 @@ class InfoProductCom extends Component {
                                                 <td>{item.SizeItem}</td>
                                                 <td>{item.Weight} kg</td>
                                             </tr>
+
                                         )
-                                    })}
+                                    })
+                                    }
 
                                 </tbody>
                             </table>
@@ -150,7 +152,7 @@ class InfoProductCom extends Component {
                                     </thead>
                                     <tbody>
                                         {this.state.ShipmentOrder.ShipmentOrder_MaterialList && this.state.ShipmentOrder.ShipmentOrder_MaterialList.map((item, index) => {
-                                            return (<tr>
+                                            return (<tr key={index}>
                                                 <td>
                                                     <div className="checkbox">
                                                         <label>
