@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
-import {
-    DataGridColumnItemList
-} from "../constants";
+import { ModalManager } from 'react-dynamic-modal';
+import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 class InfoCoordinatorCom extends Component {
     constructor(props) {
         super(props);
@@ -18,6 +16,32 @@ class InfoCoordinatorCom extends Component {
                 ShipmentOrder: nextProps.InfoCoordinator
             })
         }
+    }
+
+    onChangeInput(e) {
+        const name = e.target.name;
+        let value = e.target.value;
+     this.openViewStepModal()
+    }
+
+    openViewStepModal() {
+        // console.log("handleSubmitViewStep", this.state.lstPieRequest_WorkFlow);
+        ModalManager.open(
+            <ModelContainer
+                title="Chuyển bước xử lý"
+                name=""
+                content={"Cập nhật loại đơn vị thành công!"} onRequestClose={() => true}
+                onChangeModal={this.handleAttributeInsert}  >
+               
+              
+           
+
+            </ModelContainer>
+        );
+    }
+    handleAttributeInsert() {
+
+        ModalManager.close();
     }
 
     render() {
@@ -61,11 +85,11 @@ class InfoCoordinatorCom extends Component {
                             <label className="col-form-label bold">Trạng thái:</label>
                         </div>
                         <div className="form-group col-md-10">
-                            <select className="form-control form-control-sm">
-                                <option>Chờ giao</option>
-                                <option>Bắt đầu đi giao hàng</option>
-                                <option>Đến nhà khách</option>
-                            </select>
+                        <select className="form-control form-control-sm" value={this.state.ShipmentOrder.CurrentShipmentOrderStepID} onChange={this.onChangeInput.bind(this)} >
+                            {this.state.ShipmentOrder.ShipmentOrderType_WF_NextList && this.state.ShipmentOrder.ShipmentOrderType_WF_NextList.map(item =>
+                                <option key={item.NextShipmentOrderStep} value={item.NextShipmentOrderStep}>{item.NextShipmentOrderStepName}</option>
+                            )}
+                        </select>
                         </div>
                     </div>
                 </div>
