@@ -26,7 +26,8 @@ class ShipmentOrderTypeWFCom extends Component {
                                 <span className="stepLabel">
                                     <span className="step-icon">
                                         <div className="icon">
-                                            <i className="fa fa-check" aria-hidden="true"></i>
+                                        <i className='fa fa-check' aria-hidden='true'></i>
+                                            {/* {item.IconURL} */}
                                         </div>
                                     </span>
                                     <span className="step-label">{item.ShipmentOrderStepName}</span>

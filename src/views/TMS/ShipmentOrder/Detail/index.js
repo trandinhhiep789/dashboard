@@ -11,6 +11,8 @@ import ShipmentOrderDetail from '../Component/ShipmentOrderDetail.js';
 import ShipmentOrderTypeWF from '../Component/ShipmentOrderTypeWF.js';
 import ShipmentOrderAddress from '../Component/ShipmentOrderAddress.js';
 import InfoProduct from '../Component/InfoProduct.js';
+import InfoCoordinator from '../Component/InfoCoordinator.js';
+
 
 
 
@@ -78,55 +80,11 @@ class DetailCom extends React.Component {
                         InfoProduct={this.state.DataSource}
                     />
 
-                    <div className="card">
-                        <div className="card-title group-card-title">
-                            <h4 className="title">Thông tin điều phối</h4>
-                            <button className="btn btnEditCard">chỉnh sửa</button>
-                        </div>
-                        <div className="card-body">
-                            <div className="form-row">
-                                <div className="form-group col-md-2">
-                                    <label className="col-form-label bold">Nhân viên  giao:</label>
-                                </div>
-                                <div className="form-group col-md-10">
-                                    <div className="listpersonnel">
-                                        <div className="content">
-                                            <div className="list-item">
-                                                <div className="item">
-                                                    <span className="full-name">1125 - Võ Minh Hiếu </span>
-                                                    <span className="icon-del">x</span>
-                                                </div>
-                                                <div className="item">
-                                                    <span className="full-name">1125 - Võ Minh Hiếu </span>
-                                                    <span className="icon-del">x</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-2">
-                                    <label className="col-form-label bold">Ghi chú:</label>
-                                </div>
-                                <div className="form-group col-md-10">
-                                    <label className="col-form-label" >Gán nhân viên giao</label>
-                                </div>
-                            </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-2">
-                                    <label className="col-form-label bold">Trạng thái:</label>
-                                </div>
-                                <div className="form-group col-md-10">
-                                    <select className="form-control form-control-sm">
-                                        <option>Chờ giao</option>
-                                        <option>Bắt đầu đi giao hàng</option>
-                                        <option>Đến nhà khách</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <InfoCoordinator
+                        ShipmentOrderID={this.props.match.params.id}
+                        InfoProduct={this.state.DataSource}
+                    />
+
 
                     <div className="card">
                         <h4 className="card-title"><strong>Lịch sử xử lý</strong></h4>
