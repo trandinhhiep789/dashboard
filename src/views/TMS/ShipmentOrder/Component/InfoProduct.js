@@ -112,20 +112,23 @@ class InfoProductCom extends Component {
                                 </thead>
                                 <tbody>
                                     {this.state.ShipmentOrder.ShipmentOrder_ItemList && this.state.ShipmentOrder.ShipmentOrder_ItemList.map((item, index) => {
-                                        return (<tr key={index}>
-                                            <td>
-                                                <img src='/src/img/may-lanh-lg-v10enh-1-1-org.jpg' className="img-product" />
-                                            </td>
-                                            <td>{item.ProductName}</td>
-                                            <td>{item.PackingUnitName}</td>
-                                            <td>{item.Price}</td>
-                                            <td>{item.Quantity}</td>
-                                            <td>{item.QuantityUnitID}</td>
-                                            <td>{item.SizeItem}</td>
-                                            <td>{item.Weight} kg</td>
-                                        </tr>
+                                        return (
+                                            <tr key={index}>
+                                                <td>
+                                                    <img src='/src/img/may-lanh-lg-v10enh-1-1-org.jpg' className="img-product" />
+                                                </td>
+                                                <td>{item.ProductName}</td>
+                                                <td>{item.PackingUnitName}</td>
+                                                <td>{item.Price}</td>
+                                                <td>{item.Quantity}</td>
+                                                <td>{item.QuantityUnitID}</td>
+                                                <td>{item.SizeItem}</td>
+                                                <td>{item.Weight} kg</td>
+                                            </tr>
+
                                         )
-                                    })}
+                                    })
+                                    }
 
                                 </tbody>
                             </table>
@@ -149,7 +152,7 @@ class InfoProductCom extends Component {
                                     </thead>
                                     <tbody>
                                         {this.state.ShipmentOrder.ShipmentOrder_MaterialList && this.state.ShipmentOrder.ShipmentOrder_MaterialList.map((item, index) => {
-                                            return (<tr  key={index}>
+                                            return (<tr key={index}>
                                                 <td>
                                                     <div className="checkbox">
                                                         <label>

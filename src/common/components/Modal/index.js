@@ -42,10 +42,15 @@ export class MessageModal extends React.Component {
     }
 
     handleCLoseButton() {
+        document.body.classList.remove('modal-open');
         ModalManager.close();
         //console.log("MessageModal this.props:", this.props);
         if (this.props.onCloseModal != null)
             this.props.onCloseModal();
+    }
+
+    componentDidMount(){
+        document.body.classList.add('modal-open');
     }
 
     render() {

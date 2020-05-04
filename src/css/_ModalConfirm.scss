@@ -1,8 +1,20 @@
-.modalconfirmcus{
+.modalconfirmcus {
     .cRBgFJ {
         padding-bottom: 0;
     }
-    .modal-footer{
+
+    .modal-footer {
         border-top: 1px solid #f1f2f3;
+
+        button {
+            &.btn {
+                border-radius: 4px;
+                width: auto;
+                height: 30px;
+                font-size: 12px;
+                line-height: 20px;
+                padding: 5px 10px;
+            }
+        }
     }
 }
