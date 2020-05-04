@@ -22,19 +22,41 @@ class ShipmentOrderTypeWFCom extends Component {
                 <div className="card-body">
                     <div className="stepper">
                         {this.state.ShipmentOrderType_WF && this.state.ShipmentOrderType_WF.map((item, index) => {
-                            return (<div className="stepper-item" key={index}>
-                                <span className="stepLabel">
-                                    <span className="step-icon">
-                                        <div className="icon">
-                                        <i className='fa fa-check' aria-hidden='true'></i>
-                                            {/* {item.IconURL} */}
-                                        </div>
+                            if (index == 0) {
+                                return (<div className={(item.IsProcess == true ? "stepper-item step-completed" : "stepper-item")} key={index}>
+                                    <span className="stepLabel">
+                                        <span className="step-icon">
+                                            <div className="icon">
+                                                <i className={item.IconURL} aria-hidden='true'></i>
+                                                {/* {item.IconURL} */}
+                                            </div>
+                                        </span>
+                                        <span className="step-label">{item.ShipmentOrderStepName}</span>
+                                        <span className={(item.IsProcess == true ? "step-time" : "")}>{item.ProcessDate}</span>
                                     </span>
-                                    <span className="step-label">{item.ShipmentOrderStepName}</span>
-                                    <span className={(item.IsProcess ==true ? "step-time" : "")}>{item.ProcessDate}</span>
-                                </span>
-                            </div>
-                            )
+                                </div>
+                                )
+                            }
+                            else {
+                                return (<div className={(item.IsProcess == true ? "stepper-item step-completed" : "stepper-item")} key={index}>
+                                    <div className="step-line">
+                                        <span className="stepConnector-line"></span>
+                                    </div>
+                                    <span className="stepLabel">
+                                        <span className="step-icon">
+                                            <div className="icon">
+                                                <i className={item.IconURL} aria-hidden='true'></i>
+                                                {/* {item.IconURL} */}
+                                            </div>
+                                        </span>
+                                        <span className="step-label">{item.ShipmentOrderStepName}</span>
+                                        <span className={(item.IsProcess == true ? "step-time" : "")}>{item.ProcessDate}</span>
+                                    </span>
+                                </div>
+                                )
+
+                            }
+
                         })}
 
                     </div>
