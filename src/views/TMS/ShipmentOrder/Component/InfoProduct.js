@@ -117,7 +117,7 @@ class InfoProductCom extends Component {
                                                 <img src='/src/img/may-lanh-lg-v10enh-1-1-org.jpg' className="img-product" />
                                             </td>
                                             <td>{item.ProductName}</td>
-                                            <td>Mặc định</td>
+                                            <td>{item.PackingUnitName}</td>
                                             <td>{item.Price}</td>
                                             <td>{item.Quantity}</td>
                                             <td>{item.QuantityUnitID}</td>
@@ -148,42 +148,26 @@ class InfoProductCom extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                <div className="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" className="form-control form-control-sm" defaultChecked />
-                                                        <span className="cr">
-                                                            <i className="cr-icon fa fa-check"></i>
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Máy lạnh Panasonic Inverter 1 HP CU/CS-PU9WKH-8M</td>
-                                            <td>Mặc định</td>
-                                            <td>10,890,000</td>
-                                            <td>1</td>
-                                            <td>Cái</td>
-                                            <td>77.9 x 20.9 x 29 cm</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div className="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" className="form-control form-control-sm" />
-                                                        <span className="cr">
-                                                            <i className="cr-icon fa fa-check"></i>
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Máy lạnh Panasonic Inverter 1 HP CU/CS-PU9WKH-8M</td>
-                                            <td>Mặc định</td>
-                                            <td>10,890,000</td>
-                                            <td>1</td>
-                                            <td>Cái</td>
-                                            <td>77.9 x 20.9 x 29 cm</td>
-                                        </tr>
+                                        {this.state.ShipmentOrder.ShipmentOrder_MaterialList && this.state.ShipmentOrder.ShipmentOrder_MaterialList.map((item, index) => {
+                                            return (<tr>
+                                                <td>
+                                                    <div className="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" className="form-control form-control-sm" checked={item.IsSaleMaterial} />
+                                                            <span className="cr">
+                                                                <i className="cr-icon fa fa-check"></i>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>{item.ProductID}</td>
+                                                <td>{item.ProductName}</td>
+                                                <td>{item.Quantity}</td>
+                                                <td>{item.QuantityUnitID}</td>
+                                                <td>{item.Price}đ</td>
+                                                <td>{item.SaleOrderID}</td>
+                                            </tr>)
+                                        })}
                                     </tbody>
                                 </table>
                             </div>
