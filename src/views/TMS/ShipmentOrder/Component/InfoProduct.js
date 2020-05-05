@@ -123,7 +123,7 @@ class InfoProductCom extends Component {
                                                 <td>{item.Quantity}</td>
                                                 <td>{item.QuantityUnitID}</td>
                                                 <td>{item.SizeItem}</td>
-                                                <td>{item.Weight} kg</td>
+                                                <td>{item.Weight}kg</td>
                                             </tr>
 
                                         )

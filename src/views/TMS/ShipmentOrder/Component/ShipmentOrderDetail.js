@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { formatDate } from "../../../../common/library/CommonLib.js";
 class ShipmentOrderDetailCom extends Component {
     constructor(props) {
         super(props);
@@ -67,13 +68,13 @@ class ShipmentOrderDetailCom extends Component {
                             <label className="col-form-label bold">Ngày tạo yêu cầu:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label" >{this.state.ShipmentOrder.CreatedOrderTime}</label>
+                            <label className="col-form-label" >{formatDate(this.state.ShipmentOrder.CreatedOrderTime)}</label>
                         </div>
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Thời gian giao dự kiến:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label">{this.state.ShipmentOrder.ExpectedDeliveryDate}</label>
+                            <label className="col-form-label">{formatDate(this.state.ShipmentOrder.ExpectedDeliveryDate)}</label>
                         </div>
                     </div>
                     <div className="form-row">
@@ -81,13 +82,13 @@ class ShipmentOrderDetailCom extends Component {
                             <label className="col-form-label bold">Lấy hàng trong khoảng:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label" >{this.state.ShipmentOrder.EarliestPickUpTime}  - {this.state.ShipmentOrder.LatestPickUpTime}</label>
+                            <label className="col-form-label" >{formatDate(this.state.ShipmentOrder.EarliestPickUpTime)}  - {formatDate(this.state.ShipmentOrder.LatestPickUpTime)}</label>
                         </div>
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Giao trong khoảng:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label">{this.state.ShipmentOrder.EarliestDeliveryTime}  - {this.state.ShipmentOrder.LatestDeliveryTime}</label>
+                            <label className="col-form-label">{formatDate(this.state.ShipmentOrder.EarliestDeliveryTime)}  - {formatDate(this.state.ShipmentOrder.LatestDeliveryTime)}</label>
                         </div>
                     </div>
                 </div>

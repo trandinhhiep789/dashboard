@@ -13,6 +13,9 @@ import ShipmentOrderAddress from '../Component/ShipmentOrderAddress.js';
 import InfoProduct from '../Component/InfoProduct.js';
 import InfoCoordinator from '../Component/InfoCoordinator.js';
 import InfoHistoryWF from '../Component/InfoHistoryWF.js';
+import ShipmentOrderAttachment from '../Component/ShipmentOrderAttachment.js';
+import ShipmentOrderComment from '../Component/ShipmentOrderComment.js';
+
 
 
 
@@ -99,101 +102,21 @@ class DetailCom extends React.Component {
                         InfoCoordinator={this.state.DataSource}
                         onhandleChange={this.ChangeLoadData}
                     />
-                      <InfoHistoryWF
+
+                    <InfoHistoryWF
                         ShipmentOrderID={this.props.match.params.id}
                         InfoHistoryWF={this.state.ShipmentOrderType_WorkFlowList}
                     />
 
-                
+                    <ShipmentOrderAttachment
+                        ShipmentOrderID={this.props.match.params.id}
+                        ShipmentOrderAttachment={this.state.DataSource}
+                    />
 
-                    <div className='card'>
-                        <div className='card-body'>
-                            <b>Tập tin đính kèm:</b>
-                            <ul className="attachedList">
-                                <li>
-                                    <div className="addFile" >
-                                        <input multiple={true} name='file' type='file' id="files" hidden className='attachmentitem' />
-                                        <i>+</i>
-                                        <label htmlFor="files" className='attachmentitem'>Thêm file</label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="delIcon" >˟</div>
-                                    <a>
-                                        <div className="pull-left fileType"><span className="doctype docx"></span></div>
-                                        <div className="attachName">
-                                            <div className="hideCont bold">Baocao3032020</div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div className="delIcon" >˟</div>
-                                    <a >
-                                        <div className="pull-left fileType"><span className="doctype xlsx"></span></div>
-                                        <div className="attachName">
-                                            <div className="hideCont bold">Baocao3032020</div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div className="delIcon" >˟</div>
-                                    <a >
-                                        <div className="pull-left fileType"><span className="doctype zip"></span></div>
-                                        <div className="attachName">
-                                            <div className="hideCont bold">Baocao3032020</div>
-                                        </div>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className="card">
-                        <h4 className="card-title"><strong>Bình luận</strong></h4>
-                        <div className="card-body">
-                            <div className='form-row form-group lstcomment'>
-                                <div className='comment_account'>
-                                    <img className='comment_account_img' src='/src/img/avatar/1.jpg'></img>
-                                </div>
-                                <div className='comment_info'>
-                                    <span className='comment_account_name'>administrator</span>
-                                    <span className='comment_content'>Tạo yêu cầu</span>
-                                    <span className='comment_account_time'>27/022019 08:35</span>
-                                </div>
-                                <div className='form-row form-group'>
-                                    <div className='comment_account'>
-                                        <img className='comment_account_img' src='/src/img/avatar/1.jpg'></img>
-                                    </div>
-                                    <div className='comment_info'>
-                                        <span className='comment_account_name'>administrator</span>
-                                        <span className='comment_content'>Tạo yêu cầu 34123123</span>
-                                        <span className='comment_account_time'>27/022019 08:35</span>
-                                    </div>
-
-                                </div>
-                                <div className='form-row form-group'>
-                                    <div className='comment_account'>
-                                        <img className='comment_account_img' src='/src/img/avatar/1.jpg'></img>
-                                    </div>
-                                    <div className='comment_info'>
-                                        <span className='comment_account_name'>administrator</span>
-                                        <span className='comment_content'>Tạo yêu cầu 34123123</span>
-                                        <span className='comment_account_time'>27/022019 08:35</span>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div className='form-row comment'>
-                                <div className='comment_account'>
-                                    <img className='comment_account_img' src='/src/img/avatar/1.jpg'></img>
-                                </div>
-                                <div className='form-group col-md-11'>
-                                    <textarea value="" type='text' placeholder='Gửi bình luận' className='form-control' rows={3}></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <ShipmentOrderComment
+                        ShipmentOrderID={this.props.match.params.id}
+                        ShipmentOrderComment={this.state.DataSource}
+                    />
                 </div >
             );
         }

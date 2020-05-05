@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { formatDate } from "../../../../common/library/CommonLib.js";
 class ShipmentOrderTypeWFCom extends Component {
     constructor(props) {
         super(props);
@@ -31,7 +32,7 @@ class ShipmentOrderTypeWFCom extends Component {
                                             </div>
                                         </span>
                                         <span className="step-label">{item.ShipmentOrderStepName}</span>
-                                        <span className={(item.IsProcess == true ? "step-time" : "")}>{item.ProcessDate}</span>
+                                        <span className={(item.IsProcess == true ? "step-time" : "")}>{formatDate(item.ProcessDate)}</span>
                                     </span>
                                 </div>
                                 )
@@ -48,7 +49,7 @@ class ShipmentOrderTypeWFCom extends Component {
                                             </div>
                                         </span>
                                         <span className="step-label">{item.ShipmentOrderStepName}</span>
-                                        <span className={((item.IsProcess == true&& item.ShipmentOrderStepID<=this.props.CurrentShipmentOrderStepID) ? "step-time" : "")}>{((item.IsProcess == true&& item.ShipmentOrderStepID<=this.props.CurrentShipmentOrderStepID) ? item.ProcessDate : "")}</span>
+                                        <span className={((item.IsProcess == true&& item.ShipmentOrderStepID<=this.props.CurrentShipmentOrderStepID) ? "step-time" : "")}>{((item.IsProcess == true&& item.ShipmentOrderStepID<=this.props.CurrentShipmentOrderStepID) ? formatDate(item.ProcessDate) : "")}</span>
                                     </span>
                                 </div>
                                 )
