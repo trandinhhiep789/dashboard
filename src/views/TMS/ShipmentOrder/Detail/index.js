@@ -26,6 +26,7 @@ import {
 class DetailCom extends React.Component {
     constructor(props) {
         super(props);
+        this.ChangeLoadData = this.ChangeLoadData.bind(this);
         this.state = {
             DataSource: {},
             ShipmentOrderType_WorkFlowList: null,
@@ -56,10 +57,14 @@ class DetailCom extends React.Component {
             }
         });
     }
+    ChangeLoadData(ShipmentOrderData) {
+        this.setState({ DataSource: ShipmentOrderData });
+    }
+
 
 
     render() {
-        
+
         if (this.state.IsLoadDataComplete) {
             return (
                 <div className="col-lg-12 page-detail">
@@ -67,6 +72,7 @@ class DetailCom extends React.Component {
                     <ShipmentOrderTypeWF
                         ShipmentOrderID={this.props.match.params.id}
                         ShipmentOrderTypeWF={this.state.ShipmentOrderType_WorkFlowList}
+                        CurrentShipmentOrderStepID={this.state.DataSource.CurrentShipmentOrderStepID}
                     />
                     <ShipmentOrderDetail
                         ShipmentOrderID={this.props.match.params.id}
@@ -84,6 +90,7 @@ class DetailCom extends React.Component {
                     <InfoCoordinator
                         ShipmentOrderID={this.props.match.params.id}
                         InfoCoordinator={this.state.DataSource}
+                        onhandleChange={this.ChangeLoadData}
                     />
 
 

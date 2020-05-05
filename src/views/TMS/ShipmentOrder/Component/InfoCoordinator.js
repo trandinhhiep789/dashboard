@@ -32,6 +32,7 @@ class InfoCoordinatorCom extends Component {
         ShipmentOrder_WorkFlow.ShipmentOrderID = this.state.ShipmentOrder.ShipmentOrderID
         ShipmentOrder_WorkFlow.ShipmentOrderStepID = value
         ShipmentOrder_WorkFlow.ShipmentOrderStepName = label
+        ShipmentOrder_WorkFlow.Note = ""
         this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
             this.openViewStepModal();
         });
@@ -99,16 +100,17 @@ class InfoCoordinatorCom extends Component {
             });
         }
         else {
-            ShipmentOrder_WorkFlow.IsProcess=true;
-            ShipmentOrder_WorkFlow.ProcessUser=this.props.AppInfo.LoginInfo.Username;
-            ShipmentOrder_WorkFlow.CreatedOrderTime=this.state.ShipmentOrder.CreatedOrderTime;
-            ShipmentOrder_WorkFlow.CreatedUser=this.props.AppInfo.LoginInfo.Username;
+            ShipmentOrder_WorkFlow.IsProcess = true;
+            ShipmentOrder_WorkFlow.ProcessUser = this.props.AppInfo.LoginInfo.Username;
+            ShipmentOrder_WorkFlow.CreatedOrderTime = this.state.ShipmentOrder.CreatedOrderTime;
+            ShipmentOrder_WorkFlow.CreatedUser = this.props.AppInfo.LoginInfo.Username;
             this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/InsertWorkFlow', ShipmentOrder_WorkFlow).then((apiResult) => {
                 if (!apiResult.IsError) {
-                    
+                    if (this.props.onhandleChange != null)
+                        this.props.onhandleChange(apiResult.ResultObject)
                     ModalManager.close();
                 }
-             });
+            });
 
         }
 
