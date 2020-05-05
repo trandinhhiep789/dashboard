@@ -12,6 +12,8 @@ import ShipmentOrderTypeWF from '../Component/ShipmentOrderTypeWF.js';
 import ShipmentOrderAddress from '../Component/ShipmentOrderAddress.js';
 import InfoProduct from '../Component/InfoProduct.js';
 import InfoCoordinator from '../Component/InfoCoordinator.js';
+import InfoHistoryWF from '../Component/InfoHistoryWF.js';
+
 
 
 
@@ -30,6 +32,7 @@ class DetailCom extends React.Component {
         this.state = {
             DataSource: {},
             ShipmentOrderType_WorkFlowList: null,
+            CurrentShipmentOrderStepID: 0,
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsLoadDataComplete: false,
@@ -52,13 +55,17 @@ class DetailCom extends React.Component {
                 this.setState({
                     DataSource: apiResult.ResultObject,
                     ShipmentOrderType_WorkFlowList: apiResult.ResultObject.ShipmentOrderType_WorkFlowList,
+                    CurrentShipmentOrderStepID: apiResult.ResultObject.CurrentShipmentOrderStepID,
                     IsLoadDataComplete: true
                 });
             }
         });
     }
     ChangeLoadData(ShipmentOrderData) {
-        this.setState({ DataSource: ShipmentOrderData });
+        this.setState({
+            ShipmentOrderType_WorkFlowList: ShipmentOrderData.ShipmentOrderType_WorkFlowList,
+            CurrentShipmentOrderStepID: ShipmentOrderData.CurrentShipmentOrderStepID
+        });
     }
 
 
@@ -72,7 +79,7 @@ class DetailCom extends React.Component {
                     <ShipmentOrderTypeWF
                         ShipmentOrderID={this.props.match.params.id}
                         ShipmentOrderTypeWF={this.state.ShipmentOrderType_WorkFlowList}
-                        CurrentShipmentOrderStepID={this.state.DataSource.CurrentShipmentOrderStepID}
+                        CurrentShipmentOrderStepID={this.state.CurrentShipmentOrderStepID}
                     />
                     <ShipmentOrderDetail
                         ShipmentOrderID={this.props.match.params.id}
@@ -92,46 +99,12 @@ class DetailCom extends React.Component {
                         InfoCoordinator={this.state.DataSource}
                         onhandleChange={this.ChangeLoadData}
                     />
+                      <InfoHistoryWF
+                        ShipmentOrderID={this.props.match.params.id}
+                        InfoHistoryWF={this.state.ShipmentOrderType_WorkFlowList}
+                    />
 
-
-                    <div className="card">
-                        <h4 className="card-title"><strong>Lịch sử xử lý</strong></h4>
-                        <div className="card-body">
-                            <div className="table-responsive">
-                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                    <thead className="thead-light">
-                                        <tr>
-                                            <th className="jsgrid-header-cell">Thời gian</th>
-                                            <th className="jsgrid-header-cell">Trạng thái</th>
-                                            <th className="jsgrid-header-cell">Nhân viên</th>
-                                            <th className="jsgrid-header-cell">Hình ảnh</th>
-                                            <th className="jsgrid-header-cell">Ghi chú</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>05/04/2020 15:00</td>
-                                            <td>Bắt đầu đi giao</td>
-                                            <td>6500- Nguyễn Hữu Thiện</td>
-                                            <td>
-                                                <img src='/src/img/may-lanh-lg-v10enh-1-1-org.jpg' className="img-product" />
-                                            </td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td>05/04/2020 15:00</td>
-                                            <td>Chờ giao</td>
-                                            <td>6500- Nguyễn Hữu Thiện</td>
-                                            <td>
-                                                <img src='/src/img/may-lanh-lg-v10enh-1-1-org.jpg' className="img-product" />
-                                            </td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                
 
                     <div className='card'>
                         <div className='card-body'>

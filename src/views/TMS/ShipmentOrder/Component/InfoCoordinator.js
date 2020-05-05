@@ -106,8 +106,12 @@ class InfoCoordinatorCom extends Component {
             ShipmentOrder_WorkFlow.CreatedUser = this.props.AppInfo.LoginInfo.Username;
             this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/InsertWorkFlow', ShipmentOrder_WorkFlow).then((apiResult) => {
                 if (!apiResult.IsError) {
+                    this.setState({
+                        ShipmentOrder: apiResult.ResultObject
+                    });
                     if (this.props.onhandleChange != null)
                         this.props.onhandleChange(apiResult.ResultObject)
+
                     ModalManager.close();
                 }
             });
