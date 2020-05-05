@@ -42,11 +42,18 @@ class ShipmentOrderCommentCom extends Component {
         let hour = date.getHours();
         let minute = date.getMinutes();
         let timeDisplay = (hour < 10 ? '0' + hour : hour) + ':' + (minute < 10 ? '0' + minute : minute)
-
         var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
         var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
+        var diffMinutes = parseInt((timeDiff / ( 3600 * 24)));
         if (diffDays < 1) {
-            return 'Hôm nay ' + timeDisplay;
+            if(diffMinutes<20)
+            {
+                return 'Vừa mới';
+            }
+            else
+            {
+                return 'Hôm nay ' + timeDisplay;
+            }
         } else if (diffDays == 1) {
             return 'Hôm qua ' + timeDisplay;
         } else {
@@ -124,7 +131,7 @@ class ShipmentOrderCommentCom extends Component {
                             <img className='comment_account_img' src='/src/img/avatar/1.jpg'></img>
                         </div>
                         <div className='form-group col-md-11'>
-                            <textarea value={this.state.MObjectDefine.CommentContent} onChange={this._handleInputChange} type='text' onKeyPress={this._handleKeyPress} placeholder='Gửi bình luận' className='form-control' rows={3}></textarea>
+                            <textarea maxLength={1950} value={this.state.MObjectDefine.CommentContent} onChange={this._handleInputChange} type='text' onKeyPress={this._handleKeyPress} placeholder='Gửi bình luận' className='form-control' rows={3}></textarea>
                         </div>
                     </div>
                 </div>

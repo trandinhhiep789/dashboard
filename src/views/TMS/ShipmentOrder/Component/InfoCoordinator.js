@@ -83,7 +83,7 @@ class InfoCoordinatorCom extends Component {
                         <label className="col-form-label bold">Nội dung <span className="text-danger"> *</span></label>
                     </div>
                     <div className={formGroupclassName}>
-                        <textarea className={selectclassName} rows="10" cols="50" name="Title" value={this.state.ShipmentOrder_WorkFlow.Note} placeholder="Nội dung" onChange={this.onChangetextarea.bind(this)} />
+                        <textarea className={selectclassName}  maxLength={1950} rows="10" cols="50" name="Title" value={this.state.ShipmentOrder_WorkFlow.Note} placeholder="Nội dung" onChange={this.onChangetextarea.bind(this)} />
                         <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.state.validationErrorMessage}</li></ul></div>
                     </div>
                 </div>
