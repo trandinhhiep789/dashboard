@@ -22,13 +22,12 @@ class ShipmentOrderTypeWFCom extends Component {
                 <div className="card-body">
                     <div className="stepper">
                         {this.state.ShipmentOrderType_WF && this.state.ShipmentOrderType_WF.map((item, index) => {
-                            if (index == 0) {
+                            if (index == 0 && item.CountStep == 1) {
                                 return (<div className={(item.IsProcess == true ? "stepper-item step-completed" : "stepper-item")} key={index}>
                                     <span className="stepLabel">
                                         <span className="step-icon">
                                             <div className="icon">
                                                 <i className={item.IconURL} aria-hidden='true'></i>
-                                                {/* {item.IconURL} */}
                                             </div>
                                         </span>
                                         <span className="step-label">{item.ShipmentOrderStepName}</span>
@@ -37,7 +36,7 @@ class ShipmentOrderTypeWFCom extends Component {
                                 </div>
                                 )
                             }
-                            else {
+                            else if (item.CountStep == 1) {
                                 return (<div className={(item.IsProcess == true ? "stepper-item step-completed" : "stepper-item")} key={index}>
                                     <div className="step-line">
                                         <span className="stepConnector-line"></span>
@@ -46,7 +45,6 @@ class ShipmentOrderTypeWFCom extends Component {
                                         <span className="step-icon">
                                             <div className="icon">
                                                 <i className={item.IconURL} aria-hidden='true'></i>
-                                                {/* {item.IconURL} */}
                                             </div>
                                         </span>
                                         <span className="step-label">{item.ShipmentOrderStepName}</span>

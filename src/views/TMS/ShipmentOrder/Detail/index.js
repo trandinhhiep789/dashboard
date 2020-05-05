@@ -59,6 +59,7 @@ class DetailCom extends React.Component {
 
 
     render() {
+        
         if (this.state.IsLoadDataComplete) {
             return (
                 <div className="col-lg-12 page-detail">

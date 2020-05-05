@@ -158,6 +158,7 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     render() {
+        console.log("renderaaaaaa");
         return (
             <div className="card">
                 <h4 className="card-title"><strong>Địa chỉ</strong></h4>
