@@ -133,7 +133,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <FormContainer
-                    FormName="Cập nhật nhãn hiệu"
+                    FormName="Cập nhật loại đối tác"
                     IsAutoLayout={true}
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={this.state.EditElementList}

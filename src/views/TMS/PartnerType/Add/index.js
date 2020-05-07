@@ -96,7 +96,7 @@ class AddCom extends React.Component {
         }
         return (
             <FormContainer
-                FormName="Thêm đối tác"
+                FormName="Thêm loại đối tác"
                 name="Brand"
                 IsAutoLayout={true}
                 MLObjectDefinition={MLObjectDefinition}
