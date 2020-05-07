@@ -11,7 +11,6 @@ export const AddLink = "/PartnerType/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "PartnerTypeID";
-import { CDN_LOGO_IMAGE } from '../../../../constants/systemVars';
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ" },
@@ -66,7 +65,7 @@ export const AddElementList = [
         name: "txtPartnerTypeName",
         label: "tên đối tác",
         value: "",
-        maxSize: "400",
+        maxSize: "180",
         placeholder: "",
         icon: "",
         listoption: [],
@@ -80,7 +79,7 @@ export const AddElementList = [
         name: "txtDescription",
         label: "Mô tả",
         value: "",
-        maxSize: "2000",
+        maxSize: "1900",
         placeholder: "",
         rows: "6",
         icon: "",
@@ -133,7 +132,7 @@ export const EditElementList = [
         name: "txtPartnerTypeName",
         label: "tên đối tác",
         value: "",
-        maxSize: "400",
+        maxSize: "180",
         placeholder: "",
         icon: "",
         listoption: [],
@@ -147,7 +146,7 @@ export const EditElementList = [
         name: "txtDescription",
         label: "Mô tả",
         value: "",
-        maxSize: "2000",
+        maxSize: "1900",
         placeholder: "",
         rows: "6",
         icon: "",
