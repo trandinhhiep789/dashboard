@@ -26,6 +26,11 @@
             label{
                 margin-bottom: 0;
             }
+            input{
+                &.form-control{
+                    border-color: #a9a9a9;
+                }
+            }
         }
     }
 }

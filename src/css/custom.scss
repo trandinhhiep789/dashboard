@@ -6,16 +6,13 @@
 @import '_notification';
 @import 'inputgroup';
 @import 'collapsible';
-@import "./attached";
+@import "attached.scss";
 @import "Images.scss";
 @import "editor.scss";
 @import "./table";
 @import "./page404";
-@import "./card";
-@import "./button";
-@import "./input";
-@import "./stepper";
-@import "./select";
+@import "./treeSelect";
+@import "./tab";
 
 // Css menu trang sản phẩm
 .sidebar-left{
@@ -100,25 +97,30 @@
 .modal-custom{
     .modal-footer{
         border-top: 1px solid #f1f2f3;
-        button {
-            &.btn {
-                border-radius: 4px;
-                width: auto;
-                height: 30px;
-                font-size: 12px;
-                line-height: 20px;
-                padding: 5px 10px;
-            }
-        }
     }
 }
+
 /* cus checkbox */
 .custom-controls-stacked{
     .custom-checkbox{
         .custom-control-label{
+            &::before{
+                border: 1px solid #929292;
+                border-radius: .2em;
+                width: 20px;
+                height: 20px;
+                margin-right: .5em;
+                color: #33cabb;
+                font-size: 15px;
+                background-color: #fff;
+                margin-top: 5px;
+            }
+            &::after{
+
+            }
             &:empty{
                 &::after{
-                    top: 0px;
+                    top: 6px;
                 }
             }
         }
@@ -148,7 +150,7 @@
 .radio .cr {
     position: relative;
     display: inline-block;
-    border: 1px solid #ebebeb;
+    border: 1px solid #929292;
     border-radius: .2em;
     width: 22px;
     height: 22px;
@@ -227,6 +229,11 @@
     }
 }
 
+.form-group {
+    .invalid-feedback {
+        text-align: left;
+    }
+}
 
 ::-webkit-scrollbar-track
 {
@@ -262,9 +269,7 @@
 }
 
 .col-form-label{
-    &.bold{
-        font-weight: 500;
-    }
+    text-transform: capitalize;
     &.showMask {
         color: #f96868;
         font-size: 13px;
