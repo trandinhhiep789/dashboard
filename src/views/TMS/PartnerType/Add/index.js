@@ -26,36 +26,19 @@ class AddCom extends React.Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.handleSelectedFile = this.handleSelectedFile.bind(this);
         this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
         this.handleGetCache = this.handleGetCache.bind(this);
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
-            ResultLanguage: [],
-            DataSource: {
-                BrandID: "",
-                BrandName: "",
-                Description: "",
-                IsActived: true,
-                IsSystem: false,
-                ManufacturerID: ""
-            },
-            Files: {}
+            DataSource: {},
         };
     }
 
     componentDidMount() {
         this.props.updatePagePath(AddPagePath);
     }
-
-  
-
- 
-
-
     handleSubmit(formData, MLObject) {
-      
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.PartnerTypeID = 0;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
@@ -63,19 +46,14 @@ class AddCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-            if(!apiResult.IsError){
-                this.handleClearLocalCache();
-            }
+            // if(!apiResult.IsError){
+            //     this.handleClearLocalCache();
+            // }
             
         });
     }
 
-     //file upload
-     handleSelectedFile(file, nameValue, isDeletetedFile) {
-        const filelist = { [nameValue]: file };
-        this.setState({ Files: filelist });
-    }
-    
+  
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
     }
@@ -125,7 +103,6 @@ class AddCom extends React.Component {
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
                 IsErrorMessage={this.state.IsCallAPIError}
-                onHandleSelectedFile={this.handleSelectedFile}
                 dataSource={this.state.DataSource}
                 BackLink={BackLink}
             >

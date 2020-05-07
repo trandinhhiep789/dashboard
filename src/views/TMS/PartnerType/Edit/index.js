@@ -50,7 +50,6 @@ class EditCom extends React.Component {
         this.props.updatePagePath(EditPagePath);
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
-            debugger;
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: apiResult.IsError
@@ -80,7 +79,7 @@ class EditCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
             if(!apiResult.IsError){
-                this.handleClearLocalCache();
+               // this.handleClearLocalCache();
             }
         });
     }
@@ -117,7 +116,6 @@ class EditCom extends React.Component {
                 AdditionParamList: []
             };
             this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                //console.log("apiResult cache", apiResult);
                 this.handleGetCache();
             });
         });
@@ -125,7 +123,6 @@ class EditCom extends React.Component {
 
     handleGetCache() {
         this.props.callGetCache("PIMCACHE.BRAND").then((result) => {
-            console.log("handleGetCache: ", result);
         });
     }
 

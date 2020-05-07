@@ -268,33 +268,6 @@ export const GridMLObjectDefinition = [
     }
 ];
 
-export const InputLanguageColumnList = [
-    {
-        Name: "LanguageName",
-        Type: "text",
-        Caption: "Ngôn ngữ",
-        DataSourceMember: "LanguageName",
-        Width: 200
-    },
-    {
-        Name: "PartnerTypeName",
-        Type: "textbox",
-        Caption: "Tên đối tác",
-        DataSourceMember: "PartnerTypeName",
-        Width: 200,
-        maxSize: "400",
-        validatonList: ["required"]
-    },
-    {
-        Name: "Description",
-        Type: "textbox",
-        Caption: "Mô tả",
-        maxSize: "2000",
-        DataSourceMember: "Description",
-        Width: 200,
-        validatonList: ["required"]
-    }
-];
 
 export const DataGridColumnList = [
     {
@@ -302,49 +275,49 @@ export const DataGridColumnList = [
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "PartnerTypeID",
-        Width: 80
+        Width: 70
     },
     {
         Name: "PartnerTypeID",
         Type: "text",
-        Caption: "đối tác",
+        Caption: "Mã đối tác",
         DataSourceMember: "PartnerTypeID",
-        Width: 100
+        Width: 70
     },
     {
         Name: "PartnerTypeName",
         Type: "text",
         Caption: "Tên đối tác",
         DataSourceMember: "PartnerTypeName",
-        Width: 300
+        Width: 400
     },
     {
         Name: "IsActived",
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 200
+        Width: 70
     },
     {
         Name: "CreatedDate",
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 200
+        Width: 100
     },
     {
         Name: "CreatedFullName",
         Type: "text",
         Caption: "Người tạo",
         DataSourceMember: "CreatedFullName",
-        Width: 200
+        Width: 150
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "PartnerTypeID",
-        Width: 200,
+        Width: 70,
         Link: "/PartnerType/Edit/",
         LinkText: "Chỉnh sửa"
     }
