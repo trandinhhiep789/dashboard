@@ -6,7 +6,8 @@
             position: absolute;
             z-index: 99;
             background: transparent;
-
+            border-radius: 4px;
+            height: 35px;
             @media (max-width: 767px) {
                 position: static;
             }

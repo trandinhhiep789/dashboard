@@ -6,13 +6,16 @@
 @import '_notification';
 @import 'inputgroup';
 @import 'collapsible';
-@import "attached.scss";
+@import "./attached";
 @import "Images.scss";
 @import "editor.scss";
 @import "./table";
 @import "./page404";
-@import "./treeSelect";
-@import "./tab";
+@import "./card";
+@import "./button";
+@import "./input";
+@import "./stepper";
+@import "./select";
 
 // Css menu trang sản phẩm
 .sidebar-left{
