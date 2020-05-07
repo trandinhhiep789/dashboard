@@ -257,7 +257,7 @@ class PieRequest extends React.Component {
                             this.props.IsEdit == true ? <button className="btn btn-primary" type="submit" onClick={this.handleSubmit} ><span className="fa fa-edit"> Cập nhật</span></button> : <button className="btn btn-primary" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit"> Cập nhật</span></button>
                         }
                         {
-                            this.props.IsDelete == true ? <button className="btn btn-danger ml-10" onClick={this.handleDelete.bind(this)} type="submit"  ><span className="fa fa-remove"> Xóa </span></button> : <button className="btn btn-danger ml-10" disabled title="Bạn Không có quyền xử lý!" type="submit"><span className="fa fa-remove"> Xóa </span></button>
+                            this.props.IsDelete == true ? <button className="btn btn-danger btn-delete ml-10" onClick={this.handleDelete.bind(this)} type="submit"  ><span className="fa fa-remove"> Xóa </span></button> : <button className="btn btn-danger btn-delete ml-10" disabled title="Bạn Không có quyền xử lý!" type="submit"><span className="fa fa-remove"> Xóa </span></button>
                         }
 
                     </footer>

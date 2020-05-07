@@ -77,9 +77,11 @@
             width: 100%;
             position: absolute;
             left: 15px;
-            bottom: 0;
+            bottom: 7px;
             margin: 0 auto;
-
+            button{
+            
+            }
             @media (max-width: 767px) {
                 margin-top: 20px;
                 position: static;
