@@ -59,14 +59,12 @@ class SearchCom extends React.Component {
             };
             this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
                 this.handleGetCache();
-                console.log("apiResult cache", apiResult);
             });
         });
     }
 
     handleGetCache() {
         this.props.callGetCache("PIMCACHE.BRAND").then((result) => {
-            console.log("handleGetCache: ", result);
         });
     }
 
@@ -76,15 +74,7 @@ class SearchCom extends React.Component {
         this.callSearchData(InitSearchParams);
     }
 
-    handleSubmitInsertLog() {
-        let MLObject = {};
-        MLObject.ActivityTitle = "Xóa nhãn hiệu";
-        MLObject.ActivityDetail = "Xóa nhãn hiệu";
-        MLObject.ObjectID = "PIM_BRAND";
-        MLObject.ActivityUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        this.props.callFetchAPI(APIHostName, AddLogAPIPath, MLObject);
-    }
+
 
     handleDelete(deleteList, pkColumnName) {
         let listMLObject = [];
@@ -101,11 +91,7 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if(!apiResult.IsError){
                 this.callSearchData(this.state.SearchData);
-                this.handleClearLocalCache();
-                this.handleSubmitInsertLog();
             }
-           
-            
         });
     }
 

@@ -64,7 +64,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtPartnerTypeName",
-        label: "Tên đối tác",
+        label: "tên đối tác",
         value: "",
         maxSize: "400",
         placeholder: "",
@@ -119,7 +119,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtPartnerTypeID",
-        label: "Mã đối tác",
+        label: "mã đối tác",
         value: "",
         placeholder: "",
         icon: "",
@@ -131,7 +131,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtPartnerTypeName",
-        label: "Tên đối tác",
+        label: "tên đối tác",
         value: "",
         maxSize: "400",
         placeholder: "",
@@ -155,6 +155,19 @@ export const EditElementList = [
         DataSourceMember: "Description",
         readonly: false,
         validatonList: []
+    },
+    {
+        type: "text",
+        name: "txtOrderIndex",
+        label: "Thứ tự hiển thị",
+        value: "",
+        maxSize: "9",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "OrderIndex",
+        readonly: false,
+        validatonList: ["number"],
     },
     {
         type: "checkbox",
