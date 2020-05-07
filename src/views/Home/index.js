@@ -47,7 +47,7 @@ class HomeCom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updatePagePath(PagePath);
+        // this.props.updatePagePath(PagePath);
         var addScript = document.createElement('script');
         addScript.setAttribute('src', '/src/js/core.min.js');
         document.body.appendChild(addScript);
@@ -113,7 +113,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/ShipmentOrderStep" component={ShipmentOrderStep} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerPriviledgeGroup" component={PartnerPriviledgeGroup} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
-                                
+
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} />
 
                             </Switch>
