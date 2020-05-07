@@ -36,7 +36,9 @@ class FormContainerCom extends Component {
             focusTabIndex: -1,
             tabStateID: "",
             isDisabled: false,
-            IsSystem: false
+            IsSystem: false,
+            IsFirstTimeLoad: true
+            
         };
     }
     handleFocusTab() {
@@ -86,11 +88,12 @@ class FormContainerCom extends Component {
         }
     }
 
-    handleInputChangeList(formDataList, tabNameList, tabMLObjectDefinitionList, IsSystem) {
-        console.log("FormContainer handleInputChangeList: ", formDataList, tabNameList, tabMLObjectDefinitionList, IsSystem);
+    handleInputChangeList(formDataList, tabNameList, tabMLObjectDefinitionList, IsSystem, isFirstTimeLoad, elementItemRefs) {
+        //"FormContainer handleInputChangeList: ", formDataList, tabNameList, tabMLObjectDefinitionList, IsSystem);
         let formDataTemp = this.state.FormData;
         let formValidationTemp = this.state.FormValidation;
         let isSystem = typeof (IsSystem) != "undefined" ? IsSystem : this.state.IsSystem;
+        let _isFirstTimeLoad = isFirstTimeLoad != undefined ? isFirstTimeLoad : false;
         for (let i = 0; i < tabNameList.length; i++) {
             const tabName = tabNameList[i];
             const tabMLObjectDefinition = tabMLObjectDefinitionList[i];
@@ -114,13 +117,15 @@ class FormContainerCom extends Component {
         this.setState({
             FormData: formDataTemp,
             FormValidation: formValidationTemp,
-            IsSystem: isSystem
+            IsSystem: isSystem,
+            IsFirstTimeLoad: _isFirstTimeLoad,
+            IsSubmit: false
         });
 
         if (this.props.onInputChangeList != null) {
             this.props.onInputChangeList(formDataTemp, tabNameList, tabMLObjectDefinitionList, formValidationTemp);
         }
-        console.log("FormContainer handleInputChangeList formValidationTemp: ", formValidationTemp);
+        //console.log("FormContainer handleInputChangeList formValidationTemp: ", formValidationTemp, elementItemRefs);
     }
 
     validationInputGrid(frmdata, frmValidation) {
@@ -161,11 +166,10 @@ class FormContainerCom extends Component {
 
     //check validation for tabpage
     tabValidationForm(tabMLObjectDefinition, tabMLData, tabIndex) {
-        debugger;
         const tabMLDataLength = (Object.keys(tabMLData)).length;
-        if (!tabMLDataLength) {
-            return null;
-        }
+        // if (!tabMLDataLength) {
+        //     return null;
+        // }
         //const listElement = tabMLObjectDefinition;
         //console.log("this.state:",this.state);
         let formValidation = this.state.FormValidation[tabIndex];
@@ -232,11 +236,12 @@ class FormContainerCom extends Component {
         //console.log("checkInput formValidation: ", formValidation);
         let index = 0;
         for (const key in formValidation) {
-            //console.log("key: ", key);
+
             //console.log("this.refs.child.refs: ", this.elementItemRefs);
             //console.log("this.state.FormVavalidaton[key]: ", this.state.FormVavalidaton[key]);
             if (formValidation[key].IsValidationError) {
-                this.elementItemRefs[index].focus();
+                console.log("index: ", index);
+                this.elementItemRefs[key].focus();
                 index++;
                 return false;
             }
@@ -249,17 +254,23 @@ class FormContainerCom extends Component {
 
     }
 
+
     checkInputTabpage(formValidation) {
         //console.log("checkInput formValidation: ", formValidation);
         for (const key in formValidation) {
             for (const key1 in formValidation[key]) {
                 //console.log("key: ", key);
                 //console.log("this.state.FormVavalidaton[key]: ", this.state.FormVavalidaton[key]);
-                if (formValidation[key][key1].IsValidationError)
-                    return false;
+                if (formValidation[key][key1].IsValidationError){
+                    //this.elementItemRefs[key1].focus();
+                    //console.log("key: ", key1);
+                    // this.setFocusTab(key);
+                    return {IsError: true, FocusTabIndex: key};
+                }
+                   
             }
         }
-        return true;
+        return {IsError: false, FocusTabIndex: -1};;
     }
 
     bindDataToControl(listElement, dataSource) {
@@ -281,7 +292,7 @@ class FormContainerCom extends Component {
     }
     checkPermission() {
         let permissionKey = this.props.RequirePermission;
-        console.log("permissionKey", permissionKey);
+        //console.log("permissionKey", permissionKey);
         if (!permissionKey) {
             this.setState({ IsPermision: true });
             return;
@@ -468,14 +479,17 @@ class FormContainerCom extends Component {
     handleSubmit(e) {
         e.preventDefault();
         const mLObjectDefinition = this.props.MLObjectDefinition;
-        console.log("Submit Click formdata!", this.state.FormData);
+        //console.log("Submit Click formdata!", this.state.FormData,  this.props.listelement);
         const MLObject = GetMLObjectData(mLObjectDefinition, this.state.FormData, this.props.dataSource);
-        console.log("Submit Click!", this.state.FormData, mLObjectDefinition, MLObject, this.props.dataSource);
-        debugger;
+        //console.log("Submit Click!", this.state.FormData, mLObjectDefinition, MLObject, this.props.dataSource);
         //form container with tabpage
         if (this.props.onInputChangeList) {
+            //console.log("this.state.FormValidation", this.state.FormValidation);
             const tabpageFormValidation = this.state.FormValidation;
-            if (!this.checkInputTabpage(tabpageFormValidation)) {
+            let checkResult = this.checkInputTabpage(tabpageFormValidation);
+            if (checkResult.IsError) {
+                this.setState({IsFirstTimeLoad: false, IsSubmit: true});
+                this.setFocusTab(checkResult.FocusTabIndex);
                 return;
             }
         } else {
@@ -520,18 +534,23 @@ class FormContainerCom extends Component {
                     listoption={elementItem.listoption}
                     key={elementItem.name}
                     readonly={elementItem.readonly}
+                    showMask={elementItem.showMask}
                     validatonList={elementItem.validatonList}
                     validationErrorMessage={validationErrorMessage}
                     IsAutoLoadItemFromCache={elementItem.IsAutoLoadItemFromCache}
                     LoadItemCacheKeyID={elementItem.LoadItemCacheKeyID}
                     ValueMember={elementItem.ValueMember}
                     NameMember={elementItem.NameMember}
+                    rootID={elementItem.rootID}
+                    rootKey={elementItem.rootKey}
+                    treeData={elementItem.treeData}
                     accept={elementItem.accept}
                     multiple={elementItem.multiple}
                     maxSize={elementItem.maxSize}
                     minSize={elementItem.minSize}
                     isDisabled={this.state.isDisabled}
-                    inputRef={ref => this.elementItemRefs[index] = ref}
+                    inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                    isCategory={elementItem.isCategory}
                     elementItem={elementItem}
                 />
             </div>);
@@ -560,6 +579,9 @@ class FormContainerCom extends Component {
                         LoadItemCacheKeyID={elementItem.Item1.LoadItemCacheKeyID}
                         ValueMember={elementItem.Item1.ValueMember}
                         NameMember={elementItem.Item1.NameMember}
+                        rootID={elementItem.Item1.rootID}
+                        rootKey={elementItem.Item1.rootKey}
+                        treeData={elementItem.Item1.treeData}
                         accept={elementItem.accept}
                         multiple={elementItem.multiple}
                         maxSize={elementItem.maxSize}
@@ -584,6 +606,9 @@ class FormContainerCom extends Component {
                     LoadItemCacheKeyID={elementItem.Item1.LoadItemCacheKeyID}
                     ValueMember={elementItem.Item1.ValueMember}
                     NameMember={elementItem.Item1.NameMember}
+                    rootID={elementItem.Item1.rootID}
+                    rootKey={elementItem.Item1.rootKey}
+                    treeData={elementItem.Item1.treeData}
                     accept={elementItem.accept}
                     multiple={elementItem.multiple}
                     maxSize={elementItem.maxSize}
@@ -605,6 +630,9 @@ class FormContainerCom extends Component {
                     LoadItemCacheKeyID={elementItem.Item2.LoadItemCacheKeyID}
                     ValueMember={elementItem.Item2.ValueMember}
                     NameMember={elementItem.Item2.NameMember}
+                    rootID={elementItem.Item2.rootID}
+                    rootKey={elementItem.Item2.rootKey}
+                    treeData={elementItem.Item2.treeData}
                     accept={elementItem.accept}
                     multiple={elementItem.multiple}
                     maxSize={elementItem.maxSize}
@@ -650,6 +678,9 @@ class FormContainerCom extends Component {
                         LoadItemCacheKeyID={elementItem.Item1.LoadItemCacheKeyID}
                         ValueMember={elementItem.Item1.ValueMember}
                         NameMember={elementItem.Item1.NameMember}
+                        rootID={elementItem.Item1.rootID}
+                        rootKey={elementItem.Item1.rootKey}
+                        treeData={elementItem.Item1.treeData}
                         accept={elementItem.accept}
                         multiple={elementItem.multiple}
                         maxSize={elementItem.maxSize}
@@ -681,6 +712,9 @@ class FormContainerCom extends Component {
                         LoadItemCacheKeyID={elementItem.Item1.LoadItemCacheKeyID}
                         ValueMember={elementItem.Item1.ValueMember}
                         NameMember={elementItem.Item1.NameMember}
+                        rootID={elementItem.Item1.rootID}
+                        rootKey={elementItem.Item1.rootKey}
+                        treeData={elementItem.Item1.treeData}
                         accept={elementItem.accept}
                         multiple={elementItem.multiple}
                         maxSize={elementItem.maxSize}
@@ -702,6 +736,9 @@ class FormContainerCom extends Component {
                         LoadItemCacheKeyID={elementItem.Item2.LoadItemCacheKeyID}
                         ValueMember={elementItem.Item2.ValueMember}
                         NameMember={elementItem.Item2.NameMember}
+                        rootID={elementItem.Item2.rootID}
+                        rootKey={elementItem.Item2.rootKey}
+                        treeData={elementItem.Item2.treeData}
                         accept={elementItem.accept}
                         multiple={elementItem.multiple}
                         maxSize={elementItem.maxSize}
@@ -729,6 +766,9 @@ class FormContainerCom extends Component {
                     LoadItemCacheKeyID={elementItem.Item1.LoadItemCacheKeyID}
                     ValueMember={elementItem.Item1.ValueMember}
                     NameMember={elementItem.Item1.NameMember}
+                    rootID={elementItem.Item1.rootID}
+                    rootKey={elementItem.Item1.rootKey}
+                    treeData={elementItem.Item1.treeData}
                     accept={elementItem.accept}
                     multiple={elementItem.multiple}
                     maxSize={elementItem.maxSize}
@@ -750,6 +790,9 @@ class FormContainerCom extends Component {
                     LoadItemCacheKeyID={elementItem.Item2.LoadItemCacheKeyID}
                     ValueMember={elementItem.Item2.ValueMember}
                     NameMember={elementItem.Item2.NameMember}
+                    rootID={elementItem.Item2.rootID}
+                    rootKey={elementItem.Item2.rootKey}
+                    treeData={elementItem.Item2.treeData}
                     accept={elementItem.accept}
                     multiple={elementItem.multiple}
                     maxSize={elementItem.maxSize}
@@ -771,6 +814,9 @@ class FormContainerCom extends Component {
                     LoadItemCacheKeyID={elementItem.Item3.LoadItemCacheKeyID}
                     ValueMember={elementItem.Item3.ValueMember}
                     NameMember={elementItem.Item3.NameMember}
+                    rootID={elementItem.Item3.rootID}
+                    rootKey={elementItem.Item3.rootKey}
+                    treeData={elementItem.Item3.treeData}
                     accept={elementItem.accept}
                     multiple={elementItem.multiple}
                     maxSize={elementItem.maxSize}
@@ -977,8 +1023,10 @@ class FormContainerCom extends Component {
                             focusTabIndex: this.state.focusTabIndex,
                             tabStateID: this.state.tabStateID,
                             onValueChange: this.handleInputChangeList,
-                            tabPageValidation: this.state.FormValidation,
-                            loginUserName: this.props.AppInfo.LoginInfo.Username
+                            tabPageValidation: this.state.IsFirstTimeLoad ? {} : this.state.FormValidation,
+                            loginUserName: this.props.AppInfo.LoginInfo.Username,
+                            isSubmit: this.state.IsSubmit
+                                                
                         }
                     );
                 }
@@ -1049,9 +1097,9 @@ class FormContainerCom extends Component {
         if (this.state.IsPermision == false) {
             return <p className="col-md-12">Bạn không có quyền</p>
         }
-        // if (this.state.IsPermision === 'error') {
-        //     return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
-        // }
+        if (this.state.IsPermision === 'error') {
+            return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
+        }
         if (this.props.IsAutoLayout) {
             return this.autoLayoutForm();
         }

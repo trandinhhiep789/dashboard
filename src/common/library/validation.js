@@ -9,19 +9,28 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
             //console.log("ValidationField", typelist, fieldValue, fieldCaption);
 
             let messError = "";
-            if (elementItem && elementItem.labelError != undefined) {
+            if (elementItem.labelError != undefined && String(elementItem.labelError).trim() != '' ) {
 
-                messError = elementItem.labelError
+                if(elementItem.type == 'select'){
+                    messError = elementItem.labelError
+                }
+                else{
+                    messError = "Vui lòng nhập " + elementItem.labelError
+                }
             }
             else {
-
-                messError = fieldCaption
+                if(elementItem.type == 'select'){
+                    messError = "Vui lòng chọn " + fieldCaption
+                }
+                else{
+                    messError = "Vui lòng nhập " + fieldCaption
+                }
             }
             // console.log("elementItem", elementItem, messError);
             result = {
                 IsError: true,
                 fieldValue: fieldValue,
-                Message: "Vui lòng nhập " + messError //fieldCaption.toLowerCase()
+                Message: messError //fieldCaption.toLowerCase()
             }
         }
         else {
@@ -35,6 +44,7 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
     }
 
     if (typelist.includes("Comborequired") && IsEr == 0) {
+       // console.log("Comborequired")
         if (fieldValue == undefined || parseInt(fieldValue) < 0) {
             IsEr = 1;
             result = {
@@ -68,10 +78,24 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
                 }
                 else {
                     IsEr = 1;
+                    let messError = "";
+                    //console.log("elementItem", elementItem)
+                    if (elementItem.labelError != undefined) {
+        
+                        messError = elementItem.labelError
+                    }
+                    else {
+                        if(elementItem.type == 'select'){
+                            messError = "Vui lòng chọn " + fieldCaption
+                        }
+                        else{
+                            messError = "Vui lòng nhập số"
+                        }
+                    }
                     result = {
                         IsError: true,
                         fieldValue: fieldValue,
-                        Message: "Vui lòng nhập số "
+                        Message: messError,
                     }
                 }
             }
@@ -86,10 +110,19 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
                 }
                 else {
                     IsEr = 1;
+                    let messError = "";
+                    if (elementItem.labelError != undefined) {
+        
+                        messError = elementItem.labelError
+                    }
+                    else {
+        
+                        messError = "Vui lòng nhập số "
+                    }
                     result = {
                         IsError: true,
                         fieldValue: fieldValue,
-                        Message: "Vui lòng nhập số "
+                        Message: messError
                     }
                 }
             }

@@ -114,6 +114,33 @@ class DataGridCom extends Component {
 
     onChangePageHandle(pageNum) {
         this.setState({ PageNumber: pageNum });
+        const temp = this.checkInputisAll(this.getDisplayDataPageNumber(this.props.dataSource, pageNum), this.state.GridData["chkSelect"]);
+        this.setState({ IsCheckAll: temp });
+    }
+
+    checkInputisAll(dataSource, gridData) {
+        //const dataSource = this.getDisplayData(this.props.dataSource);
+        //  console.log("checkInputisAll", gridData, dataSource)
+        const pkColumnName = this.state.ListPKColumnName;
+        let aaa = true;
+        if (dataSource != null) {
+            dataSource.map((rowItem, rowIndex) => {
+                for (var j = 0; j < pkColumnName.length; j++) {
+                    // console.log("rowItem", pkColumnName[j], rowItem[pkColumnName[j].key])
+
+                    var marvelHeroes = gridData.filter(function (hero) {
+                        //  console.log("hero", hero, hero.pkColumnName, hero.pkColumnName[0].value)
+                        return hero.pkColumnName[0].value == rowItem[pkColumnName[j].key];
+                    });
+                    // console.log("marvelHeroes.IsChecked", marvelHeroes, marvelHeroes[0].IsChecked)
+                    if (marvelHeroes[0].IsChecked == false) {
+                        aaa = false
+                        break;
+                    }
+                }
+            });
+        }
+        return aaa;
     }
 
     onValueChange(elementdata, index) {
@@ -143,12 +170,16 @@ class DataGridCom extends Component {
                     }
                 }
                 gridData = Object.assign({}, this.state.GridData, { [elementdata.Name]: ListElement });
+
             }
             else {
                 elementobject = Object.assign({}, this.state.GridData[elementdata.Name], { [index]: elementdata });
                 gridData = Object.assign({}, this.state.GridData, { [elementdata.Name]: elementobject });
             }
-            this.setState({ GridData: gridData, IsCheckAll: false });
+            const temp = this.checkInputisAll(this.getDisplayData(this.props.dataSource), gridData["chkSelect"]);
+            // console.log("temp", temp);
+            // console.log("checkList1", gridData, elementobject);
+            this.setState({ GridData: gridData, IsCheckAll: temp });
         }
         else {
             let checkList = this.state.GridData[elementdata.Name];
@@ -171,6 +202,7 @@ class DataGridCom extends Component {
                 }
             }
             gridData = Object.assign({}, this.state.GridData, { [elementdata.Name]: ListElement });
+            // console.log("checkList", gridData);
             this.setState({ GridData: gridData });
         }
     }
@@ -201,9 +233,10 @@ class DataGridCom extends Component {
             const confir = confirm("Bạn có chắc rằng muốn xóa ?");
             if (confir == 1) {
                 this.props.onDeleteClick(listDeleteID, this.state.ListPKColumnName);
-                this.setState({
-                    GridData: {}
-                });
+                // this.setState({
+                //     GridData: {},
+                //     IsCheckAll: false
+                // });
             }
         }
         if (this.props.DeletePermission) {
@@ -264,6 +297,25 @@ class DataGridCom extends Component {
         if (this.props.RowsPerPage != null)
             rowsPerPage = this.props.RowsPerPage;
         let startRowIndex = (this.state.PageNumber - 1) * rowsPerPage;
+        let endRowIndex = startRowIndex + rowsPerPage;
+        if (endRowIndex > dataSource.length)
+            endRowIndex = dataSource.length;
+        for (let i = startRowIndex; i < endRowIndex; i++) {
+            resultData.push(dataSource[i]);
+        }
+        return resultData;
+    }
+
+    getDisplayDataPageNumber(dataSource, intPageNumber) {
+        if (!this.props.IsAutoPaging)
+            return dataSource;
+        let resultData = [];
+        if (dataSource == null)
+            return resultData;
+        let rowsPerPage = DEFAULT_ROW_PER_PAGE;
+        if (this.props.RowsPerPage != null)
+            rowsPerPage = this.props.RowsPerPage;
+        let startRowIndex = (intPageNumber - 1) * rowsPerPage;
         let endRowIndex = startRowIndex + rowsPerPage;
         if (endRowIndex > dataSource.length)
             endRowIndex = dataSource.length;
@@ -474,9 +526,9 @@ class DataGridCom extends Component {
         if (this.state.IsPermision == false) {
             return <p className="col-md-12">Bạn không có quyền!</p>
         }
-        // if (this.state.IsPermision === 'error') {
-        //     return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
-        // }
+        if (this.state.IsPermision === 'error') {
+            return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
+        }
 
         return (
             <div className="col-lg-12 SearchForm">

@@ -41,7 +41,7 @@ class Confirmation extends React.Component {
             const validatonList = elementItem.validatonList;
             if (validatonList && validatonList.length > 0) {
                 const inputvalue = this.state.FormData[elementItem.Name];
-                const validation = ValidationField(validatonList, inputvalue, elementItem.label)
+                const validation = ValidationField(validatonList, inputvalue, elementItem.label, elementItem);
                 const validationObject = { IsValidationError: validation.IsError, ValidationErrorMessage: validation.Message };
                 formValidation = Object.assign({}, formValidation, { [elementItem.Name]: validationObject });
             }
@@ -56,9 +56,10 @@ class Confirmation extends React.Component {
         return true;
     }
     handleConfirm() {
+        debugger;
         const formValidation = this.validationForm();
         if (!this.checkInput(formValidation)) {
-            this.setState({ FormValidation: formValidation });
+            this.setState({ FormValidation: formValidation, IsSubmit: true });
         }
         else {
             if(this.props.autoCloseModal){
@@ -71,7 +72,7 @@ class Confirmation extends React.Component {
         this.props.hideModal();
     }
     handleInputChange(formData, formValidation) {
-        this.setState({ FormData: formData, FormValidation: formValidation });
+        this.setState({ FormData: formData, FormValidation: formValidation, IsSubmit: false });
     }
     handleSelectedFile(filelist) {
         if (filelist) {
@@ -79,10 +80,10 @@ class Confirmation extends React.Component {
         }
     }
     render() {
-        const { Title, FormData, FormValidation, ModalElementList } = this.state;
+        const { Title, FormData, FormValidation, ModalElementList, IsSubmit } = this.state;
         return (
             <Modal title={Title} modalElementList={ModalElementList} formData={FormData} onValueChange={this.handleInputChange}
-                onClose={this.handleClose} onHandleSelectedFile={this.handleSelectedFile} formValidation={FormValidation}
+                onClose={this.handleClose} onHandleSelectedFile={this.handleSelectedFile} formValidation={FormValidation} isSubmit={IsSubmit}
             >
                 <div className="modal-footer">
                     <button className="btn btn-w-md btn-round btn-info" type="button" onClick={this.handleConfirm}>

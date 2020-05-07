@@ -87,9 +87,9 @@ class InputGridCom extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if(!nextProps.dataSource){
-			return;
-		}
+		// if(!nextProps.dataSource){
+		// 	return;
+		// }
 		if (JSON.stringify(this.props.dataSource) !== JSON.stringify(nextProps.dataSource)) // Check if it's a new user, you can also use some unique property, like the ID
 		{
 			const listDataSourceMember = this.getKeyListCheckbox(nextProps.listColumn);
@@ -693,10 +693,14 @@ class InputGridCom extends Component {
 								let cellStyle = {
 									width: elementItem.Width
 								};
+								let checkStyle={
+									width: "20px",
+									margin: "0 auto"
+								}
 								let columHeader = elementItem.Caption;
 								if (elementItem.Type == "checkbox" && elementItem.Caption == "") {
 									const className = "form-control form-control-sm";
-									columHeader = <input type="checkbox" className={className} onChange={this.checkAll} checked={this.state.IsCheckAll} />
+									columHeader = <input type="checkbox" className={className} style={checkStyle} onChange={this.checkAll} checked={this.state.IsCheckAll} />
 								}
 								else if (elementItem.Type == "checkboxAll" && elementItem.Caption == "") {
 									const className = "form-control form-control-sm";

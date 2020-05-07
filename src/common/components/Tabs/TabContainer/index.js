@@ -7,6 +7,7 @@ export default class TabContainer extends Component {
     constructor(props) {
         super(props);
 
+        this.elementItemRefs = [];
         this.handleTabClick = this.handleTabClick.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         const bindTabData = this.bindAllTabData();
@@ -21,19 +22,59 @@ export default class TabContainer extends Component {
 
         };
         if (this.props.onValueChange != null) {
-            this.props.onValueChange(this.state.FormDataList, this.state.TabNameList, this.state.TabMLObjectDefinitionList, this.state.IsSystem);
+            this.props.onValueChange(this.state.FormDataList, this.state.TabNameList, this.state.TabMLObjectDefinitionList, this.state.IsSystem, true);
         }
     }
+
+    checkFocusTabpage(formValidation) {
+        //console.log("checkInput formValidation: ", formValidation);
+        for (const key in formValidation) {
+            for (const key1 in formValidation[key]) {
+                //console.log("key: ", key);
+                //console.log("this.state.FormVavalidaton[key]: ", this.state.FormVavalidaton[key]);
+                if (formValidation[key][key1].IsValidationError) {
+                    if (this.elementItemRefs[key1]) {
+                        this.elementItemRefs[key].click();
+                        this.elementItemRefs[key1].focus();
+                        
+                    } 
+
+                    //console.log("key: ", key1);
+                    return false;
+                }
+
+            }
+        }
+        return true;
+    }
+
     static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.tabStateID !== prevState.prevtabStateID) {
             return {
                 focusTabIndex: nextProps.focusTabIndex,
-                prevtabStateID: nextProps.tabStateID
+                prevtabStateID: nextProps.tabStateID,
+                IsSubmit: nextProps.isSubmit == prevState.IsSubmit? false: true
+
             };
         }
         return null;
     }
+
+
+
+
     componentDidUpdate(prevProps, prevState) {
+        //focus vào tab có field báo lỗi khi bấm câp nhật
+        if(prevState.focusTabIndex != this.props.focusTabIndex && prevState.IsSubmit != this.state.IsSubmit){
+            this.checkFocusTabpage(this.props.tabPageValidation);
+
+        }
+        
+        // if (prevProps.focusTabIndex != this.props.focusTabIndex) {
+            
+            
+        // } 
+        //console.log("tabnextProps", this.props);
         /*console.log("componentDidUpdate this.props.focusTabIndex:", this.props.focusTabIndex);
         console.log("componentDidUpdate prevProps.focusTabIndex", prevProps.focusTabIndex);
         const tabIndex = this.props.focusTabIndex;
@@ -72,6 +113,8 @@ export default class TabContainer extends Component {
     //         }
     //     }
     // }
+
+
 
     handleInputChange(controlname, controlvalue) {
         const index = this.state.activeTabIndex;
@@ -201,7 +244,7 @@ export default class TabContainer extends Component {
     }
 
     layoutFormControl(child) {
-       // console.log("this.props.tabPageValidation", this.props.tabPageValidation, Object.hasOwnProperty.bind(this.props.tabPageValidation)(index));
+        // console.log("this.props.tabPageValidation", this.props.tabPageValidation, Object.hasOwnProperty.bind(this.props.tabPageValidation)(index));
         const controltype = child.props.controltype;
         if (controltype == "InputControl" || controltype == "GridControl") {
             const controlname = child.props.name;
@@ -232,7 +275,8 @@ export default class TabContainer extends Component {
                                 validationErrorMessage: controlValidationErrorMessage,
                                 // readonly: this.state.IsSystem,
                                 // disabled: this.state.IsSystem ? "disabled" : ""
-                                isSystem: (this.props.loginUserName && this.props.loginUserName == "administrator" && (child.props.name).toLowerCase().includes('system')) ? false : this.state.IsSystem
+                                isSystem: (this.props.loginUserName && this.props.loginUserName == "administrator" && (child.props.name).toLowerCase().includes('system')) ? false : this.state.IsSystem,
+                                inputRef: ref => this.elementItemRefs[controlname] = ref
                             }
                         )
                     }
@@ -321,7 +365,8 @@ export default class TabContainer extends Component {
             return React.cloneElement(child, {
                 onClick: this.handleTabClick,
                 tabIndex: index,
-                isActive: index === selectedTabIndex
+                isActive: index === selectedTabIndex,
+                tabRef: ref => this.elementItemRefs[index] = ref
             });
         });
     }
@@ -342,6 +387,7 @@ export default class TabContainer extends Component {
                 return this.renderChildren(children[activeTabIndex].props.children);
             }
         }
+
     }
 
     render() {

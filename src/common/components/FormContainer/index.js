@@ -196,6 +196,7 @@ class FormContainerCom extends Component {
 
     //#region InputChange && InputChangeList  
     handleInputChange(elementname, elementvalue, controllabel, listvalidation, listvalidationRow) {
+        //console.log('change')
         if (typeof listvalidation != "undefined") {
             let formValidation1 = this.state.FormValidation;
             const formValidation = Object.assign({}, formValidation1, { [elementname]: listvalidation });
@@ -205,17 +206,17 @@ class FormContainerCom extends Component {
         }
         else if (typeof listvalidationRow != "undefined") {
             let formValidation1 = this.state.FormValidation;
-            const validation = ValidationField(listvalidationRow, elementvalue, controllabel)
+            const validation = ValidationField(listvalidationRow, elementvalue, controllabel, controllabel)
             const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
             const formValidation = Object.assign({}, formValidation1, { [elementname]: validationObject });
 
-          //  console.log("listvalidationRow",listvalidationRow,validation,formValidation );
+            //  console.log("listvalidationRow",listvalidationRow,validation,formValidation );
             this.setState({
                 FormValidation: formValidation
             });
         }
         const formData = Object.assign({}, this.state.FormData, { [elementname]: elementvalue });
-     //   console.log("formData",formData);
+        //   console.log("formData",formData);
         this.setState({
             FormData: formData
         });
@@ -245,21 +246,21 @@ class FormContainerCom extends Component {
             }
         }
         this.setState({ FormData: formDataTemp });
-       // console.log("FormContainer handleInputChangeList formDataTemp: ", formDataTemp,formValidationNew);
+        // console.log("FormContainer handleInputChangeList formDataTemp: ", formDataTemp,formValidationNew);
     }
     //#endregion
 
     //#region validation InputControl
     validationForm() {
         const listElement = this.props.listelement;
-        //console.log("listElement/formValidation:", listElement, formValidation);
+        console.log("listElement/formValidation:", listElement);
         listElement.map((elementItem) => {
             const validatonList = elementItem.validatonList;
             if (validatonList && validatonList.length > 0) {
                 const inputvalue = this.state.FormData[elementItem.name];
                 //   console.log("inputvalue:", inputvalue);
                 //   console.log("elementItem.Name:", elementItem.name);
-                const validation = ValidationField(validatonList, inputvalue, elementItem.label)
+                const validation = ValidationField(validatonList, inputvalue, elementItem.label, elementItem)
                 const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
                 //  console.log("validation:", validation, validationObject);
                 this.FormValidationNew = Object.assign({}, this.FormValidationNew, { [elementItem.name]: validationObject });
@@ -318,7 +319,7 @@ class FormContainerCom extends Component {
 
         // console.log("validationInputControl:name ", name + " /value: " + value + " /validatonList: " + JSON.stringify(validatonList));
         if (typeof validatonList != "undefined") {
-            const validation = ValidationField(validatonList, value, child.props.label)
+            const validation = ValidationField(validatonList, value, child.props.label, child.props)
             const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
             this.FormValidationNew = Object.assign({}, this.FormValidationNew, { [name]: validationObject });
             //   console.log("validationInputControl:formValidation ", formValidation);
@@ -618,7 +619,7 @@ class FormContainerCom extends Component {
                     return React.cloneElement(child,
                         {
                             // focusTabIndex: aa,
-                            focusTabIndex:this.state.focusTabIndex,
+                            focusTabIndex: this.state.focusTabIndex,
                             tabStateID: this.state.tabStateID,
                             onValueChange: this.handleInputChangeList,
                             FormValidation: FormValidation1,
@@ -636,7 +637,7 @@ class FormContainerCom extends Component {
         }
         return child;
     }
-    
+
     renderOneColumnForm() {
         const listElement = this.props.listelement;
         if (listElement == null)
@@ -913,15 +914,16 @@ class FormContainerCom extends Component {
 
     //#region  handleSubmit 
     handleSubmit(e) {
+        debugger
         e.preventDefault();
         const mLObjectDefinition = this.props.MLObjectDefinition;
-        //  console.log("handleSubmit mLObjectDefinition: ", mLObjectDefinition);
-         // console.log("handleSubmit/FormData: " + this.state.FormData);
-        // console.log("handleSubmit dataSource: " + this.props.dataSource);
+        console.log("handleSubmit mLObjectDefinition: ", mLObjectDefinition);
+        console.log("handleSubmit/FormData: " + this.state.FormData);
+        console.log("handleSubmit dataSource: " + this.props.dataSource);
         const MLObject = GetMLObjectData(mLObjectDefinition, this.state.FormData, this.props.dataSource);
         // console.log("Submit MLObject!", MLObject);
         const formValidation = this.validationForm();
-        //console.log("formValidation!", formValidation);
+        console.log("formValidation!", formValidation);
 
         if (!this.checkInput(formValidation))
             return;
@@ -956,7 +958,7 @@ class FormContainerCom extends Component {
                                 }
                             }
                             else {
-        
+
                                 const elem = element[key2];
                                 for (const key3 in elem) {
                                     if (elem[key3].IsValidatonError) {
@@ -964,7 +966,7 @@ class FormContainerCom extends Component {
                                     }
                                 }
                             }
-                       
+
                         }
                     }
                 }

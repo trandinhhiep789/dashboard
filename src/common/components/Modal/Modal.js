@@ -80,6 +80,7 @@ function bindDataToControl(listElement, formData) {
 class ModalCom extends React.Component {
     constructor(props) {
         super(props);
+        this.elementItemRefs = [];
         this.listenKeyboard = this.listenKeyboard.bind(this);
         this.onOverlayClick = this.onOverlayClick.bind(this);
         this.onDialogClick = this.onDialogClick.bind(this);
@@ -122,6 +123,10 @@ class ModalCom extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.formValidation) !== JSON.stringify(nextProps.formValidation)) {
             this.setState({ FormValidation: nextProps.formValidation });
+            if(nextProps.isSubmit){
+                this.checkInput(nextProps.formValidation);
+            }
+            
         }
     }
     
@@ -142,13 +147,24 @@ class ModalCom extends React.Component {
     }
 
     onOverlayClick() {
-        this.props.onClose();
+        //this.props.onClose();
     };
 
     onDialogClick(event) {
         event.stopPropagation();
     };
 
+    checkInput(formValidation) {
+        debugger;
+        for (const key in formValidation) {
+            if (formValidation[key].IsValidationError){
+                this.elementItemRefs[key].focus();
+                return false;
+            }
+                
+        }
+        return true;
+    }
 
     valueChange(elementname, elementvalue, isValidatonError, validatonErrorMessage) {
         const formData = Object.assign({}, this.state.FormData, { [elementname]: elementvalue });
@@ -187,9 +203,9 @@ class ModalCom extends React.Component {
     }
     renderModalFormElement() {
         const modalElementList = this.props.modalElementList;
-        console.log("modalElementList",modalElementList);
+        //console.log("modalElementList",modalElementList);
         return (
-            <div className="card-body">
+            <div className="card-body" style={{textAlign: 'left'}}>
                 {
                     modalElementList.map((elementItem, index) => {
                         let validationErrorMessage = "";
@@ -202,6 +218,7 @@ class ModalCom extends React.Component {
                                     CSSClassName="form-control form-control-sm"
                                     value={this.state.FormData[elementItem.Name]}
                                     label={elementItem.label} placeholder={elementItem.placeholder}
+                                    labelError={elementItem.labelError}
                                     icon={elementItem.icon}
                                     rows={elementItem.rows}
                                     onValueChange={this.valueChange}
@@ -222,6 +239,8 @@ class ModalCom extends React.Component {
                                     min={elementItem.Min}
                                     max={elementItem.Max}
                                     maxSize={elementItem.maxSize}
+                                    elementItem={elementItem}
+                                    inputRef={ref => this.elementItemRefs[elementItem.Name] = ref}
                                 />
                             </div>);
                     }

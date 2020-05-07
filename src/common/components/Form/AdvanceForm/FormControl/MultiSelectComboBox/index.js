@@ -27,7 +27,7 @@ class MultiSelectComboBoxCom extends React.Component {
             const nameMember = this.props.nameMember;
             this.props.callGetCache(cacheKeyID).then((result) => {
 
-                listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                //listOption = [{ value: -1, label: "--Vui lòng chọn--", name: "--Vui lòng chọn--" }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     //console.log("result.IsError: ",result.IsError, result.ResultObject.CacheData);
                     result.ResultObject.CacheData.map((cacheItem) => {
@@ -107,7 +107,7 @@ class MultiSelectComboBoxCom extends React.Component {
         for (let i = 0; i < listOption.length; i++) {
             listOptionNew.push({ value: listOption[i].value, label: listOption[i].name, style: { color: 'red' } });
         }
-        //   console.log("listOptionNew:", listOptionNew,this.state.SelectedOption)
+          console.log("listOptionNew:", listOptionNew,this.state.SelectedOption)
         const selectedOption = this.state.SelectedOption;
         let formRowClassName = "form-row";
         if (this.props.rowspan)

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { ValidationField } from "../../../library/validation.js";
+import { createListTree } from "../../../library/ultils";
 import { callGetCache } from "../../../../actions/cacheAction";
 import { UploadModal } from "../../UploadModal/index";
 import { ModalManager } from 'react-dynamic-modal';
@@ -9,6 +10,8 @@ import MultiSelectComboBox from "../AdvanceForm/FormControl/MultiSelectComboBox"
 import "../../../../../node_modules/react-datetime/css/react-datetime.css";
 import JoditEditor from "jodit-react";
 
+import { TreeSelect } from "antd";
+import "antd/dist/antd.css";
 
 const singleFileUploadImage = {
     maxWidth: "100px",
@@ -49,7 +52,58 @@ class FormElementCom extends Component {
         };
     }
 
+    categoryNamePrefix(categoryLevel) {
+        let resultStr = "";
+        for (let i = 0; i < categoryLevel; i++) {
+            resultStr += "---";
+        }
+        return resultStr;
+    }
+    createCategoryTree(originListItem) {
+        let childListItem = originListItem.filter(item => item.ParentID == -1);
+        // console.log("createCategoryTree childListItem:", childListItem);
+        let itemListResult = [{ value: -1, label: "--Vui lòng chọn--" }];
+        for (let i = 0; i < childListItem.length; i++) {
+            itemListResult.push({ value: childListItem[i].value, label: childListItem[i].label });
+            let childItemTree = this.createChildCategoryTree(originListItem, childListItem[i].value, 1);
+            // console.log("createCategoryTree childItemTree:", childItemTree);
+            for (let j = 0; j < childItemTree.length; j++) {
+                //itemListResult.push(childItemTree[j]);
+                itemListResult.push({ value: childItemTree[j].value, label: childItemTree[j].label });
+            }
+        }
+        return itemListResult;
+    }
+
+    createChildCategoryTree(originListItem, parentID, categoryLevel) {
+        let childListItem = originListItem.filter(item => item.ParentID == parentID);
+        // console.log("createChildCategoryTree childListItem:", childListItem);
+        let itemListResult = []
+        for (let i = 0; i < childListItem.length; i++) {
+            let item = childListItem[i];
+            item.label = this.categoryNamePrefix(categoryLevel) + item.label;
+            // console.log("createChildCategoryTree childListItem:",item);
+            itemListResult.push(item);
+            //itemListResult.push({ value: item.CategoryID, label: item.CategoryName });
+            const newCategoryLevel = categoryLevel + 1;
+
+            let childListItem2 = originListItem.filter(item1 => item1.ParentID == item.value);
+            //  console.log("createChildCategoryTree childListItem2:",childListItem2);
+            if (childListItem2.length > 0) {
+                const childItemTree2 = this.createChildCategoryTree(originListItem, item.value, newCategoryLevel);
+                for (let j = 0; j < childItemTree2.length; j++) {
+                    //  itemListResult.push(childItemTree2[j]);
+                    itemListResult.push({ value: childItemTree2[j].value, label: childItemTree2[j].label });
+                }
+            }
+        }
+        return itemListResult;
+
+    }
+
     componentDidMount() {
+        //console.log('FormElementCom', this.props.validatonList.includes("required"))
+
         if (this.props.type == "Editor") {
             this.setState({
                 content: this.props.value
@@ -82,13 +136,15 @@ class FormElementCom extends Component {
                 const nameMember = this.props.NameMember;
                 const keyFilter = this.props.KeyFilter;
                 const valueFilter = this.props.ValueFilter;
+
                 this.props.callGetCache(cacheKeyID).then((result) => {
                     //console.log("FormElement callGetCache: ", result)
                     listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                     if (!result.IsError && result.ResultObject.CacheData != null) {
-                        //console.log("FormElement listOption: ", listOption)
+
                         result.ResultObject.CacheData.map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+                            // console.log("FormElement listOption: ", cacheItem)
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
                         });
                     }
                     else {
@@ -98,24 +154,47 @@ class FormElementCom extends Component {
                 });
             }
             else {
-                this.setState({ Listoption: listOption });
+                const isCategory = this.props.isCategory;
+                if (isCategory) {
+                    const categoryTree = this.createCategoryTree(listOption, 0, 0);
+                    this.setState({ Listoption: categoryTree });
+                }
+                else {
+                    this.setState({ Listoption: listOption });
+                }
             }
             //console.log("FormElement listOption 2: ", listOption)
-
         }
 
-
-
-
+        if (this.props.type == 'treeSelect') {
+            let treeData = this.props.treeData ? this.props.treeData : [];
+            if (this.props.IsAutoLoadItemFromCache) {
+                const { LoadItemCacheKeyID, ValueMember, NameMember, rootID, rootKey } = this.props;
+                this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        treeData = createListTree(result.ResultObject.CacheData, rootID, rootKey, ValueMember, NameMember)
+                        treeData.unshift({
+                            ParentID: -1,
+                            AttributeCategoryID: -1,
+                            AttributeCategoryName: "- Vui lòng chọn - -",
+                            key: -1,
+                            value: -1,
+                            title: "- - Vui lòng chọn - -",
+                        })
+                    }
+                    else {
+                    }
+                    this.setState({ treeData: treeData, });
+                });
+            }
+            else {
+                this.setState({ treeData: treeData });
+            }
+        }
     }
-    componentWillReceiveProps(nextProps) {
-        //console.log("FormElement componentWillReceiveProps:", nextProps);
+    componentWillReceiveProps() {
+        //console.log("FormElement componentWillReceiveProps:", this.props);
         //this.setState({value: this.props.value});
-        if (nextProps.type == "select") {
-            //console.log("FormElement componentWillReceiveProps:", nextProps);
-            let listOption = nextProps.listoption;
-            this.setState({ Listoption: listOption });
-        }
     }
 
     onChangeEditor() {
@@ -213,6 +292,39 @@ class FormElementCom extends Component {
     handleUpload() {
         this.props.onHandleUpload();
     }
+
+    loops(list, parent) {
+        return (list || []).map(({ children, value }) => {
+            const node = (valueMap[value] = {
+                parent,
+                value
+            });
+            node.children = loops(children, node);
+            return node;
+        });
+    }
+
+    // loops(treeData);
+
+    getPath(value) {
+        const path = [];
+        let current = valueMap[value];
+        while (current) {
+            path.unshift(current.value);
+            current = current.parent;
+        }
+        return path;
+    }
+
+    onChange = (inputname, inputvalue) => {
+        this.setState({ value: inputvalue });
+        this.validateInput(inputname, inputvalue)
+    };
+
+    onSelect = value => {
+        console.log("Select:", value);
+    };
+
     render() {
         const type = this.props.type;
         const icon = this.props.icon;
@@ -231,8 +343,9 @@ class FormElementCom extends Component {
                 controlCSSClassName += " is-invalid";
             }
         }
+
         let star;
-        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+        if (this.props.validatonList != undefined && (this.props.validatonList.includes("required") == true || this.props.validatonList.includes("Comborequired") == true)) {
             star = '*'
         }
 
@@ -289,6 +402,7 @@ class FormElementCom extends Component {
                     <MultiSelectComboBox
                         className={this.props.CSSClassName}
                         name={this.props.name}
+                        ref={this.props.inputRef}
                         onChange={this.handleInputChange}
                         value={this.props.value}
                         disabled={this.state.IsDisabled}
@@ -316,7 +430,7 @@ class FormElementCom extends Component {
                 break;
             case "checkbox":
                 control = (
-                    <div className="checkbox">
+                    <div className="checkbox customCheckbox">
                         <label>
                             <input name={this.props.name} type={this.props.type} defaultChecked={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsDisabled} />
                             <span className="cr"><i className="cr-icon fa fa-check"></i></span>
@@ -398,12 +512,47 @@ class FormElementCom extends Component {
             case 'date':
                 control = <Datetime timeFormat={false} dateFormat="DD/MM/YYYY" value={this.props.value} readOnly={this.props.readonly} name={this.props.name} type={this.props.type} className={CSSClassName} onChange={(moment) => this.handleDateTimeChange(this.props.name, moment)}></Datetime>
                 break;
+            case "treeSelect":
+                let disabledd = this.state.IsDisabled;
+                if (!disabledd) {
+                    if (typeof this.props.disabled !== "undefined" && this.props.disabled == true) {
+                        disabledd = this.props.disabled;
+                    }
+                }
+                let className = "form-control form-control-sm";
+                if (this.props.CSSClassName != null)
+                    className = this.props.CSSClassName;
+                if (this.props.validationErrorMessage != "") {
+                    className += " is-invalid";
+                }
+               
+                control = (
+
+                    <TreeSelect
+                        className={className}
+                        disabled={disabledd}
+                        bordered={false}
+                        ref={this.props.inputRef}
+                        // style={{ width: 300 }}
+                        value={this.state.value}
+                        dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                        treeData={this.state.treeData}
+                        placeholder="Please select"
+                        treeDefaultExpandAll
+                        onChange={(value) => this.onChange(this.props.name, value)}
+                        onSelect={this.onSelect}
+                        dropdownClassName="tree-select-custom"
+                    // multiple
+                    />
+                );
+                break;
             default:
                 control = <input className={controlCSSClassName} name={this.props.name} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} />;
                 break;
         }
 
         let divControl = (
+
             <React.Fragment>
                 <div className="form-group col-md-2">
                     <label className="col-form-label 11">
@@ -412,13 +561,18 @@ class FormElementCom extends Component {
                 </div>
                 <div className={formGroupclassName}>
                     {control}
+
                     <div className="invalid-feedback">
                         <ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul>
                     </div>
                 </div>
+                {/* {
+                    this.props.showMask ? <div className="col-form-label showMask">Vui lòng nhập số.</div> : ''
+                } */}
 
             </React.Fragment>
         );
+
         if (this.props.IsSearchForm && this.props.type != "textType") {
             divControl = (
                 <div className="input-group">
@@ -437,6 +591,7 @@ class FormElementCom extends Component {
         if (this.props.IsSearchForm && this.props.type == "groupTextAndSelect") {
             divControl = (
                 <div className="input-group">
+                    <label className="col-form-label">{this.props.label}</label>
                     {control}
                 </div>
             );
@@ -454,10 +609,11 @@ class FormElementCom extends Component {
             divControl = (
                 <React.Fragment>
                     <div className="form-group col-md-3">
-                        <label className="col-form-label modal-label-left">{this.props.label}:</label>
+                        <label className="col-form-label modal-label-left">{this.props.label}<span className="text-danger"> {star}</span></label>
                     </div>
                     <div className={formGroupclassName}>
                         {control}
+
                         <div className="invalid-feedback">
                             <ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul>
                         </div>

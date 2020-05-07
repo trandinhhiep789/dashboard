@@ -43,6 +43,11 @@ class TextBox extends React.Component {
             labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
         }
 
+        let star = "";
+        if (this.props.required) {
+            star = " *";
+        }
+
         if (this.props.validationErrorMessage != null) {
             if (this.props.validationErrorMessage.length > 0) {
                 formGroupClassName += " has-error has-danger";
@@ -57,7 +62,7 @@ class TextBox extends React.Component {
 
                 <div className={formRowClassName} >
                     <div className={labelDivClassName}>
-                        <label className="col-form-label">{this.props.label}:</label>
+                        <label className="col-form-label">{this.props.label}<span className="text-danger">{star}</span></label>
                     </div>
                     <div className={formGroupClassName}>
                         <input type="text" name={this.props.name}
@@ -70,6 +75,7 @@ class TextBox extends React.Component {
                             required={this.props.required}
                             //ref={(node) => this._myInput = node}
                             maxLength={this.props.maxSize}
+                            ref={this.props.inputRef}
                         />
                         <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
 
@@ -81,7 +87,7 @@ class TextBox extends React.Component {
             return (
                 <div className={formRowClassName} >
                     <div className={labelDivClassName}>
-                        <label className="col-form-label">{this.props.label}:</label>
+                        <label className="col-form-label">{this.props.label}<span className="text-danger">{star}</span></label>
                     </div>
                     <div className={formGroupClassName}>
                         <input type="text" name={this.props.name}
@@ -94,6 +100,7 @@ class TextBox extends React.Component {
                             required={this.props.required}
                             //ref={(node) => this._myInput = node}
                             maxLength={this.props.maxSize}
+                            ref={this.props.inputRef}
                         />
                     </div>
                 </div>
@@ -138,7 +145,7 @@ class Number extends React.Component {
         return (
             <div className={formRowClassName} >
                 <div className={labelDivClassName}>
-                    <label className="col-form-label">{this.props.label}:</label>
+                    <label className="col-form-label">{this.props.label}</label>
                 </div>
                 <div className={formGroupClassName}>
                     <input type="number" name={this.props.name}
@@ -194,7 +201,7 @@ class TextArea extends React.Component {
         return (
             <div className={formRowClassName} >
                 <div className={labelDivClassName}>
-                    <label className="col-form-label">{this.props.label}:</label>
+                    <label className="col-form-label">{this.props.label}</label>
                 </div>
                 <div className={formGroupClassName}>
                     <textarea name={this.props.name} rows={this.props.rows} onChange={this.handleValueChange}
@@ -243,6 +250,9 @@ class CheckBox extends React.Component {
         if (this.props.labelcolspan != null) {
             labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
         }
+
+
+
         if (this.props.swaplabel) {
             return (
                 <div className={formRowClassName}>
@@ -263,13 +273,16 @@ class CheckBox extends React.Component {
             if (this.props.swaplabelModal) {
                 return (
                     <div className={formRowClassName}>
-                        <div className={(labelDivClassName) + " custom-control custom-checkbox"}>
-                            <input className={(this.props.CSSClassName) + " custom-control-input"} name={this.props.name} type="checkbox"
-                                onChange={this.handleValueChange} disabled={this.state.IsSystem ? "disabled" : ""} defaultChecked={this.props.value}
-                                id={this.props.name}
-                            />
-                            <label className="custom-control-label" htmlFor={this.props.name} />
+                        <div className={(labelDivClassName) + " checkbox customCheckbox"}>
+                            <label>
+                                <input name={this.props.name} type="checkbox"
+                                    onChange={this.handleValueChange} disabled={this.state.IsSystem ? "disabled" : ""} defaultChecked={this.props.value}
+                                    id={this.props.name}
+                                />
+                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                            </label>
                         </div>
+
                         <div className={formGroupClassName} >
                             <label className="col-form-label">{this.props.label}</label>
                         </div>
@@ -277,18 +290,24 @@ class CheckBox extends React.Component {
                 )
             }
             else {
+
                 return (
                     <div className={formRowClassName}>
                         <div className={labelDivClassName}>
                             <label className="col-form-label">{this.props.label}</label>
                         </div>
-                        <div className={(formGroupClassName) + " custom-control custom-checkbox"}>
-                            <input className={(this.props.CSSClassName) + " custom-control-input"} name={this.props.name} type="checkbox"
-                                onChange={this.handleValueChange} disabled={this.state.IsSystem ? "disabled" : ""} defaultChecked={this.props.value}
-                                id={this.props.name}
-                            />
-                            <label className="custom-control-label" htmlFor={this.props.name} />
+                        <div className={formGroupClassName}>
+                            <div className="checkbox customCheckbox">
+                                <label>
+                                    <input name={this.props.name} type="checkbox"
+                                        onChange={this.handleValueChange} disabled={this.state.IsSystem ? "disabled" : ""} defaultChecked={this.props.value}
+                                        id={this.props.name}
+                                    />
+                                    <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                                </label>
+                            </div>
                         </div>
+
                     </div>
                 )
             }
@@ -446,7 +465,7 @@ class ComboBoxCom extends Component {
             return (
                 <div className={formRowClassName} >
                     <div className={labelDivClassName}>
-                        <label className="col-form-label">{this.props.label}:</label>
+                        <label className="col-form-label">{this.props.label}</label>
                     </div>
                     <div className={formGroupClassName}>
                         <select className={className} name={this.props.name}
@@ -469,7 +488,7 @@ class ComboBoxCom extends Component {
             return (
                 <div className={formRowClassName} >
                     <div className={labelDivClassName}>
-                        <label className="col-form-label">{this.props.label}:</label>
+                        <label className="col-form-label">{this.props.label}</label>
                     </div>
                     <div className={formGroupClassName}>
                         <select className={className} name={this.props.name}
@@ -543,7 +562,7 @@ class FileUpload extends React.Component {
 
             <div className="form-row" >
                 <div className={labelDivClassName}>
-                    <label className="col-form-label">{this.props.label}:</label>
+                    <label className="col-form-label">{this.props.label}</label>
                 </div>
                 <div className={formGroupClassName}>
                     <input type="text" class="form-control file-value" placeholder="Chọn hình ảnh..." readonly value={textFileValue}></input>
@@ -625,7 +644,7 @@ class SingleFileUpload extends React.Component {
 
             <div className="form-row" >
                 <div className={labelDivClassName}>
-                    <label className="col-form-label">{this.props.label}:</label>
+                    <label className="col-form-label">{this.props.label}</label>
                 </div>
                 <div className={formGroupClassName}>
                     {/* <input type="text" className="form-control file-value" value={this.state.value} placeholder="Choose file..." readOnly /> */}
@@ -836,7 +855,8 @@ class Numeric extends React.Component {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
         const isSystem = this.props.isSystem ? true : (this.props.readonly ? true : false);
-        let valueFormat = this.props.value ? this.props.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : 0;
+        //let valueFormat = this.props.value ? this.props.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : 0;
+        let valueFormat = this.props.value ? this.props.value : 0;
         this.state = {
             IsSystem: isSystem,
             ValueFormat: valueFormat
@@ -846,18 +866,38 @@ class Numeric extends React.Component {
     //     controltype: 'InputControl'
     // }
 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        // console.log("nextProps",nextProps);
+        // console.log("prevState",prevState);
+        if (nextProps.value !== prevState.ValueFormat && nextProps.value != undefined) {
+            return {
+                ValueFormat: nextProps.value
+            };
+        }
+        return null;
+    }
+
     formatNumeric(value) {
         value = value.toString().replace(/\D/g, '');
         if (isNaN(value)) {
             value = 0;
         }
-        return parseInt(value);
+
+        value = parseInt(value);
+        if (this.props.maxValue) {
+            let maxValue = parseInt(this.props.maxValue);
+            if (value > maxValue) {
+                value = maxValue;
+            }
+        }
+        return value;
     }
 
     handleValueChange(e) {
         e.preventDefault();
         let value = this.formatNumeric(e.target.value);
-        let valueFormat = value ? value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : 0;
+        //let valueFormat = value ? value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "") : 0;
+        let valueFormat = value ? value : 0;
         this.setState({ ValueFormat: valueFormat });
         if (this.props.onValueChange != null)
             this.props.onValueChange(e.target.name, value);
@@ -878,25 +918,59 @@ class Numeric extends React.Component {
         if (this.props.labelcolspan != null) {
             labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
         }
-        return (
-            <div className={formRowClassName} >
-                <div className={labelDivClassName}>
-                    <label className="col-form-label">{this.props.label}:</label>
+
+        let star = "";
+        if (this.props.required) {
+            star = " *";
+        }
+
+        if (this.props.validationErrorMessage != null) {
+            if (this.props.validationErrorMessage.length > 0) {
+                formGroupClassName += " has-error has-danger";
+                className += " is-invalid";
+            }
+
+            return (
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label">{this.props.label}<span className="text-danger">{star}</span></label>
+                    </div>
+                    <div className={formGroupClassName}>
+                        <input type="text" name={this.props.name}
+                            onChange={this.handleValueChange}
+                            //defaultValue={this.props.value}
+                            value={this.state.ValueFormat}
+                            className={className}
+                            placeholder={this.props.placeholder}
+                            readOnly={this.state.IsSystem}
+                            required={this.props.required}
+                            maxLength={this.props.maxSize}
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    </div>
                 </div>
-                <div className={formGroupClassName}>
-                    <input type="text" name={this.props.name}
-                        onChange={this.handleValueChange}
-                        defaultValue={this.props.value}
-                        value={this.state.ValueFormat}
-                        className={className}
-                        placeholder={this.props.placeholder}
-                        readOnly={this.state.IsSystem}
-                        required={this.props.required}
-                        maxLength={this.props.maxSize}
-                    />
+            );
+        } else {
+            return (
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label">{this.props.label}</label>
+                    </div>
+                    <div className={formGroupClassName}>
+                        <input type="text" name={this.props.name}
+                            onChange={this.handleValueChange}
+                            //defaultValue={this.props.value}
+                            value={this.state.ValueFormat}
+                            className={className}
+                            placeholder={this.props.placeholder}
+                            readOnly={this.state.IsSystem}
+                            required={this.props.required}
+                            maxLength={this.props.maxSize}
+                        />
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        }
     }
 }
 

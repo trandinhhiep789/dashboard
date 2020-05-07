@@ -147,12 +147,7 @@ export default class GridCell extends Component {
                 return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.value} title="Edit"><i className="ti-pencil"></i></a>;
 
             case "editnew":
-             //   return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>;
-             return  (
-                <div>
-                  <a title="" className="table-action hover-primary" onClick={this.handleonClickEdit} data-id={this.props.index} title="Chỉnh sửa"><i className="ti-pencil"></i></a>
-                  <a title="" className="table-action hover-danger" onClick={this.handleonClickDelete} data-id={this.props.index}  title="Xóa"><i className="ti-trash"></i></a></div>
-              );
+                return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>;
 
             default:
                 control = <label>{text}</label>;

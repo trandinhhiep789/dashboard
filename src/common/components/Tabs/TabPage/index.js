@@ -11,7 +11,7 @@ export default class TabPage extends Component
     {
         return (
             <li className="nav-item">
-                <a className={`nav-link ${this.props.isActive ? 'active show' : ''}`}
+                <a ref={this.props.tabRef} className={`nav-link ${this.props.isActive ? 'active show' : ''}`}
                     onClick={(event) => {
                         event.preventDefault();
                         this.props.onClick(this.props.tabIndex);

@@ -20,14 +20,14 @@ export default class SearchForm extends Component {
         const listElement = this.props.listelement;
         listElement.map((elementItem) => {
             const elementname = elementItem.name;
-            if (elementItem.nameOption != null && elementItem.nameOption !== undefined) {
+            if(elementItem.nameOption !=null && elementItem.nameOption!== undefined){
                 const elementnameOption = elementItem.nameOption;
                 formData = Object.assign({}, formData, { [elementname]: elementItem.value, [elementnameOption]: elementItem.valueOption });
             }
-            else {
-                formData = Object.assign({}, formData, { [elementname]: elementItem.value });
+            else{
+                formData = Object.assign({}, formData, { [elementname]: elementItem.value});
             }
-
+           
         });
         this.state = { FormData: formData };
     }
@@ -100,7 +100,6 @@ export default class SearchForm extends Component {
                     )
                 }
                 <div className="col-md-2 item">
-                    {/* <label class="col-form-label">&nbsp;</label> */}
                     <div className="btnSearch">
                         <button className="btn btn-primary" type="submit">{cssSearchButton}
                             <span className="fa fa-search"> Tìm Kiếm</span>
@@ -118,16 +117,8 @@ export default class SearchForm extends Component {
         //this.renderTwoColumnForm();
         const listElement = this.props.listelement;
         let elmentRender = this.renderSearchForm();
-        let classNameCustom;
-        if (this.props.className == undefined && this.props.className == "") {
-            classNameCustom = "col-lg-12 SearchForm"
-        }
-        else {
-            classNameCustom = "col-lg-12 SearchForm " + this.props.className;
-        }
-
         return (
-            <div className={classNameCustom}>
+            <div className="col-lg-12 SearchForm">
                 <form className="card" action="" onSubmit={this.handleSearchSubmit}>
                     <div className="card-body">
                         {elmentRender}

@@ -6,6 +6,12 @@ import { connect } from 'react-redux';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_SEARCH } from '../../../../constants/actionTypes';
 import SearchModal from "../../Form/AdvanceForm/FormControl/FormSearchModal"
+import { createListTree } from "../../../library/ultils";
+import { TreeSelect } from "antd";
+import "antd/dist/antd.css";
+
+
+
 
 class TextBox extends React.Component {
     constructor(props) {
@@ -23,6 +29,7 @@ class TextBox extends React.Component {
 
     }
     render() {
+
         let className = "form-control form-control-sm";
         if (this.props.CSSClassName != null)
             className = this.props.CSSClassName;
@@ -34,6 +41,11 @@ class TextBox extends React.Component {
         if (this.props.labelcolspan != null) {
             labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
         }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+
         if (this.props.validationErrorMessage != "") {
             className += " is-invalid";
 
@@ -43,7 +55,9 @@ class TextBox extends React.Component {
             return (
                 <div className="form-row" >
                     <div className={labelDivClassName}>
-                        <label className="col-form-label">{this.props.label}</label>
+                        <label className="col-form-label 2">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
                     </div>
                     <div className={formGroupClassName}>
                         <input type="text" name={this.props.name}
@@ -67,7 +81,9 @@ class TextBox extends React.Component {
             return (
                 <div className="form-row" >
                     <div className={labelDivClassName}>
-                        <label className="col-form-label">{this.props.label}</label>
+                        <label className="col-form-label 3">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
                     </div>
                     <div className={formGroupClassName}>
                         <input type="text" name={this.props.name}
@@ -111,12 +127,17 @@ class TextArea extends React.Component {
         if (this.props.labelcolspan != null) {
             labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
         }
-
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
         return (
 
             <div className="form-row" >
                 <div className={labelDivClassName}>
-                    <label className="col-form-label">{this.props.label}</label>
+                    <label className="col-form-label 4">
+                        {this.props.label}<span className="text-danger"> {star}</span>
+                    </label>
                 </div>
                 <div className={formGroupClassName}>
                     <textarea name={this.props.name} onChange={this.handleValueChange}
@@ -160,11 +181,17 @@ class CheckBox extends React.Component {
         if (this.props.labelcolspan != null) {
             labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
         }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
         return (
 
             <div className={formRowClassName} >
                 <div className={labelDivClassName}>
-                    <label className="col-form-label">{this.props.label}</label>
+                    <label className="col-form-label 5">
+                        {this.props.label}<span className="text-danger"> {star}</span>
+                    </label>
                 </div>
                 <div className={formGroupClassName}>
 
@@ -263,7 +290,7 @@ class ComboBoxCom extends Component {
                     if (!isCategory) {
 
                         result.ResultObject.CacheData.map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
                         }
                         );
                         this.setState({ Listoption: listOption });
@@ -302,22 +329,29 @@ class ComboBoxCom extends Component {
         if (this.props.labelcolspan != null) {
             labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
         }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
+            star = '*'
+        }
 
         if (this.props.validationErrorMessage != "") {
             className += " is-invalid";
             return (
                 <div className={formRowClassName} >
                     <div className={labelDivClassName}>
-                        <label className="col-form-label">{this.props.label}</label>
+                        <label className="col-form-label 6">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
                     </div>
                     <div className={formGroupClassName}>
                         <select className={className} name={this.props.name}
-                            onChange={this.handleValueChange} value={this.state.value}
+                            onChange={this.handleValueChange} 
+                            value={this.state.value}
                             disabled={this.props.disabled}
                             required={this.props.required}
                         >
                             {listOption.map((optionItem) =>
-                                <option key={optionItem.value} value={optionItem.value}>{optionItem.label}</option>
+                                <option key={optionItem.value} value={optionItem.value}>{(optionItem.value==-1?"":optionItem.value + " - " )+ optionItem.label}</option>
                             )}
                         </select>
                         <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
@@ -329,7 +363,9 @@ class ComboBoxCom extends Component {
             return (
                 <div className={formRowClassName} >
                     <div className={labelDivClassName}>
-                        <label className="col-form-label">{this.props.label}</label>
+                        <label className="col-form-label 7">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
                     </div>
                     <div className={formGroupClassName}>
                         <select className={className} name={this.props.name}
@@ -504,7 +540,7 @@ class GroupTextBoxCom extends Component {
         if (this.props.rowspan != null) {
             formRowClassName = "form-row col-md-" + this.props.rowspan;
         }
-        let className = "form-control form-control-sm";
+        let className = "form-control form-control-sm value-container-input-group";
         if (this.props.CSSClassName != null)
             className = this.props.CSSClassName;
         let formGroupClassName = "form-group col-md-4";
@@ -519,29 +555,34 @@ class GroupTextBoxCom extends Component {
             <React.Fragment>
                 <div className={formRowClassName + " input-group-cus"} >
                     <div className={labelDivClassName}>
-                        <label className="col-form-label">{this.props.label}</label>
+                        <label className="col-form-label 8">{this.props.label}</label>
                     </div>
                     <div className={formGroupClassName + " input-group"}>
-                        <div className={className}>
-                            {selectedOption &&
-                                selectedOption.map((item, index) => {
-                                    return (
-                                        <div className="item-group" key={index}>
-                                            <label>{item.label}</label>
-                                            <span className="icon-delete" onClick={() => { this.handleValueChange(index) }}>
-                                                <i className="fa fa-times"></i>
-                                            </span>
-                                        </div>
+                        <div className="container-input-group-box">
+                            <div className="control-input-group">
+                                <div className={className}>
+                                    {selectedOption &&
+                                        selectedOption.map((item, index) => {
+                                            return (
+                                                <div className="item-group" key={index}>
+                                                    <label>{item.label}</label>
+                                                    <span className="icon-delete" onClick={() => { this.handleValueChange(index) }}>
+                                                        <i className="fa fa-times"></i>
+                                                    </span>
+                                                </div>
 
-                                    )
-                                })
-                            }
+                                            )
+                                        })
+                                    }
+                                </div>
+                                <div className="input-group-prepend">
+                                    <span className="indicatorSeparator"></span>
+                                    <button className="btn btn-light btn-cus" type="button" onClick={this.handleSubmit}>
+                                        <i className="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <span className="input-group-prepend">
-                            <button className="btn btn-light" type="button" onClick={this.handleSubmit}>
-                                <i className="fa fa-search"></i>
-                            </button>
-                        </span>
                     </div>
                 </div>
             </React.Fragment>
@@ -559,4 +600,164 @@ const mapStateToProps = state => {
 
 //End hoc.lenho test
 
-export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal,GroupTextBox };
+class TreeSelectCom extends React.Component {
+    static defaultProps = {
+        componenttype: 'InputControl'
+    }
+    constructor(props) {
+        super(props);
+        //this.handleValueChange = this.handleValueChange.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.state = {
+            IsDisabled: false,
+            value: this.props.value,
+        };
+    }
+
+    componentDidMount() {
+        console.log("aaa",this.props)
+
+        const validatonDisabled = this.props.isDisabled;
+        if (this.props.AppInfo.LoginInfo.Username == "administrator" && (this.props.name).toLowerCase().includes('system')) {
+            this.setState({
+                IsDisabled: false
+            })
+        }
+        else if (validatonDisabled) {
+            this.setState({
+                IsDisabled: true
+            })
+        }
+
+        let treeData = this.props.treeData ? this.props.treeData : [];
+        if (this.props.IsAutoLoadItemFromCache) {
+            const { loadItemCachekeyID, valueMember, nameMember, rootID, rootKey } = this.props;
+            this.props.callGetCache(loadItemCachekeyID).then((result) => {
+
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    treeData = createListTree(result.ResultObject.CacheData, rootID, rootKey, valueMember, nameMember)
+                    treeData.unshift({
+                        ParentID: -1,
+                        CategoryID: -1,
+                        CategoryName: "- Vui lòng chọn - -",
+                        key: -1,
+                        value: -1,
+                        title: "- - Vui lòng chọn - -",
+                    })
+                }
+                else {
+                    console.log("ghi log cache lỗi", loadItemCachekeyID);
+                }
+                this.setState({ treeData: treeData, });
+            });
+        }
+        else {
+            this.setState({ treeData: treeData });
+        }
+    }
+
+    onChange(inputname, inputvalue){
+        //console.log("Change", this.props, inputname, inputvalue);
+        this.setState({ value: inputvalue });
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(inputname, inputvalue, this.props.label, undefined, this.props.validatonList);
+        if (this.props.onValueChangeCus) {
+            this.props.onValueChangeCus(inputname, inputvalue);
+        }
+    };
+
+    render() {
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-4";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
+            star = '*'
+        }
+        let disabledd = this.state.IsDisabled;
+        if (!disabledd) {
+            if (typeof this.props.disabled !== "undefined" && this.props.disabled == true) {
+                disabledd = this.props.disabled;
+            }
+        }
+        //console.log("aaa",this.props.validationErrorMessage )
+        if (this.props.validationErrorMessage != "") {
+            className += " is-invalid";
+            return (
+
+                <div className="form-row" >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 4">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+                    <div className={formGroupClassName}>
+                        <TreeSelect
+                            className={className} 
+                            disabled={disabledd}
+                            bordered={false}
+                            ref={this.props.inputRef}
+                            value={this.state.value}
+                            dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                            treeData={this.state.treeData}
+                            placeholder="Vui lòng chọn"
+                            treeDefaultExpandAll
+                            onChange={(value) => this.onChange(this.props.name, value)}
+                            onSelect={this.onSelect}
+                            dropdownClassName="tree-select-custom"
+                        />
+                        <div className="invalid-feedback">
+                            <ul className="list-unstyled">
+                                <li>{this.props.validationErrorMessage}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+    
+            );
+        }
+        else{
+            return (
+
+                <div className="form-row" >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 4">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+                    <div className={formGroupClassName}>
+                        <TreeSelect
+                            className={className} 
+                            disabled={disabledd}
+                            bordered={false}
+                            ref={this.props.inputRef}
+                            value={this.state.value}
+                            dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                            treeData={this.state.treeData}
+                            placeholder="Vui lòng chọn"
+                            treeDefaultExpandAll
+                            onChange={(value) => this.onChange(this.props.name, value)}
+                            onSelect={this.onSelect}
+                            dropdownClassName="tree-select-custom"
+                        />
+                    </div>
+                </div>
+    
+            );
+        }
+
+        
+    }
+}
+
+export const TreeSelectCus = connect(mapStateToProps, mapDispatchToProps)(TreeSelectCom);
+
+export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus };
