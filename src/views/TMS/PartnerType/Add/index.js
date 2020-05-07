@@ -127,7 +127,6 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 onHandleSelectedFile={this.handleSelectedFile}
                 dataSource={this.state.DataSource}
-                RequirePermission={BRAND_ADD}
                 BackLink={BackLink}
             >
             </FormContainer>

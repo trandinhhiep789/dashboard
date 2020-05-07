@@ -146,7 +146,7 @@ class EditCom extends React.Component {
                     onHandleSelectedFile={this.handleSelectedFile}
                     dataSource={this.state.DataSource}
                     ref={this.searchref}
-                    RequirePermission={BRAND_UPDATE}
+             
                     BackLink={BackLink}
                 >
                 </FormContainer>
