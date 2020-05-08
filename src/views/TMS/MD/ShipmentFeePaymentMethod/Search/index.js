@@ -20,17 +20,9 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-// import {
-//     ATTRIBUTE_CATEGORY_TYPE_VIEW,
-//     ATTRIBUTE_CATEGORY_TYPE_DELETE
-// } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache } from "../../../../../actions/cacheAction";
-
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -119,7 +111,6 @@ class SearchCom extends React.Component {
         ];
         this.setState({ SearchData: postData });
         this.callSearchData(postData);
-        //this.gridref.current.clearData();
     }
 
     callSearchData(searchData) {
@@ -189,7 +180,7 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                    FormName="Tìm kiếm danh sách phương thức thanh toán chi phí vận chuyển"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}

@@ -45,9 +45,9 @@ export const AddElementList = [
     {
         type: "numeric",
         name: "txtShipmentFeePaymentMethodID",
-        label: "Mã phương thức thanh toán chi phí vận chuyển",
+        label: "mã phương thức thanh toán chi phí",
         value: "",
-        maxSize: "5",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -58,9 +58,9 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtShipmentFeePaymentMethodName",
-        label: "Tên phương thức thanh toán chi phí vận chuyển",
+        label: "tên phương thức thanh toán chi phí",
         value: "",
-        maxSize: "200",
+        maxSize: "180",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -73,7 +73,7 @@ export const AddElementList = [
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "2000",
+        maxSize: "1900",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -87,7 +87,7 @@ export const AddElementList = [
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: "",
-        maxSize: "10",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -123,9 +123,9 @@ export const EditElementList = [
     {
         type: "numeric",
         name: "txtShipmentFeePaymentMethodID",
-        label: "Mã phương thức thanh toán chi phí vận chuyển",
+        label: "mã phương thức thanh toán chi phí vận chuyển",
         value: "",
-        maxSize: "5",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -136,9 +136,9 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtShipmentFeePaymentMethodName",
-        label: "Tên phương thức thanh toán chi phí vận chuyển",
+        label: "tên phương thức thanh toán chi phí vận chuyển",
         value: "",
-        maxSize: "200",
+        maxSize: "180",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -151,7 +151,7 @@ export const EditElementList = [
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "2000",
+        maxSize: "1900",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -165,7 +165,7 @@ export const EditElementList = [
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: "",
-        maxSize: "10",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -275,58 +275,44 @@ export const DataGridColumnList = [
     {
         Name: "ShipmentFeePaymentMethodID",
         Type: "text",
-        Caption: "Mã phương thức thanh toán chi phí vận chuyển",
+        Caption: "Mã phương thức thanh toán chi phí",
         DataSourceMember: "ShipmentFeePaymentMethodID",
-        Width: 250
+        Width: 170
     },
     {
         Name: "ShipmentFeePaymentMethodName",
         Type: "text",
-        Caption: "Tên phương thức thanh toán chi phí vận chuyển",
+        Caption: "Tên phương thức thanh toán chi phí",
         DataSourceMember: "ShipmentFeePaymentMethodName",
-        Width: 250
-    },
-    {
-        Name: "Description",
-        Type: "text",
-        Caption: "Mô tả",
-        DataSourceMember: "Description",
-        Width: 250
+        Width: 350
     },
     {
         Name: "IsActived",
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 80
+        Width: 70
     },
-    // {
-    //     Name: "IsSystem",
-    //     Type: "checkicon",
-    //     Caption: "Hệ thống",
-    //     DataSourceMember: "IsSystem",
-    //     Width: 200
-    // },
     {
         Name: "CreatedDate",
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 200
+        Width: 70
     },
     {
-        Name: "CreatedUserFullName",
+        Name: "CreatedFullName",
         Type: "text",
         Caption: "Người tạo",
-        DataSourceMember: "CreatedUserFullName",
-        Width: 200
+        DataSourceMember: "CreatedFullName",
+        Width: 150
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "ShipmentFeePaymentMethodID",
-        Width: 200,
+        Width: 70,
         Link: "/ShipmentFeePaymentMethod/Edit/",
         LinkText: "Chỉnh sửa"
     }
