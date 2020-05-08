@@ -45,9 +45,9 @@ export const AddElementList = [
     {
         type: "numeric",
         name: "txtShipmentGoodsTypeID",
-        label: "Mã loại hàng hóa vận chuyển",
+        label: "mã loại hàng hóa",
         value: "",
-        maxSize: "5",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -58,9 +58,9 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtShipmentGoodsTypeName",
-        label: "Tên loại hàng hóa vận chuyển",
+        label: "tên loại hàng hóa",
         value: "",
-        maxSize: "200",
+        maxSize: "180",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -69,25 +69,30 @@ export const AddElementList = [
         validatonList: ["required"],
     },
     {
-        type: "select",
+        type: "treeSelect",
         name: "comboParentID",
-        label: "Danh mục cha:",
-        value: -1,
+        label: "Danh mục cha",
+        value: "",
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "ParentID",
         readonly: false,
+        treeData: [],
+        rootID: -1,
+        rootKey: "ParentID",
+        DataSourceMember: "ParentID",
+        validatonList: [],
+        LoadItemCacheKeyID: "",
         IsAutoLoadItemFromCache: false,
-        validatonList: ["required", "number"],
-        isCategory:true
+        ValueMember: "ShipmentGoodsTypeID",
+        NameMember: "ShipmentGoodsTypeName",
     },
     {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "2000",
+        maxSize: "1900",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -101,7 +106,7 @@ export const AddElementList = [
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: "",
-        maxSize: "10",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -137,9 +142,9 @@ export const EditElementList = [
     {
         type: "numeric",
         name: "txtShipmentGoodsTypeID",
-        label: "Mã loại hàng hóa vận chuyển",
+        label: "mã loại hàng hóa",
         value: "",
-        maxSize: "5",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -150,9 +155,9 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtShipmentGoodsTypeName",
-        label: "Tên loại hàng hóa vận chuyển",
+        label: "tên loại hàng hóa",
         value: "",
-        maxSize: "200",
+        maxSize: "180",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -161,25 +166,30 @@ export const EditElementList = [
         validatonList: ["required"],
     },
     {
-        type: "select",
+        type: "treeSelect",
         name: "comboParentID",
-        label: "Danh mục cha:",
-        value: -1,
+        label: "Danh mục cha",
+        value: "",
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "ParentID",
         readonly: false,
+        treeData: [],
+        rootID: -1,
+        rootKey: "ParentID",
+        DataSourceMember: "ParentID",
+        validatonList: [],
+        LoadItemCacheKeyID: "",
         IsAutoLoadItemFromCache: false,
-        validatonList: ["required", "number"],
-        isCategory:true
+        ValueMember: "ShipmentGoodsTypeID",
+        NameMember: "ShipmentGoodsTypeName",
     },
     {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "2000",
+        maxSize: "1900",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -193,7 +203,7 @@ export const EditElementList = [
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: "",
-        maxSize: "10",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -247,6 +257,13 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtShipmentGoodsTypeName",
         DataSourceMember: "ShipmentGoodsTypeName"
+    },
+    ,
+    {
+        Name: "ParentID",
+        DefaultValue: "",
+        BindControlName: "comboParentID",
+        DataSourceMember: "ParentID"
     },
     {
         Name: "Description",
@@ -303,9 +320,9 @@ export const DataGridColumnList = [
     {
         Name: "ShipmentGoodsTypeID",
         Type: "text",
-        Caption: "Mã loại hàng hóa vận chuyển",
+        Caption: "Mã loại hàng hóa",
         DataSourceMember: "ShipmentGoodsTypeID",
-        Width: 250
+        Width: 100
     },
     {
         Name: "ShipmentGoodsTypeName",
@@ -315,11 +332,11 @@ export const DataGridColumnList = [
         Width: 250
     },
     {
-        Name: "Description",
+        Name: "ParentName",
         Type: "text",
-        Caption: "Mô tả",
-        DataSourceMember: "Description",
-        Width: 250
+        Caption: "Danh mục cha",
+        DataSourceMember: "ParentName",
+        Width: 200
     },
     {
         Name: "IsActived",
@@ -328,33 +345,26 @@ export const DataGridColumnList = [
         DataSourceMember: "IsActived",
         Width: 80
     },
-    // {
-    //     Name: "IsSystem",
-    //     Type: "checkicon",
-    //     Caption: "Hệ thống",
-    //     DataSourceMember: "IsSystem",
-    //     Width: 200
-    // },
     {
         Name: "CreatedDate",
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 200
+        Width: 100
     },
     {
-        Name: "CreatedUserFullName",
+        Name: "CreatedFullName",
         Type: "text",
         Caption: "Người tạo",
-        DataSourceMember: "CreatedUserFullName",
-        Width: 200
+        DataSourceMember: "CreatedFullName",
+        Width: 150
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "ShipmentGoodsTypeID",
-        Width: 200,
+        Width: 70,
         Link: "/ShipmentGoodsType/Edit/",
         LinkText: "Chỉnh sửa"
     }

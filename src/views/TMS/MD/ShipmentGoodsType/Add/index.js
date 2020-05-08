@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SimpleForm from "../../../../../common/components/Form/SimpleForm";
+import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
@@ -11,14 +11,11 @@ import {
     MLObjectDefinition,
     BackLink,
     AddPagePath,
-    AddLogAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { ATTRIBUTE_CATEGORY_TYPE_ADD } from "../../../../../constants/functionLists";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { createListTree } from '../../../../../common/library/ultils';
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -30,11 +27,14 @@ class AddCom extends React.Component {
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
-            IsCloseForm: false
+            IsCloseForm: false,
+            AddElementList: AddElementList,
+            IsLoadDataComplete: false
         };
     }
 
     componentDidMount() {
+        this.GetParentList();
         this.props.updatePagePath(AddPagePath);
     }
 
@@ -70,12 +70,65 @@ class AddCom extends React.Component {
     //     this.props.callFetchAPI(APIHostName, AddLogAPIPath, MLObject);
     // }
 
+    GetParentList() {
+        const InitSearchParams = [{
+            SearchKey: "@Keyword",
+            SearchValue: ""
+        },
+        {
+            SearchKey: "@isactived",
+            SearchValue: 1
+        }
+        ];
+
+        this.props.callFetchAPI(APIHostName,"api/ShipmentGoodsType/GetParentShipmentGoodsType", InitSearchParams).then((apiResult) => {
+            if (!apiResult.IsError) {
+
+                const sortTemp = apiResult.ResultObject.sort((a, b) => (a.ParentID > b.ParentID) ? 1 : (a.ParentID === b.ParentID) ? ((a.ShipmentGoodsTypeID > b.ShipmentGoodsTypeID) ? 1 : -1) : -1)
+                let treeData = createListTree(sortTemp, -1, "ParentID", "ShipmentGoodsTypeID", "ShipmentGoodsTypeName")
+                treeData.unshift({
+                    ParentID: -1,
+                    ShipmentGoodsTypeID: -1,
+                    ShipmentGoodsTypeName: "-- Vui lòng chọn --",
+                    key: -1,
+                    value: -1,
+                    title: "-- Vui lòng chọn --",
+                })
+                this.setState({ treeData })
+
+                let comboParentIDList = apiResult.ResultObject.map(function (objData) {
+                    if (objData.ProductTypeID === -1) {
+                        return {};
+                    }
+                    return { value: objData.ProductTypeID, ParentID: objData.ParentID, name: `${objData.ProductTypeID}. ${objData.ProductTypeName}`, label: `${objData.ParentID} - ${objData.ProductTypeName}` }
+                });
+                //  comboParentIDList.unshift({ value: -1, name:"Vuilongchon", label:"--Vui lòng chọn--"});
+                comboParentIDList = comboParentIDList.filter(value => Object.keys(value).length !== 0);
+                let _AddElementList = this.state.AddElementList;
+                _AddElementList.forEach(function (objElement) {
+                    if (objElement.DataSourceMember == 'ParentID' && comboParentIDList.length > 0) {
+                        objElement.listoption = comboParentIDList;
+                        objElement.value = -1;
+                    }
+                    if (objElement.type == 'treeSelect') {
+                        objElement.treeData = treeData;
+                    }
+                });
+                this.setState({
+                    AddElementList: _AddElementList,
+                    IsLoadDataComplete:true
+                });
+            
+            }
+        });
+    }
 
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
             if(!apiResult.IsError){
                 //this.handleClearLocalCache();
                 //this.handleSubmitInsertLog(MLObject);
@@ -106,19 +159,26 @@ class AddCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
+        if (this.state.IsLoadDataComplete) {
+            return (
+                <FormContainer
+                    FormName="Thêm loại hàng hóa vận chuyển"
+                    MLObjectDefinition={MLObjectDefinition}
+                    listelement={this.state.AddElementList}
+                    IsAutoLayout={true}
+                    onSubmit={this.handleSubmit}
+                    FormMessage={this.state.CallAPIMessage}
+                    IsErrorMessage={this.state.IsCallAPIError}
+                    dataSource={dataSource}
+                    BackLink={BackLink}
+                >
+                </FormContainer>
+            );
+        }
         return (
-            <SimpleForm
-                FormName="Thêm loại phương tiện vận chuyển"
-                MLObjectDefinition={MLObjectDefinition} ƒ
-                listelement={AddElementList}
-                onSubmit={this.handleSubmit}
-                FormMessage={this.state.CallAPIMessage}
-                IsErrorMessage={this.state.IsCallAPIError}
-                dataSource={dataSource}
-                BackLink={BackLink}
-                //RequirePermission={ATTRIBUTE_CATEGORY_TYPE_ADD}
-                ref={this.searchref}
-            />
+            <React.Fragment>
+                <label>Đang nạp dữ liệu...</label>
+            </React.Fragment>
         );
     }
 }

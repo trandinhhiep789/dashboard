@@ -30,3 +30,26 @@ export const showToastAlert = (message = '🦄 Wow so easy', type = '') => {
             break;
     }
 }
+
+export const createListTree = (resultRoot, rootID, rootKey, childrenKey, childrenName) => {
+    let result = []
+    const resultFilter = resultRoot.filter(e => {
+        return e[rootKey] == rootID 
+    })
+    if (resultFilter.length > 0) {
+        resultFilter.map((e, i) => {
+            let element = {
+                [rootKey]: rootID,
+                [childrenKey]: e[childrenKey],
+                [childrenName]: e[childrenName],
+                key: e[childrenKey],
+                value: e[childrenKey],
+                title: `${e[childrenKey]} - ${e[childrenName]}`,
+                children: []
+            }
+            element.children = createListTree(resultRoot, e[childrenKey], rootKey, childrenKey, childrenName)
+            result.push(element)
+        })
+    }
+    return result;
+}
