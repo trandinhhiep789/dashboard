@@ -45,9 +45,9 @@ export const AddElementList = [
     {
         type: "numeric",
         name: "txtShipmentOrderStepID",
-        label: "Mã bước xử lý yêu cầu vận chuyển",
+        label: "mã bước xử lý yêu cầu",
         value: "",
-        maxSize: "5",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -58,9 +58,9 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtShipmentOrderStepName",
-        label: "Tên bước xử lý yêu cầu vận chuyển",
+        label: "tên bước xử lý yêu cầu",
         value: "",
-        maxSize: "200",
+        maxSize: "180",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -73,7 +73,7 @@ export const AddElementList = [
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "2000",
+        maxSize: "1900",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -87,7 +87,7 @@ export const AddElementList = [
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: "",
-        maxSize: "10",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -123,9 +123,9 @@ export const EditElementList = [
     {
         type: "numeric",
         name: "txtShipmentOrderStepID",
-        label: "Mã bước xử lý yêu cầu vận chuyển",
+        label: "mã bước xử lý yêu cầu",
         value: "",
-        maxSize: "5",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -136,9 +136,9 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtShipmentOrderStepName",
-        label: "Tên bước xử lý yêu cầu vận chuyển",
+        label: "tên bước xử lý yêu cầu",
         value: "",
-        maxSize: "200",
+        maxSize: "180",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -165,7 +165,7 @@ export const EditElementList = [
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: "",
-        maxSize: "10",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -275,23 +275,16 @@ export const DataGridColumnList = [
     {
         Name: "ShipmentOrderStepID",
         Type: "text",
-        Caption: "Mã bước xử lý yêu cầu vận chuyển",
+        Caption: "Mã bước xử lý yêu cầu",
         DataSourceMember: "ShipmentOrderStepID",
-        Width: 250
+        Width: 150
     },
     {
         Name: "ShipmentOrderStepName",
         Type: "text",
-        Caption: "Tên bước xử lý yêu cầu vận chuyển",
+        Caption: "Tên bước xử lý yêu cầu",
         DataSourceMember: "ShipmentOrderStepName",
-        Width: 250
-    },
-    {
-        Name: "Description",
-        Type: "text",
-        Caption: "Mô tả",
-        DataSourceMember: "Description",
-        Width: 250
+        Width: 350
     },
     {
         Name: "IsActived",
@@ -300,25 +293,18 @@ export const DataGridColumnList = [
         DataSourceMember: "IsActived",
         Width: 80
     },
-    // {
-    //     Name: "IsSystem",
-    //     Type: "checkicon",
-    //     Caption: "Hệ thống",
-    //     DataSourceMember: "IsSystem",
-    //     Width: 200
-    // },
     {
         Name: "CreatedDate",
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 200
+        Width: 100
     },
     {
-        Name: "CreatedUserFullName",
+        Name: "CreatedFullName",
         Type: "text",
         Caption: "Người tạo",
-        DataSourceMember: "CreatedUserFullName",
+        DataSourceMember: "CreatedFullName",
         Width: 200
     },
     {
@@ -326,7 +312,7 @@ export const DataGridColumnList = [
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "ShipmentOrderStepID",
-        Width: 200,
+        Width: 70,
         Link: "/ShipmentOrderStep/Edit/",
         LinkText: "Chỉnh sửa"
     }

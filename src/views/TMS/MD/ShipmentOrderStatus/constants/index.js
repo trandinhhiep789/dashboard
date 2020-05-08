@@ -45,9 +45,9 @@ export const AddElementList = [
     {
         type: "numeric",
         name: "txtShipmentOrderStatusID",
-        label: "Mã trạng thái yêu cầu vận chuyển",
+        label: "mã trạng thái yêu cầu",
         value: "",
-        maxSize: "5",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -58,9 +58,9 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtShipmentOrderStatusName",
-        label: "Tên trạng thái yêu cầu vận chuyển",
+        label: "tên trạng thái yêu cầu",
         value: "",
-        maxSize: "200",
+        maxSize: "180",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -73,7 +73,7 @@ export const AddElementList = [
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "2000",
+        maxSize: "1900",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -87,7 +87,7 @@ export const AddElementList = [
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: "",
-        maxSize: "10",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -123,9 +123,9 @@ export const EditElementList = [
     {
         type: "numeric",
         name: "txtShipmentOrderStatusID",
-        label: "Mã trạng thái yêu cầu vận chuyển",
+        label: "mã trạng thái yêu cầu",
         value: "",
-        maxSize: "5",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -136,9 +136,9 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtShipmentOrderStatusName",
-        label: "Tên trạng thái yêu cầu vận chuyển",
+        label: "tên trạng thái yêu cầu",
         value: "",
-        maxSize: "200",
+        maxSize: "180",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -151,7 +151,7 @@ export const EditElementList = [
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "2000",
+        maxSize: "1900",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -165,7 +165,7 @@ export const EditElementList = [
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: "",
-        maxSize: "10",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -275,23 +275,16 @@ export const DataGridColumnList = [
     {
         Name: "ShipmentOrderStatusID",
         Type: "text",
-        Caption: "Mã trạng thái yêu cầu vận chuyển",
+        Caption: "Mã trạng thái yêu cầu",
         DataSourceMember: "ShipmentOrderStatusID",
-        Width: 250
+        Width: 150
     },
     {
         Name: "ShipmentOrderStatusName",
         Type: "text",
-        Caption: "Tên trạng thái yêu cầu vận chuyển",
+        Caption: "Tên trạng thái yêu cầu",
         DataSourceMember: "ShipmentOrderStatusName",
-        Width: 250
-    },
-    {
-        Name: "Description",
-        Type: "text",
-        Caption: "Mô tả",
-        DataSourceMember: "Description",
-        Width: 250
+        Width: 350
     },
     {
         Name: "IsActived",
@@ -300,33 +293,27 @@ export const DataGridColumnList = [
         DataSourceMember: "IsActived",
         Width: 80
     },
-    // {
-    //     Name: "IsSystem",
-    //     Type: "checkicon",
-    //     Caption: "Hệ thống",
-    //     DataSourceMember: "IsSystem",
-    //     Width: 200
-    // },
+
     {
         Name: "CreatedDate",
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 200
+        Width: 100
     },
     {
-        Name: "CreatedUserFullName",
+        Name: "CreatedFullName",
         Type: "text",
         Caption: "Người tạo",
-        DataSourceMember: "CreatedUserFullName",
-        Width: 200
+        DataSourceMember: "CreatedFullName",
+        Width: 150
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "ShipmentOrderStatusID",
-        Width: 200,
+        Width: 70,
         Link: "/ShipmentOrderStatus/Edit/",
         LinkText: "Chỉnh sửa"
     }
