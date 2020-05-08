@@ -12,18 +12,18 @@ export const PKColumnName = "PartnerPriviledgeGroupID";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/PartnerPriviledgeGroup", Title: "Nhóm quyền nhà cung cấp" }
+    { Link: "", Title: "Danh sách nhóm quyền nhà cung cấp" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/PartnerPriviledgeGroup", Title: "Nhóm quyền nhà cung cấp" },
+    { Link: "/PartnerPriviledgeGroup", Title: "Danh sách nhóm quyền nhà cung cấp" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/PartnerPriviledgeGroup", Title: "Nhóm quyền nhà cung cấp" },
+    { Link: "/PartnerPriviledgeGroup", Title: "Danh sách nhóm quyền nhà cung cấp" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -51,9 +51,9 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtPartnerPriviledgeGroupName",
-        label: "Tên nhóm quyền:",
+        label: "tên nhóm quyền:",
         value: "",
-        maxSize: "800",
+        maxSize: "700",
         placeholder: "",
         icon: "",
         listoption: [],
@@ -66,25 +66,12 @@ export const AddElementList = [
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "2000",
+        maxSize: "1900",
         placeholder: "Mô tả",
         icon: "",
         rows: "6",
         listoption: [],
         DataSourceMember: "Description",
-        readonly: false,
-        validatonList: []
-    },
-    {
-        type: "numeric",
-        name: "txtOrderIndex",
-        label: "Thứ tự hiển thị:",
-        value: 0,
-        maxSize: "9",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "OrderIndex",
         readonly: false,
         validatonList: []
     },
@@ -116,21 +103,21 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtPartnerPriviledgeGroupID",
-        label: "Mã nhóm quyền:",
+        label: "mã nhóm quyền:",
         value: "",
         placeholder: "",
         icon: "",
         listoption: [],
         readonly: true,
         DataSourceMember: "PartnerPriviledgeGroupID",
-        validatonList: []
+        validatonList: ["required"]
     },
     {
         type: "text",
         name: "txtPartnerPriviledgeGroupName",
-        label: "Tên nhóm quyền:",
+        label: "tên nhóm quyền:",
         value: "",
-        maxSize: "800",
+        maxSize: "700",
         placeholder: "",
         icon: "",
         listoption: [],
@@ -143,7 +130,7 @@ export const EditElementList = [
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "2000",
+        maxSize: "1900",
         placeholder: "Mô tả",
         icon: "",
         rows: "6",
@@ -250,42 +237,49 @@ export const DataGridColumnList = [
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "PartnerPriviledgeGroupID",
-        Width: 150
+        Width: 70
     },
     {
         Name: "PartnerPriviledgeGroupID",
         Type: "text",
         Caption: "Mã nhóm quyền",
         DataSourceMember: "PartnerPriviledgeGroupID",
-        Width: 200
+        Width: 100
     },
     {
         Name: "PartnerPriviledgeGroupName",
         Type: "text",
         Caption: "Tên nhóm quyền",
         DataSourceMember: "PartnerPriviledgeGroupName",
-        Width: 800
+        Width: 350
     },
     {
         Name: "IsActived",
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 200
+        Width: 80
     },
     {
         Name: "CreatedDate",
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 200
+        Width: 100
+    },
+    {
+        Name: "CreatedFullName",
+        Type: "text",
+        Caption: "Người tạo",
+        DataSourceMember: "CreatedFullName",
+        Width: 150
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "PartnerPriviledgeGroupID",
-        Width: 200,
+        Width: 70,
         Link: "/PartnerPriviledgeGroup/Edit/",
         LinkText: "Chỉnh sửa"
     }

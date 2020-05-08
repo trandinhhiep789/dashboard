@@ -83,7 +83,6 @@ class AddCom extends React.Component {
                 dataSource={this.state.DataSource}
                 ref={this.searchref}
                 BackLink={BackLink}
-                RequirePermission={MCPRIVILEGEGROUP_ADD}
             />
         );
     }
