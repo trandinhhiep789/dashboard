@@ -587,10 +587,10 @@ class InputGridCom extends Component {
 									}
 									{
 										(this.props.IsPermisionDelete == true || this.props.IsPermisionDelete == undefined) && this.state.IsSystem == false ?
-											(<button type="button" className="btn btn-danger ml-10" title="" data-provide="tooltip" data-original-title="Xóa" onClick={this.handleDeleteClick}>
+											(<button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa" onClick={this.handleDeleteClick}>
 												<span className="fa fa-remove"> Xóa </span>
 											</button>)
-											: (<button type="button" className="btn btn-danger ml-10" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Xóa" >
+											: (<button type="button" className="btn btn-danger btn-delete ml-10" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Xóa" >
 												<span className="fa fa-remove"> Xóa </span>
 											</button>)
 									}
