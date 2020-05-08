@@ -12,15 +12,13 @@ import {
     EditElementList,
     MLObjectDefinition,
     BackLink,
-    EditPagePath,
-    AddLogAPIPath
+    EditPagePath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { ATTRIBUTE_CATEGORY_TYPE_UPDATE } from "../../../../../constants/functionLists";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { createListTree } from '../../../../../common/library/ultils';
+import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -32,13 +30,68 @@ class EditCom extends React.Component {
             IsCallAPIError: false,
             FormContent: "",
             IsLoadDataComplete: false,
-            IsCloseForm: false
+            IsCloseForm: false,
+            EditElementList
         };
     }
 
+    GetParentList(id) {
+        const InitSearchParams = [{
+            SearchKey: "@Keyword",
+            SearchValue: id
+        },
+        {
+            SearchKey: "@isactived",
+            SearchValue: -1
+        }
+        ];
+
+        this.props.callFetchAPI(APIHostName,"api/ShipmentGoodsType/GetParentShipmentGoodsType", InitSearchParams).then((apiResult) => {
+            if (!apiResult.IsError) {
+
+                const sortTemp = apiResult.ResultObject.sort((a, b) => (a.ParentID > b.ParentID) ? 1 : (a.ParentID === b.ParentID) ? ((a.ShipmentGoodsTypeID > b.ShipmentGoodsTypeID) ? 1 : -1) : -1)
+                let treeData = createListTree(sortTemp, -1, "ParentID", "ShipmentGoodsTypeID", "ShipmentGoodsTypeName")
+                treeData.unshift({
+                    ParentID: -1,
+                    ShipmentGoodsTypeID: -1,
+                    ShipmentGoodsTypeName: "-- Vui lòng chọn --",
+                    key: -1,
+                    value: -1,
+                    title: "-- Vui lòng chọn --",
+                })
+                this.setState({ treeData })
+
+                let comboParentIDList = apiResult.ResultObject.map(function (objData) {
+                    if (objData.ProductTypeID === -1) {
+                        return {};
+                    }
+                    return { value: objData.ProductTypeID, ParentID: objData.ParentID, name: `${objData.ProductTypeID}. ${objData.ProductTypeName}`, label: `${objData.ParentID} - ${objData.ProductTypeName}` }
+                });
+                //  comboParentIDList.unshift({ value: -1, name:"Vuilongchon", label:"--Vui lòng chọn--"});
+                comboParentIDList = comboParentIDList.filter(value => Object.keys(value).length !== 0);
+                let _EditElementList = this.state.EditElementList;
+                _EditElementList.forEach(function (objElement) {
+                    if (objElement.DataSourceMember == 'ParentID' && comboParentIDList.length > 0) {
+                        objElement.listoption = comboParentIDList;
+                        objElement.value = -1;
+                    }
+                    if (objElement.type == 'treeSelect') {
+                        objElement.treeData = treeData;
+                    }
+                });
+                this.setState({
+                    EditElementList: _EditElementList
+                });
+            
+            }
+        });
+    }
+
+
     componentDidMount() {
-        this.props.updatePagePath(EditPagePath);
         const id = this.props.match.params.id;
+        this.props.updatePagePath(EditPagePath);
+        this.GetParentList(id);
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
                 if (apiResult.IsError) {
                     this.setState({
@@ -119,18 +172,18 @@ class EditCom extends React.Component {
         }
         if (this.state.IsLoadDataComplete) {
             return (
-                <SimpleForm
-                    FormName="Cập nhật loại phương tiện vận chuyển"
-                    MLObjectDefinition={MLObjectDefinition}
-                    listelement={EditElementList}
-                    onSubmit={this.handleSubmit}
-                    FormMessage={this.state.CallAPIMessage}
-                    IsErrorMessage={this.state.IsCallAPIError}
-                    dataSource={this.state.DataSource}
-                    BackLink={BackLink}
-                    //RequirePermission={ATTRIBUTE_CATEGORY_TYPE_UPDATE}
-                    ref={this.searchref}
-                />
+                <FormContainer
+                FormName="Cập nhật loại hàng hóa vận chuyển"
+                MLObjectDefinition={MLObjectDefinition}
+                listelement={EditElementList}
+                IsAutoLayout={true}
+                onSubmit={this.handleSubmit}
+                FormMessage={this.state.CallAPIMessage}
+                IsErrorMessage={this.state.IsCallAPIError}
+                dataSource={this.state.DataSource}
+                BackLink={BackLink}
+            >
+            </FormContainer>
             );
         }
         return (
