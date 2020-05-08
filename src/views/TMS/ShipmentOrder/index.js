@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Detail from "./Detail";
+import MapContainer from "./Component/MapContainer ";
 
 import NotFound from '../../NotFound'
 class ShipmentOrderCom extends React.Component {
