@@ -45,7 +45,7 @@ export const AddElementList = [
     {
         type: "numeric",
         name: "txtShipmentServiceTypeID",
-        label: "Mã loại dịch vụ vận chuyển",
+        label: "mã loại dịch vụ vận chuyển",
         value: "",
         maxSize: "5",
         placeholder: "",
@@ -58,9 +58,9 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtShipmentServiceTypeName",
-        label: "Tên loại dịch vụ vận chuyển",
+        label: "tên loại dịch vụ vận chuyển",
         value: "",
-        maxSize: "200",
+        maxSize: "180",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -73,7 +73,7 @@ export const AddElementList = [
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "2000",
+        maxSize: "1900",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -87,7 +87,7 @@ export const AddElementList = [
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: "",
-        maxSize: "10",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -123,7 +123,7 @@ export const EditElementList = [
     {
         type: "numeric",
         name: "txtShipmentServiceTypeID",
-        label: "Mã loại dịch vụ vận chuyển",
+        label: "mã loại dịch vụ vận chuyển",
         value: "",
         maxSize: "5",
         placeholder: "",
@@ -136,9 +136,9 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtShipmentServiceTypeName",
-        label: "Tên loại dịch vụ vận chuyển",
+        label: "tên loại dịch vụ vận chuyển",
         value: "",
-        maxSize: "200",
+        maxSize: "180",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -151,7 +151,7 @@ export const EditElementList = [
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "2000",
+        maxSize: "1900",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -165,7 +165,7 @@ export const EditElementList = [
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: "",
-        maxSize: "10",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -275,58 +275,44 @@ export const DataGridColumnList = [
     {
         Name: "ShipmentServiceTypeID",
         Type: "text",
-        Caption: "Mã loại dịch vụ vận chuyển",
+        Caption: "Mã loại dịch vụ",
         DataSourceMember: "ShipmentServiceTypeID",
-        Width: 250
+        Width: 100
     },
     {
         Name: "ShipmentServiceTypeName",
         Type: "text",
-        Caption: "Tên loại dịch vụ vận chuyển",
+        Caption: "Tên loại dịch vụ",
         DataSourceMember: "ShipmentServiceTypeName",
-        Width: 250
-    },
-    {
-        Name: "Description",
-        Type: "text",
-        Caption: "Mô tả",
-        DataSourceMember: "Description",
-        Width: 250
+        Width: 350
     },
     {
         Name: "IsActived",
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 80
+        Width: 70
     },
-    // {
-    //     Name: "IsSystem",
-    //     Type: "checkicon",
-    //     Caption: "Hệ thống",
-    //     DataSourceMember: "IsSystem",
-    //     Width: 200
-    // },
     {
         Name: "CreatedDate",
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 200
+        Width: 100
     },
     {
-        Name: "CreatedUserFullName",
+        Name: "CreatedFullName",
         Type: "text",
         Caption: "Người tạo",
-        DataSourceMember: "CreatedUserFullName",
-        Width: 200
+        DataSourceMember: "CreatedFullName",
+        Width: 150
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "ShipmentServiceTypeID",
-        Width: 200,
+        Width: 70,
         Link: "/ShipmentServiceType/Edit/",
         LinkText: "Chỉnh sửa"
     }
