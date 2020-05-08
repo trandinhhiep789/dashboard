@@ -120,7 +120,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <SimpleForm
-                    FormName="Cập nhật loại phương tiện vận chuyển"
+                    FormName="Cập nhật loại đóng gói hàng hóa vận chuyển"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
