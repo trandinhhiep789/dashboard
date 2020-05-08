@@ -4,16 +4,18 @@ import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { ModalManager } from 'react-dynamic-modal';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import MapContainer from './MapContainer ';
+import { Link } from "react-router-dom";
 
 const style = {
     width: '100%',
-    height: '100%'
+    height: '100%',
+    position: 'relative'
 }
 
 const containerStyle = {
-    position: 'relative',
-    width: '100%',
-    height: '100%'
+    position: 'absolute',
+    width: '98%',
+    height: '300px'
 }
 
 class ShipmentOrderAddressCom extends Component {
@@ -140,17 +142,7 @@ class ShipmentOrderAddressCom extends Component {
                 </div>
 
                 <div className="form-row google-maps">
-                    {/* <Map
-                        google= {this.props.google}  //'AIzaSyAINUe2fRGjwR9ilVnUYDzi_8_0l1-MJ-A'
-                        style={style}
-                        onReady={this.fetchPlaces}
-                        center={{
-                            lat: 40.854885,
-                            lng: -88.081807
-                        }}
-                        zoom={15}
-                    /> */}
-                    <MapContainer/>
+                    <MapContainer classStyle={style} classContainerStyle={containerStyle}/>
                 </div>
 
             </ModelContainer>
@@ -195,7 +187,7 @@ class ShipmentOrderAddressCom extends Component {
                                 </div>
                                 <div className="form-group col-md-5">
                                     <label className="col-form-label" >{this.state.ShipmentOrder.SenderFullAddress}</label>
-                                    <a className="mapslink">Xem bản đồ</a>
+                                    <Link className="mapslink" to="/Maps">Xem bản đồ</Link>
                                 </div>
                             </div>
                         </div>
