@@ -18,9 +18,9 @@ class McPriviledgeCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Route exact path="/home/McPriviledge" component={Search} />
-                <Route path="/home/McPriviledge/add" component={Add} />
-                <Route path="/home/McPriviledge/edit/:id" component={Edit} />
+                <Route exact path="/PartnerPriviledge" component={Search} />
+                <Route path="/PartnerPriviledge/add" component={Add} />
+                <Route path="/PartnerPriviledge/edit/:id" component={Edit} />
             </React.Fragment>
         );
     }

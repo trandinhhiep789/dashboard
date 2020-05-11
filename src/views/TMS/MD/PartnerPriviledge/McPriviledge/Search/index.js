@@ -23,7 +23,6 @@ import { updatePagePath } from "../../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
-import { MCPRIVILEGE_VIEW, MCPRIVILEGE_DELETE } from "../../../../../../constants/functionLists";
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -163,12 +162,9 @@ class SearchCom extends React.Component {
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
-                    ref={this.gridref}
                     hasSearch={false}
                     IsAutoPaging={true}
                     RowsPerPage={10}
-                    RequirePermission={MCPRIVILEGE_VIEW}
-                    DeletePermission={MCPRIVILEGE_DELETE}
                 />
             </React.Fragment>
         );

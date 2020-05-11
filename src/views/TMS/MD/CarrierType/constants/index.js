@@ -43,7 +43,7 @@ export const SearchElementList = [
 
 export const AddElementList = [
     {
-        type: "numeric",
+        type: "text",
         name: "txtCarrierTypeID",
         label: "Mã loại phương tiện vận chuyển",
         value: "",
@@ -121,7 +121,7 @@ export const AddElementList = [
 
 export const EditElementList = [
     {
-        type: "numeric",
+        type: "text",
         name: "txtCarrierTypeID",
         label: "Mã loại phương tiện vận chuyển",
         value: "",

@@ -43,7 +43,7 @@ export const SearchElementList = [
 
 export const AddElementList = [
     {
-        type: "numeric",
+        type: "text",
         name: "txtShipmentOrderStepID",
         label: "mã bước xử lý yêu cầu",
         value: "",
@@ -121,7 +121,7 @@ export const AddElementList = [
 
 export const EditElementList = [
     {
-        type: "numeric",
+        type: "text",
         name: "txtShipmentOrderStepID",
         label: "mã bước xử lý yêu cầu",
         value: "",

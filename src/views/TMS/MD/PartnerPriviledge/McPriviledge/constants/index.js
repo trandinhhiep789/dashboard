@@ -1,19 +1,23 @@
-export const APIHostName = "EWalletAPI";
-export const SearchAPIPath = "api/McPriviledge/Search";
-export const LoadAPIPath = "api/McPriviledge/Load";
-export const AddAPIPath = "api/McPriviledge/Add";
-export const UpdateAPIPath = "api/McPriviledge/Update";
-export const DeleteAPIPath = "api/McPriviledge/Delete";
-export const UpdateOrderAPIPath = "api/McPriviledge/UpdateOrder";
-export const BackLink = "/home/McPriviledge";
-export const AddLink = "/home/McPriviledge/add";
+export const APIHostName = "PIMAPI";
+export const SearchAPIPath = "api/PartnerPriviledge/Search";
+export const LoadAPIPath = "api/PartnerPriviledge/Load";
+export const AddAPIPath = "api/PartnerPriviledge/Add";
+export const UpdateAPIPath = "api/PartnerPriviledge/Update";
+export const DeleteAPIPath = "api/PartnerPriviledge/Delete";
+export const UpdateOrderAPIPath = "api/PartnerPriviledge/UpdateOrder";
+export const BackLink = "/PartnerPriviledge";
+export const AddLink = "/PartnerPriviledge/add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "McPriviledgeID";
+export const PKColumnName = "PartnerPriviledgeID";
 
 export const InitSearchParams = [
     {
         SearchKey: "@Keyword",
         SearchValue: ""
+    },
+    {
+        SearchKey: "@PartnerPriviledgeGroupID",
+        SearchValue: -1
     }
 ];
 export const PagePath = [
@@ -22,14 +26,14 @@ export const PagePath = [
 ];
 
 export const EditPagePath = [
-    { Link: "/home/", Title: "Trang chủ" },
-    { Link: "/home/McPriviledge", Title: "Danh sách quyền nhà cung cấp" },
+    { Link: "/", Title: "Trang chủ" },
+    { Link: "/PartnerPriviledge", Title: "Danh sách quyền nhà cung cấp" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
-    { Link: "/home/", Title: "Trang chủ" },
-    { Link: "/home/McPriviledge", Title: "Danh sách quyền nhà cung cấpn" },
+    { Link: "/", Title: "Trang chủ" },
+    { Link: "/PartnerPriviledge", Title: "Danh sách quyền nhà cung cấpn" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -45,12 +49,12 @@ export const SearchElementList = [
     },
     {
         type: "select",
-        name: "txtMcPriviledgeGroupID",
+        name: "txtPartnerPriviledgeGroupID",
         label: "Nhóm quyền:",
         value: -1,
         listoption: [],
         css: "col-md-4",
-        DataSourceMember: "McPriviledgeGroupID",
+        DataSourceMember: "PartnerPriviledgeGroupID",
         isCategory: true,
         readonly: false,
         validatonList: [],
@@ -66,7 +70,7 @@ export const SearchMLObjectDefinition = [
         SearchValue: ""
     },
     {
-        SearchKey: "@McPriviledgeGroupID",
+        SearchKey: "@PartnerPriviledgeGroupID",
         SearchValue: -1
     }
 ];
@@ -74,70 +78,57 @@ export const SearchMLObjectDefinition = [
 export const AddElementList = [
     {
         type: "text",
-        name: "txtMcPriviledgeID",
-        label: "Mã quyền",
+        name: "txtPartnerPriviledgeID",
+        label: "mã quyền",
         value: "",
         maxSize: "400",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "McPriviledgeID",
+        DataSourceMember: "PartnerPriviledgeID",
         readonly: false,
         validatonList: ["required","touppercase"]
     },
     {
         type: "select",
-        name: "selMcPriviledgeGroupID",
+        name: "selPartnerPriviledgeGroupID",
         label: "Mã nhóm quyền:",
         value: "",
         placeholder: "",
         icon: "",
         listoption: [{value: -1, label: "--Vui lòng chọn--" }],
-        DataSourceMember: "McPriviledgeGroupID",
+        DataSourceMember: "PartnerPriviledgeGroupID",
         readonly: false,
         validatonList: [],
         IsAutoLoadItemFromCache: false,
         LoadItemCacheKeyID: "",
-        ValueMember: "McPriviledgeGroupID",
-        NameMember: "McPriviledgeGroupName"
+        ValueMember: "PartnerPriviledgeGroupID",
+        NameMember: "PartnerPriviledgeGroupName"
     },
     {
         type: "text",
-        name: "txtMcPriviledgeName",
-        label: "Tên quyền",
+        name: "txtPartnerPriviledgeName",
+        label: "tên quyền",
         value: "",
         maxSize: "800",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "McPriviledgeName",
+        DataSourceMember: "PartnerPriviledgeName",
         readonly: false,
-        validatonList: ["required","special"]
+        validatonList: ["required"]
     },
     {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả",
         value: "",
-        maxSize: "2000",
+        maxSize: "1900",
         placeholder: "",
         icon: "",
         rows: "6",
         listoption: {},
         DataSourceMember: "Description",
-        readonly: false,
-        validatonList: []
-    },
-    {
-        type: "numeric",
-        name: "txtOrderIndex",
-        label: "Thứ tự hiển thị:",
-        value: 0,
-        maxSize: "9",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "OrderIndex",
         readonly: false,
         validatonList: []
     },
@@ -170,42 +161,42 @@ export const AddElementList = [
 export const EditElementList = [
     {
         type: "text",
-        name: "txtMcPriviledgeID",
+        name: "txtPartnerPriviledgeID",
         label: "Mã quyền",
         value: "",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "McPriviledgeID",
+        DataSourceMember: "PartnerPriviledgeID",
         readonly: true,
         validatonList: ["required","touppercase"]
     },
     {
         type: "select",
-        name: "selMcPriviledgeGroupID",
+        name: "selPartnerPriviledgeGroupID",
         label: "Mã nhóm quyền:",
         value: "",
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "McPriviledgeGroupID",
+        DataSourceMember: "PartnerPriviledgeGroupID",
         readonly: false,
         validatonList: [],
         IsAutoLoadItemFromCache: false,
         LoadItemCacheKeyID: "",
-        ValueMember: "McPriviledgeGroupID",
-        NameMember: "McPriviledgeGroupName"
+        ValueMember: "PartnerPriviledgeGroupID",
+        NameMember: "PartnerPriviledgeGroupName"
     },
     {
         type: "text",
-        name: "txtMcPriviledgeName",
+        name: "txtPartnerPriviledgeName",
         label: "Tên quyền",
         value: "",
         maxSize: "800",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "McPriviledgeName",
+        DataSourceMember: "PartnerPriviledgeName",
         readonly: false,
         validatonList: ["required"]
     },
@@ -265,28 +256,28 @@ export const EditElementList = [
 
 export const MLObjectDefinition = [
     {
-        Name: "McPriviledgeID",
+        Name: "PartnerPriviledgeID",
         DefaultValue: "",
-        BindControlName: "txtMcPriviledgeID",
-        DataSourceMember: "McPriviledgeID"
+        BindControlName: "txtPartnerPriviledgeID",
+        DataSourceMember: "PartnerPriviledgeID"
     },
     {
-        Name: "McPriviledgeGroupID",
+        Name: "PartnerPriviledgeGroupID",
         DefaultValue: "",
-        BindControlName: "selMcPriviledgeGroupID",
-        DataSourceMember: "McPriviledgeGroupID"
+        BindControlName: "selPartnerPriviledgeGroupID",
+        DataSourceMember: "PartnerPriviledgeGroupID"
     },
     {
-        Name: "McPriviledgeGroupName",
+        Name: "PartnerPriviledgeGroupName",
         DefaultValue: "",
-        BindControlName: "txtMcPriviledgeGroupName",
-        DataSourceMember: "McPriviledgeGroupName"
+        BindControlName: "txtPartnerPriviledgeGroupName",
+        DataSourceMember: "PartnerPriviledgeGroupName"
     },
     {
-        Name: "McPriviledgeName",
+        Name: "PartnerPriviledgeName",
         DefaultValue: "",
-        BindControlName: "txtMcPriviledgeName",
-        DataSourceMember: "McPriviledgeName"
+        BindControlName: "txtPartnerPriviledgeName",
+        DataSourceMember: "PartnerPriviledgeName"
     },
 
     {
@@ -344,28 +335,28 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "McPriviledgeID",
+        DataSourceMember: "PartnerPriviledgeID",
         Width: 60
     },
     {
-        Name: "McPriviledgeID",
+        Name: "PartnerPriviledgeID",
         Type: "text",
         Caption: "Mã  quyền",
-        DataSourceMember: "McPriviledgeID",
+        DataSourceMember: "PartnerPriviledgeID",
         Width: 100
     },
     {
-        Name: "McPriviledgeName",
+        Name: "PartnerPriviledgeName",
         Type: "text",
         Caption: "Tên quyền",
-        DataSourceMember: "McPriviledgeName",
+        DataSourceMember: "PartnerPriviledgeName",
         Width: 150
     },
     {
-        Name: "McPriviledgeGroupName",
+        Name: "PartnerPriviledgeGroupName",
         Type: "text",
         Caption: "Tên nhóm quyền",
-        DataSourceMember: "McPriviledgeGroupName",
+        DataSourceMember: "PartnerPriviledgeGroupName",
         Width: 150
     },
     {
@@ -379,9 +370,9 @@ export const DataGridColumnList = [
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "McPriviledgeID",
+        DataSourceMember: "PartnerPriviledgeID",
         Width: 80,
-        Link: "/home/McPriviledge/edit/",
+        Link: "/PartnerPriviledge/edit/",
         LinkText: "Chỉnh sửa"
     }
 ];

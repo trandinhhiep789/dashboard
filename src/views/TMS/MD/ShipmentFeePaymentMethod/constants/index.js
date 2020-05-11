@@ -43,7 +43,7 @@ export const SearchElementList = [
 
 export const AddElementList = [
     {
-        type: "numeric",
+        type: "text",
         name: "txtShipmentFeePaymentMethodID",
         label: "mã phương thức thanh toán chi phí",
         value: "",
@@ -121,7 +121,7 @@ export const AddElementList = [
 
 export const EditElementList = [
     {
-        type: "numeric",
+        type: "text",
         name: "txtShipmentFeePaymentMethodID",
         label: "mã phương thức thanh toán chi phí vận chuyển",
         value: "",

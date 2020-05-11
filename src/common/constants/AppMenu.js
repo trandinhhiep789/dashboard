@@ -106,6 +106,13 @@ const AppMenu = [
                 LinkTo: '/PartnerPriviledgeGroup',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'PartnerPriviledge',
+                MenuTitle: 'Danh sách quyền nhà cung cấp',
+                LinkTo: '/PartnerPriviledge',
+                MenuIcon: '',
+                SubMenu: []
             }
         ]
     },

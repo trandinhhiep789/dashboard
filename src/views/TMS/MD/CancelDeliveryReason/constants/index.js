@@ -43,7 +43,7 @@ export const SearchElementList = [
 
 export const AddElementList = [
     {
-        type: "numeric",
+        type: "text",
         name: "txtCancelDeliveryReasonID",
         label: "Mã lý do hủy giao hàng",
         value: "",
@@ -121,7 +121,7 @@ export const AddElementList = [
 
 export const EditElementList = [
     {
-        type: "numeric",
+        type: "text",
         name: "txtCancelDeliveryReasonID",
         label: "Mã lý do hủy giao hàng",
         value: "",
