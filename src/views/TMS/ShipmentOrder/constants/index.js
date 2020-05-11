@@ -1,6 +1,6 @@
 export const APIHostName = "PIMAPI";
 export const SearchAPIPath = "api/ShipmentOrder/Search";
-export const LoadAPIPath = "api/ShipmentOrder/Load";
+export const LoadAPIPath = "api/ShipmentOrder/LoadInfoNew";
 export const AddAPIPath = "api/ShipmentOrder/Add";
 export const UpdateAPIPath = "api/ShipmentOrder/Update";
 export const DeleteAPIPath = "api/ShipmentOrder/Delete";

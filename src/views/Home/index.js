@@ -36,6 +36,8 @@ import PartnerPriviledgeGroup from '../../views/TMS/MD/PartnerPriviledge/Partner
 import ShipmentOrder from '../../views/TMS/ShipmentOrder';
 import MapContainer from '../../views/TMS/ShipmentOrder/Component/MapContainer ';
 import McPriviledge from '../../views/TMS/MD/PartnerPriviledge/McPriviledge';
+import PartnerRole from '../../views/TMS/MD/PartnerPriviledge/PartnerRole';
+
 
 import NotFound from '../NotFound'
 
@@ -114,6 +116,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/ShipmentOrderStep" component={ShipmentOrderStep} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerPriviledgeGroup" component={PartnerPriviledgeGroup} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerPriviledge" component={McPriviledge} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/PartnerRole" component={PartnerRole} isLoggedIn={isLoggedIn} />
                                 
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Maps" component={MapContainer} isLoggedIn={isLoggedIn} />

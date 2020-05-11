@@ -23,8 +23,6 @@ import { updatePagePath } from "../../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
-import { MCROLE_VIEW, MCROLE_DELETE } from "../../../../../../constants/functionLists";
-
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -87,11 +85,9 @@ class SearchCom extends React.Component {
 
 
     callSearchData(searchData) {
-        console.log("callSearchData: ", APIHostName, SearchAPIPath, searchData);
         this.props
             .callFetchAPI(APIHostName, SearchAPIPath, searchData)
             .then(apiResult => {
-                console.log("callSearchData apiResultIsError: ", apiResult, apiResult.IsError);
                 if (apiResult && !apiResult.IsError) {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
@@ -172,8 +168,6 @@ class SearchCom extends React.Component {
                     ref={this.gridref}
                     IsAutoPaging={true}
                     RowsPerPage={10}
-                    RequirePermission={MCROLE_VIEW}
-                    DeletePermission={MCROLE_DELETE}
                 />
             </React.Fragment>
         );

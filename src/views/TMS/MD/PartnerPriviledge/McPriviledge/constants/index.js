@@ -100,8 +100,8 @@ export const AddElementList = [
         DataSourceMember: "PartnerPriviledgeGroupID",
         readonly: false,
         validatonList: [],
-        IsAutoLoadItemFromCache: false,
-        LoadItemCacheKeyID: "",
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNERPRIVILEDGEGROUP",
         ValueMember: "PartnerPriviledgeGroupID",
         NameMember: "PartnerPriviledgeGroupName"
     },
@@ -182,8 +182,8 @@ export const EditElementList = [
         DataSourceMember: "PartnerPriviledgeGroupID",
         readonly: false,
         validatonList: [],
-        IsAutoLoadItemFromCache: false,
-        LoadItemCacheKeyID: "",
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNERPRIVILEDGEGROUP",
         ValueMember: "PartnerPriviledgeGroupID",
         NameMember: "PartnerPriviledgeGroupName"
     },

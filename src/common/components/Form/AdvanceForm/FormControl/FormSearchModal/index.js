@@ -21,7 +21,7 @@ class SearchModalCom extends Component {
             DataSource: {},
             GridDataSource: [],
             DataGridColumnList: [],
-            SearchData: InitSearchParams
+            SearchData: this.props.InitSearchParams
         }
         this.gridref = React.createRef();
     }
@@ -60,6 +60,7 @@ class SearchModalCom extends Component {
     }
 
     handleInsertItem(listMLObject) {
+        debugger;
         let selectedOption = [];
         if (listMLObject !== null && listMLObject !== undefined) {
             for (let i = 0; i < listMLObject.length; i++) {

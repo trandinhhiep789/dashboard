@@ -661,7 +661,7 @@ class InputGridCom extends Component {
 	renderInputGrid() {
 		const listColumn = this.props.listColumn;
 		let dataSource = this.props.dataSource;
-		if (this.props.controltype == "InputControl" && !this.state.HasLoaded && dataSource.length) {
+		if (this.props.controltype == "InputControl" && !this.state.HasLoaded ) {
 			this.props.onValueChange(this.props.name, dataSource);
 			this.setState({ HasLoaded: true });
 		}

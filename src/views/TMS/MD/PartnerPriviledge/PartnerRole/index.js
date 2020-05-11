@@ -6,7 +6,7 @@ import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
 
-class McRoleCom extends React.Component {
+class PartnerRoleCom extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -14,9 +14,9 @@ class McRoleCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Route exact path="/home/McRole" component={Search} />
-                <Route path="/home/McRole/Add" component={Add} />
-                <Route path="/home/McRole/Edit/:id" component={Edit} />
+                <Route exact path="/PartnerRole" component={Search} />
+                <Route path="/PartnerRole/Add" component={Add} />
+                <Route path="/PartnerRole/Edit/:id" component={Edit} />
             </React.Fragment>
         );
     }
@@ -37,9 +37,9 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const McRole = connect(
+const PartnerRole = connect(
     mapStateToProps,
     mapDispatchToProps
-)(McRoleCom);
+)(PartnerRoleCom);
 
-export default McRole;
+export default PartnerRole;

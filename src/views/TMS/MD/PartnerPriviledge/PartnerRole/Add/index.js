@@ -3,8 +3,9 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 import { MessageModal } from "../../../../../../common/components/Modal";
-import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
-import InputGrid from "../../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+ import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
+ import InputGrid from "../../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+
 import { showModal } from '../../../../../../actions/modal';
 import { MODAL_TYPE_SEARCH } from '../../../../../../constants/actionTypes';
 import SearchModal from "../../../../../../common/components/Form/AdvanceForm/FormControl/FormSearchModal"
@@ -17,10 +18,11 @@ import {
     AddPagePath,
     SearchMLmoldeDefinition,
     SearchElementModeList,
+    InitSearchParamsModeList,
     DataGridColumnListMultiple,
-    InputMcRoleColumnList,
-    GridMLMcRoleDefinition,
-    SearchMcRoleAPIPath
+    InputPartnerRoleColumnList,
+    GridMLPartnerRoleDefinition,
+    SearchPartnerRoleAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
@@ -38,14 +40,15 @@ class AddCom extends React.Component {
             IsCallAPIError: false,
             IsCloseForm: false,
             AddElementList: AddElementList,
-            DataSource: {
-            }
+            DataSource:[],
+            LstPartnerRole_Priviledge:[]
         };
         this.searchref = React.createRef();
     }
 
 
     componentDidMount() {
+        console.log("componentDidMount");
         this.props.updatePagePath(AddPagePath);
     }
 
@@ -65,17 +68,16 @@ class AddCom extends React.Component {
     }
     handleinsertItem(lstOption)
     {
-        let listMLObject = [];
-        lstOption.map((row, index) => {
-            let MLObject = {};
-            row["pkColumnName"].map((pkItem, pkIndex) => {
-                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-            });
+        // let listMLObject = [];
+        // lstOption.map((row, index) => {
+        //     let MLObject = {};
+        //     row["pkColumnName"].map((pkItem, pkIndex) => {
+        //         MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+        //     });
 
-            listMLObject.push(MLObject);
-        });
-        const formData = Object.assign({}, this.state.DataSource,{["LstMcRole_Priviledge"] :listMLObject});
-        this.setState({ DataSource: formData });
+        //     listMLObject.push(MLObject);
+        // });
+        this.setState({ LstPartnerRole_Priviledge: lstOption });
     }
 
     handleInputUserRoleInsert()
@@ -84,17 +86,18 @@ class AddCom extends React.Component {
             title: "Danh sách quyền",
             content: {
                 text: <SearchModal
-                    PKColumnName={"McPriviledgeID,McPriviledgeName"}
+                    PKColumnName={"PartnerPriviledgeID,PartnerPriviledgeName"}
                     multipleCheck={true}
                     SearchMLObjectDefinition={SearchMLmoldeDefinition}
                     DataGridColumnList={DataGridColumnListMultiple}
                     GridDataSource={[]}
-                    SearchAPIPath={SearchMcRoleAPIPath}
+                    SearchAPIPath={SearchPartnerRoleAPIPath}
                     SearchElementList={SearchElementModeList}
+                    InitSearchParams={InitSearchParamsModeList}
                     onClickInsertItem={this.handleinsertItem.bind(this)}
                     IDSelectColumnName={"chkSelect"}
-                    name={"McPriviledgeID"}
-                    value={"McPriviledgeName"}
+                    name={"PartnerPriviledgeName"}
+                    value={"PartnerPriviledgeID"}
                 >
                 </SearchModal>
             }
@@ -124,20 +127,19 @@ class AddCom extends React.Component {
             ref={this.searchref}
             BackLink={BackLink}
             dataSource={this.state.DataSource}
-            RequirePermission={MCROLE_ADD}
         >
-            <InputGrid
-                name="LstMcRole_Priviledge"
-                controltype="InputControl"
-                IDSelectColumnName={"checkboxAll"}
-                listColumn={InputMcRoleColumnList}
+           <InputGrid
+               name="LstPartnerRole_Priviledge"
+              controltype="InputControl"
+              IDSelectColumnName={"checkboxAll"}
+              listColumn={InputPartnerRoleColumnList}
                 isHideHeaderToolbar={false}
-                dataSource={this.state.DataSource.LstMcRole_Priviledge}
-                MLObjectDefinition={GridMLMcRoleDefinition}
-                colspan="12"
-                onInsertClick={this.handleInputUserRoleInsert}
+               dataSource={this.state.LstPartnerRole_Priviledge}
+               MLObjectDefinition={GridMLPartnerRoleDefinition}
+              colspan="12"
+               onInsertClick={this.handleInputUserRoleInsert}
             />
-        </FormContainer>
+          </FormContainer>
         );
     }
 }

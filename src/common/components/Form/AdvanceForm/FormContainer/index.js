@@ -38,7 +38,7 @@ class FormContainerCom extends Component {
             isDisabled: false,
             IsSystem: false,
             IsFirstTimeLoad: true
-            
+
         };
     }
     handleFocusTab() {
@@ -137,22 +137,24 @@ class FormContainerCom extends Component {
             if (child.props.controltype == "InputControl") {
                 const listElement = child.props.listColumn;
                 let inputGridData = formData[child.props.name];
-                inputGridData.map((row, indexRow) => {
-                    listElement.map((elementItem) => {
-                        const validatonList = elementItem.validatonList;
-                        if (validatonList && validatonList.length > 0) {
-                            const inputvalue = row[elementItem.Name];
-                            //console.log("inputvalue:", inputvalue);
-                            //console.log("elementItem.Name:", elementItem.name);
-                            const validation = ValidationField(validatonList, inputvalue, elementItem.Caption, elementItem)
-                            const validationObject = { IsValidationError: validation.IsError, ValidationErrorMessage: validation.Message };
-                            //console.log("validation:", validation);
-                            formValidation = Object.assign({}, formValidation, { [`${elementItem.Name}_${indexRow}`]: validationObject });
-                            //console.log("map this.state:",this.state);
-                        }
-                    });
+                if (inputGridData) {
+                    inputGridData.map((row, indexRow) => {
+                        listElement.map((elementItem) => {
+                            const validatonList = elementItem.validatonList;
+                            if (validatonList && validatonList.length > 0) {
+                                const inputvalue = row[elementItem.Name];
+                                //console.log("inputvalue:", inputvalue);
+                                //console.log("elementItem.Name:", elementItem.name);
+                                const validation = ValidationField(validatonList, inputvalue, elementItem.Caption, elementItem)
+                                const validationObject = { IsValidationError: validation.IsError, ValidationErrorMessage: validation.Message };
+                                //console.log("validation:", validation);
+                                formValidation = Object.assign({}, formValidation, { [`${elementItem.Name}_${indexRow}`]: validationObject });
+                                //console.log("map this.state:",this.state);
+                            }
+                        });
 
-                });
+                    });
+                }
             }
 
 
@@ -261,16 +263,16 @@ class FormContainerCom extends Component {
             for (const key1 in formValidation[key]) {
                 //console.log("key: ", key);
                 //console.log("this.state.FormVavalidaton[key]: ", this.state.FormVavalidaton[key]);
-                if (formValidation[key][key1].IsValidationError){
+                if (formValidation[key][key1].IsValidationError) {
                     //this.elementItemRefs[key1].focus();
                     //console.log("key: ", key1);
                     // this.setFocusTab(key);
-                    return {IsError: true, FocusTabIndex: key};
+                    return { IsError: true, FocusTabIndex: key };
                 }
-                   
+
             }
         }
-        return {IsError: false, FocusTabIndex: -1};;
+        return { IsError: false, FocusTabIndex: -1 };;
     }
 
     bindDataToControl(listElement, dataSource) {
@@ -488,7 +490,7 @@ class FormContainerCom extends Component {
             const tabpageFormValidation = this.state.FormValidation;
             let checkResult = this.checkInputTabpage(tabpageFormValidation);
             if (checkResult.IsError) {
-                this.setState({IsFirstTimeLoad: false, IsSubmit: true});
+                this.setState({ IsFirstTimeLoad: false, IsSubmit: true });
                 this.setFocusTab(checkResult.FocusTabIndex);
                 return;
             }
@@ -1026,7 +1028,7 @@ class FormContainerCom extends Component {
                             tabPageValidation: this.state.IsFirstTimeLoad ? {} : this.state.FormValidation,
                             loginUserName: this.props.AppInfo.LoginInfo.Username,
                             isSubmit: this.state.IsSubmit
-                                                
+
                         }
                     );
                 }
