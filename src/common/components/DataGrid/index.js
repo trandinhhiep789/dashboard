@@ -129,11 +129,11 @@ class DataGridCom extends Component {
                     // console.log("rowItem", pkColumnName[j], rowItem[pkColumnName[j].key])
 
                     var marvelHeroes = gridData.filter(function (hero) {
-                        //  console.log("hero", hero, hero.pkColumnName, hero.pkColumnName[0].value)
-                        return hero.pkColumnName[0].value == rowItem[pkColumnName[j].key];
+                        //console.log("hero", hero, hero.pkColumnName, hero.pkColumnName[0].value)
+                        return hero.pkColumnName[j].value == rowItem[pkColumnName[j].key];
                     });
-                    // console.log("marvelHeroes.IsChecked", marvelHeroes, marvelHeroes[0].IsChecked)
-                    if (marvelHeroes[0].IsChecked == false) {
+                    //console.log("marvelHeroes", marvelHeroes)
+                    if (marvelHeroes && marvelHeroes.length > 0 && marvelHeroes[0].IsChecked == false) {
                         aaa = false
                         break;
                     }

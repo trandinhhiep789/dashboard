@@ -60,7 +60,7 @@ class InputGridCom extends Component {
 		// if(this.props.isSystem && this.props.AppInfo.LoginInfo.Username != "administrator"){
 		// 	isSystem = true;
 		// }
-		if(this.props.isSystem){
+		if (this.props.isSystem) {
 			isSystem = true;
 		}
 		this.state = {
@@ -235,6 +235,7 @@ class InputGridCom extends Component {
 			);
 		}
 		let dataSource = this.props.dataSource;
+		
 		if (this.props.value != null)
 			dataSource = this.props.value;
 		if (newSelected.length == dataSource.length) {
@@ -243,6 +244,7 @@ class InputGridCom extends Component {
 		else {
 			this.setState({ selected: newSelected, IsCheckAll: false });
 		}
+		
 	};
 
 	onChangePageHandle(pageNum) {
@@ -661,7 +663,7 @@ class InputGridCom extends Component {
 	renderInputGrid() {
 		const listColumn = this.props.listColumn;
 		let dataSource = this.props.dataSource;
-		if (this.props.controltype == "InputControl" && !this.state.HasLoaded ) {
+		if (this.props.controltype == "InputControl" && !this.state.HasLoaded) {
 			this.props.onValueChange(this.props.name, dataSource);
 			this.setState({ HasLoaded: true });
 		}
@@ -684,6 +686,7 @@ class InputGridCom extends Component {
 		let checkList;
 		if (this.props.IDSelectColumnName)
 			checkList = this.state.GridData[this.props.IDSelectColumnName];
+			console.log("checkList", checkList, this.state.GridData[this.props.IDSelectColumnName], this.state.GridData)
 		return (
 			<table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0" data-provide="datatables">
 				<thead className={"thead-light"}>
@@ -693,18 +696,40 @@ class InputGridCom extends Component {
 								let cellStyle = {
 									width: elementItem.Width
 								};
-								let checkStyle={
+								let checkStyle = {
 									width: "20px",
 									margin: "0 auto"
 								}
 								let columHeader = elementItem.Caption;
 								if (elementItem.Type == "checkbox" && elementItem.Caption == "") {
 									const className = "form-control form-control-sm";
-									columHeader = <input type="checkbox" className={className} style={checkStyle} onChange={this.checkAll} checked={this.state.IsCheckAll} />
+									columHeader = <div className="checkbox customCheckbox">
+										<label>
+											<input
+												type="checkbox"
+												onChange={this.checkAll}
+												checked={this.state.IsCheckAll}
+												className={className}
+											/>
+											<span className="cr"><i className="cr-icon fa fa-check"></i></span>
+										</label>
+									</div>
+									//columHeader = <input type="checkbox" className={className} style={checkStyle} onChange={this.checkAll} checked={this.state.IsCheckAll} />
 								}
 								else if (elementItem.Type == "checkboxAll" && elementItem.Caption == "") {
 									const className = "form-control form-control-sm";
-									columHeader = <input type="checkbox" className={className} onChange={this.checkAll1} checked={this.state.IsCheckAll} />
+									columHeader = <div className="checkbox customCheckbox">
+										<label>
+											<input
+												type="checkbox"
+												onChange={this.checkAll}
+												checked={this.state.IsCheckAll}
+												className={className}
+											/>
+											<span className="cr"><i className="cr-icon fa fa-check"></i></span>
+										</label>
+									</div>
+									//columHeader = <input type="checkbox" className={className} onChange={this.checkAll1} checked={this.state.IsCheckAll} />
 								}
 								if (elementItem.Type == "checkbox" || elementItem.Type == "checkboxAll") {
 									cellStyle = {
@@ -731,6 +756,7 @@ class InputGridCom extends Component {
 								dataSourceMember = this.state.ListDataSourceMember;
 								let isMath = false;
 								for (var i = 0; i < checkList.length; i++) {
+									debugger
 									for (var j = 0; j < dataSourceMember.length; j++) {
 										if (dataSourceMember[j].key == "index") {
 											if (rowIndex != checkList[i].DataSourceMember[j].value) {
@@ -774,6 +800,7 @@ class InputGridCom extends Component {
 										}
 										let value;
 										if (columnItem.Type == "checkbox" && columnItem.Name.toString().includes("chkSelect")) {
+											debugger
 											dataSourceMember = this.state.ListDataSourceMember;
 											value = dataSourceMember.map((obj, index) => {
 												if (obj.key == "index") {
@@ -875,7 +902,7 @@ class InputGridCom extends Component {
 			return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
 		}
 
-		
+
 		return (
 			<div className="card">
 				<div className="card-body">
