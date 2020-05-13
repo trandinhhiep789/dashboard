@@ -3302,7 +3302,7 @@ jQuery.fn.scrollToEnd = function() {
       });
 
       var infowindow = new google.maps.InfoWindow({
-        content: $(this).dataAttr('info', '')
+       // content: $(this).dataAttr('info', '')
       });
 
       marker.addListener('click', function() {

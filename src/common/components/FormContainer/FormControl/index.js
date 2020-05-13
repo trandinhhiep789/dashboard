@@ -615,7 +615,6 @@ class TreeSelectCom extends React.Component {
     }
 
     componentDidMount() {
-        console.log("aaa",this.props)
 
         const validatonDisabled = this.props.isDisabled;
         if (this.props.AppInfo.LoginInfo.Username == "administrator" && (this.props.name).toLowerCase().includes('system')) {

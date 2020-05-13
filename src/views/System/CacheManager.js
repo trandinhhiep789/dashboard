@@ -28,8 +28,8 @@ class CacheManagerCom extends React.Component {
             <div>
                 <input type="text" name="txtCacheKeyID" value={this.state.CacheKeyID} onChange={this.handleChange} />
                 <br />
-                <input type="button" value="getCache" onClick={this.handleGetCache} /><br />
-                <input type="button" value="Clear Local Cache" onClick={this.props.callClearLocalCache(this.state.CacheKeyID)} />
+           <input type="button" value="getCache" onClick={this.handleGetCache} /><br />
+                {/*  <input type="button" value="Clear Local Cache" onClick={this.props.callClearLocalCache(this.state.CacheKeyID)} /> */}
             </div>
         );
     }

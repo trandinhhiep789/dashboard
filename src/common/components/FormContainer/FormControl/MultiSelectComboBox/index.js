@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { callGetCache } from "../../../../../actions/cacheAction";
-
+import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 
 class MultiSelectComboBoxCom extends React.Component {
     static defaultProps = {
@@ -11,60 +11,64 @@ class MultiSelectComboBoxCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
-        this.bindData = this.bindData.bind(this);
+        this.handleValueChange1 = this.handleValueChange1.bind(this);
+
         let SelectedOption = [];
-        if (this.props.SelectedOption)
-            SelectedOption = this.props.SelectedOption
-        this.state = { ListOption: [], SelectedOption: SelectedOption }
+
+        this.state = { ListOption: [], SelectedOption: [] }
     }
+
+
 
     componentDidMount() {
-        let listOption = this.props.listoption;
-        if (this.props.isautoloaditemfromcache) {
-            const cacheKeyID = this.props.loaditemcachekeyid;
-            const valueMember = this.props.valuemember;
-            const nameMember = this.props.nameMember;
-            this.props.callGetCache(cacheKeyID).then((result) => {
 
-                listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
-                if (!result.IsError && result.ResultObject.CacheData != null) {
-                    result.ResultObject.CacheData.map((cacheItem) => {
-                        listOption.push({ value: cacheItem[valueMember], name: cacheItem[nameMember] });
+        this.setState({
+            ListOption: this.props.listoption,
+            SelectedOption: this.props.value
+        });
+    }
+
+    callSearchData(KeyWord) {
+        let listMLObject = {
+            "IndexName": "user",
+            "TypeName": "user",
+            "Top": 10,
+            "IsCompressResultData": false,
+            "QueryParamList":
+                [
+                    {
+                        "QueryKey": "", "QueryValue": "", "QueryType": 18, "IsNotQuery": false,
+                        "SubQueryParamList":
+                            [
+                                {
+                                    "QueryKey": "uSERNAME",
+                                    "QueryValue": KeyWord,
+                                    "QueryType": 2,
+                                    "IsNotQuery": false
+                                },
+
+                                {
+                                    "QueryKey": "fULLNAME",
+                                    "QueryValue": KeyWord,
+                                    "QueryType": 2,
+                                    "IsNotQuery": false
+                                }
+                            ]
                     }
-                    );
-                    this.setState({ ListOption: listOption });
-                    const selectedOption = this.bindData(this.state.ListOption);
-                    this.setState({ SelectedOption: selectedOption });
-                }
-                else {
-                    this.setState({ ListOption: listOption });
-                }
-            });
+                ]
         }
-        else {
-            this.setState({ ListOption: listOption });
-        }
-        const selectedOption = this.bindData(this.state.ListOption);
-        this.setState({ SelectedOption: selectedOption });
-    }
-    bindData(listOption) {
-        let values = this.props.value;
-        let selectedOption = [];
-        if (this.props.SelectedOption)
-            return this.props.SelectedOption;
-        if (values == null)
-            return selectedOption;
-        // if (typeof values.toString() == "string")
-        //        values = values.toString().split();
-        for (let i = 0; i < values.length; i++) {
-            for (let j = 0; j < listOption.length; j++) {
-                if (values[i] == listOption[j].value) {
-                    selectedOption.push({ value: listOption[j].value, label: listOption[j].name });
-                }
+
+        this.props.callFetchAPI("ERPAPI", 'api/UserSearch/Search', listMLObject).then(apiResult => {
+            let listOptionNew1 = [];
+            for (let i = 0; i < apiResult.ResultObject.length; i++) {
+                listOptionNew1.push({ value: apiResult.ResultObject[i].UserName, name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName });
             }
-        }
-        return selectedOption;
+            this.setState({
+                ListOption: listOptionNew1
+            });
+        });
     }
+
 
     getComboValue(selectedOption) {
         let values = [];
@@ -77,14 +81,41 @@ class MultiSelectComboBoxCom extends React.Component {
     }
 
     handleValueChange(selectedOption) {
-        this.setState({ SelectedOption: selectedOption });
-        const comboValues = this.getComboValue(selectedOption);
-        if (this.props.onValueChange)
-            this.props.onValueChange(this.props.name, comboValues, this.props.label, undefined, undefined);
-        //this.props.onValueChange(this.props.name, comboValues);
+        let confir = 1;
+        if ((typeof this.props.isUseConfirmMessage === "undefined") ||
+            (typeof this.props.isUseConfirmMessage !== "undefined" && this.props.isUseConfirmMessage == true)) {
+            confir = confirm("Bạn có chắc rằng muốn xóa ?");
+        }
+        if (confir == 1) {
 
-        if (this.props.onValueChangeCus)
-            this.props.onValueChangeCus(this.props.name, comboValues);
+            let listMLObject = [];
+            if (selectedOption) {
+                for (let i = 0; i < selectedOption.length; i++) {
+                    listMLObject.push({
+                        ShipmentOrderID: this.props.ShipmentOrder.ShipmentOrderID, UserName: selectedOption[i].value,
+                        CreatedUser: "administrator",
+                        CreatedOrderTime: this.props.ShipmentOrder.CreatedOrderTime
+                    });
+                }
+            }
+            else{
+                listMLObject.push({
+                    ShipmentOrderID: this.props.ShipmentOrder.ShipmentOrderID,
+                    CreatedUser: "administrator"
+                });
+            }
+            this.props.callFetchAPI("PIMAPI", 'api/ShipmentOrder_DeliverUser/AddList', listMLObject).then(apiResult => {
+                this.setState({ SelectedOption: selectedOption });
+            });
+        }
+    }
+
+    handleValueChange1(e) {
+        let value = e.target.value;
+        if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38) {
+            this.callSearchData("*" + value + "*");
+        }
+
     }
     render() {
 
@@ -113,6 +144,7 @@ class MultiSelectComboBoxCom extends React.Component {
             isLabelDiv = this.props.IsLabelDiv;
         if (isLabelDiv == false)
             formGroupClassName = "form-group col-md-12";
+
         return (
             <div className={formRowClassName} >
                 {isLabelDiv &&
@@ -124,6 +156,7 @@ class MultiSelectComboBoxCom extends React.Component {
                     <Select
                         value={selectedOption}
                         onChange={this.handleValueChange}
+                        onKeyDown={this.handleValueChange1}
                         options={listOptionNew}
                         isMulti={true}
                         isDisabled={this.props.disabled}
@@ -136,13 +169,23 @@ class MultiSelectComboBoxCom extends React.Component {
         );
     }
 }
+const mapStateToProps = state => {
+    return {
+        AppInfo: state,
+        FetchAPIInfo: state.FetchAPIInfo
+    };
+};
+
 
 const mapDispatchToProps = dispatch => {
     return {
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callFetchAPI: (hostname, hostURL, postData) => {
+            return dispatch(callFetchAPI(hostname, hostURL, postData));
         }
     }
 }
-const MultiSelectComboBox = connect(null, mapDispatchToProps)(MultiSelectComboBoxCom);
+const MultiSelectComboBox = connect(mapStateToProps, mapDispatchToProps)(MultiSelectComboBoxCom);
 export default MultiSelectComboBox;

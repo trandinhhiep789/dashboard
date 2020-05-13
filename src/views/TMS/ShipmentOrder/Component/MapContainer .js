@@ -15,7 +15,6 @@ const containerStyle = {
 
 export class MapContainer extends Component {
     render() {
-        console.log("map",this.props)
         const triangleCoords = [
             {lat: 25.774, lng: -80.190},
             {lat: 18.466, lng: -66.118},
@@ -47,12 +46,7 @@ export class MapContainer extends Component {
                 <Marker
                     title={'The marker`s title will appear as a tooltip.'}
                     name={'SOMA'}
-                    position={{ lat: 37.778519, lng: -122.405640 }} />
-                <Marker
-                    name={'Dolores park'}
-                    position={{ lat: 37.759703, lng: -122.428093 }} />
-                <Marker />
-               
+                    position={{ lat: 10.851885, lng: 106.797533 }} />
             </Map>
 
         );

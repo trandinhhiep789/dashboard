@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { ModalManager } from 'react-dynamic-modal';
 import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 import {
     APIHostName,
 } from "../constants";
@@ -83,7 +84,7 @@ class InfoCoordinatorCom extends Component {
                         <label className="col-form-label bold">Nội dung <span className="text-danger"> *</span></label>
                     </div>
                     <div className={formGroupclassName}>
-                        <textarea className={selectclassName}  maxLength={1950} rows="10" cols="50" name="Title" value={this.state.ShipmentOrder_WorkFlow.Note} placeholder="Nội dung" onChange={this.onChangetextarea.bind(this)} />
+                        <textarea className={selectclassName} maxLength={1950} rows="10" cols="50" name="Title" value={this.state.ShipmentOrder_WorkFlow.Note} placeholder="Nội dung" onChange={this.onChangetextarea.bind(this)} />
                         <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.state.validationErrorMessage}</li></ul></div>
                     </div>
                 </div>
@@ -115,12 +116,17 @@ class InfoCoordinatorCom extends Component {
                     ModalManager.close();
                 }
             });
-
         }
-
     }
 
+
+
     render() {
+        let listOption = [];
+
+        this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
+            listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName });
+        })
 
         return (
             <div className="card">
@@ -129,11 +135,24 @@ class InfoCoordinatorCom extends Component {
                     <button className="btn btnEditCard">chỉnh sửa</button>
                 </div>
                 <div className="card-body">
-                    <div className="form-row">
-                        <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Nhân viên  giao:</label>
-                        </div>
-                        <div className="form-group col-md-10">
+
+                    <MultiSelectComboBox
+                        name="ArryProduct_ShippingMethod"
+                        colspan="10"
+                        labelcolspan="2"
+                        label="Nhân viên  giao"
+                        IsLabelDiv={true}
+                        isautoloaditemfromcache={false}
+                        loaditemcachekeyid={"PIMCACHE_PIM_SHIPPINGMETHOD"}
+                        valuemember="ShippingMethodID"
+                        nameMember="ShippingMethodName"
+                        controltype="InputControl"
+                        value={listOption}
+                        ShipmentOrder={this.state.ShipmentOrder}
+                        listoption={[]}
+                        datasourcemember="ArryProduct_ShippingMethod"
+                    />
+                    {/* <div className="form-group col-md-10">
                             <div className="listpersonnel">
                                 <div className="content">
                                     <div className="list-item">
@@ -146,8 +165,8 @@ class InfoCoordinatorCom extends Component {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </div> */}
+
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Ghi chú:</label>
