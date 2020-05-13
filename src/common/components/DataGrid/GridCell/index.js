@@ -10,6 +10,8 @@ export default class GridCell extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleRadioChange = this.handleRadioChange.bind(this);
         this.handleonClickEdit = this.handleonClickEdit.bind(this);
+        this.handleonClickDelete = this.handleonClickDelete.bind(this);
+        
     }
 
     handleInputChange(e) {
@@ -38,6 +40,10 @@ export default class GridCell extends Component {
         const elementdata = { Name: this.props.name, pkColumnName: this.props.value }
         //console.log("cellhandleonClickEdit inputname",id)
         this.props.onInsertClickEdit(elementdata, this.props.pkColumnName);
+
+    }
+    handleonClickDelete()
+    {
 
     }
 
@@ -147,8 +153,11 @@ export default class GridCell extends Component {
                 return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.value} title="Edit"><i className="ti-pencil"></i></a>;
 
             case "editnew":
-                return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>;
-
+                return (
+                    <div>
+                        <Link to={linkTo}><i className="ti-pencil"></i></Link>
+                      <a title="" className="table-action hover-danger" onClick={this.handleonClickDelete} data-id={this.props.index}  title="Xóa"><i className="ti-trash"></i></a></div>
+                  );
             default:
                 control = <label>{text}</label>;
                 break;
