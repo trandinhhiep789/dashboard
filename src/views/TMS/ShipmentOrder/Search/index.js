@@ -55,23 +55,13 @@ class SearchCom extends React.Component {
 
 
 
-    handleDelete(deleteList, pkColumnName) {
-        let listMLObject = [];
-        deleteList.map((row, index) => {
-            let MLObject = {};
-            pkColumnName.map((pkItem, pkIndex) => {
-                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-            });
-            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
-            listMLObject.push(MLObject);
-        });
-        this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
+    handleDelete(id) {
+        const ShipmentOrder ={ShipmentOrderID:id,DeletedUser:this.props.AppInfo.LoginInfo.Username};
+        this.props.callFetchAPI(APIHostName, DeleteAPIPath, ShipmentOrder).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if(!apiResult.IsError){
                     this.callSearchData(this.state.SearchData);
-                    // this.handleClearLocalCache();
-                    // this.handleSubmitInsertLog();
                 }             
             });
     }

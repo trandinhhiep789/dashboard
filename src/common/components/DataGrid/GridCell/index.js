@@ -42,8 +42,13 @@ export default class GridCell extends Component {
         this.props.onInsertClickEdit(elementdata, this.props.pkColumnName);
 
     }
-    handleonClickDelete()
+    handleonClickDelete(e)
     {
+        const id = e.currentTarget.dataset.id;
+        if (this.props.onhandleonClickDelete != null)
+        {
+          this.props.onhandleonClickDelete(id);
+        }
 
     }
 
@@ -156,7 +161,7 @@ export default class GridCell extends Component {
                 return (
                     <div>
                         <Link to={linkTo}><i className="ti-pencil"></i></Link>
-                      <a title="" className="table-action hover-danger" onClick={this.handleonClickDelete} data-id={this.props.index}  title="Xóa"><i className="ti-trash"></i></a></div>
+                      <a title="" className="table-action hover-danger" onClick={this.handleonClickDelete} data-id={this.props.text}  title="Xóa"><i className="ti-trash"></i></a></div>
                   );
             default:
                 control = <label>{text}</label>;

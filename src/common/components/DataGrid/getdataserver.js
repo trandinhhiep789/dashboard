@@ -25,6 +25,8 @@ class DataGridCom extends Component {
         this.handleCloseModel = this.handleCloseModel.bind(this);
         this.handleMultipleInsertClick = this.handleMultipleInsertClick.bind(this);
         this.handleOneInsertClick = this.handleOneInsertClick.bind(this);
+        this.handleonClickDelete = this.handleonClickDelete.bind(this);
+        
         this.checkAll = this.checkAll.bind(this);
         this.getCheckList = this.getCheckList.bind(this);
         const pkColumnName = this.props.PKColumnName.split(',');
@@ -225,6 +227,31 @@ class DataGridCom extends Component {
         }
     }
 
+    handleonClickDelete(id)
+    {
+        var doDelete = () => {
+         
+            const confir = confirm("Bạn có chắc rằng muốn xóa ?");
+            if (confir == 1) {
+                this.props.onDeleteClick(id);
+            }
+        }
+        if (this.props.DeletePermission) {
+            this.checkPermission(this.props.DeletePermission).then(result => {
+                if (result == true) {
+                    doDelete();
+                }
+                else if (result == 'error') {
+                    this.showMessage("Lỗi khi kiểm tra quyền")
+                } else {
+                    this.showMessage("Bạn không có quyền xóa!")
+                }
+            })
+        } else {
+            doDelete();
+        }
+      
+    }
     handleDeleteClick() {
         var doDelete = () => {
             const idSelectColumnName = this.props.IDSelectColumnName;
@@ -429,6 +456,7 @@ class DataGridCom extends Component {
                                                 index={rowIndex}
                                                 isChecked={isChecked}
                                                 onInsertClickEdit={this.handleInsertClickEdit}
+                                                onhandleonClickDelete={this.handleonClickDelete}
                                                 pkColumnName={this.state.ListPKColumnName}
                                             />;
                                             return (

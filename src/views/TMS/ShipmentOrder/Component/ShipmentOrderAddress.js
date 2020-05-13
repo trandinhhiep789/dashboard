@@ -82,7 +82,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Số điện thoại:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input className="form-control form-control-sm"  value={this.state.ShipmentOrderEdit.SenderFullName} placeholder="Số điện thoại người gửi" />
+                                <input className="form-control form-control-sm"  value={this.state.ShipmentOrderEdit.SenderPhoneNumber} placeholder="Số điện thoại người gửi" />
                             </div>
                         </div>
                     </div>
