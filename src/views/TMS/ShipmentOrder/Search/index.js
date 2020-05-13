@@ -32,13 +32,16 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleonChangePage = this.handleonChangePage.bind(this);
+        
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
-            iconNotification: ""
+            iconNotification: "",
+            PageNumber:1
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -72,13 +75,24 @@ class SearchCom extends React.Component {
                 }             
             });
     }
+    handleonChangePage(pageNum)
+    {
+        let listMLObject = [];
+        const aa={ SearchKey:"@PAGEINDEX",SearchValue:pageNum-1};
+        listMLObject = Object.assign([], this.state.SearchData,{[9]:aa});
+        this.callSearchData(listMLObject)
+        this.setState({
+            PageNumber: pageNum
+        });
+
+    }
 
     handleSearchSubmit(formData, MLObject) {
         const postData = [
             {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
-            }
+            }            
         ];
         this.setState({ SearchData: postData });
        // this.callSearchData(postData);
@@ -87,7 +101,6 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-                this.searchref.current.changeLoadComplete();
                 if (!apiResult.IsError) {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
@@ -181,8 +194,9 @@ class SearchCom extends React.Component {
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
+                    onChangePage={this.handleonChangePage}
                     IsDelete={false}
-                    ref={this.gridref}
+                    PageNumber={this.state.PageNumber}
                     IsAutoPaging={true}
                     RowsPerPage={10}
                 />

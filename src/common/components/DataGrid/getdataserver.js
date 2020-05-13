@@ -29,7 +29,11 @@ class DataGridCom extends Component {
         this.getCheckList = this.getCheckList.bind(this);
         const pkColumnName = this.props.PKColumnName.split(',');
         const listPKColumnName = pkColumnName.map(item => { return { key: item } });
-        this.state = { GridData: {}, IsCheckAll: false, PageNumber: 1, ListPKColumnName: listPKColumnName };
+        this.state = {
+            GridData: {},
+            DataSource: this.props.dataSource,
+            IsCheckAll: false, PageNumber: this.props.PageNumber, ListPKColumnName: listPKColumnName
+        };
     }
 
     componentDidMount() {
@@ -50,7 +54,11 @@ class DataGridCom extends Component {
         if (JSON.stringify(this.props.dataSource) !== JSON.stringify(nextProps.dataSource)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             const gridData = this.getCheckList(nextProps.dataSource);
-            this.setState({ GridData: gridData, PageNumber: 1 });
+            this.setState({
+                GridData: gridData,
+                DataSource: nextProps.dataSource,
+                PageNumber: nextProps.PageNumber
+            });
         }
     }
 
@@ -113,9 +121,10 @@ class DataGridCom extends Component {
     }
 
     onChangePageHandle(pageNum) {
-        this.setState({ PageNumber: pageNum });
-        const temp = this.checkInputisAll(this.getDisplayDataPageNumber(this.props.dataSource, pageNum), this.state.GridData["chkSelect"]);
-        this.setState({ IsCheckAll: temp });
+        this.setState({PageNumber: pageNum});
+        if (this.props.onChangePage != null)
+            this.props.onChangePage(pageNum);
+
     }
 
     checkInputisAll(dataSource, gridData) {
@@ -275,13 +284,13 @@ class DataGridCom extends Component {
         this.setState({ GridData: {}, IsCheckAll: false });
     }
 
-    getPageCount(dataSource) {
-        if (dataSource == null)
+    getPageCount(dataRows) {
+        if (dataRows == null)
             return 1;
         let rowsPerPage = DEFAULT_ROW_PER_PAGE;
         if (this.props.RowsPerPage != null)
             rowsPerPage = this.props.RowsPerPage;
-        let pageCount = parseInt(Math.ceil(dataSource.length / rowsPerPage));
+        let pageCount = parseInt(Math.ceil(dataRows.TotaLRows / rowsPerPage));
         if (pageCount < 1)
             pageCount = 1;
         return pageCount;
@@ -341,7 +350,7 @@ class DataGridCom extends Component {
 
     renderDataGrid() {
         const listColumn = this.props.listColumn;
-        const dataSource = this.getDisplayData(this.props.dataSource);
+        const dataSource = this.state.DataSource;
         const pkColumnName = this.state.ListPKColumnName;
         const idSelectColumnName = this.props.IDSelectColumnName;
         const checkList = this.state.GridData[idSelectColumnName];
@@ -509,7 +518,7 @@ class DataGridCom extends Component {
                 <input className="w-200px" type="text" name="txtKeyword" placeholder="Search" onKeyPress={this.handleKeyPress} />
             </div>;
         }
-        const pageCount = this.getPageCount(this.props.dataSource);
+        const pageCount = this.getPageCount(this.props.dataSource[0]);
         const datagrid = this.renderDataGrid();
         let hasHeaderToolbar = true;
         if (this.props.isHideHeaderToolbar)
@@ -563,27 +572,25 @@ class DataGridCom extends Component {
                                                 (<button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa" onClick={this.handleDeleteClick}>
                                                     <span className="fa fa-remove"> Xóa </span>
                                                 </button>)
-                                                : (<button type="button" className="btn btn-danger btn-delete ml-10" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Xóa" >
-                                                    <span className="fa fa-remove"> Xóa </span>
-                                                </button>)
+                                                : ""
                                         }
                                     </div>
                                 </div>
                             </div>
                         }
                         {datagrid}
-                        {/* {this.props.IsAutoPaging &&
+                        {this.props.IsAutoPaging &&
                             <GridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />
-                        } */}
+                        }
 
-                        {this.props.RowFooter ? this.props.RowFooter(this.props.dataSource) : ""}
+                        {/* {this.props.RowFooter ? this.props.RowFooter(this.props.dataSource) : ""}
                         <Media query={{ minWidth: 768 }}>
                             {matches =>
                                 matches
                                     ? (this.props.IsAutoPaging && <GridPage numPage={pageCount} currentPage={this.state.PageNumber} maxPageShow={10} onChangePage={this.onChangePageHandle} />)
                                     : (this.props.IsAutoPaging && <GridPage numPage={pageCount} currentPage={this.state.PageNumber} maxPageShow={5} onChangePage={this.onChangePageHandle} />)
                             }
-                        </Media>
+                        </Media> */}
 
                         {HideHeaderToolbarGroupTextBox &&
                             <div className="flexbox mb-20 ">
