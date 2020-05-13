@@ -16,12 +16,15 @@ class SearchModalCom extends Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-
+        const pkColumnName = this.props.PKColumnName.split(',');
+        const listPKColumnName = pkColumnName.map(item => { return { key: item } });
         this.state = {
             DataSource: {},
             GridDataSource: [],
             DataGridColumnList: [],
-            SearchData: this.props.InitSearchParams
+            SearchData: this.props.InitSearchParams,
+            inputCheckItem: false,
+            ListPKColumnName: listPKColumnName 
         }
         this.gridref = React.createRef();
     }
@@ -29,7 +32,8 @@ class SearchModalCom extends Component {
     componentDidMount() {
         //console.log("this.props SearchCom", this.props);
         this.setState({
-            GridDataSource: this.props.GridDataSource
+            GridDataSource: this.props.GridDataSource,
+            inputCheckItem: this.props.inputCheckItem,
         })
         this.callSearchData(this.state.SearchData);
     }
@@ -60,13 +64,24 @@ class SearchModalCom extends Component {
     }
 
     handleInsertItem(listMLObject) {
-        debugger;
+        const { inputCheckItem } = this.state;
         let selectedOption = [];
-        if (listMLObject !== null && listMLObject !== undefined) {
-            for (let i = 0; i < listMLObject.length; i++) {
-                selectedOption.push({ value: listMLObject[i][this.props.value], label: listMLObject[i][this.props.name] });
+
+        if (inputCheckItem == false) {
+            if (listMLObject !== null && listMLObject !== undefined) {
+                for (let i = 0; i < listMLObject.length; i++) {
+                    selectedOption.push({ value: listMLObject[i][this.props.value], label: listMLObject[i][this.props.name] });
+                }
             }
         }
+        else{
+            const {ListPKColumnName}= this.state;
+            
+            if (listMLObject !== null && listMLObject !== undefined) {
+                selectedOption= listMLObject;
+            }
+        }
+
         this.props.onClickInsertItem(selectedOption)
     }
 

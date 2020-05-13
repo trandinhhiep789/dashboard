@@ -3,8 +3,8 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 import { MessageModal } from "../../../../../../common/components/Modal";
- import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
- import InputGrid from "../../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
+import InputGrid from "../../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
 
 import { showModal } from '../../../../../../actions/modal';
 import { MODAL_TYPE_SEARCH } from '../../../../../../constants/actionTypes';
@@ -22,7 +22,9 @@ import {
     DataGridColumnListMultiple,
     InputPartnerRoleColumnList,
     GridMLPartnerRoleDefinition,
-    SearchPartnerRoleAPIPath
+    SearchPartnerRoleAPIPath,
+    PKColumnName,
+    IDSelectColumnName
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
@@ -33,15 +35,15 @@ class AddCom extends React.Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.handleinsertItem = this.handleinsertItem.bind(this);
+        this.handleInsertItem = this.handleInsertItem.bind(this);
         this.handleInputUserRoleInsert = this.handleInputUserRoleInsert.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
             AddElementList: AddElementList,
-            DataSource:[],
-            LstPartnerRole_Priviledge:[]
+            DataSource: [],
+            LstPartnerRole_Priviledge: []
         };
         this.searchref = React.createRef();
     }
@@ -66,8 +68,7 @@ class AddCom extends React.Component {
             />
         );
     }
-    handleinsertItem(lstOption)
-    {
+    handleInsertItem(lstOption) {
         // let listMLObject = [];
         // lstOption.map((row, index) => {
         //     let MLObject = {};
@@ -80,8 +81,7 @@ class AddCom extends React.Component {
         this.setState({ LstPartnerRole_Priviledge: lstOption });
     }
 
-    handleInputUserRoleInsert()
-    {    
+    handleInputUserRoleInsert() {
         this.props.showModal(MODAL_TYPE_SEARCH, {
             title: "Danh sách quyền",
             content: {
@@ -94,10 +94,11 @@ class AddCom extends React.Component {
                     SearchAPIPath={SearchPartnerRoleAPIPath}
                     SearchElementList={SearchElementModeList}
                     InitSearchParams={InitSearchParamsModeList}
-                    onClickInsertItem={this.handleinsertItem.bind(this)}
+                    onClickInsertItem={this.handleInsertItem.bind(this)}
                     IDSelectColumnName={"chkSelect"}
                     name={"PartnerPriviledgeName"}
                     value={"PartnerPriviledgeID"}
+                    inputCheckItem={true}
                 >
                 </SearchModal>
             }
@@ -117,29 +118,31 @@ class AddCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
+        const { LstPartnerRole_Priviledge, DataSource, AddElementList } = this.state;
         return (
             <FormContainer
-            FormName="Cập nhật Vai trò người dùng"
-            MLObjectDefinition={MLObjectDefinition}
-            listelement={this.state.AddElementList}
-            onSubmit={this.handleSubmit}
-            IsAutoLayout={true}
-            ref={this.searchref}
-            BackLink={BackLink}
-            dataSource={this.state.DataSource}
-        >
-           <InputGrid
-               name="LstPartnerRole_Priviledge"
-              controltype="InputControl"
-              IDSelectColumnName={"checkboxAll"}
-              listColumn={InputPartnerRoleColumnList}
-                isHideHeaderToolbar={false}
-               dataSource={this.state.LstPartnerRole_Priviledge}
-               MLObjectDefinition={GridMLPartnerRoleDefinition}
-              colspan="12"
-               onInsertClick={this.handleInputUserRoleInsert}
-            />
-          </FormContainer>
+                FormName="Cập nhật vai trò người dùng"
+                MLObjectDefinition={MLObjectDefinition}
+                listelement={AddElementList}
+                onSubmit={this.handleSubmit}
+                IsAutoLayout={true}
+                ref={this.searchref}
+                BackLink={BackLink}
+                dataSource={DataSource}
+            >
+                <InputGrid
+                    name="LstPartnerRole_Priviledge"
+                    controltype="GridControl"
+                    IDSelectColumnName={IDSelectColumnName}
+                    listColumn={InputPartnerRoleColumnList}
+                    PKColumnName={PKColumnName}
+                    isHideHeaderToolbar={false}
+                    dataSource={LstPartnerRole_Priviledge}
+                    MLObjectDefinition={GridMLPartnerRoleDefinition}
+                    colspan="12"
+                    onInsertClick={this.handleInputUserRoleInsert}
+                />
+            </FormContainer>
         );
     }
 }

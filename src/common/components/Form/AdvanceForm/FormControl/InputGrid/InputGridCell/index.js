@@ -27,7 +27,7 @@ class InputGridCellCom extends Component {
                 IsDisabled: true
             })
         }
-        
+
         if (this.props.type == "combobox" || this.props.type == "comboboxCus") {
             let listOption = [];
             //  console.log("componentDidMount: ", this.props.IsAutoLoadItemFromCache)
@@ -149,7 +149,6 @@ class InputGridCellCom extends Component {
     }
 
     handleInputChange(e) {
-        this.validateInput(e);
         // this.props.onValueChange(elementdata, this.props.index);
     }
 
@@ -294,17 +293,46 @@ class InputGridCellCom extends Component {
                     let className = "form-control form-control-sm";
                     if (this.props.CSSClassName != null)
                         className = this.props.CSSClassName;
-
-                    return <input type="checkbox" name={this.props.name} className={className} readOnly={isSystem}
-                        onChange={this.handleInputChange} value={text} checked={this.props.isChecked} disabled={this.state.IsDisabled} />;
+                    return <div className="checkbox customCheckbox">
+                        <label>
+                            <input
+                                type="checkbox"
+                                name={this.props.name}
+                                value={text}
+                                onChange={this.handleInputChange}
+                                checked={this.props.isChecked}
+                                className={className}
+                                readOnly={isSystem}
+                                disabled={this.state.IsDisabled}
+                            />
+                            <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                        </label>
+                    </div>
+                    // return <input type="checkbox" name={this.props.name} className={className} readOnly={isSystem}
+                    //     onChange={this.handleInputChange} value={text} checked={this.props.isChecked} disabled={this.state.IsDisabled} />;
                 }
             case "checkboxAll":
                 {
                     let className = "form-control form-control-sm";
                     if (this.props.CSSClassName != null)
                         className = this.props.CSSClassName;
-                    return <input type="checkbox" name={this.props.name} className={className} readOnly={isSystem}
-                        onChange={this.handleInputChangeALL} value={text} checked={this.props.isChecked} />;
+                    return <div className="checkbox customCheckbox">
+                        <label>
+                            <input
+                                type="checkbox"
+                                name={this.props.name}
+                                value={text}
+                                onChange={this.handleInputChangeALL}
+                                checked={this.props.isChecked}
+                                className={className}
+                                readOnly={isSystem}
+                                disabled={this.state.IsDisabled}
+                            />
+                            <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                        </label>
+                    </div>
+                    // return <input type="checkbox" name={this.props.name} className={className} readOnly={isSystem}
+                    //     onChange={this.handleInputChangeALL} value={text} checked={this.props.isChecked} />;
                 }
             case "textbox":
                 {

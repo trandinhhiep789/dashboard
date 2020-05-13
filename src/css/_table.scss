@@ -8,6 +8,11 @@
                 line-height: 33px;
                 float: none;
                 margin: 0 auto;
+                &.customCheckbox{
+                    label{
+                        padding-top: 0;
+                    }
+                }
             }
         }
     }
@@ -19,6 +24,11 @@
                 line-height: 33px;
                 float: none;
                 margin: 0 auto;
+                &.customCheckbox{
+                    label{
+                        padding-top: 0;
+                    }
+                }
                 label{
                     margin-bottom: 0;
                 }

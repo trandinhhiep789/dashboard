@@ -374,7 +374,7 @@ export const GridMLPartnerRoleDefinition = [
 export const InputPartnerRoleColumnList = [
     {
         Name: "chkSelect",
-        Type: "checkboxAll",
+        Type: "checkbox",
         Caption: "",
         DataSourceMember: "PartnerPriviledgeID",
         Width: 70
