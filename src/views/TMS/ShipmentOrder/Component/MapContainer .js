@@ -13,40 +13,83 @@ const containerStyle = {
     height: '80%'
 }
 
+const LoadingContainer = (props) => (
+    <div>Fancy loading container!</div>
+)
+
 export class MapContainer extends Component {
+    constructor(props) {
+        super(props);
+        this.onMarkerClick = this.onMarkerClick.bind(this)
+        this.onMapClicked = this.onMapClicked.bind(this)
+        this.mapClicked = this.mapClicked.bind(this)
+        this.state = {
+
+        };
+    }
+    componentDidMount() {
+        console.log("1111", this.props)
+    }
+
+    mapClicked(mapProps, map, clickEvent) {
+        console.log('click', mapProps, map, clickEvent)
+        const { latLng } = clickEvent;
+        const latitude = clickEvent.latLng.lat();
+        const longitude = clickEvent.latLng.lng();
+        console.log("aaa", latitude + ", " + longitude);
+    }
+
+    onMarkerClick(props, marker, e) {
+        console.log('onMarkerClick', e.latLng)
+        this.setState({
+            selectedPlace: props,
+            activeMarker: marker,
+            showingInfoWindow: true
+        });
+    }
+
+    onMapClicked(mapProps, map, clickEvent) {
+        console.log('onMapClicked', clickEvent)
+
+    }
+
     render() {
-        const triangleCoords = [
-            {lat: 25.774, lng: -80.190},
-            {lat: 18.466, lng: -66.118},
-            {lat: 32.321, lng: -64.757},
-            {lat: 25.774, lng: -80.190}
-          ]
-          let styleMap;
-          if(this.props.classStyle ==undefined){
+
+        let styleMap;
+        if (this.props.classStyle == undefined) {
             styleMap = style;
-          }
-          else{
+        }
+        else {
             styleMap = this.props.classStyle;
-          }
-          let styleContainerMap;
-          if(this.props.classContainerStyle ==undefined){
+        }
+        let styleContainerMap;
+        if (this.props.classContainerStyle == undefined) {
             styleContainerMap = containerStyle;
-          }
-          else{
+        }
+        else {
             styleContainerMap = this.props.classContainerStyle;
-          }
+        }
         return (
             <Map
                 google={this.props.google}
-                zoom={14}
+                zoom={15}
                 style={styleMap}
                 containerStyle={styleContainerMap}
                 className={'map'}
+                draggable={true}
+                initialCenter={{
+                    lat: 10.845199873795655,
+                    lng: 106.7979896460848
+                }}
+                onClick={this.mapClicked}
             >
                 <Marker
-                    title={'The marker`s title will appear as a tooltip.'}
-                    name={'SOMA'}
-                    position={{ lat: 10.851885, lng: 106.797533 }} />
+                    name={'Your position'}
+                    position={{
+                        lat: 10.845199873795655,
+                        lng: 106.7979896460848
+                    }}
+                />
             </Map>
 
         );
@@ -54,5 +97,6 @@ export class MapContainer extends Component {
 }
 
 export default GoogleApiWrapper({
-    apiKey: ('AIzaSyB9GyrpAzbcozoo1DDQ0nr29X67YLkQuPQ')
+    apiKey: ('AIzaSyB9GyrpAzbcozoo1DDQ0nr29X67YLkQuPQ'),
+    LoadingContainer: LoadingContainer
 })(MapContainer)
