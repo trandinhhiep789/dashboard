@@ -13,18 +13,24 @@ export const PKColumnName = "ShipmentOrderID";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "", Title: "Danh sách bước xử lý yêu cầu vận chuyển" }
+    { Link: "", Title: "Danh sách yêu cầu vận chuyển" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/ShipmentOrder", Title: "Danh sách bước xử lý yêu cầu vận chuyển" },
+    { Link: "/ShipmentOrder", Title: "Danh sách yêu cầu vận chuyển" },
     { Link: "", Title: "Sửa" }
 ];
+export const DetailAPIPath = [
+    { Link: "/", Title: "Trang chủ" },
+    { Link: "/ShipmentOrder", Title: "Danh sách yêu cầu vận chuyển" },
+    { Link: "", Title: "Chi tiết" }
+];
+
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/ShipmentOrder", Title: "Danh sách bước xử lý yêu cầu vận chuyển" },
+    { Link: "/ShipmentOrder", Title: "Danh sách yêu cầu vận chuyển" },
     { Link: "", Title: "Thêm" }
 ];
 

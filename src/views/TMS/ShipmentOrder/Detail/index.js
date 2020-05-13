@@ -25,6 +25,7 @@ import {
     APIHostName,
     LoadAPIPath,
     PagePath,
+    DetailAPIPath
 } from "../constants";
 
 
@@ -43,7 +44,7 @@ class DetailCom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updatePagePath(PagePath);
+        this.props.updatePagePath(DetailAPIPath);
         this.callLoadData(this.props.match.params.id);
     }
     callLoadData(id) {
