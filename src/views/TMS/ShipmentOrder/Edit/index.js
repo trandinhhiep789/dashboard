@@ -115,34 +115,69 @@ class EditCom extends React.Component {
                     IsAutoLayout={false}
                     BackLink={BackLink}
                 >
-                    <div>
-                    <h4 className="card-title"><strong>Địa chỉ</strong></h4>
+                    <div className="card">
+                        <div class="card-title">
+                            <h4 class="title">Địa chỉ</h4>
+                        </div>
+                        <div className="card-body">
+                            <FormControl.TextBox
+                                name="txtProductID"
+                                colspan="8"
+                                labelcolspan="4"
+                                readOnly={true}
+                                label="mã sản phẩm"
+                                placeholder="Mã sản phẩm"
+                                controltype="InputControl"
+                                value={"a"}
+                                datasourcemember="ProductID"
+                            />
 
-                    <FormControl.TextBox
-                        name="txtProductID"
-                        colspan="8"
-                        labelcolspan="4"
-                        readOnly={true}
-                        label="mã sản phẩm"
-                        placeholder="Mã sản phẩm"
-                        controltype="InputControl"
-                        value={"a"}
-                        datasourcemember="ProductID"
-                    />
-
-                    <FormControl.TextBox
-                        name="txtProductID"
-                        colspan="8"
-                        labelcolspan="4"
-                        readOnly={true}
-                        label="mã sản phẩm"
-                        placeholder="Mã sản phẩm"
-                        controltype="InputControl"
-                        value={"a"}
-                        datasourcemember="ProductID"
-                    />
+                            <FormControl.TextBox
+                                name="txtProductID"
+                                colspan="8"
+                                labelcolspan="4"
+                                readOnly={true}
+                                label="mã sản phẩm"
+                                placeholder="Mã sản phẩm"
+                                controltype="InputControl"
+                                value={"a"}
+                                datasourcemember="ProductID"
+                            />
+                        </div>
+                        
                     </div>
 
+                    <div className="card">
+                        <div class="card-title">
+                            <h4 class="title">Địa chỉ</h4>
+                        </div>
+                        <div className="card-body">
+                            <FormControl.TextBox
+                                name="txtProductID"
+                                colspan="8"
+                                labelcolspan="4"
+                                readOnly={true}
+                                label="mã sản phẩm"
+                                placeholder="Mã sản phẩm"
+                                controltype="InputControl"
+                                value={"a"}
+                                datasourcemember="ProductID"
+                            />
+
+                            <FormControl.TextBox
+                                name="txtProductID"
+                                colspan="8"
+                                labelcolspan="4"
+                                readOnly={true}
+                                label="mã sản phẩm"
+                                placeholder="Mã sản phẩm"
+                                controltype="InputControl"
+                                value={"a"}
+                                datasourcemember="ProductID"
+                            />
+                        </div>
+                        
+                    </div>
                 </FormContainer>
             );
         }
