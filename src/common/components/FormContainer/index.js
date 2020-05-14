@@ -27,6 +27,7 @@ class FormContainerCom extends Component {
         this.handleInputChangeList = this.handleInputChangeList.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         const formData = this.bindData();
+        console.log("formData",formData)
         this.state = {
             FormData: formData,
             FormValidation: {},
@@ -46,13 +47,13 @@ class FormContainerCom extends Component {
         const children = this.props.children;
         const dataSource = this.props.dataSource;
         let formData = {};
-        const listElement = this.bindDataToControl(this.props.listelement, this.props.dataSource);
-        if (typeof dataSource != "undefined") {
-            listElement.map((elementItem) => {
-                const elementname = elementItem.name;
-                formData = Object.assign({}, formData, { [elementname]: elementItem.value });
-            });
-        }
+        // const listElement = this.bindDataToControl(this.props.listelement, this.props.dataSource);
+        // if (typeof dataSource != "undefined") {
+        //     listElement.map((elementItem) => {
+        //         const elementname = elementItem.name;
+        //         formData = Object.assign({}, formData, { [elementname]: elementItem.value });
+        //     });
+        // }
         React.Children.map(children, (child, i) => {
             if (child.type == "div") {
                 const formDataTempList = this.bindDivChildrenData(child, dataSource);
@@ -383,7 +384,7 @@ class FormContainerCom extends Component {
     }
     renderRow(children) {
         return React.Children.map(children, (child, i) => {
-            const componenttype = child.props.componenttype;
+            const componenttype = child.props.controltype;
             switch (componenttype) {
                 case "InputControl":
                     return this.renderInputControl(child);
@@ -412,6 +413,82 @@ class FormContainerCom extends Component {
             }
         );
     }
+
+    renderDivChildren(children) {
+        return React.Children.map(children, (child, i) => {
+            if (child.type == "div") {
+                return <div className={child.props.className}>
+                    {this.renderDivChildren(child.props.children)}
+                </div>
+            }
+            else {
+                if (child.props.controltype != null) {
+                    return this.layoutFormControl(child);
+                }
+                else {
+                    return child;
+                }
+            }
+        });
+    }
+    autoLayoutChildren() {
+        const children = this.props.children;
+        return React.Children.map(children, (child, i) => {
+            if (child.type == "div") {
+                return this.renderDivChildren(child);
+            }
+            else {
+                if (child.props.controltype != null) {
+
+                    return this.layoutFormControl(child);
+                }
+                return child;
+            }
+        });
+    }
+    layoutFormControl(child) {
+        if (child != null) {
+            if (child.props.controltype != null) {
+                const controltype = child.props.controltype;
+                if (controltype == "InputControl") {
+                    let FormValidation1 = this.state.FormValidation;
+                  
+                    const controlname = child.props.name;
+                    const controlvalue = this.state.FormData[controlname];
+                    let validationErrorMessage = "";
+                    if (FormValidation1[child.props.name] != null) {
+                        validationErrorMessage = FormValidation1[child.props.name].ValidatonErrorMessage;
+                    }
+                    return React.cloneElement(child,
+                        {
+                            onValueChange: this.handleInputChange,
+                            value: controlvalue,
+                            validationErrorMessage: validationErrorMessage,
+                        }
+                    );
+                }
+                else if (controltype == "GridControl") {
+
+                    let FormValidation1 = this.state.FormValidation;
+                    const controlname = child.props.name;
+                    const controlvalue = this.state.FormData[controlname];
+                    let listvalidationError = {};
+                    if (FormValidation1[child.props.name] != null) {
+                        listvalidationError = FormValidation1[child.props.name];
+                    }
+                    return React.cloneElement(child,
+                        {
+                            onValueChange: this.handleInputChange,
+                            value: controlvalue,
+                            listvalidationError: listvalidationError,
+                        }
+                    );
+                }
+            }
+        }
+        return child;
+    }
+
     //#endregion render Children
 
     //#region  handleSubmit 
@@ -507,7 +584,7 @@ class FormContainerCom extends Component {
                     {this.props.FormName ? <h4 className="card-title"><strong>{this.props.FormName}</strong></h4> : ""}
                     <div className="card-body">
                         {
-                            this.renderChildren()
+                            this.autoLayoutChildren()
                         }
                     </div>
                     <footer className="card-footer text-right" hidden={this.props.IsHideFooter}>

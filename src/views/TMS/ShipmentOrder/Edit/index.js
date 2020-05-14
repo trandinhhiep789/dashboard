@@ -113,7 +113,7 @@ class EditCom extends React.Component {
             return (
                 <FormContainer
                     FormName="Cập nhật yêu cầu vận chuyển"
-                    IsAutoLayout={false}
+                    dataSource={this.state.DataSource}
                     BackLink={BackLink}
                 >
                     <div className="card">
@@ -124,14 +124,14 @@ class EditCom extends React.Component {
                             <div className="row">
                                 <div className="col-md-6">
                                     <FormControl.TextBox
-                                        name="ShipmentOrderID"
+                                        name="txtShipmentOrderID"
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
                                         label="mã yêu cầu"
                                         placeholder="Mã yêu cầu"
                                         controltype="InputControl"
-                                        value={this.state.DataSource.ShipmentOrderID}
+                                        value=""
                                         datasourcemember="ShipmentOrderID"
                                     />
                                 </div>
@@ -153,57 +153,68 @@ class EditCom extends React.Component {
 
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.TextBox
-                                        name=""
+                                     <FormControl.ComboBox
+                                        name="txtRequestPartnerID"
                                         colspan="8"
                                         labelcolspan="4"
-                                        readOnly={true}
                                         label="đối tác yêu cầu"
-                                        placeholder="Đối tác yêu cầu"
+                                        validatonList={["Comborequired"]}
+                                        isautoloaditemfromcache={true}
+                                        loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                                        valuemember="PartnerID"
+                                        nameMember="PartnerName"
                                         controltype="InputControl"
                                         value={""}
-                                        datasourcemember=""
-                                        validatonList={[]}
-                                    />
+                                        listoption={null}
+                                        datasourcemember="RequestPartnerID" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.TextBox
-                                        name=""
+                                      <FormControl.ComboBox
+                                        name="txtCarrierPartnerID"
                                         colspan="8"
                                         labelcolspan="4"
-                                        readOnly={true}
                                         label="đơn vị vận chuyển"
-                                        placeholder="Đơn vị vận chuyển"
+                                        validatonList={["Comborequired"]}
+                                        isautoloaditemfromcache={true}
+                                        loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                                        valuemember="PartnerID"
+                                        nameMember="PartnerName"
                                         controltype="InputControl"
                                         value={""}
-                                        datasourcemember=""
-                                    />
+                                        listoption={null}
+                                        datasourcemember="CarrierPartnerID" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.TextBox
-                                        name=""
+                                     <FormControl.ComboBox
+                                        name="txtShipmentOrderTypeID"
                                         colspan="8"
                                         labelcolspan="4"
-                                        readOnly={true}
                                         label="loại dịch vụ"
-                                        placeholder="Loại dịch vụ"
+                                        validatonList={["Comborequired"]}
+                                        isautoloaditemfromcache={true}
+                                        loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
+                                        valuemember="ShipmentOrderTypeID"
+                                        nameMember="ShipmentOrderTypeName"
                                         controltype="InputControl"
                                         value={""}
-                                        datasourcemember=""
-                                    />
+                                        listoption={null}
+                                        datasourcemember="ShipmentOrderTypeID" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.TextBox
-                                        name=""
+                                      <FormControl.ComboBox
+                                        name="txtCarrierTypeID"
                                         colspan="8"
                                         labelcolspan="4"
-                                        readOnly={true}
                                         label="phương tiện vận chuyển"
-                                        placeholder="Phương tiện vận chuyển"
+                                        validatonList={["Comborequired"]}
+                                        isautoloaditemfromcache={true}
+                                        loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                        valuemember="CarrierTypeID"
+                                        nameMember="CarrierTypeName"
                                         controltype="InputControl"
                                         value={""}
-                                        datasourcemember=""
-                                    />
+                                        listoption={null}
+                                        datasourcemember="CarrierTypeID" />
                                 </div>
                                 <div className="col-md-6">
                                     <FormControl.TextBox
