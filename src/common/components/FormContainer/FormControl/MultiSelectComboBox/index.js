@@ -81,33 +81,27 @@ class MultiSelectComboBoxCom extends React.Component {
     }
 
     handleValueChange(selectedOption) {
-        let confir = 1;
-        if ((typeof this.props.isUseConfirmMessage === "undefined") ||
-            (typeof this.props.isUseConfirmMessage !== "undefined" && this.props.isUseConfirmMessage == true)) {
-            confir = confirm("Bạn có chắc rằng muốn xóa ?");
-        }
-        if (confir == 1) {
 
-            let listMLObject = [];
-            if (selectedOption) {
-                for (let i = 0; i < selectedOption.length; i++) {
-                    listMLObject.push({
-                        ShipmentOrderID: this.props.ShipmentOrder.ShipmentOrderID, UserName: selectedOption[i].value,
-                        CreatedUser: "administrator",
-                        CreatedOrderTime: this.props.ShipmentOrder.CreatedOrderTime
-                    });
-                }
-            }
-            else{
+        let listMLObject = [];
+        if (selectedOption) {
+            for (let i = 0; i < selectedOption.length; i++) {
                 listMLObject.push({
-                    ShipmentOrderID: this.props.ShipmentOrder.ShipmentOrderID,
-                    CreatedUser: "administrator"
+                    ShipmentOrderID: this.props.ShipmentOrder.ShipmentOrderID, UserName: selectedOption[i].value,
+                    CreatedUser: "administrator",
+                    CreatedOrderTime: this.props.ShipmentOrder.CreatedOrderTime
                 });
             }
-            this.props.callFetchAPI("PIMAPI", 'api/ShipmentOrder_DeliverUser/AddList', listMLObject).then(apiResult => {
-                this.setState({ SelectedOption: selectedOption });
+        }
+        else {
+            listMLObject.push({
+                ShipmentOrderID: this.props.ShipmentOrder.ShipmentOrderID,
+                CreatedUser: "administrator"
             });
         }
+        this.props.callFetchAPI("PIMAPI", 'api/ShipmentOrder_DeliverUser/AddList', listMLObject).then(apiResult => {
+            this.setState({ SelectedOption: selectedOption });
+        });
+
     }
 
     handleValueChange1(e) {

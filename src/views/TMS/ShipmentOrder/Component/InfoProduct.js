@@ -119,7 +119,7 @@ class InfoProductCom extends Component {
                                                 </td>
                                                 <td>{item.ProductName}</td>
                                                 <td>{item.PackingUnitName}</td>
-                                                <td>{item.Price}</td>
+                                                <td>{item.Price}đ</td>
                                                 <td>{item.Quantity}</td>
                                                 <td>{item.QuantityUnitID}</td>
                                                 <td>{item.SizeItem}</td>

@@ -132,7 +132,6 @@ class InfoCoordinatorCom extends Component {
             <div className="card">
                 <div className="card-title group-card-title">
                     <h4 className="title">Thông tin điều phối</h4>
-                    <button className="btn btnEditCard">chỉnh sửa</button>
                 </div>
                 <div className="card-body">
 
@@ -177,7 +176,7 @@ class InfoCoordinatorCom extends Component {
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Trạng thái:</label>
+                            <label className="col-form-label bold">Xử lý:</label>
                         </div>
                         <div className="form-group col-md-10">
                             <select className="form-control form-control-sm" value={this.state.ShipmentOrder.CurrentShipmentOrderStepID} onChange={this.onChangeInput.bind(this)} >

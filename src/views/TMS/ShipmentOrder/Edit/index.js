@@ -124,29 +124,33 @@ class EditCom extends React.Component {
                             <div className="row">
                                 <div className="col-md-6">
                                     <FormControl.TextBox
-                                        name=""
+                                        name="ShipmentOrderID"
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
                                         label="mã yêu cầu"
                                         placeholder="Mã yêu cầu"
                                         controltype="InputControl"
-                                        value={""}
-                                        datasourcemember=""
+                                        value={this.state.DataSource.ShipmentOrderID}
+                                        datasourcemember="ShipmentOrderID"
                                     />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.TextBox
-                                        name=""
+                                    <FormControl.ComboBox
+                                        name="txtShipmentOrderTypeID"
                                         colspan="8"
                                         labelcolspan="4"
-                                        readOnly={true}
                                         label="loại yêu cầu"
-                                        placeholder="Loại yêu cầu"
+                                        validatonList={["Comborequired"]}
+                                        isautoloaditemfromcache={true}
+                                        loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
+                                        valuemember="ShipmentOrderTypeID"
+                                        nameMember="ShipmentOrderTypeName"
                                         controltype="InputControl"
-                                        value={""}
-                                        datasourcemember=""
-                                    />
+                                        value={this.state.DataSource.ShipmentOrderTypeID}
+                                        listoption={null}
+                                        datasourcemember="ShipmentOrderTypeID" />
+
                                 </div>
                                 <div className="col-md-6">
                                     <FormControl.TextBox

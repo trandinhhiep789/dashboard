@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { ValidationField } from "../../library/validation.js";
-import { bindDataToControl, GetMLObjectData, transform1To2Column, transform1To3Column } from "../../library/form/FormLib";
-import FormElement from '../FormContainer/FormElement';
+import {  GetMLObjectData } from "../../library/form/FormLib";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../constants/functionLists";
 import { callGetCache } from "../../../actions/cacheAction";
 import { Link } from "react-router-dom";
@@ -297,10 +296,6 @@ class FormContainerCom extends Component {
         React.Children.map(children, (child, i) => {
             const componenttype = child.props.controltype;
             switch (componenttype) {
-                case "Row":
-                    break;
-                case "Col":
-                    break;
                 case "InputControl":
                     this.validationInputControl(child);
                     break;
@@ -356,75 +351,9 @@ class FormContainerCom extends Component {
 
     //#endregion validation TabContainer
 
-    //#region validation TabContainer
-    validationTabContainer(parent) {
-        React.Children.map(parent.props.children, (child, i) => {
-            this.TabvalidationFormDIV(child, child.props.name);
-        });
-    }
-    TabvalidationFormDIV(children, name) {
-        React.Children.map(children.props.children, (child, i) => {
-            if (child.type == "div") {
-                this.TabvalidationFormControlDIV(child.props.children, name);
-            }
-            else {
-                if (child.props.controltype != null) {
-                    this.TabvalidationFormControl(child, name);
-                }
-            }
-        });
-    }
-    TabvalidationFormControlDIV(children, name) {
-        React.Children.map(children, (child, i) => {
-            if (child.type == "div") {
-                this.TabvalidationFormControlDIV(child.props.children, name);
-            }
-            else {
-                if (child.props.controltype != null) {
-                    this.TabvalidationFormControl(child, name);
-                }
-            }
-        });
-    }
-    TabvalidationFormControl(child, name) {
-        if (child.props.controltype == "InputControl") {
-            const name1 = child.props.datasourcemember;
-            const validatonList = child.props.validatonList;
-            const value = this.state.FormData[name][name1];
-            if (typeof validatonList != "undefined") {
-                const validation = ValidationField(validatonList, value, child.props.label)
-                const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
-                const formValidation1 = Object.assign({}, this.FormValidationNew[name], { [name1]: validationObject });
-                this.FormValidationNew = Object.assign({}, this.FormValidationNew, { [name]: formValidation1 });
-            }
-        }
-        else {
-            const listElement = child.props.listColumn;
-            let inputGridData = this.state.FormData[name];
-            inputGridData = Object.assign([], inputGridData);
-            let listgridData = {};
-            inputGridData.map((row, indexRow) => {
-                let elementobject = {};
-                listElement.map((elementItem, index) => {
-                    const validatonList = elementItem.validatonList;
-                    if (typeof validatonList != "undefined") {
-                        const inputvalue = row[elementItem.Name];
-                        const validation = ValidationField(validatonList, inputvalue, elementItem.Caption)
-                        const validationObject = { IsValidatonError: validation.IsError, ValidationErrorMessage: validation.Message };
-                        elementobject = Object.assign({}, elementobject, { [elementItem.Name]: validationObject });
-                    }
-                });
-                listgridData = Object.assign({}, listgridData, { [indexRow]: elementobject });
-            });
-            const elementob = Object.assign({}, {}, { [child.props.name]: listgridData });
-            this.FormValidationNew = Object.assign({}, this.FormValidationNew, { [name]: elementob });
-        }
-    }
-    //#endregion validation TabContainer
 
     checkPermission() {
         let permissionKey = this.props.RequirePermission;
-        console.log("permissionKey", permissionKey);
         if (!permissionKey) {
             this.setState({ IsPermision: true });
             return;
@@ -456,13 +385,6 @@ class FormContainerCom extends Component {
         return React.Children.map(children, (child, i) => {
             const componenttype = child.props.componenttype;
             switch (componenttype) {
-                case "Row":
-                    return <div className="row">{this.renderRow(child.props.children)}</div>;
-                case "Col":
-                    {
-                        const className = this.getColClassName(child.props);
-                        return <div className={className}>{this.renderRow(child.props.children)}</div>;
-                    }
                 case "InputControl":
                     return this.renderInputControl(child);
 
@@ -491,427 +413,6 @@ class FormContainerCom extends Component {
         );
     }
     //#endregion render Children
-
-    //#region  render auto Layout Children IsAutoLayout:True
-    autoLayoutForm() {
-        const listElement = this.props.listelement;
-        let elmentRender = this.renderOneColumnForm();
-        const colCount = parseInt(this.props.FormCols);
-        switch (colCount) {
-            case 1: elmentRender = this.renderOneColumnForm();
-                break;
-            case 2: elmentRender = this.renderTwoColumnForm();
-                break;
-            case 3: elmentRender = this.renderThreeColumnForm();
-                break;
-        }
-
-        let backLinkButton = "";
-        if (this.props.BackLink != null) {
-            if (this.props.BackLink.length > 0) {
-                backLinkButton = (<Link to={this.props.BackLink}>
-                    <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button></Link>);
-            }
-        }
-
-        let ClassNameSingePage = "col-lg-12";
-        if (this.props.ClassNameSingePage != null) {
-            ClassNameSingePage = "col-lg-12 " + this.props.ClassNameSingePage;
-        }
-
-        let cssSearchButton = "";
-        return (
-            <div className={ClassNameSingePage}>
-                <form className="card" action="" onSubmit={this.handleSubmit}>
-                    {this.props.FormName ? <h4 className="card-title"><strong>{this.props.FormName}</strong></h4> : ""}
-                    <div className="card-body">
-                        {elmentRender}
-                        {
-                            this.autoLayoutChildren()
-                        }
-                    </div>
-                    <footer className="card-footer text-right" hidden={this.props.IsHideFooter}>
-                        <button className="btn btn-primary" type="submit">{cssSearchButton} Cập nhật</button> {backLinkButton}
-                    </footer>
-                </form>
-            </div>
-        );
-    }
-    renderDivChildren(children) {
-        return React.Children.map(children, (child, i) => {
-            if (child.type == "div") {
-                return <div className={child.props.className}>
-                    {this.renderDivChildren(child.props.children)}
-                </div>
-            }
-            else {
-                if (child.props.controltype != null) {
-                    return this.layoutFormControl(child);
-                }
-                else {
-                    return child;
-                }
-            }
-        });
-    }
-    autoLayoutChildren() {
-        const children = this.props.children;
-        return React.Children.map(children, (child, i) => {
-            if (child.type == "div") {
-                return this.renderDivChildren(child);
-            }
-            else {
-                if (child.props.controltype != null) {
-
-                    return this.layoutFormControl(child);
-                }
-                return child;
-            }
-        });
-    }
-    layoutFormControl(child) {
-        if (child != null) {
-            if (child.props.controltype != null) {
-                const controltype = child.props.controltype;
-                if (controltype == "InputControl") {
-                    let FormValidation1 = this.state.FormValidation;
-                    if (Object.keys(this.props.Lstchangvalition).length > 0) {
-                        FormValidation1 = this.props.Lstchangvalition
-                    }
-                    const controlname = child.props.name;
-                    const controlvalue = this.state.FormData[controlname];
-                    let validationErrorMessage = "";
-                    if (FormValidation1[child.props.name] != null) {
-                        validationErrorMessage = FormValidation1[child.props.name].ValidatonErrorMessage;
-                    }
-                    return React.cloneElement(child,
-                        {
-                            onValueChange: this.handleInputChange,
-                            value: controlvalue,
-                            validationErrorMessage: validationErrorMessage,
-                        }
-                    );
-                }
-                else if (controltype == "GridControl") {
-
-                    let FormValidation1 = this.state.FormValidation;
-                    if (Object.keys(this.props.Lstchangvalition).length > 0) {
-                        FormValidation1 = this.props.Lstchangvalition
-                    }
-                    const controlname = child.props.name;
-                    const controlvalue = this.state.FormData[controlname];
-                    let listvalidationError = {};
-                    if (FormValidation1[child.props.name] != null) {
-                        listvalidationError = FormValidation1[child.props.name];
-                    }
-                    return React.cloneElement(child,
-                        {
-                            onValueChange: this.handleInputChange,
-                            value: controlvalue,
-                            listvalidationError: listvalidationError,
-                        }
-                    );
-                }
-                else if (controltype == "TabContainer") {
-                    let FormValidation1 = this.state.FormValidation;
-                    if (Object.keys(this.props.Lstchangvalition).length > 0) {
-                        FormValidation1 = this.props.Lstchangvalition
-                    }
-                    return React.cloneElement(child,
-                        {
-                            // focusTabIndex: aa,
-                            focusTabIndex: this.state.focusTabIndex,
-                            tabStateID: this.state.tabStateID,
-                            onValueChange: this.handleInputChangeList,
-                            FormValidation: FormValidation1,
-                        }
-                    );
-                }
-                else if (controltype == "SubmitControl") {
-                    return React.cloneElement(child,
-                        {
-                            onClick: this.handleSubmit
-                        }
-                    );
-                }
-            }
-        }
-        return child;
-    }
-
-    renderOneColumnForm() {
-        const listElement = this.props.listelement;
-        if (listElement == null)
-            return null;
-
-        return listElement.map((elementItem, index) => {
-            let validationErrorMessage = "";
-            if (this.state.FormValidation[elementItem.name] != null) {
-                validationErrorMessage = this.state.FormValidation[elementItem.name].ValidatonErrorMessage;
-            }
-            return (<div className="form-row" key={"div" + elementItem.name}>
-                <FormElement type={elementItem.type} name={elementItem.name}
-                    CSSClassName="form-control form-control-sm"
-                    value={this.state.FormData[elementItem.name]}
-                    label={elementItem.label} placeholder={elementItem.placeholder}
-                    icon={elementItem.icon}
-                    onValueChange={this.handleInputChange}
-                    listoption={elementItem.listoption}
-                    key={elementItem.name}
-                    readonly={elementItem.readonly}
-                    validatonList={elementItem.validatonList}
-                    validationErrorMessage={validationErrorMessage}
-                    IsAutoLoadItemFromCache={elementItem.IsAutoLoadItemFromCache}
-                    LoadItemCacheKeyID={elementItem.LoadItemCacheKeyID}
-                    ValueMember={elementItem.ValueMember}
-                    NameMember={elementItem.NameMember}
-                    accept={elementItem.accept}
-                    multiple={elementItem.multiple}
-                    maxSize={elementItem.maxSize}
-                    minSize={elementItem.minSize}
-                />
-            </div>);
-        }
-        );
-    }
-    renderTwoColumnForm() {
-        const listElement = this.props.listelement;
-        const listElement1 = transform1To2Column(listElement);
-        //     console.log("renderTwoColumnForm", listElement, listElement1)
-
-        return listElement1.map((elementItem, index) => {
-            if (isEmpty(elementItem.Item2)) {
-                return (<div className="form-row" key={"div" + elementItem.Item1.name} >
-                    <FormElement type={elementItem.Item1.type} name={elementItem.Item1.name}
-                        CSSClassName="form-control form-control-sm"
-                        value={this.state.FormData[elementItem.Item1.name]}
-                        label={elementItem.Item1.label} placeholder={elementItem.Item1.placeholder}
-                        icon={elementItem.Item1.icon}
-                        onValueChange={this.handleInputChange}
-                        listoption={elementItem.Item1.listoption}
-                        key={elementItem.Item1.name}
-                        validatonList={elementItem.Item1.validatonList}
-                        IsAutoLoadItemFromCache={elementItem.Item1.IsAutoLoadItemFromCache}
-                        LoadItemCacheKeyID={elementItem.Item1.LoadItemCacheKeyID}
-                        ValueMember={elementItem.Item1.ValueMember}
-                        NameMember={elementItem.Item1.NameMember}
-                        readonly={elementItem.readonly}
-                        accept={elementItem.accept}
-                        multiple={elementItem.multiple}
-                        maxSize={elementItem.maxSize}
-                        minSize={elementItem.minSize}
-                    />
-                </div>)
-            }
-            return (<div className="form-row" key={"div" + elementItem.Item1.name} >
-                <FormElement type={elementItem.Item1.type} name={elementItem.Item1.name}
-                    CSSClassName="form-control form-control-sm"
-                    value={this.state.FormData[elementItem.Item1.name]}
-                    label={elementItem.Item1.label} placeholder={elementItem.Item1.placeholder}
-                    icon={elementItem.Item1.icon}
-                    onValueChange={this.handleInputChange}
-                    listoption={elementItem.Item1.listoption}
-                    key={elementItem.Item1.name}
-                    validatonList={elementItem.Item1.validatonList}
-                    IsAutoLoadItemFromCache={elementItem.Item1.IsAutoLoadItemFromCache}
-                    LoadItemCacheKeyID={elementItem.Item1.LoadItemCacheKeyID}
-                    ValueMember={elementItem.Item1.ValueMember}
-                    NameMember={elementItem.Item1.NameMember}
-                    readonly={elementItem.Item1.readonly}
-                    accept={elementItem.accept}
-                    multiple={elementItem.multiple}
-                    maxSize={elementItem.maxSize}
-                    minSize={elementItem.minSize}
-                />
-                <FormElement type={elementItem.Item2.type} name={elementItem.Item2.name}
-                    CSSClassName="form-control form-control-sm"
-                    value={this.state.FormData[elementItem.Item2.name]}
-                    label={elementItem.Item2.label} placeholder={elementItem.Item2.placeholder}
-                    icon={elementItem.Item2.icon}
-                    onValueChange={this.handleInputChange}
-                    listoption={elementItem.Item2.listoption}
-                    key={elementItem.Item2.name}
-                    validatonList={elementItem.Item2.validatonList}
-                    IsAutoLoadItemFromCache={elementItem.Item2.IsAutoLoadItemFromCache}
-                    LoadItemCacheKeyID={elementItem.Item2.LoadItemCacheKeyID}
-                    ValueMember={elementItem.Item2.ValueMember}
-                    NameMember={elementItem.Item2.NameMember}
-                    readonly={elementItem.Item2.readonly}
-                    accept={elementItem.accept}
-                    multiple={elementItem.multiple}
-                    maxSize={elementItem.maxSize}
-                    minSize={elementItem.minSize}
-                />
-            </div>);
-        }
-        );
-        //console.log(listElement1)
-    }
-    renderThreeColumnForm() {
-        const listElement = this.props.listelement;
-        const dataSource = this.props.dataSource;
-        let listElement1 = listElement;
-        if (typeof dataSource != "") {
-            listElement1 = listElement.map((elementItem) => {
-                const elementvalue = dataSource[elementItem.DataSourceMember];
-                const newElementItem = Object.assign({}, elementItem, { value: elementvalue });
-                return newElementItem;
-            });
-        }
-        listElement1 = transform1To3Column(listElement1);
-
-        return listElement1.map((elementItem, index) => {
-
-            if (isEmpty(elementItem.Item2) && isEmpty(elementItem.Item3)) {
-                return (<div className="form-row" key={"div1" + elementItem.Item1.name} >
-                    <FormElement type={elementItem.Item1.type} name={elementItem.Item1.name}
-                        CSSClassName="form-control form-control-sm"
-                        value={this.state.FormData[elementItem.Item1.name]}
-                        label={elementItem.Item1.label} placeholder={elementItem.Item1.placeholder}
-                        icon={elementItem.Item1.icon}
-                        onValueChange={this.handleInputChange}
-                        listoption={elementItem.Item1.listoption}
-                        key={elementItem.Item1.name}
-                        validatonList={elementItem.Item1.validatonList}
-                        IsThreeColumnForm="true"
-                        IsAutoLoadItemFromCache={elementItem.Item1.IsAutoLoadItemFromCache}
-                        LoadItemCacheKeyID={elementItem.Item1.LoadItemCacheKeyID}
-                        ValueMember={elementItem.Item1.ValueMember}
-                        NameMember={elementItem.Item1.NameMember}
-                        accept={elementItem.accept}
-                        multiple={elementItem.multiple}
-                        maxSize={elementItem.maxSize}
-                        minSize={elementItem.minSize}
-                    />
-                    <div className="form-group col-md-2"></div>
-                    <div className="form-group col-md-2"> </div>
-                    <div className="form-group col-md-2"></div>
-                    <div className="form-group col-md-2"> </div>
-                </div>
-                )
-            }
-
-            if (isEmpty(elementItem.Item3)) {
-                return (<div className="form-row" key={"div1" + elementItem.Item1.name} >
-                    <FormElement type={elementItem.Item1.type} name={elementItem.Item1.name}
-                        CSSClassName="form-control form-control-sm"
-                        value={this.state.FormData[elementItem.Item1.name]}
-                        label={elementItem.Item1.label} placeholder={elementItem.Item1.placeholder}
-                        icon={elementItem.Item1.icon}
-                        onValueChange={this.handleInputChange}
-                        listoption={elementItem.Item1.listoption}
-                        key={elementItem.Item1.name}
-                        validatonList={elementItem.Item1.validatonList}
-                        IsThreeColumnForm="true"
-                        IsAutoLoadItemFromCache={elementItem.Item1.IsAutoLoadItemFromCache}
-                        LoadItemCacheKeyID={elementItem.Item1.LoadItemCacheKeyID}
-                        ValueMember={elementItem.Item1.ValueMember}
-                        NameMember={elementItem.Item1.NameMember}
-                        accept={elementItem.accept}
-                        multiple={elementItem.multiple}
-                        maxSize={elementItem.maxSize}
-                        minSize={elementItem.minSize}
-                    />
-                    <FormElement type={elementItem.Item2.type} name={elementItem.Item2.name}
-                        CSSClassName="form-control form-control-sm"
-                        value={this.state.FormData[elementItem.Item2.name]}
-                        label={elementItem.Item2.label} placeholder={elementItem.Item2.placeholder}
-                        icon={elementItem.Item2.icon}
-                        onValueChange={this.handleInputChange}
-                        listoption={elementItem.Item2.listoption}
-                        key={elementItem.Item2.name}
-                        validatonList={elementItem.Item2.validatonList}
-                        IsThreeColumnForm="true"
-                        IsAutoLoadItemFromCache={elementItem.Item2.IsAutoLoadItemFromCache}
-                        LoadItemCacheKeyID={elementItem.Item2.LoadItemCacheKeyID}
-                        ValueMember={elementItem.Item2.ValueMember}
-                        NameMember={elementItem.Item2.NameMember}
-                        accept={elementItem.accept}
-                        multiple={elementItem.multiple}
-                        maxSize={elementItem.maxSize}
-                        minSize={elementItem.minSize}
-                    />
-                    <div className="form-group col-md-2"></div>
-                    <div className="form-group col-md-2"> </div>
-                </div>)
-            }
-
-            return (<div className="form-row" key={"div1" + elementItem.Item1.name} >
-                <FormElement type={elementItem.Item1.type} name={elementItem.Item1.name}
-                    CSSClassName="form-control form-control-sm"
-                    value={this.state.FormData[elementItem.Item1.name]}
-                    label={elementItem.Item1.label} placeholder={elementItem.Item1.placeholder}
-                    icon={elementItem.Item1.icon}
-                    onValueChange={this.handleInputChange}
-                    listoption={elementItem.Item1.listoption}
-                    key={elementItem.Item1.name}
-                    validatonList={elementItem.Item1.validatonList}
-                    IsThreeColumnForm="true"
-                    IsAutoLoadItemFromCache={elementItem.Item1.IsAutoLoadItemFromCache}
-                    LoadItemCacheKeyID={elementItem.Item1.LoadItemCacheKeyID}
-                    ValueMember={elementItem.Item1.ValueMember}
-                    NameMember={elementItem.Item1.NameMember}
-                    accept={elementItem.accept}
-                    multiple={elementItem.multiple}
-                    maxSize={elementItem.maxSize}
-                    minSize={elementItem.minSize}
-                />
-                <FormElement type={elementItem.Item2.type} name={elementItem.Item2.name}
-                    CSSClassName="form-control form-control-sm"
-                    value={this.state.FormData[elementItem.Item2.name]}
-                    label={elementItem.Item2.label} placeholder={elementItem.Item2.placeholder}
-                    icon={elementItem.Item2.icon}
-                    onValueChange={this.handleInputChange}
-                    listoption={elementItem.Item2.listoption}
-                    key={elementItem.Item2.name}
-                    validatonList={elementItem.Item2.validatonList}
-                    IsThreeColumnForm="true"
-                    IsAutoLoadItemFromCache={elementItem.Item2.IsAutoLoadItemFromCache}
-                    LoadItemCacheKeyID={elementItem.Item2.LoadItemCacheKeyID}
-                    ValueMember={elementItem.Item2.ValueMember}
-                    NameMember={elementItem.Item2.NameMember}
-                    accept={elementItem.accept}
-                    multiple={elementItem.multiple}
-                    maxSize={elementItem.maxSize}
-                    minSize={elementItem.minSize}
-                />
-                <FormElement type={elementItem.Item3.type} name={elementItem.Item3.name}
-                    CSSClassName="form-control form-control-sm"
-                    value={this.state.FormData[elementItem.Item3.name]}
-                    label={elementItem.Item3.label} placeholder={elementItem.Item3.placeholder}
-                    icon={elementItem.Item3.icon}
-                    onValueChange={this.handleInputChange}
-                    listoption={elementItem.Item3.listoption}
-                    key={elementItem.Item3.name}
-                    validatonList={elementItem.Item3.validatonList}
-                    IsThreeColumnForm="true"
-                    IsAutoLoadItemFromCache={elementItem.Item3.IsAutoLoadItemFromCache}
-                    LoadItemCacheKeyID={elementItem.Item3.LoadItemCacheKeyID}
-                    ValueMember={elementItem.Item3.ValueMember}
-                    NameMember={elementItem.Item3.NameMember}
-                    accept={elementItem.accept}
-                    multiple={elementItem.multiple}
-                    maxSize={elementItem.maxSize}
-                    minSize={elementItem.minSize}
-                />
-            </div>);
-        }
-        );
-        //console.log(listElement1)
-    }
-    getColClassName(colprops) {
-        let className = "";
-        className += colprops.xs == null ? "" : " col-" + colprops.xs;
-        className += colprops.sm == null ? "" : " col-sm-" + colprops.sm;
-        className += colprops.md == null ? "" : " col-md-" + colpropss.md;
-        className += colprops.lg == null ? "" : " col-lg-" + colprops.lg;
-        className += colprops.xl == null ? "" : " col-xl-" + colprops.xl;
-        className = className.trim();
-        if (className.length == 0)
-            className = "col";
-        return className;
-    }
-    //#endregion render auto Layout Children
 
     //#region  handleSubmit 
     handleSubmit(e) {
@@ -990,35 +491,32 @@ class FormContainerCom extends Component {
         if (this.state.IsPermision === 'error') {
             return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
         }
-        if (this.props.IsAutoLayout) {
-            return this.autoLayoutForm();
-        }
-        else {
-            let backLinkButton = "";
-            if (this.props.BackLink != null) {
-                if (this.props.BackLink.length > 0) {
-                    backLinkButton = (<Link to={this.props.BackLink}>
-                        <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button></Link>);
-                }
-            }
-            let cssSearchButton = "";
 
-            return (
-                <div className="col-lg-12">
-                    <form className="card" action="" onSubmit={this.handleSubmit}>
-                        {this.props.FormName ? <h4 className="card-title"><strong>{this.props.FormName}</strong></h4> : ""}
-                        <div className="card-body">
-                            {
-                                this.renderChildren()
-                            }
-                        </div>
-                        <footer className="card-footer text-right" hidden={this.props.IsHideFooter}>
-                            <button className="btn btn-primary" type="submit">{cssSearchButton} Cập nhật</button> {backLinkButton}
-                        </footer>
-                    </form>
-                </div>
-            );
+        let backLinkButton = "";
+        if (this.props.BackLink != null) {
+            if (this.props.BackLink.length > 0) {
+                backLinkButton = (<Link to={this.props.BackLink}>
+                    <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button></Link>);
+            }
         }
+        let cssSearchButton = "";
+
+        return (
+            <div className="col-lg-12">
+                <form className="card" action="" onSubmit={this.handleSubmit}>
+                    {this.props.FormName ? <h4 className="card-title"><strong>{this.props.FormName}</strong></h4> : ""}
+                    <div className="card-body">
+                        {
+                            this.renderChildren()
+                        }
+                    </div>
+                    <footer className="card-footer text-right" hidden={this.props.IsHideFooter}>
+                        <button className="btn btn-primary" type="submit">{cssSearchButton} Cập nhật</button> {backLinkButton}
+                    </footer>
+                </form>
+            </div>
+        );
+
     }
 }
 
