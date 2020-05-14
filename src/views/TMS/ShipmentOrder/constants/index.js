@@ -46,8 +46,7 @@ export const SearchElementList = [
         value: "",
         colspan:2,
         placeholder: "Từ khóa",
-        icon: "",
-        validatonList: ["required"]
+        icon: ""
     },
     {
         type: "ComboBox",
@@ -56,14 +55,13 @@ export const SearchElementList = [
         label: "Công ty",
         colspan:2,
         value: -1,
-        isMultiSelect: true,
-        validatonList: ["Comborequired"],
+        isMultiSelect: false,
         placeholder:"---Vui lòng chọn---",
         listoption: [],
-        IsAutoLoadItemFromCache: false,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
-        ValueMember: "ProvinceID",
-        NameMember: "ProvinceName"
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
+        ValueMember: "PartnerID",
+        NameMember: "PartnerName"
         
     },
     {
@@ -71,7 +69,7 @@ export const SearchElementList = [
         name: "dtCreatedOrderTimeFo",
         DataSourceMember: "CreatedOrderTimeFo",
         label: "Từ ngày",
-        value: "",
+        value: dtFromdate,
         timeFormat:false,
         dateFormat:"DD/MM/YYYY",
         colspan:2,
@@ -81,7 +79,7 @@ export const SearchElementList = [
         name: "dtCreatedOrderTimeTo",
         DataSourceMember: "CreatedOrderTimeTo",
         label: "Đến ngày",
-        value: "",
+        value: new Date(),
         timeFormat:false,
         dateFormat:"DD/MM/YYYY",
         colspan:2,
@@ -112,6 +110,8 @@ export const SearchElementList = [
         placeholder:"---Vui lòng chọn---",
         listoption: [], 
         IsAutoLoadItemFromCache: true,
+        filterName:"cbReceiverProvinceID",
+        filterValue:"",
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
         ValueMember: "DistrictID",
         NameMember: "DistrictName"
@@ -164,11 +164,11 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@FromDate",
-        SearchValue: null
+        SearchValue: dtFromdate
     },
     {
         SearchKey: "@ToDate",
-        SearchValue: null
+        SearchValue: new Date()
     }
     ,
     {
@@ -204,9 +204,9 @@ export const SearchMLObjectDefinition = [
         BindControlName: "txtKeyword"
     },
     {
-        Name: "cbRequestPartnerID",
+        Name: "RequestPartnerID",
         DefaultValue: "",
-        BindControlName: "RequestPartnerID"
+        BindControlName: "cbRequestPartnerID"
     },
     {
         Name: "CreatedOrderTimeFo",

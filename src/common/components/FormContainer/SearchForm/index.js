@@ -36,7 +36,7 @@ export default class SearchForm extends Component {
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
         if (typeof FormDataContolLstd[elementname].validatonList != "undefined") {
-            const validation = ValidationField(FormDataContolLstd[elementname].validatonList, elementvalue, FormDataContolLstd[elementname].label);
+            const validation = ValidationField(FormDataContolLstd[elementname].validatonList, elementvalue, FormDataContolLstd[elementname].label, FormDataContolLstd[elementname]);
             const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
             FormDataContolLstd[elementname].ErrorLst = validationObject;
         }
@@ -48,13 +48,10 @@ export default class SearchForm extends Component {
     validationFormNew() {
         const FormDataContolLst = this.state.FormData;
         for (const key in FormDataContolLst) {
-
             if (typeof FormDataContolLst[key].validatonList != "undefined") {
-                const validation = ValidationField(FormDataContolLst[key].validatonList, FormDataContolLst[key].value, FormDataContolLst[key].label);
-                //  console.log("validation:",validation);
+                const validation = ValidationField(FormDataContolLst[key].validatonList, FormDataContolLst[key].value, FormDataContolLst[key].label, FormDataContolLst[key]);
                 const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
                 FormDataContolLst[key].ErrorLst = validationObject;
-                //  console.log("FormDataContolLst:", key, FormDataContolLst[key], FormDataContolLst,validation);
             }
 
         }
@@ -86,9 +83,10 @@ export default class SearchForm extends Component {
 
         let MLObject = {};
         const mLObjectDefinition = this.props.MLObjectDefinition;
+        console.log("this.state.FormData", this.state.FormData)
         mLObjectDefinition.map((Item) => {
             const controlName = Item.BindControlName;
-
+            console.log("this.state.FormData", controlName, this.state.FormData[controlName])
             if (controlName.length > 0) {
                 MLObject = Object.assign({}, MLObject, { [Item.Name]: this.state.FormData[controlName].value });
             }
@@ -143,6 +141,11 @@ export default class SearchForm extends Component {
                                     />
                                 );
                             case "ComboBox":
+                                if (typeof elementItem.filterName != "undefined")
+                                {
+                                    elementItem.filterValue = this.state.FormData[elementItem.filterName].value;
+                                }
+                                   
                                 return (
                                     <ElementSearch.ElementComboBox
                                         onValueChange={this.onValueChange}
@@ -197,10 +200,10 @@ export default class SearchForm extends Component {
         const listElement = this.props.listelement;
         let elmentRender = this.renderSearchForm();
         let classNameCustom;
-        if(this.props.className== undefined && this.props.className==''){
-            classNameCustom= "col-lg-12 SearchForm";
-        }else{
-            classNameCustom= "col-lg-12 SearchForm "+ this.props.className;
+        if (this.props.className == undefined && this.props.className == '') {
+            classNameCustom = "col-lg-12 SearchForm";
+        } else {
+            classNameCustom = "col-lg-12 SearchForm " + this.props.className;
         }
         return (
             // <form action="" onSubmit={this.handleSearchSubmit}>

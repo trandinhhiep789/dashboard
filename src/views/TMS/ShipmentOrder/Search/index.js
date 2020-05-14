@@ -78,15 +78,52 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        console.log(formData,MLObject)
         const postData = [
             {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
-            }            
+            },
+            {
+                SearchKey: "@REQUESTPARTNERID",
+                SearchValue: MLObject.RequestPartnerID
+            },
+            {
+                SearchKey: "@FromDate",
+                SearchValue: MLObject.CreatedOrderTimeFo
+            },
+            {
+                SearchKey: "@ToDate",
+                SearchValue: MLObject.CreatedOrderTimeTo
+            }
+            ,
+            {
+                SearchKey: "@RECEIVERPROVINCEID",
+                SearchValue: MLObject.ReceiverProvinceID
+            },
+            {
+                SearchKey: "@RECEIVERDISTRICTID",
+                SearchValue: MLObject.Keyword
+            },
+            {
+                SearchKey: "@SENDERSTOREID",
+                SearchValue: MLObject.SenderStoreID
+            },
+            {
+                SearchKey: "@SHIPMENTORDERSTATUSID",
+                SearchValue: MLObject.ShipmentOrderStatusID
+            },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: 10
+            },
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: 0
+            }         
         ];
         this.setState({ SearchData: postData });
-       // this.callSearchData(postData);
-        //this.gridref.current.clearData();
+        this.callSearchData(postData);
     }
 
     callSearchData(searchData) {
@@ -151,20 +188,6 @@ class SearchCom extends React.Component {
     }
 
     render() {
-      
-        const SearchMLObjectDefinition = [
-            {
-                Name: "Keyword",
-                DefaultValue: "",
-                BindControlName: "txtKeyword"
-            },
-            {
-                Name: "Contryid",
-                DefaultValue: "",
-                BindControlName: "cbContryid",
-                DataSourceMember: "Contryid"
-            }
-        ];
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
