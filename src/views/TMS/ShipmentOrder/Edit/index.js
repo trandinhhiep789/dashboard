@@ -113,6 +113,7 @@ class EditCom extends React.Component {
             return (
                 <FormContainer
                     FormName="Cập nhật yêu cầu vận chuyển"
+                    MLObjectDefinition={MLObjectDefinition}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
                 >
@@ -186,19 +187,19 @@ class EditCom extends React.Component {
                                 </div>
                                 <div className="col-md-6">
                                      <FormControl.ComboBox
-                                        name="txtShipmentOrderTypeID"
+                                        name="txtShipmentGoodsTypeID"
                                         colspan="8"
                                         labelcolspan="4"
                                         label="loại dịch vụ"
                                         validatonList={["Comborequired"]}
                                         isautoloaditemfromcache={true}
-                                        loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
-                                        valuemember="ShipmentOrderTypeID"
-                                        nameMember="ShipmentOrderTypeName"
+                                        loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTGOODSTYPE"
+                                        valuemember="ShipmentGoodsTypeID"
+                                        nameMember="ShipmentGoodsTypeName"
                                         controltype="InputControl"
                                         value={""}
                                         listoption={null}
-                                        datasourcemember="ShipmentOrderTypeID" />
+                                        datasourcemember="ShipmentGoodsTypeID" />
                                 </div>
                                 <div className="col-md-6">
                                       <FormControl.ComboBox

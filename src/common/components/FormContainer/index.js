@@ -47,16 +47,11 @@ class FormContainerCom extends Component {
         const children = this.props.children;
         const dataSource = this.props.dataSource;
         let formData = {};
-        // const listElement = this.bindDataToControl(this.props.listelement, this.props.dataSource);
-        // if (typeof dataSource != "undefined") {
-        //     listElement.map((elementItem) => {
-        //         const elementname = elementItem.name;
-        //         formData = Object.assign({}, formData, { [elementname]: elementItem.value });
-        //     });
-        // }
+      
         React.Children.map(children, (child, i) => {
             if (child.type == "div") {
                 const formDataTempList = this.bindDivChildrenData(child, dataSource);
+                console.log("bindData formDataTempList",formDataTempList)
                 for (let i = 0; i < formDataTempList.length; i++) {
                     formData = Object.assign({}, formData, formDataTempList[i]);
                 }
@@ -82,10 +77,12 @@ class FormContainerCom extends Component {
             else {
                 if (child.props.controltype != null) {
                     const formData = this.bindFormControlData(child, dataSource);
+                  //  console.log("bindDivChildrenData formData",formData)
                     formDataList.push(formData);
                 }
             }
         });
+     //   console.log("formDataList",formDataList)
         return formDataList;
     }
     bindFormControlData(child, dataSource) {
@@ -103,10 +100,7 @@ class FormContainerCom extends Component {
             controlvalue = child.props.dataSource;
             return { [controlname]: controlvalue };
         }
-        if (controltype == "TabContainer") {
-            const bindTabData = this.bindAllTabData(child);
-            return bindTabData;
-        }
+     
         const datasourcemember = child.props.datasourcemember;
         if (dataSource != null && datasourcemember != null) {
             controlvalue = dataSource[datasourcemember];
@@ -253,21 +247,6 @@ class FormContainerCom extends Component {
 
     //#region validation InputControl
     validationForm() {
-        const listElement = this.props.listelement;
-        console.log("listElement/formValidation:", listElement);
-        listElement.map((elementItem) => {
-            const validatonList = elementItem.validatonList;
-            if (validatonList && validatonList.length > 0) {
-                const inputvalue = this.state.FormData[elementItem.name];
-                //   console.log("inputvalue:", inputvalue);
-                //   console.log("elementItem.Name:", elementItem.name);
-                const validation = ValidationField(validatonList, inputvalue, elementItem.label, elementItem)
-                const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
-                //  console.log("validation:", validation, validationObject);
-                this.FormValidationNew = Object.assign({}, this.FormValidationNew, { [elementItem.name]: validationObject });
-            }
-        });
-
         const children = this.props.children;
         if (children) {
             this.validationchildren(children)
@@ -302,9 +281,6 @@ class FormContainerCom extends Component {
                     break;
                 case "GridControl":
                     this.validationGridInputControl(child);
-                    break;
-                case "TabContainer":
-                    this.validationTabContainer(child);
                 default:
             }
         });
@@ -376,44 +352,21 @@ class FormContainerCom extends Component {
     }
 
     //#region render Children
-    renderChildren() {
+    autoLayoutChildren() {
         const children = this.props.children;
         return React.Children.map(children, (child, i) => {
-            return this.renderRow(child);
-        });
-    }
-    renderRow(children) {
-        return React.Children.map(children, (child, i) => {
-            const componenttype = child.props.controltype;
-            switch (componenttype) {
-                case "InputControl":
-                    return this.renderInputControl(child);
+            if (child.type == "div") {
+                return this.renderDivChildren(child);
+            }
+            else {
+                if (child.props.controltype != null) {
 
-                case "TabContainer":
-                    return React.cloneElement(child,
-                        {
-                            focusTabIndex: this.state.focusTabIndex,
-                            tabStateID: this.state.tabStateID,
-                            onValueChange: this.handleInputChangeList,
-                            listTabError: this.state.ListTabError
-                        }
-                    );
-                default:
-                    return child;
+                    return this.layoutFormControl(child);
+                }
+                return child;
             }
         });
     }
-    renderInputControl(child) {
-        const controlname = child.props.name;
-        const controlvalue = this.state.FormData[controlname];
-        return React.cloneElement(child,
-            {
-                onValueChange: this.handleInputChange,
-                value: controlvalue
-            }
-        );
-    }
-
     renderDivChildren(children) {
         return React.Children.map(children, (child, i) => {
             if (child.type == "div") {
@@ -428,21 +381,6 @@ class FormContainerCom extends Component {
                 else {
                     return child;
                 }
-            }
-        });
-    }
-    autoLayoutChildren() {
-        const children = this.props.children;
-        return React.Children.map(children, (child, i) => {
-            if (child.type == "div") {
-                return this.renderDivChildren(child);
-            }
-            else {
-                if (child.props.controltype != null) {
-
-                    return this.layoutFormControl(child);
-                }
-                return child;
             }
         });
     }
@@ -488,21 +426,20 @@ class FormContainerCom extends Component {
         }
         return child;
     }
-
     //#endregion render Children
 
     //#region  handleSubmit 
     handleSubmit(e) {
-        debugger
         e.preventDefault();
         const mLObjectDefinition = this.props.MLObjectDefinition;
-        console.log("handleSubmit mLObjectDefinition: ", mLObjectDefinition);
-        console.log("handleSubmit/FormData: " + this.state.FormData);
-        console.log("handleSubmit dataSource: " + this.props.dataSource);
+        console.log("handleSubmit mLObjectDefinition: ", JSON.stringify(mLObjectDefinition));
+        console.log("handleSubmit/FormData: ",JSON.stringify(this.state.FormData));
+        console.log("handleSubmit dataSource: ", JSON.stringify(this.props.dataSource));
         const MLObject = GetMLObjectData(mLObjectDefinition, this.state.FormData, this.props.dataSource);
-        // console.log("Submit MLObject!", MLObject);
+         console.log("Submit MLObject!", JSON.stringify(MLObject));
         const formValidation = this.validationForm();
-        console.log("formValidation!", formValidation);
+
+        console.log("formValidation!", JSON.stringify(formValidation));
 
         if (!this.checkInput(formValidation))
             return;

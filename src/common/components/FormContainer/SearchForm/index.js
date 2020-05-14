@@ -8,6 +8,7 @@ export default class SearchForm extends Component {
         this.onValueChange = this.onValueChange.bind(this);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         const formDataContol = this.bindDataContol();
+        console.log("formDataContol",formDataContol)
         this.elementItemRefs = [];
         this.state = { FormData: formDataContol };
     }
@@ -47,16 +48,14 @@ export default class SearchForm extends Component {
 
     validationFormNew() {
         const FormDataContolLst = this.state.FormData;
+        console.log("validationFormNew",FormDataContolLst)
         for (const key in FormDataContolLst) {
             if (typeof FormDataContolLst[key].validatonList != "undefined") {
                 const validation = ValidationField(FormDataContolLst[key].validatonList, FormDataContolLst[key].value, FormDataContolLst[key].label, FormDataContolLst[key]);
                 const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
                 FormDataContolLst[key].ErrorLst = validationObject;
             }
-
         }
-
-
         this.setState({
             FormData: FormDataContolLst
         });
@@ -86,7 +85,6 @@ export default class SearchForm extends Component {
         console.log("this.state.FormData", this.state.FormData)
         mLObjectDefinition.map((Item) => {
             const controlName = Item.BindControlName;
-            console.log("this.state.FormData", controlName, this.state.FormData[controlName])
             if (controlName.length > 0) {
                 MLObject = Object.assign({}, MLObject, { [Item.Name]: this.state.FormData[controlName].value });
             }

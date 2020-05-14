@@ -407,22 +407,28 @@ export const MLObjectDefinition = [
         DataSourceMember: "ShipmentOrderID"
     },
     {
-        Name: "ShipmentOrderName",
+        Name: "ShipmentOrderTypeID",
         DefaultValue: "",
-        BindControlName: "txtShipmentOrderName",
-        DataSourceMember: "ShipmentOrderName"
+        BindControlName: "txtShipmentOrderTypeID",
+        DataSourceMember: "ShipmentOrderTypeID"
     },
     {
-        Name: "Description",
+        Name: "RequestPartnerID",
         DefaultValue: "",
-        BindControlName: "txtDescription",
-        DataSourceMember: "Description"
+        BindControlName: "txtRequestPartnerID",
+        DataSourceMember: "RequestPartnerID"
     },
     {
-        Name: "OrderIndex",
+        Name: "CarrierPartnerID",
         DefaultValue: "",
-        BindControlName: "txtOrderIndex",
-        DataSourceMember: "OrderIndex"
+        BindControlName: "txtCarrierPartnerID",
+        DataSourceMember: "CarrierPartnerID"
+    },
+    {
+        Name: "ShipmentGoodsTypeID",
+        DefaultValue: "",
+        BindControlName: "txtShipmentGoodsTypeID",
+        DataSourceMember: "ShipmentGoodsTypeID"
     },
     {
         Name: "IsActived",
