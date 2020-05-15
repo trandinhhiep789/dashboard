@@ -18,6 +18,7 @@ class ComboboxQTQHPXCom extends React.Component {
     }
     renderSearchForm() {
         const listElement = this.props.listelement;
+        console.log("ComboboxQTQHPXCom", this.state, this.props)
         return (
             <React.Fragment>
                 {
@@ -25,10 +26,10 @@ class ComboboxQTQHPXCom extends React.Component {
                         switch (elementItem.type) {
                             case "text":
                                 return (
-                                    <ElementSearch.ElementText
+                                    <ElementSearch.ElementTextNew
                                         onValueChange={this.onValueChange}
-                                        value={this.state.FormData[elementItem.name].value}
-                                        ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        value={1}
+                                        ValidatonErrorMessage={''}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
                                         key={index}
@@ -36,7 +37,7 @@ class ComboboxQTQHPXCom extends React.Component {
                                 );
                             case "ComboBox":
                                 return (
-                                    <ElementSearch.ElementComboBox
+                                    <ElementSearch.ElementComboBoxNew
                                         onValueChange={this.onValueChange}
                                         value={1}
                                         ValidatonErrorMessage={""}

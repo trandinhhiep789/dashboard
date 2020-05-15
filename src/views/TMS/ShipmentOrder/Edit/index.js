@@ -306,6 +306,7 @@ class EditCom extends React.Component {
                                 <FormControl.ComboboxQTQHPX
                                     name=""
                                     listelement={ElementQHPXList}
+                                    
                                 />
                             </div>
                         </div>
