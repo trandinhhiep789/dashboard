@@ -12,13 +12,17 @@ export const API_HOST_LIST = {
     },
     PIMAPI: {
         HostName: "PIMAPI",
-            HostBaseURL: 'http://tmsapi.tterpbeta.vn/'
-            //HostBaseURL: 'http://devtmsapi.tterpbeta.vn/'
+           //HostBaseURL: 'http://tmsapi.tterpbeta.vn/'
+           HostBaseURL: 'http://devtmsapi.tterpbeta.vn/'
     },
     CacheAPI: {
         HostName: "CacheAPI",
         HostBaseURL: 'http://erpcacheapi.tterpbeta.vn/'
         //HostBaseURL:'http://devcacheapi.mwg.vn/'
+    },
+    ERPAPI: {
+        HostName: "ERPAPI",
+        HostBaseURL: 'http://erpsearchengineapi.tterpbeta.vn/'
     }
 }
 

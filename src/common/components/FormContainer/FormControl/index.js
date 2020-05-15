@@ -12,7 +12,7 @@ import { createListTree } from "../../../library/ultils";
 import { TreeSelect } from "antd";
 import Datetime from 'react-datetime';
 import "antd/dist/antd.css";
-
+import Select from 'react-select';
 
 
 
@@ -49,6 +49,11 @@ class TextBox extends React.Component {
             star = '*'
         }
 
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null) {
+            formRowClassName += this.props.classNameCustom;
+        }
+
         if (this.props.validationErrorMessage != "") {
             className += " is-invalid";
 
@@ -56,7 +61,7 @@ class TextBox extends React.Component {
                 this._myInput.focus();
 
             return (
-                <div className="form-row" >
+                <div className={formRowClassName} >
                     <div className={labelDivClassName}>
                         <label className="col-form-label 2">
                             {this.props.label}<span className="text-danger"> {star}</span>
@@ -82,7 +87,7 @@ class TextBox extends React.Component {
         }
         else {
             return (
-                <div className="form-row" >
+                <div className={formRowClassName} >
                     <div className={labelDivClassName}>
                         <label className="col-form-label 3">
                             {this.props.label}<span className="text-danger"> {star}</span>
@@ -348,13 +353,13 @@ class ComboBoxCom extends Component {
                     </div>
                     <div className={formGroupClassName}>
                         <select className={className} name={this.props.name}
-                            onChange={this.handleValueChange} 
+                            onChange={this.handleValueChange}
                             value={this.state.value}
                             disabled={this.props.disabled}
                             required={this.props.required}
                         >
                             {listOption.map((optionItem) =>
-                                <option key={optionItem.value} value={optionItem.value}>{(optionItem.value==-1?"":optionItem.value + " - " )+ optionItem.label}</option>
+                                <option key={optionItem.value} value={optionItem.value}>{(optionItem.value == -1 ? "" : optionItem.value + " - ") + optionItem.label}</option>
                             )}
                         </select>
                         <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
@@ -658,7 +663,7 @@ class TreeSelectCom extends React.Component {
         }
     }
 
-    onChange(inputname, inputvalue){
+    onChange(inputname, inputvalue) {
         //console.log("Change", this.props, inputname, inputvalue);
         this.setState({ value: inputvalue });
         if (this.props.onValueChange != null)
@@ -703,7 +708,7 @@ class TreeSelectCom extends React.Component {
                     </div>
                     <div className={formGroupClassName}>
                         <TreeSelect
-                            className={className} 
+                            className={className}
                             disabled={disabledd}
                             bordered={false}
                             ref={this.props.inputRef}
@@ -723,10 +728,10 @@ class TreeSelectCom extends React.Component {
                         </div>
                     </div>
                 </div>
-    
+
             );
         }
-        else{
+        else {
             return (
 
                 <div className="form-row" >
@@ -737,7 +742,7 @@ class TreeSelectCom extends React.Component {
                     </div>
                     <div className={formGroupClassName}>
                         <TreeSelect
-                            className={className} 
+                            className={className}
                             disabled={disabledd}
                             bordered={false}
                             ref={this.props.inputRef}
@@ -752,11 +757,11 @@ class TreeSelectCom extends React.Component {
                         />
                     </div>
                 </div>
-    
+
             );
         }
 
-        
+
     }
 }
 
@@ -806,7 +811,7 @@ class ElementDatetimeCom extends Component {
                         </label>
                     </div>
                     <div className={formGroupClassName}>
-                    <Datetime
+                        <Datetime
                             className={className}
                             name={name}
                             onChange={this.handleValueChange}
@@ -829,8 +834,7 @@ class ElementDatetimeCom extends Component {
                         </label>
                     </div>
                     <div className={formGroupClassName}>
-                    <Datetime
-                            className={className}
+                        <Datetime
                             name={name}
                             onChange={this.handleValueChange}
                             onChange={(moment) => this.handleValueChange(name, moment)}
@@ -949,13 +953,12 @@ class ComboBox1Com extends Component {
     }
 
     render() {
+        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder } = this.props;
         let formRowClassName = "form-row";
         if (this.props.rowspan != null) {
             formRowClassName = "form-row col-md-" + this.props.rowspan;
         }
-        let className = "form-control form-control-sm";
-        if (this.props.CSSClassName != null)
-            className = this.props.CSSClassName;
+        let className = "react-select";
         const listOption = this.state.Listoption;
         let formGroupClassName = "form-group col-md-4";
         if (this.props.colspan != null) {
@@ -979,19 +982,29 @@ class ComboBox1Com extends Component {
                             {this.props.label}<span className="text-danger"> {star}</span>
                         </label>
                     </div>
-                    <div className={formGroupClassName}>
-                        <select className={className} name={this.props.name}
-                            onChange={this.handleValueChange} 
-                            value={this.state.value}
-                            disabled={this.props.disabled}
-                            required={this.props.required}
-                        >
-                            {listOption.map((optionItem) =>
-                                <option key={optionItem.value} value={optionItem.value}>{(optionItem.value==-1?"":optionItem.value + " - " )+ optionItem.label}</option>
-                            )}
-                        </select>
-                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
-                    </div>
+                    {/* <select className={className}
+                        name={this.props.name}
+                        onChange={this.handleValueChange}
+                        value={this.state.value}
+                        disabled={this.props.disabled}
+                        required={this.props.required}
+                    >
+                        {listOption.map((optionItem) =>
+                            <option key={optionItem.value} value={optionItem.value}>{(optionItem.value == -1 ? "" : optionItem.value + " - ") + optionItem.label}</option>
+                        )}
+                    </select> */}
+                    <Select
+                        value={this.state.selectedOption}
+                        name={this.props.name}
+                        ref={this.props.inputRef}
+                        onChange={this.handleValueChange}
+                        options={this.state.ListOption}
+                        isMulti={isMultiSelect}
+                        isSearchable={true}
+                        placeholder={placeholder}
+                        className={className}
+                    />
+                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
                 </div>
             );
         }
@@ -1004,7 +1017,20 @@ class ComboBox1Com extends Component {
                         </label>
                     </div>
                     <div className={formGroupClassName}>
-                        <select className={className} name={this.props.name}
+                        <div className="form-group-input-select">
+                            <Select
+                                value={this.state.selectedOption}
+                                name={this.props.name}
+                                ref={this.props.inputRef}
+                                onChange={this.handleValueChange}
+                                options={this.state.ListOption}
+                                isMulti={isMultiSelect}
+                                isSearchable={true}
+                                placeholder={placeholder}
+                                className={className}
+                            />
+                        </div>
+                        {/* <select className={className} name={this.props.name}
                             onChange={this.handleValueChange} value={this.state.value}
                             disabled={this.props.disabled}
                             required={this.props.required}
@@ -1012,7 +1038,8 @@ class ComboBox1Com extends Component {
                             {listOption.map((optionItem) =>
                                 <option key={optionItem.value} value={optionItem.value}>{optionItem.label}</option>
                             )}
-                        </select>
+                        </select> */}
+
                     </div>
                 </div>
             );
@@ -1026,4 +1053,8 @@ export const ComboBox1 = connect(null, mapDispatchToProps)(ComboBox1Com);
 
 
 
+<<<<<<< HEAD
 export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus,ElementDatetime,ComboBox1,ComboboxQTQHPX};
+=======
+export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus, ElementDatetime, ComboBox1 };
+>>>>>>> 90d084949280eca529a784ebebd3753832e38bec

@@ -154,7 +154,7 @@ class EditCom extends React.Component {
 
                                 </div>
                                 <div className="col-md-6">
-                                     <FormControl.ComboBox
+                                    <FormControl.ComboBox
                                         name="txtRequestPartnerID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -170,7 +170,7 @@ class EditCom extends React.Component {
                                         datasourcemember="RequestPartnerID" />
                                 </div>
                                 <div className="col-md-6">
-                                      <FormControl.ComboBox
+                                    <FormControl.ComboBox
                                         name="txtCarrierPartnerID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -186,7 +186,7 @@ class EditCom extends React.Component {
                                         datasourcemember="CarrierPartnerID" />
                                 </div>
                                 <div className="col-md-6">
-                                     <FormControl.ComboBox
+                                    <FormControl.ComboBox
                                         name="txtShipmentGoodsTypeID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -202,7 +202,7 @@ class EditCom extends React.Component {
                                         datasourcemember="ShipmentGoodsTypeID" />
                                 </div>
                                 <div className="col-md-6">
-                                      <FormControl.ComboBox
+                                    <FormControl.ComboBox1
                                         name="txtCarrierTypeID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -213,9 +213,12 @@ class EditCom extends React.Component {
                                         valuemember="CarrierTypeID"
                                         nameMember="CarrierTypeName"
                                         controltype="InputControl"
-                                        value={""}
+                                        value= {-1}
                                         listoption={null}
-                                        datasourcemember="CarrierTypeID" />
+                                        datasourcemember="CarrierTypeID"
+                                        placeholder="---Vui lòng chọn---"
+                                        isMultiSelect={false}
+                                    />
                                 </div>
                                 <div className="col-md-6">
                                     <FormControl.ElementDatetime
@@ -223,14 +226,14 @@ class EditCom extends React.Component {
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
-                                        timeFormat ={false}
+                                        timeFormat={false}
                                         dateFormat="DD/MM/YYYY"
                                         label="ngày tạo yêu cầu"
                                         placeholder="Ngày tạo yêu cầu"
                                         controltype="InputControl"
                                         value={""}
                                         datasourcemember="CreatedOrderTimeTo"
-                                       
+
                                     />
                                 </div>
                                 <div className="col-md-6">
