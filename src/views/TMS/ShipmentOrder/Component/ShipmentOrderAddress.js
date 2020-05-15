@@ -22,7 +22,8 @@ class ShipmentOrderAddressCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ShipmentOrder: this.props.ShipmentOrderAddress
+            ShipmentOrder: this.props.ShipmentOrderAddress,
+            ShipmentOrderEdit: this.props.ShipmentOrderAddress
         }
     }
 
@@ -46,8 +47,16 @@ class ShipmentOrderAddressCom extends Component {
         const service = new google.maps.places.PlacesService(map);
     }
 
-    handleShowModalSender() {
-        console.log("show modal");
+
+    handleShowModalSender()
+    {
+        let { ShipmentOrderEdit } = this.state;
+
+        this.setState({ ShipmentOrderEdit:ShipmentOrderEdit}, () => {
+            this.ShowModalSender();
+        });
+    }
+    ShowModalSender() {
         ModalManager.open(
             <ModelContainer
                 title="Cập nhật thông tin địa chỉ người gửi"
@@ -63,7 +72,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Họ và tên:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input className="form-control form-control-sm" placeholder="Họ và tên" />
+                                <input className="form-control form-control-sm" value={this.state.ShipmentOrderEdit.SenderFullName} placeholder="Họ và tên" />
                             </div>
                         </div>
                     </div>
@@ -73,7 +82,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Số điện thoại:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input className="form-control form-control-sm" placeholder="Số điện thoại người gửi" />
+                                <input className="form-control form-control-sm"  value={this.state.ShipmentOrderEdit.SenderPhoneNumber} placeholder="Số điện thoại người gửi" />
                             </div>
                         </div>
                     </div>
@@ -150,7 +159,6 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     render() {
-        console.log("renderaaaaaa");
         return (
             <div className="card">
                 <h4 className="card-title"><strong>Địa chỉ</strong></h4>

@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Detail from "./Detail";
+import Edit from "./Edit";
 import MapContainer from "./Component/MapContainer ";
 
 import NotFound from '../../NotFound'
@@ -19,9 +20,9 @@ class ShipmentOrderCom extends React.Component {
     render() {
         return (
             <Switch>
-                {/* <Route exact path="/ShipmentOrder/Detail" component={Detail} /> */}
                 <Route exact path="/ShipmentOrder" component={Search} />
                 <Route exact path="/ShipmentOrder/Detail/:id" component={Detail} />
+                <Route exact path="/ShipmentOrder/Edit/:id" component={Edit} /> 
                 <Route path="*" component={NotFound} />
             </Switch>
         );

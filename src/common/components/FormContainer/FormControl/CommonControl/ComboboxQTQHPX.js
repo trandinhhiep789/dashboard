@@ -4,7 +4,7 @@ import Select from 'react-select';
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 
-class MultiSelectComboBoxCom extends React.Component {
+class ComboboxQTQHPXCom extends React.Component {
     static defaultProps = {
         componenttype: 'InputControl'
     }
@@ -113,12 +113,7 @@ class MultiSelectComboBoxCom extends React.Component {
     }
     render() {
 
-        const listOption = this.state.ListOption;
-        let listOptionNew = [];
-        for (let i = 0; i < listOption.length; i++) {
-            listOptionNew.push({ value: listOption[i].value, label: listOption[i].name, style: { color: 'red' } });
-        }
-        const selectedOption = this.state.SelectedOption;
+     
         let formRowClassName = "form-row";
         if (this.props.rowspan)
             formRowClassName = "form-row col-md-" + this.props.rowspan;
@@ -140,24 +135,8 @@ class MultiSelectComboBoxCom extends React.Component {
             formGroupClassName = "form-group col-md-12";
 
         return (
-            <div className={formRowClassName} >
-                {isLabelDiv &&
-                    <div className={labelDivClassName}>
-                        <label className="col-form-label">{this.props.label}</label>
-                    </div>
-                }
-                <div className={formGroupClassName}>
-                    <Select
-                        value={selectedOption}
-                        onChange={this.handleValueChange}
-                        onKeyDown={this.handleValueChange1}
-                        options={listOptionNew}
-                        isMulti={true}
-                        isDisabled={this.props.disabled}
-                        isSearchable={true}
-                        placeholder={"----Chọn -----"}
-                        className={"select-custom"}
-                    />
+            <div className="col-md-6" >
+                 <div className={formRowClassName} >
                 </div>
             </div>
         );
@@ -181,5 +160,5 @@ const mapDispatchToProps = dispatch => {
         }
     }
 }
-const MultiSelectComboBox = connect(mapStateToProps, mapDispatchToProps)(MultiSelectComboBoxCom);
-export default MultiSelectComboBox;
+const ComboboxQTQHPX = connect(mapStateToProps, mapDispatchToProps)(ComboboxQTQHPXCom);
+export default ComboboxQTQHPX;

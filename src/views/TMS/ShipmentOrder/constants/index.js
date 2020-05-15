@@ -13,18 +13,24 @@ export const PKColumnName = "ShipmentOrderID";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "", Title: "Danh sách bước xử lý yêu cầu vận chuyển" }
+    { Link: "", Title: "Danh sách yêu cầu vận chuyển" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/ShipmentOrder", Title: "Danh sách bước xử lý yêu cầu vận chuyển" },
+    { Link: "/ShipmentOrder", Title: "Danh sách yêu cầu vận chuyển" },
     { Link: "", Title: "Sửa" }
 ];
+export const DetailAPIPath = [
+    { Link: "/", Title: "Trang chủ" },
+    { Link: "/ShipmentOrder", Title: "Danh sách yêu cầu vận chuyển" },
+    { Link: "", Title: "Chi tiết" }
+];
+
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/ShipmentOrder", Title: "Danh sách bước xử lý yêu cầu vận chuyển" },
+    { Link: "/ShipmentOrder", Title: "Danh sách yêu cầu vận chuyển" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -40,8 +46,7 @@ export const SearchElementList = [
         value: "",
         colspan:2,
         placeholder: "Từ khóa",
-        icon: "",
-        validatonList: ["required"]
+        icon: ""
     },
     {
         type: "ComboBox",
@@ -50,14 +55,13 @@ export const SearchElementList = [
         label: "Công ty",
         colspan:2,
         value: -1,
-        isMultiSelect: true,
-        validatonList: ["Comborequired"],
+        isMultiSelect: false,
         placeholder:"---Vui lòng chọn---",
         listoption: [],
-        IsAutoLoadItemFromCache: false,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
-        ValueMember: "ProvinceID",
-        NameMember: "ProvinceName"
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
+        ValueMember: "PartnerID",
+        NameMember: "PartnerName"
         
     },
     {
@@ -65,7 +69,7 @@ export const SearchElementList = [
         name: "dtCreatedOrderTimeFo",
         DataSourceMember: "CreatedOrderTimeFo",
         label: "Từ ngày",
-        value: "",
+        value: dtFromdate,
         timeFormat:false,
         dateFormat:"DD/MM/YYYY",
         colspan:2,
@@ -75,7 +79,7 @@ export const SearchElementList = [
         name: "dtCreatedOrderTimeTo",
         DataSourceMember: "CreatedOrderTimeTo",
         label: "Đến ngày",
-        value: "",
+        value: new Date(),
         timeFormat:false,
         dateFormat:"DD/MM/YYYY",
         colspan:2,
@@ -106,6 +110,8 @@ export const SearchElementList = [
         placeholder:"---Vui lòng chọn---",
         listoption: [], 
         IsAutoLoadItemFromCache: true,
+        filterName:"cbReceiverProvinceID",
+        filterValue:"",
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
         ValueMember: "DistrictID",
         NameMember: "DistrictName"
@@ -158,11 +164,11 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@FromDate",
-        SearchValue: null
+        SearchValue: dtFromdate
     },
     {
         SearchKey: "@ToDate",
-        SearchValue: null
+        SearchValue: new Date()
     }
     ,
     {
@@ -198,9 +204,9 @@ export const SearchMLObjectDefinition = [
         BindControlName: "txtKeyword"
     },
     {
-        Name: "cbRequestPartnerID",
+        Name: "RequestPartnerID",
         DefaultValue: "",
-        BindControlName: "RequestPartnerID"
+        BindControlName: "cbRequestPartnerID"
     },
     {
         Name: "CreatedOrderTimeFo",
@@ -401,22 +407,28 @@ export const MLObjectDefinition = [
         DataSourceMember: "ShipmentOrderID"
     },
     {
-        Name: "ShipmentOrderName",
+        Name: "ShipmentOrderTypeID",
         DefaultValue: "",
-        BindControlName: "txtShipmentOrderName",
-        DataSourceMember: "ShipmentOrderName"
+        BindControlName: "txtShipmentOrderTypeID",
+        DataSourceMember: "ShipmentOrderTypeID"
     },
     {
-        Name: "Description",
+        Name: "RequestPartnerID",
         DefaultValue: "",
-        BindControlName: "txtDescription",
-        DataSourceMember: "Description"
+        BindControlName: "txtRequestPartnerID",
+        DataSourceMember: "RequestPartnerID"
     },
     {
-        Name: "OrderIndex",
+        Name: "CarrierPartnerID",
         DefaultValue: "",
-        BindControlName: "txtOrderIndex",
-        DataSourceMember: "OrderIndex"
+        BindControlName: "txtCarrierPartnerID",
+        DataSourceMember: "CarrierPartnerID"
+    },
+    {
+        Name: "ShipmentGoodsTypeID",
+        DefaultValue: "",
+        BindControlName: "txtShipmentGoodsTypeID",
+        DataSourceMember: "ShipmentGoodsTypeID"
     },
     {
         Name: "IsActived",

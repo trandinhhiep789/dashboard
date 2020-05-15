@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
-import DataGrid from "../../../../common/components/DataGrid";
+import DataGrid from "../../../../common/components/DataGrid/getdataserver.js";
 import InputGridNew from "../../../../common/components/FormContainer/FormControl/InputGridNew";
 import { MessageModal } from "../../../../common/components/Modal";
 import {
@@ -32,13 +32,16 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleonChangePage = this.handleonChangePage.bind(this);
+        
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
-            iconNotification: ""
+            iconNotification: "",
+            PageNumber:1
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -52,25 +55,26 @@ class SearchCom extends React.Component {
 
 
 
-    handleDelete(deleteList, pkColumnName) {
-        let listMLObject = [];
-        deleteList.map((row, index) => {
-            let MLObject = {};
-            pkColumnName.map((pkItem, pkIndex) => {
-                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-            });
-            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
-            listMLObject.push(MLObject);
-        });
-        this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
+    handleDelete(id) {
+        const ShipmentOrder ={ShipmentOrderID:id,DeletedUser:this.props.AppInfo.LoginInfo.Username};
+        this.props.callFetchAPI(APIHostName, DeleteAPIPath, ShipmentOrder).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if(!apiResult.IsError){
                     this.callSearchData(this.state.SearchData);
-                    // this.handleClearLocalCache();
-                    // this.handleSubmitInsertLog();
                 }             
             });
+    }
+    handleonChangePage(pageNum)
+    {
+        let listMLObject = [];
+        const aa={ SearchKey:"@PAGEINDEX",SearchValue:pageNum-1};
+        listMLObject = Object.assign([], this.state.SearchData,{[9]:aa});
+        this.callSearchData(listMLObject)
+        this.setState({
+            PageNumber: pageNum
+        });
+
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -78,16 +82,51 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
+            },
+            {
+                SearchKey: "@REQUESTPARTNERID",
+                SearchValue: MLObject.RequestPartnerID
+            },
+            {
+                SearchKey: "@FromDate",
+                SearchValue: MLObject.CreatedOrderTimeFo
+            },
+            {
+                SearchKey: "@ToDate",
+                SearchValue: MLObject.CreatedOrderTimeTo
             }
+            ,
+            {
+                SearchKey: "@RECEIVERPROVINCEID",
+                SearchValue: MLObject.ReceiverProvinceID
+            },
+            {
+                SearchKey: "@RECEIVERDISTRICTID",
+                SearchValue: MLObject.ReceiverDistrictID
+            },
+            {
+                SearchKey: "@SENDERSTOREID",
+                SearchValue: MLObject.SenderStoreID
+            },
+            {
+                SearchKey: "@SHIPMENTORDERSTATUSID",
+                SearchValue: MLObject.ShipmentOrderStatusID
+            },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: 10
+            },
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: 0
+            }         
         ];
         this.setState({ SearchData: postData });
-       // this.callSearchData(postData);
-        //this.gridref.current.clearData();
+        this.callSearchData(postData);
     }
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-                this.searchref.current.changeLoadComplete();
                 if (!apiResult.IsError) {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
@@ -148,20 +187,6 @@ class SearchCom extends React.Component {
     }
 
     render() {
-      
-        const SearchMLObjectDefinition = [
-            {
-                Name: "Keyword",
-                DefaultValue: "",
-                BindControlName: "txtKeyword"
-            },
-            {
-                Name: "Contryid",
-                DefaultValue: "",
-                BindControlName: "cbContryid",
-                DataSourceMember: "Contryid"
-            }
-        ];
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -181,8 +206,9 @@ class SearchCom extends React.Component {
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
+                    onChangePage={this.handleonChangePage}
                     IsDelete={false}
-                    ref={this.gridref}
+                    PageNumber={this.state.PageNumber}
                     IsAutoPaging={true}
                     RowsPerPage={10}
                 />
