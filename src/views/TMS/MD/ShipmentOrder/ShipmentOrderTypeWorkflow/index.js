@@ -8,7 +8,7 @@ import FormControl from '../../../../../common/components/Form/AdvanceForm/FormC
 import InputGrid from '../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
 import {
     MLObjectDefinition, GridMLObjectModelPermission, GridMLObjectModelNext
-    , MTabList, MLPieRequestType_WF_Permis, InputNextColumnList
+    , MTabList, MLShipmentOrderType_WF_Permis, InputNextColumnList
 } from "./constants"
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { APIHostName, AddAPIPath, UpdateAPIPath } from './constants';
@@ -18,27 +18,27 @@ import { MessageModal } from "../../../../../common/components/Modal";
 class ShipmentOrderTypeWorkflowCom extends React.Component {
     constructor(props) {
         super(props);
-        //this.addPieRequestWFPermis = this.addPieRequestWFPermis.bind(this);
-        //this.removePieRequestWFPermis = this.removePieRequestWFPermis.bind(this);
+        this.addShipmentOrderTypeWFPermis = this.addShipmentOrderTypeWFPermis.bind(this);
+        this.removeShipmentOrderTypeWFPermis = this.removeShipmentOrderTypeWFPermis.bind(this);
         this.addShipmentOrderTypeWFNext = this.addShipmentOrderTypeWFNext.bind(this);
         this.removeShipmentOrderTypeWFNext = this.removeShipmentOrderTypeWFNext.bind(this);
         this.handleInputChangeList = this.handleInputChangeList.bind(this);
-        //this.valueChangeInputGridPermisData = this.valueChangeInputGridPermisData.bind(this);
+        this.valueChangeInputGridPermisData = this.valueChangeInputGridPermisData.bind(this);
         this.valueChangeInputGridNextData = this.valueChangeInputGridNextData.bind(this);
         this.changeSelectUser = this.changeSelectUser.bind(this);
         this.createInputPermissColumnList = this.createInputPermissColumnList.bind(this);
         this.state = {
             FormData: {
                 ShipmentOrderTypeWorkflow: [],
-                //PieRequestType_WF_Permis: [],
+                ShipmentOrderType_WF_Permis: [],
                 ShipmentOrderType_WF_Next: [],
                 NextShipmentOrderStep: "",
                 ChooseFunctionID: ""
             },
-            //PieRequestType_WF_PermisData: [],
+            ShipmentOrderType_WF_PermisData: [],
             ShipmentOrderType_WF_NextData: [],
-            //PieRequestType_WF_Permis: [],
-            //SelectedOption: [],
+            ShipmentOrderType_WF_Permis: [],
+            SelectedOption: [],
             NextShipmentOrderStepListOption: []
         };
         if (this.props.dataSource) {
@@ -54,12 +54,12 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                 if (minute > 0)
                     dataSource.MaxProcessTimeMinute = parseInt(minute);
             }
-            // let SelectedOption = [];
-            // if (dataSource.PieRequestType_WF_Permis) {
-            //     dataSource.PieRequestType_WF_Permis.map(row => {
-            //         SelectedOption.push({ value: row.UserName, label: row.FullName });
-            //     })
-            // }
+            let SelectedOption = [];
+            if (dataSource.ShipmentOrderType_WF_Permis) {
+                dataSource.ShipmentOrderType_WF_Permis.map(row => {
+                    SelectedOption.push({ value: row.UserGroupID, label: row.UserGroupName });
+                })
+            }
             let NextShipmentOrderStepListOption = [{ value: -1, label: "--Vui lòng chọn--" }];
             if (this.props.ShipmentOrderTypeWorkflow) {
                 this.props.ShipmentOrderTypeWorkflow.map(row => {
@@ -69,61 +69,63 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
             this.state = {
                 FormData: {
                     ShipmentOrderTypeWorkflow: dataSource,
-                    //PieRequestType_WF_Permis: dataSource.PieRequestType_WF_Permis ? dataSource.PieRequestType_WF_Permis : [],
+                    ShipmentOrderType_WF_Permis: dataSource.ShipmentOrderType_WF_Permis ? dataSource.ShipmentOrderType_WF_Permis : [],
                     ShipmentOrderType_WF_Next: dataSource.ShipmentOrderType_WF_Next ? dataSource.ShipmentOrderType_WF_Next : [],
                     NextShipmentOrderStep: "",
                     ChooseFunctionID: ""
                 },
-                PieRequestType_WF_PermisData: dataSource.PieRequestType_WF_Permis ? dataSource.PieRequestType_WF_Permis : [],
+                ShipmentOrderType_WF_PermisData: dataSource.ShipmentOrderType_WF_Permis ? dataSource.ShipmentOrderType_WF_Permis : [],
                 ShipmentOrderType_WF_NextData: dataSource.ShipmentOrderType_WF_Next ? dataSource.ShipmentOrderType_WF_Next : [],
                 InputPermissColumnList: [],
-                //SelectedOption: SelectedOption,
+                SelectedOption: SelectedOption,
                 NextShipmentOrderStepListOption: NextShipmentOrderStepListOption
             }
         }
     }
 
     componentDidMount() {
-        //this.createInputPermissColumnList();
+        this.createInputPermissColumnList();
     }
 
-    // addPieRequestWFPermis() {
-    //     debugger;
-    //     const InputPermissColumnList = this.state.InputPermissColumnList;
-    //     const UserNameList = this.state.UserNameList;
-    //     let PieRequestType_WF_PermisData = this.state.PieRequestType_WF_PermisData;
-    //     let objPermisData = {};
-    //     UserNameList.map((userItem, userIndex) => {
-    //         objPermisData = {};
-    //         if (this.state.PieRequestType_WF_PermisData.filter(x => x.UserName == userItem.UserName).length <= 0) {
-    //             InputPermissColumnList.map(item => {
-    //                 if (item.Name == "UserName" || item.Name == "FullName") {
-    //                     objPermisData[item.Name] = userItem[item.Name];
-    //                 }
-    //                 else if (item.Name == "chkSelectUserName") {
-    //                     objPermisData[item.Name] = false;
-    //                 }
-    //                 else {
-    //                     objPermisData[item.Name] = true;
-    //                 }
-    //             })
-    //             PieRequestType_WF_PermisData = Object.assign([], PieRequestType_WF_PermisData, { [PieRequestType_WF_PermisData.length]: objPermisData });
-    //         }
-    //     });
-    //     this.setState({ PieRequestType_WF_PermisData });
-    // }
+    addShipmentOrderTypeWFPermis() {
+        debugger;
+        const InputPermissColumnList = this.state.InputPermissColumnList;
+        const UserNameList = this.state.UserNameList;
+        let ShipmentOrderType_WF_PermisData = this.state.ShipmentOrderType_WF_PermisData;
+        let objPermisData = {};
+        UserNameList.map((userItem, userIndex) => {
+            objPermisData = {};
+            if (this.state.ShipmentOrderType_WF_PermisData.filter(x => x.UserGroupID == userItem.UserGroupID).length <= 0) {
+                InputPermissColumnList.map(item => {
+                    if (item.Name == "UserGroupID" || item.Name == "UserGroupName") {
+                        objPermisData[item.Name] = userItem[item.Name];
+                    }
+                    else if (item.Name == "chkSelectUserGroupID") {
+                        objPermisData[item.Name] = false;
+                    }
+                    else {
+                        objPermisData[item.Name] = true;
+                    }
+                })
+                ShipmentOrderType_WF_PermisData = Object.assign([], ShipmentOrderType_WF_PermisData, { [ShipmentOrderType_WF_PermisData.length]: objPermisData });
+            }
+        });
+        this.setState({ ShipmentOrderType_WF_PermisData });
+        console.log("ShipmentOrderType_WF_PermisData",ShipmentOrderType_WF_PermisData);
+    }
 
-    // removePieRequestWFPermis(listSelect, dataSource, listDataSourceMember) {
-    //     let list = listSelect.map((item, index, listSelect) => { return item[0].value })
-    //     const PieRequestType_WF_PermisData = this.state.PieRequestType_WF_PermisData.filter(f => !list.includes(f[listDataSourceMember[0].key]));
-    //     this.setState({ PieRequestType_WF_PermisData });
-    // }
+    removeShipmentOrderTypeWFPermis(listSelect, dataSource, listDataSourceMember) {
+        let list = listSelect.map((item, index, listSelect) => { return item[0].value })
+        const ShipmentOrderType_WF_PermisData = this.state.ShipmentOrderType_WF_PermisData.filter(f => !list.includes(f[listDataSourceMember[0].key]));
+        this.setState({ ShipmentOrderType_WF_PermisData });
+    }
 
-    // valueChangeInputGridPermisData(elementdata, index) {
-    //     const rowGridData = Object.assign({}, this.state.PieRequestType_WF_PermisData[index], { [elementdata.Name]: elementdata.IsChecked }, { HasChanged: true });
-    //     const PieRequestType_WF_PermisData = Object.assign([], this.state.PieRequestType_WF_PermisData, { [index]: rowGridData });
-    //     this.setState({ PieRequestType_WF_PermisData });
-    // }
+    valueChangeInputGridPermisData(elementdata, index) {
+        debugger;
+        const rowGridData = Object.assign({}, this.state.ShipmentOrderType_WF_PermisData[index], { [elementdata.Name]: elementdata.IsChecked }, { HasChanged: true });
+        const ShipmentOrderType_WF_PermisData = Object.assign([], this.state.ShipmentOrderType_WF_PermisData, { [index]: rowGridData });
+        this.setState({ ShipmentOrderType_WF_PermisData });
+    }
 
     addShipmentOrderTypeWFNext() {
         //console.log("this.state.FormData.NextShipmentOrderStep", this.state.FormData.NextShipmentOrderStep);
@@ -163,6 +165,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     }
 
     valueChangeInputGridNextData(elementdata, index) {
+        debugger;
         //console.log("valueChangeInputGridNextData",elementdata, index)
         const rowGridData = Object.assign({}, this.state.FormData.ShipmentOrderType_WF_Next[index], { [elementdata.Name]: elementdata.IsChecked }, { HasChanged: true });
         const ShipmentOrderType_WF_Next = Object.assign([], this.state.FormData.ShipmentOrderType_WF_Next, { [index]: rowGridData });
@@ -171,11 +174,11 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     }
 
     handleInputChangeList(formData, tabNameList, tabMLObjectDefinitionList) {
-         //console.log("handleInputChangeList_wf", formData);
+        console.log("handleInputChangeList_wf", formData);
         // console.log("formData", this.state.FormData);
         let keys = []
         //formData.ShipmentOrderType_WF_Next = this.state.FormData.ShipmentOrderType_WF_Next;
-        //formData.PieRequestType_WF_Permis = this.state.PieRequestType_WF_PermisData;
+        //formData.ShipmentOrderType_WF_Permis = this.state.ShipmentOrderType_WF_PermisData;
         if (this.state.FormData.ShipmentOrderTypeWorkflow) keys = Object.keys(this.state.FormData.ShipmentOrderTypeWorkflow);
         if (formData.ShipmentOrderTypeWorkflow) {
             Object.keys(formData.ShipmentOrderTypeWorkflow).map((key) => {
@@ -199,10 +202,11 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        //let newPieRequestType_WF_PermisData = this.state.PieRequestType_WF_PermisData;
+        debugger;
+        let newShipmentOrderType_WF_PermisData = this.state.ShipmentOrderType_WF_PermisData;
         let newShipmentOrderType_WF_NextData = this.state.FormData.ShipmentOrderType_WF_Next;
         const newFormData = Object.assign({}, this.state.FormData.ShipmentOrderTypeWorkflow, {
-            //PieRequestType_WF_Permis: newPieRequestType_WF_PermisData,
+            ShipmentOrderType_WF_Permis: newShipmentOrderType_WF_PermisData,
             ShipmentOrderType_WF_Next: newShipmentOrderType_WF_NextData
         });
         newFormData.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID
@@ -223,24 +227,22 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
             newFormData.MaxProcessTime += parseInt(newFormData.MaxProcessTimeMinute);
             newFormData.DisplayProcessTime += newFormData.MaxProcessTimeMinute + ' Phút ';
         }
-        // if (newFormData.PieRequestType_WF_Permis) {
-        //     let PieRequestType_WF_PermisData = [];
-        //     newFormData.PieRequestType_WF_Permis.map((row, index) => {
-        //         const UserName = row.UserName;
-        //         const FullName = row.FullName;
-        //         Object.keys(row).forEach(key => {
-        //             if (Number.isInteger(parseInt(key)) && row[key] == true) {
-        //                 PieRequestType_WF_PermisData.push({
-        //                     ShipmentOrderStepID: newFormData.ShipmentOrderStepID,
-        //                     UserName: UserName,
-        //                     FullName: FullName,
-        //                     PiePermissionID: key
-        //                 })
-        //             }
-        //         });
-        //     })
-        //     newFormData.PieRequestType_WF_Permis = PieRequestType_WF_PermisData;
-        // }
+        if (newFormData.ShipmentOrderType_WF_Permis) {
+            let ShipmentOrderType_WF_PermisData = [];
+            newFormData.ShipmentOrderType_WF_Permis.map((row, index) => {
+                const UserGroupID = row.UserGroupID;
+                Object.keys(row).forEach(key => {
+                    if (Number.isInteger(parseInt(key)) && row[key] == true) {
+                        ShipmentOrderType_WF_PermisData.push({
+                            ShipmentOrderStepID: newFormData.ShipmentOrderStepID,
+                            UserGroupID: UserGroupID,
+                            ShipmentOrderPermissionID: key
+                        })
+                    }
+                });
+            })
+            newFormData.ShipmentOrderType_WF_Permis = ShipmentOrderType_WF_PermisData;
+        }
         if (!this.props.IsUpdateData)
             newFormData.ShipmentOrderTypeID = this.props.ShipmentOrderTypeID;
         if ((parseInt(this.props.TotalStepCompletePercent) + parseInt(newFormData.StepCompletePercent)) > 100) {
@@ -253,12 +255,14 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         }
         else {
             this.props.callFetchAPI(APIHostName, this.props.IsUpdateData ? UpdateAPIPath : AddAPIPath, newFormData).then((apiResult) => {
+                debugger;
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 this.showMessage(apiResult.Message);
-                if (this.props.onAddShipmentOrderTypeWorkflowComplete) {
-                    this.props.onAddShipmentOrderTypeWorkflowComplete(newFormData);
-                }
+
                 if (!apiResult.IsError) {
+                    if (this.props.onAddShipmentOrderTypeWorkflowComplete) {
+                        this.props.onAddShipmentOrderTypeWorkflowComplete(newFormData);
+                    }
                     this.props.hideModal();
                 }
             });
@@ -269,7 +273,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     changeSelectUser(name, listSelect) {
         let UserNameList = [];
         listSelect.map(user => {
-            const usermatch = this.props.SysUserCache.filter(x => { return x.UserName == user });
+            const usermatch = this.props.SysUserCache.filter(x => { return x.UserGroupID == user });
             UserNameList.push(usermatch[0]);
         })
         this.setState({ UserNameList });
@@ -279,34 +283,34 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         const PiePermissionCache = this.props.PiePermissionCache;
         let InputPermissColumnList = [
             {
-                Name: "chkSelectUserName",
+                Name: "chkSelectUserGroupID",
                 Type: "checkbox",
-                Caption: "Chọn",
-                DataSourceMember: "UserName",
+                Caption: "",
+                DataSourceMember: "UserGroupID",
                 Width: 100
             },
             {
-                Name: "UserName",
+                Name: "UserGroupID",
                 Type: "text",
-                Caption: "Mã người dùng",
-                DataSourceMember: "UserName",
+                Caption: "Mã nhóm người dùng",
+                DataSourceMember: "UserGroupID",
                 Width: 150
             },
             {
-                Name: "FullName",
+                Name: "UserGroupName",
                 Type: "text",
-                Caption: "Tên người dùng",
-                DataSourceMember: "FullName",
+                Caption: "Tên nhóm người dùng",
+                DataSourceMember: "UserGroupName",
                 Width: 200
             },
         ];
         if (PiePermissionCache) {
             PiePermissionCache.map((item, index) => {
                 InputPermissColumnList.push({
-                    Name: item.PiePermissionID,
+                    Name: item.ShipmentOrderPermissionID,
                     Type: "checkbox",
-                    Caption: item.PiePermissionName,
-                    DataSourceMember: item.PiePermissionID,
+                    Caption: item.ShipmentOrderPermissionName,
+                    DataSourceMember: item.ShipmentOrderPermissionID,
                     Width: 150
                 })
             });
@@ -342,23 +346,31 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                             title="Thông tin chung" name="ShipmentOrderTypeWorkflow" >
                             <div className="form-row">
                                 <div className="col-sm-8">
-                                    <FormControl.TextBox labelcolspan={4} colspan={8} placeholder="ID tự tăng" readonly={true}
+                                    {/* <FormControl.TextBox labelcolspan={4} colspan={8} placeholder="ID tự tăng" readonly={true}
                                         name="ShipmentOrderStepID" label="Mã bước xử lý"
                                         controltype="InputControl" datasourcemember="ShipmentOrderStepID"
+                                    /> */}
+                                    <FormControl.ComboBox
+                                        name="ShipmentOrderStepID" type="select" isautoloaditemfromcache={true}
+                                        loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERSTEP" valuemember="ShipmentOrderStepID" nameMember="ShipmentOrderStepName"
+                                        label="Tên bước xử lý" controltype="InputControl" datasourcemember="ShipmentOrderStepID"
+                                        listoption={[]} isRequired={true} disabled={this.props.IsUpdateData}
+                                        labelcolspan={4} colspan={8}
                                     />
-                                    <FormControl.TextBox labelcolspan={4} colspan={8} name="ShipmentOrderStepName" label="Tên bước xử lý"
-                                        controltype="InputControl" datasourcemember="ShipmentOrderStepName"
-                                        required={true} maxSize={200}
+                                    
+                                    <FormControl.ComboBox
+                                        name="AutoChangeToShipmentOrderStatusID" type="select" isautoloaditemfromcache={true}
+                                        loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERSTATUS" valuemember="ShipmentOrderStatusID" nameMember="ShipmentOrderStatusName"
+                                        label="Tự động chuyển sang trạng thái yêu cầu vận chuyển" controltype="InputControl" datasourcemember="AutoChangeToShipmentOrderStatusID"
+                                        listoption={[]} isRequired={true}
+                                        labelcolspan={4} colspan={8}
                                     />
-                                    <FormControl.Number labelcolspan={4} colspan={8} name="AutoChangeToShipmentOrderStatusID" label="AutoChangeToShipmentOrderStatusID"
-                                        datasourcemember="AutoChangeToShipmentOrderStatusID" controltype="InputControl"
-                                        min={0} max={100}
-                                    />
+
                                     <FormControl.TextBox labelcolspan={4} colspan={8} readonly={false} name="StepColorCode" label="Màu sắc của bước"
                                         controltype="InputControl" datasourcemember="StepColorCode" maxSize={20} required={false}
                                     />
 
-                                    <FormControl.Number labelcolspan={4} colspan={8} name="StepCompletePercent" label="Phần trăm hoàn thành của bước"
+                                    {/* <FormControl.Number labelcolspan={4} colspan={8} name="StepCompletePercent" label="Phần trăm hoàn thành của bước"
                                         datasourcemember="StepCompletePercent" controltype="InputControl"
                                         min={0} max={100}
                                     />
@@ -373,6 +385,25 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     <FormControl.Number labelcolspan={4} colspan={8} name="MaxProcessTimeMinute" label="Thời gian XL tối đa(phút)"
                                         datasourcemember="MaxProcessTimeMinute" controltype="InputControl"
                                         min={0} max={60}
+                                    /> */}
+
+                                    <FormControl.Numeric name="StepCompletePercent" label="Phần trăm hoàn thành của bước" controltype="InputControl"
+                                        datasourcemember="StepCompletePercent" readonly={false}
+                                        labelcolspan={4} colspan={8} maxValue={100}
+                                    />
+
+                                    <FormControl.Numeric name="MaxProcessTimeDay" label="Thời gian XL tối đa(Ngày)" controltype="InputControl"
+                                        datasourcemember="MaxProcessTimeDay" readonly={false}
+                                        labelcolspan={4} colspan={8} maxValue={30}
+                                    />
+
+                                    <FormControl.Numeric name="MaxProcessTimeHour" label="Thời gian XL tối đa(Giờ)" controltype="InputControl"
+                                        datasourcemember="MaxProcessTimeHour" readonly={false}
+                                        labelcolspan={4} colspan={8} maxValue={24}
+                                    />
+                                    <FormControl.Numeric name="MaxProcessTimeMinute" label="Thời gian XL tối đa(phút)" controltype="InputControl"
+                                        datasourcemember="MaxProcessTimeMinute" readonly={false}
+                                        labelcolspan={4} colspan={8} maxValue={60}
                                     />
                                     <FormControl.TextArea labelcolspan={4} colspan={8} name="SMSTemplate" label="Mẫu SMS"
                                         datasourcemember="SMSTemplate" controltype="InputControl"
@@ -390,8 +421,8 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         datasourcemember="Description" controltype="InputControl"
                                         rows={6} maxSize={2000}
                                     />
-                                    <FormControl.Number labelcolspan={4} colspan={8} name="OrderIndex" label="Thứ tự hiển thị"
-                                        datasourcemember="OrderIndex" controltype="InputControl"
+                                    <FormControl.Numeric labelcolspan={4} colspan={8} name="OrderIndex" label="Thứ tự hiển thị"
+                                        datasourcemember="OrderIndex" controltype="InputControl" maxValue={999999999}
                                     />
                                 </div>
                                 <div className="col-sm-1"></div>
@@ -429,33 +460,34 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                 </div>
                             </div>
                         </TabPage>
-                        {/* <TabPage title="Quyền" name="PieRequestType_WF_Permis"
-                            MLObjectDefinition={MLPieRequestType_WF_Permis}
+                        <TabPage title="Quyền" name="ShipmentOrderType_WF_Permis"
+                            MLObjectDefinition={MLShipmentOrderType_WF_Permis}
                         >
-                            <FormControl.MultiSelectComboBox name="UserName" label="Người dùng"
-                                labelcolspan={1} colspan={11} rowspan={12}
+                            <FormControl.MultiSelectComboBox name="UserGroupID" label="Nhóm người dùng"
+                                labelcolspan={2} colspan={10} rowspan={12}
                                 IsLabelDiv={true} controltype="InputControl"
-                                isautoloaditemfromcache={true} loaditemcachekeyid="PIMCACHE.SYS_USER" valuemember="UserName" nameMember="FullName"
-                                listoption={[]} datasourcemember="UserName"
+                                isautoloaditemfromcache={true} loaditemcachekeyid="ERPCOMMONCACHE.USERGROUP" valuemember="UserGroupID" nameMember="UserGroupName"
+                                listoption={[]} datasourcemember="UserGroupID"
                                 SelectedOption={this.state.SelectedOption ? this.state.SelectedOption : []}
                                 onValueChangeCus={this.changeSelectUser}
                             />
+                            <br />
                             <InputGrid
-                                name="PieRequestType_WF_Permis"
+                                name="ShipmentOrderType_WF_Permis"
                                 controltype="InputControl"
                                 colspan="12"
-                                IDSelectColumnName="chkSelectUserName"
-                                PKColumnName={"UserName"}
+                                IDSelectColumnName="chkSelectUserGroupID"
+                                PKColumnName={"UserGroupID"}
                                 isUseValueInputControl={true}
                                 MLObjectDefinition={GridMLObjectModelPermission}
                                 listColumn={this.state.InputPermissColumnList}
-                                dataSource={this.state.PieRequestType_WF_PermisData}
+                                dataSource={this.state.ShipmentOrderType_WF_PermisData}
                                 onValueChangeInputGrid={this.valueChangeInputGridPermisData}
-                                onInsertClick={this.addPieRequestWFPermis}
-                                onDeleteClick_Customize={this.removePieRequestWFPermis}
+                                onInsertClick={this.addShipmentOrderTypeWFPermis}
+                                onDeleteClick_Customize={this.removeShipmentOrderTypeWFPermis}
                                 isUseConfirmMessage={false}
                             />
-                        </TabPage> */}
+                        </TabPage>
                         <TabPage title="Bước xử lý kế tiếp" name="ShipmentOrderType_WF_Next">
                             <div className="form-row">
                                 <FormControl.ComboBox

@@ -61,6 +61,7 @@ class MultiSelectComboBoxCom extends React.Component {
             const selectedOption = this.bindData(nextProps.listoption);
             this.setState({ SelectedOption: selectedOption });
         }
+    
     }
 
     bindData(listOption) {
