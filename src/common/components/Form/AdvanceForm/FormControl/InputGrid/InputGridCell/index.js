@@ -149,6 +149,7 @@ class InputGridCellCom extends Component {
     }
 
     handleInputChange(e) {
+        this.validateInput(e);
         // this.props.onValueChange(elementdata, this.props.index);
     }
 

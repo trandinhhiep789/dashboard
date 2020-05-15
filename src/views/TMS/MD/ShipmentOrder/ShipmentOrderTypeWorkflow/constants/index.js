@@ -35,21 +35,25 @@ export const MLObjectDefinition = [
         Name: "ShipmentOrderStepID",
         DefaultValue: "",
         BindControlName: "ShipmentOrderStepID",
-        DataSourceMember: "ShipmentOrderStepID"
+        DataSourceMember: "ShipmentOrderStepID",
+        Label: "tên bước xử lý",
+        ValidationList: ["Comborequired"]
     },
-    {
-        Name: "ShipmentOrderStepName",
-        DefaultValue: "",
-        BindControlName: "ShipmentOrderStepName",
-        DataSourceMember: "ShipmentOrderStepName",
-        Label: "Tên bước xử lý",
-        ValidationList: ["required"],
-    },
+    // {
+    //     Name: "ShipmentOrderStepName",
+    //     DefaultValue: "",
+    //     BindControlName: "ShipmentOrderStepName",
+    //     DataSourceMember: "ShipmentOrderStepName",
+    //     Label: "Tên bước xử lý",
+    //     ValidationList: ["required"],
+    // },
     {
         Name: "AutoChangeToShipmentOrderStatusID",
         DefaultValue: "",
         BindControlName: "AutoChangeToShipmentOrderStatusID",
-        DataSourceMember: "AutoChangeToShipmentOrderStatusID"
+        DataSourceMember: "AutoChangeToShipmentOrderStatusID",
+        Label: "tự động chuyển sang trạng thái yêu cầu vận chuyển",
+        ValidationList: ["Comborequired"]
     },
     {
         Name: "StepColorCode",
@@ -75,7 +79,7 @@ export const MLObjectDefinition = [
         BindControlName: "MaxProcessTimeDay",
         DataSourceMember: "MaxProcessTimeDay",
         Label: "Thời gian xử lý tối đa của bước(ngày)",
-        ValidationList: ["required"]
+        //ValidationList: ["required"]
     },
     {
         Name: "MaxProcessTimeHour",
@@ -83,7 +87,7 @@ export const MLObjectDefinition = [
         BindControlName: "MaxProcessTimeHour",
         DataSourceMember: "MaxProcessTimeHour",
         Label: "Thời gian xử lý tối đa của bước(giờ)",
-        ValidationList: ["required"]
+        //ValidationList: ["required"]
     },
     {
         Name: "MaxProcessTimeMinute",
@@ -91,7 +95,7 @@ export const MLObjectDefinition = [
         BindControlName: "MaxProcessTimeMinute",
         DataSourceMember: "MaxProcessTimeMinute",
         Label: "Thời gian xử lý tối đa của bước(phút)",
-        ValidationList: ["required"]
+        //ValidationList: ["required"]
     },
     {
         Name: "IsInitStep",
@@ -173,7 +177,7 @@ export const MLObjectDefinition = [
     }
 ];
 
-export const MLPieRequestType_WF_Permis = [
+export const MLShipmentOrderType_WF_Permis = [
     {
         Name: "UserName",
         DefaultValue: "",
@@ -187,10 +191,10 @@ export const MLPieRequestType_WF_Permis = [
         DataSourceMember: "FullName"
     },
     {
-        Name: "PieRequestType_WF_Permis",
+        Name: "ShipmentOrderType_WF_Permis",
         DefaultValue: "",
-        BindControlName: "PieRequestType_WF_Permis",
-        DataSourceMember: "PieRequestType_WF_Permis"
+        BindControlName: "ShipmentOrderType_WF_Permis",
+        DataSourceMember: "ShipmentOrderType_WF_Permis"
     }
 ];
 
@@ -233,16 +237,16 @@ export const GridMLObjectModelPermission = [
         DataSourceMember: "ID"
     },
     {
-        Name: "UserName",
+        Name: "UserGroupID",
         DefaultValue: "",
-        BindControlName: "UserName",
-        DataSourceMember: "UserName"
+        BindControlName: "UserGroupID",
+        DataSourceMember: "UserGroupID"
     },
     {
-        Name: "FullName",
+        Name: "UserGroupName",
         DefaultValue: "",
-        BindControlName: "FullName",
-        DataSourceMember: "FullName"
+        BindControlName: "UserGroupName",
+        DataSourceMember: "UserGroupName"
     },
     {
         Name: "EditPermission",

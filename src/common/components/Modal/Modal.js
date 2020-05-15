@@ -122,11 +122,11 @@ class ModalCom extends React.Component {
     }
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.formValidation) !== JSON.stringify(nextProps.formValidation)) {
-            this.setState({ FormValidation: nextProps.formValidation });
-            if(nextProps.isSubmit){
-                this.checkInput(nextProps.formValidation);
-            }
-            
+            this.setState({ FormValidation: nextProps.formValidation });   
+        }
+        //focus vào field không hợp lệ khi submit
+        if(nextProps.isSubmit){
+            this.checkInput(nextProps.formValidation);
         }
     }
     

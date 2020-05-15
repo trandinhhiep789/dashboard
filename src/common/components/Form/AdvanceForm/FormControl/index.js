@@ -44,7 +44,7 @@ class TextBox extends React.Component {
         }
 
         let star = "";
-        if (this.props.required) {
+        if (this.props.isRequired) {
             star = " *";
         }
 
@@ -454,6 +454,12 @@ class ComboBoxCom extends Component {
             disabledsele = this.props.disabled;
         }
 
+        let star = "";
+        if (this.props.isRequired) {
+            star = " *";
+        }
+
+
 
         if (this.props.validationErrorMessage != null) {
             if (this.props.validationErrorMessage.length > 0) {
@@ -465,7 +471,7 @@ class ComboBoxCom extends Component {
             return (
                 <div className={formRowClassName} >
                     <div className={labelDivClassName}>
-                        <label className="col-form-label">{this.props.label}</label>
+                        <label className="col-form-label">{this.props.label}<span className="text-danger">{star}</span></label>
                     </div>
                     <div className={formGroupClassName}>
                         <select className={className} name={this.props.name}
@@ -488,7 +494,7 @@ class ComboBoxCom extends Component {
             return (
                 <div className={formRowClassName} >
                     <div className={labelDivClassName}>
-                        <label className="col-form-label">{this.props.label}</label>
+                        <label className="col-form-label">{this.props.label}<span className="text-danger">{star}</span></label>
                     </div>
                     <div className={formGroupClassName}>
                         <select className={className} name={this.props.name}
@@ -879,7 +885,7 @@ class Numeric extends React.Component {
 
     formatNumeric(value) {
         value = value.toString().replace(/\D/g, '');
-        if (isNaN(value)) {
+        if (isNaN(value) || value == "") {
             value = 0;
         }
 
