@@ -263,7 +263,7 @@ class EditCom extends React.Component {
             })
         }
 
-        console.log("handleSubmit", param);
+        //console.log("handleSubmit", param);
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, param).then((apiResult) => {
             debugger;
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -331,27 +331,28 @@ class EditCom extends React.Component {
     callLoadData() {
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            
+
             if (apiResult) {
                 if (apiResult.IsError) {
                     this.setState({ IsCallAPIError: apiResult.IsError });
                     this.showMessage(apiResult.Message);
                     return;
                 }
-                //partner
-                // let listPartner, listStatus = [];
-                // listPartner = this.comboPartner(apiResult.ResultObject.ListPartner);
-                // listStatus = this.comboStatus(apiResult.ResultObject.ListStatus);
+                
 
                 let selectedOptionPartner = [];
+                let listPartner = [];
                 if (apiResult.ResultObject.ListPartner) {
+                    listPartner = apiResult.ResultObject.ListPartner;
                     apiResult.ResultObject.ListPartner.map(row => {
                         selectedOptionPartner.push({ value: row.PartnerID, label: row.PartnerName });
                     })
                 }
 
+                let listStatus = [];
                 let selectedOptionStatus = [];
                 if (apiResult.ResultObject.ListStatus) {
+                    listStatus = apiResult.ResultObject.ListStatus;
                     apiResult.ResultObject.ListStatus.map(row => {
                         selectedOptionStatus.push({ value: row.ShipmentOrderStatusID, label: row.ShipmentOrderStatusName });
                     })
@@ -379,9 +380,11 @@ class EditCom extends React.Component {
                             ShipmentOrderType: apiResult.ResultObject,
                             ShipmentOrderTypeWorkflow: apiResult.ResultObject.ShipmentOrderTypeWorkflow,
                             TotalStepCompletePercent: TotalStepCompletePercent,
-                            PartnerList: selectedOptionPartner,
-                            ShipmentStatusList: selectedOptionStatus
-                        }
+                        },
+                        SelectedPartnerList: selectedOptionPartner,
+                        SelectedShipmentStatusList: selectedOptionStatus,
+                        PartnerList: listPartner,
+                        ShipmentStatusList: listStatus
                     });
                 }
                 else {
@@ -390,14 +393,16 @@ class EditCom extends React.Component {
                             ShipmentOrderType: apiResult.ResultObject,
                             ShipmentOrderTypeWorkflow: [],
                             ShipmentOrderType_FixShipmentFee: [],
-                            PartnerList: selectedOptionPartner,
-                            ShipmentStatusList: selectedOptionStatus
-                        }
+                        },
+                        SelectedPartnerList: selectedOptionPartner,
+                        SelectedShipmentStatusList: selectedOptionStatus,
+                        PartnerList: listPartner,
+                        ShipmentStatusList: listStatus
                     });
                 }
 
                 this.setState({ IsLoading: false });
-                console.log("apiResult", selectedOptionStatus, selectedOptionPartner);
+                
             }
         });
     }
@@ -422,6 +427,7 @@ class EditCom extends React.Component {
     }
 
     changeSelecPartner(name, listSelect) {
+        debugger;
         let PartnerList = [];
         listSelect.map(partner => {
             const partnerMatch = this.state.PartnerCache.filter(x => { return x.PartnerID == partner });
@@ -524,7 +530,7 @@ class EditCom extends React.Component {
                             IsLabelDiv={true} controltype="InputControl"
                             isautoloaditemfromcache={true} loaditemcachekeyid="ERPCOMMONCACHE.PARTNER" valuemember="PartnerID" nameMember="PartnerName"
                             listoption={[]} datasourcemember="PartnerID"
-                            SelectedOption={this.state.PartnerList ? this.state.PartnerList : []}
+                            SelectedOption={this.state.SelectedPartnerList ? this.state.SelectedPartnerList : []}
                             onValueChangeCus={this.changeSelecPartner}
                         />
 
@@ -533,7 +539,7 @@ class EditCom extends React.Component {
                             IsLabelDiv={true} controltype="InputControl"
                             isautoloaditemfromcache={true} loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERSTATUS" valuemember="ShipmentOrderStatusID" nameMember="ShipmentOrderStatusName"
                             listoption={[]} datasourcemember="ShipmentOrderStatusID"
-                            SelectedOption={this.state.ShipmentStatusList ? this.state.ShipmentStatusList : []}
+                            SelectedOption={this.state.SelectedShipmentStatusList ? this.state.SelectedShipmentStatusList : []}
                             onValueChangeCus={this.changeSelectShipmentStatus}
                         />
 

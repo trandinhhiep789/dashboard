@@ -1051,10 +1051,5 @@ class ComboBox1Com extends Component {
 export const ComboBox1 = connect(null, mapDispatchToProps)(ComboBox1Com);
 
 
-
-
-<<<<<<< HEAD
 export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus,ElementDatetime,ComboBox1,ComboboxQTQHPX};
-=======
-export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus, ElementDatetime, ComboBox1 };
->>>>>>> 90d084949280eca529a784ebebd3753832e38bec
+
