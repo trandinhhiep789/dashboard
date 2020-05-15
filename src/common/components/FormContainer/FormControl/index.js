@@ -1,6 +1,8 @@
 
 import React, { Component, PropTypes } from 'react';
 import MultiSelectComboBox from "./MultiSelectComboBox";
+import ComboboxQTQHPX from "./CommonControl/ComboboxQTQHPX.js";
+
 import { callGetCache } from "../../../../actions/cacheAction";
 import { connect } from 'react-redux';
 import { showModal, hideModal } from '../../../../actions/modal';
@@ -1024,4 +1026,4 @@ export const ComboBox1 = connect(null, mapDispatchToProps)(ComboBox1Com);
 
 
 
-export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus,ElementDatetime,ComboBox1};
+export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus,ElementDatetime,ComboBox1,ComboboxQTQHPX};

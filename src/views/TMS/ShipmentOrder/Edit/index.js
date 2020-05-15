@@ -234,15 +234,24 @@ class EditCom extends React.Component {
                                     />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.TextBox
+                                    <FormControl.ComboboxQTQHPX
                                         name=""
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
                                         label="thời gian giao hàng"
                                         placeholder="Thời gian giao hàng"
+                                        isautoloaditemfromcache={false}
+                                        loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                        valuemember="CarrierTypeID"
+                                        nameMember="CarrierTypeName"
                                         controltype="InputControl"
                                         value={""}
+                                        listoption={[
+                                            { value: -1, label: '---Vui lòng chọn---' },
+                                            { value: 1, label: 'Việt Nam' },
+                                            { value: 2, label: 'Hoa kỳ' },
+                                            { value: 3, label: 'Trung Quốc' }]}
                                         datasourcemember=""
                                     />
                                 </div>
