@@ -44,7 +44,7 @@ export const SearchElementList = [
         DataSourceMember: "Keyword",
         label: "Từ khóa",
         value: "",
-        colspan:2,
+        colspan: 2,
         placeholder: "Từ khóa",
         icon: ""
     },
@@ -53,16 +53,16 @@ export const SearchElementList = [
         name: "cbRequestPartnerID",
         DataSourceMember: "RequestPartnerID",
         label: "Công ty",
-        colspan:2,
+        colspan: 2,
         value: -1,
         isMultiSelect: false,
-        placeholder:"---Vui lòng chọn---",
+        placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
         ValueMember: "PartnerID",
         NameMember: "PartnerName"
-        
+
     },
     {
         type: "Datetime",
@@ -70,9 +70,9 @@ export const SearchElementList = [
         DataSourceMember: "CreatedOrderTimeFo",
         label: "Từ ngày",
         value: dtFromdate,
-        timeFormat:false,
-        dateFormat:"DD/MM/YYYY",
-        colspan:2,
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 2,
     },
     {
         type: "Datetime",
@@ -80,20 +80,20 @@ export const SearchElementList = [
         DataSourceMember: "CreatedOrderTimeTo",
         label: "Đến ngày",
         value: new Date(),
-        timeFormat:false,
-        dateFormat:"DD/MM/YYYY",
-        colspan:2,
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 2,
     },
     {
         type: "ComboBox",
         name: "cbReceiverProvinceID",
         DataSourceMember: "ReceiverProvinceID",
         label: "Tỉnh /thành phố",
-        colspan:2,
+        colspan: 2,
         value: -1,
         isMultiSelect: false,
-        placeholder:"---Vui lòng chọn---",
-        listoption: [], 
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
         ValueMember: "ProvinceID",
@@ -104,14 +104,14 @@ export const SearchElementList = [
         name: "cbReceiverDistrictID",
         DataSourceMember: "ReceiverDistrictID",
         label: "Quận/huyện",
-        colspan:2,
+        colspan: 2,
         value: -1,
         isMultiSelect: false,
-        placeholder:"---Vui lòng chọn---",
-        listoption: [], 
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
         IsAutoLoadItemFromCache: true,
-        filterName:"cbReceiverProvinceID",
-        filterValue:"",
+        filterName: "cbReceiverProvinceID",
+        filterValue: "",
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
         ValueMember: "DistrictID",
         NameMember: "DistrictName"
@@ -121,10 +121,10 @@ export const SearchElementList = [
         name: "cbSenderStoreID",
         DataSourceMember: "SenderStoreID",
         label: "Kho giao",
-        colspan:2,
+        colspan: 2,
         value: -1,
         isMultiSelect: false,
-        placeholder:"---Vui lòng chọn---",
+        placeholder: "---Vui lòng chọn---",
         listoption: [
             { value: -1, label: '---Vui lòng chọn---' },
             { value: 1, label: 'Việt Nam' },
@@ -134,17 +134,17 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
         ValueMember: "StoreID",
         NameMember: "StoreName"
-        
+
     },
     {
         type: "ComboBox",
         name: "cbShipmentOrderStatusID",
         DataSourceMember: "ShipmentOrderStatusID",
         label: "Trạng thái",
-        colspan:2,
+        colspan: 2,
         value: -1,
         isMultiSelect: false,
-        placeholder:"---Vui lòng chọn---",
+        placeholder: "---Vui lòng chọn---",
         listoption: [
             { value: -1, label: '---Vui lòng chọn---' },
             { value: 1, label: 'Khởi tạo' },
@@ -584,3 +584,54 @@ export const DataGridColumnItemList = [
         Width: 150
     }
 ];
+//cobombox
+export const ElementQHPXList = [
+
+    {
+        type: "ComboBox",
+        name: "cbReceiverProvinceID",
+        DataSourceMember: "ReceiverProvinceID",
+        label: "Tỉnh /thành phố",
+        colspan: 8,
+        labelcolspan: 4,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
+        ValueMember: "ProvinceID",
+        NameMember: "ProvinceName"
+    },
+    {
+        type: "ComboBox",
+        name: "cbReceiverDistrictID",
+        DataSourceMember: "ReceiverDistrictID",
+        label: "Quận/huyện",
+        colspan: 8,
+        labelcolspan: 4,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        filterName: "cbReceiverProvinceID",
+        filterValue: "",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
+        ValueMember: "DistrictID",
+        NameMember: "DistrictName"
+    },
+    {
+        type: "text",
+        name: "",
+        colspan: "10",
+        labelcolspan: "2",
+        readOnly: false,
+        label: "địa chỉ",
+        placeholder: "Địa chỉ",
+        value: "aa",
+        datasourcemember: "",
+        classNameCustom: "customcontrol"
+    }
+];
+
