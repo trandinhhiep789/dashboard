@@ -844,4 +844,184 @@ class ElementDatetimeCom extends Component {
 }
 const ElementDatetime = connect(null, null)(ElementDatetimeCom);
 
-export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus,ElementDatetime };
+class ComboBox1Com extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.state = { Listoption: [], value: this.props.value }
+    }
+    handleValueChange(e) {
+        e.preventDefault();
+        this.setState({ value: e.target.value });
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(e.target.name, e.target.value, this.props.label, undefined, this.props.validatonList);
+        if (this.props.onValueChangeCus) {
+            this.props.onValueChangeCus(e.target.name, e.target.value);
+        }
+    }
+    //#region tree category
+    categoryNamePrefix(categoryLevel) {
+        let resultStr = "";
+        for (let i = 0; i < categoryLevel; i++) {
+            resultStr += "---";
+        }
+        return resultStr;
+    }
+    createCategoryTree(originListItem) {
+        let childListItem = originListItem.filter(item => item.ParentID == 0);
+        //  console.log("createCategoryTree childListItem:", childListItem);
+        let itemListResult = [{ value: -1, label: "--Vui lòng chọn--" }];
+        for (let i = 0; i < childListItem.length; i++) {
+            itemListResult.push({ value: childListItem[i].CategoryID, label: childListItem[i].CategoryName });
+            let childItemTree = this.createChildCategoryTree(originListItem, childListItem[i].CategoryID, 1);
+            // console.log("createCategoryTree childItemTree:", childItemTree);
+            for (let j = 0; j < childItemTree.length; j++) {
+                //itemListResult.push(childItemTree[j]);
+                itemListResult.push({ value: childItemTree[j].CategoryID, label: childItemTree[j].CategoryName });
+            }
+        }
+        return itemListResult;
+    }
+    createChildCategoryTree(originListItem, parentID, categoryLevel) {
+        let childListItem = originListItem.filter(item => item.ParentID == parentID);
+        // console.log("createChildCategoryTree childListItem:", childListItem);
+        let itemListResult = []
+        for (let i = 0; i < childListItem.length; i++) {
+            let item = childListItem[i];
+            item.CategoryName = this.categoryNamePrefix(categoryLevel) + item.CategoryName;
+            //   console.log("createChildCategoryTree childListItem:",item);
+            itemListResult.push(item);
+            //itemListResult.push({ value: item.CategoryID, label: item.CategoryName });
+            const newCategoryLevel = categoryLevel + 1;
+            let childListItem2 = originListItem.filter(item => item.ParentID == item.CategoryID);
+            //  console.log("createChildCategoryTree childListItem2:",childListItem2);
+            if (childListItem2.length > 0) {
+                const childItemTree2 = this.createChildCategoryTree(originListItem, item.CategoryID, newCategoryLevel);
+                for (j = 0; j < childItemTree2.length; j++) {
+                    itemListResult.push(childItemTree2[j]);
+                    itemListResult.push({ value: childItemTree2[j].CategoryID, label: childItemTree2[j].CategoryName });
+                }
+            }
+        }
+        return itemListResult;
+
+    }
+    //#endregion tree category
+
+    componentDidMount() {
+        let listOption = this.props.listoption;
+        // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
+        if (this.props.isautoloaditemfromcache) {
+            const cacheKeyID = this.props.loaditemcachekeyid;
+            const valueMember = this.props.valuemember;
+            const nameMember = this.props.nameMember;
+            const isCategory = this.props.isCategory;
+            //    console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
+            this.props.callGetCache(cacheKeyID).then((result) => {
+                //  console.log("this.props.isautoloaditemfromcach2: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    if (!isCategory) {
+
+                        result.ResultObject.CacheData.map((cacheItem) => {
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
+                        }
+                        );
+                        this.setState({ Listoption: listOption });
+                    }
+                    else {
+                        const categoryTree = this.createCategoryTree(result.ResultObject.CacheData, 0, 0);
+                        this.setState({ Listoption: categoryTree });
+                    }
+                }
+                else {
+                    this.setState({ Listoption: listOption });
+                }
+                //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+            });
+        }
+        else {
+            //console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
+            this.setState({ Listoption: listOption });
+        }
+    }
+
+    render() {
+        let formRowClassName = "form-row";
+        if (this.props.rowspan != null) {
+            formRowClassName = "form-row col-md-" + this.props.rowspan;
+        }
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        const listOption = this.state.Listoption;
+        let formGroupClassName = "form-group col-md-4";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
+            star = '*'
+        }
+
+        if (this.props.validationErrorMessage != "") {
+            className += " is-invalid";
+            return (
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 6">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+                    <div className={formGroupClassName}>
+                        <select className={className} name={this.props.name}
+                            onChange={this.handleValueChange} 
+                            value={this.state.value}
+                            disabled={this.props.disabled}
+                            required={this.props.required}
+                        >
+                            {listOption.map((optionItem) =>
+                                <option key={optionItem.value} value={optionItem.value}>{(optionItem.value==-1?"":optionItem.value + " - " )+ optionItem.label}</option>
+                            )}
+                        </select>
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    </div>
+                </div>
+            );
+        }
+        else {
+            return (
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 7">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+                    <div className={formGroupClassName}>
+                        <select className={className} name={this.props.name}
+                            onChange={this.handleValueChange} value={this.state.value}
+                            disabled={this.props.disabled}
+                            required={this.props.required}
+                        >
+                            {listOption.map((optionItem) =>
+                                <option key={optionItem.value} value={optionItem.value}>{optionItem.label}</option>
+                            )}
+                        </select>
+                    </div>
+                </div>
+            );
+        }
+    }
+}
+
+
+export const ComboBox1 = connect(null, mapDispatchToProps)(ComboBox1Com);
+
+
+
+
+export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus,ElementDatetime,ComboBox1};
