@@ -8,6 +8,7 @@ import { MODAL_TYPE_SEARCH } from '../../../../constants/actionTypes';
 import SearchModal from "../../Form/AdvanceForm/FormControl/FormSearchModal"
 import { createListTree } from "../../../library/ultils";
 import { TreeSelect } from "antd";
+import Datetime from 'react-datetime';
 import "antd/dist/antd.css";
 
 
@@ -759,4 +760,88 @@ class TreeSelectCom extends React.Component {
 
 export const TreeSelectCus = connect(mapStateToProps, mapDispatchToProps)(TreeSelectCom);
 
-export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus };
+
+class ElementDatetimeCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+    }
+    handleValueChange(name, moment) {
+        //e.preventDefault();
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(name, moment);
+    }
+    render() {
+        let { name, label, timeFormat, dateFormat, colspan, value, ValidatonErrorMessage } = this.props;
+
+        let formRowClassName = "form-row";
+        if (this.props.rowspan != null) {
+            formRowClassName = "form-row col-md-" + this.props.rowspan;
+        }
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-4";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
+            star = '*'
+        }
+
+        if (this.props.validationErrorMessage != "") {
+            className += " is-invalid";
+            return (
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 6">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+                    <div className={formGroupClassName}>
+                    <Datetime
+                            className={className}
+                            name={name}
+                            onChange={this.handleValueChange}
+                            onChange={(moment) => this.handleValueChange(name, moment)}
+                            defaultValue={value}
+                            timeFormat={timeFormat}
+                            dateFormat={dateFormat} >
+                        </Datetime>
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    </div>
+                </div>
+            );
+        }
+        else {
+            return (
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 7">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+                    <div className={formGroupClassName}>
+                    <Datetime
+                            className={className}
+                            name={name}
+                            onChange={this.handleValueChange}
+                            onChange={(moment) => this.handleValueChange(name, moment)}
+                            defaultValue={value}
+                            timeFormat={timeFormat}
+                            dateFormat={dateFormat} >
+                        </Datetime>
+                    </div>
+                </div>
+            );
+        }
+    }
+}
+const ElementDatetime = connect(null, null)(ElementDatetimeCom);
+
+export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus,ElementDatetime };

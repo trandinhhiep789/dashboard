@@ -218,16 +218,19 @@ class EditCom extends React.Component {
                                         datasourcemember="CarrierTypeID" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.TextBox
-                                        name=""
+                                    <FormControl.ElementDatetime
+                                        name="dtCreatedOrderTimeTo"
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
+                                        timeFormat ={false}
+                                        dateFormat="DD/MM/YYYY"
                                         label="ngày tạo yêu cầu"
                                         placeholder="Ngày tạo yêu cầu"
                                         controltype="InputControl"
                                         value={""}
-                                        datasourcemember=""
+                                        datasourcemember="CreatedOrderTimeTo"
+                                       
                                     />
                                 </div>
                                 <div className="col-md-6">
