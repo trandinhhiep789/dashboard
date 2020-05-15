@@ -584,3 +584,40 @@ export const DataGridColumnItemList = [
         Width: 150
     }
 ];
+//cobombox
+export const ElementQHPXList = [
+
+    {
+        type: "ComboBox",
+        name: "cbReceiverProvinceID",
+        DataSourceMember: "ReceiverProvinceID",
+        label: "Tỉnh /thành phố",
+        colspan:2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder:"---Vui lòng chọn---",
+        listoption: [], 
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
+        ValueMember: "ProvinceID",
+        NameMember: "ProvinceName"
+    },
+    {
+        type: "ComboBox",
+        name: "cbReceiverDistrictID",
+        DataSourceMember: "ReceiverDistrictID",
+        label: "Quận/huyện",
+        colspan:2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder:"---Vui lòng chọn---",
+        listoption: [], 
+        IsAutoLoadItemFromCache: true,
+        filterName:"cbReceiverProvinceID",
+        filterValue:"",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
+        ValueMember: "DistrictID",
+        NameMember: "DistrictName"
+    }
+];
+

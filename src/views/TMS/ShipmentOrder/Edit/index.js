@@ -15,7 +15,8 @@ import {
     EditPagePath,
     InputLanguageColumnList,
     GridMLObjectDefinition,
-    AddLogAPIPath
+    AddLogAPIPath,
+    ElementQHPXList
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -213,7 +214,7 @@ class EditCom extends React.Component {
                                         valuemember="CarrierTypeID"
                                         nameMember="CarrierTypeName"
                                         controltype="InputControl"
-                                        value= {-1}
+                                        value={-1}
                                         listoption={null}
                                         datasourcemember="CarrierTypeID"
                                         placeholder="---Vui lòng chọn---"
@@ -236,28 +237,7 @@ class EditCom extends React.Component {
 
                                     />
                                 </div>
-                                <div className="col-md-6">
-                                    <FormControl.ComboboxQTQHPX
-                                        name=""
-                                        colspan="8"
-                                        labelcolspan="4"
-                                        readOnly={true}
-                                        label="thời gian giao hàng"
-                                        placeholder="Thời gian giao hàng"
-                                        isautoloaditemfromcache={false}
-                                        loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
-                                        valuemember="CarrierTypeID"
-                                        nameMember="CarrierTypeName"
-                                        controltype="InputControl"
-                                        value={""}
-                                        listoption={[
-                                            { value: -1, label: '---Vui lòng chọn---' },
-                                            { value: 1, label: 'Việt Nam' },
-                                            { value: 2, label: 'Hoa kỳ' },
-                                            { value: 3, label: 'Trung Quốc' }]}
-                                        datasourcemember=""
-                                    />
-                                </div>
+
                                 <div className="col-md-6">
                                     <FormControl.TextBox
                                         name=""
@@ -310,12 +290,29 @@ class EditCom extends React.Component {
                                         datasourcemember=""
                                     />
                                 </div>
+                                <div className="col-md-6">
+                                    <FormControl.TextBox
+                                        name=""
+                                        colspan="8"
+                                        labelcolspan="4"
+                                        readOnly={true}
+                                        label="đến"
+                                        placeholder="Đến"
+                                        controltype="InputControl"
+                                        value={""}
+                                        datasourcemember=""
+                                    />
+                                </div>
+                                <FormControl.ComboboxQTQHPX
+                                    name=""
+                                    listelement={ElementQHPXList}
+                                />
                             </div>
                         </div>
 
                     </div>
 
-                    <div className="card">
+                    {/* <div className="card">
                         <div className="card-title">
                             <h4 className="title">Địa chỉ</h4>
                         </div>
@@ -912,7 +909,7 @@ class EditCom extends React.Component {
                                 datasourcemember=""
                             />
                         </div>
-                    </div>
+                    </div> */}
                 </FormContainer >
             );
         }
