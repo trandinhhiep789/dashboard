@@ -639,19 +639,7 @@ class EditCom extends React.Component {
                                 onDeleteClick_Customize={this.removeShipmentOrderTypeWorkflow}
                             />
                         </TabPage>
-                        <TabPage title="Chi phí vận chuyển cố định" name="ShipmentOrderType_FixShipmentFee">
-                            {/* <InputGrid name="ShipmentOrderType_FixShipmentFee" controltype="GridControl"
-                            IDSelectColumnName="chkSelectShipmentFeeTypeID"
-                            PKColumnName="ShipmentFeeTypeID"
-                            isUseValueInputControl={true}
-                            listColumn={FixShipmentFeeColumnList}
-                            colspan="12"
-                            MLObjectDefinition={MLObjectShipmentOrderType_FixShipmentFee}
-                            dataSource={this.state.FormData.ShipmentOrderType_FixShipmentFee}
-                            onInsertClick={this.addShipmentOrderType_FixShipmentFeePopup}
-                            onInsertClickEdit={this.editShipmentOrderTypeWorkflowPopup}
-                            onDeleteClick_Customize={this.removeShipmentOrderTypeWorkflow}
-                        /> */}
+                        {/* <TabPage title="Chi phí vận chuyển cố định" name="ShipmentOrderType_FixShipmentFee">
                             <DataGrid listColumn={FixShipmentFeeColumnList}
                                 dataSource={this.state.gridDataSource}
                                 modalElementList={ModalFixShipmentFeeColumnList}
@@ -663,10 +651,8 @@ class EditCom extends React.Component {
                                 IsAutoPaging={false}
                                 RowsPerPage={10}
                                 IsCustomAddLink={true}
-                            // RequirePermission={PIEREQUESTTYPE_VIEW}
-                            // DeletePermission={PIEREQUESTTYPE_DELETE}
                             />
-                        </TabPage>
+                        </TabPage> */}
                     </TabContainer>
                 </FormContainer >
             </React.Fragment>
