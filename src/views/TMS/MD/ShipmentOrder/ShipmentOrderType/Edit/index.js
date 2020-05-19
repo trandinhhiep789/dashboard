@@ -759,7 +759,7 @@ class EditCom extends React.Component {
                                 onDeleteClick_Customize={this.removeShipmentOrderTypeWorkflow}
                             />
                         </TabPage>
-                        <TabPage title="Chi phí vận chuyển cố định" name="ShipmentOrderType_FixShipmentFee">
+                        {/* <TabPage title="Chi phí vận chuyển cố định" name="ShipmentOrderType_FixShipmentFee">
                             <DataGrid listColumn={FixShipmentFeeColumnList}
                                 dataSource={this.state.FormData.ShipmentOrderTypeFixShipmentFee}
                                 modalElementList={ModalFixShipmentFeeColumnList}
@@ -788,7 +788,7 @@ class EditCom extends React.Component {
                                 RowsPerPage={10}
                                 IsCustomAddLink={true}
                             />
-                        </TabPage>
+                        </TabPage> */}
                     </TabContainer>
                 </FormContainer >
             </React.Fragment>

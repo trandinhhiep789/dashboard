@@ -111,7 +111,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
             }
         });
         this.setState({ ShipmentOrderType_WF_PermisData });
-        console.log("ShipmentOrderType_WF_PermisData",ShipmentOrderType_WF_PermisData);
+        //console.log("ShipmentOrderType_WF_PermisData",ShipmentOrderType_WF_PermisData);
     }
 
     removeShipmentOrderTypeWFPermis(listSelect, dataSource, listDataSourceMember) {
@@ -174,7 +174,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     }
 
     handleInputChangeList(formData, tabNameList, tabMLObjectDefinitionList) {
-        console.log("handleInputChangeList_wf", formData);
+        //console.log("handleInputChangeList_wf", formData);
         // console.log("formData", this.state.FormData);
         let keys = []
         //formData.ShipmentOrderType_WF_Next = this.state.FormData.ShipmentOrderType_WF_Next;
@@ -369,23 +369,6 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     <FormControl.TextBox labelcolspan={4} colspan={8} readonly={false} name="StepColorCode" label="Màu sắc của bước"
                                         controltype="InputControl" datasourcemember="StepColorCode" maxSize={20} required={false}
                                     />
-
-                                    {/* <FormControl.Number labelcolspan={4} colspan={8} name="StepCompletePercent" label="Phần trăm hoàn thành của bước"
-                                        datasourcemember="StepCompletePercent" controltype="InputControl"
-                                        min={0} max={100}
-                                    />
-                                    <FormControl.Number labelcolspan={4} colspan={8} name="MaxProcessTimeDay" label="Thời gian XL tối đa(Ngày)"
-                                        datasourcemember="MaxProcessTimeDay" controltype="InputControl"
-                                        min={0} max={30} required={true}
-                                    />
-                                    <FormControl.Number labelcolspan={4} colspan={8} name="MaxProcessTimeHour" label="Thời gian XL tối đa(Giờ)"
-                                        datasourcemember="MaxProcessTimeHour" controltype="InputControl"
-                                        min={0} max={24}
-                                    />
-                                    <FormControl.Number labelcolspan={4} colspan={8} name="MaxProcessTimeMinute" label="Thời gian XL tối đa(phút)"
-                                        datasourcemember="MaxProcessTimeMinute" controltype="InputControl"
-                                        min={0} max={60}
-                                    /> */}
 
                                     <FormControl.Numeric name="StepCompletePercent" label="Phần trăm hoàn thành của bước" controltype="InputControl"
                                         datasourcemember="StepCompletePercent" readonly={false}
