@@ -10,12 +10,16 @@ export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "ShipmentOrderTypeID";
 export const CheckValidStepAPIPath = "api/ShipmentOrderType/CheckValidStep";
 
-//----------------------------------Chi phí vận chuyển cố định---------------------------------------
-export const SearchAPIPath_FixShipmentFee = "api/ShipmentOrderType_FixShipmentFee/Search";
-export const LoadAPIPath_FixShipmentFee = "api/ShipmentOrderType_FixShipmentFee/Load";
+//----------------------------------Chi phí vận chuyển cố định-----------------------------------------
 export const AddAPIPath_FixShipmentFee = "api/ShipmentOrderType_FixShipmentFee/Add";
 export const UpdateAPIPath_FixShipmentFee = "api/ShipmentOrderType_FixShipmentFee/Update";
 export const DeleteAPIPath_FixShipmentFee = "api/ShipmentOrderType_FixShipmentFee/Delete";
+//-----------------------------------------------------------------------------------------------------
+
+//----------------------------------Chi phí vận chuyển thay đổi-----------------------------------------
+export const AddAPIPath_FlexShipmentFee = "api/ShipmentOrderType_FlexShipmentFee/Add";
+export const UpdateAPIPath_FlexShipmentFee = "api/ShipmentOrderType_FlexShipmentFee/Update";
+export const DeleteAPIPath_FlexShipmentFee = "api/ShipmentOrderType_FlexShipmentFee/Delete";
 //-----------------------------------------------------------------------------------------------------
 
 
@@ -503,6 +507,18 @@ export const MLObjectShipmentOrderTypeWorkFlow = [
         DataSourceMember: "IsSentSMS"
     },
     {
+        Name: "IsBeginDeliveryStep",
+        DefaultValue: "",
+        BindControlName: "IsBeginDeliveryStep",
+        DataSourceMember: "IsBeginDeliveryStep"
+    },
+    {
+        Name: "IsCompletedDeliveryStep",
+        DefaultValue: "",
+        BindControlName: "IsCompletedDeliveryStep",
+        DataSourceMember: "IsCompletedDeliveryStep"
+    },
+    {
         Name: "SMSTemplate",
         DefaultValue: "",
         BindControlName: "SMSTemplate",
@@ -663,18 +679,90 @@ export const ModalFixShipmentFeeColumnList = [
         label: "Hệ thống",
         DataSourceMember: "IsSystem",
         readonly: false,
-        validatonList:[],
+        validatonList: [],
+        value: false
+    }
+];
+
+
+export const ModalFixShipmentFeeColumnList_Edit = [
+    {
+        Name: "ShipmentFeeTypeID",
+        type: "numeric",
+        label: "Mã loại chi phí vận chuyển",
+        maxSize: "9",
+        DataSourceMember: "ShipmentFeeTypeID",
+        readonly: true,
+        validatonList: ["required"]
+    },
+    {
+        Name: "OutputServiceProductID",
+        type: "text",
+        label: "Mã sản phẩm dịch vụ cần xuất",
+        maxSize: "20",
+        DataSourceMember: "OutputServiceProductID",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "select",
+        Name: "GetFeeType",
+        label: "Kiểu lấy chi phí",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [{ value: -1, label: "---Vui lòng chọn---" }, { value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
+        DataSourceMember: "GetFeeType",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: false
+    },
+    {
+        Name: "FeeValue",
+        type: "text",
+        label: "Chi phí",
+        maxSize: "19",
+        DataSourceMember: "FeeValue",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
+        Name: "Note",
+        type: "textarea",
+        label: "Ghi chú",
+        maxSize: "2000",
+        DataSourceMember: "Note",
+        rows: "6",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        Name: "IsActived",
+        type: "checkbox",
+        label: "Kích hoạt",
+        DataSourceMember: "IsActived",
+        readonly: false,
+        validatonList: [],
+        value: true
+    },
+    {
+        Name: "IsSystem",
+        type: "checkbox",
+        label: "Hệ thống",
+        DataSourceMember: "IsSystem",
+        readonly: false,
+        validatonList: [],
         value: false
     }
 ];
 
 export const FixShipmentFeeColumnList = [
     {
-        Name: "chkSelectShipmentFeeTypeID",
+        Name: "chkSelect",
         Type: "checkbox",
-        Caption: "",
+        Caption: "Chọn",
         DataSourceMember: "ShipmentFeeTypeID",
-        Width: 60
+        Width: 50
     },
     {
         Name: "ShipmentFeeTypeID",
@@ -691,18 +779,18 @@ export const FixShipmentFeeColumnList = [
         Width: 200
     },
     {
-        Name: "GetFeeType",
+        Name: "GetFeeTypeName",
         Type: "text",
         Caption: "Kiểu lấy chi phí",
-        DataSourceMember: "GetFeeType",
-        Width: 100
+        DataSourceMember: "GetFeeTypeName",
+        Width: 200
     },
     {
         Name: "FeeValue",
         Type: "text",
         Caption: "Chi phí vận chuyển",
         DataSourceMember: "FeeValue",
-        Width: 100
+        Width: 200
     },
     {
         Name: "IsActived",
@@ -785,4 +873,276 @@ export const MLObjectShipmentOrderType_FixShipmentFee = [
         DataSourceMember: "CreatedUser"
     }
 ];
+
+export const FlexShipmentFeeColumnList = [
+    {
+        Name: "chkSelect",
+        Type: "checkbox",
+        Caption: "Chọn",
+        DataSourceMember: "FlexShipmentFeeID",
+        Width: 50
+    },
+    // {
+    //     Name: "FlexShipmentFeeID",
+    //     Type: "text",
+    //     Caption: "Mã chi phí vận chuyển thay đổi",
+    //     DataSourceMember: "FlexShipmentFeeID",
+    //     Width: 180
+    // },
+    {
+        Name: "ShipmentFeeTypeID",
+        Type: "text",
+        Caption: "Mã loại chi phí vận chuyển",
+        DataSourceMember: "ShipmentFeeTypeID",
+        Width: 180
+    },
+    {
+        Name: "GetFeeTypeName",
+        Type: "text",
+        Caption: "Kiểu lấy chi phí",
+        DataSourceMember: "GetFeeTypeName",
+        Width: 200
+    },
+    {
+        Name: "FeeValue",
+        Type: "text",
+        Caption: "Chi phí vận chuyển",
+        DataSourceMember: "FeeValue",
+        Width: 200
+    },
+    {
+        Name: "IsActived",
+        Type: "checkicon",
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived",
+        Width: 100
+    },
+    {
+        Name: "EditFlexShipmentFeeID",
+        Type: "edit",
+        Caption: "Sửa",
+        DataSourceMember: "FlexShipmentFeeID",
+        Width: 100
+    }
+
+];
+
+export const ModalFlexShipmentFeeColumnList = [
+    {
+        Name: "ShipmentFeeTypeID",
+        type: "numeric",
+        label: "Mã loại chi phí vận chuyển",
+        maxSize: "9",
+        DataSourceMember: "ShipmentFeeTypeID",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "select",
+        Name: "SubGroupID",
+        label: "Nhóm hàng áp dụng",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [{ value: -1, label: "---Vui lòng chọn---" }, { value: 1, label: "subgroup1" }, { value: 2, label: "subgroup2" }],
+        DataSourceMember: "SubGroupID",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: false,
+        LoadItemCacheKeyID: "ERPUSERCACHE.SUBGROUP",
+        ValueMember: "SubGroupID",
+        NameMember: "SubGroupName"
+    },
+    {
+        type: "select",
+        Name: "TechspecsID",
+        label: "Thông số kỹ thuật áp dụng",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "TechspecsID",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECS",
+        ValueMember: "TechSpecsID",
+        NameMember: "TechSpecsName"
+    },
+    {
+        type: "select",
+        Name: "TechspecsValueID",
+        label: "Giá trị tham số KT áp dụng",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "TechspecsValueID",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECSVALUE",
+        ValueMember: "TechSpecsValueID",
+        NameMember: "Value"
+    },
+    {
+        Name: "ProductID",
+        type: "text",
+        label: "Mã sản phẩm áp dụng",
+        maxSize: "20",
+        DataSourceMember: "ProductID",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        Name: "OutputServiceProductID",
+        type: "text",
+        label: "Mã sản phẩm dịch vụ cần xuất",
+        maxSize: "20",
+        DataSourceMember: "OutputServiceProductID",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "select",
+        Name: "GetFeeType",
+        label: "Kiểu lấy chi phí",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [{ value: -1, label: "---Vui lòng chọn---" }, { value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
+        DataSourceMember: "GetFeeType",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: false
+    },
+    {
+        Name: "FeeValue",
+        type: "text",
+        label: "Chi phí",
+        maxSize: "19",
+        DataSourceMember: "FeeValue",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
+        Name: "Note",
+        type: "textarea",
+        label: "Ghi chú",
+        maxSize: "2000",
+        DataSourceMember: "Note",
+        rows: "6",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        Name: "IsActived",
+        type: "checkbox",
+        label: "Kích hoạt",
+        DataSourceMember: "IsActived",
+        readonly: false,
+        validatonList: [],
+        value: true
+    },
+    {
+        Name: "IsSystem",
+        type: "checkbox",
+        label: "Hệ thống",
+        DataSourceMember: "IsSystem",
+        readonly: false,
+        validatonList: [],
+        value: false
+    }
+];
+
+
+export const MLObjectShipmentOrderType_FlexShipmentFee = [
+    {
+        Name: "ShipmentOrderTypeID",
+        DefaultValue: "",
+        BindControlName: "ShipmentOrderTypeID",
+        DataSourceMember: "ShipmentOrderTypeID"
+    },
+    {
+        Name: "ShipmentFeeTypeID",
+        DefaultValue: "",
+        BindControlName: "ShipmentFeeTypeID",
+        DataSourceMember: "ShipmentFeeTypeID"
+    },
+    {
+        Name: "SubGroupID",
+        DefaultValue: "",
+        BindControlName: "SubGroupID",
+        DataSourceMember: "SubGroupID"
+    },
+    {
+        Name: "TechspecsID",
+        DefaultValue: "",
+        BindControlName: "TechspecsID",
+        DataSourceMember: "TechspecsID"
+    },
+    {
+        Name: "TechspecsValueID",
+        DefaultValue: "",
+        BindControlName: "TechspecsValueID",
+        DataSourceMember: "TechspecsValueID"
+    },
+    {
+        Name: "ProductID",
+        DefaultValue: "",
+        BindControlName: "ProductID",
+        DataSourceMember: "ProductID"
+    },
+    {
+        Name: "OutputServiceProductID",
+        DefaultValue: "",
+        BindControlName: "OutputServiceProductID",
+        DataSourceMember: "OutputServiceProductID"
+    },
+    {
+        Name: "GetFeeType",
+        DefaultValue: "",
+        BindControlName: "GetFeeType",
+        DataSourceMember: "GetFeeType",
+        // Label: "Kiểu lấy chi phí",
+        // ValidationList: ["required"]
+    },
+    {
+        Name: "FeeValue",
+        DefaultValue: "",
+        BindControlName: "FeeValue",
+        DataSourceMember: "FeeValue"
+    },
+    {
+        Name: "Note",
+        DefaultValue: "",
+        BindControlName: "Note",
+        DataSourceMember: "Note"
+    },
+    {
+        Name: "IsActived",
+        DefaultValue: "",
+        BindControlName: "IsActived",
+        DataSourceMember: "IsActived"
+    },
+    {
+        Name: "IsSystem",
+        DefaultValue: "",
+        BindControlName: "IsSystem",
+        DataSourceMember: "IsSystem"
+    },
+    {
+        Name: "CreatedDate",
+        DefaultValue: "",
+        BindControlName: "CreatedDate",
+        DataSourceMember: "CreatedDate"
+    },
+    {
+        Name: "CreatedUser",
+        DefaultValue: "",
+        BindControlName: "CreatedUser",
+        DataSourceMember: "CreatedUser"
+    }
+];
+
 

@@ -130,6 +130,18 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsSentSMS"
     },
     {
+        Name: "IsBeginDeliveryStep",
+        DefaultValue: "",
+        BindControlName: "IsBeginDeliveryStep",
+        DataSourceMember: "IsBeginDeliveryStep"
+    },
+    {
+        Name: "IsCompletedDeliveryStep",
+        DefaultValue: "",
+        BindControlName: "IsCompletedDeliveryStep",
+        DataSourceMember: "IsCompletedDeliveryStep"
+    },
+    {
         Name: "SMSTemplate",
         DefaultValue: "",
         BindControlName: "SMSTemplate",
