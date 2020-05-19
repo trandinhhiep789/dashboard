@@ -11,6 +11,9 @@ module.exports = {
     },
     devServer: {
         historyApiFallback: true,
+        host: "dev.tms.tterpbeta.vn",
+        port: 8089,
+        https: false
     },
     // plugins: [
     //     new HtmlWebpackPlugin({
