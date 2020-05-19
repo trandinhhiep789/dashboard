@@ -44,11 +44,11 @@ export const SearchElementList = [
 
 export const AddElementList = [
     {
-        type: "numeric",
+        type: "text",
         name: "txtPartnerID",
         label: "Mã đối tác",
         value: "",
-        maxSize: "10",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -57,17 +57,20 @@ export const AddElementList = [
         validatonList: ["required", "number"]
     },
     {
-        type: "text",
+        type: "select",
         name: "txtPartnerTypeID",
         label: "Loại nhà cung cấp",
-        value: "",
-        maxSize: "200",
+        value: -1,
         placeholder: "",
         icon: "",
-        listoption: {},
+        listoption: [],
         DataSourceMember: "PartnerTypeID",
         readonly: false,
-        validatonList: ["required"],
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNERTYPE",
+        ValueMember: "PartnerTypeID",
+        NameMember: "PartnerTypeName"
     },
     {
         type: "text",
@@ -407,17 +410,20 @@ export const EditElementList = [
         validatonList: ["required", "number"]
     },
     {
-        type: "text",
+        type: "select",
         name: "txtPartnerTypeID",
         label: "Loại nhà cung cấp",
-        value: "",
-        maxSize: "200",
+        value: -1,
         placeholder: "",
         icon: "",
-        listoption: {},
+        listoption: [],
         DataSourceMember: "PartnerTypeID",
         readonly: false,
-        validatonList: ["required"],
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNERTYPE",
+        ValueMember: "PartnerTypeID",
+        NameMember: "PartnerTypeName"
     },
     {
         type: "text",
@@ -943,22 +949,22 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Mã đối tác",
         DataSourceMember: "PartnerID",
-        Width: 100
+        Width: 150
     },
     {
         Name: "PartnerName",
         Type: "text",
         Caption: "Tên đối tác",
         DataSourceMember: "PartnerName",
-        Width: 250
+        Width: 450
     },
-    {
-        Name: "Description",
-        Type: "text",
-        Caption: "Mô tả",
-        DataSourceMember: "Description",
-        Width: 250
-    },
+    // {
+    //     Name: "Description",
+    //     Type: "text",
+    //     Caption: "Mô tả",
+    //     DataSourceMember: "Description",
+    //     Width: 250
+    // },
     {
         Name: "IsActived",
         Type: "checkicon",

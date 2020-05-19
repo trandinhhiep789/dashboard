@@ -192,9 +192,14 @@ class FormElementCom extends Component {
             }
         }
     }
-    componentWillReceiveProps() {
+    componentWillReceiveProps(nextProps) {
         //console.log("FormElement componentWillReceiveProps:", this.props);
         //this.setState({value: this.props.value});
+        if (nextProps.type == "select" && nextProps.listoption != undefined && nextProps.listoption.length > 0) {
+            //console.log("FormElement componentWillReceiveProps:", nextProps);
+            let listOption = nextProps.listoption;
+            this.setState({ Listoption: listOption });
+        }
     }
 
     onChangeEditor() {
@@ -525,7 +530,7 @@ class FormElementCom extends Component {
                 if (this.props.validationErrorMessage != "") {
                     className += " is-invalid";
                 }
-               
+
                 control = (
 
                     <TreeSelect

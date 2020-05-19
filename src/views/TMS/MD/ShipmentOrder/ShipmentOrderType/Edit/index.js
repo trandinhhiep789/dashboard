@@ -8,14 +8,16 @@ import { MessageModal } from "../../../../../../common/components/Modal";
 import {
     APIHostName, UpdateAPIPath, LoadAPIPath, EditPagePath,
     MLObjectDefinition, MLObjectShipmentOrderTypeWorkFlow,
-    MTabList, BackLink, WFColumnList, AddLogAPIPath, FixShipmentFeeColumnList, MLObjectShipmentOrderType_FixShipmentFee, ModalFixShipmentFeeColumnList
+    MTabList, BackLink, WFColumnList, AddLogAPIPath, CheckValidStepAPIPath,
+    FixShipmentFeeColumnList, MLObjectShipmentOrderType_FixShipmentFee, ModalFixShipmentFeeColumnList,
+    SearchAPIPath_FixShipmentFee, LoadAPIPath_FixShipmentFee, AddAPIPath_FixShipmentFee, UpdateAPIPath_FixShipmentFee, DeleteAPIPath_FixShipmentFee
 } from "../constants"
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import ShipmentOrderTypeWorkflow from '../../ShipmentOrderTypeWorkflow';
 import ShipmentOrderType_FixShipmentFee from '../../ShipmentOrderType_FixShipmentFee';
 import { showModal, hideModal } from '../../../../../../actions/modal';
-import { MODAL_TYPE_COMMONTMODALS } from '../../../../../../constants/actionTypes';
+import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_CONFIRMATION } from '../../../../../../constants/actionTypes';
 import InputGrid from '../../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
 import FormContainer from '../../../../../../common/components/Form/AdvanceForm/FormContainer';
 import FormControl from '../../../../../../common/components/Form/AdvanceForm/FormControl';
@@ -23,6 +25,10 @@ import { PIEREQUESTTYPE_UPDATE } from "../../../../../../constants/functionLists
 import { callGetCache } from "../../../../../../actions/cacheAction";
 import { DeleteAPIPath } from '../../ShipmentOrderTypeWorkflow/constants';
 import DataGrid from "../../../../../../common/components/DataGrid";
+import { GetMLObjectData } from "../../../../../../common/library/form/FormLib";
+import { Prompt } from 'react-router';
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -42,6 +48,8 @@ class EditCom extends React.Component {
         this.changeSelectShipmentStatus = this.changeSelectShipmentStatus.bind(this);
         this.callLoadData = this.callLoadData.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.checkValidStep = this.checkValidStep.bind(this);
+        this.notificationDOMRef = React.createRef();
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -51,7 +59,8 @@ class EditCom extends React.Component {
                 ShipmentOrderTypeWorkflow: [],
                 ShipmentOrderType_FixShipmentFee: [],
                 TotalStepCompletePercent: 0
-            }
+            },
+            IsValidStep: false
             // PartnerList: [],
             // ShipmentStatusList: []
         };
@@ -65,6 +74,19 @@ class EditCom extends React.Component {
         this.getCachePartner();
         this.getCacheShipmentStatus();
         //console.log("formdata", this.state.FormData);
+    }
+
+    //kiểm tra đủ bước khởi tạo hay hoàn thành trước khi rời trang
+    checkValidStep() {
+        const id = this.props.match.params.id;
+        this.props.callFetchAPI(APIHostName, CheckValidStepAPIPath, id).then((apiResult) => {
+            if (apiResult.IsError) {
+                this.setState({ IsValidStep: true });
+            } else {
+                this.setState({ IsValidStep: false });
+            }
+        });
+        //console.log("validstep", this.state.IsValidStep);
     }
 
     addShipmentOrderTypeWorkflowPopup() {
@@ -169,26 +191,11 @@ class EditCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.callLoadData();
             this.showMessage(apiResult.Message);
+            this.checkValidStep();
         });
     }
 
     //----------------------- Chi phí vận chuyển cố định ------------------------------------------------------------
-
-    // addShipmentOrderType_FixShipmentFeePopup() {
-    //     this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-    //         title: 'Thêm mới chi phí vận chuyển cố định của một loại yêu cầu vận chuyển',
-    //         content: {
-    //             text: <ShipmentOrderType_FixShipmentFee
-    //                 ShipmentOrderTypeWorkflow={this.state.FormData.ShipmentOrderTypeWorkflow}
-    //                 onAddShipmentOrderTypeWorkflowComplete={(data) => this.onWorkflowPopupSubmit(data)}
-    //                 dataSource={[]}
-    //                 ShipmentOrderTypeID={this.state.FormData.ShipmentOrderType.ShipmentOrderTypeID}
-    //             />
-    //         },
-    //         afterClose: this.onWorkflowPopupSubmit,
-    //         maxWidth: '1500px'
-    //     });
-    // }
 
     addShipmentOrderType_FixShipmentFeePopup(MLObjectDefinition, modalElementList, dataSource) {
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
@@ -198,11 +205,12 @@ class EditCom extends React.Component {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
                     if (MLObject) {
+                        MLObject.ShipmentOrderTypeID = this.props.match.params.id;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-                        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then((apiResult) => {
+                        this.props.callFetchAPI(APIHostName, AddAPIPath_FixShipmentFee, MLObject).then((apiResult) => {
                             if (!apiResult.IsError) {
-                                this.callSearchData(this.state.SearchData);
+                                this.callLoadData();
                                 //this.handleSubmitInsertLog(MLObject);
                                 this.props.hideModal();
                                 this.addNotification(apiResult.Message, apiResult.IsError);
@@ -221,6 +229,7 @@ class EditCom extends React.Component {
     //Sự kiện khi bấm cập nhật popup thêm bước xử lý
     onWorkflowPopupSubmit(formData) {
         this.callLoadData();
+        this.checkValidStep();
         this.props.hideModal();
     }
 
@@ -338,7 +347,7 @@ class EditCom extends React.Component {
                     this.showMessage(apiResult.Message);
                     return;
                 }
-                
+
 
                 let selectedOptionPartner = [];
                 let listPartner = [];
@@ -402,7 +411,7 @@ class EditCom extends React.Component {
                 }
 
                 this.setState({ IsLoading: false });
-                
+
             }
         });
     }
@@ -463,6 +472,38 @@ class EditCom extends React.Component {
     //     return convertdata;
 
     // }
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
 
     render() {
         if (this.state.IsCloseForm) {
@@ -470,129 +511,136 @@ class EditCom extends React.Component {
         }
         if (this.state.IsLoading) return <p>Đang lấy dữ liệu...</p>
         return (
-            <FormContainer
-                MLObjectDefinition={MTabList}
-                IsAutoLayout={true}
-                listelement={[]}
-                dataSource={this.state.FormData}
-                //RequirePermission={PIEREQUESTTYPE_UPDATE}
-                onInputChangeList={this.handleInputChangeList}
-                onSubmit={(formData, MLObject) => this.handleSubmit(formData, MLObject)}
-                BackLink={BackLink}>
-                <TabContainer
-                    defaultActiveTabIndex={0} IsAutoLayout={true} controltype="TabContainer" IsAutoLoadDataGrid={true}>
-                    <TabPage title="Loại yêu cầu vận chuyển" name="ShipmentOrderType" MLObjectDefinition={MLObjectDefinition} datasource={this.state.FormData.ShipmentOrderType}>
-                        <FormControl.TextBox readonly={true} name="ShipmentOrderTypeID" label="Mã loại yêu cầu vận chuyển:"
-                            controltype="InputControl" datasourcemember="ShipmentOrderTypeID"
-                            labelcolspan={4} colspan={8} rowspan={8}
-                            maxSize={10}
-                        />
-                        <FormControl.TextBox name="ShipmentOrderTypeName" label="Tên loại yêu cầu vận chuyển:"
-                            controltype="InputControl" datasourcemember="ShipmentOrderTypeName"
-                            labelcolspan={4} colspan={8} rowspan={8}
-                            maxSize={200} isRequired={true}
-                        />
-                        {/* <FormControl.ComboBox name="PieTypeID" type="select" isautoloaditemfromcache={true}
+            <React.Fragment>
+                <ReactNotification ref={this.notificationDOMRef} />
+                <Prompt
+                    when={this.state.IsValidStep}
+                    message='Thiếu bước khởi tạo hay bước hoàn thành. Bạn có muốn rời trang?'
+                />
+
+                <FormContainer
+                    MLObjectDefinition={MTabList}
+                    IsAutoLayout={true}
+                    listelement={[]}
+                    dataSource={this.state.FormData}
+                    //RequirePermission={PIEREQUESTTYPE_UPDATE}
+                    onInputChangeList={this.handleInputChangeList}
+                    onSubmit={(formData, MLObject) => this.handleSubmit(formData, MLObject)}
+                    BackLink={BackLink}>
+                    <TabContainer
+                        defaultActiveTabIndex={0} IsAutoLayout={true} controltype="TabContainer" IsAutoLoadDataGrid={true}>
+                        <TabPage title="Loại yêu cầu vận chuyển" name="ShipmentOrderType" MLObjectDefinition={MLObjectDefinition} datasource={this.state.FormData.ShipmentOrderType}>
+                            <FormControl.TextBox readonly={true} name="ShipmentOrderTypeID" label="Mã loại yêu cầu vận chuyển:"
+                                controltype="InputControl" datasourcemember="ShipmentOrderTypeID"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                                maxSize={10}
+                            />
+                            <FormControl.TextBox name="ShipmentOrderTypeName" label="Tên loại yêu cầu vận chuyển:"
+                                controltype="InputControl" datasourcemember="ShipmentOrderTypeName"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                                maxSize={200} isRequired={true}
+                            />
+                            {/* <FormControl.ComboBox name="PieTypeID" type="select" isautoloaditemfromcache={true}
                             loaditemcachekeyid="PIMCACHE.PIETYPE" valuemember="PieTypeID" nameMember="PieTypeName"
                             label="Loại chỉnh sửa:" controltype="InputControl" listoption={[]} datasourcemember="PieTypeID"
                             labelcolspan={3} colspan={9} rowspan={8}
                         /> */}
-                        <FormControl.TextBox name="AddFunctionID" label="Quyền thêm yêu cầu này"
-                            datasourcemember="AddFunctionID" controltype="InputControl"
-                            labelcolspan={4} colspan={8} rowspan={8}
-                            maxSize={400}
-                        />
+                            <FormControl.TextBox name="AddFunctionID" label="Quyền thêm yêu cầu này"
+                                datasourcemember="AddFunctionID" controltype="InputControl"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                                maxSize={400}
+                            />
 
-                        <FormControl.CheckBox label="Cho phép chọn đối tác gửi" name="IsSelectSenderPartner"
-                            datasourcemember="IsSelectSenderPartner" controltype="InputControl"
-                            labelcolspan={4} colspan={8} rowspan={8}
-                        />
+                            <FormControl.CheckBox label="Cho phép chọn đối tác gửi" name="IsSelectSenderPartner"
+                                datasourcemember="IsSelectSenderPartner" controltype="InputControl"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                            />
 
-                        <FormControl.CheckBox label="Cho phép chọn kho gửi" name="IsSelectSenderStore"
-                            datasourcemember="IsSelectSenderStore" controltype="InputControl"
-                            labelcolspan={4} colspan={8} rowspan={8}
-                        />
+                            <FormControl.CheckBox label="Cho phép chọn kho gửi" name="IsSelectSenderStore"
+                                datasourcemember="IsSelectSenderStore" controltype="InputControl"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                            />
 
-                        <FormControl.CheckBox label="Cho phép chọn đối tác nhận" name="IsSelectReceiverPartner"
-                            datasourcemember="IsSelectReceiverPartner" controltype="InputControl"
-                            labelcolspan={4} colspan={8} rowspan={8}
-                        />
+                            <FormControl.CheckBox label="Cho phép chọn đối tác nhận" name="IsSelectReceiverPartner"
+                                datasourcemember="IsSelectReceiverPartner" controltype="InputControl"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                            />
 
-                        <FormControl.CheckBox label="Cho phép chọn kho nhận" name="IsSelectReceiverStore"
-                            datasourcemember="IsSelectReceiverStore" controltype="InputControl"
-                            labelcolspan={4} colspan={8} rowspan={8}
-                        />
+                            <FormControl.CheckBox label="Cho phép chọn kho nhận" name="IsSelectReceiverStore"
+                                datasourcemember="IsSelectReceiverStore" controltype="InputControl"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                            />
 
-                        {/* ------------------------------------------------------------------ */}
+                            {/* ------------------------------------------------------------------ */}
 
-                        <FormControl.MultiSelectComboBox name="PartnerID" label="Danh sách đối tác"
-                            labelcolspan={4} colspan={8} rowspan={8}
-                            IsLabelDiv={true} controltype="InputControl"
-                            isautoloaditemfromcache={true} loaditemcachekeyid="ERPCOMMONCACHE.PARTNER" valuemember="PartnerID" nameMember="PartnerName"
-                            listoption={[]} datasourcemember="PartnerID"
-                            SelectedOption={this.state.SelectedPartnerList ? this.state.SelectedPartnerList : []}
-                            onValueChangeCus={this.changeSelecPartner}
-                        />
+                            <FormControl.MultiSelectComboBox name="PartnerID" label="Danh sách đối tác"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                                IsLabelDiv={true} controltype="InputControl"
+                                isautoloaditemfromcache={true} loaditemcachekeyid="ERPCOMMONCACHE.PARTNER" valuemember="PartnerID" nameMember="PartnerName"
+                                listoption={[]} datasourcemember="PartnerID"
+                                SelectedOption={this.state.SelectedPartnerList ? this.state.SelectedPartnerList : []}
+                                onValueChangeCus={this.changeSelecPartner}
+                            />
 
-                        <FormControl.MultiSelectComboBox name="ShipmentOrderStatusID" label="Trạng thái vận chuyển"
-                            labelcolspan={4} colspan={8} rowspan={8}
-                            IsLabelDiv={true} controltype="InputControl"
-                            isautoloaditemfromcache={true} loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERSTATUS" valuemember="ShipmentOrderStatusID" nameMember="ShipmentOrderStatusName"
-                            listoption={[]} datasourcemember="ShipmentOrderStatusID"
-                            SelectedOption={this.state.SelectedShipmentStatusList ? this.state.SelectedShipmentStatusList : []}
-                            onValueChangeCus={this.changeSelectShipmentStatus}
-                        />
+                            <FormControl.MultiSelectComboBox name="ShipmentOrderStatusID" label="Trạng thái vận chuyển"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                                IsLabelDiv={true} controltype="InputControl"
+                                isautoloaditemfromcache={true} loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERSTATUS" valuemember="ShipmentOrderStatusID" nameMember="ShipmentOrderStatusName"
+                                listoption={[]} datasourcemember="ShipmentOrderStatusID"
+                                SelectedOption={this.state.SelectedShipmentStatusList ? this.state.SelectedShipmentStatusList : []}
+                                onValueChangeCus={this.changeSelectShipmentStatus}
+                            />
 
-                        {/* <FormControl.ComboBox name="PartnerID" type="select" isautoloaditemfromcache={false}
+                            {/* <FormControl.ComboBox name="PartnerID" type="select" isautoloaditemfromcache={false}
                             loaditemcachekeyid="" valuemember="PartnerID" nameMember="PartnerName" value={this.state.FormData.ShipmentOrderType.PartnerID}
                             label="Mã đối tác" controltype="InputControl" listoption={this.state.FormData.ListPartner} datasourcemember="PartnerID"
                             labelcolspan={4} colspan={8} rowspan={8}
                         /> */}
 
-                        {/* <FormControl.ComboBox name="StatusID" type="select" isautoloaditemfromcache={false}
+                            {/* <FormControl.ComboBox name="StatusID" type="select" isautoloaditemfromcache={false}
                             loaditemcachekeyid="" valuemember="StatusID" nameMember="StatusName" value={this.state.FormData.ShipmentOrderType.StatusID}
                             label="Trạng thái vận chuyển" controltype="InputControl" listoption={this.state.FormData.ListStatus} datasourcemember="StatusID"
                             labelcolspan={4} colspan={8} rowspan={8}
                         /> */}
-                        {/* ------------------------------------------------------------------ */}
+                            {/* ------------------------------------------------------------------ */}
 
-                        <FormControl.TextArea name="Description" label="Mô tả"
-                            datasourcemember="Description" controltype="InputControl"
-                            labelcolspan={4} colspan={8} rowspan={8} rows={6}
-                            maxSize={2000}
-                        />
-                        <FormControl.Numeric name="OrderIndex" label="Thứ tự hiển thị"
-                            datasourcemember="OrderIndex" controltype="InputControl"
-                            labelcolspan={4} colspan={8} rowspan={8}
-                            value={this.state.FormData ? this.state.FormData.ShipmentOrderType.OrderIndex : 0}
-                            maxSize={10}
-                        />
-                        <FormControl.CheckBox label="Kích hoạt" name="IsActived"
-                            datasourcemember="IsActived" controltype="InputControl"
-                            labelcolspan={4} colspan={8} rowspan={8}
-                        />
-                        <FormControl.CheckBox label="Hệ thống" name="IsSystem"
-                            datasourcemember="IsSystem" controltype="InputControl"
-                            labelcolspan={4} colspan={8} rowspan={8}
-                        />
+                            <FormControl.TextArea name="Description" label="Mô tả"
+                                datasourcemember="Description" controltype="InputControl"
+                                labelcolspan={4} colspan={8} rowspan={8} rows={6}
+                                maxSize={2000}
+                            />
+                            <FormControl.Numeric name="OrderIndex" label="Thứ tự hiển thị"
+                                datasourcemember="OrderIndex" controltype="InputControl"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                                value={this.state.FormData ? this.state.FormData.ShipmentOrderType.OrderIndex : 0}
+                                maxSize={10}
+                            />
+                            <FormControl.CheckBox label="Kích hoạt" name="IsActived"
+                                datasourcemember="IsActived" controltype="InputControl"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                            />
+                            <FormControl.CheckBox label="Hệ thống" name="IsSystem"
+                                datasourcemember="IsSystem" controltype="InputControl"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                            />
 
-                    </TabPage>
-                    <TabPage title="Quy trình" name="ShipmentOrderTypeWorkFlow">
-                        <InputGrid name="ShipmentOrderTypeWorkFlow" controltype="GridControl"
-                            IDSelectColumnName="chkSelectShipmentOrderStepID"
-                            PKColumnName="ShipmentOrderStepID"
-                            isUseValueInputControl={true}
-                            listColumn={WFColumnList}
-                            colspan="12"
-                            MLObjectDefinition={MLObjectShipmentOrderTypeWorkFlow}
-                            dataSource={this.state.FormData.ShipmentOrderTypeWorkflow}
-                            onInsertClick={this.addShipmentOrderTypeWorkflowPopup}
-                            onInsertClickEdit={this.editShipmentOrderTypeWorkflowPopup}
-                            onDeleteClick_Customize={this.removeShipmentOrderTypeWorkflow}
-                        />
-                    </TabPage>
-                    <TabPage title="Chi phí vận chuyển cố định" name="ShipmentOrderType_FixShipmentFee">
-                        {/* <InputGrid name="ShipmentOrderType_FixShipmentFee" controltype="GridControl"
+                        </TabPage>
+                        <TabPage title="Quy trình" name="ShipmentOrderTypeWorkFlow">
+                            <InputGrid name="ShipmentOrderTypeWorkFlow" controltype="GridControl"
+                                IDSelectColumnName="chkSelectShipmentOrderStepID"
+                                PKColumnName="ShipmentOrderStepID"
+                                isUseValueInputControl={true}
+                                listColumn={WFColumnList}
+                                colspan="12"
+                                MLObjectDefinition={MLObjectShipmentOrderTypeWorkFlow}
+                                dataSource={this.state.FormData.ShipmentOrderTypeWorkflow}
+                                onInsertClick={this.addShipmentOrderTypeWorkflowPopup}
+                                onInsertClickEdit={this.editShipmentOrderTypeWorkflowPopup}
+                                onDeleteClick_Customize={this.removeShipmentOrderTypeWorkflow}
+                            />
+                        </TabPage>
+                        <TabPage title="Chi phí vận chuyển cố định" name="ShipmentOrderType_FixShipmentFee">
+                            {/* <InputGrid name="ShipmentOrderType_FixShipmentFee" controltype="GridControl"
                             IDSelectColumnName="chkSelectShipmentFeeTypeID"
                             PKColumnName="ShipmentFeeTypeID"
                             isUseValueInputControl={true}
@@ -604,23 +652,24 @@ class EditCom extends React.Component {
                             onInsertClickEdit={this.editShipmentOrderTypeWorkflowPopup}
                             onDeleteClick_Customize={this.removeShipmentOrderTypeWorkflow}
                         /> */}
-                        <DataGrid listColumn={FixShipmentFeeColumnList}
-                            dataSource={this.state.gridDataSource}
-                            modalElementList={ModalFixShipmentFeeColumnList}
-                            MLObjectDefinition={MLObjectShipmentOrderType_FixShipmentFee}
-                            IDSelectColumnName={"chkSelect"}
-                            PKColumnName={"ShipmentFeeTypeID"}
-                            onDeleteClick={this.handleDelete}
-                            onInsertClick={this.handleInputGridInsert}
-                            IsAutoPaging={true}
-                            RowsPerPage={10}
-                            IsCustomAddLink={true}
-                        // RequirePermission={PIEREQUESTTYPE_VIEW}
-                        // DeletePermission={PIEREQUESTTYPE_DELETE}
-                        />
-                    </TabPage>
-                </TabContainer>
-            </FormContainer >
+                            <DataGrid listColumn={FixShipmentFeeColumnList}
+                                dataSource={this.state.gridDataSource}
+                                modalElementList={ModalFixShipmentFeeColumnList}
+                                MLObjectDefinition={MLObjectShipmentOrderType_FixShipmentFee}
+                                IDSelectColumnName={"chkSelect"}
+                                PKColumnName={"ShipmentFeeTypeID"}
+                                onDeleteClick={this.handleDelete}
+                                onInsertClick={this.addShipmentOrderType_FixShipmentFeePopup}
+                                IsAutoPaging={false}
+                                RowsPerPage={10}
+                                IsCustomAddLink={true}
+                            // RequirePermission={PIEREQUESTTYPE_VIEW}
+                            // DeletePermission={PIEREQUESTTYPE_DELETE}
+                            />
+                        </TabPage>
+                    </TabContainer>
+                </FormContainer >
+            </React.Fragment>
         );
     }
 }

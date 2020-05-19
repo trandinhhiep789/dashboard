@@ -27,6 +27,7 @@ export default class TabContainer extends Component {
     }
 
     checkFocusTabpage(formValidation) {
+        debugger
         //console.log("checkInput formValidation: ", formValidation);
         for (const key in formValidation) {
             for (const key1 in formValidation[key]) {

@@ -479,6 +479,7 @@ class ComboBoxCom extends Component {
                             disabled={(this.state.IsSystem || disabledsele) ? "disabled" : ""}
                             required={this.props.required}
                             readOnly={this.state.IsSystem}
+                            ref={this.props.inputRef}
                         >
                             {listOption.map((optionItem) =>
                                 <option key={optionItem.value} value={optionItem.value}>{optionItem.label}</option>
@@ -502,6 +503,7 @@ class ComboBoxCom extends Component {
                             disabled={(this.state.IsSystem || disabledsele) ? "disabled" : ""}
                             readOnly={this.state.IsSystem}
                             required={this.props.required}
+                            ref={this.props.inputRef}
                         >
                             {listOption.map((optionItem) =>
                                 <option key={optionItem.value} value={optionItem.value}>{optionItem.label}</option>
@@ -579,6 +581,7 @@ class FileUpload extends React.Component {
                         placeholder={this.props.placeholder}
                         disabled={this.props.disabled}
                         required={this.props.required}
+                        ref={this.props.inputRef}
                     />
                     <span class="input-group-append"><label class="btn btn-light file-browser" htmlFor={this.props.name}><i class="fa fa-upload"></i></label></span>
                 </div>

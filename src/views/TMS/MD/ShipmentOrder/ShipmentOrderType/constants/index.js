@@ -8,6 +8,16 @@ export const BackLink = "/ShipmentOrderType";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "ShipmentOrderTypeID";
+export const CheckValidStepAPIPath = "api/ShipmentOrderType/CheckValidStep";
+
+//----------------------------------Chi phí vận chuyển cố định---------------------------------------
+export const SearchAPIPath_FixShipmentFee = "api/ShipmentOrderType_FixShipmentFee/Search";
+export const LoadAPIPath_FixShipmentFee = "api/ShipmentOrderType_FixShipmentFee/Load";
+export const AddAPIPath_FixShipmentFee = "api/ShipmentOrderType_FixShipmentFee/Add";
+export const UpdateAPIPath_FixShipmentFee = "api/ShipmentOrderType_FixShipmentFee/Update";
+export const DeleteAPIPath_FixShipmentFee = "api/ShipmentOrderType_FixShipmentFee/Delete";
+//-----------------------------------------------------------------------------------------------------
+
 
 export const InitSearchParams = [{
     SearchKey: "@Keyword",
@@ -419,73 +429,6 @@ export const WFColumnList = [
     }
 ];
 
-export const ModalFixShipmentFeeColumnList = [
-    {
-        Name: "ShipmentOrderTypeID",
-        type: "numeric",
-        label: "Mã loại yêu cầu vận chuyển",
-        maxSize: "10",
-        DataSourceMember: "ShipmentOrderTypeID",
-        readonly: false,
-        validatonList: ["required"]
-    },
-];
-
-
-
-export const FixShipmentFeeColumnList = [
-    {
-        Name: "chkSelectShipmentFeeTypeID",
-        Type: "checkbox",
-        Caption: "",
-        DataSourceMember: "ShipmentFeeTypeID",
-        Width: 60
-    },
-    {
-        Name: "ShipmentFeeTypeID",
-        Type: "text",
-        Caption: "Mã loại chi phí vận chuyển",
-        DataSourceMember: "ShipmentFeeTypeID",
-        Width: 180
-    },
-    {
-        Name: "OutputServiceProductID",
-        Type: "text",
-        Caption: "Mã sản phẩm dịch vụ cần xuất",
-        DataSourceMember: "OutputServiceProductID",
-        Width: 200
-    },
-    {
-        Name: "GetFeeType",
-        Type: "text",
-        Caption: "Kiểu lấy chi phí",
-        DataSourceMember: "GetFeeType",
-        Width: 100
-    },
-    {
-        Name: "FeeValue",
-        Type: "text",
-        Caption: "Chi phí vận chuyển",
-        DataSourceMember: "FeeValue",
-        Width: 100
-    },
-    {
-        Name: "IsActived",
-        Type: "checkicon",
-        Caption: "Kích hoạt",
-        DataSourceMember: "IsActived",
-        Width: 100
-    },
-    {
-        Name: "EditShipmentFeeTypeID",
-        Type: "edit",
-        Caption: "Sửa",
-        DataSourceMember: "ShipmentFeeTypeID",
-        Width: 100
-    }
-
-];
-
 export const MLObjectShipmentOrderTypeWorkFlow = [
     {
         Name: "ShipmentOrderTypeID",
@@ -627,6 +570,157 @@ export const MLObjectShipmentOrderTypeWorkFlow = [
     }
 ];
 
+
+
+export const ModalFixShipmentFeeColumnList = [
+    // {
+    //     Name: "ShipmentOrderTypeID",
+    //     type: "numeric",
+    //     label: "Mã loại yêu cầu vận chuyển",
+    //     maxSize: "9",
+    //     DataSourceMember: "ShipmentOrderTypeID",
+    //     readonly: false,
+    //     validatonList: ["required"]
+    // },
+    {
+        Name: "ShipmentFeeTypeID",
+        type: "numeric",
+        label: "Mã loại chi phí vận chuyển",
+        maxSize: "9",
+        DataSourceMember: "ShipmentFeeTypeID",
+        readonly: false,
+        validatonList: ["required"]
+    },
+    // {
+    //     type: "select",
+    //     Name: "txtWardID",
+    //     label: "Phường/xã",
+    //     value: -1,
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "WardID",
+    //     readonly: false,
+    //     validatonList: [],
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.WARD",
+    //     ValueMember: "WardID",
+    //     NameMember: "WardName"
+    // },
+    {
+        Name: "OutputServiceProductID",
+        type: "text",
+        label: "Mã sản phẩm dịch vụ cần xuất",
+        maxSize: "20",
+        DataSourceMember: "OutputServiceProductID",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "select",
+        Name: "GetFeeType",
+        label: "Kiểu lấy chi phí",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [{ value: -1, label: "---Vui lòng chọn---" }, { value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
+        DataSourceMember: "GetFeeType",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: false
+    },
+    {
+        Name: "FeeValue",
+        type: "text",
+        label: "Chi phí",
+        maxSize: "19",
+        DataSourceMember: "FeeValue",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
+        Name: "Note",
+        type: "textarea",
+        label: "Ghi chú",
+        maxSize: "2000",
+        DataSourceMember: "Note",
+        rows: "6",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        Name: "IsActived",
+        type: "checkbox",
+        label: "Kích hoạt",
+        DataSourceMember: "IsActived",
+        readonly: false,
+        validatonList: [],
+        value: true
+    },
+    {
+        Name: "IsSystem",
+        type: "checkbox",
+        label: "Hệ thống",
+        DataSourceMember: "IsSystem",
+        readonly: false,
+        validatonList:[],
+        value: false
+    }
+];
+
+export const FixShipmentFeeColumnList = [
+    {
+        Name: "chkSelectShipmentFeeTypeID",
+        Type: "checkbox",
+        Caption: "",
+        DataSourceMember: "ShipmentFeeTypeID",
+        Width: 60
+    },
+    {
+        Name: "ShipmentFeeTypeID",
+        Type: "text",
+        Caption: "Mã loại chi phí vận chuyển",
+        DataSourceMember: "ShipmentFeeTypeID",
+        Width: 180
+    },
+    {
+        Name: "OutputServiceProductID",
+        Type: "text",
+        Caption: "Mã sản phẩm dịch vụ cần xuất",
+        DataSourceMember: "OutputServiceProductID",
+        Width: 200
+    },
+    {
+        Name: "GetFeeType",
+        Type: "text",
+        Caption: "Kiểu lấy chi phí",
+        DataSourceMember: "GetFeeType",
+        Width: 100
+    },
+    {
+        Name: "FeeValue",
+        Type: "text",
+        Caption: "Chi phí vận chuyển",
+        DataSourceMember: "FeeValue",
+        Width: 100
+    },
+    {
+        Name: "IsActived",
+        Type: "checkicon",
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived",
+        Width: 100
+    },
+    {
+        Name: "EditShipmentFeeTypeID",
+        Type: "edit",
+        Caption: "Sửa",
+        DataSourceMember: "ShipmentFeeTypeID",
+        Width: 100
+    }
+
+];
+
 export const MLObjectShipmentOrderType_FixShipmentFee = [
     {
         Name: "ShipmentOrderTypeID",
@@ -651,8 +745,8 @@ export const MLObjectShipmentOrderType_FixShipmentFee = [
         DefaultValue: "",
         BindControlName: "GetFeeType",
         DataSourceMember: "GetFeeType",
-        Label: "Kiểu lấy chi phí",
-        ValidationList: ["required"]
+        // Label: "Kiểu lấy chi phí",
+        // ValidationList: ["required"]
     },
     {
         Name: "FeeValue",
@@ -691,3 +785,4 @@ export const MLObjectShipmentOrderType_FixShipmentFee = [
         DataSourceMember: "CreatedUser"
     }
 ];
+

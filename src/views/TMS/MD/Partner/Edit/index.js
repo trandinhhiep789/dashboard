@@ -20,7 +20,8 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import { ATTRIBUTE_CATEGORY_TYPE_UPDATE } from "../../../../../constants/functionLists";
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_PARTNER } from "../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -236,6 +237,7 @@ class EditCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
+                this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNER);
                 // this.handleClearLocalCache();
                 // this.handleSubmitInsertLog(MLObject);
             }
@@ -304,7 +306,11 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID))
         }
+
     };
 };
 

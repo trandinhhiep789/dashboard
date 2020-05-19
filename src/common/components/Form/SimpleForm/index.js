@@ -144,7 +144,7 @@ class SimpleFormCom extends Component {
     }
 
     componentDidUpdate() {
-
+        
     }
     componentDidMount() {
         this.setState({

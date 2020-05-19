@@ -386,6 +386,7 @@ class InputGridCom extends Component {
 						if (this.props.onDeleteClick)
 							this.props.onDeleteClick(listDeleteID);
 					}
+					this.setState({ IsCheckAll: false });
 				}
 			}
 			else {

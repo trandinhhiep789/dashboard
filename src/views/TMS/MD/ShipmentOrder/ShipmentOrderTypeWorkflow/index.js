@@ -346,8 +346,8 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                             title="Thông tin chung" name="ShipmentOrderTypeWorkflow" >
                             <div className="form-row">
                                 <div className="col-sm-8">
-                                    {/* <FormControl.TextBox labelcolspan={4} colspan={8} placeholder="ID tự tăng" readonly={true}
-                                        name="ShipmentOrderStepID" label="Mã bước xử lý"
+                                    {/* <FormControl.TextBox labelcolspan={4} colspan={8} placeholder="ID tự tăng"
+                                        name="ShipmentOrder" label="Mã bước xử lý"
                                         controltype="InputControl" datasourcemember="ShipmentOrderStepID"
                                     /> */}
                                     <FormControl.ComboBox

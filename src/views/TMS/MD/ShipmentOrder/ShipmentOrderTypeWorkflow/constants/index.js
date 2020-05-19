@@ -25,12 +25,14 @@ export const MTabList = [
 ]
 
 export const MLObjectDefinition = [
-    {
-        Name: "ShipmentOrderTypeID",
-        DefaultValue: "",
-        BindControlName: "ShipmentOrderTypeID",
-        DataSourceMember: "ShipmentOrderTypeID"
-    },
+    // {
+    //     Name: "ShipmentOrder",
+    //     DefaultValue: "",
+    //     BindControlName: "ShipmentOrder",
+    //     DataSourceMember: "ShipmentOrder",
+    //     Label: "tên bước xử lý",
+    //     ValidationList: ["required"]
+    // },
     {
         Name: "ShipmentOrderStepID",
         DefaultValue: "",
@@ -202,7 +204,7 @@ export const InputNextColumnList = [
     {
         Name: "chkSelectNextShipmentOrderStep",
         Type: "checkbox",
-        Caption: "Chọn",
+        Caption: "",
         DataSourceMember: "NextShipmentOrderStep",
         Width: 100
     },
