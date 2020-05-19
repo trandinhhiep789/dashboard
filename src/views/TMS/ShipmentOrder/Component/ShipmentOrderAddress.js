@@ -232,7 +232,7 @@ class ShipmentOrderAddressCom extends Component {
                                 </div>
                                 <div className="form-group col-md-5">
                                     <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullAddress}</label>
-                                    <a className="mapslink">Xem bản đồ</a>
+                                    <Link className="mapslink" to="/Map">Xem bản đồ</Link>
                                 </div>
                             </div>
                         </div>
