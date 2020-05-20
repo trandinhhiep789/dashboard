@@ -181,10 +181,9 @@ class InfoCoordinatorCom extends Component {
                             />
                         </div>
                     </div>
-                    <div className="form-row">
-                        <div className="form-group col-md-11"></div>
-                        <div className="form-group col-md-1">
-                            <button className="btn btnEditCard" type="submit"> Cập nhật</button>
+                    <div className="form-row form-row-custom-footer">
+                        <div className="form-group">
+                            <button className="btn btnEditCard" type="submit">Cập nhật</button>
                         </div>
 
                     </div>
