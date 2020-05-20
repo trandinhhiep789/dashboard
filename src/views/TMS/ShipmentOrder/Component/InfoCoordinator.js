@@ -4,6 +4,7 @@ import { ModalManager } from 'react-dynamic-modal';
 import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
+import FormControl from "../../../../common/components/FormContainer/FormControl";
 import {
     APIHostName,
 } from "../constants";
@@ -151,40 +152,41 @@ class InfoCoordinatorCom extends Component {
                         listoption={[]}
                         datasourcemember="ArryProduct_ShippingMethod"
                     />
-                    {/* <div className="form-group col-md-10">
-                            <div className="listpersonnel">
-                                <div className="content">
-                                    <div className="list-item">
-                                        {this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
-                                            return (<div className="item" key={index}>
-                                                <span className="full-name">{item.UserName} - {item.FullName} </span>
-                                                <span className="icon-del">x</span>
-                                            </div>)
-                                        })}
-                                    </div>
-                                </div>
-                            </div>
-                        </div> */}
-
+                    <FormControl.ComboBox1
+                        name="txtCarrierPartnerID"
+                        colspan="10"
+                        labelcolspan="2"
+                        label="Đối tác vận chuyển:"
+                        validatonList={["Comborequired"]}
+                        isautoloaditemfromcache={true}
+                        loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                        valuemember="PartnerID"
+                        nameMember="PartnerName"
+                        controltype="InputControl"
+                        value={1}
+                        listoption={null}
+                        datasourcemember="CarrierPartnerID"
+                        placeholder="---Vui lòng chọn---"
+                        isMultiSelect={false}
+                    />
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Ghi chú:</label>
                         </div>
                         <div className="form-group col-md-10">
-                            <label className="col-form-label" >Gán nhân viên giao</label>
+                            <input type="text" name=""
+                                value={""}
+                                className="form-control form-control-sm"
+                                placeholder={"ghi chú"}
+                            />
                         </div>
                     </div>
                     <div className="form-row">
-                        <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Xử lý:</label>
+                        <div className="form-group col-md-11"></div>
+                        <div className="form-group col-md-1">
+                            <button className="btn btnEditCard" type="submit"> Cập nhật</button>
                         </div>
-                        <div className="form-group col-md-10">
-                            <select className="form-control form-control-sm" value={this.state.ShipmentOrder.CurrentShipmentOrderStepID} onChange={this.onChangeInput.bind(this)} >
-                                {this.state.ShipmentOrder.ShipmentOrderType_WF_NextList && this.state.ShipmentOrder.ShipmentOrderType_WF_NextList.map(item =>
-                                    <option key={item.NextShipmentOrderStep} value={item.NextShipmentOrderStep}>{item.NextShipmentOrderStepName}</option>
-                                )}
-                            </select>
-                        </div>
+
                     </div>
                 </div>
             </div>
