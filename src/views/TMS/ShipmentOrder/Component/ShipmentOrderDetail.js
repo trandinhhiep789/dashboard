@@ -131,7 +131,7 @@ class ShipmentOrderDetailCom extends Component {
                             <label className="col-form-label bold">Loại yêu cầu vận chuyển:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentServiceTypeName}</label>
+                            <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentOrderTypeName}</label>
                         </div>
                     </div>
                     <div className="form-row">
@@ -153,7 +153,7 @@ class ShipmentOrderDetailCom extends Component {
                             <label className="col-form-label bold">Loại dịch vụ:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentOrderTypeName}</label>
+                            <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentServiceTypeName}</label>
                         </div>
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Phương tiện vận chuyển:</label>
@@ -203,7 +203,7 @@ class ShipmentOrderDetailCom extends Component {
                         <div className="form-group form-group-dropdown col-md-4 ">
                             <div className="input-group input-group-dropdown-custom">
                                 <div className="input-group-append">
-                                    <button className="btn dropdown-toggle" type="button" data-toggle="dropdown">{this.state.ShipmentOrder.ShipmentOrderType_WF_NextList.filter(a => a.NextShipmentOrderStep === this.state.ShipmentOrder.CurrentShipmentOrderStepID)[0].NextShipmentOrderStepName}</button>
+                                    <button className="btn dropdown-toggle" type="button" data-toggle="dropdown">{this.state.ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === this.state.ShipmentOrder.CurrentShipmentOrderStepID)[0].ShipmentOrderStepName}</button>
                                     <div className="dropdown dropdown-menu">
                                         {this.state.ShipmentOrder.ShipmentOrderType_WF_NextList && this.state.ShipmentOrder.ShipmentOrderType_WF_NextList.map(item =>
                                             <a className={item.NextShipmentOrderStep === this.state.ShipmentOrder.CurrentShipmentOrderStepID ? "dropdown-item active" : "dropdown-item"}
