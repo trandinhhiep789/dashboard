@@ -16,7 +16,8 @@ import {
     InputLanguageColumnList,
     GridMLObjectDefinition,
     AddLogAPIPath,
-    ElementQHPXList
+    ElementQHPXList,
+    GridMLObjectQTQHPX
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -306,6 +307,8 @@ class EditCom extends React.Component {
                                 <FormControl.ComboboxQTQHPX
                                     name=""
                                     listelement={ElementQHPXList}
+                                    dataSource={this.state.DataSource}
+                                    MLObjectDefinition={GridMLObjectQTQHPX}
                                     
                                 />
                             </div>

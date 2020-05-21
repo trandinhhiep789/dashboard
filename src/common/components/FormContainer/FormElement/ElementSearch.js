@@ -309,11 +309,11 @@ class ElementComboBoxNewCom extends Component {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
 
-        this.state = { ListOption: [], SelectedOption: this.bindcombox() }
+        this.state = { ListOption: [], SelectedOption: [] }
 
     }
 
-    bindcombox() {
+    bindcombox(listOption) {
         let values = this.props.value;
         let selectedOption = [];
         if (values == null || values === -1)
@@ -323,7 +323,7 @@ class ElementComboBoxNewCom extends Component {
         for (let i = 0; i < values.length; i++) {
             for (let j = 0; j < listOption.length; j++) {
                 if (values[i] == listOption[j].value) {
-                    selectedOption.push({ value: listOption[j].value, label: listOption[j].name });
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
                 }
             }
         }
@@ -331,7 +331,7 @@ class ElementComboBoxNewCom extends Component {
     }
 
     componentDidMount() {
-        let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember } = this.props;
+        let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember,NameMemberop } = this.props;
         // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
         if (IsAutoLoadItemFromCache) {
             this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
@@ -340,11 +340,13 @@ class ElementComboBoxNewCom extends Component {
                 if (!result.IsError && result.ResultObject.CacheData != null) {
 
 
-                    result.ResultObject.CacheData.map((cacheItem) => {
-                        listoption.push({ value: cacheItem[ValueMember], label: cacheItem[NameMember] });
+                    result.ResultObject.CacheData.filter(person => person[NameMemberop]===3).map((cacheItem) => {
+                        listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + "-" + cacheItem[NameMember] });
                     }
                     );
-                    this.setState({ ListOption: listoption });
+                    this.setState({ ListOption: listoption })
+                    const selectedOption = this.bindcombox(this.state.ListOption);
+                    this.setState({ SelectedOption: selectedOption });
                 }
                 else {
                     this.setState({ ListOption: listoption });
@@ -374,12 +376,14 @@ class ElementComboBoxNewCom extends Component {
     }
 
     handleValueChange(selectedOption) {
-        const comboValues = this.getComboValue(selectedOption);
-        if (this.props.onValueChange)
-            this.props.onValueChange(this.props.name, comboValues);
+        //const comboValues = this.getComboValue(selectedOption);
+        this.setState({ SelectedOption: selectedOption });
+        // if (this.props.onValueChange)
+        //     this.props.onValueChange(this.props.name, comboValues);
     }
 
     render() {
+
         let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder } = this.props;
         let className = "select";
 
@@ -401,11 +405,12 @@ class ElementComboBoxNewCom extends Component {
 
             className += " is-invalid";
         }
-        
+
         let star;
         if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
             star = '*'
         }
+        const selectedOption = this.state.SelectedOption;
         return (
             <div className="col-md-6">
                 <div className={formRowClassName}>
@@ -417,7 +422,7 @@ class ElementComboBoxNewCom extends Component {
                     <div className={formGroupClassName}>
                         <div className="form-group-input-select">
                             <Select
-                                value={this.state.selectedOption}
+                                value={selectedOption}
                                 name={name}
                                 ref={this.props.inputRef}
                                 onChange={this.handleValueChange}
@@ -474,14 +479,14 @@ class ElementTextNewCom extends Component {
 
         return (
             <div className="col-md-12">
-                 <div className={formRowClassName} >
+                <div className={formRowClassName} >
                     <div className={labelDivClassName}>
                         <label className="col-form-label 3">
                             {this.props.label}<span className="text-danger"> {star}</span>
                         </label>
                     </div>
                     <div className={formGroupClassName}>
-                    <input type="text"
+                        <input type="text"
                             className={className}
                             ref={this.props.inputRef}
                             name={name}
