@@ -27,12 +27,11 @@ class ShipmentOrderDetailCom extends Component {
     }
 
     onChangeInput(e) {
-        let label = e.target.options[e.target.selectedIndex].label
-        let value = e.target.value;
+        e.preventDefault();
+        let value = e.currentTarget.dataset.option;
         let { ShipmentOrder_WorkFlow } = this.state;
         ShipmentOrder_WorkFlow.ShipmentOrderID = this.state.ShipmentOrder.ShipmentOrderID
         ShipmentOrder_WorkFlow.ShipmentOrderStepID = value
-        ShipmentOrder_WorkFlow.ShipmentOrderStepName = label
         ShipmentOrder_WorkFlow.Note = ""
         this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
             this.openViewStepModal();
@@ -202,23 +201,19 @@ class ShipmentOrderDetailCom extends Component {
                             <label className="col-form-label bold">Xử lý qui trình:</label>
                         </div>
                         <div className="form-group form-group-dropdown col-md-4 ">
-                            {/* <div className="input-group input-group-dropdown-custom">
+                            <div className="input-group input-group-dropdown-custom">
                                 <div className="input-group-append">
-                                    <button className="btn dropdown-toggle" type="button" data-toggle="dropdown">Dropdown</button>
+                                    <button className="btn dropdown-toggle" type="button" data-toggle="dropdown">{this.state.ShipmentOrder.ShipmentOrderType_WF_NextList.filter(a => a.NextShipmentOrderStep === this.state.ShipmentOrder.CurrentShipmentOrderStepID)[0].NextShipmentOrderStepName}</button>
                                     <div className="dropdown dropdown-menu">
-                                        <a className="dropdown-item" href="#">Action</a>
-                                        <a className="dropdown-item" href="#" selected>Another action</a>
-                                        <a className="dropdown-item active" href="#">Something else here</a>
-                                        <a className="dropdown-item" href="#">Separated link</a>
+                                        {this.state.ShipmentOrder.ShipmentOrderType_WF_NextList && this.state.ShipmentOrder.ShipmentOrderType_WF_NextList.map(item =>
+                                            <a className={item.NextShipmentOrderStep === this.state.ShipmentOrder.CurrentShipmentOrderStepID ? "dropdown-item active" : "dropdown-item"}
+                                                key={item.NextShipmentOrderStep} name={item.NextShipmentOrderStep} data-option={item.NextShipmentOrderStep}
+                                                onClick={this.onChangeInput.bind(this)}>
+                                                {item.NextShipmentOrderStepName}</a>
+                                        )}
                                     </div>
                                 </div>
-                                <div className="invalid-feedback">Please provide a valid value.</div>
-                            </div> */}
-                            <select className="form-control form-control-sm" value={this.state.ShipmentOrder.CurrentShipmentOrderStepID} onChange={this.onChangeInput.bind(this)} >
-                                {this.state.ShipmentOrder.ShipmentOrderType_WF_NextList && this.state.ShipmentOrder.ShipmentOrderType_WF_NextList.map(item =>
-                                    <option key={item.NextShipmentOrderStep} value={item.NextShipmentOrderStep}>{item.NextShipmentOrderStepName}</option>
-                                )}
-                            </select>
+                            </div>
                         </div>
                     </div>
                 </div>
