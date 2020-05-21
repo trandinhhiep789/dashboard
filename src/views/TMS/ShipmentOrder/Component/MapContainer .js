@@ -54,7 +54,8 @@ export class MapContainer extends Component {
     }
 
     render() {
-
+        var res = this.props.SenderGeoLocation.split(',');
+        console.log("res",res);
         let styleMap;
         if (this.props.classStyle == undefined) {
             styleMap = style;
@@ -78,16 +79,16 @@ export class MapContainer extends Component {
                 className={'map'}
                 draggable={true}
                 initialCenter={{
-                    lat: 10.845199873795655,
-                    lng: 106.7979896460848
+                    lat: res[0],
+                    lng: res[1]
                 }}
                 onClick={this.mapClicked}
             >
                 <Marker
                     name={'Your position'}
                     position={{
-                        lat: 10.845199873795655,
-                        lng: 106.7979896460848
+                        lat: res[0],
+                        lng: res[1]
                     }}
                 />
             </Map>
