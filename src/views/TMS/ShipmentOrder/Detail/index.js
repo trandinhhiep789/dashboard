@@ -56,6 +56,8 @@ class DetailCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+                console.log("apiResult.ResultObject.ShipmentOrderType_WorkFlowList",apiResult.ResultObject);
+                console.log("apiResult.ResultObject.ShipmentOrderType_WorkFlowList",apiResult.ResultObject.ShipmentOrderType_WorkFlowList)
                 this.setState({
                     DataSource: apiResult.ResultObject,
                     ShipmentOrderType_WorkFlowList: apiResult.ResultObject.ShipmentOrderType_WorkFlowList,

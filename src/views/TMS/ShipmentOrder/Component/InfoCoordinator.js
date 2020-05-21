@@ -12,6 +12,11 @@ class InfoCoordinatorCom extends Component {
     constructor(props) {
         super(props);
         this.handleShipWorkFlowInsert = this.handleShipWorkFlowInsert.bind(this);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.handleValueChange1 = this.handleValueChange1.bind(this);
+        this.handleShipWorkFlowInsert = this.handleShipWorkFlowInsert.bind(this);
+
+
         this.state = {
             ShipmentOrder: this.props.InfoCoordinator,
             validationErrorMessage: null,
@@ -40,95 +45,71 @@ class InfoCoordinatorCom extends Component {
         });
     }
 
-    onChangetextarea(e) {
+
+    handleValueChange(e) {
         let value = e.target.value;
-        let { ShipmentOrder_WorkFlow, validationErrorMessage } = this.state;
-        if (value == undefined || value.length == 0 || String(value).trim() == "") {
-            validationErrorMessage = "Vui lòng nhập nội dung"
-        }
-        else {
-            validationErrorMessage = null
-        }
-
-        ShipmentOrder_WorkFlow.Note = value
-        this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: validationErrorMessage }, () => {
-            this.openViewStepModal();
-        });
+        let { ShipmentOrder } = this.state;
+        ShipmentOrder[e.target.name] = value;
+        this.setState({ ShipmentOrder: ShipmentOrder })
     }
-
-
-    openViewStepModal() {
-        let formGroupclassName = "form-group col-md-10";
-        let selectclassName = "form-control form-control-sm";
-        if (this.state.validationErrorMessage != null) {
-            if (this.state.validationErrorMessage.length > 0) {
-                formGroupclassName += " has-error has-danger";
-                selectclassName += " is-invalid";
+    handleValueChange1(e, selectedOption) {
+        let listMLObject = [];
+        if (selectedOption) {
+            for (let i = 0; i < selectedOption.length; i++) {
+                listMLObject.push({
+                    ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
+                    UserName: selectedOption[i].value,
+                    CreatedUser: this.props.AppInfo.LoginInfo.Username,
+                    CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
+                });
             }
         }
-        ModalManager.open(
-            <ModelContainer
-                title="Chuyển bước xử lý"
-                name=""
-                content={"Cập nhật loại đơn vị thành công!"} onRequestClose={() => true}
-                onChangeModal={this.handleShipWorkFlowInsert}  >
-                <div className="form-row">
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Chuyển bước kế tiếp</label>
-                    </div>
-                    <div className="form-group col-md-10">
-                        <label class="col-form-label">{this.state.ShipmentOrder_WorkFlow.ShipmentOrderStepName}</label>
-                    </div>
-                </div>
-                <div className="form-row">
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Nội dung <span className="text-danger"> *</span></label>
-                    </div>
-                    <div className={formGroupclassName}>
-                        <textarea className={selectclassName} maxLength={1950} rows="10" cols="50" name="Title" value={this.state.ShipmentOrder_WorkFlow.Note} placeholder="Nội dung" onChange={this.onChangetextarea.bind(this)} />
-                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.state.validationErrorMessage}</li></ul></div>
-                    </div>
-                </div>
-            </ModelContainer>
-        );
+        let { ShipmentOrder } = this.state;
+        ShipmentOrder.ShipmentOrder_DeliverUserList = listMLObject;
+        this.setState({ ShipmentOrder: ShipmentOrder })
+        //this.setState({ ShipmentOrder_WorkFlow: listMLObject })
     }
+
+
     handleShipWorkFlowInsert() {
-        let { ShipmentOrder_WorkFlow, validationErrorMessage } = this.state;
+        this.state.ShipmentOrder.UpdatedUser=this.props.AppInfo.LoginInfo.Username,
+        //    console.log("handleShipWorkFlowInsert",this.state.ShipmentOrder,this.state.ShipmentOrder.ShipmentOrder_DeliverUserList)
+        this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinator', this.state.ShipmentOrder).then((apiResult) => {
+            if (!apiResult.IsError) {
+            }
+        });
+        // if (ShipmentOrder_WorkFlow.Note == undefined || ShipmentOrder_WorkFlow.Note.length == 0 || String(ShipmentOrder_WorkFlow.Note).trim() == "") {
+        //     validationErrorMessage = "Vui lòng nhập nội dung"
+        //     this.setState({ validationErrorMessage: validationErrorMessage }, () => {
+        //         this.openViewStepModal();
+        //     });
+        // }
+        // else {
+        //     ShipmentOrder_WorkFlow.IsProcess = true;
+        //     ShipmentOrder_WorkFlow.ProcessUser = this.props.AppInfo.LoginInfo.Username;
+        //     ShipmentOrder_WorkFlow.CreatedOrderTime = this.state.ShipmentOrder.CreatedOrderTime;
+        //     ShipmentOrder_WorkFlow.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        //     this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/InsertWorkFlow', ShipmentOrder_WorkFlow).then((apiResult) => {
+        //         if (!apiResult.IsError) {
+        //             this.setState({
+        //                 ShipmentOrder: apiResult.ResultObject
+        //             });
+        //             if (this.props.onhandleChange != null)
+        //                 this.props.onhandleChange(apiResult.ResultObject)
 
-        if (ShipmentOrder_WorkFlow.Note == undefined || ShipmentOrder_WorkFlow.Note.length == 0 || String(ShipmentOrder_WorkFlow.Note).trim() == "") {
-            validationErrorMessage = "Vui lòng nhập nội dung"
-            this.setState({ validationErrorMessage: validationErrorMessage }, () => {
-                this.openViewStepModal();
-            });
-        }
-        else {
-            ShipmentOrder_WorkFlow.IsProcess = true;
-            ShipmentOrder_WorkFlow.ProcessUser = this.props.AppInfo.LoginInfo.Username;
-            ShipmentOrder_WorkFlow.CreatedOrderTime = this.state.ShipmentOrder.CreatedOrderTime;
-            ShipmentOrder_WorkFlow.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/InsertWorkFlow', ShipmentOrder_WorkFlow).then((apiResult) => {
-                if (!apiResult.IsError) {
-                    this.setState({
-                        ShipmentOrder: apiResult.ResultObject
-                    });
-                    if (this.props.onhandleChange != null)
-                        this.props.onhandleChange(apiResult.ResultObject)
-
-                    ModalManager.close();
-                }
-            });
-        }
+        //             ModalManager.close();
+        //         }
+        //     });
+        // }
     }
 
 
 
     render() {
         let listOption = [];
-
         this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
             listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName });
         })
-
         return (
             <div className="card">
                 <div className="card-title group-card-title">
@@ -137,7 +118,7 @@ class InfoCoordinatorCom extends Component {
                 <div className="card-body">
 
                     <MultiSelectComboBox
-                        name="ArryProduct_ShippingMethod"
+                        name="ShipmentOrder_DeliverUserList"
                         colspan="10"
                         labelcolspan="2"
                         label="Nhân viên  giao"
@@ -149,11 +130,12 @@ class InfoCoordinatorCom extends Component {
                         controltype="InputControl"
                         value={listOption}
                         ShipmentOrder={this.state.ShipmentOrder}
+                        onChange={this.handleValueChange1}
                         listoption={[]}
-                        datasourcemember="ArryProduct_ShippingMethod"
+                        datasourcemember="ShipmentOrder_DeliverUserList"
                     />
                     <FormControl.ComboBox1
-                        name="txtCarrierPartnerID"
+                        name="CarrierPartnerID"
                         colspan="10"
                         labelcolspan="2"
                         label="Đối tác vận chuyển:"
@@ -163,7 +145,8 @@ class InfoCoordinatorCom extends Component {
                         valuemember="PartnerID"
                         nameMember="PartnerName"
                         controltype="InputControl"
-                        value={1}
+                        onChange={this.handleValueChange}
+                        value={this.state.ShipmentOrder.CarrierPartnerID}
                         listoption={null}
                         datasourcemember="CarrierPartnerID"
                         placeholder="---Vui lòng chọn---"
@@ -174,8 +157,9 @@ class InfoCoordinatorCom extends Component {
                             <label className="col-form-label bold">Ghi chú:</label>
                         </div>
                         <div className="form-group col-md-10">
-                            <input type="text" name=""
-                                value={""}
+                            <input type="text" name="CoordinatorNote"
+                                value={this.state.ShipmentOrder.CoordinatorNote}
+                                onChange={this.handleValueChange}
                                 className="form-control form-control-sm"
                                 placeholder={"ghi chú"}
                             />
@@ -184,7 +168,7 @@ class InfoCoordinatorCom extends Component {
                     <div className="form-row">
                         <div className="form-group col-md-11"></div>
                         <div className="form-group col-md-1">
-                            <button className="btn btnEditCard" type="submit"> Cập nhật</button>
+                            <button className="btn btnEditCard" type="submit" onClick={this.handleShipWorkFlowInsert}  > Cập nhật</button>
                         </div>
 
                     </div>

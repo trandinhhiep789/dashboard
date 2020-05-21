@@ -857,9 +857,10 @@ class ComboBox1Com extends Component {
         this.state = { Listoption: [], value: this.props.value, SelectedOption: {} }
     }
     handleValueChange(selectedOption) {
-        debugger;
-        // const comboValues = this.getComboValue(selectedOption);
-      this.setState({ SelectedOption: selectedOption });
+        const comboValues = this.getComboValue(selectedOption);
+        this.setState({ SelectedOption: selectedOption });
+        if (this.props.onValueChange)
+            this.props.onValueChange(this.props.name, comboValues);
     }
 
     bindcombox(listOption) {
@@ -872,7 +873,7 @@ class ComboBox1Com extends Component {
         for (let i = 0; i < values.length; i++) {
             for (let j = 0; j < listOption.length; j++) {
                 if (values[i] == listOption[j].value) {
-                    selectedOption.push({ value: listOption[j].value, label:listOption[j].value+"-"+ listOption[j].name });
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].value + "-" + listOption[j].name });
                 }
             }
         }
@@ -912,7 +913,6 @@ class ComboBox1Com extends Component {
                     }
                     );
                     let aa = this.bindcombox(listOption);
-                    debugger;
                     this.setState({ Listoption: listOption, SelectedOption: aa });
                 }
                 else {
