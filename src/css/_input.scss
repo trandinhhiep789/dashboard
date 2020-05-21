@@ -230,4 +230,38 @@ textarea {
             }
         }
     }
+
+    &.form-group-dropdown {
+        .input-group-dropdown-custom {
+            .input-group-append {
+                width: 100%;
+
+                button {
+                    &.btn {
+                        width: 100%;
+                        text-align: left;
+                        padding-left: 10px;
+                        border-radius: 5px;
+                        font-size: 13px;
+                        color: #4d5259;
+
+                    }
+
+                    &.dropdown-toggle {
+                        position: relative;
+                        &::after {
+                            position: absolute;
+                            top: 0;
+                            bottom: 0;
+                            right: 6px;
+                            margin: auto;
+                        }
+                    }
+                }
+                .dropdown-menu{
+                    width: 100%;
+                }
+            }
+        }
+    }
 }

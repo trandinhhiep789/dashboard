@@ -201,22 +201,19 @@ class ShipmentOrderDetailCom extends Component {
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Xử lý qui trình:</label>
                         </div>
-                        <div className="form-group col-md-4">
-                            {/* <div className="form-group form-group-dropdown">
-                                    <label htmlFor="input-normal">Normal input</label>
-                                    <div className="input-group">
-                                        <div className="input-group-append">
-                                            <button className="btn dropdown-toggle" type="button" data-toggle="dropdown">Dropdown</button>
-                                            <div className="dropdown dropdown-menu dropdown-menu-right">
-                                                <a className="dropdown-item" href="#">Action</a>
-                                                <a className="dropdown-item" href="#" selected>Another action</a>
-                                                <a className="dropdown-item active" href="#">Something else here</a>
-                                                <a className="dropdown-item" href="#">Separated link</a>
-                                            </div>
-                                        </div>
-                                        <div className="invalid-feedback">Please provide a valid value.</div>
+                        <div className="form-group form-group-dropdown col-md-4 ">
+                            {/* <div className="input-group input-group-dropdown-custom">
+                                <div className="input-group-append">
+                                    <button className="btn dropdown-toggle" type="button" data-toggle="dropdown">Dropdown</button>
+                                    <div className="dropdown dropdown-menu">
+                                        <a className="dropdown-item" href="#">Action</a>
+                                        <a className="dropdown-item" href="#" selected>Another action</a>
+                                        <a className="dropdown-item active" href="#">Something else here</a>
+                                        <a className="dropdown-item" href="#">Separated link</a>
                                     </div>
-                                </div> */}
+                                </div>
+                                <div className="invalid-feedback">Please provide a valid value.</div>
+                            </div> */}
                             <select className="form-control form-control-sm" value={this.state.ShipmentOrder.CurrentShipmentOrderStepID} onChange={this.onChangeInput.bind(this)} >
                                 {this.state.ShipmentOrder.ShipmentOrderType_WF_NextList && this.state.ShipmentOrder.ShipmentOrderType_WF_NextList.map(item =>
                                     <option key={item.NextShipmentOrderStep} value={item.NextShipmentOrderStep}>{item.NextShipmentOrderStepName}</option>
