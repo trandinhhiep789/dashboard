@@ -11,7 +11,7 @@ import {
     MTabList, BackLink, WFColumnList, AddLogAPIPath, CheckValidStepAPIPath,
     FixShipmentFeeColumnList, MLObjectShipmentOrderType_FixShipmentFee, ModalFixShipmentFeeColumnList, ModalFixShipmentFeeColumnList_Edit,
     AddAPIPath_FixShipmentFee, UpdateAPIPath_FixShipmentFee, DeleteAPIPath_FixShipmentFee,
-    FlexShipmentFeeColumnList, ModalFlexShipmentFeeColumnList, MLObjectShipmentOrderType_FlexShipmentFee,
+    FlexShipmentFeeColumnList, ModalFlexShipmentFeeColumnList, ModalFlexShipmentFeeColumnList_Edit, MLObjectShipmentOrderType_FlexShipmentFee,
     AddAPIPath_FlexShipmentFee, UpdateAPIPath_FlexShipmentFee, DeleteAPIPath_FlexShipmentFee,
 } from "../constants"
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
@@ -23,7 +23,6 @@ import InputGrid from '../../../../../../common/components/Form/AdvanceForm/Form
 import FormContainer from '../../../../../../common/components/Form/AdvanceForm/FormContainer';
 import FormControl from '../../../../../../common/components/Form/AdvanceForm/FormControl';
 import { PIEREQUESTTYPE_UPDATE } from "../../../../../../constants/functionLists";
-import { callGetCache } from "../../../../../../actions/cacheAction";
 import { DeleteAPIPath } from '../../ShipmentOrderTypeWorkflow/constants';
 import DataGrid from "../../../../../../common/components/DataGrid";
 import { GetMLObjectData } from "../../../../../../common/library/form/FormLib";
@@ -31,6 +30,9 @@ import { Prompt } from 'react-router';
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { convertNodeToElement } from "react-html-parser";
+import Collapsible from 'react-collapsible';
+import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION } from "../../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -42,6 +44,8 @@ class EditCom extends React.Component {
         this.editShipmentOrderType_FixShipmentFeePopup = this.editShipmentOrderType_FixShipmentFeePopup.bind(this);
         this.delete_ShipmentOrderType_FixShipmentFee = this.delete_ShipmentOrderType_FixShipmentFee.bind(this);
         this.addShipmentOrderType_FlexShipmentFeePopup = this.addShipmentOrderType_FlexShipmentFeePopup.bind(this);
+        this.delete_ShipmentOrderType_FlexShipmentFee = this.delete_ShipmentOrderType_FlexShipmentFee.bind(this);
+        this.editShipmentOrderType_FlexShipmentFeePopup = this.editShipmentOrderType_FlexShipmentFeePopup.bind(this);
         this.onWorkflowPopupSubmit = this.onWorkflowPopupSubmit.bind(this);
         this.handleInputChangeList = this.handleInputChangeList.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -230,7 +234,7 @@ class EditCom extends React.Component {
             modalElementList: modalElementList,
         });
     }
-   
+
     editShipmentOrderType_FixShipmentFeePopup(value, pkColumnName) {
         let _fixShipmentFee = {};
         this.state.FormData.ShipmentOrderTypeFixShipmentFee.map((item, index) => {
@@ -257,7 +261,7 @@ class EditCom extends React.Component {
                     if (MLObject) {
                         MLObject.ShipmentOrderTypeID = this.props.match.params.id;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
-                        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;  
+                        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath_FixShipmentFee, MLObject).then((apiResult) => {
                             if (!apiResult.IsError) {
                                 this.callLoadData();
@@ -328,6 +332,73 @@ class EditCom extends React.Component {
         });
     }
 
+    delete_ShipmentOrderType_FlexShipmentFee(deleteList, pkColumnName) {
+        let listMLObject = [];
+        deleteList.map((row, index) => {
+            let MLObject = {};
+            pkColumnName.map((pkItem, pkIndex) => {
+                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+            });
+            MLObject.ShipmentOrderTypeID = this.props.match.params.id;
+            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+            listMLObject.push(MLObject);
+        });
+        //console.log("delete_ShipmentOrderType_FlexShipmentFee",listMLObject);
+        this.props.callFetchAPI(APIHostName, DeleteAPIPath_FlexShipmentFee, listMLObject).then((apiResult) => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                this.callLoadData();
+            }
+            this.addNotification(apiResult.Message, apiResult.IsError);
+        });
+    }
+
+    editShipmentOrderType_FlexShipmentFeePopup(value, pkColumnName) {
+        let _flexShipmentFee = {};
+        this.state.FormData.ShipmentOrderTypeFlexShipmentFee.map((item, index) => {
+            let isMath = false;
+            for (var j = 0; j < pkColumnName.length; j++) {
+                if (item[pkColumnName[j].key] != value.pkColumnName[j].value) {
+                    isMath = false;
+                    break;
+                }
+                else {
+                    isMath = true;
+                }
+            }
+            if (isMath) {
+                _flexShipmentFee = item;
+            }
+        });
+
+        this.props.showModal(MODAL_TYPE_CONFIRMATION, {
+            title: 'Chỉnh sửa chi phí vận chuyển thay đổi của một loại yêu cầu vận chuyển',
+            onConfirm: (isConfirmed, formData) => {
+                if (isConfirmed) {
+                    let MLObject = GetMLObjectData(MLObjectShipmentOrderType_FlexShipmentFee, formData, _flexShipmentFee);
+                    if (MLObject) {
+                        MLObject.ShipmentOrderTypeID = this.props.match.params.id;
+                        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+                        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+                        this.props.callFetchAPI(APIHostName, UpdateAPIPath_FlexShipmentFee, MLObject).then((apiResult) => {
+                            if (!apiResult.IsError) {
+                                this.callLoadData();
+                                this.props.hideModal();
+                                this.addNotification(apiResult.Message, apiResult.IsError);
+                            } else {
+                                this.showMessage(apiResult.Message);
+                            }
+                            this.setState({ IsCallAPIError: apiResult.IsError });
+                        });
+                        //console.log("showModal",MLObject);
+                    }
+                }
+            },
+            modalElementList: ModalFlexShipmentFeeColumnList_Edit,
+            formData: _flexShipmentFee
+        });
+    }
+
     //----------------------------------------------------------------------------------------------------
 
 
@@ -383,6 +454,7 @@ class EditCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
                 this.showMessage1(apiResult.Message);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERTYPE);
                 //this.handleSubmitInsertLog(param);
             } else {
                 this.showMessage(apiResult.Message);
@@ -660,15 +732,18 @@ class EditCom extends React.Component {
                                 labelcolspan={4} colspan={8} rowspan={8}
                                 maxSize={200} isRequired={true}
                             />
-                            {/* <FormControl.ComboBox name="PieTypeID" type="select" isautoloaditemfromcache={true}
-                            loaditemcachekeyid="PIMCACHE.PIETYPE" valuemember="PieTypeID" nameMember="PieTypeName"
-                            label="Loại chỉnh sửa:" controltype="InputControl" listoption={[]} datasourcemember="PieTypeID"
-                            labelcolspan={3} colspan={9} rowspan={8}
-                        /> */}
-                            <FormControl.TextBox name="AddFunctionID" label="Quyền thêm yêu cầu này"
-                                datasourcemember="AddFunctionID" controltype="InputControl"
+                            <FormControl.ComboBox
+                                name="AddFunctionID"
+                                type="select"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid={ERPCOMMONCACHE_FUNCTION}
+                                valuemember="FunctionID"
+                                nameMember="FunctionName"
+                                label="Quyền thêm yêu cầu này"
+                                controltype="InputControl"
+                                listoption={[]}
+                                datasourcemember="AddFunctionID"
                                 labelcolspan={4} colspan={8} rowspan={8}
-                                maxSize={400}
                             />
 
                             <FormControl.CheckBox label="Cho phép chọn đối tác gửi" name="IsSelectSenderPartner"
@@ -696,7 +771,7 @@ class EditCom extends React.Component {
                             <FormControl.MultiSelectComboBox name="PartnerID" label="Danh sách đối tác"
                                 labelcolspan={4} colspan={8} rowspan={8}
                                 IsLabelDiv={true} controltype="InputControl"
-                                isautoloaditemfromcache={true} loaditemcachekeyid="ERPCOMMONCACHE.PARTNER" valuemember="PartnerID" nameMember="PartnerName"
+                                isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_PARTNER} valuemember="PartnerID" nameMember="PartnerName"
                                 listoption={[]} datasourcemember="PartnerID"
                                 SelectedOption={this.state.SelectedPartnerList ? this.state.SelectedPartnerList : []}
                                 onValueChangeCus={this.changeSelecPartner}
@@ -705,7 +780,7 @@ class EditCom extends React.Component {
                             <FormControl.MultiSelectComboBox name="ShipmentOrderStatusID" label="Trạng thái vận chuyển"
                                 labelcolspan={4} colspan={8} rowspan={8}
                                 IsLabelDiv={true} controltype="InputControl"
-                                isautoloaditemfromcache={true} loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERSTATUS" valuemember="ShipmentOrderStatusID" nameMember="ShipmentOrderStatusName"
+                                isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_SHIPMENTORDERSTATUS} valuemember="ShipmentOrderStatusID" nameMember="ShipmentOrderStatusName"
                                 listoption={[]} datasourcemember="ShipmentOrderStatusID"
                                 SelectedOption={this.state.SelectedShipmentStatusList ? this.state.SelectedShipmentStatusList : []}
                                 onValueChangeCus={this.changeSelectShipmentStatus}
@@ -759,35 +834,40 @@ class EditCom extends React.Component {
                                 onDeleteClick_Customize={this.removeShipmentOrderTypeWorkflow}
                             />
                         </TabPage>
-                        {/* <TabPage title="Chi phí vận chuyển cố định" name="ShipmentOrderType_FixShipmentFee">
-                            <DataGrid listColumn={FixShipmentFeeColumnList}
-                                dataSource={this.state.FormData.ShipmentOrderTypeFixShipmentFee}
-                                modalElementList={ModalFixShipmentFeeColumnList}
-                                MLObjectDefinition={MLObjectShipmentOrderType_FixShipmentFee}
-                                IDSelectColumnName={"chkSelect"}
-                                PKColumnName={"ShipmentFeeTypeID"}
-                                onDeleteClick={this.delete_ShipmentOrderType_FixShipmentFee}
-                                onInsertClick={this.addShipmentOrderType_FixShipmentFeePopup}
-                                onInsertClickEdit={this.editShipmentOrderType_FixShipmentFeePopup}
-                                IsAutoPaging={false}
-                                RowsPerPage={10}
-                                IsCustomAddLink={true}
-                            />
-                        </TabPage>
-                        <TabPage title="Chi phí vận chuyển thay dổi" name="ShipmentOrderType_FlexShipmentFee">
-                            <DataGrid listColumn={FlexShipmentFeeColumnList}
-                                dataSource={this.state.FormData.ShipmentOrderTypeFlexShipmentFee}
-                                modalElementList={ModalFlexShipmentFeeColumnList}
-                                MLObjectDefinition={MLObjectShipmentOrderType_FlexShipmentFee}
-                                IDSelectColumnName={"chkSelect"}
-                                PKColumnName={"FlexShipmentFeeID"}
-                                onDeleteClick={this.delete_ShipmentOrderType_FixShipmentFee}
-                                onInsertClick={this.addShipmentOrderType_FlexShipmentFeePopup}
-                                onInsertClickEdit={this.editShipmentOrderType_FixShipmentFeePopup}
-                                IsAutoPaging={false}
-                                RowsPerPage={10}
-                                IsCustomAddLink={true}
-                            />
+
+                        {/* <TabPage title="Chi phí vận chuyển" name="ShipmentOrderType_FixShipmentFee">
+                            <Collapsible trigger="Chi phí vận chuyển cố định" easing="ease-in" open={true}>
+                                <DataGrid listColumn={FixShipmentFeeColumnList}
+                                    dataSource={this.state.FormData.ShipmentOrderTypeFixShipmentFee}
+                                    modalElementList={ModalFixShipmentFeeColumnList}
+                                    MLObjectDefinition={MLObjectShipmentOrderType_FixShipmentFee}
+                                    IDSelectColumnName={"chkSelectShipmentFeeTypeID"}
+                                    PKColumnName={"ShipmentFeeTypeID"}
+                                    onDeleteClick={this.delete_ShipmentOrderType_FixShipmentFee}
+                                    onInsertClick={this.addShipmentOrderType_FixShipmentFeePopup}
+                                    onInsertClickEdit={this.editShipmentOrderType_FixShipmentFeePopup}
+                                    IsAutoPaging={false}
+                                    RowsPerPage={10}
+                                    IsCustomAddLink={true}
+                                />
+                            </Collapsible>
+
+                            <br />
+                            <Collapsible trigger="Chi phí vận chuyển thay đổi" easing="ease-in" open={true}>
+                                <DataGrid listColumn={FlexShipmentFeeColumnList}
+                                    dataSource={this.state.FormData.ShipmentOrderTypeFlexShipmentFee}
+                                    modalElementList={ModalFlexShipmentFeeColumnList}
+                                    MLObjectDefinition={MLObjectShipmentOrderType_FlexShipmentFee}
+                                    IDSelectColumnName={"chkSelectFlexShipmentFeeID"}
+                                    PKColumnName={"FlexShipmentFeeID"}
+                                    onDeleteClick={this.delete_ShipmentOrderType_FlexShipmentFee}
+                                    onInsertClick={this.addShipmentOrderType_FlexShipmentFeePopup}
+                                    onInsertClickEdit={this.editShipmentOrderType_FlexShipmentFeePopup}
+                                    IsAutoPaging={false}
+                                    RowsPerPage={10}
+                                    IsCustomAddLink={true}
+                                />
+                            </Collapsible>
                         </TabPage> */}
                     </TabContainer>
                 </FormContainer >
@@ -819,7 +899,11 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
+
     }
 }
 

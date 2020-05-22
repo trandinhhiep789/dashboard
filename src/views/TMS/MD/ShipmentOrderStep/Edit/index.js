@@ -161,7 +161,7 @@ const mapDispatchToProps = dispatch => {
             return dispatch(callGetCache(cacheKeyID));
         },
         callClearLocalCache: (cacheKeyID) => {
-            return dispatch(callClearLocalCache(cacheKeyID))
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
     };
 };

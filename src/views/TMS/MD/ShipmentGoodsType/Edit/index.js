@@ -16,9 +16,10 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { callGetCache } from "../../../../../actions/cacheAction";
 import { createListTree } from '../../../../../common/library/ultils';
 import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_SHIPMENTGOODSTYPE } from "../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -144,7 +145,7 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 if(!apiResult.IsError){
-                    // this.handleClearLocalCache();
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTGOODSTYPE);
                     // this.handleSubmitInsertLog(MLObject);
                 }      
                 this.showMessage(apiResult.Message);
@@ -211,6 +212,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
     };
 };

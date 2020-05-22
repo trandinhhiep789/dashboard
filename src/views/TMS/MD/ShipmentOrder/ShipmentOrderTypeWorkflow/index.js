@@ -14,6 +14,7 @@ import { showModal, hideModal } from '../../../../../actions/modal';
 import { APIHostName, AddAPIPath, UpdateAPIPath } from './constants';
 import { ModalManager } from 'react-dynamic-modal/lib';
 import { MessageModal } from "../../../../../common/components/Modal";
+import { ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_USERGROUP, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_SHIPMENTORDERSTEP } from "../../../../../constants/keyCache";
 
 class ShipmentOrderTypeWorkflowCom extends React.Component {
     constructor(props) {
@@ -352,7 +353,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     /> */}
                                     <FormControl.ComboBox
                                         name="ShipmentOrderStepID" type="select" isautoloaditemfromcache={true}
-                                        loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERSTEP" valuemember="ShipmentOrderStepID" nameMember="ShipmentOrderStepName"
+                                        loaditemcachekeyid={ERPCOMMONCACHE_SHIPMENTORDERSTEP} valuemember="ShipmentOrderStepID" nameMember="ShipmentOrderStepName"
                                         label="Tên bước xử lý" controltype="InputControl" datasourcemember="ShipmentOrderStepID"
                                         listoption={[]} isRequired={true} disabled={this.props.IsUpdateData}
                                         labelcolspan={4} colspan={8}
@@ -360,7 +361,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     
                                     <FormControl.ComboBox
                                         name="AutoChangeToShipmentOrderStatusID" type="select" isautoloaditemfromcache={true}
-                                        loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERSTATUS" valuemember="ShipmentOrderStatusID" nameMember="ShipmentOrderStatusName"
+                                        loaditemcachekeyid={ERPCOMMONCACHE_SHIPMENTORDERSTATUS} valuemember="ShipmentOrderStatusID" nameMember="ShipmentOrderStatusName"
                                         label="Tự động chuyển sang trạng thái yêu cầu vận chuyển" controltype="InputControl" datasourcemember="AutoChangeToShipmentOrderStatusID"
                                         listoption={[]} isRequired={true}
                                         labelcolspan={4} colspan={8}
@@ -457,7 +458,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                             <FormControl.MultiSelectComboBox name="UserGroupID" label="Nhóm người dùng"
                                 labelcolspan={2} colspan={10} rowspan={12}
                                 IsLabelDiv={true} controltype="InputControl"
-                                isautoloaditemfromcache={true} loaditemcachekeyid="ERPCOMMONCACHE.USERGROUP" valuemember="UserGroupID" nameMember="UserGroupName"
+                                isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_USERGROUP} valuemember="UserGroupID" nameMember="UserGroupName"
                                 listoption={[]} datasourcemember="UserGroupID"
                                 SelectedOption={this.state.SelectedOption ? this.state.SelectedOption : []}
                                 onValueChangeCus={this.changeSelectUser}
@@ -496,7 +497,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     name="ChooseFunctionID"
                                     type="select"
                                     isautoloaditemfromcache={true}
-                                    loaditemcachekeyid="ERPCOMMONCACHE.FUNCTION"
+                                    loaditemcachekeyid={ERPCOMMONCACHE_FUNCTION}
                                     valuemember="FunctionID"
                                     nameMember="FunctionName"
                                     label="Quyền chuyển bước"

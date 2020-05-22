@@ -23,9 +23,11 @@ import { updatePagePath } from "../../../../actions/pageAction";
 import { BRAND_VIEW, BRAND_DELETE } from "../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { callGetCache } from "../../../../actions/cacheAction";
 import indexedDBLib from "../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
+import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_PARTNERTYPE } from "../../../../constants/keyCache";
+
 
 
 class SearchCom extends React.Component {
@@ -91,6 +93,7 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if(!apiResult.IsError){
                 this.callSearchData(this.state.SearchData);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERTYPE);
             }
         });
     }
@@ -213,7 +216,11 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
+
     };
 };
 

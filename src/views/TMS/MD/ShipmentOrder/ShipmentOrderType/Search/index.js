@@ -30,6 +30,9 @@ import { updatePagePath } from "../../../../../../actions/pageAction";
 import { PIEREQUESTTYPE_VIEW, PIEREQUESTTYPE_DELETE } from "../../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
+import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_SHIPMENTORDERTYPE } from "../../../../../../constants/keyCache";
+
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -76,7 +79,8 @@ class SearchCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                this.handleDeleteInsertLog();
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERTYPE);
+                //this.handleDeleteInsertLog();
             }
             this.addNotification(apiResult.Message, apiResult.IsError);
         });
@@ -113,7 +117,7 @@ class SearchCom extends React.Component {
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then((apiResult) => {
                             if (!apiResult.IsError) {
                                 this.callSearchData(this.state.SearchData);
-                                //this.handleSubmitInsertLog(MLObject);
+                                this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERTYPE);
                                 this.props.hideModal();
                                 this.addNotification(apiResult.Message, apiResult.IsError);
                             } else {
@@ -241,7 +245,11 @@ const mapDispatchToProps = dispatch => {
         },
         hideModal: () => {
             dispatch(hideModal());
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
+
     }
 }
 

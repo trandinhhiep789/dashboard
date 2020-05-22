@@ -26,8 +26,8 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 // } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_SHIPMENTGOODSTYPE } from "../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -102,7 +102,7 @@ class SearchCom extends React.Component {
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if(!apiResult.IsError){
                     this.callSearchData(this.state.SearchData);
-                    // this.handleClearLocalCache();
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTGOODSTYPE);
                     // this.handleSubmitInsertLog();
                 }             
             });
@@ -227,6 +227,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
     };
 };
