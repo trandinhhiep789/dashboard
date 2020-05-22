@@ -165,7 +165,7 @@ class InfoCoordinatorCom extends Component {
                             <label className="col-form-label bold">Ghi chú:</label>
                         </div>
                         <div className="form-group col-md-10">
-                            <input type="text" name="CoordinatorNote"
+                            <input key={"CoordinatorNote"} type="text" name="CoordinatorNote"
                                 value={this.state.ShipmentOrder.CoordinatorNote}
                                 onChange={this.handleValueChange}
                                 className="form-control form-control-sm"

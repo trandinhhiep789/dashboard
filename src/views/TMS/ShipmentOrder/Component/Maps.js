@@ -1,28 +1,6 @@
 import React, { Component } from "react";
 import vbd from '../../../../scripts/vietbandomapsapi.js';
 
-function postData(url, data) {
-    // Default options are marked with *
-    return fetch(url, {
-        //   body: JSON.stringify(data), // must match 'Content-Type' header
-        //   cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        //   credentials: 'same-origin', // include, same-origin, *omit
-        //   withCredentials: true,
-        Address: '',
-        Method: '',
-        headers: {
-            // 'user-agent': 'Mozilla/4.0 MDN Example',
-            'Content-Type': 'application/json',
-            // 'Access-Control-Allow-Origin': '*',
-            'RegisterKey': 'c1602ab5-74da-473c-9601-aa53a2a4505e'
-        },
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        //   mode: 'cors', // no-cors, cors, *same-origin
-        //   redirect: 'follow', // manual, *follow, error
-        //   referrer: 'no-referrer', // *client, no-referrer
-    })
-        .then(response => response.json()) // parses response to JSON
-}
 
 class Maps extends React.Component {
     constructor(props) {
@@ -33,56 +11,24 @@ class Maps extends React.Component {
         };
     }
 
-    async  componentDidMount() {
-        window.initialize()
+      componentDidMount() {
+        const mapContainer = document.getElementById("map-container");
+        const mapProp = {
+            center: new vbd.LatLng(10.7964825447845, 106.68550653525),
+            maxZoom: 19,
+            zoom: 12,
+            minZoom: 2,
+            registerKey: "7f65a9df-4910-434d-b2ce-5cf7d783ad8b",
+            scaleControlOptions: { showScale: true },
+            zoomControl: true
+        };
+        let map = new vbd.Map(mapContainer, mapProp);
+        vbd.event.addListener(map,'click',function(){
+            alert("click");
+        });
 
-        let data = { "Alternative": 2147483647, "Distance": true, "Duration": true, "Geometry": true, "Instructions": true, "Points": [{ "Latitude": 11.058473039992307, "Longitude": 106.63055419921875 }, { "Latitude": 10.842747549833462, "Longitude": 106.61407470703125 }], "RouteCriteria": 0, "Uturn": true, "VehicleType": 3 }
-
-
-        let _header = {
-            'user-agent': 'Mozilla/4.0 MDN Example',
-            // 'RegisterKey': '348ffe19-4514-4972-b650-a80dc5d47265'
-        }
-        if (!(data instanceof FormData)) {
-            _header['Content-Type'] = 'application/json; charset=UTF-8"';
-            _header['Accept'] = 'application/json; charset=UTF-8"';
-            _header['RegisterKey'] = '348ffe19-4514-4972-b650-a80dc5d47265';
-            data = JSON.stringify({ "Alternative": 2147483647, "Distance": true, "Duration": true, "Geometry": true, "Instructions": true, "Points": [{ "Latitude": 11.058473039992307, "Longitude": 106.63055419921875 }, { "Latitude": 10.842747549833462, "Longitude": 106.61407470703125 }], "RouteCriteria": 0, "Uturn": true, "VehicleType": 3 })
-        }
-
-        fetch("http://developers.vietbando.com/V2/service/PartnerPortalService.svc/rest/ViaRoute", {
-            body: data, // must match 'Content-Type' header
-            // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            // credentials: 'same-origin', // include, same-origin, *omit
-            // withCredentials: true,
-            headers: _header,
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'no-cors', // no-cors, cors, *same-origin
-            // redirect: 'follow', // manual, *follow, error
-            // referrer: 'no-referrer', // *client, no-referrer
-        })
-        .then(response => {
-            console.log(response);
-        }); // parses response to JSON
-
-
-
-        // const response = await fetch('http://developers.vietbando.com/V2/Service/PartnerPortalService.svc/rest/ViaRoute', {
-        //     method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        //     mode: 'no-cors', // no-cors, *cors, same-origin
-        //     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        //     credentials: 'same-origin', // include, *same-origin, omit
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'registerkey': '348ffe19-4514-4972-b650-a80dc5d47265'
-        //         // 'Content-Type': 'application/x-www-form-urlencoded',
-        //     },
-        //     redirect: 'follow', // manual, *follow, error
-        //     referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        //     body: JSON.stringify(data) // body data type must match "Content-Type" header
-        // });
-        // console.log(response)
     }
+
 
 
 

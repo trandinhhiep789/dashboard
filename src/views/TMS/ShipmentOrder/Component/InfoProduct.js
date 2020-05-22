@@ -75,7 +75,7 @@ class InfoProductCom extends Component {
                         <div className="form-group col-md-10">
                             <div className="checkbox customCheckbox">
                                 <label>
-                                    <input type="checkbox" defaultChecked />
+                                    <input type="checkbox" defaultChecked={false} />
                                     <span className="cr">
                                         <i className="cr-icon fa fa-check"></i></span>
                                 </label>
