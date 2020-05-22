@@ -14,6 +14,8 @@ class InfoCoordinatorCom extends Component {
         this.handleShipWorkFlowInsert = this.handleShipWorkFlowInsert.bind(this);
         this.handleValueChange = this.handleValueChange.bind(this);
         this.handleValueChange1 = this.handleValueChange1.bind(this);
+        this.handleOnValueChange = this.handleOnValueChange.bind(this);
+        
         this.handleShipWorkFlowInsert = this.handleShipWorkFlowInsert.bind(this);
 
 
@@ -50,6 +52,12 @@ class InfoCoordinatorCom extends Component {
         let value = e.target.value;
         let { ShipmentOrder } = this.state;
         ShipmentOrder[e.target.name] = value;
+        this.setState({ ShipmentOrder: ShipmentOrder })
+    }
+
+    handleOnValueChange(name,value) {
+        let { ShipmentOrder } = this.state;
+        ShipmentOrder[name] = value;
         this.setState({ ShipmentOrder: ShipmentOrder })
     }
     handleValueChange1(e, selectedOption) {
@@ -145,7 +153,7 @@ class InfoCoordinatorCom extends Component {
                         valuemember="PartnerID"
                         nameMember="PartnerName"
                         controltype="InputControl"
-                        onChange={this.handleValueChange}
+                        onChange={this.handleOnValueChange}
                         value={this.state.ShipmentOrder.CarrierPartnerID}
                         listoption={null}
                         datasourcemember="CarrierPartnerID"

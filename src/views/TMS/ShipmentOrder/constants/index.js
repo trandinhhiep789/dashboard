@@ -459,6 +459,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "",
         DataSourceMember: ""
+    },
+    {
+        Name: "objQHPX",
+        DefaultValue: {},
+        BindControlName: "objQHPX",
+        DataSourceMember: "objQHPX"
     }
 ];
 
