@@ -353,6 +353,7 @@ class FormContainerCom extends Component {
 
     //#region render Children
     autoLayoutChildren() {
+        console.log("autoLayoutChildren")
         const children = this.props.children;
         return React.Children.map(children, (child, i) => {
             if (child.type == "div") {

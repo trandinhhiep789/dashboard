@@ -459,6 +459,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "",
         DataSourceMember: ""
+    },
+    {
+        Name: "objQHPX",
+        DefaultValue: {},
+        BindControlName: "objQHPX",
+        DataSourceMember: "objQHPX"
     }
 ];
 
@@ -601,7 +607,8 @@ export const ElementQHPXList = [
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
         ValueMember: "ProvinceID",
-        NameMember: "ProvinceName"
+        NameMember: "ProvinceName",
+        nameOption: "ProvinceID"
     },
     {
         type: "ComboBox",
@@ -619,19 +626,41 @@ export const ElementQHPXList = [
         filterValue: "",
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
         ValueMember: "DistrictID",
-        NameMember: "DistrictName"
+        NameMember: "DistrictName",
+        nameOption: "ProvinceID"
     },
     {
         type: "text",
-        name: "",
+        name: "txtFullAddress",
         colspan: "10",
         labelcolspan: "2",
         readOnly: false,
         label: "địa chỉ",
         placeholder: "Địa chỉ",
-        value: "aa",
-        datasourcemember: "",
+        value: "",
+        datasourcemember: "FullAddress",
         classNameCustom: "customcontrol"
     }
 ];
+export const GridMLObjectQTQHPX = [
+    {
+        Name: "ReceiverProvinceID",
+        DefaultValue: "",
+        BindControlName: "cbReceiverProvinceID",
+        DataSourceMember: "ReceiverProvinceID"
+    },
+    {
+        Name: "ReceiverDistrictID",
+        DefaultValue: "",
+        BindControlName: "cbReceiverDistrictID",
+        DataSourceMember: "ReceiverDistrictID"
+    },
+    {
+        Name: "FullAddress",
+        DefaultValue: "",
+        BindControlName: "txtFullAddress",
+        DataSourceMember: "FullAddress"
+    },
+]
+
 

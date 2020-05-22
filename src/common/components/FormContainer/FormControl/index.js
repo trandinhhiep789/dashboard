@@ -854,63 +854,44 @@ class ComboBox1Com extends Component {
     constructor(props) {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
-        this.state = { Listoption: [], value: this.props.value }
+        this.state = { Listoption: [], value: this.props.value, SelectedOption: {} }
     }
-    handleValueChange(e) {
-        e.preventDefault();
-        this.setState({ value: e.target.value });
-        if (this.props.onValueChange != null)
-            this.props.onValueChange(e.target.name, e.target.value, this.props.label, undefined, this.props.validatonList);
-        if (this.props.onValueChangeCus) {
-            this.props.onValueChangeCus(e.target.name, e.target.value);
-        }
+    handleValueChange(selectedOption) {
+        const comboValues = this.getComboValue(selectedOption);
+        this.setState({ SelectedOption: selectedOption });
+        if (this.props.onChange)
+            this.props.onChange(this.props.name, comboValues);
     }
-    //#region tree category
-    categoryNamePrefix(categoryLevel) {
-        let resultStr = "";
-        for (let i = 0; i < categoryLevel; i++) {
-            resultStr += "---";
-        }
-        return resultStr;
-    }
-    createCategoryTree(originListItem) {
-        let childListItem = originListItem.filter(item => item.ParentID == 0);
-        //  console.log("createCategoryTree childListItem:", childListItem);
-        let itemListResult = [{ value: -1, label: "--Vui lòng chọn--" }];
-        for (let i = 0; i < childListItem.length; i++) {
-            itemListResult.push({ value: childListItem[i].CategoryID, label: childListItem[i].CategoryName });
-            let childItemTree = this.createChildCategoryTree(originListItem, childListItem[i].CategoryID, 1);
-            // console.log("createCategoryTree childItemTree:", childItemTree);
-            for (let j = 0; j < childItemTree.length; j++) {
-                //itemListResult.push(childItemTree[j]);
-                itemListResult.push({ value: childItemTree[j].CategoryID, label: childItemTree[j].CategoryName });
-            }
-        }
-        return itemListResult;
-    }
-    createChildCategoryTree(originListItem, parentID, categoryLevel) {
-        let childListItem = originListItem.filter(item => item.ParentID == parentID);
-        // console.log("createChildCategoryTree childListItem:", childListItem);
-        let itemListResult = []
-        for (let i = 0; i < childListItem.length; i++) {
-            let item = childListItem[i];
-            item.CategoryName = this.categoryNamePrefix(categoryLevel) + item.CategoryName;
-            //   console.log("createChildCategoryTree childListItem:",item);
-            itemListResult.push(item);
-            //itemListResult.push({ value: item.CategoryID, label: item.CategoryName });
-            const newCategoryLevel = categoryLevel + 1;
-            let childListItem2 = originListItem.filter(item => item.ParentID == item.CategoryID);
-            //  console.log("createChildCategoryTree childListItem2:",childListItem2);
-            if (childListItem2.length > 0) {
-                const childItemTree2 = this.createChildCategoryTree(originListItem, item.CategoryID, newCategoryLevel);
-                for (j = 0; j < childItemTree2.length; j++) {
-                    itemListResult.push(childItemTree2[j]);
-                    itemListResult.push({ value: childItemTree2[j].CategoryID, label: childItemTree2[j].CategoryName });
+
+    bindcombox(listOption) {
+        let values = this.props.value;
+        let selectedOption = [];
+        if (values == null || values === -1)
+            return selectedOption;
+        if (typeof values.toString() == "string")
+            values = values.toString().split();
+        for (let i = 0; i < values.length; i++) {
+            for (let j = 0; j < listOption.length; j++) {
+                if (values[i] == listOption[j].value) {
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].value + "-" + listOption[j].name });
                 }
             }
         }
-        return itemListResult;
+        return selectedOption;
+    }
+    getComboValue(selectedOption) {
+        let values = [];
+        if (selectedOption == null)
+            return -1;
+        if (this.props.isMultiSelect) {
+            for (let i = 0; i < selectedOption.length; i++) {
+                values.push(selectedOption[i].value);
+            }
+        } else {
+            return selectedOption.value;
+        }
 
+        return values;
     }
     //#endregion tree category
 
@@ -927,18 +908,12 @@ class ComboBox1Com extends Component {
                 //  console.log("this.props.isautoloaditemfromcach2: ",this.props.loaditemcachekeyid, this.state.Listoption);
                 listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
-                    if (!isCategory) {
-
-                        result.ResultObject.CacheData.map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
-                        }
-                        );
-                        this.setState({ Listoption: listOption });
+                    result.ResultObject.CacheData.map((cacheItem) => {
+                        listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
                     }
-                    else {
-                        const categoryTree = this.createCategoryTree(result.ResultObject.CacheData, 0, 0);
-                        this.setState({ Listoption: categoryTree });
-                    }
+                    );
+                    let aa = this.bindcombox(listOption);
+                    this.setState({ Listoption: listOption, SelectedOption: aa });
                 }
                 else {
                     this.setState({ Listoption: listOption });
@@ -982,29 +957,21 @@ class ComboBox1Com extends Component {
                             {this.props.label}<span className="text-danger"> {star}</span>
                         </label>
                     </div>
-                    {/* <select className={className}
-                        name={this.props.name}
-                        onChange={this.handleValueChange}
-                        value={this.state.value}
-                        disabled={this.props.disabled}
-                        required={this.props.required}
-                    >
-                        {listOption.map((optionItem) =>
-                            <option key={optionItem.value} value={optionItem.value}>{(optionItem.value == -1 ? "" : optionItem.value + " - ") + optionItem.label}</option>
-                        )}
-                    </select> */}
-                    <Select
-                        value={this.state.selectedOption}
-                        name={this.props.name}
-                        ref={this.props.inputRef}
-                        onChange={this.handleValueChange}
-                        options={this.state.ListOption}
-                        isMulti={isMultiSelect}
-                        isSearchable={true}
-                        placeholder={placeholder}
-                        className={className}
-                    />
-                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+
+                    <div className={formGroupClassName}>
+                        <Select
+                            value={this.state.SelectedOption}
+                            name={this.props.name}
+                            ref={this.props.inputRef}
+                            onChange={this.handleValueChange}
+                            options={this.state.Listoption}
+                            isMulti={isMultiSelect}
+                            isSearchable={true}
+                            placeholder={placeholder}
+                            className={className}
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    </div>
                 </div>
             );
         }
@@ -1051,5 +1018,5 @@ class ComboBox1Com extends Component {
 export const ComboBox1 = connect(null, mapDispatchToProps)(ComboBox1Com);
 
 
-export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus,ElementDatetime,ComboBox1,ComboboxQTQHPX};
+export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus, ElementDatetime, ComboBox1, ComboboxQTQHPX };
 

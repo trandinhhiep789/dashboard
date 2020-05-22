@@ -8,7 +8,7 @@ export default class SearchForm extends Component {
         this.onValueChange = this.onValueChange.bind(this);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         const formDataContol = this.bindDataContol();
-        console.log("formDataContol",formDataContol)
+        //console.log("formDataContol",formDataContol)
         this.elementItemRefs = [];
         this.state = { FormData: formDataContol };
     }

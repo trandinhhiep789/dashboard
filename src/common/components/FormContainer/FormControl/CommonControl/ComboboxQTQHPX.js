@@ -11,14 +11,30 @@ class ComboboxQTQHPXCom extends React.Component {
     constructor(props) {
         super(props);
         this.elementItemRefs = [];
-        this.state = { FormData: {} };
+        const formDataContol = this.bindDataContol();
+        console.log("formDataContol",formDataContol);
+        this.state = { FormData: formDataContol };
+    }
+
+    bindDataContol() {
+
+        let formData = {};
+        const listElement = this.props.listelement;
+        listElement.map((elementItem) => {
+            const elementname = elementItem.name;
+         
+                const ObjectName = { Name: elementname, value: elementItem.value, Controltype: elementItem.type, label: elementItem.label, ErrorLst: [], validatonList: elementItem.validatonList };
+                formData = Object.assign({}, formData, { [elementname]: ObjectName });
+            
+        });
+        return formData;
     }
 
     componentDidMount() {
     }
     renderSearchForm() {
         const listElement = this.props.listelement;
-        console.log("ComboboxQTQHPXCom", this.state, this.props)
+        //console.log("ComboboxQTQHPXCom", this.state, this.props)
         return (
             <React.Fragment>
                 {
@@ -39,7 +55,8 @@ class ComboboxQTQHPXCom extends React.Component {
                                 return (
                                     <ElementSearch.ElementComboBoxNew
                                         onValueChange={this.onValueChange}
-                                        value={1}
+                                        value={3}
+                                        valuefilter={2}
                                         ValidatonErrorMessage={""}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
@@ -53,7 +70,6 @@ class ComboboxQTQHPXCom extends React.Component {
                 }
                 </React.Fragment>
         );
-           
     }
     render() {
         let elmentRender = this.renderSearchForm();

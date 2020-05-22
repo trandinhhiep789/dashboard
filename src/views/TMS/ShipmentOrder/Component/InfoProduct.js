@@ -51,7 +51,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label bold">Tổng kích thước:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label">{this.state.ShipmentOrder.Length} x {this.state.ShipmentOrder.Width} x {this.state.ShipmentOrder.Height} cm</label>
+                            <label className="col-form-label">{this.state.ShipmentOrder.Length} x {this.state.ShipmentOrder.Width} x {this.state.ShipmentOrder.Height}cm</label>
                         </div>
                     </div>
                     <div className="form-row">
@@ -101,6 +101,7 @@ class InfoProductCom extends Component {
                                 <thead className="thead-light">
                                     <tr>
                                         <th className="jsgrid-header-cell"></th>
+                                        <th className="jsgrid-header-cell">Cần lắp đặt</th>
                                         <th className="jsgrid-header-cell">Sản phẩm</th>
                                         <th className="jsgrid-header-cell">Kiện</th>
                                         <th className="jsgrid-header-cell">Giá</th>
@@ -117,11 +118,21 @@ class InfoProductCom extends Component {
                                                 <td>
                                                     <img src='/src/img/may-lanh-lg-v10enh-1-1-org.jpg' className="img-product" />
                                                 </td>
+                                                <td>
+                                                    <div className="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" className="form-control form-control-sm" checked={item.IsInstallItem} />
+                                                            <span className="cr">
+                                                                <i className="cr-icon fa fa-check"></i>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </td>
                                                 <td>{item.ProductName}</td>
                                                 <td>{item.PackingUnitName}</td>
                                                 <td>{item.Price}đ</td>
                                                 <td>{item.Quantity}</td>
-                                                <td>{item.QuantityUnitID}</td>
+                                                <td>{item.QuantityUnitName}</td>
                                                 <td>{item.SizeItem}</td>
                                                 <td>{item.Weight}kg</td>
                                             </tr>
@@ -166,7 +177,7 @@ class InfoProductCom extends Component {
                                                 <td>{item.ProductID}</td>
                                                 <td>{item.ProductName}</td>
                                                 <td>{item.Quantity}</td>
-                                                <td>{item.QuantityUnitID}</td>
+                                                <td>{item.QuantityUnitName}</td>
                                                 <td>{item.Price}đ</td>
                                                 <td>{item.SaleOrderID}</td>
                                             </tr>)

@@ -28,7 +28,7 @@ class InfoHistoryWFCom extends Component {
                             <thead className="thead-light">
                                 <tr>
                                     <th className="jsgrid-header-cell">Thời gian</th>
-                                    <th className="jsgrid-header-cell">Trạng thái</th>
+                                    <th className="jsgrid-header-cell">Bước xử lý</th>
                                     <th className="jsgrid-header-cell">Nhân viên</th>
                                     <th className="jsgrid-header-cell">Hình ảnh</th>
                                     <th className="jsgrid-header-cell">Ghi chú</th>
@@ -39,7 +39,7 @@ class InfoHistoryWFCom extends Component {
                                     if (item.ProcessDate != null) {
                                         return (<tr key={index}>
                                             <td>{formatDate(item.ProcessDate)}</td>
-                                            <td>{item.ShipmentOrderStatusName}</td>
+                                            <td>{item.ShipmentOrderStepName}</td>
                                             <td>{item.ProcessUser}</td>
                                             <td></td>
                                             <td>{item.Note}</td>

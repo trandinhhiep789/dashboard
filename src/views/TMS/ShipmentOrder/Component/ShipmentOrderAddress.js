@@ -57,6 +57,7 @@ class ShipmentOrderAddressCom extends Component {
         });
     }
     ShowModalSender() {
+
         ModalManager.open(
             <ModelContainer
                 title="Cập nhật thông tin địa chỉ người gửi"
@@ -141,7 +142,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Tọa độ:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <label className="col-form-label">10.796279, 106.623670</label>
+                                <label className="col-form-label">{this.state.ShipmentOrderEdit.SenderGeoLocation}</label>
                             </div>
                         </div>
                     </div>
@@ -151,7 +152,7 @@ class ShipmentOrderAddressCom extends Component {
                 </div>
 
                 <div className="form-row google-maps">
-                    <MapContainer classStyle={style} classContainerStyle={containerStyle}/>
+                    <MapContainer  SenderGeoLocation ={this.state.ShipmentOrderEdit.SenderGeoLocation} classStyle={style} classContainerStyle={containerStyle}/>
                 </div>
 
             </ModelContainer>

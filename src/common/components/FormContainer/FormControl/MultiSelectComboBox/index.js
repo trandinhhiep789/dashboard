@@ -81,26 +81,29 @@ class MultiSelectComboBoxCom extends React.Component {
     }
 
     handleValueChange(selectedOption) {
-
-        let listMLObject = [];
-        if (selectedOption) {
-            for (let i = 0; i < selectedOption.length; i++) {
-                listMLObject.push({
-                    ShipmentOrderID: this.props.ShipmentOrder.ShipmentOrderID, UserName: selectedOption[i].value,
-                    CreatedUser: "administrator",
-                    CreatedOrderTime: this.props.ShipmentOrder.CreatedOrderTime
-                });
-            }
-        }
-        else {
-            listMLObject.push({
-                ShipmentOrderID: this.props.ShipmentOrder.ShipmentOrderID,
-                CreatedUser: "administrator"
-            });
-        }
-        this.props.callFetchAPI("PIMAPI", 'api/ShipmentOrder_DeliverUser/AddList', listMLObject).then(apiResult => {
-            this.setState({ SelectedOption: selectedOption });
-        });
+        // const comboValues = this.getComboValue(selectedOption);
+         this.setState({ SelectedOption: selectedOption });
+        if (this.props.onChange)
+        this.props.onChange(this.props.name, selectedOption);
+        // let listMLObject = [];
+        // if (selectedOption) {
+        //     for (let i = 0; i < selectedOption.length; i++) {
+        //         listMLObject.push({
+        //             ShipmentOrderID: this.props.ShipmentOrder.ShipmentOrderID, UserName: selectedOption[i].value,
+        //             CreatedUser: "administrator",
+        //             CreatedOrderTime: this.props.ShipmentOrder.CreatedOrderTime
+        //         });
+        //     }
+        // }
+        // else {
+        //     listMLObject.push({
+        //         ShipmentOrderID: this.props.ShipmentOrder.ShipmentOrderID,
+        //         CreatedUser: "administrator"
+        //     });
+        // }
+        // this.props.callFetchAPI("PIMAPI", 'api/ShipmentOrder_DeliverUser/AddList', listMLObject).then(apiResult => {
+        //     this.setState({ SelectedOption: selectedOption });
+        // });
 
     }
 
