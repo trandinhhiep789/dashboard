@@ -114,7 +114,7 @@ class DataGridCom extends Component {
 
     onChangePageHandle(pageNum) {
         this.setState({ PageNumber: pageNum });
-        const temp = this.checkInputisAll(this.getDisplayDataPageNumber(this.props.dataSource, pageNum), this.state.GridData["chkSelect"]);
+        const temp = this.checkInputisAll(this.getDisplayDataPageNumber(this.props.dataSource, pageNum), this.state.GridData[this.props.IDSelectColumnName]);
         this.setState({ IsCheckAll: temp });
     }
 
@@ -144,12 +144,13 @@ class DataGridCom extends Component {
     }
 
     onValueChange(elementdata, index) {
+        debugger;
         let elementobject;
         let gridData;
         const multipleCheck = this.props.isMultipleCheck;
         const pkColumnName = this.state.ListPKColumnName;
         if (multipleCheck || multipleCheck == undefined) {
-            if (elementdata.Name == "chkSelect") {
+            if (elementdata.Name.toString().includes("chkSelect")) {
                 let checkList = this.state.GridData[elementdata.Name];
                 let ListElement = this.state.GridData[elementdata.Name];
                 let isMath = false;
@@ -176,7 +177,7 @@ class DataGridCom extends Component {
                 elementobject = Object.assign({}, this.state.GridData[elementdata.Name], { [index]: elementdata });
                 gridData = Object.assign({}, this.state.GridData, { [elementdata.Name]: elementobject });
             }
-            const temp = this.checkInputisAll(this.getDisplayData(this.props.dataSource), gridData["chkSelect"]);
+            const temp = this.checkInputisAll(this.getDisplayData(this.props.dataSource), gridData[this.props.IDSelectColumnName]);
             // console.log("temp", temp);
             // console.log("checkList1", gridData, elementobject);
             this.setState({ GridData: gridData, IsCheckAll: temp });
@@ -233,10 +234,10 @@ class DataGridCom extends Component {
             const confir = confirm("Bạn có chắc rằng muốn xóa ?");
             if (confir == 1) {
                 this.props.onDeleteClick(listDeleteID, this.state.ListPKColumnName);
-                // this.setState({
-                //     GridData: {},
-                //     IsCheckAll: false
-                // });
+                this.setState({
+                    //GridData: {},
+                    IsCheckAll: false
+                });
             }
         }
         if (this.props.DeletePermission) {

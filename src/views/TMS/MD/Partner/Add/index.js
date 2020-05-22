@@ -19,7 +19,7 @@ import { ATTRIBUTE_CATEGORY_TYPE_ADD } from "../../../../../constants/functionLi
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_PARTNER } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_COUNTRY, ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD } from "../../../../../constants/keyCache";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -29,6 +29,7 @@ class AddCom extends React.Component {
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
         this.initCombobox = this.initCombobox.bind(this);
         this.onValueChange = this.onValueChange.bind(this);
+        this.setValueCombobox = this.setValueCombobox.bind(this);
         // this.handleGetCache = this.handleGetCache.bind(this);
         // this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
         this.state = {
@@ -46,33 +47,10 @@ class AddCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(AddPagePath);
+        this.setValueCombobox();
         this.initCombobox();
+        //window.location.reload(true);
     }
-
-
-    // handleClearLocalCache() {
-    //     const cacheKeyID = "PIMCACHE.PIMATTRIBUTECATEGORYTYPE";
-    //     const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-    //     return db.delete(cacheKeyID).then((result) => {
-    //         const postData = {
-    //             CacheKeyID: cacheKeyID,
-    //             UserName: this.props.AppInfo.LoginInfo.Username,
-    //             AdditionParamList: []
-    //         };
-    //         this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-    //             this.handleGetCache();
-    //             //console.log("apiResult", apiResult)
-    //         });
-    //     }
-    //     );
-    // }
-
-
-    // handleGetCache() {
-    //     this.props.callGetCache("PIMCACHE.PIMATTRIBUTECATEGORYTYPE").then((result) => {
-    //         console.log("handleGetCache: ", result);
-    //     });
-    // }
 
     // handleSubmitInsertLog(MLObject) {
     //     MLObject.ActivityTitle = `Thêm mới danh sách lý do hủy giao hàng: ${MLObject.CancelDeliveryReasonName}`;
@@ -117,7 +95,7 @@ class AddCom extends React.Component {
         var country, province, district, ward = [];
 
         // quốc gia
-        this.props.callGetCache("ERPCOMMONCACHE.COUNTRY").then((result) => {
+        this.props.callGetCache(ERPCOMMONCACHE_COUNTRY).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 //console.log("FormElement listOption: ", listOption)
                 this.setState({
@@ -127,7 +105,7 @@ class AddCom extends React.Component {
         });
 
         // tỉnh thành phố
-        this.props.callGetCache("ERPCOMMONCACHE.PROVINCE").then((result) => {
+        this.props.callGetCache(ERPCOMMONCACHE_PROVINCE).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 //console.log("FormElement listOption: ", listOption)
                 this.setState({
@@ -137,7 +115,7 @@ class AddCom extends React.Component {
         });
 
         // quận huyện
-        this.props.callGetCache("ERPCOMMONCACHE.DISTRICT").then((result) => {
+        this.props.callGetCache(ERPCOMMONCACHE_DISTRICT).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 //console.log("FormElement listOption: ", listOption)
                 this.setState({
@@ -148,7 +126,7 @@ class AddCom extends React.Component {
 
 
         // phường xã
-        this.props.callGetCache("ERPCOMMONCACHE.WARD").then((result) => {
+        this.props.callGetCache(ERPCOMMONCACHE_WARD).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 //console.log("FormElement listOption: ", listOption)
                 this.setState({
@@ -156,23 +134,54 @@ class AddCom extends React.Component {
                 });
             }
         });
+        this.setState({
+            IsLoadDataComplete: true
+        });
 
-       
+    }
+
+    setValueCombobox() {
+        debugger;
+        let country = [{ value: -1, label: "--Vui lòng chọn--" }];
+        let province = [{ value: -1, label: "--Vui lòng chọn--" }];
+        let district = [{ value: -1, label: "--Vui lòng chọn--" }];
+        let ward = [{ value: -1, label: "--Vui lòng chọn--" }];
+
+        let _AddElementList = this.state.AddElementList;
+        _AddElementList.forEach(function (objElement) {
+            if (objElement.name == "txtCountryID") {
+                objElement.listoption = this.state.Country ? this.state.Country : country;
+                objElement.value = -1;
+            } else if (objElement.name == "txtProvinceID") {
+                objElement.listoption = province;
+                objElement.value = -1;
+            } else if (objElement.name == "txtDistrictID") {
+                objElement.listoption = district;
+                objElement.value = -1;
+            } else if (objElement.name == "txtWardID") {
+                objElement.listoption = ward;
+                objElement.value = -1;
+            }
+
+
+        }.bind(this));
+        this.setState({
+            AddElementList: _AddElementList
+        });
     }
 
     onValueChange(elementname, elementvalue) {
         debugger;
         //console.log("this.state.Province", this.state.Province);
-        var country, province, district, ward = [];
+        let country = [{ value: -1, label: "--Vui lòng chọn--" }];
+        let province = [{ value: -1, label: "--Vui lòng chọn--" }];
+        let district = [{ value: -1, label: "--Vui lòng chọn--" }];
+        let ward = [{ value: -1, label: "--Vui lòng chọn--" }];
 
         let _AddElementList = this.state.AddElementList;
         _AddElementList.forEach(function (objElement) {
             if (elementname == "txtCountryID") {
-                if (objElement.name == "txtCountryID") {
-                    country = this.getDataCombobox(this.state.Country, "CountryID", "CountryName");
-                    objElement.listoption = country;
-                    objElement.value = elementvalue;
-                } else if (objElement.name == "txtProvinceID") {
+                if (objElement.name == "txtProvinceID") {
                     province = this.getDataCombobox(this.state.Province, "ProvinceID", "ProvinceName", "CountryID", elementvalue);
                     objElement.listoption = province;
                 } else if (objElement.name == "txtDistrictID") {
@@ -181,11 +190,7 @@ class AddCom extends React.Component {
                     objElement.listoption = ward;
                 }
             } else if (elementname == "txtProvinceID") {
-                if (objElement.name == "txtProvinceID") {
-                    province = this.getDataCombobox(this.state.Province, "ProvinceID", "ProvinceName");
-                    objElement.listoption = province;
-                    objElement.value = elementvalue;
-                } else if (objElement.name == "txtDistrictID") {
+                if (objElement.name == "txtDistrictID") {
                     district = this.getDataCombobox(this.state.District, "DistrictID", "DistrictName", "ProvinceID", elementvalue);
                     objElement.listoption = district;
                 } else if (objElement.name == "txtWardID") {
@@ -193,11 +198,7 @@ class AddCom extends React.Component {
                 }
 
             } else if (elementname == "txtDistrictID") {
-                if (objElement.name == "txtDistrictID") {
-                    district = this.getDataCombobox(this.state.District, "DistrictID", "DistrictName");
-                    objElement.listoption = district;
-                    objElement.value = elementvalue;
-                } else if (objElement.name == "txtWardID") {
+                if (objElement.name == "txtWardID") {
                     ward = this.getDataCombobox(this.state.Ward, "WardID", "WardName", "DistrictID", elementvalue);
                     objElement.listoption = ward;
                 }
@@ -224,6 +225,17 @@ class AddCom extends React.Component {
         var myDate = new Date(MLObject.IncorporationDate);
         myDate.setDate(myDate.getDate() + 1);
         MLObject.IncorporationDate = myDate;
+
+        if (MLObject.CountryID == -1) {
+            MLObject.ProvinceID = -1;
+            MLObject.DistrictID = -1;
+            MLObject.WardID = -1;
+        } else if (MLObject.ProvinceID == -1) {
+            MLObject.DistrictID = -1;
+            MLObject.WardID = -1;
+        } else if (MLObject.DistrictID == -1) {
+            MLObject.WardID = -1;
+        }
 
         var data = new FormData();
         data.append("LogoImageURL", this.state.Files.PictureURL);
@@ -299,7 +311,7 @@ const mapDispatchToProps = dispatch => {
             return dispatch(callGetCache(cacheKeyID));
         },
         callClearLocalCache: (cacheKeyID) => {
-            return dispatch(callClearLocalCache(cacheKeyID))
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
 
     };

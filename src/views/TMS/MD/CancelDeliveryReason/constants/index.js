@@ -277,21 +277,21 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Mã lý do hủy giao hàng",
         DataSourceMember: "CancelDeliveryReasonID",
-        Width: 200
+        Width: 160
     },
     {
         Name: "CancelDeliveryReasonName",
         Type: "text",
         Caption: "Tên lý do hủy giao hàng",
         DataSourceMember: "CancelDeliveryReasonName",
-        Width: 200
+        Width: 250
     },
     {
         Name: "Description",
         Type: "text",
         Caption: "Mô tả",
         DataSourceMember: "Description",
-        Width: 200
+        //Width: 200
     },
     {
         Name: "IsActived",
@@ -312,21 +312,21 @@ export const DataGridColumnList = [
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 200
+        Width: 100
     },
     {
         Name: "CreatedUserFullName",
         Type: "text",
         Caption: "Người tạo",
         DataSourceMember: "CreatedUserFullName",
-        Width: 200
+        Width: 100
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "CancelDeliveryReasonID",
-        Width: 200,
+        Width: 60,
         Link: "/CancelDeliveryReason/Edit/",
         LinkText: "Chỉnh sửa"
     }

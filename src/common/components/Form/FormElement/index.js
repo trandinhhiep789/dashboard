@@ -262,11 +262,23 @@ class FormElementCom extends Component {
     }
 
     handleSelectedFile(event) {
-        if (this.props.onHandleSelectedFile != null) {
+        let isValidAcceptedFile =  this.checkIsValidAcceptedFile(event.target.files[0].name);
+        if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
             this.props.onHandleSelectedFile(event.target.files[0], this.props.NameMember, false);
             this.setState({ value: event.target.files[0].name, src: URL.createObjectURL(event.target.files[0]) });
             //console.log("selipfile", event.target.files[0]);
         }
+    }
+
+    checkIsValidAcceptedFile(filename){
+        var _fileName = filename;
+        var idxDot = _fileName.lastIndexOf(".") + 1;
+        var extFile = _fileName.substr(idxDot, _fileName.length).toLowerCase();
+        if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+            return true;
+        }else{
+            return false;
+        }   
     }
 
     formatNumeric(value) {

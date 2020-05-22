@@ -397,11 +397,10 @@ export const AddElementList = [
 
 export const EditElementList = [
     {
-        type: "numeric",
+        type: "text",
         name: "txtPartnerID",
         label: "Mã đối tác",
         value: "",
-        maxSize: "10",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -474,7 +473,7 @@ export const EditElementList = [
         DataSourceMember: "CountryID",
         readonly: false,
         validatonList: [],
-        IsAutoLoadItemFromCache: true,
+        IsAutoLoadItemFromCache: false,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.COUNTRY",
         ValueMember: "CountryID",
         NameMember: "CountryName"

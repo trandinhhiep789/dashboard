@@ -21,7 +21,7 @@ import { ATTRIBUTE_CATEGORY_TYPE_UPDATE } from "../../../../../constants/functio
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_PARTNER } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_COUNTRY, ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD } from "../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -30,7 +30,9 @@ class EditCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
         this.initCombobox = this.initCombobox.bind(this);
+        this.setValueCombobox = this.setValueCombobox.bind(this);
         this.onValueChange = this.onValueChange.bind(this);
+        //this.getDataCombobox = this.getDataCombobox.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -59,13 +61,13 @@ class EditCom extends React.Component {
                 this.showMessage(apiResult.Message);
             } else {
                 this.setState({ DataSource: apiResult.ResultObject });
-                this.onValueChange("txtCountryID",apiResult.ResultObject.CountryID);
-                this.onValueChange("txtDistrictID",apiResult.ResultObject.DistrictID);
+                this.setValueCombobox(apiResult.ResultObject.CountryID, apiResult.ResultObject.ProvinceID, apiResult.ResultObject.DistrictID, apiResult.ResultObject.WardID);
             }
             this.setState({
                 IsLoadDataComplete: true
             });
         });
+
     }
 
     //file upload
@@ -79,7 +81,6 @@ class EditCom extends React.Component {
         data.map((cacheItem) => {
             if (conditionName) {
                 if (cacheItem[conditionName] == conditionValue) {
-                    debugger;
                     listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
                 }
             }
@@ -91,12 +92,11 @@ class EditCom extends React.Component {
     }
 
     initCombobox() {
-        var country, province, district, ward = [];
+        //var country, province, district, ward = [];
 
         // quốc gia
-        this.props.callGetCache("ERPCOMMONCACHE.COUNTRY").then((result) => {
+        this.props.callGetCache(ERPCOMMONCACHE_COUNTRY).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
                 this.setState({
                     Country: result.ResultObject.CacheData
                 });
@@ -104,9 +104,8 @@ class EditCom extends React.Component {
         });
 
         // tỉnh thành phố
-        this.props.callGetCache("ERPCOMMONCACHE.PROVINCE").then((result) => {
+        this.props.callGetCache(ERPCOMMONCACHE_PROVINCE).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
                 this.setState({
                     Province: result.ResultObject.CacheData
                 });
@@ -114,9 +113,8 @@ class EditCom extends React.Component {
         });
 
         // quận huyện
-        this.props.callGetCache("ERPCOMMONCACHE.DISTRICT").then((result) => {
+        this.props.callGetCache(ERPCOMMONCACHE_DISTRICT).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
                 this.setState({
                     District: result.ResultObject.CacheData
                 });
@@ -125,9 +123,8 @@ class EditCom extends React.Component {
 
 
         // phường xã
-        this.props.callGetCache("ERPCOMMONCACHE.WARD").then((result) => {
+        this.props.callGetCache(ERPCOMMONCACHE_WARD).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
                 this.setState({
                     Ward: result.ResultObject.CacheData
                 });
@@ -137,19 +134,59 @@ class EditCom extends React.Component {
 
     }
 
+    setValueCombobox(c, p, d, w) {
+        debugger;
+        let country = [{ value: -1, label: "--Vui lòng chọn--" }];
+        let province = [{ value: -1, label: "--Vui lòng chọn--" }];
+        let district = [{ value: -1, label: "--Vui lòng chọn--" }];
+        let ward = [{ value: -1, label: "--Vui lòng chọn--" }];
+
+        let _EditElementList = this.state.EditElementList;
+        _EditElementList.forEach(function (objElement) {
+            if (objElement.name == "txtCountryID") {
+                country = this.getDataCombobox(this.state.Country, "CountryID", "CountryName");
+                objElement.listoption = country;
+                if (c) {
+                    objElement.value = c;
+                }
+            } else if (objElement.name == "txtProvinceID") {
+                province = this.getDataCombobox(this.state.Province, "ProvinceID", "ProvinceName", "CountryID", c);
+                objElement.listoption = province;
+                if (p) {
+                    objElement.value = p;
+                }
+            } else if (objElement.name == "txtDistrictID") {
+                district = this.getDataCombobox(this.state.District, "DistrictID", "DistrictName", "ProvinceID", p);
+                objElement.listoption = district;
+                if (d) {
+                    objElement.value = d;
+                }
+            } else if (objElement.name == "txtWardID") {
+                ward = this.getDataCombobox(this.state.Ward, "WardID", "WardName", "DistrictID", d);
+                objElement.listoption = ward;
+                if (w) {
+                    objElement.value = w;
+                }
+            }
+
+        }.bind(this));
+        this.setState({
+            EditElementList: _EditElementList
+        });
+    }
+
     onValueChange(elementname, elementvalue) {
         debugger;
-        //console.log("this.state.Province", this.state.Province);
-        var country, province, district, ward = [];
+        //console.log("ward state", this.state.Ward);
+        let country = [{ value: -1, label: "--Vui lòng chọn--" }];
+        let province = [{ value: -1, label: "--Vui lòng chọn--" }];
+        let district = [{ value: -1, label: "--Vui lòng chọn--" }];
+        let ward = [{ value: -1, label: "--Vui lòng chọn--" }];
 
         let _EditElementList = this.state.EditElementList;
         _EditElementList.forEach(function (objElement) {
             if (elementname == "txtCountryID") {
-                if (objElement.name == "txtCountryID") {
-                    country = this.getDataCombobox(this.state.Country, "CountryID", "CountryName");
-                    objElement.listoption = country;
-                    objElement.value = elementvalue;
-                } else if (objElement.name == "txtProvinceID") {
+                if (objElement.name == "txtProvinceID") {
                     province = this.getDataCombobox(this.state.Province, "ProvinceID", "ProvinceName", "CountryID", elementvalue);
                     objElement.listoption = province;
                 } else if (objElement.name == "txtDistrictID") {
@@ -158,11 +195,7 @@ class EditCom extends React.Component {
                     objElement.listoption = ward;
                 }
             } else if (elementname == "txtProvinceID") {
-                if (objElement.name == "txtProvinceID") {
-                    province = this.getDataCombobox(this.state.Province, "ProvinceID", "ProvinceName");
-                    objElement.listoption = province;
-                    objElement.value = elementvalue;
-                } else if (objElement.name == "txtDistrictID") {
+                if (objElement.name == "txtDistrictID") {
                     district = this.getDataCombobox(this.state.District, "DistrictID", "DistrictName", "ProvinceID", elementvalue);
                     objElement.listoption = district;
                 } else if (objElement.name == "txtWardID") {
@@ -170,11 +203,7 @@ class EditCom extends React.Component {
                 }
 
             } else if (elementname == "txtDistrictID") {
-                if (objElement.name == "txtDistrictID") {
-                    district = this.getDataCombobox(this.state.District, "DistrictID", "DistrictName");
-                    objElement.listoption = district;
-                    objElement.value = elementvalue;
-                } else if (objElement.name == "txtWardID") {
+                if (objElement.name == "txtWardID") {
                     ward = this.getDataCombobox(this.state.Ward, "WardID", "WardName", "DistrictID", elementvalue);
                     objElement.listoption = ward;
                 }
@@ -185,31 +214,11 @@ class EditCom extends React.Component {
         this.setState({
             EditElementList: _EditElementList
         });
+
+        //console.log("onValueChange.Province", country, province, district, ward);
     }
 
 
-    // handleClearLocalCache() {
-    //     const cacheKeyID = "PIMCACHE.PIMATTRIBUTECATEGORYTYPE";
-    //     const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-    //     return db.delete(cacheKeyID).then((result) => {
-    //         const postData = {
-    //             CacheKeyID: cacheKeyID,
-    //             UserName: this.props.AppInfo.LoginInfo.Username,
-    //             AdditionParamList: []
-    //         };
-    //         this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-    //             this.handleGetCache();
-    //             //console.log("apiResult", apiResult)
-    //         });
-    //     }
-    //     );
-    // }
-
-    // handleGetCache() {
-    //     this.props.callGetCache("PIMCACHE.PIMATTRIBUTECATEGORYTYPE").then((result) => {
-    //         console.log("handleGetCache: ", result);
-    //     });
-    // }
 
     // handleSubmitInsertLog(MLObject) {
     //     MLObject.ActivityTitle = `Cập nhật loại danh mục thuộc tính: ${MLObject.AttributeCategoryTypeName}`;
@@ -229,7 +238,18 @@ class EditCom extends React.Component {
         var myDate = new Date(MLObject.IncorporationDate);
         myDate.setDate(myDate.getDate() + 1);
         MLObject.IncorporationDate = myDate;
-        
+
+        if (MLObject.CountryID == -1) {
+            MLObject.ProvinceID = -1;
+            MLObject.DistrictID = -1;
+            MLObject.WardID = -1;
+        } else if (MLObject.ProvinceID == -1) {
+            MLObject.DistrictID = -1;
+            MLObject.WardID = -1;
+        } else if (MLObject.DistrictID == -1) {
+            MLObject.WardID = -1;
+        }
+
         var data = new FormData();
         data.append("LogoImageURL", this.state.Files.PictureURL);
         data.append("PartnerObj", JSON.stringify(MLObject));
@@ -238,10 +258,9 @@ class EditCom extends React.Component {
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
                 this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNER);
-                // this.handleClearLocalCache();
-                // this.handleSubmitInsertLog(MLObject);
             }
         });
+        //console.log("MLObject",MLObject);
     }
 
     handleCloseMessage() {
@@ -308,7 +327,7 @@ const mapDispatchToProps = dispatch => {
             return dispatch(callGetCache(cacheKeyID));
         },
         callClearLocalCache: (cacheKeyID) => {
-            return dispatch(callClearLocalCache(cacheKeyID))
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
 
     };
