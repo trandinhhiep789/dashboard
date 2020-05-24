@@ -96,7 +96,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Tỉnh/thành phố:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input className="form-control form-control-sm" placeholder="Họ và tên" />
+                                <input defaultValue className="form-control form-control-sm" placeholder="Họ và tên" />
                             </div>
                         </div>
                     </div>
@@ -106,7 +106,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Quận/huyện:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input className="form-control form-control-sm" placeholder="Số điện thoại người gửi" />
+                                <input defaultValue className="form-control form-control-sm" placeholder="Số điện thoại người gửi" />
                             </div>
                         </div>
                     </div>
@@ -119,7 +119,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Phường/xã:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input className="form-control form-control-sm" placeholder="Họ và tên" />
+                                <input defaultValue className="form-control form-control-sm" placeholder="Họ và tên" />
                             </div>
                         </div>
                     </div>
@@ -129,7 +129,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Số nhà/đường:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input className="form-control form-control-sm" placeholder="Số điện thoại người gửi" />
+                                <input defaultValue className="form-control form-control-sm" placeholder="Số điện thoại người gửi" />
                             </div>
                         </div>
                     </div>

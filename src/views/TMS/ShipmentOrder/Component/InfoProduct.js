@@ -65,7 +65,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label bold">Tổng tiền COD:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label">{this.state.ShipmentOrder.TotalCOD} đ</label>
+                            <label className="col-form-label">{this.state.ShipmentOrder.TotalCOD}đ</label>
                         </div>
                     </div>
                     <div className="form-row">
@@ -75,7 +75,7 @@ class InfoProductCom extends Component {
                         <div className="form-group col-md-10">
                             <div className="checkbox customCheckbox">
                                 <label>
-                                    <input type="checkbox" defaultChecked={false} />
+                                    <input type="checkbox" readOnly  checked={this.state.ShipmentOrder.IsInstall} />
                                     <span className="cr">
                                         <i className="cr-icon fa fa-check"></i></span>
                                 </label>
@@ -121,7 +121,7 @@ class InfoProductCom extends Component {
                                                 <td>
                                                     <div className="checkbox">
                                                         <label>
-                                                            <input type="checkbox" className="form-control form-control-sm" checked={item.IsInstallItem} />
+                                                            <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsInstallItem} />
                                                             <span className="cr">
                                                                 <i className="cr-icon fa fa-check"></i>
                                                             </span>
@@ -167,7 +167,7 @@ class InfoProductCom extends Component {
                                                 <td>
                                                     <div className="checkbox">
                                                         <label>
-                                                            <input type="checkbox" className="form-control form-control-sm" checked={item.IsSaleMaterial} />
+                                                            <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsSaleMaterial} />
                                                             <span className="cr">
                                                                 <i className="cr-icon fa fa-check"></i>
                                                             </span>

@@ -53,12 +53,9 @@ class TextBox extends React.Component {
         if (this.props.classNameCustom != null) {
             formRowClassName += this.props.classNameCustom;
         }
-
-        if (this.props.validationErrorMessage != "") {
+   
+        if (this.props.validationErrorMessage != ""&& this.props.validationErrorMessage != undefined) {
             className += " is-invalid";
-
-            if (this._myInput)
-                this._myInput.focus();
 
             return (
                 <div className={formRowClassName} >
@@ -74,7 +71,7 @@ class TextBox extends React.Component {
                             key={this.props.name}
                             className={className}
                             autoFocus={true}
-                            ref={(node) => this._myInput = node}
+                            ref={this.props.inputRef}
                             placeholder={this.props.placeholder}
                             disabled={this.props.readOnly}
                         />
@@ -342,7 +339,7 @@ class ComboBoxCom extends Component {
             star = '*'
         }
 
-        if (this.props.validationErrorMessage != "") {
+        if (this.props.validationErrorMessage != ""&& this.props.validationErrorMessage != undefined) {
             className += " is-invalid";
             return (
                 <div className={formRowClassName} >
@@ -356,6 +353,7 @@ class ComboBoxCom extends Component {
                             onChange={this.handleValueChange}
                             value={this.state.value}
                             disabled={this.props.disabled}
+                            ref={this.props.inputRef}
                             required={this.props.required}
                         >
                             {listOption.map((optionItem) =>

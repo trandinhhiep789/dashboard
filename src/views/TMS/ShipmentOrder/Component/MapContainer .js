@@ -10,6 +10,7 @@ export class MapContainer extends Component {
         };
     }
     componentDidMount() {
+   //  console.log('this.postData()',this.postData());
         const mapContainer = document.getElementById("map-container");
         const mapProp = {
             center: new vbd.LatLng(10.7964825447845, 106.68550653525),
@@ -32,7 +33,7 @@ export class MapContainer extends Component {
             )
 
             const mapProp1 = {
-             center: new vbd.LatLng(e.LatLng.Latitude,e.LatLng.Longitude),
+                center: new vbd.LatLng(e.LatLng.Latitude, e.LatLng.Longitude),
                 maxZoom: 13,
                 zoom: 12,
                 minZoom: 2,
@@ -40,7 +41,7 @@ export class MapContainer extends Component {
                 scaleControlOptions: { showScale: true },
                 zoomControl: true
             };
-            console.log("mapProp1",mapProp1)
+            console.log("mapProp1", mapProp1)
             const mapContainer1 = document.getElementById("map-container");
             let map1 = new vbd.Map(mapContainer1, mapProp1);
             var position1 = map1.getCenter()
@@ -52,6 +53,30 @@ export class MapContainer extends Component {
         });
 
     }
+
+    postData(url, data) {
+        const datat={"Keyword":"bình tân " };
+        // Default options are marked with *
+        return fetch('http://developers.vietbando.com/V2/service/PartnerPortalService.svc/rest/AutoSuggestSearch', {
+            body: JSON.stringify(datat), // must match 'Content-Type' header
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, same-origin, *omit
+            withCredentials: true,
+            headers: {
+                'user-agent': 'Mozilla/4.0 MDN Example',
+                'content-type': 'application/json',
+                'registerKey':'c1602ab5-74da-473c-9601-aa53a2a4505e'
+
+            },
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, cors, *same-origin
+            redirect: 'follow', // manual, *follow, error
+            referrer: 'no-referrer', // *client, no-referrer
+        })
+            .then(response => response.json()) // parses response to JSON
+    }
+
+
     render() {
 
         return (
