@@ -79,25 +79,17 @@ export const AddModalColumnList = [
     },
     {
         Name: "AddFunctionID",
-        type: "text",
+        type: "select",
         label: "Quyền thêm yêu cầu này",
-        maxSize: "400",
         DataSourceMember: "AddFunctionID",
         readonly: false,
-        validatonList: []
+        value: -1,
+        validatonList: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.FUNCTION",
+        ValueMember: "FunctionID",
+        NameMember: "FunctionName",
     },
-    // {
-    //     Name: "PieTypeID",
-    //     type: "select",
-    //     label: "Mã loại yêu cầu",
-    //     DataSourceMember: "PieTypeID",
-    //     readonly: false,
-    //     validatonList: ["required"],
-    //     IsAutoLoadItemFromCache: true,
-    //     LoadItemCacheKeyID: "PIMCACHE.PIETYPE",
-    //     ValueMember: "PieTypeID",
-    //     NameMember: "PieTypeName",
-    // },
     {
         Name: "IsSelectSenderPartner",
         type: "checkbox",
@@ -323,7 +315,7 @@ export const DataGridColumnList = [
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "ShipmentOrderTypeID",
-        Width: 50
+        Width: 60
     },
     {
         Name: "ShipmentOrderTypeID",
@@ -337,35 +329,35 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Tên loại yêu cầu vận chuyển",
         DataSourceMember: "ShipmentOrderTypeName",
-        Width: 300
+        //Width: 300
     },
     {
         Name: "IsActived",
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 200
+        Width: 100
     },
     {
         Name: "CreatedDate",
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 200
+        Width: 150
     },
     {
         Name: "CreatedUserFullName",
         Type: "text",
         Caption: "Người tạo",
         DataSourceMember: "CreatedUserFullName",
-        Width: 200
+        Width: 150
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "PieRequestTypeID",
-        Width: 200,
+        Width: 100,
         Link: "/ShipmentOrderType/Edit/",
         LinkText: "Chỉnh sửa"
     }

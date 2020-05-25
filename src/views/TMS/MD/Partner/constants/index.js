@@ -969,7 +969,7 @@ export const DataGridColumnList = [
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 80
+        Width: 100
     },
     // {
     //     Name: "IsSystem",
@@ -983,21 +983,21 @@ export const DataGridColumnList = [
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 200
+        Width: 150
     },
     {
         Name: "CreatedUserFullName",
         Type: "text",
         Caption: "Người tạo",
         DataSourceMember: "CreatedUserFullName",
-        Width: 200
+        Width: 150
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "CarrierTypeID",
-        Width: 200,
+        Width: 100,
         Link: "/Partner/Edit/",
         LinkText: "Chỉnh sửa"
     }

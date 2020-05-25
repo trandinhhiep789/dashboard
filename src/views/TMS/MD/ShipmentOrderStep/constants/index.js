@@ -284,35 +284,35 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Tên bước xử lý yêu cầu",
         DataSourceMember: "ShipmentOrderStepName",
-        Width: 350
+        //Width: 350
     },
     {
         Name: "IsActived",
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 80
+        Width: 100
     },
     {
         Name: "CreatedDate",
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 100
+        Width: 150
     },
     {
         Name: "CreatedFullName",
         Type: "text",
         Caption: "Người tạo",
         DataSourceMember: "CreatedFullName",
-        Width: 200
+        Width: 150
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "ShipmentOrderStepID",
-        Width: 70,
+        Width: 100,
         Link: "/ShipmentOrderStep/Edit/",
         LinkText: "Chỉnh sửa"
     }
