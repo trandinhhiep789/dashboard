@@ -595,7 +595,7 @@ export const ElementQHPXList = [
 
     {
         type: "ComboBox",
-        name: "cbReceiverProvinceID",
+        name: "cbProvinceID",
         DataSourceMember: "ReceiverProvinceID",
         label: "Tỉnh /thành phố",
         colspan: 8,
@@ -604,16 +604,17 @@ export const ElementQHPXList = [
         isMultiSelect: false,
         placeholder: "---Vui lòng chọn---",
         listoption: [],
-        validatonList:["Comborequired"],
+        validatonList: ["Comborequired"],
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
         ValueMember: "ProvinceID",
         NameMember: "ProvinceName",
-        nameOption: "ProvinceID"
+        nameOption: "CountryID",
+        nameValue: 2
     },
     {
         type: "ComboBox",
-        name: "cbReceiverDistrictID",
+        name: "cbDistrictID",
         DataSourceMember: "ReceiverDistrictID",
         label: "Quận/huyện",
         colspan: 8,
@@ -623,12 +624,33 @@ export const ElementQHPXList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        filterName: "cbReceiverProvinceID",
         filterValue: "",
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
         ValueMember: "DistrictID",
         NameMember: "DistrictName",
-        nameOption: "ProvinceID"
+        nameOption1: "cbProvinceID",
+        nameOption: "ProvinceID",
+        nameValue: -1
+    },
+    {
+        type: "ComboBox",
+        name: "cbWardID",
+        DataSourceMember: "ReceiverWardID",
+        label: "Phường/Xã",
+        colspan: 8,
+        labelcolspan: 4,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        filterValue: "",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
+        ValueMember: "WardID",
+        NameMember: "WardName",
+        nameOption1: "cbDistrictID",
+        nameOption: "DistrictID",
+        nameValue: -1
     },
     {
         type: "text",
@@ -647,14 +669,20 @@ export const GridMLObjectQTQHPX = [
     {
         Name: "ReceiverProvinceID",
         DefaultValue: "",
-        BindControlName: "cbReceiverProvinceID",
+        BindControlName: "cbProvinceID",
         DataSourceMember: "ReceiverProvinceID"
     },
     {
         Name: "ReceiverDistrictID",
         DefaultValue: "",
-        BindControlName: "cbReceiverDistrictID",
+        BindControlName: "cbDistrictID",
         DataSourceMember: "ReceiverDistrictID"
+    },
+    {
+        Name: "ReceiverWardID",
+        DefaultValue: "",
+        BindControlName: "cbWardID",
+        DataSourceMember: "ReceiverWardID"
     },
     {
         Name: "FullAddress",

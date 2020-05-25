@@ -3,8 +3,12 @@ import { connect } from 'react-redux';
 import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { ModalManager } from 'react-dynamic-modal';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
+import Select from 'react-select';
 import MapContainer from './MapContainer ';
 import { Link } from "react-router-dom";
+import { callGetCache } from "../../../../actions/cacheAction";
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import {  ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD } from "../../../../constants/keyCache";
 
 const style = {
     width: '100%',
@@ -18,17 +22,57 @@ const containerStyle = {
     height: '300px'
 }
 
+
 class ShipmentOrderAddressCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
             ShipmentOrder: this.props.ShipmentOrderAddress,
-            ShipmentOrderEdit: this.props.ShipmentOrderAddress
+            ShipmentOrderEdit: this.props.ShipmentOrderAddress,
+            Province: [],
+            District: [],
+            Ward: []
         }
     }
 
     componentDidMount(){
-        console.log("infoWindow", {InfoWindow});
+        this.initCombobox();
+    }
+
+    initCombobox() {
+
+        // tỉnh thành phố
+        this.props.callGetCache(ERPCOMMONCACHE_PROVINCE).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                //console.log("FormElement listOption: ", listOption)
+                this.setState({
+                    Province: result.ResultObject.CacheData
+                });
+            }
+        });
+
+        // quận huyện
+        this.props.callGetCache(ERPCOMMONCACHE_DISTRICT).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                //console.log("FormElement listOption: ", listOption)
+                this.setState({
+                    District: result.ResultObject.CacheData
+                });
+            }
+        });
+
+
+        // phường xã
+        this.props.callGetCache(ERPCOMMONCACHE_WARD).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                //console.log("FormElement listOption: ", listOption)
+                this.setState({
+                    Ward: result.ResultObject.CacheData
+                });
+            }
+        });
+      
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -57,6 +101,7 @@ class ShipmentOrderAddressCom extends Component {
         });
     }
     ShowModalSender() {
+        //cobombox
 
         ModalManager.open(
             <ModelContainer
@@ -88,7 +133,7 @@ class ShipmentOrderAddressCom extends Component {
                         </div>
                     </div>
                 </div>
-
+           
                 <div className="form-row">
                     <div className="form-group col-md-6">
                         <div className="form-row">
@@ -96,7 +141,14 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Tỉnh/thành phố:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input defaultValue className="form-control form-control-sm" placeholder="Họ và tên" />
+                            {/* <Select
+                                value={{ value: -1, label: "--Vui lòng chọn--" }}
+                                name={"name"}
+                                options={{ value: -1, label: "--Vui lòng chọn--" }}
+                                isMulti={false}
+                                isSearchable={true}
+                                className={"select"}
+                            /> */}
                             </div>
                         </div>
                     </div>
@@ -256,6 +308,12 @@ const mapDispatchToProps = dispatch => {
     return {
         showModal: (type, props) => {
             dispatch(showModal(type, props));
+        },
+        callFetchAPI: (hostname, hostURL, postData) => {
+            return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
         }
     }
 }
