@@ -157,7 +157,7 @@ class EditCom extends React.Component {
                                 </div>
                                 <FormControl.ComboboxQTQHPX
                                     name="objQHPX"
-                                    controltype="InputControl"
+                                    controltype="InputControlNew"
                                     listelement={ElementQHPXList}
                                     dataSource={this.state.DataSource}
                                     MLObjectDefinition={GridMLObjectQTQHPX}

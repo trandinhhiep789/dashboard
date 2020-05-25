@@ -604,6 +604,7 @@ export const ElementQHPXList = [
         isMultiSelect: false,
         placeholder: "---Vui lòng chọn---",
         listoption: [],
+        validatonList:["Comborequired"],
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
         ValueMember: "ProvinceID",

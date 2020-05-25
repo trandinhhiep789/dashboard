@@ -376,15 +376,15 @@ class ElementComboBoxNewCom extends Component {
     }
 
     handleValueChange(selectedOption) {
-        //const comboValues = this.getComboValue(selectedOption);
+        const comboValues = this.getComboValue(selectedOption);
         this.setState({ SelectedOption: selectedOption });
-        // if (this.props.onValueChange)
-        //     this.props.onValueChange(this.props.name, comboValues);
+        if (this.props.onValueChange)
+            this.props.onValueChange(this.props.name, comboValues);
     }
 
     render() {
 
-        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder } = this.props;
+        let { name, label, icon, colspan, isMultiSelect, validationErrorMessage, placeholder } = this.props;
         let className = "select";
 
         let formRowClassName = "form-row";
@@ -401,7 +401,7 @@ class ElementComboBoxNewCom extends Component {
             formGroupClassName = "form-group col-md-" + this.props.colspan;
         }
 
-        if (ValidatonErrorMessage && ValidatonErrorMessage != "") {
+        if (validationErrorMessage && validationErrorMessage != "") {
 
             className += " is-invalid";
         }
@@ -432,7 +432,7 @@ class ElementComboBoxNewCom extends Component {
                                 placeholder={placeholder}
                                 className={className}
                             />
-                            <div className="invalid-feedback">{ValidatonErrorMessage}</div>
+                            <div className="invalid-feedback">{validationErrorMessage}</div>
                         </div>
                     </div>
 
@@ -455,7 +455,7 @@ class ElementTextNewCom extends Component {
             this.props.onValueChange(e.target.name, e.target.value);
     }
     render() {
-        let { name, label, placeholder, icon, colspan, value, readonly, ValidatonErrorMessage } = this.props;
+        let { name, label, placeholder, icon, colspan, value, readonly, validationErrorMessage } = this.props;
         let className = "form-control form-control-sm";
         if (this.props.CSSClassName != null)
             className = this.props.CSSClassName;
@@ -494,7 +494,7 @@ class ElementTextNewCom extends Component {
                             readOnly={readonly}
                             defaultValue={value}
                             placeholder={placeholder} />
-                        <div className="invalid-feedback">{ValidatonErrorMessage}</div>
+                        <div className="invalid-feedback">{validationErrorMessage}</div>
                     </div>
                 </div>
             </div>

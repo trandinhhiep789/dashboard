@@ -26,8 +26,9 @@ class FormContainerCom extends Component {
         this.changeLoadComplete = this.changeLoadComplete.bind(this);
         this.handleInputChangeList = this.handleInputChangeList.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.elementItemRefs = [];
         const formData = this.bindData();
-        console.log("formData",formData)
+       // console.log("formData",formData)
         this.state = {
             FormData: formData,
             FormValidation: {},
@@ -51,7 +52,7 @@ class FormContainerCom extends Component {
         React.Children.map(children, (child, i) => {
             if (child.type == "div") {
                 const formDataTempList = this.bindDivChildrenData(child, dataSource);
-                console.log("bindData formDataTempList",formDataTempList)
+              //  console.log("bindData formDataTempList",formDataTempList)
                 for (let i = 0; i < formDataTempList.length; i++) {
                     formData = Object.assign({}, formData, formDataTempList[i]);
                 }
@@ -94,7 +95,16 @@ class FormContainerCom extends Component {
             if (dataSource != null && datasourcemember != null) {
                 controlvalue = dataSource[datasourcemember];
             }
-            return { [controlname]: controlvalue };
+            const ObjectName = { Name: controlname, value: controlvalue, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList };
+            return { [controlname]:ObjectName};
+        }
+        if (controltype == "InputControlNew") {
+            const datasourcemember = child.props.datasourcemember;
+            if (dataSource != null && datasourcemember != null) {
+                controlvalue = dataSource[datasourcemember];
+            }
+            const ObjectName = { Name: controlname, value: controlvalue, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList };
+            return { [controlname]:ObjectName};
         }
         if (controltype == "GridControl") {
             controlvalue = child.props.dataSource;
@@ -192,28 +202,15 @@ class FormContainerCom extends Component {
     //#region InputChange && InputChangeList  
     handleInputChange(elementname, elementvalue, controllabel, listvalidation, listvalidationRow) {
         //console.log('change')
-        if (typeof listvalidation != "undefined") {
-            let formValidation1 = this.state.FormValidation;
-            const formValidation = Object.assign({}, formValidation1, { [elementname]: listvalidation });
-            this.setState({
-                FormValidation: formValidation
-            });
-        }
-        else if (typeof listvalidationRow != "undefined") {
-            let formValidation1 = this.state.FormValidation;
-            const validation = ValidationField(listvalidationRow, elementvalue, controllabel, controllabel)
+        const FormDataContolLstd = this.state.FormData;
+        FormDataContolLstd[elementname].value = elementvalue;
+        if (typeof FormDataContolLstd[elementname].validatonList != "undefined") {
+            const validation = ValidationField(FormDataContolLstd[elementname].validatonList, elementvalue, FormDataContolLstd[elementname].label, FormDataContolLstd[elementname]);
             const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
-            const formValidation = Object.assign({}, formValidation1, { [elementname]: validationObject });
-
-            //  console.log("listvalidationRow",listvalidationRow,validation,formValidation );
-            this.setState({
-                FormValidation: formValidation
-            });
+            FormDataContolLstd[elementname].ErrorLst = validationObject;
         }
-        const formData = Object.assign({}, this.state.FormData, { [elementname]: elementvalue });
-        //   console.log("formData",formData);
         this.setState({
-            FormData: formData
+            FormData: FormDataContolLstd,
         });
     }
     handleInputChangeList(formDataList, tabNameList, tabMLObjectDefinitionList, formValidationTap) {
@@ -246,87 +243,34 @@ class FormContainerCom extends Component {
     //#endregion
 
     //#region validation InputControl
-    validationForm() {
-        const children = this.props.children;
-        if (children) {
-            this.validationchildren(children)
+    validationFormNew() {
+        const FormDataContolLst = this.state.FormData;
+      //  console.log("validationFormNew",FormDataContolLst)
+        for (const key in FormDataContolLst) {
+            if (typeof FormDataContolLst[key].validatonList != "undefined") {
+                const validation = ValidationField(FormDataContolLst[key].validatonList, FormDataContolLst[key].value, FormDataContolLst[key].label, FormDataContolLst[key]);
+                const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
+                FormDataContolLst[key].ErrorLst = validationObject;
+            }
         }
         this.setState({
-            FormValidation: this.FormValidationNew
+            FormData: FormDataContolLst
         });
 
-        return this.FormValidationNew;
+        return FormDataContolLst;
     }
-    validationchildren(children) {
-        //  console.log("validationchildren:", children);
-        React.Children.map(children, (child, i) => {
-            //  console.log("validationchildren:", child.type);
-            if (child.type == "div") {
-                this.validationchildren(child.props.children);
+    checkInputName(formValidation) {
+        for (const key in formValidation) {
+            //  console.log("validation:",formValidation[key].ErrorLst,formValidation[key].ErrorLst.IsValidatonError);
+            if (formValidation[key].ErrorLst != [] && formValidation[key].ErrorLst.IsValidatonError) {
+                this.elementItemRefs[key].focus();
+                return key;
             }
-            else {
-                if (child.props.controltype != null) {
-                    this.validationRow(child);
-
-                }
-            }
-        });
-    }
-    validationRow(children) {
-        React.Children.map(children, (child, i) => {
-            const componenttype = child.props.controltype;
-            switch (componenttype) {
-                case "InputControl":
-                    this.validationInputControl(child);
-                    break;
-                case "GridControl":
-                    this.validationGridInputControl(child);
-                default:
-            }
-        });
-    }
-    validationInputControl(child) {
-        const name = child.props.name;
-        const validatonList = child.props.validatonList;
-        const value = this.state.FormData[name];
-
-        // console.log("validationInputControl:name ", name + " /value: " + value + " /validatonList: " + JSON.stringify(validatonList));
-        if (typeof validatonList != "undefined") {
-            const validation = ValidationField(validatonList, value, child.props.label, child.props)
-            const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
-            this.FormValidationNew = Object.assign({}, this.FormValidationNew, { [name]: validationObject });
-            //   console.log("validationInputControl:formValidation ", formValidation);
-            //  console.log("validationInputControl:FormValidation ", JSON.stringify(this.state.FormValidation) + " /formValidation: " + JSON.stringify(formValidation) + " /validationObject: " + JSON.stringify(validationObject));
         }
-
-    }
-    validationGridInputControl(child) {
-        const name = child.props.name;
-        const listElement = child.props.listColumn;
-        let inputGridData = this.state.FormData[child.props.name];
-        //   console.log("inputGridData",inputGridData);
-        let listgridData = {};
-        inputGridData.map((row, indexRow) => {
-            let elementobject = {};
-            listElement.map((elementItem, index) => {
-                const validatonList = elementItem.validatonList;
-                if (typeof validatonList != "undefined") {
-                    const inputvalue = row[elementItem.Name];
-                    const validation = ValidationField(validatonList, inputvalue, elementItem.Caption)
-                    //console.log("inputGridData",validation,elementItem.Name,inputvalue);
-                    const validationObject = { IsValidatonError: validation.IsError, ValidationErrorMessage: validation.Message };
-                    elementobject = Object.assign({}, elementobject, { [elementItem.Name]: validationObject });
-                }
-            });
-
-            listgridData = Object.assign({}, listgridData, { [indexRow]: elementobject });
-        });
-
-        this.FormValidationNew = Object.assign({}, this.FormValidationNew, { [name]: listgridData });
-        //    this.FormValidationNew = Object.assign({}, this.FormValidationNew, { [name]: validationObject });
+        return "";
     }
 
-    //#endregion validation TabContainer
+    //#endregion validation TabContainers
 
 
     checkPermission() {
@@ -353,7 +297,6 @@ class FormContainerCom extends Component {
 
     //#region render Children
     autoLayoutChildren() {
-        console.log("autoLayoutChildren")
         const children = this.props.children;
         return React.Children.map(children, (child, i) => {
             if (child.type == "div") {
@@ -390,36 +333,22 @@ class FormContainerCom extends Component {
             if (child.props.controltype != null) {
                 const controltype = child.props.controltype;
                 if (controltype == "InputControl") {
-                    let FormValidation1 = this.state.FormValidation;
-                  
                     const controlname = child.props.name;
-                    const controlvalue = this.state.FormData[controlname];
-                    let validationErrorMessage = "";
-                    if (FormValidation1[child.props.name] != null) {
-                        validationErrorMessage = FormValidation1[child.props.name].ValidatonErrorMessage;
-                    }
                     return React.cloneElement(child,
                         {
                             onValueChange: this.handleInputChange,
-                            value: controlvalue,
-                            validationErrorMessage: validationErrorMessage,
+                            value: this.state.FormData[controlname].value,
+                            validationErrorMessage: this.state.FormData[controlname].ErrorLst.ValidatonErrorMessage,
+                            inputRef:ref => this.elementItemRefs[controlname] = ref
                         }
                     );
                 }
-                else if (controltype == "GridControl") {
-
-                    let FormValidation1 = this.state.FormValidation;
+                else if (controltype == "InputControlNew") {
                     const controlname = child.props.name;
-                    const controlvalue = this.state.FormData[controlname];
-                    let listvalidationError = {};
-                    if (FormValidation1[child.props.name] != null) {
-                        listvalidationError = FormValidation1[child.props.name];
-                    }
                     return React.cloneElement(child,
                         {
                             onValueChange: this.handleInputChange,
-                            value: controlvalue,
-                            listvalidationError: listvalidationError,
+                            inputRef:ref => this.elementItemRefs[controlname] = ref
                         }
                     );
                 }
@@ -432,21 +361,25 @@ class FormContainerCom extends Component {
     //#region  handleSubmit 
     handleSubmit(e) {
         e.preventDefault();
-        const mLObjectDefinition = this.props.MLObjectDefinition;
-        console.log("handleSubmit mLObjectDefinition: ", JSON.stringify(mLObjectDefinition));
-        console.log("handleSubmit/FormData: ",JSON.stringify(this.state.FormData));
-        console.log("handleSubmit dataSource: ", JSON.stringify(this.props.dataSource));
-        const MLObject = GetMLObjectData(mLObjectDefinition, this.state.FormData, this.props.dataSource);
-         console.log("Submit MLObject!", JSON.stringify(MLObject));
-        const formValidation = this.validationForm();
-
-        console.log("formValidation!", JSON.stringify(formValidation));
-
-        if (!this.checkInput(formValidation))
+        const formValidation = this.validationFormNew();
+        if (this.checkInputName(formValidation) != "")
             return;
-        if (this.props.onSubmit != null) {
-            this.props.onSubmit(this.state.FormData, MLObject);
-        }
+
+        // const mLObjectDefinition = this.props.MLObjectDefinition;
+        // console.log("handleSubmit mLObjectDefinition: ", JSON.stringify(mLObjectDefinition));
+        // console.log("handleSubmit/FormData: ",JSON.stringify(this.state.FormData));
+        // console.log("handleSubmit dataSource: ", JSON.stringify(this.props.dataSource));
+        // const MLObject = GetMLObjectData(mLObjectDefinition, this.state.FormData, this.props.dataSource);
+        //  console.log("Submit MLObject!", JSON.stringify(MLObject));
+        // const formValidation = this.validationForm();
+
+        // console.log("formValidation!", JSON.stringify(formValidation));
+
+        // if (!this.checkInput(formValidation))
+        //     return;
+        // if (this.props.onSubmit != null) {
+        //     this.props.onSubmit(this.state.FormData, MLObject);
+        // }
     }
 
     checkInput(formValidation) {
