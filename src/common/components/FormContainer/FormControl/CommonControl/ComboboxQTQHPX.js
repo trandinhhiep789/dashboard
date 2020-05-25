@@ -14,9 +14,12 @@ class ComboboxQTQHPXCom extends React.Component {
         this.elementItemRefs = [];
         const formDataContol = this.bindDataContol();
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.getcombox = this.getcombox.bind(this);
-        console.log("formDataContol", formDataContol);
-        this.state = { FormData: formDataContol };
+        // console.log("formDataContol", formDataContol);
+        this.state = {
+            FormData: formDataContol,
+            Provincelst: [],
+            Districtlst: []
+        };
     }
 
     bindDataContol() {
@@ -24,36 +27,17 @@ class ComboboxQTQHPXCom extends React.Component {
         const listElement = this.props.listelement;
         listElement.map((elementItem) => {
             const elementname = elementItem.name;
-            let lstobj=[];
-            if(elementItem.IsAutoLoadItemFromCache)
-            {
-                 lstobj= this.getcombox(elementItem.LoadItemCacheKeyID,elementItem.ValueMember,elementItem.NameMember);
-            }
-            console.log(elementname,lstobj)
-            const ObjectName = { Name: elementname, value: elementItem.value,
-                 Controltype: elementItem.type, label: elementItem.label, ErrorLst: [], 
-                 validatonList: elementItem.validatonList,listoption:lstobj };
+            const ObjectName = {
+                Name: elementname, value: elementItem.value,
+                Controltype: elementItem.type, label: elementItem.label, ErrorLst: [],
+                validatonList: elementItem.validatonList, listoption: []
+            };
             formData = Object.assign({}, formData, { [elementname]: ObjectName });
 
         });
         return formData;
     }
 
-    getcombox(LoadItemCacheKeyID,ValueMember,NameMember) {
-        let  listoption = [{ value: -1, label: "--Vui lòng chọn--" }];
-        this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
-            debugger;
-            listoption = [{ value: -1, label: "--Vui lòng chọn--" }];
-            if (!result.IsError && result.ResultObject.CacheData != null) {
-                result.ResultObject.CacheData.map((cacheItem) => {
-                    listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + "-" + cacheItem[NameMember] });
-                }
-                );
-            }
-         
-        });
-        return listoption;
-    }
     handleInputChange(elementname, elementvalue, controllabel, listvalidation, listvalidationRow) {
         //console.log('change')
         const FormDataContolLstd = this.state.FormData;
@@ -69,10 +53,22 @@ class ComboboxQTQHPXCom extends React.Component {
     }
 
     componentDidMount() {
+        let districtlst= [];
+        this.props.callGetCache("ERPCOMMONCACHE.DISTRICT").then((result) => {
+            districtlst = [{ value: -1, label: "--Vui lòng chọn--" }];
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                result.ResultObject.CacheData.map((cacheItem) => {
+                    districtlst.push({ value: cacheItem['DistrictID'], label: cacheItem['DistrictID'] + "-" + cacheItem['DistrictName'] });
+                }
+                );
+            }
+        });
+        this.setState({Districtlst: districtlst });
+
     }
     renderSearchForm() {
         const listElement = this.props.listelement;
-      //  console.log("ComboboxQTQHPXCom", this.state, this.props)
+        //  console.log("ComboboxQTQHPXCom", this.state, this.props)
         return (
             <React.Fragment>
                 {
