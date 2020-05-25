@@ -277,7 +277,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Mã loại phương tiện vận chuyển",
         DataSourceMember: "CarrierTypeID",
-        Width: 250
+        Width: 220
     },
     {
         Name: "CarrierTypeName",
@@ -291,7 +291,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Mô tả",
         DataSourceMember: "Description",
-        Width: 250
+        //Width: 250
     },
     {
         Name: "IsActived",
@@ -312,21 +312,21 @@ export const DataGridColumnList = [
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 200
+        Width: 100
     },
     {
         Name: "CreatedUserFullName",
         Type: "text",
         Caption: "Người tạo",
         DataSourceMember: "CreatedUserFullName",
-        Width: 200
+        Width: 100
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "CarrierTypeID",
-        Width: 200,
+        Width: 100,
         Link: "/CarrierType/Edit/",
         LinkText: "Chỉnh sửa"
     }
