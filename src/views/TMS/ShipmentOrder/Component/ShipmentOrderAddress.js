@@ -8,7 +8,7 @@ import MapContainer from './MapContainer ';
 import { Link } from "react-router-dom";
 import { callGetCache } from "../../../../actions/cacheAction";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import {  ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD } from "../../../../constants/keyCache";
+import { ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD } from "../../../../constants/keyCache";
 
 const style = {
     width: '100%',
@@ -26,17 +26,99 @@ const containerStyle = {
 class ShipmentOrderAddressCom extends Component {
     constructor(props) {
         super(props);
+
+        this.ShowModalSender = this.ShowModalSender.bind(this);
+        this.handleValueChange = this.handleValueChange.bind(this);
+
         this.state = {
             ShipmentOrder: this.props.ShipmentOrderAddress,
             ShipmentOrderEdit: this.props.ShipmentOrderAddress,
+            ProvinceLst: [],
+            DistrictLst: [],
+            WardLst: [],
             Province: [],
             District: [],
-            Ward: []
+            Ward: [],
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.initCombobox();
+        this.setValueCombobox();
+    }
+    handleValueChange() {
+
+
+
+    }
+    // initCombobox() {
+    //     let listoption = [];
+    //     // tỉnh thành phố
+    //     this.props.callGetCache(ERPCOMMONCACHE_PROVINCE).then((result) => {
+    //         listoption = [{ value: -1, label: "--Vui lòng chọn--" }];
+    //         if (!result.IsError && result.ResultObject.CacheData != null) {
+    //             result.ResultObject.CacheData.map((cacheItem) => {
+    //                 listoption.push({ value: cacheItem['ProvinceID'], label: cacheItem['ProvinceName'] });
+    //             }
+    //             );
+    //         }
+    //         this.setState({
+    //             ProvinceLst: listoption
+    //         });
+    //     });
+
+
+    //     let listoptionDISTRICT = [];
+    //     // quận huyện
+    //     this.props.callGetCache(ERPCOMMONCACHE_DISTRICT).then((result) => {
+    //         if (!result.IsError && result.ResultObject.CacheData != null) {
+    //             listoptionDISTRICT = [{ value: -1, label: "--Vui lòng chọn--" }];
+    //             if (!result.IsError && result.ResultObject.CacheData != null) {
+    //                 result.ResultObject.CacheData.map((cacheItem) => {
+    //                     listoptionDISTRICT.push({ value: cacheItem['DistrictID'], label: cacheItem['DistrictName'] });
+    //                 }
+    //                 );
+    //             }
+    //             this.setState({
+    //                 DistrictLst: listoptionDISTRICT
+    //             });
+    //         }
+    //     });
+
+    //     let listoptionWARD = [];
+    //     // phường xã
+    //     this.props.callGetCache(ERPCOMMONCACHE_WARD).then((result) => {
+    //         if (!result.IsError && result.ResultObject.CacheData != null) {
+    //             //console.log("FormElement listOption: ", listOption)
+    //             listoptionWARD = [{ value: -1, label: "--Vui lòng chọn--" }];
+    //             if (!result.IsError && result.ResultObject.CacheData != null) {
+    //                 result.ResultObject.CacheData.map((cacheItem) => {
+    //                     listoptionWARD.push({ value: cacheItem['DistrictID'], label: cacheItem['DistrictName'] });
+    //                 }
+    //                 );
+    //             }
+    //             this.setState({
+    //                 WardLst: listoptionWARD
+    //             });
+    //         }
+    //     });
+
+
+    // }
+
+    getDataCombobox(data, valueMember, nameMember, conditionName, conditionValue) {
+        let listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+        data.map((cacheItem) => {
+            if (conditionName) {
+                if (cacheItem[conditionName] == conditionValue) {
+                    listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+                }
+            }
+            else {
+                listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+            }
+        });
+        return listOption;
     }
 
     initCombobox() {
@@ -71,8 +153,27 @@ class ShipmentOrderAddressCom extends Component {
                 });
             }
         });
-      
+        this.setState({
+            IsLoadDataComplete: true
+        });
 
+    }
+
+
+    bindcombox(listOption, values) {
+        let selectedOption = [];
+        if (values == null || values === -1)
+            return selectedOption;
+        if (typeof values.toString() == "string")
+            values = values.toString().split();
+        for (let i = 0; i < values.length; i++) {
+            for (let j = 0; j < listOption.length; j++) {
+                if (values[i] == listOption[j].value) {
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
+                }
+            }
+        }
+        return selectedOption;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -85,24 +186,33 @@ class ShipmentOrderAddressCom extends Component {
     handleUpdateAddressSender() {
         console.log("show modal update");
     }
-
-    fetchPlaces(mapProps, map) {
-        const { google } = mapProps;
-        const service = new google.maps.places.PlacesService(map);
-    }
-
-
-    handleShowModalSender()
-    {
+    handleShowModalSender() {
         let { ShipmentOrderEdit } = this.state;
-
-        this.setState({ ShipmentOrderEdit:ShipmentOrderEdit}, () => {
+        this.setValueCombobox(2, this.state.ShipmentOrderEdit.SenderProvinceID, this.state.ShipmentOrderEdit.SenderDistrictID)
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
             this.ShowModalSender();
         });
     }
-    ShowModalSender() {
-        //cobombox
+    setValueCombobox(CountryID, ProvinceID, WardID) {
 
+        let province = [{ value: -1, label: "--Vui lòng chọn--" }];
+        let district = [{ value: -1, label: "--Vui lòng chọn--" }];
+        let ward = [{ value: -1, label: "--Vui lòng chọn--" }];
+        province = this.getDataCombobox(this.state.Province, "ProvinceID", "ProvinceName", "CountryID", CountryID);
+        district = this.getDataCombobox(this.state.District, "DistrictID", "DistrictName", "ProvinceID", ProvinceID);
+        ward = this.getDataCombobox(this.state.Ward, "WardID", "WardName", "DistrictID", WardID);
+        this.setState({
+            ProvinceLst: province,
+            DistrictLst: district,
+            WardLst: ward
+        });
+    }
+
+    ShowModalSender() {
+        const Province = this.bindcombox(this.state.ProvinceLst, this.state.ShipmentOrderEdit.SenderProvinceID);
+        const District = this.bindcombox(this.state.DistrictLst, this.state.ShipmentOrderEdit.SenderDistrictID);
+        const Ward = this.bindcombox(this.state.WardLst, this.state.ShipmentOrderEdit.SenderWardID);
+ 
         ModalManager.open(
             <ModelContainer
                 title="Cập nhật thông tin địa chỉ người gửi"
@@ -128,12 +238,11 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Số điện thoại:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input className="form-control form-control-sm"  value={this.state.ShipmentOrderEdit.SenderPhoneNumber} placeholder="Số điện thoại người gửi" />
+                                <input className="form-control form-control-sm" value={this.state.ShipmentOrderEdit.SenderPhoneNumber} placeholder="Số điện thoại người gửi" />
                             </div>
                         </div>
                     </div>
                 </div>
-           
                 <div className="form-row">
                     <div className="form-group col-md-6">
                         <div className="form-row">
@@ -141,14 +250,17 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Tỉnh/thành phố:</label>
                             </div>
                             <div className="form-group col-md-8">
-                            {/* <Select
-                                value={{ value: -1, label: "--Vui lòng chọn--" }}
-                                name={"name"}
-                                options={{ value: -1, label: "--Vui lòng chọn--" }}
-                                isMulti={false}
-                                isSearchable={true}
-                                className={"select"}
-                            /> */}
+                                <div className="form-group-input-select">
+                                    <Select
+                                        value={Province}
+                                        name={"aaaa"}
+                                        onChange={this.handleValueChange}
+                                        options={this.state.ProvinceLst}
+                                        isMulti={false}
+                                        isSearchable={true}
+                                        className={'select'}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -158,7 +270,17 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Quận/huyện:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input defaultValue className="form-control form-control-sm" placeholder="Số điện thoại người gửi" />
+                                <div className="form-group-input-select">
+                                    <Select
+                                        value={District}
+                                        name={"aaaa"}
+                                        onChange={this.handleValueChange}
+                                        options={this.state.DistrictLst}
+                                        isMulti={false}
+                                        isSearchable={true}
+                                        className={'select'}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -171,7 +293,17 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Phường/xã:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input defaultValue className="form-control form-control-sm" placeholder="Họ và tên" />
+                                <div className="form-group-input-select">
+                                    <Select
+                                        value={Ward}
+                                        name={"aaaa"}
+                                        onChange={this.handleValueChange}
+                                        options={this.state.WardLst}
+                                        isMulti={false}
+                                        isSearchable={true}
+                                        className={'select'}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -204,7 +336,7 @@ class ShipmentOrderAddressCom extends Component {
                 </div>
 
                 <div className="form-row google-maps">
-                    <MapContainer  SenderGeoLocation ={this.state.ShipmentOrderEdit.SenderGeoLocation} classStyle={style} classContainerStyle={containerStyle}/>
+                    <MapContainer SenderGeoLocation={this.state.ShipmentOrderEdit.SenderGeoLocation} classStyle={style} classContainerStyle={containerStyle} />
                 </div>
 
             </ModelContainer>
