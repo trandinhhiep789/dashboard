@@ -83,7 +83,7 @@ export const AddElementList = [
         validatonList: []
     },
     {
-        type: "numeric",
+        type: "text",
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: "",
@@ -93,7 +93,7 @@ export const AddElementList = [
         listoption: {},
         DataSourceMember: "OrderIndex",
         readonly: false,
-        validatonList: []
+        validatonList: ["number"]
     },
     {
         type: "checkbox",
@@ -161,7 +161,7 @@ export const EditElementList = [
         validatonList: []
     },
     {
-        type: "numeric",
+        type: "text",
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: "",
@@ -171,7 +171,7 @@ export const EditElementList = [
         listoption: {},
         DataSourceMember: "OrderIndex",
         readonly: false,
-        validatonList: []
+        validatonList: ["number"]
     },
     {
         type: "checkbox",

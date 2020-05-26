@@ -15,8 +15,9 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { callGetCache } from "../../../../../../actions/cacheAction";
 import { MCPRIVILEGEGROUP_EDIT } from "../../../../../../constants/functionLists";
+import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_PARTNERPRIVILEDGEGROUP } from "../../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -71,6 +72,7 @@ class EditCom extends React.Component {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+            this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERPRIVILEDGEGROUP);
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
         });
@@ -115,7 +117,11 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
+
     };
 };
 

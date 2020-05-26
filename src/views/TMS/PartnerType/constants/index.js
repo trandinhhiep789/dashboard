@@ -63,7 +63,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtPartnerTypeName",
-        label: "tên đối tác",
+        label: "tên loại đối tác",
         value: "",
         maxSize: "180",
         placeholder: "",
@@ -87,6 +87,19 @@ export const AddElementList = [
         DataSourceMember: "Description",
         readonly: false,
         validatonList: []
+    },
+    {
+        type: "text",
+        name: "txtOrderIndex",
+        label: "Thứ tự hiển thị",
+        value: "0",
+        maxSize: "9",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "OrderIndex",
+        readonly: false,
+        validatonList: ["number"],
     },
     {
         type: "checkbox",
@@ -118,7 +131,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtPartnerTypeID",
-        label: "mã đối tác",
+        label: "mã loại đối tác",
         value: "",
         placeholder: "",
         icon: "",
@@ -130,7 +143,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtPartnerTypeName",
-        label: "tên đối tác",
+        label: "tên loại đối tác",
         value: "",
         maxSize: "180",
         placeholder: "",
@@ -217,7 +230,7 @@ export const MLObjectDefinition = [
     {
         Name: "OrderIndex",
         DefaultValue: "0",
-        BindControlName: "",
+        BindControlName: "txtOrderIndex",
         DataSourceMember: "OrderIndex"
     },
     {
@@ -279,14 +292,14 @@ export const DataGridColumnList = [
     {
         Name: "PartnerTypeID",
         Type: "text",
-        Caption: "Mã đối tác",
+        Caption: "Mã loại đối tác",
         DataSourceMember: "PartnerTypeID",
-        Width: 70
+        Width: 150
     },
     {
         Name: "PartnerTypeName",
         Type: "text",
-        Caption: "Tên đối tác",
+        Caption: "Tên loại đối tác",
         DataSourceMember: "PartnerTypeName",
         Width: 400
     },
