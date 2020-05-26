@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 import { ModalManager } from "react-dynamic-modal";
-import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
+import FormContainer from "../../../../../../common/components/FormContainer";
 import InputGrid from "../../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
 import { MessageModal } from "../../../../../../common/components/Modal";
 import { showModal } from '../../../../../../actions/modal';
@@ -180,12 +180,9 @@ class EditCom extends React.Component {
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={this.state.EditElementList}
                     onSubmit={this.handleSubmit}
-                    IsAutoLayout={true}
-                    ref={this.searchref}
                     BackLink={BackLink}
                     dataSource={this.state.DataSource}
                     onValueChange={this.handleOnInputChange}
-                    RequirePermission={MCUSER_EDIT}
                 >
                     <InputGrid
                         name="LstMcUser_Role"

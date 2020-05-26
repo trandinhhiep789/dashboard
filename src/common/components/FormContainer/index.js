@@ -53,7 +53,7 @@ class FormContainerCom extends Component {
         if (typeof dataSource != "undefined") {
             listElement.map((elementItem) => {
                 const elementname = elementItem.name;
-                const ObjectName = { Name: elementname, value: elementItem.value, Controltype: elementItem.type, label: elementItem.label, ErrorLst: [], validatonList: elementItem.validatonList };
+                const ObjectName = { Name: elementname, value: elementItem.value, Controltype: elementItem.type, label: elementItem.label,labelError: elementItem.label, ErrorLst: [], validatonList: elementItem.validatonList };
                 formData = Object.assign({}, formData, { [elementname]: ObjectName });
             });
         }
@@ -211,6 +211,7 @@ class FormContainerCom extends Component {
     //#region InputChange && InputChangeList  
     handleInputChange(elementname, elementvalue, controllabel, listvalidation, listvalidationRow) {
         //console.log('change')
+        debugger;
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
         if (typeof FormDataContolLstd[elementname].validatonList != "undefined") {
@@ -221,7 +222,7 @@ class FormContainerCom extends Component {
         this.setState({
             FormData: FormDataContolLstd,
         });
-        debugger;
+     
     }
     handleInputChangeList(formDataList, tabNameList, tabMLObjectDefinitionList, formValidationTap) {
         //console.log("FormContainer handleInputChangeList: ", formDataList, tabNameList, tabMLObjectDefinitionList, formValidationTap);

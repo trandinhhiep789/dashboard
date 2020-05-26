@@ -69,8 +69,7 @@ class AddCom extends React.Component {
             />
         );
     }
-    handleinsertItem(lstOption)
-    {
+    handleinsertItem(lstOption) {
         let listMLObject = [];
         lstOption.map((row, index) => {
             let MLObject = {};
@@ -80,12 +79,11 @@ class AddCom extends React.Component {
 
             listMLObject.push(MLObject);
         });
-        const formData = Object.assign({}, this.state.DataSource,{["LstMcUser_Role"] :listMLObject});
+        const formData = Object.assign({}, this.state.DataSource, { ["LstMcUser_Role"]: listMLObject });
         this.setState({ DataSource: formData });
     }
 
-    handleInputUserRoleInsert()
-    {    
+    handleInputUserRoleInsert() {
         this.props.showModal(MODAL_TYPE_SEARCH, {
             title: "Danh sách vai trò",
             content: {
@@ -120,7 +118,7 @@ class AddCom extends React.Component {
 
     }
 
-    showPassWord(name){
+    showPassWord(name) {
         var x = document.getElementsByName(name)[0];
         if (x.type === "password") {
             x.type = "text";
@@ -153,18 +151,18 @@ class AddCom extends React.Component {
         }
         return (
             <FormContainer
-                    FormName="Thêm gói sản phẩm lắp đặt kèm theo"
-                    MLObjectDefinition={MLObjectDefinition}
-                    listelement={this.state.AddElementList}
-                    onSubmit={this.handleSubmit}
-                    BackLink={BackLink}
-                    dataSource={this.state.DataSource}
-                    onValueChange={this.handleOnInputChange}
-                    // RequirePermission={MCUSER_ADD}
-                >
+                FormName="Thêm gói sản phẩm lắp đặt kèm theo"
+                MLObjectDefinition={MLObjectDefinition}
+                listelement={this.state.AddElementList}
+                onSubmit={this.handleSubmit}
+                BackLink={BackLink}
+                dataSource={this.state.DataSource}
+                onValueChange={this.handleOnInputChange}
+            // RequirePermission={MCUSER_ADD}
+            >
 
 
-                </FormContainer>
+            </FormContainer>
         );
     }
 }
