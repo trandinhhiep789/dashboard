@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
-
+import vbd from '../../../scripts/vietbandomapsapi.js';
 const MessageModelStyle = {
     overlay: {
         position: 'fixed',
@@ -42,13 +42,32 @@ export default class ModelContainer extends React.Component {
             this.props.onCloseModal();
     }
 
+    componentDidMount(){
+        // const mapContainer = document.getElementById("map-container");
+        // const mapProp = {
+        //     center: new vbd.LatLng(10.811778780317383, 106.7158178333029),
+        //     maxZoom: 19,
+        //     zoom: 18,
+        //     minZoom: 2,
+        //     registerKey: "7f65a9df-4910-434d-b2ce-5cf7d783ad8b",
+        //     scaleControlOptions: { showScale: true },
+        //     zoomControl: true
+        // };
+        // let map = new vbd.Map(mapContainer, mapProp);
+        // var position = map.getCenter()
+        // var marker = new vbd.Marker({
+        //     position: position
+        // });
+
+        // marker.setMap(map);
+    }
+
     handleChangeButton() {
         if (this.props.onChangeModal != null)
             this.props.onChangeModal();
     }
 
     render() {
-        console.log('ModelContainer', this.props);
         const { title, message, onRequestClose } = this.props;
         let hasHeaderToolbar = true;
         if (this.props.IsButton)
