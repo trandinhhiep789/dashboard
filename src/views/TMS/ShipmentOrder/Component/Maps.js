@@ -28,7 +28,7 @@ class Maps extends React.Component {
 
         let map = new vbd.Map(mapContainer, mapProp);
         vbd.event.addListener(map, 'click', function (p) {
-            console.log('aa', p)
+            console.log('aa', p);
             //alert("click");
             var position = map.getCenter()
             var marker = new vbd.Marker({
@@ -58,8 +58,9 @@ class Maps extends React.Component {
 
             });
 
-        }
+        })
     }
+    
     render() {
         return (
             <div className="main-container" style={{ overflow: 'hidden' }} >
