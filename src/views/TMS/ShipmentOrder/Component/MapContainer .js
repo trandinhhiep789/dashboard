@@ -7,7 +7,7 @@ export class MapContainer extends Component {
         };
     }
     componentDidMount() {
-
+        console.log('MapContainer', this.props)
 
         const values = this.props.SenderGeoLocation.split(",")
         const v1 = parseFloat(values[0])
@@ -22,7 +22,7 @@ export class MapContainer extends Component {
             scaleControlOptions: { showScale: true },
             zoomControl: true
         };
-        console.log('this.postData()', this.props.SenderGeoLocation, mapProp);
+        //console.log('this.postData()', this.props.SenderGeoLocation, mapProp);
         let map = new vbd.Map(mapContainer, mapProp);
         var position = map.getCenter()
         var marker = new vbd.Marker({
@@ -32,7 +32,7 @@ export class MapContainer extends Component {
 
         vbd.event.addListener(map, 'click', function (e) {
           //  this.SenderGeoLocation(e.LatLng.Latitude, e.LatLng.Longitude);
-          console.log('this.postData()', e.LatLng.Latitude, e.LatLng.Longitude);
+          //console.log('this.postData()', e.LatLng.Latitude, e.LatLng.Longitude);
             const mapProp1 = {
                 center: new vbd.LatLng(e.LatLng.Latitude, e.LatLng.Longitude),
                 maxZoom: 19,
@@ -82,7 +82,7 @@ export class MapContainer extends Component {
     render() {
 
         return (
-            <div id="map-container" style={{ width: '100%', height: 600 }}></div>
+            <div id="map-container" style={this.props.classContainerStyle}></div>
         );
     }
 }
