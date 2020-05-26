@@ -196,7 +196,7 @@ class FormElementCom extends Component {
         break;
       case "select":
         control = (
-          <select className={this.props.CSSClassName} name={this.props.name} onChange={this.handleInputChange} value={this.props.value}>
+          <select className={this.props.CSSClassName}  ref={this.props.inputRef} name={this.props.name} onChange={this.handleInputChange} value={this.props.value}>
             {listOption.map((optionItem) =>
               <option value={optionItem.value} key={optionItem.value} >{optionItem.label}</option>
             )}
@@ -205,7 +205,7 @@ class FormElementCom extends Component {
         break;
       case "combobox":
         control = (
-          <select className={this.props.CSSClassName} type={this.props.type} id={this.props.id} name={this.props.name}
+          <select className={this.props.CSSClassName}  ref={this.props.inputRef} type={this.props.type} id={this.props.id} name={this.props.name}
             onChange={this.handleInputChange} value={parseInt(this.props.value == "" ? -1 : this.props.value)} >
             {listOption.map((optionItem) =>
               <option key={optionItem.value} value={optionItem.value}>{optionItem.label}</option>
@@ -232,7 +232,7 @@ class FormElementCom extends Component {
         control = <input className={this.props.CSSClassName} name={this.props.name} type={this.props.type} defaultValue={this.props.value} checked={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} />;
         break;
       case "text":
-        control = <input className={controlCSSClassName} name={this.props.name} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} />;
+        control = <input className={controlCSSClassName}  ref={this.props.inputRef} name={this.props.name} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} />;
         break;
       case "file":
         const CSSClassName = this.props.CSSClassName + "btn btn-bold btn-pure btn-primary"

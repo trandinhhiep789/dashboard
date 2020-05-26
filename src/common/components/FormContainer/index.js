@@ -5,6 +5,7 @@ import {  GetMLObjectData } from "../../library/form/FormLib";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../constants/functionLists";
 import { callGetCache } from "../../../actions/cacheAction";
 import { Link } from "react-router-dom";
+import FormElement from '../FormContainer/FormElement';
 function isEmpty(obj) {
     for (var key in obj) {
         if (obj.hasOwnProperty(key))
@@ -28,7 +29,7 @@ class FormContainerCom extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.elementItemRefs = [];
         const formData = this.bindData();
-       // console.log("formData",formData)
+        // console.log("formData",formData)
         this.state = {
             FormData: formData,
             FormValidation: {},
@@ -48,7 +49,15 @@ class FormContainerCom extends Component {
         const children = this.props.children;
         const dataSource = this.props.dataSource;
         let formData = {};
-      
+        const listElement = this.bindDataToControl(this.props.listelement, this.props.dataSource);
+        if (typeof dataSource != "undefined") {
+            listElement.map((elementItem) => {
+                const elementname = elementItem.name;
+                const ObjectName = { Name: elementname, value: elementItem.value, Controltype: elementItem.type, label: elementItem.label, ErrorLst: [], validatonList: elementItem.validatonList };
+                formData = Object.assign({}, formData, { [elementname]: ObjectName });
+            });
+        }
+
         React.Children.map(children, (child, i) => {
             if (child.type == "div") {
                 const formDataTempList = this.bindDivChildrenData(child, dataSource);
@@ -212,6 +221,7 @@ class FormContainerCom extends Component {
         this.setState({
             FormData: FormDataContolLstd,
         });
+        debugger;
     }
     handleInputChangeList(formDataList, tabNameList, tabMLObjectDefinitionList, formValidationTap) {
         //console.log("FormContainer handleInputChangeList: ", formDataList, tabNameList, tabMLObjectDefinitionList, formValidationTap);
@@ -245,7 +255,6 @@ class FormContainerCom extends Component {
     //#region validation InputControl
     validationFormNew() {
         const FormDataContolLst = this.state.FormData;
-      //  console.log("validationFormNew",FormDataContolLst)
         for (const key in FormDataContolLst) {
             if (typeof FormDataContolLst[key].validatonList != "undefined") {
                 const validation = ValidationField(FormDataContolLst[key].validatonList, FormDataContolLst[key].value, FormDataContolLst[key].label, FormDataContolLst[key]);
@@ -425,10 +434,41 @@ class FormContainerCom extends Component {
         return true;
     }
     //#endregion  handleSubmit 
+    renderOneColumnForm() {
+        const listElement = this.props.listelement;
+        if (listElement == null)
+            return null;
 
+        return listElement.map((elementItem, index) => {
+            return (<div className="form-row" key={"div" + elementItem.name}>
+                <FormElement type={elementItem.type} name={elementItem.name}
+                    CSSClassName="form-control form-control-sm"
+                    value={this.state.FormData[elementItem.name].value}
+                    label={elementItem.label} placeholder={elementItem.placeholder}
+                    icon={elementItem.icon}
+                    onValueChange={this.handleInputChange}
+                    inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                    listoption={elementItem.listoption}
+                    key={elementItem.name}
+                    readonly={elementItem.readonly}
+                    validatonList={elementItem.validatonList}
+                    validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                    IsAutoLoadItemFromCache={elementItem.IsAutoLoadItemFromCache}
+                    LoadItemCacheKeyID={elementItem.LoadItemCacheKeyID}
+                    ValueMember={elementItem.ValueMember}
+                    NameMember={elementItem.NameMember}
+                    accept={elementItem.accept}
+                    multiple={elementItem.multiple}
+                    maxSize={elementItem.maxSize}
+                    minSize={elementItem.minSize}
+                />
+            </div>);
+        }
+        );
+    }
     render() {
 
-
+        let elmentRender = this.renderOneColumnForm();
 
         if (this.state.IsPermision == undefined) {
             return <p className="col-md-12">Đang kiểm tra quyền...</p>
@@ -454,6 +494,7 @@ class FormContainerCom extends Component {
                 <form className="card" action="" onSubmit={this.handleSubmit}>
                     {this.props.FormName ? <h4 className="card-title"><strong>{this.props.FormName}</strong></h4> : ""}
                     <div className="card-body">
+                        {elmentRender}
                         {
                             this.autoLayoutChildren()
                         }

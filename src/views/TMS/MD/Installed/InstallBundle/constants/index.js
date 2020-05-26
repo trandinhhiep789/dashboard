@@ -119,7 +119,6 @@ export const AddElementList = [
         listoption: [],
         DataSourceMember: "Description",
         readonly: false,
-        validatonList: []
     },
     {
         type: "checkbox",
@@ -130,7 +129,6 @@ export const AddElementList = [
         icon: "",
         listoption: [],
         readonly: false,
-        validatonList: []
     },
     {
         type: "checkbox",
@@ -141,7 +139,6 @@ export const AddElementList = [
         icon: "",
         listoption: [],
         readonly: false,
-        validatonList: []
     }
 ];
 

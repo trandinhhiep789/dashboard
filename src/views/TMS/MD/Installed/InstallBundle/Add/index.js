@@ -2,8 +2,10 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
-import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
+// import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
 import InputGrid from "../../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+import FormContainer from "../../../../../../common/components/FormContainer";
+import FormControl from "../../../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../../../common/components/Modal";
 import { showModal } from '../../../../../../actions/modal';
 import { MODAL_TYPE_SEARCH } from '../../../../../../constants/actionTypes';
@@ -155,24 +157,13 @@ class AddCom extends React.Component {
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={this.state.AddElementList}
                     onSubmit={this.handleSubmit}
-                    IsAutoLayout={true}
-                    ref={this.searchref}
                     BackLink={BackLink}
                     dataSource={this.state.DataSource}
                     onValueChange={this.handleOnInputChange}
-                    RequirePermission={MCUSER_ADD}
+                    // RequirePermission={MCUSER_ADD}
                 >
-                    <InputGrid
-                        name="LstMcUser_Role"
-                        controltype="InputControl"
-                        IDSelectColumnName={"checkboxAll"}
-                        listColumn={InputMcRoleColumnList}
-                        isHideHeaderToolbar={false}
-                        dataSource={this.state.DataSource.LstMcUser_Role}
-                        MLObjectDefinition={GridMLMcRoleDefinition}
-                        colspan="12"
-                        onInsertClick={this.handleInputUserRoleInsert}
-                    />
+
+
                 </FormContainer>
         );
     }
