@@ -82,6 +82,7 @@ class EditCom extends React.Component {
         this.getCacheSysUser();
         this.getCachePartner();
         this.getCacheShipmentStatus();
+        this.checkValidStep();
         //console.log("formdata", this.state.FormData);
     }
 
@@ -448,19 +449,39 @@ class EditCom extends React.Component {
             })
         }
 
-        //console.log("handleSubmit", param);
-        this.props.callFetchAPI(APIHostName, UpdateAPIPath, param).then((apiResult) => {
-            debugger;
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            if (!apiResult.IsError) {
-                this.showMessage1(apiResult.Message);
-                this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERTYPE);
-                //this.handleSubmitInsertLog(param);
-            } else {
-                this.showMessage(apiResult.Message);
+        if (this.state.IsValidStep) {
+            if (window.confirm('Thiếu bước khởi tạo hay hoàn thành. Bạn có muốn tiếp tục cập nhật không?')) {
+                this.props.callFetchAPI(APIHostName, UpdateAPIPath, param).then((apiResult) => {
+                    debugger;
+                    this.setState({ IsCallAPIError: apiResult.IsError });
+                    if (!apiResult.IsError) {
+                        this.showMessage1(apiResult.Message);
+                        this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERTYPE);
+                        //this.handleSubmitInsertLog(param);
+                    } else {
+                        this.showMessage(apiResult.Message);
+                    }
+
+                });
             }
 
-        });
+        }else{
+            this.props.callFetchAPI(APIHostName, UpdateAPIPath, param).then((apiResult) => {
+                debugger;
+                this.setState({ IsCallAPIError: apiResult.IsError });
+                if (!apiResult.IsError) {
+                    this.showMessage1(apiResult.Message);
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERTYPE);
+                    //this.handleSubmitInsertLog(param);
+                } else {
+                    this.showMessage(apiResult.Message);
+                }
+    
+            });
+        }
+
+        //console.log("handleSubmit", param);
+
     }
 
     getCachePiePermission() {

@@ -14,8 +14,9 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { callGetCache } from "../../../../../../actions/cacheAction";
 import { MCPRIVILEGEGROUP_ADD } from "../../../../../../constants/functionLists";
+import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_PARTNERPRIVILEDGEGROUP } from "../../../../../../constants/keyCache";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -28,10 +29,8 @@ class AddCom extends React.Component {
             IsCloseForm: false,
             AddElementList: AddElementList,
             DataSource: {
-                PieTypeID: "",
-                PieTypeName: "",
                 Description: "",
-                OrderIndex: "",
+                OrderIndex: 0,
                 IsActived: true,
                 IsSystem: false
             }
@@ -64,6 +63,7 @@ class AddCom extends React.Component {
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
+            this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERPRIVILEDGEGROUP);
             this.showMessage(apiResult.Message);
         });
     }
@@ -105,7 +105,11 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
+
     };
 };
 

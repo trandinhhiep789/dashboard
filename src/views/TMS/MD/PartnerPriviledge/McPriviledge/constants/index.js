@@ -33,7 +33,7 @@ export const EditPagePath = [
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/PartnerPriviledge", Title: "Danh sách quyền nhà cung cấpn" },
+    { Link: "/PartnerPriviledge", Title: "Danh sách quyền nhà cung cấp" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -93,10 +93,10 @@ export const AddElementList = [
         type: "select",
         name: "selPartnerPriviledgeGroupID",
         label: "Mã nhóm quyền:",
-        value: "",
+        value: -1,
         placeholder: "",
         icon: "",
-        listoption: [{value: -1, label: "--Vui lòng chọn--" }],
+        listoption: [],
         DataSourceMember: "PartnerPriviledgeGroupID",
         readonly: false,
         validatonList: [],
@@ -131,6 +131,19 @@ export const AddElementList = [
         DataSourceMember: "Description",
         readonly: false,
         validatonList: []
+    },
+    {
+        type: "text",
+        name: "txtOrderIndex",
+        label: "Thứ tự hiển thị:",
+        value: 0,
+        maxSize: "9",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "OrderIndex",
+        readonly: false,
+        validatonList: ["number"]
     },
     {
         type: "checkbox",
@@ -215,17 +228,17 @@ export const EditElementList = [
         validatonList: []
     },
     {
-        type: "numeric",
+        type: "text",
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
-        value: 0,
+        value: "",
         maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
         DataSourceMember: "OrderIndex",
         readonly: false,
-        validatonList: []
+        validatonList: ["number"]
     },
     {
         type: "checkbox",
