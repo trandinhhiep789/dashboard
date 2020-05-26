@@ -29,7 +29,7 @@ class FormContainerCom extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.elementItemRefs = [];
         const formData = this.bindData();
-        // console.log("formData",formData)
+         console.log("formData",formData)
         this.state = {
             FormData: formData,
             FormValidation: {},
@@ -211,7 +211,6 @@ class FormContainerCom extends Component {
     //#region InputChange && InputChangeList  
     handleInputChange(elementname, elementvalue, controllabel, listvalidation, listvalidationRow) {
         //console.log('change')
-        debugger;
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
         if (typeof FormDataContolLstd[elementname].validatonList != "undefined") {
@@ -224,32 +223,13 @@ class FormContainerCom extends Component {
         });
      
     }
-    handleInputChangeList(formDataList, tabNameList, tabMLObjectDefinitionList, formValidationTap) {
-        //console.log("FormContainer handleInputChangeList: ", formDataList, tabNameList, tabMLObjectDefinitionList, formValidationTap);
-        if (typeof formValidationTap != "undefined") {
-            let formValidation = this.state.FormValidation;
-            const formValidationNew = Object.assign({}, formValidation, formValidationTap);
-            this.setState({
-                FormValidation: formValidationNew
-            });
-        }
-        let formDataTemp = this.state.FormData;
-        for (let i = 0; i < tabNameList.length; i++) {
-            const tabName = tabNameList[i];
-            const tabMLObjectDefinition = tabMLObjectDefinitionList[i];
-            if (tabName != null && tabMLObjectDefinition != null) {
-                const tabMLData = GetMLObjectData(tabMLObjectDefinition, formDataList[i]);
-                formDataTemp = Object.assign({}, formDataTemp, { [tabName]: tabMLData });
-            }
-            else {
-                const formData = formDataList[i];
-                Object.keys(formData).forEach(function (key) {
-                    formDataTemp = Object.assign({}, formDataTemp, { [key]: formData[key] });
-                });
-            }
-        }
-        this.setState({ FormData: formDataTemp });
-        // console.log("FormContainer handleInputChangeList formDataTemp: ", formDataTemp,formValidationNew);
+    handleInputChangeList(name, tabNameList) {
+        const FormDataContolLstd = this.state.FormData;
+        
+        FormDataContolLstd[name] = tabNameList;
+        this.setState({
+            FormData: FormDataContolLstd,
+        });
     }
     //#endregion
 
@@ -359,6 +339,16 @@ class FormContainerCom extends Component {
                         {
                             onValueChange: this.handleInputChange,
                             inputRef:ref => this.elementItemRefs[controlname] = ref
+                        }
+                    );
+                }
+                else if (controltype == "GridControl") {
+                    const controlname = child.props.name;
+                   
+                    return React.cloneElement(child,
+                        {
+                            onValueChange: this.handleInputChangeList,
+                            value: this.state.FormData[controlname]
                         }
                     );
                 }

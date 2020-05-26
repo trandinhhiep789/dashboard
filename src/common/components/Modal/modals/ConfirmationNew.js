@@ -70,7 +70,6 @@ class ConfirmationNew extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.elementItemRefs = [];
         const formData = this.bindData();
-        console.log("formData",formData);
         this.state = {
             Title: this.props.title ? this.props.title : "",
             FormData: formData
@@ -81,7 +80,6 @@ class ConfirmationNew extends React.Component {
     bindData() {
         const dataSource = this.props.dataSource;
         let formData = {};
-        debugger
         const listElement = this.bindDataToControl(this.props.modalElementList, this.props.dataSource);
        
             listElement.map((elementItem) => {
@@ -159,14 +157,10 @@ class ConfirmationNew extends React.Component {
         if (this.checkInputName(formValidation) != "")
             return;
         if (this.props.onConfirm != null) {
-            if(this.props.autoCloseModal){
                 this.props.hideModal();
-            }
             const mLObjectDefinition = this.props.modalElementOl;
             let MLObject = {};
-            console.log(this.state.FormData);
             mLObjectDefinition.map((Item) => {
-                debugger;
                 const controlName = Item.BindControlName;
                 if (controlName.length > 0) {
                     console.log(this.state.FormData,this.state.FormData[controlName].value);

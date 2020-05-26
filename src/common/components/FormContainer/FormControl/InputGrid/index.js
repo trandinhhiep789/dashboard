@@ -287,12 +287,13 @@ class InputGridCom extends Component {
 					title: 'Cập nhật ' + this.props.title,
 					autoCloseModal: this.state.AutoCloseModal,
 					onConfirm: (isConfirmed, formData) => {
-						let dataSource = this.props.dataSource;
+						let dataSource = this.props.value;
 					
 						if (this.props.onValueChange != null) {
 							dataSource.push(formData)
 							const mLObjectDefinition = this.props.MLObjectDefinition;
 							const MLObjectList = GetMLObjectDataList(mLObjectDefinition, dataSource, dataSource);
+							debugger;
 							this.props.onValueChange(this.props.name, MLObjectList, this.props.controltype, undefined);
 						}
 					},
@@ -481,7 +482,7 @@ class InputGridCom extends Component {
 										//    console.log("columnItem Type isChecked :", columnItem.Name,columnItem.Type,this.state.selected);
 										//  console.log("rowItem[columnItem.IsAutoLoadItemFromCache]:", columnItem.IsAutoLoadItemFromCache);
 										let validationErrorMessage = "";
-										let listerror = this.props.listvalidationError[rowIndex];
+										let listerror = "";
 										// console.log("listvalidationError",this.props.listvalidationError,rowIndex,listerror);
 										if (listerror != undefined) {
 											if (listerror[columnItem.Name] != null) {
