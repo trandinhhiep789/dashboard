@@ -144,7 +144,29 @@ const AppMenu = [
                 SubMenu: []
             }
         ]
-    }
+    },
+    {
+        MenuName: 'INSTALL',
+        MenuTitle: 'Khai báo thông tin lắp đặt',
+        LinkTo: '',
+        MenuIcon: '',
+        SubMenu: [
+            {
+                MenuName: 'InstallBundle',
+                MenuTitle: 'Danh sách gói sản phẩm lắp đặt kèm theo',
+                LinkTo: '/InstallBundle',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'InstallMaterial',
+                MenuTitle: 'Danh sách nhóm sản phẩm cần vật tư lắp đặt',
+                LinkTo: '/InstallMaterial',
+                MenuIcon: '',
+                SubMenu: []
+            }
+        ]
+    },
 ];
 
 export default AppMenu;

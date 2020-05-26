@@ -331,34 +331,22 @@ class ElementComboBoxNewCom extends Component {
     }
 
     componentDidMount() {
-        let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember,NameMemberop } = this.props;
+        let { listoption } = this.props;
+        debugger;
         // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
-        if (IsAutoLoadItemFromCache) {
-            this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
-                //  console.log("this.props.isautoloaditemfromcach2: ",this.props.loaditemcachekeyid, this.state.Listoption);
-                listoption = [{ value: -1, label: "--Vui lòng chọn--" }];
-                if (!result.IsError && result.ResultObject.CacheData != null) {
-
-
-                    result.ResultObject.CacheData.filter(person => person[NameMemberop]===3).map((cacheItem) => {
-                        listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + "-" + cacheItem[NameMember] });
-                    }
-                    );
-                    this.setState({ ListOption: listoption })
-                    const selectedOption = this.bindcombox(this.state.ListOption);
-                    this.setState({ SelectedOption: selectedOption });
-                }
-                else {
-                    this.setState({ ListOption: listoption });
-                }
-                //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
-            });
-        }
-        else {
-            //console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
-            this.setState({ ListOption: listoption });
+        this.setState({ ListOption: listoption })
+        const selectedOption = this.bindcombox(this.state.ListOption);
+        this.setState({ SelectedOption: selectedOption });
+    }
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            this.setState({ ListOption: nextProps.listoption })
+            const selectedOption = this.bindcombox(nextProps.listoption);
+            this.setState({ SelectedOption: selectedOption });
         }
     }
+
 
     getComboValue(selectedOption) {
         let values = [];
@@ -383,7 +371,6 @@ class ElementComboBoxNewCom extends Component {
     }
 
     render() {
-
         let { name, label, icon, colspan, isMultiSelect, validationErrorMessage, placeholder } = this.props;
         let className = "select";
 

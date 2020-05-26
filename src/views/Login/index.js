@@ -104,7 +104,7 @@ class LoginCom extends React.Component {
                         <span id="reauth-email" className="reauth-email"></span>
                         <input type="text" id="inputEmail" className="form-control" placeholder="Tên truy cập" autoFocus name="txtUserName" value={this.state.txtUserName} onChange={this.onTextChange} />
                         <input type="password" id="inputPassword" className="form-control" placeholder="Mật khẩu" name="txtPassword" value={this.state.txtPassword} onChange={this.onTextChange} />
-                        <div className="form-group flexbox flex-column flex-md-row">
+                        <div className="form-group flexbox flex-column flex-md-row w-100">
                             <div className="custom-control custom-checkbox">
                                 <input type="checkbox" name="txtremember" id="txtremember" checked={this.state.txtremember} onChange={this.onTextChange} className="custom-control-input" />
                                 <label className="custom-control-label" htmlFor="txtremember" >Nhớ mật khẩu</label>
