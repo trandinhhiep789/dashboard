@@ -14,7 +14,7 @@ class Maps extends React.Component {
       componentDidMount() {
         const mapContainer = document.getElementById("map-container");
         const mapProp = {
-            center: new vbd.LatLng(10.7964825447845, 106.68550653525),
+            center: new vbd.LatLng(10.852526000673762, 106.66059494018555),
             maxZoom: 19,
             zoom: 12,
             minZoom: 2,
@@ -23,11 +23,13 @@ class Maps extends React.Component {
             zoomControl: true
         };
         let map = new vbd.Map(mapContainer, mapProp);
-        vbd.event.addListener(map,'click',function(){
-            alert("click");
+        vbd.event.addListener(map,'click',function(p){
+            console.log('aa', p)
+            //alert("click");
         });
 
     }
+
 
 
 

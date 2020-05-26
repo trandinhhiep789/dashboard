@@ -39,6 +39,7 @@ class ShipmentOrderAddressCom extends Component {
             Province: [],
             District: [],
             Ward: [],
+            dataOrderAddressSender: {},
         }
     }
 
@@ -46,10 +47,11 @@ class ShipmentOrderAddressCom extends Component {
         this.initCombobox();
         this.setValueCombobox();
     }
+
     handleValueChange(e) {
         let { ShipmentOrderEdit } = this.state;
         ShipmentOrderEdit[e.target.name] = e.target.value;
-        if (e.target.name = "SenderAddress") {
+        if (e.target.name == "SenderAddress") {
             ShipmentOrderEdit.SenderGeoLocation = "10.852982,105.700";
         }
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
@@ -77,6 +79,7 @@ class ShipmentOrderAddressCom extends Component {
             this.ShowModalSender();
         });
     }
+
     handleValueChangeDistrict(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         let { ShipmentOrderEdit } = this.state;
@@ -87,6 +90,7 @@ class ShipmentOrderAddressCom extends Component {
             this.ShowModalSender();
         });
     }
+
     handleValueChangeWard(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         let { ShipmentOrderEdit } = this.state;
@@ -96,8 +100,6 @@ class ShipmentOrderAddressCom extends Component {
             this.ShowModalSender();
         });
     }
-
-
 
     getComboValue(selectedOption) {
         let values = [];
@@ -113,6 +115,7 @@ class ShipmentOrderAddressCom extends Component {
 
         return values;
     }
+
     // initCombobox() {
     //     let listoption = [];
     //     // tỉnh thành phố
@@ -245,9 +248,11 @@ class ShipmentOrderAddressCom extends Component {
             })
         }
     }
+
     handleUpdateAddressSender() {
-        console.log("show modal update");
+        console.log("show modal update", this.state.ShipmentOrderEdit);
     }
+
     handleShowModalSender() {
         let { ShipmentOrderEdit } = this.state;
         this.setValueCombobox(2, this.state.ShipmentOrderEdit.SenderProvinceID, this.state.ShipmentOrderEdit.SenderDistrictID)
@@ -255,6 +260,7 @@ class ShipmentOrderAddressCom extends Component {
             this.ShowModalSender();
         });
     }
+
     setValueCombobox(CountryID, ProvinceID, WardID) {
 
         let province = [{ value: -1, label: "--Vui lòng chọn--" }];
@@ -290,7 +296,14 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Họ và tên:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input name="SenderFullName" onChange={this.handleValueChange.bind(this)} className="form-control form-control-sm" value={this.state.ShipmentOrderEdit.SenderFullName} placeholder="Họ và tên" />
+                                <input
+                                    type="text"
+                                    name="SenderFullName"
+                                    onChange={this.handleValueChange.bind(this)}
+                                    className="form-control form-control-sm"
+                                    value={this.state.ShipmentOrderEdit.SenderFullName}
+                                    placeholder="Họ và tên"
+                                />
                             </div>
                         </div>
                     </div>
@@ -300,7 +313,14 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Số điện thoại:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input name="SenderPhoneNumber" onChange={this.handleValueChange.bind(this)} className="form-control form-control-sm" value={this.state.ShipmentOrderEdit.SenderPhoneNumber} placeholder="Số điện thoại người gửi" />
+                                <input
+                                    type="text"
+                                    name="SenderPhoneNumber"
+                                    onChange={this.handleValueChange.bind(this)}
+                                    className="form-control form-control-sm"
+                                    value={this.state.ShipmentOrderEdit.SenderPhoneNumber}
+                                    placeholder="Số điện thoại người gửi"
+                                />
                             </div>
                         </div>
                     </div>
@@ -375,14 +395,20 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Số nhà/đường:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input name="SenderAddress" onChange={this.handleValueChange.bind(this)} value={this.state.ShipmentOrderEdit.SenderAddress} className="form-control form-control-sm" placeholder="Số điện thoại người gửi" />
+                                <input
+                                    name="SenderAddress"
+                                    onChange={this.handleValueChange.bind(this)}
+                                    value={this.state.ShipmentOrderEdit.SenderAddress}
+                                    className="form-control form-control-sm"
+                                    placeholder="Số điện thoại người gửi"
+                                />
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div className="form-row">
-                    <div className="form-group col-md-6">
+                    <div className="form-group col-md-4">
                         <div className="form-row">
                             <div className="form-group col-md-4">
                                 <label className="col-form-label">Tọa độ:</label>
@@ -392,8 +418,25 @@ class ShipmentOrderAddressCom extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="form-group col-md-6">
-                        <button className="btn btnEditCard">chỉnh sửa</button>
+                    <div className="form-group col-md-4">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">Khoảng cách:</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <label className="col-form-label">3Km</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">Thời gian:</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <label className="col-form-label">15 phút</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
