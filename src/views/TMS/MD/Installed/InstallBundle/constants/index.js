@@ -8,23 +8,23 @@ export const UpdateOrderAPIPath = "api/InstallBundle/UpdateOrder";
 export const BackLink = "/InstallBundle";
 export const AddLink = "/InstallBundle/add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "UserName";
+export const PKColumnName = "InstallBundleID";
 export const SearchMcRoleAPIPath = "api/McRole/Search";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/InstallBundle", Title: "Người dùng của nhà cung cấp" }
+    { Link: "/InstallBundle", Title: "Danh sách gói sản phẩm lắp đặt kèm theo" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/InstallBundle", Title: "Người dùng của nhà cung cấp" },
+    { Link: "/InstallBundle", Title: "Danh sách gói sản phẩm lắp đặt kèm theo" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/InstallBundle", Title: "Người dùng của nhà cung cấp" },
+    { Link: "/InstallBundle", Title: "Danh sách gói sản phẩm lắp đặt kèm theo" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -51,145 +51,61 @@ export const SearchElementList = [
 export const AddElementList = [
     {
         type: "text",
-        name: "txtUserName",
-        label: "Tên truy cập người dùng:",
+        name: "txtInstallBundleID",
+        label: "mã gói sản phẩm lắp đặt",
         value: "",
         maxSize: "20",
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "UserName",
-        readonly: false,
-        validatonList: ["required","special"]
-    },
-    {
-        type: "select",
-        name: "txtMerchant",
-        label: "Nhà cung cấp:",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "MerchantID",
-        readonly: false,
-        validatonList: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "EWALLETCOMMONCACHE.MERCHANT",
-        ValueMember: "MerchantID",
-        NameMember: "MerchantName"
-    },
-    {
-        type: "password",
-        name: "txtPassWord",
-        label: "Mật khẩu:",
-        value: "",
-        maxSize: "400",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "PassWord",
+        DataSourceMember: "InstallBundleID",
         readonly: false,
         validatonList: ["required"]
     },
     {
-        type: "password",
-        name: "txtPassWordConfirm",
-        label: "Xác nhận mật khẩu:",
-        value: "",
-        maxSize: "400",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "PassWordConfirm",
-        readonly: false,
-        validatonList: []
-    },
-    {
-        type: "checkbox",
-        name: "chkShowPassWord",
-        label: "Hiển thị mật khẩu:",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        readonly: false,
-        DataSourceMember: "",
-        validatonList: []
-    },
-    {
         type: "text",
-        name: "txtFullName",
-        label: "Họ tên đầy đủ:",
-        value: "",
-        maxSize: "200",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "FullName",
-        readonly: false,
-        validatonList: []
-    },
-    // {
-    //     type: "text",
-    //     name: "txtFirstName",
-    //     label: "Tên:",
-    //     value: "",
-    //     placeholder: "",
-    //     icon: "",
-    //     listoption: [],
-    //     DataSourceMember: "FirstName",
-    //     readonly: false,
-    //     validatonList: []
-    // },
-    // {
-    //     type: "text",
-    //     name: "txtLastName",
-    //     label: "Họ:",
-    //     value: "",
-    //     placeholder: "",
-    //     icon: "",
-    //     listoption: [],
-    //     DataSourceMember: "LastName",
-    //     readonly: false,
-    //     validatonList: []
-    // },
-    {
-        type: "text",
-        name: "txtPhoneNumber",
-        label: "Điện thoại:",
+        name: "txtInstallBundleName",
+        label: "tên gói sản phẩm lắp đặt",
         value: "",
         maxSize: "20",
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "PhoneNumber",
+        DataSourceMember: "InstallBundleName",
         readonly: false,
-        validatonList: []
+        validatonList: ["required"]
     },
     {
-        type: "date",
-        name: "dtBirthday",
-        label: "Ngày sinh:",
-        value: new Date(),
-        placeholder: "",
-        icon: "",
-        DataSourceMember: "Birthday",
-        ValueMember: "Birthday",
-        NameMember: "Birthday",
-        validatonList: []
-    },
-    {
-        type: "text",
-        name: "txtEmail",
-        label: "Email:",
+        type: "select",
+        name: "cbShiPMentOrderTypeID",
+        label: "loại yêu cầu vận chuyển",
         value: "",
-        maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "Email",
+        DataSourceMember: "ShiPMentOrderTypeID",
         readonly: false,
-        validatonList: []
+        validatonList: ["required"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
+        ValueMember: "ShipmentOrderTypeID",
+        NameMember: "ShipmentOrderTypeName"
+    },
+    {
+        type: "select",
+        name: "cbPartnerID",
+        label: "đối tác vận chuyển",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "PartnerID",
+        readonly: false,
+        validatonList: ["required"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
+        ValueMember: "PartnerID",
+        NameMember: "PartnerName"
     },
     {
         type: "textarea",
@@ -519,54 +435,55 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "UserName",
-        Width: 150
+        DataSourceMember: "InstallBundleID",
+        Width: 80
     },
     {
-        Name: "UserName",
+        Name: "InstallBundleName",
         Type: "text",
-        Caption: "Tên người dùng",
-        DataSourceMember: "UserName",
+        Caption: "Tên gói sản phẩm lắp đặt",
+        DataSourceMember: "InstallBundleName",
+        Width: 280
+    },
+    {
+        Name: "ShiPMentOrderTypeID",
+        Type: "text",
+        Caption: "Loại yêu cầu vận chuyển",
+        DataSourceMember: "ShiPMentOrderTypeID",
         Width: 200
     },
     {
-        Name: "FullName",
+        Name: "PartnerID",
         Type: "text",
-        Caption: "Họ tên",
-        DataSourceMember: "FullName",
+        Caption: "Đối tác",
+        DataSourceMember: "PartnerID",
         Width: 200
-    },
-    {
-        Name: "MerchantName",
-        Type: "text",
-        Caption: "Tên nhà cung cấp",
-        DataSourceMember: "MerchantName",
-        Width: 800
     },
     {
         Name: "IsActived",
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 200
+        Width: 80
     },
     {
         Name: "CreatedDate",
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 200
-     },
-    // {
-    //     Name: "Action",
-    //     Type: "link",
-    //     Caption: "Tác vụ",
-    //     DataSourceMember: "",
-    //     Width: 200,
-    //     Link: "/InstallBundle/edit/",
-    //     LinkText: "Chỉnh sửa"
-    // }
-];
+        Width: 100
+    },
+    {
+        Name: "Action",
+        Type: "link",
+        Caption: "Tác vụ",
+        DataSourceMember: "InstallBundleID",
+        Width: 80,
+        Link: "/InstallBundle/edit/",
+        LinkText: "Chỉnh sửa"
+    }
+]
+    
 
 export const GridMLMcRoleDefinition = [
     {

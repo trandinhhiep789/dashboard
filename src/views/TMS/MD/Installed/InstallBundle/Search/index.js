@@ -87,11 +87,9 @@ class SearchCom extends React.Component {
 
 
     callSearchData(searchData) {
-        console.log("callSearchData: ", APIHostName, SearchAPIPath, searchData);
         this.props
             .callFetchAPI(APIHostName, SearchAPIPath, searchData)
             .then(apiResult => {
-                console.log("callSearchData apiResultIsError: ", apiResult, apiResult.IsError);
                 if (apiResult && !apiResult.IsError) {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
@@ -172,8 +170,6 @@ class SearchCom extends React.Component {
                     ref={this.gridref}
                     IsAutoPaging={true}
                     RowsPerPage={10}
-                    RequirePermission={MCUSER_VIEW}
-                    DeletePermission={MCUSER_DELETE}
                 />
             </React.Fragment>
         );

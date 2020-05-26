@@ -151,7 +151,7 @@ class AddCom extends React.Component {
         }
         return (
             <FormContainer
-                    FormName="Thêm người dùng của nhà cung cấp"
+                    FormName="Thêm gói sản phẩm lắp đặt kèm theo"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={this.state.AddElementList}
                     onSubmit={this.handleSubmit}
