@@ -46,10 +46,72 @@ class ShipmentOrderAddressCom extends Component {
         this.initCombobox();
         this.setValueCombobox();
     }
-    handleValueChange() {
+    handleValueChange(e) {
+        let { ShipmentOrderEdit } = this.state;
+        ShipmentOrderEdit[e.target.name] = e.target.value;
+        if (e.target.name = "SenderAddress") {
+            ShipmentOrderEdit.SenderGeoLocation = "10.852982,105.700";
+        }
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
+            this.ShowModalSender();
+        });
+
+    }
+
+    handleValueChangeGeoLocation(e, a) {
+        let { ShipmentOrderEdit } = this.state;
+        ShipmentOrderEdit.SenderGeoLocation = "10.852982,105.700";
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
+            this.ShowModalSender();
+        });
+    }
+
+    handleValueChangeProvince(selectedOption) {
+        const comboValues = this.getComboValue(selectedOption);
+        let { ShipmentOrderEdit } = this.state;
+        ShipmentOrderEdit['SenderProvinceID'] = comboValues;
+        ShipmentOrderEdit['SenderDistrictID'] = -1;
+        ShipmentOrderEdit['SenderWardID'] = -1;
+        this.setValueCombobox(2, comboValues, -1)
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
+            this.ShowModalSender();
+        });
+    }
+    handleValueChangeDistrict(selectedOption) {
+        const comboValues = this.getComboValue(selectedOption);
+        let { ShipmentOrderEdit } = this.state;
+        ShipmentOrderEdit['SenderDistrictID'] = comboValues;
+        ShipmentOrderEdit['SenderWardID'] = -1;
+        this.setValueCombobox(2, ShipmentOrderEdit.SenderProvinceID, comboValues)
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
+            this.ShowModalSender();
+        });
+    }
+    handleValueChangeWard(selectedOption) {
+        const comboValues = this.getComboValue(selectedOption);
+        let { ShipmentOrderEdit } = this.state;
+        ShipmentOrderEdit['SenderWardID'] = comboValues;
+        this.setValueCombobox(2, ShipmentOrderEdit.SenderProvinceID, ShipmentOrderEdit.SenderDistrictID)
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
+            this.ShowModalSender();
+        });
+    }
 
 
 
+    getComboValue(selectedOption) {
+        let values = [];
+        if (selectedOption == null)
+            return -1;
+        if (this.props.isMultiSelect) {
+            for (let i = 0; i < selectedOption.length; i++) {
+                values.push(selectedOption[i].value);
+            }
+        } else {
+            return selectedOption.value;
+        }
+
+        return values;
     }
     // initCombobox() {
     //     let listoption = [];
@@ -212,7 +274,7 @@ class ShipmentOrderAddressCom extends Component {
         const Province = this.bindcombox(this.state.ProvinceLst, this.state.ShipmentOrderEdit.SenderProvinceID);
         const District = this.bindcombox(this.state.DistrictLst, this.state.ShipmentOrderEdit.SenderDistrictID);
         const Ward = this.bindcombox(this.state.WardLst, this.state.ShipmentOrderEdit.SenderWardID);
- 
+
         ModalManager.open(
             <ModelContainer
                 title="Cập nhật thông tin địa chỉ người gửi"
@@ -228,7 +290,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Họ và tên:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input className="form-control form-control-sm" value={this.state.ShipmentOrderEdit.SenderFullName} placeholder="Họ và tên" />
+                                <input name="SenderFullName" onChange={this.handleValueChange.bind(this)} className="form-control form-control-sm" value={this.state.ShipmentOrderEdit.SenderFullName} placeholder="Họ và tên" />
                             </div>
                         </div>
                     </div>
@@ -238,7 +300,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Số điện thoại:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input className="form-control form-control-sm" value={this.state.ShipmentOrderEdit.SenderPhoneNumber} placeholder="Số điện thoại người gửi" />
+                                <input name="SenderPhoneNumber" onChange={this.handleValueChange.bind(this)} className="form-control form-control-sm" value={this.state.ShipmentOrderEdit.SenderPhoneNumber} placeholder="Số điện thoại người gửi" />
                             </div>
                         </div>
                     </div>
@@ -253,8 +315,8 @@ class ShipmentOrderAddressCom extends Component {
                                 <div className="form-group-input-select">
                                     <Select
                                         value={Province}
-                                        name={"aaaa"}
-                                        onChange={this.handleValueChange}
+                                        name={"SenderProvinceID"}
+                                        onChange={this.handleValueChangeProvince.bind(this)}
                                         options={this.state.ProvinceLst}
                                         isMulti={false}
                                         isSearchable={true}
@@ -273,8 +335,8 @@ class ShipmentOrderAddressCom extends Component {
                                 <div className="form-group-input-select">
                                     <Select
                                         value={District}
-                                        name={"aaaa"}
-                                        onChange={this.handleValueChange}
+                                        name={"SenderDistrictID"}
+                                        onChange={this.handleValueChangeDistrict.bind(this)}
                                         options={this.state.DistrictLst}
                                         isMulti={false}
                                         isSearchable={true}
@@ -296,8 +358,8 @@ class ShipmentOrderAddressCom extends Component {
                                 <div className="form-group-input-select">
                                     <Select
                                         value={Ward}
-                                        name={"aaaa"}
-                                        onChange={this.handleValueChange}
+                                        name={"SenderWardID"}
+                                        onChange={this.handleValueChangeWard.bind(this)}
                                         options={this.state.WardLst}
                                         isMulti={false}
                                         isSearchable={true}
@@ -313,7 +375,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Số nhà/đường:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input defaultValue className="form-control form-control-sm" placeholder="Số điện thoại người gửi" />
+                                <input name="SenderAddress" onChange={this.handleValueChange.bind(this)} value={this.state.ShipmentOrderEdit.SenderAddress} className="form-control form-control-sm" placeholder="Số điện thoại người gửi" />
                             </div>
                         </div>
                     </div>
@@ -336,7 +398,9 @@ class ShipmentOrderAddressCom extends Component {
                 </div>
 
                 <div className="form-row google-maps">
-                    <MapContainer SenderGeoLocation={this.state.ShipmentOrderEdit.SenderGeoLocation} classStyle={style} classContainerStyle={containerStyle} />
+                    <MapContainer SenderGeoLocation={this.state.ShipmentOrderEdit.SenderGeoLocation}
+                        onChange={this.handleValueChangeGeoLocation.bind(this)}
+                        classStyle={style} classContainerStyle={containerStyle} />
                 </div>
 
             </ModelContainer>
