@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 // import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
-import InputGrid from "../../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+import InputGrid from "../../../../../../common/components/FormContainer/FormControl/InputGrid";
 import FormContainer from "../../../../../../common/components/FormContainer";
 import FormControl from "../../../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../../../common/components/Modal";
@@ -158,9 +158,19 @@ class AddCom extends React.Component {
                 BackLink={BackLink}
                 dataSource={this.state.DataSource}
                 onValueChange={this.handleOnInputChange}
-            // RequirePermission={MCUSER_ADD}
             >
-
+                <InputGrid
+                    name="LstInstallBundle_Product"
+                    controltype="GirdControl"
+                    title="sản phẩm của gói lắp đặt kèm theo"
+                    IDSelectColumnName={"checkboxAll"}
+                    listColumn={InputMcRoleColumnList}
+                    isHideHeaderToolbar={false}
+                    dataSource={[]}
+                    Ispopup={true}
+                    MLObjectDefinition={GridMLMcRoleDefinition}
+                    colspan="12"
+                />
 
             </FormContainer>
         );

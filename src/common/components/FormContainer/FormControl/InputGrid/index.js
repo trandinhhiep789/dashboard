@@ -288,21 +288,13 @@ class InputGridCom extends Component {
 					autoCloseModal: this.state.AutoCloseModal,
 					onConfirm: (isConfirmed, formData) => {
 						let dataSource = this.props.dataSource;
-						if (this.props.value != null) {
-							dataSource = this.props.value;
-						}
+					
 						if (this.props.onValueChange != null) {
 							dataSource.push(formData)
 							const mLObjectDefinition = this.props.MLObjectDefinition;
 							const MLObjectList = GetMLObjectDataList(mLObjectDefinition, dataSource, dataSource);
 							this.props.onValueChange(this.props.name, MLObjectList, this.props.controltype, undefined);
 						}
-						//lưu trực tiếp vào database
-						if (this.props.onInsertPermanently) {
-							this.props.onInsertPermanently(formData);
-						}
-						const lstobjdelete = this.bindobjdelete1(false, dataSource);
-						this.setState({ lstobjDelete: lstobjdelete, IsCheckAll: false });
 					},
 					modalElementList: listColumnNew,
 					modalElementOl: this.props.MLObjectDefinition
@@ -584,15 +576,6 @@ class InputGridCom extends Component {
 												<span className="fa fa-plus ff"> Thêm </span>
 											</button>
 										)
-									}
-									{
-										(this.props.IsPermisionDelete == true || this.props.IsPermisionDelete == undefined) && this.state.IsSystem == false ?
-											(<button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa" onClick={this.handleDeleteClick}>
-												<span className="fa fa-remove"> Xóa </span>
-											</button>)
-											: (<button type="button" className="btn btn-danger btn-delete ml-10" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Xóa" >
-												<span className="fa fa-remove"> Xóa </span>
-											</button>)
 									}
 								</div>
 							</div>

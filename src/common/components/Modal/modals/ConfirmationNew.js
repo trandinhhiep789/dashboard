@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { hideModal } from '../../../../actions/modal';
 import FormElement from '../../../../common/components/FormContainer/FormElement';
 import { ValidationField } from "../../../library/validation.js"
+import {  GetMLObjectData } from "../../../library/form/FormLib";
 
 
 const Overlay = styled.div`
@@ -67,13 +68,12 @@ class ConfirmationNew extends React.Component {
         this.handleConfirm = this.handleConfirm.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-
+        this.elementItemRefs = [];
         const formData = this.bindData();
+        console.log("formData",formData);
         this.state = {
             Title: this.props.title ? this.props.title : "",
-            FormData: formData,
-            FormValidation: {}
-
+            FormData: formData
         };
     }
 
@@ -81,13 +81,15 @@ class ConfirmationNew extends React.Component {
     bindData() {
         const dataSource = this.props.dataSource;
         let formData = {};
-        const listElement = this.bindDataToControl(this.props.modalElementOl, this.props.dataSource);
-        if (typeof dataSource != "undefined") {
+        debugger
+        const listElement = this.bindDataToControl(this.props.modalElementList, this.props.dataSource);
+       
             listElement.map((elementItem) => {
                 const elementname = elementItem.Name;
-                formData = Object.assign({}, formData, { [elementname]: elementItem.value });
+                const ObjectName = { Name: elementname, value: elementItem.value, Controltype: elementItem.Type, label: elementItem.Caption,labelError: elementItem.Caption, ErrorLst: [], validatonList: elementItem.validatonList };
+                formData = Object.assign({}, formData, { [elementname]: ObjectName });
             });
-        }
+        
         return formData;
     }
 
@@ -109,109 +111,69 @@ class ConfirmationNew extends React.Component {
     //#endregion BinData
 
     //#region InputChange && InputChangeList  
-    handleInputChange(elementname, elementvalue, controllabel, listvalidation, listvalidationRow,elementdata) {
-      
-        if (typeof listvalidationRow != "undefined") {
-            let formValidation1 = this.state.FormValidation;
-            const validation = ValidationField(listvalidationRow, elementvalue, controllabel)
+    handleInputChange(elementname, elementvalue, controllabel, listvalidation, listvalidationRow) {
+        //console.log('change')
+        const FormDataContolLstd = this.state.FormData;
+        FormDataContolLstd[elementname].value = elementvalue;
+        if (typeof FormDataContolLstd[elementname].validatonList != "undefined") {
+            const validation = ValidationField(FormDataContolLstd[elementname].validatonList, elementvalue, FormDataContolLstd[elementname].label, FormDataContolLstd[elementname]);
             const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
-            const formValidation = Object.assign({}, formValidation1, { [elementname]: validationObject });
-            this.setState({
-                FormValidation: formValidation
-            });
+            FormDataContolLstd[elementname].ErrorLst = validationObject;
         }
-        if (typeof elementdata != "undefined") {
-            const formData = Object.assign({}, this.state.FormData, elementdata);
-
-            this.setState({
-                FormData: formData
-            });
-        }
-        else
-        {
-            const formData = Object.assign({}, this.state.FormData, { [elementname]: elementvalue });
-            this.setState({
-                FormData: formData
-            });
-        }
-    }
-    //#endregion InputChange && InputChangeList  
-
-    validationForm() {
-        const listElement = this.props.modalElementList;
-        listElement.map((elementItem) => {
-            const validatonList = elementItem.validatonList;
-            if (validatonList && validatonList.length > 0) {
-                const inputvalue = this.state.FormData[elementItem.Name];
-                //   console.log("inputvalue:", inputvalue);
-                //   console.log("elementItem.Name:", elementItem.name);
-                const validation = ValidationField(validatonList, inputvalue, elementItem.Caption)
-                const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
-                //  console.log("validation:", validation, validationObject);
-                this.FormValidationNew = Object.assign({}, this.FormValidationNew, { [elementItem.Name]: validationObject });
-            }
-        });
-
-     
         this.setState({
-            FormValidation: this.FormValidationNew
+            FormData: FormDataContolLstd,
         });
-
-        return this.FormValidationNew;
+     
     }
-    checkInput(formValidation) {
-        for (const key in formValidation) {
-            if (formValidation[key].IsValidatonError != undefined) {
-                if (formValidation[key].IsValidatonError) {
-                    return false;
-                }
-            }
-            else {
-                const elementob = formValidation[key];
-                //console.log("elementob",elementob,key)
-                for (const key1 in elementob) {
-                    if (elementob[key1].IsValidatonError != undefined) {
-                        if (elementob[key1].IsValidatonError) {
-                            return false;
-                        }
-                    }
-                    else {
-
-                        const element = elementob[key1];
-                        for (const key2 in element) {
-                            if (element[key2].IsValidatonError != undefined) {
-                                if (element[key2].IsValidatonError) {
-                                    return false;
-                                }
-                            }
-                            else {
-
-                                const elem = element[key2];
-                                for (const key3 in elem) {
-                                    if (elem[key3].IsValidatonError) {
-                                        return false;
-                                    }
-                                }
-                            }
-
-                        }
-                    }
-                }
+     //#region validation InputControl
+     validationFormNew() {
+        const FormDataContolLst = this.state.FormData;
+        for (const key in FormDataContolLst) {
+            if (typeof FormDataContolLst[key].validatonList != "undefined") {
+                const validation = ValidationField(FormDataContolLst[key].validatonList, FormDataContolLst[key].value, FormDataContolLst[key].label, FormDataContolLst[key]);
+                const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
+                FormDataContolLst[key].ErrorLst = validationObject;
             }
         }
-        return true;
+        this.setState({
+            FormData: FormDataContolLst
+        });
+
+        return FormDataContolLst;
     }
+    checkInputName(formValidation) {
+        for (const key in formValidation) {
+            //  console.log("validation:",formValidation[key].ErrorLst,formValidation[key].ErrorLst.IsValidatonError);
+            if (formValidation[key].ErrorLst != [] && formValidation[key].ErrorLst.IsValidatonError) {
+                this.elementItemRefs[key].focus();
+                return key;
+            }
+        }
+        return "";
+    }
+
+    //#endregion validation TabContainers
 
     handleConfirm() {
-        const formValidation = this.validationForm();
-
-        if (!this.checkInput(formValidation))
+        const formValidation = this.validationFormNew();
+        if (this.checkInputName(formValidation) != "")
             return;
         if (this.props.onConfirm != null) {
             if(this.props.autoCloseModal){
                 this.props.hideModal();
             }
-            this.props.onConfirm(false, this.state.FormData, this.state.SelectedFile);
+            const mLObjectDefinition = this.props.modalElementOl;
+            let MLObject = {};
+            console.log(this.state.FormData);
+            mLObjectDefinition.map((Item) => {
+                debugger;
+                const controlName = Item.BindControlName;
+                if (controlName.length > 0) {
+                    console.log(this.state.FormData,this.state.FormData[controlName].value);
+                    MLObject = Object.assign({}, MLObject, { [Item.Name]: this.state.FormData[controlName].value });
+                }
+            });
+            this.props.onConfirm(false,MLObject, this.state.SelectedFile);
         }
 
     }
@@ -224,26 +186,21 @@ class ConfirmationNew extends React.Component {
             return null;
 
         return listElement.map((elementItem, index) => {
-            let validationErrorMessage = "";
-            if (this.state.FormValidation && this.state.FormValidation[elementItem.Name]) {
-                validationErrorMessage = this.state.FormValidation[elementItem.Name].ValidatonErrorMessage;
-            }
-            // console.log("listElement",this.state.FormData[elementItem.Name]);
             return (<div className="form-row" key={"div" + elementItem.Name}>
                 <FormElement type={elementItem.Type} name={elementItem.Name}
-                    id={elementItem.ID}
                     CSSClassName="form-control form-control-sm"
-                    value={this.state.FormData[elementItem.Name]}
+                    value={this.state.FormData[elementItem.Name].value}
                     label={elementItem.Caption}
                     cation={elementItem.Caption}
                     placeholder={elementItem.placeholder}
                     icon={elementItem.icon}
                     onValueChange={this.handleInputChange}
+                    inputRef={ref => this.elementItemRefs[elementItem.Name] = ref}
                     listoption={elementItem.listoption}
                     key={elementItem.Name}
                     readonly={elementItem.readonly}
                     validatonList={elementItem.validatonList}
-                    validationErrorMessage={validationErrorMessage}
+                    validationErrorMessage={this.state.FormData[elementItem.Name].ErrorLst.ValidatonErrorMessage}
                     IsAutoLoadItemFromCache={elementItem.IsAutoLoadItemFromCache}
                     LoadItemCacheKeyID={elementItem.LoadItemCacheKeyID}
                     ValueMember={elementItem.ValueMember}

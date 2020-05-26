@@ -263,7 +263,7 @@ class FormElementCom extends Component {
     }
 
     handleSelectedFile(event) {
-        let isValidAcceptedFile =  this.checkIsValidAcceptedFile(event.target.files[0].name);
+        let isValidAcceptedFile = this.checkIsValidAcceptedFile(event.target.files[0].name);
         if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
             this.props.onHandleSelectedFile(event.target.files[0], this.props.NameMember, false);
             this.setState({ value: event.target.files[0].name, src: URL.createObjectURL(event.target.files[0]) });
@@ -271,15 +271,15 @@ class FormElementCom extends Component {
         }
     }
 
-    checkIsValidAcceptedFile(filename){
+    checkIsValidAcceptedFile(filename) {
         var _fileName = filename;
         var idxDot = _fileName.lastIndexOf(".") + 1;
         var extFile = _fileName.substr(idxDot, _fileName.length).toLowerCase();
-        if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+        if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
             return true;
-        }else{
+        } else {
             return false;
-        }   
+        }
     }
 
     formatNumeric(value) {
@@ -460,6 +460,9 @@ class FormElementCom extends Component {
                 control = <input className={this.props.CSSClassName} name={this.props.name} type={this.props.type} defaultValue={this.props.value} checked={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} />;
                 break;
             case "text":
+                control = <input className={controlCSSClassName} name={this.props.name} ref={this.props.inputRef} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} />;
+                break;
+            case "textbox":
                 control = <input className={controlCSSClassName} name={this.props.name} ref={this.props.inputRef} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} />;
                 break;
             case "textType":

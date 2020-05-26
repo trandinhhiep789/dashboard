@@ -392,48 +392,6 @@ class FormContainerCom extends Component {
         // }
     }
 
-    checkInput(formValidation) {
-        for (const key in formValidation) {
-            if (formValidation[key].IsValidatonError != undefined) {
-                if (formValidation[key].IsValidatonError) {
-                    return false;
-                }
-            }
-            else {
-                const elementob = formValidation[key];
-                //console.log("elementob",elementob,key)
-                for (const key1 in elementob) {
-                    if (elementob[key1].IsValidatonError != undefined) {
-                        if (elementob[key1].IsValidatonError) {
-                            return false;
-                        }
-                    }
-                    else {
-
-                        const element = elementob[key1];
-                        for (const key2 in element) {
-                            if (element[key2].IsValidatonError != undefined) {
-                                if (element[key2].IsValidatonError) {
-                                    return false;
-                                }
-                            }
-                            else {
-
-                                const elem = element[key2];
-                                for (const key3 in elem) {
-                                    if (elem[key3].IsValidatonError) {
-                                        return false;
-                                    }
-                                }
-                            }
-
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-    }
     //#endregion  handleSubmit 
     renderOneColumnForm() {
         const listElement = this.props.listelement;
