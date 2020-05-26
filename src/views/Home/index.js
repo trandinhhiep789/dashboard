@@ -38,6 +38,8 @@ import MapContainer from '../../views/TMS/ShipmentOrder/Component/MapContainer '
 import Maps from '../../views/TMS/ShipmentOrder/Component/Maps';
 import McPriviledge from '../../views/TMS/MD/PartnerPriviledge/McPriviledge';
 import PartnerRole from '../../views/TMS/MD/PartnerPriviledge/PartnerRole';
+import InstallBundle from '../../views/TMS/MD/Installed/InstallBundle';
+import InstallMaterial from '../../views/TMS/MD/Installed/InstallMaterial';
 
 
 import NotFound from '../NotFound'
@@ -122,6 +124,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Maps" component={MapContainer} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Map" component={Maps} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/InstallBundle" component={InstallBundle} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/InstallMaterial" component={InstallMaterial} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} />
 
