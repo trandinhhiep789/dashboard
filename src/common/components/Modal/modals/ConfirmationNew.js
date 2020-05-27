@@ -2,10 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { hideModal } from '../../../../actions/modal';
-import FormElement from '../../../../common/components/FormContainer/FormElement';
+import FormElement from '../../../../common/components/FormContainer/FormElement/ModelIndex.js';
 import { ValidationField } from "../../../library/validation.js"
-import {  GetMLObjectData } from "../../../library/form/FormLib";
-
 
 const Overlay = styled.div`
   position: fixed;

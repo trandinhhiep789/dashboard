@@ -129,17 +129,9 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        //check password valid
-        let { PassWord, PassWordConfirm } = this.state;
-        if (PassWord != PassWordConfirm) {
-            this.setState({ IsCallAPIError: true });
-            this.showMessage("Xác nhận mật khẩu chưa đúng.");
-            return false;
-        }
-
+        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.PassWord = MD5Digest(PassWord);
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -157,10 +149,9 @@ class AddCom extends React.Component {
                 onSubmit={this.handleSubmit}
                 BackLink={BackLink}
                 dataSource={this.state.DataSource}
-                onValueChange={this.handleOnInputChange}
             >
                 <InputGrid
-                    name="LstInstallBundle_Product"
+                    name="InstallBundle_ProductList"
                     controltype="GridControl"
                     title="sản phẩm của gói lắp đặt kèm theo"
                     IDSelectColumnName={"ProductID"}

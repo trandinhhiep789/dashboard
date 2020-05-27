@@ -27,9 +27,7 @@ class InputGridCom extends Component {
 		this.renderInputGrid = this.renderInputGrid.bind(this);
 		this.handleInsertClickEdit = this.handleInsertClickEdit.bind(this);
 		this.handleInsertClickDelete = this.handleInsertClickDelete.bind(this);
-		this.checkAll = this.checkAll.bind(this);
 		const gridData = this.bindData();
-		const lstobjdelete = this.bindobjdelete(false);
 
 		//check isSystem
 		let isSystem = false;
@@ -46,7 +44,7 @@ class InputGridCom extends Component {
 		this.state = {
 			GridData: gridData,
 			IsCheckAll: false,
-			lstobjDelete: lstobjdelete,
+			lstobjDelete: [],
 
 			PageNumber: 1,
 			IsSystem: isSystem,
@@ -71,64 +69,10 @@ class InputGridCom extends Component {
 
 		return gridData;
 	}
-	bindobjdelete(Checked) {
-		const listColumn = this.props.listColumn;
-		const element = listColumn.filter(x => { return x.Name.toString().includes("chkSelect") })
 
-		let listDataSourceMember = [];
-		if (element && element.length > 0) {
-			const dataSourceMember = element[0].DataSourceMember.split(',');
-			listDataSourceMember = dataSourceMember.map(item => { return { key: item } });
-		}
-
-		let dataSource = this.props.dataSource;
-		let lstobjdelete = {};
-		dataSource.map((rowItem, rowIndex) => {
-			let elementobject = { IsChecked: Checked };
-			listDataSourceMember.map((obj, index) => {
-				const elementdata = { [obj.key]: rowItem[obj.key] };
-				elementobject = Object.assign(elementobject, elementdata);
-			}
-			);
-
-			lstobjdelete = Object.assign({}, lstobjdelete, { [rowIndex]: elementobject });
-		});
-		return lstobjdelete;
-	}
-	bindobjdelete1(Checked, value) {
-		const listColumn = this.props.listColumn;
-		const element = listColumn.filter(x => { return x.Name.toString().includes("chkSelect") })
-		let listDataSourceMember = [];
-		if (element && element.length > 0) {
-			const dataSourceMember = element[0].DataSourceMember.split(',');
-			listDataSourceMember = dataSourceMember.map(item => { return { key: item } });
-		}
-		let lstobjdelete = {};
-		value.map((rowItem, rowIndex) => {
-			let elementobject = { IsChecked: Checked };
-			listDataSourceMember.map((obj, index) => {
-				const elementdata = { [obj.key]: rowItem[obj.key] };
-				elementobject = Object.assign(elementobject, elementdata);
-			}
-			);
-
-			lstobjdelete = Object.assign({}, lstobjdelete, { [rowIndex]: elementobject });
-		});
-		return lstobjdelete;
-	}
-	//#endregion bind Data
-
+	
 	//#region Delete
-	checkAll = event => {
-		if (event.target.checked) {
-			const lstobjdelete = this.bindobjdelete(true);
-			this.setState({ lstobjDelete: lstobjdelete, IsCheckAll: true });
-		}
-		else {
-			const lstobjdelete = this.bindobjdelete(false);
-			this.setState({ lstobjDelete: lstobjdelete, IsCheckAll: false });
-		}
-	};
+
 	handleClick = (event, id) => {
 		let elementobject = { IsChecked: event };
 		elementobject = Object.assign({}, this.state.lstobjDelete[id], elementobject);

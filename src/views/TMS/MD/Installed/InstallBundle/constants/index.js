@@ -1,9 +1,9 @@
 export const APIHostName = "PIMAPI";
 export const SearchAPIPath = "api/InstallBundle/Search";
 export const LoadAPIPath = "api/InstallBundle/Load";
-export const AddAPIPath = "api/InstallBundle/Add";
-export const UpdateAPIPath = "api/InstallBundle/Update";
-export const DeleteAPIPath = "api/InstallBundle/Delete";
+export const AddAPIPath = "api/InstallBundle/InsertInstallBundle";
+export const UpdateAPIPath = "api/InstallBundle/UpdateInstallBundle";
+export const DeleteAPIPath = "api/InstallBundle/DeleteList";
 export const UpdateOrderAPIPath = "api/InstallBundle/UpdateOrder";
 export const BackLink = "/InstallBundle";
 export const AddLink = "/InstallBundle/add";
@@ -266,6 +266,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "ShiPMentOrderTypeID"
     },
     {
+        Name: "PartnerID",
+        DefaultValue: "",
+        BindControlName: "cbPartnerID",
+        DataSourceMember: "PartnerID"
+    },
+    {
         Name: "Description",
         DefaultValue: "",
         BindControlName: "txtDescription",
@@ -296,10 +302,10 @@ export const MLObjectDefinition = [
         DataSourceMember: "UpdatedUser"
     },
     {
-        Name: "LstInstallBundle_Product",
+        Name: "InstallBundle_ProductList",
         DefaultValue: {},
-        BindControlName: "LstInstallBundle_Product",
-        DataSourceMember: "LstInstallBundle_Product"
+        BindControlName: "InstallBundle_ProductList",
+        DataSourceMember: "InstallBundle_ProductList"
     }
 
 ];
