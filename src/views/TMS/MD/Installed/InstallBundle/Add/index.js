@@ -163,7 +163,7 @@ class AddCom extends React.Component {
                     name="LstInstallBundle_Product"
                     controltype="GridControl"
                     title="sản phẩm của gói lắp đặt kèm theo"
-                    IDSelectColumnName={"checkboxAll"}
+                    IDSelectColumnName={"ProductID"}
                     listColumn={InputMcRoleColumnList}
                     isHideHeaderToolbar={false}
                     dataSource={[]}
