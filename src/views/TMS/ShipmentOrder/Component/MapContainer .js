@@ -65,7 +65,7 @@ export class MapContainer extends Component {
             const mapProp = {
                 center: new vbd.LatLng(v1, v2),
                 maxZoom: 19,
-                zoom: 12,
+                zoom: 8,
                 minZoom: 2,
                 registerKey: "7f65a9df-4910-434d-b2ce-5cf7d783ad8b",
                 scaleControlOptions: { showScale: true },

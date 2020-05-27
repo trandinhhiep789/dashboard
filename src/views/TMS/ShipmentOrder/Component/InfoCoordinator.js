@@ -141,6 +141,7 @@ class InfoCoordinatorCom extends Component {
                         onChange={this.handleValueChange1}
                         listoption={[]}
                         datasourcemember="ShipmentOrder_DeliverUserList"
+                        validatonList={["Comborequired"]}
                     />
                     <FormControl.ComboBox1
                         name="CarrierPartnerID"
@@ -174,9 +175,8 @@ class InfoCoordinatorCom extends Component {
                         </div>
                     </div>
                     <div className="form-row">
-                        <div className="form-group col-md-11"></div>
-                        <div className="form-group col-md-1">
-                            <button className="btn btnEditCard" type="submit" onClick={this.handleShipWorkFlowInsert}  > Cập nhật</button>
+                        <div className="form-group form-group-btncustom">
+                            <button className="btn btnEditCard" type="submit" onClick={this.handleShipWorkFlowInsert}> Cập nhật</button>
                         </div>
 
                     </div>
