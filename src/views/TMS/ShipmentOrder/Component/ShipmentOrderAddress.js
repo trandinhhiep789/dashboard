@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { callGetCache } from "../../../../actions/cacheAction";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD } from "../../../../constants/keyCache";
+import vbd from '../../../../scripts/vietbandomapsapi.js';
 
 const style = {
     width: '100%',
@@ -44,6 +45,36 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     componentDidMount() {
+
+
+        // const values = this.state.ShipmentOrderEdit.SenderGeoLocation.split(",")
+        // const v1 = parseFloat(values[0])
+        // const v2 = parseFloat(values[1])
+
+
+        // vbd.event.addListener(map, 'click', function (e) {
+        //     //  this.SenderGeoLocation(e.LatLng.Latitude, e.LatLng.Longitude);
+        //     console.log('this.postData()', e.LatLng.Latitude, e.LatLng.Longitude);
+        //     const mapProp1 = {
+        //         center: new vbd.LatLng(e.LatLng.Latitude, e.LatLng.Longitude),
+        //         maxZoom: 19,
+        //         zoom: 18,
+        //         minZoom: 2,
+        //         registerKey: "7f65a9df-4910-434d-b2ce-5cf7d783ad8b",
+        //         scaleControlOptions: { showScale: true },
+        //         zoomControl: true
+        //     };
+
+        //     let map1 = new vbd.Map(mapContainer, mapProp1);
+        //     var position1 = map1.getCenter()
+        //     var marker = new vbd.Marker({
+        //         position: position1
+        //     });
+
+        //     marker.setMap(map1);
+
+        // });
+
         this.initCombobox();
         this.setValueCombobox();
     }
@@ -60,12 +91,14 @@ class ShipmentOrderAddressCom extends Component {
 
     }
 
-    handleValueChangeGeoLocation(e, a) {
+    handleValueChangeGeoLocation(lat,lng) {
+        console.log('handleValueChangeGeoLocation',lat,lng)
         let { ShipmentOrderEdit } = this.state;
-        ShipmentOrderEdit.SenderGeoLocation = "10.852982,105.700";
-        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
-            this.ShowModalSender();
-        });
+        // ShipmentOrderEdit.SenderGeoLocation = `"${lat},${lng}"`;
+        // console.log(ShipmentOrderEdit.SenderGeoLocation )
+        // this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
+        //     this.ShowModalSender();
+        // });
     }
 
     handleValueChangeProvince(selectedOption) {
@@ -254,10 +287,12 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     handleShowModalSender() {
+
         let { ShipmentOrderEdit } = this.state;
         this.setValueCombobox(2, this.state.ShipmentOrderEdit.SenderProvinceID, this.state.ShipmentOrderEdit.SenderDistrictID)
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
             this.ShowModalSender();
+
         });
     }
 
@@ -325,6 +360,7 @@ class ShipmentOrderAddressCom extends Component {
                         </div>
                     </div>
                 </div>
+
                 <div className="form-row">
                     <div className="form-group col-md-6">
                         <div className="form-row">
@@ -441,9 +477,12 @@ class ShipmentOrderAddressCom extends Component {
                 </div>
 
                 <div className="form-row google-maps">
-                    <MapContainer SenderGeoLocation={this.state.ShipmentOrderEdit.SenderGeoLocation}
+                    <MapContainer
+                        SenderGeoLocation={this.state.ShipmentOrderEdit.SenderGeoLocation}
                         onChange={this.handleValueChangeGeoLocation.bind(this)}
-                        classStyle={style} classContainerStyle={containerStyle} />
+                        classStyle={style} classContainerStyle={containerStyle}
+                    />
+                    {/* <div id="map-container"></div> */}
                 </div>
 
             </ModelContainer>
