@@ -219,8 +219,7 @@ class ConfirmationNew extends React.Component {
                 <Content onClick={this.onOverlayClick}>
                     <Dialog onClick={this.onDialogClick} customStyle={{ maxWidth: maxWidth }}>
                         <div className="modal-header">
-                            {Title}
-
+                            <h4 className="modal-title"> {Title}</h4>
                             <button type="button" className="close" onClick={this.handleClose}>
                                 <span aria-hidden="true">×</span>
                             </button>

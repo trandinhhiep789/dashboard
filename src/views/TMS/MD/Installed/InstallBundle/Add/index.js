@@ -69,6 +69,7 @@ class AddCom extends React.Component {
             />
         );
     }
+    
     handleinsertItem(lstOption) {
         let listMLObject = [];
         lstOption.map((row, index) => {

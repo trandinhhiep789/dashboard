@@ -98,6 +98,7 @@ class InputGridCom extends Component {
 		}
 		return true;
 	}
+	
 	handleDeleteClick() {
 		let lstobjdelete = this.state.lstobjDelete;
 		const temp = this.checkInput1(lstobjdelete);
