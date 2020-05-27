@@ -1,50 +1,58 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SimpleForm from "../../../../../../common/components/Form/SimpleForm";
+import { ModalManager } from "react-dynamic-modal";
+// import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
+import InputGrid from "../../../../../../common/components/FormContainer/FormControl/InputGrid";
+import FormContainer from "../../../../../../common/components/FormContainer";
+import FormControl from "../../../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../../../common/components/Modal";
+import { showModal } from '../../../../../../actions/modal';
+import { MODAL_TYPE_SEARCH } from '../../../../../../constants/actionTypes';
+import SearchModal from "../../../../../../common/components/Form/AdvanceForm/FormControl/FormSearchModal"
+import MD5Digest from "../../../../../../common/library/cryptography/MD5Digest.js";
 import {
     APIHostName,
     AddAPIPath,
     AddElementList,
     MLObjectDefinition,
     BackLink,
-    AddPagePath
+    AddPagePath,
+    GridMLMcRoleDefinition,
+    InputMcRoleColumnList,
+    SearchMLmoldeDefinition,
+    SearchElementModeList,
+    SearchMcRoleAPIPath,
+    DataGridColumnListMultiple
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { MCPRIVILEGE_ADD } from "../../../../../../constants/functionLists";
+import { callGetCache } from "../../../../../../actions/cacheAction";
+import { MCUSER_ADD } from "../../../../../../constants/functionLists";
 
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-     
+        this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.handleInputUserRoleInsert = this.handleInputUserRoleInsert.bind(this);
+        this.handleOnInputChange = this.handleOnInputChange.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
-            Files: {}
+            AddElementList: AddElementList,
+            DataSource: {},
+            Password: "",
+            PasswordConfirm: ""
         };
         this.searchref = React.createRef();
     }
 
+
     componentDidMount() {
         this.props.updatePagePath(AddPagePath);
-    }
-
-  
-  
-
-    handleSubmit(formData, MLObject) {
-        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                this.showMessage(apiResult.Message);
-            });
     }
 
     handleCloseMessage() {
@@ -61,27 +69,101 @@ class AddCom extends React.Component {
             />
         );
     }
+    handleinsertItem(lstOption) {
+        let listMLObject = [];
+        lstOption.map((row, index) => {
+            let MLObject = {};
+            row["pkColumnName"].map((pkItem, pkIndex) => {
+                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+            });
 
+            listMLObject.push(MLObject);
+        });
+        const formData = Object.assign({}, this.state.DataSource, { ["LstMcUser_Role"]: listMLObject });
+        this.setState({ DataSource: formData });
+    }
+
+    handleInputUserRoleInsert() {
+        this.props.showModal(MODAL_TYPE_SEARCH, {
+            title: "Danh sách vai trò",
+            content: {
+                text: <SearchModal
+                    PKColumnName={"McRoleID,McRoleName"}
+                    multipleCheck={true}
+                    SearchMLObjectDefinition={SearchMLmoldeDefinition}
+                    DataGridColumnList={DataGridColumnListMultiple}
+                    GridDataSource={[]}
+                    SearchAPIPath={SearchMcRoleAPIPath}
+                    SearchElementList={SearchElementModeList}
+                    onClickInsertItem={this.handleinsertItem.bind(this)}
+                    IDSelectColumnName={"chkSelect"}
+                    name={"McRoleID"}
+                    value={"McRoleName"}
+                >
+                </SearchModal>
+            }
+        });
+    }
+
+    handleOnInputChange(name, value) {
+        if (name == "txtPassWord") {
+            this.setState({ PassWord: value });
+        } else if (name == "txtPassWordConfirm") {
+            this.setState({ PassWordConfirm: value });
+        } else if (name == "chkShowPassWord") {
+            this.showPassWord("txtPassWord");
+            this.showPassWord("txtPassWordConfirm");
+            return;
+        }
+
+    }
+
+    showPassWord(name) {
+        var x = document.getElementsByName(name)[0];
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+
+
+    handleSubmit(formData, MLObject) {
+        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
+        });
+    }
     render() {
-        const dataSource = {
-            IsActived: true
-        };
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
         return (
-            <SimpleForm
-                FormName="Thêm quyền"
+            <FormContainer
+                FormName="Thêm nhóm sản phẩm cần vật tư lắp đặt"
                 MLObjectDefinition={MLObjectDefinition}
-                listelement={AddElementList}
+                listelement={this.state.AddElementList}
                 onSubmit={this.handleSubmit}
-                FormMessage={this.state.CallAPIMessage}
-                IsErrorMessage={this.state.IsCallAPIError}
-                dataSource={dataSource}
                 BackLink={BackLink}
-                ref={this.searchref}
-                RequirePermission={MCPRIVILEGE_ADD}
-            />
+                dataSource={this.state.DataSource}
+            >
+                <InputGrid
+                    name="InstallMaterial_ProductList"
+                    controltype="GridControl"
+                    title=" vật tư lắp đặt cho nhóm sản phẩm"
+                    IDSelectColumnName={"ProductID"}
+                    listColumn={InputMcRoleColumnList}
+                    isHideHeaderToolbar={false}
+                    dataSource={[]}
+                    Ispopup={true}
+                    MLObjectDefinition={GridMLMcRoleDefinition}
+                    colspan="12"
+                />
+
+            </FormContainer>
         );
     }
 }
@@ -100,12 +182,15 @@ const mapDispatchToProps = dispatch => {
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
         }
     };
 };
 
-const Add = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(AddCom);
+const Add = connect(mapStateToProps, mapDispatchToProps)(AddCom);
 export default Add;

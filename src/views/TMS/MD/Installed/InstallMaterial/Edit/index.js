@@ -1,9 +1,14 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SimpleForm from "../../../../../../common/components/Form/SimpleForm";
+import { connect } from 'react-redux';
+import { ModalManager } from "react-dynamic-modal";
+import FormContainer from "../../../../../../common/components/FormContainer";
+import InputGrid from "../../../../../../common/components/FormContainer/FormControl/InputGrid";
 import { MessageModal } from "../../../../../../common/components/Modal";
+import { showModal } from '../../../../../../actions/modal';
+import { MODAL_TYPE_SEARCH } from '../../../../../../constants/actionTypes';
+import SearchModal from "../../../../../../common/components/Form/AdvanceForm/FormControl/FormSearchModal"
+import MD5Digest from "../../../../../../common/library/cryptography/MD5Digest.js";
 import {
     APIHostName,
     LoadAPIPath,
@@ -11,54 +16,39 @@ import {
     EditElementList,
     MLObjectDefinition,
     BackLink,
-    EditPagePath
+    EditPagePath,
+    GridMLMcRoleDefinition,
+    InputMcRoleColumnList,
+    SearchMLmoldeDefinition,
+    SearchElementModeList,
+    SearchMcRoleAPIPath,
+    DataGridColumnListMultiple
 } from "../constants";
+
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-
-import { MCPRIVILEGE_EDIT } from "../../../../../../constants/functionLists";
+import { callGetCache } from "../../../../../../actions/cacheAction";
+import { MCUSER_EDIT } from "../../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-   
+        this.handleInputUserRoleInsert = this.handleInputUserRoleInsert.bind(this);
+        this.handleOnInputChange = this.handleOnInputChange.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             FormContent: "",
             IsLoadDataComplete: false,
             IsCloseForm: false,
-            Files: {}
+            EditElementList: EditElementList,
+            Password: "",
+            PasswordConfirm: ""
+
         };
-    }
-
-    componentDidMount() {
-        this.props.updatePagePath(EditPagePath);
-        const id = this.props.match.params.id;
-        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
-            if (apiResult.IsError) {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                this.showMessage(apiResult.Message);
-            } else {
-                this.setState({ DataSource: apiResult.ResultObject });
-            }
-            this.setState({ IsLoadDataComplete: true });
-        });
-    }
-
-   
-
-    handleSubmit(formData, MLObject) {
-        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.DistrictID = this.props.match.params.id;
-        //MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            //this.handleClearLocalCache(apiResult.Message);
-            this.showMessage(apiResult.Message);
-        });
+        this.searchref = React.createRef();
     }
 
     handleCloseMessage() {
@@ -76,30 +66,123 @@ class EditCom extends React.Component {
         );
     }
 
+    componentDidMount() {
+        const id = this.props.match.params.id;
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            } else {
+                apiResult.ResultObject.Birthday = apiResult.ResultObject.BirthdayString;
+                this.setState({ DataSource: apiResult.ResultObject, PassWord: apiResult.ResultObject.PassWord, PassWordConfirm: apiResult.ResultObject.PassWord });
+                // apiResult.ResultObject.PassWord = null;
+                // apiResult.ResultObject.PassWordConfirm = null;
+            }
+            this.setState({
+                IsLoadDataComplete: true
+            });
+        });
+        this.props.updatePagePath(EditPagePath);
+    }
+    handleinsertItem(lstOption) {
+        let listMLObject = [];
+        lstOption.map((row, index) => {
+            let MLObject = {};
+            row["pkColumnName"].map((pkItem, pkIndex) => {
+                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+            });
+
+            listMLObject.push(MLObject);
+        });
+        const formData = Object.assign({}, this.state.DataSource, { ["LstMcUser_Role"]: listMLObject });
+        this.setState({ DataSource: formData });
+    }
+
+    handleInputUserRoleInsert() {
+        this.props.showModal(MODAL_TYPE_SEARCH, {
+            title: "Danh sách vai trò",
+            content: {
+                text: <SearchModal
+                    PKColumnName={"McRoleID,McRoleName"}
+                    multipleCheck={true}
+                    SearchMLObjectDefinition={SearchMLmoldeDefinition}
+                    DataGridColumnList={DataGridColumnListMultiple}
+                    GridDataSource={[]}
+                    SearchAPIPath={SearchMcRoleAPIPath}
+                    SearchElementList={SearchElementModeList}
+                    onClickInsertItem={this.handleinsertItem.bind(this)}
+                    IDSelectColumnName={"chkSelect"}
+                    name={"McRoleID"}
+                    value={"McRoleName"}
+                >
+                </SearchModal>
+            }
+        });
+    }
+
+    handleOnInputChange(name, value) {
+        if (name == "txtPassWord") {
+            this.setState({ PassWord: value });
+        } else if (name == "txtPassWordConfirm") {
+            this.setState({ PassWordConfirm: value });
+        } else if (name == "chkShowPassWord") {
+            this.showPassWord("txtPassWord");
+            this.showPassWord("txtPassWordConfirm");
+            return;
+        }
+
+    }
+
+    showPassWord(name) {
+        var x = document.getElementsByName(name)[0];
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+
+    handleSubmit(formData, MLObject) {
+        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
+        });
+    }
     render() {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
         if (this.state.IsLoadDataComplete) {
             return (
-                <SimpleForm
-                    FormName="Cập nhật quyền"
+                <FormContainer
+                    FormName="Cập nhật nhóm sản phẩm cần vật tư lắp đặt"
                     MLObjectDefinition={MLObjectDefinition}
-                    listelement={EditElementList}
+                    listelement={this.state.EditElementList}
                     onSubmit={this.handleSubmit}
-                    FormMessage={this.state.CallAPIMessage}
-                    IsErrorMessage={this.state.IsCallAPIError}
-                    dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={MCPRIVILEGE_EDIT}
-                />
+                    dataSource={this.state.DataSource}
+                >
+                    <InputGrid
+                        name="InstallMaterial_ProductList"
+                        controltype="GridControl"
+                        title="vật tư lắp đặt cho nhóm sản phẩm"
+                        IDSelectColumnName={"ProductID"}
+                        listColumn={InputMcRoleColumnList}
+                        isHideHeaderToolbar={false}
+                        dataSource={this.state.DataSource.InstallMaterial_ProductList}
+                        Ispopup={true}
+                        MLObjectDefinition={GridMLMcRoleDefinition}
+                        colspan="12"
+                    />
+                </FormContainer>
             );
         }
-        return (
-            <div>
-                <label>Đang nạp dữ liệu...</label>
-            </div>
-        );
+        return <label>Đang nạp dữ liệu...</label>;
     }
 }
 
@@ -117,12 +200,15 @@ const mapDispatchToProps = dispatch => {
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
         }
     };
 };
 
-const Edit = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(EditCom);
+const Edit = connect(mapStateToProps, mapDispatchToProps)(EditCom);
 export default Edit;
