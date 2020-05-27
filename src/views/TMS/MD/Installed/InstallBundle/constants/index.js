@@ -77,13 +77,13 @@ export const AddElementList = [
     },
     {
         type: "select",
-        name: "cbShiPMentOrderTypeID",
+        name: "cbShipmentOrderTypeID",
         label: "loại yêu cầu vận chuyển",
         value: -1,
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "ShiPMentOrderTypeID",
+        DataSourceMember: "ShipmentOrderTypeID",
         readonly: false,
         validatonList: ["Comborequired"],
         IsAutoLoadItemFromCache: true,
@@ -171,13 +171,13 @@ export const EditElementList = [
     },
     {
         type: "select",
-        name: "cbShiPMentOrderTypeID",
+        name: "cbShipmentOrderTypeID",
         label: "loại yêu cầu vận chuyển",
         value: "",
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "ShiPMentOrderTypeID",
+        DataSourceMember: "ShipmentOrderTypeID",
         readonly: false,
         validatonList: ["Comborequired"],
         IsAutoLoadItemFromCache: true,
@@ -260,10 +260,10 @@ export const MLObjectDefinition = [
         DataSourceMember: "InstallBundleName"
     },
     {
-        Name: "ShiPMentOrderTypeID",
+        Name: "ShipmentOrderTypeID",
         DefaultValue: "",
-        BindControlName: "cbShiPMentOrderTypeID",
-        DataSourceMember: "ShiPMentOrderTypeID"
+        BindControlName: "cbShipmentOrderTypeID",
+        DataSourceMember: "ShipmentOrderTypeID"
     },
     {
         Name: "PartnerID",
@@ -316,7 +316,7 @@ export const DataGridColumnList = [
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "InstallBundleID",
-        Width: 80
+        Width: 70
     },
     {
         Name: "InstallBundleName",
@@ -326,17 +326,17 @@ export const DataGridColumnList = [
         Width: 280
     },
     {
-        Name: "ShiPMentOrderTypeID",
+        Name: "ShipmentOrderTypeName",
         Type: "text",
         Caption: "Loại yêu cầu vận chuyển",
-        DataSourceMember: "ShiPMentOrderTypeID",
+        DataSourceMember: "ShipmentOrderTypeName",
         Width: 200
     },
     {
-        Name: "PartnerID",
+        Name: "PartnerName",
         Type: "text",
         Caption: "Đối tác",
-        DataSourceMember: "PartnerID",
+        DataSourceMember: "PartnerName",
         Width: 200
     },
     {
