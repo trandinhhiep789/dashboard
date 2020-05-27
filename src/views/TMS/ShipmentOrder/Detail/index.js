@@ -15,12 +15,6 @@ import InfoCoordinator from '../Component/InfoCoordinator.js';
 import InfoHistoryWF from '../Component/InfoHistoryWF.js';
 import ShipmentOrderAttachment from '../Component/ShipmentOrderAttachment.js';
 import ShipmentOrderComment from '../Component/ShipmentOrderComment.js';
-
-
-
-
-
-
 import {
     APIHostName,
     LoadAPIPath,

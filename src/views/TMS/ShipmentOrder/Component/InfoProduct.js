@@ -68,7 +68,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label">{this.state.ShipmentOrder.TotalCOD}đ</label>
                         </div>
                     </div>
-                    <div className="form-row">
+                    {/* <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Có lắp đặt:</label>
                         </div>
@@ -81,7 +81,7 @@ class InfoProductCom extends Component {
                                 </label>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Ghi chú:</label>

@@ -931,7 +931,7 @@ class ComboBox1Com extends Component {
         if (this.props.rowspan != null) {
             formRowClassName = "form-row col-md-" + this.props.rowspan;
         }
-        let className = "react-select";
+        
         const listOption = this.state.Listoption;
         let formGroupClassName = "form-group col-md-4";
         if (this.props.colspan != null) {
@@ -945,9 +945,14 @@ class ComboBox1Com extends Component {
         if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
             star = '*'
         }
-
-        if (this.props.validationErrorMessage != "") {
+        let className = "react-select";
+        if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
             className += " is-invalid";
+        }
+       
+        if (this.props.validationErrorMessage != "") {
+            
+            console.log('aaa', this.props.validationErrorMessage, className )
             return (
                 <div className={formRowClassName} >
                     <div className={labelDivClassName}>
