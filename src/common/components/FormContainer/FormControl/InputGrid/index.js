@@ -46,7 +46,7 @@ class InputGridCom extends Component {
 			GridData: gridData,
 			IsCheckAll: false,
 			lstobjDelete: lstobjdelete,
-			listvalidationError: {},
+		
 			PageNumber: 1,
 			IsSystem: isSystem,
 			AutoCloseModal: autoCloseModal
@@ -54,7 +54,6 @@ class InputGridCom extends Component {
 	}
 
 	componentDidMount() {
-		this.setState({ listvalidationError: this.props.listvalidationError })
 	}
 	handleCloseMessage() {
 	}
@@ -67,27 +66,8 @@ class InputGridCom extends Component {
 
 	//#region bind Data
 	bindData() {
-		const listColumn = this.props.listColumn;
-		//const dataSource = this.props.dataSource;
-		let dataSource = this.props.dataSource;
-		if (this.props.value != null)
-			dataSource = this.props.value;
-
 		let gridData = {};
-		if (dataSource == null)
-			return gridData;
-		dataSource.map((rowItem, rowIndex) => {
-			let elementobject = {};
-			listColumn.map((columnItem, index) => {
-				const name = columnItem.Name;
-				const value = rowItem[columnItem.DataSourceMember];
-				const elementdata = { Name: name, Value: value, IsChecked: false };
-				elementobject = Object.assign({}, elementobject, { [index]: elementdata });
-			}
-			);
-			gridData = Object.assign({}, gridData, { [rowIndex]: elementobject });
-		});
-		//	 console.log("bindData gridData: ", gridData);
+
 		return gridData;
 	}
 	bindobjdelete(Checked) {
@@ -394,9 +374,7 @@ class InputGridCom extends Component {
 			dataSource = this.props.value;
 		}
 
-		if (this.props.IsAutoPaging) {
-			dataSource = this.getDisplayData(dataSource);
-		}
+
 		const idSelectColumnName = this.props.IDSelectColumnName;
 		return (
 			<table className="table table-bordered">
@@ -584,9 +562,6 @@ class InputGridCom extends Component {
 					}
 					{
 						this.renderInputGrid()
-					}
-					{this.props.IsAutoPaging &&
-						<InputGridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />
 					}
 				</div>
 			</div>

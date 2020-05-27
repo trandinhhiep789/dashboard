@@ -280,7 +280,10 @@ class InputGridCellCom extends Component {
         case "edit":
           return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.value} title="Edit"><i className="ti-pencil"></i></a>;
         case "editnew":
-          return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>;
+          return (<div>
+            <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>
+            <a title="" className="table-action hover-danger" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>;
+          </div>)
         case "buttonEdit":
           return (
             <button type="button" className="btn" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleEditClick}>
@@ -327,7 +330,10 @@ class InputGridCellCom extends Component {
           return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.value} title="Edit"><i className="ti-pencil"></i></a>;
         case "editnew":
           if (this.props.IsPermisionEdit == true || this.props.IsPermisionEdit == undefined) {
-            return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>;
+            return (<div>
+              <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>
+              <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>
+            </div>)
           } else {
             return <a title="" className="nav-link hover-primary" data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>;
           }
