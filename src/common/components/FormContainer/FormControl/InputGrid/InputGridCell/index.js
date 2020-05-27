@@ -16,6 +16,8 @@ class InputGridCellCom extends Component {
     this.handleInputChangeALL = this.handleInputChangeALL.bind(this);
     this.handleonClickEdit = this.handleonClickEdit.bind(this);
     this.handleEditClick = this.handleEditClick.bind(this);
+    this.handleonClickDelete = this.handleonClickDelete.bind(this);
+    
   }
 
   componentDidMount() {
@@ -38,110 +40,16 @@ class InputGridCellCom extends Component {
       }
     }
 
-    if (this.props.type == "combobox" || this.props.type == "comboboxCus") {
-      let listOption = [];
-      //  console.log("componentDidMount: ", this.props.IsAutoLoadItemFromCache)
-      if (this.props.IsAutoLoadItemFromCache) {
-        const cacheKeyID = this.props.LoadItemCacheKeyID;
-        const valueMember = this.props.ValueMember;
-        const nameMember = this.props.NameMember;
-        // console.log("componentDidMount: ", cacheKeyID,valueMember,nameMember)
-        const keyFilter = this.props.KeyFilter;
-        const valueFilter = this.props.ValueFilter;
-        const isCategory = this.props.isCategory;
-        const CategoryTypeID = this.props.CategoryTypeID;
-        this.props.callGetCache(cacheKeyID).then((result) => {
-
-          if (!result.IsError && result.ResultObject.CacheData != null) {
-            listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
-
-            if (!isCategory) {
-              if (this.props.IsFilterData) {
-                result.ResultObject.CacheData.map((cacheItem) => {
-                  if (cacheItem[keyFilter] === valueFilter) {
-                    listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
-                  }
-                }
-                );
-              }
-              else {
-                result.ResultObject.CacheData.map((cacheItem) => {
-                  listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
-                }
-                );
-              }
-              this.setState({ Listoption: listOption });
-            }
-            else {
-
-              const filterdata = result.ResultObject.CacheData.filter(a => a.CategoryTypeID == CategoryTypeID);
-              //  console.log("filterdata", CategoryTypeID, filterdata);
-              const categoryTree = this.createCategoryTree(filterdata, 0, 0);
-              //  console.log("categoryTree", CategoryTypeID, filterdata, categoryTree);
-              this.setState({ Listoption: categoryTree });
-            }
-
-
-          }
-        }
-        );
-      }
-      else {
-        listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
-        this.setState({ Listoption: listOption });
-      }
-      //console.log("FormElement listOption 2: ", listOption)
-    }
+    
   }
 
-  categoryNamePrefix(categoryLevel) {
-    let resultStr = "";
-    for (let i = 0; i < categoryLevel; i++) {
-      resultStr += "---";
+  handleonClickDelete()
+  {
+    if (this.props.isSystem) {
+      return;
     }
-    return resultStr;
+    this.props.onClickDelete(this.props.index);
   }
-
-  createCategoryTree(originListItem) {
-    let childListItem = originListItem.filter(item => item.ParentID == 0);
-    //  console.log("createCategoryTree childListItem:", childListItem);
-    let itemListResult = [{ value: -1, label: "--Vui lòng chọn--" }];
-    for (let i = 0; i < childListItem.length; i++) {
-      itemListResult.push({ value: childListItem[i].CategoryID, label: childListItem[i].CategoryName });
-      let childItemTree = this.createChildCategoryTree(originListItem, childListItem[i].CategoryID, 1);
-      // console.log("createCategoryTree childItemTree:", childItemTree);
-      for (let j = 0; j < childItemTree.length; j++) {
-        //itemListResult.push(childItemTree[j]);
-        itemListResult.push({ value: childItemTree[j].CategoryID, label: childItemTree[j].CategoryName });
-      }
-    }
-    return itemListResult;
-  }
-  createChildCategoryTree(originListItem, parentID, categoryLevel) {
-    let childListItem = originListItem.filter(item => item.ParentID == parentID);
-    // console.log("createChildCategoryTree childListItem:", childListItem);
-    let itemListResult = []
-    for (let i = 0; i < childListItem.length; i++) {
-      let item = childListItem[i];
-      item.CategoryName = this.categoryNamePrefix(categoryLevel) + item.CategoryName;
-      //   console.log("createChildCategoryTree childListItem:",item);
-      itemListResult.push(item);
-      //itemListResult.push({ value: item.CategoryID, label: item.CategoryName });
-      const newCategoryLevel = categoryLevel + 1;
-      let childListItem2 = originListItem.filter(item => item.ParentID == item.CategoryID);
-      //  console.log("createChildCategoryTree childListItem2:",childListItem2);
-      if (childListItem2.length > 0) {
-        const childItemTree2 = this.createChildCategoryTree(originListItem, item.CategoryID, newCategoryLevel);
-        for (j = 0; j < childItemTree2.length; j++) {
-          itemListResult.push(childItemTree2[j]);
-          itemListResult.push({ value: childItemTree2[j].CategoryID, label: childItemTree2[j].CategoryName });
-        }
-      }
-    }
-    return itemListResult;
-  }
-
-
   handleonClickEdit(e) {
     if (this.props.isSystem) {
       return;
@@ -331,8 +239,8 @@ class InputGridCellCom extends Component {
         case "editnew":
           if (this.props.IsPermisionEdit == true || this.props.IsPermisionEdit == undefined) {
             return (<div>
-              <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>
-              <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>
+              <a title="" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>
+              <a title="" className="table-action hover-danger" onClick={this.handleonClickDelete} data-id={this.props.index} title="Edit"><i className="ti-trash"></i></a>
             </div>)
           } else {
             return <a title="" className="nav-link hover-primary" data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>;
