@@ -43,9 +43,6 @@ export default class GridPage extends Component {
       nextPageLICSS = "page-item disabled";
       nextPage = numPage;
     }
-
-
-
     let pageArray = [];
     for (let i = fromPage; i < toPage + 1; i++) {
       pageArray.push(i);
@@ -67,7 +64,6 @@ export default class GridPage extends Component {
               <span className="ti-arrow-left" data-pagenum={previousPage} ></span>
             </a>
           </li>
-
           {
             pageArray.map((item) => {
               if (item == currentPage) {
@@ -81,11 +77,8 @@ export default class GridPage extends Component {
                 </li>
               }
             }
-
             )
           }
-
-
           <li className={nextPageLICSS}>
             <a className="page-link" id="next" data-pagenum={nextPage} data-linktext="next" onClick={this.changePageHandle} >
               <span className="ti-arrow-right" data-pagenum={nextPage} ></span>

@@ -2,8 +2,10 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
-import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
-import InputGrid from "../../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+// import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
+import InputGrid from "../../../../../../common/components/FormContainer/FormControl/InputGrid";
+import FormContainer from "../../../../../../common/components/FormContainer";
+import FormControl from "../../../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../../../common/components/Modal";
 import { showModal } from '../../../../../../actions/modal';
 import { MODAL_TYPE_SEARCH } from '../../../../../../constants/actionTypes';
@@ -67,8 +69,8 @@ class AddCom extends React.Component {
             />
         );
     }
-    handleinsertItem(lstOption)
-    {
+    
+    handleinsertItem(lstOption) {
         let listMLObject = [];
         lstOption.map((row, index) => {
             let MLObject = {};
@@ -78,12 +80,11 @@ class AddCom extends React.Component {
 
             listMLObject.push(MLObject);
         });
-        const formData = Object.assign({}, this.state.DataSource,{["LstMcUser_Role"] :listMLObject});
+        const formData = Object.assign({}, this.state.DataSource, { ["LstMcUser_Role"]: listMLObject });
         this.setState({ DataSource: formData });
     }
 
-    handleInputUserRoleInsert()
-    {    
+    handleInputUserRoleInsert() {
         this.props.showModal(MODAL_TYPE_SEARCH, {
             title: "Danh sách vai trò",
             content: {
@@ -118,7 +119,7 @@ class AddCom extends React.Component {
 
     }
 
-    showPassWord(name){
+    showPassWord(name) {
         var x = document.getElementsByName(name)[0];
         if (x.type === "password") {
             x.type = "text";
@@ -129,17 +130,9 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        //check password valid
-        let { PassWord, PassWordConfirm } = this.state;
-        if (PassWord != PassWordConfirm) {
-            this.setState({ IsCallAPIError: true });
-            this.showMessage("Xác nhận mật khẩu chưa đúng.");
-            return false;
-        }
-
+        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.PassWord = MD5Digest(PassWord);
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -151,29 +144,27 @@ class AddCom extends React.Component {
         }
         return (
             <FormContainer
-                    FormName="Thêm gói sản phẩm lắp đặt kèm theo"
-                    MLObjectDefinition={MLObjectDefinition}
-                    listelement={this.state.AddElementList}
-                    onSubmit={this.handleSubmit}
-                    IsAutoLayout={true}
-                    ref={this.searchref}
-                    BackLink={BackLink}
-                    dataSource={this.state.DataSource}
-                    onValueChange={this.handleOnInputChange}
-                    RequirePermission={MCUSER_ADD}
-                >
-                    <InputGrid
-                        name="LstMcUser_Role"
-                        controltype="InputControl"
-                        IDSelectColumnName={"checkboxAll"}
-                        listColumn={InputMcRoleColumnList}
-                        isHideHeaderToolbar={false}
-                        dataSource={this.state.DataSource.LstMcUser_Role}
-                        MLObjectDefinition={GridMLMcRoleDefinition}
-                        colspan="12"
-                        onInsertClick={this.handleInputUserRoleInsert}
-                    />
-                </FormContainer>
+                FormName="Thêm gói sản phẩm lắp đặt kèm theo"
+                MLObjectDefinition={MLObjectDefinition}
+                listelement={this.state.AddElementList}
+                onSubmit={this.handleSubmit}
+                BackLink={BackLink}
+                dataSource={this.state.DataSource}
+            >
+                <InputGrid
+                    name="InstallBundle_ProductList"
+                    controltype="GridControl"
+                    title="sản phẩm của gói lắp đặt kèm theo"
+                    IDSelectColumnName={"ProductID"}
+                    listColumn={InputMcRoleColumnList}
+                    isHideHeaderToolbar={false}
+                    dataSource={[]}
+                    Ispopup={true}
+                    MLObjectDefinition={GridMLMcRoleDefinition}
+                    colspan="12"
+                />
+
+            </FormContainer>
         );
     }
 }

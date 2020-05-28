@@ -10,7 +10,7 @@ import Datetime from 'react-datetime';
 import MultiSelectComboBox from "../FormControl/MultiSelectComboBox";
 import "../../../../../node_modules/react-datetime/css/react-datetime.css";
 import JoditEditor from "jodit-react";
-
+import Select from 'react-select';
 import { TreeSelect } from "antd";
 import "antd/dist/antd.css";
 
@@ -349,11 +349,8 @@ class FormElementCom extends Component {
         var checked = false;
         if (this.props.checked)
             checked = true;
+        let formGroupclassName = "form-group col-md-10";
 
-        let formGroupclassName = "form-group col-md-4";
-        if (this.props.IsThreeColumnForm) {
-            let formGroupclassName = "form-group col-md-2";
-        }
         let controlCSSClassName = this.props.CSSClassName;
         if (this.props.validationErrorMessage != null) {
             if (this.props.validationErrorMessage.length > 0) {
@@ -411,6 +408,24 @@ class FormElementCom extends Component {
                             <option value={optionItem.value} key={optionItem.value} >{optionItem.label}</option>
                         )}
                     </select>
+                );
+
+                break;
+
+            case "selectnew":
+                debugger
+                control = (
+                    <Select
+                        value={this.state.selectedOption}
+                        name={name}
+                        ref={this.props.inputRef}
+                        onChange={this.handleInputChange}
+                        options={this.state.ListOption}
+                        isSearchable={true}
+                        placeholder='--Vui lòng chọn--'
+                        className="select-custom-controll-modal"
+                        noOptionsMessage={() => 'Không có dữ liệu'}
+                    />
                 );
 
                 break;

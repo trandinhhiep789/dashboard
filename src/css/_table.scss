@@ -41,6 +41,10 @@
                     border-color: #a9a9a9;
                 }
             }
+            .group-action {
+                display: flex;
+                justify-content: space-around;
+            }
         }
     }
 }

@@ -1,15 +1,11 @@
 import React from "react";
-import {
-    BrowserRouter as Router,
-    Route,
-    Link,
-    Redirect
-} from "react-router-dom";
+import { Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
+
 class InstallMaterialCom extends React.Component {
     constructor(props) {
         super(props);
@@ -45,4 +41,5 @@ const InstallMaterial = connect(
     mapStateToProps,
     mapDispatchToProps
 )(InstallMaterialCom);
+
 export default InstallMaterial;

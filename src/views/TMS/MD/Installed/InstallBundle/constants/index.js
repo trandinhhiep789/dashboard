@@ -1,9 +1,9 @@
 export const APIHostName = "PIMAPI";
 export const SearchAPIPath = "api/InstallBundle/Search";
 export const LoadAPIPath = "api/InstallBundle/Load";
-export const AddAPIPath = "api/InstallBundle/Add";
-export const UpdateAPIPath = "api/InstallBundle/Update";
-export const DeleteAPIPath = "api/InstallBundle/Delete";
+export const AddAPIPath = "api/InstallBundle/InsertInstallBundle";
+export const UpdateAPIPath = "api/InstallBundle/UpdateInstallBundle";
+export const DeleteAPIPath = "api/InstallBundle/DeleteList";
 export const UpdateOrderAPIPath = "api/InstallBundle/UpdateOrder";
 export const BackLink = "/InstallBundle";
 export const AddLink = "/InstallBundle/add";
@@ -77,15 +77,15 @@ export const AddElementList = [
     },
     {
         type: "select",
-        name: "cbShiPMentOrderTypeID",
+        name: "cbShipmentOrderTypeID",
         label: "loại yêu cầu vận chuyển",
-        value: "",
+        value: -1,
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "ShiPMentOrderTypeID",
+        DataSourceMember: "ShipmentOrderTypeID",
         readonly: false,
-        validatonList: ["required"],
+        validatonList: ["Comborequired"],
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
         ValueMember: "ShipmentOrderTypeID",
@@ -95,13 +95,13 @@ export const AddElementList = [
         type: "select",
         name: "cbPartnerID",
         label: "đối tác vận chuyển",
-        value: "",
+        value: -1,
         placeholder: "",
         icon: "",
         listoption: [],
         DataSourceMember: "PartnerID",
         readonly: false,
-        validatonList: ["required"],
+        validatonList: ["Comborequired"],
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
         ValueMember: "PartnerID",
@@ -119,7 +119,6 @@ export const AddElementList = [
         listoption: [],
         DataSourceMember: "Description",
         readonly: false,
-        validatonList: []
     },
     {
         type: "checkbox",
@@ -130,7 +129,6 @@ export const AddElementList = [
         icon: "",
         listoption: [],
         readonly: false,
-        validatonList: []
     },
     {
         type: "checkbox",
@@ -141,166 +139,80 @@ export const AddElementList = [
         icon: "",
         listoption: [],
         readonly: false,
-        validatonList: []
     }
 ];
 
 export const EditElementList = [
     {
         type: "text",
-        name: "txtUserName",
-        label: "Tên truy cập người dùng:",
+        name: "txtInstallBundleID",
+        label: "mã gói sản phẩm lắp đặt",
         value: "",
         maxSize: "20",
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "UserName",
+        DataSourceMember: "InstallBundleID",
         readonly: false,
-        validatonList: ["required","special"]
+        validatonList: ["required"]
+    },
+    {
+        type: "text",
+        name: "txtInstallBundleName",
+        label: "tên gói sản phẩm lắp đặt",
+        value: "",
+        maxSize: "20",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "InstallBundleName",
+        readonly: false,
+        validatonList: ["required"]
     },
     {
         type: "select",
-        name: "txtMerchant",
-        label: "Nhà cung cấp:",
-        value: "MerchantID",
+        name: "cbShipmentOrderTypeID",
+        label: "loại yêu cầu vận chuyển",
+        value: "",
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "MerchantID",
+        DataSourceMember: "ShipmentOrderTypeID",
         readonly: false,
-        validatonList: [],
+        validatonList: ["Comborequired"],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "EWALLETCOMMONCACHE.MERCHANT",
-        ValueMember: "MerchantID",
-        NameMember: "MerchantName"
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
+        ValueMember: "ShipmentOrderTypeID",
+        NameMember: "ShipmentOrderTypeName"
     },
     {
-        type: "password",
-        name: "txtPassWord",
-        label: "Mật khẩu:",
-        value: "",
-        maxSize: "400",
-        placeholder: "*********",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "",
-        readonly: false,
-        validatonList: []
-    },
-    {
-        type: "password",
-        name: "txtPassWordConfirm",
-        label: "Xác nhận mật khẩu:",
-        value: "",
-        maxSize: "400",
-        placeholder: "*********",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "",
-        readonly: false,
-        validatonList: []
-    },
-    {
-        type: "checkbox",
-        name: "chkShowPassWord",
-        label: "Hiển thị mật khẩu:",
+        type: "select",
+        name: "cbPartnerID",
+        label: "đối tác vận chuyển",
         value: "",
         placeholder: "",
         icon: "",
         listoption: [],
+        DataSourceMember: "PartnerID",
         readonly: false,
-        DataSourceMember: "",
-        validatonList: []
-    },
-    {
-        type: "text",
-        name: "txtFullName",
-        label: "Họ tên đầy đủ:",
-        value: "",
-        maxSize: "400",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "FullName",
-        readonly: false,
-        validatonList: []
-    },
-    // {
-    //     type: "text",
-    //     name: "txtFirstName",
-    //     label: "Tên:",
-    //     value: "",
-    //     placeholder: "",
-    //     icon: "",
-    //     listoption: [],
-    //     DataSourceMember: "FirstName",
-    //     readonly: false,
-    //     validatonList: []
-    // },
-    // {
-    //     type: "text",
-    //     name: "txtLastName",
-    //     label: "Họ:",
-    //     value: "",
-    //     placeholder: "",
-    //     icon: "",
-    //     listoption: [],
-    //     DataSourceMember: "LastName",
-    //     readonly: false,
-    //     validatonList: []
-    // },
-    {
-        type: "text",
-        name: "txtPhoneNumber",
-        label: "Điện thoại:",
-        value: "",
-        maxSize: "20",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "PhoneNumber",
-        readonly: false,
-        validatonList: []
-    },
-    {
-        type: "date",
-        name: "dtBirthday",
-        label: "Ngày sinh:",
-        value: new Date(),
-        placeholder: "",
-        icon: "",
-        DataSourceMember: "Birthday",
-        ValueMember: "Birthday",
-        NameMember: "Birthday",
-        validatonList: []
-    },
-    {
-        type: "text",
-        name: "txtEmail",
-        label: "Email:",
-        value: "",
-        maxSize: "200",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "Email",
-        readonly: false,
-        validatonList: []
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
+        ValueMember: "PartnerID",
+        NameMember: "PartnerName"
     },
     {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "2000",
         placeholder: "Mô tả",
+        maxSize: "2000",
         icon: "",
         rows: "6",
         listoption: [],
         DataSourceMember: "Description",
         readonly: false,
-        validatonList: []
     },
     {
         type: "checkbox",
@@ -312,7 +224,6 @@ export const EditElementList = [
         listoption: [],
         readonly: false,
         DataSourceMember: "IsActived",
-        validatonList: []
     },
     {
         type: "checkbox",
@@ -324,7 +235,6 @@ export const EditElementList = [
         listoption: [],
         readonly: false,
         DataSourceMember: "IsSystem",
-        validatonList: []
     }
 ];
 
@@ -338,58 +248,28 @@ export const SearchMLObjectDefinition = [
 
 export const MLObjectDefinition = [
     {
-        Name: "UserName",
+        Name: "InstallBundleID",
         DefaultValue: "",
-        BindControlName: "txtUserName",
-        DataSourceMember: "UserName"
+        BindControlName: "txtInstallBundleID",
+        DataSourceMember: "InstallBundleID"
     },
     {
-        Name: "MerchantID",
+        Name: "InstallBundleName",
         DefaultValue: "",
-        BindControlName: "txtMerchant",
-        DataSourceMember: "MerchantID"
+        BindControlName: "txtInstallBundleName",
+        DataSourceMember: "InstallBundleName"
     },
     {
-        Name: "PassWord",
+        Name: "ShipmentOrderTypeID",
         DefaultValue: "",
-        BindControlName: "txtPassWord",
-        DataSourceMember: "PassWord"
+        BindControlName: "cbShipmentOrderTypeID",
+        DataSourceMember: "ShipmentOrderTypeID"
     },
     {
-        Name: "FullName",
+        Name: "PartnerID",
         DefaultValue: "",
-        BindControlName: "txtFullName",
-        DataSourceMember: "FullName"
-    },
-    {
-        Name: "FirstName",
-        DefaultValue: "",
-        BindControlName: "txtFirstName",
-        DataSourceMember: "FirstName"
-    },
-    {
-        Name: "LastName",
-        DefaultValue: "",
-        BindControlName: "txtLastName",
-        DataSourceMember: "LastName"
-    },
-    {
-        Name: "PhoneNumber",
-        DefaultValue: "",
-        BindControlName: "txtPhoneNumber",
-        DataSourceMember: "PhoneNumber"
-    },
-    {
-        Name: "Birthday",
-        DefaultValue: "",
-        BindControlName: "dtBirthday",
-        DataSourceMember: "Birthday"
-    },
-    {
-        Name: "Email",
-        DefaultValue: "",
-        BindControlName: "txtEmail",
-        DataSourceMember: "Email"
+        BindControlName: "cbPartnerID",
+        DataSourceMember: "PartnerID"
     },
     {
         Name: "Description",
@@ -422,10 +302,10 @@ export const MLObjectDefinition = [
         DataSourceMember: "UpdatedUser"
     },
     {
-        Name: "LstInstallBundle_Role",
+        Name: "InstallBundle_ProductList",
         DefaultValue: {},
-        BindControlName: "LstInstallBundle_Role",
-        DataSourceMember: "LstInstallBundle_Role"
+        BindControlName: "InstallBundle_ProductList",
+        DataSourceMember: "InstallBundle_ProductList"
     }
 
 ];
@@ -436,7 +316,7 @@ export const DataGridColumnList = [
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "InstallBundleID",
-        Width: 80
+        Width: 70
     },
     {
         Name: "InstallBundleName",
@@ -446,17 +326,17 @@ export const DataGridColumnList = [
         Width: 280
     },
     {
-        Name: "ShiPMentOrderTypeID",
+        Name: "ShipmentOrderTypeName",
         Type: "text",
         Caption: "Loại yêu cầu vận chuyển",
-        DataSourceMember: "ShiPMentOrderTypeID",
+        DataSourceMember: "ShipmentOrderTypeName",
         Width: 200
     },
     {
-        Name: "PartnerID",
+        Name: "PartnerName",
         Type: "text",
         Caption: "Đối tác",
-        DataSourceMember: "PartnerID",
+        DataSourceMember: "PartnerName",
         Width: 200
     },
     {
@@ -486,86 +366,77 @@ export const DataGridColumnList = [
     
 
 export const GridMLMcRoleDefinition = [
+
     {
-        Name: "McRoleID",
+        Name: "ProductID",
         DefaultValue: "",
-        BindControlName: "McRoleID",
-        DataSourceMember: "McRoleID"
+        BindControlName: "ProductID",
+        DataSourceMember: "ProductID"
     },
     {
-        Name: "McRoleName",
+        Name: "Quantity",
         DefaultValue: "",
-        BindControlName: "McRoleName",
-        DataSourceMember: "McRoleName"
+        BindControlName: "Quantity",
+        DataSourceMember: "Quantity"
+    },
+    {
+        Name: "Note",
+        DefaultValue: "",
+        BindControlName: "Note",
+        DataSourceMember: "Note"
+    },
+    {
+        Name: "IsActived",
+        DefaultValue: true,
+        BindControlName: "IsActived",
+        DataSourceMember: "IsActived"
     }
 ];
-
 export const InputMcRoleColumnList = [
     {
-        Name: "chkSelect",
-        Type: "checkboxAll",
-        Caption: "",
-        DataSourceMember: "McRoleID",
-        Width: 70
+        Name: "ProductID",
+        Type: "textbox",
+        Caption: "Mã sản phẩm",
+        DataSourceMember: "ProductID",
+        Width: 200,
+        validatonList: ["required"]
     },
     {
-        Name: "McRoleID",
-        Type: "text",
-        Caption: "Mã vai trò",
-        DataSourceMember: "McRoleID",
-        Width: 150
+        Name: "Quantity",
+        Type: "textbox",
+        Caption: "Số lượng",
+        DataSourceMember: "Quantity",
+        Width: 200,
+        validatonList: ["required","number"]
+    },
+    // {
+    //     Name: "Quantity1",
+    //     Type: "selectnew",
+    //     Caption: "combobox",
+    //     DataSourceMember: "Quantity1",
+    //     Width: 200,
+    //     validatonList: []
+    // },
+    {
+        Name: "Note",
+        Type: "textbox",
+        Caption: "Ghi chú",
+        DataSourceMember: "Note",
+        Width: 300,
     },
     {
-        Name: "McRoleName",
-        Type: "text",
-        Caption: "Tên vai trò",
-        DataSourceMember: "McRoleName",
-        Width: 700
-    }
-];
-
-//model
-export const SearchMLmoldeDefinition = [
-    {
-        Name: "Keyword",
-        DefaultValue: "",
-        BindControlName: "txtKeyword"
-    }
-];
-
-export const SearchElementModeList = [
-    {
-        type: "textType",
-        name: "txtKeyword",
-        label: "",
-        value: "",
-        placeholder: "Từ khóa ",
-        icon: "",
-        listoption: {}
-    }
-];
-
-export const DataGridColumnListMultiple = [
-    {
-        Name: "chkSelect",
+        Name: "IsActived",
         Type: "checkbox",
-        Caption: "Chọn",
-        DataSourceMember: "McRoleID",
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived",
         Width: 70
     },
     {
-        Name: "McRoleID",
-        Type: "text",
-        Caption: "Mã vai trò",
-        DataSourceMember: "McRoleID",
-        Width: 150
-    },
-    {
-        Name: "McRoleName",
-        Type: "text",
-        Caption: "Tên vai trò",
-        DataSourceMember: "McRoleName",
-        Width: 700
+        Name: "Action",
+        Type: "editnew",
+        Caption: "Tác vụ",
+        DataSourceMember: "ArticleID",
+        Width: 70,
+        iputpop: false
     }
-
 ];

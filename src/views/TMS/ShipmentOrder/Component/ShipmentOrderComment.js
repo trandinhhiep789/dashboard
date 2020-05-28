@@ -125,15 +125,15 @@ class ShipmentOrderCommentCom extends Component {
                     </div>) : ''}
 
                     <br></br>
-
-                    <div className='form-row comment'>
-                        <div className='comment_account'>
-                            <img className='comment_account_img' src='/src/img/avatar/1.jpg'></img>
-                        </div>
-                        <div className='form-group col-md-11'>
-                            <textarea maxLength={1950} value={this.state.MObjectDefine.CommentContent} onChange={this._handleInputChange} type='text' onKeyPress={this._handleKeyPress} placeholder='Gửi bình luận' className='form-control' rows={3}></textarea>
-                        </div>
-                    </div>
+                    {this.props.IsComment == true &&(
+                         <div className='form-row comment'>
+                         <div className='comment_account'>
+                             <img className='comment_account_img' src='/src/img/avatar/1.jpg'></img>
+                         </div>
+                         <div className='form-group col-md-11'>
+                             <textarea maxLength={1900} value={this.state.MObjectDefine.CommentContent} onChange={this._handleInputChange} type='text' onKeyPress={this._handleKeyPress} placeholder='Gửi bình luận' className='form-control' rows={3}></textarea>
+                         </div>
+                     </div>)}
                 </div>
             </div>
         );

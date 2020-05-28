@@ -26,9 +26,8 @@ class InputGridCom extends Component {
 		this.bindData = this.bindData.bind(this);
 		this.renderInputGrid = this.renderInputGrid.bind(this);
 		this.handleInsertClickEdit = this.handleInsertClickEdit.bind(this);
-		this.checkAll = this.checkAll.bind(this);
+		this.handleInsertClickDelete = this.handleInsertClickDelete.bind(this);
 		const gridData = this.bindData();
-		const lstobjdelete = this.bindobjdelete(false);
 
 		//check isSystem
 		let isSystem = false;
@@ -38,15 +37,15 @@ class InputGridCom extends Component {
 
 		//auto close popup
 		let autoCloseModal = false;
-		if(this.props.autoCloseModal){
+		if (this.props.autoCloseModal) {
 			autoCloseModal = true;
 		}
 
 		this.state = {
 			GridData: gridData,
 			IsCheckAll: false,
-			lstobjDelete: lstobjdelete,
-			listvalidationError: {},
+			lstobjDelete: [],
+
 			PageNumber: 1,
 			IsSystem: isSystem,
 			AutoCloseModal: autoCloseModal
@@ -54,7 +53,6 @@ class InputGridCom extends Component {
 	}
 
 	componentDidMount() {
-		this.setState({ listvalidationError: this.props.listvalidationError })
 	}
 	handleCloseMessage() {
 	}
@@ -67,87 +65,14 @@ class InputGridCom extends Component {
 
 	//#region bind Data
 	bindData() {
-		const listColumn = this.props.listColumn;
-		//const dataSource = this.props.dataSource;
-		let dataSource = this.props.dataSource;
-		if (this.props.value != null)
-			dataSource = this.props.value;
-
 		let gridData = {};
-		if (dataSource == null)
-			return gridData;
-		dataSource.map((rowItem, rowIndex) => {
-			let elementobject = {};
-			listColumn.map((columnItem, index) => {
-				const name = columnItem.Name;
-				const value = rowItem[columnItem.DataSourceMember];
-				const elementdata = { Name: name, Value: value, IsChecked: false };
-				elementobject = Object.assign({}, elementobject, { [index]: elementdata });
-			}
-			);
-			gridData = Object.assign({}, gridData, { [rowIndex]: elementobject });
-		});
-		//	 console.log("bindData gridData: ", gridData);
+
 		return gridData;
 	}
-	bindobjdelete(Checked) {
-		const listColumn = this.props.listColumn;
-		const element = listColumn.filter(x => { return x.Name.toString().includes("chkSelect") })
 
-		let listDataSourceMember = [];
-		if (element && element.length > 0) {
-			const dataSourceMember = element[0].DataSourceMember.split(',');
-			listDataSourceMember = dataSourceMember.map(item => { return { key: item } });
-		}
-
-		let dataSource = this.props.dataSource;
-		let lstobjdelete = {};
-		dataSource.map((rowItem, rowIndex) => {
-			let elementobject = { IsChecked: Checked };
-			listDataSourceMember.map((obj, index) => {
-				const elementdata = { [obj.key]: rowItem[obj.key] };
-				elementobject = Object.assign(elementobject, elementdata);
-			}
-			);
-
-			lstobjdelete = Object.assign({}, lstobjdelete, { [rowIndex]: elementobject });
-		});
-		return lstobjdelete;
-	}
-	bindobjdelete1(Checked, value) {
-		const listColumn = this.props.listColumn;
-		const element = listColumn.filter(x => { return x.Name.toString().includes("chkSelect") })
-		let listDataSourceMember = [];
-		if (element && element.length > 0) {
-			const dataSourceMember = element[0].DataSourceMember.split(',');
-			listDataSourceMember = dataSourceMember.map(item => { return { key: item } });
-		}
-		let lstobjdelete = {};
-		value.map((rowItem, rowIndex) => {
-			let elementobject = { IsChecked: Checked };
-			listDataSourceMember.map((obj, index) => {
-				const elementdata = { [obj.key]: rowItem[obj.key] };
-				elementobject = Object.assign(elementobject, elementdata);
-			}
-			);
-
-			lstobjdelete = Object.assign({}, lstobjdelete, { [rowIndex]: elementobject });
-		});
-		return lstobjdelete;
-	}
-	//#endregion bind Data
-
+	
 	//#region Delete
-	checkAll = event => {
-		if (event.target.checked) {
-			const lstobjdelete = this.bindobjdelete(true);
-			this.setState({ lstobjDelete: lstobjdelete, IsCheckAll: true });
-		}
-		else {
-			const lstobjdelete = this.bindobjdelete(false);
-			this.setState({ lstobjDelete: lstobjdelete, IsCheckAll: false });
-		}
-	};
+
 	handleClick = (event, id) => {
 		let elementobject = { IsChecked: event };
 		elementobject = Object.assign({}, this.state.lstobjDelete[id], elementobject);
@@ -173,6 +98,7 @@ class InputGridCom extends Component {
 		}
 		return true;
 	}
+	
 	handleDeleteClick() {
 		let lstobjdelete = this.state.lstobjDelete;
 		const temp = this.checkInput1(lstobjdelete);
@@ -287,22 +213,16 @@ class InputGridCom extends Component {
 					title: 'Cập nhật ' + this.props.title,
 					autoCloseModal: this.state.AutoCloseModal,
 					onConfirm: (isConfirmed, formData) => {
-						let dataSource = this.props.dataSource;
-						if (this.props.value != null) {
-							dataSource = this.props.value;
-						}
+						let dataSource = this.props.value;
 						if (this.props.onValueChange != null) {
-							dataSource.push(formData)
+							const result = dataSource.filter(n => n[this.props.IDSelectColumnName] == formData[this.props.IDSelectColumnName])
+							if (result.length == 0) {
+								dataSource.push(formData)
+							}
 							const mLObjectDefinition = this.props.MLObjectDefinition;
 							const MLObjectList = GetMLObjectDataList(mLObjectDefinition, dataSource, dataSource);
 							this.props.onValueChange(this.props.name, MLObjectList, this.props.controltype, undefined);
 						}
-						//lưu trực tiếp vào database
-						if (this.props.onInsertPermanently) {
-							this.props.onInsertPermanently(formData);
-						}
-						const lstobjdelete = this.bindobjdelete1(false, dataSource);
-						this.setState({ lstobjDelete: lstobjdelete, IsCheckAll: false });
 					},
 					modalElementList: listColumnNew,
 					modalElementOl: this.props.MLObjectDefinition
@@ -353,6 +273,19 @@ class InputGridCom extends Component {
 		});
 
 	}
+
+	handleInsertClickDelete(index) {
+		let dataSource = this.props.dataSource;
+		if (this.props.value != null) {
+			dataSource = this.props.value;
+		}
+		let dataSourceValue = dataSource.filter(function (value, index1) { return index1 != index; });
+		if (this.props.onValueChange != null) {
+			const mLObjectDefinition = this.props.MLObjectDefinition;
+			const MLObjectList = GetMLObjectDataList(mLObjectDefinition, dataSourceValue, dataSourceValue);
+			this.props.onValueChange(this.props.name, MLObjectList, this.props.controltype, undefined);
+		}
+	}
 	//#region get Page
 	clearData() {
 		this.setState({
@@ -400,10 +333,6 @@ class InputGridCom extends Component {
 		if (this.props.value != null) {
 			dataSource = this.props.value;
 		}
-
-		if (this.props.IsAutoPaging) {
-			dataSource = this.getDisplayData(dataSource);
-		}
 		const idSelectColumnName = this.props.IDSelectColumnName;
 		return (
 			<table className="table table-bordered">
@@ -415,26 +344,6 @@ class InputGridCom extends Component {
 									width: elementItem.Width
 								};
 								let columHeader = elementItem.Caption;
-								if (elementItem.Type == "checkbox" && elementItem.Caption == "") {
-									const className = "form-control form-control-sm";
-									columHeader = <input type="checkbox" className={className} onChange={this.checkAll} checked={this.state.IsCheckAll} />
-								}
-								else if (elementItem.Type == "checkboxAll" && elementItem.Caption == "") {
-									const className = "form-control form-control-sm";
-									if (this.props.IsPermisionDelete == true || this.props.IsPermisionDelete == undefined) {
-										columHeader = <input type="checkbox" className={className} onChange={this.checkAll} checked={this.state.IsCheckAll} />
-									}
-									else {
-										columHeader = <input type="checkbox" disabled={true} className={className} />
-
-									}
-								}
-								if (elementItem.Type == "checkbox") {
-									cellStyle = {
-										width: elementItem.Width,
-										textAlign: "center"
-									};
-								}
 								return (
 									<th key={elementItem.Name} className="jsgrid-header-cell" style={cellStyle}>{columHeader}</th>
 								);
@@ -449,16 +358,6 @@ class InputGridCom extends Component {
 							if (index % 2 != 0) {
 								rowClass = "jsgrid-alt-row";
 							}
-							let isChecked = false;
-							const checkList = this.state.GridData[idSelectColumnName];
-							//  console.log("checkList :", checkList, this.state.GridData);
-							if (checkList != null) {
-								if (checkList[rowIndex] != null) {
-									isChecked = checkList[rowIndex].IsChecked;
-								}
-							}
-							// console.log("RowNum :", rowIndex);
-							// console.log("isChecked :", isChecked);
 							return (<tr key={rowIndex}>
 								{
 									listColumnNew.map((columnItem, index) => {
@@ -467,43 +366,12 @@ class InputGridCom extends Component {
 											verticalAlign: "middle"
 										};
 										let isChecked = false;
-										const checkList = this.state.GridData[idSelectColumnName];
-										//  console.log("dataSource checkList :", checkList,columnItem.Name,idSelectColumnName);
-										if (checkList != null) {
-											if (checkList[rowIndex] != null && columnItem.Name == idSelectColumnName) {
-												//console.log("dataSource checkList[rowIndex].IsChecked :", checkList[rowIndex].IsChecked,);
-												isChecked = checkList[rowIndex].IsChecked;
-											}
-										}
-										if (columnItem.Type == "checkbox" && columnItem.Name != idSelectColumnName) {
+
+										if (columnItem.Type == "checkbox") {
 											isChecked = rowItem[columnItem.DataSourceMember];
-
 										}
-										// console.log("rowItem[columnItem.DataSourceMember]:",rowItem[columnItem.DataSourceMember]);
-										if (columnItem.Type == "checkboxAll" && columnItem.Name != idSelectColumnName) {
-											//	console.log("this.state.lstobjDelete",this.state.lstobjDelete);
-											if (this.state.lstobjDelete[rowIndex])
-												isChecked = this.state.lstobjDelete[rowIndex].IsChecked;
-
-										}
-										//    console.log("columnItem Type isChecked :", columnItem.Name,columnItem.Type,this.state.selected);
-										//  console.log("rowItem[columnItem.IsAutoLoadItemFromCache]:", columnItem.IsAutoLoadItemFromCache);
 										let validationErrorMessage = "";
-										let listerror = this.props.listvalidationError[rowIndex];
-										// console.log("listvalidationError",this.props.listvalidationError,rowIndex,listerror);
-										if (listerror != undefined) {
-											if (listerror[columnItem.Name] != null) {
-												validationErrorMessage = listerror[columnItem.Name].ValidationErrorMessage;
-											}
-										}
-										let DataSourceMember = columnItem.DataSourceMember;
-										if (columnItem.Type === "combobox" && this.props.Ispopup === true) {
-											DataSourceMember = columnItem.ID;
-										}
-										let ovjvalue = rowItem[DataSourceMember] === undefined ? "" : rowItem[DataSourceMember];
-
-
-										//console.log("{rowItem[columnItem.DataSourceMember]}", columnItem.Type, columnItem.DataSourceMember, columnItem);
+										let ovjvalue = rowItem[columnItem.DataSourceMember];
 										const cellData = <InputGridCell type={columnItem.Type}
 											text={ovjvalue}
 											value={ovjvalue}
@@ -524,6 +392,7 @@ class InputGridCom extends Component {
 											ValueFilter={rowItem[columnItem.KeyFilter]}
 											onHandleEditClick={this.handleEditClick}
 											onValueChangeALL={this.handleClick}
+											onClickDelete={this.handleInsertClickDelete}
 											validationErrorMessage={validationErrorMessage}
 											label={columnItem.label}
 											cation={columnItem.Caption}
@@ -585,24 +454,12 @@ class InputGridCom extends Component {
 											</button>
 										)
 									}
-									{
-										(this.props.IsPermisionDelete == true || this.props.IsPermisionDelete == undefined) && this.state.IsSystem == false ?
-											(<button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa" onClick={this.handleDeleteClick}>
-												<span className="fa fa-remove"> Xóa </span>
-											</button>)
-											: (<button type="button" className="btn btn-danger btn-delete ml-10" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Xóa" >
-												<span className="fa fa-remove"> Xóa </span>
-											</button>)
-									}
 								</div>
 							</div>
 						</div>
 					}
 					{
 						this.renderInputGrid()
-					}
-					{this.props.IsAutoPaging &&
-						<InputGridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />
 					}
 				</div>
 			</div>
@@ -623,8 +480,8 @@ const mapDispatchToProps = dispatch => {
 			dispatch(showModal(type, props));
 		},
 		hideModal: () => {
-            dispatch(hideModal());
-        },
+			dispatch(hideModal());
+		},
 		callGetCache: (cacheKeyID) => {
 			return dispatch(callGetCache(cacheKeyID));
 		}

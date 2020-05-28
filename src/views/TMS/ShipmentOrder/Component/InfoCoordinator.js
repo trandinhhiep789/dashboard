@@ -5,6 +5,7 @@ import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
+import { MessageModal } from "../../../../common/components/Modal";
 import {
     APIHostName,
 } from "../constants";
@@ -22,7 +23,9 @@ class InfoCoordinatorCom extends Component {
         this.state = {
             ShipmentOrder: this.props.InfoCoordinator,
             validationErrorMessage: null,
-            ShipmentOrder_WorkFlow: {}
+            ShipmentOrder_WorkFlow: {},
+            IsCallAPIError: false,
+            IsCloseForm: false,
         }
     }
 
@@ -78,41 +81,34 @@ class InfoCoordinatorCom extends Component {
         //this.setState({ ShipmentOrder_WorkFlow: listMLObject })
     }
 
+    handleCloseMessage() {
+        if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
+    }
+
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+                onCloseModal={this.handleCloseMessage}
+            />
+        );
+    }
+
 
     handleShipWorkFlowInsert() {
         this.state.ShipmentOrder.UpdatedUser=this.props.AppInfo.LoginInfo.Username,
         //    console.log("handleShipWorkFlowInsert",this.state.ShipmentOrder,this.state.ShipmentOrder.ShipmentOrder_DeliverUserList)
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinator', this.state.ShipmentOrder).then((apiResult) => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
+                
             }
         });
-        // if (ShipmentOrder_WorkFlow.Note == undefined || ShipmentOrder_WorkFlow.Note.length == 0 || String(ShipmentOrder_WorkFlow.Note).trim() == "") {
-        //     validationErrorMessage = "Vui lòng nhập nội dung"
-        //     this.setState({ validationErrorMessage: validationErrorMessage }, () => {
-        //         this.openViewStepModal();
-        //     });
-        // }
-        // else {
-        //     ShipmentOrder_WorkFlow.IsProcess = true;
-        //     ShipmentOrder_WorkFlow.ProcessUser = this.props.AppInfo.LoginInfo.Username;
-        //     ShipmentOrder_WorkFlow.CreatedOrderTime = this.state.ShipmentOrder.CreatedOrderTime;
-        //     ShipmentOrder_WorkFlow.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        //     this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/InsertWorkFlow', ShipmentOrder_WorkFlow).then((apiResult) => {
-        //         if (!apiResult.IsError) {
-        //             this.setState({
-        //                 ShipmentOrder: apiResult.ResultObject
-        //             });
-        //             if (this.props.onhandleChange != null)
-        //                 this.props.onhandleChange(apiResult.ResultObject)
-
-        //             ModalManager.close();
-        //         }
-        //     });
-        // }
+   
     }
-
-
-
     render() {
         let listOption = [];
         this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
@@ -130,6 +126,7 @@ class InfoCoordinatorCom extends Component {
                         colspan="10"
                         labelcolspan="2"
                         label="Nhân viên  giao"
+                        disabled={!this.props.IsUserCoordinator}
                         IsLabelDiv={true}
                         isautoloaditemfromcache={false}
                         loaditemcachekeyid={"PIMCACHE_PIM_SHIPPINGMETHOD"}
@@ -141,6 +138,7 @@ class InfoCoordinatorCom extends Component {
                         onChange={this.handleValueChange1}
                         listoption={[]}
                         datasourcemember="ShipmentOrder_DeliverUserList"
+                        validatonList={["Comborequired"]}
                     />
                     <FormControl.ComboBox1
                         name="CarrierPartnerID"
@@ -174,9 +172,8 @@ class InfoCoordinatorCom extends Component {
                         </div>
                     </div>
                     <div className="form-row">
-                        <div className="form-group col-md-11"></div>
-                        <div className="form-group col-md-1">
-                            <button className="btn btnEditCard" type="submit" onClick={this.handleShipWorkFlowInsert}  > Cập nhật</button>
+                        <div className="form-group form-group-btncustom">
+                            <button className="btn btnEditCard" type="submit" onClick={this.handleShipWorkFlowInsert}> Cập nhật</button>
                         </div>
 
                     </div>

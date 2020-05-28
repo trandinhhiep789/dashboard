@@ -895,15 +895,12 @@ class ComboBox1Com extends Component {
 
     componentDidMount() {
         let listOption = this.props.listoption;
-        // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
         if (this.props.isautoloaditemfromcache) {
             const cacheKeyID = this.props.loaditemcachekeyid;
             const valueMember = this.props.valuemember;
             const nameMember = this.props.nameMember;
             const isCategory = this.props.isCategory;
-            //    console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
             this.props.callGetCache(cacheKeyID).then((result) => {
-                //  console.log("this.props.isautoloaditemfromcach2: ",this.props.loaditemcachekeyid, this.state.Listoption);
                 listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     result.ResultObject.CacheData.map((cacheItem) => {
@@ -916,11 +913,9 @@ class ComboBox1Com extends Component {
                 else {
                     this.setState({ Listoption: listOption });
                 }
-                //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
             });
         }
         else {
-            //console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
             this.setState({ Listoption: listOption });
         }
     }
@@ -931,7 +926,7 @@ class ComboBox1Com extends Component {
         if (this.props.rowspan != null) {
             formRowClassName = "form-row col-md-" + this.props.rowspan;
         }
-        let className = "react-select";
+        
         const listOption = this.state.Listoption;
         let formGroupClassName = "form-group col-md-4";
         if (this.props.colspan != null) {
@@ -945,9 +940,13 @@ class ComboBox1Com extends Component {
         if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
             star = '*'
         }
-
-        if (this.props.validationErrorMessage != "") {
+        let className = "react-select";
+        if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
             className += " is-invalid";
+        }
+        const selectedOption = this.state.SelectedOption;
+        if (this.props.validationErrorMessage != "") {
+            
             return (
                 <div className={formRowClassName} >
                     <div className={labelDivClassName}>
@@ -958,11 +957,11 @@ class ComboBox1Com extends Component {
 
                     <div className={formGroupClassName}>
                         <Select
-                            value={this.state.SelectedOption}
+                            value={selectedOption}
                             name={this.props.name}
                             ref={this.props.inputRef}
                             onChange={this.handleValueChange}
-                            options={this.state.Listoption}
+                            options={listOption}
                             isMulti={isMultiSelect}
                             isSearchable={true}
                             placeholder={placeholder}
@@ -984,27 +983,17 @@ class ComboBox1Com extends Component {
                     <div className={formGroupClassName}>
                         <div className="form-group-input-select">
                             <Select
-                                value={this.state.selectedOption}
+                                value={selectedOption}
                                 name={this.props.name}
                                 ref={this.props.inputRef}
                                 onChange={this.handleValueChange}
-                                options={this.state.ListOption}
+                                options={listOption}
                                 isMulti={isMultiSelect}
                                 isSearchable={true}
                                 placeholder={placeholder}
                                 className={className}
                             />
                         </div>
-                        {/* <select className={className} name={this.props.name}
-                            onChange={this.handleValueChange} value={this.state.value}
-                            disabled={this.props.disabled}
-                            required={this.props.required}
-                        >
-                            {listOption.map((optionItem) =>
-                                <option key={optionItem.value} value={optionItem.value}>{optionItem.label}</option>
-                            )}
-                        </select> */}
-
                     </div>
                 </div>
             );
@@ -1013,7 +1002,7 @@ class ComboBox1Com extends Component {
 }
 
 
-export const ComboBox1 = connect(null, mapDispatchToProps)(ComboBox1Com);
+export const ComboBox1 = connect(mapStateToProps, mapDispatchToProps)(ComboBox1Com);
 
 
 export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus, ElementDatetime, ComboBox1, ComboboxQTQHPX };

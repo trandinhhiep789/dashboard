@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import { ModalManager } from "react-dynamic-modal";
 import SearchForm from "../../../../../../common/components/Form/SearchForm";
 import DataGrid from "../../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../../common/components/Modal";
@@ -23,17 +23,22 @@ import { updatePagePath } from "../../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
+import { MCUSER_VIEW, MCUSER_DELETE } from "../../../../../../constants/functionLists";
+
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.addNotification = this.addNotification.bind(this);
+
         this.handleDelete = this.handleDelete.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
+            SearchElementList: SearchElementList,
             cssNotification: "",
             iconNotification: ""
         };
@@ -42,11 +47,12 @@ class SearchCom extends React.Component {
         this.notificationDOMRef = React.createRef();
     }
 
-    componentDidMount() {
-        this.props.updatePagePath(PagePath);
-        this.callSearchData(this.state.SearchData);
-    }
 
+
+    componentDidMount() {
+        this.callSearchData(this.state.SearchData);
+        this.props.updatePagePath(PagePath);
+    }
 
 
     handleDelete(deleteList, pkColumnName) {
@@ -59,9 +65,10 @@ class SearchCom extends React.Component {
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
+        debugger;
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            //this.handleClearLocalCache(apiResult.Message, apiResult.IsError);
+
             this.addNotification(apiResult.Message, apiResult.IsError);
             this.callSearchData(this.state.SearchData);
         });
@@ -79,18 +86,18 @@ class SearchCom extends React.Component {
         //this.gridref.current.clearData();
     }
 
+
     callSearchData(searchData) {
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            if (!apiResult.IsError) {
-                this.setState({
-                    gridDataSource: apiResult.ResultObject,
-                    IsCallAPIError: apiResult.IsError
-                });
-            } else {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                this.showMessage(apiResult.Message);
-            }
-        });
+        this.props
+            .callFetchAPI(APIHostName, SearchAPIPath, searchData)
+            .then(apiResult => {
+                if (apiResult && !apiResult.IsError) {
+                    this.setState({
+                        gridDataSource: apiResult.ResultObject,
+                        IsCallAPIError: apiResult.IsError
+                    });
+                }
+            });
     }
 
     handleCloseMessage() {
@@ -148,9 +155,9 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    FormName="Tìm kiếm"
+                    FormName="Tìm kiếm loại tài khoản"
                     MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
+                    listelement={this.state.SearchElementList}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                 />
@@ -161,7 +168,7 @@ class SearchCom extends React.Component {
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
-                    hasSearch={false}
+                    ref={this.gridref}
                     IsAutoPaging={true}
                     RowsPerPage={10}
                 />
@@ -184,7 +191,10 @@ const mapDispatchToProps = dispatch => {
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
-        }
+        },
+        /*callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
+        }*/
     };
 };
 

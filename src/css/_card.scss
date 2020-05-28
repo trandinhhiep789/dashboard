@@ -35,6 +35,10 @@
         .form-row{
             .form-group {
                 margin-bottom: .5rem;
+                &.form-group-btncustom{
+                    text-align: right;
+                    width: 100%;
+                }
             }
             &.customcontrol{
                 

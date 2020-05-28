@@ -265,17 +265,33 @@
 		}
 		//10.8152328 106.680505
 		function initialize() {
+			debugger;
 			const mapContainer = document.getElementById("map-container");
 			vbd.pathImgMap = 'http://images.vietbando.com/mapimagesws/mapimageservice.ashx?Action=GetTiles';
+			// const mapProp = {
+			// 	center: new vbd.LatLng(14.102783, 109.649506),
+			// 	zoom: 13,
+			// 	minZoom: 2,
+			// 	zoomControl: false
+			// };
 			const mapProp = {
 				center: new vbd.LatLng(14.102783, 109.649506),
-				zoom: 13,
+				maxZoom: 19,
+				zoom: 18,
 				minZoom: 2,
-				zoomControl: false
-			};
+				registerKey: "7f65a9df-4910-434d-b2ce-5cf7d783ad8b",
+				scaleControlOptions: { showScale: true },
+				zoomControl: true
+        	};
 
 			let map = new vbd.Map(mapContainer, mapProp);
-
+			var position = map.getCenter()
+			var marker = new vbd.Marker({
+            	position: position
+			});
+			
+			marker.setMap(map);
+		
 			var stepContainer = document.getElementById('mySteps');
 			stepContainer.style.height = document.getElementById('guide-container').clientHeight - 140 + 'px';
 
@@ -284,7 +300,30 @@
 
 			var ctxMenu = new ContextMenu();
 
-			vbd.event.addListener(map, 'rightclick', function (e) {
+			// vbd.event.addListener(map, 'rightclick', function (e) {
+			// 	ctxMenu.close();
+
+			// 	var container = vbd.DomUtil.create('ul', 'menuCtx');
+			// 	var startBtn = createLi('Từ đây', container);
+			// 	var destBtn = createLi('Đến đây', container);
+
+			// 	vbd.event.addDomListener(startBtn, 'click', function (params) {
+			// 		direction.fromHere(e.LatLng);
+			// 		ctxMenu.close();
+
+			// 	});
+
+			// 	vbd.event.addDomListener(destBtn, 'click', function (params) {
+			// 		direction.toHere(e.LatLng);
+			// 		ctxMenu.close();
+			// 	});
+
+			// 	ctxMenu.setLatLng(e.LatLng)
+			// 		.setContent(container)
+			// 		.openOn(map);
+			// });
+
+			vbd.event.addListener(map, 'click', function (e) {
 				ctxMenu.close();
 
 				var container = vbd.DomUtil.create('ul', 'menuCtx');

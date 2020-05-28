@@ -2,8 +2,8 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 import { ModalManager } from "react-dynamic-modal";
-import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
-import InputGrid from "../../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+import FormContainer from "../../../../../../common/components/FormContainer";
+import InputGrid from "../../../../../../common/components/FormContainer/FormControl/InputGrid";
 import { MessageModal } from "../../../../../../common/components/Modal";
 import { showModal } from '../../../../../../actions/modal';
 import { MODAL_TYPE_SEARCH } from '../../../../../../constants/actionTypes';
@@ -145,25 +145,9 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        //check password valid
-        let { PassWord, PassWordConfirm } = this.state;
-        if (PassWord != PassWordConfirm) {
-            this.setState({ IsCallAPIError: true });
-            this.showMessage("Xác nhận mật khẩu chưa đúng.");
-            return false;
-        }
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-
-        var myDate = new Date(MLObject.Birthday);
-        myDate.setDate(myDate.getDate() + 1);
-        MLObject.Birthday = myDate;
-        if (!MLObject.PassWord) {
-            MLObject.PassWord = this.state.PassWord;
-        } else {
-            MLObject.PassWord = MD5Digest(PassWord);
-        }
-
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -180,23 +164,20 @@ class EditCom extends React.Component {
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={this.state.EditElementList}
                     onSubmit={this.handleSubmit}
-                    IsAutoLayout={true}
-                    ref={this.searchref}
                     BackLink={BackLink}
                     dataSource={this.state.DataSource}
-                    onValueChange={this.handleOnInputChange}
-                    RequirePermission={MCUSER_EDIT}
                 >
                     <InputGrid
-                        name="LstMcUser_Role"
-                        controltype="InputControl"
-                        IDSelectColumnName={"checkboxAll"}
+                        name="InstallBundle_ProductList"
+                        controltype="GridControl"
+                        title="sản phẩm của gói lắp đặt kèm theo"
+                        IDSelectColumnName={"ProductID"}
                         listColumn={InputMcRoleColumnList}
                         isHideHeaderToolbar={false}
-                        dataSource={this.state.DataSource.LstMcUser_Role}
+                        dataSource={this.state.DataSource.InstallBundle_ProductList}
+                        Ispopup={true}
                         MLObjectDefinition={GridMLMcRoleDefinition}
                         colspan="12"
-                        onInsertClick={this.handleInputUserRoleInsert}
                     />
                 </FormContainer>
             );

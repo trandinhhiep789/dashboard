@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { callGetCache } from "../../../../actions/cacheAction";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD } from "../../../../constants/keyCache";
+import vbd from '../../../../scripts/vietbandomapsapi.js';
 
 const style = {
     width: '100%',
@@ -44,6 +45,36 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     componentDidMount() {
+
+
+        // const values = this.state.ShipmentOrderEdit.SenderGeoLocation.split(",")
+        // const v1 = parseFloat(values[0])
+        // const v2 = parseFloat(values[1])
+
+
+        // vbd.event.addListener(map, 'click', function (e) {
+        //     //  this.SenderGeoLocation(e.LatLng.Latitude, e.LatLng.Longitude);
+        //     console.log('this.postData()', e.LatLng.Latitude, e.LatLng.Longitude);
+        //     const mapProp1 = {
+        //         center: new vbd.LatLng(e.LatLng.Latitude, e.LatLng.Longitude),
+        //         maxZoom: 19,
+        //         zoom: 18,
+        //         minZoom: 2,
+        //         registerKey: "7f65a9df-4910-434d-b2ce-5cf7d783ad8b",
+        //         scaleControlOptions: { showScale: true },
+        //         zoomControl: true
+        //     };
+
+        //     let map1 = new vbd.Map(mapContainer, mapProp1);
+        //     var position1 = map1.getCenter()
+        //     var marker = new vbd.Marker({
+        //         position: position1
+        //     });
+
+        //     marker.setMap(map1);
+
+        // });
+
         this.initCombobox();
         this.setValueCombobox();
     }
@@ -60,12 +91,14 @@ class ShipmentOrderAddressCom extends Component {
 
     }
 
-    handleValueChangeGeoLocation(e, a) {
+    handleValueChangeGeoLocation(lat, lng) {
+        console.log('handleValueChangeGeoLocation', lat, lng)
         let { ShipmentOrderEdit } = this.state;
-        ShipmentOrderEdit.SenderGeoLocation = "10.852982,105.700";
-        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
-            this.ShowModalSender();
-        });
+        // ShipmentOrderEdit.SenderGeoLocation = `"${lat},${lng}"`;
+        // console.log(ShipmentOrderEdit.SenderGeoLocation )
+        // this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
+        //     this.ShowModalSender();
+        // });
     }
 
     handleValueChangeProvince(selectedOption) {
@@ -253,11 +286,24 @@ class ShipmentOrderAddressCom extends Component {
         console.log("show modal update", this.state.ShipmentOrderEdit);
     }
 
+    handleUpdateAddressReceiver() {
+        console.log("show modal update", this.state.ShipmentOrderEdit);
+    }
+
     handleShowModalSender() {
+
         let { ShipmentOrderEdit } = this.state;
         this.setValueCombobox(2, this.state.ShipmentOrderEdit.SenderProvinceID, this.state.ShipmentOrderEdit.SenderDistrictID)
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
             this.ShowModalSender();
+        });
+    }
+
+    handleShowModalReceiver() {
+        let { ShipmentOrderEdit } = this.state;
+        this.setValueCombobox(2, this.state.ShipmentOrderEdit.SenderProvinceID, this.state.ShipmentOrderEdit.SenderDistrictID)
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
+            this.ShowModalReceiver();
         });
     }
 
@@ -276,14 +322,14 @@ class ShipmentOrderAddressCom extends Component {
         });
     }
 
-    ShowModalSender() {
+    ShowModalReceiver() {
         const Province = this.bindcombox(this.state.ProvinceLst, this.state.ShipmentOrderEdit.SenderProvinceID);
         const District = this.bindcombox(this.state.DistrictLst, this.state.ShipmentOrderEdit.SenderDistrictID);
         const Ward = this.bindcombox(this.state.WardLst, this.state.ShipmentOrderEdit.SenderWardID);
 
         ModalManager.open(
             <ModelContainer
-                title="Cập nhật thông tin địa chỉ người gửi"
+                title="Cập nhật thông tin địa chỉ người nhận"
                 name=""
                 content={""}
                 onRequestClose={() => false}
@@ -325,6 +371,7 @@ class ShipmentOrderAddressCom extends Component {
                         </div>
                     </div>
                 </div>
+
                 <div className="form-row">
                     <div className="form-group col-md-6">
                         <div className="form-row">
@@ -341,6 +388,7 @@ class ShipmentOrderAddressCom extends Component {
                                         isMulti={false}
                                         isSearchable={true}
                                         className={'select'}
+                                        placeholder="--Vui lòng chọn--"
                                     />
                                 </div>
                             </div>
@@ -361,6 +409,7 @@ class ShipmentOrderAddressCom extends Component {
                                         isMulti={false}
                                         isSearchable={true}
                                         className={'select'}
+                                        placeholder="--Vui lòng chọn--"
                                     />
                                 </div>
                             </div>
@@ -384,6 +433,7 @@ class ShipmentOrderAddressCom extends Component {
                                         isMulti={false}
                                         isSearchable={true}
                                         className={'select'}
+                                        placeholder="--Vui lòng chọn--"
                                     />
                                 </div>
                             </div>
@@ -441,9 +491,193 @@ class ShipmentOrderAddressCom extends Component {
                 </div>
 
                 <div className="form-row google-maps">
-                    <MapContainer SenderGeoLocation={this.state.ShipmentOrderEdit.SenderGeoLocation}
+                    <MapContainer
+                        SenderGeoLocation={this.state.ShipmentOrderEdit.SenderGeoLocation}
                         onChange={this.handleValueChangeGeoLocation.bind(this)}
-                        classStyle={style} classContainerStyle={containerStyle} />
+                        classStyle={style} classContainerStyle={containerStyle}
+                    />
+                    {/* <div id="map-container"></div> */}
+                </div>
+
+            </ModelContainer>
+        )
+    }
+
+    ShowModalSender() {
+        const Province = this.bindcombox(this.state.ProvinceLst, this.state.ShipmentOrderEdit.SenderProvinceID);
+        const District = this.bindcombox(this.state.DistrictLst, this.state.ShipmentOrderEdit.SenderDistrictID);
+        const Ward = this.bindcombox(this.state.WardLst, this.state.ShipmentOrderEdit.SenderWardID);
+
+        ModalManager.open(
+            <ModelContainer
+                title="Cập nhật thông tin địa chỉ người gửi"
+                name=""
+                content={""}
+                onRequestClose={() => false}
+                onChangeModal={this.handleUpdateAddressSender.bind(this)}
+            >
+                <div className="form-row">
+                    <div className="form-group col-md-6">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">Họ và tên:</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <input
+                                    type="text"
+                                    name="SenderFullName"
+                                    onChange={this.handleValueChange.bind(this)}
+                                    className="form-control form-control-sm"
+                                    value={this.state.ShipmentOrderEdit.SenderFullName}
+                                    placeholder="Họ và tên"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-group col-md-6">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">Số điện thoại:</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <input
+                                    type="text"
+                                    name="SenderPhoneNumber"
+                                    onChange={this.handleValueChange.bind(this)}
+                                    className="form-control form-control-sm"
+                                    value={this.state.ShipmentOrderEdit.SenderPhoneNumber}
+                                    placeholder="Số điện thoại người gửi"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="form-row">
+                    <div className="form-group col-md-6">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">Tỉnh/thành phố:</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <div className="form-group-input-select">
+                                    <Select
+                                        value={Province}
+                                        name={"SenderProvinceID"}
+                                        onChange={this.handleValueChangeProvince.bind(this)}
+                                        options={this.state.ProvinceLst}
+                                        isMulti={false}
+                                        isSearchable={true}
+                                        className={'select'}
+                                        placeholder="--Vui lòng chọn--"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-group col-md-6">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">Quận/huyện:</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <div className="form-group-input-select">
+                                    <Select
+                                        value={District}
+                                        name={"SenderDistrictID"}
+                                        onChange={this.handleValueChangeDistrict.bind(this)}
+                                        options={this.state.DistrictLst}
+                                        isMulti={false}
+                                        isSearchable={true}
+                                        className={'select'}
+                                        placeholder='--Vui lòng chọn--'
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="form-row">
+                    <div className="form-group col-md-6">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">Phường/xã:</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <div className="form-group-input-select">
+                                    <Select
+                                        value={Ward}
+                                        name={"SenderWardID"}
+                                        onChange={this.handleValueChangeWard.bind(this)}
+                                        options={this.state.WardLst}
+                                        isMulti={false}
+                                        isSearchable={true}
+                                        className={'select'}
+                                        placeholder="--Vui lòng chọn--"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-group col-md-6">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">Số nhà/đường:</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <input
+                                    name="SenderAddress"
+                                    onChange={this.handleValueChange.bind(this)}
+                                    value={this.state.ShipmentOrderEdit.SenderAddress}
+                                    className="form-control form-control-sm"
+                                    placeholder="Số điện thoại người gửi"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="form-row">
+                    <div className="form-group col-md-4">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">Tọa độ:</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <label className="col-form-label">{this.state.ShipmentOrderEdit.SenderGeoLocation}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">Khoảng cách:</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <label className="col-form-label">3Km</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">Thời gian:</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <label className="col-form-label">15 phút</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="form-row google-maps">
+                    <MapContainer
+                        SenderGeoLocation={this.state.ShipmentOrderEdit.SenderGeoLocation}
+                        onChange={this.handleValueChangeGeoLocation.bind(this)}
+                        classStyle={style} classContainerStyle={containerStyle}
+                    />
+                    {/* <div id="map-container"></div> */}
                 </div>
 
             </ModelContainer>
@@ -485,7 +719,7 @@ class ShipmentOrderAddressCom extends Component {
                                         <i className="fa fa-map-marker" aria-hidden="true"></i>
                                     </label>
                                 </div>
-                                <div className="form-group col-md-5">
+                                <div className="form-group col-md-8">
                                     <label className="col-form-label" >{this.state.ShipmentOrder.SenderFullAddress}</label>
                                     <Link className="mapslink" to="/Maps">Xem bản đồ</Link>
                                 </div>
@@ -495,7 +729,7 @@ class ShipmentOrderAddressCom extends Component {
                     <div className="card">
                         <div className="card-title">
                             <h4 className="title">Người nhận</h4>
-                            <button className="btn btnEditCard">chỉnh sửa</button>
+                            <button className="btn btnEditCard" onClick={this.handleShowModalReceiver.bind(this)}>chỉnh sửa</button>
                         </div>
                         <div className="card-body">
                             <div className="form-row">
@@ -522,7 +756,7 @@ class ShipmentOrderAddressCom extends Component {
                                         <i className="fa fa-map-marker" aria-hidden="true"></i>
                                     </label>
                                 </div>
-                                <div className="form-group col-md-5">
+                                <div className="form-group col-md-8">
                                     <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullAddress}</label>
                                     <Link className="mapslink" to="/Map">Xem bản đồ</Link>
                                 </div>
