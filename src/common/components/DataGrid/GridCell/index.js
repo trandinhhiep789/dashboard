@@ -11,7 +11,7 @@ export default class GridCell extends Component {
         this.handleRadioChange = this.handleRadioChange.bind(this);
         this.handleonClickEdit = this.handleonClickEdit.bind(this);
         this.handleonClickDelete = this.handleonClickDelete.bind(this);
-        
+
     }
 
     handleInputChange(e) {
@@ -42,12 +42,10 @@ export default class GridCell extends Component {
         this.props.onInsertClickEdit(elementdata, this.props.pkColumnName);
 
     }
-    handleonClickDelete(e)
-    {
+    handleonClickDelete(e) {
         const id = e.currentTarget.dataset.id;
-        if (this.props.onhandleonClickDelete != null)
-        {
-          this.props.onhandleonClickDelete(id);
+        if (this.props.onhandleonClickDelete != null) {
+            this.props.onhandleonClickDelete(id);
         }
 
     }
@@ -155,14 +153,31 @@ export default class GridCell extends Component {
                 control = <Link to={linkTo}>{linkText}</Link>;
                 break;
             case "edit":
-                return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.value} title="Edit"><i className="ti-pencil"></i></a>;
+                return <a
+                    title=""
+                    className="nav-link hover-primary"
+                    onClick={this.handleonClickEdit}
+                    data-id={this.props.value}
+                    title="Edit">
+                    <i className="ti-pencil"></i>
+                </a>;
 
             case "editnew":
                 return (
-                    <div>
-                        <Link to={linkTo}><i className="ti-pencil"></i></Link>
-                      <a title="" className="table-action hover-danger" onClick={this.handleonClickDelete} data-id={this.props.text}  title="Xóa"><i className="ti-trash"></i></a></div>
-                  );
+                    <div className="group-action">
+                        <Link to={linkTo}>
+                            <i className="ti-pencil"></i>
+                        </Link>
+                        <a
+                            title=""
+                            className="table-action hover-danger"
+                            onClick={this.handleonClickDelete}
+                            data-id={this.props.text}
+                            title="Xóa">
+                            <i className="ti-trash"></i>
+                        </a>
+                    </div>
+                );
             default:
                 control = <label>{text}</label>;
                 break;
