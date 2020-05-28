@@ -140,7 +140,7 @@ class InfoCoordinatorCom extends Component {
                         datasourcemember="ShipmentOrder_DeliverUserList"
                         validatonList={["Comborequired"]}
                     />
-                    <FormControl.ComboBox1
+                    <FormControl.ComboBoxPartner
                         name="CarrierPartnerID"
                         colspan="10"
                         labelcolspan="2"

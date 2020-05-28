@@ -53,8 +53,8 @@ class TextBox extends React.Component {
         if (this.props.classNameCustom != null) {
             formRowClassName += this.props.classNameCustom;
         }
-   
-        if (this.props.validationErrorMessage != ""&& this.props.validationErrorMessage != undefined) {
+
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
             className += " is-invalid";
 
             return (
@@ -339,7 +339,7 @@ class ComboBoxCom extends Component {
             star = '*'
         }
 
-        if (this.props.validationErrorMessage != ""&& this.props.validationErrorMessage != undefined) {
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
             className += " is-invalid";
             return (
                 <div className={formRowClassName} >
@@ -848,11 +848,11 @@ class ElementDatetimeCom extends Component {
 }
 const ElementDatetime = connect(null, null)(ElementDatetimeCom);
 
-class ComboBox1Com extends Component {
+class ComboBoxPartnerCom extends Component {
     constructor(props) {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
-        this.state = { Listoption: [], value: this.props.value, SelectedOption: {} }
+        this.state = { Listoption: [], SelectedOption: {} }
     }
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
@@ -926,7 +926,7 @@ class ComboBox1Com extends Component {
         if (this.props.rowspan != null) {
             formRowClassName = "form-row col-md-" + this.props.rowspan;
         }
-        
+
         const listOption = this.state.Listoption;
         let formGroupClassName = "form-group col-md-4";
         if (this.props.colspan != null) {
@@ -946,7 +946,6 @@ class ComboBox1Com extends Component {
         }
         const selectedOption = this.state.SelectedOption;
         if (this.props.validationErrorMessage != "") {
-            
             return (
                 <div className={formRowClassName} >
                     <div className={labelDivClassName}>
@@ -972,38 +971,12 @@ class ComboBox1Com extends Component {
                 </div>
             );
         }
-        else {
-            return (
-                <div className={formRowClassName} >
-                    <div className={labelDivClassName}>
-                        <label className="col-form-label 7">
-                            {this.props.label}<span className="text-danger"> {star}</span>
-                        </label>
-                    </div>
-                    <div className={formGroupClassName}>
-                        <div className="form-group-input-select">
-                            <Select
-                                value={selectedOption}
-                                name={this.props.name}
-                                ref={this.props.inputRef}
-                                onChange={this.handleValueChange}
-                                options={listOption}
-                                isMulti={isMultiSelect}
-                                isSearchable={true}
-                                placeholder={placeholder}
-                                className={className}
-                            />
-                        </div>
-                    </div>
-                </div>
-            );
-        }
     }
 }
 
 
-export const ComboBox1 = connect(mapStateToProps, mapDispatchToProps)(ComboBox1Com);
+export const ComboBoxPartner = connect(mapStateToProps, mapDispatchToProps)(ComboBoxPartnerCom);
 
 
-export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus, ElementDatetime, ComboBox1, ComboboxQTQHPX };
+export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus, ElementDatetime, ComboBoxPartner, ComboboxQTQHPX };
 
