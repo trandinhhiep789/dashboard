@@ -852,7 +852,7 @@ class ComboBoxPartnerCom extends Component {
     constructor(props) {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
-        this.state = { Listoption: [], SelectedOption: {} }
+        this.state = { Listoption: [], SelectedOption: [] }
     }
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
@@ -961,6 +961,7 @@ class ComboBoxPartnerCom extends Component {
                             ref={this.props.inputRef}
                             onChange={this.handleValueChange}
                             options={listOption}
+                            isDisabled={this.props.disabled}
                             isMulti={isMultiSelect}
                             isSearchable={true}
                             placeholder={placeholder}

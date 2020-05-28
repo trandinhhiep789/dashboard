@@ -16,13 +16,15 @@ class InfoCoordinatorCom extends Component {
         this.handleValueChange = this.handleValueChange.bind(this);
         this.handleValueChange1 = this.handleValueChange1.bind(this);
         this.handleOnValueChange = this.handleOnValueChange.bind(this);
-        
+
         this.handleShipWorkFlowInsert = this.handleShipWorkFlowInsert.bind(this);
 
 
         this.state = {
             ShipmentOrder: this.props.InfoCoordinator,
             validationErrorMessage: null,
+            validationErroDeliverUser: null,
+            validationErroCarrierPartner: null,
             ShipmentOrder_WorkFlow: {},
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -45,7 +47,7 @@ class InfoCoordinatorCom extends Component {
         ShipmentOrder_WorkFlow.ShipmentOrderStepID = value
         ShipmentOrder_WorkFlow.ShipmentOrderStepName = label
         ShipmentOrder_WorkFlow.Note = ""
-        this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
+        this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErroDeliverUser: "", validationErroCarrierPartner: "" }, () => {
             this.openViewStepModal();
         });
     }
@@ -58,9 +60,18 @@ class InfoCoordinatorCom extends Component {
         this.setState({ ShipmentOrder: ShipmentOrder })
     }
 
-    handleOnValueChange(name,value) {
+    handleOnValueChange(name, value) {
         let { ShipmentOrder } = this.state;
         ShipmentOrder[name] = value;
+        if (name == "CarrierPartnerID") {
+            if (parseInt(value) < 0) {
+                this.setState({ validationErroCarrierPartner: "Vui lòng chọn đối tác vận chuyển" });
+            }
+            else {
+                this.setState({ validationErroCarrierPartner: null });
+            }
+        }
+
         this.setState({ ShipmentOrder: ShipmentOrder })
     }
     handleValueChange1(e, selectedOption) {
@@ -75,8 +86,15 @@ class InfoCoordinatorCom extends Component {
                 });
             }
         }
+
         let { ShipmentOrder } = this.state;
         ShipmentOrder.ShipmentOrder_DeliverUserList = listMLObject;
+        if (ShipmentOrder.ShipmentOrder_DeliverUserList.length <= 0) {
+            this.setState({ validationErroDeliverUser: "Vui lòng chọn nhân viên giao" });
+        }
+        else {
+            this.setState({ validationErroDeliverUser: null });
+        }
         this.setState({ ShipmentOrder: ShipmentOrder })
         //this.setState({ ShipmentOrder_WorkFlow: listMLObject })
     }
@@ -98,16 +116,26 @@ class InfoCoordinatorCom extends Component {
 
 
     handleShipWorkFlowInsert() {
-        this.state.ShipmentOrder.UpdatedUser=this.props.AppInfo.LoginInfo.Username,
-        //    console.log("handleShipWorkFlowInsert",this.state.ShipmentOrder,this.state.ShipmentOrder.ShipmentOrder_DeliverUserList)
-        this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinator', this.state.ShipmentOrder).then((apiResult) => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.Message);
-            if (!apiResult.IsError) {
-                
-            }
-        });
-   
+        let { ShipmentOrder, validationErroDeliverUser, validationErroCarrierPartner } = this.state;
+        if (ShipmentOrder.CarrierPartnerID == undefined || parseInt(ShipmentOrder.CarrierPartnerID) <= 0) {
+            validationErroCarrierPartner = "Vui lòng chọn đối tác vận chuyển"
+            this.setState({ validationErroCarrierPartner: validationErroCarrierPartner });
+            return false;
+        }
+        else if (ShipmentOrder.ShipmentOrder_DeliverUserList == undefined || ShipmentOrder.ShipmentOrder_DeliverUserList.length <= 0) {
+            validationErroDeliverUser = "Vui lòng chọn nhân viên giao"
+            this.setState({ validationErroDeliverUser: validationErroDeliverUser });
+            return false;
+        }
+        else {
+            this.state.ShipmentOrder.UpdatedUser = this.props.AppInfo.LoginInfo.Username,
+                this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinator', this.state.ShipmentOrder).then((apiResult) => {
+                    this.setState({ IsCallAPIError: apiResult.IsError });
+                    this.showMessage(apiResult.Message);
+                    if (!apiResult.IsError) {
+                    }
+                });
+        }
     }
     render() {
         let listOption = [];
@@ -139,6 +167,7 @@ class InfoCoordinatorCom extends Component {
                         listoption={[]}
                         datasourcemember="ShipmentOrder_DeliverUserList"
                         validatonList={["Comborequired"]}
+                        validationErrorMessage={this.state.validationErroDeliverUser}
                     />
                     <FormControl.ComboBoxPartner
                         name="CarrierPartnerID"
@@ -157,6 +186,8 @@ class InfoCoordinatorCom extends Component {
                         datasourcemember="CarrierPartnerID"
                         placeholder="---Vui lòng chọn---"
                         isMultiSelect={false}
+                        disabled={!this.props.IsCoordinator}
+                        validationErrorMessage={this.state.validationErroCarrierPartner}
                     />
                     <div className="form-row">
                         <div className="form-group col-md-2">
@@ -165,6 +196,7 @@ class InfoCoordinatorCom extends Component {
                         <div className="form-group col-md-10">
                             <input key={"CoordinatorNote"} type="text" name="CoordinatorNote"
                                 value={this.state.ShipmentOrder.CoordinatorNote}
+                                disabled={!this.props.IsCoordinator}
                                 onChange={this.handleValueChange}
                                 className="form-control form-control-sm"
                                 placeholder={"ghi chú"}
@@ -173,7 +205,10 @@ class InfoCoordinatorCom extends Component {
                     </div>
                     <div className="form-row">
                         <div className="form-group form-group-btncustom">
-                            <button className="btn btnEditCard" type="submit" onClick={this.handleShipWorkFlowInsert}> Cập nhật</button>
+                        {
+                            this.props.IsCoordinator == true ?  <button className="btn btnEditCard" type="submit" onClick={this.handleShipWorkFlowInsert}> Cập nhật</button> : <button className="btn btnEditCard" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit"> Cập nhật</span></button>
+                        }
+                           
                         </div>
 
                     </div>
