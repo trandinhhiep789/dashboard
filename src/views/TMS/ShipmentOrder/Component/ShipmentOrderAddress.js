@@ -154,6 +154,7 @@ class ShipmentOrderAddressCom extends Component {
             this.ShowModalSender();
         });
     }
+
     ShowModalSender() {
         const Province = this.bindcombox(this.state.ProvinceLst, this.state.ShipmentOrderEdit.SenderProvinceID);
         const District = this.bindcombox(this.state.DistrictLst, this.state.ShipmentOrderEdit.SenderDistrictID);
@@ -164,7 +165,7 @@ class ShipmentOrderAddressCom extends Component {
                 name=""
                 content={""}
                 onRequestClose={() => false}
-                IsButton={!this.CheckPermissionUser(3)||!this.CheckPermissionUser(4)}
+                IsButton={!this.CheckPermissionUser(3) || !this.CheckPermissionUser(4)}
                 onChangeModal={this.handleUpdateAddressSender.bind(this)}
             >
                 <div className="form-row">
@@ -382,16 +383,16 @@ class ShipmentOrderAddressCom extends Component {
             const ObjectNameSenderAddress = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập số nhà/đường" } };
             formData = Object.assign({}, formData, { ["SenderAddress"]: ObjectNameSenderAddress });
         }
-        if (this.checkInputName(formData) != "")
-        {
+        if (this.checkInputName(formData) != "") {
             this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
                 this.ShowModalSender();
             });
         }
-        else
-        {
+        else {
             ShipmentOrderEdit.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
             this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
+                console.log("UpdateShipmentOrderAddress", apiResult)
+                this.addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
                     ModalManager.close();
                 }
@@ -399,7 +400,7 @@ class ShipmentOrderAddressCom extends Component {
         }
     }
 
-    
+
     addNotification(message1, IsError) {
         if (!IsError) {
             this.setState({
@@ -741,89 +742,126 @@ class ShipmentOrderAddressCom extends Component {
     }
 
 
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
 
     render() {
-        <ReactNotification ref={this.notificationDOMRef} />
+
         return (
-            <div className="card">
-                <h4 className="card-title"><strong>Địa chỉ</strong></h4>
-                <div className="card-body">
-                    <div className="card">
-                        <div className="card-title">
-                            <h4 className="title">Ngưởi gửi</h4>
-                            <button className="btn btnEditCard" onClick={this.handleShowModalSender.bind(this)}>chỉnh sửa</button>
-                        </div>
-                        <div className="card-body">
-                            <div className="form-row">
-                                <div className="form-group col-md-1">
-                                    <label className="col-form-label icon">
-                                        <i className="fa fa-user" aria-hidden="true"></i>
-                                    </label>
+            <React.Fragment>
+                <ReactNotification ref={this.notificationDOMRef} />
+                <div className="card">
+                    <h4 className="card-title"><strong>Địa chỉ</strong></h4>
+                    <div className="card-body">
+                        <div className="card">
+                            <div className="card-title">
+                                <h4 className="title">Ngưởi gửi</h4>
+                                <button className="btn btnEditCard" onClick={this.handleShowModalSender.bind(this)}>chỉnh sửa</button>
+                            </div>
+                            <div className="card-body">
+                                <div className="form-row">
+                                    <div className="form-group col-md-1">
+                                        <label className="col-form-label icon">
+                                            <i className="fa fa-user" aria-hidden="true"></i>
+                                        </label>
+                                    </div>
+                                    <div className="form-group col-md-5">
+                                        <label className="col-form-label" >{this.state.ShipmentOrder.SenderFullName}</label>
+                                    </div>
+                                    <div className="form-group col-md-1">
+                                        <label className="col-form-label icon">
+                                            <i className="fa fa-mobile " aria-hidden="true"></i>
+                                        </label>
+                                    </div>
+                                    <div className="form-group col-md-5">
+                                        <label className="col-form-label">{this.state.ShipmentOrder.SenderPhoneNumber}</label>
+                                    </div>
                                 </div>
-                                <div className="form-group col-md-5">
-                                    <label className="col-form-label" >{this.state.ShipmentOrder.SenderFullName}</label>
-                                </div>
-                                <div className="form-group col-md-1">
-                                    <label className="col-form-label icon">
-                                        <i className="fa fa-mobile " aria-hidden="true"></i>
-                                    </label>
-                                </div>
-                                <div className="form-group col-md-5">
-                                    <label className="col-form-label">{this.state.ShipmentOrder.SenderPhoneNumber}</label>
+                                <div className="form-row">
+                                    <div className="form-group col-md-1">
+                                        <label className="col-form-label icon">
+                                            <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                        </label>
+                                    </div>
+                                    <div className="form-group col-md-8">
+                                        <label className="col-form-label" >{this.state.ShipmentOrder.SenderFullAddress}</label>
+                                        <Link className="mapslink" to="/Maps">Xem bản đồ</Link>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-1">
-                                    <label className="col-form-label icon">
-                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                    </label>
-                                </div>
-                                <div className="form-group col-md-8">
-                                    <label className="col-form-label" >{this.state.ShipmentOrder.SenderFullAddress}</label>
-                                    <Link className="mapslink" to="/Maps">Xem bản đồ</Link>
-                                </div>
-                            </div>
                         </div>
-                    </div>
-                    <div className="card">
-                        <div className="card-title">
-                            <h4 className="title">Người nhận</h4>
-                            <button className="btn btnEditCard" onClick={this.handleShowModalReceiver.bind(this)}>chỉnh sửa</button>
-                        </div>
-                        <div className="card-body">
-                            <div className="form-row">
-                                <div className="form-group col-md-1">
-                                    <label className="col-form-label icon">
-                                        <i className="fa fa-user" aria-hidden="true"></i>
-                                    </label>
-                                </div>
-                                <div className="form-group col-md-5">
-                                    <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullName}</label>
-                                </div>
-                                <div className="form-group col-md-1">
-                                    <label className="col-form-label icon">
-                                        <i className="fa fa-mobile " aria-hidden="true"></i>
-                                    </label>
-                                </div>
-                                <div className="form-group col-md-5">
-                                    <label className="col-form-label">{this.state.ShipmentOrder.ReceiverPhoneNumber}</label>
-                                </div>
+                        <div className="card">
+                            <div className="card-title">
+                                <h4 className="title">Người nhận</h4>
+                                <button className="btn btnEditCard" onClick={this.handleShowModalReceiver.bind(this)}>chỉnh sửa</button>
                             </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-1">
-                                    <label className="col-form-label icon">
-                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                    </label>
+                            <div className="card-body">
+                                <div className="form-row">
+                                    <div className="form-group col-md-1">
+                                        <label className="col-form-label icon">
+                                            <i className="fa fa-user" aria-hidden="true"></i>
+                                        </label>
+                                    </div>
+                                    <div className="form-group col-md-5">
+                                        <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullName}</label>
+                                    </div>
+                                    <div className="form-group col-md-1">
+                                        <label className="col-form-label icon">
+                                            <i className="fa fa-mobile " aria-hidden="true"></i>
+                                        </label>
+                                    </div>
+                                    <div className="form-group col-md-5">
+                                        <label className="col-form-label">{this.state.ShipmentOrder.ReceiverPhoneNumber}</label>
+                                    </div>
                                 </div>
-                                <div className="form-group col-md-8">
-                                    <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullAddress}</label>
-                                    <Link className="mapslink" to="/Map">Xem bản đồ</Link>
+                                <div className="form-row">
+                                    <div className="form-group col-md-1">
+                                        <label className="col-form-label icon">
+                                            <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                        </label>
+                                    </div>
+                                    <div className="form-group col-md-8">
+                                        <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullAddress}</label>
+                                        <Link className="mapslink" to="/Map">Xem bản đồ</Link>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </React.Fragment>
+
         );
     }
 }
