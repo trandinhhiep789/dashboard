@@ -10,15 +10,14 @@ export class MapContainer extends Component {
     }
 
     componentDidMount() {
-        console.log('MapContainer', this.props);
         const values = this.props.SenderGeoLocation.split(",")
         const v1 = parseFloat(values[0])
         const v2 = parseFloat(values[1])
         const mapContainer = document.getElementById("map-container");
         const mapProp = {
-            center: new vbd.LatLng(10.811778780317383, 106.7158178333029),
+            center: new vbd.LatLng(v1, v2),
             maxZoom: 19,
-            zoom: 18,
+            zoom: 15,
             minZoom: 2,
             registerKey: "7f65a9df-4910-434d-b2ce-5cf7d783ad8b",
             scaleControlOptions: { showScale: true },
@@ -47,12 +46,12 @@ export class MapContainer extends Component {
     }
 
     onHandleClick = (e) => {
-        console.log('onHandleClick', e, this.state.map,  this.state.marker);
-        // marker.setPosition(e.LatLng);
+       if(this.props.isGeoLocation)
+       {
         this.state.marker.setPosition(new vbd.LatLng(e.LatLng.Latitude, e.LatLng.Longitude))
-        // marker.setMap(this.state.map);
-
-        this.props.onChange(e.LatLng.Latitude, e.LatLng.Longitude)
+        this.props.onChange(this.props.name,e.LatLng.Latitude, e.LatLng.Longitude)
+       }
+       
     }
 
     componentWillReceiveProps(nextProps) {

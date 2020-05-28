@@ -46,7 +46,8 @@ class ShipmentOrderAddressCom extends Component {
             District: [],
             Ward: [],
             dataOrderAddressSender: {},
-            FormDataSenderLst: {}
+            FormDataSenderLst: {},
+            SenderGeoLocation:this.props.ShipmentOrderAddress.SenderGeoLocation
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -88,8 +89,12 @@ class ShipmentOrderAddressCom extends Component {
         });
     }
 
-    handleValueChangeGeoLocation(lat, lng) {
-        let { ShipmentOrderEdit } = this.state;
+    handleValueChangeGeoLocation(name,lat, lng) {
+        let { SenderGeoLocation } = this.state;
+        SenderGeoLocation = lat+","+lng;
+        this.setState({ SenderGeoLocation: lat+","+lng}, () => {
+            this.ShowModalSender();
+        });
     }
     handleValueChangeProvince(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
@@ -306,7 +311,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Tọa độ:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <label className="col-form-label">{this.state.ShipmentOrderEdit.SenderGeoLocation}</label>
+                                <label className="col-form-label">{this.state.SenderGeoLocation}</label>
                             </div>
                         </div>
                     </div>
@@ -336,6 +341,8 @@ class ShipmentOrderAddressCom extends Component {
                     <MapContainer
                         SenderGeoLocation={this.state.ShipmentOrderEdit.SenderGeoLocation}
                         onChange={this.handleValueChangeGeoLocation.bind(this)}
+                        isGeoLocation={this.CheckPermissionUser(4)}
+                        name={"SenderGeoLocation"}
                         classStyle={style} classContainerStyle={containerStyle}
                     />
                 </div>
@@ -391,6 +398,7 @@ class ShipmentOrderAddressCom extends Component {
         else
         {
             ShipmentOrderEdit.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+            ShipmentOrderEdit.SenderGeoLocation= this.state.SenderGeoLocation;
             this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
                 if (!apiResult.IsError) {
                     ModalManager.close();
