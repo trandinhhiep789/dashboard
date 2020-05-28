@@ -1,40 +1,38 @@
 export const APIHostName = "PIMAPI";
 export const SearchAPIPath = "api/InstallMaterial/Search";
 export const LoadAPIPath = "api/InstallMaterial/Load";
-export const AddAPIPath = "api/InstallMaterial/Add";
-export const UpdateAPIPath = "api/InstallMaterial/Update";
-export const DeleteAPIPath = "api/InstallMaterial/Delete";
+export const AddAPIPath = "api/InstallMaterial/InsertInstallMaterial";
+export const UpdateAPIPath = "api/InstallMaterial/UpdateInstallMaterial";
+export const DeleteAPIPath = "api/InstallMaterial/DeleteList";
 export const UpdateOrderAPIPath = "api/InstallMaterial/UpdateOrder";
 export const BackLink = "/InstallMaterial";
 export const AddLink = "/InstallMaterial/add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "InstallMaterialID";
+export const SearchMcRoleAPIPath = "api/McRole/Search";
 
-export const InitSearchParams = [
-    {
-        SearchKey: "@Keyword",
-        SearchValue: ""
-    },
-    {
-        SearchKey: "@InstallMaterialGroupID",
-        SearchValue: -1
-    }
-];
 export const PagePath = [
-    { Link: "/home/", Title: "Trang chủ" },
-    { Link: "", Title: "Danh sách quyền nhà cung cấp" }
+    { Link: "/", Title: "Trang chủ" },
+    { Link: "/InstallMaterial", Title: "Danh sách nhóm sản phẩm cần vật tư lắp đặt" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/InstallMaterial", Title: "Danh sách quyền nhà cung cấp" },
+    { Link: "/InstallMaterial", Title: "Danh sách nhóm sản phẩm cần vật tư lắp đặt" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/InstallMaterial", Title: "Danh sách quyền nhà cung cấpn" },
+    { Link: "/InstallMaterial", Title: "Danh sách nhóm sản phẩm cần vật tư lắp đặt" },
     { Link: "", Title: "Thêm" }
+];
+
+export const InitSearchParams = [
+    {
+        SearchKey: "@Keyword",
+        SearchValue: ""
+    }
 ];
 
 export const SearchElementList = [
@@ -45,33 +43,8 @@ export const SearchElementList = [
         value: "",
         placeholder: "",
         icon: "",
-        listoption: {}
-    },
-    {
-        type: "select",
-        name: "txtInstallMaterialGroupID",
-        label: "Nhóm quyền:",
-        value: -1,
         listoption: [],
-        css: "col-md-4",
-        DataSourceMember: "InstallMaterialGroupID",
-        isCategory: true,
-        readonly: false,
-        validatonList: [],
-        IsAutoLoadItemFromCache: false,
-        LoadItemCacheKeyID: "",
-        ValueMember: "",
-        NameMember: ""
-    }
-];
-export const SearchMLObjectDefinition = [
-    {
-        SearchKey: "@Keyword",
-        SearchValue: ""
-    },
-    {
-        SearchKey: "@InstallMaterialGroupID",
-        SearchValue: -1
+        validatonList: []
     }
 ];
 
@@ -79,58 +52,120 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtInstallMaterialID",
-        label: "mã quyền",
+        label: "mã nhóm vật tư lắp đặt",
         value: "",
-        maxSize: "400",
+        maxSize: "20",
         placeholder: "",
         icon: "",
-        listoption: {},
+        listoption: [],
         DataSourceMember: "InstallMaterialID",
         readonly: false,
-        validatonList: ["required","touppercase"]
-    },
-    {
-        type: "select",
-        name: "selInstallMaterialGroupID",
-        label: "Mã nhóm quyền:",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: [{value: -1, label: "--Vui lòng chọn--" }],
-        DataSourceMember: "InstallMaterialGroupID",
-        readonly: false,
-        validatonList: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.InstallMaterialGROUP",
-        ValueMember: "InstallMaterialGroupID",
-        NameMember: "InstallMaterialGroupName"
+        validatonList: ["required"]
     },
     {
         type: "text",
         name: "txtInstallMaterialName",
-        label: "tên quyền",
+        label: "tên nhóm vật tư lắp đặt",
         value: "",
-        maxSize: "800",
+        maxSize: "20",
         placeholder: "",
         icon: "",
-        listoption: {},
+        listoption: [],
         DataSourceMember: "InstallMaterialName",
         readonly: false,
         validatonList: ["required"]
     },
     {
-        type: "textarea",
-        name: "txtDescription",
-        label: "Mô tả",
-        value: "",
-        maxSize: "1900",
+        type: "select",
+        name: "cbShipmentOrderTypeID",
+        label: "loại yêu cầu vận chuyển",
+        value: -1,
         placeholder: "",
         icon: "",
+        listoption: [],
+        DataSourceMember: "ShipmentOrderTypeID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
+        ValueMember: "ShipmentOrderTypeID",
+        NameMember: "ShipmentOrderTypeName"
+    },
+    {
+        type: "select",
+        name: "cbPartnerID",
+        label: "đối tác vận chuyển",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "PartnerID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
+        ValueMember: "PartnerID",
+        NameMember: "PartnerName"
+    },
+    {
+        type: "select",
+        name: "cbSubGroupID",
+        label: "Nhóm hàng",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "SubGroupID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SUBGROUP",
+        ValueMember: "SubGroupID",
+        NameMember: "SubGroupName"
+    },
+    {
+        type: "select",
+        name: "cbTechspecsID",
+        label: "Thông số kỹ thuật",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "TechspecsID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECS",
+        ValueMember: "TechSpecsID",
+        NameMember: "TechSpecsName"
+    },
+    {
+        type: "select",
+        name: "cbTechspecsValueID",
+        label: "giá trị thông số kỹ thuật",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "TechspecsValueID",
+        readonly: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECSVALUE",
+        ValueMember: "TechSpecsValueID",
+        NameMember: "Value"
+    },
+    {
+        type: "textarea",
+        name: "txtDescription",
+        label: "Mô tả:",
+        value: "",
+        placeholder: "Mô tả",
+        maxSize: "1900",
+        icon: "",
         rows: "6",
-        listoption: {},
+        listoption: [],
         DataSourceMember: "Description",
         readonly: false,
-        validatonList: []
     },
     {
         type: "checkbox",
@@ -139,22 +174,18 @@ export const AddElementList = [
         value: true,
         placeholder: "",
         icon: "",
-        listoption: {},
+        listoption: [],
         readonly: false,
-        DataSourceMember: "IsActived",
-        validatonList: []
     },
     {
         type: "checkbox",
         name: "chkIsSystem",
         label: "Hệ thống:",
-        value: false,
+        value: "",
         placeholder: "",
         icon: "",
-        listoption: {},
+        listoption: [],
         readonly: false,
-        DataSourceMember: "IsSystem",
-        validatonList: []
     }
 ];
 
@@ -162,70 +193,120 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtInstallMaterialID",
-        label: "Mã quyền",
+        label: "mã nhóm vật tư lắp đặt",
         value: "",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "InstallMaterialID",
-        readonly: true,
-        validatonList: ["required","touppercase"]
-    },
-    {
-        type: "select",
-        name: "selInstallMaterialGroupID",
-        label: "Mã nhóm quyền:",
-        value: "",
+        maxSize: "20",
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "InstallMaterialGroupID",
+        DataSourceMember: "InstallMaterialID",
         readonly: false,
-        validatonList: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.InstallMaterialGROUP",
-        ValueMember: "InstallMaterialGroupID",
-        NameMember: "InstallMaterialGroupName"
+        validatonList: ["required"]
     },
     {
         type: "text",
         name: "txtInstallMaterialName",
-        label: "Tên quyền",
+        label: "tên nhóm vật tư lắp đặt",
         value: "",
-        maxSize: "800",
+        maxSize: "20",
         placeholder: "",
         icon: "",
-        listoption: {},
+        listoption: [],
         DataSourceMember: "InstallMaterialName",
         readonly: false,
         validatonList: ["required"]
     },
     {
-        type: "textarea",
-        name: "txtDescription",
-        label: "Mô tả",
+        type: "select",
+        name: "cbShipmentOrderTypeID",
+        label: "loại yêu cầu vận chuyển",
         value: "",
-        maxSize: "2000",
         placeholder: "",
         icon: "",
-        rows: "6",
-        listoption: {},
-        DataSourceMember: "Description",
+        listoption: [],
+        DataSourceMember: "ShipmentOrderTypeID",
         readonly: false,
-        validatonList: []
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
+        ValueMember: "ShipmentOrderTypeID",
+        NameMember: "ShipmentOrderTypeName"
     },
     {
-        type: "numeric",
-        name: "txtOrderIndex",
-        label: "Thứ tự hiển thị:",
-        value: 0,
-        maxSize: "9",
+        type: "select",
+        name: "cbPartnerID",
+        label: "đối tác vận chuyển",
+        value: "",
         placeholder: "",
         icon: "",
-        listoption: {},
-        DataSourceMember: "OrderIndex",
+        listoption: [],
+        DataSourceMember: "PartnerID",
         readonly: false,
-        validatonList: []
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
+        ValueMember: "PartnerID",
+        NameMember: "PartnerName"
+    },
+    {
+        type: "select",
+        name: "cbSubGroupID",
+        label: "Nhóm hàng",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "SubGroupID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SUBGROUP",
+        ValueMember: "SubGroupID",
+        NameMember: "SubGroupName"
+    },
+    {
+        type: "select",
+        name: "cbTechspecsID",
+        label: "Thông số kỹ thuật",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "TechspecsID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECS",
+        ValueMember: "TechSpecsID",
+        NameMember: "TechSpecsName"
+    },
+    {
+        type: "select",
+        name: "cbTechspecsValueID",
+        label: "giá trị thông số kỹ thuật",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "TechspecsValueID",
+        readonly: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECSVALUE",
+        ValueMember: "TechSpecsValueID",
+        NameMember: "Value"
+    },
+    {
+        type: "textarea",
+        name: "txtDescription",
+        label: "Mô tả:",
+        value: "",
+        placeholder: "Mô tả",
+        maxSize: "2000",
+        icon: "",
+        rows: "6",
+        listoption: [],
+        DataSourceMember: "Description",
+        readonly: false,
     },
     {
         type: "checkbox",
@@ -234,10 +315,9 @@ export const EditElementList = [
         value: "",
         placeholder: "",
         icon: "",
-        listoption: {},
+        listoption: [],
         readonly: false,
         DataSourceMember: "IsActived",
-        validatonList: []
     },
     {
         type: "checkbox",
@@ -246,13 +326,19 @@ export const EditElementList = [
         value: "",
         placeholder: "",
         icon: "",
-        listoption: {},
+        listoption: [],
         readonly: false,
         DataSourceMember: "IsSystem",
-        validatonList: []
     }
 ];
 
+export const SearchMLObjectDefinition = [
+    {
+        Name: "Keyword",
+        DefaultValue: "",
+        BindControlName: "txtKeyword"
+    }
+];
 
 export const MLObjectDefinition = [
     {
@@ -262,35 +348,46 @@ export const MLObjectDefinition = [
         DataSourceMember: "InstallMaterialID"
     },
     {
-        Name: "InstallMaterialGroupID",
-        DefaultValue: "",
-        BindControlName: "selInstallMaterialGroupID",
-        DataSourceMember: "InstallMaterialGroupID"
-    },
-    {
-        Name: "InstallMaterialGroupName",
-        DefaultValue: "",
-        BindControlName: "txtInstallMaterialGroupName",
-        DataSourceMember: "InstallMaterialGroupName"
-    },
-    {
         Name: "InstallMaterialName",
         DefaultValue: "",
         BindControlName: "txtInstallMaterialName",
         DataSourceMember: "InstallMaterialName"
     },
-
+    {
+        Name: "ShipmentOrderTypeID",
+        DefaultValue: "",
+        BindControlName: "cbShipmentOrderTypeID",
+        DataSourceMember: "ShipmentOrderTypeID"
+    },
+    {
+        Name: "PartnerID",
+        DefaultValue: "",
+        BindControlName: "cbPartnerID",
+        DataSourceMember: "PartnerID"
+    },
+    {
+        Name: "SubGroupID",
+        DefaultValue: "",
+        BindControlName: "cbSubGroupID",
+        DataSourceMember: "SubGroupID"
+    },
+    {
+        Name: "TechspecsID",
+        DefaultValue: "",
+        BindControlName: "cbTechspecsID",
+        DataSourceMember: "TechspecsID"
+    },
+    {
+        Name: "TechspecsValueID",
+        DefaultValue: "",
+        BindControlName: "cbTechspecsValueID",
+        DataSourceMember: "TechspecsValueID"
+    },
     {
         Name: "Description",
         DefaultValue: "",
         BindControlName: "txtDescription",
         DataSourceMember: "Description"
-    },
-    {
-        Name: "OrderIndex",
-        DefaultValue: "0",
-        BindControlName: "txtOrderIndex",
-        DataSourceMember: "OrderIndex"
     },
     {
         Name: "IsActived",
@@ -305,12 +402,6 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsSystem"
     },
     {
-        Name: "CreatedUserFullName",
-        DefaultValue: "administrator",
-        BindControlName: "",
-        DataSourceMember: "CreatedUserFullName"
-    },
-    {
         Name: "CreatedUser",
         DefaultValue: "administrator",
         BindControlName: "",
@@ -323,11 +414,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "UpdatedUser"
     },
     {
-        Name: "LoginLogID",
-        DefaultValue: "",
-        BindControlName: "",
-        DataSourceMember: ""
+        Name: "InstallMaterial_ProductList",
+        DefaultValue: {},
+        BindControlName: "InstallMaterial_ProductList",
+        DataSourceMember: "InstallMaterial_ProductList"
     }
+
 ];
 
 export const DataGridColumnList = [
@@ -336,28 +428,35 @@ export const DataGridColumnList = [
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "InstallMaterialID",
-        Width: 60
+        Width: 70
     },
     {
         Name: "InstallMaterialID",
         Type: "text",
-        Caption: "Mã  quyền",
+        Caption: "Mã nhóm vật tư lắp đặt",
         DataSourceMember: "InstallMaterialID",
-        Width: 100
+        Width: 80
     },
     {
         Name: "InstallMaterialName",
         Type: "text",
-        Caption: "Tên quyền",
+        Caption: "Tên nhóm vật tư lắp đặt",
         DataSourceMember: "InstallMaterialName",
-        Width: 150
+        Width: 380
     },
     {
-        Name: "InstallMaterialGroupName",
+        Name: "PartnerName",
         Type: "text",
-        Caption: "Tên nhóm quyền",
-        DataSourceMember: "InstallMaterialGroupName",
-        Width: 150
+        Caption: "Đối tác",
+        DataSourceMember: "PartnerName",
+        Width: 200
+    },
+    {
+        Name: "SubGroupName",
+        Type: "text",
+        Caption: "Nhóm hàng",
+        DataSourceMember: "SubGroupName",
+        Width: 200
     },
     {
         Name: "IsActived",
@@ -367,6 +466,13 @@ export const DataGridColumnList = [
         Width: 80
     },
     {
+        Name: "CreatedDate",
+        Type: "date",
+        Caption: "Ngày tạo",
+        DataSourceMember: "CreatedDate",
+        Width: 100
+    },
+    {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
@@ -374,5 +480,74 @@ export const DataGridColumnList = [
         Width: 80,
         Link: "/InstallMaterial/edit/",
         LinkText: "Chỉnh sửa"
+    }
+]
+    
+
+export const GridMLMcRoleDefinition = [
+
+    {
+        Name: "ProductID",
+        DefaultValue: "",
+        BindControlName: "ProductID",
+        DataSourceMember: "ProductID"
+    },
+    {
+        Name: "IsFrequentlyUse",
+        DefaultValue: "",
+        BindControlName: "IsFrequentlyUse",
+        DataSourceMember: "IsFrequentlyUse"
+    },
+    {
+        Name: "Note",
+        DefaultValue: "",
+        BindControlName: "Note",
+        DataSourceMember: "Note"
+    },
+    {
+        Name: "IsActived",
+        DefaultValue: true,
+        BindControlName: "IsActived",
+        DataSourceMember: "IsActived"
+    }
+];
+export const InputMcRoleColumnList = [
+    {
+        Name: "ProductID",
+        Type: "textbox",
+        Caption: "Mã sản phẩm",
+        DataSourceMember: "ProductID",
+        Width: 200,
+        validatonList: ["required"]
+    }
+    ,
+    {
+        Name: "IsFrequentlyUse",
+        Type: "checkbox",
+        Caption: "Là vật tư thường sử dụng",
+        DataSourceMember: "IsFrequentlyUse",
+        Width: 70,
+    },
+    {
+        Name: "Note",
+        Type: "textbox",
+        Caption: "Ghi chú",
+        DataSourceMember: "Note",
+        Width: 300,
+    },
+    {
+        Name: "IsActived",
+        Type: "checkbox",
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived",
+        Width: 70
+    },
+    {
+        Name: "Action",
+        Type: "editnew",
+        Caption: "Tác vụ",
+        DataSourceMember: "ArticleID",
+        Width: 70,
+        iputpop: false
     }
 ];
