@@ -45,38 +45,17 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     componentDidMount() {
-
-
-        // const values = this.state.ShipmentOrderEdit.SenderGeoLocation.split(",")
-        // const v1 = parseFloat(values[0])
-        // const v2 = parseFloat(values[1])
-
-
-        // vbd.event.addListener(map, 'click', function (e) {
-        //     //  this.SenderGeoLocation(e.LatLng.Latitude, e.LatLng.Longitude);
-        //     console.log('this.postData()', e.LatLng.Latitude, e.LatLng.Longitude);
-        //     const mapProp1 = {
-        //         center: new vbd.LatLng(e.LatLng.Latitude, e.LatLng.Longitude),
-        //         maxZoom: 19,
-        //         zoom: 18,
-        //         minZoom: 2,
-        //         registerKey: "7f65a9df-4910-434d-b2ce-5cf7d783ad8b",
-        //         scaleControlOptions: { showScale: true },
-        //         zoomControl: true
-        //     };
-
-        //     let map1 = new vbd.Map(mapContainer, mapProp1);
-        //     var position1 = map1.getCenter()
-        //     var marker = new vbd.Marker({
-        //         position: position1
-        //     });
-
-        //     marker.setMap(map1);
-
-        // });
-
         this.initCombobox();
         this.setValueCombobox();
+    }
+
+    CheckPermissionUser(id) {
+        if (this.state.ShipmentOrder.CurrentStepPermissionList && this.state.ShipmentOrder.CurrentStepPermissionList.length > 0) {
+            if (this.state.ShipmentOrder.CurrentStepPermissionList.some(a => a.ShipmentOrderPermissionID === id)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     handleValueChange(e) {
@@ -92,13 +71,7 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     handleValueChangeGeoLocation(lat, lng) {
-        console.log('handleValueChangeGeoLocation', lat, lng)
         let { ShipmentOrderEdit } = this.state;
-        // ShipmentOrderEdit.SenderGeoLocation = `"${lat},${lng}"`;
-        // console.log(ShipmentOrderEdit.SenderGeoLocation )
-        // this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
-        //     this.ShowModalSender();
-        // });
     }
 
     handleValueChangeProvince(selectedOption) {
@@ -148,61 +121,6 @@ class ShipmentOrderAddressCom extends Component {
 
         return values;
     }
-
-    // initCombobox() {
-    //     let listoption = [];
-    //     // tỉnh thành phố
-    //     this.props.callGetCache(ERPCOMMONCACHE_PROVINCE).then((result) => {
-    //         listoption = [{ value: -1, label: "--Vui lòng chọn--" }];
-    //         if (!result.IsError && result.ResultObject.CacheData != null) {
-    //             result.ResultObject.CacheData.map((cacheItem) => {
-    //                 listoption.push({ value: cacheItem['ProvinceID'], label: cacheItem['ProvinceName'] });
-    //             }
-    //             );
-    //         }
-    //         this.setState({
-    //             ProvinceLst: listoption
-    //         });
-    //     });
-
-
-    //     let listoptionDISTRICT = [];
-    //     // quận huyện
-    //     this.props.callGetCache(ERPCOMMONCACHE_DISTRICT).then((result) => {
-    //         if (!result.IsError && result.ResultObject.CacheData != null) {
-    //             listoptionDISTRICT = [{ value: -1, label: "--Vui lòng chọn--" }];
-    //             if (!result.IsError && result.ResultObject.CacheData != null) {
-    //                 result.ResultObject.CacheData.map((cacheItem) => {
-    //                     listoptionDISTRICT.push({ value: cacheItem['DistrictID'], label: cacheItem['DistrictName'] });
-    //                 }
-    //                 );
-    //             }
-    //             this.setState({
-    //                 DistrictLst: listoptionDISTRICT
-    //             });
-    //         }
-    //     });
-
-    //     let listoptionWARD = [];
-    //     // phường xã
-    //     this.props.callGetCache(ERPCOMMONCACHE_WARD).then((result) => {
-    //         if (!result.IsError && result.ResultObject.CacheData != null) {
-    //             //console.log("FormElement listOption: ", listOption)
-    //             listoptionWARD = [{ value: -1, label: "--Vui lòng chọn--" }];
-    //             if (!result.IsError && result.ResultObject.CacheData != null) {
-    //                 result.ResultObject.CacheData.map((cacheItem) => {
-    //                     listoptionWARD.push({ value: cacheItem['DistrictID'], label: cacheItem['DistrictName'] });
-    //                 }
-    //                 );
-    //             }
-    //             this.setState({
-    //                 WardLst: listoptionWARD
-    //             });
-    //         }
-    //     });
-
-
-    // }
 
     getDataCombobox(data, valueMember, nameMember, conditionName, conditionValue) {
         let listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
@@ -308,7 +226,6 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     setValueCombobox(CountryID, ProvinceID, WardID) {
-
         let province = [{ value: -1, label: "--Vui lòng chọn--" }];
         let district = [{ value: -1, label: "--Vui lòng chọn--" }];
         let ward = [{ value: -1, label: "--Vui lòng chọn--" }];
@@ -527,6 +444,7 @@ class ShipmentOrderAddressCom extends Component {
                                     type="text"
                                     name="SenderFullName"
                                     onChange={this.handleValueChange.bind(this)}
+                                    disabled={!this.CheckPermissionUser(3)}
                                     className="form-control form-control-sm"
                                     value={this.state.ShipmentOrderEdit.SenderFullName}
                                     placeholder="Họ và tên"
@@ -544,6 +462,7 @@ class ShipmentOrderAddressCom extends Component {
                                     type="text"
                                     name="SenderPhoneNumber"
                                     onChange={this.handleValueChange.bind(this)}
+                                    disabled={!this.CheckPermissionUser(3)}
                                     className="form-control form-control-sm"
                                     value={this.state.ShipmentOrderEdit.SenderPhoneNumber}
                                     placeholder="Số điện thoại người gửi"
@@ -566,6 +485,7 @@ class ShipmentOrderAddressCom extends Component {
                                         name={"SenderProvinceID"}
                                         onChange={this.handleValueChangeProvince.bind(this)}
                                         options={this.state.ProvinceLst}
+                                        isDisabled={!this.CheckPermissionUser(4)}
                                         isMulti={false}
                                         isSearchable={true}
                                         className={'select'}
@@ -587,6 +507,7 @@ class ShipmentOrderAddressCom extends Component {
                                         name={"SenderDistrictID"}
                                         onChange={this.handleValueChangeDistrict.bind(this)}
                                         options={this.state.DistrictLst}
+                                        isDisabled={!this.CheckPermissionUser(4)}
                                         isMulti={false}
                                         isSearchable={true}
                                         className={'select'}
@@ -611,6 +532,7 @@ class ShipmentOrderAddressCom extends Component {
                                         name={"SenderWardID"}
                                         onChange={this.handleValueChangeWard.bind(this)}
                                         options={this.state.WardLst}
+                                        isDisabled={!this.CheckPermissionUser(4)}
                                         isMulti={false}
                                         isSearchable={true}
                                         className={'select'}
@@ -630,6 +552,7 @@ class ShipmentOrderAddressCom extends Component {
                                     name="SenderAddress"
                                     onChange={this.handleValueChange.bind(this)}
                                     value={this.state.ShipmentOrderEdit.SenderAddress}
+                                    disabled={!this.CheckPermissionUser(4)}
                                     className="form-control form-control-sm"
                                     placeholder="Số điện thoại người gửi"
                                 />
@@ -655,7 +578,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Khoảng cách:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <label className="col-form-label">3Km</label>
+                                <label className="col-form-label">{this.state.ShipmentOrderEdit.EstimateDeliveryDistance}km</label>
                             </div>
                         </div>
                     </div>
@@ -665,7 +588,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Thời gian:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <label className="col-form-label">15 phút</label>
+                                <label className="col-form-label">{this.state.ShipmentOrderEdit.EstimateDeliveryLong}phút</label>
                             </div>
                         </div>
                     </div>

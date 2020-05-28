@@ -117,15 +117,15 @@ class InfoCoordinatorCom extends Component {
 
     handleShipWorkFlowInsert() {
         let { ShipmentOrder, validationErroDeliverUser, validationErroCarrierPartner } = this.state;
-        if (ShipmentOrder.CarrierPartnerID == undefined || parseInt(ShipmentOrder.CarrierPartnerID) <= 0) {
-            validationErroCarrierPartner = "Vui lòng chọn đối tác vận chuyển"
-            this.setState({ validationErroCarrierPartner: validationErroCarrierPartner });
-            return false;
-        }
-        else if (ShipmentOrder.ShipmentOrder_DeliverUserList == undefined || ShipmentOrder.ShipmentOrder_DeliverUserList.length <= 0) {
+        if (ShipmentOrder.ShipmentOrder_DeliverUserList == undefined || ShipmentOrder.ShipmentOrder_DeliverUserList.length <= 0) {
             validationErroDeliverUser = "Vui lòng chọn nhân viên giao"
             this.setState({ validationErroDeliverUser: validationErroDeliverUser });
-            return false;
+            return;
+        }
+        else if (ShipmentOrder.CarrierPartnerID == undefined || parseInt(ShipmentOrder.CarrierPartnerID) <= 0) {
+            validationErroCarrierPartner = "Vui lòng chọn đối tác vận chuyển"
+            this.setState({ validationErroCarrierPartner: validationErroCarrierPartner });
+            return;
         }
         else {
             this.state.ShipmentOrder.UpdatedUser = this.props.AppInfo.LoginInfo.Username,
@@ -205,10 +205,10 @@ class InfoCoordinatorCom extends Component {
                     </div>
                     <div className="form-row">
                         <div className="form-group form-group-btncustom">
-                        {
-                            this.props.IsCoordinator == true ?  <button className="btn btnEditCard" type="submit" onClick={this.handleShipWorkFlowInsert}> Cập nhật</button> : <button className="btn btnEditCard" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit"> Cập nhật</span></button>
-                        }
-                           
+                            {
+                                this.props.IsCoordinator == true ? <button className="btn btnEditCard" type="submit" onClick={this.handleShipWorkFlowInsert}> Cập nhật</button> : <button className="btn btnEditCard" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit"> Cập nhật</span></button>
+                            }
+
                         </div>
 
                     </div>
