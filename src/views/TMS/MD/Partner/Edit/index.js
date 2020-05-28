@@ -22,7 +22,7 @@ import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_COUNTRY, ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD } from "../../../../../constants/keyCache";
-
+import PartnerCoordinatorStore from "../../PartnerCoordinatorStore";
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
@@ -32,6 +32,8 @@ class EditCom extends React.Component {
         this.initCombobox = this.initCombobox.bind(this);
         this.setValueCombobox = this.setValueCombobox.bind(this);
         this.onValueChange = this.onValueChange.bind(this);
+        this.getFullAddress = this.getFullAddress.bind(this);
+        this.onPartnerCoordinatorStoreChange = this.onPartnerCoordinatorStoreChange.bind(this);
         //this.getDataCombobox = this.getDataCombobox.bind(this);
         this.state = {
             CallAPIMessage: "",
@@ -45,7 +47,9 @@ class EditCom extends React.Component {
             Province: [],
             District: [],
             Ward: [],
-            EditElementList: EditElementList
+            EditElementList: EditElementList,
+            PartnerCoordinatorStore: []
+
         };
     }
 
@@ -60,7 +64,7 @@ class EditCom extends React.Component {
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                this.setState({ DataSource: apiResult.ResultObject });
+                this.setState({ DataSource: apiResult.ResultObject, PartnerCoordinatorStore: apiResult.ResultObject.PartnerCoordinatorStore ? apiResult.ResultObject.PartnerCoordinatorStore : [] });
                 this.setValueCombobox(apiResult.ResultObject.CountryID, apiResult.ResultObject.ProvinceID, apiResult.ResultObject.DistrictID, apiResult.ResultObject.WardID);
             }
             this.setState({
@@ -175,8 +179,20 @@ class EditCom extends React.Component {
         });
     }
 
+    getFullAddress() {
+        this.state.EditElementList.forEach(function (objElement) {
+            if (objElement.name == "txtProvinceID") {
+                console.log("txtProvinceID", objElement.value);
+            }
+
+        });
+    }
+
     onValueChange(elementname, elementvalue) {
         debugger;
+        // if(elementname == "txtAddress"){
+        //     this.getFullAddress();
+        // }
         //console.log("ward state", this.state.Ward);
         let country = [{ value: -1, label: "--Vui lòng chọn--" }];
         let province = [{ value: -1, label: "--Vui lòng chọn--" }];
@@ -218,15 +234,12 @@ class EditCom extends React.Component {
         //console.log("onValueChange.Province", country, province, district, ward);
     }
 
+    onPartnerCoordinatorStoreChange(list) {
+        this.setState({ PartnerCoordinatorStore: list });
+        console.log("onPartnerCoordinatorStoreChange", list);
+    }
 
 
-    // handleSubmitInsertLog(MLObject) {
-    //     MLObject.ActivityTitle = `Cập nhật loại danh mục thuộc tính: ${MLObject.AttributeCategoryTypeName}`;
-    //     MLObject.ActivityDetail = `Cập nhật loại danh mục thuộc tính: ${MLObject.AttributeCategoryTypeName} ${"\n"}Mô tả: ${MLObject.Description}`;
-    //     MLObject.ObjectID = "PIM_ATTRIBUTECATEGORYTYPE";
-    //     MLObject.ActivityUser = MLObject.UpdatedUser;
-    //     this.props.callFetchAPI(APIHostName, AddLogAPIPath, MLObject);
-    // }
 
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
@@ -249,6 +262,9 @@ class EditCom extends React.Component {
         } else if (MLObject.DistrictID == -1) {
             MLObject.WardID = -1;
         }
+
+        MLObject.PartnerCoordinatorStore = this.state.PartnerCoordinatorStore;
+        MLObject.PartnerCoordinatorStore_DeleteList = this.state.PartnerCoordinatorStore_DeleteList;
 
         var data = new FormData();
         data.append("LogoImageURL", this.state.Files.PictureURL);
@@ -284,20 +300,32 @@ class EditCom extends React.Component {
         }
         if (this.state.IsLoadDataComplete) {
             return (
-                <SimpleForm
-                    FormName="Cập nhật đối tác"
-                    MLObjectDefinition={MLObjectDefinition}
-                    listelement={this.state.EditElementList}
-                    onSubmit={this.handleSubmit}
-                    onHandleSelectedFile={this.handleSelectedFile}
-                    onValueChange={this.onValueChange}
-                    FormMessage={this.state.CallAPIMessage}
-                    IsErrorMessage={this.state.IsCallAPIError}
-                    dataSource={this.state.DataSource}
-                    BackLink={BackLink}
-                    //RequirePermission={ATTRIBUTE_CATEGORY_TYPE_UPDATE}
-                    ref={this.searchref}
-                />
+                <React.Fragment>
+                    <SimpleForm
+                        FormName="Cập nhật đối tác"
+                        MLObjectDefinition={MLObjectDefinition}
+                        listelement={this.state.EditElementList}
+                        onSubmit={this.handleSubmit}
+                        onHandleSelectedFile={this.handleSelectedFile}
+                        onValueChange={this.onValueChange}
+                        FormMessage={this.state.CallAPIMessage}
+                        IsErrorMessage={this.state.IsCallAPIError}
+                        dataSource={this.state.DataSource}
+                        BackLink={BackLink}
+                        //RequirePermission={ATTRIBUTE_CATEGORY_TYPE_UPDATE}
+                        ref={this.searchref}>
+
+                        <br />
+                        <PartnerCoordinatorStore
+                            PartnerID={this.props.match.params.id}
+                            partnerCoordinatorStore={this.state.PartnerCoordinatorStore}
+                            onPartnerCoordinatorStoreChange={this.onPartnerCoordinatorStoreChange}
+                        />
+                    </SimpleForm>
+
+
+
+                </React.Fragment>
             );
         }
         return (

@@ -20,6 +20,7 @@ import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_COUNTRY, ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD } from "../../../../../constants/keyCache";
+import PartnerCoordinatorStore from "../../PartnerCoordinatorStore";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -30,6 +31,7 @@ class AddCom extends React.Component {
         this.initCombobox = this.initCombobox.bind(this);
         this.onValueChange = this.onValueChange.bind(this);
         this.setValueCombobox = this.setValueCombobox.bind(this);
+        this.onPartnerCoordinatorStoreChange = this.onPartnerCoordinatorStoreChange.bind(this);
         // this.handleGetCache = this.handleGetCache.bind(this);
         // this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
         this.state = {
@@ -41,7 +43,9 @@ class AddCom extends React.Component {
             Province: [],
             District: [],
             Ward: [],
-            AddElementList: AddElementList
+            AddElementList: AddElementList,
+            PartnerID: "",
+            PartnerCoordinatorStore: []
         };
     }
 
@@ -170,8 +174,13 @@ class AddCom extends React.Component {
         });
     }
 
+    
+
     onValueChange(elementname, elementvalue) {
-        debugger;
+        if (elementname == "txtPartnerID") {
+            this.setState({ PartnerID: elementvalue });
+        }
+
         //console.log("this.state.Province", this.state.Province);
         let country = [{ value: -1, label: "--Vui lòng chọn--" }];
         let province = [{ value: -1, label: "--Vui lòng chọn--" }];
@@ -218,6 +227,11 @@ class AddCom extends React.Component {
         this.setState({ Files: filelist });
     }
 
+    onPartnerCoordinatorStoreChange(list, deleteList) {
+        this.setState({ PartnerCoordinatorStore: list });
+        //onsole.log("onPartnerCoordinatorStoreChange", list);
+    }
+
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
@@ -236,6 +250,8 @@ class AddCom extends React.Component {
         } else if (MLObject.DistrictID == -1) {
             MLObject.WardID = -1;
         }
+
+        MLObject.PartnerCoordinatorStore = this.state.PartnerCoordinatorStore;
 
         var data = new FormData();
         data.append("LogoImageURL", this.state.Files.PictureURL);
@@ -286,8 +302,15 @@ class AddCom extends React.Component {
                 dataSource={dataSource}
                 BackLink={BackLink}
                 //RequirePermission={ATTRIBUTE_CATEGORY_TYPE_ADD}
-                ref={this.searchref}
-            />
+                ref={this.searchref}>
+
+                <br />
+                <PartnerCoordinatorStore
+                    PartnerID={this.state.PartnerID}
+                    onPartnerCoordinatorStoreChange={this.onPartnerCoordinatorStoreChange}
+                />
+            </SimpleForm>
+
         );
     }
 }
