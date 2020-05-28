@@ -400,8 +400,7 @@ export const InputMcRoleColumnList = [
         DataSourceMember: "ProductID",
         Width: 200,
         validatonList: ["required"]
-    }
-    ,
+    },
     {
         Name: "Quantity",
         Type: "textbox",
@@ -410,6 +409,14 @@ export const InputMcRoleColumnList = [
         Width: 200,
         validatonList: ["required","number"]
     },
+    // {
+    //     Name: "Quantity1",
+    //     Type: "selectnew",
+    //     Caption: "combobox",
+    //     DataSourceMember: "Quantity1",
+    //     Width: 200,
+    //     validatonList: []
+    // },
     {
         Name: "Note",
         Type: "textbox",
