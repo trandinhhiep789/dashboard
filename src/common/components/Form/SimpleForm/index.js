@@ -144,7 +144,7 @@ class SimpleFormCom extends Component {
     }
 
     componentDidUpdate() {
-        
+
     }
     componentDidMount() {
         this.setState({
@@ -244,7 +244,7 @@ class SimpleFormCom extends Component {
         for (const key in formValidation) {
             //console.log("key: ", key);
             //console.log("this.refs.child.refs: ", this.elementItemRefs);
-           // console.log("this.state.FormVavalidaton[key]: ", formValidation,key);
+            // console.log("this.state.FormVavalidaton[key]: ", formValidation,key);
             if (formValidation[key].IsValidatonError) {
                 this.elementItemRefs[key].focus();
                 index++;
@@ -673,6 +673,7 @@ class SimpleFormCom extends Component {
                         <div className="card-body">
 
                             {elmentRender}
+                            {this.props.children ? this.props.children : ""}
                         </div>
                         <footer className="card-footer text-right">
                             <button className={deActive ? "btn btn-primary de-active" : "btn btn-primary"} type="submit">{cssSearchButton} Cập nhật</button> {backLinkButton}
