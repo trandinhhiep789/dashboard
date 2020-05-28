@@ -50,8 +50,8 @@ class DetailCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-                console.log("apiResult.ResultObject.ShipmentOrderType_WorkFlowList",apiResult.ResultObject);
-                console.log("apiResult.ResultObject.ShipmentOrderType_WorkFlowList",apiResult.ResultObject.ShipmentOrderType_WorkFlowList)
+                console.log("apiResult.ResultObject",apiResult.ResultObject);
+           //    console.log("apiResult.ResultObject.ShipmentOrderType_WorkFlowList",apiResult.ResultObject.ShipmentOrderType_WorkFlowList)
                 this.setState({
                     DataSource: apiResult.ResultObject,
                     ShipmentOrderType_WorkFlowList: apiResult.ResultObject.ShipmentOrderType_WorkFlowList,
@@ -60,6 +60,15 @@ class DetailCom extends React.Component {
                 });
             }
         });
+    }
+    
+    CheckPermissionUser(id) {
+        if (this.state.DataSource.CurrentStepPermissionList && this.state.DataSource.CurrentStepPermissionList.length > 0) {
+            if (this.state.DataSource.CurrentStepPermissionList.some(a => a.ShipmentOrderPermissionID === id)) {
+                return true;
+            }
+        }
+        return false;
     }
     ChangeLoadData(ShipmentOrderData) {
         this.setState({
@@ -99,6 +108,8 @@ class DetailCom extends React.Component {
                         ShipmentOrderID={this.props.match.params.id}
                         InfoCoordinator={this.state.DataSource}
                         onhandleChange={this.ChangeLoadData}
+                        IsUserCoordinator={this.CheckPermissionUser(16)}
+                        IsCoordinator={this.CheckPermissionUser(17)}
                     />
 
                     <InfoHistoryWF
@@ -109,11 +120,13 @@ class DetailCom extends React.Component {
                     <ShipmentOrderAttachment
                         ShipmentOrderID={this.props.match.params.id}
                         ShipmentOrderAttachment={this.state.DataSource}
+                        IsAttachment={this.CheckPermissionUser(18)} 
                     />
 
                     <ShipmentOrderComment
                         ShipmentOrderID={this.props.match.params.id}
                         ShipmentOrderComment={this.state.DataSource}
+                        IsComment={this.CheckPermissionUser(19)}
                     />
                 </div >
             );

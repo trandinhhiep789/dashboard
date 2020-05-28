@@ -107,33 +107,8 @@ class InfoCoordinatorCom extends Component {
                 
             }
         });
-        // if (ShipmentOrder_WorkFlow.Note == undefined || ShipmentOrder_WorkFlow.Note.length == 0 || String(ShipmentOrder_WorkFlow.Note).trim() == "") {
-        //     validationErrorMessage = "Vui lòng nhập nội dung"
-        //     this.setState({ validationErrorMessage: validationErrorMessage }, () => {
-        //         this.openViewStepModal();
-        //     });
-        // }
-        // else {
-        //     ShipmentOrder_WorkFlow.IsProcess = true;
-        //     ShipmentOrder_WorkFlow.ProcessUser = this.props.AppInfo.LoginInfo.Username;
-        //     ShipmentOrder_WorkFlow.CreatedOrderTime = this.state.ShipmentOrder.CreatedOrderTime;
-        //     ShipmentOrder_WorkFlow.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        //     this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/InsertWorkFlow', ShipmentOrder_WorkFlow).then((apiResult) => {
-        //         if (!apiResult.IsError) {
-        //             this.setState({
-        //                 ShipmentOrder: apiResult.ResultObject
-        //             });
-        //             if (this.props.onhandleChange != null)
-        //                 this.props.onhandleChange(apiResult.ResultObject)
-
-        //             ModalManager.close();
-        //         }
-        //     });
-        // }
+   
     }
-
-
-
     render() {
         let listOption = [];
         this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
@@ -151,6 +126,7 @@ class InfoCoordinatorCom extends Component {
                         colspan="10"
                         labelcolspan="2"
                         label="Nhân viên  giao"
+                        disabled={!this.props.IsUserCoordinator}
                         IsLabelDiv={true}
                         isautoloaditemfromcache={false}
                         loaditemcachekeyid={"PIMCACHE_PIM_SHIPPINGMETHOD"}

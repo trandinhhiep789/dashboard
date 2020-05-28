@@ -29,13 +29,12 @@ class ShipmentOrderAttachmentCom extends Component {
         data.append('CreatedUser', this.props.AppInfo.LoginInfo.Username);
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder_Attachment/UploadFileNew", data).then((apiResult) => {
             if (apiResult)
-                if (apiResult.IsError == false)
-                 {
+                if (apiResult.IsError == false) {
                     this.setState({
                         ShipmentOrder: apiResult.ResultObject
                     });
 
-                 }
+                }
                 else {
                     let message = '';
                     if (apiResult.MessageDetail === 'Maximum request length exceeded.')
@@ -49,98 +48,102 @@ class ShipmentOrderAttachmentCom extends Component {
         });
     }
 
-    onDeletefile(e) {}
+    onDeletefile(e) { }
 
 
     render() {
         return (
             <div className='card'>
-                        <div className='card-body'>
-                            <b>Tập tin đính kèm:</b>
-                            <ul className="attachedList">
-                                <li>
-                                    <div className="addFile" >
-                                        <input multiple={true} name='file' type='file' id="files" hidden className='attachmentitem' onChange={this._handleselectedFile}></input>
-                                        <i>+</i>
-                                        <label htmlFor="files" className='attachmentitem'>Thêm file</label>
-                                    </div>
-                                </li>
-                                {this.state.ShipmentOrder != [] && this.state.ShipmentOrder.map((item, index) => {
-                                if (item.FileName.split(".")[1] == "docx" || item.FileName.split(".")[1] == "doc") {
-                                    return (
-                                        <li key={index}>
-                                            {this.props.IsAttachment == true ?
-                                                (<div className="delIcon" data-id={item.AttachmentID} onClick={this.onDeletefile.bind(this)} >˟</div>) :
-                                                (<div className="delIcon" >˟</div>)
-                                            }
-                                            <a>
-                                                <div className="pull-left fileType"><span className="doctype docx"></span></div>
-                                                <div className="attachName">
-                                                    <div className="hideCont bold">{item.FileName}</div>
-                                                    {/* <span className="attachSize">300 KB</span> */}
-                                                </div>
-                                            </a>
-                                            {/* <a download target='_blank' className='attachmentitem' href={item.FilePath} key={index}>{item.FileName}</a> */}
-                                        </li>
-                                    )
-                                }
-                                else if (item.FileName.split(".")[1] == "xlsx") {
-                                    return (
-                                        <li key={index}>
-                                            {this.props.IsAttachment == true ?
-                                                (<div className="delIcon" data-id={item.AttachmentID} onClick={this.onDeletefile.bind(this)} >˟</div>) :
-                                                (<div className="delIcon" >˟</div>)
-                                            }
-                                            <a >
-                                                <div className="pull-left fileType"><span className="doctype xlsx"></span></div>
-                                                <div className="attachName">
-                                                    <div className="hideCont bold">{item.FileName}</div>
-                                                    {/* <span className="attachSize">300 KB</span> */}
-                                                </div>
-                                            </a>
-                                            {/* <a download target='_blank' className='attachmentitem' href={item.FilePath} key={index}>{item.FileName}</a> */}
-                                        </li>
-                                    )
-                                }
-                                else if (item.FileName.split(".")[1] == "zip") {
-                                    return (
-                                        <li key={index}>
-                                            {this.props.IsAttachment == true ?
-                                                (<div className="delIcon" data-id={item.AttachmentID} onClick={this.onDeletefile.bind(this)} >˟</div>) :
-                                                (<div className="delIcon" >˟</div>)
-                                            }
-                                            <a >
-                                                <div className="pull-left fileType"><span className="doctype zip"></span></div>
-                                                <div className="attachName">
-                                                    <div className="hideCont bold">{item.FileName}</div>
-                                                    {/* <span className="attachSize">300 KB</span> */}
-                                                </div>
-                                            </a>
-                                            {/* <a download target='_blank' className='attachmentitem' href={item.FilePath} key={index}>{item.FileName}</a> */}
-                                        </li>
-                                    )
-                                }
-                                else{
-                                    return (
-                                        <li key={index}>
-                                            {this.props.IsAttachment == true ?
-                                                (<div className="delIcon" data-id={item.AttachmentID} onClick={this.onDeletefile.bind(this)} >˟</div>) :
-                                                (<div className="delIcon" >˟</div>)
-                                            }
-                                            <a >
-                                                <div className="pull-left fileType"><span className="doctype other"></span></div>
-                                                <div className="attachName">
-                                                    <div className="hideCont bold">{item.FileName}</div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    )
-                                }
+                <div className='card-body'>
+                    <b>Tập tin đính kèm:</b>
+                    <ul className="attachedList">
+                        <li>
+                            {this.props.IsAttachment == true ?
+                                (<div className="addFile" >
+                                    <input multiple={true} name='file' type='file' id="files" hidden className='attachmentitem' onChange={this._handleselectedFile}></input>
+                                    <i>+</i><label htmlFor="files" className='attachmentitem'>Thêm file</label>
+                                </div>) :
+                                (<div className="addFile" title="Không có quyền thêm tập tin." >
+                                    <i>+</i><h3 htmlFor="files">Thêm file</h3>
+                                </div>)
+                            }
+                        </li>
+                        {this.state.ShipmentOrder != [] && this.state.ShipmentOrder.map((item, index) => {
+                            if (item.FileName.split(".")[1] == "docx" || item.FileName.split(".")[1] == "doc") {
+                                return (
+                                    <li key={index}>
+                                        {this.props.IsAttachment == true ?
+                                            (<div className="delIcon" data-id={item.AttachmentID} onClick={this.onDeletefile.bind(this)} >˟</div>) :
+                                            (<div className="delIcon" >˟</div>)
+                                        }
+                                        <a>
+                                            <div className="pull-left fileType"><span className="doctype docx"></span></div>
+                                            <div className="attachName">
+                                                <div className="hideCont bold">{item.FileName}</div>
+                                                {/* <span className="attachSize">300 KB</span> */}
+                                            </div>
+                                        </a>
+                                        {/* <a download target='_blank' className='attachmentitem' href={item.FilePath} key={index}>{item.FileName}</a> */}
+                                    </li>
+                                )
+                            }
+                            else if (item.FileName.split(".")[1] == "xlsx") {
+                                return (
+                                    <li key={index}>
+                                        {this.props.IsAttachment == true ?
+                                            (<div className="delIcon" data-id={item.AttachmentID} onClick={this.onDeletefile.bind(this)} >˟</div>) :
+                                            (<div className="delIcon" >˟</div>)
+                                        }
+                                        <a >
+                                            <div className="pull-left fileType"><span className="doctype xlsx"></span></div>
+                                            <div className="attachName">
+                                                <div className="hideCont bold">{item.FileName}</div>
+                                                {/* <span className="attachSize">300 KB</span> */}
+                                            </div>
+                                        </a>
+                                        {/* <a download target='_blank' className='attachmentitem' href={item.FilePath} key={index}>{item.FileName}</a> */}
+                                    </li>
+                                )
+                            }
+                            else if (item.FileName.split(".")[1] == "zip") {
+                                return (
+                                    <li key={index}>
+                                        {this.props.IsAttachment == true ?
+                                            (<div className="delIcon" data-id={item.AttachmentID} onClick={this.onDeletefile.bind(this)} >˟</div>) :
+                                            (<div className="delIcon" >˟</div>)
+                                        }
+                                        <a >
+                                            <div className="pull-left fileType"><span className="doctype zip"></span></div>
+                                            <div className="attachName">
+                                                <div className="hideCont bold">{item.FileName}</div>
+                                                {/* <span className="attachSize">300 KB</span> */}
+                                            </div>
+                                        </a>
+                                        {/* <a download target='_blank' className='attachmentitem' href={item.FilePath} key={index}>{item.FileName}</a> */}
+                                    </li>
+                                )
+                            }
+                            else {
+                                return (
+                                    <li key={index}>
+                                        {this.props.IsAttachment == true ?
+                                            (<div className="delIcon" data-id={item.AttachmentID} onClick={this.onDeletefile.bind(this)} >˟</div>) :
+                                            (<div className="delIcon" >˟</div>)
+                                        }
+                                        <a >
+                                            <div className="pull-left fileType"><span className="doctype other"></span></div>
+                                            <div className="attachName">
+                                                <div className="hideCont bold">{item.FileName}</div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                )
+                            }
 
-                            })}
-                            </ul>
-                        </div>
-                    </div>
+                        })}
+                    </ul>
+                </div>
+            </div>
         );
     }
 }
