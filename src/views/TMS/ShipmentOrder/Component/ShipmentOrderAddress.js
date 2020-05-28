@@ -164,6 +164,7 @@ class ShipmentOrderAddressCom extends Component {
                 name=""
                 content={""}
                 onRequestClose={() => false}
+                IsButton={!this.CheckPermissionUser(3)||!this.CheckPermissionUser(4)}
                 onChangeModal={this.handleUpdateAddressSender.bind(this)}
             >
                 <div className="form-row">
