@@ -9,8 +9,13 @@ import { Link } from "react-router-dom";
 import { callGetCache } from "../../../../actions/cacheAction";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD } from "../../../../constants/keyCache";
-import vbd from '../../../../scripts/vietbandomapsapi.js';
-
+import FormControl from "../../../../common/components/FormContainer/FormControl";
+import { ValidationField } from "../../../../common/library/validation.js";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
+import {
+    APIHostName,
+} from "../constants";
 const style = {
     width: '100%',
     height: '100%',
@@ -30,7 +35,7 @@ class ShipmentOrderAddressCom extends Component {
 
         this.ShowModalSender = this.ShowModalSender.bind(this);
         this.handleValueChange = this.handleValueChange.bind(this);
-
+        this.elementItemRefs = [];
         this.state = {
             ShipmentOrder: this.props.ShipmentOrderAddress,
             ShipmentOrderEdit: this.props.ShipmentOrderAddress,
@@ -41,7 +46,9 @@ class ShipmentOrderAddressCom extends Component {
             District: [],
             Ward: [],
             dataOrderAddressSender: {},
+            FormDataSenderLst: {}
         }
+        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
@@ -58,52 +65,370 @@ class ShipmentOrderAddressCom extends Component {
         return false;
     }
 
-    handleValueChange(e) {
-        let { ShipmentOrderEdit } = this.state;
-        ShipmentOrderEdit[e.target.name] = e.target.value;
-        if (e.target.name == "SenderAddress") {
+    handleValueChange(name, value, label, labelnew, validatonList) {
+        let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
+        let formData = FormDataSenderLst;
+        const aa = { labelError: undefined }
+        if (typeof validatonList != "undefined") {
+            const validation = ValidationField(validatonList, value, label, aa);
+            const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
+            const ObjectName = { ErrorLst: validationObject };
+            formData = Object.assign({}, formData, { [name]: ObjectName });
+            ShipmentOrderEdit[name] = validation.fieldValue;
+        }
+        else {
+            ShipmentOrderEdit[name] = value;
+        }
+
+        if (name == "SenderAddress") {
             ShipmentOrderEdit.SenderGeoLocation = "10.852982,105.700";
         }
-        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
             this.ShowModalSender();
         });
-
     }
 
     handleValueChangeGeoLocation(lat, lng) {
         let { ShipmentOrderEdit } = this.state;
     }
-
     handleValueChangeProvince(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
-        let { ShipmentOrderEdit } = this.state;
+        let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
         ShipmentOrderEdit['SenderProvinceID'] = comboValues;
         ShipmentOrderEdit['SenderDistrictID'] = -1;
         ShipmentOrderEdit['SenderWardID'] = -1;
         this.setValueCombobox(2, comboValues, -1)
-        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
+        let formData = FormDataSenderLst;
+        const aa = { labelError: undefined }
+        const validation = ValidationField(["Comborequired"], comboValues, "tỉnh/thành phố", aa);
+        const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
+        const ObjectName = { ErrorLst: validationObject };
+        const ObjectNameDistrict = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn quận/huyện" } };
+        const ObjectNameWard = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn phường/xã" } };
+        formData = Object.assign({}, formData, { ["SenderProvinceID"]: ObjectName });
+        formData = Object.assign({}, formData, { ["SenderDistrictID"]: ObjectNameDistrict });
+        formData = Object.assign({}, formData, { ["SenderWardID"]: ObjectNameWard });
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
             this.ShowModalSender();
         });
     }
-
     handleValueChangeDistrict(selectedOption) {
+        let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
         const comboValues = this.getComboValue(selectedOption);
-        let { ShipmentOrderEdit } = this.state;
         ShipmentOrderEdit['SenderDistrictID'] = comboValues;
         ShipmentOrderEdit['SenderWardID'] = -1;
         this.setValueCombobox(2, ShipmentOrderEdit.SenderProvinceID, comboValues)
-        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
+        let formData = FormDataSenderLst;
+        if (parseInt(comboValues) < 0) {
+            const ObjectNameDistrict = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn quận/huyện" } };
+            const ObjectNameWard = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn phường/xã" } };
+            formData = Object.assign({}, formData, { ["SenderDistrictID"]: ObjectNameDistrict });
+            formData = Object.assign({}, formData, { ["SenderWardID"]: ObjectNameWard });
+        }
+        else {
+            const ObjectNameDistrict = { ErrorLst: { IsValidatonError: false, ValidatonErrorMessage: "" } };
+            const ObjectNameWard = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn phường/xã" } };
+            formData = Object.assign({}, formData, { ["SenderDistrictID"]: ObjectNameDistrict });
+            formData = Object.assign({}, formData, { ["SenderWardID"]: ObjectNameWard });
+        }
+
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
             this.ShowModalSender();
         });
     }
-
     handleValueChangeWard(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
-        let { ShipmentOrderEdit } = this.state;
+        let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
         ShipmentOrderEdit['SenderWardID'] = comboValues;
         this.setValueCombobox(2, ShipmentOrderEdit.SenderProvinceID, ShipmentOrderEdit.SenderDistrictID)
-        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
+        let formData = FormDataSenderLst;
+        if (parseInt(comboValues) < 0) {
+            const ObjectNameWard = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn phường/xã" } };
+            formData = Object.assign({}, formData, { ["SenderWardID"]: ObjectNameWard });
+        }
+        else {
+            const ObjectNameWard = { ErrorLst: { IsValidatonError: false, ValidatonErrorMessage: "" } };
+            formData = Object.assign({}, formData, { ["SenderWardID"]: ObjectNameWard });
+        }
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
             this.ShowModalSender();
+        });
+    }
+    ShowModalSender() {
+        const Province = this.bindcombox(this.state.ProvinceLst, this.state.ShipmentOrderEdit.SenderProvinceID);
+        const District = this.bindcombox(this.state.DistrictLst, this.state.ShipmentOrderEdit.SenderDistrictID);
+        const Ward = this.bindcombox(this.state.WardLst, this.state.ShipmentOrderEdit.SenderWardID);
+        ModalManager.open(
+            <ModelContainer
+                title="Cập nhật thông tin địa chỉ người gửi"
+                name=""
+                content={""}
+                onRequestClose={() => false}
+                onChangeModal={this.handleUpdateAddressSender.bind(this)}
+            >
+                <div className="form-row">
+                    <div className="form-group col-md-6">
+                        <FormControl.TextBox
+                            name="SenderFullName"
+                            colspan="8"
+                            labelcolspan="4"
+                            label="họ và tên"
+                            onValueChange={this.handleValueChange.bind(this)}
+                            readOnly={!this.CheckPermissionUser(3)}
+                            inputRef={ref => this.elementItemRefs["SenderFullName"] = ref}
+                            placeholder="Họ và tên"
+                            controltype="InputControl"
+                            value={this.state.ShipmentOrderEdit.SenderFullName}
+                            datasourcemember="SenderFullName"
+                            validatonList={["required"]}
+                            validationErrorMessage={(this.state.FormDataSenderLst["SenderFullName"] != undefined ? this.state.FormDataSenderLst["SenderFullName"].ErrorLst.ValidatonErrorMessage : "")}
+                        />
+                    </div>
+                    <div className="form-group col-md-6">
+                        <FormControl.TextBox
+                            name="SenderPhoneNumber"
+                            colspan="8"
+                            labelcolspan="4"
+                            label="số điện thoại"
+                            onValueChange={this.handleValueChange.bind(this)}
+                            readOnly={!this.CheckPermissionUser(3)}
+                            inputRef={ref => this.elementItemRefs["SenderPhoneNumber"] = ref}
+                            placeholder="Số điện thoại"
+                            controltype="InputControl"
+                            value={this.state.ShipmentOrderEdit.SenderPhoneNumber}
+                            datasourcemember="SenderPhoneNumber"
+                            validatonList={["required", "number"]}
+                            validationErrorMessage={(this.state.FormDataSenderLst["SenderPhoneNumber"] != undefined ? this.state.FormDataSenderLst["SenderPhoneNumber"].ErrorLst.ValidatonErrorMessage : "")}
+                        />
+                    </div>
+                </div>
+
+                <div className="form-row">
+                    <div className="form-group col-md-6">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label 6">Tỉnh/thành phố<span className="text-danger">*</span></label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <div className="form-group-input-select">
+                                    <Select
+                                        value={Province}
+                                        name={"SenderProvinceID"}
+                                        onChange={this.handleValueChangeProvince.bind(this)}
+                                        options={this.state.ProvinceLst}
+                                        isDisabled={!this.CheckPermissionUser(4)}
+                                        inputRef={ref => this.elementItemRefs["SenderProvinceID"] = ref}
+                                        isMulti={false}
+                                        isSearchable={true}
+                                        className={(this.state.ShipmentOrderEdit.SenderProvinceID == -1 ? "react-select is-invalid" : "react-select")}
+                                        placeholder="--Vui lòng chọn--"
+                                    />
+                                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{(this.state.FormDataSenderLst["SenderProvinceID"] != undefined ? this.state.FormDataSenderLst["SenderProvinceID"].ErrorLst.ValidatonErrorMessage : "")}</li></ul></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-group col-md-6">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label 6">Quận/huyện<span className="text-danger">*</span></label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <div className="form-group-input-select">
+                                    <Select
+                                        value={District}
+                                        name={"SenderDistrictID"}
+                                        onChange={this.handleValueChangeDistrict.bind(this)}
+                                        options={this.state.DistrictLst}
+                                        isDisabled={!this.CheckPermissionUser(4)}
+                                        inputRef={ref => this.elementItemRefs["SenderDistrictID"] = ref}
+                                        isMulti={false}
+                                        isSearchable={true}
+                                        className={(this.state.ShipmentOrderEdit.SenderDistrictID == -1 ? "react-select is-invalid" : "react-select")}
+                                        placeholder='--Vui lòng chọn--'
+                                    />
+                                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{(this.state.FormDataSenderLst["SenderDistrictID"] != undefined ? this.state.FormDataSenderLst["SenderDistrictID"].ErrorLst.ValidatonErrorMessage : "")}</li></ul></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="form-row">
+                    <div className="form-group col-md-6">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label 6">Phường/xã<span className="text-danger">*</span></label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <div className="form-group-input-select">
+                                    <Select
+                                        value={Ward}
+                                        name={"SenderWardID"}
+                                        onChange={this.handleValueChangeWard.bind(this)}
+                                        options={this.state.WardLst}
+                                        isDisabled={!this.CheckPermissionUser(4)}
+                                        inputRef={ref => this.elementItemRefs["SenderWardID"] = ref}
+                                        isMulti={false}
+                                        isSearchable={true}
+                                        className={(this.state.ShipmentOrderEdit.SenderWardID == -1 ? "react-select is-invalid" : "react-select")}
+                                        placeholder="--Vui lòng chọn--"
+                                    />
+                                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{(this.state.FormDataSenderLst["SenderWardID"] != undefined ? this.state.FormDataSenderLst["SenderWardID"].ErrorLst.ValidatonErrorMessage : "")}</li></ul></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-group col-md-6">
+                        <FormControl.TextBox
+                            name="SenderAddress"
+                            colspan="8"
+                            labelcolspan="4"
+                            label="số nhà/đường"
+                            onValueChange={this.handleValueChange.bind(this)}
+                            readOnly={!this.CheckPermissionUser(4)}
+                            placeholder="Số điện thoại người gửi"
+                            controltype="InputControl"
+                            value={this.state.ShipmentOrderEdit.SenderAddress}
+                            inputRef={ref => this.elementItemRefs["SenderAddress"] = ref}
+                            datasourcemember="SenderAddress"
+                            validatonList={["required"]}
+                            validationErrorMessage={""}
+                        />
+                    </div>
+                </div>
+
+                <div className="form-row">
+                    <div className="form-group col-md-4">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">Tọa độ:</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <label className="col-form-label">{this.state.ShipmentOrderEdit.SenderGeoLocation}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">Khoảng cách:</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <label className="col-form-label">{this.state.ShipmentOrderEdit.EstimateDeliveryDistance}km</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">Thời gian:</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <label className="col-form-label">{this.state.ShipmentOrderEdit.EstimateDeliveryLong}phút</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="form-row google-maps">
+                    <MapContainer
+                        SenderGeoLocation={this.state.ShipmentOrderEdit.SenderGeoLocation}
+                        onChange={this.handleValueChangeGeoLocation.bind(this)}
+                        classStyle={style} classContainerStyle={containerStyle}
+                    />
+                </div>
+
+            </ModelContainer>
+        )
+    }
+    checkInputName(formValidation) {
+        for (const key in formValidation) {
+            //  console.log("validation:",formValidation[key].ErrorLst,formValidation[key].ErrorLst.IsValidatonError);
+            if (formValidation[key].ErrorLst != undefined) {
+                if (formValidation[key].ErrorLst != [] && formValidation[key].ErrorLst.IsValidatonError) {
+                    this.elementItemRefs[key].focus();
+                    return key;
+                }
+            }
+        }
+        return "";
+    }
+    handleUpdateAddressSender() {
+        let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
+        let formData = FormDataSenderLst;
+        if (ShipmentOrderEdit.SenderFullName.length == 0 || String(ShipmentOrderEdit.SenderFullName).trim() == "") {
+            const ObjectNameSenderFullName = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập họ và tên" } };
+            formData = Object.assign({}, formData, { ["SenderFullName"]: ObjectNameSenderFullName });
+        }
+        if (ShipmentOrderEdit.SenderPhoneNumber.length == 0 || String(ShipmentOrderEdit.SenderPhoneNumber).trim() == "") {
+            const ObjectNameSenderPhoneNumber = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập số điện thoại" } };
+            formData = Object.assign({}, formData, { ["SenderPhoneNumber"]: ObjectNameSenderPhoneNumber });
+        }
+        if (parseInt(ShipmentOrderEdit.SenderProvinceID) < 0) {
+            const ObjectNameProvince = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn tỉnh/thành phố" } };
+            formData = Object.assign({}, formData, { ["SenderProvinceID"]: ObjectNameProvince });
+        }
+        if (parseInt(ShipmentOrderEdit.SenderDistrictID) < 0) {
+            const ObjectNameDistrict = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn quận/huyện" } };
+            formData = Object.assign({}, formData, { ["SenderDistrictID"]: ObjectNameDistrict });
+        }
+        if (parseInt(ShipmentOrderEdit.SenderWardID) < 0) {
+            const ObjectNameWard = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn phường/xã" } };
+            formData = Object.assign({}, formData, { ["SenderWardID"]: ObjectNameWard });
+        }
+        if (ShipmentOrderEdit.SenderAddress.length == 0 || String(ShipmentOrderEdit.SenderAddress).trim() == "") {
+            const ObjectNameSenderAddress = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập số nhà/đường" } };
+            formData = Object.assign({}, formData, { ["SenderAddress"]: ObjectNameSenderAddress });
+        }
+        if (this.checkInputName(formData) != "")
+        {
+            this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
+                this.ShowModalSender();
+            });
+        }
+        else
+        {
+            ShipmentOrderEdit.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
+                if (!apiResult.IsError) {
+                    ModalManager.close();
+                }
+            });
+        }
+    }
+
+    
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
         });
     }
 
@@ -121,7 +446,6 @@ class ShipmentOrderAddressCom extends Component {
 
         return values;
     }
-
     getDataCombobox(data, valueMember, nameMember, conditionName, conditionValue) {
         let listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
         data.map((cacheItem) => {
@@ -136,7 +460,6 @@ class ShipmentOrderAddressCom extends Component {
         });
         return listOption;
     }
-
     initCombobox() {
 
         // tỉnh thành phố
@@ -174,8 +497,6 @@ class ShipmentOrderAddressCom extends Component {
         });
 
     }
-
-
     bindcombox(listOption, values) {
         let selectedOption = [];
         if (values == null || values === -1)
@@ -200,9 +521,7 @@ class ShipmentOrderAddressCom extends Component {
         }
     }
 
-    handleUpdateAddressSender() {
-        console.log("show modal update", this.state.ShipmentOrderEdit);
-    }
+
 
     handleUpdateAddressReceiver() {
         console.log("show modal update", this.state.ShipmentOrderEdit);
@@ -420,193 +739,10 @@ class ShipmentOrderAddressCom extends Component {
         )
     }
 
-    ShowModalSender() {
-        const Province = this.bindcombox(this.state.ProvinceLst, this.state.ShipmentOrderEdit.SenderProvinceID);
-        const District = this.bindcombox(this.state.DistrictLst, this.state.ShipmentOrderEdit.SenderDistrictID);
-        const Ward = this.bindcombox(this.state.WardLst, this.state.ShipmentOrderEdit.SenderWardID);
 
-        ModalManager.open(
-            <ModelContainer
-                title="Cập nhật thông tin địa chỉ người gửi"
-                name=""
-                content={""}
-                onRequestClose={() => false}
-                onChangeModal={this.handleUpdateAddressSender.bind(this)}
-            >
-                <div className="form-row">
-                    <div className="form-group col-md-6">
-                        <div className="form-row">
-                            <div className="form-group col-md-4">
-                                <label className="col-form-label">Họ và tên:</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <input
-                                    type="text"
-                                    name="SenderFullName"
-                                    onChange={this.handleValueChange.bind(this)}
-                                    disabled={!this.CheckPermissionUser(3)}
-                                    className="form-control form-control-sm"
-                                    value={this.state.ShipmentOrderEdit.SenderFullName}
-                                    placeholder="Họ và tên"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="form-group col-md-6">
-                        <div className="form-row">
-                            <div className="form-group col-md-4">
-                                <label className="col-form-label">Số điện thoại:</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <input
-                                    type="text"
-                                    name="SenderPhoneNumber"
-                                    onChange={this.handleValueChange.bind(this)}
-                                    disabled={!this.CheckPermissionUser(3)}
-                                    className="form-control form-control-sm"
-                                    value={this.state.ShipmentOrderEdit.SenderPhoneNumber}
-                                    placeholder="Số điện thoại người gửi"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="form-row">
-                    <div className="form-group col-md-6">
-                        <div className="form-row">
-                            <div className="form-group col-md-4">
-                                <label className="col-form-label">Tỉnh/thành phố:</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <div className="form-group-input-select">
-                                    <Select
-                                        value={Province}
-                                        name={"SenderProvinceID"}
-                                        onChange={this.handleValueChangeProvince.bind(this)}
-                                        options={this.state.ProvinceLst}
-                                        isDisabled={!this.CheckPermissionUser(4)}
-                                        isMulti={false}
-                                        isSearchable={true}
-                                        className={'select'}
-                                        placeholder="--Vui lòng chọn--"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="form-group col-md-6">
-                        <div className="form-row">
-                            <div className="form-group col-md-4">
-                                <label className="col-form-label">Quận/huyện:</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <div className="form-group-input-select">
-                                    <Select
-                                        value={District}
-                                        name={"SenderDistrictID"}
-                                        onChange={this.handleValueChangeDistrict.bind(this)}
-                                        options={this.state.DistrictLst}
-                                        isDisabled={!this.CheckPermissionUser(4)}
-                                        isMulti={false}
-                                        isSearchable={true}
-                                        className={'select'}
-                                        placeholder='--Vui lòng chọn--'
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="form-row">
-                    <div className="form-group col-md-6">
-                        <div className="form-row">
-                            <div className="form-group col-md-4">
-                                <label className="col-form-label">Phường/xã:</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <div className="form-group-input-select">
-                                    <Select
-                                        value={Ward}
-                                        name={"SenderWardID"}
-                                        onChange={this.handleValueChangeWard.bind(this)}
-                                        options={this.state.WardLst}
-                                        isDisabled={!this.CheckPermissionUser(4)}
-                                        isMulti={false}
-                                        isSearchable={true}
-                                        className={'select'}
-                                        placeholder="--Vui lòng chọn--"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="form-group col-md-6">
-                        <div className="form-row">
-                            <div className="form-group col-md-4">
-                                <label className="col-form-label">Số nhà/đường:</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <input
-                                    name="SenderAddress"
-                                    onChange={this.handleValueChange.bind(this)}
-                                    value={this.state.ShipmentOrderEdit.SenderAddress}
-                                    disabled={!this.CheckPermissionUser(4)}
-                                    className="form-control form-control-sm"
-                                    placeholder="Số điện thoại người gửi"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="form-row">
-                    <div className="form-group col-md-4">
-                        <div className="form-row">
-                            <div className="form-group col-md-4">
-                                <label className="col-form-label">Tọa độ:</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <label className="col-form-label">{this.state.ShipmentOrderEdit.SenderGeoLocation}</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <div className="form-row">
-                            <div className="form-group col-md-4">
-                                <label className="col-form-label">Khoảng cách:</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <label className="col-form-label">{this.state.ShipmentOrderEdit.EstimateDeliveryDistance}km</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <div className="form-row">
-                            <div className="form-group col-md-4">
-                                <label className="col-form-label">Thời gian:</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <label className="col-form-label">{this.state.ShipmentOrderEdit.EstimateDeliveryLong}phút</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="form-row google-maps">
-                    <MapContainer
-                        SenderGeoLocation={this.state.ShipmentOrderEdit.SenderGeoLocation}
-                        onChange={this.handleValueChangeGeoLocation.bind(this)}
-                        classStyle={style} classContainerStyle={containerStyle}
-                    />
-                </div>
-
-            </ModelContainer>
-        )
-    }
 
     render() {
+        <ReactNotification ref={this.notificationDOMRef} />
         return (
             <div className="card">
                 <h4 className="card-title"><strong>Địa chỉ</strong></h4>
@@ -687,7 +823,6 @@ class ShipmentOrderAddressCom extends Component {
                     </div>
                 </div>
             </div>
-
         );
     }
 }
