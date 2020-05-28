@@ -903,7 +903,7 @@ class ComboBoxPartnerCom extends Component {
             this.props.callGetCache(cacheKeyID).then((result) => {
                 listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
-                    result.ResultObject.CacheData.map((cacheItem) => {
+                    result.ResultObject.CacheData.filter(a => a.PartnerTypeID == 2).map((cacheItem) => {
                         listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
                     }
                     );

@@ -600,7 +600,6 @@ class ShipmentOrderAddressCom extends Component {
                         onChange={this.handleValueChangeGeoLocation.bind(this)}
                         classStyle={style} classContainerStyle={containerStyle}
                     />
-                    {/* <div id="map-container"></div> */}
                 </div>
 
             </ModelContainer>
