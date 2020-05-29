@@ -31,7 +31,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label bold">Loại hàng hóa:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentGoodsTypeName}</label>
+                            <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentGoodsDescription}</label>
                         </div>
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Tổng số kiện:</label>
