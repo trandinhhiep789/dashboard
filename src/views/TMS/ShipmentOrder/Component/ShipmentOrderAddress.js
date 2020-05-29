@@ -25,7 +25,7 @@ const style = {
 const containerStyle = {
     position: 'absolute',
     width: '98%',
-    height: '300px'
+    height: '250px'
 }
 
 
@@ -47,7 +47,7 @@ class ShipmentOrderAddressCom extends Component {
             Ward: [],
             dataOrderAddressSender: {},
             FormDataSenderLst: {},
-            SenderGeoLocation:this.props.ShipmentOrderAddress.SenderGeoLocation
+            SenderGeoLocation: this.props.ShipmentOrderAddress.SenderGeoLocation
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -89,13 +89,14 @@ class ShipmentOrderAddressCom extends Component {
         });
     }
 
-    handleValueChangeGeoLocation(name,lat, lng) {
+    handleValueChangeGeoLocation(name, lat, lng) {
         let { SenderGeoLocation } = this.state;
-        SenderGeoLocation = lat+","+lng;
-        this.setState({ SenderGeoLocation: lat+","+lng}, () => {
+        SenderGeoLocation = lat + "," + lng;
+        this.setState({ SenderGeoLocation: lat + "," + lng }, () => {
             this.ShowModalSender();
         });
     }
+
     handleValueChangeProvince(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
@@ -117,6 +118,7 @@ class ShipmentOrderAddressCom extends Component {
             this.ShowModalSender();
         });
     }
+
     handleValueChangeDistrict(selectedOption) {
         let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
         const comboValues = this.getComboValue(selectedOption);
@@ -141,6 +143,7 @@ class ShipmentOrderAddressCom extends Component {
             this.ShowModalSender();
         });
     }
+
     handleValueChangeWard(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
@@ -157,6 +160,266 @@ class ShipmentOrderAddressCom extends Component {
         }
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
             this.ShowModalSender();
+        });
+    }
+
+    checkInputName(formValidation) {
+        for (const key in formValidation) {
+            //  console.log("validation:",formValidation[key].ErrorLst,formValidation[key].ErrorLst.IsValidatonError);
+            if (formValidation[key].ErrorLst != undefined) {
+                if (formValidation[key].ErrorLst != [] && formValidation[key].ErrorLst.IsValidatonError) {
+                    this.elementItemRefs[key].focus();
+                    return key;
+                }
+            }
+        }
+        return "";
+    }
+
+    handleUpdateAddressSender() {
+        let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
+        let formData = FormDataSenderLst;
+        if (ShipmentOrderEdit.SenderFullName.length == 0 || String(ShipmentOrderEdit.SenderFullName).trim() == "") {
+            const ObjectNameSenderFullName = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập họ và tên" } };
+            formData = Object.assign({}, formData, { ["SenderFullName"]: ObjectNameSenderFullName });
+        }
+        if (ShipmentOrderEdit.SenderPhoneNumber.length == 0 || String(ShipmentOrderEdit.SenderPhoneNumber).trim() == "") {
+            const ObjectNameSenderPhoneNumber = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập số điện thoại" } };
+            formData = Object.assign({}, formData, { ["SenderPhoneNumber"]: ObjectNameSenderPhoneNumber });
+        }
+        if (parseInt(ShipmentOrderEdit.SenderProvinceID) < 0) {
+            const ObjectNameProvince = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn tỉnh/thành phố" } };
+            formData = Object.assign({}, formData, { ["SenderProvinceID"]: ObjectNameProvince });
+        }
+        if (parseInt(ShipmentOrderEdit.SenderDistrictID) < 0) {
+            const ObjectNameDistrict = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn quận/huyện" } };
+            formData = Object.assign({}, formData, { ["SenderDistrictID"]: ObjectNameDistrict });
+        }
+        if (parseInt(ShipmentOrderEdit.SenderWardID) < 0) {
+            const ObjectNameWard = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn phường/xã" } };
+            formData = Object.assign({}, formData, { ["SenderWardID"]: ObjectNameWard });
+        }
+        if (ShipmentOrderEdit.SenderAddress.length == 0 || String(ShipmentOrderEdit.SenderAddress).trim() == "") {
+            const ObjectNameSenderAddress = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập số nhà/đường" } };
+            formData = Object.assign({}, formData, { ["SenderAddress"]: ObjectNameSenderAddress });
+        }
+        if (this.checkInputName(formData) != "") {
+            this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
+                this.ShowModalSender();
+            });
+        }
+        else {
+            ShipmentOrderEdit.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+            ShipmentOrderEdit.SenderGeoLocation = this.state.SenderGeoLocation;
+            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
+                console.log("UpdateShipmentOrderAddress", apiResult)
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                if (!apiResult.IsError) {
+                    ModalManager.close();
+                }
+            });
+        }
+    }
+
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
+    getComboValue(selectedOption) {
+        let values = [];
+        if (selectedOption == null)
+            return -1;
+        if (this.props.isMultiSelect) {
+            for (let i = 0; i < selectedOption.length; i++) {
+                values.push(selectedOption[i].value);
+            }
+        } else {
+            return selectedOption.value;
+        }
+
+        return values;
+    }
+
+    getDataCombobox(data, valueMember, nameMember, conditionName, conditionValue) {
+        let listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+        data.map((cacheItem) => {
+            if (conditionName) {
+                if (cacheItem[conditionName] == conditionValue) {
+                    listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+                }
+            }
+            else {
+                listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+            }
+        });
+        return listOption;
+    }
+
+    initCombobox() {
+
+        // tỉnh thành phố
+        this.props.callGetCache(ERPCOMMONCACHE_PROVINCE).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                //console.log("FormElement listOption: ", listOption)
+                this.setState({
+                    Province: result.ResultObject.CacheData
+                });
+            }
+        });
+
+        // quận huyện
+        this.props.callGetCache(ERPCOMMONCACHE_DISTRICT).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                //console.log("FormElement listOption: ", listOption)
+                this.setState({
+                    District: result.ResultObject.CacheData
+                });
+            }
+        });
+
+
+        // phường xã
+        this.props.callGetCache(ERPCOMMONCACHE_WARD).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                //console.log("FormElement listOption: ", listOption)
+                this.setState({
+                    Ward: result.ResultObject.CacheData
+                });
+            }
+        });
+        this.setState({
+            IsLoadDataComplete: true
+        });
+
+    }
+
+    bindcombox(listOption, values) {
+        let selectedOption = [];
+        if (values == null || values === -1)
+            return selectedOption;
+        if (typeof values.toString() == "string")
+            values = values.toString().split();
+        for (let i = 0; i < values.length; i++) {
+            for (let j = 0; j < listOption.length; j++) {
+                if (values[i] == listOption[j].value) {
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
+                }
+            }
+        }
+        return selectedOption;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.ShipmentOrderAddress) !== JSON.stringify(nextProps.ShipmentOrderAddress)) {
+            this.setState({
+                ShipmentOrder: nextProps.ShipmentOrderAddress
+            })
+        }
+    }
+
+    handleUpdateAddressReceiver() {
+        let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
+        console.log("Receiver", ShipmentOrderEdit)
+        let formData = FormDataSenderLst;
+        if (ShipmentOrderEdit.ReceiverFullName.length == 0 || String(ShipmentOrderEdit.ReceiverFullName).trim() == "") {
+            const ObjectNameReceiverFullName = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập họ và tên" } };
+            formData = Object.assign({}, formData, { ["ReceiverFullName"]: ObjectNameReceiverFullName });
+        }
+        if (ShipmentOrderEdit.ReceiverPhoneNumber.length == 0 || String(ShipmentOrderEdit.ReceiverPhoneNumber).trim() == "") {
+            const ObjectNameReceiverPhoneNumber = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập số điện thoại" } };
+            formData = Object.assign({}, formData, { ["ReceiverPhoneNumber"]: ObjectNameReceiverPhoneNumber });
+        }
+        if (parseInt(ShipmentOrderEdit.ReceiverProvinceID) < 0) {
+            const ObjectNameReceiverProvinceID = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn tỉnh/thành phố" } };
+            formData = Object.assign({}, formData, { ["ReceiverProvinceID"]: ObjectNameReceiverProvinceID });
+        }
+        if (parseInt(ShipmentOrderEdit.ReceiverDistrictID) < 0) {
+            const ObjectNameReceiverDistrictID= { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn quận/huyện" } };
+            formData = Object.assign({}, formData, { ["ReceiverDistrictID"]: ObjectNameReceiverDistrictID });
+        }
+        if (parseInt(ShipmentOrderEdit.ReceiverWardID) < 0) {
+            const ObjectNameReceiverWardID = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn phường/xã" } };
+            formData = Object.assign({}, formData, { ["ReceiverWardID"]: ObjectNameReceiverWardID });
+        }
+        if (ShipmentOrderEdit.ReceiverAddress.length == 0 || String(ShipmentOrderEdit.ReceiverAddress).trim() == "") {
+            const ObjectNameReceiverAddress = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập số nhà/đường" } };
+            formData = Object.assign({}, formData, { ["ReceiverAddress"]: ObjectNameReceiverAddress });
+        }
+        if (this.checkInputName(formData) != "") {
+            this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
+                this.ShowModalSender();
+            });
+        }
+        else {
+            ShipmentOrderEdit.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+            ShipmentOrderEdit.SenderGeoLocation = this.state.SenderGeoLocation;
+            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
+                console.log("UpdateShipmentOrderAddress", apiResult)
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                if (!apiResult.IsError) {
+                    ModalManager.close();
+                }
+            });
+        }
+    }
+
+    handleShowModalSender() {
+
+        let { ShipmentOrderEdit } = this.state;
+        this.setValueCombobox(2, this.state.ShipmentOrderEdit.SenderProvinceID, this.state.ShipmentOrderEdit.SenderDistrictID)
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
+            this.ShowModalSender();
+        });
+    }
+
+    handleShowModalReceiver() {
+        let { ShipmentOrderEdit } = this.state;
+        this.setValueCombobox(2, this.state.ShipmentOrderEdit.SenderProvinceID, this.state.ShipmentOrderEdit.SenderDistrictID)
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
+            this.ShowModalReceiver();
+        });
+    }
+
+    setValueCombobox(CountryID, ProvinceID, WardID) {
+        let province = [{ value: -1, label: "--Vui lòng chọn--" }];
+        let district = [{ value: -1, label: "--Vui lòng chọn--" }];
+        let ward = [{ value: -1, label: "--Vui lòng chọn--" }];
+        province = this.getDataCombobox(this.state.Province, "ProvinceID", "ProvinceName", "CountryID", CountryID);
+        district = this.getDataCombobox(this.state.District, "DistrictID", "DistrictName", "ProvinceID", ProvinceID);
+        ward = this.getDataCombobox(this.state.Ward, "WardID", "WardName", "DistrictID", WardID);
+        this.setState({
+            ProvinceLst: province,
+            DistrictLst: district,
+            WardLst: ward
         });
     }
 
@@ -306,7 +569,7 @@ class ShipmentOrderAddressCom extends Component {
                 </div>
 
                 <div className="form-row">
-                    <div className="form-group col-md-4">
+                    <div className="form-group col-md-6">
                         <div className="form-row">
                             <div className="form-group col-md-4">
                                 <label className="col-form-label">Tọa độ:</label>
@@ -316,22 +579,22 @@ class ShipmentOrderAddressCom extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="form-group col-md-4">
+                    <div className="form-group col-md-3">
                         <div className="form-row">
-                            <div className="form-group col-md-4">
+                            <div className="form-group col-md-6">
                                 <label className="col-form-label">Khoảng cách:</label>
                             </div>
-                            <div className="form-group col-md-8">
+                            <div className="form-group col-md-6">
                                 <label className="col-form-label">{this.state.ShipmentOrderEdit.EstimateDeliveryDistance}km</label>
                             </div>
                         </div>
                     </div>
-                    <div className="form-group col-md-4">
+                    <div className="form-group col-md-3">
                         <div className="form-row">
-                            <div className="form-group col-md-4">
+                            <div className="form-group col-md-6">
                                 <label className="col-form-label">Thời gian:</label>
                             </div>
-                            <div className="form-group col-md-8">
+                            <div className="form-group col-md-6">
                                 <label className="col-form-label">{this.state.ShipmentOrderEdit.EstimateDeliveryLong}phút</label>
                             </div>
                         </div>
@@ -344,228 +607,12 @@ class ShipmentOrderAddressCom extends Component {
                         onChange={this.handleValueChangeGeoLocation.bind(this)}
                         isGeoLocation={this.CheckPermissionUser(4)}
                         name={"SenderGeoLocation"}
-                        classStyle={style} classContainerStyle={containerStyle}
+                        classContainerStyle={containerStyle}
                     />
                 </div>
 
             </ModelContainer>
         )
-    }
-    checkInputName(formValidation) {
-        for (const key in formValidation) {
-            //  console.log("validation:",formValidation[key].ErrorLst,formValidation[key].ErrorLst.IsValidatonError);
-            if (formValidation[key].ErrorLst != undefined) {
-                if (formValidation[key].ErrorLst != [] && formValidation[key].ErrorLst.IsValidatonError) {
-                    this.elementItemRefs[key].focus();
-                    return key;
-                }
-            }
-        }
-        return "";
-    }
-    handleUpdateAddressSender() {
-        let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
-        let formData = FormDataSenderLst;
-        if (ShipmentOrderEdit.SenderFullName.length == 0 || String(ShipmentOrderEdit.SenderFullName).trim() == "") {
-            const ObjectNameSenderFullName = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập họ và tên" } };
-            formData = Object.assign({}, formData, { ["SenderFullName"]: ObjectNameSenderFullName });
-        }
-        if (ShipmentOrderEdit.SenderPhoneNumber.length == 0 || String(ShipmentOrderEdit.SenderPhoneNumber).trim() == "") {
-            const ObjectNameSenderPhoneNumber = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập số điện thoại" } };
-            formData = Object.assign({}, formData, { ["SenderPhoneNumber"]: ObjectNameSenderPhoneNumber });
-        }
-        if (parseInt(ShipmentOrderEdit.SenderProvinceID) < 0) {
-            const ObjectNameProvince = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn tỉnh/thành phố" } };
-            formData = Object.assign({}, formData, { ["SenderProvinceID"]: ObjectNameProvince });
-        }
-        if (parseInt(ShipmentOrderEdit.SenderDistrictID) < 0) {
-            const ObjectNameDistrict = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn quận/huyện" } };
-            formData = Object.assign({}, formData, { ["SenderDistrictID"]: ObjectNameDistrict });
-        }
-        if (parseInt(ShipmentOrderEdit.SenderWardID) < 0) {
-            const ObjectNameWard = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn phường/xã" } };
-            formData = Object.assign({}, formData, { ["SenderWardID"]: ObjectNameWard });
-        }
-        if (ShipmentOrderEdit.SenderAddress.length == 0 || String(ShipmentOrderEdit.SenderAddress).trim() == "") {
-            const ObjectNameSenderAddress = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập số nhà/đường" } };
-            formData = Object.assign({}, formData, { ["SenderAddress"]: ObjectNameSenderAddress });
-        }
-        if (this.checkInputName(formData) != "") {
-            this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
-                this.ShowModalSender();
-            });
-        }
-        else {
-            ShipmentOrderEdit.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
-            ShipmentOrderEdit.SenderGeoLocation= this.state.SenderGeoLocation;
-            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
-                console.log("UpdateShipmentOrderAddress", apiResult)
-                this.addNotification(apiResult.Message, apiResult.IsError);
-                if (!apiResult.IsError) {
-                    ModalManager.close();
-                }
-            });
-        }
-    }
-
-
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
-        } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close">
-                            <span>×</span>
-                        </div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
-    getComboValue(selectedOption) {
-        let values = [];
-        if (selectedOption == null)
-            return -1;
-        if (this.props.isMultiSelect) {
-            for (let i = 0; i < selectedOption.length; i++) {
-                values.push(selectedOption[i].value);
-            }
-        } else {
-            return selectedOption.value;
-        }
-
-        return values;
-    }
-    getDataCombobox(data, valueMember, nameMember, conditionName, conditionValue) {
-        let listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
-        data.map((cacheItem) => {
-            if (conditionName) {
-                if (cacheItem[conditionName] == conditionValue) {
-                    listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
-                }
-            }
-            else {
-                listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
-            }
-        });
-        return listOption;
-    }
-    initCombobox() {
-
-        // tỉnh thành phố
-        this.props.callGetCache(ERPCOMMONCACHE_PROVINCE).then((result) => {
-            if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
-                this.setState({
-                    Province: result.ResultObject.CacheData
-                });
-            }
-        });
-
-        // quận huyện
-        this.props.callGetCache(ERPCOMMONCACHE_DISTRICT).then((result) => {
-            if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
-                this.setState({
-                    District: result.ResultObject.CacheData
-                });
-            }
-        });
-
-
-        // phường xã
-        this.props.callGetCache(ERPCOMMONCACHE_WARD).then((result) => {
-            if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
-                this.setState({
-                    Ward: result.ResultObject.CacheData
-                });
-            }
-        });
-        this.setState({
-            IsLoadDataComplete: true
-        });
-
-    }
-    bindcombox(listOption, values) {
-        let selectedOption = [];
-        if (values == null || values === -1)
-            return selectedOption;
-        if (typeof values.toString() == "string")
-            values = values.toString().split();
-        for (let i = 0; i < values.length; i++) {
-            for (let j = 0; j < listOption.length; j++) {
-                if (values[i] == listOption[j].value) {
-                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
-                }
-            }
-        }
-        return selectedOption;
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (JSON.stringify(this.props.ShipmentOrderAddress) !== JSON.stringify(nextProps.ShipmentOrderAddress)) {
-            this.setState({
-                ShipmentOrder: nextProps.ShipmentOrderAddress
-            })
-        }
-    }
-
-
-
-    handleUpdateAddressReceiver() {
-        console.log("show modal update", this.state.ShipmentOrderEdit);
-    }
-
-    handleShowModalSender() {
-
-        let { ShipmentOrderEdit } = this.state;
-        this.setValueCombobox(2, this.state.ShipmentOrderEdit.SenderProvinceID, this.state.ShipmentOrderEdit.SenderDistrictID)
-        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
-            this.ShowModalSender();
-        });
-    }
-
-    handleShowModalReceiver() {
-        let { ShipmentOrderEdit } = this.state;
-        this.setValueCombobox(2, this.state.ShipmentOrderEdit.SenderProvinceID, this.state.ShipmentOrderEdit.SenderDistrictID)
-        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
-            this.ShowModalReceiver();
-        });
-    }
-
-    setValueCombobox(CountryID, ProvinceID, WardID) {
-        let province = [{ value: -1, label: "--Vui lòng chọn--" }];
-        let district = [{ value: -1, label: "--Vui lòng chọn--" }];
-        let ward = [{ value: -1, label: "--Vui lòng chọn--" }];
-        province = this.getDataCombobox(this.state.Province, "ProvinceID", "ProvinceName", "CountryID", CountryID);
-        district = this.getDataCombobox(this.state.District, "DistrictID", "DistrictName", "ProvinceID", ProvinceID);
-        ward = this.getDataCombobox(this.state.Ward, "WardID", "WardName", "DistrictID", WardID);
-        this.setState({
-            ProvinceLst: province,
-            DistrictLst: district,
-            WardLst: ward
-        });
     }
 
     ShowModalReceiver() {
@@ -579,7 +626,7 @@ class ShipmentOrderAddressCom extends Component {
                 name=""
                 content={""}
                 onRequestClose={() => false}
-                onChangeModal={this.handleUpdateAddressSender.bind(this)}
+                onChangeModal={this.handleUpdateAddressReceiver.bind(this)}
             >
                 <div className="form-row">
                     <div className="form-group col-md-6">
@@ -704,7 +751,7 @@ class ShipmentOrderAddressCom extends Component {
                 </div>
 
                 <div className="form-row">
-                    <div className="form-group col-md-4">
+                    <div className="form-group col-md-6">
                         <div className="form-row">
                             <div className="form-group col-md-4">
                                 <label className="col-form-label">Tọa độ:</label>
@@ -714,22 +761,22 @@ class ShipmentOrderAddressCom extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="form-group col-md-4">
+                    <div className="form-group col-md-3">
                         <div className="form-row">
-                            <div className="form-group col-md-4">
+                            <div className="form-group col-md-6">
                                 <label className="col-form-label">Khoảng cách:</label>
                             </div>
-                            <div className="form-group col-md-8">
+                            <div className="form-group col-md-6">
                                 <label className="col-form-label">3Km</label>
                             </div>
                         </div>
                     </div>
-                    <div className="form-group col-md-4">
+                    <div className="form-group col-md-3">
                         <div className="form-row">
-                            <div className="form-group col-md-4">
+                            <div className="form-group col-md-6">
                                 <label className="col-form-label">Thời gian:</label>
                             </div>
-                            <div className="form-group col-md-8">
+                            <div className="form-group col-md-6">
                                 <label className="col-form-label">15 phút</label>
                             </div>
                         </div>
@@ -740,7 +787,7 @@ class ShipmentOrderAddressCom extends Component {
                     <MapContainer
                         SenderGeoLocation={this.state.ShipmentOrderEdit.SenderGeoLocation}
                         onChange={this.handleValueChangeGeoLocation.bind(this)}
-                        classStyle={style} classContainerStyle={containerStyle}
+                        classContainerStyle={containerStyle}
                     />
                     {/* <div id="map-container"></div> */}
                 </div>
@@ -748,41 +795,6 @@ class ShipmentOrderAddressCom extends Component {
             </ModelContainer>
         )
     }
-
-
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
-        } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close">
-                            <span>×</span>
-                        </div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
 
     render() {
 

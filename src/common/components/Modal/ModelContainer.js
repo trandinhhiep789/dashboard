@@ -17,7 +17,7 @@ const MessageModelStyle = {
 
     content: {
         position: 'relative',
-        margin: '5% auto',
+        margin: '3% auto',
         width: '70%',
         border: '1px solid rgba(0, 0, 0, .2)',
         background: '#fff',
