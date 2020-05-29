@@ -178,7 +178,7 @@ class ShipmentOrderAddressCom extends Component {
         };
         this.props.callFetchAPI(APIHostName, 'api/Maps/FindPathViaRoute', paramsRequest).then((apiResult) => {
             if (!apiResult.IsError) {
-                console.log(JSON.parse(apiResult.ResultObject), JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Distances[1] / 1000);
+            
                 let { ShipmentOrderEdit } = this.state;
                 const Durations = Math.floor(JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Durations[1] / 60);
                 ShipmentOrderEdit["EstimateDeliveryDistance"] = JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Distances[1] / 1000;
@@ -1013,7 +1013,7 @@ class ShipmentOrderAddressCom extends Component {
                                     </div>
                                     <div className="form-group col-md-8">
                                         <label className="col-form-label" >{this.state.ShipmentOrder.SenderFullAddress}</label>
-                                        <Link className="mapslink" to="/Maps">Xem bản đồ</Link>
+                                        <Link className="mapslink" to="/Map">Xem bản đồ</Link>
                                     </div>
                                 </div>
                             </div>
