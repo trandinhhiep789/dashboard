@@ -47,7 +47,8 @@ class ShipmentOrderAddressCom extends Component {
             Ward: [],
             dataOrderAddressSender: {},
             FormDataSenderLst: {},
-            SenderGeoLocation: this.props.ShipmentOrderAddress.SenderGeoLocation
+            SenderGeoLocation: this.props.ShipmentOrderAddress.SenderGeoLocation,
+            ReceiverGeoLocation: this.props.ShipmentOrderAddress.ReceiverGeoLocation
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -86,6 +87,38 @@ class ShipmentOrderAddressCom extends Component {
         }
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
             this.ShowModalSender();
+        });
+    }
+
+    handleValueChangeReceiver(name, value, label, labelnew, validatonList) {
+        debugger
+        let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
+        let formData = FormDataSenderLst;
+        const aa = { labelError: undefined }
+        if (typeof validatonList != "undefined") {
+            const validation = ValidationField(validatonList, value, label, aa);
+            const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
+            const ObjectName = { ErrorLst: validationObject };
+            formData = Object.assign({}, formData, { [name]: ObjectName });
+            ShipmentOrderEdit[name] = validation.fieldValue;
+        }
+        else {
+            ShipmentOrderEdit[name] = value;
+        }
+
+        if (name == "ReceiverAddress") {
+            ShipmentOrderEdit.ReceiverGeoLocation = "10.852982,105.700";
+        }
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
+            this.ShowModalReceiver();
+        });
+    }
+
+    handleValueChangeReceiverGeoLocation(name, lat, lng) {
+        let { ReceiverGeoLocation } = this.state;
+        ReceiverGeoLocation = lat + "," + lng;
+        this.setState({ ReceiverGeoLocation: lat + "," + lng }, () => {
+            this.ShowModalReceiver();
         });
     }
 
@@ -162,6 +195,73 @@ class ShipmentOrderAddressCom extends Component {
             this.ShowModalSender();
         });
     }
+
+    handleValueChangeReceiverProvince(selectedOption) {
+        const comboValues = this.getComboValue(selectedOption);
+        let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
+        ShipmentOrderEdit['ReceiverProvinceID'] = comboValues;
+        ShipmentOrderEdit['ReceiverDistrictID'] = -1;
+        ShipmentOrderEdit['ReceiverWardID'] = -1;
+        this.setValueCombobox(2, comboValues, -1)
+        let formData = FormDataSenderLst;
+        const aa = { labelError: undefined }
+        const validation = ValidationField(["Comborequired"], comboValues, "tỉnh/thành phố", aa);
+        const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
+        const ObjectName = { ErrorLst: validationObject };
+        const ObjectNameDistrict = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn quận/huyện" } };
+        const ObjectNameWard = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn phường/xã" } };
+        formData = Object.assign({}, formData, { ["ReceiverProvinceID"]: ObjectName });
+        formData = Object.assign({}, formData, { ["ReceiverDistrictID"]: ObjectNameDistrict });
+        formData = Object.assign({}, formData, { ["ReceiverWardID"]: ObjectNameWard });
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
+            this.ShowModalReceiver();
+        });
+    }
+    handleValueChangeReceiverDistrict(selectedOption) {
+        let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
+        const comboValues = this.getComboValue(selectedOption);
+        ShipmentOrderEdit['ReceiverDistrictID'] = comboValues;
+        ShipmentOrderEdit['ReceiverWardID'] = -1;
+        this.setValueCombobox(2, ShipmentOrderEdit.SenderProvinceID, comboValues)
+        let formData = FormDataSenderLst;
+        if (parseInt(comboValues) < 0) {
+            const ObjectNameDistrict = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn quận/huyện" } };
+            const ObjectNameWard = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn phường/xã" } };
+            formData = Object.assign({}, formData, { ["ReceiverDistrictID"]: ObjectNameDistrict });
+            formData = Object.assign({}, formData, { ["SenderWardID"]: ObjectNameWard });
+        }
+        else {
+            const ObjectNameDistrict = { ErrorLst: { IsValidatonError: false, ValidatonErrorMessage: "" } };
+            const ObjectNameWard = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn phường/xã" } };
+            formData = Object.assign({}, formData, { ["ReceiverDistrictID"]: ObjectNameDistrict });
+            formData = Object.assign({}, formData, { ["ReceiverWardID"]: ObjectNameWard });
+        }
+
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
+            this.ShowModalReceiver();
+        });
+    }
+
+    handleValueChangeReceiverWard(selectedOption) {
+        const comboValues = this.getComboValue(selectedOption);
+        let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
+        ShipmentOrderEdit['ReceiverWardID'] = comboValues;
+        this.setValueCombobox(2, ShipmentOrderEdit.SenderProvinceID, ShipmentOrderEdit.SenderDistrictID)
+        let formData = FormDataSenderLst;
+        if (parseInt(comboValues) < 0) {
+            const ObjectNameWard = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn phường/xã" } };
+            formData = Object.assign({}, formData, { ["ReceiverWardID"]: ObjectNameWard });
+        }
+        else {
+            const ObjectNameWard = { ErrorLst: { IsValidatonError: false, ValidatonErrorMessage: "" } };
+            formData = Object.assign({}, formData, { ["ReceiverWardID"]: ObjectNameWard });
+        }
+        this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
+            this.ShowModalSender();
+        });
+    }
+
+    
 
     checkInputName(formValidation) {
         for (const key in formValidation) {
@@ -347,6 +447,7 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     handleUpdateAddressReceiver() {
+        debugger
         let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
         console.log("Receiver", ShipmentOrderEdit)
         let formData = FormDataSenderLst;
@@ -363,7 +464,7 @@ class ShipmentOrderAddressCom extends Component {
             formData = Object.assign({}, formData, { ["ReceiverProvinceID"]: ObjectNameReceiverProvinceID });
         }
         if (parseInt(ShipmentOrderEdit.ReceiverDistrictID) < 0) {
-            const ObjectNameReceiverDistrictID= { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn quận/huyện" } };
+            const ObjectNameReceiverDistrictID = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn quận/huyện" } };
             formData = Object.assign({}, formData, { ["ReceiverDistrictID"]: ObjectNameReceiverDistrictID });
         }
         if (parseInt(ShipmentOrderEdit.ReceiverWardID) < 0) {
@@ -380,10 +481,11 @@ class ShipmentOrderAddressCom extends Component {
             });
         }
         else {
+            debugger
             ShipmentOrderEdit.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
-            ShipmentOrderEdit.SenderGeoLocation = this.state.SenderGeoLocation;
+            ShipmentOrderEdit.SenderGeoLocation = this.state.ReceiverGeoLocation;
             this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
-                console.log("UpdateShipmentOrderAddress", apiResult)
+                console.log("11111", apiResult, ShipmentOrderEdit)
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
                     ModalManager.close();
@@ -402,8 +504,9 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     handleShowModalReceiver() {
+        debugger
         let { ShipmentOrderEdit } = this.state;
-        this.setValueCombobox(2, this.state.ShipmentOrderEdit.SenderProvinceID, this.state.ShipmentOrderEdit.SenderDistrictID)
+        this.setValueCombobox(2, this.state.ShipmentOrderEdit.ReceiverProvinceID, this.state.ShipmentOrderEdit.ReceiverDistrictID)
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
             this.ShowModalReceiver();
         });
@@ -616,9 +719,10 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     ShowModalReceiver() {
-        const Province = this.bindcombox(this.state.ProvinceLst, this.state.ShipmentOrderEdit.SenderProvinceID);
-        const District = this.bindcombox(this.state.DistrictLst, this.state.ShipmentOrderEdit.SenderDistrictID);
-        const Ward = this.bindcombox(this.state.WardLst, this.state.ShipmentOrderEdit.SenderWardID);
+        debugger
+        const Province = this.bindcombox(this.state.ProvinceLst, this.state.ShipmentOrderEdit.ReceiverProvinceID);
+        const District = this.bindcombox(this.state.DistrictLst, this.state.ShipmentOrderEdit.ReceiverDistrictID);
+        const Ward = this.bindcombox(this.state.WardLst, this.state.ShipmentOrderEdit.ReceiverWardID);
 
         ModalManager.open(
             <ModelContainer
@@ -626,42 +730,43 @@ class ShipmentOrderAddressCom extends Component {
                 name=""
                 content={""}
                 onRequestClose={() => false}
+                IsButton={!this.CheckPermissionUser(3) || !this.CheckPermissionUser(4)}
                 onChangeModal={this.handleUpdateAddressReceiver.bind(this)}
             >
                 <div className="form-row">
                     <div className="form-group col-md-6">
-                        <div className="form-row">
-                            <div className="form-group col-md-4">
-                                <label className="col-form-label">Họ và tên:</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <input
-                                    type="text"
-                                    name="SenderFullName"
-                                    onChange={this.handleValueChange.bind(this)}
-                                    className="form-control form-control-sm"
-                                    value={this.state.ShipmentOrderEdit.SenderFullName}
-                                    placeholder="Họ và tên"
-                                />
-                            </div>
-                        </div>
+                        <FormControl.TextBox
+                            name="ReceiverFullName"
+                            colspan="8"
+                            labelcolspan="4"
+                            label="họ và tên"
+                            onValueChange={this.handleValueChangeReceiver.bind(this)}
+                            readOnly={!this.CheckPermissionUser(3)}
+                            inputRef={ref => this.elementItemRefs["ReceiverFullName"] = ref}
+                            placeholder="Họ và tên"
+                            controltype="InputControl"
+                            value={this.state.ShipmentOrderEdit.ReceiverFullName}
+                            datasourcemember="ReceiverFullName"
+                            validatonList={["required"]}
+                            validationErrorMessage={(this.state.FormDataSenderLst["ReceiverFullName"] != undefined ? this.state.FormDataSenderLst["ReceiverFullName"].ErrorLst.ValidatonErrorMessage : "")}
+                        />
                     </div>
                     <div className="form-group col-md-6">
-                        <div className="form-row">
-                            <div className="form-group col-md-4">
-                                <label className="col-form-label">Số điện thoại:</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <input
-                                    type="text"
-                                    name="SenderPhoneNumber"
-                                    onChange={this.handleValueChange.bind(this)}
-                                    className="form-control form-control-sm"
-                                    value={this.state.ShipmentOrderEdit.SenderPhoneNumber}
-                                    placeholder="Số điện thoại người gửi"
-                                />
-                            </div>
-                        </div>
+                        <FormControl.TextBox
+                            name="ReceiverPhoneNumber"
+                            colspan="8"
+                            labelcolspan="4"
+                            label="số điện thoại"
+                            onValueChange={this.handleValueChangeReceiver.bind(this)}
+                            readOnly={!this.CheckPermissionUser(3)}
+                            inputRef={ref => this.elementItemRefs["ReceiverPhoneNumber"] = ref}
+                            placeholder="Số điện thoại"
+                            controltype="InputControl"
+                            value={this.state.ShipmentOrderEdit.ReceiverPhoneNumber}
+                            datasourcemember="ReceiverPhoneNumber"
+                            validatonList={["required", "number"]}
+                            validationErrorMessage={(this.state.FormDataSenderLst["ReceiverPhoneNumber"] != undefined ? this.state.FormDataSenderLst["ReceiverPhoneNumber"].ErrorLst.ValidatonErrorMessage : "")}
+                        />
                     </div>
                 </div>
 
@@ -669,20 +774,23 @@ class ShipmentOrderAddressCom extends Component {
                     <div className="form-group col-md-6">
                         <div className="form-row">
                             <div className="form-group col-md-4">
-                                <label className="col-form-label">Tỉnh/thành phố:</label>
+                                <label className="col-form-label 6">Tỉnh/thành phố<span className="text-danger">*</span></label>
                             </div>
                             <div className="form-group col-md-8">
                                 <div className="form-group-input-select">
                                     <Select
                                         value={Province}
-                                        name={"SenderProvinceID"}
-                                        onChange={this.handleValueChangeProvince.bind(this)}
+                                        name={"ReceiverProvinceID"}
+                                        onChange={this.handleValueChangeReceiverProvince.bind(this)}
                                         options={this.state.ProvinceLst}
+                                        isDisabled={!this.CheckPermissionUser(4)}
+                                        inputRef={ref => this.elementItemRefs["ReceiverProvinceID"] = ref}
                                         isMulti={false}
                                         isSearchable={true}
-                                        className={'select'}
+                                        className={(this.state.ShipmentOrderEdit.ReceiverProvinceID == -1 ? "react-select is-invalid" : "react-select")}
                                         placeholder="--Vui lòng chọn--"
                                     />
+                                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{(this.state.FormDataSenderLst["ReceiverProvinceID"] != undefined ? this.state.FormDataSenderLst["ReceiverProvinceID"].ErrorLst.ValidatonErrorMessage : "")}</li></ul></div>
                                 </div>
                             </div>
                         </div>
@@ -690,20 +798,23 @@ class ShipmentOrderAddressCom extends Component {
                     <div className="form-group col-md-6">
                         <div className="form-row">
                             <div className="form-group col-md-4">
-                                <label className="col-form-label">Quận/huyện:</label>
+                                <label className="col-form-label 6">Quận/huyện<span className="text-danger">*</span></label>
                             </div>
                             <div className="form-group col-md-8">
                                 <div className="form-group-input-select">
                                     <Select
                                         value={District}
-                                        name={"SenderDistrictID"}
-                                        onChange={this.handleValueChangeDistrict.bind(this)}
+                                        name={"ReceiverDistrictID"}
+                                        onChange={this.handleValueChangeReceiverDistrict.bind(this)}
                                         options={this.state.DistrictLst}
+                                        isDisabled={!this.CheckPermissionUser(4)}
+                                        inputRef={ref => this.elementItemRefs["ReceiverDistrictID"] = ref}
                                         isMulti={false}
                                         isSearchable={true}
-                                        className={'select'}
-                                        placeholder="--Vui lòng chọn--"
+                                        className={(this.state.ShipmentOrderEdit.ReceiverDistrictID == -1 ? "react-select is-invalid" : "react-select")}
+                                        placeholder='--Vui lòng chọn--'
                                     />
+                                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{(this.state.FormDataSenderLst["ReceiverDistrictID"] != undefined ? this.state.FormDataSenderLst["ReceiverDistrictID"].ErrorLst.ValidatonErrorMessage : "")}</li></ul></div>
                                 </div>
                             </div>
                         </div>
@@ -714,39 +825,43 @@ class ShipmentOrderAddressCom extends Component {
                     <div className="form-group col-md-6">
                         <div className="form-row">
                             <div className="form-group col-md-4">
-                                <label className="col-form-label">Phường/xã:</label>
+                                <label className="col-form-label 6">Phường/xã<span className="text-danger">*</span></label>
                             </div>
                             <div className="form-group col-md-8">
                                 <div className="form-group-input-select">
                                     <Select
                                         value={Ward}
-                                        name={"SenderWardID"}
-                                        onChange={this.handleValueChangeWard.bind(this)}
+                                        name={"ReceiverWardID"}
+                                        onChange={this.handleValueChangeReceiverWard.bind(this)}
                                         options={this.state.WardLst}
+                                        isDisabled={!this.CheckPermissionUser(4)}
+                                        inputRef={ref => this.elementItemRefs["ReceiverWardID"] = ref}
                                         isMulti={false}
                                         isSearchable={true}
-                                        className={'select'}
+                                        className={(this.state.ShipmentOrderEdit.ReceiverWardID == -1 ? "react-select is-invalid" : "react-select")}
                                         placeholder="--Vui lòng chọn--"
                                     />
+                                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{(this.state.FormDataSenderLst["ReceiverWardID"] != undefined ? this.state.FormDataSenderLst["ReceiverWardID"].ErrorLst.ValidatonErrorMessage : "")}</li></ul></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="form-group col-md-6">
-                        <div className="form-row">
-                            <div className="form-group col-md-4">
-                                <label className="col-form-label">Số nhà/đường:</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <input
-                                    name="SenderAddress"
-                                    onChange={this.handleValueChange.bind(this)}
-                                    value={this.state.ShipmentOrderEdit.SenderAddress}
-                                    className="form-control form-control-sm"
-                                    placeholder="Số điện thoại người gửi"
-                                />
-                            </div>
-                        </div>
+                        <FormControl.TextBox
+                            name="ReceiverAddress"
+                            colspan="8"
+                            labelcolspan="4"
+                            label="số nhà/đường"
+                            onValueChange={this.handleValueChangeReceiver.bind(this)}
+                            readOnly={!this.CheckPermissionUser(4)}
+                            placeholder="Số điện thoại người nhận"
+                            controltype="InputControl"
+                            value={this.state.ShipmentOrderEdit.ReceiverAddress}
+                            inputRef={ref => this.elementItemRefs["ReceiverAddress"] = ref}
+                            datasourcemember="ReceiverAddress"
+                            validatonList={["required"]}
+                            validationErrorMessage={""}
+                        />
                     </div>
                 </div>
 
@@ -757,7 +872,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Tọa độ:</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <label className="col-form-label">{this.state.ShipmentOrderEdit.SenderGeoLocation}</label>
+                                <label className="col-form-label">{this.state.ReceiverGeoLocation}</label>
                             </div>
                         </div>
                     </div>
@@ -767,7 +882,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Khoảng cách:</label>
                             </div>
                             <div className="form-group col-md-6">
-                                <label className="col-form-label">3Km</label>
+                                <label className="col-form-label">{this.state.ShipmentOrderEdit.EstimateDeliveryDistance}km</label>
                             </div>
                         </div>
                     </div>
@@ -777,7 +892,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">Thời gian:</label>
                             </div>
                             <div className="form-group col-md-6">
-                                <label className="col-form-label">15 phút</label>
+                                <label className="col-form-label">{this.state.ShipmentOrderEdit.EstimateDeliveryLong}phút</label>
                             </div>
                         </div>
                     </div>
@@ -785,11 +900,12 @@ class ShipmentOrderAddressCom extends Component {
 
                 <div className="form-row google-maps">
                     <MapContainer
-                        SenderGeoLocation={this.state.ShipmentOrderEdit.SenderGeoLocation}
-                        onChange={this.handleValueChangeGeoLocation.bind(this)}
+                        SenderGeoLocation={this.state.ShipmentOrderEdit.ReceiverGeoLocation}
+                        onChange={this.handleValueChangeReceiverGeoLocation.bind(this)}
+                        isGeoLocation={this.CheckPermissionUser(4)}
+                        name={"ReceiverGeoLocation"}
                         classContainerStyle={containerStyle}
                     />
-                    {/* <div id="map-container"></div> */}
                 </div>
 
             </ModelContainer>
