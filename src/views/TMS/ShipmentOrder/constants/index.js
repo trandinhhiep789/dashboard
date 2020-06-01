@@ -431,6 +431,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "ShipmentGoodsTypeID"
     },
     {
+        Name: "CreatedOrderTime",
+        DefaultValue: "",
+        BindControlName: "dtCreatedOrderTime",
+        DataSourceMember: "CreatedOrderTime"
+    },
+    {
         Name: "IsActived",
         DefaultValue: true,
         BindControlName: "chkIsActived",

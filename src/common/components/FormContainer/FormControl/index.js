@@ -2,6 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import MultiSelectComboBox from "./MultiSelectComboBox";
 import ComboboxQTQHPX from "./CommonControl/ComboboxQTQHPX.js";
+import { formatDate } from "../../../../common/library/CommonLib.js";
 
 import { callGetCache } from "../../../../actions/cacheAction";
 import { connect } from 'react-redux';
@@ -34,7 +35,6 @@ class TextBox extends React.Component {
     }
 
     handKeyDown(e) {
-        debugger;
         if (e.key == 'Enter') {
             if (this.props.onhandKeyDown != null) {
                 this.props.onhandKeyDown(e.target.name, e.target.value, this.props.label, e, this.props.validatonList);
@@ -827,7 +827,7 @@ class ElementDatetimeCom extends Component {
                             name={name}
                             onChange={this.handleValueChange}
                             onChange={(moment) => this.handleValueChange(name, moment)}
-                            defaultValue={value}
+                            defaultValue={formatDate(value)}
                             timeFormat={timeFormat}
                             dateFormat={dateFormat} >
                         </Datetime>
@@ -849,7 +849,7 @@ class ElementDatetimeCom extends Component {
                             name={name}
                             onChange={this.handleValueChange}
                             onChange={(moment) => this.handleValueChange(name, moment)}
-                            defaultValue={value}
+                            defaultValue={formatDate(value)}
                             timeFormat={timeFormat}
                             dateFormat={dateFormat} >
                         </Datetime>
