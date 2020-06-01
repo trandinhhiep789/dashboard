@@ -623,6 +623,7 @@ export const ElementQHPXList = [
         isMultiSelect: false,
         placeholder: "---Vui lòng chọn---",
         listoption: [],
+        validatonList: ["Comborequired"],
         IsAutoLoadItemFromCache: true,
         filterValue: "",
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
@@ -643,6 +644,7 @@ export const ElementQHPXList = [
         isMultiSelect: false,
         placeholder: "---Vui lòng chọn---",
         listoption: [],
+        validatonList: ["Comborequired"],
         IsAutoLoadItemFromCache: true,
         filterValue: "",
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
@@ -654,29 +656,29 @@ export const ElementQHPXList = [
     },
     {
         type: "text",
-        name: "txtFullAddress",
+        name: "txtSenderAddress",
         colspan: "8",
         labelcolspan: "4",
         readOnly: false,
         label: "số nhà/đường",
         placeholder: "số nhà/đường",
         value: "",
-        datasourcemember: "FullAddress",
-        classNameCustom: "customcontrol"
+        DataSourceMember: "SenderAddress",
+      
     }
-    ,
-    {
-        type: "textfull",
-        name: "txtFullAddressFull",
-        colspan: "10",
-        labelcolspan: "2",
-        readOnly: false,
-        label: "địa chỉ",
-        placeholder: "Địa chỉ",
-        value: "",
-        datasourcemember: "FullAddressFull",
-        classNameCustom: "customcontrol"
-    }
+    // ,
+    // {
+    //     type: "textfull",
+    //     name: "txtFullAddressFull",
+    //     colspan: "10",
+    //     labelcolspan: "2",
+    //     readOnly: false,
+    //     label: "địa chỉ",
+    //     placeholder: "Địa chỉ",
+    //     value: "",
+    //     datasourcemember: "FullAddressFull",
+    //     classNameCustom: "customcontrol"
+    // }
 ];
 export const GridMLObjectQTQHPX = [
     {
@@ -698,11 +700,11 @@ export const GridMLObjectQTQHPX = [
         DataSourceMember: "ReceiverWardID"
     },
     {
-        Name: "FullAddress",
+        Name: "SenderAddress",
         DefaultValue: "",
-        BindControlName: "txtFullAddress",
-        DataSourceMember: "FullAddress"
-    },
+        BindControlName: "txtSenderAddress",
+        DataSourceMember: "SenderAddress"
+    }
 ]
 
 

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { ValidationField } from "../../library/validation.js";
-import { GetMLObjectData } from "../../library/form/FormLib";
+import { GetMLObjectData,GetMLObjectObjData } from "../../library/form/FormLib";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../constants/functionLists";
 import { callGetCache } from "../../../actions/cacheAction";
 import { Link } from "react-router-dom";
@@ -24,6 +24,8 @@ class FormContainerCom extends Component {
     constructor(props) {
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleInputChangeObj = this.handleInputChangeObj.bind(this);
+
         this.changeLoadComplete = this.changeLoadComplete.bind(this);
         this.handleInputChangeList = this.handleInputChangeList.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -108,11 +110,8 @@ class FormContainerCom extends Component {
             return { [controlname]: ObjectName };
         }
         if (controltype == "InputControlNew") {
-            const datasourcemember = child.props.datasourcemember;
-            if (dataSource != null && datasourcemember != null) {
-                controlvalue = dataSource[datasourcemember];
-            }
-            const ObjectName = { Name: controlname, value: controlvalue, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList };
+            const objvalue = GetMLObjectData(child.props.MLObjectDefinition, {}, this.props.dataSource);
+            const ObjectName = { Name: controlname, value: objvalue, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList, listelement: child.props.listelement };
             return { [controlname]: ObjectName };
         }
         if (controltype == "GridControl") {
@@ -224,6 +223,16 @@ class FormContainerCom extends Component {
         });
 
     }
+    handleInputChangeObj(elementname, elementvalue) {
+        let FormDataContolLstd = this.state.FormData;
+        let objelementname =Object.assign({}, FormDataContolLstd[elementname], { value: elementvalue});
+        FormDataContolLstd = Object.assign({}, FormDataContolLstd, {[elementname]:objelementname});
+
+        this.setState({
+            FormData: FormDataContolLstd,
+        });
+    }
+
     handleInputChangeList(name, tabNameList) {
         const FormDataContolLstd = this.state.FormData;
 
@@ -340,7 +349,8 @@ class FormContainerCom extends Component {
                     const controlname = child.props.name;
                     return React.cloneElement(child,
                         {
-                            onValueChange: this.handleInputChange,
+                            onValueChange: this.handleInputChangeObj,
+                            value:this.state.FormData[controlname].value,
                             inputRef: ref => this.elementItemRefs[controlname] = ref
                         }
                     );
@@ -373,13 +383,23 @@ class FormContainerCom extends Component {
         mLObjectDefinition.map((Item) => {
             const controlName = Item.BindControlName;
             if (controlName.length > 0) {
-                MLObject = Object.assign({}, MLObject, { [Item.Name]: this.state.FormData[controlName].value });
+                if (typeof this.state.FormData[controlName] != "undefined") {
+                    if (this.state.FormData[controlName].Controltype == "InputControl") {
+                        MLObject = Object.assign({}, MLObject, { [Item.Name]: this.state.FormData[controlName].value });
+                    }
+                    else if(this.state.FormData[controlName].Controltype == "InputControlNew")
+                    {
+                        MLObject = Object.assign({}, MLObject,this.state.FormData[controlName].value);
+                    }
+                }
             }
         });
+        console.log("MLObject", MLObject)
 
-        if (this.props.onSubmit != null) {
-            this.props.onSubmit(this.state.FormData, MLObject);
-        }
+        // const MLObject = GetMLObjectObjData(this.props.MLObjectDefinition, FormDataContolLstd, this.props.value);
+        // if (this.props.onSubmit != null) {
+        //     this.props.onSubmit(this.state.FormData, MLObject);
+        // }
     }
 
     //#endregion  handleSubmit 

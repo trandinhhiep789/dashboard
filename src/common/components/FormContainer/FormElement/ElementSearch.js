@@ -195,6 +195,7 @@ class ElementComboBoxCom extends Component {
 
     }
     bindcombox() {
+      
         let values = this.props.value;
         let selectedOption = [];
         if (values == null || values === -1)
@@ -237,6 +238,8 @@ class ElementComboBoxCom extends Component {
             this.setState({ ListOption: listoption });
         }
     }
+
+
     getComboValue(selectedOption) {
         let values = [];
         if (selectedOption == null)
@@ -272,6 +275,7 @@ class ElementComboBoxCom extends Component {
 
             className += " is-invalid";
         }
+        
         return (
             <div className={colspanClassName}  >
                 <div className="form-group form-group-input form-group-input-select">
@@ -332,18 +336,13 @@ class ElementComboBoxNewCom extends Component {
 
     componentDidMount() {
         let { listoption } = this.props;
-        debugger;
-        // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
         this.setState({ ListOption: listoption })
-        const selectedOption = this.bindcombox(this.state.ListOption);
-        this.setState({ SelectedOption: selectedOption });
+      
     }
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             this.setState({ ListOption: nextProps.listoption })
-            const selectedOption = this.bindcombox(nextProps.listoption);
-            this.setState({ SelectedOption: selectedOption });
         }
     }
 
@@ -365,7 +364,6 @@ class ElementComboBoxNewCom extends Component {
 
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
-        this.setState({ SelectedOption: selectedOption });
         if (this.props.onValueChange)
             this.props.onValueChange(this.props.name, comboValues);
     }
@@ -397,7 +395,7 @@ class ElementComboBoxNewCom extends Component {
         if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
             star = '*'
         }
-        const selectedOption = this.state.SelectedOption;
+        const selectedOption = this.bindcombox(this.props.listoption);
         return (
             <div className="col-md-6">
                 <div className={formRowClassName}>
