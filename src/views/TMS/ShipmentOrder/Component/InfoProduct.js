@@ -31,7 +31,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label bold">Loại hàng hóa:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentGoodsTypeName}</label>
+                            <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentGoodsDescription}</label>
                         </div>
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Tổng số kiện:</label>
@@ -51,7 +51,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label bold">Tổng kích thước:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label">{this.state.ShipmentOrder.Length} x {this.state.ShipmentOrder.Width} x {this.state.ShipmentOrder.Height}cm</label>
+                            <label className="col-form-label">{this.state.ShipmentOrder.Length}x{this.state.ShipmentOrder.Width}x{this.state.ShipmentOrder.Height}cm</label>
                         </div>
                     </div>
                     <div className="form-row">
@@ -59,7 +59,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label bold">Phí vận chuyển:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label" >{this.state.ShipmentOrder.TotalShipmentFee} đ</label>
+                            <label className="col-form-label" >{this.state.ShipmentOrder.TotalShipmentFee}đ</label>
                         </div>
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Tổng tiền COD:</label>

@@ -20,6 +20,7 @@ class TextBox extends React.Component {
     constructor(props) {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
+        this.handKeyDown = this.handKeyDown.bind(this);
     }
     static defaultProps = {
         controltype: 'InputControl'
@@ -27,10 +28,20 @@ class TextBox extends React.Component {
 
     handleValueChange(e) {
         if (this.props.onValueChange != null) {
-            this.props.onValueChange(e.target.name, e.target.value, this.props.label, undefined, this.props.validatonList);
+            this.props.onValueChange(e.target.name, e.target.value, this.props.label, e, this.props.validatonList);
         }
 
     }
+
+    handKeyDown(e) {
+        debugger;
+        if (e.key == 'Enter') {
+            if (this.props.onhandKeyDown != null) {
+                this.props.onhandKeyDown(e.target.name, e.target.value, this.props.label, e, this.props.validatonList);
+            }
+        }
+    }
+
     render() {
 
         let className = "form-control form-control-sm";
@@ -53,8 +64,8 @@ class TextBox extends React.Component {
         if (this.props.classNameCustom != null) {
             formRowClassName += this.props.classNameCustom;
         }
-   
-        if (this.props.validationErrorMessage != ""&& this.props.validationErrorMessage != undefined) {
+
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
             className += " is-invalid";
 
             return (
@@ -67,6 +78,7 @@ class TextBox extends React.Component {
                     <div className={formGroupClassName}>
                         <input type="text" name={this.props.name}
                             onChange={this.handleValueChange}
+                            onBlur={this.handKeyDown}
                             value={this.props.value}
                             key={this.props.name}
                             className={className}
@@ -93,6 +105,7 @@ class TextBox extends React.Component {
                     <div className={formGroupClassName}>
                         <input type="text" name={this.props.name}
                             onChange={this.handleValueChange}
+                            onKeyPress ={(event) => this.handKeyDown(event)}
                             value={this.props.value}
                             key={this.props.name}
                             className={className}
@@ -339,7 +352,7 @@ class ComboBoxCom extends Component {
             star = '*'
         }
 
-        if (this.props.validationErrorMessage != ""&& this.props.validationErrorMessage != undefined) {
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
             className += " is-invalid";
             return (
                 <div className={formRowClassName} >
@@ -848,11 +861,11 @@ class ElementDatetimeCom extends Component {
 }
 const ElementDatetime = connect(null, null)(ElementDatetimeCom);
 
-class ComboBox1Com extends Component {
+class ComboBoxPartnerCom extends Component {
     constructor(props) {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
-        this.state = { Listoption: [], value: this.props.value, SelectedOption: {} }
+        this.state = { Listoption: [], SelectedOption: [] }
     }
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
@@ -903,7 +916,7 @@ class ComboBox1Com extends Component {
             this.props.callGetCache(cacheKeyID).then((result) => {
                 listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
-                    result.ResultObject.CacheData.map((cacheItem) => {
+                    result.ResultObject.CacheData.filter(a => a.PartnerTypeID == 2).map((cacheItem) => {
                         listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
                     }
                     );
@@ -926,7 +939,7 @@ class ComboBox1Com extends Component {
         if (this.props.rowspan != null) {
             formRowClassName = "form-row col-md-" + this.props.rowspan;
         }
-        
+
         const listOption = this.state.Listoption;
         let formGroupClassName = "form-group col-md-4";
         if (this.props.colspan != null) {
@@ -946,7 +959,6 @@ class ComboBox1Com extends Component {
         }
         const selectedOption = this.state.SelectedOption;
         if (this.props.validationErrorMessage != "") {
-            
             return (
                 <div className={formRowClassName} >
                     <div className={labelDivClassName}>
@@ -962,6 +974,7 @@ class ComboBox1Com extends Component {
                             ref={this.props.inputRef}
                             onChange={this.handleValueChange}
                             options={listOption}
+                            isDisabled={this.props.disabled}
                             isMulti={isMultiSelect}
                             isSearchable={true}
                             placeholder={placeholder}
@@ -972,38 +985,114 @@ class ComboBox1Com extends Component {
                 </div>
             );
         }
-        else {
+    }
+}
+export const ComboBoxPartner = connect(mapStateToProps, mapDispatchToProps)(ComboBoxPartnerCom);
+
+class ComboBoxNewCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.state = { Listoption: [], SelectedOption: [] }
+    }
+    handleValueChange(selectedOption) {
+        const comboValues = this.getComboValue(selectedOption);
+        this.setState({ SelectedOption: selectedOption });
+        if (this.props.onChange)
+            this.props.onChange(this.props.name, comboValues);
+    }
+
+    bindcombox(listOption) {
+        let values = this.props.value;
+        let selectedOption = [];
+        if (values == null || values === -1)
+            return selectedOption;
+        if (typeof values.toString() == "string")
+            values = values.toString().split();
+        for (let i = 0; i < values.length; i++) {
+            for (let j = 0; j < listOption.length; j++) {
+                if (values[i] == listOption[j].value) {
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].value + "-" + listOption[j].name });
+                }
+            }
+        }
+        return selectedOption;
+    }
+    getComboValue(selectedOption) {
+        let values = [];
+        if (selectedOption == null)
+            return -1;
+        if (this.props.isMultiSelect) {
+            for (let i = 0; i < selectedOption.length; i++) {
+                values.push(selectedOption[i].value);
+            }
+        } else {
+            return selectedOption.value;
+        }
+
+        return values;
+    }
+    //#endregion tree category
+
+    componentDidMount() {
+    }
+
+    render() {
+        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder, listoption } = this.props;
+        debugger;
+        let formRowClassName = "form-row";
+        if (this.props.rowspan != null) {
+            formRowClassName = "form-row col-md-" + this.props.rowspan;
+        }
+
+        let formGroupClassName = "form-group col-md-4";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
+            star = '*'
+        }
+        let className = "react-select";
+        if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
+            className += " is-invalid";
+        }
+        const selectedOption = this.state.SelectedOption;
+        if (this.props.validationErrorMessage != "") {
             return (
                 <div className={formRowClassName} >
                     <div className={labelDivClassName}>
-                        <label className="col-form-label 7">
+                        <label className="col-form-label 6">
                             {this.props.label}<span className="text-danger"> {star}</span>
                         </label>
                     </div>
+
                     <div className={formGroupClassName}>
-                        <div className="form-group-input-select">
-                            <Select
-                                value={selectedOption}
-                                name={this.props.name}
-                                ref={this.props.inputRef}
-                                onChange={this.handleValueChange}
-                                options={listOption}
-                                isMulti={isMultiSelect}
-                                isSearchable={true}
-                                placeholder={placeholder}
-                                className={className}
-                            />
-                        </div>
+                        <Select
+                            value={selectedOption}
+                            name={this.props.name}
+                            ref={this.props.inputRef}
+                            onChange={this.handleValueChange}
+                            options={listoption}
+                            isDisabled={this.props.disabled}
+                            isMulti={isMultiSelect}
+                            isSearchable={true}
+                            placeholder={placeholder}
+                            className={className}
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
                     </div>
                 </div>
             );
         }
     }
 }
+export const ComboBoxNew = connect(mapStateToProps, mapDispatchToProps)(ComboBoxNewCom);
 
 
-export const ComboBox1 = connect(mapStateToProps, mapDispatchToProps)(ComboBox1Com);
-
-
-export default { TextBox, TextArea, CheckBox, ComboBox, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus, ElementDatetime, ComboBox1, ComboboxQTQHPX };
+export default { TextBox, TextArea, CheckBox, ComboBox, ComboBoxNew, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus, ElementDatetime, ComboBoxPartner, ComboboxQTQHPX };
 

@@ -33,7 +33,7 @@ class SearchCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleonChangePage = this.handleonChangePage.bind(this);
-        
+
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -41,7 +41,8 @@ class SearchCom extends React.Component {
             SearchData: InitSearchParams,
             cssNotification: "",
             iconNotification: "",
-            PageNumber:1
+            PageNumber: 1,
+            IsLoadDataComplete: false,
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -56,20 +57,19 @@ class SearchCom extends React.Component {
 
 
     handleDelete(id) {
-        const ShipmentOrder ={ShipmentOrderID:id,DeletedUser:this.props.AppInfo.LoginInfo.Username};
+        const ShipmentOrder = { ShipmentOrderID: id, DeletedUser: this.props.AppInfo.LoginInfo.Username };
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, ShipmentOrder).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                this.addNotification(apiResult.Message, apiResult.IsError);
-                if(!apiResult.IsError){
-                    this.callSearchData(this.state.SearchData);
-                }             
-            });
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callSearchData(this.state.SearchData);
+            }
+        });
     }
-    handleonChangePage(pageNum)
-    {
+    handleonChangePage(pageNum) {
         let listMLObject = [];
-        const aa={ SearchKey:"@PAGEINDEX",SearchValue:pageNum-1};
-        listMLObject = Object.assign([], this.state.SearchData,{[9]:aa});
+        const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
+        listMLObject = Object.assign([], this.state.SearchData, { [9]: aa });
         this.callSearchData(listMLObject)
         this.setState({
             PageNumber: pageNum
@@ -119,7 +119,7 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@PAGEINDEX",
                 SearchValue: 0
-            }         
+            }
         ];
         this.setState({ SearchData: postData });
         this.callSearchData(postData);
@@ -127,13 +127,14 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-                if (!apiResult.IsError) {
-                    this.setState({
-                        gridDataSource: apiResult.ResultObject,
-                        IsCallAPIError: apiResult.IsError
-                    });
-                }
-            });
+            if (!apiResult.IsError) {
+                this.setState({
+                    gridDataSource: apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError,
+                    IsLoadDataComplete: true
+                });
+            }
+        });
     }
 
     handleCloseMessage() {
@@ -187,33 +188,36 @@ class SearchCom extends React.Component {
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
-                <SearchForm
-                    FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
-                    onSubmit={this.handleSearchSubmit}
-                    ref={this.searchref}
-                    className="multiple"
-                   
-                />
-                <DataGrid
-                    listColumn={DataGridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    AddLink={AddLink}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
-                    onDeleteClick={this.handleDelete}
-                    onChangePage={this.handleonChangePage}
-                    IsDelete={false}
-                    PageNumber={this.state.PageNumber}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                />
-            </React.Fragment>
-        );
+        if (this.state.IsLoadDataComplete) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm
+                        FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                        className="multiple"
+
+                    />
+                    <DataGrid
+                        listColumn={DataGridColumnList}
+                        dataSource={this.state.gridDataSource}
+                        AddLink={AddLink}
+                        IDSelectColumnName={IDSelectColumnName}
+                        PKColumnName={PKColumnName}
+                        onDeleteClick={this.handleDelete}
+                        onChangePage={this.handleonChangePage}
+                        IsDelete={false}
+                        PageNumber={this.state.PageNumber}
+                        IsAutoPaging={true}
+                        RowsPerPage={10}
+                    />
+                </React.Fragment>
+            );
+        }
+        return <label>Đang nạp dữ liệu...</label>;
     }
 }
 
@@ -238,5 +242,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Search = connect(mapStateToProps,mapDispatchToProps)(SearchCom);
+const Search = connect(mapStateToProps, mapDispatchToProps)(SearchCom);
 export default Search;

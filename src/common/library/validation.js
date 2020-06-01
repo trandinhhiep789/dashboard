@@ -64,8 +64,6 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
     }
 
     if (typelist.includes("number") && IsEr == 0) {
-        // debugger
-        // console.log("fieldValue", fieldValue);
         if (fieldValue) {
             if (fieldValue.toString().length > 1) {
                 if (/^[0-9][0-9]*$/.test(fieldValue)) {
@@ -78,8 +76,7 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
                 }
                 else {
                     IsEr = 1;
-                    let messError = "";
-                    //console.log("elementItem", elementItem)
+                    let messError = "Vui lòng nhập số";
                     if (elementItem.labelError != undefined) {
         
                         messError = elementItem.labelError
@@ -87,9 +84,6 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
                     else {
                         if(elementItem.type == 'select'){
                             messError = "Vui lòng chọn " + fieldCaption
-                        }
-                        else{
-                            messError = "Vui lòng nhập số"
                         }
                     }
                     result = {

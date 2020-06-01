@@ -82,9 +82,9 @@ class MultiSelectComboBoxCom extends React.Component {
 
     handleValueChange(selectedOption) {
         // const comboValues = this.getComboValue(selectedOption);
-         this.setState({ SelectedOption: selectedOption });
+        this.setState({ SelectedOption: selectedOption });
         if (this.props.onChange)
-        this.props.onChange(this.props.name, selectedOption);
+            this.props.onChange(this.props.name, selectedOption);
     }
 
     handleValueChange1(e) {
@@ -121,12 +121,21 @@ class MultiSelectComboBoxCom extends React.Component {
             isLabelDiv = this.props.IsLabelDiv;
         if (isLabelDiv == false)
             formGroupClassName = "form-group col-md-12";
-
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
+            star = '*'
+        }
+        let classNameselect = "react-select";
+        if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
+            classNameselect += " is-invalid";
+        }
         return (
             <div className={formRowClassName} >
                 {isLabelDiv &&
                     <div className={labelDivClassName}>
-                        <label className="col-form-label">{this.props.label}</label>
+                        <label className="col-form-label 6">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
                     </div>
                 }
                 <div className={formGroupClassName}>
@@ -139,8 +148,9 @@ class MultiSelectComboBoxCom extends React.Component {
                         isDisabled={this.props.disabled}
                         isSearchable={true}
                         placeholder={"----Chọn -----"}
-                        className={"select-custom"}
+                        className={classNameselect}
                     />
+                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
                 </div>
             </div>
         );

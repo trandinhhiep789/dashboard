@@ -138,6 +138,9 @@
     }
 
     &.is-invalid {
+        .css-yk16xz-control{
+            border-color: #f96868;
+        }
         &~.invalid-feedback {
             display: block;
         }
