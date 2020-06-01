@@ -20,23 +20,26 @@ import {
     EditPagePath,
     SearchMLmoldeDefinition,
     SearchElementModeList,
+    InitSearchParamsModeList,
     DataGridColumnListMultiple,
-    InputMcRoleColumnList,
-    GridMLMcRoleDefinition,
-    SearchMcRoleAPIPath
+    InputPartnerRoleColumnList,
+    GridMLPartnerRoleDefinition,
+    SearchPartnerRoleAPIPath,
+    PKColumnName,
+    IDSelectColumnName
 
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../../actions/cacheAction";
-import { MCROLE_EDIT, MCPRIVILEGE_VIEW, MCPRIVILEGE_DELETE } from "../../../../../../constants/functionLists";
+import Collapsible from 'react-collapsible';
 
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.handleinsertItem = this.handleinsertItem.bind(this);
+        this.handleInsertItem = this.handleInsertItem.bind(this);
         this.handleInputUserRoleInsert = this.handleInputUserRoleInsert.bind(this);
         this.state = {
             CallAPIMessage: "",
@@ -82,40 +85,45 @@ class EditCom extends React.Component {
         this.props.updatePagePath(EditPagePath);
     }
 
-    handleinsertItem(lstOption)
-    {
-        let listMLObject = [];
-        lstOption.map((row, index) => {
-            let MLObject = {};
-            row["pkColumnName"].map((pkItem, pkIndex) => {
-                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-            });
 
-            listMLObject.push(MLObject);
+
+    handleInsertItem(lstOption) {
+        let _PartnerRolePriviledge = [];
+        if (this.state.DataSource.ListPartnerRolePriviledge) {
+            _PartnerRolePriviledge = this.state.DataSource.ListPartnerRolePriviledge;
+        }
+        lstOption.map((row, index) => {
+            let match = _PartnerRolePriviledge.filter(item => item.PartnerPriviledgeID == row.PartnerPriviledgeID);
+            if (match.length <= 0) {
+                _PartnerRolePriviledge.push(row);
+            }
         });
-        const formData = Object.assign({}, this.state.DataSource,{["LstMcRole_Priviledge"] :listMLObject});
+
+        const formData = Object.assign({}, this.state.DataSource, { ["ListPartnerRolePriviledge"]: _PartnerRolePriviledge });
         this.setState({ DataSource: formData });
+
+        // console.log("handleInsertItem",lstOption);
     }
 
-    handleInputUserRoleInsert()
-    {    
+
+    handleInputUserRoleInsert() {
         this.props.showModal(MODAL_TYPE_SEARCH, {
             title: "Danh sách quyền",
             content: {
                 text: <SearchModal
-                    PKColumnName={"McPriviledgeID,McPriviledgeName"}
+                    PKColumnName={"PartnerPriviledgeID,PartnerPriviledgeName"}
                     multipleCheck={true}
                     SearchMLObjectDefinition={SearchMLmoldeDefinition}
                     DataGridColumnList={DataGridColumnListMultiple}
                     GridDataSource={[]}
-                    SearchAPIPath={SearchMcRoleAPIPath}
+                    SearchAPIPath={SearchPartnerRoleAPIPath}
                     SearchElementList={SearchElementModeList}
-                    onClickInsertItem={this.handleinsertItem.bind(this)}
-                    RequirePermission={MCPRIVILEGE_VIEW}
-                    DeletePermission={MCPRIVILEGE_DELETE}
+                    InitSearchParams={InitSearchParamsModeList}
+                    onClickInsertItem={this.handleInsertItem.bind(this)}
                     IDSelectColumnName={"chkSelect"}
-                    name={"McPriviledgeID"}
-                    value={"McPriviledgeName"}
+                    name={"PartnerPriviledgeName"}
+                    value={"PartnerPriviledgeID"}
+                    inputCheckItem={true}
                 >
                 </SearchModal>
             }
@@ -125,6 +133,7 @@ class EditCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        MLObject.ListPartnerRolePriviledge = this.state.DataSource.ListPartnerRolePriviledge;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -137,28 +146,32 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <FormContainer
-                FormName="Cập nhật Vai trò người dùng"
-                MLObjectDefinition={MLObjectDefinition}
-                listelement={this.state.EditElementList}
-                onSubmit={this.handleSubmit}
-                IsAutoLayout={true}
-                ref={this.searchref}
-                BackLink={BackLink}
-                dataSource={this.state.DataSource}
-                RequirePermission={MCROLE_EDIT}
-            >
-                <InputGrid
-                    name="LstMcRole_Priviledge"
-                    controltype="InputControl"
-                    IDSelectColumnName={"checkboxAll"}
-                    listColumn={InputMcRoleColumnList}
-                    isHideHeaderToolbar={false}
-                    dataSource={this.state.DataSource.LstMcRole_Priviledge}
-                    MLObjectDefinition={GridMLMcRoleDefinition}
-                    colspan="12"
-                    onInsertClick={this.handleInputUserRoleInsert}
-                />
-            </FormContainer>
+                    FormName="Cập nhật vai trò người dùng"
+                    MLObjectDefinition={MLObjectDefinition}
+                    listelement={this.state.EditElementList}
+                    onSubmit={this.handleSubmit}
+                    IsAutoLayout={true}
+                    ref={this.searchref}
+                    BackLink={BackLink}
+                    dataSource={this.state.DataSource}
+                    //RequirePermission={MCROLE_EDIT}
+                >
+                    <br />
+                    <Collapsible trigger="Danh sách quyền của nhà cung cấp" easing="ease-in" open={true}>
+                        <InputGrid
+                            name="LstPartnerRole_Priviledge"
+                            controltype="GridControl"
+                            IDSelectColumnName={IDSelectColumnName}
+                            listColumn={InputPartnerRoleColumnList}
+                            PKColumnName={PKColumnName}
+                            isHideHeaderToolbar={false}
+                            dataSource={this.state.DataSource.ListPartnerRolePriviledge}
+                            MLObjectDefinition={GridMLPartnerRoleDefinition}
+                            colspan="12"
+                            onInsertClick={this.handleInputUserRoleInsert}
+                        />
+                    </Collapsible>
+                </FormContainer>
             );
         }
         return <label>Đang nạp dữ liệu...</label>;

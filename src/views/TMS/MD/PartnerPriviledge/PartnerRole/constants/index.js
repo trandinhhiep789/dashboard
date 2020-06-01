@@ -7,7 +7,7 @@ export const DeleteAPIPath = "api/PartnerRole/Delete";
 export const UpdateOrderAPIPath = "api/PartnerRole/UpdateOrder";
 export const BackLink = "/PartnerRole";
 export const AddLink = "/PartnerRole/Add";
-export const SearchPartnerRoleAPIPath = "api/PartnerPriviledge/Search";
+export const SearchPartnerRoleAPIPath = "api/PartnerPriviledge/Search2";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "PartnerRoleID";
 
@@ -18,7 +18,7 @@ export const PagePath = [
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "//PartnerRole", Title: "Danh sách vai trò nhà cung cấp" },
+    { Link: "/PartnerRole", Title: "Danh sách vai trò nhà cung cấp" },
     { Link: "", Title: "Sửa" }
 ];
 
@@ -51,6 +51,19 @@ export const SearchElementList = [
 export const AddElementList = [
     {
         type: "text",
+        name: "txtPartnerRoleID",
+        label: "Mã vai trò:",
+        value: "",
+        maxSize: "9",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "PartnerRoleID",
+        readonly: false,
+        validatonList: ["required", "number"]
+    },
+    {
+        type: "text",
         name: "txtPartnerRoleName",
         label: "tên vai trò:",
         value: "",
@@ -77,7 +90,7 @@ export const AddElementList = [
         validatonList: []
     },
     {
-        type: "numeric",
+        type: "text",
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: 0,
@@ -87,7 +100,7 @@ export const AddElementList = [
         listoption: {},
         DataSourceMember: "OrderIndex",
         readonly: false,
-        validatonList: []
+        validatonList: ["number"]
     },
     {
         type: "checkbox",
@@ -124,7 +137,7 @@ export const EditElementList = [
         listoption: [],
         readonly: true,
         DataSourceMember: "PartnerRoleID",
-        validatonList: []
+        validatonList: ["required"]
     },
     {
         type: "text",
@@ -137,7 +150,7 @@ export const EditElementList = [
         listoption: [],
         readonly: false,
         DataSourceMember: "PartnerRoleName",
-        validatonList: ["required","special"]
+        validatonList: ["required"]
     },
     {
         type: "textarea",
@@ -154,7 +167,7 @@ export const EditElementList = [
         validatonList: []
     },
     {
-        type: "numeric",
+        type: "text",
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: "",
@@ -164,7 +177,7 @@ export const EditElementList = [
         listoption: {},
         DataSourceMember: "OrderIndex",
         readonly: false,
-        validatonList: []
+        validatonList: ["number"]
     },
     {
         type: "checkbox",
@@ -303,11 +316,11 @@ export const InitSearchParamsModeList = [
     {
         SearchKey: "@Keyword",
         SearchValue: ""
-    },
-    {
-        SearchKey: "@PartnerPriviledgeGroupID",
-        SearchValue: -1
     }
+    // {
+    //     SearchKey: "@PartnerPriviledgeGroupID",
+    //     SearchValue: -1
+    // }
 ];
 
 export const SearchMLmoldeDefinition = [

@@ -2,13 +2,13 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 import { ModalManager } from "react-dynamic-modal";
-import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
-import InputGrid from "../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
-import { MessageModal } from "../../../../../common/components/Modal";
-import { showModal } from '../../../../../actions/modal';
-import { MODAL_TYPE_SEARCH } from '../../../../../constants/actionTypes';
-import SearchModal from "../../../../../common/components/Form/AdvanceForm/FormControl/FormSearchModal"
-import MD5Digest from "../../../../../common/library/cryptography/MD5Digest.js";
+import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
+import InputGrid from "../../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+import { MessageModal } from "../../../../../../common/components/Modal";
+import { showModal } from '../../../../../../actions/modal';
+import { MODAL_TYPE_SEARCH } from '../../../../../../constants/actionTypes';
+import SearchModal from "../../../../../../common/components/Form/AdvanceForm/FormControl/FormSearchModal"
+import MD5Digest from "../../../../../../common/library/cryptography/MD5Digest.js";
 import {
     APIHostName,
     LoadAPIPath,
@@ -17,18 +17,20 @@ import {
     MLObjectDefinition,
     BackLink,
     EditPagePath,
-    GridMLMcRoleDefinition,
-    InputMcRoleColumnList,
+    GridMLPartnerRoleDefinition,
+    InputPartnerRoleColumnList,
     SearchMLmoldeDefinition,
     SearchElementModeList,
-    SearchMcRoleAPIPath,
-    DataGridColumnListMultiple
+    SearchPartnerRoleAPIPath,
+    DataGridColumnListMultiple,
+    IDSelectColumnName,
+    InitSearchParamsModeList
 } from "../constants";
 
-import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../actions/pageAction";
-import { callGetCache } from "../../../../../actions/cacheAction";
-import { MCUSER_EDIT } from "../../../../../constants/functionLists";
+import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
+import { updatePagePath } from "../../../../../../actions/pageAction";
+import { callGetCache } from "../../../../../../actions/cacheAction";
+import Collapsible from 'react-collapsible';
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -87,35 +89,50 @@ class EditCom extends React.Component {
         this.props.updatePagePath(EditPagePath);
     }
     handleinsertItem(lstOption) {
-        let listMLObject = [];
-        lstOption.map((row, index) => {
-            let MLObject = {};
-            row["pkColumnName"].map((pkItem, pkIndex) => {
-                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-            });
 
-            listMLObject.push(MLObject);
+        let _PartnerUserRole = [];
+        if (this.state.DataSource.ListPartnerUser_Role) {
+            _PartnerUserRole = this.state.DataSource.ListPartnerUser_Role;
+        }
+        lstOption.map((row, index) => {
+            let match = _PartnerUserRole.filter(item => item.PartnerRoleID == row.PartnerRoleID);
+            if (match.length <= 0) {
+                _PartnerUserRole.push(row);
+            }
         });
-        const formData = Object.assign({}, this.state.DataSource, { ["LstMcUser_Role"]: listMLObject });
+
+        const formData = Object.assign({}, this.state.DataSource, { ["ListPartnerUser_Role"]: _PartnerUserRole });
         this.setState({ DataSource: formData });
+        // let listMLObject = [];
+        // lstOption.map((row, index) => {
+        //     let MLObject = {};
+        //     row["pkColumnName"].map((pkItem, pkIndex) => {
+        //         MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+        //     });
+
+        //     listMLObject.push(MLObject);
+        // });
+        // const formData = Object.assign({}, this.state.DataSource, { ["LstMcUser_Role"]: listMLObject });
+        // this.setState({ DataSource: formData });
     }
 
     handleInputUserRoleInsert() {
         this.props.showModal(MODAL_TYPE_SEARCH, {
-            title: "Danh sách vai trò",
+            title: "Danh sách vai trò người dùng",
             content: {
                 text: <SearchModal
-                    PKColumnName={"McRoleID,McRoleName"}
+                    PKColumnName={"PartnerRoleID,PartnerRoleName"}
                     multipleCheck={true}
                     SearchMLObjectDefinition={SearchMLmoldeDefinition}
                     DataGridColumnList={DataGridColumnListMultiple}
                     GridDataSource={[]}
-                    SearchAPIPath={SearchMcRoleAPIPath}
+                    SearchAPIPath={SearchPartnerRoleAPIPath}
                     SearchElementList={SearchElementModeList}
+                    InitSearchParams={InitSearchParamsModeList}
                     onClickInsertItem={this.handleinsertItem.bind(this)}
                     IDSelectColumnName={"chkSelect"}
-                    name={"McRoleID"}
-                    value={"McRoleName"}
+                    name={"PartnerRoleName"}
+                    value={"PartnerRoleID"}
                 >
                 </SearchModal>
             }
@@ -152,8 +169,21 @@ class EditCom extends React.Component {
             this.showMessage("Xác nhận mật khẩu chưa đúng.");
             return false;
         }
+
+        let fullName = MLObject.FullName.split(" ");
+        let firstName = fullName[fullName.length - 1];
+        let lastName = "";
+        fullName.map((item, index) => {
+            if (item != firstName) {
+                lastName += item + " ";
+            }
+        })
+
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        MLObject.FirstName = firstName.trim();
+        MLObject.LastName = lastName.trim();
+        MLObject.ListPartnerUser_Role = this.state.DataSource.ListPartnerUser_Role;
 
         var myDate = new Date(MLObject.Birthday);
         myDate.setDate(myDate.getDate() + 1);
@@ -185,19 +215,23 @@ class EditCom extends React.Component {
                     BackLink={BackLink}
                     dataSource={this.state.DataSource}
                     onValueChange={this.handleOnInputChange}
-                    RequirePermission={MCUSER_EDIT}
+                    //RequirePermission={MCUSER_EDIT}
                 >
+                     <br />
+                <Collapsible trigger="Danh sách vai trò của người dùng" easing="ease-in" open={true}>
                     <InputGrid
-                        name="LstMcUser_Role"
-                        controltype="InputControl"
-                        IDSelectColumnName={"checkboxAll"}
-                        listColumn={InputMcRoleColumnList}
+                        name="LstPartnerUser_Role"
+                        controltype="GridControl"
+                        IDSelectColumnName={IDSelectColumnName}
+                        listColumn={InputPartnerRoleColumnList}
+                        PKColumnName={"PartnerRoleID"}
                         isHideHeaderToolbar={false}
-                        dataSource={this.state.DataSource.LstMcUser_Role}
-                        MLObjectDefinition={GridMLMcRoleDefinition}
+                        dataSource={this.state.DataSource.ListPartnerUser_Role}
+                        MLObjectDefinition={GridMLPartnerRoleDefinition}
                         colspan="12"
                         onInsertClick={this.handleInputUserRoleInsert}
                     />
+                </Collapsible>
                 </FormContainer>
             );
         }

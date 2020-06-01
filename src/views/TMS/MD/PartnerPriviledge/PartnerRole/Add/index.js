@@ -29,7 +29,8 @@ import {
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../../actions/cacheAction";
-import { MCROLE_ADD } from "../../../../../../constants/functionLists";
+import Collapsible from 'react-collapsible';
+
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -50,7 +51,7 @@ class AddCom extends React.Component {
 
 
     componentDidMount() {
-        console.log("componentDidMount");
+        //console.log("componentDidMount");
         this.props.updatePagePath(AddPagePath);
     }
 
@@ -69,16 +70,19 @@ class AddCom extends React.Component {
         );
     }
     handleInsertItem(lstOption) {
-        // let listMLObject = [];
-        // lstOption.map((row, index) => {
-        //     let MLObject = {};
-        //     row["pkColumnName"].map((pkItem, pkIndex) => {
-        //         MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-        //     });
+        let _PartnerRolePriviledge = [];
+        if (this.state.LstPartnerRole_Priviledge) {
+            _PartnerRolePriviledge = this.state.LstPartnerRole_Priviledge
+        }
+        lstOption.map((row, index) => {
+            let match = _PartnerRolePriviledge.filter(item => item.PartnerPriviledgeID == row.PartnerPriviledgeID);
+            if (match.length <= 0) {
+                _PartnerRolePriviledge.push(row);
+            }
+        });
 
-        //     listMLObject.push(MLObject);
-        // });
-        this.setState({ LstPartnerRole_Priviledge: lstOption });
+        this.setState({ LstPartnerRole_Priviledge: _PartnerRolePriviledge });
+        //console.log("handleInsertItem",lstOption);
     }
 
     handleInputUserRoleInsert() {
@@ -109,6 +113,7 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        MLObject.ListPartnerRolePriviledge = this.state.LstPartnerRole_Priviledge;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -121,7 +126,7 @@ class AddCom extends React.Component {
         const { LstPartnerRole_Priviledge, DataSource, AddElementList } = this.state;
         return (
             <FormContainer
-                FormName="Cập nhật vai trò người dùng"
+                FormName="Thêm mới vai trò người dùng"
                 MLObjectDefinition={MLObjectDefinition}
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
@@ -130,18 +135,21 @@ class AddCom extends React.Component {
                 BackLink={BackLink}
                 dataSource={DataSource}
             >
-                <InputGrid
-                    name="LstPartnerRole_Priviledge"
-                    controltype="GridControl"
-                    IDSelectColumnName={IDSelectColumnName}
-                    listColumn={InputPartnerRoleColumnList}
-                    PKColumnName={PKColumnName}
-                    isHideHeaderToolbar={false}
-                    dataSource={LstPartnerRole_Priviledge}
-                    MLObjectDefinition={GridMLPartnerRoleDefinition}
-                    colspan="12"
-                    onInsertClick={this.handleInputUserRoleInsert}
-                />
+                <br />
+                <Collapsible trigger="Danh sách quyền của nhà cung cấp" easing="ease-in" open={true}>
+                    <InputGrid
+                        name="LstPartnerRole_Priviledge"
+                        controltype="GridControl"
+                        IDSelectColumnName={IDSelectColumnName}
+                        listColumn={InputPartnerRoleColumnList}
+                        PKColumnName={PKColumnName}
+                        isHideHeaderToolbar={false}
+                        dataSource={LstPartnerRole_Priviledge}
+                        MLObjectDefinition={GridMLPartnerRoleDefinition}
+                        colspan="12"
+                        onInsertClick={this.handleInputUserRoleInsert}
+                    />
+                </Collapsible>
             </FormContainer>
         );
     }

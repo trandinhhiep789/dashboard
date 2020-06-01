@@ -2,13 +2,13 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
-import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
-import InputGrid from "../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
-import { MessageModal } from "../../../../../common/components/Modal";
-import { showModal } from '../../../../../actions/modal';
-import { MODAL_TYPE_SEARCH } from '../../../../../constants/actionTypes';
-import SearchModal from "../../../../../common/components/Form/AdvanceForm/FormControl/FormSearchModal"
-import MD5Digest from "../../../../../common/library/cryptography/MD5Digest.js";
+import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
+import InputGrid from "../../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+import { MessageModal } from "../../../../../../common/components/Modal";
+import { showModal } from '../../../../../../actions/modal';
+import { MODAL_TYPE_SEARCH } from '../../../../../../constants/actionTypes';
+import SearchModal from "../../../../../../common/components/Form/AdvanceForm/FormControl/FormSearchModal"
+import MD5Digest from "../../../../../../common/library/cryptography/MD5Digest.js";
 import {
     APIHostName,
     AddAPIPath,
@@ -16,17 +16,20 @@ import {
     MLObjectDefinition,
     BackLink,
     AddPagePath,
-    GridMLMcRoleDefinition,
-    InputMcRoleColumnList,
+    GridMLPartnerRoleDefinition,
+    InputPartnerRoleColumnList,
     SearchMLmoldeDefinition,
     SearchElementModeList,
-    SearchMcRoleAPIPath,
-    DataGridColumnListMultiple
+    SearchPartnerRoleAPIPath,
+    DataGridColumnListMultiple,
+    IDSelectColumnName,
+    InitSearchParamsModeList
+
 } from "../constants";
-import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../actions/pageAction";
-import { callGetCache } from "../../../../../actions/cacheAction";
-import { MCUSER_ADD } from "../../../../../constants/functionLists";
+import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
+import { updatePagePath } from "../../../../../../actions/pageAction";
+import { callGetCache } from "../../../../../../actions/cacheAction";
+import Collapsible from 'react-collapsible';
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -43,7 +46,8 @@ class AddCom extends React.Component {
             AddElementList: AddElementList,
             DataSource: {},
             Password: "",
-            PasswordConfirm: ""
+            PasswordConfirm: "",
+            ListPartnerUser_Role: []
         };
         this.searchref = React.createRef();
     }
@@ -67,38 +71,38 @@ class AddCom extends React.Component {
             />
         );
     }
-    handleinsertItem(lstOption)
-    {
-        let listMLObject = [];
-        lstOption.map((row, index) => {
-            let MLObject = {};
-            row["pkColumnName"].map((pkItem, pkIndex) => {
-                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-            });
+    handleinsertItem(lstOption) {
+        // let listMLObject = [];
+        // lstOption.map((row, index) => {
+        //     let MLObject = {};
+        //     row["pkColumnName"].map((pkItem, pkIndex) => {
+        //         MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+        //     });
 
-            listMLObject.push(MLObject);
-        });
-        const formData = Object.assign({}, this.state.DataSource,{["LstMcUser_Role"] :listMLObject});
-        this.setState({ DataSource: formData });
+        //     listMLObject.push(MLObject);
+        // });
+        //const formData = Object.assign({}, this.state.DataSource, { ["LstMcUser_Role"]: listMLObject });
+        this.setState({ ListPartnerUser_Role: lstOption });
+        console.log("lstOption", lstOption);
     }
 
-    handleInputUserRoleInsert()
-    {    
+    handleInputUserRoleInsert() {
         this.props.showModal(MODAL_TYPE_SEARCH, {
-            title: "Danh sách vai trò",
+            title: "Danh sách vai trò người dùng",
             content: {
                 text: <SearchModal
-                    PKColumnName={"McRoleID,McRoleName"}
+                    PKColumnName={"PartnerRoleID,PartnerRoleName"}
                     multipleCheck={true}
                     SearchMLObjectDefinition={SearchMLmoldeDefinition}
                     DataGridColumnList={DataGridColumnListMultiple}
                     GridDataSource={[]}
-                    SearchAPIPath={SearchMcRoleAPIPath}
+                    SearchAPIPath={SearchPartnerRoleAPIPath}
                     SearchElementList={SearchElementModeList}
+                    InitSearchParams={InitSearchParamsModeList}
                     onClickInsertItem={this.handleinsertItem.bind(this)}
                     IDSelectColumnName={"chkSelect"}
-                    name={"McRoleID"}
-                    value={"McRoleName"}
+                    name={"PartnerRoleName"}
+                    value={"PartnerRoleID"}
                 >
                 </SearchModal>
             }
@@ -118,7 +122,7 @@ class AddCom extends React.Component {
 
     }
 
-    showPassWord(name){
+    showPassWord(name) {
         var x = document.getElementsByName(name)[0];
         if (x.type === "password") {
             x.type = "text";
@@ -137,9 +141,26 @@ class AddCom extends React.Component {
             return false;
         }
 
+        let fullName = MLObject.FullName.split(" ");
+        let firstName = fullName[fullName.length - 1];
+        let lastName = "";
+        fullName.map((item, index) => {
+            if (item != firstName) {
+                lastName += item + " ";
+            }
+        })
+
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.PassWord = MD5Digest(PassWord);
+        MLObject.FirstName = firstName.trim();
+        MLObject.LastName = lastName.trim();
+        MLObject.ListPartnerUser_Role = this.state.ListPartnerUser_Role;
+        
+        var myDate = new Date(MLObject.Birthday);
+        myDate.setDate(myDate.getDate() + 1);
+        MLObject.Birthday = myDate;
+
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -151,29 +172,33 @@ class AddCom extends React.Component {
         }
         return (
             <FormContainer
-                    FormName="Thêm người dùng của nhà cung cấp"
-                    MLObjectDefinition={MLObjectDefinition}
-                    listelement={this.state.AddElementList}
-                    onSubmit={this.handleSubmit}
-                    IsAutoLayout={true}
-                    ref={this.searchref}
-                    BackLink={BackLink}
-                    dataSource={this.state.DataSource}
-                    onValueChange={this.handleOnInputChange}
-                    RequirePermission={MCUSER_ADD}
-                >
+                FormName="Thêm người dùng của nhà cung cấp"
+                MLObjectDefinition={MLObjectDefinition}
+                listelement={this.state.AddElementList}
+                onSubmit={this.handleSubmit}
+                IsAutoLayout={true}
+                ref={this.searchref}
+                BackLink={BackLink}
+                dataSource={this.state.DataSource}
+                onValueChange={this.handleOnInputChange}
+            //RequirePermission={MCUSER_ADD}
+            >
+                <br />
+                <Collapsible trigger="Danh sách vai trò của người dùng" easing="ease-in" open={true}>
                     <InputGrid
-                        name="LstMcUser_Role"
-                        controltype="InputControl"
-                        IDSelectColumnName={"checkboxAll"}
-                        listColumn={InputMcRoleColumnList}
+                        name="LstPartnerUser_Role"
+                        controltype="GridControl"
+                        IDSelectColumnName={IDSelectColumnName}
+                        listColumn={InputPartnerRoleColumnList}
+                        PKColumnName={"PartnerRoleID"}
                         isHideHeaderToolbar={false}
-                        dataSource={this.state.DataSource.LstMcUser_Role}
-                        MLObjectDefinition={GridMLMcRoleDefinition}
+                        dataSource={this.state.ListPartnerUser_Role}
+                        MLObjectDefinition={GridMLPartnerRoleDefinition}
                         colspan="12"
                         onInsertClick={this.handleInputUserRoleInsert}
                     />
-                </FormContainer>
+                </Collapsible>
+            </FormContainer>
         );
     }
 }

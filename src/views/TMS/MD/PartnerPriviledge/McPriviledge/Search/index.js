@@ -72,6 +72,10 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
+            },
+            {
+                SearchKey: "@PartnerPriviledgeGroupID",
+                SearchValue: MLObject.PartnerPriviledgeGroupID
             }
         ];
         this.setState({ SearchData: postData });

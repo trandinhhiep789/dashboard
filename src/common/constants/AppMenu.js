@@ -123,7 +123,7 @@ const AppMenu = [
             },
             {
                 MenuName: 'PartnerUser',
-                MenuTitle: 'Danh sách PartnerUser',
+                MenuTitle: 'Danh sách người dùng của nhà cung cấp',
                 LinkTo: '/PartnerUser',
                 MenuIcon: '',
                 SubMenu: []
