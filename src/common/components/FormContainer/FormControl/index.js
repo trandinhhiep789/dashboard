@@ -105,7 +105,7 @@ class TextBox extends React.Component {
                     <div className={formGroupClassName}>
                         <input type="text" name={this.props.name}
                             onChange={this.handleValueChange}
-                            onKeyPress ={(event) => this.handKeyDown(event)}
+                            onKeyPress={(event) => this.handKeyDown(event)}
                             value={this.props.value}
                             key={this.props.name}
                             className={className}
@@ -796,7 +796,7 @@ class ElementDatetimeCom extends Component {
         if (this.props.rowspan != null) {
             formRowClassName = "form-row col-md-" + this.props.rowspan;
         }
-        let className = "form-control form-control-sm";
+        let className = "";
         if (this.props.CSSClassName != null)
             className = this.props.CSSClassName;
         let formGroupClassName = "form-group col-md-4";
@@ -830,7 +830,11 @@ class ElementDatetimeCom extends Component {
                             timeFormat={timeFormat}
                             dateFormat={dateFormat} >
                         </Datetime>
-                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                        <div className="invalid-feedback">
+                            <ul className="list-unstyled">
+                                <li>{this.props.validationErrorMessage}</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             );
