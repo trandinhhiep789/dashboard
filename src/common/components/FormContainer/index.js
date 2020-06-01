@@ -49,7 +49,7 @@ class FormContainerCom extends Component {
         const children = this.props.children;
         const dataSource = this.props.dataSource;
         let formData = {};
-        const listElement = this.bindDataToControl(this.props.listelement, this.props.dataSource);
+        const listElement = this.bindDataToControl(typeof this.props.listelement != "undefined" ? this.props.listelement : [], this.props.dataSource);
         if (typeof dataSource != "undefined") {
             listElement.map((elementItem) => {
                 const elementname = elementItem.name;
@@ -117,7 +117,7 @@ class FormContainerCom extends Component {
         }
         if (controltype == "GridControl") {
             let controlname = child.props.name;
-            const ObjectName = { Name: controlname, value: child.props.dataSource, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList:child.props.validatonList };
+            const ObjectName = { Name: controlname, value: child.props.dataSource, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList };
             return { [controlname]: ObjectName };
         }
 
