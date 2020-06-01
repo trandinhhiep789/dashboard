@@ -83,17 +83,17 @@ export const AddElementList = [
         validatonList: []
     },
     {
-        type: "numeric",
+        type: "text",
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
-        value: "",
+        value: "0",
         maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
         DataSourceMember: "OrderIndex",
         readonly: false,
-        validatonList: []
+        validatonList: ["number"]
     },
     {
         type: "checkbox",
@@ -161,7 +161,7 @@ export const EditElementList = [
         validatonList: []
     },
     {
-        type: "numeric",
+        type: "text",
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: "",
@@ -171,7 +171,7 @@ export const EditElementList = [
         listoption: {},
         DataSourceMember: "OrderIndex",
         readonly: false,
-        validatonList: []
+        validatonList: ["number"]
     },
     {
         type: "checkbox",
@@ -277,7 +277,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Mã phương thức thanh toán chi phí",
         DataSourceMember: "ShipmentFeePaymentMethodID",
-        Width: 170
+        Width: 200
     },
     {
         Name: "ShipmentFeePaymentMethodName",
@@ -298,7 +298,7 @@ export const DataGridColumnList = [
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 70
+        Width: 150
     },
     {
         Name: "CreatedFullName",

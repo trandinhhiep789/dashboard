@@ -58,20 +58,22 @@ export const SearchElementList = [
         isCategory: true,
         readonly: false,
         validatonList: [],
-        IsAutoLoadItemFromCache: false,
-        LoadItemCacheKeyID: "",
-        ValueMember: "",
-        NameMember: ""
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNERPRIVILEDGEGROUP",
+        ValueMember: "PartnerPriviledgeGroupID",
+        NameMember: "PartnerPriviledgeGroupName"
     }
 ];
 export const SearchMLObjectDefinition = [
     {
-        SearchKey: "@Keyword",
-        SearchValue: ""
+        Name: "Keyword",
+        DefaultValue: "",
+        BindControlName: "txtKeyword"
     },
     {
-        SearchKey: "@PartnerPriviledgeGroupID",
-        SearchValue: -1
+        Name: "PartnerPriviledgeGroupID",
+        DefaultValue: "",
+        BindControlName: "txtPartnerPriviledgeGroupID"
     }
 ];
 

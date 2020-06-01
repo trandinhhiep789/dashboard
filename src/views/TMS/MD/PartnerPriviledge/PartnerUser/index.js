@@ -6,7 +6,7 @@ import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
 
-class McUserCom extends React.Component {
+class PartnerUserCom extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -14,9 +14,9 @@ class McUserCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Route exact path="/home/mcuser" component={Search} />
-                <Route path="/home/mcuser/add" component={Add} />
-                <Route path="/home/mcuser/edit/:id" component={Edit} />
+                <Route exact path="/PartnerUser" component={Search} />
+                <Route path="/PartnerUser/add" component={Add} />
+                <Route path="/PartnerUser/edit/:id" component={Edit} />
             </React.Fragment>
         );
     }
@@ -37,9 +37,9 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const McUser = connect(
+const PartnerUser = connect(
     mapStateToProps,
     mapDispatchToProps
-)(McUserCom);
+)(PartnerUserCom);
 
-export default McUser;
+export default PartnerUser;

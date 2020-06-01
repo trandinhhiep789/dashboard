@@ -1,30 +1,30 @@
-export const APIHostName = "EWalletAPI";
-export const SearchAPIPath = "api/McUser/Search";
-export const LoadAPIPath = "api/McUser/Load";
-export const AddAPIPath = "api/McUser/Add";
-export const UpdateAPIPath = "api/McUser/Update";
-export const DeleteAPIPath = "api/McUser/Delete";
-export const UpdateOrderAPIPath = "api/McUser/UpdateOrder";
-export const BackLink = "/home/mcuser";
-export const AddLink = "/home/mcuser/add";
+export const APIHostName = "PIMAPI";
+export const SearchAPIPath = "api/PartnerUser/Search";
+export const LoadAPIPath = "api/PartnerUser/Load";
+export const AddAPIPath = "api/PartnerUser/Add";
+export const UpdateAPIPath = "api/PartnerUser/Update";
+export const DeleteAPIPath = "api/PartnerUser/Delete";
+export const UpdateOrderAPIPath = "api/PartnerUser/UpdateOrder";
+export const BackLink = "/PartnerUser";
+export const AddLink = "/PartnerUser/add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "UserName";
-export const SearchMcRoleAPIPath = "api/McRole/Search";
+export const SearchPartnerRoleAPIPath = "api/PartnerRole/Search";
 
 export const PagePath = [
-    { Link: "/home/", Title: "Trang chủ" },
-    { Link: "/home/mcuser", Title: "Người dùng của nhà cung cấp" }
+    { Link: "/", Title: "Trang chủ" },
+    { Link: "/PartnerUser", Title: "Người dùng của nhà cung cấp" }
 ];
 
 export const EditPagePath = [
-    { Link: "/home/", Title: "Trang chủ" },
-    { Link: "/home/mcuser", Title: "Người dùng của nhà cung cấp" },
+    { Link: "/", Title: "Trang chủ" },
+    { Link: "/PartnerUser", Title: "Người dùng của nhà cung cấp" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
-    { Link: "/home/", Title: "Trang chủ" },
-    { Link: "/home/mcuser", Title: "Người dùng của nhà cung cấp" },
+    { Link: "/", Title: "Trang chủ" },
+    { Link: "/PartnerUser", Title: "Người dùng của nhà cung cấp" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -60,23 +60,23 @@ export const AddElementList = [
         listoption: [],
         DataSourceMember: "UserName",
         readonly: false,
-        validatonList: ["required","special"]
+        validatonList: ["required"]
     },
     {
         type: "select",
-        name: "txtMerchant",
+        name: "txtPartnerID",
         label: "Nhà cung cấp:",
-        value: "",
+        value: -1,
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "MerchantID",
+        DataSourceMember: "PartnerID",
         readonly: false,
         validatonList: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "EWALLETCOMMONCACHE.MERCHANT",
-        ValueMember: "MerchantID",
-        NameMember: "MerchantName"
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
+        ValueMember: "PartnerID",
+        NameMember: "PartnerName"
     },
     {
         type: "password",
@@ -121,13 +121,13 @@ export const AddElementList = [
         name: "txtFullName",
         label: "Họ tên đầy đủ:",
         value: "",
-        maxSize: "200",
+        maxSize: "400",
         placeholder: "",
         icon: "",
         listoption: [],
         DataSourceMember: "FullName",
         readonly: false,
-        validatonList: []
+        validatonList: ["required"]
     },
     // {
     //     type: "text",
@@ -240,24 +240,24 @@ export const EditElementList = [
         icon: "",
         listoption: [],
         DataSourceMember: "UserName",
-        readonly: false,
-        validatonList: ["required","special"]
+        readonly: true,
+        validatonList: ["required"]
     },
     {
         type: "select",
-        name: "txtMerchant",
+        name: "txtPartnerID",
         label: "Nhà cung cấp:",
-        value: "MerchantID",
+        value: "",
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "MerchantID",
+        DataSourceMember: "PartnerID",
         readonly: false,
         validatonList: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "EWALLETCOMMONCACHE.MERCHANT",
-        ValueMember: "MerchantID",
-        NameMember: "MerchantName"
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
+        ValueMember: "PartnerID",
+        NameMember: "PartnerName"
     },
     {
         type: "password",
@@ -428,10 +428,10 @@ export const MLObjectDefinition = [
         DataSourceMember: "UserName"
     },
     {
-        Name: "MerchantID",
+        Name: "PartnerID",
         DefaultValue: "",
-        BindControlName: "txtMerchant",
-        DataSourceMember: "MerchantID"
+        BindControlName: "txtPartnerID",
+        DataSourceMember: "PartnerID"
     },
     {
         Name: "PassWord",
@@ -520,7 +520,7 @@ export const DataGridColumnList = [
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "UserName",
-        Width: 150
+        Width: 100
     },
     {
         Name: "UserName",
@@ -534,13 +534,13 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Họ tên",
         DataSourceMember: "FullName",
-        Width: 200
+        Width: 250
     },
     {
-        Name: "MerchantName",
+        Name: "PartnerName",
         Type: "text",
         Caption: "Tên nhà cung cấp",
-        DataSourceMember: "MerchantName",
+        DataSourceMember: "PartnerName",
         Width: 800
     },
     {
@@ -563,46 +563,46 @@ export const DataGridColumnList = [
         Caption: "Tác vụ",
         DataSourceMember: "UserName",
         Width: 200,
-        Link: "/home/mcuser/edit/",
+        Link: "/PartnerUser/edit/",
         LinkText: "Chỉnh sửa"
     }
 ];
 
-export const GridMLMcRoleDefinition = [
+export const GridMLPartnerRoleDefinition = [
     {
-        Name: "McRoleID",
+        Name: "PartnerRoleID",
         DefaultValue: "",
-        BindControlName: "McRoleID",
-        DataSourceMember: "McRoleID"
+        BindControlName: "PartnerRoleID",
+        DataSourceMember: "PartnerRoleID"
     },
     {
-        Name: "McRoleName",
+        Name: "PartnerRoleName",
         DefaultValue: "",
-        BindControlName: "McRoleName",
-        DataSourceMember: "McRoleName"
+        BindControlName: "PartnerRoleName",
+        DataSourceMember: "PartnerRoleName"
     }
 ];
 
-export const InputMcRoleColumnList = [
+export const InputPartnerRoleColumnList = [
     {
         Name: "chkSelect",
-        Type: "checkboxAll",
+        Type: "checkbox",
         Caption: "",
-        DataSourceMember: "McRoleID",
+        DataSourceMember: "PartnerRoleID",
         Width: 70
     },
     {
-        Name: "McRoleID",
+        Name: "PartnerRoleID",
         Type: "text",
         Caption: "Mã vai trò",
-        DataSourceMember: "McRoleID",
+        DataSourceMember: "PartnerRoleID",
         Width: 150
     },
     {
-        Name: "McRoleName",
+        Name: "PartnerRoleName",
         Type: "text",
         Caption: "Tên vai trò",
-        DataSourceMember: "McRoleName",
+        DataSourceMember: "PartnerRoleName",
         Width: 700
     }
 ];
@@ -628,26 +628,33 @@ export const SearchElementModeList = [
     }
 ];
 
+export const InitSearchParamsModeList = [
+    {
+        SearchKey: "@Keyword",
+        SearchValue: ""
+    }
+];
+
 export const DataGridColumnListMultiple = [
     {
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "McRoleID",
+        DataSourceMember: "PartnerRoleID",
         Width: 70
     },
     {
-        Name: "McRoleID",
+        Name: "PartnerRoleID",
         Type: "text",
         Caption: "Mã vai trò",
-        DataSourceMember: "McRoleID",
+        DataSourceMember: "PartnerRoleID",
         Width: 150
     },
     {
-        Name: "McRoleName",
+        Name: "PartnerRoleName",
         Type: "text",
         Caption: "Tên vai trò",
-        DataSourceMember: "McRoleName",
+        DataSourceMember: "PartnerRoleName",
         Width: 700
     }
 

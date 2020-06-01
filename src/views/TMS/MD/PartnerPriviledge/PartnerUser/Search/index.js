@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 import SearchForm from "../../../../../../common/components/Form/SearchForm";
-import DataGrid from "../UploadModal../../../../../common/components/DataGrid";
+import DataGrid from "../../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../../common/components/Modal";
 import {
     SearchElementList,
@@ -23,7 +23,7 @@ import { updatePagePath } from "../../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
-import { MCUSER_VIEW, MCUSER_DELETE } from "../../../../../../constants/functionLists";
+//import { MCUSER_VIEW, MCUSER_DELETE } from "../../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -156,7 +156,7 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    FormName="Tìm kiếm loại tài khoản"
+                    FormName="Tìm kiếm người dùng của nhà cung cấp"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={this.state.SearchElementList}
                     onSubmit={this.handleSearchSubmit}
@@ -172,8 +172,8 @@ class SearchCom extends React.Component {
                     ref={this.gridref}
                     IsAutoPaging={true}
                     RowsPerPage={10}
-                    RequirePermission={MCUSER_VIEW}
-                    DeletePermission={MCUSER_DELETE}
+                    // RequirePermission={MCUSER_VIEW}
+                    // DeletePermission={MCUSER_DELETE}
                 />
             </React.Fragment>
         );

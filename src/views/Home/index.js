@@ -38,6 +38,7 @@ import MapContainer from '../../views/TMS/ShipmentOrder/Component/MapContainer '
 import Maps from '../../views/TMS/ShipmentOrder/Component/Maps';
 import McPriviledge from '../../views/TMS/MD/PartnerPriviledge/McPriviledge';
 import PartnerRole from '../../views/TMS/MD/PartnerPriviledge/PartnerRole';
+import PartnerUser from '../../views/TMS/MD/PartnerPriviledge/PartnerUser';
 import InstallBundle from '../../views/TMS/MD/Installed/InstallBundle';
 import InstallMaterial from '../../views/TMS/MD/Installed/InstallMaterial';
 
@@ -120,6 +121,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/PartnerPriviledgeGroup" component={PartnerPriviledgeGroup} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerPriviledge" component={McPriviledge} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerRole" component={PartnerRole} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/PartnerUser" component={PartnerUser} isLoggedIn={isLoggedIn} />
                                 
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Maps" component={MapContainer} isLoggedIn={isLoggedIn} />

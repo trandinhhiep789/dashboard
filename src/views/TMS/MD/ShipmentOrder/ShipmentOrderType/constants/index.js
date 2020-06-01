@@ -61,12 +61,12 @@ export const SearchMLObjectDefinition = [
 export const AddModalColumnList = [
     {
         Name: "ShipmentOrderTypeID",
-        type: "numeric",
+        type: "text",
         label: "Mã loại yêu cầu vận chuyển",
         maxSize: "10",
         DataSourceMember: "ShipmentOrderTypeID",
         readonly: false,
-        validatonList: ["required"]
+        validatonList: ["required","number"]
     },
     {
         Name: "ShipmentOrderTypeName",
@@ -161,7 +161,7 @@ export const AddModalColumnList = [
         validatonList: []
     },
     {
-        type: "numeric",
+        type: "text",
         Name: "OrderIndex",
         label: "Thứ tự hiển thị:",
         value: 0,
@@ -171,7 +171,7 @@ export const AddModalColumnList = [
         listoption: {},
         DataSourceMember: "OrderIndex",
         readonly: false,
-        validatonList: []
+        validatonList: ["number"]
     },
     {
         Name: "IsActived",

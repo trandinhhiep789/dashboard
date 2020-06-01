@@ -235,7 +235,7 @@ class InputGridCom extends Component {
 			);
 		}
 		let dataSource = this.props.dataSource;
-		
+
 		if (this.props.value != null)
 			dataSource = this.props.value;
 		if (newSelected.length == dataSource.length) {
@@ -244,7 +244,7 @@ class InputGridCom extends Component {
 		else {
 			this.setState({ selected: newSelected, IsCheckAll: false });
 		}
-		
+
 	};
 
 	onChangePageHandle(pageNum) {
@@ -374,14 +374,18 @@ class InputGridCom extends Component {
 						}
 					}
 					else {
+						let removeValFromIndex = [];
 						for (let item in idDeleteListObject) {
 							const elementobject = idDeleteListObject[item];
 							if (elementobject.IsChecked) {
-								this.props.dataSource.splice(item, 1);
+								removeValFromIndex.push(item);
+								//this.props.dataSource.splice(item, 1);
 								if (this.props.value)
 									this.props.value.splice(item, 1);
 							}
 						}
+						for (var i = removeValFromIndex.length - 1; i >= 0; i--)
+							this.props.dataSource.splice(removeValFromIndex[i], 1);
 						this.forceUpdate();
 						if (this.props.onDeleteClick)
 							this.props.onDeleteClick(listDeleteID);
@@ -687,7 +691,7 @@ class InputGridCom extends Component {
 		let checkList;
 		if (this.props.IDSelectColumnName)
 			checkList = this.state.GridData[this.props.IDSelectColumnName];
-			console.log("checkList", checkList, this.state.GridData[this.props.IDSelectColumnName], this.state.GridData)
+		//console.log("checkList", checkList, this.state.GridData[this.props.IDSelectColumnName], this.state.GridData)
 		return (
 			<table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0" data-provide="datatables">
 				<thead className={"thead-light"}>

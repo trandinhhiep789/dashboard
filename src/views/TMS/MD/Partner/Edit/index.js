@@ -64,6 +64,7 @@ class EditCom extends React.Component {
                 });
                 this.showMessage(apiResult.Message);
             } else {
+                apiResult.ResultObject.IncorporationDate = apiResult.ResultObject.IncorporationDateString;
                 this.setState({ DataSource: apiResult.ResultObject, PartnerCoordinatorStore: apiResult.ResultObject.PartnerCoordinatorStore ? apiResult.ResultObject.PartnerCoordinatorStore : [] });
                 this.setValueCombobox(apiResult.ResultObject.CountryID, apiResult.ResultObject.ProvinceID, apiResult.ResultObject.DistrictID, apiResult.ResultObject.WardID);
             }
