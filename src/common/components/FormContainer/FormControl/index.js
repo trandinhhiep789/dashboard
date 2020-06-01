@@ -20,6 +20,7 @@ class TextBox extends React.Component {
     constructor(props) {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
+        this.handKeyDown = this.handKeyDown.bind(this);
     }
     static defaultProps = {
         controltype: 'InputControl'
@@ -27,10 +28,20 @@ class TextBox extends React.Component {
 
     handleValueChange(e) {
         if (this.props.onValueChange != null) {
-            this.props.onValueChange(e.target.name, e.target.value, this.props.label, undefined, this.props.validatonList);
+            this.props.onValueChange(e.target.name, e.target.value, this.props.label, e, this.props.validatonList);
         }
 
     }
+
+    handKeyDown(e) {
+        debugger;
+        if (e.key == 'Enter') {
+            if (this.props.onhandKeyDown != null) {
+                this.props.onhandKeyDown(e.target.name, e.target.value, this.props.label, e, this.props.validatonList);
+            }
+        }
+    }
+
     render() {
 
         let className = "form-control form-control-sm";
@@ -67,6 +78,7 @@ class TextBox extends React.Component {
                     <div className={formGroupClassName}>
                         <input type="text" name={this.props.name}
                             onChange={this.handleValueChange}
+                            onBlur={this.handKeyDown}
                             value={this.props.value}
                             key={this.props.name}
                             className={className}
@@ -93,6 +105,7 @@ class TextBox extends React.Component {
                     <div className={formGroupClassName}>
                         <input type="text" name={this.props.name}
                             onChange={this.handleValueChange}
+                            onKeyPress ={(event) => this.handKeyDown(event)}
                             value={this.props.value}
                             key={this.props.name}
                             className={className}
@@ -1025,7 +1038,7 @@ class ComboBoxNewCom extends Component {
     }
 
     render() {
-        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder,listoption } = this.props;
+        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder, listoption } = this.props;
         debugger;
         let formRowClassName = "form-row";
         if (this.props.rowspan != null) {
@@ -1081,5 +1094,5 @@ class ComboBoxNewCom extends Component {
 export const ComboBoxNew = connect(mapStateToProps, mapDispatchToProps)(ComboBoxNewCom);
 
 
-export default { TextBox, TextArea, CheckBox, ComboBox,ComboBoxNew, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus, ElementDatetime, ComboBoxPartner, ComboboxQTQHPX };
+export default { TextBox, TextArea, CheckBox, ComboBox, ComboBoxNew, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus, ElementDatetime, ComboBoxPartner, ComboboxQTQHPX };
 

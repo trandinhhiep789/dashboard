@@ -66,8 +66,26 @@ class ShipmentOrderAddressCom extends Component {
         }
         return false;
     }
+    handKeyDown(name, value, label, e, validatonList) {
+        let paramsRequest = {
+            "Keyword":value+"Phường"+ "413 Lê Văn Quới, Phường Bình Trị Đông A, Quận Bình Tân, Thành Phố Hồ Chí Minh",
+            "Page": 1,
+            "PageSize": 1
+        }
+        this.props.callFetchAPI(APIHostName, 'api/Maps/SearchAll', paramsRequest).then((apiResult) => {
+            if (!apiResult.IsError) {
+                console.log(JSON.parse(apiResult.ResultObject).List[0].Latitude, JSON.parse(apiResult.ResultObject).List[0].Longitude);
+                let { ShipmentOrderEdit } = this.state;
+                ShipmentOrderEdit.SenderGeoLocation = JSON.parse(apiResult.ResultObject).List[0].Latitude + "," + JSON.parse(apiResult.ResultObject).List[0].Longitude;
+                this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
+                    this.ShowModalSender();
+                });
+            }
+        });
 
-    handleValueChange(name, value, label, labelnew, validatonList) {
+    }
+
+    handleValueChange(name, value, label, e, validatonList) {
         let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
         let formData = FormDataSenderLst;
         const aa = { labelError: undefined }
@@ -80,10 +98,6 @@ class ShipmentOrderAddressCom extends Component {
         }
         else {
             ShipmentOrderEdit[name] = value;
-        }
-
-        if (name == "SenderAddress") {
-            ShipmentOrderEdit.SenderGeoLocation = "10.852982,105.700";
         }
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
             this.ShowModalSender();
@@ -142,7 +156,7 @@ class ShipmentOrderAddressCom extends Component {
                 let { ShipmentOrderEdit } = this.state;
                 const Durations = Math.floor(JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Durations[1] / 60);
                 ShipmentOrderEdit["EstimateDeliveryDistance"] = JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Distances[1] / 1000;
-                ShipmentOrderEdit["EstimateDeliveryLong"] =Durations;
+                ShipmentOrderEdit["EstimateDeliveryLong"] = Durations;
                 this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, ReceiverGeoLocation: lat + "," + lng }, () => {
                     this.ShowModalReceiver();
                 });
@@ -178,11 +192,11 @@ class ShipmentOrderAddressCom extends Component {
         };
         this.props.callFetchAPI(APIHostName, 'api/Maps/FindPathViaRoute', paramsRequest).then((apiResult) => {
             if (!apiResult.IsError) {
-            
+
                 let { ShipmentOrderEdit } = this.state;
                 const Durations = Math.floor(JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Durations[1] / 60);
                 ShipmentOrderEdit["EstimateDeliveryDistance"] = JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Distances[1] / 1000;
-                ShipmentOrderEdit["EstimateDeliveryLong"] =Durations;
+                ShipmentOrderEdit["EstimateDeliveryLong"] = Durations;
                 this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, SenderGeoLocation: lat + "," + lng }, () => {
                     this.ShowModalSender();
                 });
@@ -546,7 +560,6 @@ class ShipmentOrderAddressCom extends Component {
             ShipmentOrderEdit.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
             ShipmentOrderEdit.ReceiverGeoLocation = this.state.ReceiverGeoLocation;
             this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
-                console.log("11111", apiResult, ShipmentOrderEdit)
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
                     ModalManager.close();
@@ -565,7 +578,6 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     handleShowModalReceiver() {
-        debugger
         let { ShipmentOrderEdit } = this.state;
         this.setValueCombobox(2, this.state.ShipmentOrderEdit.ReceiverProvinceID, this.state.ShipmentOrderEdit.ReceiverDistrictID)
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
@@ -720,6 +732,7 @@ class ShipmentOrderAddressCom extends Component {
                             labelcolspan="4"
                             label="số nhà/đường"
                             onValueChange={this.handleValueChange.bind(this)}
+                            onhandKeyDown={this.handKeyDown.bind(this)}
                             readOnly={!this.CheckPermissionUser(4)}
                             placeholder="Số điện thoại người gửi"
                             controltype="InputControl"
@@ -974,7 +987,6 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     render() {
-
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -1002,7 +1014,7 @@ class ShipmentOrderAddressCom extends Component {
                                         </label>
                                     </div>
                                     <div className="form-group col-md-5">
-                                        <label className="col-form-label">{this.state.ShipmentOrder.SenderPhoneNumber}</label>
+                                        <label className="col-form-label">{this.props.ShipmentOrderAddress.SenderPhoneNumber}</label>
                                     </div>
                                 </div>
                                 <div className="form-row">
