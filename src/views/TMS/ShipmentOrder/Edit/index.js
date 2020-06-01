@@ -117,6 +117,7 @@ class EditCom extends React.Component {
                     FormName="Cập nhật yêu cầu vận chuyển"
                     MLObjectDefinition={MLObjectDefinition}
                     dataSource={this.state.DataSource}
+                    listelement={[]}
                     BackLink={BackLink}
                 >
                     <div className="card">

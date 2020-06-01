@@ -193,7 +193,7 @@ class FormContainerCom extends Component {
     }
     bindDataToControl(listElement, dataSource) {
         let listElement1 = listElement;
-        if (typeof dataSource != "undefined") {
+        if (typeof dataSource != "undefined" && listElement1 != []) {
             listElement1 = listElement.map((elementItem) => {
                 const elementvalue = dataSource[elementItem.DataSourceMember];
                 if (typeof elementvalue != "undefined") {

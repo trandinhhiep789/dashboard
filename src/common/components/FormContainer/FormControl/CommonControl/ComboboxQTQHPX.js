@@ -15,7 +15,7 @@ class ComboboxQTQHPXCom extends React.Component {
         this.elementItemRefs = [];
         const formDataContol = this.bindDataContol();
         this.handleInputChange = this.handleInputChange.bind(this);
-        // console.log("formDataContol", formDataContol);
+        //console.log("formDataContol", formDataContol);
         this.state = {
             FormData: formDataContol,
             Country: [],
@@ -48,7 +48,7 @@ class ComboboxQTQHPXCom extends React.Component {
             const validation = ValidationField(FormDataContolLstd[elementname].validatonList, elementvalue, FormDataContolLstd[elementname].label, FormDataContolLstd[elementname]);
             const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
             FormDataContolLstd[elementname].ErrorLst = validationObject;
-          
+
         }
         this.setState({
             FormData: FormDataContolLstd,
@@ -59,7 +59,6 @@ class ComboboxQTQHPXCom extends React.Component {
         this.initCombobox();
     }
     initCombobox() {
-
         // tỉnh thành phố
         this.props.callGetCache(ERPCOMMONCACHE_PROVINCE).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
@@ -69,7 +68,6 @@ class ComboboxQTQHPXCom extends React.Component {
                 });
             }
         });
-
         // quận huyện
         this.props.callGetCache(ERPCOMMONCACHE_DISTRICT).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
@@ -79,31 +77,20 @@ class ComboboxQTQHPXCom extends React.Component {
                 });
             }
         });
-
-
         // phường xã
         this.props.callGetCache(ERPCOMMONCACHE_WARD).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
+
                 this.setState({
                     Ward: result.ResultObject.CacheData
                 });
             }
         });
-      
-
     }
-    getDataCombobox(data, valueMember, nameMember, conditionName, conditionValue) {
+    getDataComboboxNew(data, valueMember, nameMember, conditionName, conditionValue) {
         let listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
-        data.map((cacheItem) => {
-            if (conditionName) {
-                if (cacheItem[conditionName] == conditionValue) {
-                    listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
-                }
-            }
-            else {
-                listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
-            }
+        data.filter(n => n[conditionName] == conditionValue).map((cacheItem) => {
+            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
         });
         return listOption;
     }
@@ -129,22 +116,36 @@ class ComboboxQTQHPXCom extends React.Component {
                                         key={index}
                                     />
                                 );
+                            case "textfull":
+                                return (
+                                    <ElementSearch.ElementTextNewFull
+                                        onValueChange={this.handleInputChange}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                        {...elementItem}
+                                        key={index}
+                                    />
+                                );
                             case "ComboBox":
                                 if (elementItem.name == "cbProvinceID") {
-                                    const aa = this.getDataCombobox(this.state.Province, elementItem.ValueMember, elementItem.NameMember, elementItem.nameOption, elementItem.nameValue == -1 ? this.state.FormData[elementItem.name].value : elementItem.nameValue);
+                                    //   const aa = this.getDataCombobox(this.state.Province, elementItem.ValueMember, elementItem.NameMember, elementItem.nameOption, elementItem.nameValue == -1 ? this.state.FormData[elementItem.name].value : elementItem.nameValue);
+                                    const aa = this.getDataComboboxNew(this.state.Province, elementItem.ValueMember, elementItem.NameMember, elementItem.nameOption, elementItem.nameValue == -1 ? this.state.FormData[elementItem.name].value : elementItem.nameValue);
+
+                                    debugger;
                                     elementItem.listoption = aa;
                                 }
                                 else if (elementItem.name == "cbDistrictID") {
-                                    const aaa = this.getDataCombobox(this.state.District, elementItem.ValueMember, elementItem.NameMember, elementItem.nameOption, elementItem.nameValue == -1 ? this.state.FormData[elementItem.nameOption1].value : elementItem.nameValue);
+                                    const aaa = this.getDataComboboxNew(this.state.District, elementItem.ValueMember, elementItem.NameMember, elementItem.nameOption, elementItem.nameValue == -1 ? this.state.FormData[elementItem.nameOption1].value : elementItem.nameValue);
                                     elementItem.listoption = aaa;
 
                                 }
                                 else if (elementItem.name == "cbWardID") {
-                                    const aaaa = this.getDataCombobox(this.state.Ward, elementItem.ValueMember, elementItem.NameMember, elementItem.nameOption, elementItem.nameValue == -1 ? this.state.FormData[elementItem.nameOption1].value : elementItem.nameValue);
+                                    const aaaa = this.getDataComboboxNew(this.state.Ward, elementItem.ValueMember, elementItem.NameMember, elementItem.nameOption, elementItem.nameValue == -1 ? this.state.FormData[elementItem.nameOption1].value : elementItem.nameValue);
                                     elementItem.listoption = aaaa;
 
                                 }
-                           
+
                                 return (
                                     <ElementSearch.ElementComboBoxNew
                                         onValueChange={this.handleInputChange}

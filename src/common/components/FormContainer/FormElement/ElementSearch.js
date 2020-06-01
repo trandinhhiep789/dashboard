@@ -422,8 +422,6 @@ class ElementComboBoxNewCom extends Component {
                             <div className="invalid-feedback">{validationErrorMessage}</div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         );
@@ -432,6 +430,66 @@ class ElementComboBoxNewCom extends Component {
 const ElementComboBoxNew = connect(null, mapDispatchToProps)(ElementComboBoxNewCom);
 
 class ElementTextNewCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+    }
+    handleValueChange(e) {
+        e.preventDefault();
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(e.target.name, e.target.value);
+    }
+    render() {
+        let { name, label, placeholder, icon, colspan, value, readonly, validationErrorMessage } = this.props;
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-2";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null) {
+            formRowClassName += this.props.classNameCustom;
+        }
+
+        return (
+            <div className="col-md-6">
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 3">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+                    <div className={formGroupClassName}>
+                        <input type="text"
+                            className={className}
+                            ref={this.props.inputRef}
+                            name={name}
+                            onChange={this.handleValueChange}
+                            readOnly={readonly}
+                            defaultValue={value}
+                            placeholder={placeholder} />
+                        <div className="invalid-feedback">{validationErrorMessage}</div>
+                    </div>
+                </div>
+            </div>
+
+        );
+    }
+}
+const ElementTextNew = connect(null, null)(ElementTextNewCom);
+
+class ElementTextNewFullCom extends Component {
     constructor(props) {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
@@ -489,7 +547,7 @@ class ElementTextNewCom extends Component {
         );
     }
 }
-const ElementTextNew = connect(null, null)(ElementTextNewCom);
+const ElementTextNewFull = connect(null, null)(ElementTextNewFullCom);
 
 class ElementDatetimeCom extends Component {
     constructor(props) {
@@ -631,5 +689,5 @@ class ElementDatetimeFromToCom extends Component {
 }
 const ElementDatetimeFromTo = connect(null, null)(ElementDatetimeFromToCom);
 
-export default { ElementText, ElementTextdropdown, ElementCheckbox, ElementComboBox, ElementDatetime, ElementDatetimeFromTo, ElementCheckLDivbox, ElementComboBoxNew, ElementTextNew };
+export default { ElementText, ElementTextdropdown, ElementCheckbox, ElementComboBox, ElementDatetime, ElementDatetimeFromTo, ElementCheckLDivbox, ElementComboBoxNew, ElementTextNew,ElementTextNewFull };
 

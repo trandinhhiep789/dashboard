@@ -655,13 +655,26 @@ export const ElementQHPXList = [
     {
         type: "text",
         name: "txtFullAddress",
+        colspan: "8",
+        labelcolspan: "4",
+        readOnly: false,
+        label: "số nhà/đường",
+        placeholder: "số nhà/đường",
+        value: "",
+        datasourcemember: "FullAddress",
+        classNameCustom: "customcontrol"
+    }
+    ,
+    {
+        type: "textfull",
+        name: "txtFullAddressFull",
         colspan: "10",
         labelcolspan: "2",
         readOnly: false,
         label: "địa chỉ",
         placeholder: "Địa chỉ",
         value: "",
-        datasourcemember: "FullAddress",
+        datasourcemember: "FullAddressFull",
         classNameCustom: "customcontrol"
     }
 ];
