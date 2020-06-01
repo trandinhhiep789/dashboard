@@ -235,6 +235,7 @@ class EditCom extends React.Component {
                                         placeholder="Ngày tạo yêu cầu"
                                         controltype="InputControl"
                                         value=""
+                                        validatonList={["Comborequired"]}
                                         datasourcemember="CreatedOrderTime"
 
                                     />

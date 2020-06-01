@@ -811,7 +811,6 @@ class ElementDatetimeCom extends Component {
         if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
             star = '*'
         }
-
         if (this.props.validationErrorMessage != "") {
             className += " is-invalid";
             return (
