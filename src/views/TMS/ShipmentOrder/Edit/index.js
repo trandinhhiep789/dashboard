@@ -242,69 +242,80 @@ class EditCom extends React.Component {
                                 </div>
 
                                 <div className="col-md-6">
-                                    <FormControl.TextBox
-                                        name=""
+                                    <FormControl.ElementDatetime
+                                        name="dtExpectedDeliveryDate"
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
+                                        timeFormat={false}
+                                        dateFormat="DD/MM/YYYY"
+                                        label="thời gian giao hàng"
+                                        placeholder="Thời gian giao hàng"
+                                        controltype="InputControl"
+                                        value=""
+                                        validatonList={["Comborequired"]}
+                                        datasourcemember="ExpectedDeliveryDate" />
+
+                                </div>
+                                <div className="col-md-6">
+                                    <FormControl.ElementDatetime
+                                        name="dtExpectedDeliveryDate"
+                                        colspan="8"
+                                        labelcolspan="4"
+                                        readOnly={true}
+                                        timeFormat={false}
+                                        dateFormat="DD/MM/YYYY"
                                         label="lấy hàng từ"
                                         placeholder="Lấy hàng từ"
                                         controltype="InputControl"
-                                        value={""}
-                                        datasourcemember=""
-                                    />
+                                        value=""
+                                        validatonList={["Comborequired"]}
+                                        datasourcemember="ExpectedDeliveryDate" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.TextBox
-                                        name=""
+                                    <FormControl.ElementDatetime
+                                        name="dtExpectedDeliveryDate"
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
+                                        timeFormat={false}
+                                        dateFormat="DD/MM/YYYY"
                                         label="đến"
                                         placeholder="Đến"
                                         controltype="InputControl"
-                                        value={""}
-                                        datasourcemember=""
-                                    />
+                                        value=""
+                                        validatonList={["Comborequired"]}
+                                        datasourcemember="ExpectedDeliveryDate" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.TextBox
-                                        name=""
+                                    <FormControl.ElementDatetime
+                                        name="dtExpectedDeliveryDate"
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
+                                        timeFormat={false}
+                                        dateFormat="DD/MM/YYYY"
                                         label="giao hàng từ"
                                         placeholder="Giao hàng từ"
                                         controltype="InputControl"
-                                        value={""}
-                                        datasourcemember=""
-                                    />
+                                        value=""
+                                        validatonList={["Comborequired"]}
+                                        datasourcemember="ExpectedDeliveryDate" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.TextBox
-                                        name=""
+                                    <FormControl.ElementDatetime
+                                        name="dtExpectedDeliveryDate"
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
+                                        timeFormat={false}
+                                        dateFormat="DD/MM/YYYY"
                                         label="đến"
-                                        placeholder="Đến"
+                                        placeholder="Đế"
                                         controltype="InputControl"
-                                        value={""}
-                                        datasourcemember=""
-                                    />
-                                </div>
-                                <div className="col-md-6">
-                                    <FormControl.TextBox
-                                        name=""
-                                        colspan="8"
-                                        labelcolspan="4"
-                                        readOnly={true}
-                                        label="đến"
-                                        placeholder="Đến"
-                                        controltype="InputControl"
-                                        value={""}
-                                        datasourcemember=""
-                                    />
+                                        value=""
+                                        validatonList={["Comborequired"]}
+                                        datasourcemember="ExpectedDeliveryDate" />
                                 </div>
 
                                 {/* <FormControl.ComboboxQTQHPX
