@@ -2,7 +2,9 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
+import ModelFormContainer from "../../../../common/components/Modal/ModelFormContainer";
 import FormContainer from "../../../../common/components/FormContainer";
+import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../common/components/Modal";
 import {
@@ -17,7 +19,8 @@ import {
     GridMLObjectDefinition,
     AddLogAPIPath,
     ElementQHPXList,
-    GridMLObjectQTQHPX
+    GridMLObjectQTQHPX,
+    DataGridColumnItemList
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -26,6 +29,9 @@ import { callGetCache } from "../../../../actions/cacheAction";
 import indexedDBLib from "../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
+import { showModal, hideModal } from '../../../../actions/modal';
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import ShipmentOrderItemObj from '../Component/ShipmentOrderItemObj';
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -33,6 +39,9 @@ class EditCom extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
+        this.handleItemInsert = this.handleItemInsert.bind(this);
+
+
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -67,6 +76,17 @@ class EditCom extends React.Component {
         });
     }
 
+    handleItemInsert() {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Cập nhật danh sách hàng hóa',
+            content: {
+                text: <ShipmentOrderItemObj></ShipmentOrderItemObj>
+            },
+            maxWidth: '1000px'
+        });
+    }
+
+ 
 
 
     handleSubmit(formData, MLObject) {
@@ -112,7 +132,6 @@ class EditCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
         if (this.state.IsLoadDataComplete) {
-            console.log("this.state.DataSource", this.state.DataSource);
             return (
                 <FormContainer
                     FormName="Cập nhật yêu cầu vận chuyển"
@@ -373,7 +392,7 @@ class EditCom extends React.Component {
                                         </div>
                                         <div className="col-md-6">
                                             <FormControl.TextBox
-                                                name="txtxSenderFullName"
+                                                name="txtSenderFullName"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 readOnly={false}
@@ -431,7 +450,7 @@ class EditCom extends React.Component {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-md-6">
-                                             <FormControl.ComboBox
+                                            <FormControl.ComboBox
                                                 name="cbReceiverPartnerID"
                                                 colspan="8"
                                                 labelcolspan="4"
@@ -447,7 +466,7 @@ class EditCom extends React.Component {
                                                 datasourcemember="ReceiverPartnerID" />
                                         </div>
                                         <div className="col-md-6">
-                                             <FormControl.ComboBox
+                                            <FormControl.ComboBox
                                                 name="cbReceiverStoreID"
                                                 colspan="8"
                                                 labelcolspan="4"
@@ -528,7 +547,7 @@ class EditCom extends React.Component {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-md-6">
-                                              <FormControl.ComboBox
+                                            <FormControl.ComboBox
                                                 name="cbShipmentGoodsTypeID"
                                                 colspan="8"
                                                 labelcolspan="4"
@@ -543,7 +562,7 @@ class EditCom extends React.Component {
                                                 listoption={null}
                                                 datasourcemember="ShipmentGoodsTypeID" />
                                         </div>
-                                      
+
                                         <div className="col-md-6">
                                             <FormControl.TextBox
                                                 name="txtNumberOfPackages"
@@ -598,7 +617,7 @@ class EditCom extends React.Component {
                                             />
                                         </div>
                                         <div className="col-md-6">
-                                             <FormControl.ComboBox
+                                            <FormControl.ComboBox
                                                 name="cbShipmentFeePaymentMethodID"
                                                 colspan="8"
                                                 labelcolspan="4"
@@ -626,7 +645,7 @@ class EditCom extends React.Component {
                                                 datasourcemember="TotalShipmentFee"
                                             />
                                         </div>
-                                    
+
                                         <div className="col-md-6">
                                             <FormControl.TextBox
                                                 name="txtTotalCOD"
@@ -658,55 +677,17 @@ class EditCom extends React.Component {
 
                                 </div>
                             </div>
-                            <div className="card">
-                                <div className="card-title">
-                                    <h4 className="title">Danh sách hàng hóa</h4>
-                                    <button className="btn btnEditCard">thêm hàng hóa</button>
-                                </div>
-                                <div className="card-body">
-                                    <div className="table-responsive">
-                                        <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                            <thead className="thead-light">
-                                                <tr>
-                                                    <th className="jsgrid-header-cell"></th>
-                                                    <th className="jsgrid-header-cell">Sản phẩm</th>
-                                                    <th className="jsgrid-header-cell">Kiện</th>
-                                                    <th className="jsgrid-header-cell">Giá</th>
-                                                    <th className="jsgrid-header-cell">Số lượng</th>
-                                                    <th className="jsgrid-header-cell">Đơn vị tính</th>
-                                                    <th className="jsgrid-header-cell">Kích thước</th>
-                                                    <th className="jsgrid-header-cell">Khối lượng</th>
-                                                    <th className="jsgrid-header-cell">Tác vụ</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
 
-                                                <tr>
-                                                    <td>
-                                                        <img src='/src/img/may-lanh-lg-v10enh-1-1-org.jpg' className="img-product" />
-                                                    </td>
-                                                    <td>Máy lạnh Panasonic Inverter 1 HP CU/CS-PU9WKH-8M</td>
-                                                    <td>Mặc định</td>
-                                                    <td>10,890,000</td>
-                                                    <td>1</td>
-                                                    <td>Cái</td>
-                                                    <td>77.9 x 20.9 x 29 cm</td>
-                                                    <td>8kg</td>
-                                                    <td className="table-actions">
-                                                        <a className="table-action hover-primary" href="#">
-                                                            <i className="ti-pencil"></i>
-                                                        </a>
-                                                        <a className="table-action hover-danger" href="#">
-                                                            <i className="ti-trash"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
+                            <InputGridControl
+                                name="ShipmentOrder_ItemList"
+                                controltype="InputGridControl"
+                                title="Danh sách hàng hóa"
+                                IDSelectColumnName={"ProductID"}
+                                listColumn={DataGridColumnItemList}
+                                dataSource={this.state.DataSource.ShipmentOrder_ItemList}
+                                onInsertClick={this.handleItemInsert}
+                            />
 
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
                             <div className="card">
                                 <div className="card-title">
                                     <h4 className="title">Vật tư lắp đặt</h4>
@@ -846,6 +827,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: cacheKeyID => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
         }
     };
 };

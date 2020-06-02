@@ -609,6 +609,18 @@ export const MLObjectDefinition = [
         DefaultValue: {},
         BindControlName: "objQHPX",
         DataSourceMember: "objQHPX"
+    },
+    {
+        Name: "ShipmentOrder_MaterialList",
+        DefaultValue: {},
+        BindControlName: "ShipmentOrder_MaterialList",
+        DataSourceMember: "ShipmentOrder_MaterialList"
+    },
+    {
+        Name: "ShipmentOrder_ItemList",
+        DefaultValue: {},
+        BindControlName: "ShipmentOrder_ItemList",
+        DataSourceMember: "ShipmentOrder_ItemList"
     }
 ];
 
@@ -683,7 +695,21 @@ export const DataGridColumnList = [
 
 
 export const DataGridColumnItemList = [
-
+    {
+        Name: "ProductID",
+        Type: "text",
+        Caption: "Mã sản phẩm",
+        DataSourceMember: "ProductID",
+        Width: 250,
+        hideInput:false
+    },
+    {
+        Name: "IsInstallItem",
+        Type: "checkbox",
+        Caption: "Cần lắp đặt",
+        DataSourceMember: "IsInstallItem",
+        Width: 80
+    },
     {
         Name: "ProductName",
         Type: "text",
@@ -692,10 +718,10 @@ export const DataGridColumnItemList = [
         Width: 250
     },
     {
-        Name: "Quantity",
+        Name: "PackingUnitName",
         Type: "text",
         Caption: "Kiện",
-        DataSourceMember: "Quantity",
+        DataSourceMember: "PackingUnitName",
         Width: 100
     },
     {
@@ -732,8 +758,42 @@ export const DataGridColumnItemList = [
         Caption: "Khối lượng",
         DataSourceMember: "Weight",
         Width: 150
+    },
+    {
+        Name: "Action",
+        Type: "editnew",
+        Caption: "Tác vụ",
+        DataSourceMember: "ArticleID",
+        Width: 70,
+        iputpop: false
     }
 ];
+export const GridMLObjectItem = [
+    {
+        Name: "ProductName",
+        DefaultValue: "",
+        BindControlName: "ProductName",
+        DataSourceMember: "ProductName"
+    },
+    {
+        Name: "ReceiverDistrictID",
+        DefaultValue: "",
+        BindControlName: "cbDistrictID",
+        DataSourceMember: "ReceiverDistrictID"
+    },
+    {
+        Name: "ReceiverWardID",
+        DefaultValue: "",
+        BindControlName: "cbWardID",
+        DataSourceMember: "ReceiverWardID"
+    },
+    {
+        Name: "SenderAddress",
+        DefaultValue: "",
+        BindControlName: "txtSenderAddress",
+        DataSourceMember: "SenderAddress"
+    }
+]
 //cobombox
 export const ElementQHPXList = [
 
@@ -824,6 +884,7 @@ export const ElementQHPXList = [
     //     classNameCustom: "customcontrol"
     // }
 ];
+
 export const GridMLObjectQTQHPX = [
     {
         Name: "ReceiverProvinceID",
@@ -848,6 +909,58 @@ export const GridMLObjectQTQHPX = [
         DefaultValue: "",
         BindControlName: "txtSenderAddress",
         DataSourceMember: "SenderAddress"
+    }
+]
+
+/// ShipmentOrder_Item
+export const MLObjectShipmentOrderItem = [
+    {
+        Name: "ShipmentOrderItemID",
+        DefaultValue: "",
+        BindControlName: "txtShipmentOrderItemID",
+        DataSourceMember: "txtShipmentOrderItemID"
+    },
+    {
+        Name: "ShipmentOrderPackingUnitID",
+        DefaultValue: "",
+        BindControlName: "cbShipmentOrderPackingUnitID",
+        DataSourceMember: "ShipmentOrderPackingUnitID"
+    },
+    {
+        Name: "ProductID",
+        DefaultValue: "",
+        BindControlName: "txtProductID",
+        DataSourceMember: "ProductID"
+    },
+    {
+        Name: "ProductName",
+        DefaultValue: "",
+        BindControlName: "txtProductName",
+        DataSourceMember: "ProductName"
+    },
+    {
+        Name: "Price",
+        DefaultValue: "",
+        BindControlName: "txtPrice",
+        DataSourceMember: "Price"
+    },
+    {
+        Name: "Quantity",
+        DefaultValue: "",
+        BindControlName: "txtQuantity",
+        DataSourceMember: "Quantity"
+    },
+    {
+        Name: "QuantityUnitID",
+        DefaultValue: "",
+        BindControlName: "txtQuantityUnitID",
+        DataSourceMember: "QuantityUnitID"
+    } ,
+    {
+        Name: "Note",
+        DefaultValue: "",
+        BindControlName: "txtNote",
+        DataSourceMember: "Note"
     }
 ]
 

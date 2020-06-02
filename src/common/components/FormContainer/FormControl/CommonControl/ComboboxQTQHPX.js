@@ -30,7 +30,6 @@ class ComboboxQTQHPXCom extends React.Component {
         let formData = {};
         const listElement = this.props.listelement;
         const listElementw = this.bindDataToControl(typeof this.props.listelement != "undefined" ? this.props.listelement : [], dataSource);
-        debugger;
         listElementw.map((elementItem) => {
             const elementname = elementItem.name;
             const ObjectName = {
@@ -66,7 +65,6 @@ class ComboboxQTQHPXCom extends React.Component {
         if (typeof dataSource != "undefined" && listElement1 != []) {
             listElement1 = listElement.map((elementItem) => {
                 const elementvalue = dataSource[elementItem.DataSourceMember];
-                debugger;
                 if (typeof elementvalue != "undefined") {
                     const newElementItem = Object.assign({}, elementItem, { value: elementvalue });
                     return newElementItem;

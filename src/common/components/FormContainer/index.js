@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { ValidationField } from "../../library/validation.js";
-import { GetMLObjectData,GetMLObjectObjData } from "../../library/form/FormLib";
+import { GetMLObjectData, GetMLObjectObjData } from "../../library/form/FormLib";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../constants/functionLists";
 import { callGetCache } from "../../../actions/cacheAction";
 import { Link } from "react-router-dom";
@@ -114,7 +114,7 @@ class FormContainerCom extends Component {
             const ObjectName = { Name: controlname, value: objvalue, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList, listelement: child.props.listelement };
             return { [controlname]: ObjectName };
         }
-        if (controltype == "GridControl") {
+        if (controltype == "GridControl"||controltype == "InputGridControl") {
             let controlname = child.props.name;
             const ObjectName = { Name: controlname, value: child.props.dataSource, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList };
             return { [controlname]: ObjectName };
@@ -164,8 +164,8 @@ class FormContainerCom extends Component {
     }
     handleInputChangeObj(elementname, elementvalue) {
         let FormDataContolLstd = this.state.FormData;
-        let objelementname =Object.assign({}, FormDataContolLstd[elementname], { value: elementvalue});
-        FormDataContolLstd = Object.assign({}, FormDataContolLstd, {[elementname]:objelementname});
+        let objelementname = Object.assign({}, FormDataContolLstd[elementname], { value: elementvalue });
+        FormDataContolLstd = Object.assign({}, FormDataContolLstd, { [elementname]: objelementname });
 
         this.setState({
             FormData: FormDataContolLstd,
@@ -200,10 +200,10 @@ class FormContainerCom extends Component {
     }
     checkInputName(formValidation) {
         for (const key in formValidation) {
-             console.log("formValidation:",formValidation);
-             
+      //      console.log("formValidation:", formValidation);
+
             if (formValidation[key].ErrorLst != undefined) {
-                console.log("validation:",key, this.elementItemRefs[key]);
+               // console.log("validation:", key, this.elementItemRefs[key]);
                 if (formValidation[key].ErrorLst != [] && formValidation[key].ErrorLst.IsValidatonError) {
                     this.elementItemRefs[key].focus();
                     return key;
@@ -291,12 +291,12 @@ class FormContainerCom extends Component {
                     return React.cloneElement(child,
                         {
                             onValueChange: this.handleInputChangeObj,
-                            value:this.state.FormData[controlname].value,
+                            value: this.state.FormData[controlname].value,
                             inputRef: ref => this.elementItemRefs[controlname] = ref
                         }
                     );
                 }
-                else if (controltype == "GridControl") {
+                else if (controltype == "GridControl" || controltype == "InputGridControl") {
                     const controlname = child.props.name;
 
                     return React.cloneElement(child,
@@ -328,9 +328,8 @@ class FormContainerCom extends Component {
                     if (this.state.FormData[controlName].Controltype == "InputControl") {
                         MLObject = Object.assign({}, MLObject, { [Item.Name]: this.state.FormData[controlName].value });
                     }
-                    else if(this.state.FormData[controlName].Controltype == "InputControlNew")
-                    {
-                        MLObject = Object.assign({}, MLObject,this.state.FormData[controlName].value);
+                    else if (this.state.FormData[controlName].Controltype == "InputControlNew") {
+                        MLObject = Object.assign({}, MLObject, this.state.FormData[controlName].value);
                     }
                 }
             }
