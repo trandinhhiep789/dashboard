@@ -14,7 +14,7 @@ import { TreeSelect } from "antd";
 import Datetime from 'react-datetime';
 import "antd/dist/antd.css";
 import Select from 'react-select';
-import {formatMoney} from '../../../../utils/function';
+import { formatMoney } from '../../../../utils/function';
 
 
 class TextBox extends React.Component {
@@ -64,7 +64,7 @@ class TextBox extends React.Component {
         if (this.props.classNameCustom != null) {
             formRowClassName += this.props.classNameCustom;
         }
-        console.log('this.props.label', this.props.label)
+        // console.log('this.props.label', this.props.label)
         if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
             className += " is-invalid";
 
@@ -139,7 +139,7 @@ class TextBoxCurrency extends React.Component {
     }
 
     componentDidMount() {
-       
+
 
     }
 
@@ -180,7 +180,7 @@ class TextBoxCurrency extends React.Component {
         if (this.props.classNameCustom != null) {
             formRowClassName += this.props.classNameCustom;
         }
-        console.log('this.props.label', this.props.label)
+        // console.log('this.props.label', this.props.label)
         if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
             className += " is-invalid";
 
@@ -204,13 +204,10 @@ class TextBoxCurrency extends React.Component {
                             value={formatMoney(this.props.value, 0)}
                             key={this.props.name}
                             className={className}
-                            autoFocus={true}
                             ref={this.props.inputRef}
                             placeholder={this.props.placeholder}
                             disabled={this.props.readOnly}
                             maxLength={this.props.maxSize}
-                            data-type="currency"
-                            pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
                         />
                         <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
                     </div>
@@ -242,8 +239,6 @@ class TextBoxCurrency extends React.Component {
                             placeholder={this.props.placeholder}
                             disabled={this.props.readOnly}
                             maxLength={this.props.maxSize}
-                            data-type="currency"
-                            pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
                         />
                     </div>
                 </div>
@@ -524,7 +519,7 @@ class ComboBoxCom extends Component {
                             required={this.props.required}
                         >
                             {listOption.map((optionItem) =>
-                                <option key={optionItem.value} value={optionItem.value}>{optionItem.label}</option>
+                                <option key={optionItem.value} value={optionItem.value}>{(optionItem.value == -1 ? "" : optionItem.value + " - ") + optionItem.label}</option>
                             )}
                         </select>
                     </div>

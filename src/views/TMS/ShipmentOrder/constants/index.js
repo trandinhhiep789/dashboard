@@ -953,7 +953,7 @@ export const MLObjectShipmentOrderItem = [
     {
         Name: "QuantityUnitID",
         DefaultValue: "",
-        BindControlName: "txtQuantityUnitID",
+        BindControlName: "cbQuantityUnitID",
         DataSourceMember: "QuantityUnitID"
     } ,
     {
@@ -961,7 +961,32 @@ export const MLObjectShipmentOrderItem = [
         DefaultValue: "",
         BindControlName: "txtNote",
         DataSourceMember: "Note"
+    },
+    {
+        Name: "IsInstallItem",
+        DefaultValue: "",
+        BindControlName: "ckIsInstallItem",
+        DataSourceMember: "IsInstallItem"
+    },
+    {
+        Name: "Length",
+        DefaultValue: "",
+        BindControlName: "txtLength",
+        DataSourceMember: "Length"
+    },
+    {
+        Name: "Width",
+        DefaultValue: "",
+        BindControlName: "txtWidth",
+        DataSourceMember: "Width"
+    },
+    {
+        Name: "Height",
+        DefaultValue: "",
+        BindControlName: "txtHeight",
+        DataSourceMember: "Height"
     }
+    
 ]
 
 

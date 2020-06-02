@@ -27,193 +27,168 @@ class ShipmentOrderItemObjCom extends Component {
                 <div className="row">
                     <div className="col-md-6">
                         <FormControl.TextBox
-                            name="txtShipmentOrderID"
+                            name="txtProductID"
                             colspan="9"
                             labelcolspan="3"
-                            readOnly={true}
-                            label="mã yêu cầu"
-                            placeholder="Mã yêu cầu"
+                            readOnly={false}
+                            label="mã sản phẩm"
+                            placeholder="Mã sản phẩm"
                             controltype="InputControl"
                             value=""
-                            datasourcemember="ShipmentOrderID"
+                            validatonList={["required"]}
+                            datasourcemember="ProductID"
                         />
                     </div>
                     <div className="col-md-6">
-                        <FormControl.ComboBox
-                            name="txtShipmentOrderTypeID"
+                        <FormControl.TextBox
+                            name="txtProductName"
                             colspan="9"
                             labelcolspan="3"
-                            label="loại yêu cầu"
-                            validatonList={["Comborequired"]}
-                            isautoloaditemfromcache={true}
+                            readOnly={false}
+                            label="tên sản phẩm"
+                            placeholder="Tên sản phẩm"
+                            controltype="InputControl"
+                            value=""
+                            validatonList={["required"]}
+                            datasourcemember="ProductName"
+                        />
+                    </div>
+
+                    <div className="col-md-6">
+                        <FormControl.ComboBox
+                            name="cbShipmentOrderPackingUnitID"
+                            colspan="9"
+                            labelcolspan="3"
+                            label="kiện hàng"
+                            // validatonList={["Comborequired"]}
+                            isautoloaditemfromcache={false}
                             loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
                             valuemember="ShipmentOrderTypeID"
                             nameMember="ShipmentOrderTypeName"
                             controltype="InputControl"
-                            value={1}
-                            listoption={null}
-                            datasourcemember="ShipmentOrderTypeID" />
+                            value={-1}
+                            listoption={[{value:-1,label:"--vui lòng chọn--"},{value:1,label:"hoclenho"}]}
+                            datasourcemember="ShipmentOrderPackingUnitID" />
 
                     </div>
-                </div>
-                <div className="row">
                     <div className="col-md-6">
-                        <FormControl.TextBox
-                            name="txtShipmentOrderID"
-                            colspan="8"
-                            labelcolspan="4"
-                            readOnly={true}
-                            label="mã yêu cầu"
-                            placeholder="Mã yêu cầu"
+                        <FormControl.TextBoxCurrency
+                            name="txtPrice"
+                            colspan="9"
+                            labelcolspan="3"
+                            readOnly={false}
+                            label="giá sản phẩm "
+                            placeholder="Giá sản phẩm "
                             controltype="InputControl"
                             value=""
-                            datasourcemember="ShipmentOrderID"
+                            datasourcemember="Price"
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <FormControl.TextBox
+                            name="txtQuantity"
+                            colspan="9"
+                            labelcolspan="3"
+                            readOnly={false}
+                            label="số lượng"
+                            placeholder="Số lượng"
+                            controltype="InputControl"
+                            value=""
+                            datasourcemember="Quantity"
                         />
                     </div>
                     <div className="col-md-6">
                         <FormControl.ComboBox
-                            name="txtShipmentOrderTypeID"
-                            colspan="8"
-                            labelcolspan="4"
-                            label="loại yêu cầu"
+                            name="cbQuantityUnitID"
+                            colspan="9"
+                            labelcolspan="3"
+                            label="đơn vị tính"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
-                            valuemember="ShipmentOrderTypeID"
-                            nameMember="ShipmentOrderTypeName"
+                            loaditemcachekeyid="ERPCOMMONCACHE.QUANTITYUNIT"
+                            valuemember="QuantityUnitID"
+                            nameMember="QuantityUnit"
                             controltype="InputControl"
-                            value={1}
+                            value={""}
                             listoption={null}
-                            datasourcemember="ShipmentOrderTypeID" />
+                            datasourcemember="QuantityUnitID" />
 
                     </div>
-                </div>
-                <div className="row">
                     <div className="col-md-6">
-                        <FormControl.TextBox
-                            name="txtShipmentOrderID"
-                            colspan="8"
-                            labelcolspan="4"
-                            readOnly={true}
-                            label="mã yêu cầu"
-                            placeholder="Mã yêu cầu"
+                        <div className="form-row ">
+                            <div className="form-group col-md-3">
+                                <label className="col-form-label">Kích thước (DxRxC)</label>
+                            </div>
+                            <div className="form-group col-md-9">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <FormControl.TextBox
+                                            name="txtLength"
+                                            colspan="12"
+                                            labelcolspan="4"
+                                            readOnly={false}
+                                            label=""
+                                            placeholder="Kích thước(D)"
+                                            controltype="InputControl"
+                                            value={""}
+                                            datasourcemember="Length"
+                                        />
+                                    </div>
+                                    <div className="col-md-4">
+                                        <FormControl.TextBox
+                                            name="txtWidth"
+                                            colspan="12"
+                                            labelcolspan="4"
+                                            readOnly={false}
+                                            label=""
+                                            placeholder="Kích thước(R)"
+                                            controltype="InputControl"
+                                            value={""}
+                                            datasourcemember="Width"
+                                        />
+                                    </div>
+                                    <div className="col-md-4">
+                                        <FormControl.TextBox
+                                            name="txtHeight"
+                                            colspan="12"
+                                            labelcolspan="4"
+                                            readOnly={false}
+                                            label=""
+                                            placeholder="Kích thước(C)"
+                                            controltype="InputControl"
+                                            value={""}
+                                            datasourcemember="Height"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <FormControl.CheckBox
+                            name="ckIsInstallItem"
+                            colspan="9"
+                            labelcolspan="3"
+                            readOnly={false}
+                            label="Cần lắp đặt"
                             controltype="InputControl"
                             value=""
-                            datasourcemember="ShipmentOrderID"
+                            datasourcemember="IsInstallItem"
                         />
                     </div>
-                    <div className="col-md-6">
-                        <FormControl.ComboBox
-                            name="txtShipmentOrderTypeID"
-                            colspan="8"
-                            labelcolspan="4"
-                            label="loại yêu cầu"
-                            validatonList={["Comborequired"]}
-                            isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
-                            valuemember="ShipmentOrderTypeID"
-                            nameMember="ShipmentOrderTypeName"
-                            controltype="InputControl"
-                            value={1}
-                            listoption={null}
-                            datasourcemember="ShipmentOrderTypeID" />
 
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                         <FormControl.TextBox
-                            name="txtShipmentOrderID"
-                            colspan="8"
-                            labelcolspan="4"
-                            readOnly={true}
-                            label="mã yêu cầu"
-                            placeholder="Mã yêu cầu"
+                            name="txtNote"
+                            colspan="10"
+                            labelcolspan="2"
+                            readOnly={false}
+                            label="Ghi chú"
                             controltype="InputControl"
                             value=""
-                            datasourcemember="ShipmentOrderID"
+                            datasourcemember="Note"
+                            classNameCustom="customcontrol"
                         />
-                    </div>
-                    <div className="col-md-6">
-                        <FormControl.ComboBox
-                            name="txtShipmentOrderTypeID"
-                            colspan="8"
-                            labelcolspan="4"
-                            label="loại yêu cầu"
-                            validatonList={["Comborequired"]}
-                            isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
-                            valuemember="ShipmentOrderTypeID"
-                            nameMember="ShipmentOrderTypeName"
-                            controltype="InputControl"
-                            value={1}
-                            listoption={null}
-                            datasourcemember="ShipmentOrderTypeID" />
-
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-6">
-                        <FormControl.TextBox
-                            name="txtShipmentOrderID"
-                            colspan="8"
-                            labelcolspan="4"
-                            readOnly={true}
-                            label="mã yêu cầu"
-                            placeholder="Mã yêu cầu"
-                            controltype="InputControl"
-                            value=""
-                            datasourcemember="ShipmentOrderID"
-                        />
-                    </div>
-                    <div className="col-md-6">
-                        <FormControl.ComboBox
-                            name="txtShipmentOrderTypeID"
-                            colspan="8"
-                            labelcolspan="4"
-                            label="loại yêu cầu"
-                            validatonList={["Comborequired"]}
-                            isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
-                            valuemember="ShipmentOrderTypeID"
-                            nameMember="ShipmentOrderTypeName"
-                            controltype="InputControl"
-                            value={1}
-                            listoption={null}
-                            datasourcemember="ShipmentOrderTypeID" />
-
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-6">
-                        <FormControl.TextBox
-                            name="txtShipmentOrderID"
-                            colspan="8"
-                            labelcolspan="4"
-                            readOnly={true}
-                            label="mã yêu cầu"
-                            placeholder="Mã yêu cầu"
-                            controltype="InputControl"
-                            value=""
-                            datasourcemember="ShipmentOrderID"
-                        />
-                    </div>
-                    <div className="col-md-6">
-                        <FormControl.ComboBox
-                            name="txtShipmentOrderTypeID"
-                            colspan="8"
-                            labelcolspan="4"
-                            label="loại yêu cầu"
-                            validatonList={["Comborequired"]}
-                            isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
-                            valuemember="ShipmentOrderTypeID"
-                            nameMember="ShipmentOrderTypeName"
-                            controltype="InputControl"
-                            value={1}
-                            listoption={null}
-                            datasourcemember="ShipmentOrderTypeID" />
-
                     </div>
                 </div>
 
