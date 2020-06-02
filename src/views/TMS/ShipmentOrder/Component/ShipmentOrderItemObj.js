@@ -11,18 +11,24 @@ import {
 class ShipmentOrderItemObjCom extends Component {
     constructor(props) {
         super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
 
         }
     }
-
+    handleSubmit(From, MLObject) {
+        if (this.props.onInputChangeObj != null) {
+            this.props.onInputChangeObj(MLObject);
+        }
+    }
 
     render() {
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectShipmentOrderItem}
-                dataSource={[]}
+                dataSource={this.props.dataSource}
                 listelement={[]}
+                onSubmit={this.handleSubmit}
             >
                 <div className="row">
                     <div className="col-md-6">
@@ -67,7 +73,7 @@ class ShipmentOrderItemObjCom extends Component {
                             nameMember="ShipmentOrderTypeName"
                             controltype="InputControl"
                             value={-1}
-                            listoption={[{value:-1,label:"--vui lòng chọn--"},{value:1,label:"hoclenho"}]}
+                            listoption={[{ value: -1, label: "--vui lòng chọn--" }, { value: 1, label: "hoclenho" }]}
                             datasourcemember="ShipmentOrderPackingUnitID" />
 
                     </div>

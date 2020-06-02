@@ -337,9 +337,9 @@ class FormContainerCom extends Component {
         console.log("MLObject", MLObject)
 
         // const MLObject = GetMLObjectObjData(this.props.MLObjectDefinition, FormDataContolLstd, this.props.value);
-        // if (this.props.onSubmit != null) {
-        //     this.props.onSubmit(this.state.FormData, MLObject);
-        // }
+        if (this.props.onSubmit != null) {
+            this.props.onSubmit(this.state.FormData, MLObject);
+        }
     }
 
     //#endregion  handleSubmit

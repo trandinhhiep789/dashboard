@@ -171,71 +171,76 @@ class InputGridControlCom extends Component {
     //#endregion onValueChange
 
     handleInsertClick() {
-            if (this.props.onInsertClick === undefined) {
-                let listColumnNew = this.props.listColumn.filter((person, index) => {
-                    if (this.props.listColumn[index].iputpop == true || this.props.listColumn[index].iputpop === undefined) { return person; }
-                });
+        if (this.props.onInsertClick === undefined) {
+            let listColumnNew = this.props.listColumn.filter((person, index) => {
+                if (this.props.listColumn[index].iputpop == true || this.props.listColumn[index].iputpop === undefined) { return person; }
+            });
 
-                this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
-                    title: 'Cập nhật ' + this.props.title,
-                    autoCloseModal: this.state.AutoCloseModal,
-                    onConfirm: (isConfirmed, formData) => {
-                        let dataSource = this.props.value;
-                        if (this.props.onValueChange != null) {
-                            const result = dataSource.filter(n => n[this.props.IDSelectColumnName] == formData[this.props.IDSelectColumnName])
-                            if (result.length == 0) {
-                                dataSource.push(formData)
-                            }
-                            const mLObjectDefinition = this.props.MLObjectDefinition;
-                            const MLObjectList = GetMLObjectDataList(mLObjectDefinition, dataSource, dataSource);
-                            this.props.onValueChange(this.props.name, MLObjectList, this.props.controltype, undefined);
+            this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
+                title: 'Cập nhật ' + this.props.title,
+                autoCloseModal: this.state.AutoCloseModal,
+                onConfirm: (isConfirmed, formData) => {
+                    let dataSource = this.props.value;
+                    if (this.props.onValueChange != null) {
+                        const result = dataSource.filter(n => n[this.props.IDSelectColumnName] == formData[this.props.IDSelectColumnName])
+                        if (result.length == 0) {
+                            dataSource.push(formData)
                         }
-                    },
-                    modalElementList: listColumnNew,
-                    modalElementOl: this.props.MLObjectDefinition
-                });
+                        const mLObjectDefinition = this.props.MLObjectDefinition;
+                        const MLObjectList = GetMLObjectDataList(mLObjectDefinition, dataSource, dataSource);
+                        this.props.onValueChange(this.props.name, MLObjectList, this.props.controltype, undefined);
+                    }
+                },
+                modalElementList: listColumnNew,
+                modalElementOl: this.props.MLObjectDefinition
+            });
 
-            }
-            else {
-                this.props.onInsertClick();
-            }
+        }
+        else {
+            this.props.onInsertClick();
+        }
     }
 
     handleInsertClickEdit(index) {
-        let listColumnNew = this.props.listColumn.filter((person, index) => {
-            if ((this.props.listColumn[index].iputpop == true || this.props.listColumn[index].iputpop === undefined) && this.props.listColumn[index].forbiddenUpdate === undefined) { return person; }
-        });
+        if (this.props.onInsertClick === undefined) {
+            let listColumnNew = this.props.listColumn.filter((person, index) => {
+                if ((this.props.listColumn[index].iputpop == true || this.props.listColumn[index].iputpop === undefined) && this.props.listColumn[index].forbiddenUpdate === undefined) { return person; }
+            });
 
-        let dataSourcenew = this.props.dataSource[index];
-        if (this.props.value != null) {
-            dataSourcenew = this.props.value[index];
+            let dataSourcenew = this.props.dataSource[index];
+            if (this.props.value != null) {
+                dataSourcenew = this.props.value[index];
+            }
+
+            this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
+                title: 'Chỉnh sửa ' + this.props.title,
+                autoCloseModal: this.state.AutoCloseModal,
+                onConfirm: (isConfirmed, formData) => {
+                    let dataSource = this.props.dataSource;
+                    if (this.props.value != null) {
+                        dataSource = this.props.value;
+                    }
+                    if (this.props.onValueChange != null) {
+                        const formDatanew = Object.assign({}, dataSource, { [index]: formData });
+                        const mLObjectDefinition = this.props.MLObjectDefinition;
+                        const MLObjectList = GetMLObjectDataList(mLObjectDefinition, formDatanew, formDatanew);
+                        this.props.onValueChange(this.props.name, MLObjectList, this.props.controltype, undefined);
+                    }
+                    //lưu trực tiếp vào database
+                    if (this.props.onUpdatePermanently) {
+                        this.props.onUpdatePermanently(formData);
+                    }
+                    const lstobjdelete = this.bindobjdelete1(false, dataSource);
+                    this.setState({ lstobjDelete: lstobjdelete, IsCheckAll: false });
+                },
+                modalElementList: listColumnNew,
+                modalElementOl: this.props.MLObjectDefinition,
+                dataSource: dataSourcenew
+            });
         }
-
-        this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
-            title: 'Chỉnh sửa ' + this.props.title,
-            autoCloseModal: this.state.AutoCloseModal,
-            onConfirm: (isConfirmed, formData) => {
-                let dataSource = this.props.dataSource;
-                if (this.props.value != null) {
-                    dataSource = this.props.value;
-                }
-                if (this.props.onValueChange != null) {
-                    const formDatanew = Object.assign({}, dataSource, { [index]: formData });
-                    const mLObjectDefinition = this.props.MLObjectDefinition;
-                    const MLObjectList = GetMLObjectDataList(mLObjectDefinition, formDatanew, formDatanew);
-                    this.props.onValueChange(this.props.name, MLObjectList, this.props.controltype, undefined);
-                }
-                //lưu trực tiếp vào database
-                if (this.props.onUpdatePermanently) {
-                    this.props.onUpdatePermanently(formData);
-                }
-                const lstobjdelete = this.bindobjdelete1(false, dataSource);
-                this.setState({ lstobjDelete: lstobjdelete, IsCheckAll: false });
-            },
-            modalElementList: listColumnNew,
-            modalElementOl: this.props.MLObjectDefinition,
-            dataSource: dataSourcenew
-        });
+        else {
+            this.props.onEditClick(index);
+        }
 
     }
 
@@ -301,7 +306,7 @@ class InputGridControlCom extends Component {
         const idSelectColumnName = this.props.IDSelectColumnName;
         return (
             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                <thead  className="thead-light">
+                <thead className="thead-light">
                     <tr className="jsgrid-header-row">
                         {
                             listColumnNew.map((elementItem, index) => {
