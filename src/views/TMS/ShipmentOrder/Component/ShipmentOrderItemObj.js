@@ -11,18 +11,24 @@ import {
 class ShipmentOrderItemObjCom extends Component {
     constructor(props) {
         super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
 
         }
     }
-
+    handleSubmit(From, MLObject) {
+        if (this.props.onInputChangeObj != null) {
+            this.props.onInputChangeObj(MLObject);
+        }
+    }
 
     render() {
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectShipmentOrderItem}
-                dataSource={[]}
+                dataSource={this.props.dataSource}
                 listelement={[]}
+                onSubmit={this.handleSubmit}
             >
                 <div className="row">
                     <div className="col-md-6">

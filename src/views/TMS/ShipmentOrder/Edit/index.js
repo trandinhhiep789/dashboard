@@ -40,6 +40,8 @@ class EditCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
         this.handleItemInsert = this.handleItemInsert.bind(this);
+        this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
+        this.handleItemEdit = this.handleItemEdit.bind(this);
 
 
         this.state = {
@@ -75,18 +77,40 @@ class EditCom extends React.Component {
             }
         });
     }
+    handleInputChangeObjItem(ObjItem) {
 
+        console.log("handleInputChangeObjItem", ObjItem)
+    }
     handleItemInsert() {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Cập nhật danh sách hàng hóa',
             content: {
-                text: <ShipmentOrderItemObj></ShipmentOrderItemObj>
+                text: <ShipmentOrderItemObj
+                     dataSource={[]}
+                    onInputChangeObj={this.handleInputChangeObjItem}
+
+                />
+
+
             },
             maxWidth: '1000px'
         });
     }
+    handleItemEdit(index) {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Cập nhật danh sách hàng hóa',
+            content: {
+                text: <ShipmentOrderItemObj
+                    dataSource={this.state.DataSource.ShipmentOrder_ItemList[index]}
+                    onInputChangeObj={this.handleInputChangeObjItem}
 
- 
+                />
+            },
+            maxWidth: '1000px'
+        });
+
+    }
+
 
 
     handleSubmit(formData, MLObject) {
@@ -615,51 +639,51 @@ class EditCom extends React.Component {
                                                     <label className="col-form-label">Kích thước(DxRxC)</label>
                                                 </div>
                                                 <div className="form-group col-md-8">
-                                                <div className="row">
-                                                    <div className="col-md-4">
-                                                        <FormControl.TextBox
-                                                            name=""
-                                                            colspan="12"
-                                                            labelcolspan="4"
-                                                            readOnly={true}
-                                                            label=""
-                                                            placeholder="Kích thước(DxRxC)"
-                                                            controltype="InputControl"
-                                                            value={""}
-                                                            datasourcemember=""
-                                                        />
-                                                    </div>
-                                                    <div className="col-md-4">
-                                                        <FormControl.TextBox
-                                                            name=""
-                                                            colspan="12"
-                                                            labelcolspan="4"
-                                                            readOnly={true}
-                                                            label=""
-                                                            placeholder="Kích thước(DxRxC)"
-                                                            controltype="InputControl"
-                                                            value={""}
-                                                            datasourcemember=""
-                                                        />
-                                                    </div>
-                                                    <div className="col-md-4">
-                                                        <FormControl.TextBox
-                                                            name=""
-                                                            colspan="12"
-                                                            labelcolspan="4"
-                                                            readOnly={true}
-                                                            label=""
-                                                            placeholder="Kích thước(DxRxC)"
-                                                            controltype="InputControl"
-                                                            value={""}
-                                                            datasourcemember=""
-                                                        />
+                                                    <div className="row">
+                                                        <div className="col-md-4">
+                                                            <FormControl.TextBox
+                                                                name=""
+                                                                colspan="12"
+                                                                labelcolspan="4"
+                                                                readOnly={true}
+                                                                label=""
+                                                                placeholder="Kích thước(DxRxC)"
+                                                                controltype="InputControl"
+                                                                value={""}
+                                                                datasourcemember=""
+                                                            />
+                                                        </div>
+                                                        <div className="col-md-4">
+                                                            <FormControl.TextBox
+                                                                name=""
+                                                                colspan="12"
+                                                                labelcolspan="4"
+                                                                readOnly={true}
+                                                                label=""
+                                                                placeholder="Kích thước(DxRxC)"
+                                                                controltype="InputControl"
+                                                                value={""}
+                                                                datasourcemember=""
+                                                            />
+                                                        </div>
+                                                        <div className="col-md-4">
+                                                            <FormControl.TextBox
+                                                                name=""
+                                                                colspan="12"
+                                                                labelcolspan="4"
+                                                                readOnly={true}
+                                                                label=""
+                                                                placeholder="Kích thước(DxRxC)"
+                                                                controltype="InputControl"
+                                                                value={""}
+                                                                datasourcemember=""
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            </div>
-                                           
-                                            
+
+
                                         </div>
                                         <div className="col-md-6">
                                             <FormControl.ComboBox
@@ -731,6 +755,7 @@ class EditCom extends React.Component {
                                 listColumn={DataGridColumnItemList}
                                 dataSource={this.state.DataSource.ShipmentOrder_ItemList}
                                 onInsertClick={this.handleItemInsert}
+                                onEditClick={this.handleItemEdit}
                             />
 
                             <div className="card">
