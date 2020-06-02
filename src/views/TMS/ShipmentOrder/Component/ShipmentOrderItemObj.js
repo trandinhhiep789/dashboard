@@ -39,6 +39,7 @@ class ShipmentOrderItemObjCom extends Component {
                             datasourcemember="ProductID"
                         />
                     </div>
+
                     <div className="col-md-6">
                         <FormControl.TextBox
                             name="txtProductName"
@@ -67,10 +68,11 @@ class ShipmentOrderItemObjCom extends Component {
                             nameMember="ShipmentOrderTypeName"
                             controltype="InputControl"
                             value={-1}
-                            listoption={[{value:-1,label:"--vui lòng chọn--"},{value:1,label:"hoclenho"}]}
+                            listoption={[{ value: -1, label: "--vui lòng chọn--" }, { value: 1, label: "hoclenho" }]}
                             datasourcemember="ShipmentOrderPackingUnitID" />
 
                     </div>
+
                     <div className="col-md-6">
                         <FormControl.TextBoxCurrency
                             name="txtPrice"
@@ -84,6 +86,7 @@ class ShipmentOrderItemObjCom extends Component {
                             datasourcemember="Price"
                         />
                     </div>
+
                     <div className="col-md-6">
                         <FormControl.TextBox
                             name="txtQuantity"
@@ -97,6 +100,7 @@ class ShipmentOrderItemObjCom extends Component {
                             datasourcemember="Quantity"
                         />
                     </div>
+
                     <div className="col-md-6">
                         <FormControl.ComboBox
                             name="cbQuantityUnitID"
@@ -114,6 +118,7 @@ class ShipmentOrderItemObjCom extends Component {
                             datasourcemember="QuantityUnitID" />
 
                     </div>
+
                     <div className="col-md-6">
                         <div className="form-row ">
                             <div className="form-group col-md-3">
@@ -164,6 +169,7 @@ class ShipmentOrderItemObjCom extends Component {
                             </div>
                         </div>
                     </div>
+
                     <div className="col-md-6">
                         <FormControl.CheckBox
                             name="ckIsInstallItem"
@@ -174,10 +180,11 @@ class ShipmentOrderItemObjCom extends Component {
                             controltype="InputControl"
                             value=""
                             datasourcemember="IsInstallItem"
+                            classNameCustom="customCheckbox"
                         />
                     </div>
 
-                    <div className="col-md-12">
+                    {/* <div className="col-md-12">
                         <FormControl.TextBox
                             name="txtNote"
                             colspan="10"
@@ -189,6 +196,23 @@ class ShipmentOrderItemObjCom extends Component {
                             datasourcemember="Note"
                             classNameCustom="customcontrol"
                         />
+                    </div> */}
+
+                    <div className="col-md-6">
+                        <FormControl.TextBox
+                            name="txtNote"
+                            colspan="9"
+                            labelcolspan="3"
+                            readOnly={false}
+                            label="Ghi chú"
+                            controltype="InputControl"
+                            value=""
+                            datasourcemember="Note"
+                            classNameCustom="customcontrol"
+                        />
+                    </div>
+                    <div className="col-md-6">
+
                     </div>
                 </div>
 

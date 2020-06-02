@@ -329,6 +329,10 @@ class CheckBox extends React.Component {
         if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
             star = '*'
         }
+        let classNameCustom= "checkbox ";
+        if(this.props.classNameCustom != undefined || this.props.classNameCustom != ''){
+            classNameCustom += this.props.classNameCustom;
+        }
         return (
 
             <div className={formRowClassName} >
@@ -339,7 +343,7 @@ class CheckBox extends React.Component {
                 </div>
                 <div className={formGroupClassName}>
 
-                    <div className="checkbox">
+                    <div className={classNameCustom}>
                         <label>
                             <input className={this.props.CSSClassName} name={this.props.name} type="checkbox"
                                 checked={this.props.value} onChange={this.handleValueChange} readOnly={this.props.readonly}
