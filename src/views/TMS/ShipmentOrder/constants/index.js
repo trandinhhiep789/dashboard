@@ -467,6 +467,114 @@ export const MLObjectDefinition = [
         DataSourceMember: "LatestDeliveryTime"
     },
     {
+        Name: "SenderPartnerID",
+        DefaultValue: "",
+        BindControlName: "cbSenderPartnerID",
+        DataSourceMember: "SenderPartnerID"
+    },
+    {
+        Name: "SenderStoreID",
+        DefaultValue: "",
+        BindControlName: "cbSenderStoreID",
+        DataSourceMember: "SenderStoreID"
+    },
+    {
+        Name: "SenderFullName",
+        DefaultValue: "",
+        BindControlName: "txtSenderFullName",
+        DataSourceMember: "SenderFullName"
+    },
+    {
+        Name: "SenderPhoneNumber",
+        DefaultValue: "",
+        BindControlName: "txtSenderPhoneNumber",
+        DataSourceMember: "SenderPhoneNumber"
+    },
+    {
+        Name: "SenderEmail",
+        DefaultValue: "",
+        BindControlName: "txtSenderEmail",
+        DataSourceMember: "SenderEmail"
+    },
+    {
+        Name: "ReceiverStoreID",
+        DefaultValue: "",
+        BindControlName: "cbReceiverStoreID",
+        DataSourceMember: "ReceiverStoreID"
+    },
+    {
+        Name: "ReceiverPartnerID",
+        DefaultValue: "",
+        BindControlName: "cbReceiverPartnerID",
+        DataSourceMember: "ReceiverPartnerID"
+    },
+    {
+        Name: "ReceiverFullName",
+        DefaultValue: "",
+        BindControlName: "txtReceiverFullName",
+        DataSourceMember: "ReceiverFullName"
+    },
+    {
+        Name: "ReceiverPhoneNumber",
+        DefaultValue: "",
+        BindControlName: "txtReceiverPhoneNumber",
+        DataSourceMember: "ReceiverPhoneNumber"
+    },
+    {
+        Name: "ReceiverEmail",
+        DefaultValue: "",
+        BindControlName: "txtReceiverEmail",
+        DataSourceMember: "ReceiverEmail"
+    },
+    {
+        Name: "ShipmentGoodsTypeID",
+        DefaultValue: "",
+        BindControlName: "cbShipmentGoodsTypeID",
+        DataSourceMember: "ShipmentGoodsTypeID"
+    },
+    {
+        Name: "NumberOfPackages",
+        DefaultValue: "",
+        BindControlName: "txtNumberOfPackages",
+        DataSourceMember: "NumberOfPackages"
+    },
+    {
+        Name: "SecondaryItemCount",
+        DefaultValue: "",
+        BindControlName: "txtSecondaryItemCount",
+        DataSourceMember: "SecondaryItemCount"
+    },
+    {
+        Name: "Weight",
+        DefaultValue: "",
+        BindControlName: "txtWeight",
+        DataSourceMember: "Weight"
+    },
+    {
+        Name: "ShipmentFeePaymentMethodID",
+        DefaultValue: "",
+        BindControlName: "cbShipmentFeePaymentMethodID",
+        DataSourceMember: "ShipmentFeePaymentMethodID"
+    },
+    {
+        Name: "TotalShipmentFee",
+        DefaultValue: "",
+        BindControlName: "txtTotalShipmentFee",
+        DataSourceMember: "TotalShipmentFee"
+    },
+    {
+        Name: "TotalCOD",
+        DefaultValue: "",
+        BindControlName: "txtTotalCOD",
+        DataSourceMember: "TotalCOD"
+    },
+    {
+        Name: "OrderNote",
+        DefaultValue: "",
+        BindControlName: "txtOrderNote",
+        DataSourceMember: "OrderNote"
+    },
+    {
         Name: "IsActived",
         DefaultValue: true,
         BindControlName: "chkIsActived",
