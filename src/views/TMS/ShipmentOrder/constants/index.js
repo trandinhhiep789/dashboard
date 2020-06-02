@@ -431,6 +431,150 @@ export const MLObjectDefinition = [
         DataSourceMember: "ShipmentGoodsTypeID"
     },
     {
+        Name: "CreatedOrderTime",
+        DefaultValue: "",
+        BindControlName: "dtCreatedOrderTime",
+        DataSourceMember: "CreatedOrderTime"
+    },
+    {
+        Name: "ExpectedDeliveryDate",
+        DefaultValue: "",
+        BindControlName: "dtExpectedDeliveryDate",
+        DataSourceMember: "ExpectedDeliveryDate"
+    },
+    {
+        Name: "EarliestPickUpTime",
+        DefaultValue: "",
+        BindControlName: "dtEarliestPickUpTime",
+        DataSourceMember: "EarliestPickUpTime"
+    },
+    {
+        Name: "LatestPickUpTime",
+        DefaultValue: "",
+        BindControlName: "dtLatestPickUpTime",
+        DataSourceMember: "LatestPickUpTime"
+    },
+    {
+        Name: "EarliestDeliveryTime",
+        DefaultValue: "",
+        BindControlName: "dtEarliestDeliveryTime",
+        DataSourceMember: "EarliestDeliveryTime"
+    },
+    {
+        Name: "LatestDeliveryTime",
+        DefaultValue: "",
+        BindControlName: "dtLatestDeliveryTime",
+        DataSourceMember: "LatestDeliveryTime"
+    },
+    {
+        Name: "SenderPartnerID",
+        DefaultValue: "",
+        BindControlName: "cbSenderPartnerID",
+        DataSourceMember: "SenderPartnerID"
+    },
+    {
+        Name: "SenderStoreID",
+        DefaultValue: "",
+        BindControlName: "cbSenderStoreID",
+        DataSourceMember: "SenderStoreID"
+    },
+    {
+        Name: "SenderFullName",
+        DefaultValue: "",
+        BindControlName: "txtSenderFullName",
+        DataSourceMember: "SenderFullName"
+    },
+    {
+        Name: "SenderPhoneNumber",
+        DefaultValue: "",
+        BindControlName: "txtSenderPhoneNumber",
+        DataSourceMember: "SenderPhoneNumber"
+    },
+    {
+        Name: "SenderEmail",
+        DefaultValue: "",
+        BindControlName: "txtSenderEmail",
+        DataSourceMember: "SenderEmail"
+    },
+    {
+        Name: "ReceiverStoreID",
+        DefaultValue: "",
+        BindControlName: "cbReceiverStoreID",
+        DataSourceMember: "ReceiverStoreID"
+    },
+    {
+        Name: "ReceiverPartnerID",
+        DefaultValue: "",
+        BindControlName: "cbReceiverPartnerID",
+        DataSourceMember: "ReceiverPartnerID"
+    },
+    {
+        Name: "ReceiverFullName",
+        DefaultValue: "",
+        BindControlName: "txtReceiverFullName",
+        DataSourceMember: "ReceiverFullName"
+    },
+    {
+        Name: "ReceiverPhoneNumber",
+        DefaultValue: "",
+        BindControlName: "txtReceiverPhoneNumber",
+        DataSourceMember: "ReceiverPhoneNumber"
+    },
+    {
+        Name: "ReceiverEmail",
+        DefaultValue: "",
+        BindControlName: "txtReceiverEmail",
+        DataSourceMember: "ReceiverEmail"
+    },
+    {
+        Name: "ShipmentGoodsTypeID",
+        DefaultValue: "",
+        BindControlName: "cbShipmentGoodsTypeID",
+        DataSourceMember: "ShipmentGoodsTypeID"
+    },
+    {
+        Name: "NumberOfPackages",
+        DefaultValue: "",
+        BindControlName: "txtNumberOfPackages",
+        DataSourceMember: "NumberOfPackages"
+    },
+    {
+        Name: "SecondaryItemCount",
+        DefaultValue: "",
+        BindControlName: "txtSecondaryItemCount",
+        DataSourceMember: "SecondaryItemCount"
+    },
+    {
+        Name: "Weight",
+        DefaultValue: "",
+        BindControlName: "txtWeight",
+        DataSourceMember: "Weight"
+    },
+    {
+        Name: "ShipmentFeePaymentMethodID",
+        DefaultValue: "",
+        BindControlName: "cbShipmentFeePaymentMethodID",
+        DataSourceMember: "ShipmentFeePaymentMethodID"
+    },
+    {
+        Name: "TotalShipmentFee",
+        DefaultValue: "",
+        BindControlName: "txtTotalShipmentFee",
+        DataSourceMember: "TotalShipmentFee"
+    },
+    {
+        Name: "TotalCOD",
+        DefaultValue: "",
+        BindControlName: "txtTotalCOD",
+        DataSourceMember: "TotalCOD"
+    },
+    {
+        Name: "OrderNote",
+        DefaultValue: "",
+        BindControlName: "txtOrderNote",
+        DataSourceMember: "OrderNote"
+    },
+    {
         Name: "IsActived",
         DefaultValue: true,
         BindControlName: "chkIsActived",
@@ -465,6 +609,18 @@ export const MLObjectDefinition = [
         DefaultValue: {},
         BindControlName: "objQHPX",
         DataSourceMember: "objQHPX"
+    },
+    {
+        Name: "ShipmentOrder_MaterialList",
+        DefaultValue: {},
+        BindControlName: "ShipmentOrder_MaterialList",
+        DataSourceMember: "ShipmentOrder_MaterialList"
+    },
+    {
+        Name: "ShipmentOrder_ItemList",
+        DefaultValue: {},
+        BindControlName: "ShipmentOrder_ItemList",
+        DataSourceMember: "ShipmentOrder_ItemList"
     }
 ];
 
@@ -539,7 +695,21 @@ export const DataGridColumnList = [
 
 
 export const DataGridColumnItemList = [
-
+    {
+        Name: "ProductID",
+        Type: "text",
+        Caption: "Mã sản phẩm",
+        DataSourceMember: "ProductID",
+        Width: 250,
+        hideInput:false
+    },
+    {
+        Name: "IsInstallItem",
+        Type: "checkbox",
+        Caption: "Cần lắp đặt",
+        DataSourceMember: "IsInstallItem",
+        Width: 80
+    },
     {
         Name: "ProductName",
         Type: "text",
@@ -548,10 +718,10 @@ export const DataGridColumnItemList = [
         Width: 250
     },
     {
-        Name: "Quantity",
+        Name: "PackingUnitName",
         Type: "text",
         Caption: "Kiện",
-        DataSourceMember: "Quantity",
+        DataSourceMember: "PackingUnitName",
         Width: 100
     },
     {
@@ -588,8 +758,42 @@ export const DataGridColumnItemList = [
         Caption: "Khối lượng",
         DataSourceMember: "Weight",
         Width: 150
+    },
+    {
+        Name: "Action",
+        Type: "editnew",
+        Caption: "Tác vụ",
+        DataSourceMember: "ArticleID",
+        Width: 70,
+        iputpop: false
     }
 ];
+export const GridMLObjectItem = [
+    {
+        Name: "ProductName",
+        DefaultValue: "",
+        BindControlName: "ProductName",
+        DataSourceMember: "ProductName"
+    },
+    {
+        Name: "ReceiverDistrictID",
+        DefaultValue: "",
+        BindControlName: "cbDistrictID",
+        DataSourceMember: "ReceiverDistrictID"
+    },
+    {
+        Name: "ReceiverWardID",
+        DefaultValue: "",
+        BindControlName: "cbWardID",
+        DataSourceMember: "ReceiverWardID"
+    },
+    {
+        Name: "SenderAddress",
+        DefaultValue: "",
+        BindControlName: "txtSenderAddress",
+        DataSourceMember: "SenderAddress"
+    }
+]
 //cobombox
 export const ElementQHPXList = [
 
@@ -623,6 +827,7 @@ export const ElementQHPXList = [
         isMultiSelect: false,
         placeholder: "---Vui lòng chọn---",
         listoption: [],
+        validatonList: ["Comborequired"],
         IsAutoLoadItemFromCache: true,
         filterValue: "",
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
@@ -643,6 +848,7 @@ export const ElementQHPXList = [
         isMultiSelect: false,
         placeholder: "---Vui lòng chọn---",
         listoption: [],
+        validatonList: ["Comborequired"],
         IsAutoLoadItemFromCache: true,
         filterValue: "",
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
@@ -654,17 +860,31 @@ export const ElementQHPXList = [
     },
     {
         type: "text",
-        name: "txtFullAddress",
-        colspan: "10",
-        labelcolspan: "2",
+        name: "txtSenderAddress",
+        colspan: "8",
+        labelcolspan: "4",
         readOnly: false,
-        label: "địa chỉ",
-        placeholder: "Địa chỉ",
+        label: "số nhà/đường",
+        placeholder: "số nhà/đường",
         value: "",
-        datasourcemember: "FullAddress",
-        classNameCustom: "customcontrol"
+        DataSourceMember: "SenderAddress",
+      
     }
+    // ,
+    // {
+    //     type: "textfull",
+    //     name: "txtFullAddressFull",
+    //     colspan: "10",
+    //     labelcolspan: "2",
+    //     readOnly: false,
+    //     label: "địa chỉ",
+    //     placeholder: "Địa chỉ",
+    //     value: "",
+    //     datasourcemember: "FullAddressFull",
+    //     classNameCustom: "customcontrol"
+    // }
 ];
+
 export const GridMLObjectQTQHPX = [
     {
         Name: "ReceiverProvinceID",
@@ -685,11 +905,88 @@ export const GridMLObjectQTQHPX = [
         DataSourceMember: "ReceiverWardID"
     },
     {
-        Name: "FullAddress",
+        Name: "SenderAddress",
         DefaultValue: "",
-        BindControlName: "txtFullAddress",
-        DataSourceMember: "FullAddress"
+        BindControlName: "txtSenderAddress",
+        DataSourceMember: "SenderAddress"
+    }
+]
+
+/// ShipmentOrder_Item
+export const MLObjectShipmentOrderItem = [
+    {
+        Name: "ShipmentOrderItemID",
+        DefaultValue: "",
+        BindControlName: "txtShipmentOrderItemID",
+        DataSourceMember: "txtShipmentOrderItemID"
     },
+    {
+        Name: "ShipmentOrderPackingUnitID",
+        DefaultValue: "",
+        BindControlName: "cbShipmentOrderPackingUnitID",
+        DataSourceMember: "ShipmentOrderPackingUnitID"
+    },
+    {
+        Name: "ProductID",
+        DefaultValue: "",
+        BindControlName: "txtProductID",
+        DataSourceMember: "ProductID"
+    },
+    {
+        Name: "ProductName",
+        DefaultValue: "",
+        BindControlName: "txtProductName",
+        DataSourceMember: "ProductName"
+    },
+    {
+        Name: "Price",
+        DefaultValue: "",
+        BindControlName: "txtPrice",
+        DataSourceMember: "Price"
+    },
+    {
+        Name: "Quantity",
+        DefaultValue: "",
+        BindControlName: "txtQuantity",
+        DataSourceMember: "Quantity"
+    },
+    {
+        Name: "QuantityUnitID",
+        DefaultValue: "",
+        BindControlName: "cbQuantityUnitID",
+        DataSourceMember: "QuantityUnitID"
+    } ,
+    {
+        Name: "Note",
+        DefaultValue: "",
+        BindControlName: "txtNote",
+        DataSourceMember: "Note"
+    },
+    {
+        Name: "IsInstallItem",
+        DefaultValue: "",
+        BindControlName: "ckIsInstallItem",
+        DataSourceMember: "IsInstallItem"
+    },
+    {
+        Name: "Length",
+        DefaultValue: "",
+        BindControlName: "txtLength",
+        DataSourceMember: "Length"
+    },
+    {
+        Name: "Width",
+        DefaultValue: "",
+        BindControlName: "txtWidth",
+        DataSourceMember: "Width"
+    },
+    {
+        Name: "Height",
+        DefaultValue: "",
+        BindControlName: "txtHeight",
+        DataSourceMember: "Height"
+    }
+    
 ]
 
 

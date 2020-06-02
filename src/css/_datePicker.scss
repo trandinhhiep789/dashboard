@@ -1,6 +1,5 @@
 .rdt {
     input {
-        position: absolute;
         z-index: 99;
         background: transparent;
         border-radius: 4px;
@@ -36,6 +35,18 @@
     &.rdtOpen {
         .rdtPicker {
             margin-top: 36px;
+        }
+    }
+    &.is-invalid {
+        input {
+            &.form-control {
+                border-color: #dc3545;
+                color: #dc3545;
+            }
+        }
+
+        &~.invalid-feedback {
+            display: block;
         }
     }
 }

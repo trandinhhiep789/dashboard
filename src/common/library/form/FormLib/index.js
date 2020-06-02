@@ -103,6 +103,30 @@ export function GetMLObjectData(mLObjectDefinition, formData, dataSource) {
 
     return MLObject;
 }
+export function GetMLObjectObjData(mLObjectDefinition, formData, dataSource) {
+
+    let MLObject = {};
+    if (typeof dataSource != "undefined") {
+        mLObjectDefinition.map((Item) => {
+            if (dataSource[Item.DataSourceMember] != null) {
+                MLObject = Object.assign({}, MLObject, { [Item.Name]: dataSource[Item.DataSourceMember] });
+            }
+
+
+        });
+    }
+    mLObjectDefinition.map((Item) => {
+        const controlName = Item.BindControlName;
+        if (controlName.length > 0) {
+            if (formData[controlName] != null) {
+                MLObject = Object.assign({}, MLObject, { [Item.Name]: formData[controlName].value });
+            }
+        }
+    });
+
+    return MLObject;
+}
+
 
 export function GetModalFormData(mLObjectDefinition, formData, dataSource) {
 

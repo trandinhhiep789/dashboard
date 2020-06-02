@@ -195,6 +195,7 @@ class ElementComboBoxCom extends Component {
 
     }
     bindcombox() {
+      
         let values = this.props.value;
         let selectedOption = [];
         if (values == null || values === -1)
@@ -237,6 +238,8 @@ class ElementComboBoxCom extends Component {
             this.setState({ ListOption: listoption });
         }
     }
+
+
     getComboValue(selectedOption) {
         let values = [];
         if (selectedOption == null)
@@ -272,6 +275,7 @@ class ElementComboBoxCom extends Component {
 
             className += " is-invalid";
         }
+        
         return (
             <div className={colspanClassName}  >
                 <div className="form-group form-group-input form-group-input-select">
@@ -332,18 +336,13 @@ class ElementComboBoxNewCom extends Component {
 
     componentDidMount() {
         let { listoption } = this.props;
-        debugger;
-        // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
         this.setState({ ListOption: listoption })
-        const selectedOption = this.bindcombox(this.state.ListOption);
-        this.setState({ SelectedOption: selectedOption });
+      
     }
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             this.setState({ ListOption: nextProps.listoption })
-            const selectedOption = this.bindcombox(nextProps.listoption);
-            this.setState({ SelectedOption: selectedOption });
         }
     }
 
@@ -365,7 +364,6 @@ class ElementComboBoxNewCom extends Component {
 
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
-        this.setState({ SelectedOption: selectedOption });
         if (this.props.onValueChange)
             this.props.onValueChange(this.props.name, comboValues);
     }
@@ -397,7 +395,7 @@ class ElementComboBoxNewCom extends Component {
         if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
             star = '*'
         }
-        const selectedOption = this.state.SelectedOption;
+        const selectedOption = this.bindcombox(this.props.listoption);
         return (
             <div className="col-md-6">
                 <div className={formRowClassName}>
@@ -422,8 +420,6 @@ class ElementComboBoxNewCom extends Component {
                             <div className="invalid-feedback">{validationErrorMessage}</div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         );
@@ -432,6 +428,66 @@ class ElementComboBoxNewCom extends Component {
 const ElementComboBoxNew = connect(null, mapDispatchToProps)(ElementComboBoxNewCom);
 
 class ElementTextNewCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+    }
+    handleValueChange(e) {
+        e.preventDefault();
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(e.target.name, e.target.value);
+    }
+    render() {
+        let { name, label, placeholder, icon, colspan, value, readonly, validationErrorMessage } = this.props;
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-2";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null) {
+            formRowClassName += this.props.classNameCustom;
+        }
+
+        return (
+            <div className="col-md-6">
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 3">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+                    <div className={formGroupClassName}>
+                        <input type="text"
+                            className={className}
+                            ref={this.props.inputRef}
+                            name={name}
+                            onChange={this.handleValueChange}
+                            readOnly={readonly}
+                            defaultValue={value}
+                            placeholder={placeholder} />
+                        <div className="invalid-feedback">{validationErrorMessage}</div>
+                    </div>
+                </div>
+            </div>
+
+        );
+    }
+}
+const ElementTextNew = connect(null, null)(ElementTextNewCom);
+
+class ElementTextNewFullCom extends Component {
     constructor(props) {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
@@ -489,7 +545,7 @@ class ElementTextNewCom extends Component {
         );
     }
 }
-const ElementTextNew = connect(null, null)(ElementTextNewCom);
+const ElementTextNewFull = connect(null, null)(ElementTextNewFullCom);
 
 class ElementDatetimeCom extends Component {
     constructor(props) {
@@ -631,5 +687,5 @@ class ElementDatetimeFromToCom extends Component {
 }
 const ElementDatetimeFromTo = connect(null, null)(ElementDatetimeFromToCom);
 
-export default { ElementText, ElementTextdropdown, ElementCheckbox, ElementComboBox, ElementDatetime, ElementDatetimeFromTo, ElementCheckLDivbox, ElementComboBoxNew, ElementTextNew };
+export default { ElementText, ElementTextdropdown, ElementCheckbox, ElementComboBox, ElementDatetime, ElementDatetimeFromTo, ElementCheckLDivbox, ElementComboBoxNew, ElementTextNew,ElementTextNewFull };
 
