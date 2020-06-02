@@ -592,9 +592,9 @@ class DataGridCom extends Component {
                                 <div className="btn-toolbar">
                                     <div className="btn-group btn-group-sm">
                                         <button className="btn btn-w-md btn-round btn-info" onClick={this.handleOneInsertClick}>Chọn</button>
-                                        {MultipleCheck &&
+                                        {/* {MultipleCheck &&
                                             <button className="btn btn-w-md btn-round btn-info ml-20" onClick={this.handleMultipleInsertClick}>Chọn & Tiếp tục</button>
-                                        }
+                                        } */}
                                         <button className="btn btn-w-md btn-round btn-secondary  ml-20" onClick={this.handleCloseModel} >Bỏ qua</button>
                                     </div>
                                 </div>

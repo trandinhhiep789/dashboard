@@ -89,10 +89,14 @@ class PartnerCoordinatorStoreCom extends React.Component {
                         MLObject.PartnerStoreName = this.getStoreName(MLObject.PartnerStoreID);
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-                        let _PartnerCoordinatorStore = this.state.PartnerCoordinatorStore
-                            .filter(item => item.PartnerID != MLObject.PartnerID
-                                || item.CoordinatorStoreID != MLObject.CoordinatorStoreID
-                                || item.PartnerStoreID != MLObject.PartnerStoreID);
+                        let match = this.state.PartnerCoordinatorStore.filter(item => item.PartnerID == MLObject.PartnerID
+                            && item.CoordinatorStoreID == MLObject.CoordinatorStoreID
+                            && item.PartnerStoreID == MLObject.PartnerStoreID);
+                        if (match.length) {
+                            this.showMessage("Dữ liệu đã tồn tại.");
+                            return;
+                        }
+                        let _PartnerCoordinatorStore = this.state.PartnerCoordinatorStore;
                         _PartnerCoordinatorStore.push(MLObject);
                         _PartnerCoordinatorStore.sort((a, b) => (a.CoordinatorStoreID > b.CoordinatorStoreID) ? 1 : ((b.CoordinatorStoreID > a.CoordinatorStoreID) ? -1 : 0));
                         this.setState({ PartnerCoordinatorStore: _PartnerCoordinatorStore });
@@ -215,8 +219,8 @@ class PartnerCoordinatorStoreCom extends React.Component {
     }
 
     render() {
-        let datasource = this.state.PartnerCoordinatorStore.filter(item => item.IsDeleted == undefined || item.IsDeleted == false ); 
-        
+        let datasource = this.state.PartnerCoordinatorStore.filter(item => item.IsDeleted == undefined || item.IsDeleted == false);
+
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }

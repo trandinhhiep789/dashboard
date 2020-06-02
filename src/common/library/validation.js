@@ -9,20 +9,20 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
             //console.log("ValidationField", typelist, fieldValue, fieldCaption);
 
             let messError = "";
-            if (elementItem.labelError != undefined && String(elementItem.labelError).trim() != '' ) {
+            if (elementItem.labelError != undefined && String(elementItem.labelError).trim() != '') {
 
-                if(elementItem.type == 'select'){
+                if (elementItem.type == 'select') {
                     messError = elementItem.labelError
                 }
-                else{
+                else {
                     messError = "Vui lòng nhập " + elementItem.labelError
                 }
             }
             else {
-                if(elementItem.type == 'select'){
+                if (elementItem.type == 'select') {
                     messError = "Vui lòng chọn " + fieldCaption
                 }
-                else{
+                else {
                     messError = "Vui lòng nhập " + fieldCaption
                 }
             }
@@ -44,7 +44,7 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
     }
 
     if (typelist.includes("Comborequired") && IsEr == 0) {
-       // console.log("Comborequired")
+        // console.log("Comborequired")
         if (fieldValue == undefined || parseInt(fieldValue) < 0) {
             IsEr = 1;
             result = {
@@ -78,11 +78,11 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
                     IsEr = 1;
                     let messError = "Vui lòng nhập số";
                     if (elementItem.labelError != undefined) {
-        
+
                         messError = elementItem.labelError
                     }
                     else {
-                        if(elementItem.type == 'select'){
+                        if (elementItem.type == 'select') {
                             messError = "Vui lòng chọn " + fieldCaption
                         }
                     }
@@ -106,11 +106,11 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
                     IsEr = 1;
                     let messError = "";
                     if (elementItem.labelError != undefined) {
-        
+
                         messError = elementItem.labelError
                     }
                     else {
-        
+
                         messError = "Vui lòng nhập số "
                     }
                     result = {
@@ -193,6 +193,13 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
                     Message: "Vui lòng nhập email đúng định dạng như (@gmail.com ,@yahoo.com,@abc.vn...... )."
                 }
             }
+        } else {
+            IsEr = 0;
+            result = {
+                IsError: false,
+                fieldValue: fieldValue,
+                Message: ""
+            }
         }
     }
 
@@ -269,5 +276,41 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
             }
         }
     }
+
+    if (typelist.includes("date") && IsEr == 0) {
+        debugger;
+        if (fieldValue) {
+            var temp = fieldValue.trim().split('/');
+            var d = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
+            let isValid = (d && (d.getMonth() + 1) == temp[1] && d.getDate() == Number(temp[0]) && d.getFullYear() == Number(temp[2]));
+
+            if (isValid) {
+                IsEr = 0;
+                result = {
+                    IsError: false,
+                    fieldValue: fieldValue,
+                    Message: ""
+                }
+            }
+            else {
+                IsEr = 1;
+                result = {
+                    IsError: true,
+                    fieldValue: fieldValue,
+                    Message: "Vui lòng nhập ngày tháng đúng định dạng (ngày/tháng/năm)."
+                }
+            }
+        }
+        else {
+            IsEr = 0;
+            result = {
+                IsError: false,
+                fieldValue: fieldValue,
+                Message: ""
+            }
+        }
+
+    }
+
     return result;
 }

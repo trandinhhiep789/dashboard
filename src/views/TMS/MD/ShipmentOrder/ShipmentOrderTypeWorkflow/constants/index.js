@@ -234,11 +234,18 @@ export const InputNextColumnList = [
         DataSourceMember: "NextShipmentOrderStepName",
         Width: 200
     },
+    // {
+    //     Name: "ChooseFunctionID",
+    //     Type: "text",
+    //     Caption: "Quyền chuyển bước",
+    //     DataSourceMember: "ChooseFunctionID",
+    //     Width: 200
+    // }
     {
-        Name: "ChooseFunctionID",
+        Name: "ChooseFunctionName",
         Type: "text",
         Caption: "Quyền chuyển bước",
-        DataSourceMember: "ChooseFunctionID",
+        DataSourceMember: "ChooseFunctionName",
         Width: 200
     }
 ];

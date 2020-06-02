@@ -157,9 +157,12 @@ class AddCom extends React.Component {
         MLObject.LastName = lastName.trim();
         MLObject.ListPartnerUser_Role = this.state.ListPartnerUser_Role;
         
-        var myDate = new Date(MLObject.Birthday);
-        myDate.setDate(myDate.getDate() + 1);
-        MLObject.Birthday = myDate;
+        if (MLObject.Birthday) {
+            let temp = MLObject.Birthday.trim().split('/');
+            let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
+            myDate.setDate(myDate.getDate() + 1);
+            MLObject.Birthday = myDate;
+        }
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });

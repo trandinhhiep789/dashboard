@@ -14,6 +14,7 @@ import { showModal, hideModal } from '../../../../../actions/modal';
 import { APIHostName, AddAPIPath, UpdateAPIPath } from './constants';
 import { ModalManager } from 'react-dynamic-modal/lib';
 import { MessageModal } from "../../../../../common/components/Modal";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_USERGROUP, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_SHIPMENTORDERSTEP } from "../../../../../constants/keyCache";
 
 class ShipmentOrderTypeWorkflowCom extends React.Component {
@@ -28,6 +29,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         this.valueChangeInputGridNextData = this.valueChangeInputGridNextData.bind(this);
         this.changeSelectUser = this.changeSelectUser.bind(this);
         this.createInputPermissColumnList = this.createInputPermissColumnList.bind(this);
+        this.getFunctionCache = this.getFunctionCache.bind(this);
         this.state = {
             FormData: {
                 ShipmentOrderTypeWorkflow: [],
@@ -40,7 +42,8 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
             ShipmentOrderType_WF_NextData: [],
             ShipmentOrderType_WF_Permis: [],
             SelectedOption: [],
-            NextShipmentOrderStepListOption: []
+            NextShipmentOrderStepListOption: [],
+            ChooseFunctionCache: []
         };
         if (this.props.dataSource) {
             let dataSource = this.props.dataSource;
@@ -86,6 +89,32 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
 
     componentDidMount() {
         this.createInputPermissColumnList();
+        this.getFunctionCache();
+    }
+
+    getFunctionCache() {
+        this.props.callGetCache(ERPCOMMONCACHE_FUNCTION).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                //console.log("FormElement listOption: ", listOption)
+                let wf_Next = [];
+                let match = [];
+                
+                if (this.props.dataSource && this.props.dataSource.ShipmentOrderType_WF_Next) {
+                    wf_Next = this.props.dataSource.ShipmentOrderType_WF_Next.map(function (item, index) {
+                        match = [];
+                        match = result.ResultObject.CacheData.filter(x => x.FunctionID == item.ChooseFunctionID);
+                        if (match) {
+                            item.ChooseFunctionName = match[0].FunctionName;
+                            return item;
+                        }
+                    });
+                }
+                this.setState({
+                    ChooseFunctionCache: result.ResultObject.CacheData,
+                    ShipmentOrderType_WF_Next: wf_Next
+                });
+            }
+        });
     }
 
     addShipmentOrderTypeWFPermis() {
@@ -133,13 +162,14 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         if (this.state.FormData.NextShipmentOrderStep != "" && this.state.FormData.NextShipmentOrderStep != "-1") {
             const NextShipmentOrderStep = this.state.FormData.NextShipmentOrderStep;
             const ChooseFunctionID = this.state.FormData.ChooseFunctionID ? this.state.FormData.ChooseFunctionID : "";
+            const ChooseFunctionName = ChooseFunctionID != "" ? (this.state.ChooseFunctionCache.filter(x => x.FunctionID == ChooseFunctionID))[0].FunctionName : "";
             const ShipmentOrderStepID = this.state.FormData.ShipmentOrderTypeWorkflow.ShipmentOrderStepID;
             let elementItem = this.state.FormData.ShipmentOrderType_WF_Next.filter(x => { return x.NextShipmentOrderStep == NextShipmentOrderStep });
             if (elementItem.length == 0) {
                 const NextShipmentOrderStepListOption = this.state.NextShipmentOrderStepListOption.filter(x => { return x.value == NextShipmentOrderStep });
                 const NextShipmentOrderStepName = NextShipmentOrderStepListOption[0].label;
                 let ShipmentOrderType_WF_Next = this.state.FormData.ShipmentOrderType_WF_Next;
-                ShipmentOrderType_WF_Next.push({ ShipmentOrderStepID: ShipmentOrderStepID, NextShipmentOrderStep: NextShipmentOrderStep, NextShipmentOrderStepName: NextShipmentOrderStepName, ChooseFunctionID: ChooseFunctionID })
+                ShipmentOrderType_WF_Next.push({ ShipmentOrderStepID: ShipmentOrderStepID, NextShipmentOrderStep: NextShipmentOrderStep, NextShipmentOrderStepName: NextShipmentOrderStepName, ChooseFunctionID: ChooseFunctionID, ChooseFunctionName: ChooseFunctionName })
                 const FormData = Object.assign({}, this.state.FormData, { ShipmentOrderType_WF_Next });
                 this.setState({ FormData });
             }
@@ -358,7 +388,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         listoption={[]} isRequired={true} disabled={this.props.IsUpdateData}
                                         labelcolspan={4} colspan={8}
                                     />
-                                    
+
                                     <FormControl.ComboBox
                                         name="AutoChangeToShipmentOrderStatusID" type="select" isautoloaditemfromcache={true}
                                         loaditemcachekeyid={ERPCOMMONCACHE_SHIPMENTORDERSTATUS} valuemember="ShipmentOrderStatusID" nameMember="ShipmentOrderStatusName"
@@ -550,6 +580,12 @@ const mapDispatchToProps = dispatch => {
     return {
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));

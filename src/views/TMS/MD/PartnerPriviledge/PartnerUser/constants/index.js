@@ -158,16 +158,16 @@ export const AddElementList = [
         name: "txtPhoneNumber",
         label: "Điện thoại:",
         value: "",
-        maxSize: "20",
+        maxSize: "11",
         placeholder: "",
         icon: "",
         listoption: [],
         DataSourceMember: "PhoneNumber",
         readonly: false,
-        validatonList: []
+        validatonList: ["number"]
     },
     {
-        type: "date",
+        type: "text",
         name: "dtBirthday",
         label: "Ngày sinh:",
         value: new Date(),
@@ -176,7 +176,7 @@ export const AddElementList = [
         DataSourceMember: "Birthday",
         ValueMember: "Birthday",
         NameMember: "Birthday",
-        validatonList: []
+        validatonList: ["date"]
     },
     {
         type: "text",
@@ -189,7 +189,7 @@ export const AddElementList = [
         listoption: [],
         DataSourceMember: "Email",
         readonly: false,
-        validatonList: []
+        validatonList: ["Email"]
     },
     {
         type: "textarea",
@@ -339,16 +339,16 @@ export const EditElementList = [
         name: "txtPhoneNumber",
         label: "Điện thoại:",
         value: "",
-        maxSize: "20",
+        maxSize: "11",
         placeholder: "",
         icon: "",
         listoption: [],
         DataSourceMember: "PhoneNumber",
         readonly: false,
-        validatonList: []
+        validatonList: ["number"]
     },
     {
-        type: "date",
+        type: "text",
         name: "dtBirthday",
         label: "Ngày sinh:",
         value: new Date(),
@@ -357,7 +357,7 @@ export const EditElementList = [
         DataSourceMember: "Birthday",
         ValueMember: "Birthday",
         NameMember: "Birthday",
-        validatonList: []
+        validatonList: ["date"]
     },
     {
         type: "text",
@@ -370,7 +370,7 @@ export const EditElementList = [
         listoption: [],
         DataSourceMember: "Email",
         readonly: false,
-        validatonList: []
+        validatonList: ["Email"]
     },
     {
         type: "textarea",

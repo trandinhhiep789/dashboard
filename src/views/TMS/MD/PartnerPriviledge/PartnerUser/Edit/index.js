@@ -185,9 +185,13 @@ class EditCom extends React.Component {
         MLObject.LastName = lastName.trim();
         MLObject.ListPartnerUser_Role = this.state.DataSource.ListPartnerUser_Role;
 
-        var myDate = new Date(MLObject.Birthday);
-        myDate.setDate(myDate.getDate() + 1);
-        MLObject.Birthday = myDate;
+        if (MLObject.Birthday) {
+            let temp = MLObject.Birthday.trim().split('/');
+            let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
+            myDate.setDate(myDate.getDate() + 1);
+            MLObject.Birthday = myDate;
+        }
+
         if (!MLObject.PassWord) {
             MLObject.PassWord = this.state.PassWord;
         } else {
@@ -215,23 +219,23 @@ class EditCom extends React.Component {
                     BackLink={BackLink}
                     dataSource={this.state.DataSource}
                     onValueChange={this.handleOnInputChange}
-                    //RequirePermission={MCUSER_EDIT}
+                //RequirePermission={MCUSER_EDIT}
                 >
-                     <br />
-                <Collapsible trigger="Danh sách vai trò của người dùng" easing="ease-in" open={true}>
-                    <InputGrid
-                        name="LstPartnerUser_Role"
-                        controltype="GridControl"
-                        IDSelectColumnName={IDSelectColumnName}
-                        listColumn={InputPartnerRoleColumnList}
-                        PKColumnName={"PartnerRoleID"}
-                        isHideHeaderToolbar={false}
-                        dataSource={this.state.DataSource.ListPartnerUser_Role}
-                        MLObjectDefinition={GridMLPartnerRoleDefinition}
-                        colspan="12"
-                        onInsertClick={this.handleInputUserRoleInsert}
-                    />
-                </Collapsible>
+                    <br />
+                    <Collapsible trigger="Danh sách vai trò của người dùng" easing="ease-in" open={true}>
+                        <InputGrid
+                            name="LstPartnerUser_Role"
+                            controltype="GridControl"
+                            IDSelectColumnName={IDSelectColumnName}
+                            listColumn={InputPartnerRoleColumnList}
+                            PKColumnName={"PartnerRoleID"}
+                            isHideHeaderToolbar={false}
+                            dataSource={this.state.DataSource.ListPartnerUser_Role}
+                            MLObjectDefinition={GridMLPartnerRoleDefinition}
+                            colspan="12"
+                            onInsertClick={this.handleInputUserRoleInsert}
+                        />
+                    </Collapsible>
                 </FormContainer>
             );
         }
