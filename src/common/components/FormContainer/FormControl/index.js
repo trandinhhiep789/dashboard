@@ -91,8 +91,6 @@ class TextBox extends React.Component {
                     </div>
                 </div>
             );
-
-
         }
         else {
             return (
@@ -110,7 +108,7 @@ class TextBox extends React.Component {
                             key={this.props.name}
                             className={className}
                             autoFocus={false}
-                            ref={(node) => this._myInput = node}
+                            ref={this.props.inputRef}
                             placeholder={this.props.placeholder}
                             disabled={this.props.readOnly}
                         />
@@ -787,8 +785,12 @@ class ElementDatetimeCom extends Component {
     handleValueChange(name, moment) {
         //e.preventDefault();
         if (this.props.onValueChange != null)
-            this.props.onValueChange(name, moment);
+            this.props.onValueChange(name, moment._d);
     }
+    componentDidMount() {
+        
+    }
+
     render() {
         let { name, label, timeFormat, dateFormat, colspan, value, ValidatonErrorMessage } = this.props;
 
@@ -808,10 +810,10 @@ class ElementDatetimeCom extends Component {
             labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
         }
         let star;
-        if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
             star = '*'
         }
-        if (this.props.validationErrorMessage != "") {
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
             className += " is-invalid";
             return (
                 <div className={formRowClassName} >
@@ -820,13 +822,13 @@ class ElementDatetimeCom extends Component {
                             {this.props.label}<span className="text-danger"> {star}</span>
                         </label>
                     </div>
-                    <div className={formGroupClassName}>
+                    <div  className={formGroupClassName}>
                         <Datetime
                             className={className}
                             name={name}
-                            onChange={this.handleValueChange}
                             onChange={(moment) => this.handleValueChange(name, moment)}
-                            defaultValue={formatDate(value)}
+                            value={value!=null?value:""}
+                            refs={this.props.inputRef}
                             timeFormat={timeFormat}
                             dateFormat={dateFormat} >
                         </Datetime>
@@ -847,12 +849,12 @@ class ElementDatetimeCom extends Component {
                             {this.props.label}<span className="text-danger"> {star}</span>
                         </label>
                     </div>
-                    <div className={formGroupClassName}>
+                    <div  className={formGroupClassName}>
                         <Datetime
                             name={name}
-                            onChange={this.handleValueChange}
                             onChange={(moment) => this.handleValueChange(name, moment)}
-                            defaultValue={formatDate(value)}
+                            value={value!=null?value:""}
+                            refs={this.props.inputRef}
                             timeFormat={timeFormat}
                             dateFormat={dateFormat} >
                         </Datetime>

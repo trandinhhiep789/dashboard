@@ -437,6 +437,36 @@ export const MLObjectDefinition = [
         DataSourceMember: "CreatedOrderTime"
     },
     {
+        Name: "ExpectedDeliveryDate",
+        DefaultValue: "",
+        BindControlName: "dtExpectedDeliveryDate",
+        DataSourceMember: "ExpectedDeliveryDate"
+    },
+    {
+        Name: "EarliestPickUpTime",
+        DefaultValue: "",
+        BindControlName: "dtEarliestPickUpTime",
+        DataSourceMember: "EarliestPickUpTime"
+    },
+    {
+        Name: "LatestPickUpTime",
+        DefaultValue: "",
+        BindControlName: "dtLatestPickUpTime",
+        DataSourceMember: "LatestPickUpTime"
+    },
+    {
+        Name: "EarliestDeliveryTime",
+        DefaultValue: "",
+        BindControlName: "dtEarliestDeliveryTime",
+        DataSourceMember: "EarliestDeliveryTime"
+    },
+    {
+        Name: "LatestDeliveryTime",
+        DefaultValue: "",
+        BindControlName: "dtLatestDeliveryTime",
+        DataSourceMember: "LatestDeliveryTime"
+    },
+    {
         Name: "IsActived",
         DefaultValue: true,
         BindControlName: "chkIsActived",

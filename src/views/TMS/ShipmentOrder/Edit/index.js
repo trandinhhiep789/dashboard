@@ -112,6 +112,7 @@ class EditCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
         if (this.state.IsLoadDataComplete) {
+            console.log("this.state.DataSource", this.state.DataSource);
             return (
                 <FormContainer
                     FormName="Cập nhật yêu cầu vận chuyển"
@@ -235,9 +236,8 @@ class EditCom extends React.Component {
                                         placeholder="Ngày tạo yêu cầu"
                                         controltype="InputControl"
                                         value=""
-                                        validatonList={["Comborequired"]}
+                                        validatonList={["required"]}
                                         datasourcemember="CreatedOrderTime"
-
                                     />
                                 </div>
 
@@ -253,13 +253,13 @@ class EditCom extends React.Component {
                                         placeholder="Thời gian giao hàng"
                                         controltype="InputControl"
                                         value=""
-                                        validatonList={["Comborequired"]}
+                                        validatonList={["required"]}
                                         datasourcemember="ExpectedDeliveryDate" />
 
                                 </div>
                                 <div className="col-md-6">
                                     <FormControl.ElementDatetime
-                                        name="dtExpectedDeliveryDate"
+                                        name="dtEarliestPickUpTime"
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
@@ -269,12 +269,12 @@ class EditCom extends React.Component {
                                         placeholder="Lấy hàng từ"
                                         controltype="InputControl"
                                         value=""
-                                        validatonList={["Comborequired"]}
-                                        datasourcemember="ExpectedDeliveryDate" />
+                                        validatonList={["required"]}
+                                        datasourcemember="EarliestPickUpTime" />
                                 </div>
                                 <div className="col-md-6">
                                     <FormControl.ElementDatetime
-                                        name="dtExpectedDeliveryDate"
+                                        name="dtLatestPickUpTime"
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
@@ -284,12 +284,12 @@ class EditCom extends React.Component {
                                         placeholder="Đến"
                                         controltype="InputControl"
                                         value=""
-                                        validatonList={["Comborequired"]}
-                                        datasourcemember="ExpectedDeliveryDate" />
+                                        validatonList={["required"]}
+                                        datasourcemember="LatestPickUpTime" />
                                 </div>
                                 <div className="col-md-6">
                                     <FormControl.ElementDatetime
-                                        name="dtExpectedDeliveryDate"
+                                        name="dtEarliestDeliveryTime"
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
@@ -299,12 +299,12 @@ class EditCom extends React.Component {
                                         placeholder="Giao hàng từ"
                                         controltype="InputControl"
                                         value=""
-                                        validatonList={["Comborequired"]}
-                                        datasourcemember="ExpectedDeliveryDate" />
+                                        validatonList={["required"]}
+                                        datasourcemember="EarliestDeliveryTime" />
                                 </div>
                                 <div className="col-md-6">
                                     <FormControl.ElementDatetime
-                                        name="dtExpectedDeliveryDate"
+                                        name="dtLatestDeliveryTime"
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
@@ -314,8 +314,8 @@ class EditCom extends React.Component {
                                         placeholder="Đế"
                                         controltype="InputControl"
                                         value=""
-                                        validatonList={["Comborequired"]}
-                                        datasourcemember="ExpectedDeliveryDate" />
+                                        validatonList={["required"]}
+                                        datasourcemember="LatestDeliveryTime" />
                                 </div>
 
                                 {/* <FormControl.ComboboxQTQHPX
@@ -340,136 +340,86 @@ class EditCom extends React.Component {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
+                                            <FormControl.ComboBox
+                                                name="cbSenderPartnerID"
                                                 colspan="8"
                                                 labelcolspan="4"
-                                                readOnly={true}
                                                 label="đối tác gửi"
-                                                placeholder="Đối tác gửi"
+                                                validatonList={["Comborequired"]}
+                                                isautoloaditemfromcache={true}
+                                                loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                                                valuemember="PartnerID"
+                                                nameMember="PartnerName"
                                                 controltype="InputControl"
                                                 value={""}
-                                                datasourcemember=""
-                                            />
+                                                listoption={null}
+                                                datasourcemember="SenderPartnerID" />
+                                        </div>
+                                        <div className="col-md-6">
+                                            <FormControl.ComboBox
+                                                name="cbSenderStoreID"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                label="kho gửi hàng"
+                                                validatonList={["Comborequired"]}
+                                                isautoloaditemfromcache={true}
+                                                loaditemcachekeyid="ERPCOMMONCACHE.STORE"
+                                                valuemember="StoreID"
+                                                nameMember="StoreName"
+                                                controltype="InputControl"
+                                                value={""}
+                                                listoption={null}
+                                                datasourcemember="SenderStoreID" />
                                         </div>
                                         <div className="col-md-6">
                                             <FormControl.TextBox
-                                                name=""
+                                                name="txtxSenderFullName"
                                                 colspan="8"
                                                 labelcolspan="4"
-                                                readOnly={true}
-                                                label="kho gửi"
-                                                placeholder="Kho gửi"
-                                                controltype="InputControl"
-                                                value={""}
-                                                datasourcemember=""
-                                            />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
-                                                colspan="8"
-                                                labelcolspan="4"
-                                                readOnly={true}
+                                                readOnly={false}
                                                 label="họ tên người gửi"
                                                 placeholder="Họ tên người gửi"
                                                 controltype="InputControl"
                                                 value={""}
-                                                datasourcemember=""
+                                                validatonList={["required"]}
+                                                datasourcemember="SenderFullName"
                                             />
                                         </div>
                                         <div className="col-md-6">
                                             <FormControl.TextBox
-                                                name=""
+                                                name="txtSenderPhoneNumber"
                                                 colspan="8"
                                                 labelcolspan="4"
-                                                readOnly={true}
+                                                readOnly={false}
                                                 label="số điện thoại"
                                                 placeholder="Số điện thoại"
                                                 controltype="InputControl"
                                                 value={""}
-                                                datasourcemember=""
+                                                validatonList={["required"]}
+                                                datasourcemember="SenderPhoneNumber"
                                             />
                                         </div>
                                         <div className="col-md-12">
                                             <FormControl.TextBox
-                                                name=""
+                                                name="txtSenderEmail"
                                                 colspan="10"
                                                 labelcolspan="2"
-                                                readOnly={true}
+                                                readOnly={false}
                                                 label="địa chỉ email"
                                                 placeholder="Địa chỉ email"
                                                 controltype="InputControl"
                                                 value={""}
-                                                datasourcemember=""
+                                                datasourcemember="SenderEmail"
                                                 classNameCustom="customcontrol"
                                             />
                                         </div>
-                                        <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
-                                                colspan="8"
-                                                labelcolspan="4"
-                                                readOnly={true}
-                                                label="tỉnh/thành phố"
-                                                placeholder="Tỉnh/thành phố"
-                                                controltype="InputControl"
-                                                value={""}
-                                                datasourcemember=""
-                                            />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
-                                                colspan="8"
-                                                labelcolspan="4"
-                                                readOnly={true}
-                                                label="quận/huyện"
-                                                placeholder="Quận/huyện"
-                                                controltype="InputControl"
-                                                value={""}
-                                                datasourcemember=""
-                                            />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
-                                                colspan="8"
-                                                labelcolspan="4"
-                                                readOnly={true}
-                                                label="phường/xã"
-                                                placeholder="Phường/xã"
-                                                controltype="InputControl"
-                                                value={""}
-                                                datasourcemember=""
-                                            />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
-                                                colspan="8"
-                                                labelcolspan="4"
-                                                readOnly={true}
-                                                label="số nhà/đường"
-                                                placeholder="Số nhà/đường"
-                                                controltype="InputControl"
-                                                value={""}
-                                                datasourcemember=""
-                                            />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
-                                                colspan="8"
-                                                labelcolspan="4"
-                                                readOnly={true}
-                                                label="địa chỉ đầy đủ"
-                                                placeholder="Địa chỉ đầy đủ"
-                                                controltype="InputControl"
-                                                value={""}
-                                                datasourcemember=""
-                                            />
-                                        </div>
+                                        <FormControl.ComboboxQTQHPX
+                                            name="objQHPX"
+                                            controltype="InputControlNew"
+                                            listelement={ElementQHPXList}
+                                            dataSource={this.state.DataSource}
+                                            MLObjectDefinition={GridMLObjectQTQHPX}
+                                        />
                                     </div>
 
                                 </div>
@@ -481,136 +431,86 @@ class EditCom extends React.Component {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
+                                             <FormControl.ComboBox
+                                                name="cbReceiverPartnerID"
                                                 colspan="8"
                                                 labelcolspan="4"
-                                                readOnly={true}
                                                 label="đối tác nhận"
-                                                placeholder="Đối tác nhận"
+                                                validatonList={["Comborequired"]}
+                                                isautoloaditemfromcache={true}
+                                                loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                                                valuemember="PartnerID"
+                                                nameMember="PartnerName"
                                                 controltype="InputControl"
                                                 value={""}
-                                                datasourcemember=""
-                                            />
+                                                listoption={null}
+                                                datasourcemember="ReceiverPartnerID" />
                                         </div>
                                         <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
+                                             <FormControl.ComboBox
+                                                name="cbReceiverStoreID"
                                                 colspan="8"
                                                 labelcolspan="4"
-                                                readOnly={true}
                                                 label="kho nhận"
-                                                placeholder="Kho nhận"
+                                                validatonList={["Comborequired"]}
+                                                isautoloaditemfromcache={true}
+                                                loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                                                valuemember="PartnerID"
+                                                nameMember="PartnerName"
                                                 controltype="InputControl"
                                                 value={""}
-                                                datasourcemember=""
-                                            />
+                                                listoption={null}
+                                                datasourcemember="ReceiverStoreID" />
                                         </div>
                                         <div className="col-md-6">
                                             <FormControl.TextBox
-                                                name=""
+                                                name="txtReceiverFullName"
                                                 colspan="8"
                                                 labelcolspan="4"
-                                                readOnly={true}
+                                                readOnly={false}
                                                 label="họ tên người nhận"
                                                 placeholder="Họ tên người nhận"
                                                 controltype="InputControl"
                                                 value={""}
-                                                datasourcemember=""
+                                                validatonList={["required"]}
+                                                datasourcemember="ReceiverFullName"
                                             />
                                         </div>
                                         <div className="col-md-6">
                                             <FormControl.TextBox
-                                                name=""
+                                                name="txtReceiverPhoneNumber"
                                                 colspan="8"
                                                 labelcolspan="4"
-                                                readOnly={true}
+                                                readOnly={false}
                                                 label="số điện thoại"
                                                 placeholder="Số điện thoại"
                                                 controltype="InputControl"
                                                 value={""}
-                                                datasourcemember=""
+                                                validatonList={["required"]}
+                                                datasourcemember="ReceiverPhoneNumber"
                                             />
                                         </div>
                                         <div className="col-md-12">
                                             <FormControl.TextBox
-                                                name=""
+                                                name="txtReceiverEmail"
                                                 colspan="10"
                                                 labelcolspan="2"
-                                                readOnly={true}
+                                                readOnly={false}
                                                 label="địa chỉ email"
                                                 placeholder="Địa chỉ email"
                                                 controltype="InputControl"
                                                 value={""}
-                                                datasourcemember=""
+                                                datasourcemember="ReceiverEmail"
                                                 classNameCustom="customcontrol"
                                             />
                                         </div>
-                                        <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
-                                                colspan="8"
-                                                labelcolspan="4"
-                                                readOnly={true}
-                                                label="tỉnh/thành phố"
-                                                placeholder="Tỉnh/thành phố"
-                                                controltype="InputControl"
-                                                value={""}
-                                                datasourcemember=""
-                                            />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
-                                                colspan="8"
-                                                labelcolspan="4"
-                                                readOnly={true}
-                                                label="quận/huyện"
-                                                placeholder="Quận/huyện"
-                                                controltype="InputControl"
-                                                value={""}
-                                                datasourcemember=""
-                                            />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
-                                                colspan="8"
-                                                labelcolspan="4"
-                                                readOnly={true}
-                                                label="phường/xã"
-                                                placeholder="Phường/xã"
-                                                controltype="InputControl"
-                                                value={""}
-                                                datasourcemember=""
-                                            />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
-                                                colspan="8"
-                                                labelcolspan="4"
-                                                readOnly={true}
-                                                label="số nhà/đường"
-                                                placeholder="Số nhà/đường"
-                                                controltype="InputControl"
-                                                value={""}
-                                                datasourcemember=""
-                                            />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
-                                                colspan="8"
-                                                labelcolspan="4"
-                                                readOnly={true}
-                                                label="địa chỉ đầy đủ"
-                                                placeholder="Địa chỉ đầy đủ"
-                                                controltype="InputControl"
-                                                value={""}
-                                                datasourcemember=""
-                                            />
-                                        </div>
+                                        <FormControl.ComboboxQTQHPX
+                                            name="objQHPX"
+                                            controltype="InputControlNew"
+                                            listelement={ElementQHPXList}
+                                            dataSource={this.state.DataSource}
+                                            MLObjectDefinition={GridMLObjectQTQHPX}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -628,47 +528,38 @@ class EditCom extends React.Component {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-md-6">
+                                              <FormControl.ComboBox
+                                                name="cbShipmentGoodsTypeID"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                label="loại hàng"
+                                                validatonList={["Comborequired"]}
+                                                isautoloaditemfromcache={true}
+                                                loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTGOODSTYPE"
+                                                valuemember="ShipmentGoodsTypeID"
+                                                nameMember="ShipmentGoodsTypeName"
+                                                controltype="InputControl"
+                                                value={""}
+                                                listoption={null}
+                                                datasourcemember="ShipmentGoodsTypeID" />
+                                        </div>
+                                      
+                                        <div className="col-md-6">
                                             <FormControl.TextBox
-                                                name=""
+                                                name="txtNumberOfPackages"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 readOnly={false}
-                                                label="Loại hàng"
-                                                placeholder="Loại hàng"
-                                                controltype="InputControl"
-                                                value={""}
-                                                datasourcemember=""
-                                            />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
-                                                colspan="8"
-                                                labelcolspan="4"
-                                                readOnly={true}
-                                                label="mô tả"
-                                                placeholder="Mô tả"
-                                                controltype="InputControl"
-                                                value={""}
-                                                datasourcemember=""
-                                            />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
-                                                colspan="8"
-                                                labelcolspan="4"
-                                                readOnly={true}
                                                 label="số kiện"
                                                 placeholder="Số kiện"
                                                 controltype="InputControl"
                                                 value={""}
-                                                datasourcemember=""
+                                                datasourcemember="NumberOfPackages"
                                             />
                                         </div>
                                         <div className="col-md-6">
                                             <FormControl.TextBox
-                                                name=""
+                                                name="txtSecondaryItemCount"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 readOnly={true}
@@ -676,13 +567,13 @@ class EditCom extends React.Component {
                                                 placeholder="Số sản phẩm"
                                                 controltype="InputControl"
                                                 value={""}
-                                                datasourcemember=""
+                                                datasourcemember="SecondaryItemCount"
                                             />
                                         </div>
 
                                         <div className="col-md-6">
                                             <FormControl.TextBox
-                                                name=""
+                                                name="txtWeight"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 readOnly={true}
@@ -690,7 +581,7 @@ class EditCom extends React.Component {
                                                 placeholder="Khối lượng"
                                                 controltype="InputControl"
                                                 value={""}
-                                                datasourcemember=""
+                                                datasourcemember="Weight"
                                             />
                                         </div>
                                         <div className="col-md-6">
@@ -707,55 +598,60 @@ class EditCom extends React.Component {
                                             />
                                         </div>
                                         <div className="col-md-6">
-                                            <FormControl.TextBox
-                                                name=""
+                                             <FormControl.ComboBox
+                                                name="cbShipmentFeePaymentMethodID"
                                                 colspan="8"
                                                 labelcolspan="4"
-                                                readOnly={true}
                                                 label="phương thức thanh toán phí dịch vụ vc"
-                                                placeholder="Phương thức thanh toán phí dịch vụ vc"
+                                                validatonList={["Comborequired"]}
+                                                isautoloaditemfromcache={true}
+                                                loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTFEEPAYMENTMETHOD"
+                                                valuemember="ShiPmentFeePaymentMethodID"
+                                                nameMember="ShiPmentFeePaymentMethodName"
                                                 controltype="InputControl"
                                                 value={""}
-                                                datasourcemember=""
-                                            />
+                                                listoption={null}
+                                                datasourcemember="ShipmentFeePaymentMethodID" />
                                         </div>
                                         <div className="col-md-6">
                                             <FormControl.TextBox
-                                                name=""
+                                                name="txtTotalShipmentFee"
                                                 colspan="8"
                                                 labelcolspan="4"
-                                                readOnly={true}
+                                                readOnly={false}
                                                 label="phí vận chuyển"
                                                 placeholder="Phí vận chuyển"
                                                 controltype="InputControl"
                                                 value={""}
-                                                datasourcemember=""
+                                                datasourcemember="TotalShipmentFee"
                                             />
                                         </div>
-                                        <div className="col-md-6">
-                                            <FormControl.CheckBox
-                                                name=""
-                                                colspan="8"
-                                                labelcolspan="4"
-                                                readOnly={true}
-                                                label="có lắp đặt"
-                                                placeholder="Có lắp đặt"
-                                                controltype="InputControl"
-                                                value={""}
-                                                datasourcemember=""
-                                            />
-                                        </div>
+                                    
                                         <div className="col-md-6">
                                             <FormControl.TextBox
-                                                name=""
+                                                name="txtTotalCOD"
                                                 colspan="8"
                                                 labelcolspan="4"
-                                                readOnly={true}
+                                                readOnly={false}
                                                 label="tiền COD"
                                                 placeholder="Tiền COD"
                                                 controltype="InputControl"
                                                 value={""}
-                                                datasourcemember=""
+                                                datasourcemember="TotalCOD"
+                                            />
+                                        </div>
+                                        <div className="col-md-12">
+                                            <FormControl.TextBox
+                                                name="txtOrderNote"
+                                                colspan="10"
+                                                labelcolspan="2"
+                                                readOnly={false}
+                                                label="mô tả"
+                                                placeholder="Mô tả"
+                                                controltype="InputControl"
+                                                value={""}
+                                                datasourcemember="OrderNote"
+                                                classNameCustom="customcontrol"
                                             />
                                         </div>
                                     </div>

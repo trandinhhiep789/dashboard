@@ -128,68 +128,7 @@ class FormContainerCom extends Component {
     }
 
     //#region Bin all
-    bindAllTabData(parent) {
-        let formDataList = [];
-        React.Children.map(parent.props.children, (child, index) => {
-            const formData = this.bindDataTabrow(child.props.children);
-            let formDataTemp = {};
-            for (let i = 0; i < formData.length; i++) {
-                formDataTemp = Object.assign({}, formDataTemp, formData[i]);
-            }
-            formDataList = Object.assign({}, formDataList, { [child.props.name]: formDataTemp });
-        });
-        return formDataList;
-    }
-    bindDivChildrenDataTab(children) {
-        let formDataList = [];
-        React.Children.map(children, (child, i) => {
-            if (child.type == "div") {
-                const formData = this.bindDivChildrenDataTab(child.props.children);
-                for (let i = 0; i < formData.length; i++) {
-                    formDataList.push(formData[i]);
-                }
-            }
-            else {
-                if (child.props.controltype != null) {
-                    const formData = this.bindFormControlDataTab(child);
-                    formDataList.push(formData);
-                }
-            }
-        });
-        return formDataList;
-    }
-    bindFormControlDataTab(child) {
-        const controltype = child.props.controltype;
-        let controlvalue = child.props.value;
-        let controlname = child.props.name;
-        if (controltype == "InputControl") {
 
-            return { [controlname]: controlvalue };
-        }
-        if (controltype == "GridControl") {
-            controlvalue = child.props.dataSource;
-            return controlvalue;
-        }
-    }
-    bindDataTabrow(children, dataSource) {
-        let formDataList = [];
-        React.Children.map(children, (child, i) => {
-            if (child.type == "div") {
-                const formData = this.bindDivChildrenDataTab(child, dataSource);
-                for (let i = 0; i < formData.length; i++) {
-                    formDataList.push(formData[i]);
-                }
-            }
-            else {
-                if (child.props.controltype != null) {
-                    const formData = this.bindFormControlDataTab(child, dataSource);
-                    formDataList.push(formData);
-                }
-            }
-        });
-        //  console.log("bindDataTabrow", formDataList);
-        return formDataList;
-    }
     bindDataToControl(listElement, dataSource) {
         let listElement1 = listElement;
         if (typeof dataSource != "undefined" && listElement1 != []) {
@@ -208,7 +147,7 @@ class FormContainerCom extends Component {
 
     //#endregion BinData
 
-    //#region InputChange && InputChangeList  
+    //#region InputChange && InputChangeList
     handleInputChange(elementname, elementvalue, controllabel, listvalidation, listvalidationRow) {
         //console.log('change')
         const FormDataContolLstd = this.state.FormData;
@@ -261,8 +200,10 @@ class FormContainerCom extends Component {
     }
     checkInputName(formValidation) {
         for (const key in formValidation) {
-            //  console.log("validation:",formValidation[key].ErrorLst,formValidation[key].ErrorLst.IsValidatonError);
+             console.log("formValidation:",formValidation);
+             
             if (formValidation[key].ErrorLst != undefined) {
+                console.log("validation:",key, this.elementItemRefs[key]);
                 if (formValidation[key].ErrorLst != [] && formValidation[key].ErrorLst.IsValidatonError) {
                     this.elementItemRefs[key].focus();
                     return key;
@@ -371,7 +312,7 @@ class FormContainerCom extends Component {
     }
     //#endregion render Children
 
-    //#region  handleSubmit 
+    //#region  handleSubmit
     handleSubmit(e) {
         e.preventDefault();
         const formValidation = this.validationFormNew();
@@ -402,7 +343,7 @@ class FormContainerCom extends Component {
         // }
     }
 
-    //#endregion  handleSubmit 
+    //#endregion  handleSubmit
     renderOneColumnForm() {
         const listElement = this.props.listelement;
         if (listElement == null)
@@ -491,4 +432,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 const FormContainer = connect(mapStateToProps, mapDispatchToProps)(FormContainerCom);
-export default FormContainer; 
+export default FormContainer;
