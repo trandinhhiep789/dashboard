@@ -37,7 +37,7 @@ class ShipmentOrderItemObjCom extends Component {
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectShipmentOrderItem}
-                dataSource={this.props.index != undefined ? this.props.dataSource.ShipmentOrder_ItemList[this.props.index] : []}
+                dataSource={this.props.index != undefined ? this.props.dataSource.ShipmentOrder_ItemList[this.props.index] : null}
                 listelement={[]}
                 onSubmit={this.handleSubmit}
             >
@@ -84,7 +84,7 @@ class ShipmentOrderItemObjCom extends Component {
                             valuemember="ShipmentOrderTypeID"
                             nameMember="ShipmentOrderTypeName"
                             controltype="InputControl"
-                            value={-1}
+                            value={'A6FDE36255DB209DE053D105010ACAB8'}
                             listoption={[{ value: 'A6FDE36255DB209DE053D105010ACAB8', label: "mặc đinh" }]}
                             datasourcemember="ShipmentOrderPackingUnitID" />
 
