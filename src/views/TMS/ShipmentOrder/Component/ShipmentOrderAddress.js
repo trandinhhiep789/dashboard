@@ -68,7 +68,7 @@ class ShipmentOrderAddressCom extends Component {
     }
     handKeyDown(name, value, label, e, validatonList) {
         let paramsRequest = {
-            "Keyword":value+"Phường"+ "413 Lê Văn Quới, Phường Bình Trị Đông A, Quận Bình Tân, Thành Phố Hồ Chí Minh",
+            "Keyword": value + "Phường" + "413 Lê Văn Quới, Phường Bình Trị Đông A, Quận Bình Tân, Thành Phố Hồ Chí Minh",
             "Page": 1,
             "PageSize": 1
         }
@@ -525,7 +525,7 @@ class ShipmentOrderAddressCom extends Component {
     handleUpdateAddressReceiver() {
         debugger
         let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
-        console.log("Receiver", ShipmentOrderEdit)
+
         let formData = FormDataSenderLst;
         if (ShipmentOrderEdit.ReceiverFullName.length == 0 || String(ShipmentOrderEdit.ReceiverFullName).trim() == "") {
             const ObjectNameReceiverFullName = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập họ và tên" } };
@@ -986,6 +986,10 @@ class ShipmentOrderAddressCom extends Component {
         )
     }
 
+    handleMapSender() {
+        console.log('sender map', this.props)
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -1025,7 +1029,16 @@ class ShipmentOrderAddressCom extends Component {
                                     </div>
                                     <div className="form-group col-md-8">
                                         <label className="col-form-label" >{this.state.ShipmentOrder.SenderFullAddress}</label>
-                                        <Link className="mapslink" to="/Map">Xem bản đồ</Link>
+                                        <Link
+                                            className="mapslink"
+                                            to={{
+                                                pathname: "/Map",
+                                                state: {
+                                                    SenderGeoLocation: this.state.SenderGeoLocation,
+                                                    ReceiverGeoLocation: this.state.ReceiverGeoLocation,
+                                                }
+                                            }}
+                                        >Xem bản đồ</Link>
                                     </div>
                                 </div>
                             </div>
@@ -1062,7 +1075,15 @@ class ShipmentOrderAddressCom extends Component {
                                     </div>
                                     <div className="form-group col-md-8">
                                         <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullAddress}</label>
-                                        <Link className="mapslink" to="/Map">Xem bản đồ</Link>
+                                        <Link
+                                            className="mapslink"
+                                            to={{
+                                                pathname: "/Map",
+                                                state: {
+                                                    SenderGeoLocation: this.state.SenderGeoLocation,
+                                                    ReceiverGeoLocation: this.state.ReceiverGeoLocation,
+                                                }
+                                            }}>Xem bản đồ</Link>
                                     </div>
                                 </div>
                             </div>
