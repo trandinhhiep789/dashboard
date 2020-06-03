@@ -38,6 +38,7 @@ class DetailCom extends React.Component {
     }
 
     componentDidMount() {
+        console.log("DetailCom",this.props)
         this.props.updatePagePath(DetailAPIPath);
         this.callLoadData(this.props.match.params.id);
     }
@@ -71,7 +72,7 @@ class DetailCom extends React.Component {
         return false;
     }
     ChangeLoadData(ShipmentOrderData) {
-        console.log("ChangeLoadData",ShipmentOrderData)
+       
 
         this.setState({
             ShipmentOrderType_WorkFlowList: ShipmentOrderData.ShipmentOrderType_WorkFlowList,
@@ -82,7 +83,6 @@ class DetailCom extends React.Component {
 
 
     render() {
-        console.log("asdasdasd",this.state.DataSource)
         if (this.state.IsLoadDataComplete) {
             return (
                 <div className="col-lg-12 page-detail">
@@ -101,6 +101,7 @@ class DetailCom extends React.Component {
                         ShipmentOrderID={this.props.match.params.id}
                         ShipmentOrderAddress={this.state.DataSource}
                         ShipmentOrderAddressEdit={this.state.DataSource}
+
                     />
 
                     <InfoProduct

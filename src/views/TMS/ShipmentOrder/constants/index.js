@@ -768,6 +768,8 @@ export const DataGridColumnItemList = [
         iputpop: false
     }
 ];
+
+
 export const GridMLObjectItem = [
     {
         Name: "ProductName",
@@ -925,6 +927,12 @@ export const MLObjectShipmentOrderItem = [
         DefaultValue: "",
         BindControlName: "cbShipmentOrderPackingUnitID",
         DataSourceMember: "ShipmentOrderPackingUnitID"
+    },
+    {
+        Name: "PackingUnitName",
+        DefaultValue: "",
+        BindControlName: "txtPackingUnitName",
+        DataSourceMember: "PackingUnitName"
     },
     {
         Name: "ProductID",

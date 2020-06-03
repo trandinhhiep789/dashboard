@@ -11,18 +11,44 @@ import {
 class ShipmentOrderItemObjCom extends Component {
     constructor(props) {
         super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
 
         }
     }
-
+    handleSubmit(From, MLObject) {
+        let newShipmentOrder_ItemList = this.props.dataSource.ShipmentOrder_ItemList;
+        let formDatanew = [];
+        if (this.props.index != undefined) {
+            formDatanew = Object.assign([], newShipmentOrder_ItemList, { [this.props.index]: MLObject });
+            if (this.props.onInputChangeObj != null) {
+                this.props.onInputChangeObj(formDatanew);
+            }
+        }
+        else {
+            newShipmentOrder_ItemList.push(MLObject)
+            if (this.props.onInputChangeObj != null) {
+                this.props.onInputChangeObj(newShipmentOrder_ItemList);
+            }
+        }
+    }
 
     render() {
+        
+ const AddElementList = [
+    {
+        type: "hidden",
+        name: "txtPackingUnitName",
+        label: "mã gói sản phẩm lắp đặt",
+        datasourcemember: "PackingUnitName",
+        DataSourceMember:"PackingUnitName"
+    }]
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectShipmentOrderItem}
-                dataSource={[]}
-                listelement={[]}
+                dataSource={this.props.index != undefined ? this.props.dataSource.ShipmentOrder_ItemList[this.props.index] : null}
+                listelement={AddElementList}
+                onSubmit={this.handleSubmit}
             >
                 <div className="row">
                     <div className="col-md-6">
@@ -35,10 +61,10 @@ class ShipmentOrderItemObjCom extends Component {
                             placeholder="Mã sản phẩm"
                             controltype="InputControl"
                             value=""
-                            validatonList={["required"]}
                             datasourcemember="ProductID"
                         />
                     </div>
+
                     <div className="col-md-6">
                         <FormControl.TextBox
                             name="txtProductName"
@@ -60,17 +86,18 @@ class ShipmentOrderItemObjCom extends Component {
                             colspan="9"
                             labelcolspan="3"
                             label="kiện hàng"
-                            // validatonList={["Comborequired"]}
+                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={false}
                             loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
                             valuemember="ShipmentOrderTypeID"
                             nameMember="ShipmentOrderTypeName"
                             controltype="InputControl"
                             value={-1}
-                            listoption={[{value:-1,label:"--vui lòng chọn--"},{value:1,label:"hoclenho"}]}
+                            listoption={[{ value: '-1', label: "--vui lòng chọn--" },{ value: 'A6FDE36255DB209DE053D105010ACAB8', label: "mặc đinh" }]}
                             datasourcemember="ShipmentOrderPackingUnitID" />
 
                     </div>
+
                     <div className="col-md-6">
                         <FormControl.TextBoxCurrency
                             name="txtPrice"
@@ -84,6 +111,7 @@ class ShipmentOrderItemObjCom extends Component {
                             datasourcemember="Price"
                         />
                     </div>
+
                     <div className="col-md-6">
                         <FormControl.TextBox
                             name="txtQuantity"
@@ -97,6 +125,7 @@ class ShipmentOrderItemObjCom extends Component {
                             datasourcemember="Quantity"
                         />
                     </div>
+
                     <div className="col-md-6">
                         <FormControl.ComboBox
                             name="cbQuantityUnitID"
@@ -109,11 +138,12 @@ class ShipmentOrderItemObjCom extends Component {
                             valuemember="QuantityUnitID"
                             nameMember="QuantityUnit"
                             controltype="InputControl"
-                            value={""}
+                            value={-1}
                             listoption={null}
                             datasourcemember="QuantityUnitID" />
 
                     </div>
+
                     <div className="col-md-6">
                         <div className="form-row ">
                             <div className="form-group col-md-3">
@@ -164,6 +194,7 @@ class ShipmentOrderItemObjCom extends Component {
                             </div>
                         </div>
                     </div>
+
                     <div className="col-md-6">
                         <FormControl.CheckBox
                             name="ckIsInstallItem"
@@ -174,10 +205,11 @@ class ShipmentOrderItemObjCom extends Component {
                             controltype="InputControl"
                             value=""
                             datasourcemember="IsInstallItem"
+                            classNameCustom="customCheckbox"
                         />
                     </div>
 
-                    <div className="col-md-12">
+                    {/* <div className="col-md-12">
                         <FormControl.TextBox
                             name="txtNote"
                             colspan="10"
@@ -189,6 +221,23 @@ class ShipmentOrderItemObjCom extends Component {
                             datasourcemember="Note"
                             classNameCustom="customcontrol"
                         />
+                    </div> */}
+
+                    <div className="col-md-6">
+                        <FormControl.TextBox
+                            name="txtNote"
+                            colspan="9"
+                            labelcolspan="3"
+                            readOnly={false}
+                            label="Ghi chú"
+                            controltype="InputControl"
+                            value=""
+                            datasourcemember="Note"
+                            classNameCustom="customcontrol"
+                        />
+                    </div>
+                    <div className="col-md-6">
+
                     </div>
                 </div>
 

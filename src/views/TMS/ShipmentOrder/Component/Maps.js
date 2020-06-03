@@ -13,14 +13,25 @@ class MapsCom extends React.Component {
     }
 
     componentDidMount() {
+        let SenderGeoLocation = this.props.location.state.SenderGeoLocation.split(',');
+        let ReceiverGeoLocation = this.props.location.state.ReceiverGeoLocation.split(',');
+        const LatitudeSender = parseFloat(SenderGeoLocation[0]);
+        const LongitudeSender = parseFloat(SenderGeoLocation[1]);
+
+        const LatitudeReceiver = parseFloat(ReceiverGeoLocation[0]);
+        const LongitudeReceiver = parseFloat(ReceiverGeoLocation[1]);
+
+        var position = new vbd.LatLng(LatitudeSender, LongitudeSender); /*vị trí của marker trên map*/
+        var positioncustomer = new vbd.LatLng(LatitudeReceiver, LongitudeReceiver); /*vị trí của marker trên map*/
+
         let Geometry="";
         const Points = [{
-            "Latitude": 10.780683826609504,
-            "Longitude": 106.73606586482492
+            "Latitude": LatitudeSender,
+            "Longitude": LongitudeSender
         },
         {
-            "Latitude": 10.787795778917115,
-            "Longitude": 106.76496505868272
+            "Latitude": LatitudeReceiver,
+            "Longitude": LongitudeReceiver,
         }];
 
         let paramsRequest = {
@@ -38,15 +49,27 @@ class MapsCom extends React.Component {
        /// registerKey: "7f65a9df-4910-434d-b2ce-5cf7d783ad8b",
      
         const mapProp = {
-            center: new vbd.LatLng(10.780683826609504, 106.73606586482492),
+            center: new vbd.LatLng(LatitudeSender, LongitudeSender),
             maxZoom: 19,
-            zoom: 14,
+            zoom: 15,
             minZoom: 2,
-            registerKey: "6a50ea65-8dd9-4c03-aa6e-6c839b611eea",
+            registerKey: "7f65a9df-4910-434d-b2ce-5cf7d783ad8b",
             scaleControlOptions: { showScale: true },
             zoomControl: true
         };
+
         let map = new vbd.Map(mapContainer, mapProp);
+        var marker = new vbd.Marker({
+            position: position,
+
+        });
+        var marker2 = new vbd.Marker({
+            position: positioncustomer,
+
+        });
+
+        marker.setMap(map);
+        marker2.setMap(map);
 
         this.props.callFetchAPI(APIHostName, 'api/Maps/FindPathViaRoute', paramsRequest).then((apiResult) => {
             if (!apiResult.IsError) {
