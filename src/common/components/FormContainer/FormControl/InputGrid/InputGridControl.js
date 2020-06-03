@@ -245,16 +245,22 @@ class InputGridControlCom extends Component {
     }
 
     handleInsertClickDelete(index) {
-        let dataSource = this.props.dataSource;
-        if (this.props.value != null) {
-            dataSource = this.props.value;
+
+        if (this.props.onDeleteClick === undefined) {
+            let dataSource = this.props.dataSource;
+
+            if (this.props.value != null) {
+                dataSource = this.props.value;
+            }
+            let dataSourceValue = dataSource.filter(function (value, index1) { return index1 != index; });
+            if (this.props.onValueChange != null) {
+                this.props.onValueChange(this.props.name, dataSourceValue, this.props.controltype, undefined);
+            }
         }
-        let dataSourceValue = dataSource.filter(function (value, index1) { return index1 != index; });
-        if (this.props.onValueChange != null) {
-            const mLObjectDefinition = this.props.MLObjectDefinition;
-            const MLObjectList = GetMLObjectDataList(mLObjectDefinition, dataSourceValue, dataSourceValue);
-            this.props.onValueChange(this.props.name, MLObjectList, this.props.controltype, undefined);
+        else {
+            this.props.onDeleteClick(index)
         }
+
     }
     //#region get Page
     clearData() {

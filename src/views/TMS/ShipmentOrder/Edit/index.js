@@ -42,8 +42,7 @@ class EditCom extends React.Component {
         this.handleItemInsert = this.handleItemInsert.bind(this);
         this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
         this.handleItemEdit = this.handleItemEdit.bind(this);
-
-
+        this.handleItemDelete = this.handleItemDelete.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -79,19 +78,26 @@ class EditCom extends React.Component {
     }
     handleInputChangeObjItem(ObjItem) {
 
-        console.log("handleInputChangeObjItem", ObjItem)
+        const formData = Object.assign({}, this.state.DataSource, { ["ShipmentOrder_ItemList"]: ObjItem });
+        this.setState({ DataSource: formData});
+        this.props.hideModal();
+      
+    }
+    handleItemDelete(index)
+    {
+        let dataSourceValue = this.state.DataSource.ShipmentOrder_ItemList.filter(function (value, index1) { return index1 != index; });
+        const formData = Object.assign({}, this.state.DataSource, { ["ShipmentOrder_ItemList"]: dataSourceValue });
+        this.setState({ DataSource: formData});
+
     }
     handleItemInsert() {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Cập nhật danh sách hàng hóa',
             content: {
                 text: <ShipmentOrderItemObj
-                     dataSource={[]}
+                    dataSource={this.state.DataSource}
                     onInputChangeObj={this.handleInputChangeObjItem}
-
                 />
-
-
             },
             maxWidth: '1000px'
         });
@@ -101,9 +107,9 @@ class EditCom extends React.Component {
             title: 'Cập nhật danh sách hàng hóa',
             content: {
                 text: <ShipmentOrderItemObj
-                    dataSource={this.state.DataSource.ShipmentOrder_ItemList[index]}
+                    dataSource={this.state.DataSource}
+                    index={index}
                     onInputChangeObj={this.handleInputChangeObjItem}
-
                 />
             },
             maxWidth: '1000px'
@@ -756,6 +762,7 @@ class EditCom extends React.Component {
                                 dataSource={this.state.DataSource.ShipmentOrder_ItemList}
                                 onInsertClick={this.handleItemInsert}
                                 onEditClick={this.handleItemEdit}
+                                onDeleteClick={this.handleItemDelete}
                             />
 
                             <div className="card">
@@ -900,6 +907,9 @@ const mapDispatchToProps = dispatch => {
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
+        },
+        hideModal: () => {
+            dispatch(hideModal());
         }
     };
 };

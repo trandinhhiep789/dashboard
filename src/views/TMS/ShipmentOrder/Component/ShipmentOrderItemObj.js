@@ -17,8 +17,19 @@ class ShipmentOrderItemObjCom extends Component {
         }
     }
     handleSubmit(From, MLObject) {
-        if (this.props.onInputChangeObj != null) {
-            this.props.onInputChangeObj(MLObject);
+        let newShipmentOrder_ItemList = this.props.dataSource.ShipmentOrder_ItemList;
+        let formDatanew = [];
+        if (this.props.index != undefined) {
+            formDatanew = Object.assign([], newShipmentOrder_ItemList, { [this.props.index]: MLObject });
+            if (this.props.onInputChangeObj != null) {
+                this.props.onInputChangeObj(formDatanew);
+            }
+        }
+        else {
+            newShipmentOrder_ItemList.push(MLObject)
+            if (this.props.onInputChangeObj != null) {
+                this.props.onInputChangeObj(newShipmentOrder_ItemList);
+            }
         }
     }
 
@@ -26,7 +37,7 @@ class ShipmentOrderItemObjCom extends Component {
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectShipmentOrderItem}
-                dataSource={this.props.dataSource}
+                dataSource={this.props.index != undefined ? this.props.dataSource.ShipmentOrder_ItemList[this.props.index] : []}
                 listelement={[]}
                 onSubmit={this.handleSubmit}
             >
@@ -73,7 +84,7 @@ class ShipmentOrderItemObjCom extends Component {
                             nameMember="ShipmentOrderTypeName"
                             controltype="InputControl"
                             value={-1}
-                            listoption={[{ value: -1, label: "--vui lòng chọn--" }, { value: 1, label: "hoclenho" }]}
+                            listoption={[{ value: 'A6FDE36255DB209DE053D105010ACAB8', label: "mặc đinh" }]}
                             datasourcemember="ShipmentOrderPackingUnitID" />
 
                     </div>

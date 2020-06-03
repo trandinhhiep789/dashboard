@@ -20,12 +20,10 @@ function GUID() {
 
 class FormContainerCom extends Component {
 
-    FormValidationNew = {};
     constructor(props) {
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleInputChangeObj = this.handleInputChangeObj.bind(this);
-
         this.changeLoadComplete = this.changeLoadComplete.bind(this);
         this.handleInputChangeList = this.handleInputChangeList.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -46,6 +44,19 @@ class FormContainerCom extends Component {
     componentDidMount() {
         this.checkPermission()
     }
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.dataSource) !== JSON.stringify(nextProps.dataSource)) {
+            console.log("nextProps.dataSource",this.state.FormData,nextProps.dataSource)
+            const FormDataContol = this.state.FormData;
+            for (const key in FormDataContol) {
+                FormDataContol[key].value = nextProps.dataSource[FormDataContol[key].datasourcemember];
+            }
+            this.setState({
+                FormData: FormDataContol
+            });
+        }
+        
+    }
     //#region BinData
     bindData() {
         const children = this.props.children;
@@ -55,7 +66,7 @@ class FormContainerCom extends Component {
         if (typeof dataSource != "undefined") {
             listElement.map((elementItem) => {
                 const elementname = elementItem.name;
-                const ObjectName = { Name: elementname, value: elementItem.value, Controltype: elementItem.type, label: elementItem.label, labelError: elementItem.label, ErrorLst: [], validatonList: elementItem.validatonList };
+                const ObjectName = { Name: elementname,datasourcemember:elementItem.datasourcemember, value: elementItem.value, Controltype: elementItem.type, label: elementItem.label, labelError: elementItem.label, ErrorLst: [], validatonList: elementItem.validatonList };
                 formData = Object.assign({}, formData, { [elementname]: ObjectName });
             });
         }
@@ -106,17 +117,17 @@ class FormContainerCom extends Component {
             if (dataSource != null && datasourcemember != null) {
                 controlvalue = dataSource[datasourcemember];
             }
-            const ObjectName = { Name: controlname, value: controlvalue, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList };
+            const ObjectName = { Name: controlname,datasourcemember:datasourcemember, value: controlvalue, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList };
             return { [controlname]: ObjectName };
         }
         if (controltype == "InputControlNew") {
             const objvalue = GetMLObjectData(child.props.MLObjectDefinition, {}, this.props.dataSource);
-            const ObjectName = { Name: controlname, value: objvalue, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList, listelement: child.props.listelement };
+            const ObjectName = { Name: controlname,datasourcemember:datasourcemember, value: objvalue, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList, listelement: child.props.listelement };
             return { [controlname]: ObjectName };
         }
         if (controltype == "GridControl"||controltype == "InputGridControl") {
             let controlname = child.props.name;
-            const ObjectName = { Name: controlname, value: child.props.dataSource, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList };
+            const ObjectName = { Name: controlname,datasourcemember:controlname, value: child.props.dataSource, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList };
             return { [controlname]: ObjectName };
         }
 
@@ -334,9 +345,7 @@ class FormContainerCom extends Component {
                 }
             }
         });
-        console.log("MLObject", MLObject)
-
-        // const MLObject = GetMLObjectObjData(this.props.MLObjectDefinition, FormDataContolLstd, this.props.value);
+        console.log("MLObject", MLObject,this.state.FormData)
         if (this.props.onSubmit != null) {
             this.props.onSubmit(this.state.FormData, MLObject);
         }
