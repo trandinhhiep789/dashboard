@@ -313,6 +313,7 @@ class InputGridCom extends Component {
 	}
 
 	handleDeleteClick() {
+		debugger;
 		var doDelete = () => {
 			const idSelectColumnName = this.props.IDSelectColumnName;
 			if (idSelectColumnName != "checkboxAll") {
@@ -374,18 +375,23 @@ class InputGridCom extends Component {
 						}
 					}
 					else {
-						let removeValFromIndex = [];
+						let removedList = [];
 						for (let item in idDeleteListObject) {
 							const elementobject = idDeleteListObject[item];
 							if (elementobject.IsChecked) {
-								removeValFromIndex.push(item);
-								//this.props.dataSource.splice(item, 1);
+								removedList.push({ "key": elementobject.DataSourceMember[0].key, "value": elementobject.DataSourceMember[0].value });
 								if (this.props.value)
 									this.props.value.splice(item, 1);
 							}
 						}
-						for (var i = removeValFromIndex.length - 1; i >= 0; i--)
-							this.props.dataSource.splice(removeValFromIndex[i], 1);
+						for (let j = 0; j <= removedList.length - 1; j++) {
+							for (let i = 0; i <= this.props.dataSource.length - 1; i++) {
+								let removeItem = removedList[j];
+								if (removeItem && this.props.dataSource[i][removeItem.key] === removeItem.value) {
+									this.props.dataSource.splice(i, 1);
+								}
+							}
+						}
 						this.forceUpdate();
 						if (this.props.onDeleteClick)
 							this.props.onDeleteClick(listDeleteID);

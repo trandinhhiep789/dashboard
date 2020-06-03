@@ -99,16 +99,16 @@ export const AddElementList = [
         validatonList: [],
     },
     {
-        type: "date",
+        type: "text",
         name: "txtIncorporationDate",
         label: "Ngày thành lập",
-        value: new Date(),
+        value: "",
         placeholder: "",
         icon: "",
         DataSourceMember: "IncorporationDate",
         ValueMember: "IncorporationDate",
         NameMember: "IncorporationDate",
-        validatonList: []
+        validatonList: ["date"]
     },
     {
         type: "select",
@@ -276,7 +276,7 @@ export const AddElementList = [
         listoption: [],
         DataSourceMember: "OwnerEmail",
         readonly: false,
-        validatonList: []
+        validatonList: ["Email"]
     },
     {
         type: "text",
@@ -328,7 +328,7 @@ export const AddElementList = [
         listoption: [],
         DataSourceMember: "ContactEmail",
         readonly: false,
-        validatonList: []
+        validatonList: ["Email"]
     },
     {
         type: "singleFileUpload",
@@ -451,16 +451,16 @@ export const EditElementList = [
         validatonList: [],
     },
     {
-        type: "date",
+        type: "text",
         name: "txtIncorporationDate",
         label: "Ngày thành lập",
-        value: new Date(),
+        value: "",
         placeholder: "",
         icon: "",
         DataSourceMember: "IncorporationDate",
         ValueMember: "IncorporationDate",
         NameMember: "IncorporationDate",
-        validatonList: []
+        validatonList: ["date"]
     },
     {
         type: "select",
@@ -628,7 +628,7 @@ export const EditElementList = [
         listoption: [],
         DataSourceMember: "OwnerEmail",
         readonly: false,
-        validatonList: []
+        validatonList: ["Email"]
     },
     {
         type: "text",
@@ -680,7 +680,7 @@ export const EditElementList = [
         listoption: [],
         DataSourceMember: "ContactEmail",
         readonly: false,
-        validatonList: []
+        validatonList: ["Email"]
     },
     {
         type: "singleFileUpload",

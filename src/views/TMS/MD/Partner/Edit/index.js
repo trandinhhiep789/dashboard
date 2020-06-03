@@ -249,9 +249,12 @@ class EditCom extends React.Component {
             MLObject.PictureURL = "";
         }
 
-        var myDate = new Date(MLObject.IncorporationDate);
-        myDate.setDate(myDate.getDate() + 1);
-        MLObject.IncorporationDate = myDate;
+        if (MLObject.IncorporationDate) {
+            let temp = MLObject.IncorporationDate.trim().split('/');
+            let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
+            myDate.setDate(myDate.getDate() + 1);
+            MLObject.IncorporationDate = myDate;
+        }
 
         if (MLObject.CountryID == -1) {
             MLObject.ProvinceID = -1;
