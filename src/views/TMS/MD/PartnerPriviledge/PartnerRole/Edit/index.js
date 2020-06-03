@@ -107,6 +107,25 @@ class EditCom extends React.Component {
 
 
     handleInputUserRoleInsert() {
+        let SearchValue = "";
+        if (this.state.DataSource.ListPartnerRolePriviledge) {
+            this.state.DataSource.ListPartnerRolePriviledge.map(function (item, index) {
+                SearchValue = SearchValue + item.PartnerPriviledgeID + ",";
+            });
+            SearchValue = SearchValue.substring(0, SearchValue.length - 1);
+        }
+
+        let SearchParamsModeList = [
+            {
+                SearchKey: "@Keyword",
+                SearchValue: ""
+            },
+            {
+                SearchKey: "@PartnerPriviledgeListID",
+                SearchValue: SearchValue
+            }
+        ];
+
         this.props.showModal(MODAL_TYPE_SEARCH, {
             title: "Danh sách quyền",
             content: {
@@ -118,7 +137,7 @@ class EditCom extends React.Component {
                     GridDataSource={[]}
                     SearchAPIPath={SearchPartnerRoleAPIPath}
                     SearchElementList={SearchElementModeList}
-                    InitSearchParams={InitSearchParamsModeList}
+                    InitSearchParams={SearchParamsModeList}
                     onClickInsertItem={this.handleInsertItem.bind(this)}
                     IDSelectColumnName={"chkSelect"}
                     name={"PartnerPriviledgeName"}
