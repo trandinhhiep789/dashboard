@@ -929,6 +929,12 @@ export const MLObjectShipmentOrderItem = [
         DataSourceMember: "ShipmentOrderPackingUnitID"
     },
     {
+        Name: "PackingUnitName",
+        DefaultValue: "",
+        BindControlName: "txtPackingUnitName",
+        DataSourceMember: "PackingUnitName"
+    },
+    {
         Name: "ProductID",
         DefaultValue: "",
         BindControlName: "txtProductID",

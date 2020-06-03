@@ -373,54 +373,7 @@ class ComboBoxCom extends Component {
             this.props.onValueChangeCus(e.target.name, e.target.value);
         }
     }
-    //#region tree category
-    categoryNamePrefix(categoryLevel) {
-        let resultStr = "";
-        for (let i = 0; i < categoryLevel; i++) {
-            resultStr += "---";
-        }
-        return resultStr;
-    }
-    createCategoryTree(originListItem) {
-        let childListItem = originListItem.filter(item => item.ParentID == 0);
-        //  console.log("createCategoryTree childListItem:", childListItem);
-        let itemListResult = [{ value: -1, label: "--Vui lòng chọn--" }];
-        for (let i = 0; i < childListItem.length; i++) {
-            itemListResult.push({ value: childListItem[i].CategoryID, label: childListItem[i].CategoryName });
-            let childItemTree = this.createChildCategoryTree(originListItem, childListItem[i].CategoryID, 1);
-            // console.log("createCategoryTree childItemTree:", childItemTree);
-            for (let j = 0; j < childItemTree.length; j++) {
-                //itemListResult.push(childItemTree[j]);
-                itemListResult.push({ value: childItemTree[j].CategoryID, label: childItemTree[j].CategoryName });
-            }
-        }
-        return itemListResult;
-    }
-    createChildCategoryTree(originListItem, parentID, categoryLevel) {
-        let childListItem = originListItem.filter(item => item.ParentID == parentID);
-        // console.log("createChildCategoryTree childListItem:", childListItem);
-        let itemListResult = []
-        for (let i = 0; i < childListItem.length; i++) {
-            let item = childListItem[i];
-            item.CategoryName = this.categoryNamePrefix(categoryLevel) + item.CategoryName;
-            //   console.log("createChildCategoryTree childListItem:",item);
-            itemListResult.push(item);
-            //itemListResult.push({ value: item.CategoryID, label: item.CategoryName });
-            const newCategoryLevel = categoryLevel + 1;
-            let childListItem2 = originListItem.filter(item => item.ParentID == item.CategoryID);
-            //  console.log("createChildCategoryTree childListItem2:",childListItem2);
-            if (childListItem2.length > 0) {
-                const childItemTree2 = this.createChildCategoryTree(originListItem, item.CategoryID, newCategoryLevel);
-                for (j = 0; j < childItemTree2.length; j++) {
-                    itemListResult.push(childItemTree2[j]);
-                    itemListResult.push({ value: childItemTree2[j].CategoryID, label: childItemTree2[j].CategoryName });
-                }
-            }
-        }
-        return itemListResult;
 
-    }
-    //#endregion tree category
 
     componentDidMount() {
         let listOption = this.props.listoption;
@@ -442,10 +395,6 @@ class ComboBoxCom extends Component {
                         }
                         );
                         this.setState({ Listoption: listOption });
-                    }
-                    else {
-                        const categoryTree = this.createCategoryTree(result.ResultObject.CacheData, 0, 0);
-                        this.setState({ Listoption: categoryTree });
                     }
                 }
                 else {

@@ -34,11 +34,20 @@ class ShipmentOrderItemObjCom extends Component {
     }
 
     render() {
+        
+ const AddElementList = [
+    {
+        type: "hidden",
+        name: "txtPackingUnitName",
+        label: "mã gói sản phẩm lắp đặt",
+        datasourcemember: "PackingUnitName",
+        DataSourceMember:"PackingUnitName"
+    }]
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectShipmentOrderItem}
                 dataSource={this.props.index != undefined ? this.props.dataSource.ShipmentOrder_ItemList[this.props.index] : null}
-                listelement={[]}
+                listelement={AddElementList}
                 onSubmit={this.handleSubmit}
             >
                 <div className="row">
@@ -52,7 +61,6 @@ class ShipmentOrderItemObjCom extends Component {
                             placeholder="Mã sản phẩm"
                             controltype="InputControl"
                             value=""
-                            validatonList={["required"]}
                             datasourcemember="ProductID"
                         />
                     </div>
@@ -78,14 +86,14 @@ class ShipmentOrderItemObjCom extends Component {
                             colspan="9"
                             labelcolspan="3"
                             label="kiện hàng"
-                            // validatonList={["Comborequired"]}
+                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={false}
                             loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
                             valuemember="ShipmentOrderTypeID"
                             nameMember="ShipmentOrderTypeName"
                             controltype="InputControl"
-                            value={'A6FDE36255DB209DE053D105010ACAB8'}
-                            listoption={[{ value: 'A6FDE36255DB209DE053D105010ACAB8', label: "mặc đinh" }]}
+                            value={-1}
+                            listoption={[{ value: '-1', label: "--vui lòng chọn--" },{ value: 'A6FDE36255DB209DE053D105010ACAB8', label: "mặc đinh" }]}
                             datasourcemember="ShipmentOrderPackingUnitID" />
 
                     </div>
@@ -130,7 +138,7 @@ class ShipmentOrderItemObjCom extends Component {
                             valuemember="QuantityUnitID"
                             nameMember="QuantityUnit"
                             controltype="InputControl"
-                            value={""}
+                            value={-1}
                             listoption={null}
                             datasourcemember="QuantityUnitID" />
 
