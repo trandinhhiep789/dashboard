@@ -739,10 +739,10 @@ export const DataGridColumnItemList = [
         Width: 150
     },
     {
-        Name: "QuantityUnitID",
+        Name: "QuantityUnitName",
         Type: "text",
         Caption: "Đơn vị tính",
-        DataSourceMember: "QuantityUnitID",
+        DataSourceMember: "QuantityUnitName",
         Width: 70
     },
     {
@@ -931,8 +931,14 @@ export const MLObjectShipmentOrderItem = [
     {
         Name: "PackingUnitName",
         DefaultValue: "",
-        BindControlName: "txtPackingUnitName",
+        BindControlName: "PackingUnitName",
         DataSourceMember: "PackingUnitName"
+    },
+    {
+        Name: "QuantityUnitName",
+        DefaultValue: "",
+        BindControlName: "QuantityUnitName",
+        DataSourceMember: "QuantityUnitName"
     },
     {
         Name: "ProductID",

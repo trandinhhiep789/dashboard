@@ -70,8 +70,6 @@ class FormContainerCom extends Component {
                 formData = Object.assign({}, formData, { [elementname]: ObjectName });
             });
         }
-        debugger;
-
         React.Children.map(children, (child, i) => {
             if (child.type == "div") {
                 const formDataTempList = this.bindDivChildrenData(child, dataSource);
@@ -160,7 +158,7 @@ class FormContainerCom extends Component {
     //#endregion BinData
 
     //#region InputChange && InputChangeList
-    handleInputChange(elementname, elementvalue, controllabel, listvalidation, listvalidationRow) {
+    handleInputChange(elementname, elementvalue, namelabel, valuelabel, listvalidationRow) {
         //console.log('change')
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
@@ -169,6 +167,10 @@ class FormContainerCom extends Component {
             const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
             FormDataContolLstd[elementname].ErrorLst = validationObject;
         }
+        if (typeof namelabel != "undefined" && namelabel != "") {
+            FormDataContolLstd[namelabel].value = valuelabel;
+        }
+
         this.setState({
             FormData: FormDataContolLstd,
         });
@@ -217,7 +219,11 @@ class FormContainerCom extends Component {
             if (formValidation[key].ErrorLst != undefined) {
                 // console.log("validation:", key, this.elementItemRefs[key]);
                 if (formValidation[key].ErrorLst != [] && formValidation[key].ErrorLst.IsValidatonError) {
-                    this.elementItemRefs[key].focus();
+                    debugger;
+                    this.elementItemRefs[key].focus()
+                    // this.elementItemRefs[key].getElementsByTagName('input')[0].focus()
+                    //     console.log("elementItemRefs[key].",key,this.elementItemRefs[key].Children)
+                    // this.elementItemRefs[key].find("input")[0].focus()
                     return key;
                 }
             }

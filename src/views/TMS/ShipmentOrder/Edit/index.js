@@ -190,7 +190,7 @@ class EditCom extends React.Component {
                                     />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ComboBox
+                                    <FormControl.ComboBoxSelect
                                         name="txtShipmentOrderTypeID"
                                         colspan="8"
                                         labelcolspan="4"

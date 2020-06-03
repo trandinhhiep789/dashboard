@@ -19,6 +19,8 @@ class ShipmentOrderItemObjCom extends Component {
     handleSubmit(From, MLObject) {
         let newShipmentOrder_ItemList = this.props.dataSource.ShipmentOrder_ItemList;
         let formDatanew = [];
+        debugger
+        MLObject.SizeItem = MLObject.Length + "x" + MLObject.Width + "x" + MLObject.Height + "cm";
         if (this.props.index != undefined) {
             formDatanew = Object.assign([], newShipmentOrder_ItemList, { [this.props.index]: MLObject });
             if (this.props.onInputChangeObj != null) {
@@ -34,15 +36,23 @@ class ShipmentOrderItemObjCom extends Component {
     }
 
     render() {
-        
- const AddElementList = [
-    {
-        type: "hidden",
-        name: "txtPackingUnitName",
-        label: "mã gói sản phẩm lắp đặt",
-        datasourcemember: "PackingUnitName",
-        DataSourceMember:"PackingUnitName"
-    }]
+
+        const AddElementList = [
+            {
+                type: "hidden",
+                name: "QuantityUnitName",
+                label: "",
+                datasourcemember: "QuantityUnitName",
+                DataSourceMember: "QuantityUnitName"
+            },
+            {
+                type: "hidden",
+                name: "PackingUnitName",
+                label: "",
+                datasourcemember: "PackingUnitName",
+                DataSourceMember: "PackingUnitName"
+            },
+        ]
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectShipmentOrderItem}
@@ -52,7 +62,7 @@ class ShipmentOrderItemObjCom extends Component {
             >
                 <div className="row">
                     <div className="col-md-6">
-                        <FormControl.TextBox
+                        <FormControl.FormControlTextBox
                             name="txtProductID"
                             colspan="9"
                             labelcolspan="3"
@@ -66,7 +76,7 @@ class ShipmentOrderItemObjCom extends Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.TextBox
+                        <FormControl.FormControlTextBox
                             name="txtProductName"
                             colspan="9"
                             labelcolspan="3"
@@ -81,19 +91,20 @@ class ShipmentOrderItemObjCom extends Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.ComboBox
+                        <FormControl.FormControlComboBox
                             name="cbShipmentOrderPackingUnitID"
                             colspan="9"
                             labelcolspan="3"
                             label="kiện hàng"
-                             validatonList={["Comborequired"]}
+                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={false}
                             loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
                             valuemember="ShipmentOrderTypeID"
                             nameMember="ShipmentOrderTypeName"
                             controltype="InputControl"
                             value={-1}
-                            listoption={[{ value: '-1', label: "--vui lòng chọn--" },{ value: 'A6FDE36255DB209DE053D105010ACAB8', label: "mặc đinh" }]}
+                            listoption={[{ value: '-1', label: "--vui lòng chọn--",name:"" }, { value: 'A6FDE36255DB209DE053D105010ACAB8', label: "mặc đinh",name:"mặc đinh" }]}
+                            namelabel="PackingUnitName"
                             datasourcemember="ShipmentOrderPackingUnitID" />
 
                     </div>
@@ -127,7 +138,7 @@ class ShipmentOrderItemObjCom extends Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.ComboBox
+                        <FormControl.ComboBoxSelect
                             name="cbQuantityUnitID"
                             colspan="9"
                             labelcolspan="3"
@@ -140,6 +151,7 @@ class ShipmentOrderItemObjCom extends Component {
                             controltype="InputControl"
                             value={-1}
                             listoption={null}
+                            namelabel="QuantityUnitName"
                             datasourcemember="QuantityUnitID" />
 
                     </div>
