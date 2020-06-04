@@ -35,7 +35,7 @@ class PartnerCoordinatorStoreCom extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log("222", nextProps);
+        //console.log("222", nextProps);
         if (nextProps.PartnerID !== this.state.PartnerID) {
             this.setState({ PartnerID: nextProps.PartnerID });
         }

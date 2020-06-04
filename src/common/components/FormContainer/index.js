@@ -26,10 +26,11 @@ class FormContainerCom extends Component {
         this.handleInputChangeObj = this.handleInputChangeObj.bind(this);
         this.changeLoadComplete = this.changeLoadComplete.bind(this);
         this.handleInputChangeList = this.handleInputChangeList.bind(this);
+        this.handleInputChangeMulti = this.handleInputChangeMulti.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.elementItemRefs = [];
         const formData = this.bindData();
-        console.log("formData", formData, this.props.dataSource)
+        //console.log("formData", formData, this.props.dataSource)
         this.state = {
             FormData: formData,
             FormValidation: {},
@@ -46,7 +47,6 @@ class FormContainerCom extends Component {
     }
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.dataSource) !== JSON.stringify(nextProps.dataSource)) {
-            console.log("nextProps.dataSource", this.state.FormData, nextProps.dataSource)
             const FormDataContol = this.state.FormData;
             for (const key in FormDataContol) {
                 FormDataContol[key].value = nextProps.dataSource[FormDataContol[key].datasourcemember];
@@ -129,6 +129,11 @@ class FormContainerCom extends Component {
             const ObjectName = { Name: controlname, datasourcemember: controlname, value: child.props.dataSource, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList };
             return { [controlname]: ObjectName };
         }
+        if (controltype == "InputMultiControl") {
+            let controlname = child.props.name;
+            const ObjectName = { Name: controlname, datasourcemember: controlname, value: child.props.dataSource, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList };
+            return { [controlname]: ObjectName };
+        }
 
         const datasourcemember = child.props.datasourcemember;
         if (dataSource != null && datasourcemember != null) {
@@ -171,6 +176,25 @@ class FormContainerCom extends Component {
             FormDataContolLstd[namelabel].value = valuelabel;
         }
 
+        this.setState({
+            FormData: FormDataContolLstd,
+        });
+
+    }
+
+    handleInputChangeMulti(elementname, elementvalue) {
+        const FormDataContolLstd = this.state.FormData;
+        FormDataContolLstd[elementname].value = elementvalue;
+        if (typeof FormDataContolLstd[elementname].validatonList != "undefined") {
+            if (elementvalue.length < 1) {
+                const validationObject = { IsValidatonError: true, ValidatonErrorMessage: "vui lòng chọn " + FormDataContolLstd[elementname].label };
+                FormDataContolLstd[elementname].ErrorLst = validationObject;
+            }
+            else {
+                const validationObject = { IsValidatonError: false, ValidatonErrorMessage: "" };
+                FormDataContolLstd[elementname].ErrorLst = validationObject;
+            }
+        }
         this.setState({
             FormData: FormDataContolLstd,
         });
@@ -324,6 +348,17 @@ class FormContainerCom extends Component {
                         }
                     );
                 }
+                else if (controltype == "InputMultiControl") {
+                    const controlname = child.props.name;
+
+                    return React.cloneElement(child,
+                        {
+                            onValueChange: this.handleInputChangeMulti,
+                            value: this.state.FormData[controlname].value,
+                            inputRef: ref => this.elementItemRefs[controlname] = ref
+                        }
+                    );
+                }
             }
         }
         return child;
@@ -352,10 +387,12 @@ class FormContainerCom extends Component {
                     else if (this.state.FormData[controlName].Controltype == "InputControlNew") {
                         MLObject = Object.assign({}, MLObject, this.state.FormData[controlName].value);
                     }
+                    else {
+                        MLObject = Object.assign({}, MLObject, { [Item.Name]: this.state.FormData[controlName].value });
+                    }
                 }
             }
         });
-        console.log("MLObject", MLObject, this.state.FormData)
         if (this.props.onSubmit != null) {
             this.props.onSubmit(this.state.FormData, MLObject);
         }
@@ -397,9 +434,7 @@ class FormContainerCom extends Component {
         );
     }
     render() {
-
         let elmentRender = this.renderOneColumnForm();
-
         if (this.state.IsPermision == undefined) {
             return <p className="col-md-12">Đang kiểm tra quyền...</p>
         }
