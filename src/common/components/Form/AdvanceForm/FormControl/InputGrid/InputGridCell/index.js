@@ -65,9 +65,9 @@ class InputGridCellCom extends Component {
                         else {
 
                             const filterdata = result.ResultObject.CacheData.filter(a => a.CategoryTypeID == CategoryTypeID);
-                            console.log("filterdata", CategoryTypeID, filterdata);
+                            //console.log("filterdata", CategoryTypeID, filterdata);
                             const categoryTree = this.createCategoryTree(filterdata, 0, 0);
-                            console.log("categoryTree", CategoryTypeID, filterdata, categoryTree);
+                            //console.log("categoryTree", CategoryTypeID, filterdata, categoryTree);
                             this.setState({ Listoption: categoryTree });
                         }
 

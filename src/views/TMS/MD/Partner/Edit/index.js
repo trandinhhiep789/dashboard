@@ -48,7 +48,8 @@ class EditCom extends React.Component {
             District: [],
             Ward: [],
             EditElementList: EditElementList,
-            PartnerCoordinatorStore: []
+            PartnerCoordinatorStore: [],
+            FullAddress: ""
 
         };
     }
@@ -180,20 +181,55 @@ class EditCom extends React.Component {
         });
     }
 
-    getFullAddress() {
-        this.state.EditElementList.forEach(function (objElement) {
-            if (objElement.name == "txtProvinceID") {
-                console.log("txtProvinceID", objElement.value);
-            }
+    getFullAddress(formData) {
+        let fullAddress = "";
 
-        });
+        if (formData.txtWardID && formData.txtWardID != "-1") {
+            let ward = this.state.Ward.filter(x => x.WardID == formData.txtWardID);
+            fullAddress += ward[0].WardName + ", ";
+        }
+        if (formData.txtDistrictID && formData.txtDistrictID != "-1") {
+            let district = this.state.District.filter(x => x.DistrictID == formData.txtDistrictID);
+            fullAddress += district[0].DistrictName + ", ";
+        }
+        if (formData.txtProvinceID && formData.txtProvinceID != "-1") {
+            let province = this.state.Province.filter(x => x.ProvinceID == formData.txtProvinceID);
+            fullAddress += province[0].ProvinceName;
+        }
+
+        if (fullAddress) {
+            if (formData.txtAddress && formData.txtWardID && formData.txtWardID != "-1") {
+                fullAddress = formData.txtAddress + ", " + fullAddress;
+            } else {
+                fullAddress = "";
+            }
+        }
+
+        //console.log("full address", fullAddress);
+        return fullAddress;
+
     }
 
-    onValueChange(elementname, elementvalue) {
-        debugger;
-        // if(elementname == "txtAddress"){
-        //     this.getFullAddress();
-        // }
+    onValueChange(elementname, elementvalue, formData) {
+        //console.log("formData", formData);
+        let fullAddress = "";
+        if (elementname == "txtCountryID") {
+            fullAddress = "";
+            formData.txtProvinceID = -1;
+            formData.txtDistrictID = -1;
+            formData.txtWardID = -1;
+        } else if (elementname == "txtProvinceID") {
+            fullAddress = "";
+            formData.txtDistrictID = -1;
+            formData.txtWardID = -1;
+        } else if (elementname == "txtDistrictID") {
+            fullAddress = "";
+            formData.txtWardID = -1;
+        } else if (elementname == "txtWardID" && formData.txtAddress) {
+            fullAddress = this.getFullAddress(formData);
+        } else if (elementname == "txtAddress") {
+            fullAddress = this.getFullAddress(formData);
+        }
         //console.log("ward state", this.state.Ward);
         let country = [{ value: -1, label: "--Vui lòng chọn--" }];
         let province = [{ value: -1, label: "--Vui lòng chọn--" }];
@@ -226,10 +262,15 @@ class EditCom extends React.Component {
                 }
 
             }
+            if (objElement.name == "txtFullAddress") {
+                objElement.value = fullAddress;
+                document.getElementsByName("txtFullAddress")[0].value = fullAddress;
+            }
 
         }.bind(this));
         this.setState({
-            EditElementList: _EditElementList
+            EditElementList: _EditElementList,
+            FullAddress: fullAddress
         });
 
         //console.log("onValueChange.Province", country, province, district, ward);
@@ -237,7 +278,7 @@ class EditCom extends React.Component {
 
     onPartnerCoordinatorStoreChange(list) {
         this.setState({ PartnerCoordinatorStore: list });
-        console.log("onPartnerCoordinatorStoreChange", list);
+        //console.log("onPartnerCoordinatorStoreChange", list);
     }
 
 
@@ -267,6 +308,7 @@ class EditCom extends React.Component {
             MLObject.WardID = -1;
         }
 
+        MLObject.FullAddress = this.state.FullAddress;
         MLObject.PartnerCoordinatorStore = this.state.PartnerCoordinatorStore;
         MLObject.PartnerCoordinatorStore_DeleteList = this.state.PartnerCoordinatorStore_DeleteList;
 

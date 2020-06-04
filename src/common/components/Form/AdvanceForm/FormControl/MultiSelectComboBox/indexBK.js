@@ -55,7 +55,7 @@ export default class MultiSelectComboBox extends React.Component {
     }
 
     handleValueChange(selectedOption) {
-        console.log("MultiSelectComboBox handleValueChange: ", selectedOption);
+        //console.log("MultiSelectComboBox handleValueChange: ", selectedOption);
         this.setState({ SelectedOption: selectedOption });
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange)

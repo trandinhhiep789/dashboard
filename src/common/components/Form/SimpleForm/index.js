@@ -56,8 +56,8 @@ function transform1To3Column(inputArray) {
             Item2: {},
             Item3: {}
         }
-        console.log("itemCount*3 + 1", itemCount * 3 + 1);
-        console.log("inputArray.length", inputArray.length);
+        //console.log("itemCount*3 + 1", itemCount * 3 + 1);
+        //console.log("inputArray.length", inputArray.length);
         if (itemCount * 3 + 1 < inputArray.length) {
             Item.Item2 = inputArray[itemCount * 3 + 1]
         }
@@ -69,7 +69,7 @@ function transform1To3Column(inputArray) {
 
 function bindDataToControl(listElement, dataSource) {
     let listElement1 = listElement;
-    console.log("dataSource:", dataSource);
+    //console.log("dataSource:", dataSource);
     //console.log("listElement:", listElement)
     if (typeof dataSource != "undefined") {
         listElement1 = listElement.map((elementItem) => {
@@ -102,7 +102,7 @@ function GetMLObjectData(mLObjectDefinition, formData, dataSource) {
 
         });
     }
-    console.log("formData:", formData);
+    //console.log("formData:", formData);
     mLObjectDefinition.map((Item) => {
         const controlName = Item.BindControlName;
         //console.log();
@@ -187,7 +187,7 @@ class SimpleFormCom extends Component {
         });
         //console.log(this.state);
         if (this.props.onValueChange) {
-            this.props.onValueChange(elementname, elementvalue);
+            this.props.onValueChange(elementname, elementvalue, formData);
         }
     }
 
@@ -291,7 +291,7 @@ class SimpleFormCom extends Component {
                             validationErrorMessage = this.state.FormValidation[elementItem.name].ValidatonErrorMessage;
                         }
 
-                        console.log("validationErrorMessage:", validationErrorMessage);
+                        //console.log("validationErrorMessage:", validationErrorMessage);
                         return (
                             <div className="form-row" key={"div" + elementItem.name}>
                                 <FormElement type={elementItem.type} name={elementItem.name}
@@ -421,7 +421,7 @@ class SimpleFormCom extends Component {
         );
 
 
-        console.log(listElement1)
+        //console.log(listElement1)
     }
 
     renderThreeColumnForm() {
@@ -611,7 +611,7 @@ class SimpleFormCom extends Component {
         );
 
 
-        console.log(listElement1)
+        //console.log(listElement1)
     }
 
 
