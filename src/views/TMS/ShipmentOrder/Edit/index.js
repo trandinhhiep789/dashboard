@@ -278,13 +278,13 @@ class EditCom extends React.Component {
                                     />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ElementDatetime
+                                    <FormControl.FormControlDatetime
                                         name="dtCreatedOrderTime"
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
                                         timeFormat={false}
-                                        dateFormat="DD/MM/YYYY"
+                                        dateFormat="DD/MM/YYYY HH:mm"
                                         label="ngày tạo yêu cầu"
                                         placeholder="Ngày tạo yêu cầu"
                                         controltype="InputControl"
@@ -311,7 +311,7 @@ class EditCom extends React.Component {
 
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ElementDatetime
+                                    <FormControl.FormControlDatetime
                                         name="dtEarliestPickUpTime"
                                         colspan="8"
                                         labelcolspan="4"

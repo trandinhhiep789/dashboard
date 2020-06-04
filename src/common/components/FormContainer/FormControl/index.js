@@ -10,7 +10,8 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_SEARCH } from '../../../../constants/actionTypes';
 import SearchModal from "../../Form/AdvanceForm/FormControl/FormSearchModal"
 import { createListTree } from "../../../library/ultils";
-import { TreeSelect } from "antd";
+import { TreeSelect, DatePicker } from "antd";
+import moment from 'moment';
 import Datetime from 'react-datetime';
 import "antd/dist/antd.css";
 import Select from 'react-select';
@@ -295,7 +296,7 @@ class FormControlComboBoxCom extends Component {
     }
 
     render() {
-        let { name, label, rowspan, colspan,labelcolspan,validatonList, isMultiSelect,disabled, validationErrorMessage, placeholder, listoption } = this.props;
+        let { name, label, rowspan, colspan, labelcolspan, validatonList, isMultiSelect, disabled, validationErrorMessage, placeholder, listoption } = this.props;
         let formRowClassName = "form-row";
         if (rowspan != null) {
             formRowClassName = "form-row col-md-" + rowspan;
@@ -346,7 +347,73 @@ class FormControlComboBoxCom extends Component {
     }
 }
 export const FormControlComboBox = connect(mapStateToProps, mapDispatchToProps)(FormControlComboBoxCom);
+class FormControlDatetimeCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+    }
+    handleValueChange(name, moment) {
+        //e.preventDefault();
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(name, moment._d);
+    }
+    componentDidMount() {
 
+    }
+
+
+    render() {
+        let { name, label, timeFormat, dateFormat, colspan, value, ValidatonErrorMessage } = this.props;
+
+        let formRowClassName = "form-row";
+        if (this.props.rowspan != null) {
+            formRowClassName = "form-row col-md-" + this.props.rowspan;
+        }
+        let className = "";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-4";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
+            className += " is-invalid";
+        }
+            return (
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 6">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+                    <div ref={this.inputRef} className={formGroupClassName}>
+                 
+                        <DatePicker
+                             
+                            defaultValue={moment('2020-06-02 16:15', "YYYY-MM-DD HH:mm")}
+                            format="YYYY-MM-DD HH:mm"
+                            className={className}
+                            dropdownClassName="tree-select-custom"
+                        />
+                        <div className="invalid-feedback">
+                            <ul className="list-unstyled">
+                                <li>{this.props.validationErrorMessage}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            );
+    }
+}
+const FormControlDatetime = connect(null, null)(FormControlDatetimeCom);
 
 class TextBoxCurrency extends React.Component {
     constructor(props) {
@@ -515,7 +582,7 @@ class TextArea extends React.Component {
                         className={className}
                         placeholder={this.props.placeholder}
                         readOnly={this.props.readonly}
-                        rows="5" 
+                        rows="5"
                     />
                 </div>
             </div>
@@ -1089,7 +1156,7 @@ class ElementDatetimeCom extends Component {
     }
 
     render() {
-        let { name, label, timeFormat, dateFormat, colspan, value, ValidatonErrorMessage } = this.props;
+        let { name, label, timeFormat, dateFormat, colspan, value, validationErrorMessage } = this.props;
 
         let formRowClassName = "form-row";
         if (this.props.rowspan != null) {
@@ -1110,53 +1177,33 @@ class ElementDatetimeCom extends Component {
         if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
             star = '*'
         }
-        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
+        if (validationErrorMessage != "" && validationErrorMessage != undefined) {
             className += " is-invalid";
-            return (
-                <div className={formRowClassName} >
-                    <div className={labelDivClassName}>
-                        <label className="col-form-label 6">
-                            {this.props.label}<span className="text-danger"> {star}</span>
-                        </label>
-                    </div>
-                    <div ref={this.inputRef} className={formGroupClassName}>
-                        <Datetime
-                            className={className}
-                            name={name}
-                            onChange={(moment) => this.handleValueChange(name, moment)}
-                            value={value != null ? value : ""}
-                            timeFormat={timeFormat}
-                            dateFormat={dateFormat} >
-                        </Datetime>
-                        <div className="invalid-feedback">
-                            <ul className="list-unstyled">
-                                <li>{this.props.validationErrorMessage}</li>
-                            </ul>
-                        </div>
+        }
+        return (
+            <div className={formRowClassName} >
+                <div className={labelDivClassName}>
+                    <label className="col-form-label 6">
+                        {label}<span className="text-danger"> {star}</span>
+                    </label>
+                </div>
+                <div ref={this.inputRef} className={formGroupClassName}>
+                    <Datetime
+                        className={className}
+                        name={name}
+                        onChange={(moment) => this.handleValueChange(name, moment)}
+                        value={value != null ? value : ""}
+                        timeFormat={timeFormat}
+                        dateFormat={dateFormat} >
+                    </Datetime>
+                    <div className="invalid-feedback">
+                        <ul className="list-unstyled">
+                            <li>{validationErrorMessage}</li>
+                        </ul>
                     </div>
                 </div>
-            );
-        }
-        else {
-            return (
-                <div className={formRowClassName} >
-                    <div className={labelDivClassName}>
-                        <label className="col-form-label 7">
-                            {this.props.label}<span className="text-danger"> {star}</span>
-                        </label>
-                    </div>
-                    <div ref={this.props.inputRef} className={formGroupClassName}>
-                        <Datetime
-                            name={name}
-                            onChange={(moment) => this.handleValueChange(name, moment)}
-                            value={value != null ? value : ""}
-                            timeFormat={timeFormat}
-                            dateFormat={dateFormat} >
-                        </Datetime>
-                    </div>
-                </div>
-            );
-        }
+            </div>
+        );
     }
 }
 const ElementDatetime = connect(null, null)(ElementDatetimeCom);
@@ -1563,8 +1610,8 @@ export const ComboBoxSelect = connect(mapStateToProps, mapDispatchToProps)(Combo
 
 
 export default {
-    FormControlTextBox, FormControlComboBox, TextBox, TextArea, CheckBox, ComboBox, ComboBoxNew,
+    FormControlTextBox, FormControlComboBox, FormControlDatetime, TextBox, TextArea, CheckBox, ComboBox, ComboBoxNew,
     MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus, ElementDatetime,
-    ComboBoxPartner, ComboboxQTQHPX, TextBoxCurrency, ComboBoxSelect,MultiUserComboBox
+    ComboBoxPartner, ComboboxQTQHPX, TextBoxCurrency, ComboBoxSelect, MultiUserComboBox
 };
 
