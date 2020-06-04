@@ -1,9 +1,9 @@
 
 import React, { Component, PropTypes } from 'react';
 import MultiSelectComboBox from "./MultiSelectComboBox";
-import ComboboxQTQHPX from "./CommonControl/ComboboxQTQHPX.js";
-import { formatDate } from "../../../../common/library/CommonLib.js";
+import MultiUserComboBox from "./MultiSelectComboBox/MultiUserComboBox";
 
+import ComboboxQTQHPX from "./CommonControl/ComboboxQTQHPX.js";
 import { callGetCache } from "../../../../actions/cacheAction";
 import { connect } from 'react-redux';
 import { showModal, hideModal } from '../../../../actions/modal';
@@ -15,6 +15,27 @@ import Datetime from 'react-datetime';
 import "antd/dist/antd.css";
 import Select from 'react-select';
 import { formatMoney } from '../../../../utils/function';
+
+//#region connect
+const mapStateToProps = state => {
+    return {
+        AppInfo: state
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: () => {
+            dispatch(hideModal());
+        }
+    }
+}
+//#endregion connect
 
 
 class TextBox extends React.Component {
@@ -29,7 +50,7 @@ class TextBox extends React.Component {
 
     handleValueChange(e) {
         if (this.props.onValueChange != null) {
-            this.props.onValueChange(e.target.name, e.target.value, this.props.label, e, this.props.validatonList);
+            this.props.onValueChange(e.target.name, e.target.value, "", e, this.props.validatonList);
         }
 
     }
@@ -37,7 +58,7 @@ class TextBox extends React.Component {
     handKeyDown(e) {
         if (e.key == 'Enter') {
             if (this.props.onhandKeyDown != null) {
-                this.props.onhandKeyDown(e.target.name, e.target.value, this.props.label, e, this.props.validatonList);
+                this.props.onhandKeyDown(e.target.name, e.target.value, "", e, this.props.validatonList);
             }
         }
     }
@@ -128,6 +149,205 @@ class TextBox extends React.Component {
     }
 }
 
+class FormControlTextBox extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+    }
+    handleValueChange(e) {
+        if (this.props.onValueChange != null) {
+            this.props.onValueChange(e.target.name, e.target.value);
+        }
+    }
+
+    render() {
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-4";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null) {
+            formRowClassName += this.props.classNameCustom;
+        }
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
+            className += " is-invalid";
+        }
+        return (
+            <div className={formRowClassName} >
+                {this.props.label.length > 0 ?
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 2">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+                    : ""
+                }
+
+                <div className={formGroupClassName}>
+                    <input type="text" name={this.props.name}
+                        onChange={this.handleValueChange}
+                        onBlur={this.handKeyDown}
+                        value={this.props.value}
+                        key={this.props.name}
+                        className={className}
+                        autoFocus={true}
+                        ref={this.props.inputRef}
+                        placeholder={this.props.placeholder}
+                        disabled={this.props.readOnly}
+                        maxLength={this.props.maxSize}
+                    />
+                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                </div>
+            </div>
+        );
+    }
+}
+
+class FormControlComboBoxCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.state = { Listoption: [], SelectedOption: [] }
+    }
+    handleValueChange(selectedOption) {
+        const comboValues = this.getComboValue(selectedOption);
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption.name);
+    }
+
+    bindcombox(value, listOption) {
+        let values = value;
+        let selectedOption = [];
+        if (values == null || values === -1)
+            return { value: -1, label: "--Vui lòng chọn--" };
+        if (typeof values.toString() == "string")
+            values = values.toString().split();
+        for (let i = 0; i < values.length; i++) {
+            for (let j = 0; j < listOption.length; j++) {
+                if (values[i] == listOption[j].value) {
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
+                }
+            }
+        }
+        return selectedOption;
+    }
+    getComboValue(selectedOption) {
+        let values = [];
+        if (selectedOption == null)
+            return -1;
+        if (this.props.isMultiSelect) {
+            for (let i = 0; i < selectedOption.length; i++) {
+                values.push(selectedOption[i].value);
+            }
+        } else {
+            return selectedOption.value;
+        }
+
+        return values;
+    }
+    //#endregion tree category
+
+    componentDidMount() {
+        let listOption = this.props.listoption;
+        if (this.props.isautoloaditemfromcache) {
+            const cacheKeyID = this.props.loaditemcachekeyid;
+            const valueMember = this.props.valuemember;
+            const nameMember = this.props.nameMember;
+            this.props.callGetCache(cacheKeyID).then((result) => {
+                listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    result.ResultObject.CacheData.map((cacheItem) => {
+                        listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+                    }
+                    );
+                    this.setState({ Listoption: listOption });
+                    const strSelectedOption = this.bindcombox(this.props.value, listOption);
+                    this.setState({ SelectedOption: strSelectedOption });
+                }
+                else {
+                    this.setState({ Listoption: listOption });
+                }
+            });
+        }
+        else {
+            this.setState({ Listoption: listOption });
+            const strSelectedOption = this.bindcombox(this.props.value, listOption);
+            this.setState({ SelectedOption: strSelectedOption });
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
+            const aa = this.bindcombox(nextProps.value, this.state.Listoption);
+            this.setState({ SelectedOption: aa });
+        }
+    }
+
+    render() {
+        let { name, label, rowspan, colspan,labelcolspan,validatonList, isMultiSelect,disabled, validationErrorMessage, placeholder, listoption } = this.props;
+        let formRowClassName = "form-row";
+        if (rowspan != null) {
+            formRowClassName = "form-row col-md-" + rowspan;
+        }
+
+        let formGroupClassName = "form-group col-md-4";
+        if (colspan != null) {
+            formGroupClassName = "form-group col-md-" + colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + labelcolspan;
+        }
+        let star;
+        if (validatonList != undefined && validatonList.includes("Comborequired") == true) {
+            star = '*'
+        }
+        let className = "react-select";
+        if (validationErrorMessage != undefined && validationErrorMessage != "") {
+            className += " is-invalid";
+        }
+        const selectedOption = this.state.SelectedOption;
+        const listOption = this.state.Listoption;
+        return (
+            <div className={formRowClassName} >
+                <div className={labelDivClassName}>
+                    <label className="col-form-label 6">
+                        {label}<span className="text-danger"> {star}</span>
+                    </label>
+                </div>
+                <div className={formGroupClassName}>
+                    <Select
+                        value={selectedOption}
+                        name={name}
+                        ref={this.props.inputRef}
+                        onChange={this.handleValueChange}
+                        options={listOption}
+                        isDisabled={disabled}
+                        isMulti={isMultiSelect}
+                        isSearchable={true}
+                        placeholder={placeholder}
+                        className={className}
+                    />
+                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{validationErrorMessage}</li></ul></div>
+                </div>
+            </div>
+        );
+    }
+}
+export const FormControlComboBox = connect(mapStateToProps, mapDispatchToProps)(FormControlComboBoxCom);
+
+
 class TextBoxCurrency extends React.Component {
     constructor(props) {
         super(props);
@@ -145,7 +365,7 @@ class TextBoxCurrency extends React.Component {
 
     handleValueChange(e) {
         if (this.props.onValueChange != null) {
-            this.props.onValueChange(e.target.name, e.target.value, this.props.label, e, this.props.validatonList);
+            this.props.onValueChange(e.target.name, e.target.value, "", e, this.props.validatonList);
         }
 
     }
@@ -153,7 +373,7 @@ class TextBoxCurrency extends React.Component {
     handKeyDown(e) {
         if (e.key == 'Enter') {
             if (this.props.onhandKeyDown != null) {
-                this.props.onhandKeyDown(e.target.name, e.target.value, this.props.label, e, this.props.validatonList);
+                this.props.onhandKeyDown(e.target.name, e.target.value, '', e, this.props.validatonList);
             }
         }
     }
@@ -275,19 +495,27 @@ class TextArea extends React.Component {
         if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
             star = '*'
         }
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null || this.props.classNameCustom != undefined) {
+            formRowClassName += this.props.classNameCustom;
+        }
         return (
 
-            <div className="form-row" >
+            <div className={formRowClassName} >
                 <div className={labelDivClassName}>
                     <label className="col-form-label 4">
                         {this.props.label}<span className="text-danger"> {star}</span>
                     </label>
                 </div>
                 <div className={formGroupClassName}>
-                    <textarea name={this.props.name} onChange={this.handleValueChange}
+                    <textarea
+                        name={this.props.name}
+                        onChange={this.handleValueChange}
                         value={this.props.value}
-                        className={className} placeholder={this.props.placeholder}
+                        className={className}
+                        placeholder={this.props.placeholder}
                         readOnly={this.props.readonly}
+                        rows="5" 
                     />
                 </div>
             </div>
@@ -329,8 +557,8 @@ class CheckBox extends React.Component {
         if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
             star = '*'
         }
-        let classNameCustom= "checkbox ";
-        if(this.props.classNameCustom != undefined || this.props.classNameCustom != ''){
+        let classNameCustom = "checkbox ";
+        if (this.props.classNameCustom != undefined || this.props.classNameCustom != '') {
             classNameCustom += this.props.classNameCustom;
         }
         return (
@@ -482,19 +710,7 @@ class ComboBoxCom extends Component {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        callGetCache: (cacheKeyID) => {
-            return dispatch(callGetCache(cacheKeyID));
-        },
-        showModal: (type, props) => {
-            dispatch(showModal(type, props));
-        },
-        hideModal: () => {
-            dispatch(hideModal());
-        }
-    }
-}
+
 
 export const ComboBox = connect(null, mapDispatchToProps)(ComboBoxCom);
 
@@ -690,11 +906,7 @@ class GroupTextBoxCom extends Component {
 
 export const GroupTextBox = connect(null, mapDispatchToProps)(GroupTextBoxCom);
 
-const mapStateToProps = state => {
-    return {
-        AppInfo: state
-    }
-}
+
 
 //End hoc.lenho test
 
@@ -872,6 +1084,10 @@ class ElementDatetimeCom extends Component {
 
     }
 
+    inputRef() {
+        debugger;
+    }
+
     render() {
         let { name, label, timeFormat, dateFormat, colspan, value, ValidatonErrorMessage } = this.props;
 
@@ -903,13 +1119,12 @@ class ElementDatetimeCom extends Component {
                             {this.props.label}<span className="text-danger"> {star}</span>
                         </label>
                     </div>
-                    <div className={formGroupClassName}>
+                    <div ref={this.inputRef} className={formGroupClassName}>
                         <Datetime
                             className={className}
                             name={name}
                             onChange={(moment) => this.handleValueChange(name, moment)}
                             value={value != null ? value : ""}
-                            refs={this.props.inputRef}
                             timeFormat={timeFormat}
                             dateFormat={dateFormat} >
                         </Datetime>
@@ -930,12 +1145,11 @@ class ElementDatetimeCom extends Component {
                             {this.props.label}<span className="text-danger"> {star}</span>
                         </label>
                     </div>
-                    <div className={formGroupClassName}>
+                    <div ref={this.props.inputRef} className={formGroupClassName}>
                         <Datetime
                             name={name}
                             onChange={(moment) => this.handleValueChange(name, moment)}
                             value={value != null ? value : ""}
-                            refs={this.props.inputRef}
                             timeFormat={timeFormat}
                             dateFormat={dateFormat} >
                         </Datetime>
@@ -1125,7 +1339,6 @@ class ComboBoxNewCom extends Component {
 
     render() {
         let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder, listoption } = this.props;
-        debugger;
         let formRowClassName = "form-row";
         if (this.props.rowspan != null) {
             formRowClassName = "form-row col-md-" + this.props.rowspan;
@@ -1179,6 +1392,179 @@ class ComboBoxNewCom extends Component {
 }
 export const ComboBoxNew = connect(mapStateToProps, mapDispatchToProps)(ComboBoxNewCom);
 
+class ComboBoxSelectCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.state = { Listoption: [], SelectedOption: [] }
+    }
+    handleValueChange(selectedOption) {
+        const comboValues = this.getComboValue(selectedOption);
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption.name, this.props.validatonList);
+    }
 
-export default { TextBox, TextArea, CheckBox, ComboBox, ComboBoxNew, MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus, ElementDatetime, ComboBoxPartner, ComboboxQTQHPX, TextBoxCurrency };
+    bindcombox(value, listOption) {
+        let values = value;
+        let selectedOption = [];
+        if (values == null || values === -1)
+            return { value: -1, label: "--Vui lòng chọn--" };
+        if (typeof values.toString() == "string")
+            values = values.toString().split();
+        for (let i = 0; i < values.length; i++) {
+            for (let j = 0; j < listOption.length; j++) {
+                if (values[i] == listOption[j].value) {
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
+                }
+            }
+        }
+        return selectedOption;
+    }
+    getComboValue(selectedOption) {
+        let values = [];
+        if (selectedOption == null)
+            return -1;
+        if (this.props.isMultiSelect) {
+            for (let i = 0; i < selectedOption.length; i++) {
+                values.push(selectedOption[i].value);
+            }
+        } else {
+            return selectedOption.value;
+        }
+
+        return values;
+    }
+    //#endregion tree category
+
+    componentDidMount() {
+        let listOption = this.props.listoption;
+        // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
+        if (this.props.isautoloaditemfromcache) {
+            const cacheKeyID = this.props.loaditemcachekeyid;
+            const valueMember = this.props.valuemember;
+            const nameMember = this.props.nameMember;
+            //    console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
+            this.props.callGetCache(cacheKeyID).then((result) => {
+                //  console.log("this.props.isautoloaditemfromcach2: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    result.ResultObject.CacheData.map((cacheItem) => {
+                        listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+                    }
+                    );
+                    this.setState({ Listoption: listOption });
+                    const aa = this.bindcombox(this.props.value, listOption);
+                    this.setState({ SelectedOption: aa });
+
+                }
+                else {
+                    this.setState({ Listoption: listOption });
+
+                }
+                //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+            });
+        }
+        else {
+            //console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
+            this.setState({ Listoption: listOption });
+            const aa = this.bindcombox(this.props.value, listOption);
+            this.setState({ SelectedOption: aa });
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
+            const aa = this.bindcombox(nextProps.value, this.state.Listoption);
+            this.setState({ SelectedOption: aa });
+        }
+    }
+
+    render() {
+        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder, listoption } = this.props;
+        let formRowClassName = "form-row";
+        if (this.props.rowspan != null) {
+            formRowClassName = "form-row col-md-" + this.props.rowspan;
+        }
+
+        let formGroupClassName = "form-group col-md-4";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
+            star = '*'
+        }
+        let className = "react-select";
+        if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
+            className += " is-invalid";
+        }
+        const selectedOption = this.state.SelectedOption;
+        const listOption = this.state.Listoption;
+        if (this.props.validationErrorMessage != "") {
+            return (
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 6">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+
+                    <div className={formGroupClassName}>
+                        <Select
+                            value={selectedOption}
+                            name={this.props.name}
+                            ref={this.props.inputRef}
+                            onChange={this.handleValueChange}
+                            options={listOption}
+                            isDisabled={this.props.disabled}
+                            isMulti={isMultiSelect}
+                            isSearchable={true}
+                            placeholder={placeholder}
+                            className={className}
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    </div>
+                </div>
+            );
+        }
+        else {
+            return (
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 6">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+
+                    <div className={formGroupClassName}>
+                        <Select
+                            value={selectedOption}
+                            name={this.props.name}
+                            ref={this.props.inputRef}
+                            onChange={this.handleValueChange}
+                            options={listOption}
+                            isDisabled={this.props.disabled}
+                            isMulti={isMultiSelect}
+                            isSearchable={true}
+                            placeholder={placeholder}
+                            className={className}
+                        />
+                    </div>
+                </div>
+            );
+        }
+
+    }
+}
+export const ComboBoxSelect = connect(mapStateToProps, mapDispatchToProps)(ComboBoxSelectCom);
+
+
+export default {
+    FormControlTextBox, FormControlComboBox, TextBox, TextArea, CheckBox, ComboBox, ComboBoxNew,
+    MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus, ElementDatetime,
+    ComboBoxPartner, ComboboxQTQHPX, TextBoxCurrency, ComboBoxSelect,MultiUserComboBox
+};
 

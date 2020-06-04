@@ -20,7 +20,10 @@ import {
     AddLogAPIPath,
     ElementQHPXList,
     GridMLObjectQTQHPX,
-    DataGridColumnItemList
+    DataGridColumnItemList,
+    DataGridColumnMaterialList,
+    GridMLMaterialDefinition,
+    GridMLDeliverUserDefinition
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -28,7 +31,7 @@ import { BRAND_UPDATE } from "../../../../constants/functionLists";
 import { callGetCache } from "../../../../actions/cacheAction";
 import indexedDBLib from "../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
-import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
+import MultiUserComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiUserComboBox";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import ShipmentOrderItemObj from '../Component/ShipmentOrderItemObj';
@@ -120,18 +123,18 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        let ResultLanguage = this.state.ResultLanguage.filter(x => x.HasChanged == true && x.BrandName !== null);
+        console.log("handleSubmit",formData, MLObject)
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.ResultLanguage = ResultLanguage;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
-        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.Message);
-            if (!apiResult.IsError) {
-                // this.handleClearLocalCache();
-            }
-        });
+        // this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+        //     this.setState({ IsCallAPIError: apiResult.IsError });
+        //     this.showMessage(apiResult.Message);
+        //     if (!apiResult.IsError) {
+        //         // this.handleClearLocalCache();
+        //     }
+        // });
     }
 
 
@@ -169,6 +172,7 @@ class EditCom extends React.Component {
                     dataSource={this.state.DataSource}
                     listelement={[]}
                     BackLink={BackLink}
+                    onSubmit={this.handleSubmit}
                 >
                     <div className="card">
                         <div className="card-title">
@@ -190,7 +194,7 @@ class EditCom extends React.Component {
                                     />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ComboBox
+                                    <FormControl.ComboBoxSelect
                                         name="txtShipmentOrderTypeID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -604,7 +608,7 @@ class EditCom extends React.Component {
                                                 controltype="InputControl"
                                                 value={""}
                                                 datasourcemember="NumberOfPackages"
-                                                validatonList={["number"]}
+                                                validatonList={["numbernew"]}
                                                 maxSize="4"
                                             />
                                         </div>
@@ -619,7 +623,7 @@ class EditCom extends React.Component {
                                                 controltype="InputControl"
                                                 value={""}
                                                 datasourcemember="SecondaryItemCount"
-                                                validatonList={["number"]}
+                                                validatonList={["numbernew"]}
                                                 maxSize="4"
                                             />
                                         </div>
@@ -648,41 +652,44 @@ class EditCom extends React.Component {
                                                     <div className="row">
                                                         <div className="col-md-4">
                                                             <FormControl.TextBox
-                                                                name=""
+                                                                name="txtLength"
                                                                 colspan="12"
                                                                 labelcolspan="4"
-                                                                readOnly={true}
+                                                                readOnly={false}
                                                                 label=""
-                                                                placeholder="Kích thước(DxRxC)"
+                                                                placeholder="Kích thước(Dx)"
                                                                 controltype="InputControl"
                                                                 value={""}
-                                                                datasourcemember=""
+                                                                validatonList={["numbernew"]}
+                                                                datasourcemember="Length"
                                                             />
                                                         </div>
                                                         <div className="col-md-4">
                                                             <FormControl.TextBox
-                                                                name=""
+                                                                name="txtWidth"
                                                                 colspan="12"
                                                                 labelcolspan="4"
-                                                                readOnly={true}
+                                                                readOnly={false}
                                                                 label=""
-                                                                placeholder="Kích thước(DxRxC)"
+                                                                placeholder="Kích thước(R)"
                                                                 controltype="InputControl"
                                                                 value={""}
-                                                                datasourcemember=""
+                                                                validatonList={["numbernew"]}
+                                                                datasourcemember="Width"
                                                             />
                                                         </div>
                                                         <div className="col-md-4">
                                                             <FormControl.TextBox
-                                                                name=""
+                                                                name="txtHeight"
                                                                 colspan="12"
                                                                 labelcolspan="4"
-                                                                readOnly={true}
+                                                                readOnly={false}
                                                                 label=""
-                                                                placeholder="Kích thước(DxRxC)"
+                                                                placeholder="Kích thước(C)"
                                                                 controltype="InputControl"
                                                                 value={""}
-                                                                datasourcemember=""
+                                                                validatonList={["numbernew"]}
+                                                                datasourcemember="Height"
                                                             />
                                                         </div>
                                                     </div>
@@ -764,85 +771,16 @@ class EditCom extends React.Component {
                                 onEditClick={this.handleItemEdit}
                                 onDeleteClick={this.handleItemDelete}
                             />
-
-                            <div className="card">
-                                <div className="card-title">
-                                    <h4 className="title">Vật tư lắp đặt</h4>
-                                    <button className="btn btnEditCard">thêm vật tư</button>
-                                </div>
-                                <div className="card-body">
-                                    <div className="table-responsive">
-                                        <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                            <thead className="thead-light">
-                                                <tr>
-                                                    <th className="jsgrid-header-cell">Xuất bán</th>
-                                                    <th className="jsgrid-header-cell">Mã sản phẩm</th>
-                                                    <th className="jsgrid-header-cell">Tên sản phẩm</th>
-                                                    <th className="jsgrid-header-cell">Số lượng</th>
-                                                    <th className="jsgrid-header-cell">Đơn vị tính</th>
-                                                    <th className="jsgrid-header-cell">Giá</th>
-                                                    <th className="jsgrid-header-cell">Mã đơn hàng xuất</th>
-                                                    <th className="jsgrid-header-cell">Tác vụ</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <div className="checkbox">
-                                                            <label>
-                                                                <input type="checkbox" className="form-control form-control-sm" defaultChecked />
-                                                                <span className="cr">
-                                                                    <i className="cr-icon fa fa-check"></i>
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td></td>
-                                                    <td>Ống đồng</td>
-                                                    <td>5</td>
-                                                    <td>Mét</td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td className="table-actions">
-                                                        <a className="table-action hover-primary" href="#">
-                                                            <i className="ti-pencil"></i>
-                                                        </a>
-                                                        <a className="table-action hover-danger" href="#">
-                                                            <i className="ti-trash"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div className="checkbox">
-                                                            <label>
-                                                                <input type="checkbox" className="form-control form-control-sm" defaultChecked />
-                                                                <span className="cr">
-                                                                    <i className="cr-icon fa fa-check"></i>
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td></td>
-                                                    <td>Ống đồng</td>
-                                                    <td>5</td>
-                                                    <td>Mét</td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td className="table-actions">
-                                                        <a className="table-action hover-primary" href="#">
-                                                            <i className="ti-pencil"></i>
-                                                        </a>
-                                                        <a className="table-action hover-danger" href="#">
-                                                            <i className="ti-trash"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                              <InputGridControl
+                                name="ShipmentOrder_MaterialList"
+                                controltype="InputGridControl"
+                                title="Vật tư lắp đặt"
+                                Ispopup={true}
+                                IDSelectColumnName={"ProductID"}
+                                MLObjectDefinition={GridMLMaterialDefinition}
+                                listColumn={DataGridColumnMaterialList}
+                                dataSource={this.state.DataSource.ShipmentOrder_MaterialList}
+                            />
                         </div>
                     </div>
                     <div className="card">
@@ -850,33 +788,26 @@ class EditCom extends React.Component {
                             <h4 className="title">Điều phối</h4>
                         </div>
                         <div className="card-body">
-
-                            <MultiSelectComboBox
-                                name="ArryProduct_ShippingMethod"
+                            <MultiUserComboBox
+                                name="ShipmentOrder_DeliverUserList"
                                 colspan="10"
                                 labelcolspan="2"
                                 label="Nhân viên  giao"
                                 IsLabelDiv={true}
-                                isautoloaditemfromcache={false}
-                                loaditemcachekeyid={"PIMCACHE_PIM_SHIPPINGMETHOD"}
-                                valuemember="ShippingMethodID"
-                                nameMember="ShippingMethodName"
-                                controltype="InputControl"
-                                value={[]}
-                                ShipmentOrder={this.state.ShipmentOrder}
-                                listoption={[]}
-                                datasourcemember="ArryProduct_ShippingMethod"
+                                controltype="InputMultiControl"
+                                MLObjectDefinition={GridMLDeliverUserDefinition}
+                                datasourcemember="ShipmentOrder_DeliverUserList"
                             />
                             <FormControl.TextBox
-                                name=""
+                                name="txtCoordinatorNote"
                                 colspan="10"
                                 labelcolspan="2"
-                                readOnly={true}
+                                readOnly={false}
                                 label="ghi chú"
                                 placeholder="Ghi chú"
                                 controltype="InputControl"
                                 value={""}
-                                datasourcemember=""
+                                datasourcemember="CoordinatorNote"
                             />
                         </div>
                     </div>

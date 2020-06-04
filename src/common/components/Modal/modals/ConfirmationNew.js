@@ -78,8 +78,7 @@ class ConfirmationNew extends React.Component {
     bindData() {
         const dataSource = this.props.dataSource;
         let formData = {};
-        const listElement = this.bindDataToControl(this.props.modalElementList, this.props.dataSource);
-       
+        const listElement = this.bindDataToControl(this.props.modalElementOl, this.props.dataSource);
             listElement.map((elementItem) => {
                 const elementname = elementItem.Name;
                 const ObjectName = { Name: elementname, value: elementItem.value, Controltype: elementItem.Type, label: elementItem.Caption,labelError: elementItem.Caption, ErrorLst: [], validatonList: elementItem.validatonList };
@@ -151,6 +150,7 @@ class ConfirmationNew extends React.Component {
     //#endregion validation TabContainers
 
     handleConfirm() {
+        debugger;
         const formValidation = this.validationFormNew();
         if (this.checkInputName(formValidation) != "")
             return;
@@ -161,7 +161,6 @@ class ConfirmationNew extends React.Component {
             mLObjectDefinition.map((Item) => {
                 const controlName = Item.BindControlName;
                 if (controlName.length > 0) {
-                    console.log(this.state.FormData,this.state.FormData[controlName].value);
                     MLObject = Object.assign({}, MLObject, { [Item.Name]: this.state.FormData[controlName].value });
                 }
             });

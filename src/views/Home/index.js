@@ -42,6 +42,8 @@ import PartnerUser from '../../views/TMS/MD/PartnerPriviledge/PartnerUser';
 import InstallBundle from '../../views/TMS/MD/Installed/InstallBundle';
 import InstallMaterial from '../../views/TMS/MD/Installed/InstallMaterial';
 
+import ServiceAgreement from '../../views/TMS/ServiceAgreement';
+
 
 import NotFound from '../NotFound'
 
@@ -122,6 +124,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/PartnerPriviledge" component={McPriviledge} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerRole" component={PartnerRole} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerUser" component={PartnerUser} isLoggedIn={isLoggedIn} />
+
+                                <PrivateRoute path="/ServiceAgreement" component={ServiceAgreement} isLoggedIn={isLoggedIn} />
                                 
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Maps" component={MapContainer} isLoggedIn={isLoggedIn} />

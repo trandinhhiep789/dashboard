@@ -17,6 +17,7 @@ class ComboboxQTQHPXCom extends React.Component {
         const formDataContol = this.bindDataContol(this.props.value);
         console.log("formDataContol", formDataContol)
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.InputChange = this.InputChange.bind(this);
         this.state = {
             FormData: formDataContol,
             Country: [],
@@ -25,7 +26,10 @@ class ComboboxQTQHPXCom extends React.Component {
             Ward: []
         };
     }
-
+    InputChange()
+    {
+        console.log("InputChange")
+    }
     bindDataContol(dataSource) {
         let formData = {};
         const listElement = this.props.listelement;
