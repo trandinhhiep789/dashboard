@@ -20,7 +20,7 @@ class ServiceAgreementCom extends React.Component {
                 <Route exact path="/ServiceAgreement" component={Search} />
                 <Route exact path="/ServiceAgreement/Add/" component={Add} />
                 <Route exact path="/ServiceAgreement/Edit/:id" component={Edit} />
-                <Route exact path="/ShipmentOrder/Detail/:id" component={Detail} />
+                <Route exact path="/ServiceAgreement/Detail/:id" component={Detail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );

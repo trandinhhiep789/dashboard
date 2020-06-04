@@ -20,6 +20,7 @@ import { updatePagePath } from "../../../../actions/pageAction";
 import indexedDBLib from "../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
+import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 
 
 class AddCom extends React.Component {
@@ -72,6 +73,7 @@ class AddCom extends React.Component {
                 dataSource={this.state.DataSource}
                 listelement={[]}
                 BackLink={BackLink}
+                onSubmit={this.handleSubmit}
             >
 
                 <div className="row">
@@ -86,6 +88,7 @@ class AddCom extends React.Component {
                             controltype="InputControl"
                             value=""
                             datasourcemember="ServiceAgreementID"
+                            validatonList={['required']}
                         />
                     </div>
 
@@ -95,7 +98,7 @@ class AddCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             label="loại hợp đồng"
-                            validatonList={[]}
+                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.SERVICEAGREEMENTTYPE"
                             valuemember="ServiceAgreementTypeID"
@@ -130,7 +133,7 @@ class AddCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             label="đối tác"
-                            validatonList={[]}
+                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
                             valuemember="PartnerID"
@@ -147,11 +150,11 @@ class AddCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             label="khu vực"
-                            validatonList={[]}
+                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.SERVICEAREA"
-                            valuemember="ServiceAreaID"
-                            nameMember="ServiceAreaName"
+                            loaditemcachekeyid="ERPCOMMONCACHE.AREA"
+                            valuemember="AreaID"
+                            nameMember="AreaName"
                             controltype="InputControl"
                             value={""}
                             listoption={null}
@@ -159,16 +162,25 @@ class AddCom extends React.Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.TextBox
-                            name="txtDeputyUserName"
+
+                        <MultiSelectComboBox
+                            name="ShipmentOrder_DeliverUserList"
                             colspan="8"
                             labelcolspan="4"
-                            readOnly={false}
-                            label="nhân viên đại diện"
-                            placeholder="Nhân viên đại diện"
+                            label="Nhân viên  giao"
+                            IsLabelDiv={true}
+                            isautoloaditemfromcache={false}
+                            loaditemcachekeyid={"PIMCACHE_PIM_SHIPPINGMETHOD"}
+                            valuemember="ShippingMethodID"
+                            nameMember="ShippingMethodName"
                             controltype="InputControl"
-                            value=""
-                            datasourcemember="DeputyUserName"
+                            value={''}
+                            ShipmentOrder={this.state.ShipmentOrder}
+                            onChange={this.handleValueChange1}
+                            listoption={[]}
+                            datasourcemember="ShipmentOrder_DeliverUserList"
+                            //validatonList={["Comborequired"]}
+                            validationErrorMessage={''}
                         />
                     </div>
 
@@ -184,7 +196,7 @@ class AddCom extends React.Component {
                             placeholder="Ngày ký hợp đồng"
                             controltype="InputControl"
                             value=""
-                            validatonList={[]}
+                            validatonList={["required"]}
                             datasourcemember="SignedDate"
                         />
                     </div>
@@ -195,13 +207,13 @@ class AddCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             readOnly={false}
-                            timeFormat={true}
+                            timeFormat={false}
                             dateFormat="DD/MM/YYYY"
                             label="ngày hết hạn hợp đồng"
                             placeholder="Ngày hết hạn hợp đồng"
                             controltype="InputControl"
                             value=""
-                            validatonList={[]}
+                            validatonList={["required"]}
                             datasourcemember="ExpiredDate"
                         />
 
@@ -225,15 +237,15 @@ class AddCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             readOnly={false}
-                            timeFormat={true}
+                            timeFormat={false}
                             dateFormat="DD/MM/YYYY"
                             label="gia hạn đến ngày"
                             placeholder="Gia hạn đến ngày"
                             controltype="InputControl"
                             value=""
-                            validatonList={[]}
-                            datasourcemember="ExtendedDate" 
-                            />
+                            validatonList={["required"]}
+                            datasourcemember="ExtendedDate"
+                        />
                     </div>
 
                     <div className="col-md-6">
@@ -254,13 +266,13 @@ class AddCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             readOnly={false}
-                            timeFormat={true}
+                            timeFormat={false}
                             dateFormat="DD/MM/YYYY"
                             label="ngày thanh lý hợp đồng"
                             placeholder="Ngày thanh lý hợp đồng"
                             controltype="InputControl"
                             value=""
-                            validatonList={[]}
+                            validatonList={["required"]}
                             datasourcemember="Liquidateddate"
                         />
                     </div>
@@ -297,13 +309,12 @@ class AddCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             readOnly={false}
-                            timeFormat={true}
+                            timeFormat={false}
                             dateFormat="DD/MM/YYYY"
                             label="ngày ký quỹ"
                             placeholder="Ngày ký quỹ"
                             controltype="InputControl"
                             value=""
-                            validatonList={[]}
                             datasourcemember="DepositedDate"
                         />
                     </div>
@@ -321,7 +332,7 @@ class AddCom extends React.Component {
                             datasourcemember="DepositNote"
                         />
                     </div>
-                    
+
                     <div className="col-md-12">
                         <FormControl.TextArea
                             labelcolspan={2}

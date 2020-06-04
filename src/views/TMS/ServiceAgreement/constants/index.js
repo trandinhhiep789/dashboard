@@ -29,12 +29,17 @@ export const EditPagePath = [
     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ" },
     { Link: "", Title: "Sửa" }
 ];
-export const DetailAPIPath = [
+export const AddPagePath = [
     { Link: "/", Title: "Trang chủ" },
     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ" },
     { Link: "", Title: "Thêm" }
 ];
 
+export const DetailAPIPath = [
+    { Link: "/", Title: "Trang chủ" },
+    { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ" },
+    { Link: "", Title: "Chi tiết" }
+];
 
 
 export const DataGridColumnList = [
