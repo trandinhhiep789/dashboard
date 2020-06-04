@@ -646,7 +646,15 @@ export const MLObjectDefinition = [
         DefaultValue: {},
         BindControlName: "ShipmentOrder_ItemList",
         DataSourceMember: "ShipmentOrder_ItemList"
+    },
+    {
+        Name: "ShipmentOrder_DeliverUserList",
+        DefaultValue: {},
+        BindControlName: "ShipmentOrder_DeliverUserList",
+        DataSourceMember: "ShipmentOrder_DeliverUserList"
     }
+                             
+
 ];
 
 export const DataGridColumnList = [
@@ -1075,13 +1083,6 @@ export const DataGridColumnMaterialList = [
         Width: 150
     },
     {
-        Name: "SaleOrderID",
-        Type: "textbox",
-        Caption: "Mã đơn hàng xuất",
-        DataSourceMember: "SaleOrderID",
-        Width: 150
-    },
-    {
         Name: "Note",
         Type: "textbox",
         Caption: "Ghi chú",
@@ -1160,15 +1161,12 @@ export const GridMLMaterialDefinition = [
         DataSourceMember: "QuantityUnitID"
     },
     {
-        Name: "SaleOrderID",
-        DefaultValue: "",
-        BindControlName: "SaleOrderID",
-        DataSourceMember: "SaleOrderID"
-    },
-    {
         Name: "Note",
         DefaultValue: "",
         BindControlName: "Note",
         DataSourceMember: "Note"
     }
 ]
+
+
+

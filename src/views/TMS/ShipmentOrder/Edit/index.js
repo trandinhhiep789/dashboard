@@ -22,7 +22,8 @@ import {
     GridMLObjectQTQHPX,
     DataGridColumnItemList,
     DataGridColumnMaterialList,
-    GridMLMaterialDefinition
+    GridMLMaterialDefinition,
+    GridMLDeliverUserDefinition
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -30,7 +31,7 @@ import { BRAND_UPDATE } from "../../../../constants/functionLists";
 import { callGetCache } from "../../../../actions/cacheAction";
 import indexedDBLib from "../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
-import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
+import MultiUserComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiUserComboBox";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import ShipmentOrderItemObj from '../Component/ShipmentOrderItemObj';
@@ -122,18 +123,19 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
+        console.log("handleSubmit",formData, MLObject)
         let ResultLanguage = this.state.ResultLanguage.filter(x => x.HasChanged == true && x.BrandName !== null);
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.ResultLanguage = ResultLanguage;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
-        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.Message);
-            if (!apiResult.IsError) {
-                // this.handleClearLocalCache();
-            }
-        });
+        // this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+        //     this.setState({ IsCallAPIError: apiResult.IsError });
+        //     this.showMessage(apiResult.Message);
+        //     if (!apiResult.IsError) {
+        //         // this.handleClearLocalCache();
+        //     }
+        // });
     }
 
 
@@ -171,6 +173,7 @@ class EditCom extends React.Component {
                     dataSource={this.state.DataSource}
                     listelement={[]}
                     BackLink={BackLink}
+                    onSubmit={this.handleSubmit}
                 >
                     <div className="card">
                         <div className="card-title">
@@ -786,22 +789,15 @@ class EditCom extends React.Component {
                             <h4 className="title">Điều phối</h4>
                         </div>
                         <div className="card-body">
-
-                            <MultiSelectComboBox
-                                name="ArryProduct_ShippingMethod"
+                            <MultiUserComboBox
+                                name="ShipmentOrder_DeliverUserList"
                                 colspan="10"
                                 labelcolspan="2"
                                 label="Nhân viên  giao"
                                 IsLabelDiv={true}
-                                isautoloaditemfromcache={false}
-                                loaditemcachekeyid={"PIMCACHE_PIM_SHIPPINGMETHOD"}
-                                valuemember="ShippingMethodID"
-                                nameMember="ShippingMethodName"
-                                controltype="InputControl"
-                                value={[]}
-                                ShipmentOrder={this.state.ShipmentOrder}
-                                listoption={[]}
-                                datasourcemember="ArryProduct_ShippingMethod"
+                                controltype="InputMultiControl"
+                                MLObjectDefinition={GridMLDeliverUserDefinition}
+                                datasourcemember="ShipmentOrder_DeliverUserList"
                             />
                             <FormControl.TextBox
                                 name="txtCoordinatorNote"
