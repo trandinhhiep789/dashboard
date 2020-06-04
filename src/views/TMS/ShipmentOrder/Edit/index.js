@@ -124,7 +124,6 @@ class EditCom extends React.Component {
 
     handleSubmit(formData, MLObject) {
         console.log("handleSubmit",formData, MLObject)
-        let ResultLanguage = this.state.ResultLanguage.filter(x => x.HasChanged == true && x.BrandName !== null);
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.ResultLanguage = ResultLanguage;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;

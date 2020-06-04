@@ -184,9 +184,9 @@ const AppMenu = [
         MenuIcon: '',
         SubMenu: [
             {
-                MenuName: 'dđ',
+                MenuName: 'ServiceAgreement',
                 MenuTitle: 'Danh sách hợp đồng',
-                LinkTo: '/',
+                LinkTo: '/ServiceAgreement',
                 MenuIcon: '',
                 SubMenu: []
             }

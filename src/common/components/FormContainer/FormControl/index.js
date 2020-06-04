@@ -495,19 +495,27 @@ class TextArea extends React.Component {
         if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
             star = '*'
         }
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null || this.props.classNameCustom != undefined) {
+            formRowClassName += this.props.classNameCustom;
+        }
         return (
 
-            <div className="form-row" >
+            <div className={formRowClassName} >
                 <div className={labelDivClassName}>
                     <label className="col-form-label 4">
                         {this.props.label}<span className="text-danger"> {star}</span>
                     </label>
                 </div>
                 <div className={formGroupClassName}>
-                    <textarea name={this.props.name} onChange={this.handleValueChange}
+                    <textarea
+                        name={this.props.name}
+                        onChange={this.handleValueChange}
                         value={this.props.value}
-                        className={className} placeholder={this.props.placeholder}
+                        className={className}
+                        placeholder={this.props.placeholder}
                         readOnly={this.props.readonly}
+                        rows="5" 
                     />
                 </div>
             </div>
