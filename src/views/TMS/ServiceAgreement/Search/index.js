@@ -17,7 +17,8 @@ import {
     PKColumnName,
     InitSearchParams,
     PagePath,
-    AddLogAPIPath
+    AddLogAPIPath,
+    TitleFormSearch
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -29,11 +30,9 @@ import { callGetCache } from "../../../../actions/cacheAction";
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-        this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleonChangePage = this.handleonChangePage.bind(this);
-
+        this.callSearchData = this.callSearchData.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -50,109 +49,31 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
-        this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
-    }
-
-
-
-    handleDelete(id) {
-        const ShipmentOrder = { ShipmentOrderID: id, DeletedUser: this.props.AppInfo.LoginInfo.Username };
-        this.props.callFetchAPI(APIHostName, DeleteAPIPath, ShipmentOrder).then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
-            if (!apiResult.IsError) {
-                this.callSearchData(this.state.SearchData);
-            }
-        });
-    }
-    handleonChangePage(pageNum) {
-        let listMLObject = [];
-        const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
-        listMLObject = Object.assign([], this.state.SearchData, { [9]: aa });
-        this.callSearchData(listMLObject)
-        this.setState({
-            PageNumber: pageNum
-        });
-
-    }
-
-    handleSearchSubmit(formData, MLObject) {
-        const postData = [
-            {
-                SearchKey: "@Keyword",
-                SearchValue: MLObject.Keyword
-            },
-            {
-                SearchKey: "@REQUESTPARTNERID",
-                SearchValue: MLObject.RequestPartnerID
-            },
-            {
-                SearchKey: "@FromDate",
-                SearchValue: MLObject.CreatedOrderTimeFo
-            },
-            {
-                SearchKey: "@ToDate",
-                SearchValue: MLObject.CreatedOrderTimeTo
-            }
-            ,
-            {
-                SearchKey: "@RECEIVERPROVINCEID",
-                SearchValue: MLObject.ReceiverProvinceID
-            },
-            {
-                SearchKey: "@RECEIVERDISTRICTID",
-                SearchValue: MLObject.ReceiverDistrictID
-            },
-            {
-                SearchKey: "@SENDERSTOREID",
-                SearchValue: MLObject.SenderStoreID
-            },
-            {
-                SearchKey: "@SHIPMENTORDERSTATUSID",
-                SearchValue: MLObject.ShipmentOrderStatusID
-            },
-            {
-                SearchKey: "@PAGESIZE",
-                SearchValue: 10
-            },
-            {
-                SearchKey: "@PAGEINDEX",
-                SearchValue: 0
-            }
-        ];
-        this.setState({ SearchData: postData });
-        this.callSearchData(postData);
+        this.callSearchData(this.state.SearchData);
     }
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log('Service Agree', apiResult)
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
-                    IsLoadDataComplete: true
                 });
             }
         });
     }
 
-    handleCloseMessage() {
-        if (!this.state.IsCallAPIError) {
-            this.callSearchData(this.state.SearchData);
-        }
+    handleDelete(id) {
+        console.log('handleDelete', id)
     }
 
-    showMessage(message) {
-        ModalManager.open(
-            <MessageModal
-                title="Thông báo"
-                message={message}
-                onRequestClose={() => true}
-                onCloseModal={this.handleCloseMessage}
-            />
-        );
+    handleonChangePage(pageNum) {
+        console.log('handleonChangePage', pageNum)
+
     }
+
 
     addNotification(message1, IsError) {
         if (!IsError) {
@@ -187,37 +108,39 @@ class SearchCom extends React.Component {
         });
     }
 
-    render() {
-        if (this.state.IsLoadDataComplete) {
-            return (
-                <React.Fragment>
-                    <ReactNotification ref={this.notificationDOMRef} />
-                    <SearchForm
-                        FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
-                        MLObjectDefinition={SearchMLObjectDefinition}
-                        listelement={SearchElementList}
-                        onSubmit={this.handleSearchSubmit}
-                        ref={this.searchref}
-                        className="multiple"
+    
 
-                    />
-                    <DataGrid
-                        listColumn={DataGridColumnList}
-                        dataSource={this.state.gridDataSource}
-                        AddLink={AddLink}
-                        IDSelectColumnName={IDSelectColumnName}
-                        PKColumnName={PKColumnName}
-                        onDeleteClick={this.handleDelete}
-                        onChangePage={this.handleonChangePage}
-                        IsDelete={false}
-                        PageNumber={this.state.PageNumber}
-                        IsAutoPaging={true}
-                        RowsPerPage={10}
-                    />
-                </React.Fragment>
-            );
-        }
-        return <label>Đang nạp dữ liệu...</label>;
+
+    render() {
+        console.log('gridDataSource', this.state.gridDataSource)
+        return (
+            <React.Fragment>
+                <ReactNotification ref={this.notificationDOMRef} />
+                <SearchForm
+                    FormName={TitleFormSearch}
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    listelement={SearchElementList}
+                    onSubmit={this.handleSearchSubmit}
+                    ref={this.searchref}
+                    className="multiple multiple-custom"
+
+                />
+                <DataGrid
+                    listColumn={DataGridColumnList}
+                    dataSource={this.state.gridDataSource}
+                    AddLink={AddLink}
+                    IDSelectColumnName={IDSelectColumnName}
+                    PKColumnName={PKColumnName}
+                    onDeleteClick={this.handleDelete}
+                    onChangePage={this.handleonChangePage}
+                    IsDelete={false}
+                    PageNumber={this.state.PageNumber}
+                    IsAutoPaging={true}
+                    RowsPerPage={10}
+                />
+            </React.Fragment>
+        );
+
     }
 }
 

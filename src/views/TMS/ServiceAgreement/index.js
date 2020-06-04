@@ -9,20 +9,18 @@ import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
-import MapContainer from "./Component/MapContainer ";
-
+import Detail from "./Detail";
 import NotFound from '../../NotFound'
 class ServiceAgreementCom extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+    
 
     render() {
         return (
             <Switch>
                 <Route exact path="/ServiceAgreement" component={Search} />
-                <Route exact path="/ServiceAgreement/Add/" component={Detail} />
+                <Route exact path="/ServiceAgreement/Add/" component={Add} />
                 <Route exact path="/ServiceAgreement/Edit/:id" component={Edit} />
+                <Route exact path="/ShipmentOrder/Detail/:id" component={Detail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );

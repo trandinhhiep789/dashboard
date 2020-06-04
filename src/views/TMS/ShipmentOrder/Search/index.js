@@ -66,6 +66,7 @@ class SearchCom extends React.Component {
             }
         });
     }
+
     handleonChangePage(pageNum) {
         let listMLObject = [];
         const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
