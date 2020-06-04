@@ -551,6 +551,24 @@ export const MLObjectDefinition = [
         DataSourceMember: "Weight"
     },
     {
+        Name: "Length",
+        DefaultValue: "",
+        BindControlName: "txtLength",
+        DataSourceMember: "Length"
+    },
+    {
+        Name: "Width",
+        DefaultValue: "",
+        BindControlName: "txtWidth",
+        DataSourceMember: "Width"
+    },
+    {
+        Name: "Height",
+        DefaultValue: "",
+        BindControlName: "txtHeight",
+        DataSourceMember: "Height"
+    },
+    {
         Name: "ShipmentFeePaymentMethodID",
         DefaultValue: "",
         BindControlName: "cbShipmentFeePaymentMethodID",

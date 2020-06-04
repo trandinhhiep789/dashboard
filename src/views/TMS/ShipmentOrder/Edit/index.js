@@ -606,7 +606,7 @@ class EditCom extends React.Component {
                                                 controltype="InputControl"
                                                 value={""}
                                                 datasourcemember="NumberOfPackages"
-                                                validatonList={["number"]}
+                                                validatonList={["numbernew"]}
                                                 maxSize="4"
                                             />
                                         </div>
@@ -621,7 +621,7 @@ class EditCom extends React.Component {
                                                 controltype="InputControl"
                                                 value={""}
                                                 datasourcemember="SecondaryItemCount"
-                                                validatonList={["number"]}
+                                                validatonList={["numbernew"]}
                                                 maxSize="4"
                                             />
                                         </div>
@@ -650,44 +650,44 @@ class EditCom extends React.Component {
                                                     <div className="row">
                                                         <div className="col-md-4">
                                                             <FormControl.TextBox
-                                                                name=""
+                                                                name="txtLength"
                                                                 colspan="12"
                                                                 labelcolspan="4"
-                                                                readOnly={true}
+                                                                readOnly={false}
                                                                 label=""
-                                                                placeholder="Kích thước(DxRxC)"
+                                                                placeholder="Kích thước(Dx)"
                                                                 controltype="InputControl"
                                                                 value={""}
                                                                 validatonList={["numbernew"]}
-                                                                datasourcemember=""
+                                                                datasourcemember="Length"
                                                             />
                                                         </div>
                                                         <div className="col-md-4">
                                                             <FormControl.TextBox
-                                                                name=""
+                                                                name="txtWidth"
                                                                 colspan="12"
                                                                 labelcolspan="4"
-                                                                readOnly={true}
+                                                                readOnly={false}
                                                                 label=""
-                                                                placeholder="Kích thước(DxRxC)"
+                                                                placeholder="Kích thước(R)"
                                                                 controltype="InputControl"
                                                                 value={""}
                                                                 validatonList={["numbernew"]}
-                                                                datasourcemember=""
+                                                                datasourcemember="Width"
                                                             />
                                                         </div>
                                                         <div className="col-md-4">
                                                             <FormControl.TextBox
-                                                                name=""
+                                                                name="txtHeight"
                                                                 colspan="12"
                                                                 labelcolspan="4"
-                                                                readOnly={true}
+                                                                readOnly={false}
                                                                 label=""
-                                                                placeholder="Kích thước(DxRxC)"
+                                                                placeholder="Kích thước(C)"
                                                                 controltype="InputControl"
                                                                 value={""}
                                                                 validatonList={["numbernew"]}
-                                                                datasourcemember=""
+                                                                datasourcemember="Height"
                                                             />
                                                         </div>
                                                     </div>
