@@ -130,6 +130,39 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
             }
         }
     }
+    if (typelist.includes("numbernew") && IsEr == 0) {
+        if (fieldValue) {
+            if (fieldValue.toString().length > 1) {
+                if (/^[0-9][0-9]*$/.test(fieldValue)) {
+                    IsEr = 0;
+                    result = {
+                        IsError: false,
+                        fieldValue: fieldValue,
+                        Message: ""
+                    }
+                }
+           
+            }
+            else {
+                if (/^[0-9]*$/.test(fieldValue)) {
+                    IsEr = 0;
+                    result = {
+                        IsError: false,
+                        fieldValue: fieldValue,
+                        Message: ""
+                    }
+                }
+            }
+        }
+        else {
+            IsEr = 0;
+            result = {
+                IsError: false,
+                fieldValue: fieldValue,
+                Message: ""
+            }
+        }
+    }
     /*kiểm tra ký tự đặc biệt */
     if (typelist.includes("special") && IsEr == 0) {
 
@@ -151,16 +184,6 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
             Message: ""
         }
     }
-    /*Viết hoa kí tự đầu của string*/
-    if (typelist.includes("capitalize") && IsEr == 0) {
-        fieldValue.capitalize();
-        IsEr = 0;
-        result = {
-            IsError: false,
-            fieldValue: fieldValue,
-            Message: ""
-        }
-    }
 
     /*Viết hoa kí tự đầu của string*/
     if (typelist.includes("capitalize") && IsEr == 0) {
@@ -172,7 +195,6 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
             Message: ""
         }
     }
-
 
     if (typelist.includes("Email") && IsEr == 0) {
         var regEx = new RegExp(/^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
@@ -202,7 +224,6 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
             }
         }
     }
-
 
     if (typelist.includes("phone") && IsEr == 0) {
         const arrayPrefixMobileNumber = new Array("0120", "0121", "0122", "0123", "0124", "0125", "0126", "0127", "0128", "0129", "0160", "0161", "0162", "0163", "0164", "0165", "0166", "0167", "0168", "0169", "0186", "0188", "0199", "08", "083", "086", "0868", "088", "089", "090", "091", "092", "093", "094", "095", "096", "097", "098", "099");
@@ -278,7 +299,6 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
     }
 
     if (typelist.includes("date") && IsEr == 0) {
-        debugger;
         if (fieldValue) {
             var temp = fieldValue.trim().split('/');
             var d = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);

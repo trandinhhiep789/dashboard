@@ -222,7 +222,7 @@ class FormControlComboBoxCom extends Component {
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption.name, this.props.validatonList);
+            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption.name);
     }
 
     bindcombox(value, listOption) {
@@ -293,26 +293,26 @@ class FormControlComboBoxCom extends Component {
     }
 
     render() {
-        let { name, label, rowspan, colspan, isMultiSelect, ValidatonErrorMessage, placeholder, listoption } = this.props;
+        let { name, label, rowspan, colspan,labelcolspan,validatonList, isMultiSelect,disabled, validationErrorMessage, placeholder, listoption } = this.props;
         let formRowClassName = "form-row";
-        if (this.props.rowspan != null) {
-            formRowClassName = "form-row col-md-" + this.props.rowspan;
+        if (rowspan != null) {
+            formRowClassName = "form-row col-md-" + rowspan;
         }
 
         let formGroupClassName = "form-group col-md-4";
-        if (this.props.colspan != null) {
-            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        if (colspan != null) {
+            formGroupClassName = "form-group col-md-" + colspan;
         }
         let labelDivClassName = "form-group col-md-2";
-        if (this.props.labelcolspan != null) {
-            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        if (labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + labelcolspan;
         }
         let star;
-        if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
+        if (validatonList != undefined && validatonList.includes("Comborequired") == true) {
             star = '*'
         }
         let className = "react-select";
-        if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
+        if (validationErrorMessage != undefined && validationErrorMessage != "") {
             className += " is-invalid";
         }
         const selectedOption = this.state.SelectedOption;
@@ -321,23 +321,23 @@ class FormControlComboBoxCom extends Component {
             <div className={formRowClassName} >
                 <div className={labelDivClassName}>
                     <label className="col-form-label 6">
-                        {this.props.label}<span className="text-danger"> {star}</span>
+                        {label}<span className="text-danger"> {star}</span>
                     </label>
                 </div>
                 <div className={formGroupClassName}>
                     <Select
                         value={selectedOption}
-                        name={this.props.name}
+                        name={name}
                         ref={this.props.inputRef}
                         onChange={this.handleValueChange}
                         options={listOption}
-                        isDisabled={this.props.disabled}
+                        isDisabled={disabled}
                         isMulti={isMultiSelect}
                         isSearchable={true}
                         placeholder={placeholder}
                         className={className}
                     />
-                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{validationErrorMessage}</li></ul></div>
                 </div>
             </div>
         );

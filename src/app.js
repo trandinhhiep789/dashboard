@@ -16,6 +16,7 @@ const customMiddleWare = store => next => action => {
 
     if (action.type == FETCH_API_FAILURE) {
         console.log("Middleware check FETCH_API_FAILURE:", store.getState());
+        console.log("Middleware check FETCH_API_FAILURE action:", action);
         //RegisterClientInfo
         const unAuthenStatus = [10, 11, 12, 13, 18];
         const state = store.getState();
