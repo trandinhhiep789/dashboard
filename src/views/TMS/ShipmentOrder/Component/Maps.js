@@ -53,7 +53,7 @@ class MapsCom extends React.Component {
             maxZoom: 19,
             zoom: 15,
             minZoom: 2,
-            registerKey: "7f65a9df-4910-434d-b2ce-5cf7d783ad8b",
+            registerKey: "6a50ea65-8dd9-4c03-aa6e-6c839b611eea",
             scaleControlOptions: { showScale: true },
             zoomControl: true
         };

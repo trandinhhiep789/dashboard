@@ -119,6 +119,7 @@ class ShipmentOrderItemObjCom extends Component {
                             placeholder="Giá sản phẩm "
                             controltype="InputControl"
                             value=""
+                            maxSize={17}
                             datasourcemember="Price"
                         />
                     </div>
@@ -133,6 +134,8 @@ class ShipmentOrderItemObjCom extends Component {
                             placeholder="Số lượng"
                             controltype="InputControl"
                             value=""
+                            validatonList={["numbernew"]}
+                            maxSize={9}
                             datasourcemember="Quantity"
                         />
                     </div>
@@ -173,6 +176,7 @@ class ShipmentOrderItemObjCom extends Component {
                                             placeholder="Kích thước(D)"
                                             controltype="InputControl"
                                             value={""}
+                                            validatonList={["numbernew"]}
                                             datasourcemember="Length"
                                         />
                                     </div>
@@ -186,6 +190,7 @@ class ShipmentOrderItemObjCom extends Component {
                                             placeholder="Kích thước(R)"
                                             controltype="InputControl"
                                             value={""}
+                                            validatonList={["numbernew"]}
                                             datasourcemember="Width"
                                         />
                                     </div>
@@ -199,6 +204,7 @@ class ShipmentOrderItemObjCom extends Component {
                                             placeholder="Kích thước(C)"
                                             controltype="InputControl"
                                             value={""}
+                                            validatonList={["numbernew"]}
                                             datasourcemember="Height"
                                         />
                                     </div>
@@ -220,21 +226,6 @@ class ShipmentOrderItemObjCom extends Component {
                             classNameCustom="customCheckbox"
                         />
                     </div>
-
-                    {/* <div className="col-md-12">
-                        <FormControl.TextBox
-                            name="txtNote"
-                            colspan="10"
-                            labelcolspan="2"
-                            readOnly={false}
-                            label="Ghi chú"
-                            controltype="InputControl"
-                            value=""
-                            datasourcemember="Note"
-                            classNameCustom="customcontrol"
-                        />
-                    </div> */}
-
                     <div className="col-md-6">
                         <FormControl.TextBox
                             name="txtNote"
@@ -249,7 +240,6 @@ class ShipmentOrderItemObjCom extends Component {
                         />
                     </div>
                     <div className="col-md-6">
-
                     </div>
                 </div>
 

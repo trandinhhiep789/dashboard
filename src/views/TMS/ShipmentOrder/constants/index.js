@@ -575,6 +575,13 @@ export const MLObjectDefinition = [
         DataSourceMember: "OrderNote"
     },
     {
+        Name: "CoordinatorNote",
+        DefaultValue: "",
+        BindControlName: "txtCoordinatorNote",
+        DataSourceMember: "CoordinatorNote"
+    },
+    
+    {
         Name: "IsActived",
         DefaultValue: true,
         BindControlName: "chkIsActived",
@@ -701,7 +708,7 @@ export const DataGridColumnItemList = [
         Caption: "Mã sản phẩm",
         DataSourceMember: "ProductID",
         Width: 250,
-        hideInput:false
+        hideInput: false
     },
     {
         Name: "IsInstallItem",
@@ -870,7 +877,7 @@ export const ElementQHPXList = [
         placeholder: "số nhà/đường",
         value: "",
         DataSourceMember: "SenderAddress",
-      
+
     }
     // ,
     // {
@@ -969,7 +976,7 @@ export const MLObjectShipmentOrderItem = [
         DefaultValue: "",
         BindControlName: "cbQuantityUnitID",
         DataSourceMember: "QuantityUnitID"
-    } ,
+    },
     {
         Name: "Note",
         DefaultValue: "",
@@ -1000,7 +1007,150 @@ export const MLObjectShipmentOrderItem = [
         BindControlName: "txtHeight",
         DataSourceMember: "Height"
     }
-    
+
 ]
 
+export const DataGridColumnMaterialList = [
 
+    {
+        Name: "IsSaleMaterial",
+        Type: "checkbox",
+        Caption: "Xuất bán",
+        DataSourceMember: "IsSaleMaterial",
+        Width: 80
+    },
+    {
+        Name: "ProductID",
+        Type: "textbox",
+        Caption: "Mã sản phẩm",
+        DataSourceMember: "ProductID",
+        Width: 100
+    },
+    {
+        Name: "ProductName",
+        Type: "textbox",
+        Caption: "Tên sản phẩm",
+        DataSourceMember: "ProductName",
+        Width: 300,
+        validatonList: ["required"]
+    },
+    {
+        Name: "Quantity",
+        Type: "textbox",
+        Caption: "Số lượng",
+        DataSourceMember: "Quantity",
+        Width: 70,
+        validatonList: ["numbernew"]
+    },
+    {
+        Name: "QuantityUnitName",
+        Type: "textbox",
+        Caption: "Đơn vị tính",
+        DataSourceMember: "QuantityUnitName",
+        Width: 100
+    },
+    {
+        Name: "Price",
+        Type: "textbox",
+        Caption: "Giá",
+        DataSourceMember: "Price",
+        Width: 150
+    },
+    {
+        Name: "SaleOrderID",
+        Type: "textbox",
+        Caption: "Mã đơn hàng xuất",
+        DataSourceMember: "SaleOrderID",
+        Width: 150
+    },
+    {
+        Name: "Note",
+        Type: "textbox",
+        Caption: "Ghi chú",
+        DataSourceMember: "Note",
+        Width: 150,
+        hideInput: false
+    },
+    {
+        Name: "Action",
+        Type: "editnew",
+        Caption: "Tác vụ",
+        DataSourceMember: "",
+        Width: 70,
+        iputpop: false
+    }
+];
+export const GridMLMaterialDefinition = [
+    {
+        Name: "ShipmentOrderItemID",
+        DefaultValue: "",
+        BindControlName: "ShipmentOrderItemID",
+        DataSourceMember: "ShipmentOrderItemID"
+    },
+    {
+        Name: "ShipmentOrderMaterialID",
+        DefaultValue: "",
+        BindControlName: "ShipmentOrderMaterialID",
+        DataSourceMember: "ShipmentOrderMaterialID"
+    },
+    {
+        Name: "CreatedOrderTime",
+        DefaultValue: "",
+        BindControlName: "CreatedOrderTime",
+        DataSourceMember: "CreatedOrderTime"
+    },
+    {
+        Name: "QuantityUnitName",
+        DefaultValue: "",
+        BindControlName: "QuantityUnitName",
+        DataSourceMember: "QuantityUnitName"
+    },
+    {
+        Name: "IsSaleMaterial",
+        DefaultValue: false,
+        BindControlName: "IsSaleMaterial",
+        DataSourceMember: "IsSaleMaterial"
+    },
+    {
+        Name: "ProductID",
+        DefaultValue: "",
+        BindControlName: "ProductID",
+        DataSourceMember: "ProductID"
+    },
+    {
+        Name: "ProductName",
+        DefaultValue: "",
+        BindControlName: "ProductName",
+        DataSourceMember: "ProductName"
+    },
+    {
+        Name: "Price",
+        DefaultValue: "",
+        BindControlName: "Price",
+        DataSourceMember: "Price"
+    },
+    {
+        Name: "Quantity",
+        DefaultValue: "",
+        BindControlName: "Quantity",
+        DataSourceMember: "Quantity"
+    },
+    {
+        Name: "QuantityUnitID",
+        DefaultValue: "",
+        BindControlName: "QuantityUnitID",
+        DataSourceMember: "QuantityUnitID"
+    },
+    {
+        Name: "SaleOrderID",
+        DefaultValue: "",
+        BindControlName: "SaleOrderID",
+        DataSourceMember: "SaleOrderID"
+    },
+    {
+        Name: "Note",
+        DefaultValue: "",
+        BindControlName: "Note",
+        DataSourceMember: "Note"
+    }
+]
