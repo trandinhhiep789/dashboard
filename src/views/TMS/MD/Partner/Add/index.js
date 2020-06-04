@@ -32,6 +32,7 @@ class AddCom extends React.Component {
         this.onValueChange = this.onValueChange.bind(this);
         this.setValueCombobox = this.setValueCombobox.bind(this);
         this.onPartnerCoordinatorStoreChange = this.onPartnerCoordinatorStoreChange.bind(this);
+        this.getFullAddress = this.getFullAddress.bind(this);
         // this.handleGetCache = this.handleGetCache.bind(this);
         // this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
         this.state = {
@@ -45,7 +46,8 @@ class AddCom extends React.Component {
             Ward: [],
             AddElementList: AddElementList,
             PartnerID: "",
-            PartnerCoordinatorStore: []
+            PartnerCoordinatorStore: [],
+            FullAddress: ""
         };
     }
 
@@ -174,11 +176,59 @@ class AddCom extends React.Component {
         });
     }
 
+
+    getFullAddress(formData) {
+        let fullAddress = "";
+
+        if (formData.txtWardID && formData.txtWardID != "-1") {
+            let ward = this.state.Ward.filter(x => x.WardID == formData.txtWardID);
+            fullAddress += ward[0].WardName + ", ";
+        }
+        if (formData.txtDistrictID && formData.txtDistrictID != "-1") {
+            let district = this.state.District.filter(x => x.DistrictID == formData.txtDistrictID);
+            fullAddress += district[0].DistrictName + ", ";
+        }
+        if (formData.txtProvinceID && formData.txtProvinceID != "-1") {
+            let province = this.state.Province.filter(x => x.ProvinceID == formData.txtProvinceID);
+            fullAddress += province[0].ProvinceName;
+        }
+
+        if (fullAddress) {
+            if (formData.txtAddress && formData.txtWardID && formData.txtWardID != "-1") {
+                fullAddress = formData.txtAddress + ", " + fullAddress;
+            } else {
+                fullAddress = "";
+            }
+        }
+
+        //console.log("full address", fullAddress);
+        return fullAddress;
+
+    }
     
 
-    onValueChange(elementname, elementvalue) {
+    onValueChange(elementname, elementvalue,formData) {
         if (elementname == "txtPartnerID") {
             this.setState({ PartnerID: elementvalue });
+        }
+
+        let fullAddress = "";
+        if (elementname == "txtCountryID") {
+            fullAddress = "";
+            formData.txtProvinceID = -1;
+            formData.txtDistrictID = -1;
+            formData.txtWardID = -1;
+        } else if (elementname == "txtProvinceID") {
+            fullAddress = "";
+            formData.txtDistrictID = -1;
+            formData.txtWardID = -1;
+        } else if (elementname == "txtDistrictID") {
+            fullAddress = "";
+            formData.txtWardID = -1;
+        } else if (elementname == "txtWardID" && formData.txtAddress) {
+            fullAddress = this.getFullAddress(formData);
+        } else if (elementname == "txtAddress") {
+            fullAddress = this.getFullAddress(formData);
         }
 
         //console.log("this.state.Province", this.state.Province);
@@ -214,9 +264,15 @@ class AddCom extends React.Component {
 
             }
 
+            if (objElement.name == "txtFullAddress") {
+                objElement.value = fullAddress;
+                document.getElementsByName("txtFullAddress")[0].value = fullAddress;
+            }
+
         }.bind(this));
         this.setState({
-            AddElementList: _AddElementList
+            AddElementList: _AddElementList,
+            FullAddress: fullAddress
         });
     }
 
@@ -254,6 +310,7 @@ class AddCom extends React.Component {
             MLObject.WardID = -1;
         }
 
+        MLObject.FullAddress = this.state.FullAddress;
         MLObject.PartnerCoordinatorStore = this.state.PartnerCoordinatorStore;
 
         var data = new FormData();

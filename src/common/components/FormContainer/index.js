@@ -30,7 +30,7 @@ class FormContainerCom extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.elementItemRefs = [];
         const formData = this.bindData();
-        console.log("formData", formData, this.props.dataSource)
+        //console.log("formData", formData, this.props.dataSource)
         this.state = {
             FormData: formData,
             FormValidation: {},

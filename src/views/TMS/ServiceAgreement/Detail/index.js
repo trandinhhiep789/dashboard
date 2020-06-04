@@ -24,7 +24,6 @@ class DetailCom extends React.Component {
             DataSource: {},
             CallAPIMessage: "",
             IsCallAPIError: false,
-            IsLoadDataComplete: false,
         }
     }
 
@@ -36,16 +35,12 @@ class DetailCom extends React.Component {
 
 
     render() {
-        if (this.state.IsLoadDataComplete) {
-            return (
-                <div className="col-lg-12 page-detail">
-                    <ServiceAgreementInfo />
-                </div >
-            );
-        }
         return (
-            <label>Đang nạp dữ liệu...</label>
+            <div className="col-lg-12 page-detail">
+                <ServiceAgreementInfo />
+            </div >
         );
+
     }
 }
 
