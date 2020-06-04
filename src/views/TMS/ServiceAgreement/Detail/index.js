@@ -14,8 +14,10 @@ import {
     PagePath,
     DetailAPIPath
 } from "../constants";
+import { MessageModal } from "../../../../common/components/Modal";
 import ServiceAgreementInfo from "./ServiceAgreementInfo";
-
+import Abiliti from "./Abiliti";
+import FeeAppendix from './FeeAppendix';
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -24,22 +26,70 @@ class DetailCom extends React.Component {
             DataSource: {},
             CallAPIMessage: "",
             IsCallAPIError: false,
+            ServiceAgreementInfo: {},
+            IsLoadDataComplete: false
         }
     }
 
     componentDidMount() {
         console.log("DetailCom", this.props)
         this.props.updatePagePath(DetailAPIPath);
+        this.callLoadData(this.props.match.params.id);
+    }
+
+    callLoadData(id) {
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.setState({
+                    DataSource: apiResult.ResultObject,
+                    ServiceAgreementInfo: apiResult.ResultObject,
+                    IsLoadDataComplete: true
+                });
+            }
+        });
+    }
+
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+                onCloseModal={this.handleCloseMessage}
+            />
+        );
     }
 
 
 
+
     render() {
+
+        if (this.state.IsLoadDataComplete) {
+            return (
+                <div className="col-lg-12 page-detail">
+                    <ServiceAgreementInfo
+                        ServiceAgreementInfo={this.state.ServiceAgreementInfo}
+                    />
+
+                    <FeeAppendix
+
+                    />
+
+                    <Abiliti />
+                </div >
+            );
+        }
         return (
-            <div className="col-lg-12 page-detail">
-                <ServiceAgreementInfo />
-            </div >
+            <label>Đang nạp dữ liệu...</label>
         );
+
 
     }
 }

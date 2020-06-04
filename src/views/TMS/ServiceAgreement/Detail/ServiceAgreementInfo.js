@@ -9,8 +9,12 @@ class ServiceAgreementInfoCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-  
+
         }
+    }
+
+    componentDidMount() {
+        console.log('ServiceAgreementInfoCom', this.props.ServiceAgreementInfo)
     }
 
 
@@ -24,12 +28,14 @@ class ServiceAgreementInfoCom extends Component {
                             <label className="col-form-label bold">Mã hợp đồng:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label">VCLD-HD001</label>
+                            <label className="col-form-label">{this.props.ServiceAgreementInfo.ServiceAgreementID}</label>
                         </div><div className="form-group col-md-2">
                             <label className="col-form-label bold">Loại hợp đồng:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label">11111</label>
+                            <label className="col-form-label">
+                            {this.props.ServiceAgreementInfo.ServiceTypeID}
+                            </label>
                         </div>
                     </div>
 
@@ -157,7 +163,7 @@ class ServiceAgreementInfoCom extends Component {
                             <label className="col-form-label"></label>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         );

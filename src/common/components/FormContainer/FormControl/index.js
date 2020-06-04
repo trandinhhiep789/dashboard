@@ -369,7 +369,7 @@ class FormControlDatetimeCom extends Component {
         if (this.props.rowspan != null) {
             formRowClassName = "form-row col-md-" + this.props.rowspan;
         }
-        let className = "";
+        let className = "ant-picker-custom";
         if (this.props.CSSClassName != null)
             className = this.props.CSSClassName;
         let formGroupClassName = "form-group col-md-4";

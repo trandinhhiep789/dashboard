@@ -291,6 +291,7 @@ class EditCom extends React.Component {
                                         value=""
                                         validatonList={["required"]}
                                         datasourcemember="CreatedOrderTime"
+                                        
                                     />
                                 </div>
 
