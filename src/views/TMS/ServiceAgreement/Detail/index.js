@@ -46,7 +46,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            console.log('DetailCom', apiResult, LoadNewAPIPath, id)
+            console.log('DetailCom', apiResult,)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -95,6 +95,9 @@ class DetailCom extends React.Component {
 
                     <FeeAppendix
                         FeeAppendix={this.state.ServiceAgreementInfo.FeeAppendix_ItemList}
+                    />
+                    <Abiliti
+                        Abiliti={this.state.ServiceAgreementInfo.Ability_ItemList}
                     />
 
                 </FormContainer>

@@ -35,7 +35,7 @@ class FeeAppendixCom extends Component {
     }
 
     handleItemInsert(){
-
+        console.log('handleItemInsert FeeAppendix')
     }
 
 
