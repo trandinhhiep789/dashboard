@@ -30,7 +30,6 @@ class AbilitiCom extends Component {
     }
 
     render() {
-        console.log('â', this.props, this.props.Abiliti)
         return (
             <InputGridControl
             name="Abiliti_ItemList"

@@ -46,6 +46,8 @@ class FeeAppendixCom extends Component {
             <InputGridControl
                 name="FeeAppendix_ItemList"
                 controltype="InputGridControl"
+                IsCustomAddLink={true}
+                AddLink="/ServiceAgreement/FeeAppendix/Add"
                 title={TitleFromFeeAppendix}
                 IDSelectColumnName={PKColumnNameFeeAppendix}
                 listColumn={DataGridColumnItemListFeeAppendix}
