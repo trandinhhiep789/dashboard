@@ -8,13 +8,17 @@ import { ModalManager } from "react-dynamic-modal";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
+import FormContainer from "../../../../common/components/FormContainer";
 
 import {
     APIHostName,
     LoadAPIPath,
     PagePath,
     DetailAPIPath,
-    LoadNewAPIPath
+    LoadNewAPIPath,
+    MLObjectDefinition,
+    BackLink,
+    TitleFormDetail
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
 import ServiceAgreementInfo from "./ServiceAgreementInfo";
@@ -77,7 +81,14 @@ class DetailCom extends React.Component {
 
         if (this.state.IsLoadDataComplete) {
             return (
-                <div className="col-lg-12 page-detail">
+                <FormContainer
+                    FormName={TitleFormDetail}
+                    MLObjectDefinition={MLObjectDefinition}
+                    dataSource={this.state.DataSource}
+                    listelement={[]}
+                    BackLink={BackLink}
+                    onSubmit={this.handleSubmit}
+                >
                     <ServiceAgreementInfo
                         ServiceAgreementInfo={this.state.ServiceAgreementInfo}
                     />
@@ -86,10 +97,8 @@ class DetailCom extends React.Component {
                         FeeAppendix={this.state.ServiceAgreementInfo.FeeAppendix_ItemList}
                     />
 
-                    <Abiliti
-                        Abiliti={''}
-                    />
-                </div >
+                </FormContainer>
+
             );
         }
         return (

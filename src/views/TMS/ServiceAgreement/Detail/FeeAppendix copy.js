@@ -1,38 +1,36 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
 import {
-    PKColumnNameAbiliti,
-    TitleFrom,
-    DataGridColumnItemList
+    APIHostName,
 } from "../constants";
 
-class AbilitiCom extends Component {
+class FeeAppendixCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            Abiliti: this.props.Abiliti
+            FeeAppendix: this.props.FeeAppendix
+        }
+    }
+
+    componentDidMount() {
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.FeeAppendix) !== JSON.stringify(nextProps.FeeAppendix)) {
+            this.setState({
+                Abiliti: nextProps.FeeAppendix
+            })
         }
     }
 
 
-
-    handleItemDelete(index) {
-
-    }
-    handleItemEdit() {
-
-    }
-    handleItemInsert() {
-
-    }
-
     render() {
-        console.log('â', this.props, this.props.Abiliti)
+        console.log('FeeAppendixCom',this.props.FeeAppendix)
+
         return (
-            <div className="card">
-                <h4 className="card-title"><strong>Năng lực</strong></h4>
+               <div className="card">
+                <h4 className="card-title"><strong>Phụ lục biểu phí</strong></h4>
                 <div className="card-body">
                     <div className="form-row">
                         <div className="col-md-12">
@@ -40,31 +38,33 @@ class AbilitiCom extends Component {
                                 <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                     <thead className="thead-light">
                                         <tr>
-                                            <th className="jsgrid-header-cell">Loại mùa vụ</th>
+                                            <th className="jsgrid-header-cell">Tên phụ lục</th>
+                                            <th className="jsgrid-header-cell">Loại thời vụ</th>
                                             <th className="jsgrid-header-cell">Từ ngày</th>
                                             <th className="jsgrid-header-cell">Đến ngày</th>
-                                            <th className="jsgrid-header-cell">Theo tháng</th>
-                                            <th className="jsgrid-header-cell">Theo ngày</th>
+                                            <th className="jsgrid-header-cell">Đơn vị tính</th>
+                                            <th className="jsgrid-header-cell">Kích hoạt</th>
                                             <th className="jsgrid-header-cell">Tác vụ</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.state.Abiliti && this.state.Abiliti.map((item, index) => {
+                                        {this.state.FeeAppendix && this.state.FeeAppendix.map((item, index) => {
                                             return (<tr key={index}>
                                                 <td>
                                                     <div className="checkbox">
                                                         <label>
-                                                            <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.AbilityID} />
+                                                            <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.FeeAppendixID} />
                                                             <span className="cr">
                                                                 <i className="cr-icon fa fa-check"></i>
                                                             </span>
                                                         </label>
                                                     </div>
                                                 </td>
-                                                <td>AAA</td>
-                                                <td>{item.ToDate}</td>
-                                                <td>{item.FromDate}</td>
-                                                <td>AA</td>
+                                                <td>{item.FeeAppendixName}</td>
+                                                <td>{item.ServiceSeasonTypeID}</td>
+                                                <td>{item.ApplyToDate}</td>
+                                                <td>{item.ApplyFromDate}</td>
+                                                <td>{item.IsActived}</td>
                                             </tr>)
                                         })}
                                     </tbody>
@@ -97,5 +97,5 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-const Abiliti = connect(mapStateToProps, mapDispatchToProps)(AbilitiCom);
-export default Abiliti;
+const FeeAppendix = connect(mapStateToProps, mapDispatchToProps)(FeeAppendixCom);
+export default FeeAppendix;

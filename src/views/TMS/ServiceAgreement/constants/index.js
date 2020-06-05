@@ -14,6 +14,7 @@ export const PKColumnName = "ServiceAgreementID";
 
 export const TitleFormSearch = "Tìm kiếm danh sách hợp đồng";
 export const TitleFormAdd = "Thêm hợp đồng";
+export const TitleFormDetail = "Thông tin hợp đồng";
 
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
