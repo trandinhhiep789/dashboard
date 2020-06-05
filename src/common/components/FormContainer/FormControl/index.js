@@ -353,9 +353,9 @@ class FormControlDatetimeCom extends Component {
         this.handleValueChange = this.handleValueChange.bind(this);
     }
     handleValueChange(name, moment) {
-        //e.preventDefault();
+
         if (this.props.onValueChange != null)
-            this.props.onValueChange(name, moment._d);
+            this.props.onValueChange(this.props.name, moment);
     }
     componentDidMount() {
 
@@ -363,7 +363,7 @@ class FormControlDatetimeCom extends Component {
 
 
     render() {
-        let { name, label, timeFormat, dateFormat, colspan, value, ValidatonErrorMessage } = this.props;
+        let { name, label, timeFormat, dateFormat, colspan, value, validationErrorMessage } = this.props;
 
         let formRowClassName = "form-row";
         if (this.props.rowspan != null) {
@@ -384,33 +384,36 @@ class FormControlDatetimeCom extends Component {
         if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
             star = '*'
         }
-        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
+        if (validationErrorMessage != "" && validationErrorMessage != undefined) {
             className += " is-invalid";
         }
-            return (
-                <div className={formRowClassName} >
-                    <div className={labelDivClassName}>
-                        <label className="col-form-label 6">
-                            {this.props.label}<span className="text-danger"> {star}</span>
-                        </label>
-                    </div>
-                    <div ref={this.inputRef} className={formGroupClassName}>
-                 
-                        <DatePicker
-                             
-                            defaultValue={moment('2020-06-02 16:15', "YYYY-MM-DD HH:mm")}
-                            format="YYYY-MM-DD HH:mm"
-                            className={className}
-                            dropdownClassName="tree-select-custom"
-                        />
-                        <div className="invalid-feedback">
-                            <ul className="list-unstyled">
-                                <li>{this.props.validationErrorMessage}</li>
-                            </ul>
-                        </div>
+        return (
+            <div className={formRowClassName} >
+                <div className={labelDivClassName}>
+                    <label className="col-form-label 6">
+                        {this.props.label}<span className="text-danger"> {star}</span>
+                    </label>
+                </div>
+
+                <div className={formGroupClassName}>
+                    <DatePicker
+                        showTime
+                        value={(value != '' && value != null) ? moment(value, dateFormat) : ''}
+                        format={dateFormat}
+                        className={className}
+                        dropdownClassName="tree-select-custom"
+                        ref={this.props.inputRef}
+                        placeholder={'vui lòng chọn ngày'}
+                        onChange={this.handleValueChange}
+                    />
+                    <div className="invalid-feedback">
+                        <ul className="list-unstyled">
+                            <li>{validationErrorMessage}</li>
+                        </ul>
                     </div>
                 </div>
-            );
+            </div>
+        );
     }
 }
 const FormControlDatetime = connect(null, null)(FormControlDatetimeCom);
@@ -1149,10 +1152,6 @@ class ElementDatetimeCom extends Component {
     }
     componentDidMount() {
 
-    }
-
-    inputRef() {
-        debugger;
     }
 
     render() {
