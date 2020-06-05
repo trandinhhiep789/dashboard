@@ -32,6 +32,8 @@ import { callGetCache } from "../../../../actions/cacheAction";
 import indexedDBLib from "../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import MultiUserComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiUserComboBox";
+import ProductComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/ProductComboBox";
+
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import ShipmentOrderItemObj from '../Component/ShipmentOrderItemObj';
@@ -82,15 +84,14 @@ class EditCom extends React.Component {
     handleInputChangeObjItem(ObjItem) {
 
         const formData = Object.assign({}, this.state.DataSource, { ["ShipmentOrder_ItemList"]: ObjItem });
-        this.setState({ DataSource: formData});
+        this.setState({ DataSource: formData });
         this.props.hideModal();
-      
+
     }
-    handleItemDelete(index)
-    {
+    handleItemDelete(index) {
         let dataSourceValue = this.state.DataSource.ShipmentOrder_ItemList.filter(function (value, index1) { return index1 != index; });
         const formData = Object.assign({}, this.state.DataSource, { ["ShipmentOrder_ItemList"]: dataSourceValue });
-        this.setState({ DataSource: formData});
+        this.setState({ DataSource: formData });
 
     }
     handleItemInsert() {
@@ -123,7 +124,7 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        console.log("handleSubmit",formData, MLObject)
+        console.log("handleSubmit", formData, MLObject)
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.ResultLanguage = ResultLanguage;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
@@ -291,7 +292,7 @@ class EditCom extends React.Component {
                                         value=""
                                         validatonList={["required"]}
                                         datasourcemember="CreatedOrderTime"
-                                        
+
                                     />
                                 </div>
 
@@ -357,7 +358,7 @@ class EditCom extends React.Component {
                                         datasourcemember="EarliestDeliveryTime" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.FormControlDatetime    
+                                    <FormControl.FormControlDatetime
                                         name="dtLatestDeliveryTime"
                                         colspan="8"
                                         labelcolspan="4"
@@ -772,7 +773,7 @@ class EditCom extends React.Component {
                                 onEditClick={this.handleItemEdit}
                                 onDeleteClick={this.handleItemDelete}
                             />
-                              <InputGridControl
+                            <InputGridControl
                                 name="ShipmentOrder_MaterialList"
                                 controltype="InputGridControl"
                                 title="Vật tư lắp đặt"
@@ -798,6 +799,17 @@ class EditCom extends React.Component {
                                 controltype="InputMultiControl"
                                 MLObjectDefinition={GridMLDeliverUserDefinition}
                                 datasourcemember="ShipmentOrder_DeliverUserList"
+                            />
+
+                            <ProductComboBox
+                                name="Product"
+                                colspan="10"
+                                labelcolspan="2"
+                                label="Mã sản phẩm"
+                                IsLabelDiv={true}
+                                controltype="InputMultiControl"
+                                MLObjectDefinition={GridMLDeliverUserDefinition}
+                                datasourcemember="Product"
                             />
                             <FormControl.TextBox
                                 name="txtCoordinatorNote"
