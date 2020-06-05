@@ -401,12 +401,12 @@ class InputGridControlCom extends Component {
                     {(this.props.IsPermisionAdd == true || this.props.IsPermisionAdd == undefined) && this.state.IsSystem == false ?
                         (this.props.IsCustomAddLink == true || this.props.IsCustomAddLink != undefined ?
                             (<Link to={this.props.AddLink}>
-                                <button type="button" className="btn btn-info 2222" title="" data-provide="tooltip" data-original-title="Thêm">
+                                <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
                                     <span className="fa fa-plus ff"> Thêm </span>
                                 </button>
                             </Link>)
                             : (
-                                <button type="button" className="btn btnEditCard 111" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleInsertClick}>
+                                <button type="button" className="btn btnEditCard" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleInsertClick}>
                                     <span className="fa fa-plus ff"> Thêm </span>
                                 </button>
                             )
