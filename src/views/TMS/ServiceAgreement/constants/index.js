@@ -1,6 +1,7 @@
 export const APIHostName = "PIMAPI";
 export const SearchAPIPath = "api/ServiceAgreement/Search";
 export const LoadAPIPath = "api/ServiceAgreement/Load";
+export const LoadNewAPIPath = "api/ServiceAgreement/LoadInfoNew";
 export const AddAPIPath = "api/ServiceAgreement/Add";
 export const UpdateAPIPath = "api/ServiceAgreement/Update";
 export const DeleteAPIPath = "api/ServiceAgreement/Delete";

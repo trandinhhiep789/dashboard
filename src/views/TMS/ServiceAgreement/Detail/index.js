@@ -4,6 +4,7 @@ import {
     Route,
     Switch
 } from "react-router-dom";
+import { ModalManager } from "react-dynamic-modal";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -12,7 +13,8 @@ import {
     APIHostName,
     LoadAPIPath,
     PagePath,
-    DetailAPIPath
+    DetailAPIPath,
+    LoadNewAPIPath
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
 import ServiceAgreementInfo from "./ServiceAgreementInfo";
@@ -27,18 +29,20 @@ class DetailCom extends React.Component {
             CallAPIMessage: "",
             IsCallAPIError: false,
             ServiceAgreementInfo: {},
+            FeeAppendix: {},
+            Abiliti: {},
             IsLoadDataComplete: false
         }
     }
 
     componentDidMount() {
-        console.log("DetailCom", this.props)
         this.props.updatePagePath(DetailAPIPath);
         this.callLoadData(this.props.match.params.id);
     }
 
     callLoadData(id) {
-        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+        this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
+            console.log('DetailCom', apiResult, LoadNewAPIPath, id)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -79,10 +83,12 @@ class DetailCom extends React.Component {
                     />
 
                     <FeeAppendix
-
+                        FeeAppendix={this.state.ServiceAgreementInfo.FeeAppendix_ItemList}
                     />
 
-                    <Abiliti />
+                    <Abiliti
+                        Abiliti={''}
+                    />
                 </div >
             );
         }
