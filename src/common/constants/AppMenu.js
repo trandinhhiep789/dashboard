@@ -90,6 +90,13 @@ const AppMenu = [
                         LinkTo: '/ShipmentOrderStatus',
                         MenuIcon: '',
                         SubMenu: []
+                    },
+                    {
+                        MenuName: 'ShipmentFeeType',
+                        MenuTitle: 'Danh sách loại phí vận chuyển',
+                        LinkTo: '/ShipmentFeeType',
+                        MenuIcon: '',
+                        SubMenu: []
                     }
 
                 ]

@@ -17,8 +17,8 @@ export const API_HOST_LIST = {
     },
     CacheAPI: {
         HostName: "CacheAPI",
-        HostBaseURL: 'http://erpcacheapi.tterpbeta.vn/'
-        //HostBaseURL:'http://devcacheapi.mwg.vn/'
+        //HostBaseURL: 'http://erpcacheapi.tterpbeta.vn/'
+        HostBaseURL:'http://devcacheapi.mwg.vn/'
     },
     ERPAPI: {
         HostName: "ERPAPI",
