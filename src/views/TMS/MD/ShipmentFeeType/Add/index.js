@@ -15,7 +15,6 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { ATTRIBUTE_CATEGORY_TYPE_ADD } from "../../../../../constants/functionLists";
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache } from "../../../../../actions/cacheAction";
@@ -25,8 +24,6 @@ class AddCom extends React.Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        // this.handleGetCache = this.handleGetCache.bind(this);
-        // this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -37,24 +34,6 @@ class AddCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(AddPagePath);
     }
-
-    // handleClearLocalCache() {
-    //     const cacheKeyID = "PIMCACHE.PIMATTRIBUTECATEGORYTYPE";
-    //     const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-    //     return db.delete(cacheKeyID).then((result) => {
-    //         const postData = {
-    //             CacheKeyID: cacheKeyID,
-    //             UserName: this.props.AppInfo.LoginInfo.Username,
-    //             AdditionParamList: []
-    //         };
-    //         this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-    //             this.handleGetCache();
-    //             //console.log("apiResult", apiResult)
-    //         });
-    //     }
-    //     );
-    // }
-    
 
     // handleGetCache() {
     //     this.props.callGetCache("PIMCACHE.PIMATTRIBUTECATEGORYTYPE").then((result) => {
@@ -74,6 +53,8 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        console.log("Data submit",MLObject );
+
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if(!apiResult.IsError){
@@ -108,7 +89,7 @@ class AddCom extends React.Component {
         }
         return (
             <SimpleForm
-                FormName="Thêm lý do hủy giao hàng"
+                FormName="Thêm loại phí vận chuyển"
                 MLObjectDefinition={MLObjectDefinition} 
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
