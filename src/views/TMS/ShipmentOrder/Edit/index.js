@@ -32,6 +32,8 @@ import { callGetCache } from "../../../../actions/cacheAction";
 import indexedDBLib from "../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import MultiUserComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiUserComboBox";
+import ProductComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/ProductComboBox";
+
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import ShipmentOrderItemObj from '../Component/ShipmentOrderItemObj';
@@ -82,15 +84,14 @@ class EditCom extends React.Component {
     handleInputChangeObjItem(ObjItem) {
 
         const formData = Object.assign({}, this.state.DataSource, { ["ShipmentOrder_ItemList"]: ObjItem });
-        this.setState({ DataSource: formData});
+        this.setState({ DataSource: formData });
         this.props.hideModal();
-      
+
     }
-    handleItemDelete(index)
-    {
+    handleItemDelete(index) {
         let dataSourceValue = this.state.DataSource.ShipmentOrder_ItemList.filter(function (value, index1) { return index1 != index; });
         const formData = Object.assign({}, this.state.DataSource, { ["ShipmentOrder_ItemList"]: dataSourceValue });
-        this.setState({ DataSource: formData});
+        this.setState({ DataSource: formData });
 
     }
     handleItemInsert() {
@@ -123,7 +124,7 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        console.log("handleSubmit",formData, MLObject)
+        console.log("handleSubmit", formData, MLObject)
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.ResultLanguage = ResultLanguage;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
@@ -211,7 +212,7 @@ class EditCom extends React.Component {
 
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ComboBox
+                                    <FormControl.ComboBoxSelect
                                         name="txtRequestPartnerID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -227,7 +228,7 @@ class EditCom extends React.Component {
                                         datasourcemember="RequestPartnerID" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ComboBox
+                                    <FormControl.ComboBoxSelect
                                         name="txtCarrierPartnerID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -243,7 +244,7 @@ class EditCom extends React.Component {
                                         datasourcemember="CarrierPartnerID" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ComboBox
+                                    <FormControl.ComboBoxSelect
                                         name="txtShipmentGoodsTypeID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -259,7 +260,7 @@ class EditCom extends React.Component {
                                         datasourcemember="ShipmentGoodsTypeID" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ComboBox
+                                    <FormControl.ComboBoxSelect
                                         name="txtCarrierTypeID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -284,25 +285,25 @@ class EditCom extends React.Component {
                                         labelcolspan="4"
                                         readOnly={true}
                                         timeFormat={false}
-                                        dateFormat="DD/MM/YYYY HH:mm"
+                                        dateFormat="YYYY-MM-DD HH:mm"
                                         label="ngày tạo yêu cầu"
                                         placeholder="Ngày tạo yêu cầu"
                                         controltype="InputControl"
                                         value=""
                                         validatonList={["required"]}
                                         datasourcemember="CreatedOrderTime"
-                                        
+
                                     />
                                 </div>
 
                                 <div className="col-md-6">
-                                    <FormControl.ElementDatetime
+                                    <FormControl.FormControlDatetime
                                         name="dtExpectedDeliveryDate"
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
                                         timeFormat={false}
-                                        dateFormat="DD/MM/YYYY"
+                                        dateFormat="YYYY-MM-DD HH:mm"
                                         label="thời gian giao hàng"
                                         placeholder="Thời gian giao hàng"
                                         controltype="InputControl"
@@ -318,7 +319,7 @@ class EditCom extends React.Component {
                                         labelcolspan="4"
                                         readOnly={true}
                                         timeFormat={false}
-                                        dateFormat="DD/MM/YYYY"
+                                        dateFormat="YYYY-MM-DD HH:mm"
                                         label="lấy hàng từ"
                                         placeholder="Lấy hàng từ"
                                         controltype="InputControl"
@@ -327,13 +328,13 @@ class EditCom extends React.Component {
                                         datasourcemember="EarliestPickUpTime" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ElementDatetime
+                                    <FormControl.FormControlDatetime
                                         name="dtLatestPickUpTime"
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
                                         timeFormat={false}
-                                        dateFormat="DD/MM/YYYY"
+                                        dateFormat="YYYY-MM-DD HH:mm"
                                         label="đến"
                                         placeholder="Đến"
                                         controltype="InputControl"
@@ -342,13 +343,13 @@ class EditCom extends React.Component {
                                         datasourcemember="LatestPickUpTime" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ElementDatetime
+                                    <FormControl.FormControlDatetime
                                         name="dtEarliestDeliveryTime"
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
                                         timeFormat={false}
-                                        dateFormat="DD/MM/YYYY"
+                                        dateFormat="YYYY-MM-DD HH:mm"
                                         label="giao hàng từ"
                                         placeholder="Giao hàng từ"
                                         controltype="InputControl"
@@ -357,13 +358,13 @@ class EditCom extends React.Component {
                                         datasourcemember="EarliestDeliveryTime" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ElementDatetime
+                                    <FormControl.FormControlDatetime
                                         name="dtLatestDeliveryTime"
                                         colspan="8"
                                         labelcolspan="4"
                                         readOnly={true}
                                         timeFormat={false}
-                                        dateFormat="DD/MM/YYYY"
+                                        dateFormat="YYYY-MM-DD HH:mm"
                                         label="đến"
                                         placeholder="Đế"
                                         controltype="InputControl"
@@ -485,7 +486,7 @@ class EditCom extends React.Component {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <FormControl.ComboBox
+                                            <FormControl.ComboBoxSelect
                                                 name="cbReceiverPartnerID"
                                                 colspan="8"
                                                 labelcolspan="4"
@@ -501,7 +502,7 @@ class EditCom extends React.Component {
                                                 datasourcemember="ReceiverPartnerID" />
                                         </div>
                                         <div className="col-md-6">
-                                            <FormControl.ComboBox
+                                            <FormControl.ComboBoxSelect
                                                 name="cbReceiverStoreID"
                                                 colspan="8"
                                                 labelcolspan="4"
@@ -582,7 +583,7 @@ class EditCom extends React.Component {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <FormControl.ComboBox
+                                            <FormControl.ComboBoxSelect
                                                 name="cbShipmentGoodsTypeID"
                                                 colspan="8"
                                                 labelcolspan="4"
@@ -661,7 +662,7 @@ class EditCom extends React.Component {
                                                                 placeholder="Kích thước(Dx)"
                                                                 controltype="InputControl"
                                                                 value={""}
-                                                                validatonList={["numbernew"]}
+                                                                validatonList={["number"]}
                                                                 datasourcemember="Length"
                                                             />
                                                         </div>
@@ -675,7 +676,7 @@ class EditCom extends React.Component {
                                                                 placeholder="Kích thước(R)"
                                                                 controltype="InputControl"
                                                                 value={""}
-                                                                validatonList={["numbernew"]}
+                                                                validatonList={["number"]}
                                                                 datasourcemember="Width"
                                                             />
                                                         </div>
@@ -689,7 +690,7 @@ class EditCom extends React.Component {
                                                                 placeholder="Kích thước(C)"
                                                                 controltype="InputControl"
                                                                 value={""}
-                                                                validatonList={["numbernew"]}
+                                                                validatonList={["number"]}
                                                                 datasourcemember="Height"
                                                             />
                                                         </div>
@@ -700,7 +701,7 @@ class EditCom extends React.Component {
 
                                         </div>
                                         <div className="col-md-6">
-                                            <FormControl.ComboBox
+                                            <FormControl.ComboBoxSelect
                                                 name="cbShipmentFeePaymentMethodID"
                                                 colspan="8"
                                                 labelcolspan="4"
@@ -772,7 +773,7 @@ class EditCom extends React.Component {
                                 onEditClick={this.handleItemEdit}
                                 onDeleteClick={this.handleItemDelete}
                             />
-                              <InputGridControl
+                            <InputGridControl
                                 name="ShipmentOrder_MaterialList"
                                 controltype="InputGridControl"
                                 title="Vật tư lắp đặt"
@@ -798,6 +799,17 @@ class EditCom extends React.Component {
                                 controltype="InputMultiControl"
                                 MLObjectDefinition={GridMLDeliverUserDefinition}
                                 datasourcemember="ShipmentOrder_DeliverUserList"
+                            />
+
+                            <ProductComboBox
+                                name="Product"
+                                colspan="10"
+                                labelcolspan="2"
+                                label="Mã sản phẩm"
+                                IsLabelDiv={true}
+                                controltype="InputMultiControl"
+                                MLObjectDefinition={GridMLDeliverUserDefinition}
+                                datasourcemember="Product"
                             />
                             <FormControl.TextBox
                                 name="txtCoordinatorNote"
