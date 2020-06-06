@@ -26,7 +26,7 @@ class DataGridCom extends Component {
         this.handleMultipleInsertClick = this.handleMultipleInsertClick.bind(this);
         this.handleOneInsertClick = this.handleOneInsertClick.bind(this);
         this.handleonClickDelete = this.handleonClickDelete.bind(this);
-        
+
         this.checkAll = this.checkAll.bind(this);
         this.getCheckList = this.getCheckList.bind(this);
         const pkColumnName = this.props.PKColumnName.split(',');
@@ -123,7 +123,7 @@ class DataGridCom extends Component {
     }
 
     onChangePageHandle(pageNum) {
-        this.setState({PageNumber: pageNum});
+        this.setState({ PageNumber: pageNum });
         if (this.props.onChangePage != null)
             this.props.onChangePage(pageNum);
 
@@ -227,10 +227,9 @@ class DataGridCom extends Component {
         }
     }
 
-    handleonClickDelete(id)
-    {
+    handleonClickDelete(id) {
         var doDelete = () => {
-         
+
             const confir = confirm("Bạn có chắc rằng muốn xóa ?");
             if (confir == 1) {
                 this.props.onDeleteClick(id);
@@ -250,7 +249,7 @@ class DataGridCom extends Component {
         } else {
             doDelete();
         }
-      
+
     }
     handleDeleteClick() {
         var doDelete = () => {
@@ -458,6 +457,7 @@ class DataGridCom extends Component {
                                                 onInsertClickEdit={this.handleInsertClickEdit}
                                                 onhandleonClickDelete={this.handleonClickDelete}
                                                 pkColumnName={this.state.ListPKColumnName}
+                                                params={this.props.params}
                                             />;
                                             return (
                                                 <td key={columnItem.Name} style={cellStyle}  >{cellData}</td>
@@ -566,11 +566,20 @@ class DataGridCom extends Component {
         if (this.state.IsPermision === 'error') {
             return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
         }
+        let classCustom;
+        if (this.props.classCustom != "") {
+            classCustom = "col-lg-12 SearchForm"
+        }
+        else {
+            classCustom = ""
+        }
 
         return (
-            <div className="col-lg-12 SearchForm">
+            <div className={classCustom}>
                 <div className="card">
-                    <div className="card-body">
+                    <div className="card-title">
+                        { (this.props.title != undefined || this.props.title != '') ? <h4 className="title">{this.props.title}</h4> : '' }
+
                         {hasHeaderToolbar &&
                             <div className="flexbox mb-10 ">
                                 {searchTextbox}
@@ -578,7 +587,14 @@ class DataGridCom extends Component {
                                     <div className="btn-group btn-group-sm">
                                         {(this.props.IsAdd == true || this.props.IsAdd == undefined) ?
                                             (!this.props.IsCustomAddLink == true ?
-                                                (<Link to={this.props.AddLink}>
+                                                (<Link 
+                                                    to={{
+                                                        pathname: this.props.AddLink,
+                                                        state: {
+                                                            params: this.props.params
+                                                        }
+                                                    }}
+                                                >
                                                     <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
                                                         <span className="fa fa-plus ff"> Thêm </span>
                                                     </button>
@@ -606,7 +622,11 @@ class DataGridCom extends Component {
                                 </div>
                             </div>
                         }
+                    </div>
+                    <div className="card-body">
+
                         {datagrid}
+
                         {this.props.IsAutoPaging &&
                             <GridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />
                         }

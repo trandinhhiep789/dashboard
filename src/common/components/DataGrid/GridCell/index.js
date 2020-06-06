@@ -75,7 +75,7 @@ export default class GridCell extends Component {
         }
 
         //console.log("type:", type);
-        //console.log("text:", text);
+        // console.log("this.props.paramsn1111", this.props.params);
 
         let control = "";
         switch (type) {
@@ -83,7 +83,14 @@ export default class GridCell extends Component {
                 control = <label>{text}</label>;
                 break;
             case "texttolink":
-                control = <Link to={linkTo}>{text}</Link>;
+                control = <Link 
+                    className="linktext"
+                    to={{
+                        pathname: linkTo,
+                        state: {
+                            params: this.props.params
+                        }
+                    }}>{text}</Link>;
                 break;
             case "popuplink":
                 control = <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => { this.onShowPopup(name, popupContent) }}>{text}</a>
@@ -165,7 +172,14 @@ export default class GridCell extends Component {
             case "editnew":
                 return (
                     <div className="group-action">
-                        <Link to={linkTo}>
+                        <Link 
+                            to={{
+                                pathname: linkTo,
+                                state: {
+                                    params: this.props.params
+                                }
+                            }}
+                        >
                             <i className="ti-pencil"></i>
                         </Link>
                         <a

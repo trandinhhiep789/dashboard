@@ -453,7 +453,7 @@ class FormContainerCom extends Component {
             }
         }
         let cssSearchButton = "";
-
+        //console.log("this.props.isSubmitForm ", this.props.isSubmitForm )
         return (
             <div className="col-lg-12">
                 <form className="card" action="" onSubmit={this.handleSubmit}>
@@ -465,7 +465,11 @@ class FormContainerCom extends Component {
                         }
                     </div>
                     <footer className="card-footer text-right" hidden={this.props.IsHideFooter}>
-                        <button className="btn btn-primary" type="submit">{cssSearchButton} Cập nhật</button> {backLinkButton}
+                        {(this.props.isSubmitForm == undefined || this.props.isSubmitForm == true) &&
+                            <button className="btn btn-primary mr-3" type="submit">{cssSearchButton} Cập nhật</button> 
+
+                        }
+                        {backLinkButton}
                     </footer>
                 </form>
             </div>
