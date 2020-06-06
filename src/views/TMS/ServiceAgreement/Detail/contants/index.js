@@ -5,6 +5,9 @@ export const PKColumnNameFeeAppendix = "FeeAppendixID";
 export const TitleFromFeeAppendix = "Phụ lục biểu phí";
 
 
+export const IDSelectColumnNameFeeAppendix = "chkSelect";
+export const AddLinkFeeAppendix = "/ServiceAgreement/FeeAppendix/Add";
+
 export const DataGridColumnItemListFeeAppendix=[
     {
         Name: "FeeAppendixID",
@@ -18,7 +21,7 @@ export const DataGridColumnItemListFeeAppendix=[
         Type: "texttolink",
         Caption: "Tên Phụ lục",
         DataSourceMember: "FeeAppendixName",
-        Link: "/FeeAppendix/Detail/",
+        Link: "/ServiceAgreement/FeeAppendix/Detail/",
         Width: 150,
     },
     {
@@ -43,18 +46,14 @@ export const DataGridColumnItemListFeeAppendix=[
         Width: 250,
     },
     {
-        Name: "IsActived",
-        Type: "checkbox",
-        Caption: "Kích hoạt",
-        DataSourceMember: "IsActived",
-        Width: 150,
-    },
-    {
+
         Name: "Action",
         Type: "editnew",
         Caption: "Tác vụ",
         DataSourceMember: "FeeAppendixID",
         Width: 70,
+        Link: "/ServiceAgreement/FeeAppendix/Edit/",
+        LinkText: "Chỉnh sửa"
     }
 ]
 

@@ -2,18 +2,24 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import {
-    PKColumnNameFeeAppendix, 
+    PKColumnNameFeeAppendix,
     TitleFromFeeAppendix,
-    DataGridColumnItemListFeeAppendix
+    DataGridColumnItemListFeeAppendix,
+    IDSelectColumnName,
+    AddLinkFeeAppendix
 } from "../Detail/contants";
 import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
+import DataGrid from "../../../../common/components/DataGrid/getdataserver.js";
 class FeeAppendixCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
             FeeAppendix: this.props.FeeAppendix,
-            DataSource: this.props.FeeAppendix
+            DataSource: this.props.FeeAppendix,
+            PageNumber: 1,
         }
+        this.gridref = React.createRef();
+        this.searchref = React.createRef();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -27,35 +33,48 @@ class FeeAppendixCom extends Component {
     componentDidMount() {
     }
 
-    handleItemDelete(){
+    handleItemDelete() {
 
     }
-    handleItemEdit(){
+    handleItemEdit() {
 
     }
 
-    handleItemInsert(){
+    handleItemInsert() {
         console.log('handleItemInsert FeeAppendix')
+    }
+
+    handleonChangePage() {
+
     }
 
 
     render() {
-        console.log('FeeAppendixCom', this.props.FeeAppendix, this.state.DataSource)
+
+        console.log('FeeAppendixCom', this.props, this.props.ServiceAgreementID)
+        const ServiceAgreementID = this.props.ServiceAgreementID;
 
         return (
-            <InputGridControl
-                name="FeeAppendix_ItemList"
-                controltype="InputGridControl"
-                IsCustomAddLink={true}
-                AddLink="/ServiceAgreement/FeeAppendix/Add"
-                title={TitleFromFeeAppendix}
-                IDSelectColumnName={PKColumnNameFeeAppendix}
-                listColumn={DataGridColumnItemListFeeAppendix}
-                dataSource={this.state.DataSource}
-                onInsertClick={this.handleItemInsert}
-                onEditClick={this.handleItemEdit}
-                onDeleteClick={this.handleItemDelete}
-            />
+            <React.Fragment>
+                <DataGrid
+                    listColumn={DataGridColumnItemListFeeAppendix}
+                    dataSource={this.state.DataSource}
+                    title={TitleFromFeeAppendix}
+                    AddLink={AddLinkFeeAppendix}
+                    params={ServiceAgreementID}
+                    IDSelectColumnName={IDSelectColumnName}
+                    PKColumnName={PKColumnNameFeeAppendix}
+                    onDeleteClick={this.handleItemDelete}
+                    onChangePage={this.handleonChangePage}
+                    IsDelete={false}
+                    PageNumber={this.state.PageNumber}
+                    IsAutoPaging={false}
+                    RowsPerPage={10}
+                    classCustom=""
+                    ref={this.gridref}
+                />
+            </React.Fragment>
+
         );
     }
 }

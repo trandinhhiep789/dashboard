@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import FormContainer from "../../../../common/components/FormContainer";
+import DataGrid from "../../../../common/components/DataGrid/getdataserver.js";
 
 import {
     APIHostName,
@@ -18,7 +19,14 @@ import {
     LoadNewAPIPath,
     MLObjectDefinition,
     BackLink,
-    TitleFormDetail
+    TitleFormDetail,
+
+    PKColumnNameFeeAppendix,
+    TitleFromFeeAppendix,
+    DataGridColumnItemListFeeAppendix,
+    IDSelectColumnNameFeeAppendix,
+    AddLinkFeeAppendix
+
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
 import ServiceAgreementInfo from "./ServiceAgreementInfo";
@@ -34,6 +42,7 @@ class DetailCom extends React.Component {
             IsCallAPIError: false,
             ServiceAgreementInfo: {},
             FeeAppendix: {},
+            PageNumber: 1,
             Abiliti: {},
             IsLoadDataComplete: false
         }
@@ -46,7 +55,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            console.log('DetailCom', apiResult,)
+            //console.log('DetailCom', apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -74,33 +83,67 @@ class DetailCom extends React.Component {
         );
     }
 
+    handleonChangePageFeeAppendix() {
 
+    }
+
+    handleItemDeleteFeeAppendix() {
+
+    }
 
 
     render() {
 
         if (this.state.IsLoadDataComplete) {
             return (
-                <FormContainer
-                    FormName={TitleFormDetail}
-                    MLObjectDefinition={MLObjectDefinition}
-                    dataSource={this.state.DataSource}
-                    listelement={[]}
-                    BackLink={BackLink}
-                    onSubmit={this.handleSubmit}
-                >
-                    <ServiceAgreementInfo
-                        ServiceAgreementInfo={this.state.ServiceAgreementInfo}
-                    />
+                // <FormContainer
+                //     FormName={TitleFormDetail}
+                //     MLObjectDefinition={MLObjectDefinition}
+                //     dataSource={this.state.DataSource}
+                //     listelement={[]}
+                //     BackLink={BackLink}
+                //     isSubmitForm={false}
+                // >
+                //  </FormContainer>
+                <div className="col-lg-12">
+                    <div className="card">
+                        <h4 className="card-title"><strong>{TitleFormDetail}</strong></h4>
+                        <div className="card-body">
+                            <ServiceAgreementInfo
+                                ServiceAgreementInfo={this.state.ServiceAgreementInfo}
+                            />
 
-                    <FeeAppendix
+                            {/* <FeeAppendix
+                        ServiceAgreementID={this.state.ServiceAgreementInfo.ServiceAgreementID}
                         FeeAppendix={this.state.ServiceAgreementInfo.FeeAppendix_ItemList}
-                    />
-                    <Abiliti
-                        Abiliti={this.state.ServiceAgreementInfo.Ability_ItemList}
-                    />
+                    /> */}
 
-                </FormContainer>
+                            {/* <Abiliti
+                        Abiliti={this.state.ServiceAgreementInfo.Ability_ItemList}
+                    /> */}
+
+                            <DataGrid
+                                listColumn={DataGridColumnItemListFeeAppendix}
+                                dataSource={this.state.ServiceAgreementInfo.FeeAppendix_ItemList}
+                                title={TitleFromFeeAppendix}
+                                AddLink={AddLinkFeeAppendix}
+                                params={this.state.ServiceAgreementInfo.ServiceAgreementID}
+                                IDSelectColumnName={IDSelectColumnNameFeeAppendix}
+                                PKColumnName={PKColumnNameFeeAppendix}
+                                onDeleteClick={this.handleItemDeleteFeeAppendix}
+                                onChangePage={this.handleonChangePageFeeAppendix}
+                                IsDelete={true}
+                                PageNumber={this.state.PageNumber}
+                                IsAutoPaging={false}
+                                RowsPerPage={10}
+                                classCustom=""
+                                ref={this.gridref}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+
 
             );
         }

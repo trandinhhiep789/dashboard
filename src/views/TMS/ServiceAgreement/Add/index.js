@@ -249,7 +249,7 @@ class AddCom extends React.Component {
                             placeholder="Gia hạn đến ngày"
                             controltype="InputControl"
                             value=""
-                            validatonList={["required"]}
+                            //validatonList={[]}
                             datasourcemember="ExtendedDate"
                         />
                     </div>
@@ -278,7 +278,7 @@ class AddCom extends React.Component {
                             placeholder="Ngày thanh lý hợp đồng"
                             controltype="InputControl"
                             value=""
-                            validatonList={["required"]}
+                           // validatonList={[]}
                             datasourcemember="Liquidateddate"
                         />
                     </div>

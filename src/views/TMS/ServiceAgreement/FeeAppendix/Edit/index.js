@@ -31,6 +31,7 @@ class EditCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(AddPagePath);
+        console.log("FeeAppendix edit",this.props)
     }
 
     handleSubmit(formData, MLObject) {

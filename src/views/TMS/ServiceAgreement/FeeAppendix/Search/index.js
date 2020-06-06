@@ -6,59 +6,69 @@ import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
     AddAPIPath,
-    AddElementList,
-    MLObjectDefinition,
     BackLink,
-    AddPagePath,
-    TitleFormAdd
+    PagePath,
+    IDSelectColumnName,
+    TitleFormSearch,
+    SearchMLObjectDefinition,
+    SearchElementList ,
+    DataGridColumnList,
+    AddLink,
+    PKColumnName,
+    InitSearchParams,
+    SearchAPIPath,
 
 } from "../../../ServiceAgreement/FeeAppendix/contants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-
+import ReactNotification from "react-notifications-component";
+import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
+import DataGrid from "../../../../../common/components/DataGrid/getdataserver.js";
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleonChangePage = this.handleonChangePage.bind(this);
+        this.callSearchData = this.callSearchData.bind(this);
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
             DataSource: {},
+            PageNumber: 1,
+            SearchData: InitSearchParams,
+            gridDataSource: [],
         };
+        this.gridref = React.createRef();
+        this.searchref = React.createRef();
+        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
-        this.props.updatePagePath(AddPagePath);
+        this.callSearchData(this.state.SearchData);
+
+        this.props.updatePagePath(PagePath);
     }
 
-    handleSubmit(formData, MLObject) {
-       
-        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-            console.log('handleSubmit', MLObject, apiResult)
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.Message);
-          
+    callSearchData(searchData) {
+        debugger
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log('Service Agree', apiResult)
+            if (!apiResult.IsError) {
+                this.setState({
+                    gridDataSource: apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError,
+                });
+            }
         });
     }
 
+    handleDelete(){
 
-    handleCloseMessage() {
-        if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
     }
 
-    showMessage(message) {
-        ModalManager.open(
-            <MessageModal
-                title="Thông báo"
-                message={message}
-                onRequestClose={() => true}
-                onCloseModal={this.handleCloseMessage}
-            />
-        );
+    handleonChangePage(){
+
     }
 
 
@@ -67,9 +77,31 @@ class SearchCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
         return (
-                <React.Fragment>
-                    FeeAppendix SearchCom
-                </React.Fragment>
+            <React.Fragment>
+                <ReactNotification ref={this.notificationDOMRef} />
+                <SearchForm
+                    FormName={TitleFormSearch}
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    listelement={SearchElementList}
+                    onSubmit={this.handleSearchSubmit}
+                    ref={this.searchref}
+                    //className="multiple multiple-custom"
+
+                />
+                <DataGrid
+                    listColumn={DataGridColumnList}
+                    dataSource={this.state.gridDataSource}
+                    AddLink={AddLink}
+                    IDSelectColumnName={IDSelectColumnName}
+                    PKColumnName={PKColumnName}
+                    onDeleteClick={this.handleDelete}
+                    onChangePage={this.handleonChangePage}
+                    IsDelete={false}
+                    PageNumber={this.state.PageNumber}
+                    IsAutoPaging={true}
+                    RowsPerPage={10}
+                />
+            </React.Fragment>
         );
     }
 }
