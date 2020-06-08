@@ -167,6 +167,10 @@ class ShipmentOrderAddressCom extends Component {
     handleValueChangeGeoLocation(name, lat, lng) {
         // let { SenderGeoLocation } = this.state;
         // SenderGeoLocation = lat + "," + lng;
+        if(lat!=""&&this.state.ShipmentOrderEdit.ReceiverGeoLocation!="")
+        {
+
+        
         const values = this.state.ShipmentOrderEdit.ReceiverGeoLocation.split(",")
         const v1 = parseFloat(values[0])
         const v2 = parseFloat(values[1])
@@ -202,6 +206,13 @@ class ShipmentOrderAddressCom extends Component {
                 });
             }
         });
+    }
+    else
+    {
+        this.setState({ SenderGeoLocation: lat + "," + lng }, () => {
+            this.ShowModalSender();
+        });
+    }
 
 
     }
@@ -337,8 +348,6 @@ class ShipmentOrderAddressCom extends Component {
         });
     }
 
-
-
     checkInputName(formValidation) {
         for (const key in formValidation) {
             //  console.log("validation:",formValidation[key].ErrorLst,formValidation[key].ErrorLst.IsValidatonError);
@@ -387,16 +396,34 @@ class ShipmentOrderAddressCom extends Component {
             });
         }
         else {
+
             ShipmentOrderEdit.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
             ShipmentOrderEdit.SenderGeoLocation = this.state.SenderGeoLocation;
+            ShipmentOrderEdit.SenderFullAddress = this.getfulladress(ShipmentOrderEdit.SenderAddress,ShipmentOrderEdit.SenderWardID,ShipmentOrderEdit.SenderDistrictID,ShipmentOrderEdit.SenderProvinceID);
             this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
-                console.log("UpdateShipmentOrderAddress", apiResult)
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
                     ModalManager.close();
                 }
             });
         }
+    }
+
+    getfulladress(Address, WardID, DistrictID, ProvinceID) {
+        let stringfulladress = Address;
+        if (WardID != 0 && WardID != -1) {
+            stringfulladress = stringfulladress + "," + this.state.Ward.find(element => element.WardID == WardID).WardName
+        }
+        if (DistrictID != 0 && DistrictID != -1) {
+            stringfulladress = stringfulladress + "," + this.state.District.find(element => element.DistrictID == DistrictID).DistrictName
+        }
+        if (ProvinceID != 0 && ProvinceID != -1) {
+            stringfulladress = stringfulladress + "," + this.state.Province.find(element => element.ProvinceID == ProvinceID).ProvinceName
+        }
+
+
+        return stringfulladress;
+
     }
 
     addNotification(message1, IsError) {
@@ -525,7 +552,6 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     handleUpdateAddressReceiver() {
-        debugger
         let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
 
         let formData = FormDataSenderLst;
@@ -561,6 +587,7 @@ class ShipmentOrderAddressCom extends Component {
         else {
             ShipmentOrderEdit.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
             ShipmentOrderEdit.ReceiverGeoLocation = this.state.ReceiverGeoLocation;
+            ShipmentOrderEdit.ReceiverFullAddress = this.getfulladress(ShipmentOrderEdit.ReceiverAddress,ShipmentOrderEdit.ReceiverWardID,ShipmentOrderEdit.ReceiverDistrictID,ShipmentOrderEdit.ReceiverProvinceID);
             this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
@@ -795,7 +822,6 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     ShowModalReceiver() {
-        debugger
         const Province = this.bindcombox(this.state.ProvinceLst, this.state.ShipmentOrderEdit.ReceiverProvinceID);
         const District = this.bindcombox(this.state.DistrictLst, this.state.ShipmentOrderEdit.ReceiverDistrictID);
         const Ward = this.bindcombox(this.state.WardLst, this.state.ShipmentOrderEdit.ReceiverWardID);
@@ -1033,6 +1059,7 @@ class ShipmentOrderAddressCom extends Component {
                                         <label className="col-form-label" >{this.state.ShipmentOrder.SenderFullAddress}</label>
                                         <Link
                                             className="mapslink"
+                                            target="_blank"
                                             to={{
                                                 pathname: "/Map",
                                                 state: {
