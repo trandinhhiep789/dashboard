@@ -50,8 +50,9 @@ export function callFetchAPI(hostname, apiPath, postData) {
             // };
         }
         if (!CheckIsRegisterClient(state.RegisterClientInfo[hostname])) {
+            console.log("CheckIsRegisterClient state.LoginInfo",state.LoginInfo)
             const username = state.LoginInfo.Username;
-            const password = "e10adc3949ba59abbe56e057f20f883e";
+            const password = state.LoginInfo.Password;
             return dispatch(callRegisterClient(hostname, username, password)).then((registerResult) => {
                 if (!registerResult.IsError) {
 

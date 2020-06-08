@@ -15,11 +15,10 @@ import {
     MLObjectDefinition,
     BackLink,
     EditPagePath,
-    InputLanguageColumnList,
-    GridMLObjectDefinition,
-    AddLogAPIPath,
+    ElementSenderQHPXList,
     ElementQHPXList,
     GridMLObjectQTQHPX,
+    GridMLSenderQTQHPX,
     DataGridColumnItemList,
     DataGridColumnMaterialList,
     GridMLMaterialDefinition,
@@ -126,14 +125,14 @@ class EditCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-
-        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.Message);
-            if (!apiResult.IsError) {
-                // this.handleClearLocalCache();
-            }
-        });
+        console.log("handleSubmit",formData, MLObject);
+        // this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+        //     this.setState({ IsCallAPIError: apiResult.IsError });
+        //     this.showMessage(apiResult.Message);
+        //     if (!apiResult.IsError) {
+        //         // this.handleClearLocalCache();
+        //     }
+        // });
     }
 
 
@@ -243,19 +242,19 @@ class EditCom extends React.Component {
                                 </div>
                                 <div className="col-md-6">
                                     <FormControl.ComboBoxSelect
-                                        name="txtShipmentGoodsTypeID"
+                                        name="txtShipmentServiceTypeID"
                                         colspan="8"
                                         labelcolspan="4"
                                         label="loại dịch vụ"
                                         validatonList={["Comborequired"]}
                                         isautoloaditemfromcache={true}
-                                        loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTGOODSTYPE"
-                                        valuemember="ShipmentGoodsTypeID"
-                                        nameMember="ShipmentGoodsTypeName"
+                                        loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTSERVICETYPE"
+                                        valuemember="ShipmentServiceTypeID"
+                                        nameMember="ShipmentServiceTypeName"
                                         controltype="InputControl"
                                         value={""}
                                         listoption={null}
-                                        datasourcemember="ShipmentGoodsTypeID" />
+                                        datasourcemember="ShipmentServiceTypeID" />
                                 </div>
                                 <div className="col-md-6">
                                     <FormControl.ComboBoxSelect
@@ -370,14 +369,6 @@ class EditCom extends React.Component {
                                         validatonList={["required"]}
                                         datasourcemember="LatestDeliveryTime" />
                                 </div>
-
-                                {/* <FormControl.ComboboxQTQHPX
-                                    name="objQHPX"
-                                    controltype="InputControlNew"
-                                    listelement={ElementQHPXList}
-                                    dataSource={this.state.DataSource}
-                                    MLObjectDefinition={GridMLObjectQTQHPX}
-                                /> */}
                             </div>
                         </div>
                     </div>
@@ -467,11 +458,11 @@ class EditCom extends React.Component {
                                             />
                                         </div>
                                         <FormControl.ComboboxQTQHPX
-                                            name="objQHPX"
+                                            name="objSenderQHPX"
                                             controltype="InputControlNew"
-                                            listelement={ElementQHPXList}
+                                            listelement={ElementSenderQHPXList}
                                             dataSource={this.state.DataSource}
-                                            MLObjectDefinition={GridMLObjectQTQHPX}
+                                            MLObjectDefinition={GridMLSenderQTQHPX}
                                         />
                                     </div>
 

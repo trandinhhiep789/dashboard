@@ -18,7 +18,7 @@ export function loginRequest(username,password)
 
 export function loginSuccess(loginUserInfo,tokenString,password)
 {
-  //  console.log(LOGIN_SUCCESS,loginUserInfo);
+//  console.log(LOGIN_SUCCESS,loginUserInfo, password);
     return {
         type: LOGIN_SUCCESS,
         IsLoginSuccess: true,
@@ -120,7 +120,8 @@ export function callLogin(username,password)
                 }
                 else
                 {
-                    return dispatch(callLoginAPI(username,password));
+                    return apiResult;
+                    //return dispatch(callLoginAPI(username,password));
                 }
              });
         }
@@ -153,7 +154,7 @@ export function callLoginAPI(username,password)
                 
                 const plainTokenString = window.decryptData2(clientPrivateKey,1024, encryptedTokenString);
                 //this.props.addLoginSuccess(apiResult.ResultObject.LoginUserInfo, plainTokenString);
-               // console.log("callLogin apiResult:", apiResult); 
+            //    console.log("callLogin apiResult:", apiResult); 
                 dispatch(loginSuccess(apiResult.ResultObject.LoginUserInfo,plainTokenString,password));
                 //console.log(plainTokenString);
                 

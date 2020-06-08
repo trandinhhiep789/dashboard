@@ -425,6 +425,20 @@ export const MLObjectDefinition = [
         DataSourceMember: "CarrierPartnerID"
     },
     {
+        Name: "CarrierTypeID",
+        DefaultValue: "",
+        BindControlName: "txtCarrierTypeID",
+        DataSourceMember: "CarrierTypeID"
+    },
+    
+    {
+        Name: "ShipmentServiceTypeID",
+        DefaultValue: "",
+        BindControlName: "txtShipmentServiceTypeID",
+        DataSourceMember: "ShipmentServiceTypeID"
+    },
+    
+    {
         Name: "ShipmentGoodsTypeID",
         DefaultValue: "",
         BindControlName: "txtShipmentGoodsTypeID",
@@ -630,6 +644,12 @@ export const MLObjectDefinition = [
         DataSourceMember: ""
     },
     {
+        Name: "objSenderQHPX",
+        DefaultValue: {},
+        BindControlName: "objSenderQHPX",
+        DataSourceMember: "objSenderQHPX"
+    },
+    {
         Name: "objQHPX",
         DefaultValue: {},
         BindControlName: "objQHPX",
@@ -830,6 +850,130 @@ export const GridMLObjectItem = [
     }
 ]
 //cobombox
+export const ElementSenderQHPXList = [
+
+    {
+        type: "ComboBox",
+        name: "cbProvinceID",
+        DataSourceMember: "SenderProvinceID",
+        label: "Tỉnh /thành phố",
+        colspan: 8,
+        labelcolspan: 4,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
+        ValueMember: "ProvinceID",
+        NameMember: "ProvinceName",
+        nameOption: "CountryID",
+        nameValue: 2
+    },
+    {
+        type: "ComboBox",
+        name: "cbDistrictID",
+        DataSourceMember: "SenderDistrictID",
+        label: "Quận/huyện",
+        colspan: 8,
+        labelcolspan: 4,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        filterValue: "",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
+        ValueMember: "DistrictID",
+        NameMember: "DistrictName",
+        nameOption1: "cbProvinceID",
+        nameOption: "ProvinceID",
+        nameValue: -1
+    },
+    {
+        type: "ComboBox",
+        name: "cbWardID",
+        DataSourceMember: "SenderWardID",
+        label: "Phường/Xã",
+        colspan: 8,
+        labelcolspan: 4,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        filterValue: "",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
+        ValueMember: "WardID",
+        NameMember: "WardName",
+        nameOption1: "cbDistrictID",
+        nameOption: "DistrictID",
+        nameValue: -1
+    },
+    {
+        type: "text",
+        name: "txtAddress",
+        colspan: "8",
+        labelcolspan: "4",
+        readOnly: false,
+        label: "số nhà/đường",
+        placeholder: "số nhà/đường",
+        value: "",
+        DataSourceMember: "SenderAddress",
+
+    },
+    {
+        type: "textfull",
+        name: "txtFullAddress",
+        colspan: "10",
+        labelcolspan: "2",
+        readOnly: false,
+        label: "địa chỉ",
+        placeholder: "Địa chỉ",
+        value: "",
+        DataSourceMember: "SenderFullAddress",
+        classNameCustom: "customcontrol"
+    }
+];
+
+export const GridMLSenderQTQHPX = [
+    {
+        Name: "SenderProvinceID",
+        DefaultValue: "",
+        BindControlName: "cbProvinceID",
+        DataSourceMember: "SenderProvinceID"
+    },
+    {
+        Name: "SenderDistrictID",
+        DefaultValue: "",
+        BindControlName: "cbDistrictID",
+        DataSourceMember: "SenderDistrictID"
+    },
+    {
+        Name: "SenderWardID",
+        DefaultValue: "",
+        BindControlName: "cbWardID",
+        DataSourceMember: "SenderWardID"
+    },
+    {
+        Name: "SenderAddress",
+        DefaultValue: "",
+        BindControlName: "txtAddress",
+        DataSourceMember: "SenderAddress"
+    }
+    ,
+    {
+        Name: "SenderFullAddress",
+        DefaultValue: "",
+        BindControlName: "txtFullAddress",
+        DataSourceMember: "SenderFullAddress"
+    }
+]
+
+
 export const ElementQHPXList = [
 
     {
@@ -895,29 +1039,28 @@ export const ElementQHPXList = [
     },
     {
         type: "text",
-        name: "txtSenderAddress",
+        name: "txtAddress",
         colspan: "8",
         labelcolspan: "4",
         readOnly: false,
         label: "số nhà/đường",
         placeholder: "số nhà/đường",
         value: "",
-        DataSourceMember: "SenderAddress",
+        DataSourceMember: "ReceiverAddress",
 
+    },
+    {
+        type: "textfull",
+        name: "txtFullAddress",
+        colspan: "10",
+        labelcolspan: "2",
+        readOnly: false,
+        label: "địa chỉ",
+        placeholder: "Địa chỉ",
+        value: "",
+        DataSourceMember:"ReceiverFullAddress",
+        classNameCustom: "customcontrol"
     }
-    // ,
-    // {
-    //     type: "textfull",
-    //     name: "txtFullAddressFull",
-    //     colspan: "10",
-    //     labelcolspan: "2",
-    //     readOnly: false,
-    //     label: "địa chỉ",
-    //     placeholder: "Địa chỉ",
-    //     value: "",
-    //     datasourcemember: "FullAddressFull",
-    //     classNameCustom: "customcontrol"
-    // }
 ];
 
 export const GridMLObjectQTQHPX = [
@@ -940,10 +1083,17 @@ export const GridMLObjectQTQHPX = [
         DataSourceMember: "ReceiverWardID"
     },
     {
-        Name: "SenderAddress",
+        Name: "ReceiverFullAddress",
         DefaultValue: "",
-        BindControlName: "txtSenderAddress",
-        DataSourceMember: "SenderAddress"
+        BindControlName: "txtFullAddress",
+        DataSourceMember: "ReceiverFullAddress"
+    }
+    ,
+    {
+        Name: "ReceiverAddress",
+        DefaultValue: "",
+        BindControlName: "txtAddress",
+        DataSourceMember: "ReceiverAddress"
     }
 ]
 

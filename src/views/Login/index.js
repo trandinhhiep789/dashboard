@@ -76,6 +76,7 @@ class LoginCom extends React.Component {
         let sessionlogin = getCookie(COOKIELOGIN);
         if (sessionlogin) {
             let LoginInfo = JSON.parse(sessionlogin);
+         //   console.log("componentDidMount login",LoginInfo);
             this.props.loginSuccess(LoginInfo.LoginUserInfo, LoginInfo.TokenString, LoginInfo.Password);
             this.setState({ IsLoginSuccess: true })
         }
