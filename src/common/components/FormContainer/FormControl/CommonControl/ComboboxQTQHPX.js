@@ -26,8 +26,7 @@ class ComboboxQTQHPXCom extends React.Component {
             Ward: []
         };
     }
-    InputChange()
-    {
+    InputChange() {
         console.log("InputChange")
     }
     bindDataContol(dataSource) {
@@ -51,7 +50,7 @@ class ComboboxQTQHPXCom extends React.Component {
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             let formDataContol = this.bindDataContol(nextProps.value);
-
+            console.log("formDataContol", formDataContol)
             // const FormDataContolLst = this.state.FormData;
             for (const key in formDataContol) {
                 if (typeof formDataContol[key].validatonList != "undefined") {
@@ -67,6 +66,7 @@ class ComboboxQTQHPXCom extends React.Component {
     bindDataToControl(listElement, dataSource) {
         let listElement1 = listElement;
         if (typeof dataSource != "undefined" && listElement1 != []) {
+
             listElement1 = listElement.map((elementItem) => {
                 const elementvalue = dataSource[elementItem.DataSourceMember];
                 if (typeof elementvalue != "undefined") {
@@ -135,12 +135,28 @@ class ComboboxQTQHPXCom extends React.Component {
         // this.setState({
         //     FormData: FormDataContolLstd,
         // });
+        FormDataContolLstd["txtFullAddress"].value = this.getfulladress(FormDataContolLstd["txtAddress"].value, FormDataContolLstd["cbWardID"].value, FormDataContolLstd["cbDistrictID"].value, FormDataContolLstd["cbProvinceID"].value)
         const MLObject = GetMLObjectObjData(this.props.MLObjectDefinition, FormDataContolLstd, this.props.value);
         if (this.props.onValueChange != null) {
             this.props.onValueChange(this.props.name, MLObject);
         }
     }
+    getfulladress(Address, WardID, DistrictID, ProvinceID) {
+        let stringfulladress = Address;
+        if (WardID != 0 && WardID != -1) {
+            stringfulladress = stringfulladress + "," + this.state.Ward.find(element => element.WardID == WardID).WardName
+        }
+        if (DistrictID != 0 && DistrictID != -1) {
+            stringfulladress = stringfulladress + "," + this.state.District.find(element => element.DistrictID == DistrictID).DistrictName
+        }
+        if (ProvinceID != 0 && ProvinceID != -1) {
+            stringfulladress = stringfulladress + "," + this.state.Province.find(element => element.ProvinceID == ProvinceID).ProvinceName
+        }
 
+
+        return stringfulladress;
+
+    }
     componentDidMount() {
         this.initCombobox();
     }

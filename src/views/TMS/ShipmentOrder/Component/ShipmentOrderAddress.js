@@ -379,6 +379,8 @@ class ShipmentOrderAddressCom extends Component {
             const ObjectNameSenderAddress = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập số nhà/đường" } };
             formData = Object.assign({}, formData, { ["SenderAddress"]: ObjectNameSenderAddress });
         }
+
+        
         if (this.checkInputName(formData) != "") {
             this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
                 this.ShowModalSender();

@@ -1,10 +1,12 @@
 import {LOGIN_REQUEST,  LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT}  from "../constants/actionTypes";
 import {AUTHEN_HOSTNAME,  AUTHEN_HOST_BASEURL,CLIENT_INFO_OBJECT_STORENAME}  from "../constants/systemVars.js";
+import { COOKIELOGIN } from '../constants/systemVars';
 import WebRequest from "../common/library/net/WebRequest.js";
 import MD5Digest from "../common/library/cryptography/MD5Digest.js";
 import {callRegisterClient} from "./registerClient";
 import indexedDBLib from "../common/library/indexedDBLib.js";
 import {CreateLoginData,CheckIsRegisterClient} from "../common/library/AuthenLib.js";
+import { deleteCookie } from "../common/library/CommonLib.js";
 
 export function loginRequest(username,password)
 {
@@ -43,6 +45,17 @@ export function logout()
   //  console.log(LOGOUT);
     return {
         type: LOGOUT
+    };
+}
+
+export function calllogout()
+{
+    return (dispatch, getState) => {
+        deleteCookie(COOKIELOGIN);
+        localStorage.removeItem('LoginInfo')
+        return {
+            type: LOGOUT
+        };
     };
 }
 

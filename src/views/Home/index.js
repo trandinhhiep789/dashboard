@@ -70,16 +70,22 @@ class HomeCom extends React.Component {
         //     this.setState({ isLoggedIn: true })
         // }
         const LoginInfo = localStorage.getItem('LoginInfo');
+        //console.log('home props.AuthenticationInfo ', this.props.AuthenticationInfo);
+        if(!this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess)
+        {
+            if (LoginInfo) {
+                const LoginInfo1 = JSON.parse(LoginInfo)
+             //   console.log("componentDidMount Home",LoginInfo1,LoginInfo1.Password);
+                this.props.loginSuccess(LoginInfo1.LoginUserInfo, LoginInfo1.TokenString,"e10adc3949ba59abbe56e057f20f883e");
+                this.setState({ isLoggedIn: true })
+            }
+            else {
+                this.setState({ isLoggedIn: false })
+    
+            }
+        }
         //console.log('home LoginInfo', LoginInfo)
-        if (LoginInfo) {
-            const LoginInfo1 = JSON.parse(LoginInfo)
-            this.props.loginSuccess(LoginInfo1.LoginUserInfo, LoginInfo1.TokenString, LoginInfo1.Password);
-            this.setState({ isLoggedIn: true })
-        }
-        else {
-            this.setState({ isLoggedIn: false })
-
-        }
+        
 
     }
 
@@ -159,8 +165,8 @@ const mapDispatchToProps = dispatch => {
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         },
-        loginSuccess: (loginInfo, token) => {
-            return dispatch(loginSuccess(loginInfo, token))
+        loginSuccess: (loginInfo, token,password) => {
+            return dispatch(loginSuccess(loginInfo, token, password))
         },
     }
 }

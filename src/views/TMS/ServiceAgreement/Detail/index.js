@@ -37,11 +37,12 @@ import FeeAppendix from './FeeAppendix';
 import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
-import AbilityElement from "../FeeAppendix/Component/AbilityElement";
+import AbilityElement from "./Component/AbilityElement.js";
 
 class DetailCom extends React.Component {
     constructor(props) {
         super(props);
+        this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
         this.state = {
             DataSource: {},
             CallAPIMessage: "",
@@ -96,28 +97,37 @@ class DetailCom extends React.Component {
     handleItemDeleteFeeAppendix() {
 
     }
+    handleInputChangeObjItem(ObjItem) {
+debugger
+        const formData = Object.assign({}, this.state.DataSource, { ["Ability_ItemList"]: ObjItem });
+        this.setState({ DataSource: formData });
 
-    handleItemInsertAbiliti(){
+    }
+
+    handleItemInsertAbiliti() {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Thêm năng lực',
             content: {
-                text: <AbilityElement/>
+                text: <AbilityElement
+                    dataSource={this.state.DataSource}
+                    onInputChangeObj={this.handleInputChangeObjItem}
+                />
             },
             maxWidth: '1000px'
         });
     }
 
-    handleItemEditAbiliti(){
+    handleItemEditAbiliti() {
 
     }
 
-    handleItemDeleteAbiliti(){
+    handleItemDeleteAbiliti() {
 
     }
 
 
     render() {
-        console.log('aa', this.state.ServiceAgreementInfo.FeeAppendix_ItemList)
+        //console.log('aa', this.state.ServiceAgreementInfo.FeeAppendix_ItemList)
         if (this.state.IsLoadDataComplete) {
             return (
                 // <FormContainer
