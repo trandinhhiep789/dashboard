@@ -124,18 +124,16 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        console.log("handleSubmit", formData, MLObject)
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.ResultLanguage = ResultLanguage;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
-        // this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-        //     this.setState({ IsCallAPIError: apiResult.IsError });
-        //     this.showMessage(apiResult.Message);
-        //     if (!apiResult.IsError) {
-        //         // this.handleClearLocalCache();
-        //     }
-        // });
+        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
+            if (!apiResult.IsError) {
+                // this.handleClearLocalCache();
+            }
+        });
     }
 
 
@@ -662,7 +660,6 @@ class EditCom extends React.Component {
                                                                 placeholder="Kích thước(Dx)"
                                                                 controltype="InputControl"
                                                                 value={""}
-                                                                validatonList={["number"]}
                                                                 datasourcemember="Length"
                                                             />
                                                         </div>
@@ -676,7 +673,6 @@ class EditCom extends React.Component {
                                                                 placeholder="Kích thước(R)"
                                                                 controltype="InputControl"
                                                                 value={""}
-                                                                validatonList={["number"]}
                                                                 datasourcemember="Width"
                                                             />
                                                         </div>
@@ -690,7 +686,6 @@ class EditCom extends React.Component {
                                                                 placeholder="Kích thước(C)"
                                                                 controltype="InputControl"
                                                                 value={""}
-                                                                validatonList={["number"]}
                                                                 datasourcemember="Height"
                                                             />
                                                         </div>
@@ -800,7 +795,7 @@ class EditCom extends React.Component {
                                 MLObjectDefinition={GridMLDeliverUserDefinition}
                                 datasourcemember="ShipmentOrder_DeliverUserList"
                             />
-
+{/* 
                             <ProductComboBox
                                 name="Product"
                                 colspan="10"
@@ -810,7 +805,7 @@ class EditCom extends React.Component {
                                 controltype="InputMultiControl"
                                 MLObjectDefinition={GridMLDeliverUserDefinition}
                                 datasourcemember="Product"
-                            />
+                            /> */}
                             <FormControl.TextBox
                                 name="txtCoordinatorNote"
                                 colspan="10"

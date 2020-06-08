@@ -26,40 +26,46 @@ class ProductComboBoxCom extends React.Component {
     }
 
     callSearchData(KeyWord) {
-        let listMLObject = {
-            "QueryParamList":
-              [
-               {
-                "QueryKey":"pRODUCTID",
-                "QueryValue":"3051099000089",
-                "QueryType":1,
-                "IsNotQuery":false
-               },
-               {
-                "QueryKey":"pRODUCTNAME",
-                "QueryValue":"3051099000089",
-                "QueryType":2,
-                "IsNotQuery":false
-               } 
-               ,
-               {
-                "QueryKey":"pRODUCTSHORTNAME",
-                "QueryValue":"3051099000089",
-                "QueryType":2,
-                "IsNotQuery":false
-               } 
-              ],
-           
-            "Top":10,
-            "IndexName":"product",
-            "TypeName":"product",
-            "IsCompressResultData":false
-           }
-        this.props.callFetchAPI("ERPAPI", 'api/ProductSearch/Search', listMLObject).then(apiResult => {
+        let listMLObject = 
+        {
+            "QueryParamList": [
+              {
+                "QueryKey": "",
+                "QueryValue": "",
+                "QueryType": 18,
+                "IsNotQuery": false,
+                "SubQueryParamList": [
+                  {
+                    "QueryKey": "pRODUCTID",
+                    "QueryValue": KeyWord,
+                    "QueryType": 1,
+                    "IsNotQuery": false
+                  },
+                  {
+                    "QueryKey": "pRODUCTNAME",
+                    "QueryValue": KeyWord,
+                    "QueryType": 2,
+                    "IsNotQuery": false
+                  },
+                  {
+                    "QueryKey": "pRODUCTSHORTNAME",
+                    "QueryValue": KeyWord,
+                    "QueryType": 2,
+                    "IsNotQuery": false
+                  }
+                ]
+              }
+            ],
+            "Top": 1000,
+            "IndexName": "product",
+            "TypeName": "product",
+            "IsCompressResultData": false
+          }
+        this.props.callFetchAPI("ERPAPI",'api/ProductSearch/Search', listMLObject).then(apiResult => {
             debugger;
             let listOptionNew = [];
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
-                listOptionNew.push({ value: apiResult.ResultObject[i].UserName, label: apiResult.ResultObject[i].FullName });
+                listOptionNew.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
             }
             this.setState({
                 ListOption: listOptionNew
@@ -86,7 +92,7 @@ class ProductComboBoxCom extends React.Component {
     handleValueonKeyDown(e) {
         let value = e.target.value;
         if (value.length > 2 && e.keyCode != 40 && e.keyCode != 38) {
-            this.callSearchData("*" + value + "*");
+            this.callSearchData(value);
         }
     }
     render() {
