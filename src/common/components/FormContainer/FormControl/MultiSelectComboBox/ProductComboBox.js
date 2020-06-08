@@ -13,63 +13,76 @@ class ProductComboBoxCom extends React.Component {
     }
 
     componentDidMount() {
+        let selectedOption = [];
+        let values = this.props.value;
+        if (values && !Array.isArray(values)) {
+            selectedOption = this.callSearchData(values, true);
+        }
     }
+
     bindData() {
+        debugger;
         let values = this.props.value;
         let selectedOption = [];
-        if (typeof values != "undefined" && values!=[]) {
+
+        if (values && !Array.isArray(values)) {
+            selectedOption = this.state.SelectedOption;
+        }
+        else if (typeof values != "undefined" && values != []) {
             for (let i = 0; i < values.length; i++) {
-                selectedOption.push({ value: values[i].UserName, label:values[i].FullName });
+                selectedOption.push({ value: values[i].ProductID, label: values[i].ProductName });
             }
         }
         return selectedOption;
     }
 
-    callSearchData(KeyWord) {
-        let listMLObject = 
+    callSearchData(KeyWord, isFirstLoad) {
+        let listMLObject =
         {
             "QueryParamList": [
-              {
-                "QueryKey": "",
-                "QueryValue": "",
-                "QueryType": 18,
-                "IsNotQuery": false,
-                "SubQueryParamList": [
-                  {
-                    "QueryKey": "pRODUCTID",
-                    "QueryValue": KeyWord,
-                    "QueryType": 1,
-                    "IsNotQuery": false
-                  },
-                  {
-                    "QueryKey": "pRODUCTNAME",
-                    "QueryValue": KeyWord,
-                    "QueryType": 2,
-                    "IsNotQuery": false
-                  },
-                  {
-                    "QueryKey": "pRODUCTSHORTNAME",
-                    "QueryValue": KeyWord,
-                    "QueryType": 2,
-                    "IsNotQuery": false
-                  }
-                ]
-              }
+                {
+                    "QueryKey": "",
+                    "QueryValue": "",
+                    "QueryType": 18,
+                    "IsNotQuery": false,
+                    "SubQueryParamList": [
+                        {
+                            "QueryKey": "pRODUCTID",
+                            "QueryValue": KeyWord,
+                            "QueryType": 1,
+                            "IsNotQuery": false
+                        },
+                        {
+                            "QueryKey": "pRODUCTNAME",
+                            "QueryValue": KeyWord,
+                            "QueryType": 2,
+                            "IsNotQuery": false
+                        },
+                        {
+                            "QueryKey": "pRODUCTSHORTNAME",
+                            "QueryValue": KeyWord,
+                            "QueryType": 2,
+                            "IsNotQuery": false
+                        }
+                    ]
+                }
             ],
             "Top": 1000,
             "IndexName": "product",
             "TypeName": "product",
             "IsCompressResultData": false
-          }
-        this.props.callFetchAPI("ERPAPI",'api/ProductSearch/Search', listMLObject).then(apiResult => {
+        }
+        this.props.callFetchAPI("ERPAPI", 'api/ProductSearch/Search', listMLObject).then(apiResult => {
             debugger;
             let listOptionNew = [];
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
                 listOptionNew.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
             }
             this.setState({
-                ListOption: listOptionNew
+                ListOption: listOptionNew,
+                SelectedOption: isFirstLoad? listOptionNew: []
             });
+            return listOptionNew;
         });
     }
 
@@ -78,15 +91,24 @@ class ProductComboBoxCom extends React.Component {
         if (selectedOption == null)
             return values;
         for (let i = 0; i < selectedOption.length; i++) {
-            values.push({ UserName: selectedOption[i].value, FullName: selectedOption[i].label });
+            values.push({ ProductID: selectedOption[i].value, ProductName: selectedOption[i].label });
         }
         return values;
     }
 
     handleValueChange(selectedOption) {
-        let comboValues = this.getComboValue(selectedOption);
+        debugger;
+        let comboValues = [];
+        if (Array.isArray(selectedOption)) {
+            comboValues = this.getComboValue(selectedOption);
+        } else {
+            comboValues.push({ ProductID: selectedOption.value, ProductName: selectedOption.label });
+        }
+
         if (this.props.onValueChange)
             this.props.onValueChange(this.props.name, comboValues);
+
+
     }
 
     handleValueonKeyDown(e) {
@@ -137,14 +159,15 @@ class ProductComboBoxCom extends React.Component {
                 }
                 <div className={formGroupClassName}>
                     <Select
+                        name={this.props.name}
                         value={selectedOption}
                         onChange={this.handleValueChange}
                         onKeyDown={this.handleValueonKeyDown}
                         options={listOption}
-                        isMulti={true}
+                        isMulti={this.props.isMulti !== undefined ? this.props.isMulti : true}
                         isDisabled={this.props.disabled}
                         isSearchable={true}
-                        placeholder={"----Chọn -----"}
+                        placeholder={"Nhập mã sản phẩm"}
                         className={classNameselect}
                     />
                     <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>

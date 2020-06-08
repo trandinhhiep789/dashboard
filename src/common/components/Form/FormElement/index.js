@@ -7,6 +7,7 @@ import { UploadModal } from "../../UploadModal/index";
 import { ModalManager } from 'react-dynamic-modal';
 import Datetime from 'react-datetime';
 import MultiSelectComboBox from "../AdvanceForm/FormControl/MultiSelectComboBox";
+import ProductComboBox from "../../FormContainer/FormControl/MultiSelectComboBox/ProductComboBox";
 import "../../../../../node_modules/react-datetime/css/react-datetime.css";
 import JoditEditor from "jodit-react";
 
@@ -432,6 +433,18 @@ class FormElementCom extends Component {
                     />
                 );
 
+                break;
+            case "productbox":
+                control =(
+                    <ProductComboBox
+                        name={this.props.name}
+                        value={this.props.value}
+                        colspan={this.props.colspan}
+                        isMulti={this.props.isMulti}
+                        ref={this.props.inputRef}
+                        onValueChange={this.handleMultiSelectChange}
+                    />
+                );
                 break;
             case "radiogroup":
                 const listValue = this.props.listoption;
