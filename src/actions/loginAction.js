@@ -1,6 +1,6 @@
 import {LOGIN_REQUEST,  LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT}  from "../constants/actionTypes";
 import {AUTHEN_HOSTNAME,  AUTHEN_HOST_BASEURL,CLIENT_INFO_OBJECT_STORENAME}  from "../constants/systemVars.js";
-import { COOKIELOGIN } from '../constants/systemVars'
+import { COOKIELOGIN } from '../constants/systemVars';
 import WebRequest from "../common/library/net/WebRequest.js";
 import MD5Digest from "../common/library/cryptography/MD5Digest.js";
 import {callRegisterClient} from "./registerClient";
@@ -20,7 +20,7 @@ export function loginRequest(username,password)
 
 export function loginSuccess(loginUserInfo,tokenString,password)
 {
-//  console.log(LOGIN_SUCCESS,loginUserInfo, password);
+  //  console.log(LOGIN_SUCCESS,loginUserInfo);
     return {
         type: LOGIN_SUCCESS,
         IsLoginSuccess: true,
@@ -33,34 +33,29 @@ export function loginSuccess(loginUserInfo,tokenString,password)
 
 export function loginFailure(errorMessage)
 {
-    return (dispatch, getState) => {
-        deleteCookie(COOKIELOGIN);
-        localStorage.removeItem('LoginInfo');
-        return {
-            type: LOGIN_FAILURE,
-            ErrorMessage: errorMessage
-        };
-    };
   //  console.log(LOGIN_FAILURE);
-    
+    return {
+        type: LOGIN_FAILURE,
+        ErrorMessage: errorMessage
+    };
 }
-
-
 
 export function logout()
 {
-
   //  console.log(LOGOUT);
     return {
         type: LOGOUT
     };
 }
 
-export function callLogout()
+export function calllogout()
 {
-  //  console.log(LOGOUT);
-    return {
-        type: LOGOUT
+    return (dispatch, getState) => {
+        deleteCookie(COOKIELOGIN);
+        localStorage.removeItem('LoginInfo')
+        return {
+            type: LOGOUT
+        };
     };
 }
 
@@ -138,8 +133,7 @@ export function callLogin(username,password)
                 }
                 else
                 {
-                    return apiResult;
-                    //return dispatch(callLoginAPI(username,password));
+                    return dispatch(callLoginAPI(username,password));
                 }
              });
         }
@@ -172,7 +166,7 @@ export function callLoginAPI(username,password)
                 
                 const plainTokenString = window.decryptData2(clientPrivateKey,1024, encryptedTokenString);
                 //this.props.addLoginSuccess(apiResult.ResultObject.LoginUserInfo, plainTokenString);
-            //    console.log("callLogin apiResult:", apiResult); 
+               // console.log("callLogin apiResult:", apiResult); 
                 dispatch(loginSuccess(apiResult.ResultObject.LoginUserInfo,plainTokenString,password));
                 //console.log(plainTokenString);
                 
