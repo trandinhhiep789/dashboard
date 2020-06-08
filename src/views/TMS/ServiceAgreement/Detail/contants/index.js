@@ -10,7 +10,10 @@ export const IDSelectColumnNameFeeAppendix = "chkSelect";
 export const AddLinkFeeAppendix = "/ServiceAgreement/FeeAppendix/Add";
 
 export const AddAPIAbilitiPath = "api/ServiceAgreement_Ability/Add";
+export const EditAPIAbilitiPath = "api/ServiceAgreement_Ability/Update";
 
+export const AddAPIFeeAppendixPath= "api/ServiceAgreement_FeeAppendix/Add";
+export const EditAPIFeeAppendixPath= "api/ServiceAgreement_FeeAppendix/Update";
 
 export const DataGridColumnItemListFeeAppendix=[
     {
@@ -113,6 +116,7 @@ export const DataGridColumnItemListAbiliti=[
         Width: 70,
     }
 ]
+
 export const MLObjectAbilitiItem=[
     {
         Name: "AbilityID",
@@ -180,4 +184,62 @@ export const MLObjectAbilitiItem=[
         DataSourceMember: "IsSystem"
     },
     
+]
+
+export const MLObjectFeeAppendixDetailItem=[
+    {
+        Name: "FeeAppendixID",
+        DefaultValue: "",
+        BindControlName: "txtFeeAppendixID",
+        DataSourceMember: "FeeAppendixID"
+    },
+    {
+        Name: "ServiceSeasonTypeID",
+        DefaultValue: "",
+        BindControlName: "cbServiceSeasonTypeID",
+        DataSourceMember: "ServiceSeasonTypeID"
+    },
+    {
+        Name: "FeeAppendixName",
+        DefaultValue: "",
+        BindControlName: "txtFeeAppendixName",
+        DataSourceMember: "FeeAppendixName"
+    },
+
+    {
+        Name: "ApplyToDate",
+        DefaultValue: "",
+        BindControlName: "txtApplyToDate",
+        DataSourceMember: "ApplyToDate"
+    },
+    {
+        Name: "ApplyFromDate",
+        DefaultValue: "",
+        BindControlName: "txtApplyFromDate",
+        DataSourceMember: "ApplyFromDate"
+    },
+    {
+        Name: "Description",
+        DefaultValue: "",
+        BindControlName: "txtDescription",
+        DataSourceMember: "Description"
+    },
+    {
+        Name: "IsActived",
+        DefaultValue: true,
+        BindControlName: "chkIsActived",
+        DataSourceMember: "IsActived"
+    },
+    {
+        Name: "IsSystem",
+        DefaultValue: false,
+        BindControlName: "chkIsSystem",
+        DataSourceMember: "IsSystem"
+    },
+    {
+        Name: "CreatedUser",
+        DefaultValue: "administrator",
+        BindControlName: "",
+        DataSourceMember: "CreatedUser"
+    },
 ]

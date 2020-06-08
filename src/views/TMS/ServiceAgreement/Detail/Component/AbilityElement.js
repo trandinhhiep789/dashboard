@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
+
 import {
     LoadAPIPath,
     MLObjectAbilitiItem,
     AddAPIAbilityPath,
     APIHostName,
-    AddAPIAbilitiPath
+    AddAPIAbilitiPath,
+    EditAPIAbilitiPath
 } from "../contants/index.js";
 import ReactNotification from "react-notifications-component";
 class AbilityElementCom extends Component {
@@ -22,21 +24,34 @@ class AbilityElementCom extends Component {
     }
 
     componentDidMount() {
-        console.log("AbilityElementCom", this.props)
+        console.log("AbilityElementCom", this.props, this.props.index)
     }
 
     handleSubmit(From, MLObject) {
-        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
         MLObject.SignedDate = this.props.dataSource.SignedDate;
         MLObject.AbilityID = 4;
-        this.props.callFetchAPI(APIHostName, AddAPIAbilitiPath, MLObject).then(apiResult => {
-            this.addNotification(apiResult.Message, apiResult.IsError);
-            if (!apiResult.IsError) {
-                this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID);
-            }
-        });
+        if(this.props.index != undefined){
+            MLObject.UpdatedUser= this.props.AppInfo.LoginInfo.Username;
+            this.props.callFetchAPI(APIHostName, EditAPIAbilitiPath, MLObject).then(apiResult => {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                if (!apiResult.IsError) {
+                    this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID);
+                }
+            });
+        }
+        else{
+            MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+            this.props.callFetchAPI(APIHostName, AddAPIAbilitiPath, MLObject).then(apiResult => {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                if (!apiResult.IsError) {
+                    this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID);
+                }
+            });
+        }
+        
     }
 
     addNotification(message1, IsError) {
@@ -234,8 +249,7 @@ const mapDispatchToProps = dispatch => {
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
-        }
-        ,
+        },
         hideModal: () => {
             dispatch(hideModal());
         }

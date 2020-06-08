@@ -38,6 +38,7 @@ import InputGridControl from "../../../../common/components/FormContainer/FormCo
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import AbilityElement from "./Component/AbilityElement.js";
+import FeeAppendixDetailElement from "./Component/FeeAppendixDetailElement.js";
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -91,12 +92,41 @@ class DetailCom extends React.Component {
     }
 
     handleonChangePageFeeAppendix() {
+      
+    }
 
+    handleItemEditFeeAppendix(){
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Cập nhật phụ lục biểu phí',
+            content: {
+                text: <FeeAppendixDetailElement
+                    dataSource={this.state.DataSource}
+                    index={index}
+                    onInputChangeObj={this.handleInputChangeObjItem}
+                />
+            },
+            maxWidth: '1000px'
+        });
     }
 
     handleItemDeleteFeeAppendix() {
 
     }
+
+    handleItemInsertFeeAppendix(){
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Thêm phụ lục biểu phí',
+            content: {
+                text: <FeeAppendixDetailElement
+                    dataSource={this.state.DataSource}
+                    onInputChangeObj={this.handleInputChangeObjItem}
+
+                />
+            },
+            maxWidth: '1000px'
+        });
+    }
+
     handleInputChangeObjItem(id) {
         this.callLoadData(id);
         this.props.hideModal();
@@ -109,14 +139,14 @@ class DetailCom extends React.Component {
                 text: <AbilityElement
                     dataSource={this.state.DataSource}
                     onInputChangeObj={this.handleInputChangeObjItem}
-                    
+
                 />
             },
             maxWidth: '1000px'
         });
     }
 
-    handleItemEditAbiliti() {
+    handleItemEditAbiliti(index) {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Cập nhật năng lực',
             content: {
@@ -124,7 +154,6 @@ class DetailCom extends React.Component {
                     dataSource={this.state.DataSource}
                     index={index}
                     onInputChangeObj={this.handleInputChangeObjItem}
-                    
                 />
             },
             maxWidth: '1000px'
@@ -182,6 +211,18 @@ class DetailCom extends React.Component {
                                 RowsPerPage={10}
                                 classCustom=""
                                 ref={this.gridref}
+                            />
+
+                            <InputGridControl
+                                name="FeeAppendix_ItemList"
+                                controltype="InputGridControl"
+                                title={TitleFromFeeAppendix}
+                                IDSelectColumnName={"AbilityID"}
+                                listColumn={DataGridColumnItemListFeeAppendix}
+                                dataSource={this.state.ServiceAgreementInfo.FeeAppendix_ItemList}
+                                onInsertClick={this.handleItemInsertFeeAppendix.bind(this)}
+                                onEditClick={this.handleItemEditFeeAppendix.bind(this)}
+                                onDeleteClick={this.handleItemDeleteFeeAppendix.bind(this)}
                             />
 
                             <InputGridControl
