@@ -219,6 +219,7 @@ class ModalCom extends React.Component {
                                     value={this.state.FormData[elementItem.Name]}
                                     label={elementItem.label} placeholder={elementItem.placeholder}
                                     labelError={elementItem.labelError}
+                                    colspan={elementItem.colspan}
                                     icon={elementItem.icon}
                                     rows={elementItem.rows}
                                     onValueChange={this.valueChange}
@@ -241,6 +242,7 @@ class ModalCom extends React.Component {
                                     maxSize={elementItem.maxSize}
                                     elementItem={elementItem}
                                     inputRef={ref => this.elementItemRefs[elementItem.Name] = ref}
+                                    isMulti={elementItem.isMulti}
                                 />
                             </div>);
                     }

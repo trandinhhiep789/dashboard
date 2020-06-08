@@ -126,6 +126,15 @@ export const AddModalColumnList = [
         validatonList: [],
         value: false
     },
+    {
+        Name: "IsIncludeInstall",
+        type: "checkbox",
+        label: "Có bao gồm lắp đặt",
+        DataSourceMember: "IsIncludeInstall",
+        readonly: false,
+        validatonList: [],
+        value: false
+    },
     //  {
     //     Name: "PartnerID",
     //     type: "select",
@@ -256,6 +265,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "IsSelectReceiverStore",
         DataSourceMember: "IsSelectReceiverStore"
+    },
+    {
+        Name: "IsIncludeInstall",
+        DefaultValue: "",
+        BindControlName: "IsIncludeInstall",
+        DataSourceMember: "IsIncludeInstall"
     },
     {
         Name: "Description",
@@ -605,7 +620,7 @@ export const ModalFixShipmentFeeColumnList = [
     // },
     // {
     //     Name: "ShipmentFeeTypeID",
-    //     type: "numeric",
+    //     type: "groupTextAndSelect",
     //     label: "Mã loại chi phí vận chuyển",
     //     maxSize: "9",
     //     DataSourceMember: "ShipmentFeeTypeID",
@@ -630,9 +645,11 @@ export const ModalFixShipmentFeeColumnList = [
     },
     {
         Name: "OutputServiceProductID",
-        type: "text",
+        type: "productbox",
         label: "Mã sản phẩm dịch vụ cần xuất",
-        maxSize: "20",
+        //maxSize: "20",
+        colspan: 12,
+        isMulti: false,
         DataSourceMember: "OutputServiceProductID",
         readonly: false,
         validatonList: []
@@ -709,9 +726,10 @@ export const ModalFixShipmentFeeColumnList_Edit = [
     },
     {
         Name: "OutputServiceProductID",
-        type: "text",
+        type: "productbox",
         label: "Mã sản phẩm dịch vụ cần xuất",
-        maxSize: "20",
+        colspan: 12,
+        isMulti: false,
         DataSourceMember: "OutputServiceProductID",
         readonly: false,
         validatonList: []
@@ -1006,18 +1024,20 @@ export const ModalFlexShipmentFeeColumnList = [
     },
     {
         Name: "ProductID",
-        type: "text",
+        type: "productbox",
         label: "Mã sản phẩm áp dụng",
-        maxSize: "20",
+        colspan: 12,
+        isMulti: false,
         DataSourceMember: "ProductID",
         readonly: false,
         validatonList: []
     },
     {
         Name: "OutputServiceProductID",
-        type: "text",
+        type: "productbox",
         label: "Mã sản phẩm dịch vụ cần xuất",
-        maxSize: "20",
+        colspan: 12,
+        isMulti: false,
         DataSourceMember: "OutputServiceProductID",
         readonly: false,
         validatonList: []
@@ -1150,18 +1170,20 @@ export const ModalFlexShipmentFeeColumnList_Edit = [
     },
     {
         Name: "ProductID",
-        type: "text",
+        type: "productbox",
         label: "Mã sản phẩm áp dụng",
-        maxSize: "20",
+        colspan: 12,
+        isMulti: false,
         DataSourceMember: "ProductID",
         readonly: false,
         validatonList: []
     },
     {
         Name: "OutputServiceProductID",
-        type: "text",
+        type: "productbox",
         label: "Mã sản phẩm dịch vụ cần xuất",
-        maxSize: "20",
+        colspan: 12,
+        isMulti: false,
         DataSourceMember: "OutputServiceProductID",
         readonly: false,
         validatonList: []

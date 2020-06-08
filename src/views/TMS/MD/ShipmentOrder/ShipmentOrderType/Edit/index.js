@@ -216,6 +216,7 @@ class EditCom extends React.Component {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
                     if (MLObject) {
                         MLObject.ShipmentOrderTypeID = this.props.match.params.id;
+                        MLObject.OutputServiceProductID = MLObject.OutputServiceProductID && MLObject.OutputServiceProductID[0].ProductID ? MLObject.OutputServiceProductID[0].ProductID : MLObject.OutputServiceProductID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         this.props.callFetchAPI(APIHostName, AddAPIPath_FixShipmentFee, MLObject).then((apiResult) => {
@@ -229,6 +230,7 @@ class EditCom extends React.Component {
                             }
                             this.setState({ IsCallAPIError: apiResult.IsError });
                         });
+                        //console.log("MLObject",MLObject);
                     }
                 }
             },
@@ -261,6 +263,7 @@ class EditCom extends React.Component {
                     let MLObject = GetMLObjectData(MLObjectShipmentOrderType_FixShipmentFee, formData, _fixShipmentFee);
                     if (MLObject) {
                         MLObject.ShipmentOrderTypeID = this.props.match.params.id;
+                        MLObject.OutputServiceProductID = MLObject.OutputServiceProductID && MLObject.OutputServiceProductID[0].ProductID ? MLObject.OutputServiceProductID[0].ProductID : MLObject.OutputServiceProductID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath_FixShipmentFee, MLObject).then((apiResult) => {
@@ -313,6 +316,8 @@ class EditCom extends React.Component {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
                     if (MLObject) {
                         MLObject.ShipmentOrderTypeID = this.props.match.params.id;
+                        MLObject.OutputServiceProductID = MLObject.OutputServiceProductID && MLObject.OutputServiceProductID[0].ProductID ? MLObject.OutputServiceProductID[0].ProductID : MLObject.OutputServiceProductID;
+                        MLObject.ProductID = MLObject.ProductID && MLObject.ProductID[0].ProductID ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         this.props.callFetchAPI(APIHostName, AddAPIPath_FlexShipmentFee, MLObject).then((apiResult) => {
@@ -326,6 +331,7 @@ class EditCom extends React.Component {
                             }
                             this.setState({ IsCallAPIError: apiResult.IsError });
                         });
+                        //console.log("MLObject", MLObject);
                     }
                 }
             },
@@ -379,6 +385,8 @@ class EditCom extends React.Component {
                     let MLObject = GetMLObjectData(MLObjectShipmentOrderType_FlexShipmentFee, formData, _flexShipmentFee);
                     if (MLObject) {
                         MLObject.ShipmentOrderTypeID = this.props.match.params.id;
+                        MLObject.OutputServiceProductID = MLObject.OutputServiceProductID && MLObject.OutputServiceProductID[0].ProductID ? MLObject.OutputServiceProductID[0].ProductID : MLObject.OutputServiceProductID;
+                        MLObject.ProductID = MLObject.ProductID && MLObject.ProductID[0].ProductID ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath_FlexShipmentFee, MLObject).then((apiResult) => {
@@ -391,7 +399,7 @@ class EditCom extends React.Component {
                             }
                             this.setState({ IsCallAPIError: apiResult.IsError });
                         });
-                        //console.log("showModal",MLObject);
+                        //console.log("showModal", MLObject);
                     }
                 }
             },
@@ -449,6 +457,8 @@ class EditCom extends React.Component {
             })
         }
 
+
+
         if (this.state.IsValidStep) {
             if (window.confirm('Thiếu bước khởi tạo hay hoàn thành. Bạn có muốn tiếp tục cập nhật không?')) {
                 this.props.callFetchAPI(APIHostName, UpdateAPIPath, param).then((apiResult) => {
@@ -465,7 +475,7 @@ class EditCom extends React.Component {
                 });
             }
 
-        }else{
+        } else {
             this.props.callFetchAPI(APIHostName, UpdateAPIPath, param).then((apiResult) => {
                 debugger;
                 this.setState({ IsCallAPIError: apiResult.IsError });
@@ -476,7 +486,7 @@ class EditCom extends React.Component {
                 } else {
                     this.showMessage(apiResult.Message);
                 }
-    
+
             });
         }
 
@@ -787,6 +797,11 @@ class EditCom extends React.Component {
                                 labelcolspan={4} colspan={8} rowspan={8}
                             />
 
+                            <FormControl.CheckBox label="Có bao gồm lắp đặt" name="IsIncludeInstall"
+                                datasourcemember="IsIncludeInstall" controltype="InputControl"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                            />
+
                             {/* ------------------------------------------------------------------ */}
 
                             <FormControl.MultiSelectComboBox name="PartnerID" label="Danh sách đối tác"
@@ -856,7 +871,7 @@ class EditCom extends React.Component {
                             />
                         </TabPage>
 
-                        {/* <TabPage title="Chi phí vận chuyển" name="ShipmentOrderType_FixShipmentFee">
+                        <TabPage title="Chi phí vận chuyển" name="ShipmentOrderType_FixShipmentFee">
                             <Collapsible trigger="Chi phí vận chuyển cố định" easing="ease-in" open={true}>
                                 <DataGrid listColumn={FixShipmentFeeColumnList}
                                     dataSource={this.state.FormData.ShipmentOrderTypeFixShipmentFee}
@@ -889,7 +904,7 @@ class EditCom extends React.Component {
                                     IsCustomAddLink={true}
                                 />
                             </Collapsible>
-                        </TabPage> */}
+                        </TabPage>
                     </TabContainer>
                 </FormContainer >
             </React.Fragment>
