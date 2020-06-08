@@ -480,7 +480,6 @@ class EditCom extends React.Component {
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 label="đối tác nhận"
-                                                validatonList={["Comborequired"]}
                                                 isautoloaditemfromcache={true}
                                                 loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
                                                 valuemember="PartnerID"
@@ -496,7 +495,7 @@ class EditCom extends React.Component {
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 label="kho nhận"
-                                                validatonList={["Comborequired"]}
+                                              
                                                 isautoloaditemfromcache={true}
                                                 loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
                                                 valuemember="PartnerID"
