@@ -1491,7 +1491,7 @@ class ComboBoxSelectCom extends Component {
             const nameMember = this.props.nameMember;
             //    console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
             this.props.callGetCache(cacheKeyID).then((result) => {
-                //  console.log("this.props.isautoloaditemfromcach2: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                 console.log("this.props.isautoloaditemfromcach2: ",this.props.loaditemcachekeyid, this.state.Listoption,result);
                 listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     result.ResultObject.CacheData.map((cacheItem) => {

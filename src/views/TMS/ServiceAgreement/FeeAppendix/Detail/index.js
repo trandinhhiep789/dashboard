@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 import { MessageModal } from "../../../../../common/components/Modal";
+import FormContainer from "../../../../../common/components/FormContainer";
 import {
     APIHostName,
     AddAPIPath,
@@ -15,6 +16,7 @@ import {
     AddLinkFeeAppendixDetail,
     IDSelectColumnNameFeeAppendixDetail,
     PKColumnNameFeeAppendixDetail,
+    MLObjectDefinition
 
 
 } from "../../../ServiceAgreement/FeeAppendix/contants";
@@ -35,6 +37,7 @@ class DetailCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleItemInsert = this.handleItemInsert.bind(this);
         this.handleItemEdit = this.handleItemEdit.bind(this);
+        this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -48,13 +51,13 @@ class DetailCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        console.log("FeeAppendix Detail", this.props)
+
         this.callLoadData(this.props.match.params.id);
     }
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            console.log('FeeAppendix Detail 2222', apiResult, id)
+            console.log('FeeAppendix Detail 2222', apiResult, this.props)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -73,6 +76,7 @@ class DetailCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
+        console.log("MLObject", MLObject)
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
@@ -105,6 +109,12 @@ class DetailCom extends React.Component {
     handleonChangePageFeeAppendixDetail() {
 
     }
+
+    handleInputChangeObjItem(ObjItem) {
+        const formData = Object.assign({}, this.state.DataSource, { ["FeeAppendixDetail_ItemList"]: ObjItem });
+        this.setState({ DataSource: formData });
+    }
+
     handleItemInsert() {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Thêm chi tiết biểu phí',
@@ -135,47 +145,29 @@ class DetailCom extends React.Component {
 
         console.log('DataSource', this.state.DataSource.FeeAppendixDetail_ItemList)
         return (
-            <div className="col-lg-12">
-                <div className="card">
-                    <h4 className="card-title">
-                        <strong>{TitleFormDetail}</strong>
-                    </h4>
-                    <div className="card-body">
-                        <FeeAppendixInfo
-                            FeeAppendixInfo={this.state.FeeAppendixDetailInfo}
-                        />
-
-                        {/* <DataGrid
-                            listColumn={DataGridColumnItemListFeeAppendixDetail}
-                            dataSource={this.state.FeeAppendixDetailItemList}
-                            title={TitleFromFeeAppendixDetail}
-                            AddLink={AddLinkFeeAppendixDetail}
-                            params={this.state.DataSource.FeeAppendixDetailID}
-                            IDSelectColumnName={IDSelectColumnNameFeeAppendixDetail}
-                            PKColumnName={PKColumnNameFeeAppendixDetail}
-                            onDeleteClick={this.handleItemDeleteFeeAppendixDetail}
-                            onChangePage={this.handleonChangePageFeeAppendixDetail}
-                            IsDelete={true}
-                            IsAutoPaging={false}
-                            RowsPerPage={10}
-                            classCustom=""
-                            ref={this.gridref}
-                        /> */}
-
-                        <InputGridControl
-                            name="FeeAppendixDetail_ItemList"
-                            controltype="InputGridControl"
-                            title={TitleFromFeeAppendixDetail}
-                            IDSelectColumnName={"FeeAppendixDetailID"}
-                            listColumn={DataGridColumnItemListFeeAppendixDetail}
-                            dataSource={this.state.DataSource.FeeAppendixDetailItemList}
-                            onInsertClick={this.handleItemInsert}
-                            onEditClick={this.handleItemEdit}
-                            onDeleteClick={this.handleItemDeleteFeeAppendixDetail}
-                        />
-                    </div>
-                </div>
-            </div>
+            <FormContainer
+                FormName={TitleFormDetail}
+                MLObjectDefinition={MLObjectDefinition}
+                dataSource={this.state.DataSource}
+                listelement={[]}
+                BackLink={BackLink}
+                onSubmit={this.handleSubmit}
+            >
+                <FeeAppendixInfo
+                    FeeAppendixInfo={this.state.FeeAppendixDetailInfo}
+                />
+                <InputGridControl
+                    name="FeeAppendixDetail_ItemList"
+                    controltype="InputGridControl"
+                    title={TitleFromFeeAppendixDetail}
+                    IDSelectColumnName={"FeeAppendixDetailID"}
+                    listColumn={DataGridColumnItemListFeeAppendixDetail}
+                    dataSource={this.state.DataSource.FeeAppendixDetailItemList}
+                    onInsertClick={this.handleItemInsert}
+                    onEditClick={this.handleItemEdit}
+                    onDeleteClick={this.handleItemDeleteFeeAppendixDetail}
+                />
+            </FormContainer>
         );
     }
 }

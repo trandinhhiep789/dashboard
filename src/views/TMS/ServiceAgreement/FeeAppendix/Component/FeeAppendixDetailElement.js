@@ -17,20 +17,24 @@ class FeeAppendixDetailElementCom extends Component {
 
         }
     }
+
+    componentDidMount(){
+        console.log("FeeAppendixDetailElementCom", this.props)
+    }
+
     handleSubmit(From, MLObject) {
-        let newShipmentOrder_ItemList = this.props.dataSource.ShipmentOrder_ItemList;
+        let newFeeAppendixDetail_ItemList= this.props.dataSource.FeeAppendixDetail_ItemList;
         let formDatanew = [];
-        MLObject.SizeItem = MLObject.Length + "x" + MLObject.Width + "x" + MLObject.Height + "cm";
         if (this.props.index != undefined) {
-            formDatanew = Object.assign([], newShipmentOrder_ItemList, { [this.props.index]: MLObject });
+            formDatanew = Object.assign([], newFeeAppendixDetail_ItemList, { [this.props.index]: MLObject });
             if (this.props.onInputChangeObj != null) {
                 this.props.onInputChangeObj(formDatanew);
             }
         }
         else {
-            newShipmentOrder_ItemList.push(MLObject)
+            newFeeAppendixDetail_ItemList.push(MLObject)
             if (this.props.onInputChangeObj != null) {
-                this.props.onInputChangeObj(newShipmentOrder_ItemList);
+                this.props.onInputChangeObj(newFeeAppendixDetail_ItemList);
             }
         }
     }
@@ -76,7 +80,6 @@ class FeeAppendixDetailElementCom extends Component {
                             controltype="InputControl"
                             value={-1}
                             listoption={[]}
-                            namelabel="PackingUnitName"
                             datasourcemember="SubGroupID"
                         />
 
@@ -84,40 +87,39 @@ class FeeAppendixDetailElementCom extends Component {
 
                     <div className="col-md-6">
                         <FormControl.FormControlComboBox
-                            name="cbTechspecsID"
+                            name="cbTechSpecsID"
                             colspan="9"
                             labelcolspan="3"
                             label="thông số kỹ thuật"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.TECHSPECS"
-                            valuemember="TechspecsID"
-                            nameMember="TechspecsName"
+                            valuemember="TechSpecsID"
+                            nameMember="TechSpecsName"
                             controltype="InputControl"
                             value={-1}
                             listoption={[]}
                             namelabel="PackingUnitName"
-                            datasourcemember="TechspecsID"
+                            datasourcemember="TechSpecsID"
                         />
 
                     </div>
 
                     <div className="col-md-6">
                         <FormControl.FormControlComboBox
-                            name="cbTechspecsValueID"
+                            name="cbTechSpecsValueID"
                             colspan="9"
                             labelcolspan="3"
                             label="giá trị"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.TECHSPECSVALUE"
-                            valuemember="TechspecsValueID"
-                            nameMember="TechspecsValueName"
+                            valuemember="TechSpecsValueID"
+                            nameMember="Value"
                             controltype="InputControl"
                             value={-1}
                             listoption={[]}
-                            namelabel="PackingUnitName"
-                            datasourcemember="TechspecsValueID"
+                            datasourcemember="TechSpecsValueID"
                         />
 
                     </div>
