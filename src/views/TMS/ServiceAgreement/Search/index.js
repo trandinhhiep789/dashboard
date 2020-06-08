@@ -144,7 +144,7 @@ class SearchCom extends React.Component {
 
 
     render() {
-        console.log('gridDataSource', this.state.gridDataSource)
+        //console.log('gridDataSource', this.state.gridDataSource)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />

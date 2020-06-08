@@ -20,18 +20,24 @@ import {
     MLObjectDefinition,
     BackLink,
     TitleFormDetail,
-
+    TitleFromAbiliti,
     PKColumnNameFeeAppendix,
     TitleFromFeeAppendix,
     DataGridColumnItemListFeeAppendix,
     IDSelectColumnNameFeeAppendix,
-    AddLinkFeeAppendix
+    AddLinkFeeAppendix,
+    DataGridColumnItemListAbiliti
 
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
 import ServiceAgreementInfo from "./ServiceAgreementInfo";
 import Abiliti from "./Abiliti";
 import FeeAppendix from './FeeAppendix';
+
+import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
+import { showModal, hideModal } from '../../../../actions/modal';
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import AbilityElement from "../FeeAppendix/Component/AbilityElement";
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -55,7 +61,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            //console.log('DetailCom', apiResult)
+            console.log('DetailCom', apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -91,9 +97,27 @@ class DetailCom extends React.Component {
 
     }
 
+    handleItemInsertAbiliti(){
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Thêm năng lực',
+            content: {
+                text: <AbilityElement/>
+            },
+            maxWidth: '1000px'
+        });
+    }
+
+    handleItemEditAbiliti(){
+
+    }
+
+    handleItemDeleteAbiliti(){
+
+    }
+
 
     render() {
-
+        console.log('aa', this.state.ServiceAgreementInfo.FeeAppendix_ItemList)
         if (this.state.IsLoadDataComplete) {
             return (
                 // <FormContainer
@@ -139,6 +163,18 @@ class DetailCom extends React.Component {
                                 classCustom=""
                                 ref={this.gridref}
                             />
+
+                            <InputGridControl
+                                name="Ability_ItemList"
+                                controltype="InputGridControl"
+                                title={TitleFromAbiliti}
+                                IDSelectColumnName={"AbilityID"}
+                                listColumn={DataGridColumnItemListAbiliti}
+                                dataSource={this.state.ServiceAgreementInfo.Ability_ItemList}
+                                onInsertClick={this.handleItemInsertAbiliti.bind(this)}
+                                onEditClick={this.handleItemEditAbiliti.bind(this)}
+                                onDeleteClick={this.handleItemDeleteAbiliti.bind(this)}
+                            />
                         </div>
                     </div>
                 </div>
@@ -169,7 +205,10 @@ const mapDispatchToProps = dispatch => {
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
-        }
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
     };
 };
 

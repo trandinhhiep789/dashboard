@@ -14,6 +14,7 @@ import NotFound from '../../NotFound';
 
 import FeeAppendixAdd from "./FeeAppendix/Add";
 import FeeAppendixEdit from "./FeeAppendix/Edit";
+import FeeAppendixDetail from "./FeeAppendix/Detail";
 import FeeAppendixSearch from "./FeeAppendix/Search";
 class ServiceAgreementCom extends React.Component {
     
@@ -29,7 +30,7 @@ class ServiceAgreementCom extends React.Component {
                 <Route exact path="/ServiceAgreement/FeeAppendix" component={FeeAppendixSearch} />
                 <Route exact path="/ServiceAgreement/FeeAppendix/Add/" component={FeeAppendixAdd} />
                 <Route exact path="/ServiceAgreement/FeeAppendix/Edit/:id" component={FeeAppendixEdit} />
-                <Route exact path="/ServiceAgreement/FeeAppendix/Detail/:id" component={FeeAppendixEdit} />
+                <Route exact path="/ServiceAgreement/FeeAppendix/Detail/:id" component={FeeAppendixDetail} />
 
                 <Route exact path="/ServiceAgreement/Abiliti" component={Edit} />
                 <Route exact path="/ServiceAgreement/Abiliti/Add" component={Edit} />

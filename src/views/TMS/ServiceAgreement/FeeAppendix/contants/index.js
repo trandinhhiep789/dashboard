@@ -1,6 +1,7 @@
 export const APIHostName = "PIMAPI";
 export const SearchAPIPath = "api/ServiceAgreement_FeeAppendix/Search";
 export const LoadAPIPath = "api/ServiceAgreement_FeeAppendix/Load";
+export const LoadNewAPIPath= "api/ServiceAgreement_FeeAppendix/LoadNew";
 export const AddAPIPath = "api/ServiceAgreement_FeeAppendix/Add";
 export const UpdateAPIPath = "api/ServiceAgreement_FeeAppendix/Update";
 export const DeleteAPIPath = "api/ServiceAgreement_FeeAppendix/Delete";
@@ -13,6 +14,14 @@ export const PKColumnName = "FeeAppendixID";
 export const TitleFormAdd = "Thêm chi tiết phụ lục biểu phí";
 export const TitleFormEdit = "Cập nhật chi tiết phụ lục biểu phí";
 export const TitleFormSearch = "Danh sách chi tiết phụ lục biểu phí";
+export const TitleFormDetail = "Danh sách chi tiết phụ lục biểu phí";
+export const TitleFromFeeAppendixDetail = "Chi tiết biểu phí";
+
+export const AddLinkFeeAppendixDetail ="/ServiceAgreement/FeeAppendix/Add";
+export const IDSelectColumnNameFeeAppendixDetail = "chkSelect";
+export const PKColumnNameFeeAppendixDetail = "FeeAppendixDetailID"
+ 
+
 
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
@@ -284,4 +293,81 @@ export const DataGridColumnList=[
         Link: "/ServiceAgreement/FeeAppendix/Edit/",
         LinkText: "Chỉnh sửa"
     },
+]
+
+export const DataGridColumnItemListFeeAppendixDetail = [
+    {
+        Name: "FeeAppendixDetailID",
+        Type: "checkbox",
+        Caption: "Mã",
+        DataSourceMember: "FeeAppendixDetailID",
+        Width: 150,
+    },
+    {
+        Name: "SubGroupID",
+        Type: "texttolink",
+        Caption: "Nhóm hàng",
+        DataSourceMember: "SubGroupID",
+        Link: "/ServiceAgreement/FeeAppendix/Detail/",
+        Width: 150,
+    },
+    {
+        Name: "TechspecsID",
+        Type: "text",
+        Caption: "Thông số kỹ thuật",
+        DataSourceMember: "TechspecsID",
+        Width: 250,
+    },
+    {
+        Name: "TechspecsValueID",
+        Type: "text",
+        Caption: " Giá trị",
+        DataSourceMember: "TechspecsValueID",
+        Width: 250,
+    },
+    {
+        Name: "ProductID",
+        Type: "text",
+        Caption: "Sản phẩm",
+        DataSourceMember: "ProductID",
+        Width: 250,
+    },
+    {
+        Name: "ServiceFee",
+        Type: "text",
+        Caption: "Giá dịch vụ",
+        DataSourceMember: "ServiceFee",
+        Width: 250,
+    },
+    {
+
+        Name: "Action",
+        Type: "editnew",
+        Caption: "Tác vụ",
+        DataSourceMember: "FeeAppendixID",
+        Width: 70,
+        Link: "/ServiceAgreement/FeeAppendix/Edit/",
+        LinkText: "Chỉnh sửa"
+    }
+];
+
+export const MLObjectFeeAppendixDetailItem = [
+   
+    {
+        Name: "Note",
+        DefaultValue: "",
+        BindControlName: "txtNote",
+        DataSourceMember: "Note"
+    },
+   
+]
+export const MLObjectAbilityItem = [
+   
+    {
+        Name: "Note",
+        DefaultValue: "",
+        BindControlName: "txtNote",
+        DataSourceMember: "Note"
+    },
+   
 ]
