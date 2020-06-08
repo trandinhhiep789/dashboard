@@ -164,6 +164,7 @@ function loginInfo(state = initialLoginInfoState, action) {
     });
 
     case LOGOUT: return Object.assign({}, state, {
+      IsLoginCompleted: false,
       IsLoginSuccess: false,
       IsLogout: true,
       LoginUserInfo: {},

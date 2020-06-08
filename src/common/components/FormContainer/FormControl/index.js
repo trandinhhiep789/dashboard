@@ -1,6 +1,8 @@
 
 import React, { Component, PropTypes } from 'react';
 import MultiSelectComboBox from "./MultiSelectComboBox";
+import MultiUserComboBox from "./MultiSelectComboBox/MultiUserComboBox";
+
 import ComboboxQTQHPX from "./CommonControl/ComboboxQTQHPX.js";
 import { callGetCache } from "../../../../actions/cacheAction";
 import { connect } from 'react-redux';
@@ -8,7 +10,8 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_SEARCH } from '../../../../constants/actionTypes';
 import SearchModal from "../../Form/AdvanceForm/FormControl/FormSearchModal"
 import { createListTree } from "../../../library/ultils";
-import { TreeSelect } from "antd";
+import { TreeSelect, DatePicker } from "antd";
+import moment from 'moment';
 import Datetime from 'react-datetime';
 import "antd/dist/antd.css";
 import Select from 'react-select';
@@ -222,7 +225,7 @@ class FormControlComboBoxCom extends Component {
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption.name, this.props.validatonList);
+            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption.name);
     }
 
     bindcombox(value, listOption) {
@@ -293,12 +296,82 @@ class FormControlComboBoxCom extends Component {
     }
 
     render() {
-        let { name, label, rowspan, colspan, isMultiSelect, ValidatonErrorMessage, placeholder, listoption } = this.props;
+        let { name, label, rowspan, colspan, labelcolspan, validatonList, isMultiSelect, disabled, validationErrorMessage, placeholder, listoption } = this.props;
+        let formRowClassName = "form-row";
+        if (rowspan != null) {
+            formRowClassName = "form-row col-md-" + rowspan;
+        }
+
+        let formGroupClassName = "form-group col-md-4";
+        if (colspan != null) {
+            formGroupClassName = "form-group col-md-" + colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + labelcolspan;
+        }
+        let star;
+        if (validatonList != undefined && validatonList.includes("Comborequired") == true) {
+            star = '*'
+        }
+        let className = "react-select";
+        if (validationErrorMessage != undefined && validationErrorMessage != "") {
+            className += " is-invalid";
+        }
+        const selectedOption = this.state.SelectedOption;
+        const listOption = this.state.Listoption;
+        return (
+            <div className={formRowClassName} >
+                <div className={labelDivClassName}>
+                    <label className="col-form-label 6">
+                        {label}<span className="text-danger"> {star}</span>
+                    </label>
+                </div>
+                <div className={formGroupClassName}>
+                    <Select
+                        value={selectedOption}
+                        name={name}
+                        ref={this.props.inputRef}
+                        onChange={this.handleValueChange}
+                        options={listOption}
+                        isDisabled={disabled}
+                        isMulti={isMultiSelect}
+                        isSearchable={true}
+                        placeholder={placeholder}
+                        className={className}
+                    />
+                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{validationErrorMessage}</li></ul></div>
+                </div>
+            </div>
+        );
+    }
+}
+export const FormControlComboBox = connect(mapStateToProps, mapDispatchToProps)(FormControlComboBoxCom);
+class FormControlDatetimeCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+    }
+    handleValueChange(name, moment) {
+
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(this.props.name, moment);
+    }
+    componentDidMount() {
+
+    }
+
+
+    render() {
+        let { name, label, timeFormat, dateFormat, colspan, value, validationErrorMessage } = this.props;
+
         let formRowClassName = "form-row";
         if (this.props.rowspan != null) {
             formRowClassName = "form-row col-md-" + this.props.rowspan;
         }
-
+        let className = "ant-picker-custom";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
         let formGroupClassName = "form-group col-md-4";
         if (this.props.colspan != null) {
             formGroupClassName = "form-group col-md-" + this.props.colspan;
@@ -308,15 +381,12 @@ class FormControlComboBoxCom extends Component {
             labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
         }
         let star;
-        if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
             star = '*'
         }
-        let className = "react-select";
-        if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
+        if (validationErrorMessage != "" && validationErrorMessage != undefined) {
             className += " is-invalid";
         }
-        const selectedOption = this.state.SelectedOption;
-        const listOption = this.state.Listoption;
         return (
             <div className={formRowClassName} >
                 <div className={labelDivClassName}>
@@ -324,27 +394,29 @@ class FormControlComboBoxCom extends Component {
                         {this.props.label}<span className="text-danger"> {star}</span>
                     </label>
                 </div>
+
                 <div className={formGroupClassName}>
-                    <Select
-                        value={selectedOption}
-                        name={this.props.name}
-                        ref={this.props.inputRef}
-                        onChange={this.handleValueChange}
-                        options={listOption}
-                        isDisabled={this.props.disabled}
-                        isMulti={isMultiSelect}
-                        isSearchable={true}
-                        placeholder={placeholder}
+                    <DatePicker
+                        showTime
+                        value={(value != '' && value != null) ? moment(value, dateFormat) : ''}
+                        format={dateFormat}
                         className={className}
+                        dropdownClassName="tree-select-custom"
+                        ref={this.props.inputRef}
+                        placeholder={'vui lòng chọn ngày'}
+                        onChange={this.handleValueChange}
                     />
-                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    <div className="invalid-feedback">
+                        <ul className="list-unstyled">
+                            <li>{validationErrorMessage}</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         );
     }
 }
-export const FormControlComboBox = connect(mapStateToProps, mapDispatchToProps)(FormControlComboBoxCom);
-
+const FormControlDatetime = connect(null, null)(FormControlDatetimeCom);
 
 class TextBoxCurrency extends React.Component {
     constructor(props) {
@@ -493,19 +565,27 @@ class TextArea extends React.Component {
         if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
             star = '*'
         }
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null || this.props.classNameCustom != undefined) {
+            formRowClassName += this.props.classNameCustom;
+        }
         return (
 
-            <div className="form-row" >
+            <div className={formRowClassName} >
                 <div className={labelDivClassName}>
                     <label className="col-form-label 4">
                         {this.props.label}<span className="text-danger"> {star}</span>
                     </label>
                 </div>
                 <div className={formGroupClassName}>
-                    <textarea name={this.props.name} onChange={this.handleValueChange}
+                    <textarea
+                        name={this.props.name}
+                        onChange={this.handleValueChange}
                         value={this.props.value}
-                        className={className} placeholder={this.props.placeholder}
+                        className={className}
+                        placeholder={this.props.placeholder}
                         readOnly={this.props.readonly}
+                        rows="5"
                     />
                 </div>
             </div>
@@ -1074,12 +1154,8 @@ class ElementDatetimeCom extends Component {
 
     }
 
-    inputRef() {
-        debugger;
-    }
-
     render() {
-        let { name, label, timeFormat, dateFormat, colspan, value, ValidatonErrorMessage } = this.props;
+        let { name, label, timeFormat, dateFormat, colspan, value, validationErrorMessage } = this.props;
 
         let formRowClassName = "form-row";
         if (this.props.rowspan != null) {
@@ -1100,53 +1176,33 @@ class ElementDatetimeCom extends Component {
         if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
             star = '*'
         }
-        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
+        if (validationErrorMessage != "" && validationErrorMessage != undefined) {
             className += " is-invalid";
-            return (
-                <div className={formRowClassName} >
-                    <div className={labelDivClassName}>
-                        <label className="col-form-label 6">
-                            {this.props.label}<span className="text-danger"> {star}</span>
-                        </label>
-                    </div>
-                    <div ref={this.inputRef} className={formGroupClassName}>
-                        <Datetime
-                            className={className}
-                            name={name}
-                            onChange={(moment) => this.handleValueChange(name, moment)}
-                            value={value != null ? value : ""}
-                            timeFormat={timeFormat}
-                            dateFormat={dateFormat} >
-                        </Datetime>
-                        <div className="invalid-feedback">
-                            <ul className="list-unstyled">
-                                <li>{this.props.validationErrorMessage}</li>
-                            </ul>
-                        </div>
+        }
+        return (
+            <div className={formRowClassName} >
+                <div className={labelDivClassName}>
+                    <label className="col-form-label 6">
+                        {label}<span className="text-danger"> {star}</span>
+                    </label>
+                </div>
+                <div ref={this.inputRef} className={formGroupClassName}>
+                    <Datetime
+                        className={className}
+                        name={name}
+                        onChange={(moment) => this.handleValueChange(name, moment)}
+                        value={value != null ? value : ""}
+                        timeFormat={timeFormat}
+                        dateFormat={dateFormat} >
+                    </Datetime>
+                    <div className="invalid-feedback">
+                        <ul className="list-unstyled">
+                            <li>{validationErrorMessage}</li>
+                        </ul>
                     </div>
                 </div>
-            );
-        }
-        else {
-            return (
-                <div className={formRowClassName} >
-                    <div className={labelDivClassName}>
-                        <label className="col-form-label 7">
-                            {this.props.label}<span className="text-danger"> {star}</span>
-                        </label>
-                    </div>
-                    <div ref={this.props.inputRef} className={formGroupClassName}>
-                        <Datetime
-                            name={name}
-                            onChange={(moment) => this.handleValueChange(name, moment)}
-                            value={value != null ? value : ""}
-                            timeFormat={timeFormat}
-                            dateFormat={dateFormat} >
-                        </Datetime>
-                    </div>
-                </div>
-            );
-        }
+            </div>
+        );
     }
 }
 const ElementDatetime = connect(null, null)(ElementDatetimeCom);
@@ -1553,8 +1609,8 @@ export const ComboBoxSelect = connect(mapStateToProps, mapDispatchToProps)(Combo
 
 
 export default {
-    FormControlTextBox, FormControlComboBox, TextBox, TextArea, CheckBox, ComboBox, ComboBoxNew,
+    FormControlTextBox, FormControlComboBox, FormControlDatetime, TextBox, TextArea, CheckBox, ComboBox, ComboBoxNew,
     MultiSelectComboBox, modal, GroupTextBox, TreeSelectCus, ElementDatetime,
-    ComboBoxPartner, ComboboxQTQHPX, TextBoxCurrency, ComboBoxSelect
+    ComboBoxPartner, ComboboxQTQHPX, TextBoxCurrency, ComboBoxSelect, MultiUserComboBox
 };
 

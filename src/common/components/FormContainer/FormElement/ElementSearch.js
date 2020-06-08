@@ -534,8 +534,8 @@ class ElementTextNewFullCom extends Component {
                             ref={this.props.inputRef}
                             name={name}
                             onChange={this.handleValueChange}
-                            readOnly={readonly}
-                            defaultValue={value}
+                            readOnly={true}
+                            value={value}
                             placeholder={placeholder} />
                         <div className="invalid-feedback">{validationErrorMessage}</div>
                     </div>

@@ -1,0 +1,11 @@
+.ant-picker{
+    &.ant-picker-custom{
+        width: 100%;
+        &.is-invalid{
+            border-color: #f96868;
+            &~ .invalid-feedback{
+                display: block;
+            }
+        }
+    }
+}

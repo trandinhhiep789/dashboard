@@ -197,7 +197,7 @@ export const AddElementList = [
         icon: "",
         listoption: [],
         DataSourceMember: "FullAddress",
-        readonly: false,
+        readonly: true,
         validatonList: []
     },
     {
@@ -549,7 +549,7 @@ export const EditElementList = [
         icon: "",
         listoption: [],
         DataSourceMember: "FullAddress",
-        readonly: false,
+        readonly: true,
         validatonList: []
     },
     {

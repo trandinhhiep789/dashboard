@@ -2,15 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from "react-router-dom";
 import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
 import { showModal } from '../../../../../actions/modal';
-import ModelContainer from "../../../../components/Modal/ModelContainer";
 import { connect } from 'react-redux';
 import { MessageModal } from "../../../Modal";
 import InputGridCell from "./InputGridCell";
 import { GetMLObjectData, GetMLObjectDataList } from "../../../../library/form/FormLib";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { DEFAULT_ROW_PER_PAGE } from "../../../../../constants/systemVars.js";
-import InputGridPage from "./InputGridPage";
-import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../../constants/functionLists";
 import { ValidationField } from "../../../../library/validation.js";
 import { MODAL_TYPE_CONFIRMATIONNEW, MODAL_TYPE_CONFICOMPONET } from '../../../../../constants/actionTypes';
 
@@ -211,11 +208,13 @@ class InputGridControlCom extends Component {
             if (this.props.value != null) {
                 dataSourcenew = this.props.value[index];
             }
+            debugger;
 
             this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
                 title: 'Chỉnh sửa ' + this.props.title,
                 autoCloseModal: this.state.AutoCloseModal,
                 onConfirm: (isConfirmed, formData) => {
+                    debugger;
                     let dataSource = this.props.dataSource;
                     if (this.props.value != null) {
                         dataSource = this.props.value;
@@ -226,12 +225,6 @@ class InputGridControlCom extends Component {
                         const MLObjectList = GetMLObjectDataList(mLObjectDefinition, formDatanew, formDatanew);
                         this.props.onValueChange(this.props.name, MLObjectList, this.props.controltype, undefined);
                     }
-                    //lưu trực tiếp vào database
-                    if (this.props.onUpdatePermanently) {
-                        this.props.onUpdatePermanently(formData);
-                    }
-                    const lstobjdelete = this.bindobjdelete1(false, dataSource);
-                    this.setState({ lstobjDelete: lstobjdelete, IsCheckAll: false });
                 },
                 modalElementList: listColumnNew,
                 modalElementOl: this.props.MLObjectDefinition,
@@ -399,15 +392,31 @@ class InputGridControlCom extends Component {
     //#endregion get Page
 
     render() {
+        //console.log('button link', this.props.IsCustomAddLink, this.props.AddLink, this.props.params)
         return (
             <div className="card">
                 <div className="card-title">
                     <h4 className="title">{this.props.title}</h4>
+
                     {(this.props.IsPermisionAdd == true || this.props.IsPermisionAdd == undefined) && this.state.IsSystem == false ?
-                        (
-                            <button type="button" className="btn btnEditCard" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleInsertClick}>
-                                <span className="fa fa-plus ff"> Thêm </span>
-                            </button>
+                        (this.props.IsCustomAddLink == true || this.props.IsCustomAddLink != undefined ?
+                            (<Link
+                                to={{
+                                    pathname: this.props.AddLink,
+                                    state: {
+                                        params: this.props.params
+                                    }
+                                }}
+                            >
+                                <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                    <span className="fa fa-plus ff"> Thêm </span>
+                                </button>
+                            </Link>)
+                            : (
+                                <button type="button" className="btn btnEditCard" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleInsertClick}>
+                                    <span className="fa fa-plus ff"> Thêm </span>
+                                </button>
+                            )
                         )
                         : (
                             <button type="button" className="btn btnEditCard" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Thêm">

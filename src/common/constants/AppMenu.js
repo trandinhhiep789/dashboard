@@ -90,6 +90,13 @@ const AppMenu = [
                         LinkTo: '/ShipmentOrderStatus',
                         MenuIcon: '',
                         SubMenu: []
+                    },
+                    {
+                        MenuName: 'ShipmentFeeType',
+                        MenuTitle: 'Danh sách loại phí vận chuyển',
+                        LinkTo: '/ShipmentFeeType',
+                        MenuIcon: '',
+                        SubMenu: []
                     }
 
                 ]
@@ -184,9 +191,9 @@ const AppMenu = [
         MenuIcon: '',
         SubMenu: [
             {
-                MenuName: 'dđ',
+                MenuName: 'ServiceAgreement',
                 MenuTitle: 'Danh sách hợp đồng',
-                LinkTo: '/',
+                LinkTo: '/ServiceAgreement',
                 MenuIcon: '',
                 SubMenu: []
             }

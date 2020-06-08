@@ -114,12 +114,25 @@
                 left: 15px;
                 bottom: 7px;
                 margin: 0 auto;
+                clear: both;
                 button{
                 
                 }
                 @media (max-width: 767px) {
                     margin-top: 20px;
                     position: static;
+                }
+            }
+        }
+        &.multiple-custom{
+            .item {
+                clear: both;
+        
+                
+                .btnSearch {
+                    position: static;
+                    clear: both;
+                  
                 }
             }
         }
