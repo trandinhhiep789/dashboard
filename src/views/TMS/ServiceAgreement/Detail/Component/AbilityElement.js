@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
-
+import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import {
-    APIHostName,
     LoadAPIPath,
-    DataGridColumnItemListAbiliti
+    MLObjectAbilitiItem,
+    AddAPIAbilityPath,
+    APIHostName,
+    AddAPIAbilitiPath
 } from "../contants/index.js";
-
+import ReactNotification from "react-notifications-component";
 class AbilityElementCom extends Component {
     constructor(props) {
         super(props);
@@ -16,6 +18,7 @@ class AbilityElementCom extends Component {
         this.state = {
 
         }
+        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
@@ -23,50 +26,65 @@ class AbilityElementCom extends Component {
     }
 
     handleSubmit(From, MLObject) {
-        console.log("AbilityElementCom", AbilityElementCom)
-        let newAbility_ItemList = this.props.dataSource.Ability_ItemList;
-        let formDatanew = [];
-        MLObject.SizeItem = MLObject.Length + "x" + MLObject.Width + "x" + MLObject.Height + "cm";
-        if (this.props.index != undefined) {
-            formDatanew = Object.assign([], newAbility_ItemList, { [this.props.index]: MLObject });
-            if (this.props.onInputChangeObj != null) {
-                this.props.onInputChangeObj(formDatanew);
+        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
+        MLObject.SignedDate = this.props.dataSource.SignedDate;
+        MLObject.AbilityID = 4;
+        this.props.callFetchAPI(APIHostName, AddAPIAbilitiPath, MLObject).then(apiResult => {
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID);
             }
-        }
-        else {
-            newAbility_ItemList.push(MLObject)
-            if (this.props.onInputChangeObj != null) {
-                this.props.onInputChangeObj(newAbility_ItemList);
-            }
-        }
+        });
     }
 
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
+
     render() {
-
-
         const AddElementList = [
-            {
-                type: "hidden",
-                name: "QuantityUnitName",
-                label: "",
-                datasourcemember: "QuantityUnitName",
-                DataSourceMember: "QuantityUnitName"
-            },
-            {
-                type: "hidden",
-                name: "PackingUnitName",
-                label: "",
-                datasourcemember: "PackingUnitName",
-                DataSourceMember: "PackingUnitName"
-            },
+
         ]
         return (
             <FormContainer
-                MLObjectDefinition={DataGridColumnItemListAbiliti}
+                MLObjectDefinition={MLObjectAbilitiItem}
                 dataSource={this.props.index != undefined ? this.props.dataSource.Ability_ItemList[this.props.index] : null}
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
             >
+                <ReactNotification ref={this.notificationDOMRef} />
                 <div className="row">
 
                     <div className="col-md-6">
@@ -74,16 +92,15 @@ class AbilityElementCom extends Component {
                             name="cbServiceSeasonTypeID"
                             colspan="9"
                             labelcolspan="3"
-                            label="Loại mùa vụ aa"
+                            label="loại mùa vụ"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.SERVICESEASONTYPE"
-                            valuemember="ServiceSeasonTypeID "
+                            valuemember="ServiceSeasonTypeID"
                             nameMember="ServiceSeasonTypeName"
                             controltype="InputControl"
                             value={-1}
                             listoption={[]}
-                            namelabel="PackingUnitName"
                             datasourcemember="ServiceSeasonTypeID"
                         />
 
@@ -214,6 +231,13 @@ const mapDispatchToProps = dispatch => {
     return {
         showModal: (type, props) => {
             dispatch(showModal(type, props));
+        },
+        callFetchAPI: (hostname, hostURL, postData) => {
+            return dispatch(callFetchAPI(hostname, hostURL, postData));
+        }
+        ,
+        hideModal: () => {
+            dispatch(hideModal());
         }
     }
 }

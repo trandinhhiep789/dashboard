@@ -97,11 +97,9 @@ class DetailCom extends React.Component {
     handleItemDeleteFeeAppendix() {
 
     }
-    handleInputChangeObjItem(ObjItem) {
-debugger
-        const formData = Object.assign({}, this.state.DataSource, { ["Ability_ItemList"]: ObjItem });
-        this.setState({ DataSource: formData });
-
+    handleInputChangeObjItem(id) {
+        this.callLoadData(id);
+        this.props.hideModal();
     }
 
     handleItemInsertAbiliti() {
@@ -111,6 +109,7 @@ debugger
                 text: <AbilityElement
                     dataSource={this.state.DataSource}
                     onInputChangeObj={this.handleInputChangeObjItem}
+                    
                 />
             },
             maxWidth: '1000px'
@@ -118,7 +117,18 @@ debugger
     }
 
     handleItemEditAbiliti() {
-
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Cập nhật năng lực',
+            content: {
+                text: <AbilityElement
+                    dataSource={this.state.DataSource}
+                    index={index}
+                    onInputChangeObj={this.handleInputChangeObjItem}
+                    
+                />
+            },
+            maxWidth: '1000px'
+        });
     }
 
     handleItemDeleteAbiliti() {
@@ -219,6 +229,9 @@ const mapDispatchToProps = dispatch => {
         showModal: (type, props) => {
             dispatch(showModal(type, props));
         },
+        hideModal: () => {
+            dispatch(hideModal());
+        }
     };
 };
 

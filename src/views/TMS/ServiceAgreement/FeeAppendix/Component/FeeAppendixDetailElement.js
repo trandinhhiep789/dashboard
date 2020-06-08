@@ -41,22 +41,6 @@ class FeeAppendixDetailElementCom extends Component {
 
     render() {
 
-        const AddElementList = [
-            {
-                type: "hidden",
-                name: "QuantityUnitName",
-                label: "",
-                datasourcemember: "QuantityUnitName",
-                DataSourceMember: "QuantityUnitName"
-            },
-            {
-                type: "hidden",
-                name: "PackingUnitName",
-                label: "",
-                datasourcemember: "PackingUnitName",
-                DataSourceMember: "PackingUnitName"
-            },
-        ]
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectFeeAppendixDetailItem}
@@ -99,7 +83,6 @@ class FeeAppendixDetailElementCom extends Component {
                             controltype="InputControl"
                             value={-1}
                             listoption={[]}
-                            namelabel="PackingUnitName"
                             datasourcemember="TechSpecsID"
                         />
 

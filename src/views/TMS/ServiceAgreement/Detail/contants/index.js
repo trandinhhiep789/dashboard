@@ -1,3 +1,4 @@
+export const APIHostName = "PIMAPI";
 export const PKColumnNameAbiliti = "AbilityID";
 export const TitleFromAbiliti = "Năng lực";
 
@@ -7,6 +8,9 @@ export const TitleFromFeeAppendix = "Phụ lục biểu phí";
 
 export const IDSelectColumnNameFeeAppendix = "chkSelect";
 export const AddLinkFeeAppendix = "/ServiceAgreement/FeeAppendix/Add";
+
+export const AddAPIAbilitiPath = "api/ServiceAgreement_Ability/Add";
+
 
 export const DataGridColumnItemListFeeAppendix=[
     {
@@ -108,4 +112,72 @@ export const DataGridColumnItemListAbiliti=[
         DataSourceMember: "AbilityID",
         Width: 70,
     }
+]
+export const MLObjectAbilitiItem=[
+    {
+        Name: "AbilityID",
+        DefaultValue: "",
+        BindControlName: "txtAbilityID",
+        DataSourceMember: "AbilityID"
+    },
+    {
+        
+        Name: "ServiceAgreementID",
+        DefaultValue: "",
+        BindControlName: "cbServiceAgreementID",
+        DataSourceMember: "ServiceAgreementID"
+    },
+    {
+        Name: "ServiceSeasonTypeID",
+        DefaultValue: "",
+        BindControlName: "cbServiceSeasonTypeID",
+        DataSourceMember: "ServiceSeasonTypeID"
+    },
+
+    {
+        Name: "FromDate",
+        DefaultValue: "",
+        BindControlName: "dtFromDate",
+        DataSourceMember: "FromDate"
+    },
+    {
+        Name: "ToDate",
+        DefaultValue: "",
+        BindControlName: "dtToDate",
+        DataSourceMember: "ToDate"
+    },
+    {
+        Name: "MonthlyAbilityValue",
+        DefaultValue: "",
+        BindControlName: "txtMonthlyAbilityValue",
+        DataSourceMember: "MonthlyAbilityValue"
+    },
+    {
+        Name: "DailyAbilityValue",
+        DefaultValue: "",
+        BindControlName: "txtDailyAbilityValue",
+        DataSourceMember: "DailyAbilityValue"
+    },
+    {
+        
+        Name: "Note",
+        DefaultValue: "",
+        BindControlName: "txtNote",
+        DataSourceMember: "Note"
+    },
+    {
+        
+        Name: "IsActived",
+        DefaultValue: "",
+        BindControlName: "ckIsActived",
+        DataSourceMember: "IsActived"
+    },
+    {
+        
+        Name: "IsSystem",
+        DefaultValue: "",
+        BindControlName: "ckIsSystem",
+        DataSourceMember: "IsSystem"
+    },
+    
 ]
