@@ -1,31 +1,31 @@
 export const APIHostName = "PIMAPI";
-export const SearchAPIPath = "api/CancelDeliveryReason/Search";
-export const LoadAPIPath = "api/CancelDeliveryReason/Load";
-export const AddAPIPath = "api/CancelDeliveryReason/Add";
-export const UpdateAPIPath = "api/CancelDeliveryReason/Update";
-export const DeleteAPIPath = "api/CancelDeliveryReason/Delete";
-export const UpdateOrderAPIPath = "api/CancelDeliveryReason/UpdateOrder";
-export const BackLink = "/CancelDeliveryReason";
-export const AddLink = "/CancelDeliveryReason/Add";
+export const SearchAPIPath = "api/ShipmentFeeType/Search";
+export const LoadAPIPath = "api/ShipmentFeeType/Load";
+export const AddAPIPath = "api/ShipmentFeeType/Add";
+export const UpdateAPIPath = "api/ShipmentFeeType/Update";
+export const DeleteAPIPath = "api/ShipmentFeeType/Delete";
+export const UpdateOrderAPIPath = "api/ShipmentFeeType/UpdateOrder";
+export const BackLink = "/ShipmentFeeType";
+export const AddLink = "/ShipmentFeeType/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "CancelDeliveryReasonID";
+export const PKColumnName = "ShipmentFeeTypeID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "", Title: "Danh sách lý do hủy giao hàng" }
+    { Link: "", Title: "Danh sách loại phí vận chuyển" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/CancelDeliveryReason", Title: "Danh sách lý do hủy giao hàng" },
+    { Link: "/ShipmentFeeType", Title: "Danh sách loại phí vận chuyển" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/CancelDeliveryReason", Title: "Danh sách lý do hủy giao hàng" },
+    { Link: "/ShipmentFeeType", Title: "Danh sách loại phí vận chuyển" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -44,29 +44,42 @@ export const SearchElementList = [
 export const AddElementList = [
     {
         type: "text",
-        name: "txtCancelDeliveryReasonID",
-        label: "Mã lý do hủy giao hàng",
+        name: "txtShipmentFeeTypeID",
+        label: "mã loại phí vận chuyển",
         value: "",
-        maxSize: "10",
+        maxSize: "5",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "CancelDeliveryReasonID",
+        DataSourceMember: "ShipmentFeeTypeID",
         readonly: false,
         validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtCancelDeliveryReasonName",
-        label: "Tên lý do hủy giao hàng",
+        name: "txtShipmentFeeTypeName",
+        label: "tên loại phí vận chuyển",
         value: "",
         maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "CancelDeliveryReasonName",
+        DataSourceMember: "ShipmentFeeTypeName",
         readonly: false,
         validatonList: ["required"],
+    },
+    {
+        type: "select",
+        name: "GetFeeType",
+        label: "Kiểu lấy chi phí",
+        value: 1,
+        placeholder: "",
+        icon: "",
+        listoption: [{ value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
+        DataSourceMember: "GetFeeType",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: false
     },
     {
         type: "textarea",
@@ -86,7 +99,7 @@ export const AddElementList = [
         type: "text",
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
-        value: "",
+        value: "0",
         maxSize: "9",
         placeholder: "",
         icon: "",
@@ -94,6 +107,17 @@ export const AddElementList = [
         DataSourceMember: "OrderIndex",
         readonly: false,
         validatonList: ["number"]
+    },
+    {
+        type: "checkbox",
+        name: "chkIsOther",
+        label: "Khác:",
+        value: 0,
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        readonly: false,
+        validatonList: []
     },
     {
         type: "checkbox",
@@ -110,7 +134,7 @@ export const AddElementList = [
         type: "checkbox",
         name: "chkIsSystem",
         label: "Hệ thống:",
-        value: "",
+        value: 0,
         placeholder: "",
         icon: "",
         listoption: {},
@@ -122,29 +146,42 @@ export const AddElementList = [
 export const EditElementList = [
     {
         type: "text",
-        name: "txtCancelDeliveryReasonID",
-        label: "Mã lý do hủy giao hàng",
+        name: "txtShipmentFeeTypeID",
+        label: "mã loại phí vận chuyển",
         value: "",
-        maxSize: "10",
+        maxSize: "5",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "CancelDeliveryReasonID",
+        DataSourceMember: "ShipmentFeeTypeID",
         readonly: true,
         validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtCancelDeliveryReasonName",
-        label: "Tên lý do hủy giao hàng",
+        name: "txtShipmentFeeTypeName",
+        label: "tên loại phí vận chuyển",
         value: "",
         maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "CancelDeliveryReasonName",
+        DataSourceMember: "ShipmentFeeTypeName",
         readonly: false,
         validatonList: ["required"],
+    },
+    {
+        type: "select",
+        name: "GetFeeType",
+        label: "Kiểu lấy chi phí",
+        value: 1,
+        placeholder: "",
+        icon: "",
+        listoption: [{ value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
+        DataSourceMember: "GetFeeType",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: false
     },
     {
         type: "textarea",
@@ -172,6 +209,18 @@ export const EditElementList = [
         DataSourceMember: "OrderIndex",
         readonly: false,
         validatonList: ["number"]
+    },
+    {
+        type: "checkbox",
+        name: "chkIsOther",
+        label: "Khác:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "IsOther",
+        readonly: false,
+        validatonList: []
     },
     {
         type: "checkbox",
@@ -209,16 +258,22 @@ export const SearchMLObjectDefinition = [
 
 export const MLObjectDefinition = [
     {
-        Name: "CancelDeliveryReasonID",
+        Name: "ShipmentFeeTypeID",
         DefaultValue: "",
-        BindControlName: "txtCancelDeliveryReasonID",
-        DataSourceMember: "CancelDeliveryReasonID"
+        BindControlName: "txtShipmentFeeTypeID",
+        DataSourceMember: "ShipmentFeeTypeID"
     },
     {
-        Name: "CancelDeliveryReasonName",
+        Name: "ShipmentFeeTypeName",
         DefaultValue: "",
-        BindControlName: "txtCancelDeliveryReasonName",
-        DataSourceMember: "CancelDeliveryReasonName"
+        BindControlName: "txtShipmentFeeTypeName",
+        DataSourceMember: "ShipmentFeeTypeName"
+    },
+    {
+        Name: "GetFeeType",
+        DefaultValue: "",
+        BindControlName: "GetFeeType",
+        DataSourceMember: "GetFeeType"
     },
     {
         Name: "Description",
@@ -231,6 +286,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtOrderIndex",
         DataSourceMember: "OrderIndex"
+    },
+    {
+        Name: "IsOther",
+        DefaultValue: false,
+        BindControlName: "chkIsOther",
+        DataSourceMember: "IsOther"
     },
     {
         Name: "IsActived",
@@ -269,21 +330,21 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "CancelDeliveryReasonID",
+        DataSourceMember: "ShipmentFeeTypeID",
         Width: 60
     },
     {
-        Name: "CancelDeliveryReasonID",
+        Name: "ShipmentFeeTypeID",
         Type: "text",
-        Caption: "Mã lý do hủy giao hàng",
-        DataSourceMember: "CancelDeliveryReasonID",
+        Caption: "Mã loại phí vận chuyển",
+        DataSourceMember: "ShipmentFeeTypeID",
         Width: 160
     },
     {
-        Name: "CancelDeliveryReasonName",
+        Name: "ShipmentFeeTypeName",
         Type: "text",
-        Caption: "Tên lý do hủy giao hàng",
-        DataSourceMember: "CancelDeliveryReasonName",
+        Caption: "Tên loại phí vận chuyển",
+        DataSourceMember: "ShipmentFeeTypeName",
         Width: 250
     },
     {
@@ -300,34 +361,27 @@ export const DataGridColumnList = [
         DataSourceMember: "IsActived",
         Width: 80
     },
-    // {
-    //     Name: "IsSystem",
-    //     Type: "checkicon",
-    //     Caption: "Hệ thống",
-    //     DataSourceMember: "IsSystem",
-    //     Width: 200
-    // },
     {
         Name: "CreatedDate",
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 100
+        Width: 150
     },
     {
         Name: "CreatedUserFullName",
         Type: "text",
         Caption: "Người tạo",
         DataSourceMember: "CreatedUserFullName",
-        Width: 100
+        Width: 150
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "CancelDeliveryReasonID",
-        Width: 60,
-        Link: "/CancelDeliveryReason/Edit/",
+        DataSourceMember: "ShipmentFeeTypeID",
+        Width: 100,
+        Link: "/ShipmentFeeType/Edit/",
         LinkText: "Chỉnh sửa"
     }
 ];

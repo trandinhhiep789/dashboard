@@ -64,6 +64,7 @@ export const SearchElementList = [
         NameMember: "PartnerPriviledgeGroupName"
     }
 ];
+
 export const SearchMLObjectDefinition = [
     {
         Name: "Keyword",

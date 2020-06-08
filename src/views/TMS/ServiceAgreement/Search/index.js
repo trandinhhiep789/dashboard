@@ -33,6 +33,7 @@ class SearchCom extends React.Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleonChangePage = this.handleonChangePage.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -54,6 +55,7 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
+        debugger
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             console.log('Service Agree', apiResult)
             if (!apiResult.IsError) {
@@ -108,11 +110,41 @@ class SearchCom extends React.Component {
         });
     }
 
-    
+    handleSearchSubmit(formData, MLObject) {
+        const DataSearch = [
+            {
+                SearchKey: "@Keyword",
+                SearchValue: MLObject.Keyword
+            },
+            {
+                SearchKey: "@SERVICETYPEID",
+                SearchValue: MLObject.ServiceTypeID
+            },
+            {
+                SearchKey: "@AREAID",
+                SearchValue: MLObject.AreaID
+            },
+            {
+                SearchKey: "@SIGNEDDATE",
+                SearchValue: MLObject.SignedDate
+            },
+            {
+                SearchKey: "@EXPIREDDATE",
+                SearchValue: MLObject.ExpiredDate
+            }
+         
+        ];
+
+        this.setState({ 
+            SearchData: DataSearch 
+        });
+
+        this.callSearchData(DataSearch);
+    }
 
 
     render() {
-        console.log('gridDataSource', this.state.gridDataSource)
+        //console.log('gridDataSource', this.state.gridDataSource)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -133,7 +165,7 @@ class SearchCom extends React.Component {
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
                     onChangePage={this.handleonChangePage}
-                    IsDelete={false}
+                    IsDelete={true}
                     PageNumber={this.state.PageNumber}
                     IsAutoPaging={true}
                     RowsPerPage={10}

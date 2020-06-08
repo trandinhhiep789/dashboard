@@ -14,11 +14,145 @@ export const PKColumnName = "ServiceAgreementID";
 
 export const TitleFormSearch = "Tìm kiếm danh sách hợp đồng";
 export const TitleFormAdd = "Thêm hợp đồng";
+export const TitleFormEdit = "Cập nhật hợp đồng";
+export const TitleFormDetail = "Thông tin hợp đồng";
 
-export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
+export const PKColumnNameFeeAppendix = "FeeAppendixID";
+export const TitleFromFeeAppendix = "Phụ lục biểu phí";
 
-const dtFromdate = new Date()
+export const IDSelectColumnNameFeeAppendix = "chkSelect";
+export const AddLinkFeeAppendix = "/ServiceAgreement/FeeAppendix/Add";
+
+
+
+export const DataGridColumnItemListFeeAppendix = [
+    {
+        Name: "FeeAppendixID",
+        Type: "checkbox",
+        Caption: "Mã",
+        DataSourceMember: "FeeAppendixID",
+        Width: 150,
+    },
+    {
+        Name: "FeeAppendixName",
+        Type: "texttolink",
+        Caption: "Tên Phụ lục",
+        DataSourceMember: "FeeAppendixName",
+        Link: "/ServiceAgreement/FeeAppendix/Detail/",
+        Width: 150,
+    },
+    {
+        Name: "ServiceSeasonTypeName",
+        Type: "text",
+        Caption: "Loại thời vụ",
+        DataSourceMember: "ServiceSeasonTypeName",
+        Width: 250,
+    },
+    {
+        Name: "ApplyToDate",
+        Type: "date",
+        Caption: "Từ ngày",
+        DataSourceMember: "ApplyToDate",
+        Width: 250,
+    },
+    {
+        Name: "ApplyFromDate",
+        Type: "date",
+        Caption: "Đến ngày",
+        DataSourceMember: "ApplyFromDate",
+        Width: 250,
+    },
+    {
+
+        Name: "Action",
+        Type: "editnew",
+        Caption: "Tác vụ",
+        DataSourceMember: "FeeAppendixID",
+        Width: 70,
+        Link: "/ServiceAgreement/FeeAppendix/Edit/",
+        LinkText: "Chỉnh sửa"
+    }
+];
+
+export const DataGridColumnItemListAbiliti = [
+    {
+        Name: "AbilityID",
+        Type: "checkbox",
+        Caption: "Mã",
+        DataSourceMember: "AbilityID",
+        Width: 150,
+    },
+    {
+        Name: "ServiceSeasonTypeName",
+        Type: "texttolink",
+        Caption: " Loại mùa vụ",
+        DataSourceMember: "ServiceSeasonTypeName",
+        Link: "/Abiliti/Detail/",
+        Width: 150,
+    },
+    {
+        Name: "ToDate",
+        Type: "date",
+        Caption: "Từ ngày",
+        DataSourceMember: "ToDate",
+        Width: 250,
+    },
+    {
+        Name: "FromDate",
+        Type: "date",
+        Caption: "Đến ngày",
+        DataSourceMember: "FromDate",
+        Width: 250,
+    },
+    {
+        Name: "MonthlyAbilityValue",
+        Type: "text",
+        Caption: "Theo tháng",
+        DataSourceMember: "MonthlyAbilityValue",
+        Width: 250,
+    },
+    {
+        Name: "DailyAbilityValue",
+        Type: "text",
+        Caption: "Theo ngày",
+        DataSourceMember: "DailyAbilityValue",
+        Width: 250,
+    },
+    {
+        Name: "Action",
+        Type: "editnew",
+        Caption: "Tác vụ",
+        DataSourceMember: "AbilityID",
+        Width: 70,
+    }
+];
+
+const dtFromdate = new Date();
 dtFromdate.setDate(new Date().getDate() - 30);
+
+export const InitSearchParams = [
+    {
+        SearchKey: "@Keyword",
+        SearchValue: ""
+    },
+    {
+        SearchKey: "@SERVICETYPEID",
+        SearchValue: "-1"
+    },
+    {
+        SearchKey: "@AREAID",
+        SearchValue: "-1"
+    },
+    {
+        SearchKey: "@SIGNEDDATE",
+        SearchValue: dtFromdate
+    },
+    {
+        SearchKey: "@EXPIREDDATE",
+        SearchValue: new Date()
+    },
+  
+];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ" },
@@ -28,7 +162,7 @@ export const PagePath = [
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ" },
     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ" },
-    { Link: "", Title: "Sửa" }
+    { Link: "", Title: "Cập nhật" }
 ];
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ" },
@@ -60,17 +194,17 @@ export const DataGridColumnList = [
         Width: 140
     },
     {
-        Name: "PartnerID",
+        Name: "PartnerName",
         Type: "text",
         Caption: "Đối tác",
-        DataSourceMember: "PartnerID",
-        Width: 230
+        DataSourceMember: "PartnerName",
+        Width: 300
     },
     {
-        Name: "ServiceTypeID",
+        Name: "ServiceTypeName",
         Type: "text",
         Caption: "Loại dịch vụ",
-        DataSourceMember: "ServiceTypeID",
+        DataSourceMember: "ServiceTypeName",
         Width: 140
     },
     {
@@ -126,40 +260,25 @@ export const SearchMLObjectDefinition = [
         BindControlName: "txtKeyword"
     },
     {
-        Name: "RequestPartnerID",
+        Name: "ServiceTypeID",
         DefaultValue: "",
-        BindControlName: "cbRequestPartnerID"
+        BindControlName: "cbServiceTypeID"
     },
     {
-        Name: "CreatedOrderTimeFo",
+        Name: "AreaID",
         DefaultValue: "",
-        BindControlName: "dtCreatedOrderTimeFo"
+        BindControlName: "cbAreaID"
     },
     {
-        Name: "CreatedOrderTimeTo",
+        Name: "SignedDate",
         DefaultValue: "",
-        BindControlName: "dtCreatedOrderTimeTo"
+        BindControlName: "dtSignedDate"
     },
     {
-        Name: "ReceiverProvinceID",
+        Name: "ExpiredDate",
         DefaultValue: "",
-        BindControlName: "cbReceiverProvinceID"
+        BindControlName: "dtExpiredDate"
     },
-    {
-        Name: "ReceiverDistrictID",
-        DefaultValue: "",
-        BindControlName: "cbReceiverDistrictID"
-    },
-    {
-        Name: "SenderStoreID",
-        DefaultValue: "",
-        BindControlName: "cbSenderStoreID"
-    },
-    {
-        Name: "ShipmentOrderStatusID",
-        DefaultValue: "",
-        BindControlName: "cbShipmentOrderStatusID"
-    }
 ];
 
 export const SearchElementList = [
@@ -167,10 +286,10 @@ export const SearchElementList = [
         type: "text",
         name: "txtKeyword",
         DataSourceMember: "Keyword",
-        label: "Mã hợp đồng",
+        label: "Từ khóa",
         value: "",
         colspan: 2,
-        placeholder: "Mã hợp đồng",
+        placeholder: "Từ khóa",
         icon: ""
     },
     {
@@ -183,26 +302,26 @@ export const SearchElementList = [
         isMultiSelect: false,
         placeholder: "---Vui lòng chọn---",
         listoption: [],
-        IsAutoLoadItemFromCache: false,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
-        ValueMember: "PartnerID",
-        NameMember: "PartnerName"
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SERVICETYPE",
+        ValueMember: "ServiceTypeID",
+        NameMember: "ServiceTypeName",
 
     },
     {
         type: "ComboBox",
-        name: "cbServiceAreaID",
-        DataSourceMember: "ServiceAreaID",
+        name: "cbAreaID",
+        DataSourceMember: "AreaID",
         label: "Khu vực",
         colspan: 2,
         value: -1,
-        isMultiSelect: false,
+        isMultiSelect: true,
         placeholder: "---Vui lòng chọn---",
         listoption: [],
-        IsAutoLoadItemFromCache: false,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
-        ValueMember: "PartnerID",
-        NameMember: "PartnerName"
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREA",
+        ValueMember: "AreaID",
+        NameMember: "AreaName"
 
     },
     {
@@ -210,7 +329,7 @@ export const SearchElementList = [
         name: "dtSignedDate",
         DataSourceMember: "SignedDate",
         label: "Từ ngày",
-        value: dtFromdate,
+        value:  dtFromdate ,
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
@@ -227,18 +346,20 @@ export const SearchElementList = [
     },
     {
         type: "ComboBox",
-        name: "cbServiceAreaID",
-        DataSourceMember: "ServiceAreaID",
+        name: "cbServiceStatusID",
+        DataSourceMember: "ServiceStatusID",
         label: "Trạng thái",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
-        placeholder: "---Vui lòng chọn---",
-        listoption: [],
-        IsAutoLoadItemFromCache: false,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
-        ValueMember: "PartnerID",
-        NameMember: "PartnerName"
+        placeholder: "--Tất cả--",
+        listoption: [
+            { value: -1, label: '--Tất cả--' },
+            { value: 1, label: 'Hết hạn' },
+            { value: 2, label: 'Còn hạn' },
+        ],
+        ValueMember: "ServiceStatusID",
+        NameMember: "ServiceStatusName"
 
     },
 ];
@@ -320,131 +441,131 @@ export const MLObjectDefinition = [
         BindControlName: "txtServiceAgreementID",
         DataSourceMember: "ServiceAgreementID"
     },
-    
+
     {
         Name: "ServiceAgreementTypeID",
         DefaultValue: "",
         BindControlName: "txtServiceAgreementTypeID",
         DataSourceMember: "ServiceAgreementTypeID"
     },
-    
+
     {
         Name: "ServiceTypeID",
         DefaultValue: "",
         BindControlName: "txtServiceTypeID",
         DataSourceMember: "ServiceTypeID"
     },
-   
+
     {
         Name: "PartnerID",
         DefaultValue: "",
         BindControlName: "txtPartnerID",
         DataSourceMember: "PartnerID"
     },
-    
+
     {
         Name: "ServiceAreaID",
         DefaultValue: "",
         BindControlName: "txtServiceAreaID",
         DataSourceMember: "ServiceAreaID"
     },
-    
+
     {
         Name: "DeputyUserName",
         DefaultValue: "",
         BindControlName: "txtDeputyUserName",
         DataSourceMember: "DeputyUserName"
     },
-    
+
     {
         Name: "SignedDate",
         DefaultValue: "",
         BindControlName: "dtSignedDate",
         DataSourceMember: "SignedDate"
     },
-   
+
     {
         Name: "ExpiredDate",
         DefaultValue: "",
         BindControlName: "dtExpiredDate",
         DataSourceMember: "ExpiredDate"
     },
-    
+
     {
         Name: "IsExtended",
         DefaultValue: "",
         BindControlName: "chkIsExtended",
         DataSourceMember: "IsExtended"
     },
-   
+
     {
         Name: "ExtendedDate",
         DefaultValue: "",
         BindControlName: "dtExtendedDate",
         DataSourceMember: "ExtendedDate"
     },
-   
+
     {
         Name: "IsLiquidated",
         DefaultValue: "",
         BindControlName: "chkIsLiquidated",
         DataSourceMember: "IsLiquidated"
     },
-    
+
     {
         Name: "Liquidateddate",
         DefaultValue: "",
         BindControlName: "dtLiquidateddate",
         DataSourceMember: "Liquidateddate"
     },
-   
+
     {
         Name: "IsDeposited",
         DefaultValue: "",
         BindControlName: "chkIsDeposited",
         DataSourceMember: "IsDeposited"
     },
-   
+
     {
         Name: "DepositMoney",
         DefaultValue: "",
         BindControlName: "txtDepositMoney",
         DataSourceMember: "DepositMoney"
     },
-   
+
     {
         Name: "DepositedDate",
         DefaultValue: "",
         BindControlName: "dtDepositedDate",
         DataSourceMember: "DepositedDate"
     },
-   
+
     {
         Name: "DepositNote",
         DefaultValue: "",
         BindControlName: "txtDepositNote",
         DataSourceMember: "DepositNote"
     },
-    
+
     {
         Name: "Description",
         DefaultValue: "",
         BindControlName: "txtDescription",
         DataSourceMember: "Description"
     },
-    
+
     {
         Name: "IsActived",
         DefaultValue: true,
         BindControlName: "chkIsActived",
         DataSourceMember: "IsActived"
     },
-    
+
     {
         Name: "IsSystem",
         DefaultValue: false,
         BindControlName: "chkIsSystem",
         DataSourceMember: "IsSystem"
     },
- 
+
 ];

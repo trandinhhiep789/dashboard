@@ -1,9 +1,9 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SimpleForm from "../../../../../common/components/Form/SimpleForm";
+import { ModalManager } from "react-dynamic-modal";
 import { MessageModal } from "../../../../../common/components/Modal";
+import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import {
     APIHostName,
     AddAPIPath,
@@ -11,76 +11,63 @@ import {
     MLObjectDefinition,
     BackLink,
     AddPagePath,
-    AddLogAPIPath
-} from "../constants";
+    TitleFormAdd
+} from "../../../ServiceAgreement/FeeAppendix/contants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { ATTRIBUTE_CATEGORY_TYPE_ADD } from "../../../../../constants/functionLists";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { FEEAPPENDIX_ADD } from "../../../../../constants/functionLists";
+
 
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        // this.handleGetCache = this.handleGetCache.bind(this);
-        // this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
         this.state = {
-            CallAPIMessage: "",
             IsCallAPIError: false,
-            IsCloseForm: false
+            IsCloseForm: false,
+            DataSource: {},
+            CallAPIMessage: "",
+            ServiceAgreementID: this.props.location.state.params,
+            ServiceAgreement: {}
         };
+        this.searchref = React.createRef();
     }
 
     componentDidMount() {
+        console.log(' FeeAppendix add 11111', this.props)
         this.props.updatePagePath(AddPagePath);
+        this.getServiceAgreementById(this.props.location.state.params);
     }
-
-    // handleClearLocalCache() {
-    //     const cacheKeyID = "PIMCACHE.PIMATTRIBUTECATEGORYTYPE";
-    //     const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-    //     return db.delete(cacheKeyID).then((result) => {
-    //         const postData = {
-    //             CacheKeyID: cacheKeyID,
-    //             UserName: this.props.AppInfo.LoginInfo.Username,
-    //             AdditionParamList: []
-    //         };
-    //         this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-    //             this.handleGetCache();
-    //             //console.log("apiResult", apiResult)
-    //         });
-    //     }
-    //     );
-    // }
-    
-
-    // handleGetCache() {
-    //     this.props.callGetCache("PIMCACHE.PIMATTRIBUTECATEGORYTYPE").then((result) => {
-    //         console.log("handleGetCache: ", result);
-    //     });
-    // }
-
-    handleSubmitInsertLog(MLObject) {
-        MLObject.ActivityTitle = `Thêm mới danh sách lý do hủy giao hàng: ${MLObject.CancelDeliveryReasonName}`;
-        MLObject.ActivityDetail = `Thêm mới danh sách lý do hủy giao hàng: ${MLObject.CancelDeliveryReasonName} ${"\n"}Mô tả: ${MLObject.Description}`;
-        MLObject.ObjectID = "MD_CANCELDELIVERYREASON";
-        MLObject.ActivityUser = MLObject.CreatedUser;
-        this.props.callFetchAPI(APIHostName, AddLogAPIPath, MLObject);
-    }
-
 
     handleSubmit(formData, MLObject) {
+        const { ServiceAgreement } = this.state;
+        
+
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        MLObject.SignedDate = ServiceAgreement.SignedDate;
+        MLObject.ServiceAgreementID = ServiceAgreement.ServiceAgreementID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+            console.log('handleSubmit FeeAppendix', MLObject, apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
-            if(!apiResult.IsError){
-                //this.handleClearLocalCache();
-                //this.handleSubmitInsertLog(MLObject);
-            }            
             this.showMessage(apiResult.Message);
+
+        });
+    }
+
+    getServiceAgreementById(id) {
+
+        this.props.callFetchAPI(APIHostName, 'api/ServiceAgreement/Load', id).then(apiResult => {
+            console.log('getServiceAgreementById', apiResult)
+
+            if (!apiResult.IsError) {
+                this.setState({
+                    ServiceAgreement: apiResult.ResultObject,
+                })
+            } else {
+                this.showMessage(apiResult.Message);
+            }
         });
     }
 
@@ -99,6 +86,7 @@ class AddCom extends React.Component {
         );
     }
 
+
     render() {
         const dataSource = {
             IsActived: true
@@ -107,17 +95,18 @@ class AddCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
         return (
+
             <SimpleForm
-                FormName="Thêm lý do hủy giao hàng"
-                MLObjectDefinition={MLObjectDefinition} 
+                FormName={TitleFormAdd}
+                MLObjectDefinition={MLObjectDefinition}
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
                 FormMessage={this.state.CallAPIMessage}
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                //RequirePermission={ATTRIBUTE_CATEGORY_TYPE_ADD}
                 ref={this.searchref}
+            //RequirePermission={FEEAPPENDIX_ADD}
             />
         );
     }
@@ -140,6 +129,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
     };
 };

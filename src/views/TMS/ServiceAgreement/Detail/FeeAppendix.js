@@ -2,70 +2,79 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import {
-    APIHostName,
-} from "../constants";
-
+    PKColumnNameFeeAppendix,
+    TitleFromFeeAppendix,
+    DataGridColumnItemListFeeAppendix,
+    IDSelectColumnName,
+    AddLinkFeeAppendix
+} from "../Detail/contants";
+import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
+import DataGrid from "../../../../common/components/DataGrid/getdataserver.js";
 class FeeAppendixCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            FeeAppendix: this.props.FeeAppendix,
+            DataSource: this.props.FeeAppendix,
+            PageNumber: 1,
+        }
+        this.gridref = React.createRef();
+        this.searchref = React.createRef();
+    }
 
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.FeeAppendix) !== JSON.stringify(nextProps.FeeAppendix)) {
+            this.setState({
+                DataSource: nextProps.FeeAppendix
+            })
         }
     }
 
     componentDidMount() {
-        console.log('FeeAppendixCom', this.props)
+    }
+
+    handleItemDelete() {
+
+    }
+    handleItemEdit() {
+
+    }
+
+    handleItemInsert() {
+        console.log('handleItemInsert FeeAppendix')
+    }
+
+    handleonChangePage() {
+
     }
 
 
     render() {
+
+        console.log('FeeAppendixCom', this.props, this.props.ServiceAgreementID)
+        const ServiceAgreementID = this.props.ServiceAgreementID;
+
         return (
-               <div className="card">
-                <h4 className="card-title"><strong>Phụ lục biểu phí</strong></h4>
-                <div className="card-body">
-                    <div className="form-row">
-                        <div className="col-md-12">
-                            <div className="table-responsive">
-                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                    <thead className="thead-light">
-                                        <tr>
-                                            <th className="jsgrid-header-cell">Tên phụ lục</th>
-                                            <th className="jsgrid-header-cell">Loại thời vụ</th>
-                                            <th className="jsgrid-header-cell">Từ ngày</th>
-                                            <th className="jsgrid-header-cell">Đến ngày</th>
-                                            <th className="jsgrid-header-cell">Đơn vị tính</th>
-                                            <th className="jsgrid-header-cell">Kích hoạt</th>
-                                            <th className="jsgrid-header-cell">Tác vụ</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {/* {this.state.ShipmentOrder.ShipmentOrder_MaterialList && this.state.ShipmentOrder.ShipmentOrder_MaterialList.map((item, index) => {
-                                            return (<tr key={index}>
-                                                <td>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsSaleMaterial} />
-                                                            <span className="cr">
-                                                                <i className="cr-icon fa fa-check"></i>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>{item.ProductID}</td>
-                                                <td>{item.ProductName}</td>
-                                                <td>{item.Quantity}</td>
-                                                <td>{item.QuantityUnitName}</td>
-                                                <td>{item.Price}đ</td>
-                                                <td>{item.SaleOrderID}</td>
-                                            </tr>)
-                                        })} */}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <React.Fragment>
+                <DataGrid
+                    listColumn={DataGridColumnItemListFeeAppendix}
+                    dataSource={this.state.DataSource}
+                    title={TitleFromFeeAppendix}
+                    AddLink={AddLinkFeeAppendix}
+                    params={ServiceAgreementID}
+                    IDSelectColumnName={IDSelectColumnName}
+                    PKColumnName={PKColumnNameFeeAppendix}
+                    onDeleteClick={this.handleItemDelete}
+                    onChangePage={this.handleonChangePage}
+                    IsDelete={false}
+                    PageNumber={this.state.PageNumber}
+                    IsAutoPaging={false}
+                    RowsPerPage={10}
+                    classCustom=""
+                    ref={this.gridref}
+                />
+            </React.Fragment>
+
         );
     }
 }

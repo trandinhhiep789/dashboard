@@ -128,11 +128,35 @@ class InputGridCellCom extends Component {
                         if (this.props.CSSClassName != null)
                             className = this.props.CSSClassName;
                         if (this.props.IsPermisionDelete == true || this.props.IsPermisionDelete == undefined) {
-                            return <input type="checkbox" name={this.props.name} className={className}
-                                onChange={this.handleInputChange} value={text} checked={this.props.isChecked} />;
+                            //return <input type="checkbox" name={this.props.name} className={className} onChange={this.handleInputChange} value={text} checked={this.props.isChecked} />;
+                            return <div className="checkbox">
+                                <label>
+                                    <input
+                                        type="checkbox" 
+                                        name={this.props.name} 
+                                        className={className} 
+                                        onChange={this.handleInputChange} 
+                                        value={text} 
+                                        checked={this.props.isChecked}
+                                    />
+                                    <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                                </label>
+                            </div>;
                         } else {
-                            return <input type="checkbox" disabled={true} checked={this.props.isChecked} name={this.props.name} className={className}
-                                value={text} />;
+                            //return <input type="checkbox" disabled={true} checked={this.props.isChecked} name={this.props.name} className={className} value={text} />;
+                            return <div className="checkbox">
+                                <label>
+                                    <input
+                                        type="checkbox" 
+                                        disabled={true} 
+                                        checked={this.props.isChecked} 
+                                        name={this.props.name} 
+                                        className={className} 
+                                        value={text}
+                                    />
+                                    <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                                </label>
+                            </div>;
                         }
                     }
                 case "checkboxAll":
@@ -142,11 +166,36 @@ class InputGridCellCom extends Component {
                             className = this.props.CSSClassName;
 
                         if (this.props.IsPermisionDelete == true || this.props.IsPermisionDelete == undefined) {
-                            return <input type="checkbox" name={this.props.name} className={className}
-                                onChange={this.handleInputChangeALL} value={text} checked={this.props.isChecked} />;
+                            //return <input type="checkbox" name={this.props.name} className={className} onChange={this.handleInputChangeALL} value={text} checked={this.props.isChecked} />;
+
+                            return <div className="checkbox">
+                                <label>
+                                    <input
+                                        type="checkbox" 
+                                        name={this.props.name} 
+                                        className={className} 
+                                        onChange={this.handleInputChangeALL} 
+                                        value={text} 
+                                        checked={this.props.isChecked}
+                                    />
+                                    <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                                </label>
+                            </div>;
+
                         } else {
-                            return <input type="checkbox" disabled={true} name={this.props.name} className={className}
-                                value={text} />;
+                            return <div className="checkbox">
+                                <label>
+                                    <input
+                                        type="checkbox" 
+                                        disabled={true} 
+                                        name={this.props.name} 
+                                        className={className} 
+                                        value={text}
+                                    />
+                                    <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                                </label>
+                            </div>;
+                            //return <input type="checkbox" disabled={true} name={this.props.name} className={className} value={text} />;
                         }
 
                     }
@@ -187,7 +236,7 @@ class InputGridCellCom extends Component {
                 case "edit":
                     return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.value} title="Edit"><i className="ti-pencil"></i></a>;
                 case "editnew":
-                     return (<div>
+                    return (<div>
                         <a title="" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>
                         <a title="" className="table-action hover-danger" onClick={this.handleonClickDelete} data-id={this.props.index} title="Edit"><i className="ti-trash"></i></a>
                     </div>)
@@ -216,11 +265,34 @@ class InputGridCellCom extends Component {
                             className = this.props.CSSClassName;
 
                         if (this.props.IsPermisionDelete == true || this.props.IsPermisionDelete == undefined) {
-                            return <input type="checkbox" name={this.props.name} className={className}
-                                onChange={this.handleInputChangeALL} value={text} checked={this.props.isChecked} />;
+                            //return <input type="checkbox" name={this.props.name} className={className} onChange={this.handleInputChangeALL} value={text} checked={this.props.isChecked} />;
+                            return <div className="checkbox">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name={this.props.name}
+                                        onChange={this.handleInputChangeALL}
+                                        value={text}
+                                        checked={this.props.isChecked}
+                                        className={className}
+                                    />
+                                    <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                                </label>
+                            </div>;
                         } else {
-                            return <input type="checkbox" disabled={true} name={this.props.name} className={className}
-                                value={text} />;
+                            //return <input type="checkbox" disabled={true} name={this.props.name} className={className} value={text} />;
+                            return <div className="checkbox">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        disabled={true}
+                                        name={this.props.name}
+                                        value={text}
+                                        className={className}
+                                    />
+                                    <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                                </label>
+                            </div>;
                         }
                     }
                 case "checkbox":
@@ -228,8 +300,21 @@ class InputGridCellCom extends Component {
                         let className = "form-control form-control-sm";
                         if (this.props.CSSClassName != null)
                             className = this.props.CSSClassName;
-                        return <input type="checkbox" disabled={true} checked={this.props.isChecked} name={this.props.name} className={className}
-                            value={text} />;
+                        //return <input type="checkbox" disabled={true} checked={this.props.isChecked} name={this.props.name} className={className} value={text} />;
+                        return <div className="checkbox">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    disabled={true}
+                                    disabled={true}
+                                    name={this.props.name}
+                                    value={text}
+                                    checked={this.props.isChecked}
+                                    className={className}
+                                />
+                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                            </label>
+                        </div>;
                     }
                 case "link":
                     return <Link to={to}>{linkText}</Link>;
