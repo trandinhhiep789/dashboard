@@ -17,8 +17,8 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../../actions/cacheAction";
-
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -58,7 +58,7 @@ class AddCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if(!apiResult.IsError){
-                //this.handleClearLocalCache();
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTFEETYPE);
                 //this.handleSubmitInsertLog(MLObject);
             }            
             this.showMessage(apiResult.Message);
@@ -121,6 +121,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
     };
 };
