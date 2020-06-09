@@ -43,6 +43,10 @@ import InstallBundle from '../../views/TMS/MD/Installed/InstallBundle';
 import InstallMaterial from '../../views/TMS/MD/Installed/InstallMaterial';
 import ServiceAgreement from '../../views/TMS/ServiceAgreement';
 import ShipmentFeeType from '../../views/TMS/MD/ShipmentFeeType';
+import ServiceType from '../../views/TMS/MD/ServiceType';
+import ServiceSeasonType from '../../views/TMS/MD/ServiceSeasonType';
+import ServiceAgreementType from '../../views/TMS/MD/ServiceAgreementType';
+
 
 
 import NotFound from '../NotFound'
@@ -132,7 +136,10 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/PartnerUser" component={PartnerUser} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentFeeType" component={ShipmentFeeType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ServiceAgreement" component={ServiceAgreement} isLoggedIn={isLoggedIn} />
-                                
+                                <PrivateRoute path="/ServiceType" component={ServiceType} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/ServiceSeasonType" component={ServiceSeasonType} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/ServiceAgreementType" component={ServiceAgreementType} isLoggedIn={isLoggedIn} />
+
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Maps" component={MapContainer} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Map" component={Maps} isLoggedIn={isLoggedIn} />

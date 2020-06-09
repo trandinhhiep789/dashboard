@@ -12,13 +12,10 @@ import {
     EditElementList,
     MLObjectDefinition,
     BackLink,
-    EditPagePath,
-    AddLogAPIPath
+    EditPagePath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
 
@@ -53,14 +50,6 @@ class EditCom extends React.Component {
                 });
             });
     }
-
-    // handleSubmitInsertLog(MLObject) {
-    //     MLObject.ActivityTitle = `Cập nhật loại danh mục thuộc tính: ${MLObject.AttributeCategoryTypeName}`;
-    //     MLObject.ActivityDetail = `Cập nhật loại danh mục thuộc tính: ${MLObject.AttributeCategoryTypeName} ${"\n"}Mô tả: ${MLObject.Description}`;
-    //     MLObject.ObjectID = "PIM_ATTRIBUTECATEGORYTYPE";
-    //     MLObject.ActivityUser = MLObject.UpdatedUser;
-    //     this.props.callFetchAPI(APIHostName, AddLogAPIPath, MLObject);
-    // }
 
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;

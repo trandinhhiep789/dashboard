@@ -1,54 +1,203 @@
 export const APIHostName = "PIMAPI";
-export const SearchAPIPath = "api/PartnerType/Search";
-export const LoadAPIPath = "api/PartnerType/Load";
-export const AddAPIPath = "api/PartnerType/Add";
-export const UpdateAPIPath = "api/PartnerType/Update";
-export const DeleteAPIPath = "api/PartnerType/Delete";
-export const UpdateOrderAPIPath = "api/PartnerType/UpdateOrder";
-export const LoadAPIPathLanguage = "api/PartnerType_lang/Load";
-export const BackLink = "/PartnerType";
-export const AddLink = "/PartnerType/Add";
+export const SearchAPIPath = "api/ServiceAgreementType/Search";
+export const LoadAPIPath = "api/ServiceAgreementType/Load";
+export const AddAPIPath = "api/ServiceAgreementType/Add";
+export const UpdateAPIPath = "api/ServiceAgreementType/Update";
+export const DeleteAPIPath = "api/ServiceAgreementType/Delete";
+export const UpdateOrderAPIPath = "api/ServiceAgreementType/UpdateOrder";
+export const BackLink = "/ServiceAgreementType";
+export const AddLink = "/ServiceAgreementType/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "PartnerTypeID";
+export const PKColumnName = "ServiceAgreementTypeID";
+export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "", Title: "Loại đối tác" }
+    { Link: "", Title: "Danh sách loại hợp đồng dịch vụ" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/PartnerType", Title: "Loại đối tác" },
+    { Link: "/ServiceAgreementType", Title: "Danh sách loại hợp đồng dịch vụ" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "/PartnerType", Title: "Loại đối tác" },
+    { Link: "/ServiceAgreementType", Title: "Danh sách loại hợp đồng dịch vụ" },
     { Link: "", Title: "Thêm" }
-];
-
-export const InitSearchParams = [
-    {
-        SearchKey: "@Keyword",
-        SearchValue: ""
-    }
 ];
 
 export const SearchElementList = [
     {
         type: "text",
         name: "txtKeyword",
-        label: "Từ khóa",
+        label: "Từ khóa:",
         value: "",
         placeholder: "",
         icon: "",
-        listoption: [],
+        listoption: {}
+    }
+];
+
+export const AddElementList = [
+    {
+        type: "text",
+        name: "txtServiceAgreementTypeID",
+        label: "mã loại hợp đồng dịch vụ",
+        value: "",
+        maxSize: "5",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "ServiceAgreementTypeID",
+        readonly: false,
+        validatonList: ["required", "number"]
+    },
+    {
+        type: "text",
+        name: "txtServiceAgreementTypeName",
+        label: "tên loại hợp đồng dịch vụ",
+        value: "",
+        maxSize: "200",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "ServiceAgreementTypeName",
+        readonly: false,
+        validatonList: ["required"],
+    },
+    {
+        type: "textarea",
+        name: "txtDescription",
+        label: "Mô tả:",
+        value: "",
+        maxSize: "2000",
+        placeholder: "",
+        icon: "",
+        rows: "6",
+        listoption: {},
+        DataSourceMember: "Description",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "text",
+        name: "txtOrderIndex",
+        label: "Thứ tự hiển thị:",
+        value: "0",
+        maxSize: "9",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "OrderIndex",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
+        type: "checkbox",
+        name: "chkIsActived",
+        label: "Kích hoạt:",
+        value: 1,
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "checkbox",
+        name: "chkIsSystem",
+        label: "Hệ thống:",
+        value: 0,
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        readonly: false,
         validatonList: []
     }
 ];
 
+export const EditElementList = [
+    {
+        type: "text",
+        name: "txtServiceAgreementTypeID",
+        label: "mã loại hợp đồng dịch vụ",
+        value: "",
+        maxSize: "5",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "ServiceAgreementTypeID",
+        readonly: true,
+        validatonList: ["required", "number"]
+    },
+    {
+        type: "text",
+        name: "txtServiceAgreementTypeName",
+        label: "tên loại hợp đồng dịch vụ",
+        value: "",
+        maxSize: "200",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "ServiceAgreementTypeName",
+        readonly: false,
+        validatonList: ["required"],
+    },
+    {
+        type: "textarea",
+        name: "txtDescription",
+        label: "Mô tả:",
+        value: "",
+        maxSize: "2000",
+        placeholder: "",
+        icon: "",
+        rows: "6",
+        listoption: {},
+        DataSourceMember: "Description",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "text",
+        name: "txtOrderIndex",
+        label: "Thứ tự hiển thị:",
+        value: "",
+        maxSize: "9",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "OrderIndex",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
+        type: "checkbox",
+        name: "chkIsActived",
+        label: "Kích hoạt:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "IsActived",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "checkbox",
+        name: "chkIsSystem",
+        label: "Hệ thống:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "IsSystem",
+        readonly: false,
+        validatonList: []
+    }
+];
 
 export const SearchMLObjectDefinition = [
     {
@@ -58,181 +207,18 @@ export const SearchMLObjectDefinition = [
     }
 ];
 
-
-export const AddElementList = [
-    {
-        type: "text",
-        name: "txtPartnerTypeID",
-        label: "Mã loại nhà cung cấp",
-        value: "",
-        maxSize: "9",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "PartnerTypeID",
-        readonly: false,
-        validatonList: ["required", "number"]
-    },
-    {
-        type: "text",
-        name: "txtPartnerTypeName",
-        label: "tên loại nhà cung cấp",
-        value: "",
-        maxSize: "180",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "PartnerTypeName",
-        readonly: false,
-        validatonList: ["required"]
-    },
-
-    {
-        type: "textarea",
-        name: "txtDescription",
-        label: "Mô tả",
-        value: "",
-        maxSize: "1900",
-        placeholder: "",
-        rows: "6",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "Description",
-        readonly: false,
-        validatonList: []
-    },
-    {
-        type: "text",
-        name: "txtOrderIndex",
-        label: "Thứ tự hiển thị",
-        value: "0",
-        maxSize: "9",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "OrderIndex",
-        readonly: false,
-        validatonList: ["number"],
-    },
-    {
-        type: "checkbox",
-        name: "chkIsActived",
-        label: "Kích hoạt",
-        value: true,
-        placeholder: "",
-        icon: "",
-        DataSourceMember: "IsActived",
-        listoption: [],
-        readonly: false,
-        validatonList: []
-    },
-    {
-        type: "checkbox",
-        name: "chkIsSystem",
-        label: "Hệ thống",
-        value: false,
-        placeholder: "",
-        icon: "",
-        DataSourceMember: "IsSystem",
-        listoption: [],
-        readonly: false,
-        validatonList: []
-    }
-];
-
-export const EditElementList = [
-    {
-        type: "text",
-        name: "txtPartnerTypeID",
-        label: "mã loại nhà cung cấp",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        readonly: true,
-        DataSourceMember: "PartnerTypeID",
-        validatonList: ["required", "number"],
-    },
-    {
-        type: "text",
-        name: "txtPartnerTypeName",
-        label: "tên loại nhà cung cấp",
-        value: "",
-        maxSize: "180",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "PartnerTypeName",
-        readonly: false,
-        validatonList: ["required"]
-    },
-
-    {
-        type: "textarea",
-        name: "txtDescription",
-        label: "Mô tả",
-        value: "",
-        maxSize: "1900",
-        placeholder: "",
-        rows: "6",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "Description",
-        readonly: false,
-        validatonList: []
-    },
-    {
-        type: "text",
-        name: "txtOrderIndex",
-        label: "Thứ tự hiển thị",
-        value: "",
-        maxSize: "9",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "OrderIndex",
-        readonly: false,
-        validatonList: ["number"],
-    },
-    {
-        type: "checkbox",
-        name: "chkIsActived",
-        label: "Kích hoạt",
-        value: true,
-        placeholder: "",
-        icon: "",
-        DataSourceMember: "IsActived",
-        listoption: [],
-        readonly: false,
-        validatonList: []
-    },
-    {
-        type: "checkbox",
-        name: "chkIsSystem",
-        label: "Hệ thống",
-        value: false,
-        placeholder: "",
-        icon: "",
-        DataSourceMember: "IsSystem",
-        listoption: [],
-        readonly: false,
-        validatonList: []
-    }
-];
-
-
 export const MLObjectDefinition = [
     {
-        Name: "PartnerTypeID",
+        Name: "ServiceAgreementTypeID",
         DefaultValue: "",
-        BindControlName: "txtPartnerTypeID",
-        DataSourceMember: "PartnerTypeID"
+        BindControlName: "txtServiceAgreementTypeID",
+        DataSourceMember: "ServiceAgreementTypeID"
     },
     {
-        Name: "PartnerTypeName",
+        Name: "ServiceAgreementTypeName",
         DefaultValue: "",
-        BindControlName: "txtPartnerTypeName",
-        DataSourceMember: "PartnerTypeName"
+        BindControlName: "txtServiceAgreementTypeName",
+        DataSourceMember: "ServiceAgreementTypeName"
     },
     {
         Name: "Description",
@@ -242,7 +228,7 @@ export const MLObjectDefinition = [
     },
     {
         Name: "OrderIndex",
-        DefaultValue: "0",
+        DefaultValue: "",
         BindControlName: "txtOrderIndex",
         DataSourceMember: "OrderIndex"
     },
@@ -263,87 +249,78 @@ export const MLObjectDefinition = [
         DefaultValue: "administrator",
         BindControlName: "",
         DataSourceMember: "CreatedUser"
+    },
+    {
+        Name: "UpdatedUser",
+        DefaultValue: "administrator",
+        BindControlName: "",
+        DataSourceMember: "UpdatedUser"
+    },
+    {
+        Name: "LoginLogID",
+        DefaultValue: "",
+        BindControlName: "",
+        DataSourceMember: ""
     }
 ];
-
-export const GridMLObjectDefinition = [
-    {
-        Name: "LanguageID",
-        DefaultValue: "",
-        BindControlName: "LanguageID",
-        DataSourceMember: "LanguageID"
-    },
-    {
-        Name: "LanguageName",
-        DefaultValue: "",
-        BindControlName: "LanguageName",
-        DataSourceMember: "LanguageName"
-    },
-    {
-        Name: "PartnerTypeName",
-        DefaultValue: "",
-        BindControlName: "PartnerTypeName",
-        DataSourceMember: "PartnerTypeName"
-    },
-    {
-        Name: "Description",
-        DefaultValue: "",
-        BindControlName: "Description",
-        DataSourceMember: "Description"
-    }
-];
-
 
 export const DataGridColumnList = [
     {
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "PartnerTypeID",
-        Width: 70
+        DataSourceMember: "ServiceAgreementTypeID",
+        Width: 60
     },
     {
-        Name: "PartnerTypeID",
+        Name: "ServiceAgreementTypeID",
         Type: "text",
-        Caption: "Mã loại đối tác",
-        DataSourceMember: "PartnerTypeID",
-        Width: 150
+        Caption: "Mã loại hợp đồng dịch vụ",
+        DataSourceMember: "ServiceAgreementTypeID",
+        Width: 200
     },
     {
-        Name: "PartnerTypeName",
+        Name: "ServiceAgreementTypeName",
         Type: "text",
-        Caption: "Tên loại đối tác",
-        DataSourceMember: "PartnerTypeName",
-        Width: 400
+        Caption: "Tên loại hợp đồng dịch vụ",
+        DataSourceMember: "ServiceAgreementTypeName",
+        Width: 250
+    },
+    {
+        Name: "Description",
+        Type: "text",
+        Caption: "Mô tả",
+        DataSourceMember: "Description",
+        //Width: 200
     },
     {
         Name: "IsActived",
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 70
+        Width: 80
     },
     {
         Name: "CreatedDate",
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 100
+        Width: 150
     },
     {
-        Name: "CreatedFullName",
+        Name: "CreatedUserFullName",
         Type: "text",
         Caption: "Người tạo",
-        DataSourceMember: "CreatedFullName",
+        DataSourceMember: "CreatedUserFullName",
         Width: 150
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "PartnerTypeID",
-        Width: 70,
-        Link: "/PartnerType/Edit/",
+        DataSourceMember: "ServiceAgreementTypeID",
+        Width: 100,
+        Link: "/ServiceAgreementType/Edit/",
         LinkText: "Chỉnh sửa"
     }
 ];
