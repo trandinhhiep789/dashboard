@@ -1,7 +1,7 @@
 export const APIHostName = "PIMAPI";
 export const SearchAPIPath = "api/ServiceAgreement_FeeAppendix/Search";
 export const LoadAPIPath = "api/ServiceAgreement_FeeAppendix/Load";
-export const LoadNewAPIPath= "api/ServiceAgreement_FeeAppendix/LoadNew";
+export const LoadNewAPIPath = "api/ServiceAgreement_FeeAppendix/LoadNew";
 export const AddAPIPath = "api/ServiceAgreement_FeeAppendix/Add";
 export const UpdateAPIPath = "api/ServiceAgreement_FeeAppendix/Update";
 export const DeleteAPIPath = "api/ServiceAgreement_FeeAppendix/Delete";
@@ -17,10 +17,10 @@ export const TitleFormSearch = "Danh sách chi tiết phụ lục biểu phí";
 export const TitleFormDetail = "Danh sách chi tiết phụ lục biểu phí";
 export const TitleFromFeeAppendixDetail = "Chi tiết biểu phí";
 
-export const AddLinkFeeAppendixDetail ="/ServiceAgreement/FeeAppendix/Add";
+export const AddLinkFeeAppendixDetail = "/ServiceAgreement/FeeAppendix/Add";
 export const IDSelectColumnNameFeeAppendixDetail = "chkSelect";
 export const PKColumnNameFeeAppendixDetail = "FeeAppendixDetailID"
- 
+
 
 
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
@@ -51,7 +51,7 @@ export const DetailAPIPath = [
     { Link: "", Title: "Chi tiết" }
 ];
 
-export const SearchMLObjectDefinition =[
+export const SearchMLObjectDefinition = [
     {
         Name: "Keyword",
         DefaultValue: "",
@@ -71,10 +71,10 @@ export const SearchElementList = [
         placeholder: "Từ Khóa",
         icon: ""
     },
-  
+
 ];
 
-export const MLObjectDefinition= [
+export const MLObjectDefinition = [
     {
         Name: "FeeAppendixID",
         DefaultValue: "",
@@ -93,7 +93,7 @@ export const MLObjectDefinition= [
         BindControlName: "txtFeeAppendixName",
         DataSourceMember: "FeeAppendixName"
     },
-    
+
     {
         Name: "ApplyToDate",
         DefaultValue: "",
@@ -174,7 +174,7 @@ export const AddElementList = [
         readonly: false,
         validatonList: ["required"]
     },
-    
+
     {
         type: "datetime",
         name: "txtApplyToDate",
@@ -239,7 +239,7 @@ export const AddElementList = [
     }
 ];
 
-export const DataGridColumnList=[
+export const DataGridColumnList = [
     {
         Name: "chkSelect",
         Type: "checkbox",
@@ -352,22 +352,68 @@ export const DataGridColumnItemListFeeAppendixDetail = [
 ];
 
 export const MLObjectFeeAppendixDetailItem = [
-   
+    {
+
+        Name: "SubGroupID",
+        DefaultValue: "",
+        BindControlName: "cbSubGroupID",
+        DataSourceMember: "SubGroupID"
+    },
+    {
+        Name: "TechSpecsID",
+        DefaultValue: "",
+        BindControlName: "cbTechSpecsID",
+        DataSourceMember: "TechSpecsID"
+    },
+    {
+        Name: "TechSpecsValueID",
+        DefaultValue: "",
+        BindControlName: "cbTechSpecsValueID",
+        DataSourceMember: "TechSpecsValueID"
+    },
+    {
+        
+        Name: "ProductID",
+        DefaultValue: "",
+        BindControlName: "txtProductID",
+        DataSourceMember: "ProductID"
+    },
+    {
+        
+        Name: "ServiceFee",
+        DefaultValue: "",
+        BindControlName: "txtServiceFee",
+        DataSourceMember: "ServiceFee"
+    },
+    {
+        
+        Name: "IsActived",
+        DefaultValue: "",
+        BindControlName: "ckIsActived",
+        DataSourceMember: "IsActived"
+    },
+    {
+        
+        Name: "IsSystem",
+        DefaultValue: "",
+        BindControlName: "ckIsSystem",
+        DataSourceMember: "IsSystem"
+    },
     {
         Name: "Note",
         DefaultValue: "",
         BindControlName: "txtNote",
         DataSourceMember: "Note"
     },
-   
+
 ]
 export const MLObjectAbilityItem = [
-   
+
     {
         Name: "Note",
         DefaultValue: "",
         BindControlName: "txtNote",
         DataSourceMember: "Note"
     },
-   
+
 ]

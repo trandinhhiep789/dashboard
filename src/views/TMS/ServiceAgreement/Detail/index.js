@@ -38,6 +38,7 @@ import InputGridControl from "../../../../common/components/FormContainer/FormCo
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import AbilityElement from "./Component/AbilityElement.js";
+import FeeAppendixDetailElement from "./Component/FeeAppendixDetailElement.js";
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -91,17 +92,44 @@ class DetailCom extends React.Component {
     }
 
     handleonChangePageFeeAppendix() {
+      
+    }
 
+    handleItemEditFeeAppendix(){
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Cập nhật phụ lục biểu phí',
+            content: {
+                text: <FeeAppendixDetailElement
+                    dataSource={this.state.DataSource}
+                    index={index}
+                    onInputChangeObj={this.handleInputChangeObjItem}
+                />
+            },
+            maxWidth: '1000px'
+        });
     }
 
     handleItemDeleteFeeAppendix() {
 
     }
-    handleInputChangeObjItem(ObjItem) {
-debugger
-        const formData = Object.assign({}, this.state.DataSource, { ["Ability_ItemList"]: ObjItem });
-        this.setState({ DataSource: formData });
 
+    handleItemInsertFeeAppendix(){
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Thêm phụ lục biểu phí',
+            content: {
+                text: <FeeAppendixDetailElement
+                    dataSource={this.state.DataSource}
+                    onInputChangeObj={this.handleInputChangeObjItem}
+
+                />
+            },
+            maxWidth: '1000px'
+        });
+    }
+
+    handleInputChangeObjItem(id) {
+        this.callLoadData(id);
+        this.props.hideModal();
     }
 
     handleItemInsertAbiliti() {
@@ -111,14 +139,25 @@ debugger
                 text: <AbilityElement
                     dataSource={this.state.DataSource}
                     onInputChangeObj={this.handleInputChangeObjItem}
+
                 />
             },
             maxWidth: '1000px'
         });
     }
 
-    handleItemEditAbiliti() {
-
+    handleItemEditAbiliti(index) {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Cập nhật năng lực',
+            content: {
+                text: <AbilityElement
+                    dataSource={this.state.DataSource}
+                    index={index}
+                    onInputChangeObj={this.handleInputChangeObjItem}
+                />
+            },
+            maxWidth: '1000px'
+        });
     }
 
     handleItemDeleteAbiliti() {
@@ -175,6 +214,18 @@ debugger
                             />
 
                             <InputGridControl
+                                name="FeeAppendix_ItemList"
+                                controltype="InputGridControl"
+                                title={TitleFromFeeAppendix}
+                                IDSelectColumnName={"AbilityID"}
+                                listColumn={DataGridColumnItemListFeeAppendix}
+                                dataSource={this.state.ServiceAgreementInfo.FeeAppendix_ItemList}
+                                onInsertClick={this.handleItemInsertFeeAppendix.bind(this)}
+                                onEditClick={this.handleItemEditFeeAppendix.bind(this)}
+                                onDeleteClick={this.handleItemDeleteFeeAppendix.bind(this)}
+                            />
+
+                            <InputGridControl
                                 name="Ability_ItemList"
                                 controltype="InputGridControl"
                                 title={TitleFromAbiliti}
@@ -219,6 +270,9 @@ const mapDispatchToProps = dispatch => {
         showModal: (type, props) => {
             dispatch(showModal(type, props));
         },
+        hideModal: () => {
+            dispatch(hideModal());
+        }
     };
 };
 
