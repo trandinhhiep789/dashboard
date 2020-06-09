@@ -12,7 +12,7 @@ import {
     AddAPIAbilitiPath,
     EditAPIAbilitiPath
 } from "../contants/index.js";
-import ReactNotification from "react-notifications-component";
+
 class AbilityElementCom extends Component {
     constructor(props) {
         super(props);
@@ -20,7 +20,7 @@ class AbilityElementCom extends Component {
         this.state = {
 
         }
-        this.notificationDOMRef = React.createRef();
+        
     }
 
     componentDidMount() {
@@ -36,57 +36,23 @@ class AbilityElementCom extends Component {
         if(this.props.index != undefined){
             MLObject.UpdatedUser= this.props.AppInfo.LoginInfo.Username;
             this.props.callFetchAPI(APIHostName, EditAPIAbilitiPath, MLObject).then(apiResult => {
-                this.addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
-                    this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID);
+                    this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
                 }
             });
         }
         else{
             MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
             this.props.callFetchAPI(APIHostName, AddAPIAbilitiPath, MLObject).then(apiResult => {
-                this.addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
-                    this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID);
+                    this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
                 }
             });
         }
         
     }
 
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
-        } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close">
-                            <span>×</span>
-                        </div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
+ 
 
     render() {
         const AddElementList = [
@@ -99,7 +65,7 @@ class AbilityElementCom extends Component {
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
             >
-                <ReactNotification ref={this.notificationDOMRef} />
+                
                 <div className="row">
 
                     <div className="col-md-6">
@@ -152,7 +118,7 @@ class AbilityElementCom extends Component {
                             placeholder="đến ngày"
                             controltype="InputControl"
                             value={""}
-                            datasourcemember="ToDate "
+                            datasourcemember="ToDate"
 
                         />
                     </div>

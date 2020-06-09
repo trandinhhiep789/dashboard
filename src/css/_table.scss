@@ -44,6 +44,9 @@
             .group-action {
                 display: flex;
                 justify-content: space-around;
+                .btn-edit{
+                    color: #33cabb;
+                }
             }
         }
     }
