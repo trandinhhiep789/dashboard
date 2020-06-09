@@ -99,7 +99,7 @@ class MapsCom extends React.Component {
 
     render() {
         return (
-            <div id="map-container" style={{ width: '100%', height: 600 }}></div>
+            <div id="map-container"  style={this.props.classContainerStyle}></div>
         );
     }
 }

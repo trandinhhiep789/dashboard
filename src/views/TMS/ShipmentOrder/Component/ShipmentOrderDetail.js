@@ -29,10 +29,12 @@ class ShipmentOrderDetailCom extends Component {
     onChangeInput(e) {
         e.preventDefault();
         let value = e.currentTarget.dataset.option;
+        let lable = e.currentTarget.dataset.lable;
         let { ShipmentOrder_WorkFlow } = this.state;
         ShipmentOrder_WorkFlow.ShipmentOrderID = this.state.ShipmentOrder.ShipmentOrderID
         ShipmentOrder_WorkFlow.ShipmentOrderStepID = value
         ShipmentOrder_WorkFlow.Note = ""
+        ShipmentOrder_WorkFlow.ShipmentOrderStepName=lable
         this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
             this.openViewStepModal();
         });
@@ -208,7 +210,7 @@ class ShipmentOrderDetailCom extends Component {
                                         {this.state.ShipmentOrder.ShipmentOrderType_WF_NextList && this.state.ShipmentOrder.ShipmentOrderType_WF_NextList.map(item =>
                                             <a className={item.NextShipmentOrderStep === this.state.ShipmentOrder.CurrentShipmentOrderStepID ? "dropdown-item active" : "dropdown-item"}
                                                 key={item.NextShipmentOrderStep} name={item.NextShipmentOrderStep} data-option={item.NextShipmentOrderStep}
-                                                onClick={this.onChangeInput.bind(this)}>
+                                                data-lable={item.NextShipmentOrderStepName} onClick={this.onChangeInput.bind(this)}>
                                                 {item.NextShipmentOrderStepName}</a>
                                         )}
                                     </div>
