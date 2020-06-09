@@ -10,7 +10,6 @@ import {
     AddAPIFeeAppendixPath,
     EditAPIFeeAppendixPath
 } from "../contants/index.js";
-import ReactNotification from "react-notifications-component";
 
 class FeeAppendixDetailElementCom extends Component {
     constructor(props) {
@@ -19,7 +18,6 @@ class FeeAppendixDetailElementCom extends Component {
         this.state = {
 
         }
-        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
@@ -27,88 +25,51 @@ class FeeAppendixDetailElementCom extends Component {
     }
 
     handleSubmit(From, MLObject) {
-        debugger
-        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.SignedDate = this.props.dataSource.SignedDate;
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID;
+    debugger;
         if (this.props.index != undefined) {
-            MLObject.UpdatedUser= this.props.AppInfo.LoginInfo.Username;
+            MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+            console.log('edit', MLObject)
+            debugger
             this.props.callFetchAPI(APIHostName, EditAPIFeeAppendixPath, MLObject).then(apiResult => {
-                this.addNotification(apiResult.Message, apiResult.IsError);
+               
                 if (!apiResult.IsError) {
-                    this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID);
+                    this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
                 }
             });
         }
         else {
             MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-            
+
             this.props.callFetchAPI(APIHostName, AddAPIFeeAppendixPath, MLObject).then(apiResult => {
-                console.log('FeeAppendixDetailElementCom', apiResult, MLObject)
-                this.addNotification(apiResult.Message, apiResult.IsError);
+
                 if (!apiResult.IsError) {
-                    this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID);
+                    this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
                 }
-    
+
             });
         }
     }
-
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
-        } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close">
-                            <span>×</span>
-                        </div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
 
     render() {
-        const AddElementListFeeAppendix =[
-
-        ]
+        const AddElementListFeeAppendix = []
 
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectFeeAppendixDetailItem}
-                dataSource={this.props.index != undefined ? this.props.dataSource.ShipmentOrder_ItemList[this.props.index] : null}
+                dataSource={this.props.index != undefined ? this.props.dataSource.FeeAppendix_ItemList[this.props.index] : null}
                 listelement={AddElementListFeeAppendix}
                 onSubmit={this.handleSubmit}
             >
-                <ReactNotification ref={this.notificationDOMRef} />
                 <div className="row">
-
                     <div className="col-md-6">
                         <FormControl.FormControlTextBox
                             name="txtFeeAppendixID"
                             colspan="9"
                             labelcolspan="3"
-                            readOnly={false}
+                            readOnly={true}
+                            hidenControll={true}
                             label="mã phụ lục"
                             placeholder="Mã phụ lục"
                             controltype="InputControl"
@@ -118,7 +79,7 @@ class FeeAppendixDetailElementCom extends Component {
                         />
 
                     </div>
-
+                    <div className="col-md-6"></div>
                     <div className="col-md-6">
                         <FormControl.FormControlComboBox
                             name="cbServiceSeasonTypeID"
@@ -154,25 +115,10 @@ class FeeAppendixDetailElementCom extends Component {
 
                     </div>
 
-                    <div className="col-md-6">
-                        <FormControl.ElementDatetime
-                            name="dtApplyToDate"
-                            colspan="9"
-                            labelcolspan="3"
-                            readOnly={false}
-                            timeFormat={false}
-                            dateFormat="DD/MM/YYYY"
-                            label="từ ngày"
-                            placeholder="Từ ngày"
-                            controltype="InputControl"
-                            value={""}
-                            datasourcemember="ApplyToDate"
-                        />
-                    </div>
 
                     <div className="col-md-6">
                         <FormControl.ElementDatetime
-                            name="txtApplyFromDate"
+                            name="dtApplyFromDate"
                             colspan="9"
                             labelcolspan="3"
                             readOnly={false}
@@ -185,6 +131,24 @@ class FeeAppendixDetailElementCom extends Component {
                             datasourcemember="ApplyFromDate"
                         />
                     </div>
+
+                    <div className="col-md-6">
+                        <FormControl.ElementDatetime
+                            name="dtApplyToDate"
+                            colspan="9"
+                            labelcolspan="3"
+                            readOnly={false}
+                            timeFormat={false}
+                            dateFormat="DD/MM/YYYY"
+                            label="đến ngày"
+                            placeholder="Đến ngày"
+                            controltype="InputControl"
+                            value={""}
+                            datasourcemember="ApplyToDate"
+                        />
+                    </div>
+
+
 
                     <div className="col-md-6">
                         <FormControl.TextArea
@@ -200,7 +164,8 @@ class FeeAppendixDetailElementCom extends Component {
                             classNameCustom="customcontrol"
                         />
                     </div>
-
+                    <div className="col-md-6">
+                    </div>
                     <div className="col-md-6">
                         <FormControl.CheckBox
                             name="chkIsActived"
@@ -227,9 +192,6 @@ class FeeAppendixDetailElementCom extends Component {
                             datasourcemember="IsSystem"
                             classNameCustom="customCheckbox"
                         />
-                    </div>
-
-                    <div className="col-md-6">
                     </div>
                 </div>
 

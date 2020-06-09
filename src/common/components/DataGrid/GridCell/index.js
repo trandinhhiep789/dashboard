@@ -66,7 +66,6 @@ export default class GridCell extends Component {
         const name = this.props.caption;
         const popupContent = this.props.popupContent;
         let linkTo;
-
         if (link) {
             linkTo = listValue.reduce((link, item, index, listValue) => {
                 return link + item.value.toString().trim() + "/"

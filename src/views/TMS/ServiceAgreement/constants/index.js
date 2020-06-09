@@ -20,19 +20,22 @@ export const TitleFormDetail = "Thông tin hợp đồng";
 export const PKColumnNameFeeAppendix = "FeeAppendixID";
 export const TitleFromFeeAppendix = "Phụ lục biểu phí";
 
+export const PKColumnNameAbiliti = "AbilityID";
+export const TitleFromAbiliti= "Năng lực";
+
 export const IDSelectColumnNameFeeAppendix = "chkSelect";
 export const AddLinkFeeAppendix = "/ServiceAgreement/FeeAppendix/Add";
 
 
 
 export const DataGridColumnItemListFeeAppendix = [
-    {
-        Name: "FeeAppendixID",
-        Type: "checkbox",
-        Caption: "Mã",
-        DataSourceMember: "FeeAppendixID",
-        Width: 150,
-    },
+    // {
+    //     Name: "FeeAppendixID",
+    //     Type: "checkbox",
+    //     Caption: "Mã",
+    //     DataSourceMember: "FeeAppendixID",
+    //     Width: 150,
+    // },
     {
         Name: "FeeAppendixName",
         Type: "texttolink",
@@ -75,13 +78,6 @@ export const DataGridColumnItemListFeeAppendix = [
 ];
 
 export const DataGridColumnItemListAbiliti = [
-    {
-        Name: "AbilityID",
-        Type: "checkbox",
-        Caption: "Mã",
-        DataSourceMember: "AbilityID",
-        Width: 150,
-    },
     {
         Name: "ServiceSeasonTypeName",
         Type: "texttolink",
@@ -164,6 +160,7 @@ export const EditPagePath = [
     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ" },
     { Link: "", Title: "Cập nhật" }
 ];
+
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ" },
     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ" },

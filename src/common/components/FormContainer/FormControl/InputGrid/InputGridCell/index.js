@@ -92,6 +92,7 @@ class InputGridCellCom extends Component {
         let text = ReactHtmlParser(this.props.text);
         const to = this.props.to + text;
         const linkText = this.props.linkText;
+        const listValue = this.props.value;
         if (text.length > 50) {
             const truncate = (
                 value = '',
@@ -103,6 +104,15 @@ class InputGridCellCom extends Component {
                     .join(k ? '' : at)}${k ? at : ''}${elipsis}`)
                     (value.split(at));
             text = truncate(text, '', 50);
+        }
+
+        
+        const link = this.props.to;
+        let linkTo;
+
+        if (this.props.linkId) {
+            linkTo = link+ this.props.linkId.toString().trim() + "/"
+
         }
 
         let control = "";
@@ -132,11 +142,11 @@ class InputGridCellCom extends Component {
                             return <div className="checkbox">
                                 <label>
                                     <input
-                                        type="checkbox" 
-                                        name={this.props.name} 
-                                        className={className} 
-                                        onChange={this.handleInputChange} 
-                                        value={text} 
+                                        type="checkbox"
+                                        name={this.props.name}
+                                        className={className}
+                                        onChange={this.handleInputChange}
+                                        value={text}
                                         checked={this.props.isChecked}
                                     />
                                     <span className="cr"><i className="cr-icon fa fa-check"></i></span>
@@ -147,11 +157,11 @@ class InputGridCellCom extends Component {
                             return <div className="checkbox">
                                 <label>
                                     <input
-                                        type="checkbox" 
-                                        disabled={true} 
-                                        checked={this.props.isChecked} 
-                                        name={this.props.name} 
-                                        className={className} 
+                                        type="checkbox"
+                                        disabled={true}
+                                        checked={this.props.isChecked}
+                                        name={this.props.name}
+                                        className={className}
                                         value={text}
                                     />
                                     <span className="cr"><i className="cr-icon fa fa-check"></i></span>
@@ -171,11 +181,11 @@ class InputGridCellCom extends Component {
                             return <div className="checkbox">
                                 <label>
                                     <input
-                                        type="checkbox" 
-                                        name={this.props.name} 
-                                        className={className} 
-                                        onChange={this.handleInputChangeALL} 
-                                        value={text} 
+                                        type="checkbox"
+                                        name={this.props.name}
+                                        className={className}
+                                        onChange={this.handleInputChangeALL}
+                                        value={text}
                                         checked={this.props.isChecked}
                                     />
                                     <span className="cr"><i className="cr-icon fa fa-check"></i></span>
@@ -186,10 +196,10 @@ class InputGridCellCom extends Component {
                             return <div className="checkbox">
                                 <label>
                                     <input
-                                        type="checkbox" 
-                                        disabled={true} 
-                                        name={this.props.name} 
-                                        className={className} 
+                                        type="checkbox"
+                                        disabled={true}
+                                        name={this.props.name}
+                                        className={className}
                                         value={text}
                                     />
                                     <span className="cr"><i className="cr-icon fa fa-check"></i></span>
@@ -231,15 +241,30 @@ class InputGridCellCom extends Component {
                             </select>
                         );
                     }
+                case "texttolink":
+                    return <Link
+                        className="linktext"
+                        to={{
+                            pathname: linkTo,
+                            state: {
+                                params: this.props.params
+                            }
+                        }}>{text}</Link>;
                 case "link":
                     return <Link to={to}>{linkText}</Link>;
                 case "edit":
                     return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.value} title="Edit"><i className="ti-pencil"></i></a>;
                 case "editnew":
-                    return (<div>
-                        <a title="" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>
-                        <a title="" className="table-action hover-danger" onClick={this.handleonClickDelete} data-id={this.props.index} title="Edit"><i className="ti-trash"></i></a>
-                    </div>)
+                    return (
+                        <div className="group-action">
+                            <a title="" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit" className="btn-edit">
+                                <i className="ti-pencil"></i>
+                            </a>
+                            <a title="" className="table-action hover-danger" onClick={this.handleonClickDelete} data-id={this.props.index} title="Edit">
+                                <i className="ti-trash"></i>
+                            </a>
+                        </div>
+                    )
                 case "buttonEdit":
                     return (
                         <button type="button" className="btn" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleEditClick}>
@@ -316,6 +341,18 @@ class InputGridCellCom extends Component {
                             </label>
                         </div>;
                     }
+                case "texttolink":
+                    return <Link
+                        className="linktext"
+                        to={{
+                            pathname: linkTo,
+                            state: {
+                                params: this.props.params
+                            }
+                        }}>
+                        {text}
+                    </Link>;
+
                 case "link":
                     return <Link to={to}>{linkText}</Link>;
                 case "edit":

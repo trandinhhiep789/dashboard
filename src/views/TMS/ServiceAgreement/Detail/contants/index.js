@@ -209,13 +209,13 @@ export const MLObjectFeeAppendixDetailItem=[
     {
         Name: "ApplyToDate",
         DefaultValue: "",
-        BindControlName: "txtApplyToDate",
+        BindControlName: "dtApplyToDate",
         DataSourceMember: "ApplyToDate"
     },
     {
         Name: "ApplyFromDate",
         DefaultValue: "",
-        BindControlName: "txtApplyFromDate",
+        BindControlName: "dtApplyFromDate",
         DataSourceMember: "ApplyFromDate"
     },
     {
