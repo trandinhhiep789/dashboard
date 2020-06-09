@@ -13,8 +13,9 @@ class MapsCom extends React.Component {
     }
 
     componentDidMount() {
-        let SenderGeoLocation = this.props.location.state.SenderGeoLocation.split(',');
-        let ReceiverGeoLocation = this.props.location.state.ReceiverGeoLocation.split(',');
+
+        let SenderGeoLocation = this.props.SenderGeoLocation.split(",")
+        let ReceiverGeoLocation = this.props.ReceiverGeoLocation.split(",")
         const LatitudeSender = parseFloat(SenderGeoLocation[0]);
         const LongitudeSender = parseFloat(SenderGeoLocation[1]);
 
@@ -24,7 +25,7 @@ class MapsCom extends React.Component {
         var position = new vbd.LatLng(LatitudeSender, LongitudeSender); /*vị trí của marker trên map*/
         var positioncustomer = new vbd.LatLng(LatitudeReceiver, LongitudeReceiver); /*vị trí của marker trên map*/
 
-        let Geometry="";
+        let Geometry = "";
         const Points = [{
             "Latitude": LatitudeSender,
             "Longitude": LongitudeSender
@@ -46,8 +47,8 @@ class MapsCom extends React.Component {
             "VehicleType": 2
         };
         const mapContainer = document.getElementById("map-container");
-       /// registerKey: "7f65a9df-4910-434d-b2ce-5cf7d783ad8b",
-     
+        /// registerKey: "7f65a9df-4910-434d-b2ce-5cf7d783ad8b",
+
         const mapProp = {
             center: new vbd.LatLng(LatitudeSender, LongitudeSender),
             maxZoom: 19,
@@ -70,23 +71,30 @@ class MapsCom extends React.Component {
 
         marker.setMap(map);
         marker2.setMap(map);
+        var polyline = new vbd.Polyline({
+            path: this.props.Geometry,
+            strokeOpacity: 6,
+            strokeWidth: 6
 
-        this.props.callFetchAPI(APIHostName, 'api/Maps/FindPathViaRoute', paramsRequest).then((apiResult) => {
-            if (!apiResult.IsError) {
-                Geometry=JSON.parse(apiResult.ResultObject).Value.Routes[0].Geometry;
-                var polyline = new vbd.Polyline({
-                    path:Geometry,
-                     strokeOpacity: 6, 
-                     strokeWidth: 6
-                      
-                    });
-                polyline.setMap(map);
-            }
         });
-    
+        polyline.setMap(map);
+
+        // this.props.callFetchAPI(APIHostName, 'api/Maps/FindPathViaRoute', paramsRequest).then((apiResult) => {
+        //     if (!apiResult.IsError) {
+        //         Geometry=JSON.parse(apiResult.ResultObject).Value.Routes[0].Geometry;
+        //         var polyline = new vbd.Polyline({
+        //             path:Geometry,
+        //              strokeOpacity: 6, 
+        //              strokeWidth: 6
+
+        //             });
+        //         polyline.setMap(map);
+        //     }
+        // });
 
 
-      
+
+
     }
 
     render() {
@@ -112,5 +120,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-const Maps = connect(mapStateToProps, mapDispatchToProps)(MapsCom);
-export default Maps;
+export default MapsCom;
