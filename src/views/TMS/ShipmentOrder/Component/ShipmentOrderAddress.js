@@ -29,6 +29,11 @@ const containerStyle = {
     width: '98%',
     height: '250px'
 }
+const contStyle = {
+    position: 'absolute',
+    width: '98%',
+    height: '498px'
+}
 
 
 class ShipmentOrderAddressCom extends Component {
@@ -1081,11 +1086,12 @@ class ShipmentOrderAddressCom extends Component {
                 onRequestClose={() => false}
             >
 
-                <div className="form-row google-maps">
+                <div className="form-row google-maps-custom">
                     <Maps
                         Geometry={this.state.Geometry}
                         SenderGeoLocation={this.state.SenderGeoLocation}
                         ReceiverGeoLocation={this.state.ReceiverGeoLocation}
+                        classContainerStyle={contStyle}
                     ></Maps>
 
                 </div>

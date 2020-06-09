@@ -27,7 +27,6 @@ class FeeAppendixDetailElementCom extends Component {
     handleSubmit(From, MLObject) {
         MLObject.SignedDate = this.props.dataSource.SignedDate;
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID;
-    debugger;
         if (this.props.index != undefined) {
             MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
             console.log('edit', MLObject)
