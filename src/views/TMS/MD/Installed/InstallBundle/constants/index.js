@@ -153,7 +153,7 @@ export const EditElementList = [
         icon: "",
         listoption: [],
         DataSourceMember: "InstallBundleID",
-        readonly: false,
+        readonly: true,
         validatonList: ["required"]
     },
     {
