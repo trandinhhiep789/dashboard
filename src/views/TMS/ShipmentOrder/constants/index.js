@@ -112,6 +112,7 @@ export const SearchElementList = [
         IsAutoLoadItemFromCache: true,
         filterName: "cbReceiverProvinceID",
         filterValue: "",
+        filterobj:"ProvinceID",
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
         ValueMember: "DistrictID",
         NameMember: "DistrictName"
@@ -125,15 +126,14 @@ export const SearchElementList = [
         value: -1,
         isMultiSelect: false,
         placeholder: "---Vui lòng chọn---",
-        listoption: [
-            { value: -1, label: '---Vui lòng chọn---' },
-            { value: 1, label: 'Việt Nam' },
-            { value: 2, label: 'Hoa kỳ' },
-            { value: 3, label: 'Trung Quốc' }],
-        IsAutoLoadItemFromCache: false,
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
         ValueMember: "StoreID",
-        NameMember: "StoreName"
+        NameMember: "StoreName",
+        filterName: "cbReceiverDistrictID",
+        filterValue: "",
+        filterobj:"DistrictID"
 
     },
     {
@@ -145,12 +145,11 @@ export const SearchElementList = [
         value: -1,
         isMultiSelect: false,
         placeholder: "---Vui lòng chọn---",
-        listoption: [
-            { value: -1, label: '---Vui lòng chọn---' },
-            { value: 1, label: 'Khởi tạo' },
-            { value: 2, label: 'Giao hàng' },
-            { value: 3, label: 'Hoàn thành' }
-        ]
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUS",
+        ValueMember: "ShipmentOrderStatusID",
+        NameMember: "ShipmentOrderStatusName",
     }
 ];
 export const InitSearchParams = [

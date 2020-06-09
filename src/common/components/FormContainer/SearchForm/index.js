@@ -33,7 +33,7 @@ export default class SearchForm extends Component {
         return formData;
     }
 
-    onValueChange(elementname, elementvalue) {
+    onValueChange(elementname, elementvalue, filterName) {
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
         if (typeof FormDataContolLstd[elementname].validatonList != "undefined") {
@@ -48,7 +48,7 @@ export default class SearchForm extends Component {
 
     validationFormNew() {
         const FormDataContolLst = this.state.FormData;
-        console.log("validationFormNew",FormDataContolLst)
+        console.log("validationFormNew", FormDataContolLst)
         for (const key in FormDataContolLst) {
             if (typeof FormDataContolLst[key].validatonList != "undefined") {
                 const validation = ValidationField(FormDataContolLst[key].validatonList, FormDataContolLst[key].value, FormDataContolLst[key].label, FormDataContolLst[key]);
@@ -82,7 +82,6 @@ export default class SearchForm extends Component {
 
         let MLObject = {};
         const mLObjectDefinition = this.props.MLObjectDefinition;
-        console.log("this.state.FormData", this.state.FormData)
         mLObjectDefinition.map((Item) => {
             const controlName = Item.BindControlName;
             if (controlName.length > 0) {
@@ -139,11 +138,10 @@ export default class SearchForm extends Component {
                                     />
                                 );
                             case "ComboBox":
-                                if (typeof elementItem.filterName != "undefined")
-                                {
+                                if (typeof elementItem.filterName != "undefined") {
                                     elementItem.filterValue = this.state.FormData[elementItem.filterName].value;
                                 }
-                                   
+
                                 return (
                                     <ElementSearch.ElementComboBox
                                         onValueChange={this.onValueChange}

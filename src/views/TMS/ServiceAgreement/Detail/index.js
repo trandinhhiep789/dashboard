@@ -26,7 +26,8 @@ import {
     DataGridColumnItemListFeeAppendix,
     IDSelectColumnNameFeeAppendix,
     AddLinkFeeAppendix,
-    DataGridColumnItemListAbiliti
+    DataGridColumnItemListAbiliti,
+    PKColumnNameAbiliti
 
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
@@ -39,6 +40,7 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import AbilityElement from "./Component/AbilityElement.js";
 import FeeAppendixDetailElement from "./Component/FeeAppendixDetailElement.js";
+import ReactNotification from "react-notifications-component";
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -54,6 +56,7 @@ class DetailCom extends React.Component {
             Abiliti: {},
             IsLoadDataComplete: false
         }
+        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
@@ -95,7 +98,7 @@ class DetailCom extends React.Component {
       
     }
 
-    handleItemEditFeeAppendix(){
+    handleItemEditFeeAppendix(index){
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Cập nhật phụ lục biểu phí',
             content: {
@@ -127,7 +130,8 @@ class DetailCom extends React.Component {
         });
     }
 
-    handleInputChangeObjItem(id) {
+    handleInputChangeObjItem(id, apiResult) {
+        this.addNotification(apiResult.Message, apiResult.IsError);
         this.callLoadData(id);
         this.props.hideModal();
     }
@@ -164,6 +168,40 @@ class DetailCom extends React.Component {
 
     }
 
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
+
 
     render() {
         //console.log('aa', this.state.ServiceAgreementInfo.FeeAppendix_ItemList)
@@ -179,38 +217,12 @@ class DetailCom extends React.Component {
                 // >
                 //  </FormContainer>
                 <div className="col-lg-12">
+                    <ReactNotification ref={this.notificationDOMRef} />
                     <div className="card">
                         <h4 className="card-title"><strong>{TitleFormDetail}</strong></h4>
                         <div className="card-body">
                             <ServiceAgreementInfo
                                 ServiceAgreementInfo={this.state.ServiceAgreementInfo}
-                            />
-
-                            {/* <FeeAppendix
-                        ServiceAgreementID={this.state.ServiceAgreementInfo.ServiceAgreementID}
-                        FeeAppendix={this.state.ServiceAgreementInfo.FeeAppendix_ItemList}
-                    /> */}
-
-                            {/* <Abiliti
-                        Abiliti={this.state.ServiceAgreementInfo.Ability_ItemList}
-                    /> */}
-
-                            <DataGrid
-                                listColumn={DataGridColumnItemListFeeAppendix}
-                                dataSource={this.state.ServiceAgreementInfo.FeeAppendix_ItemList}
-                                title={TitleFromFeeAppendix}
-                                AddLink={AddLinkFeeAppendix}
-                                params={this.state.ServiceAgreementInfo.ServiceAgreementID}
-                                IDSelectColumnName={IDSelectColumnNameFeeAppendix}
-                                PKColumnName={PKColumnNameFeeAppendix}
-                                onDeleteClick={this.handleItemDeleteFeeAppendix}
-                                onChangePage={this.handleonChangePageFeeAppendix}
-                                IsDelete={true}
-                                PageNumber={this.state.PageNumber}
-                                IsAutoPaging={false}
-                                RowsPerPage={10}
-                                classCustom=""
-                                ref={this.gridref}
                             />
 
                             <InputGridControl
@@ -219,10 +231,12 @@ class DetailCom extends React.Component {
                                 title={TitleFromFeeAppendix}
                                 IDSelectColumnName={"AbilityID"}
                                 listColumn={DataGridColumnItemListFeeAppendix}
+                                PKColumnName={PKColumnNameFeeAppendix}
                                 dataSource={this.state.ServiceAgreementInfo.FeeAppendix_ItemList}
                                 onInsertClick={this.handleItemInsertFeeAppendix.bind(this)}
                                 onEditClick={this.handleItemEditFeeAppendix.bind(this)}
                                 onDeleteClick={this.handleItemDeleteFeeAppendix.bind(this)}
+                                ref={this.gridref}
                             />
 
                             <InputGridControl
@@ -230,11 +244,13 @@ class DetailCom extends React.Component {
                                 controltype="InputGridControl"
                                 title={TitleFromAbiliti}
                                 IDSelectColumnName={"AbilityID"}
+                                PKColumnName={PKColumnNameAbiliti}
                                 listColumn={DataGridColumnItemListAbiliti}
                                 dataSource={this.state.ServiceAgreementInfo.Ability_ItemList}
                                 onInsertClick={this.handleItemInsertAbiliti.bind(this)}
                                 onEditClick={this.handleItemEditAbiliti.bind(this)}
                                 onDeleteClick={this.handleItemDeleteAbiliti.bind(this)}
+                                ref={this.gridref}
                             />
                         </div>
                     </div>

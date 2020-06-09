@@ -200,7 +200,7 @@ export const EditElementList = [
         icon: "",
         listoption: [],
         DataSourceMember: "InstallMaterialID",
-        readonly: false,
+        readonly: true,
         validatonList: ["required"]
     },
     {

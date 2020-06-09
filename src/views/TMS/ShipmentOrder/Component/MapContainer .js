@@ -3,7 +3,7 @@ import vbd from '../../../../scripts/vietbandomapsapi.js';
 export class MapContainer extends Component {
     constructor(props) {
         super(props);
-      
+
         this.state = {
             // map: new vbd.Map(mapContainer, mapProp)
         };
@@ -11,8 +11,13 @@ export class MapContainer extends Component {
 
     componentDidMount() {
         const values = this.props.SenderGeoLocation.split(",")
-        const v1 = parseFloat(values[0])
-        const v2 = parseFloat(values[1])
+        let v1 = 10.852982;
+        let v2 = 106.794835;
+        if (this.props.SenderGeoLocation != "") {
+            v1 = parseFloat(values[0])
+            v2 = parseFloat(values[1])
+        }
+
         const mapContainer = document.getElementById("map-container");
         const mapProp = {
             center: new vbd.LatLng(v1, v2),
@@ -29,7 +34,9 @@ export class MapContainer extends Component {
         var marker = new vbd.Marker({
             position: position
         });
-        marker.setMap(map);
+        
+            marker.setMap(map);
+    
         this.setState({
             map: map,
             marker: marker
@@ -46,12 +53,11 @@ export class MapContainer extends Component {
     }
 
     onHandleClick = (e) => {
-       if(this.props.isGeoLocation)
-       {
-        this.state.marker.setPosition(new vbd.LatLng(e.LatLng.Latitude, e.LatLng.Longitude))
-        this.props.onChange(this.props.name,e.LatLng.Latitude, e.LatLng.Longitude)
-       }
-       
+        if (this.props.isGeoLocation) {
+            this.state.marker.setPosition(new vbd.LatLng(e.LatLng.Latitude, e.LatLng.Longitude))
+            this.props.onChange(this.props.name, e.LatLng.Latitude, e.LatLng.Longitude)
+        }
+
     }
 
     componentWillReceiveProps(nextProps) {

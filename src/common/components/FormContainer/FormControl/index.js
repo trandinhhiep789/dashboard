@@ -185,7 +185,9 @@ class FormControlTextBox extends React.Component {
         if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
             className += " is-invalid";
         }
+        // console.log("FormControlTextBox", this.props.hidenControll)
         return (
+
             <div className={formRowClassName} >
                 {this.props.label.length > 0 ?
                     <div className={labelDivClassName}>
@@ -1491,7 +1493,7 @@ class ComboBoxSelectCom extends Component {
             const nameMember = this.props.nameMember;
             //    console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
             this.props.callGetCache(cacheKeyID).then((result) => {
-                 console.log("this.props.isautoloaditemfromcach2: ",this.props.loaditemcachekeyid, this.state.Listoption,result);
+                console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
                 listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     result.ResultObject.CacheData.map((cacheItem) => {

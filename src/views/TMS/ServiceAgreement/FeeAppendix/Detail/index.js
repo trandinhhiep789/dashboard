@@ -50,14 +50,14 @@ class DetailCom extends React.Component {
     }
 
     componentDidMount() {
+        console.log('FeeAppendix Detail', this.props)
         this.props.updatePagePath(PagePath);
-
         this.callLoadData(this.props.match.params.id);
     }
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            console.log('FeeAppendix Detail 2222', apiResult, this.props)
+            console.log('FeeAppendix Detail callLoadData', apiResult,id)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -143,7 +143,7 @@ class DetailCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
 
-        console.log('DataSource', this.state.DataSource.FeeAppendixDetail_ItemList)
+        console.log('DataSource', this.state.FeeAppendixDetailInfo)
         return (
             <FormContainer
                 FormName={TitleFormDetail}

@@ -35,7 +35,6 @@ class InputGridControlCom extends Component {
         if (this.props.autoCloseModal) {
             autoCloseModal = true;
         }
-
         this.state = {
             GridData: {},
             IsCheckAll: false,
@@ -48,6 +47,7 @@ class InputGridControlCom extends Component {
     }
 
     componentDidMount() {
+        //console.log('pkColumnName', this.props)
     }
     handleCloseMessage() {
     }
@@ -341,7 +341,11 @@ class InputGridControlCom extends Component {
                                         }
                                         let validationErrorMessage = "";
                                         let ovjvalue = rowItem[columnItem.DataSourceMember];
+
+                                        let objlink=rowItem[this.props.PKColumnName];
+
                                         const cellData = <InputGridCell type={columnItem.Type}
+                                            linkId= {objlink}
                                             text={ovjvalue}
                                             value={ovjvalue}
                                             to={columnItem.Link}
