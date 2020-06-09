@@ -20,39 +20,33 @@ class AbilityElementCom extends Component {
         this.state = {
 
         }
-        
+
     }
 
     componentDidMount() {
-        console.log("AbilityElementCom", this.props, this.props.index)
     }
 
     handleSubmit(From, MLObject) {
-        
+
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
         MLObject.SignedDate = this.props.dataSource.SignedDate;
-        MLObject.AbilityID = 4;
-        if(this.props.index != undefined){
-            MLObject.UpdatedUser= this.props.AppInfo.LoginInfo.Username;
+        if (this.props.index != undefined) {
+            MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
             this.props.callFetchAPI(APIHostName, EditAPIAbilitiPath, MLObject).then(apiResult => {
-                if (!apiResult.IsError) {
-                    this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
-                }
+                this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
             });
         }
-        else{
+        else {
             MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
             this.props.callFetchAPI(APIHostName, AddAPIAbilitiPath, MLObject).then(apiResult => {
-                if (!apiResult.IsError) {
-                    this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
-                }
+                this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
             });
         }
-        
+
     }
 
- 
+
 
     render() {
         const AddElementList = [
@@ -65,9 +59,23 @@ class AbilityElementCom extends Component {
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
             >
-                
-                <div className="row">
 
+                <div className="row">
+                    <div className="col-md-6">
+                        <FormControl.FormControlTextBox
+                            name="txtAbilityID"
+                            colspan="9"
+                            labelcolspan="3"
+                            readOnly={true}
+                            hidenControll={true}
+                            label="mã năng lực"
+                            placeholder="Mã năng lực tự động nhập"
+                            controltype="InputControl"
+                            value=""
+                            datasourcemember="AbilityID"
+                        />
+
+                    </div>
                     <div className="col-md-6">
                         <FormControl.FormControlComboBox
                             name="cbServiceSeasonTypeID"
@@ -87,16 +95,14 @@ class AbilityElementCom extends Component {
 
                     </div>
 
-                    <div className="col-md-6"></div>
-
                     <div className="col-md-6">
-                        <FormControl.ElementDatetime
+                        <FormControl.FormControlDatetime
                             name="dtFromDate"
                             colspan="9"
                             labelcolspan="3"
                             readOnly={false}
                             timeFormat={false}
-                            dateFormat="DD/MM/YYYY"
+                            dateFormat="YYYY-MM-DD"
                             label="Từ ngày"
                             placeholder="Từ ngày"
                             controltype="InputControl"
@@ -107,13 +113,13 @@ class AbilityElementCom extends Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.ElementDatetime
+                        <FormControl.FormControlDatetime
                             name="dtToDate"
                             colspan="9"
                             labelcolspan="3"
                             readOnly={false}
                             timeFormat={false}
-                            dateFormat="DD/MM/YYYY"
+                            dateFormat="YYYY-MM-DD"
                             label="đến ngày"
                             placeholder="đến ngày"
                             controltype="InputControl"

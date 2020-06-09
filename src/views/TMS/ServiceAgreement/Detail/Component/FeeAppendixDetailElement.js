@@ -27,26 +27,17 @@ class FeeAppendixDetailElementCom extends Component {
     handleSubmit(From, MLObject) {
         MLObject.SignedDate = this.props.dataSource.SignedDate;
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID;
-    debugger;
         if (this.props.index != undefined) {
             MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
-            console.log('edit', MLObject)
-            debugger
             this.props.callFetchAPI(APIHostName, EditAPIFeeAppendixPath, MLObject).then(apiResult => {
-               
-                if (!apiResult.IsError) {
-                    this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
-                }
+                this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
             });
         }
         else {
             MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
 
             this.props.callFetchAPI(APIHostName, AddAPIFeeAppendixPath, MLObject).then(apiResult => {
-
-                if (!apiResult.IsError) {
-                    this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
-                }
+                this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
 
             });
         }
@@ -71,10 +62,9 @@ class FeeAppendixDetailElementCom extends Component {
                             readOnly={true}
                             hidenControll={true}
                             label="mã phụ lục"
-                            placeholder="Mã phụ lục"
+                            placeholder="Mã phụ lục tự động nhập"
                             controltype="InputControl"
                             value=""
-                            validatonList={["required"]}
                             datasourcemember="FeeAppendixID"
                         />
 
@@ -117,33 +107,36 @@ class FeeAppendixDetailElementCom extends Component {
 
 
                     <div className="col-md-6">
-                        <FormControl.ElementDatetime
+
+
+                        <FormControl.FormControlDatetime
                             name="dtApplyFromDate"
                             colspan="9"
                             labelcolspan="3"
-                            readOnly={false}
+                            readOnly={true}
                             timeFormat={false}
-                            dateFormat="DD/MM/YYYY"
+                            dateFormat="YYYY-MM-DD"
                             label="từ ngày"
                             placeholder="Từ ngày"
                             controltype="InputControl"
-                            value={""}
+                            value=""
                             datasourcemember="ApplyFromDate"
+
                         />
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.ElementDatetime
+                        <FormControl.FormControlDatetime
                             name="dtApplyToDate"
                             colspan="9"
                             labelcolspan="3"
-                            readOnly={false}
+                            readOnly={true}
                             timeFormat={false}
-                            dateFormat="DD/MM/YYYY"
+                            dateFormat="YYYY-MM-DD"
                             label="đến ngày"
                             placeholder="Đến ngày"
                             controltype="InputControl"
-                            value={""}
+                            value=""
                             datasourcemember="ApplyToDate"
                         />
                     </div>

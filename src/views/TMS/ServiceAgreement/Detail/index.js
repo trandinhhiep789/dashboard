@@ -225,33 +225,6 @@ class DetailCom extends React.Component {
                                 ServiceAgreementInfo={this.state.ServiceAgreementInfo}
                             />
 
-                            {/* <FeeAppendix
-                        ServiceAgreementID={this.state.ServiceAgreementInfo.ServiceAgreementID}
-                        FeeAppendix={this.state.ServiceAgreementInfo.FeeAppendix_ItemList}
-                    /> */}
-
-                            {/* <Abiliti
-                        Abiliti={this.state.ServiceAgreementInfo.Ability_ItemList}
-                    /> */}
-
-                            {/* <DataGrid
-                                listColumn={DataGridColumnItemListFeeAppendix}
-                                dataSource={this.state.ServiceAgreementInfo.FeeAppendix_ItemList}
-                                title={TitleFromFeeAppendix}
-                                AddLink={AddLinkFeeAppendix}
-                                params={this.state.ServiceAgreementInfo.ServiceAgreementID}
-                                IDSelectColumnName={IDSelectColumnNameFeeAppendix}
-                                PKColumnName={PKColumnNameFeeAppendix}
-                                onDeleteClick={this.handleItemDeleteFeeAppendix}
-                                onChangePage={this.handleonChangePageFeeAppendix}
-                                IsDelete={true}
-                                PageNumber={this.state.PageNumber}
-                                IsAutoPaging={false}
-                                RowsPerPage={10}
-                                classCustom=""
-                                ref={this.gridref}
-                            /> */}
-
                             <InputGridControl
                                 name="FeeAppendix_ItemList"
                                 controltype="InputGridControl"

@@ -18,12 +18,12 @@ class FeeAppendixDetailElementCom extends Component {
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         console.log("FeeAppendixDetailElementCom", this.props)
     }
 
     handleSubmit(From, MLObject) {
-        let newFeeAppendixDetail_ItemList= this.props.dataSource.FeeAppendixDetail_ItemList;
+        let newFeeAppendixDetail_ItemList = this.props.dataSource.FeeAppendixDetail_ItemList;
         let formDatanew = [];
         if (this.props.index != undefined) {
             formDatanew = Object.assign([], newFeeAppendixDetail_ItemList, { [this.props.index]: MLObject });
@@ -45,10 +45,28 @@ class FeeAppendixDetailElementCom extends Component {
             <FormContainer
                 MLObjectDefinition={MLObjectFeeAppendixDetailItem}
                 dataSource={this.props.index != undefined ? this.props.dataSource.ShipmentOrder_ItemList[this.props.index] : null}
-                listelement={AddElementList}
+                listelement={[]}
                 onSubmit={this.handleSubmit}
             >
                 <div className="row">
+                    <div className="col-md-6">
+                        <FormControl.FormControlComboBox
+                            name="cbMainGroupID"
+                            colspan="9"
+                            labelcolspan="3"
+                            label="nghành hàng"
+                            validatonList={["Comborequired"]}
+                            isautoloaditemfromcache={true}
+                            loaditemcachekeyid="ERPCOMMONCACHE.MAINGROUP"
+                            valuemember="MainGroupID"
+                            nameMember="MainGroupName"
+                            controltype="InputControl"
+                            value={-1}
+                            listoption={[]}
+                            datasourcemember="MainGroupID"
+                        />
+
+                    </div>
 
                     <div className="col-md-6">
                         <FormControl.FormControlComboBox
@@ -85,7 +103,6 @@ class FeeAppendixDetailElementCom extends Component {
                             listoption={[]}
                             datasourcemember="TechSpecsID"
                         />
-
                     </div>
 
                     <div className="col-md-6">
@@ -104,7 +121,6 @@ class FeeAppendixDetailElementCom extends Component {
                             listoption={[]}
                             datasourcemember="TechSpecsValueID"
                         />
-
                     </div>
 
                     <div className="col-md-6">
@@ -138,7 +154,7 @@ class FeeAppendixDetailElementCom extends Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.TextBox
+                        <FormControl.TextArea
                             name="txtNote"
                             colspan="9"
                             labelcolspan="3"
@@ -162,8 +178,6 @@ class FeeAppendixDetailElementCom extends Component {
                             datasourcemember="IsActived"
                             classNameCustom="customCheckbox"
                         />
-                    </div>
-                    <div className="col-md-6">
                         <FormControl.CheckBox
                             name="ckIsSystem"
                             colspan="9"
@@ -175,8 +189,6 @@ class FeeAppendixDetailElementCom extends Component {
                             datasourcemember="IsSystem"
                             classNameCustom="customCheckbox"
                         />
-                    </div>
-                    <div className="col-md-6">
                     </div>
                 </div>
 
