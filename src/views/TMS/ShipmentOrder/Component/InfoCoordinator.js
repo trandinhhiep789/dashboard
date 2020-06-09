@@ -169,26 +169,54 @@ class InfoCoordinatorCom extends Component {
                         validatonList={["Comborequired"]}
                         validationErrorMessage={this.state.validationErroDeliverUser}
                     />
-                    <FormControl.ComboBoxPartner
-                        name="CarrierPartnerID"
-                        colspan="10"
-                        labelcolspan="2"
-                        label="Đối tác vận chuyển:"
-                        validatonList={["Comborequired"]}
-                        isautoloaditemfromcache={true}
-                        loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
-                        valuemember="PartnerID"
-                        nameMember="PartnerName"
-                        controltype="InputControl"
-                        onChange={this.handleOnValueChange}
-                        value={this.state.ShipmentOrder.CarrierPartnerID}
-                        listoption={null}
-                        datasourcemember="CarrierPartnerID"
-                        placeholder="---Vui lòng chọn---"
-                        isMultiSelect={false}
-                        disabled={!this.props.IsCoordinator}
-                        validationErrorMessage={this.state.validationErroCarrierPartner}
-                    />
+                    <div className="form-row">
+                        <div className="col-md-6">
+                        <FormControl.ComboBoxPartner
+                            name="CarrierPartnerID"
+                            colspan="8"
+                            labelcolspan="4"
+                            label="Đối tác vận chuyển:"
+                            validatonList={["Comborequired"]}
+                            isautoloaditemfromcache={true}
+                            loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                            valuemember="PartnerID"
+                            nameMember="PartnerName"
+                            controltype="InputControl"
+                            onChange={this.handleOnValueChange}
+                            value={this.state.ShipmentOrder.CarrierPartnerID}
+                            listoption={null}
+                            datasourcemember="CarrierPartnerID"
+                            placeholder="---Vui lòng chọn---"
+                            isMultiSelect={false}
+                            disabled={!this.props.IsCoordinator}
+                            validationErrorMessage={this.state.validationErroCarrierPartner}
+                        />
+                        </div>
+                        <div className="col-md-6">
+                        <FormControl.ComboBox
+                            name="CarrierTypeID"
+                            colspan="8"
+                            labelcolspan="4"
+                            label="phương tiện vận chuyển"
+                            validatonList={["Comborequired"]}
+                            isautoloaditemfromcache={true}
+                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                            valuemember="CarrierTypeID"
+                            nameMember="CarrierTypeName"
+                            controltype="InputControl"
+                            onChange={this.handleOnValueChange}
+                            value={this.state.ShipmentOrder.CarrierTypeID}
+                            listoption={null}
+                            datasourcemember="CarrierTypeID"
+                            placeholder="---Vui lòng chọn---"
+                            isMultiSelect={false}
+                            disabled={!this.props.IsCoordinator}
+                            validationErrorMessage={this.state.validationErroCarrierPartner}
+                        />
+                        </div>
+                       
+                       
+                    </div>
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Ghi chú:</label>

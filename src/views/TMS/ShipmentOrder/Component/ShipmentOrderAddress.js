@@ -5,6 +5,7 @@ import { ModalManager } from 'react-dynamic-modal';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import Select from 'react-select';
 import MapContainer from './MapContainer ';
+import Maps from './Maps';
 import { Link } from "react-router-dom";
 import { callGetCache } from "../../../../actions/cacheAction";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -13,6 +14,7 @@ import FormControl from "../../../../common/components/FormContainer/FormControl
 import { ValidationField } from "../../../../common/library/validation.js";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
+import vbd from '../../../../scripts/vietbandomapsapi.js';
 import {
     APIHostName,
 } from "../constants";
@@ -45,6 +47,7 @@ class ShipmentOrderAddressCom extends Component {
             Province: [],
             District: [],
             Ward: [],
+            Geometry: {},
             dataOrderAddressSender: {},
             FormDataSenderLst: {},
             SenderGeoLocation: this.props.ShipmentOrderAddress.SenderGeoLocation,
@@ -128,93 +131,96 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     handleValueChangeReceiverGeoLocation(name, lat, lng) {
-        const values = this.state.ShipmentOrderEdit.SenderGeoLocation.split(",")
-        const v1 = parseFloat(values[0])
-        const v2 = parseFloat(values[1])
-        const Points = [{
-            "Latitude": v1,
-            "Longitude": v2
-        },
-        {
-            "Latitude": lat,
-            "Longitude": lng
-        }];
+        debugger
+        if (lat != "" && this.state.ShipmentOrderEdit.SenderGeoLocation != "") {
+            const values = this.state.ShipmentOrderEdit.SenderGeoLocation.split(",")
+            const v1 = parseFloat(values[0])
+            const v2 = parseFloat(values[1])
+            const Points = [{
+                "Latitude": v1,
+                "Longitude": v2
+            },
+            {
+                "Latitude": lat,
+                "Longitude": lng
+            }];
 
-        let paramsRequest = {
-            "Alternative": 2147483647,
-            "Distance": true,
-            "Duration": true,
-            "Geometry": true,
-            "Instructions": true,
-            "Points": Points,
-            "RouteCriteria": 0,
-            "Uturn": true,
-            "VehicleType": 2
-        };
-        this.props.callFetchAPI(APIHostName, 'api/Maps/FindPathViaRoute', paramsRequest).then((apiResult) => {
-            if (!apiResult.IsError) {
-                let { ShipmentOrderEdit } = this.state;
-                const Durations = Math.floor(JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Durations[1] / 60);
-                ShipmentOrderEdit["EstimateDeliveryDistance"] = JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Distances[1] / 1000;
-                ShipmentOrderEdit["EstimateDeliveryLong"] = Durations;
-                this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, ReceiverGeoLocation: lat + "," + lng }, () => {
-                    this.ShowModalReceiver();
-                });
-            }
-        });
+            let paramsRequest = {
+                "Alternative": 2147483647,
+                "Distance": true,
+                "Duration": true,
+                "Geometry": true,
+                "Instructions": true,
+                "Points": Points,
+                "RouteCriteria": 0,
+                "Uturn": true,
+                "VehicleType": 2
+            };
+
+
+            this.props.callFetchAPI(APIHostName, 'api/Maps/FindPathViaRoute', paramsRequest).then((apiResult) => {
+                debugger
+                if (!apiResult.IsError) {
+
+                    let { ShipmentOrderEdit } = this.state;
+                    const Durations = Math.floor(JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Durations[1] / 60);
+                    ShipmentOrderEdit["EstimateDeliveryDistance"] = JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Distances[1] / 1000;
+                    ShipmentOrderEdit["EstimateDeliveryLong"] = Durations;
+                    this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, ReceiverGeoLocation: lat + "," + lng }, () => {
+                        this.ShowModalReceiver();
+                    });
+                }
+            });
+        } else {
+            this.setState({ ReceiverGeoLocation: lat + "," + lng }, () => {
+                this.ShowModalReceiver();
+            });
+
+        }
     }
 
     handleValueChangeGeoLocation(name, lat, lng) {
-        // let { SenderGeoLocation } = this.state;
-        // SenderGeoLocation = lat + "," + lng;
-        if(lat!=""&&this.state.ShipmentOrderEdit.ReceiverGeoLocation!="")
-        {
+        if (lat != "" && this.state.ShipmentOrderEdit.ReceiverGeoLocation != "") {
+            const values = this.state.ShipmentOrderEdit.ReceiverGeoLocation.split(",")
+            const v1 = parseFloat(values[0])
+            const v2 = parseFloat(values[1])
+            const Points = [{
+                "Latitude": lat,
+                "Longitude": lng
+            },
+            {
+                "Latitude": v1,
+                "Longitude": v2
+            }];
+            let paramsRequest = {
+                "Alternative": 2147483647,
+                "Distance": true,
+                "Duration": true,
+                "Geometry": true,
+                "Instructions": true,
+                "Points": Points,
+                "RouteCriteria": 0,
+                "Uturn": true,
+                "VehicleType": 2
+            };
+            this.props.callFetchAPI(APIHostName, 'api/Maps/FindPathViaRoute', paramsRequest).then((apiResult) => {
+                if (!apiResult.IsError) {
 
-        
-        const values = this.state.ShipmentOrderEdit.ReceiverGeoLocation.split(",")
-        const v1 = parseFloat(values[0])
-        const v2 = parseFloat(values[1])
-        const Points = [{
-            "Latitude": lat,
-            "Longitude": lng
-        },
-        {
-            "Latitude": v1,
-            "Longitude": v2
-        }];
-
-        let paramsRequest = {
-            "Alternative": 2147483647,
-            "Distance": true,
-            "Duration": true,
-            "Geometry": true,
-            "Instructions": true,
-            "Points": Points,
-            "RouteCriteria": 0,
-            "Uturn": true,
-            "VehicleType": 2
-        };
-        this.props.callFetchAPI(APIHostName, 'api/Maps/FindPathViaRoute', paramsRequest).then((apiResult) => {
-            if (!apiResult.IsError) {
-
-                let { ShipmentOrderEdit } = this.state;
-                const Durations = Math.floor(JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Durations[1] / 60);
-                ShipmentOrderEdit["EstimateDeliveryDistance"] = JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Distances[1] / 1000;
-                ShipmentOrderEdit["EstimateDeliveryLong"] = Durations;
-                this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, SenderGeoLocation: lat + "," + lng }, () => {
-                    this.ShowModalSender();
-                });
-            }
-        });
-    }
-    else
-    {
-        this.setState({ SenderGeoLocation: lat + "," + lng }, () => {
-            this.ShowModalSender();
-        });
-    }
-
-
+                    let { ShipmentOrderEdit } = this.state;
+                    const Durations = Math.floor(JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Durations[1] / 60);
+                    ShipmentOrderEdit["EstimateDeliveryDistance"] = JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Distances[1] / 1000;
+                    ShipmentOrderEdit["EstimateDeliveryLong"] = Durations;
+                    this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, SenderGeoLocation: lat + "," + lng }, () => {
+                        this.ShowModalSender();
+                    });
+                }
+            });
+        }
+        else {
+            this.setState({ SenderGeoLocation: lat + "," + lng }, () => {
+                this.ShowModalSender();
+            });
+        }
     }
 
     handleValueChangeProvince(selectedOption) {
@@ -389,7 +395,7 @@ class ShipmentOrderAddressCom extends Component {
             formData = Object.assign({}, formData, { ["SenderAddress"]: ObjectNameSenderAddress });
         }
 
-        
+
         if (this.checkInputName(formData) != "") {
             this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
                 this.ShowModalSender();
@@ -399,7 +405,7 @@ class ShipmentOrderAddressCom extends Component {
 
             ShipmentOrderEdit.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
             ShipmentOrderEdit.SenderGeoLocation = this.state.SenderGeoLocation;
-            ShipmentOrderEdit.SenderFullAddress = this.getfulladress(ShipmentOrderEdit.SenderAddress,ShipmentOrderEdit.SenderWardID,ShipmentOrderEdit.SenderDistrictID,ShipmentOrderEdit.SenderProvinceID);
+            ShipmentOrderEdit.SenderFullAddress = this.getfulladress(ShipmentOrderEdit.SenderAddress, ShipmentOrderEdit.SenderWardID, ShipmentOrderEdit.SenderDistrictID, ShipmentOrderEdit.SenderProvinceID);
             this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
@@ -587,7 +593,7 @@ class ShipmentOrderAddressCom extends Component {
         else {
             ShipmentOrderEdit.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
             ShipmentOrderEdit.ReceiverGeoLocation = this.state.ReceiverGeoLocation;
-            ShipmentOrderEdit.ReceiverFullAddress = this.getfulladress(ShipmentOrderEdit.ReceiverAddress,ShipmentOrderEdit.ReceiverWardID,ShipmentOrderEdit.ReceiverDistrictID,ShipmentOrderEdit.ReceiverProvinceID);
+            ShipmentOrderEdit.ReceiverFullAddress = this.getfulladress(ShipmentOrderEdit.ReceiverAddress, ShipmentOrderEdit.ReceiverWardID, ShipmentOrderEdit.ReceiverDistrictID, ShipmentOrderEdit.ReceiverProvinceID);
             this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
@@ -1018,6 +1024,76 @@ class ShipmentOrderAddressCom extends Component {
         console.log('sender map', this.props)
     }
 
+    handleShowModalSenderReceiver() {
+        if (this.state.SenderGeoLocation != "" && this.state.ReceiverGeoLocation != "") {
+            const valuesSender = this.state.SenderGeoLocation.split(",")
+            const valuesReceiver = this.state.ReceiverGeoLocation.split(",")
+            const Points = [{
+                "Latitude": valuesSender[0],
+                "Longitude": valuesSender[1]
+            },
+            {
+                "Latitude": valuesReceiver[0],
+                "Longitude": valuesReceiver[1]
+            }];
+
+            let paramsRequest = {
+                "Alternative": 2147483647,
+                "Distance": true,
+                "Duration": true,
+                "Geometry": true,
+                "Instructions": true,
+                "Points": Points,
+                "RouteCriteria": 0,
+                "Uturn": true,
+                "VehicleType": 2
+            };
+            this.props.callFetchAPI(APIHostName, 'api/Maps/FindPathViaRoute', paramsRequest).then((apiResult) => {
+                if (!apiResult.IsError) {
+                    this.setState({
+                        SenderGeoLocation: this.state.SenderGeoLocation,
+                        ReceiverGeoLocation: this.state.ReceiverGeoLocation,
+                        Geometry: JSON.parse(apiResult.ResultObject).Value.Routes[0].Geometry
+                    }, () => {
+                        this.ShowModalSenderReceiver();
+                    });
+                }
+            });
+        }
+        else
+        {
+            this.setState({
+                SenderGeoLocation: this.state.SenderGeoLocation,
+                ReceiverGeoLocation: this.state.ReceiverGeoLocation,
+                Geometry:this.state.Geometry
+            }, () => {
+                this.ShowModalSenderReceiver();
+            });
+        }
+    }
+    ShowModalSenderReceiver() {
+        ModalManager.open(
+            <ModelContainer
+                title="Thông tin đường đi"
+                name=""
+                content={""}
+                IsButton={true}
+                onRequestClose={() => false}
+            >
+
+                <div className="form-row google-maps">
+                    <Maps
+                        Geometry={this.state.Geometry}
+                        SenderGeoLocation={this.state.SenderGeoLocation}
+                        ReceiverGeoLocation={this.state.ReceiverGeoLocation}
+                    ></Maps>
+
+                </div>
+
+            </ModelContainer>
+        )
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -1057,17 +1133,7 @@ class ShipmentOrderAddressCom extends Component {
                                     </div>
                                     <div className="form-group col-md-8">
                                         <label className="col-form-label" >{this.state.ShipmentOrder.SenderFullAddress}</label>
-                                        <Link
-                                            className="mapslink"
-                                            target="_blank"
-                                            to={{
-                                                pathname: "/Map",
-                                                state: {
-                                                    SenderGeoLocation: this.state.SenderGeoLocation,
-                                                    ReceiverGeoLocation: this.state.ReceiverGeoLocation,
-                                                }
-                                            }}
-                                        >Xem bản đồ</Link>
+                                        <a className="mapslink" onClick={this.handleShowModalSenderReceiver.bind(this)}>Xem bản đồ</a>
                                     </div>
                                 </div>
                             </div>
@@ -1104,15 +1170,7 @@ class ShipmentOrderAddressCom extends Component {
                                     </div>
                                     <div className="form-group col-md-8">
                                         <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullAddress}</label>
-                                        <Link
-                                            className="mapslink"
-                                            to={{
-                                                pathname: "/Map",
-                                                state: {
-                                                    SenderGeoLocation: this.state.SenderGeoLocation,
-                                                    ReceiverGeoLocation: this.state.ReceiverGeoLocation,
-                                                }
-                                            }}>Xem bản đồ</Link>
+                                        <a className="mapslink" onClick={this.handleShowModalSenderReceiver.bind(this)}>Xem bản đồ</a>
                                     </div>
                                 </div>
                             </div>
