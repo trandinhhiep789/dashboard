@@ -97,7 +97,8 @@ export const SearchElementList = [
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
         ValueMember: "ProvinceID",
-        NameMember: "ProvinceName"
+        NameMember: "ProvinceName",
+        filterrest:"cbReceiverDistrictID,cbSenderStoreID"
     },
     {
         type: "ComboBox",
@@ -115,7 +116,8 @@ export const SearchElementList = [
         filterobj:"ProvinceID",
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
         ValueMember: "DistrictID",
-        NameMember: "DistrictName"
+        NameMember: "DistrictName",
+        filterrest:"cbSenderStoreID"
     },
     {
         type: "ComboBox",

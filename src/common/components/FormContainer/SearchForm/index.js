@@ -33,9 +33,16 @@ export default class SearchForm extends Component {
         return formData;
     }
 
-    onValueChange(elementname, elementvalue, filterName) {
+    onValueChange(elementname, elementvalue, filterrest) {
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
+        if (typeof filterrest != "undefined" && filterrest != "") {
+            const objrest = filterrest.split(",");
+            for (let i = 0; i < objrest.length; i++) {
+                FormDataContolLstd[objrest[i]].value = -1;
+            }
+        }
+
         if (typeof FormDataContolLstd[elementname].validatonList != "undefined") {
             const validation = ValidationField(FormDataContolLstd[elementname].validatonList, elementvalue, FormDataContolLstd[elementname].label, FormDataContolLstd[elementname]);
             const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
@@ -99,6 +106,7 @@ export default class SearchForm extends Component {
     renderSearchForm() {
         const listElement = this.props.listelement;
         let cssSearchButton = "";
+        console.log("renderSearchForm", this.state.FormData)
         return (
             <div className="row">
                 {
@@ -141,11 +149,10 @@ export default class SearchForm extends Component {
                                 if (typeof elementItem.filterName != "undefined") {
                                     elementItem.filterValue = this.state.FormData[elementItem.filterName].value;
                                 }
-
+                                elementItem.value = this.state.FormData[elementItem.name].value
                                 return (
                                     <ElementSearch.ElementComboBox
                                         onValueChange={this.onValueChange}
-                                        value={this.state.FormData[elementItem.name].value}
                                         ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}

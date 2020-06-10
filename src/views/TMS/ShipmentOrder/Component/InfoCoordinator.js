@@ -65,14 +65,6 @@ class InfoCoordinatorCom extends Component {
         debugger
         let { ShipmentOrder } = this.state;
         ShipmentOrder[name] = value;
-        if (name == "CarrierPartnerID") {
-            if (parseInt(value) < 0) {
-                this.setState({ validationErroCarrierPartner: "Vui lòng chọn đối tác vận chuyển" });
-            }
-            else {
-                this.setState({ validationErroCarrierPartner: null });
-            }
-        }
         if (name == "CarrierTypeID") {
             if (parseInt(value) < 0) {
                 this.setState({ validationErroCarrierType: "Vui lòng chọn phương Tiện Vận Chuyển" });
@@ -127,13 +119,8 @@ class InfoCoordinatorCom extends Component {
 
     handleShipWorkFlowInsert() {
         let { ShipmentOrder, validationErroDeliverUser, validationErroCarrierPartner } = this.state;
-         if (ShipmentOrder.CarrierPartnerID == undefined || parseInt(ShipmentOrder.CarrierPartnerID) <= 0) {
-            validationErroCarrierPartner = "Vui lòng chọn đối tác vận chuyển"
-            this.setState({ validationErroCarrierPartner: validationErroCarrierPartner });
-            return;
-        }
-        else if (ShipmentOrder.CarrierTypeID == undefined || parseInt(ShipmentOrder.CarrierTypeID) <= 0) {
-            validationErroCarrierType = "Vui lòng chọn phương Tiện Vận Chuyển"
+          if (ShipmentOrder.CarrierTypeID == undefined || parseInt(ShipmentOrder.CarrierTypeID) <= 0) {
+            validationErroCarrierType = "Vui lòng chọn phương tiện vận chuyển"
             this.setState({ validationErroCarrierType: validationErroCarrierType });
             return;
         }
@@ -171,7 +158,6 @@ class InfoCoordinatorCom extends Component {
                             colspan="8"
                             labelcolspan="4"
                             label="Đối tác vận chuyển:"
-                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
                             valuemember="PartnerID"
