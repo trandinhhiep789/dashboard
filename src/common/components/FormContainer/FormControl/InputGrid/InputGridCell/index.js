@@ -12,8 +12,6 @@ class InputGridCellCom extends Component {
             Listoption: [],
             IsDisabled: false
         };
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleInputChangeALL = this.handleInputChangeALL.bind(this);
         this.handleonClickEdit = this.handleonClickEdit.bind(this);
         this.handleEditClick = this.handleEditClick.bind(this);
         this.handleonClickDelete = this.handleonClickDelete.bind(this);
@@ -39,8 +37,6 @@ class InputGridCellCom extends Component {
                 })
             }
         }
-
-
     }
 
     handleonClickDelete() {
@@ -55,30 +51,6 @@ class InputGridCellCom extends Component {
         }
         const id = e.currentTarget.dataset.id;
         this.props.onInsertClickEdit(id);
-    }
-
-    handleInputChange(e) {
-        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
-        let inputvalue = e.target.value;
-        if (e.target.type == 'checkbox') {
-            inputvalue = ischecked;
-        }
-        if (e.target.type == 'combobox') {
-            inputvalue = parseInt(e.target.value);
-        }
-        const inputname = e.target.name;
-        const elementdata = { Name: inputname, Value: inputvalue, cation: this.props.cation, validatonList: this.props.validatonList };
-        // console.log("handleInputChange",elementdata, this.props.index);
-        this.props.onValueChange(elementdata, this.props.index);
-    }
-
-    handleInputChangeALL(e) {
-        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
-        let inputvalue = e.target.value;
-        if (e.target.type == 'checkbox') {
-            inputvalue = ischecked;
-        }
-        this.props.onValueChangeALL(inputvalue, this.props.index);
     }
 
     handleEditClick() {
@@ -105,8 +77,6 @@ class InputGridCellCom extends Component {
                     (value.split(at));
             text = truncate(text, '', 50);
         }
-
-        
         const link = this.props.to;
         let linkTo;
 
@@ -114,9 +84,6 @@ class InputGridCellCom extends Component {
             linkTo = link+ this.props.linkId.toString().trim() + "/"
 
         }
-
-        let control = "";
-        if ((this.props.IsPermisionAdd === true || this.props.IsPermisionAdd === undefined) && this.props.Ispopup === false) {
             switch (type) {
                 case "text":
                     return <label>{text}</label>;
@@ -169,78 +136,7 @@ class InputGridCellCom extends Component {
                             </div>;
                         }
                     }
-                case "checkboxAll":
-                    {
-                        let className = "form-control form-control-sm";
-                        if (this.props.CSSClassName != null)
-                            className = this.props.CSSClassName;
-
-                        if (this.props.IsPermisionDelete == true || this.props.IsPermisionDelete == undefined) {
-                            //return <input type="checkbox" name={this.props.name} className={className} onChange={this.handleInputChangeALL} value={text} checked={this.props.isChecked} />;
-
-                            return <div className="checkbox">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name={this.props.name}
-                                        className={className}
-                                        onChange={this.handleInputChangeALL}
-                                        value={text}
-                                        checked={this.props.isChecked}
-                                    />
-                                    <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                </label>
-                            </div>;
-
-                        } else {
-                            return <div className="checkbox">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        disabled={true}
-                                        name={this.props.name}
-                                        className={className}
-                                        value={text}
-                                    />
-                                    <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                </label>
-                            </div>;
-                            //return <input type="checkbox" disabled={true} name={this.props.name} className={className} value={text} />;
-                        }
-
-                    }
-                case "textbox":
-                    {
-                        let className = "form-control form-control-sm";
-                        if (this.props.validationErrorMessage != "") {
-                            className = "form-control form-control-sm is-invalid";
-                        }
-                        if (this.props.CSSClassName != null)
-                            className = this.props.CSSClassName;
-
-                        return <input type="text" name={this.props.name} title={this.props.validationErrorMessage} className={className}
-                            onChange={this.handleInputChange} defaultValue={text} />;
-                    }
-
-                case "combobox":
-                    {
-                        let className = "form-control form-control-sm";
-                        if (this.props.CSSClassName != null)
-                            className = this.props.CSSClassName;
-
-                        const listOption = this.state.Listoption;
-                        //  console.log(this.props.value==""?-1:this.props.value,this.props.value);
-                        // console.log(parseInt(this.props.value==""?-1:this.props.value));
-                        return (
-                            <select className={this.props.CSSClassName} name={this.props.name}
-                                onChange={this.handleInputChange} value={parseInt(this.props.value == "" ? -1 : this.props.value)}
-                                className={className} >
-                                {listOption && listOption.map((optionItem) =>
-                                    <option value={optionItem.value} key={optionItem.value} >{optionItem.label}</option>
-                                )}
-                            </select>
-                        );
-                    }
+            
                 case "texttolink":
                     return <Link
                         className="linktext"
@@ -274,109 +170,7 @@ class InputGridCellCom extends Component {
                 default:
                     return <label>{text}</label>;
             }
-        }
-        else {
-            switch (type) {
-                case "date":
-                    {
-                        const datestring = formatDate(text);
-                        return <label>{datestring}</label>;
-                    }
-
-                case "checkboxAll":
-                    {
-                        let className = "form-control form-control-sm";
-                        if (this.props.CSSClassName != null)
-                            className = this.props.CSSClassName;
-
-                        if (this.props.IsPermisionDelete == true || this.props.IsPermisionDelete == undefined) {
-                            //return <input type="checkbox" name={this.props.name} className={className} onChange={this.handleInputChangeALL} value={text} checked={this.props.isChecked} />;
-                            return <div className="checkbox">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name={this.props.name}
-                                        onChange={this.handleInputChangeALL}
-                                        value={text}
-                                        checked={this.props.isChecked}
-                                        className={className}
-                                    />
-                                    <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                </label>
-                            </div>;
-                        } else {
-                            //return <input type="checkbox" disabled={true} name={this.props.name} className={className} value={text} />;
-                            return <div className="checkbox">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        disabled={true}
-                                        name={this.props.name}
-                                        value={text}
-                                        className={className}
-                                    />
-                                    <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                </label>
-                            </div>;
-                        }
-                    }
-                case "checkbox":
-                    {
-                        let className = "form-control form-control-sm";
-                        if (this.props.CSSClassName != null)
-                            className = this.props.CSSClassName;
-                        //return <input type="checkbox" disabled={true} checked={this.props.isChecked} name={this.props.name} className={className} value={text} />;
-                        return <div className="checkbox">
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    disabled={true}
-                                    disabled={true}
-                                    name={this.props.name}
-                                    value={text}
-                                    checked={this.props.isChecked}
-                                    className={className}
-                                />
-                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                            </label>
-                        </div>;
-                    }
-                case "texttolink":
-                    return <Link
-                        className="linktext"
-                        to={{
-                            pathname: linkTo,
-                            state: {
-                                params: this.props.params
-                            }
-                        }}>
-                        {text}
-                    </Link>;
-
-                case "link":
-                    return <Link to={to}>{linkText}</Link>;
-                case "edit":
-                    return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.value} title="Edit"><i className="ti-pencil"></i></a>;
-                case "editnew":
-                    if (this.props.IsPermisionEdit == true || this.props.IsPermisionEdit == undefined) {
-                        return (<div>
-                            <a title="" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>
-                            <a title="" className="table-action hover-danger" onClick={this.handleonClickDelete} data-id={this.props.index} title="Edit"><i className="ti-trash"></i></a>
-                        </div>)
-                    } else {
-                        return <a title="" className="nav-link hover-primary" data-id={this.props.index} title="Edit"><i className="ti-pencil"></i></a>;
-                    }
-
-                case "buttonEdit":
-                    return (
-                        <button type="button" className="btn" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleEditClick}>
-                            <span className="fa fa-plus ff"> Chỉnh sửa</span>
-                        </button>
-                    );
-                default:
-                    return <label>{text}</label>;
-            }
-        }
+      
     }
 }
 

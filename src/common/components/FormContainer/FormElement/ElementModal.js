@@ -1,0 +1,467 @@
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import Select from 'react-select';
+import { callGetCache } from "../../../../actions/cacheAction";
+import { InputNumber, DatePicker } from "antd";
+import moment from 'moment';
+import Datetime from 'react-datetime';
+import "antd/dist/antd.css";
+
+
+//#region connect
+const mapStateToProps = state => {
+    return {
+        AppInfo: state
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: () => {
+            dispatch(hideModal());
+        }
+    }
+}
+//#endregion connect
+
+class ElementModalText extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+    }
+    handleValueChange(e) {
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(e.target.name, e.target.value);
+    }
+
+    render() {
+        let classNamecolmd = "col-md-6";
+        if (this.props.Colmd != null)
+            classNamecolmd = "col-md-" + this.props.Colmd;
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        if (this.props.Colmd == 12) {
+            className = className + " customcontrol";
+        }
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-8";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-4";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null) {
+            formRowClassName += this.props.classNameCustom;
+        }
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
+            className += " is-invalid";
+        }
+        return (
+            <div className={classNamecolmd}>
+                <div className={formRowClassName} >
+                    {this.props.label.length > 0 ?
+                        <div className={labelDivClassName}>
+                            <label className="col-form-label 2">
+                                {this.props.label}<span className="text-danger"> {star}</span>
+                            </label>
+                        </div>
+                        : ""
+                    }
+
+                    <div className={formGroupClassName}>
+                        <input type="text" name={this.props.Name}
+                            onChange={this.handleValueChange}
+                            onBlur={this.handKeyDown}
+                            value={this.props.value}
+                            key={this.props.name}
+                            className={className}
+                            ref={this.props.inputRef}
+                            placeholder={this.props.placeholder}
+                            disabled={this.props.readOnly}
+                            maxLength={this.props.maxSize}
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+class ElementModalNumber extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+    }
+    handleValueChange(evalue) {
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(this.props.Name, evalue);
+    }
+
+    render() {
+        let classNamecolmd = "col-md-6";
+        if (this.props.Colmd != null)
+            classNamecolmd = "col-md-" + this.props.Colmd;
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        if (this.props.Colmd == 12) {
+            className = className + " customcontrol";
+        }
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-8";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-4";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null) {
+            formRowClassName += this.props.classNameCustom;
+        }
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
+            className += " is-invalid";
+        }
+        return (
+            <div className={classNamecolmd}>
+                <div className={formRowClassName} >
+                    {this.props.label.length > 0 ?
+                        <div className={labelDivClassName}>
+                            <label className="col-form-label 2">
+                                {this.props.label}<span className="text-danger"> {star}</span>
+                            </label>
+                        </div>
+                        : ""
+                    }
+
+                    <div className={formGroupClassName}>
+                        <InputNumber
+                            name={this.props.Name}
+                            min={1}
+                            max={10}
+                            onChange={this.handleValueChange}
+                            ref={this.props.inputRef}
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+class ElementModalComboBoxCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.state = { Listoption: [], SelectedOption: [] }
+    }
+    handleValueChange(selectedOption) {
+        debugger;
+        const comboValues = this.getComboValue(selectedOption);
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.name : "");
+    }
+
+    bindcombox(value, listOption) {
+        let values = value;
+        let selectedOption = [];
+        if (values == null || values === -1)
+            return { value: -1, label: "--Vui lòng chọn--" };
+        if (typeof values.toString() == "string")
+            values = values.toString().split(",");
+        for (let i = 0; i < values.length; i++) {
+            for (let j = 0; j < listOption.length; j++) {
+                if (values[i] == listOption[j].value) {
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
+                }
+            }
+        }
+        return selectedOption;
+    }
+    getComboValue(selectedOption) {
+        let values = [];
+        if (selectedOption == null)
+            return -1;
+        if (this.props.isMultiSelect) {
+            for (let i = 0; i < selectedOption.length; i++) {
+                values.push(selectedOption[i].value);
+            }
+        } else {
+            return selectedOption.value;
+        }
+
+        return values;
+    }
+    //#endregion tree category
+
+    componentDidMount() {
+        let listOption = this.props.listoption;
+        let { filterValue, filterobj } = this.props;
+        if (this.props.isautoloaditemfromcache) {
+            const cacheKeyID = this.props.loaditemcachekeyid;
+            const valueMember = this.props.valuemember;
+            const nameMember = this.props.nameMember;
+            this.props.callGetCache(cacheKeyID).then((result) => {
+                listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    if (typeof filterobj != undefined) {
+                        result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
+                        }
+                        );
+
+                    }
+                    else {
+                        result.ResultObject.CacheData.map((cacheItem) => {
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
+                        }
+                        );
+                    }
+                    // result.ResultObject.CacheData.map((cacheItem) => {
+                    //     listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+                    // });
+
+                    this.setState({ Listoption: listOption, Data: result.ResultObject.CacheData });
+                    debugger
+                    const strSelectedOption = this.bindcombox(this.props.value, listOption);
+                    this.setState({ SelectedOption: strSelectedOption });
+                }
+                else {
+                    this.setState({ Listoption: listOption });
+                }
+            });
+        }
+        else {
+            this.setState({ Listoption: listOption });
+            const strSelectedOption = this.bindcombox(this.props.value, listOption);
+            this.setState({ SelectedOption: strSelectedOption });
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+
+        if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            let { filterobj, valuemember, nameMember } = this.props;
+            if (typeof filterobj != undefined) {
+                let listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
+                this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
+                    listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[nameMember] });
+                }
+                );
+                this.setState({ Listoption: listoptionnew });
+            }
+
+        }
+
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
+            debugger
+            const aa = this.bindcombox(nextProps.value, this.state.Listoption);
+            this.setState({ SelectedOption: aa });
+        }
+    }
+
+    render() {
+        let { name, label, rowspan, colspan, labelcolspan, validatonList, isMultiSelect, disabled, validationErrorMessage, placeholder, listoption } = this.props;
+        let formRowClassName = "form-row";
+        if (rowspan != null) {
+            formRowClassName = "form-row col-md-" + rowspan;
+        }
+
+        let formGroupClassName = "form-group col-md-4";
+        if (colspan != null) {
+            formGroupClassName = "form-group col-md-" + colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + labelcolspan;
+        }
+        let star;
+        if (validatonList != undefined && validatonList.includes("Comborequired") == true) {
+            star = '*'
+        }
+        let className = "react-select";
+        if (validationErrorMessage != undefined && validationErrorMessage != "") {
+            className += " is-invalid";
+        }
+        const selectedOption = this.state.SelectedOption;
+        const listOption = this.state.Listoption;
+        return (
+            <div className={formRowClassName} >
+                <div className={labelDivClassName}>
+                    <label className="col-form-label 6">
+                        {label}<span className="text-danger"> {star}</span>
+                    </label>
+                </div>
+                <div className={formGroupClassName}>
+                    <Select
+                        value={selectedOption}
+                        name={name}
+                        ref={this.props.inputRef}
+                        onChange={this.handleValueChange}
+                        options={listOption}
+                        isDisabled={disabled}
+                        isMulti={isMultiSelect}
+                        isSearchable={true}
+                        placeholder={placeholder}
+                        className={className}
+                    />
+                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{validationErrorMessage}</li></ul></div>
+                </div>
+            </div>
+        );
+    }
+}
+export const ElementModalComboBox = connect(mapStateToProps, mapDispatchToProps)(ElementModalComboBoxCom);
+
+class CheckBox extends React.Component {
+    static defaultProps = {
+        componenttype: 'InputControl'
+    }
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+    }
+    handleValueChange(e) {
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(e.target.name, e.target.checked);
+        // console.log("Checkbox:", e.target.checked);
+    }
+    render() {
+        let classNamecolmd = "col-md-6";
+        if (this.props.Colmd != null)
+            classNamecolmd = "col-md-" + this.props.Colmd;
+        let formRowClassName = "form-row";
+        if (this.props.rowspan != null) {
+            formRowClassName = "form-row col-md-" + this.props.rowspan;
+        }
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-8";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-4";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+        let classNameCustom = "checkbox ";
+        if (this.props.classNameCustom != undefined || this.props.classNameCustom != '') {
+            classNameCustom += this.props.classNameCustom;
+        }
+        return (
+            <div className={classNamecolmd}>
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 5">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+                    <div className={formGroupClassName}>
+
+                        <div className={classNameCustom}>
+                            <label>
+                                <input className={this.props.CSSClassName} name={this.props.Name} type="checkbox"
+                                    checked={this.props.value} onChange={this.handleValueChange} readOnly={this.props.readonly}
+                                    className={this.props.CSSClassName}
+                                />
+                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+class TextArea extends React.Component {
+    static defaultProps = {
+        componenttype: 'InputControl'
+    }
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+    }
+    handleValueChange(e) {
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(e.target.name, e.target.value);
+    }
+    render() {
+        let classNamecolmd = "col-md-6";
+        if (this.props.Colmd != null)
+            classNamecolmd = "col-md-" + this.props.Colmd;
+
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-8";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-4";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null || this.props.classNameCustom != undefined) {
+            formRowClassName += this.props.classNameCustom;
+        }
+        return (
+            <div className={classNamecolmd}>
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 4">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+                    <div className={formGroupClassName}>
+                        <textarea
+                            name={this.props.Name}
+                            onChange={this.handleValueChange}
+                            value={this.props.value}
+                            className={className}
+                            placeholder={this.props.placeholder}
+                            readOnly={this.props.readonly}
+                            rows="5"
+                        />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+export default { ElementModalText, ElementModalComboBox, CheckBox, TextArea, ElementModalNumber };
+
