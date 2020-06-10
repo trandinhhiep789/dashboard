@@ -176,6 +176,7 @@ class EditCom extends React.Component {
                         isHideHeaderToolbar={false}
                         dataSource={this.state.DataSource.InstallBundle_ProductList}
                         Ispopup={true}
+                        isSystem={this.state.DataSource.IsSystem}
                         MLObjectDefinition={GridMLMcRoleDefinition}
                         colspan="12"
                     />

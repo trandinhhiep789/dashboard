@@ -374,6 +374,12 @@ export const GridMLMcRoleDefinition = [
         DataSourceMember: "ProductID"
     },
     {
+        Name: "ProductName",
+        DefaultValue: "",
+        BindControlName: "ProductName",
+        DataSourceMember: "ProductName"
+    },
+    {
         Name: "Quantity",
         DefaultValue: "",
         BindControlName: "Quantity",
@@ -397,39 +403,56 @@ export const InputMcRoleColumnList = [
         Name: "ProductID",
         Type: "textbox",
         Caption: "Mã sản phẩm",
+        label:"mã sản phẩm",
         DataSourceMember: "ProductID",
         Width: 200,
-        validatonList: ["required"]
+        validatonList: ["required"],
+        OrderIndex:1,
+        Colmd:12
+    
+    },
+    {
+        Name: "ProductName",
+        Type: "textbox",
+        Caption: "Tên sản phẩm",
+        label:"Tên sản phẩm",
+        DataSourceMember: "ProductName",
+        iputpop:false,
+        Width: 200,
+        OrderIndex:2,
+        Colmd:12
+      
     },
     {
         Name: "Quantity",
-        Type: "textbox",
+        Type: "TextNumber",
+        label:"Số lượng",
         Caption: "Số lượng",
         DataSourceMember: "Quantity",
         Width: 200,
-        validatonList: ["required","number"]
+        validatonList: ["required","number"],
+        OrderIndex:3,
+        Colmd:12
     },
-    // {
-    //     Name: "Quantity1",
-    //     Type: "selectnew",
-    //     Caption: "combobox",
-    //     DataSourceMember: "Quantity1",
-    //     Width: 200,
-    //     validatonList: []
-    // },
     {
         Name: "Note",
-        Type: "textbox",
+        Type: "TextArea",
+        label:"Ghi chú",
         Caption: "Ghi chú",
         DataSourceMember: "Note",
         Width: 300,
+        OrderIndex:4,
+        Colmd:12
     },
     {
         Name: "IsActived",
         Type: "checkbox",
+        label:"kích hoạt",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 70
+        Width: 70,
+        OrderIndex:5,
+        Colmd:12
     },
     {
         Name: "Action",
