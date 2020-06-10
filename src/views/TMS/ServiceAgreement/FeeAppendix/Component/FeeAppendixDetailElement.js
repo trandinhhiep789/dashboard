@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
+import ProductComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/ProductComboBox.js";
 
 import {
     APIHostName,
@@ -23,20 +24,7 @@ class FeeAppendixDetailElementCom extends Component {
     }
 
     handleSubmit(From, MLObject) {
-        let newFeeAppendixDetail_ItemList = this.props.dataSource.FeeAppendixDetail_ItemList;
-        let formDatanew = [];
-        if (this.props.index != undefined) {
-            formDatanew = Object.assign([], newFeeAppendixDetail_ItemList, { [this.props.index]: MLObject });
-            if (this.props.onInputChangeObj != null) {
-                this.props.onInputChangeObj(formDatanew);
-            }
-        }
-        else {
-            newFeeAppendixDetail_ItemList.push(MLObject)
-            if (this.props.onInputChangeObj != null) {
-                this.props.onInputChangeObj(newFeeAppendixDetail_ItemList);
-            }
-        }
+        console.log("FeeAppendixDetailElementCom MLObject", MLObject)
     }
 
     render() {
@@ -44,11 +32,12 @@ class FeeAppendixDetailElementCom extends Component {
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectFeeAppendixDetailItem}
-                dataSource={this.props.index != undefined ? this.props.dataSource.ShipmentOrder_ItemList[this.props.index] : null}
+                dataSource={this.props.index != undefined ? this.props.dataSource.FeeAppendixDetail_ItemList[this.props.index] : null}
                 listelement={[]}
                 onSubmit={this.handleSubmit}
             >
                 <div className="row">
+
                     <div className="col-md-6">
                         <FormControl.FormControlComboBox
                             name="cbMainGroupID"
@@ -124,7 +113,7 @@ class FeeAppendixDetailElementCom extends Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.FormControlTextBox
+                        {/* <FormControl.FormControlTextBox
                             name="txtProductID"
                             colspan="9"
                             labelcolspan="3"
@@ -135,6 +124,17 @@ class FeeAppendixDetailElementCom extends Component {
                             value=""
                             validatonList={["required"]}
                             datasourcemember="ProductID"
+                        /> */}
+                        <ProductComboBox 
+                            colspan="9"
+                            labelcolspan="3"
+                            label="sản phẩm"
+                            placeholder="Tên sản phẩm"
+                            controltype="InputControl"
+                            datasourcemember="ProductID"
+                            name="cbProductID"
+                            validatonList={["required"]}
+                            IsLabelDiv={true}
                         />
                     </div>
 

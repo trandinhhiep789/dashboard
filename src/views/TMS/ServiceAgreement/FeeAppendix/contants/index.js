@@ -375,7 +375,7 @@ export const MLObjectFeeAppendixDetailItem = [
         
         Name: "ProductID",
         DefaultValue: "",
-        BindControlName: "txtProductID",
+        BindControlName: "cbProductID",
         DataSourceMember: "ProductID"
     },
     {
