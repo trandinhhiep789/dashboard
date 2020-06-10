@@ -21,15 +21,13 @@ export const AddLinkFeeAppendixDetail = "/ServiceAgreement/FeeAppendix/Add";
 export const IDSelectColumnNameFeeAppendixDetail = "chkSelect";
 export const PKColumnNameFeeAppendixDetail = "FeeAppendixDetailID"
 
+export const AddFeeAppendixDetailPath ="api/ServiceAgreement_FeeAppendixDetail/Add";
+export const  EditFeeAppendixDetailPath="api/ServiceAgreement_FeeAppendixDetail/Update";
 
 
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
-export const PagePath = [
-    { Link: "/", Title: "Trang chủ" },
-    { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ" },
-    { Link: "/ServiceAgreement/FeeAppendix", Title: "Danh sách phụ lục biểu phí" },
-];
+
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ" },
@@ -296,40 +294,40 @@ export const DataGridColumnList = [
 ]
 
 export const DataGridColumnItemListFeeAppendixDetail = [
+    // {
+    //     Name: "FeeAppendixDetailID",
+    //     Type: "checkbox",
+    //     Caption: "Mã",
+    //     DataSourceMember: "FeeAppendixDetailID",
+    //     Width: 150,
+    // },
     {
-        Name: "FeeAppendixDetailID",
-        Type: "checkbox",
-        Caption: "Mã",
-        DataSourceMember: "FeeAppendixDetailID",
-        Width: 150,
-    },
-    {
-        Name: "SubGroupID",
+        Name: "SubGroupName",
         Type: "texttolink",
         Caption: "Nhóm hàng",
-        DataSourceMember: "SubGroupID",
-        Link: "/ServiceAgreement/FeeAppendix/Detail/",
+        DataSourceMember: "SubGroupName",
+        Link: "/ServiceAgreement/FeeAppendixDetail/Detail/",
         Width: 150,
     },
     {
-        Name: "TechspecsID",
+        Name: "TechspecsName",
         Type: "text",
         Caption: "Thông số kỹ thuật",
-        DataSourceMember: "TechspecsID",
+        DataSourceMember: "TechspecsName",
         Width: 250,
     },
     {
-        Name: "TechspecsValueID",
+        Name: "TechspecsValue",
         Type: "text",
         Caption: " Giá trị",
-        DataSourceMember: "TechspecsValueID",
+        DataSourceMember: "TechspecsValue",
         Width: 250,
     },
     {
-        Name: "ProductID",
+        Name: "ProductName",
         Type: "text",
         Caption: "Sản phẩm",
-        DataSourceMember: "ProductID",
+        DataSourceMember: "ProductName",
         Width: 250,
     },
     {
@@ -373,10 +371,10 @@ export const MLObjectFeeAppendixDetailItem = [
     },
     {
         
-        Name: "ProductID",
+        Name: "Product",
         DefaultValue: "",
         BindControlName: "cbProductID",
-        DataSourceMember: "ProductID"
+        DataSourceMember: "Product"
     },
     {
         
@@ -407,6 +405,7 @@ export const MLObjectFeeAppendixDetailItem = [
     },
 
 ]
+
 export const MLObjectAbilityItem = [
 
     {

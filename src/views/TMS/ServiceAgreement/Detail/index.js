@@ -95,10 +95,10 @@ class DetailCom extends React.Component {
     }
 
     handleonChangePageFeeAppendix() {
-      
+
     }
 
-    handleItemEditFeeAppendix(index){
+    handleItemEditFeeAppendix(index) {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Cập nhật phụ lục biểu phí',
             content: {
@@ -116,7 +116,7 @@ class DetailCom extends React.Component {
 
     }
 
-    handleItemInsertFeeAppendix(){
+    handleItemInsertFeeAppendix() {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Thêm phụ lục biểu phí',
             content: {
@@ -204,23 +204,16 @@ class DetailCom extends React.Component {
 
 
     render() {
-        //console.log('aa', this.state.ServiceAgreementInfo.FeeAppendix_ItemList)
         if (this.state.IsLoadDataComplete) {
             return (
-                // <FormContainer
-                //     FormName={TitleFormDetail}
-                //     MLObjectDefinition={MLObjectDefinition}
-                //     dataSource={this.state.DataSource}
-                //     listelement={[]}
-                //     BackLink={BackLink}
-                //     isSubmitForm={false}
-                // >
-                //  </FormContainer>
                 <div className="col-lg-12">
                     <ReactNotification ref={this.notificationDOMRef} />
                     <div className="card">
-                        <h4 className="card-title"><strong>{TitleFormDetail}</strong></h4>
+                        <h4 className="card-title">
+                            <strong>{TitleFormDetail}</strong>
+                        </h4>
                         <div className="card-body">
+
                             <ServiceAgreementInfo
                                 ServiceAgreementInfo={this.state.ServiceAgreementInfo}
                             />

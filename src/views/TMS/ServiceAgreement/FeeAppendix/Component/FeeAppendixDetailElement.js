@@ -7,8 +7,11 @@ import ProductComboBox from "../../../../../common/components/FormContainer/Form
 import {
     APIHostName,
     LoadAPIPath,
-    MLObjectFeeAppendixDetailItem
+    MLObjectFeeAppendixDetailItem,
+    EditFeeAppendixDetailPath,
+    AddFeeAppendixDetailPath
 } from "../contants/index.js";
+import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 
 class FeeAppendixDetailElementCom extends Component {
     constructor(props) {
@@ -20,11 +23,29 @@ class FeeAppendixDetailElementCom extends Component {
     }
 
     componentDidMount() {
-        console.log("FeeAppendixDetailElementCom", this.props)
+        //console.log("FeeAppendixDetailElementCom", this.props)
     }
 
     handleSubmit(From, MLObject) {
-        console.log("FeeAppendixDetailElementCom MLObject", MLObject)
+        
+        MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
+        MLObject.FeeAppendixID = this.props.dataSource.FeeAppendixID.trim();
+        MLObject.SignedDate = this.props.dataSource.SignedDate;
+        MLObject.ApplyFromDate= this.props.dataSource.ApplyFromDate;
+        MLObject.ProductID = MLObject.Product[0].ProductID;
+        if (this.props.index != undefined) {
+            MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+            this.props.callFetchAPI(APIHostName, EditFeeAppendixDetailPath, MLObject).then(apiResult => {
+                this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
+            });
+        }
+        else {
+            MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+            this.props.callFetchAPI(APIHostName, AddFeeAppendixDetailPath, MLObject).then(apiResult => {
+                console.log("handleSubmit MLObject", MLObject, apiResult)
+                this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
+            });
+        }
     }
 
     render() {
@@ -208,6 +229,9 @@ const mapDispatchToProps = dispatch => {
     return {
         showModal: (type, props) => {
             dispatch(showModal(type, props));
+        },
+        callFetchAPI: (hostname, hostURL, postData) => {
+            return dispatch(callFetchAPI(hostname, hostURL, postData));
         }
     }
 }
