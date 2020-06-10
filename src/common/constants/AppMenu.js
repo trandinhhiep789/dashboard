@@ -146,6 +146,36 @@ const AppMenu = [
                     }
                 ]
             },
+            {
+                MenuName: 'Service',
+                MenuTitle: 'Dịch vụ',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'ServiceType',
+                        MenuTitle: 'Loại dịch vụ',
+                        LinkTo: '/ServiceType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'ServiceSeasonType',
+                        MenuTitle: 'Loại mùa dịch vụ',
+                        LinkTo: '/ServiceSeasonType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'ServiceAgreementType',
+                        MenuTitle: 'Loại hợp đồng dịch vụ',
+                        LinkTo: '/ServiceAgreementType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+                    
+                ]
+            },
         ]
     },
     {

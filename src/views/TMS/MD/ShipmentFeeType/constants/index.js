@@ -108,17 +108,17 @@ export const AddElementList = [
         readonly: false,
         validatonList: ["number"]
     },
-    {
-        type: "checkbox",
-        name: "chkIsOther",
-        label: "Khác:",
-        value: 0,
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        readonly: false,
-        validatonList: []
-    },
+    // {
+    //     type: "checkbox",
+    //     name: "chkIsOther",
+    //     label: "Khác:",
+    //     value: 0,
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: {},
+    //     readonly: false,
+    //     validatonList: []
+    // },
     {
         type: "checkbox",
         name: "chkIsActived",
@@ -210,18 +210,18 @@ export const EditElementList = [
         readonly: false,
         validatonList: ["number"]
     },
-    {
-        type: "checkbox",
-        name: "chkIsOther",
-        label: "Khác:",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "IsOther",
-        readonly: false,
-        validatonList: []
-    },
+    // {
+    //     type: "checkbox",
+    //     name: "chkIsOther",
+    //     label: "Khác:",
+    //     value: "",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: {},
+    //     DataSourceMember: "IsOther",
+    //     readonly: false,
+    //     validatonList: []
+    // },
     {
         type: "checkbox",
         name: "chkIsActived",
@@ -290,7 +290,7 @@ export const MLObjectDefinition = [
     {
         Name: "IsOther",
         DefaultValue: false,
-        BindControlName: "chkIsOther",
+        BindControlName: "",
         DataSourceMember: "IsOther"
     },
     {

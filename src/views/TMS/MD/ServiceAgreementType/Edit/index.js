@@ -1,10 +1,10 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { ModalManager } from "react-dynamic-modal";
-import FormContainer from "../../../../common/components/Form/AdvanceForm/FormContainer";
-import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
-import { MessageModal } from "../../../../common/components/Modal";
+import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import SimpleForm from "../../../../../common/components/Form/SimpleForm";
+import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
     LoadAPIPath,
@@ -14,10 +14,10 @@ import {
     BackLink,
     EditPagePath
 } from "../constants";
-import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../actions/pageAction";
-import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_PARTNERTYPE } from "../../../../constants/keyCache";
+import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
+import { updatePagePath } from "../../../../../actions/pageAction";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_SERVICEAGREEMENTTYPE } from "../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -27,45 +27,41 @@ class EditCom extends React.Component {
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
+            FormContent: "",
             IsLoadDataComplete: false,
-            IsCloseForm: false,
-            EditElementList: EditElementList,
-            DataSource: [],
+            IsCloseForm: false
         };
-        this.searchref = React.createRef();
     }
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
-            if (apiResult.IsError) {
-                this.setState({
-                    IsCallAPIError: apiResult.IsError
-                });
-                this.showMessage(apiResult.Message);
-            } else {
-                if (apiResult.ResultObject) {
-                    this.setState({ DataSource:apiResult.ResultObject});
+                if (apiResult.IsError) {
+                    this.setState({
+                        IsCallAPIError: apiResult.IsError
+                    });
+                    this.showMessage(apiResult.Message);
+                } else {
+                    this.setState({ DataSource: apiResult.ResultObject });
                 }
-            }
-            this.setState({
-                IsLoadDataComplete: true
+                this.setState({
+                    IsLoadDataComplete: true
+                });
             });
-        });
     }
 
-    handleSubmit(formData, MLObject) { 
+    handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-       
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.Message);
-            if(!apiResult.IsError){
-                this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERTYPE);
-            }
-        });
+                this.setState({ IsCallAPIError: apiResult.IsError });
+                if(!apiResult.IsError){
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_SERVICEAGREEMENTTYPE);
+                    // this.handleSubmitInsertLog(MLObject);
+                }      
+                this.showMessage(apiResult.Message);
+            });
     }
 
     handleCloseMessage() {
@@ -89,22 +85,25 @@ class EditCom extends React.Component {
         }
         if (this.state.IsLoadDataComplete) {
             return (
-                <FormContainer
-                    FormName="Cập nhật loại đối tác"
-                    IsAutoLayout={true}
+                <SimpleForm
+                    FormName="Cập nhật loại phí vận chuyển"
                     MLObjectDefinition={MLObjectDefinition}
-                    listelement={this.state.EditElementList}
+                    listelement={EditElementList}
                     onSubmit={this.handleSubmit}
                     FormMessage={this.state.CallAPIMessage}
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
-                    ref={this.searchref} 
                     BackLink={BackLink}
-                >
-                </FormContainer>
+                    //RequirePermission={ATTRIBUTE_CATEGORY_TYPE_UPDATE}
+                    ref={this.searchref}
+                />
             );
         }
-        return <label>Đang nạp dữ liệu...</label>;
+        return (
+            <div>
+                <label>Đang nạp dữ liệu...</label>
+            </div>
+        );
     }
 }
 
@@ -123,13 +122,12 @@ const mapDispatchToProps = dispatch => {
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         },
-        callGetCache: cacheKeyID => {
+        callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
         }
-
     };
 };
 

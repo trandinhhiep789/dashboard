@@ -15,7 +15,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_SERVICEAGREEMENTTYPE } from "../../../../../constants/keyCache";
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -38,7 +38,7 @@ class AddCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if(!apiResult.IsError){
-                this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTFEETYPE);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SERVICEAGREEMENTTYPE);
                 //this.handleSubmitInsertLog(MLObject);
             }            
             this.showMessage(apiResult.Message);
