@@ -186,29 +186,36 @@ const AppMenu = [
         SubMenu: [
             {
                 MenuName: 'PartnerPriviledgeGroup',
-                MenuTitle: 'Danh sách nhóm quyền nhà cung cấp',
+                MenuTitle: 'Nhóm quyền nhà cung cấp',
                 LinkTo: '/PartnerPriviledgeGroup',
                 MenuIcon: '',
                 SubMenu: []
             },
             {
                 MenuName: 'PartnerPriviledge',
-                MenuTitle: 'Danh sách quyền nhà cung cấp',
+                MenuTitle: 'Quyền nhà cung cấp',
                 LinkTo: '/PartnerPriviledge',
                 MenuIcon: '',
                 SubMenu: []
             },
             {
                 MenuName: 'PartnerRole',
-                MenuTitle: 'Danh sách vai trò nhà cung cấp',
+                MenuTitle: 'Vai trò nhà cung cấp',
                 LinkTo: '/PartnerRole',
                 MenuIcon: '',
                 SubMenu: []
             },
             {
                 MenuName: 'PartnerUser',
-                MenuTitle: 'Danh sách người dùng của nhà cung cấp',
+                MenuTitle: 'Người dùng của nhà cung cấp',
                 LinkTo: '/PartnerUser',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'IDDocumentType',
+                MenuTitle: 'Loại giấy tờ tùy thân',
+                LinkTo: '/IDDocumentType',
                 MenuIcon: '',
                 SubMenu: []
             }

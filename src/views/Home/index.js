@@ -46,6 +46,7 @@ import ShipmentFeeType from '../../views/TMS/MD/ShipmentFeeType';
 import ServiceType from '../../views/TMS/MD/ServiceType';
 import ServiceSeasonType from '../../views/TMS/MD/ServiceSeasonType';
 import ServiceAgreementType from '../../views/TMS/MD/ServiceAgreementType';
+import IDDocumentType from '../../views/TMS/MD/IDDocumentType';
 
 
 
@@ -139,6 +140,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/ServiceType" component={ServiceType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ServiceSeasonType" component={ServiceSeasonType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ServiceAgreementType" component={ServiceAgreementType} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/IDDocumentType" component={IDDocumentType} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Maps" component={MapContainer} isLoggedIn={isLoggedIn} />

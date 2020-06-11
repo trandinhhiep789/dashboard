@@ -74,11 +74,19 @@ class Confirmation extends React.Component {
     handleInputChange(formData, formValidation) {
         this.setState({ FormData: formData, FormValidation: formValidation, IsSubmit: false });
     }
-    handleSelectedFile(filelist) {
-        if (filelist) {
-            this.setState({ SelectedFile: filelist });
+    // handleSelectedFile(filelist) {
+    //     if (filelist) {
+    //         this.setState({ SelectedFile: filelist });
+    //     }
+    // }
+
+    //file upload
+    handleSelectedFile(file, nameValue, isDeletetedFile) {
+        if (this.props.onHandleSelectedFile != null) {
+            this.props.onHandleSelectedFile(file, nameValue, isDeletetedFile);
         }
     }
+    
     render() {
         const { Title, FormData, FormValidation, ModalElementList, IsSubmit } = this.state;
         return (

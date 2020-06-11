@@ -72,21 +72,42 @@ class AddCom extends React.Component {
         );
     }
     handleinsertItem(lstOption) {
-        // let listMLObject = [];
-        // lstOption.map((row, index) => {
-        //     let MLObject = {};
-        //     row["pkColumnName"].map((pkItem, pkIndex) => {
-        //         MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-        //     });
-
-        //     listMLObject.push(MLObject);
-        // });
-        //const formData = Object.assign({}, this.state.DataSource, { ["LstMcUser_Role"]: listMLObject });
-        this.setState({ ListPartnerUser_Role: lstOption });
-        console.log("lstOption", lstOption);
+        let _PartnerUserRole = [];
+        if (this.state.ListPartnerUser_Role) {
+            _PartnerUserRole = this.state.ListPartnerUser_Role;
+        }
+        lstOption.map((row, index) => {
+            let match = _PartnerUserRole.filter(item => item.PartnerRoleID == row.PartnerRoleID);
+            if (match.length <= 0) {
+                _PartnerUserRole.push(row);
+            }
+        });
+        this.setState({ ListPartnerUser_Role: _PartnerUserRole });
+        //console.log("lstOption", lstOption);
     }
 
     handleInputUserRoleInsert() {
+
+        let SearchValue = "";
+        if (this.state.ListPartnerUser_Role) {
+            this.state.ListPartnerUser_Role.map(function (item, index) {
+                SearchValue = SearchValue + item.PartnerRoleID + ",";
+            });
+            SearchValue = SearchValue.substring(0, SearchValue.length - 1);
+        }
+
+        let SearchParamsModeList = [
+            {
+                SearchKey: "@Keyword",
+                SearchValue: ""
+            },
+            {
+                SearchKey: "@PartnerRoleListID",
+                SearchValue: SearchValue
+            }
+        ];
+
+
         this.props.showModal(MODAL_TYPE_SEARCH, {
             title: "Danh sách vai trò người dùng",
             content: {
@@ -98,7 +119,7 @@ class AddCom extends React.Component {
                     GridDataSource={[]}
                     SearchAPIPath={SearchPartnerRoleAPIPath}
                     SearchElementList={SearchElementModeList}
-                    InitSearchParams={InitSearchParamsModeList}
+                    InitSearchParams={SearchParamsModeList}
                     onClickInsertItem={this.handleinsertItem.bind(this)}
                     IDSelectColumnName={"chkSelect"}
                     name={"PartnerRoleName"}
@@ -186,8 +207,8 @@ class AddCom extends React.Component {
                 onValueChange={this.handleOnInputChange}
             //RequirePermission={MCUSER_ADD}
             >
-                <br />
-                <Collapsible trigger="Danh sách vai trò của người dùng" easing="ease-in" open={true}>
+                
+                {/* <Collapsible trigger="Danh sách vai trò của người dùng" easing="ease-in" open={true}>
                     <InputGrid
                         name="LstPartnerUser_Role"
                         controltype="GridControl"
@@ -200,7 +221,7 @@ class AddCom extends React.Component {
                         colspan="12"
                         onInsertClick={this.handleInputUserRoleInsert}
                     />
-                </Collapsible>
+                </Collapsible> */}
             </FormContainer>
         );
     }

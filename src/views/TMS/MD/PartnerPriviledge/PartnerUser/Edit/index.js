@@ -5,8 +5,8 @@ import { ModalManager } from "react-dynamic-modal";
 import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
 import InputGrid from "../../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
 import { MessageModal } from "../../../../../../common/components/Modal";
-import { showModal } from '../../../../../../actions/modal';
-import { MODAL_TYPE_SEARCH } from '../../../../../../constants/actionTypes';
+import { MODAL_TYPE_SEARCH, MODAL_TYPE_CONFIRMATION } from '../../../../../../constants/actionTypes';
+import { showModal, hideModal } from '../../../../../../actions/modal';
 import SearchModal from "../../../../../../common/components/Form/AdvanceForm/FormControl/FormSearchModal"
 import MD5Digest from "../../../../../../common/library/cryptography/MD5Digest.js";
 import {
@@ -24,13 +24,16 @@ import {
     SearchPartnerRoleAPIPath,
     DataGridColumnListMultiple,
     IDSelectColumnName,
-    InitSearchParamsModeList
+    Modal_PartnerUserIDDocument_Add, Modal_PartnerUserIDDocument_Edit, PartnerUserIDDocument_DataGrid_ColumnList, MLObject_PartnerUserIDDocument,
+    AddAPIPath_PartnerUserIDDocument, UpdateAPIPath_PartnerUserIDDocument, DeleteAPIPath_PartnerUserIDDocument
 } from "../constants";
-
+import DataGrid from "../../../../../../common/components/DataGrid";
+import { GetMLObjectData } from "../../../../../../common/library/form/FormLib";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../../actions/cacheAction";
 import Collapsible from 'react-collapsible';
+import { Prompt } from 'react-router';
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -38,7 +41,13 @@ class EditCom extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleInputUserRoleInsert = this.handleInputUserRoleInsert.bind(this);
+        this.callLoadData = this.callLoadData.bind(this);
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
+        this.handleInputUserRoleDelete = this.handleInputUserRoleDelete.bind(this);
+        this.handleSelectedFile = this.handleSelectedFile.bind(this);
+        this.addPartnerUser_IDDocumentPopup = this.addPartnerUser_IDDocumentPopup.bind(this);
+        this.editPartnerUser_IDDocumentPopup = this.editPartnerUser_IDDocumentPopup.bind(this);
+        this.delete_PartnerUser_IDDocumentPopup = this.delete_PartnerUser_IDDocumentPopup.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -47,8 +56,9 @@ class EditCom extends React.Component {
             IsCloseForm: false,
             EditElementList: EditElementList,
             Password: "",
-            PasswordConfirm: ""
-
+            PasswordConfirm: "",
+            Files: [],
+            IsNotSaved: false
         };
         this.searchref = React.createRef();
     }
@@ -68,7 +78,41 @@ class EditCom extends React.Component {
         );
     }
 
+    showMessage2(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+            />
+        );
+    }
+
+    //file upload
+    handleSelectedFile(file, nameValue, isDeletetedFile) {
+        debugger;
+        const filelist = { [nameValue]: file, "KeyName": nameValue, IsDeletetedFile: isDeletetedFile };
+        let files = this.state.Files;
+        let result = [];
+        if (files && files.length > 0) {
+            result = files.map(function (item, index) {
+                if (Object.keys(item)[0] != nameValue) {
+                    return item;
+                }
+            });
+        }
+        result = result.filter(x => x != undefined);
+        result.push(filelist);
+
+        this.setState({ Files: result });
+    }
+
     componentDidMount() {
+        this.callLoadData();
+        this.props.updatePagePath(EditPagePath);
+    }
+
+    callLoadData(key) {
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
             if (apiResult.IsError) {
@@ -78,7 +122,16 @@ class EditCom extends React.Component {
                 this.showMessage(apiResult.Message);
             } else {
                 apiResult.ResultObject.Birthday = apiResult.ResultObject.BirthdayString;
-                this.setState({ DataSource: apiResult.ResultObject, PassWord: apiResult.ResultObject.PassWord, PassWordConfirm: apiResult.ResultObject.PassWord });
+                if (key === undefined) {
+                    this.setState({
+                        DataSource: apiResult.ResultObject,
+                        PassWord: apiResult.ResultObject.PassWord,
+                        PassWordConfirm: apiResult.ResultObject.PassWord,
+                        ListPartnerUser_IDDocument: apiResult.ResultObject.ListPartnerUser_IDDocument
+                    });
+                } else {
+                    this.setState({ ListPartnerUser_IDDocument: apiResult.ResultObject.ListPartnerUser_IDDocument });
+                }
                 // apiResult.ResultObject.PassWord = null;
                 // apiResult.ResultObject.PassWordConfirm = null;
             }
@@ -86,10 +139,168 @@ class EditCom extends React.Component {
                 IsLoadDataComplete: true
             });
         });
-        this.props.updatePagePath(EditPagePath);
     }
-    handleinsertItem(lstOption) {
 
+    //************************************** giấy tờ tùy thân người dùng ***********************************/
+    addPartnerUser_IDDocumentPopup(MLObjectDefinition, modalElementList, dataSource) {
+        this.props.showModal(MODAL_TYPE_CONFIRMATION, {
+            title: 'Thêm mới giấy tờ tùy thân của người dùng',
+            autoCloseModal: false,
+            onHandleSelectedFile: this.handleSelectedFile,
+            onConfirm: (isConfirmed, formData) => {
+                if (isConfirmed) {
+                    let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
+                    if (MLObject) {
+                        MLObject.UserName = this.props.match.params.id;
+                        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+
+                        var data = new FormData();
+                        if (this.state.Files.length > 0) {
+                            this.state.Files.map((item, index) => {
+                                if (item.KeyName == "FrontIDDocumentImageURL") {
+                                    MLObject.FrontIDDocumentImageURL = item.FrontIDDocumentImageURL ? item.FrontIDDocumentImageURL.name : "";
+                                    data.append("FrontIDDocumentImageURL", item.FrontIDDocumentImageURL);
+                                }
+                                if (item.KeyName == "BackSideIDDocumentImageURL") {
+                                    MLObject.BackSideIDDocumentImageURL = item.BackSideIDDocumentImageURL ? item.BackSideIDDocumentImageURL.name : "";
+                                    data.append("BackSideIDDocumentImageURL", item.BackSideIDDocumentImageURL);
+                                }
+                            });
+                        }
+
+                        data.append("PartnerUserIDDocumentObj", JSON.stringify(MLObject));
+
+                        this.props.callFetchAPI(APIHostName, AddAPIPath_PartnerUserIDDocument, data).then((apiResult) => {
+                            if (!apiResult.IsError) {
+                                this.callLoadData(1);
+                                this.props.hideModal();
+                                this.setState({ Files: [] });
+                            }
+                            this.showMessage2(apiResult.Message);
+                            this.setState({ IsCallAPIError: apiResult.IsError });
+                        });
+
+                        // let partnerUser_IDDocument = [];
+                        // let match = [];
+                        // let formData = {};
+                        // let filesData = this.state.FilesData;
+                        // if (this.state.DataSource.ListPartnerUser_IDDocument) {
+                        //     partnerUser_IDDocument = this.state.DataSource.ListPartnerUser_IDDocument;
+                        // }          
+                        // match = partnerUser_IDDocument.filter(item => item.IDDocumentNumber == MLObject.IDDocumentNumber);
+                        // if (match && match.length > 0) {
+                        //     this.showMessage2("Giấy tờ tùy thân này đã tồn tại.");
+                        // } else { 
+                        //     this.state.Files.map(function (item, index) {
+                        //         // if (Object.keys(item)[0] == "FrontIDDocumentImageURL") {
+                        //         //     MLObject.FrontIDDocumentImageUR = item.FrontIDDocumentImageURL;
+                        //         // }
+                        //         // if (Object.keys(item)[0] == "BackSideidDocumentImageURL") {
+                        //         //     MLObject.BackSideidDocumentImageURL = item.BackSideidDocumentImageURL;
+                        //         // }
+                        //         item.IDDocumentNumber = MLObject.IDDocumentNumber
+                        //         filesData.push(item);
+                        //     });
+                        //     partnerUser_IDDocument.push(MLObject);
+                        //     formData = Object.assign({}, this.state.DataSource, { ["ListPartnerUser_IDDocument"]: partnerUser_IDDocument });
+                        //     this.setState({ DataSource: formData, FilesData: filesData });
+                        //     this.props.hideModal();
+                        // }
+                        //this.setState({ Files: [] });
+                        // console.log("MLObject", MLObject);
+                        // console.log("filesData", this.state.Files);
+                    }
+                }
+            },
+            modalElementList: modalElementList,
+        });
+    }
+
+    editPartnerUser_IDDocumentPopup(value, pkColumnName) {
+        let partnerUser_IDDocument = {};
+        this.state.ListPartnerUser_IDDocument.map((item, index) => {
+            let isMath = false;
+            for (var j = 0; j < pkColumnName.length; j++) {
+                if (item[pkColumnName[j].key] != value.pkColumnName[j].value) {
+                    isMath = false;
+                    break;
+                }
+                else {
+                    isMath = true;
+                }
+            }
+            if (isMath) {
+                partnerUser_IDDocument = item;
+            }
+        });
+
+        this.props.showModal(MODAL_TYPE_CONFIRMATION, {
+            title: 'Chỉnh sửa giấy tờ tùy thân của người dùng',
+            autoCloseModal: false,
+            onHandleSelectedFile: this.handleSelectedFile,
+            onConfirm: (isConfirmed, formData) => {
+                if (isConfirmed) {
+                    let MLObject = GetMLObjectData(MLObject_PartnerUserIDDocument, formData, partnerUser_IDDocument);
+                    if (MLObject) {
+                        MLObject.UserName = this.props.match.params.id;
+                        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+
+                        var data = new FormData();
+                        if (this.state.Files.length > 0) {
+                            this.state.Files.map((item, index) => {
+                                if (item.KeyName == "FrontIDDocumentImageURL") {
+                                    MLObject.FrontIDDocumentImageURL = item.FrontIDDocumentImageURL ? item.FrontIDDocumentImageURL.name : "";
+                                    data.append("FrontIDDocumentImageURL", item.FrontIDDocumentImageURL);
+                                }
+                                if (item.KeyName == "BackSideIDDocumentImageURL") {
+                                    MLObject.BackSideIDDocumentImageURL = item.BackSideIDDocumentImageURL ? item.BackSideIDDocumentImageURL.name : "";
+                                    data.append("BackSideIDDocumentImageURL", item.BackSideIDDocumentImageURL);
+                                }
+                            });
+                        }
+
+                        data.append("PartnerUserIDDocumentObj", JSON.stringify(MLObject));
+                        this.props.callFetchAPI(APIHostName, UpdateAPIPath_PartnerUserIDDocument, data).then((apiResult) => {
+                            if (!apiResult.IsError) {
+                                this.callLoadData(1);
+                                this.props.hideModal();
+                                this.setState({ Files: [] });
+                            }
+                            this.showMessage2(apiResult.Message);
+                            this.setState({ IsCallAPIError: apiResult.IsError });
+                        });
+                        // console.log("MLObject", MLObject);
+                        // console.log("filesData", this.state.Files);
+                    }
+                }
+            },
+            modalElementList: Modal_PartnerUserIDDocument_Edit,
+            formData: partnerUser_IDDocument
+        });
+    }
+
+    delete_PartnerUser_IDDocumentPopup(deleteList, pkColumnName) {
+        let listMLObject = [];
+        deleteList.map((row, index) => {
+            let MLObject = {};
+            pkColumnName.map((pkItem, pkIndex) => {
+                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+            });
+            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+            listMLObject.push(MLObject);
+        });
+        this.props.callFetchAPI(APIHostName, DeleteAPIPath_PartnerUserIDDocument, listMLObject).then((apiResult) => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                this.callLoadData(1);
+            }
+            this.showMessage2(apiResult.Message);
+        });
+    }
+
+    //***********************************************************************************************/
+
+    handleinsertItem(lstOption) {
         let _PartnerUserRole = [];
         if (this.state.DataSource.ListPartnerUser_Role) {
             _PartnerUserRole = this.state.DataSource.ListPartnerUser_Role;
@@ -102,21 +313,35 @@ class EditCom extends React.Component {
         });
 
         const formData = Object.assign({}, this.state.DataSource, { ["ListPartnerUser_Role"]: _PartnerUserRole });
-        this.setState({ DataSource: formData });
-        // let listMLObject = [];
-        // lstOption.map((row, index) => {
-        //     let MLObject = {};
-        //     row["pkColumnName"].map((pkItem, pkIndex) => {
-        //         MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-        //     });
+        this.setState({ DataSource: formData, IsNotSaved: true });
+    }
 
-        //     listMLObject.push(MLObject);
-        // });
-        // const formData = Object.assign({}, this.state.DataSource, { ["LstMcUser_Role"]: listMLObject });
-        // this.setState({ DataSource: formData });
+    handleInputUserRoleDelete(listDeleteID) {
+        this.setState({ IsNotSaved: true });
     }
 
     handleInputUserRoleInsert() {
+        let SearchValue = "";
+        if (this.state.DataSource.ListPartnerUser_Role) {
+            this.state.DataSource.ListPartnerUser_Role.map(function (item, index) {
+                SearchValue = SearchValue + item.PartnerRoleID + ",";
+            });
+            SearchValue = SearchValue.substring(0, SearchValue.length - 1);
+        }
+
+        let SearchParamsModeList = [
+            {
+                SearchKey: "@Keyword",
+                SearchValue: ""
+            },
+            {
+                SearchKey: "@PartnerRoleListID",
+                SearchValue: SearchValue
+            }
+        ];
+
+
+
         this.props.showModal(MODAL_TYPE_SEARCH, {
             title: "Danh sách vai trò người dùng",
             content: {
@@ -128,7 +353,7 @@ class EditCom extends React.Component {
                     GridDataSource={[]}
                     SearchAPIPath={SearchPartnerRoleAPIPath}
                     SearchElementList={SearchElementModeList}
-                    InitSearchParams={InitSearchParamsModeList}
+                    InitSearchParams={SearchParamsModeList}
                     onClickInsertItem={this.handleinsertItem.bind(this)}
                     IDSelectColumnName={"chkSelect"}
                     name={"PartnerRoleName"}
@@ -140,6 +365,7 @@ class EditCom extends React.Component {
     }
 
     handleOnInputChange(name, value) {
+        this.setState({ IsNotSaved: true });
         if (name == "txtPassWord") {
             this.setState({ PassWord: value });
         } else if (name == "txtPassWordConfirm") {
@@ -198,6 +424,8 @@ class EditCom extends React.Component {
             MLObject.PassWord = MD5Digest(PassWord);
         }
 
+
+
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -209,34 +437,57 @@ class EditCom extends React.Component {
         }
         if (this.state.IsLoadDataComplete) {
             return (
-                <FormContainer
-                    FormName="Cập nhật người dùng của nhà cung cấp"
-                    MLObjectDefinition={MLObjectDefinition}
-                    listelement={this.state.EditElementList}
-                    onSubmit={this.handleSubmit}
-                    IsAutoLayout={true}
-                    ref={this.searchref}
-                    BackLink={BackLink}
-                    dataSource={this.state.DataSource}
-                    onValueChange={this.handleOnInputChange}
-                //RequirePermission={MCUSER_EDIT}
-                >
-                    <br />
-                    <Collapsible trigger="Danh sách vai trò của người dùng" easing="ease-in" open={true}>
-                        <InputGrid
-                            name="LstPartnerUser_Role"
-                            controltype="GridControl"
-                            IDSelectColumnName={IDSelectColumnName}
-                            listColumn={InputPartnerRoleColumnList}
-                            PKColumnName={"PartnerRoleID"}
-                            isHideHeaderToolbar={false}
-                            dataSource={this.state.DataSource.ListPartnerUser_Role}
-                            MLObjectDefinition={GridMLPartnerRoleDefinition}
-                            colspan="12"
-                            onInsertClick={this.handleInputUserRoleInsert}
-                        />
-                    </Collapsible>
-                </FormContainer>
+                <React.Fragment>
+                    <Prompt
+                        when={this.state.IsNotSaved}
+                        message='Có dữ liệu chưa được lưu. Bạn có muốn rời trang?'
+                    />
+                    <FormContainer
+                        FormName="Cập nhật người dùng của nhà cung cấp"
+                        MLObjectDefinition={MLObjectDefinition}
+                        listelement={this.state.EditElementList}
+                        onSubmit={this.handleSubmit}
+                        IsAutoLayout={true}
+                        ref={this.searchref}
+                        BackLink={BackLink}
+                        dataSource={this.state.DataSource}
+                        onValueChange={this.handleOnInputChange}
+                    //RequirePermission={MCUSER_EDIT}
+                    >
+                        <br />
+                        <Collapsible trigger="Vai trò của người dùng" easing="ease-in" open={true}>
+                            <InputGrid
+                                name="LstPartnerUser_Role"
+                                controltype="GridControl"
+                                IDSelectColumnName={IDSelectColumnName}
+                                listColumn={InputPartnerRoleColumnList}
+                                PKColumnName={"PartnerRoleID"}
+                                isHideHeaderToolbar={false}
+                                dataSource={this.state.DataSource.ListPartnerUser_Role}
+                                MLObjectDefinition={GridMLPartnerRoleDefinition}
+                                colspan="12"
+                                onInsertClick={this.handleInputUserRoleInsert}
+                                onDeleteClick={this.handleInputUserRoleDelete}
+                            />
+                        </Collapsible>
+                        <br />
+                        <Collapsible trigger="Giấy tờ tùy thân của người dùng" easing="ease-in" open={true}>
+                            <DataGrid listColumn={PartnerUserIDDocument_DataGrid_ColumnList}
+                                dataSource={this.state.ListPartnerUser_IDDocument}
+                                modalElementList={Modal_PartnerUserIDDocument_Add}
+                                MLObjectDefinition={MLObject_PartnerUserIDDocument}
+                                IDSelectColumnName={"chkSelectIDDocumentID"}
+                                PKColumnName={"IDDocumentID"}
+                                onDeleteClick={this.delete_PartnerUser_IDDocumentPopup}
+                                onInsertClick={this.addPartnerUser_IDDocumentPopup}
+                                onInsertClickEdit={this.editPartnerUser_IDDocumentPopup}
+                                IsAutoPaging={false}
+                                RowsPerPage={10}
+                                IsCustomAddLink={true}
+                            />
+                        </Collapsible>
+                    </FormContainer>
+                </React.Fragment>
             );
         }
         return <label>Đang nạp dữ liệu...</label>;
@@ -257,6 +508,12 @@ const mapDispatchToProps = dispatch => {
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: () => {
+            dispatch(hideModal());
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));

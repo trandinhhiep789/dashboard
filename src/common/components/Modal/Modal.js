@@ -85,7 +85,7 @@ class ModalCom extends React.Component {
         this.onOverlayClick = this.onOverlayClick.bind(this);
         this.onDialogClick = this.onDialogClick.bind(this);
         this.valueChange = this.valueChange.bind(this);
-        this.onHandleSelectedFile = this.onHandleSelectedFile.bind(this);
+        this.handleSelectedFile = this.handleSelectedFile.bind(this);
         this.onHandleUpload = this.onHandleUpload.bind(this);
         let formData = {};
         if (this.props.modalElementList) {
@@ -186,6 +186,15 @@ class ModalCom extends React.Component {
         })
         this.props.onHandleSelectedFile(filelist);
     }
+
+    //file upload
+    handleSelectedFile(file, nameValue, isDeletetedFile) {
+        if (this.props.onHandleSelectedFile != null) {
+            this.props.onHandleSelectedFile(file, nameValue, isDeletetedFile);
+        }
+
+    }
+
     onHandleUpload() {
         const data = new FormData()
         const fileList = this.state.selectedFile;
@@ -223,8 +232,9 @@ class ModalCom extends React.Component {
                                     icon={elementItem.icon}
                                     rows={elementItem.rows}
                                     onValueChange={this.valueChange}
-                                    onHandleSelectedFile={this.onHandleSelectedFile}
+                                    onHandleSelectedFile={this.handleSelectedFile}
                                     onHandleUpload={this.onHandleUpload}
+                                    cdn={elementItem.cdn}
                                     listoption={elementItem.listoption}
                                     key={elementItem.Name}
                                     readonly={elementItem.readonly}
