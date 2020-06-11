@@ -124,7 +124,7 @@ export const DataGridColumnItemListAbiliti = [
 ];
 
 const dtFromdate = new Date();
-dtFromdate.setDate(new Date().getDate() - 30);
+dtFromdate.setDate(new Date().getDate() - 365);
 
 export const InitSearchParams = [
     {
@@ -140,11 +140,11 @@ export const InitSearchParams = [
         SearchValue: "-1"
     },
     {
-        SearchKey: "@SIGNEDDATE",
+        SearchKey: "@FromDate",
         SearchValue: dtFromdate
     },
     {
-        SearchKey: "@EXPIREDDATE",
+        SearchKey: "@ToDate",
         SearchValue: new Date()
     },
   
@@ -232,13 +232,13 @@ export const DataGridColumnList = [
         DataSourceMember: "IsExtended",
         Width: 150
     },
-    // {
-    //     Name: "ShipmentOrderStatusName",
-    //     Type: "text",
-    //     Caption: "Trạng thái",
-    //     DataSourceMember: "ShipmentOrderStatusName",
-    //     Width: 150
-    // },
+    {
+        Name: "Status",
+        Type: "text",
+        Caption: "Trạng thái",
+        DataSourceMember: "Status",
+        Width: 150
+    },
     {
         Name: "Action",
         Type: "editnew",

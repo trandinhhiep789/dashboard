@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import DataGrid from "../../../../common/components/DataGrid/getdataserver.js";
+//import DataGrid from "../../../../common/components/DataGrid";
 import InputGridNew from "../../../../common/components/FormContainer/FormControl/InputGridNew";
 import { MessageModal } from "../../../../common/components/Modal";
 import {
@@ -43,6 +44,7 @@ class SearchCom extends React.Component {
             iconNotification: "",
             PageNumber: 1,
             IsLoadDataComplete: false,
+
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -55,10 +57,15 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-        debugger
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             console.log('Service Agree', apiResult)
-            if (!apiResult.IsError) {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else{
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
@@ -67,8 +74,30 @@ class SearchCom extends React.Component {
         });
     }
 
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+                onCloseModal={this.handleCloseMessage}
+            />
+        );
+    }
+
     handleDelete(id) {
-        console.log('handleDelete', id)
+        const objServiceAgreement = {
+            ServiceAgreementID: id,
+            DeletedUser: this.props.AppInfo.LoginInfo.Username
+        };
+        this.props.callFetchAPI(APIHostName, DeleteAPIPath, objServiceAgreement).then(apiResult => {
+            console.log('handleDelete', apiResult, objServiceAgreement)
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callSearchData(this.state.SearchData);
+            }
+        });
     }
 
     handleonChangePage(pageNum) {
@@ -125,18 +154,18 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.AreaID
             },
             {
-                SearchKey: "@SIGNEDDATE",
+                SearchKey: "@FromDate",
                 SearchValue: MLObject.SignedDate
             },
             {
-                SearchKey: "@EXPIREDDATE",
-                SearchValue: MLObject.ExpiredDate
+                SearchKey: "@ToDate",
+                SearchValue: MLObject.SignedDate
             }
-         
+
         ];
 
-        this.setState({ 
-            SearchData: DataSearch 
+        this.setState({
+            SearchData: DataSearch
         });
 
         this.callSearchData(DataSearch);
