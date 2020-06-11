@@ -243,7 +243,6 @@ class FormContainerCom extends Component {
             if (formValidation[key].ErrorLst != undefined) {
                 // console.log("validation:", key, this.elementItemRefs[key]);
                 if (formValidation[key].ErrorLst != [] && formValidation[key].ErrorLst.IsValidatonError) {
-                    debugger;
                     this.elementItemRefs[key].focus()
                     // this.elementItemRefs[key].getElementsByTagName('input')[0].focus()
                     //     console.log("elementItemRefs[key].",key,this.elementItemRefs[key].Children)

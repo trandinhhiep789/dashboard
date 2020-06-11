@@ -95,7 +95,6 @@ class InputGridNewCom extends Component {
 			this.props.onInsertClick();
 		}
 		else {
-			debugger;
 			let listColumnNew = this.props.listColumn.filter((person, index) => {
 				if (this.props.listColumn[index].iputpop == true || this.props.listColumn[index].iputpop === undefined) { return person; }
 			});

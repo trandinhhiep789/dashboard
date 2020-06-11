@@ -144,7 +144,6 @@ class DataGridCom extends Component {
     }
 
     onValueChange(elementdata, index) {
-        debugger;
         let elementobject;
         let gridData;
         const multipleCheck = this.props.isMultipleCheck;

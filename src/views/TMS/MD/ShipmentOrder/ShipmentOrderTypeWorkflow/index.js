@@ -118,7 +118,6 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     }
 
     addShipmentOrderTypeWFPermis() {
-        debugger;
         const InputPermissColumnList = this.state.InputPermissColumnList;
         const UserNameList = this.state.UserNameList;
         let ShipmentOrderType_WF_PermisData = this.state.ShipmentOrderType_WF_PermisData;
@@ -151,7 +150,6 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     }
 
     valueChangeInputGridPermisData(elementdata, index) {
-        debugger;
         const rowGridData = Object.assign({}, this.state.ShipmentOrderType_WF_PermisData[index], { [elementdata.Name]: elementdata.IsChecked }, { HasChanged: true });
         const ShipmentOrderType_WF_PermisData = Object.assign([], this.state.ShipmentOrderType_WF_PermisData, { [index]: rowGridData });
         this.setState({ ShipmentOrderType_WF_PermisData });
@@ -196,7 +194,6 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     }
 
     valueChangeInputGridNextData(elementdata, index) {
-        debugger;
         //console.log("valueChangeInputGridNextData",elementdata, index)
         const rowGridData = Object.assign({}, this.state.FormData.ShipmentOrderType_WF_Next[index], { [elementdata.Name]: elementdata.IsChecked }, { HasChanged: true });
         const ShipmentOrderType_WF_Next = Object.assign([], this.state.FormData.ShipmentOrderType_WF_Next, { [index]: rowGridData });
@@ -233,7 +230,6 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        debugger;
         let newShipmentOrderType_WF_PermisData = this.state.ShipmentOrderType_WF_PermisData;
         let newShipmentOrderType_WF_NextData = this.state.FormData.ShipmentOrderType_WF_Next;
         const newFormData = Object.assign({}, this.state.FormData.ShipmentOrderTypeWorkflow, {
@@ -286,7 +282,6 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         }
         else {
             this.props.callFetchAPI(APIHostName, this.props.IsUpdateData ? UpdateAPIPath : AddAPIPath, newFormData).then((apiResult) => {
-                debugger;
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 this.showMessage(apiResult.Message);
 

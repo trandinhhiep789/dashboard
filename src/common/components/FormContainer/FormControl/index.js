@@ -225,7 +225,6 @@ class FormControlComboBoxCom extends Component {
         this.state = { Listoption: [], SelectedOption: [] }
     }
     handleValueChange(selectedOption) {
-        debugger;
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null)
             this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.name : "");
@@ -291,7 +290,6 @@ class FormControlComboBoxCom extends Component {
                     // });
 
                     this.setState({ Listoption: listOption, Data: result.ResultObject.CacheData });
-                    debugger
                     const strSelectedOption = this.bindcombox(this.props.value, listOption);
                     this.setState({ SelectedOption: strSelectedOption });
                 }
@@ -323,7 +321,6 @@ class FormControlComboBoxCom extends Component {
         }
 
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
-            debugger
             const aa = this.bindcombox(nextProps.value, this.state.Listoption);
             this.setState({ SelectedOption: aa });
         }
@@ -1525,7 +1522,7 @@ class ComboBoxSelectCom extends Component {
             const nameMember = this.props.nameMember;
             //    console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
             this.props.callGetCache(cacheKeyID).then((result) => {
-                console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
+                //console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
                 listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     result.ResultObject.CacheData.map((cacheItem) => {

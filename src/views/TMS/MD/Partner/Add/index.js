@@ -86,7 +86,6 @@ class AddCom extends React.Component {
         data.map((cacheItem) => {
             if (conditionName) {
                 if (cacheItem[conditionName] == conditionValue) {
-                    debugger;
                     listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
                 }
             }
@@ -147,7 +146,6 @@ class AddCom extends React.Component {
     }
 
     setValueCombobox() {
-        debugger;
         let country = [{ value: -1, label: "--Vui lòng chọn--" }];
         let province = [{ value: -1, label: "--Vui lòng chọn--" }];
         let district = [{ value: -1, label: "--Vui lòng chọn--" }];

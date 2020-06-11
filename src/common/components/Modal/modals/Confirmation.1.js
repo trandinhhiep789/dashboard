@@ -56,7 +56,6 @@ class Confirmation extends React.Component {
         return true;
     }
     handleConfirm() {
-        debugger;
         const formValidation = this.validationForm();
         if (!this.checkInput(formValidation)) {
             this.setState({ FormValidation: formValidation, IsSubmit: true });

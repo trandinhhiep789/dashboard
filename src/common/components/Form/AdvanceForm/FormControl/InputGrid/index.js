@@ -313,7 +313,6 @@ class InputGridCom extends Component {
 	}
 
 	handleDeleteClick() {
-		debugger;
 		var doDelete = () => {
 			const idSelectColumnName = this.props.IDSelectColumnName;
 			if (idSelectColumnName != "checkboxAll") {
@@ -767,7 +766,6 @@ class InputGridCom extends Component {
 								dataSourceMember = this.state.ListDataSourceMember;
 								let isMath = false;
 								for (var i = 0; i < checkList.length; i++) {
-									debugger
 									for (var j = 0; j < dataSourceMember.length; j++) {
 										if (dataSourceMember[j].key == "index") {
 											if (rowIndex != checkList[i].DataSourceMember[j].value) {
@@ -811,7 +809,6 @@ class InputGridCom extends Component {
 										}
 										let value;
 										if (columnItem.Type == "checkbox" && columnItem.Name.toString().includes("chkSelect")) {
-											debugger
 											dataSourceMember = this.state.ListDataSourceMember;
 											value = dataSourceMember.map((obj, index) => {
 												if (obj.key == "index") {

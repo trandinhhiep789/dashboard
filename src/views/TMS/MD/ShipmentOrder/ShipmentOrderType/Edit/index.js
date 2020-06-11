@@ -119,7 +119,6 @@ class EditCom extends React.Component {
     }
 
     editShipmentOrderTypeWorkflowPopup(index) {
-        debugger;
         // let objPieRequestTypeWorkflow = this.state.FormData.PieRequestTypeWorkflow.filter(x => x.PieRequestStepID == pieRequestStepID)[0];
         // let shipmentOrderTypeWorkflowNext = this.state.FormData.PieRequestTypeWorkflow.filter((x,i) => x.PieRequestStepID != pieRequestStepID);
         let objShipmentOrderTypeWorkflow = this.state.FormData.ShipmentOrderTypeWorkflow[index];
@@ -462,7 +461,6 @@ class EditCom extends React.Component {
         if (this.state.IsValidStep) {
             if (window.confirm('Thiếu bước khởi tạo hay hoàn thành. Bạn có muốn tiếp tục cập nhật không?')) {
                 this.props.callFetchAPI(APIHostName, UpdateAPIPath, param).then((apiResult) => {
-                    debugger;
                     this.setState({ IsCallAPIError: apiResult.IsError });
                     if (!apiResult.IsError) {
                         this.showMessage1(apiResult.Message);
@@ -477,7 +475,6 @@ class EditCom extends React.Component {
 
         } else {
             this.props.callFetchAPI(APIHostName, UpdateAPIPath, param).then((apiResult) => {
-                debugger;
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 if (!apiResult.IsError) {
                     this.showMessage1(apiResult.Message);
@@ -659,7 +656,6 @@ class EditCom extends React.Component {
     }
 
     changeSelecPartner(name, listSelect) {
-        debugger;
         let PartnerList = [];
         listSelect.map(partner => {
             const partnerMatch = this.state.PartnerCache.filter(x => { return x.PartnerID == partner });
