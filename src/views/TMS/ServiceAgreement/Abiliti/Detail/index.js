@@ -11,7 +11,7 @@ import {
 import { ModalManager } from "react-dynamic-modal";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-
+import { formatDate } from "../../../../../common/library/CommonLib.js";
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -24,7 +24,6 @@ class DetailCom extends React.Component {
     }
 
     componentDidMount() {
-        console.log('Abiliti Detail', this.props)
         this.callLoadData(this.props.match.params.id);
 
     }
@@ -42,6 +41,14 @@ class DetailCom extends React.Component {
                     AbilityItem: apiResult.ResultObject,
                     IsLoadDataComplete: true
                 });
+                const id= apiResult.ResultObject.ServiceAgreementID;
+                const PagePath = [
+                    { Link: "/", Title: "Trang chủ" },
+                    { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ " },
+                    { Link: "/ServiceAgreement/Detail/" + id, Title: "Danh sách hợp đồng dịch vụ " },
+                    { Link: "", Title: "Chi tiết năng lực" },
+                ];
+                this.props.updatePagePath(PagePath);
             }
         });
     }
@@ -86,7 +93,7 @@ class DetailCom extends React.Component {
                                 </div>
                                 <div className="form-group col-md-4">
                                     <label className="col-form-label">
-                                        {this.state.AbilityItem.FromDate}
+                                        {formatDate(this.state.AbilityItem.FromDate)}
                                     </label>
                                 </div>
 
@@ -95,7 +102,7 @@ class DetailCom extends React.Component {
                                 </div>
                                 <div className="form-group col-md-4">
                                     <label className="col-form-label">
-                                        {this.state.AbilityItem.ToDate}
+                                        {formatDate(this.state.AbilityItem.ToDate)}
                                     </label>
                                 </div>
                             </div>
@@ -168,7 +175,7 @@ class DetailCom extends React.Component {
                         </div>
                         <footer className="card-footer text-right">
                             <Link to={BackLinkTo}>
-                                <button class="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
+                                <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
                             </Link>
                         </footer>
                     </div>

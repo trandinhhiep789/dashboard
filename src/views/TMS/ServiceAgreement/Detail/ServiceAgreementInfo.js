@@ -5,6 +5,8 @@ import {
     APIHostName,
 } from "../constants";
 
+import { formatDate } from "../../../../common/library/CommonLib.js";
+
 class ServiceAgreementInfoCom extends Component {
     constructor(props) {
         super(props);
@@ -14,7 +16,7 @@ class ServiceAgreementInfoCom extends Component {
     }
 
     componentDidMount() {
-        // console.log('ServiceAgreementInfoCom', this.props.ServiceAgreementInfo)
+        console.log('ServiceAgreementInfoCom', this.props.ServiceAgreementInfo)
     }
 
 
@@ -70,12 +72,12 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Ngày ký hợp đồng:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{this.props.ServiceAgreementInfo.SignedDate}</label>
+                        <label className="col-form-label">{formatDate(this.props.ServiceAgreementInfo.SignedDate)}</label>
                     </div><div className="form-group col-md-2">
                         <label className="col-form-label bold">Ngày hết hạn hợp đồng:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{this.props.ServiceAgreementInfo.ExpiredDate}</label>
+                        <label className="col-form-label">{formatDate(this.props.ServiceAgreementInfo.ExpiredDate)}</label>
                     </div>
                 </div>
 
@@ -84,12 +86,17 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Đã gia hạn hợp đồng:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{this.props.ServiceAgreementInfo.IsExtended}</label>
+                        <div className="checkbox customCheckbox">
+                            <label><input type="checkbox" disabled={true} defaultChecked={this.props.ServiceAgreementInfo.IsExtended} />
+                                <span className="cr"><i className="cr-icon fa fa-check"></i>
+                                </span>
+                            </label>
+                        </div>
                     </div><div className="form-group col-md-2">
                         <label className="col-form-label bold">Gia hạn đến ngày:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{this.props.ServiceAgreementInfo.ExtendedDate}</label>
+                        <label className="col-form-label">{formatDate(this.props.ServiceAgreementInfo.ExtendedDate)}</label>
                     </div>
                 </div>
 
@@ -98,12 +105,18 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Đã thanh lý hợp đồng:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{this.props.ServiceAgreementInfo.IsLiquidated}</label>
-                    </div><div className="form-group col-md-2">
+                        <div className="checkbox customCheckbox">
+                            <label><input type="checkbox" disabled={true} defaultChecked={this.props.ServiceAgreementInfo.IsLiquidated} />
+                                <span className="cr"><i className="cr-icon fa fa-check"></i>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <div className="form-group col-md-2">
                         <label className="col-form-label bold">Ngày thanh lý hợp đồng:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{this.props.ServiceAgreementInfo.Liquidateddate}</label>
+                        <label className="col-form-label">{formatDate(this.props.ServiceAgreementInfo.Liquidateddate)}</label>
                     </div>
                 </div>
 
@@ -112,7 +125,13 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Đã ký quỹ:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{this.props.ServiceAgreementInfo.IsDeposited}</label>
+                        <div className="checkbox customCheckbox">
+                            <label><input type="checkbox" disabled={true} defaultChecked={this.props.ServiceAgreementInfo.IsDeposited} />
+                                <span className="cr"><i className="cr-icon fa fa-check"></i>
+                                </span>
+                            </label>
+                        </div>
+
                     </div><div className="form-group col-md-2">
                         <label className="col-form-label bold">Số tiền ký quỹ:</label>
                     </div>
@@ -126,7 +145,7 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Ngày ký quỹ:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{this.props.ServiceAgreementInfo.DepositedDate}</label>
+                        <label className="col-form-label">{formatDate(this.props.ServiceAgreementInfo.DepositedDate)}</label>
                     </div><div className="form-group col-md-2">
                         <label className="col-form-label bold">Ghi chú ký quỹ:</label>
                     </div>
@@ -149,9 +168,9 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Kích hoạt:</label>
                     </div>
                     <div className="form-group col-md-10">
-                        <div class="checkbox customCheckbox">
+                        <div className="checkbox customCheckbox">
                             <label><input type="checkbox" disabled={true} defaultChecked={this.props.ServiceAgreementInfo.IsActived} />
-                                <span class="cr"><i class="cr-icon fa fa-check"></i>
+                                <span className="cr"><i className="cr-icon fa fa-check"></i>
                                 </span>
                             </label>
                         </div>
@@ -163,9 +182,9 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Hệ thống:</label>
                     </div>
                     <div className="form-group col-md-10">
-                        <div class="checkbox customCheckbox">
+                        <div className="checkbox customCheckbox">
                             <label><input type="checkbox" disabled={true} defaultChecked={this.props.ServiceAgreementInfo.IsSystem} />
-                                <span class="cr"><i class="cr-icon fa fa-check"></i>
+                                <span className="cr"><i className="cr-icon fa fa-check"></i>
                                 </span>
                             </label>
                         </div>

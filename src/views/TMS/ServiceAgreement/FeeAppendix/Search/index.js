@@ -51,7 +51,6 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-        debugger
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             console.log('Service Agree', apiResult)
             if (!apiResult.IsError) {

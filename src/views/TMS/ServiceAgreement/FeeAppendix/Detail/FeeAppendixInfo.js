@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-
+import { formatDate } from "../../../../../common/library/CommonLib.js";
 class FeeAppendixInfoInfoCom extends Component {
     constructor(props) {
         super(props);
@@ -46,7 +46,7 @@ class FeeAppendixInfoInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {this.state.FeeAppendixInfo.ApplyFromDate}
+                            {formatDate(this.state.FeeAppendixInfo.ApplyFromDate)}
                         </label>
                     </div>
                     <div className="form-group col-md-2">
@@ -54,7 +54,7 @@ class FeeAppendixInfoInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {this.state.FeeAppendixInfo.ApplyToDate}
+                            {formatDate(this.state.FeeAppendixInfo.ApplyToDate)}
                         </label>
                     </div>
                 </div>
