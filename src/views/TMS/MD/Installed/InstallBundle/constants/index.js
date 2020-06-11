@@ -401,12 +401,13 @@ export const GridMLMcRoleDefinition = [
 export const InputMcRoleColumnList = [
     {
         Name: "ProductID",
-        Type: "textbox",
+        Type: "ProductCombo",
         Caption: "Mã sản phẩm",
         label:"mã sản phẩm",
         DataSourceMember: "ProductID",
         Width: 200,
-        validatonList: ["required"],
+        validatonList: ["Comborequired"],
+        namelabel:"ProductName",
         OrderIndex:1,
         Colmd:12
     
@@ -432,7 +433,9 @@ export const InputMcRoleColumnList = [
         Width: 200,
         validatonList: ["required","number"],
         OrderIndex:3,
-        Colmd:12
+        Colmd:12,
+        min:1,
+        max:9999
     },
     {
         Name: "Note",

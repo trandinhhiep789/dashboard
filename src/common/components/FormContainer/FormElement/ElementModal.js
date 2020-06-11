@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { callGetCache } from "../../../../actions/cacheAction";
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { InputNumber, DatePicker } from "antd";
 import moment from 'moment';
 import Datetime from 'react-datetime';
@@ -18,6 +19,9 @@ const mapDispatchToProps = dispatch => {
     return {
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callFetchAPI: (hostname, hostURL, postData) => {
+            return dispatch(callFetchAPI(hostname, hostURL, postData));
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
@@ -43,9 +47,11 @@ class ElementModalText extends React.Component {
         let classNamecolmd = "col-md-6";
         if (this.props.Colmd != null)
             classNamecolmd = "col-md-" + this.props.Colmd;
+
         let className = "form-control form-control-sm";
         if (this.props.CSSClassName != null)
             className = this.props.CSSClassName;
+
         if (this.props.Colmd == 12) {
             className = className + " customcontrol";
         }
@@ -160,8 +166,9 @@ class ElementModalNumber extends React.Component {
                     <div className={formGroupClassName}>
                         <InputNumber
                             name={this.props.Name}
-                            min={1}
-                            max={10}
+                            min={this.props.min}
+                            max={this.props.max}
+                            value={this.props.value}
                             onChange={this.handleValueChange}
                             ref={this.props.inputRef}
                         />
@@ -286,6 +293,11 @@ class ElementModalComboBoxCom extends Component {
 
     render() {
         let { name, label, rowspan, colspan, labelcolspan, validatonList, isMultiSelect, disabled, validationErrorMessage, placeholder, listoption } = this.props;
+
+        let classNamecolmd = "col-md-6";
+        if (this.props.Colmd != null)
+            classNamecolmd = "col-md-" + this.props.Colmd;
+
         let formRowClassName = "form-row";
         if (rowspan != null) {
             formRowClassName = "form-row col-md-" + rowspan;
@@ -310,28 +322,31 @@ class ElementModalComboBoxCom extends Component {
         const selectedOption = this.state.SelectedOption;
         const listOption = this.state.Listoption;
         return (
-            <div className={formRowClassName} >
-                <div className={labelDivClassName}>
-                    <label className="col-form-label 6">
-                        {label}<span className="text-danger"> {star}</span>
-                    </label>
-                </div>
-                <div className={formGroupClassName}>
-                    <Select
-                        value={selectedOption}
-                        name={name}
-                        ref={this.props.inputRef}
-                        onChange={this.handleValueChange}
-                        options={listOption}
-                        isDisabled={disabled}
-                        isMulti={isMultiSelect}
-                        isSearchable={true}
-                        placeholder={placeholder}
-                        className={className}
-                    />
-                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{validationErrorMessage}</li></ul></div>
+            <div className={classNamecolmd}>
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 6">
+                            {label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+                    <div className={formGroupClassName}>
+                        <Select
+                            value={selectedOption}
+                            name={name}
+                            ref={this.props.inputRef}
+                            onChange={this.handleValueChange}
+                            options={listOption}
+                            isDisabled={disabled}
+                            isMulti={isMultiSelect}
+                            isSearchable={true}
+                            placeholder={placeholder}
+                            className={className}
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{validationErrorMessage}</li></ul></div>
+                    </div>
                 </div>
             </div>
+
         );
     }
 }
@@ -463,5 +478,150 @@ class TextArea extends React.Component {
     }
 }
 
-export default { ElementModalText, ElementModalComboBox, CheckBox, TextArea, ElementModalNumber };
+class ProductComboBoxCom extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.handleValueonKeyDown = this.handleValueonKeyDown.bind(this);
+        this.state = { ListOption: [], SelectedOption: [] }
+    }
+
+    componentDidMount() {
+    }
+
+    callSearchData(KeyWord, isFirstLoad) {
+        let listMLObject =
+        {
+            "QueryParamList": [
+                {
+                    "QueryKey": "",
+                    "QueryValue": "",
+                    "QueryType": 18,
+                    "IsNotQuery": false,
+                    "SubQueryParamList": [
+                        {
+                            "QueryKey": "pRODUCTID",
+                            "QueryValue": KeyWord,
+                            "QueryType": 1,
+                            "IsNotQuery": false
+                        },
+                        {
+                            "QueryKey": "pRODUCTNAME",
+                            "QueryValue": KeyWord,
+                            "QueryType": 2,
+                            "IsNotQuery": false
+                        },
+                        {
+                            "QueryKey": "pRODUCTSHORTNAME",
+                            "QueryValue": KeyWord,
+                            "QueryType": 2,
+                            "IsNotQuery": false
+                        }
+                    ]
+                }
+            ],
+            "Top": 1000,
+            "IndexName": "product",
+            "TypeName": "product",
+            "IsCompressResultData": false
+        }
+        this.props.callFetchAPI("ERPAPI", 'api/ProductSearch/Search', listMLObject).then(apiResult => {
+            let listOptionNew = [];
+            for (let i = 0; i < apiResult.ResultObject.length; i++) {
+                listOptionNew.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
+            }
+            this.setState({
+                ListOption: listOptionNew,
+                SelectedOption: isFirstLoad ? listOptionNew : []
+            });
+            return listOptionNew;
+        });
+    }
+
+    getComboValue(selectedOption) {
+        let values = [];
+        if (selectedOption == null)
+            return values;
+        for (let i = 0; i < selectedOption.length; i++) {
+            values.push({ ProductID: selectedOption[i].value, ProductName: selectedOption[i].label });
+        }
+        return values;
+    }
+
+    handleValueChange(selectedOption) {
+        if (this.props.onValueChange)
+            this.props.onValueChange(this.props.Name, selectedOption.value,this.props.namelabel, selectedOption.label);
+    }
+
+    handleValueonKeyDown(e) {
+        let value = e.target.value;
+        if (value.length > 4 && e.keyCode != 40 && e.keyCode != 38) {
+            this.callSearchData(value);
+        }
+    }
+    render() {
+        const listOption = this.state.ListOption;
+        const selectedOption = this.props.value;
+
+        let classNamecolmd = "col-md-6";
+        if (this.props.Colmd != null)
+            classNamecolmd = "col-md-" + this.props.Colmd;
+
+        let formRowClassName = "form-row";
+        if (this.props.rowspan)
+            formRowClassName = "form-row col-md-" + this.props.rowspan;
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-8";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-4";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
+            star = '*'
+        }
+        let classNameselect = "react-select";
+        if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
+            classNameselect += " is-invalid";
+        }
+        return (
+            <div className={classNamecolmd}>
+                <div className={formRowClassName} >
+
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 6">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+
+                    <div className={formGroupClassName}>
+                        <Select
+                            name={this.props.Name}
+                            value={selectedOption}
+                            onChange={this.handleValueChange}
+                            onKeyDown={this.handleValueonKeyDown}
+                            options={listOption}
+                            isMulti={false}
+                            isDisabled={this.props.disabled}
+                            isSearchable={true}
+                            placeholder={"Nhập mã sản phẩm"}
+                            className={classNameselect}
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+const ProductComboBox = connect(mapStateToProps, mapDispatchToProps)(ProductComboBoxCom);
+
+export default { ElementModalText, ElementModalComboBox, CheckBox, TextArea, ElementModalNumber, ProductComboBox };
 

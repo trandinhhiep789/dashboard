@@ -493,6 +493,12 @@ export const GridMLMcRoleDefinition = [
         DataSourceMember: "ProductID"
     },
     {
+        Name: "ProductName",
+        DefaultValue: "",
+        BindControlName: "ProductName",
+        DataSourceMember: "ProductName"
+    },
+    {
         Name: "IsFrequentlyUse",
         DefaultValue: "",
         BindControlName: "IsFrequentlyUse",
@@ -514,33 +520,57 @@ export const GridMLMcRoleDefinition = [
 export const InputMcRoleColumnList = [
     {
         Name: "ProductID",
-        Type: "textbox",
+        Type: "ProductCombo",
         Caption: "Mã sản phẩm",
+        label:"mã sản phẩm",
         DataSourceMember: "ProductID",
-        Width: 200,
-        validatonList: ["required"]
-    }
-    ,
+        Width: 100,
+        validatonList: ["Comborequired"],
+        namelabel:"ProductName",
+        OrderIndex:1,
+        Colmd:12
+    },
+    {
+        Name: "ProductName",
+        Type: "textbox",
+        Caption: "Tên sản phẩm",
+        label:"Tên sản phẩm",
+        DataSourceMember: "ProductName",
+        iputpop:false,
+        Width: 300,
+        OrderIndex:2,
+        Colmd:12
+      
+    },
     {
         Name: "IsFrequentlyUse",
         Type: "checkbox",
+        label:"là vật tư thường sử dụng",
         Caption: "Là vật tư thường sử dụng",
         DataSourceMember: "IsFrequentlyUse",
-        Width: 70,
+        Width: 150,
+        OrderIndex:3,
+        Colmd:12
     },
     {
         Name: "Note",
-        Type: "textbox",
+        Type: "TextArea",
+        label:"ghi chú",
         Caption: "Ghi chú",
         DataSourceMember: "Note",
         Width: 300,
+        OrderIndex:4,
+        Colmd:12
     },
     {
         Name: "IsActived",
         Type: "checkbox",
+        label:"kích hoạt",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 70
+        Width: 70,
+        OrderIndex:5,
+        Colmd:12
     },
     {
         Name: "Action",

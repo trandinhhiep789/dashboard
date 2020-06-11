@@ -68,7 +68,7 @@ class ConfirmationNew extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.elementItemRefs = [];
         const formData = this.bindData();
-        console.log("ConfirmationNew",formData);
+        console.log("ConfirmationNew", formData);
         this.state = {
             Title: this.props.title ? this.props.title : "",
             FormData: formData
@@ -80,7 +80,7 @@ class ConfirmationNew extends React.Component {
         const dataSource = this.props.dataSource;
         let formData = {};
         const listElement = this.bindDataToControl(this.props.modalElementList, this.props.dataSource);
-            listElement.map((elementItem) => {
+        listElement.map((elementItem) => {
             const elementname = elementItem.Name;
             const ObjectName = { Name: elementname, value: elementItem.value, Controltype: elementItem.Type, label: elementItem.label, labelError: elementItem.label, ErrorLst: [], validatonList: elementItem.validatonList };
             formData = Object.assign({}, formData, { [elementname]: ObjectName });
@@ -107,10 +107,15 @@ class ConfirmationNew extends React.Component {
     //#endregion BinData
 
     //#region InputChange && InputChangeList  
-    handleInputChange(elementname, elementvalue, controllabel, listvalidation, listvalidationRow) {
+    handleInputChange(elementname, elementvalue, namelabel, valuelabel, listvalidationRow) {
         //console.log('change')
+
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
+        if (typeof namelabel != "undefined" && namelabel != "") {
+            FormDataContolLstd[namelabel].value = valuelabel;
+        }
+
         if (typeof FormDataContolLstd[elementname].validatonList != "undefined") {
             const validation = ValidationField(FormDataContolLstd[elementname].validatonList, elementvalue, FormDataContolLstd[elementname].label, FormDataContolLstd[elementname]);
             const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
@@ -229,6 +234,20 @@ class ConfirmationNew extends React.Component {
                                         key={index}
                                     />
                                 );
+                            case "ProductCombo":
+                                if (this.state.FormData[elementItem.Name].value != "" && typeof this.state.FormData[elementItem.Name].value != "undefined")
+                                    elementItem.value = { value: this.state.FormData[elementItem.Name].value, label: this.state.FormData[elementItem.namelabel].value }
+                                return (
+                                    <ElementModal.ProductComboBox
+                                        onValueChange={this.handleInputChange}
+                                        value={this.state.FormData[elementItem.Name].value}
+                                        validationErrorMessage={this.state.FormData[elementItem.Name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.Name] = ref}
+                                        {...elementItem}
+                                        key={index}
+                                    />
+                                );
+
                             case "checkbox":
                                 return (
                                     <ElementModal.CheckBox
