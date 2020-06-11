@@ -54,26 +54,24 @@ export const AddElementList = [
         name: "txtInstallMaterialID",
         label: "mã nhóm vật tư lắp đặt",
         value: "",
-        maxSize: "20",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "InstallMaterialID",
+        maxsize: "20",
+        placeholder: "Mã nhóm vật tư lắp đặt",
+        datasourcemember: "InstallMaterialID",
         readonly: false,
-        validatonList: ["required"]
+        validatonList: ["required"],
+        OrderIndex: 1
     },
     {
         type: "text",
         name: "txtInstallMaterialName",
         label: "tên nhóm vật tư lắp đặt",
         value: "",
-        maxSize: "20",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "InstallMaterialName",
+        maxsize: "175",
+        placeholder: "Tên nhóm vật tư lắp đặt",
+        datasourcemember: "InstallMaterialName",
         readonly: false,
-        validatonList: ["required"]
+        validatonList: ["required"],
+        OrderIndex: 2
     },
     {
         type: "select",
@@ -83,13 +81,14 @@ export const AddElementList = [
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "ShipmentOrderTypeID",
+        datasourcemember: "ShipmentOrderTypeID",
         readonly: false,
         validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
-        ValueMember: "ShipmentOrderTypeID",
-        NameMember: "ShipmentOrderTypeName"
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
+        valuemember: "ShipmentOrderTypeID",
+        nameMember: "ShipmentOrderTypeName",
+        OrderIndex: 3
     },
     {
         type: "select",
@@ -99,13 +98,14 @@ export const AddElementList = [
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "PartnerID",
+        datasourcemember: "PartnerID",
         readonly: false,
         validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
-        ValueMember: "PartnerID",
-        NameMember: "PartnerName"
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
+        valuemember: "PartnerID",
+        nameMember: "PartnerName",
+        OrderIndex: 4
     },
     {
         type: "select",
@@ -115,13 +115,14 @@ export const AddElementList = [
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "SubGroupID",
+        datasourcemember: "SubGroupID",
         readonly: false,
         validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SUBGROUP",
-        ValueMember: "SubGroupID",
-        NameMember: "SubGroupName"
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.SUBGROUP",
+        valuemember: "SubGroupID",
+        nameMember: "SubGroupName",
+        OrderIndex: 5
     },
     {
         type: "select",
@@ -131,13 +132,14 @@ export const AddElementList = [
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "TechspecsID",
+        datasourcemember: "TechspecsID",
         readonly: false,
-        validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECS",
-        ValueMember: "TechSpecsID",
-        NameMember: "TechSpecsName"
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.TECHSPECS",
+        valuemember: "TechSpecsID",
+        nameMember: "TechSpecsName",
+        filterrest: "cbTechspecsValueID",
+        OrderIndex: 6
     },
     {
         type: "select",
@@ -147,45 +149,49 @@ export const AddElementList = [
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "TechspecsValueID",
+        datasourcemember: "TechspecsValueID",
         readonly: false,
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECSVALUE",
-        ValueMember: "TechSpecsValueID",
-        NameMember: "Value"
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.TECHSPECSVALUE",
+        valuemember: "TechSpecsValueID",
+        nameMember: "Value",
+        filterName: "cbTechspecsID",
+        filterValue: "",
+        filterobj: "TechSpecsID",
+        OrderIndex: 7
     },
     {
-        type: "textarea",
+        type: "TextArea",
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
         placeholder: "Mô tả",
-        maxSize: "1900",
-        icon: "",
+        maxsize: "1900",
         rows: "6",
-        listoption: [],
-        DataSourceMember: "Description",
+        datasourcemember: "Description",
         readonly: false,
+        Colmd:12,
+        labelcolspan:2,
+        colspan:10,
+        OrderIndex: 8
     },
     {
         type: "checkbox",
         name: "chkIsActived",
         label: "Kích hoạt:",
         value: true,
-        placeholder: "",
-        icon: "",
-        listoption: [],
+        datasourcemember: "IsActived",
         readonly: false,
+        OrderIndex: 9
     },
     {
         type: "checkbox",
         name: "chkIsSystem",
         label: "Hệ thống:",
         value: "",
-        placeholder: "",
-        icon: "",
-        listoption: [],
         readonly: false,
+        datasourcemember: "IsSystem",
+        OrderIndex: 10
     }
 ];
 
@@ -197,11 +203,10 @@ export const EditElementList = [
         value: "",
         maxSize: "20",
         placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "InstallMaterialID",
+        datasourcemember: "InstallMaterialID",
         readonly: true,
-        validatonList: ["required"]
+        validatonList: ["required"],
+        OrderIndex: 1
     },
     {
         type: "text",
@@ -210,11 +215,10 @@ export const EditElementList = [
         value: "",
         maxSize: "20",
         placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "InstallMaterialName",
+        datasourcemember: "InstallMaterialName",
         readonly: false,
-        validatonList: ["required"]
+        validatonList: ["required"],
+        OrderIndex: 2
     },
     {
         type: "select",
@@ -224,13 +228,14 @@ export const EditElementList = [
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "ShipmentOrderTypeID",
+        datasourcemember: "ShipmentOrderTypeID",
         readonly: false,
         validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
-        ValueMember: "ShipmentOrderTypeID",
-        NameMember: "ShipmentOrderTypeName"
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
+        valuemember: "ShipmentOrderTypeID",
+        nameMember: "ShipmentOrderTypeName",
+        OrderIndex: 3
     },
     {
         type: "select",
@@ -240,13 +245,14 @@ export const EditElementList = [
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "PartnerID",
+        datasourcemember: "PartnerID",
         readonly: false,
         validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
-        ValueMember: "PartnerID",
-        NameMember: "PartnerName"
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
+        valuemember: "PartnerID",
+        nameMember: "PartnerName",
+        OrderIndex: 4
     },
     {
         type: "select",
@@ -256,13 +262,14 @@ export const EditElementList = [
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "SubGroupID",
+        datasourcemember: "SubGroupID",
         readonly: false,
         validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SUBGROUP",
-        ValueMember: "SubGroupID",
-        NameMember: "SubGroupName"
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.SUBGROUP",
+        valuemember: "SubGroupID",
+        nameMember: "SubGroupName",
+        OrderIndex: 5
     },
     {
         type: "select",
@@ -272,13 +279,15 @@ export const EditElementList = [
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "TechspecsID",
+        datasourcemember: "TechspecsID",
         readonly: false,
         validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECS",
-        ValueMember: "TechSpecsID",
-        NameMember: "TechSpecsName"
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.TECHSPECS",
+        valuemember: "TechSpecsID",
+        nameMember: "TechSpecsName",
+        filterrest: "cbTechspecsValueID",
+        OrderIndex: 6
     },
     {
         type: "select",
@@ -288,47 +297,49 @@ export const EditElementList = [
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "TechspecsValueID",
+        datasourcemember: "TechspecsValueID",
         readonly: false,
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECSVALUE",
-        ValueMember: "TechSpecsValueID",
-        NameMember: "Value"
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.TECHSPECSVALUE",
+        valuemember: "TechSpecsValueID",
+        nameMember: "Value",
+        filterName: "cbTechspecsID",
+        filterValue: "",
+        filterobj: "TechSpecsID",
+        OrderIndex: 7
     },
     {
-        type: "textarea",
+        type: "TextArea",
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
         placeholder: "Mô tả",
         maxSize: "2000",
-        icon: "",
         rows: "6",
-        listoption: [],
-        DataSourceMember: "Description",
+        datasourcemember: "Description",
         readonly: false,
+        Colmd:12,
+        labelcolspan:2,
+        colspan:10,
+        OrderIndex: 8
     },
     {
         type: "checkbox",
         name: "chkIsActived",
         label: "Kích hoạt:",
         value: "",
-        placeholder: "",
-        icon: "",
-        listoption: [],
         readonly: false,
-        DataSourceMember: "IsActived",
+        datasourcemember: "IsActived",
+        OrderIndex: 9
     },
     {
         type: "checkbox",
         name: "chkIsSystem",
         label: "Hệ thống:",
         value: "",
-        placeholder: "",
-        icon: "",
-        listoption: [],
         readonly: false,
-        DataSourceMember: "IsSystem",
+        datasourcemember: "IsSystem",
+        OrderIndex: 10
     }
 ];
 
@@ -482,7 +493,6 @@ export const DataGridColumnList = [
         LinkText: "Chỉnh sửa"
     }
 ]
-    
 
 export const GridMLMcRoleDefinition = [
 
@@ -519,64 +529,64 @@ export const GridMLMcRoleDefinition = [
 ];
 export const InputMcRoleColumnList = [
     {
-        Name: "ProductID",
+        name: "ProductID",
         Type: "ProductCombo",
         Caption: "Mã sản phẩm",
-        label:"mã sản phẩm",
-        DataSourceMember: "ProductID",
+        label: "mã sản phẩm",
+        datasourcemember: "ProductID",
         Width: 100,
         validatonList: ["Comborequired"],
-        namelabel:"ProductName",
-        OrderIndex:1,
-        Colmd:12
+        namelabel: "ProductName",
+        OrderIndex: 1,
+        Colmd: 12
     },
     {
-        Name: "ProductName",
+        name: "ProductName",
         Type: "textbox",
         Caption: "Tên sản phẩm",
-        label:"Tên sản phẩm",
-        DataSourceMember: "ProductName",
+        label: "Tên sản phẩm",
+        datasourcemember: "ProductName",
         iputpop:false,
         Width: 300,
-        OrderIndex:2,
-        Colmd:12
-      
+        OrderIndex: 2,
+        Colmd: 12
+
     },
     {
-        Name: "IsFrequentlyUse",
+        name: "IsFrequentlyUse",
         Type: "checkbox",
-        label:"là vật tư thường sử dụng",
+        label: "là vật tư thường sử dụng",
         Caption: "Là vật tư thường sử dụng",
-        DataSourceMember: "IsFrequentlyUse",
+        datasourcemember: "IsFrequentlyUse",
         Width: 150,
-        OrderIndex:3,
-        Colmd:12
+        OrderIndex: 3,
+        Colmd: 12
     },
     {
-        Name: "Note",
+        name: "Note",
         Type: "TextArea",
-        label:"ghi chú",
+        label: "ghi chú",
         Caption: "Ghi chú",
-        DataSourceMember: "Note",
+        datasourcemember: "Note",
         Width: 300,
-        OrderIndex:4,
-        Colmd:12
+        OrderIndex: 4,
+        Colmd: 12
     },
     {
-        Name: "IsActived",
+        name: "IsActived",
         Type: "checkbox",
-        label:"kích hoạt",
+        label: "kích hoạt",
         Caption: "Kích hoạt",
-        DataSourceMember: "IsActived",
+        datasourcemember: "IsActived",
         Width: 70,
-        OrderIndex:5,
-        Colmd:12
+        OrderIndex: 5,
+        Colmd: 12
     },
     {
-        Name: "Action",
+        name: "Action",
         Type: "editnew",
         Caption: "Tác vụ",
-        DataSourceMember: "ArticleID",
+        datasourcemember: "ArticleID",
         Width: 70,
         iputpop: false
     }

@@ -80,8 +80,9 @@ class ConfirmationNew extends React.Component {
         const dataSource = this.props.dataSource;
         let formData = {};
         const listElement = this.bindDataToControl(this.props.modalElementList, this.props.dataSource);
+        debugger;
         listElement.map((elementItem) => {
-            const elementname = elementItem.Name;
+            const elementname = elementItem.name;
             const ObjectName = { Name: elementname, value: elementItem.value, Controltype: elementItem.Type, label: elementItem.label, labelError: elementItem.label, ErrorLst: [], validatonList: elementItem.validatonList };
             formData = Object.assign({}, formData, { [elementname]: ObjectName });
         });
@@ -94,7 +95,7 @@ class ConfirmationNew extends React.Component {
         let listElement1 = listElement;
         if (typeof dataSource != "undefined") {
             listElement1 = listElement.map((elementItem) => {
-                const elementvalue = dataSource[elementItem.DataSourceMember];
+                const elementvalue = dataSource[elementItem.datasourcemember];
                 if (typeof elementvalue != "undefined") {
                     const newElementItem = Object.assign({}, elementItem, { value: elementvalue });
                     return newElementItem;
@@ -193,9 +194,9 @@ class ConfirmationNew extends React.Component {
                                 return (
                                     <ElementModal.ElementModalText
                                         onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.Name].value}
-                                        validationErrorMessage={this.state.FormData[elementItem.Name].ErrorLst.ValidatonErrorMessage}
-                                        inputRef={ref => this.elementItemRefs[elementItem.Name] = ref}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
                                         key={index}
                                     />
@@ -204,9 +205,9 @@ class ConfirmationNew extends React.Component {
                                 return (
                                     <ElementModal.ElementModalNumber
                                         onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.Name].value}
-                                        validationErrorMessage={this.state.FormData[elementItem.Name].ErrorLst.ValidatonErrorMessage}
-                                        inputRef={ref => this.elementItemRefs[elementItem.Name] = ref}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
                                         key={index}
                                     />
@@ -215,9 +216,9 @@ class ConfirmationNew extends React.Component {
                                 return (
                                     <ElementModal.TextArea
                                         onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.Name].value}
-                                        validationErrorMessage={this.state.FormData[elementItem.Name].ErrorLst.ValidatonErrorMessage}
-                                        inputRef={ref => this.elementItemRefs[elementItem.Name] = ref}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
                                         key={index}
                                     />
@@ -227,22 +228,22 @@ class ConfirmationNew extends React.Component {
                                 return (
                                     <ElementModal.ElementModalComboBox
                                         onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.Name].value}
-                                        validationErrorMessage={this.state.FormData[elementItem.Name].ErrorLst.ValidatonErrorMessage}
-                                        inputRef={ref => this.elementItemRefs[elementItem.Name] = ref}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
                                         key={index}
                                     />
                                 );
                             case "ProductCombo":
-                                if (this.state.FormData[elementItem.Name].value != "" && typeof this.state.FormData[elementItem.Name].value != "undefined")
-                                    elementItem.value = { value: this.state.FormData[elementItem.Name].value, label: this.state.FormData[elementItem.namelabel].value }
+                                if (this.state.FormData[elementItem.name].value != "" && typeof this.state.FormData[elementItem.name].value != "undefined")
+                                    elementItem.value = { value: this.state.FormData[elementItem.name].value, label: this.state.FormData[elementItem.namelabel].value }
                                 return (
                                     <ElementModal.ProductComboBox
                                         onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.Name].value}
-                                        validationErrorMessage={this.state.FormData[elementItem.Name].ErrorLst.ValidatonErrorMessage}
-                                        inputRef={ref => this.elementItemRefs[elementItem.Name] = ref}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
                                         key={index}
                                     />
@@ -252,9 +253,9 @@ class ConfirmationNew extends React.Component {
                                 return (
                                     <ElementModal.CheckBox
                                         onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.Name].value}
-                                        validationErrorMessage={this.state.FormData[elementItem.Name].ErrorLst.ValidatonErrorMessage}
-                                        inputRef={ref => this.elementItemRefs[elementItem.Name] = ref}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
                                         key={index}
                                     />

@@ -336,7 +336,7 @@ class InputGridCom extends Component {
 								};
 								let columHeader = elementItem.Caption;
 								return (
-									<th key={elementItem.Name} className="jsgrid-header-cell" style={cellStyle}>{columHeader}</th>
+									<th key={elementItem.name} className="jsgrid-header-cell" style={cellStyle}>{columHeader}</th>
 								);
 							})
 						}
@@ -359,9 +359,9 @@ class InputGridCom extends Component {
 										let isChecked = false;
 
 										if (columnItem.Type == "checkbox") {
-											isChecked = rowItem[columnItem.DataSourceMember];
+											isChecked = rowItem[columnItem.datasourcemember];
 										}
-										let ovjvalue = rowItem[columnItem.DataSourceMember];
+										let ovjvalue = rowItem[columnItem.datasourcemember];
 										const cellData = <InputGridCell type={columnItem.Type}
 											text={ovjvalue}
 											value={ovjvalue}
@@ -375,7 +375,7 @@ class InputGridCom extends Component {
 											isSystem={this.state.IsSystem}
 										/>;
 										return (
-											<td key={columnItem.Name} style={cellStyle}  >{cellData}</td>
+											<td key={columnItem.name} style={cellStyle}  >{cellData}</td>
 										);
 									}
 									)

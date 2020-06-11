@@ -41,7 +41,7 @@ class AddCom extends React.Component {
             IsCloseForm: false,
             AddElementList: AddElementList,
             DataSource: {},
-           
+
         };
         this.searchref = React.createRef();
     }
@@ -91,6 +91,7 @@ class AddCom extends React.Component {
             >
                 <InputGrid
                     name="InstallMaterial_ProductList"
+                    key="InstallMaterial_ProductList"
                     controltype="GridControl"
                     title=" vật tư lắp đặt cho nhóm sản phẩm"
                     IDSelectColumnName={"ProductID"}
@@ -101,7 +102,6 @@ class AddCom extends React.Component {
                     MLObjectDefinition={GridMLMcRoleDefinition}
                     colspan="12"
                 />
-
             </FormContainer>
         );
     }

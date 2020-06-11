@@ -70,10 +70,7 @@ class EditCom extends React.Component {
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                apiResult.ResultObject.Birthday = apiResult.ResultObject.BirthdayString;
-                this.setState({ DataSource: apiResult.ResultObject, PassWord: apiResult.ResultObject.PassWord, PassWordConfirm: apiResult.ResultObject.PassWord });
-                // apiResult.ResultObject.PassWord = null;
-                // apiResult.ResultObject.PassWordConfirm = null;
+                this.setState({ DataSource: apiResult.ResultObject });
             }
             this.setState({
                 IsLoadDataComplete: true

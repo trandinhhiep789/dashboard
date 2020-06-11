@@ -90,7 +90,7 @@ class ElementModalText extends React.Component {
                     }
 
                     <div className={formGroupClassName}>
-                        <input type="text" name={this.props.Name}
+                        <input type="text" name={this.props.name}
                             onChange={this.handleValueChange}
                             onBlur={this.handKeyDown}
                             value={this.props.value}
@@ -98,8 +98,8 @@ class ElementModalText extends React.Component {
                             className={className}
                             ref={this.props.inputRef}
                             placeholder={this.props.placeholder}
-                            disabled={this.props.readOnly}
-                            maxLength={this.props.maxSize}
+                            disabled={this.props.disabled == true ? true : this.props.readonly}
+                            maxLength={this.props.maxsize}
                         />
                         <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
                     </div>
@@ -116,7 +116,7 @@ class ElementModalNumber extends React.Component {
     }
     handleValueChange(evalue) {
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.Name, evalue);
+            this.props.onValueChange(this.props.name, evalue);
     }
 
     render() {
@@ -165,11 +165,12 @@ class ElementModalNumber extends React.Component {
 
                     <div className={formGroupClassName}>
                         <InputNumber
-                            name={this.props.Name}
+                            name={this.props.name}
                             min={this.props.min}
                             max={this.props.max}
                             value={this.props.value}
                             onChange={this.handleValueChange}
+                            disabled= {this.props.disabled == true ? true : this.props.readonly}
                             ref={this.props.inputRef}
                         />
                         <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
@@ -189,7 +190,7 @@ class ElementModalComboBoxCom extends Component {
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.name : "");
+            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.name : "", this.props.filterrest);
     }
 
     bindcombox(value, listOption) {
@@ -226,17 +227,14 @@ class ElementModalComboBoxCom extends Component {
 
     componentDidMount() {
         let listOption = this.props.listoption;
-        let { filterValue, filterobj } = this.props;
-        if (this.props.isautoloaditemfromcache) {
-            const cacheKeyID = this.props.loaditemcachekeyid;
-            const valueMember = this.props.valuemember;
-            const nameMember = this.props.nameMember;
-            this.props.callGetCache(cacheKeyID).then((result) => {
+        let { isautoloaditemfromcache, loaditemcachekeyid, valuemember, nameMember, filterValue, filterobj } = this.props;
+        if (isautoloaditemfromcache) {
+            this.props.callGetCache(loaditemcachekeyid).then((result) => {
                 listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     if (typeof filterobj != undefined) {
                         result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
+                            listOption.push({ value: cacheItem[valuemember], label: cacheItem[nameMember] });
                         }
                         );
 
@@ -247,10 +245,6 @@ class ElementModalComboBoxCom extends Component {
                         }
                         );
                     }
-                    // result.ResultObject.CacheData.map((cacheItem) => {
-                    //     listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
-                    // });
-
                     this.setState({ Listoption: listOption, Data: result.ResultObject.CacheData });
                     const strSelectedOption = this.bindcombox(this.props.value, listOption);
                     this.setState({ SelectedOption: strSelectedOption });
@@ -300,11 +294,11 @@ class ElementModalComboBoxCom extends Component {
             formRowClassName = "form-row col-md-" + rowspan;
         }
 
-        let formGroupClassName = "form-group col-md-4";
+        let formGroupClassName = "form-group col-md-8";
         if (colspan != null) {
             formGroupClassName = "form-group col-md-" + colspan;
         }
-        let labelDivClassName = "form-group col-md-2";
+        let labelDivClassName = "form-group col-md-4";
         if (labelcolspan != null) {
             labelDivClassName = "form-group col-md-" + labelcolspan;
         }
@@ -333,7 +327,7 @@ class ElementModalComboBoxCom extends Component {
                             ref={this.props.inputRef}
                             onChange={this.handleValueChange}
                             options={listOption}
-                            isDisabled={disabled}
+                            isDisabled={this.props.disabled == true ? true : this.props.readonly}
                             isMulti={isMultiSelect}
                             isSearchable={true}
                             placeholder={placeholder}
@@ -401,8 +395,8 @@ class CheckBox extends React.Component {
 
                         <div className={classNameCustom}>
                             <label>
-                                <input className={this.props.CSSClassName} name={this.props.Name} type="checkbox"
-                                    checked={this.props.value} onChange={this.handleValueChange} readOnly={this.props.readonly}
+                                <input className={this.props.CSSClassName} name={this.props.name} type="checkbox"
+                                    checked={this.props.value} onChange={this.handleValueChange} disabled={this.props.disabled == true ? true : this.props.readonly}
                                     className={this.props.CSSClassName}
                                 />
                                 <span className="cr"><i className="cr-icon fa fa-check"></i></span>
@@ -460,12 +454,12 @@ class TextArea extends React.Component {
                     </div>
                     <div className={formGroupClassName}>
                         <textarea
-                            name={this.props.Name}
+                            name={this.props.name}
                             onChange={this.handleValueChange}
                             value={this.props.value}
                             className={className}
                             placeholder={this.props.placeholder}
-                            readOnly={this.props.readonly}
+                            readOnly={this.props.disabled == true ? true : this.props.readonly}
                             rows="5"
                         />
                     </div>
@@ -547,7 +541,7 @@ class ProductComboBoxCom extends React.Component {
 
     handleValueChange(selectedOption) {
         if (this.props.onValueChange)
-            this.props.onValueChange(this.props.Name, selectedOption.value,this.props.namelabel, selectedOption.label);
+            this.props.onValueChange(this.props.name, selectedOption.value, this.props.namelabel, selectedOption.label);
     }
 
     handleValueonKeyDown(e) {
@@ -599,13 +593,13 @@ class ProductComboBoxCom extends React.Component {
 
                     <div className={formGroupClassName}>
                         <Select
-                            name={this.props.Name}
+                            name={this.props.name}
                             value={selectedOption}
                             onChange={this.handleValueChange}
                             onKeyDown={this.handleValueonKeyDown}
                             options={listOption}
                             isMulti={false}
-                            isDisabled={this.props.disabled}
+                            isDisabled={this.props.disabled == true ? true : this.props.readonly}
                             isSearchable={true}
                             placeholder={"Nhập mã sản phẩm"}
                             className={classNameselect}
