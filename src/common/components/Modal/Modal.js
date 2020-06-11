@@ -155,7 +155,6 @@ class ModalCom extends React.Component {
     };
 
     checkInput(formValidation) {
-        debugger;
         for (const key in formValidation) {
             if (formValidation[key].IsValidationError){
                 this.elementItemRefs[key].focus();

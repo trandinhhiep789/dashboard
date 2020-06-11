@@ -21,7 +21,6 @@ class ProductComboBoxCom extends React.Component {
     }
 
     bindData() {
-        debugger;
         let values = this.props.value;
         let selectedOption = [];
 
@@ -73,7 +72,6 @@ class ProductComboBoxCom extends React.Component {
             "IsCompressResultData": false
         }
         this.props.callFetchAPI("ERPAPI", 'api/ProductSearch/Search', listMLObject).then(apiResult => {
-            debugger;
             let listOptionNew = [];
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
                 listOptionNew.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
@@ -97,7 +95,6 @@ class ProductComboBoxCom extends React.Component {
     }
 
     handleValueChange(selectedOption) {
-        debugger;
         let comboValues = [];
         if (Array.isArray(selectedOption)) {
             comboValues = this.getComboValue(selectedOption);

@@ -54,26 +54,24 @@ export const AddElementList = [
         name: "txtInstallBundleID",
         label: "mã gói sản phẩm lắp đặt",
         value: "",
-        maxSize: "20",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "InstallBundleID",
+        maxsize: "20",
+        placeholder: "Mã gói sản phẩm lắp đặt",
+        datasourcemember: "InstallBundleID",
         readonly: false,
-        validatonList: ["required"]
+        validatonList: ["required"],
+        OrderIndex:1
     },
     {
         type: "text",
         name: "txtInstallBundleName",
         label: "tên gói sản phẩm lắp đặt",
         value: "",
-        maxSize: "20",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "InstallBundleName",
+        maxsize: "175",
+        placeholder: "Tên gói sản phẩm lắp đặt",
+        datasourcemember: "InstallBundleName",
         readonly: false,
-        validatonList: ["required"]
+        validatonList: ["required"],
+        OrderIndex:2
     },
     {
         type: "select",
@@ -86,10 +84,11 @@ export const AddElementList = [
         DataSourceMember: "ShipmentOrderTypeID",
         readonly: false,
         validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
-        ValueMember: "ShipmentOrderTypeID",
-        NameMember: "ShipmentOrderTypeName"
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
+        valuemember: "ShipmentOrderTypeID",
+        nameMember: "ShipmentOrderTypeName",
+        OrderIndex:3
     },
     {
         type: "select",
@@ -99,46 +98,47 @@ export const AddElementList = [
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "PartnerID",
+        datasourcemember: "PartnerID",
         readonly: false,
         validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
-        ValueMember: "PartnerID",
-        NameMember: "PartnerName"
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
+        valuemember: "PartnerID",
+        nameMember: "PartnerName",
+        OrderIndex:4
     },
     {
-        type: "textarea",
+        type: "TextArea",
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
         placeholder: "Mô tả",
-        maxSize: "2000",
-        icon: "",
+        maxSize: "1900",
         rows: "6",
-        listoption: [],
-        DataSourceMember: "Description",
+        datasourcemember: "Description",
         readonly: false,
+        Colmd:12,
+        labelcolspan:2,
+        colspan:10,
+        OrderIndex:5
     },
     {
         type: "checkbox",
         name: "chkIsActived",
+        datasourcemember:"IsActived",
         label: "Kích hoạt:",
         value: true,
-        placeholder: "",
-        icon: "",
-        listoption: [],
         readonly: false,
+        OrderIndex:6
     },
     {
         type: "checkbox",
         name: "chkIsSystem",
+        datasourcemember:"IsSystem",
         label: "Hệ thống:",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: [],
+        value: false,
         readonly: false,
+        OrderIndex:7
     }
 ];
 
@@ -148,42 +148,40 @@ export const EditElementList = [
         name: "txtInstallBundleID",
         label: "mã gói sản phẩm lắp đặt",
         value: "",
-        maxSize: "20",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "InstallBundleID",
+        maxsize: "20",
+        placeholder: "Mã gói sản phẩm lắp đặt",
+        datasourcemember: "InstallBundleID",
         readonly: true,
-        validatonList: ["required"]
+        validatonList: ["required"],
+        OrderIndex:1
+
     },
     {
         type: "text",
         name: "txtInstallBundleName",
         label: "tên gói sản phẩm lắp đặt",
         value: "",
-        maxSize: "20",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "InstallBundleName",
+        maxsize: "175",
+        placeholder: "Tên gói sản phẩm lắp đặt",
+        datasourcemember: "InstallBundleName",
         readonly: false,
-        validatonList: ["required"]
+        validatonList: ["required"],
+        OrderIndex:2
     },
     {
         type: "select",
         name: "cbShipmentOrderTypeID",
         label: "loại yêu cầu vận chuyển",
         value: "",
-        placeholder: "",
-        icon: "",
         listoption: [],
-        DataSourceMember: "ShipmentOrderTypeID",
+        datasourcemember: "ShipmentOrderTypeID",
         readonly: false,
         validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
-        ValueMember: "ShipmentOrderTypeID",
-        NameMember: "ShipmentOrderTypeName"
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
+        valuemember: "ShipmentOrderTypeID",
+        nameMember: "ShipmentOrderTypeName",
+        OrderIndex:3
     },
     {
         type: "select",
@@ -193,26 +191,29 @@ export const EditElementList = [
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "PartnerID",
+        datasourcemember: "PartnerID",
         readonly: false,
         validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
-        ValueMember: "PartnerID",
-        NameMember: "PartnerName"
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
+        valuemember: "PartnerID",
+        nameMember: "PartnerName",
+        OrderIndex:4
     },
     {
-        type: "textarea",
+        type: "TextArea",
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
         placeholder: "Mô tả",
-        maxSize: "2000",
-        icon: "",
+        maxSize: "1900",
         rows: "6",
-        listoption: [],
-        DataSourceMember: "Description",
+        datasourcemember: "Description",
         readonly: false,
+        Colmd:12,
+        labelcolspan:2,
+        colspan:10,
+        OrderIndex:5
     },
     {
         type: "checkbox",
@@ -223,7 +224,8 @@ export const EditElementList = [
         icon: "",
         listoption: [],
         readonly: false,
-        DataSourceMember: "IsActived",
+        datasourcemember: "IsActived",
+        OrderIndex:6
     },
     {
         type: "checkbox",
@@ -234,7 +236,8 @@ export const EditElementList = [
         icon: "",
         listoption: [],
         readonly: false,
-        DataSourceMember: "IsSystem",
+        datasourcemember: "IsSystem",
+        OrderIndex:7
     }
 ];
 
@@ -374,6 +377,12 @@ export const GridMLMcRoleDefinition = [
         DataSourceMember: "ProductID"
     },
     {
+        Name: "ProductName",
+        DefaultValue: "",
+        BindControlName: "ProductName",
+        DataSourceMember: "ProductName"
+    },
+    {
         Name: "Quantity",
         DefaultValue: "",
         BindControlName: "Quantity",
@@ -394,48 +403,68 @@ export const GridMLMcRoleDefinition = [
 ];
 export const InputMcRoleColumnList = [
     {
-        Name: "ProductID",
-        Type: "textbox",
+        name: "ProductID",
+        Type: "ProductCombo",
         Caption: "Mã sản phẩm",
-        DataSourceMember: "ProductID",
+        label:"mã sản phẩm",
+        datasourcemember: "ProductID",
         Width: 200,
-        validatonList: ["required"]
+        validatonList: ["Comborequired"],
+        namelabel:"ProductName",
+        OrderIndex:1,
+        Colmd:12
+    
     },
     {
-        Name: "Quantity",
+        name: "ProductName",
         Type: "textbox",
+        Caption: "Tên sản phẩm",
+        label:"Tên sản phẩm",
+        datasourcemember: "ProductName",
+        iputpop:false,
+        Width: 200,
+        OrderIndex:2,
+        Colmd:12
+      
+    },
+    {
+        name: "Quantity",
+        Type: "TextNumber",
+        label:"Số lượng",
         Caption: "Số lượng",
-        DataSourceMember: "Quantity",
+        datasourcemember: "Quantity",
         Width: 200,
-        validatonList: ["required","number"]
+        validatonList: ["required","number"],
+        OrderIndex:3,
+        Colmd:12,
+        min:1,
+        max:9999
     },
-    // {
-    //     Name: "Quantity1",
-    //     Type: "selectnew",
-    //     Caption: "combobox",
-    //     DataSourceMember: "Quantity1",
-    //     Width: 200,
-    //     validatonList: []
-    // },
     {
-        Name: "Note",
-        Type: "textbox",
+        name: "Note",
+        Type: "TextArea",
+        label:"Ghi chú",
         Caption: "Ghi chú",
-        DataSourceMember: "Note",
+        datasourcemember: "Note",
         Width: 300,
+        OrderIndex:4,
+        Colmd:12
     },
     {
-        Name: "IsActived",
+        name: "IsActived",
         Type: "checkbox",
+        label:"kích hoạt",
         Caption: "Kích hoạt",
-        DataSourceMember: "IsActived",
-        Width: 70
+        datasourcemember: "IsActived",
+        Width: 70,
+        OrderIndex:5,
+        Colmd:12
     },
     {
-        Name: "Action",
+        name: "Action",
         Type: "editnew",
         Caption: "Tác vụ",
-        DataSourceMember: "ArticleID",
+        datasourcemember: "ArticleID",
         Width: 70,
         iputpop: false
     }

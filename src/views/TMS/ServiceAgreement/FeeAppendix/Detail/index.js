@@ -8,7 +8,6 @@ import {
     APIHostName,
     AddAPIPath,
     BackLink,
-    PagePath,
     TitleFormDetail,
     LoadNewAPIPath,
     DataGridColumnItemListFeeAppendixDetail,
@@ -43,21 +42,25 @@ class DetailCom extends React.Component {
             IsCloseForm: false,
             DataSource: {},
             FeeAppendixDetailInfo: {},
-            FeeAppendixDetailItemList: []
+            FeeAppendixDetailItemList: [],
+            ServiceAgreementID: ''
+
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
     }
 
     componentDidMount() {
-        console.log('FeeAppendix Detail', this.props)
-        this.props.updatePagePath(PagePath);
+        
+        
         this.callLoadData(this.props.match.params.id);
+
+       
     }
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            console.log('FeeAppendix Detail callLoadData', apiResult,id)
+            console.log('aaa', apiResult.ResultObject)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -67,20 +70,28 @@ class DetailCom extends React.Component {
             else {
                 this.setState({
                     DataSource: apiResult.ResultObject,
+                    ServiceAgreementID: apiResult.ResultObject.ServiceAgreementID,
                     FeeAppendixDetailInfo: apiResult.ResultObject,
                     FeeAppendixDetailItemList: apiResult.ResultObject.FeeAppendixDetail_ItemList,
+                    
                     IsLoadDataComplete: true
                 });
+                const id= apiResult.ResultObject.ServiceAgreementID;
+                const PagePath = [
+                    { Link: "/", Title: "Trang chủ" },
+                    { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ " },
+                    { Link: "/ServiceAgreement/Detail/" + id, Title: "Danh sách hợp đồng dịch vụ " },
+                    { Link: "", Title: "Danh sách chi tiết phụ lục biểu phí" },
+                ];
+                this.props.updatePagePath(PagePath);
             }
         });
     }
 
     handleSubmit(formData, MLObject) {
-        console.log("MLObject", MLObject)
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-            console.log('handleSubmit', MLObject, apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
 
@@ -110,9 +121,10 @@ class DetailCom extends React.Component {
 
     }
 
-    handleInputChangeObjItem(ObjItem) {
-        const formData = Object.assign({}, this.state.DataSource, { ["FeeAppendixDetail_ItemList"]: ObjItem });
-        this.setState({ DataSource: formData });
+    handleInputChangeObjItem(id, apiResult) {
+        this.callLoadData(id);
+        this.props.hideModal();
+
     }
 
     handleItemInsert() {
@@ -127,11 +139,16 @@ class DetailCom extends React.Component {
             maxWidth: '1000px'
         });
     }
+
     handleItemEdit(index) {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Cập nhật chi tiết biểu phí',
             content: {
-                text: <div>aaa</div>
+                text: <FeeAppendixDetailElement
+                    dataSource={this.state.DataSource}
+                    index={index}
+                    onInputChangeObj={this.handleInputChangeObjItem}
+                />
             },
             maxWidth: '1000px'
         });
@@ -143,7 +160,6 @@ class DetailCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
 
-        console.log('DataSource', this.state.FeeAppendixDetailInfo)
         return (
             <FormContainer
                 FormName={TitleFormDetail}
@@ -156,11 +172,13 @@ class DetailCom extends React.Component {
                 <FeeAppendixInfo
                     FeeAppendixInfo={this.state.FeeAppendixDetailInfo}
                 />
+
                 <InputGridControl
                     name="FeeAppendixDetail_ItemList"
                     controltype="InputGridControl"
                     title={TitleFromFeeAppendixDetail}
                     IDSelectColumnName={"FeeAppendixDetailID"}
+                    PKColumnName={"FeeAppendixDetailID"}
                     listColumn={DataGridColumnItemListFeeAppendixDetail}
                     dataSource={this.state.DataSource.FeeAppendixDetailItemList}
                     onInsertClick={this.handleItemInsert}
@@ -195,6 +213,9 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
+        },
+        hideModal: () => {
+            dispatch(hideModal());
         }
     };
 };

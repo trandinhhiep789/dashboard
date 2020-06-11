@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { hideModal } from '../../../../actions/modal';
-import ElementModal from '../../../../common/components/FormContainer/FormElement/ElementModal';
+import FormElement from '../../../../common/components/FormContainer/FormElement/ModelIndex.js';
 import { ValidationField } from "../../../library/validation.js"
 
 const Overlay = styled.div`
@@ -68,7 +68,6 @@ class ConfirmationNew extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.elementItemRefs = [];
         const formData = this.bindData();
-        console.log("ConfirmationNew", formData);
         this.state = {
             Title: this.props.title ? this.props.title : "",
             FormData: formData
@@ -79,23 +78,22 @@ class ConfirmationNew extends React.Component {
     bindData() {
         const dataSource = this.props.dataSource;
         let formData = {};
-        const listElement = this.bindDataToControl(this.props.modalElementList, this.props.dataSource);
-        debugger;
-        listElement.map((elementItem) => {
-            const elementname = elementItem.name;
-            const ObjectName = { Name: elementname, value: elementItem.value, Controltype: elementItem.Type, label: elementItem.label, labelError: elementItem.label, ErrorLst: [], validatonList: elementItem.validatonList };
-            formData = Object.assign({}, formData, { [elementname]: ObjectName });
-        });
-
+        const listElement = this.bindDataToControl(this.props.modalElementOl, this.props.dataSource);
+            listElement.map((elementItem) => {
+                const elementname = elementItem.Name;
+                const ObjectName = { Name: elementname, value: elementItem.value, Controltype: elementItem.Type, label: elementItem.Caption,labelError: elementItem.Caption, ErrorLst: [], validatonList: elementItem.validatonList };
+                formData = Object.assign({}, formData, { [elementname]: ObjectName });
+            });
+        
         return formData;
     }
 
     bindDataToControl(listElement, dataSource) {
-        //  console.log("bindDataToControl",listElement,dataSource);
+      //  console.log("bindDataToControl",listElement,dataSource);
         let listElement1 = listElement;
         if (typeof dataSource != "undefined") {
             listElement1 = listElement.map((elementItem) => {
-                const elementvalue = dataSource[elementItem.datasourcemember];
+                const elementvalue = dataSource[elementItem.DataSourceMember];
                 if (typeof elementvalue != "undefined") {
                     const newElementItem = Object.assign({}, elementItem, { value: elementvalue });
                     return newElementItem;
@@ -108,15 +106,10 @@ class ConfirmationNew extends React.Component {
     //#endregion BinData
 
     //#region InputChange && InputChangeList  
-    handleInputChange(elementname, elementvalue, namelabel, valuelabel, listvalidationRow) {
+    handleInputChange(elementname, elementvalue, controllabel, listvalidation, listvalidationRow) {
         //console.log('change')
-
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
-        if (typeof namelabel != "undefined" && namelabel != "") {
-            FormDataContolLstd[namelabel].value = valuelabel;
-        }
-
         if (typeof FormDataContolLstd[elementname].validatonList != "undefined") {
             const validation = ValidationField(FormDataContolLstd[elementname].validatonList, elementvalue, FormDataContolLstd[elementname].label, FormDataContolLstd[elementname]);
             const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
@@ -125,10 +118,10 @@ class ConfirmationNew extends React.Component {
         this.setState({
             FormData: FormDataContolLstd,
         });
-
+     
     }
-    //#region validation InputControl
-    validationFormNew() {
+     //#region validation InputControl
+     validationFormNew() {
         const FormDataContolLst = this.state.FormData;
         for (const key in FormDataContolLst) {
             if (typeof FormDataContolLst[key].validatonList != "undefined") {
@@ -161,7 +154,7 @@ class ConfirmationNew extends React.Component {
         if (this.checkInputName(formValidation) != "")
             return;
         if (this.props.onConfirm != null) {
-            this.props.hideModal();
+                this.props.hideModal();
             const mLObjectDefinition = this.props.modalElementOl;
             let MLObject = {};
             mLObjectDefinition.map((Item) => {
@@ -170,7 +163,7 @@ class ConfirmationNew extends React.Component {
                     MLObject = Object.assign({}, MLObject, { [Item.Name]: this.state.FormData[controlName].value });
                 }
             });
-            this.props.onConfirm(false, MLObject, this.state.SelectedFile);
+            this.props.onConfirm(false,MLObject, this.state.SelectedFile);
         }
 
     }
@@ -178,94 +171,38 @@ class ConfirmationNew extends React.Component {
         this.props.hideModal();
     }
     renderModalFormElement() {
-        let listElement = this.props.modalElementList.filter((person, index) => {
-            if (this.props.modalElementList[index].iputpop == true || this.props.modalElementList[index].iputpop === undefined) { return person; }
-        });
-
+        const listElement = this.props.modalElementList;
         if (listElement == null)
             return null;
 
-        return (
-            <div className="row">
-                {
-                    listElement.sort((a, b) => (a.OrderIndex > b.OrderIndex) ? 1 : -1).map((elementItem, index) => {
-                        switch (elementItem.Type) {
-                            case "textbox":
-                                return (
-                                    <ElementModal.ElementModalText
-                                        onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.name].value}
-                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
-                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
-                                        {...elementItem}
-                                        key={index}
-                                    />
-                                );
-                            case "TextNumber":
-                                return (
-                                    <ElementModal.ElementModalNumber
-                                        onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.name].value}
-                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
-                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
-                                        {...elementItem}
-                                        key={index}
-                                    />
-                                );
-                            case "TextArea":
-                                return (
-                                    <ElementModal.TextArea
-                                        onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.name].value}
-                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
-                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
-                                        {...elementItem}
-                                        key={index}
-                                    />
-                                );
+        return listElement.map((elementItem, index) => {
 
-                            case "ComboBox":
-                                return (
-                                    <ElementModal.ElementModalComboBox
-                                        onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.name].value}
-                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
-                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
-                                        {...elementItem}
-                                        key={index}
-                                    />
-                                );
-                            case "ProductCombo":
-                                if (this.state.FormData[elementItem.name].value != "" && typeof this.state.FormData[elementItem.name].value != "undefined")
-                                    elementItem.value = { value: this.state.FormData[elementItem.name].value, label: this.state.FormData[elementItem.namelabel].value }
-                                return (
-                                    <ElementModal.ProductComboBox
-                                        onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.name].value}
-                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
-                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
-                                        {...elementItem}
-                                        key={index}
-                                    />
-                                );
-
-                            case "checkbox":
-                                return (
-                                    <ElementModal.CheckBox
-                                        onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.name].value}
-                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
-                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
-                                        {...elementItem}
-                                        key={index}
-                                    />
-                                );
-                            default:
-                                break;
-                        }
-                    })
-                }
-            </div>
+            return (<div className="form-row" key={"div" + elementItem.Name}>
+                <FormElement type={elementItem.Type} name={elementItem.Name}
+                    CSSClassName="form-control form-control-sm"
+                    value={this.state.FormData[elementItem.Name].value}
+                    label={elementItem.Caption}
+                    cation={elementItem.Caption}
+                    placeholder={elementItem.placeholder}
+                    icon={elementItem.icon}
+                    onValueChange={this.handleInputChange}
+                    inputRef={ref => this.elementItemRefs[elementItem.Name] = ref}
+                    listoption={elementItem.listoption}
+                    key={elementItem.Name}
+                    readonly={elementItem.readonly}
+                    validatonList={elementItem.validatonList}
+                    validationErrorMessage={this.state.FormData[elementItem.Name].ErrorLst.ValidatonErrorMessage}
+                    IsAutoLoadItemFromCache={elementItem.IsAutoLoadItemFromCache}
+                    LoadItemCacheKeyID={elementItem.LoadItemCacheKeyID}
+                    ValueMember={elementItem.ValueMember}
+                    NameMember={elementItem.NameMember}
+                    accept={elementItem.accept}
+                    multiple={elementItem.multiple}
+                    maxSize={elementItem.maxSize}
+                    minSize={elementItem.minSize}
+                />
+            </div>);
+        }
         );
     }
 

@@ -136,7 +136,6 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     handleValueChangeReceiverGeoLocation(name, lat, lng) {
-        debugger
         if (lat != "" && this.state.ShipmentOrderEdit.SenderGeoLocation != "") {
             const values = this.state.ShipmentOrderEdit.SenderGeoLocation.split(",")
             const v1 = parseFloat(values[0])
@@ -164,7 +163,6 @@ class ShipmentOrderAddressCom extends Component {
 
 
             this.props.callFetchAPI(APIHostName, 'api/Maps/FindPathViaRoute', paramsRequest).then((apiResult) => {
-                debugger
                 if (!apiResult.IsError) {
 
                     let { ShipmentOrderEdit } = this.state;

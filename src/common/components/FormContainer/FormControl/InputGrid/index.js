@@ -70,7 +70,7 @@ class InputGridCom extends Component {
 		return gridData;
 	}
 
-	
+
 	//#region Delete
 
 	handleClick = (event, id) => {
@@ -98,7 +98,7 @@ class InputGridCom extends Component {
 		}
 		return true;
 	}
-	
+
 	handleDeleteClick() {
 		let lstobjdelete = this.state.lstobjDelete;
 		const temp = this.checkInput1(lstobjdelete);
@@ -205,9 +205,6 @@ class InputGridCom extends Component {
 		else {
 
 			if (this.props.onInsertClick === undefined) {
-				let listColumnNew = this.props.listColumn.filter((person, index) => {
-					if (this.props.listColumn[index].iputpop == true || this.props.listColumn[index].iputpop === undefined) { return person; }
-				});
 
 				this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
 					title: 'Cập nhật ' + this.props.title,
@@ -224,7 +221,7 @@ class InputGridCom extends Component {
 							this.props.onValueChange(this.props.name, MLObjectList, this.props.controltype, undefined);
 						}
 					},
-					modalElementList: listColumnNew,
+					modalElementList: this.props.listColumn,
 					modalElementOl: this.props.MLObjectDefinition
 				});
 
@@ -237,10 +234,6 @@ class InputGridCom extends Component {
 	}
 
 	handleInsertClickEdit(index) {
-		let listColumnNew = this.props.listColumn.filter((person, index) => {
-			if ((this.props.listColumn[index].iputpop == true || this.props.listColumn[index].iputpop === undefined) && this.props.listColumn[index].forbiddenUpdate === undefined) { return person; }
-		});
-
 		let dataSourcenew = this.props.dataSource[index];
 		if (this.props.value != null) {
 			dataSourcenew = this.props.value[index];
@@ -264,10 +257,8 @@ class InputGridCom extends Component {
 				if (this.props.onUpdatePermanently) {
 					this.props.onUpdatePermanently(formData);
 				}
-				const lstobjdelete = this.bindobjdelete1(false, dataSource);
-				this.setState({ lstobjDelete: lstobjdelete, IsCheckAll: false });
 			},
-			modalElementList: listColumnNew,
+			modalElementList: this.props.listColumn,
 			modalElementOl: this.props.MLObjectDefinition,
 			dataSource: dataSourcenew
 		});
@@ -345,7 +336,7 @@ class InputGridCom extends Component {
 								};
 								let columHeader = elementItem.Caption;
 								return (
-									<th key={elementItem.Name} className="jsgrid-header-cell" style={cellStyle}>{columHeader}</th>
+									<th key={elementItem.name} className="jsgrid-header-cell" style={cellStyle}>{columHeader}</th>
 								);
 							})
 						}
@@ -368,46 +359,23 @@ class InputGridCom extends Component {
 										let isChecked = false;
 
 										if (columnItem.Type == "checkbox") {
-											isChecked = rowItem[columnItem.DataSourceMember];
+											isChecked = rowItem[columnItem.datasourcemember];
 										}
-										let validationErrorMessage = "";
-										let ovjvalue = rowItem[columnItem.DataSourceMember];
+										let ovjvalue = rowItem[columnItem.datasourcemember];
 										const cellData = <InputGridCell type={columnItem.Type}
 											text={ovjvalue}
 											value={ovjvalue}
 											to={columnItem.Link}
 											linkText={columnItem.LinkText}
 											name={columnItem.Name}
-											listoption={columnItem.listoption}
-											IsAutoLoadItemFromCache={columnItem.IsAutoLoadItemFromCache}
-											LoadItemCacheKeyID={columnItem.LoadItemCacheKeyID}
-											ValueMember={columnItem.ValueMember}
-											NameMember={columnItem.NameMember}
 											onInsertClickEdit={this.handleInsertClickEdit}
-											onValueChange={this.onValueChange}
+											onClickDelete={this.handleInsertClickDelete}
 											index={rowIndex}
 											isChecked={isChecked}
-											IsFilterData={columnItem.IsFilterData}
-											KeyFilter={columnItem.KeyFilter}
-											ValueFilter={rowItem[columnItem.KeyFilter]}
-											onHandleEditClick={this.handleEditClick}
-											onValueChangeALL={this.handleClick}
-											onClickDelete={this.handleInsertClickDelete}
-											validationErrorMessage={validationErrorMessage}
-											label={columnItem.label}
-											cation={columnItem.Caption}
-											validatonList={columnItem.validatonList}
-											isDisabled={this.props.isDisabled}
-											isCategory={columnItem.isCategory}
-											CategoryTypeID={rowItem[columnItem.rowCategoryType]}
-											IsPermisionAdd={this.props.IsPermisionAdd}
-											IsPermisionEdit={this.props.IsPermisionEdit}
-											IsPermisionDelete={this.props.IsPermisionDelete}
 											isSystem={this.state.IsSystem}
-											Ispopup={this.props.Ispopup === undefined ? false : this.props.Ispopup}
 										/>;
 										return (
-											<td key={columnItem.Name} style={cellStyle}  >{cellData}</td>
+											<td key={columnItem.name} style={cellStyle}  >{cellData}</td>
 										);
 									}
 									)

@@ -35,18 +35,13 @@ class EditCom extends React.Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.handleInputUserRoleInsert = this.handleInputUserRoleInsert.bind(this);
-        this.handleOnInputChange = this.handleOnInputChange.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             FormContent: "",
             IsLoadDataComplete: false,
             IsCloseForm: false,
-            EditElementList: EditElementList,
-            Password: "",
-            PasswordConfirm: ""
-
+            EditElementList: EditElementList
         };
         this.searchref = React.createRef();
     }
@@ -75,73 +70,13 @@ class EditCom extends React.Component {
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                apiResult.ResultObject.Birthday = apiResult.ResultObject.BirthdayString;
-                this.setState({ DataSource: apiResult.ResultObject, PassWord: apiResult.ResultObject.PassWord, PassWordConfirm: apiResult.ResultObject.PassWord });
-                // apiResult.ResultObject.PassWord = null;
-                // apiResult.ResultObject.PassWordConfirm = null;
+                this.setState({ DataSource: apiResult.ResultObject });
             }
             this.setState({
                 IsLoadDataComplete: true
             });
         });
         this.props.updatePagePath(EditPagePath);
-    }
-    handleinsertItem(lstOption) {
-        let listMLObject = [];
-        lstOption.map((row, index) => {
-            let MLObject = {};
-            row["pkColumnName"].map((pkItem, pkIndex) => {
-                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-            });
-
-            listMLObject.push(MLObject);
-        });
-        const formData = Object.assign({}, this.state.DataSource, { ["LstMcUser_Role"]: listMLObject });
-        this.setState({ DataSource: formData });
-    }
-
-    handleInputUserRoleInsert() {
-        this.props.showModal(MODAL_TYPE_SEARCH, {
-            title: "Danh sách vai trò",
-            content: {
-                text: <SearchModal
-                    PKColumnName={"McRoleID,McRoleName"}
-                    multipleCheck={true}
-                    SearchMLObjectDefinition={SearchMLmoldeDefinition}
-                    DataGridColumnList={DataGridColumnListMultiple}
-                    GridDataSource={[]}
-                    SearchAPIPath={SearchMcRoleAPIPath}
-                    SearchElementList={SearchElementModeList}
-                    onClickInsertItem={this.handleinsertItem.bind(this)}
-                    IDSelectColumnName={"chkSelect"}
-                    name={"McRoleID"}
-                    value={"McRoleName"}
-                >
-                </SearchModal>
-            }
-        });
-    }
-
-    handleOnInputChange(name, value) {
-        if (name == "txtPassWord") {
-            this.setState({ PassWord: value });
-        } else if (name == "txtPassWordConfirm") {
-            this.setState({ PassWordConfirm: value });
-        } else if (name == "chkShowPassWord") {
-            this.showPassWord("txtPassWord");
-            this.showPassWord("txtPassWordConfirm");
-            return;
-        }
-
-    }
-
-    showPassWord(name) {
-        var x = document.getElementsByName(name)[0];
-        if (x.type === "password") {
-            x.type = "text";
-        } else {
-            x.type = "password";
-        }
     }
 
     handleSubmit(formData, MLObject) {
@@ -176,6 +111,7 @@ class EditCom extends React.Component {
                         isHideHeaderToolbar={false}
                         dataSource={this.state.DataSource.InstallMaterial_ProductList}
                         Ispopup={true}
+                        isSystem={this.state.DataSource.IsSystem}
                         MLObjectDefinition={GridMLMcRoleDefinition}
                         colspan="12"
                     />

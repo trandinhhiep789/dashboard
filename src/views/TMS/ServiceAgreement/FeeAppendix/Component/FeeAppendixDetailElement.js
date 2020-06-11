@@ -2,12 +2,16 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
+import ProductComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/ProductComboBox.js";
 
 import {
     APIHostName,
     LoadAPIPath,
-    MLObjectFeeAppendixDetailItem
+    MLObjectFeeAppendixDetailItem,
+    EditFeeAppendixDetailPath,
+    AddFeeAppendixDetailPath
 } from "../contants/index.js";
+import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 
 class FeeAppendixDetailElementCom extends Component {
     constructor(props) {
@@ -19,23 +23,28 @@ class FeeAppendixDetailElementCom extends Component {
     }
 
     componentDidMount() {
-        console.log("FeeAppendixDetailElementCom", this.props)
+        //console.log("FeeAppendixDetailElementCom", this.props)
     }
 
     handleSubmit(From, MLObject) {
-        let newFeeAppendixDetail_ItemList = this.props.dataSource.FeeAppendixDetail_ItemList;
-        let formDatanew = [];
+        
+        MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
+        MLObject.FeeAppendixID = this.props.dataSource.FeeAppendixID.trim();
+        MLObject.SignedDate = this.props.dataSource.SignedDate;
+        MLObject.ApplyFromDate= this.props.dataSource.ApplyFromDate;
+        MLObject.ProductID = MLObject.Product[0].ProductID;
         if (this.props.index != undefined) {
-            formDatanew = Object.assign([], newFeeAppendixDetail_ItemList, { [this.props.index]: MLObject });
-            if (this.props.onInputChangeObj != null) {
-                this.props.onInputChangeObj(formDatanew);
-            }
+            MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+            this.props.callFetchAPI(APIHostName, EditFeeAppendixDetailPath, MLObject).then(apiResult => {
+                this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
+            });
         }
         else {
-            newFeeAppendixDetail_ItemList.push(MLObject)
-            if (this.props.onInputChangeObj != null) {
-                this.props.onInputChangeObj(newFeeAppendixDetail_ItemList);
-            }
+            MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+            this.props.callFetchAPI(APIHostName, AddFeeAppendixDetailPath, MLObject).then(apiResult => {
+                console.log("handleSubmit MLObject", MLObject, apiResult)
+                this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
+            });
         }
     }
 
@@ -44,11 +53,12 @@ class FeeAppendixDetailElementCom extends Component {
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectFeeAppendixDetailItem}
-                dataSource={this.props.index != undefined ? this.props.dataSource.ShipmentOrder_ItemList[this.props.index] : null}
+                dataSource={this.props.index != undefined ? this.props.dataSource.FeeAppendixDetail_ItemList[this.props.index] : null}
                 listelement={[]}
                 onSubmit={this.handleSubmit}
             >
                 <div className="row">
+
                     <div className="col-md-6">
                         <FormControl.FormControlComboBox
                             name="cbMainGroupID"
@@ -124,7 +134,7 @@ class FeeAppendixDetailElementCom extends Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.FormControlTextBox
+                        {/* <FormControl.FormControlTextBox
                             name="txtProductID"
                             colspan="9"
                             labelcolspan="3"
@@ -135,6 +145,17 @@ class FeeAppendixDetailElementCom extends Component {
                             value=""
                             validatonList={["required"]}
                             datasourcemember="ProductID"
+                        /> */}
+                        <ProductComboBox 
+                            colspan="9"
+                            labelcolspan="3"
+                            label="sản phẩm"
+                            placeholder="Tên sản phẩm"
+                            controltype="InputControl"
+                            datasourcemember="ProductID"
+                            name="cbProductID"
+                            validatonList={["required"]}
+                            IsLabelDiv={true}
                         />
                     </div>
 
@@ -208,6 +229,9 @@ const mapDispatchToProps = dispatch => {
     return {
         showModal: (type, props) => {
             dispatch(showModal(type, props));
+        },
+        callFetchAPI: (hostname, hostURL, postData) => {
+            return dispatch(callFetchAPI(hostname, hostURL, postData));
         }
     }
 }

@@ -193,21 +193,21 @@ class ElementComboBoxCom extends Component {
 
         this.state = { ListOption: [],
                        Data: [],
-                       SelectedOption: this.bindcombox() }
+                       SelectedOption: [] }
 
     }
-    bindcombox() {
 
-        let values = this.props.value;
+    bindcombox(value, listOption) {
+        let values = value;
         let selectedOption = [];
         if (values == null || values === -1)
-            return selectedOption;
+            return { value: -1, label: "--Vui lòng chọn--" };
         if (typeof values.toString() == "string")
             values = values.toString().split();
         for (let i = 0; i < values.length; i++) {
             for (let j = 0; j < listOption.length; j++) {
                 if (values[i] == listOption[j].value) {
-                    selectedOption.push({ value: listOption[j].value, label: listOption[j].name });
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
                 }
             }
         }
@@ -226,6 +226,7 @@ class ElementComboBoxCom extends Component {
                             listoption.push({ value: cacheItem[ValueMember], label: cacheItem[NameMember] });
                         }
                         );
+                      
                     }
                     else {
                         result.ResultObject.CacheData.map((cacheItem) => {
@@ -233,8 +234,10 @@ class ElementComboBoxCom extends Component {
                         }
                         );
                     }
-
+                  
                     this.setState({ ListOption: listoption, Data:result.ResultObject.CacheData});
+                    const aa = this.bindcombox(this.props.value, listoption);
+                    this.setState({ SelectedOption: aa });
                 }
                 else {
                     this.setState({ ListOption: listoption });
@@ -245,6 +248,8 @@ class ElementComboBoxCom extends Component {
         else {
             //console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
             this.setState({ ListOption: listoption });
+            const aa = this.bindcombox(this.props.value, listoption);
+            this.setState({ SelectedOption: aa });
         }
     }
 
@@ -266,7 +271,7 @@ class ElementComboBoxCom extends Component {
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange)
-            this.props.onValueChange(this.props.name, comboValues,this.props.filterName);
+            this.props.onValueChange(this.props.name, comboValues,this.props.filterrest);
     }
     componentWillReceiveProps(nextProps) {
        
@@ -274,7 +279,6 @@ class ElementComboBoxCom extends Component {
         {
             let {filterName,filterobj,ValueMember,NameMember } = this.props;
             if (typeof filterName != undefined) {
-                debugger;
                 let listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
                 this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
                     listoptionnew.push({ value: cacheItem[ValueMember], label: cacheItem[NameMember] });
@@ -283,6 +287,11 @@ class ElementComboBoxCom extends Component {
                 this.setState({ ListOption: listoptionnew });
             }
 
+        }
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            const aa = this.bindcombox(nextProps.value, this.state.ListOption);
+            this.setState({ SelectedOption: aa });
         }
     }
 
@@ -302,13 +311,13 @@ class ElementComboBoxCom extends Component {
 
             className += " is-invalid";
         }
-
+        const selectedOption = this.state.SelectedOption;
         return (
             <div className={colspanClassName}  >
                 <div className="form-group form-group-input form-group-input-select">
                     {labeldiv}
                     <Select
-                        value={this.state.selectedOption}
+                        value={selectedOption}
                         name={name}
                         ref={this.props.inputRef}
                         onChange={this.handleValueChange}

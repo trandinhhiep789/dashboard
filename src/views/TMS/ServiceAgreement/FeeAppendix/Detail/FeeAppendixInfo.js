@@ -22,7 +22,6 @@ class FeeAppendixInfoInfoCom extends Component {
 
 
     render() {
-        console.log('FeeAppendixInfoInfoCom', this.state.FeeAppendixInfo.FeeAppendixName)
         return (
             <React.Fragment>
                 <div className="form-row">
@@ -71,29 +70,31 @@ class FeeAppendixInfoInfoCom extends Component {
                     </div>
                 </div>
                 <div className="form-row">
-                    <div className="col-md-6">
-                        <div className="form-row">
-                            <div className="form-group col-md-2">
-                                <label className="col-form-label bold">Kích hoạt:</label>
-                            </div>
-                            <div className="form-group col-md-10">
-                                <label className="col-form-label">
-                                    {this.state.FeeAppendixInfo.IsActived}
-                                </label>
-                            </div>
-                        </div>
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Kích hoạt:</label>
                     </div>
-                    <div className="col-md-6">
-                        <div className="form-row">
-                            <div className="form-group col-md-2">
-                                <label className="col-form-label bold">Hệ thống:</label>
-                            </div>
-                            <div className="form-group col-md-10">
-                                <label className="col-form-label">
-                                    {this.state.FeeAppendixInfo.IsSystem}
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">
+                            <div className="checkbox customCheckbox">
+                                <label>
+                                    <input type="checkbox" defaultChecked={this.state.FeeAppendixInfo.IsActived} disabled={true} />
+                                    <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                                 </label>
                             </div>
-                        </div>
+                        </label>
+                    </div>
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Hệ thống:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">
+                            <div className="checkbox customCheckbox">
+                                <label>
+                                    <input type="checkbox" defaultChecked={this.state.FeeAppendixInfo.IsSystem} disabled={true} />
+                                    <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                                </label>
+                            </div>
+                        </label>
                     </div>
                 </div>
 

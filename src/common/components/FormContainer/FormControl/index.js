@@ -227,7 +227,7 @@ class FormControlComboBoxCom extends Component {
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption.name);
+            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.name : "");
     }
 
     bindcombox(value, listOption) {
@@ -236,7 +236,7 @@ class FormControlComboBoxCom extends Component {
         if (values == null || values === -1)
             return { value: -1, label: "--Vui lòng chọn--" };
         if (typeof values.toString() == "string")
-            values = values.toString().split();
+            values = values.toString().split(",");
         for (let i = 0; i < values.length; i++) {
             for (let j = 0; j < listOption.length; j++) {
                 if (values[i] == listOption[j].value) {
@@ -264,6 +264,7 @@ class FormControlComboBoxCom extends Component {
 
     componentDidMount() {
         let listOption = this.props.listoption;
+        let { filterValue, filterobj } = this.props;
         if (this.props.isautoloaditemfromcache) {
             const cacheKeyID = this.props.loaditemcachekeyid;
             const valueMember = this.props.valuemember;
@@ -271,11 +272,24 @@ class FormControlComboBoxCom extends Component {
             this.props.callGetCache(cacheKeyID).then((result) => {
                 listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
-                    result.ResultObject.CacheData.map((cacheItem) => {
-                        listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+                    if (typeof filterobj != undefined) {
+                        result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
+                        }
+                        );
+
                     }
-                    );
-                    this.setState({ Listoption: listOption });
+                    else {
+                        result.ResultObject.CacheData.map((cacheItem) => {
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
+                        }
+                        );
+                    }
+                    // result.ResultObject.CacheData.map((cacheItem) => {
+                    //     listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+                    // });
+
+                    this.setState({ Listoption: listOption, Data: result.ResultObject.CacheData });
                     const strSelectedOption = this.bindcombox(this.props.value, listOption);
                     this.setState({ SelectedOption: strSelectedOption });
                 }
@@ -291,6 +305,21 @@ class FormControlComboBoxCom extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
+
+        if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            let { filterobj, valuemember, nameMember } = this.props;
+            if (typeof filterobj != undefined) {
+                let listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
+                this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
+                    listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[nameMember] });
+                }
+                );
+                this.setState({ Listoption: listoptionnew });
+            }
+
+        }
+
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
             const aa = this.bindcombox(nextProps.value, this.state.Listoption);
             this.setState({ SelectedOption: aa });
@@ -1493,7 +1522,7 @@ class ComboBoxSelectCom extends Component {
             const nameMember = this.props.nameMember;
             //    console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
             this.props.callGetCache(cacheKeyID).then((result) => {
-                console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
+                //console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
                 listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     result.ResultObject.CacheData.map((cacheItem) => {

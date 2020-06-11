@@ -312,7 +312,7 @@ export const SearchElementList = [
         label: "Khu vực",
         colspan: 2,
         value: -1,
-        isMultiSelect: true,
+        isMultiSelect: false,
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: true,

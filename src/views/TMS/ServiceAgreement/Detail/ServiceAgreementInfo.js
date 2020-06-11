@@ -149,7 +149,12 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Kích hoạt:</label>
                     </div>
                     <div className="form-group col-md-10">
-                        <label className="col-form-label">{this.props.ServiceAgreementInfo.IsActived}</label>
+                        <div class="checkbox customCheckbox">
+                            <label><input type="checkbox" disabled={true} defaultChecked={this.props.ServiceAgreementInfo.IsActived} />
+                                <span class="cr"><i class="cr-icon fa fa-check"></i>
+                                </span>
+                            </label>
+                        </div>
                     </div>
                 </div>
 
@@ -158,7 +163,13 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Hệ thống:</label>
                     </div>
                     <div className="form-group col-md-10">
-                        <label className="col-form-label">{this.props.ServiceAgreementInfo.IsSystem}</label>
+                        <div class="checkbox customCheckbox">
+                            <label><input type="checkbox" disabled={true} defaultChecked={this.props.ServiceAgreementInfo.IsSystem} />
+                                <span class="cr"><i class="cr-icon fa fa-check"></i>
+                                </span>
+                            </label>
+                        </div>
+
                     </div>
                 </div>
             </React.Fragment>

@@ -35,17 +35,13 @@ class AddCom extends React.Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.handleInputUserRoleInsert = this.handleInputUserRoleInsert.bind(this);
-        this.handleOnInputChange = this.handleOnInputChange.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
             AddElementList: AddElementList,
             DataSource: {},
-            Password: "",
-            PasswordConfirm: ""
+
         };
         this.searchref = React.createRef();
     }
@@ -68,63 +64,6 @@ class AddCom extends React.Component {
                 onCloseModal={this.handleCloseMessage}
             />
         );
-    }
-    handleinsertItem(lstOption) {
-        let listMLObject = [];
-        lstOption.map((row, index) => {
-            let MLObject = {};
-            row["pkColumnName"].map((pkItem, pkIndex) => {
-                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-            });
-
-            listMLObject.push(MLObject);
-        });
-        const formData = Object.assign({}, this.state.DataSource, { ["LstMcUser_Role"]: listMLObject });
-        this.setState({ DataSource: formData });
-    }
-
-    handleInputUserRoleInsert() {
-        this.props.showModal(MODAL_TYPE_SEARCH, {
-            title: "Danh sách vai trò",
-            content: {
-                text: <SearchModal
-                    PKColumnName={"McRoleID,McRoleName"}
-                    multipleCheck={true}
-                    SearchMLObjectDefinition={SearchMLmoldeDefinition}
-                    DataGridColumnList={DataGridColumnListMultiple}
-                    GridDataSource={[]}
-                    SearchAPIPath={SearchMcRoleAPIPath}
-                    SearchElementList={SearchElementModeList}
-                    onClickInsertItem={this.handleinsertItem.bind(this)}
-                    IDSelectColumnName={"chkSelect"}
-                    name={"McRoleID"}
-                    value={"McRoleName"}
-                >
-                </SearchModal>
-            }
-        });
-    }
-
-    handleOnInputChange(name, value) {
-        if (name == "txtPassWord") {
-            this.setState({ PassWord: value });
-        } else if (name == "txtPassWordConfirm") {
-            this.setState({ PassWordConfirm: value });
-        } else if (name == "chkShowPassWord") {
-            this.showPassWord("txtPassWord");
-            this.showPassWord("txtPassWordConfirm");
-            return;
-        }
-
-    }
-
-    showPassWord(name) {
-        var x = document.getElementsByName(name)[0];
-        if (x.type === "password") {
-            x.type = "text";
-        } else {
-            x.type = "password";
-        }
     }
 
 
@@ -152,6 +91,7 @@ class AddCom extends React.Component {
             >
                 <InputGrid
                     name="InstallMaterial_ProductList"
+                    key="InstallMaterial_ProductList"
                     controltype="GridControl"
                     title=" vật tư lắp đặt cho nhóm sản phẩm"
                     IDSelectColumnName={"ProductID"}
@@ -162,7 +102,6 @@ class AddCom extends React.Component {
                     MLObjectDefinition={GridMLMcRoleDefinition}
                     colspan="12"
                 />
-
             </FormContainer>
         );
     }

@@ -457,7 +457,6 @@ class FormContainerCom extends Component {
 
     // //file upload
     // handleSelectedFile(file, name, nameValue) {
-    //     debugger;
     //     if (this.props.onHandleSelectedFile != null) {
     //         const filelist = Object.assign({}, this.state.selectedFile, { [name]: file });
     //         const formData = Object.assign({}, this.state.FormData, { [name]: file? file.name : "" });

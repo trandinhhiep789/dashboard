@@ -51,7 +51,6 @@ export function transform1To3Column(inputArray) {
 }
 
 export function bindDataToControl(listElement, dataSource) {
-    debugger;
     let listElement1 = listElement;
     console.log("dataSource:", dataSource);
     //console.log("listElement:", listElement)

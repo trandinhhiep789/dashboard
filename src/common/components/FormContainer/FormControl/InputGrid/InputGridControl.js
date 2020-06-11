@@ -208,13 +208,10 @@ class InputGridControlCom extends Component {
             if (this.props.value != null) {
                 dataSourcenew = this.props.value[index];
             }
-            debugger;
-
             this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
                 title: 'Chỉnh sửa ' + this.props.title,
                 autoCloseModal: this.state.AutoCloseModal,
                 onConfirm: (isConfirmed, formData) => {
-                    debugger;
                     let dataSource = this.props.dataSource;
                     if (this.props.value != null) {
                         dataSource = this.props.value;

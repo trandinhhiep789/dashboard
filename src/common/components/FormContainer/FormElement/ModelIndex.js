@@ -413,7 +413,6 @@ class FormElementCom extends Component {
                 break;
 
             case "selectnew":
-                debugger
                 control = (
                     <Select
                         value={this.state.selectedOption}
