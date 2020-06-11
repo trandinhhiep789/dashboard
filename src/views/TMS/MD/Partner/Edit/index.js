@@ -141,7 +141,6 @@ class EditCom extends React.Component {
     }
 
     setValueCombobox(c, p, d, w) {
-        debugger;
         let country = [{ value: -1, label: "--Vui lòng chọn--" }];
         let province = [{ value: -1, label: "--Vui lòng chọn--" }];
         let district = [{ value: -1, label: "--Vui lòng chọn--" }];

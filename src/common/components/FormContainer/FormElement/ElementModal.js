@@ -187,7 +187,6 @@ class ElementModalComboBoxCom extends Component {
         this.state = { Listoption: [], SelectedOption: [] }
     }
     handleValueChange(selectedOption) {
-        debugger;
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null)
             this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.name : "");
@@ -253,7 +252,6 @@ class ElementModalComboBoxCom extends Component {
                     // });
 
                     this.setState({ Listoption: listOption, Data: result.ResultObject.CacheData });
-                    debugger
                     const strSelectedOption = this.bindcombox(this.props.value, listOption);
                     this.setState({ SelectedOption: strSelectedOption });
                 }
@@ -285,7 +283,6 @@ class ElementModalComboBoxCom extends Component {
         }
 
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
-            debugger
             const aa = this.bindcombox(nextProps.value, this.state.Listoption);
             this.setState({ SelectedOption: aa });
         }

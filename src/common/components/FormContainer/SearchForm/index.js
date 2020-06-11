@@ -106,7 +106,6 @@ export default class SearchForm extends Component {
     renderSearchForm() {
         const listElement = this.props.listelement;
         let cssSearchButton = "";
-        console.log("renderSearchForm", this.state.FormData)
         return (
             <div className="row">
                 {

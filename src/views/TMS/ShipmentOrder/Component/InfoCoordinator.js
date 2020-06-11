@@ -36,6 +36,11 @@ class InfoCoordinatorCom extends Component {
         }
     }
 
+
+    componentDidMount(){
+        console.log('this.props.InfoCoordinator', this.props.InfoCoordinator)
+    }
+
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.InfoCoordinator) !== JSON.stringify(nextProps.InfoCoordinator)) {
 

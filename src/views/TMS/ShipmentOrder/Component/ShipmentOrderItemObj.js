@@ -19,7 +19,6 @@ class ShipmentOrderItemObjCom extends Component {
     handleSubmit(From, MLObject) {
         let newShipmentOrder_ItemList = this.props.dataSource.ShipmentOrder_ItemList;
         let formDatanew = [];
-        debugger
         MLObject.SizeItem = MLObject.Length + "x" + MLObject.Width + "x" + MLObject.Height + "cm";
         if (this.props.index != undefined) {
             formDatanew = Object.assign([], newShipmentOrder_ItemList, { [this.props.index]: MLObject });
