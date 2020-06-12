@@ -235,7 +235,6 @@ class InputGridControlCom extends Component {
     }
 
     handleInsertClickDelete(index) {
-
         if (this.props.onDeleteClick === undefined) {
             let dataSource = this.props.dataSource;
 
@@ -339,10 +338,12 @@ class InputGridControlCom extends Component {
                                         let validationErrorMessage = "";
                                         let ovjvalue = rowItem[columnItem.DataSourceMember];
 
-                                        let objlink=rowItem[this.props.PKColumnName];
+                                        let objlink = rowItem[this.props.PKColumnName];
+                                        let objID = rowItem[this.props.PKColumnName].trim();
 
                                         const cellData = <InputGridCell type={columnItem.Type}
-                                            linkId= {objlink}
+                                            idItem={objID}
+                                            linkId={objlink}
                                             text={ovjvalue}
                                             value={ovjvalue}
                                             to={columnItem.Link}

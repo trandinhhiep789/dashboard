@@ -107,6 +107,7 @@ class AbilityElementCom extends Component {
                             placeholder="Từ ngày"
                             controltype="InputControl"
                             value={""}
+                            validatonList={["required"]}
                             datasourcemember="FromDate"
 
                         />
@@ -124,6 +125,7 @@ class AbilityElementCom extends Component {
                             placeholder="đến ngày"
                             controltype="InputControl"
                             value={""}
+                            validatonList={["required"]}
                             datasourcemember="ToDate"
 
                         />
