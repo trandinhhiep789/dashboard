@@ -173,7 +173,6 @@ class FormContainerCom extends Component {
         //console.log('change')
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
-        debugger;
         if (typeof filterrest != "undefined" && filterrest != "") {
             const objrest = filterrest.split(",");
             for (let i = 0; i < objrest.length; i++) {
