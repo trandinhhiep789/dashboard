@@ -179,7 +179,7 @@ class EditCom extends React.Component {
                         <div className="card-body">
                             <div className="row">
                                 <div className="col-md-6">
-                                    <FormControl.TextBox
+                                    <FormControl.FormControlTextBox
                                         name="txtShipmentOrderID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -192,7 +192,7 @@ class EditCom extends React.Component {
                                     />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ComboBoxSelect
+                                    <FormControl.FormControlComboBox
                                         name="txtShipmentOrderTypeID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -209,7 +209,7 @@ class EditCom extends React.Component {
 
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ComboBoxSelect
+                                    <FormControl.FormControlComboBox
                                         name="txtRequestPartnerID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -225,7 +225,7 @@ class EditCom extends React.Component {
                                         datasourcemember="RequestPartnerID" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ComboBoxSelect
+                                    <FormControl.FormControlComboBox
                                         name="txtCarrierPartnerID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -241,11 +241,12 @@ class EditCom extends React.Component {
                                         datasourcemember="CarrierPartnerID" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ComboBoxSelect
+                                    <FormControl.FormControlComboBox
                                         name="txtShipmentServiceTypeID"
                                         colspan="8"
                                         labelcolspan="4"
                                         label="loại dịch vụ"
+                                        placeholder="---Vui lòng chọn---"
                                         validatonList={["Comborequired"]}
                                         isautoloaditemfromcache={true}
                                         loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTSERVICETYPE"
@@ -257,7 +258,7 @@ class EditCom extends React.Component {
                                         datasourcemember="ShipmentServiceTypeID" />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ComboBoxSelect
+                                    <FormControl.FormControlComboBox
                                         name="txtCarrierTypeID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -384,11 +385,12 @@ class EditCom extends React.Component {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <FormControl.ComboBox
+                                            <FormControl.FormControlComboBox
                                                 name="cbSenderPartnerID"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 label="đối tác gửi"
+                                                placeholder="---Vui lòng chọn---"
                                                 validatonList={["Comborequired"]}
                                                 isautoloaditemfromcache={true}
                                                 loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
@@ -400,11 +402,12 @@ class EditCom extends React.Component {
                                                 datasourcemember="SenderPartnerID" />
                                         </div>
                                         <div className="col-md-6">
-                                            <FormControl.ComboBox
+                                            <FormControl.FormControlComboBox
                                                 name="cbSenderStoreID"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 label="kho gửi hàng"
+                                                placeholder="---Vui lòng chọn---"
                                                 validatonList={["Comborequired"]}
                                                 isautoloaditemfromcache={true}
                                                 loaditemcachekeyid="ERPCOMMONCACHE.STORE"
@@ -475,11 +478,12 @@ class EditCom extends React.Component {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <FormControl.ComboBoxSelect
+                                            <FormControl.FormControlComboBox
                                                 name="cbReceiverPartnerID"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 label="đối tác nhận"
+                                                placeholder="---Vui lòng chọn---"
                                                 isautoloaditemfromcache={true}
                                                 loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
                                                 valuemember="PartnerID"
@@ -490,12 +494,12 @@ class EditCom extends React.Component {
                                                 datasourcemember="ReceiverPartnerID" />
                                         </div>
                                         <div className="col-md-6">
-                                            <FormControl.ComboBoxSelect
+                                            <FormControl.FormControlComboBox
                                                 name="cbReceiverStoreID"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 label="kho nhận"
-                                              
+                                                placeholder="---Vui lòng chọn---"
                                                 isautoloaditemfromcache={true}
                                                 loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
                                                 valuemember="PartnerID"
@@ -571,11 +575,12 @@ class EditCom extends React.Component {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <FormControl.ComboBoxSelect
+                                            <FormControl.FormControlComboBox
                                                 name="cbShipmentGoodsTypeID"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 label="loại hàng"
+                                                placeholder="---Vui lòng chọn---"
                                                 validatonList={["Comborequired"]}
                                                 isautoloaditemfromcache={true}
                                                 loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTGOODSTYPE"
@@ -686,11 +691,12 @@ class EditCom extends React.Component {
 
                                         </div>
                                         <div className="col-md-6">
-                                            <FormControl.ComboBoxSelect
+                                            <FormControl.FormControlComboBox
                                                 name="cbShipmentFeePaymentMethodID"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 label="phương thức thanh toán phí dịch vụ vc"
+                                                placeholder="---Vui lòng chọn---"
                                                 validatonList={["Comborequired"]}
                                                 isautoloaditemfromcache={true}
                                                 loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTFEEPAYMENTMETHOD"
