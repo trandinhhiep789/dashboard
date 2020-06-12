@@ -48,7 +48,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label" >{this.state.ShipmentOrder.Weight}kg</label>
                         </div>
                         <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Tổng kích thước:</label>
+                            <label className="col-form-label bold">Tổng kích thước(DxRxC):</label>
                         </div>
                         <div className="form-group col-md-4">
                             <label className="col-form-label">{this.state.ShipmentOrder.Length}x{this.state.ShipmentOrder.Width}x{this.state.ShipmentOrder.Height}cm</label>
@@ -102,12 +102,13 @@ class InfoProductCom extends Component {
                                     <tr>
                                         <th className="jsgrid-header-cell"></th>
                                         <th className="jsgrid-header-cell">Cần lắp đặt</th>
+                                        <th className="jsgrid-header-cell">Mã sản phẩm</th>
                                         <th className="jsgrid-header-cell">Sản phẩm</th>
                                         <th className="jsgrid-header-cell">Kiện</th>
                                         <th className="jsgrid-header-cell">Giá</th>
                                         <th className="jsgrid-header-cell">Số lượng</th>
                                         <th className="jsgrid-header-cell">Đơn vị tính</th>
-                                        <th className="jsgrid-header-cell">Kích thước</th>
+                                        <th className="jsgrid-header-cell">Kích thước(DxRxC)</th>
                                         <th className="jsgrid-header-cell">Khối lượng</th>
                                     </tr>
                                 </thead>
@@ -128,6 +129,7 @@ class InfoProductCom extends Component {
                                                         </label>
                                                     </div>
                                                 </td>
+                                                <td>{item.ProductID}</td>
                                                 <td>{item.ProductName}</td>
                                                 <td>{item.PackingUnitName}</td>
                                                 <td>{item.Price}đ</td>

@@ -147,7 +147,7 @@ class AddCom extends React.Component {
         const { LstPartnerRole_Priviledge, DataSource, AddElementList } = this.state;
         return (
             <FormContainer
-                FormName="Thêm mới vai trò người dùng"
+                FormName="Thêm mới vai trò nhà cung cấp"
                 MLObjectDefinition={MLObjectDefinition}
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}

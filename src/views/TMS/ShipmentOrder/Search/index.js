@@ -54,8 +54,6 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
     }
 
-
-
     handleDelete(id) {
         const ShipmentOrder = { ShipmentOrderID: id, DeletedUser: this.props.AppInfo.LoginInfo.Username };
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, ShipmentOrder).then(apiResult => {
@@ -75,7 +73,6 @@ class SearchCom extends React.Component {
         this.setState({
             PageNumber: pageNum
         });
-
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -130,7 +127,6 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
 
-                console.log("callSearchData",apiResult.ResultObject)
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
