@@ -4,7 +4,7 @@ export const LoadAPIPath = "api/ServiceAgreement/Load";
 export const LoadNewAPIPath = "api/ServiceAgreement/LoadInfoNew";
 export const AddAPIPath = "api/ServiceAgreement/Add";
 export const UpdateAPIPath = "api/ServiceAgreement/Update";
-export const DeleteAPIPath = "api/ServiceAgreement/Delete";
+export const DeleteAPIPath = "api/ServiceAgreement/DeleteNew";
 export const UpdateOrderAPIPath = "api/ServiceAgreement/UpdateOrder";
 export const BackLink = "/ServiceAgreement";
 export const AddLink = "/ServiceAgreement/Add";
@@ -205,10 +205,10 @@ export const DataGridColumnList = [
         Width: 140
     },
     {
-        Name: "ServiceAreaID",
+        Name: "AreaName",
         Type: "text",
         Caption: "Khu vực",
-        DataSourceMember: "ServiceAreaID",
+        DataSourceMember: "AreaName",
         Width: 100
     },
     {
@@ -223,28 +223,28 @@ export const DataGridColumnList = [
         Type: "date",
         Caption: "Ngày hết hạn hợp đồng",
         DataSourceMember: "ExpiredDate",
-        Width: 170
+        Width: 250
     },
     {
-        Name: "IsExtended",
+        Name: "ExtendLable",
         Type: "text",
-        Caption: "Đã gia hạn hợp đồng",
-        DataSourceMember: "IsExtended",
+        Caption: "Gia hạn đến",
+        DataSourceMember: "ExtendLable",
         Width: 150
     },
     {
-        Name: "Status",
+        Name: "StatusLable",
         Type: "text",
         Caption: "Trạng thái",
-        DataSourceMember: "Status",
+        DataSourceMember: "StatusLable",
         Width: 150
     },
     {
         Name: "Action",
-        Type: "editnew",
+        Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "ServiceAgreementID",
-        Width: 70,
+        Width: 100,
         Link: "/ServiceAgreement/Edit/",
         LinkText: "Chỉnh sửa"
     },

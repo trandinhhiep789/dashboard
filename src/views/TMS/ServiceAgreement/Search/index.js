@@ -2,10 +2,16 @@ import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
-import DataGrid from "../../../../common/components/DataGrid/getdataserver.js";
-//import DataGrid from "../../../../common/components/DataGrid";
+//import DataGrid from "../../../../common/components/DataGrid/getdataserver.js";
+import DataGrid from "../../../../common/components/DataGrid";
 import InputGridNew from "../../../../common/components/FormContainer/FormControl/InputGridNew";
 import { MessageModal } from "../../../../common/components/Modal";
+import { formatDate } from "../../../../common/library/CommonLib.js";
+import isBefore from 'date-fns/isBefore';
+import formatDistance from 'date-fns/formatDistance';
+import viLocale from "date-fns/locale/vi";
+import { compareAsc, format, add } from 'date-fns'
+
 import {
     SearchElementList,
     SearchMLObjectDefinition,
@@ -58,16 +64,40 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log('Service Agree', apiResult)
+
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
                 });
                 this.showMessage(apiResult.Message);
             }
-            else{
+            else {
+                const dtdate = new Date();
+                //dtFromdate.setDate(new Date().getDate() - 365);
+                const result = apiResult.ResultObject.map((item) => {
+                    item.ExtendLable = item.ExtendedDate ? formatDate(item.ExtendedDate) : 'Chưa gia hạn';
+
+                    if (isBefore(new Date(item.ExpiredDate), new Date())) {
+                        item.StatusLable = <span className='lblstatus text-danger'>Hết hạn</span>;
+                    }
+                    else {
+                        const ExpiredDate = new Date(item.ExpiredDate);
+                        let currentDate = new Date();
+                        var timeDiff = Math.abs(currentDate.getTime() - ExpiredDate.getTime());
+                        var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
+                        if (diffDays < 30) {
+                            item.StatusLable = <span className='lblstatus text-warning'>Còn {diffDays} ngày</span>;
+                        }
+                        else{
+                            item.StatusLable = <span className='lblstatus text-success'>Còn hạn</span>;
+                        }
+                    }
+
+                    return item;
+                })
+
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource: result,
                     IsCallAPIError: apiResult.IsError,
                 });
             }
@@ -85,13 +115,18 @@ class SearchCom extends React.Component {
         );
     }
 
-    handleDelete(id) {
-        const objServiceAgreement = {
-            ServiceAgreementID: id,
-            DeletedUser: this.props.AppInfo.LoginInfo.Username
-        };
-        this.props.callFetchAPI(APIHostName, DeleteAPIPath, objServiceAgreement).then(apiResult => {
-            console.log('handleDelete', apiResult, objServiceAgreement)
+    handleDelete(deleteList, pkColumnName) {
+        let listMLObject = [];
+        deleteList.map((row, index) => {
+            let MLObject = {};
+            pkColumnName.map((pkItem, pkIndex) => {
+                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+            });
+            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+            listMLObject.push(MLObject);
+        });
+        this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
+
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
@@ -193,9 +228,7 @@ class SearchCom extends React.Component {
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
-                    onChangePage={this.handleonChangePage}
                     IsDelete={true}
-                    PageNumber={this.state.PageNumber}
                     IsAutoPaging={true}
                     RowsPerPage={10}
                 />
