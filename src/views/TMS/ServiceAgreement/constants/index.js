@@ -140,14 +140,17 @@ export const InitSearchParams = [
         SearchValue: "-1"
     },
     {
-        SearchKey: "@FromDate",
+        SearchKey: "@FROMDATE",
         SearchValue: dtFromdate
     },
     {
-        SearchKey: "@ToDate",
+        SearchKey: "@TODATE",
         SearchValue: new Date()
     },
-  
+    {
+        SearchKey: "@STATUS",
+        SearchValue: "-1"
+    },
 ];
 
 export const PagePath = [
@@ -275,6 +278,11 @@ export const SearchMLObjectDefinition = [
         Name: "ExpiredDate",
         DefaultValue: "",
         BindControlName: "dtExpiredDate"
+    },
+    {
+        Name: "ServiceStatusID",
+        DefaultValue: "",
+        BindControlName: "cbServiceStatusID"
     },
 ];
 

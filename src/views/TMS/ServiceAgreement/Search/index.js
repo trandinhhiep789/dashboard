@@ -194,7 +194,11 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@ToDate",
-                SearchValue: MLObject.SignedDate
+                SearchValue: MLObject.ExpiredDate
+            },
+            {
+                SearchKey: "@STATUS",
+                SearchValue: MLObject.ServiceStatusID
             }
 
         ];
@@ -208,7 +212,6 @@ class SearchCom extends React.Component {
 
 
     render() {
-        //console.log('gridDataSource', this.state.gridDataSource)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
