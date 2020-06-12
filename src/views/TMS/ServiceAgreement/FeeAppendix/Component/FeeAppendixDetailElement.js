@@ -114,7 +114,7 @@ class FeeAppendixDetailElementCom extends Component {
                             controltype="InputControl"
                             value={-1}
                             listoption={[]}
-                            datasourcemember="TechSpecsID"
+                            datasourcemember="TechspecsID"
                             filterrest="cbTechSpecsValueID"
                         />
                     </div>
@@ -133,7 +133,7 @@ class FeeAppendixDetailElementCom extends Component {
                             controltype="InputControl"
                             value={-1}
                             listoption={[]}
-                            datasourcemember="TechSpecsValueID"
+                            datasourcemember="TechspecsValueID"
                             filterName="cbTechSpecsID"
                             filterValue=""
                             filterobj="TechSpecsID"
