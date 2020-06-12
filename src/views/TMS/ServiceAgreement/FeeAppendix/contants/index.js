@@ -23,6 +23,8 @@ export const PKColumnNameFeeAppendixDetail = "FeeAppendixDetailID"
 
 export const AddFeeAppendixDetailPath ="api/ServiceAgreement_FeeAppendixDetail/Add";
 export const  EditFeeAppendixDetailPath="api/ServiceAgreement_FeeAppendixDetail/Update";
+export const  DeleteFeeAppendixDetailPath="api/ServiceAgreement_FeeAppendixDetail/Delete";
+
 
 
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
@@ -340,7 +342,7 @@ export const DataGridColumnItemListFeeAppendixDetail = [
     {
 
         Name: "Action",
-        Type: "editnew",
+        Type: "groupAction",
         Caption: "Tác vụ",
         DataSourceMember: "FeeAppendixID",
         Width: 70,

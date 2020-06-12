@@ -12,10 +12,8 @@ import {
     LoadNewAPIPath,
     DataGridColumnItemListFeeAppendixDetail,
     TitleFromFeeAppendixDetail,
-    AddLinkFeeAppendixDetail,
-    IDSelectColumnNameFeeAppendixDetail,
-    PKColumnNameFeeAppendixDetail,
-    MLObjectDefinition
+    MLObjectDefinition,
+    DeleteFeeAppendixDetailPath
 
 
 } from "../../../ServiceAgreement/FeeAppendix/contants";
@@ -28,6 +26,7 @@ import InputGridControl from "../../../../../common/components/FormContainer/For
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
 import FeeAppendixDetailElement from '../Component/FeeAppendixDetailElement';
+import ReactNotification from "react-notifications-component";
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -48,19 +47,17 @@ class DetailCom extends React.Component {
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
+        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
-        
-        
+     
         this.callLoadData(this.props.match.params.id);
-
-       
     }
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            console.log('111',apiResult.ResultObject)
+            console.log('ssss', apiResult);
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -114,12 +111,53 @@ class DetailCom extends React.Component {
         );
     }
 
-    handleItemDeleteFeeAppendixDetail() {
-
+    handleItemDeleteFeeAppendixDetail(id) {
+        let MLObject = {};
+        MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.FeeAppendixDetailID = id;
+        this.props.callFetchAPI(APIHostName, DeleteFeeAppendixDetailPath, MLObject).then((apiResult) => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callLoadData(this.props.match.params.id);
+            }
+        });
     }
-    handleonChangePageFeeAppendixDetail() {
 
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
     }
+
+
 
     handleInputChangeObjItem(id, apiResult) {
         this.callLoadData(id);
@@ -169,6 +207,7 @@ class DetailCom extends React.Component {
                 BackLink={BackLink}
                 onSubmit={this.handleSubmit}
             >
+                <ReactNotification ref={this.notificationDOMRef} />
                 <FeeAppendixInfo
                     FeeAppendixInfo={this.state.FeeAppendixDetailInfo}
                 />
@@ -183,7 +222,7 @@ class DetailCom extends React.Component {
                     dataSource={this.state.DataSource.FeeAppendixDetailItemList}
                     onInsertClick={this.handleItemInsert}
                     onEditClick={this.handleItemEdit}
-                    onDeleteClick={this.handleItemDeleteFeeAppendixDetail}
+                    onDeleteClick={this.handleItemDeleteFeeAppendixDetail.bind(this)}
                 />
             </FormContainer>
         );

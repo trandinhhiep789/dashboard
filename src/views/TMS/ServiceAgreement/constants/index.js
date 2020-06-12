@@ -6,6 +6,7 @@ export const AddAPIPath = "api/ServiceAgreement/Add";
 export const UpdateAPIPath = "api/ServiceAgreement/Update";
 export const DeleteNewAPIPath = "api/ServiceAgreement/DeleteNew";
 export const DeleteAPIPath = "api/ServiceAgreement_FeeAppendix/Delete";
+export const DeleteAbilityAPIPath = "api/ServiceAgreement_Ability/Delete";
 export const UpdateOrderAPIPath = "api/ServiceAgreement/UpdateOrder";
 export const BackLink = "/ServiceAgreement";
 export const AddLink = "/ServiceAgreement/Add";
@@ -117,7 +118,7 @@ export const DataGridColumnItemListAbiliti = [
     },
     {
         Name: "Action",
-        Type: "editnew",
+        Type: "groupAction",
         Caption: "Tác vụ",
         DataSourceMember: "AbilityID",
         Width: 70,

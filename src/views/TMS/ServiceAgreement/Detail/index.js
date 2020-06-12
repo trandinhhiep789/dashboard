@@ -13,21 +13,17 @@ import DataGrid from "../../../../common/components/DataGrid/getdataserver.js";
 
 import {
     APIHostName,
-    LoadAPIPath,
-    PagePath,
     DetailAPIPath,
     LoadNewAPIPath,
-    MLObjectDefinition,
-    BackLink,
     TitleFormDetail,
     TitleFromAbiliti,
     PKColumnNameFeeAppendix,
     TitleFromFeeAppendix,
     DataGridColumnItemListFeeAppendix,
-    IDSelectColumnNameFeeAppendix,
     DeleteAPIPath,
     DataGridColumnItemListAbiliti,
-    PKColumnNameAbiliti
+    PKColumnNameAbiliti,
+    DeleteAbilityAPIPath
 
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
@@ -111,12 +107,9 @@ class DetailCom extends React.Component {
     }
 
     handleItemDeleteFeeAppendix(id) {
-        let objServiceAgreement_FeeAppendix = [];
         let MLObject = {};
         MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.FeeAppendixID = id;
-        objServiceAgreement_FeeAppendix.push(MLObject);
-        console.log('a2', objServiceAgreement_FeeAppendix)
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, MLObject).then((apiResult) => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
@@ -175,8 +168,17 @@ class DetailCom extends React.Component {
         });
     }
 
-    handleItemDeleteAbiliti() {
-
+    handleItemDeleteAbiliti(id) {
+        let MLObject = {};
+        MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.AbilityID = id;
+        this.props.callFetchAPI(APIHostName, DeleteAbilityAPIPath, MLObject).then((apiResult) => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callLoadData(this.props.match.params.id);
+            }
+        });
     }
 
     addNotification(message1, IsError) {
