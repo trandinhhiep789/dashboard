@@ -1478,7 +1478,7 @@ class ComboBoxSelectCom extends Component {
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption.name, this.props.validatonList);
+            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption.name, this.props.filterrest);
     }
 
     bindcombox(value, listOption) {
