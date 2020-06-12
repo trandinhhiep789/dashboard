@@ -157,8 +157,6 @@ class DetailCom extends React.Component {
         });
     }
 
-
-
     handleInputChangeObjItem(id, apiResult) {
         this.callLoadData(id);
         this.props.hideModal();

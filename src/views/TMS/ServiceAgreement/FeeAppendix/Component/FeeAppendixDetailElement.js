@@ -153,6 +153,7 @@ class FeeAppendixDetailElementCom extends Component {
                             validatonList={["required"]}
                             datasourcemember="ProductID"
                         /> */}
+                        
                         <ProductComboBox
                             colspan="9"
                             labelcolspan="3"
@@ -163,6 +164,7 @@ class FeeAppendixDetailElementCom extends Component {
                             name="cbProductID"
                             validatonList={["required"]}
                             IsLabelDiv={true}
+                            isMulti={false}
                         />
                     </div>
 
