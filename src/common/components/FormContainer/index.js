@@ -173,6 +173,7 @@ class FormContainerCom extends Component {
         //console.log('change')
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
+        debugger;
         if (typeof filterrest != "undefined" && filterrest != "") {
             const objrest = filterrest.split(",");
             for (let i = 0; i < objrest.length; i++) {
@@ -330,10 +331,12 @@ class FormContainerCom extends Component {
                 const controltype = child.props.controltype;
                 if (controltype == "InputControl") {
                     const controlname = child.props.name;
+
                     return React.cloneElement(child,
                         {
                             onValueChange: this.handleInputChange,
                             value: this.state.FormData[controlname].value,
+                            filterValue: typeof child.props.filterName != "undefined" ? this.state.FormData[child.props.filterName].value : "",
                             validationErrorMessage: this.state.FormData[controlname].ErrorLst.ValidatonErrorMessage,
                             inputRef: ref => this.elementItemRefs[controlname] = ref
                         }

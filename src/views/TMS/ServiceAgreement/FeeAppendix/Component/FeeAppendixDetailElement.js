@@ -27,11 +27,11 @@ class FeeAppendixDetailElementCom extends Component {
     }
 
     handleSubmit(From, MLObject) {
-        
+
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
         MLObject.FeeAppendixID = this.props.dataSource.FeeAppendixID.trim();
         MLObject.SignedDate = this.props.dataSource.SignedDate;
-        MLObject.ApplyFromDate= this.props.dataSource.ApplyFromDate;
+        MLObject.ApplyFromDate = this.props.dataSource.ApplyFromDate;
         MLObject.ProductID = MLObject.Product[0].ProductID;
         if (this.props.index != undefined) {
             MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
@@ -73,6 +73,7 @@ class FeeAppendixDetailElementCom extends Component {
                             value={-1}
                             listoption={[]}
                             datasourcemember="MainGroupID"
+                            filterrest="cbSubGroupID"
                         />
 
                     </div>
@@ -92,6 +93,9 @@ class FeeAppendixDetailElementCom extends Component {
                             value={-1}
                             listoption={[]}
                             datasourcemember="SubGroupID"
+                            filterName="cbMainGroupID"
+                            filterValue=""
+                            filterobj="MainGroupID"
                         />
 
                     </div>
@@ -111,6 +115,7 @@ class FeeAppendixDetailElementCom extends Component {
                             value={-1}
                             listoption={[]}
                             datasourcemember="TechSpecsID"
+                            filterrest="cbTechSpecsValueID"
                         />
                     </div>
 
@@ -129,6 +134,9 @@ class FeeAppendixDetailElementCom extends Component {
                             value={-1}
                             listoption={[]}
                             datasourcemember="TechSpecsValueID"
+                            filterName="cbTechSpecsID"
+                            filterValue=""
+                            filterobj="TechSpecsID"
                         />
                     </div>
 
@@ -145,7 +153,7 @@ class FeeAppendixDetailElementCom extends Component {
                             validatonList={["required"]}
                             datasourcemember="ProductID"
                         /> */}
-                        <ProductComboBox 
+                        <ProductComboBox
                             colspan="9"
                             labelcolspan="3"
                             label="sản phẩm"
