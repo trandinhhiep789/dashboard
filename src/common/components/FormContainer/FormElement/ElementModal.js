@@ -190,8 +190,9 @@ class ElementModalComboBoxCom extends Component {
     }
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
+        debugger
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.name : "", this.props.filterrest);
+            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.label : "", this.props.filterrest);
     }
 
     bindcombox(value, listOption) {

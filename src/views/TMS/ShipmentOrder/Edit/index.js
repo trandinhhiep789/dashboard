@@ -5,6 +5,7 @@ import { ModalManager } from "react-dynamic-modal";
 import ModelFormContainer from "../../../../common/components/Modal/ModelFormContainer";
 import FormContainer from "../../../../common/components/FormContainer";
 import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
+import InputGrid from "../../../../common/components/FormContainer/FormControl/InputGrid";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../common/components/Modal";
 import {
@@ -764,7 +765,7 @@ class EditCom extends React.Component {
                                 onEditClick={this.handleItemEdit}
                                 onDeleteClick={this.handleItemDelete}
                             />
-                            <InputGridControl
+                            <InputGrid
                                 name="ShipmentOrder_MaterialList"
                                 controltype="InputGridControl"
                                 title="Vật tư lắp đặt"
