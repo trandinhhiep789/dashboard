@@ -25,7 +25,7 @@ import {
     TitleFromFeeAppendix,
     DataGridColumnItemListFeeAppendix,
     IDSelectColumnNameFeeAppendix,
-    AddLinkFeeAppendix,
+    DeleteAPIPath,
     DataGridColumnItemListAbiliti,
     PKColumnNameAbiliti
 
@@ -94,9 +94,7 @@ class DetailCom extends React.Component {
         );
     }
 
-    handleonChangePageFeeAppendix() {
 
-    }
 
     handleItemEditFeeAppendix(index) {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
@@ -112,7 +110,20 @@ class DetailCom extends React.Component {
         });
     }
 
-    handleItemDeleteFeeAppendix() {
+    handleItemDeleteFeeAppendix(id) {
+        let objServiceAgreement_FeeAppendix = [];
+        let MLObject = {};
+        MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.FeeAppendixID = id;
+        objServiceAgreement_FeeAppendix.push(MLObject);
+        console.log('a2', objServiceAgreement_FeeAppendix)
+        this.props.callFetchAPI(APIHostName, DeleteAPIPath, MLObject).then((apiResult) => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callLoadData(this.props.match.params.id);
+            }
+        });
 
     }
 

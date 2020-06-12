@@ -120,6 +120,7 @@ class FeeAppendixDetailElementCom extends Component {
                             placeholder="Từ ngày"
                             controltype="InputControl"
                             value=""
+                            validatonList={["required"]}
                             datasourcemember="ApplyFromDate"
 
                         />
@@ -137,6 +138,7 @@ class FeeAppendixDetailElementCom extends Component {
                             placeholder="Đến ngày"
                             controltype="InputControl"
                             value=""
+                            validatonList={["required"]}
                             datasourcemember="ApplyToDate"
                         />
                     </div>
