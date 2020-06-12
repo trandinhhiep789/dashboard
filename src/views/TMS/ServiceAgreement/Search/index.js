@@ -234,6 +234,7 @@ class SearchCom extends React.Component {
                     IsDelete={true}
                     IsAutoPaging={true}
                     RowsPerPage={10}
+                    IsExportFile={true}
                 />
             </React.Fragment>
         );
