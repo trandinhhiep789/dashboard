@@ -352,6 +352,13 @@ export const DataGridColumnItemListFeeAppendixDetail = [
 export const MLObjectFeeAppendixDetailItem = [
     {
 
+        Name: "MainGroupID",
+        DefaultValue: "",
+        BindControlName: "cbMainGroupID",
+        DataSourceMember: "MainGroupID"
+    },
+    {
+
         Name: "SubGroupID",
         DefaultValue: "",
         BindControlName: "cbSubGroupID",

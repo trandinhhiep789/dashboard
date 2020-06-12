@@ -23,7 +23,7 @@ class FeeAppendixDetailElementCom extends Component {
     }
 
     componentDidMount() {
-        //console.log("FeeAppendixDetailElementCom", this.props)
+        console.log("FeeAppendixDetailElementCom", this.props)
     }
 
     handleSubmit(From, MLObject) {
@@ -42,7 +42,6 @@ class FeeAppendixDetailElementCom extends Component {
         else {
             MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
             this.props.callFetchAPI(APIHostName, AddFeeAppendixDetailPath, MLObject).then(apiResult => {
-                console.log("handleSubmit MLObject", MLObject, apiResult)
                 this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
             });
         }
