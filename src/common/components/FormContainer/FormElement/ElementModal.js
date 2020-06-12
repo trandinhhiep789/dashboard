@@ -172,6 +172,7 @@ class ElementModalNumber extends React.Component {
                             onChange={this.handleValueChange}
                             disabled= {this.props.disabled == true ? true : this.props.readonly}
                             ref={this.props.inputRef}
+                            className={className}
                         />
                         <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
                     </div>
