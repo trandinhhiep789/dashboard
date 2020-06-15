@@ -802,6 +802,7 @@ class EditCom extends React.Component {
                                 MLObjectDefinition={GridMLDeliverUserDefinition}
                                 datasourcemember="ShipmentOrder_DeliverUserList"
                                 filterName="txtCarrierPartnerID"
+                                isMultiSelect={true}
                             />
                             <FormControl.TextArea
                                 name="txtCoordinatorNote"

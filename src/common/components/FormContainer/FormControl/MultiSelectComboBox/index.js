@@ -144,7 +144,7 @@ class MultiSelectComboBoxCom extends React.Component {
                         onChange={this.handleValueChange}
                         onKeyDown={this.handleValueChange1}
                         options={listOptionNew}
-                        isMulti={true}
+                        isMulti={this.props.isMultiSelect}
                         isDisabled={this.props.disabled}
                         isSearchable={true}
                         placeholder={"----Chọn -----"}

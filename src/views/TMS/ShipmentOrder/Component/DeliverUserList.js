@@ -83,15 +83,28 @@ class DeliverUserListCom extends React.Component {
     handleValueChange(name, value) {
         let listMLObject = [];
         if (value) {
-            for (let i = 0; i < value.length; i++) {
+            if (this.props.isMultiSelect == true) {
+                for (let i = 0; i < value.length; i++) {
+                    listMLObject.push({
+                        UserName: value[i],
+                        CreatedUser: this.props.AppInfo.LoginInfo.Username
+
+                    });
+                }
+            }
+            else {
                 listMLObject.push({
-                    UserName: value[i],
+                    UserName: value,
                     CreatedUser: this.props.AppInfo.LoginInfo.Username
 
                 });
+
             }
+
         }
         // let comboValues = this.getComboValue(selectedOption);
+
+
         if (this.props.onValueChange)
             this.props.onValueChange(this.props.name, listMLObject);
     }
@@ -105,9 +118,17 @@ class DeliverUserListCom extends React.Component {
     handleValueChange1(name, selectedOption) {
         let listMLObject = [];
         if (selectedOption) {
-            for (let i = 0; i < selectedOption.length; i++) {
+            if (this.props.isMultiSelect == true) {
+
+                for (let i = 0; i < selectedOption.length; i++) {
+                    listMLObject.push({
+                        UserName: selectedOption[i].value,
+                        CreatedUser: this.props.AppInfo.LoginInfo.Username,
+                    });
+                }
+            } else {
                 listMLObject.push({
-                    UserName: selectedOption[i].value,
+                    UserName: selectedOption[0].value,
                     CreatedUser: this.props.AppInfo.LoginInfo.Username,
                 });
             }
@@ -147,6 +168,7 @@ class DeliverUserListCom extends React.Component {
                         value={listOption}
                         onChange={this.handleValueChange1}
                         listoption={[]}
+                        isMultiSelect={this.props.isMultiSelect}
                         datasourcemember="ShipmentOrder_DeliverUserList"
                         validationErrorMessage={this.props.validationErrorMessage}
 
@@ -167,7 +189,7 @@ class DeliverUserListCom extends React.Component {
                         listoption={null}
                         datasourcemember="PartnerID"
                         placeholder="---Vui lòng chọn---"
-                        isMultiSelect={true}
+                        isMultiSelect={this.props.isMultiSelect}
                         filterValue={this.props.filterValue}
                         filterobj="PartnerID"
                         validationErrorMessage={this.props.validationErrorMessage}
