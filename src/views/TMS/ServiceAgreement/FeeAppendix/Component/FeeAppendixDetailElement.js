@@ -27,6 +27,7 @@ class FeeAppendixDetailElementCom extends Component {
     }
 
     handleSubmit(From, MLObject) {
+        console.log('12', MLObject)
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
         MLObject.FeeAppendixID = this.props.dataSource.FeeAppendixID.trim();
         MLObject.SignedDate = this.props.dataSource.SignedDate;
@@ -34,12 +35,15 @@ class FeeAppendixDetailElementCom extends Component {
         MLObject.ProductID = MLObject.ProductID[0].ProductID;
         if (this.props.index != undefined) {
             MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+            MLObject.FeeAppendixDetailID = 
             this.props.callFetchAPI(APIHostName, EditFeeAppendixDetailPath, MLObject).then(apiResult => {
+                console.log('12', apiResult, MLObject)
                 this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
             });
         }
         else {
             MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+            
             this.props.callFetchAPI(APIHostName, AddFeeAppendixDetailPath, MLObject).then(apiResult => {
                 this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
             });
@@ -57,6 +61,23 @@ class FeeAppendixDetailElementCom extends Component {
             >
                 <div className="row">
 
+                <div className="col-md-6">
+                        <FormControl.FormControlTextBox
+                            name="txtFeeAppendixDetailID"
+                            colspan="9"
+                            labelcolspan="3"
+                            readOnly={true}
+                            label="mã chi tiết biểu phí"
+                            hidenControll={true}
+                            placeholder="Mã chi tiết biểu phí tự động nhập"
+                            controltype="InputControl"
+                            value=""
+                            datasourcemember="FeeAppendixDetailID"
+                        />
+                    </div>
+
+                    <div className="col-md-6"></div>
+
                     <div className="col-md-6">
                         <FormControl.FormControlComboBox
                             name="cbMainGroupID"
@@ -72,7 +93,7 @@ class FeeAppendixDetailElementCom extends Component {
                             value={-1}
                             listoption={[]}
                             datasourcemember="MainGroupID"
-                            filterrest="cbSubGroupID"
+                            filterrest="cbSubGroupID,cbTechSpecsValueID,cbTechSpecsID"
                         />
 
                     </div>
@@ -95,6 +116,7 @@ class FeeAppendixDetailElementCom extends Component {
                             filterName="cbMainGroupID"
                             filterValue=""
                             filterobj="MainGroupID"
+                            filterrest="cbTechSpecsValueID,cbTechSpecsID"
                         />
 
                     </div>
@@ -107,13 +129,16 @@ class FeeAppendixDetailElementCom extends Component {
                             label="thông số kỹ thuật"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.TECHSPECS"
-                            valuemember="TechSpecsID"
-                            nameMember="TechSpecsName"
+                            loaditemcachekeyid="ERPCOMMONCACHE.SUBGROUPTECHSPECS"
+                            valuemember="TechspecsID"
+                            nameMember="TechspecsName"
                             controltype="InputControl"
                             value={-1}
                             listoption={[]}
                             datasourcemember="TechspecsID"
+                            filterobj="SubGroupID"
+                            filterName="cbSubGroupID"
+                            filterValue=''
                             filterrest="cbTechSpecsValueID"
                         />
                     </div>
@@ -152,7 +177,7 @@ class FeeAppendixDetailElementCom extends Component {
                             validatonList={["required"]}
                             datasourcemember="ProductID"
                         /> */}
-                        
+
                         <ProductComboBox
                             colspan="9"
                             labelcolspan="3"
