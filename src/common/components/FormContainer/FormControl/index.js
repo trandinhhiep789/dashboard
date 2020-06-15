@@ -51,7 +51,7 @@ class TextBox extends React.Component {
 
     handleValueChange(e) {
         if (this.props.onValueChange != null) {
-            this.props.onValueChange(e.target.name, e.target.value, "", e, this.props.validatonList);
+            this.props.onValueChange(e.target.name, e.target.value, "", e, undefined);
         }
 
     }
