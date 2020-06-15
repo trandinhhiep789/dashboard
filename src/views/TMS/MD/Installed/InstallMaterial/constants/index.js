@@ -586,8 +586,8 @@ export const InputMcRoleColumnList = [
     {
         name: "ProductID",
         Type: "ProductCombo",
-        Caption: "Mã sản phẩm",
-        label: "mã sản phẩm",
+        Caption: "Tên sản phẩm",
+        label: "tên sản phẩm",
         datasourcemember: "ProductID",
         Width: 100,
         validatonList: ["Comborequired"],
