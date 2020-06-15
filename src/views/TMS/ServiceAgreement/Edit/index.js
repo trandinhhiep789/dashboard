@@ -12,7 +12,8 @@ import {
     BackLink,
     MLObjectDefinition,
     LoadNewAPIPath,
-    APIHostName
+    APIHostName,
+    UpdateAPIPath
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -39,14 +40,19 @@ class EditCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
-        console.log('edit', this.props)
+   
         this.callLoadData(this.props.match.params.id);
     }
 
     handleSubmit(formData, MLObject) {
+        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.DeputyUserName = MLObject.ShipmentOrder_DeliverUserList[0].UserName;
+        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
 
-        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        });
+
     }
 
 
@@ -67,7 +73,7 @@ class EditCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            console.log('111', apiResult)
+
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -75,10 +81,12 @@ class EditCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+                apiResult.ResultObject.ShipmentOrder_DeliverUserList = [{ UserName: apiResult.ResultObject.DeputyUserName, FullName: apiResult.ResultObject.FullName }]
                 this.setState({
                     DataSource: apiResult.ResultObject,
                     IsLoadDataComplete: true
                 });
+                console.log('111', apiResult.ResultObject)
             }
         });
     }
@@ -235,6 +243,7 @@ class EditCom extends React.Component {
                                 //MLObjectDefinition={GridMLDeliverUserDefinition}
                                 datasourcemember="ShipmentOrder_DeliverUserList"
                                 filterName="txtPartnerID"
+                                isMultiSelect={false}
                             />
                         </div>
 

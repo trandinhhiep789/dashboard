@@ -82,7 +82,6 @@ class DeliverUserListCom extends React.Component {
 
     handleValueChange(name, value) {
 
-        debugger
         let listMLObject = [];
         if (value) {
             if (this.props.isMultiSelect == true) {
@@ -118,7 +117,6 @@ class DeliverUserListCom extends React.Component {
         }
     }
     handleValueChange1(name, selectedOption) {
-        debugger
         let listMLObject = [];
         if (selectedOption) {
             if (this.props.isMultiSelect == true) {
@@ -131,7 +129,7 @@ class DeliverUserListCom extends React.Component {
                 }
             } else {
                 listMLObject.push({
-                    UserName: selectedOption[0].value,
+                    UserName: selectedOption.value,
                     CreatedUser: this.props.AppInfo.LoginInfo.Username,
                 });
             }
