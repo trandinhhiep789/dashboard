@@ -81,6 +81,8 @@ class DeliverUserListCom extends React.Component {
     }
 
     handleValueChange(name, value) {
+
+        debugger
         let listMLObject = [];
         if (value) {
             for (let i = 0; i < value.length; i++) {
@@ -103,6 +105,7 @@ class DeliverUserListCom extends React.Component {
         }
     }
     handleValueChange1(name, selectedOption) {
+        debugger
         let listMLObject = [];
         if (selectedOption) {
             for (let i = 0; i < selectedOption.length; i++) {
@@ -137,8 +140,8 @@ class DeliverUserListCom extends React.Component {
                 {this.props.filterValue == -1 ?
                     <MultiSelectComboBox
                         name="ShipmentOrder_DeliverUserList"
-                        colspan="10"
-                        labelcolspan="2"
+                        colspan={this.props.colspan}
+                        labelcolspan={this.props.labelcolspan}
                         label="Nhân viên giao"
                         IsLabelDiv={true}
                         isautoloaditemfromcache={false}
@@ -149,12 +152,13 @@ class DeliverUserListCom extends React.Component {
                         listoption={[]}
                         datasourcemember="ShipmentOrder_DeliverUserList"
                         validationErrorMessage={this.props.validationErrorMessage}
+                        isMulti={isMulti}
 
                     /> :
                     <FormControl.FormControlComboBox
                         name="ShipmentOrder_DeliverUserList"
-                        colspan="10"
-                        labelcolspan="2"
+                        colspan={this.props.colspan}
+                        labelcolspan={this.props.labelcolspan}
                         label="Nhân viên giao"
                         validatonList={["Comborequired"]}
                         isautoloaditemfromcache={true}
