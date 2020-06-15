@@ -137,7 +137,12 @@ class FormContainerCom extends Component {
         }
         if (controltype == "InputMultiControl") {
             let controlname = child.props.name;
-            const ObjectName = { Name: controlname, datasourcemember: controlname, value: child.props.dataSource, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList };
+            let controlvalue = child.props.dataSource;
+            const datasourcemember = child.props.datasourcemember;
+            if (dataSource != null && datasourcemember != null) {
+                controlvalue = dataSource[datasourcemember];
+            }
+            const ObjectName = { Name: controlname, datasourcemember: controlname, value: controlvalue, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList };
             return { [controlname]: ObjectName };
         }
 
@@ -366,12 +371,17 @@ class FormContainerCom extends Component {
                 }
                 else if (controltype == "InputMultiControl") {
                     const controlname = child.props.name;
-
+                    let strfilterValue = child.props.filterValue;
+                    if (typeof child.props.filterName != "undefined") {
+                        strfilterValue = this.state.FormData[child.props.filterName].value
+                    }
                     return React.cloneElement(child,
                         {
                             onValueChange: this.handleInputChangeMulti,
                             value: this.state.FormData[controlname].value,
-                            inputRef: ref => this.elementItemRefs[controlname] = ref
+                            filterValue: strfilterValue,
+                            inputRef: ref => this.elementItemRefs[controlname] = ref,
+                            validationErrorMessage: this.state.FormData[controlname].ErrorLst.ValidatonErrorMessage,
                         }
                     );
                 }

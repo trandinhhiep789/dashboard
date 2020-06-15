@@ -32,7 +32,7 @@ import { callGetCache } from "../../../../actions/cacheAction";
 import indexedDBLib from "../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import MultiUserComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiUserComboBox";
-import ProductComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/ProductComboBox";
+import DeliverUserList from "../Component/DeliverUserList"
 
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
@@ -768,6 +768,7 @@ class EditCom extends React.Component {
                                         listoption={null}
                                         filterValue = {2}
                                         filterobj= "PartnerTypeID"
+                                        filterrest="ShipmentOrder_DeliverUserList"
                                         datasourcemember="CarrierPartnerID" />
                                 </div>
                                 <div className="col-md-6">
@@ -790,15 +791,17 @@ class EditCom extends React.Component {
                                     />
                                 </div>
                             </div>
-                            <MultiUserComboBox
+                            <DeliverUserList
                                 name="ShipmentOrder_DeliverUserList"
                                 colspan="10"
                                 labelcolspan="2"
                                 label="Nhân viên  giao"
                                 IsLabelDiv={true}
+                                validatonList={["Comborequired"]}
                                 controltype="InputMultiControl"
                                 MLObjectDefinition={GridMLDeliverUserDefinition}
                                 datasourcemember="ShipmentOrder_DeliverUserList"
+                                filterName="txtCarrierPartnerID"
                             />
                             <FormControl.TextArea
                                 name="txtCoordinatorNote"
