@@ -795,10 +795,10 @@ export const FixShipmentFeeColumnList = [
         Width: 50
     },
     {
-        Name: "ShipmentFeeTypeID",
+        Name: "ShipmentFeeTypeName",
         Type: "text",
-        Caption: "Mã loại chi phí vận chuyển",
-        DataSourceMember: "ShipmentFeeTypeID",
+        Caption: "Loại chi phí vận chuyển",
+        DataSourceMember: "ShipmentFeeTypeName",
         Width: 180
     },
     {
@@ -851,6 +851,12 @@ export const MLObjectShipmentOrderType_FixShipmentFee = [
         DefaultValue: "",
         BindControlName: "ShipmentFeeTypeID",
         DataSourceMember: "ShipmentFeeTypeID"
+    },
+    {
+        Name: "ShipmentFeeTypeName",
+        DefaultValue: "",
+        BindControlName: "ShipmentFeeTypeName",
+        DataSourceMember: "ShipmentFeeTypeName"
     },
     {
         Name: "OutputServiceProductID",
@@ -920,25 +926,25 @@ export const FlexShipmentFeeColumnList = [
         Width: 200
     },
     {
-        Name: "ShipmentFeeTypeID",
+        Name: "ShipmentFeeTypeName",
         Type: "text",
-        Caption: "Mã loại chi phí vận chuyển",
-        DataSourceMember: "ShipmentFeeTypeID",
-        Width: 180
+        Caption: "Loại chi phí vận chuyển",
+        DataSourceMember: "ShipmentFeeTypeName",
+        Width: 220
     },
     {
         Name: "GetFeeTypeName",
         Type: "text",
         Caption: "Kiểu lấy chi phí",
         DataSourceMember: "GetFeeTypeName",
-        Width: 160
+        Width: 150
     },
     {
         Name: "FeeValue",
         Type: "text",
         Caption: "Chi phí vận chuyển",
         DataSourceMember: "FeeValue",
-        Width: 200
+        Width: 120
     },
     {
         Name: "IsActived",
@@ -961,7 +967,7 @@ export const ModalFlexShipmentFeeColumnList = [
     {
         type: "select",
         Name: "ShipmentFeeTypeID",
-        label: "Mã loại chi phí vận chuyển",
+        label: "Loại chi phí vận chuyển",
         value: -1,
         placeholder: "",
         icon: "",
@@ -975,7 +981,24 @@ export const ModalFlexShipmentFeeColumnList = [
         NameMember: "ShipmentFeeTypeName"
     },
     {
-        type: "select",
+        type: "multiselect",
+        Name: "MainGroupID",
+        label: "Ngành hàng áp dụng",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        //listoption: [],
+        DataSourceMember: "MainGroupID",
+        readonly: false,
+        validatonList: [],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.MAINGROUP",
+        ValueMember: "MainGroupID",
+        NameMember: "MainGroupName"
+    },
+    {
+        type: "multiselect",
         Name: "SubGroupID",
         label: "Nhóm hàng áp dụng",
         value: -1,
@@ -985,43 +1008,62 @@ export const ModalFlexShipmentFeeColumnList = [
         DataSourceMember: "SubGroupID",
         readonly: false,
         validatonList: [],
+        isMulti: false,
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SUBGROUP",
         ValueMember: "SubGroupID",
         NameMember: "SubGroupName"
     },
     {
-        type: "select",
+        type: "multiselect",
         Name: "TechspecsID",
         label: "Thông số kỹ thuật áp dụng",
         value: -1,
         placeholder: "",
         icon: "",
-        listoption: [],
+        //listoption: [],
         DataSourceMember: "TechspecsID",
         readonly: false,
         validatonList: [],
+        isMulti: false,
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECS",
         ValueMember: "TechSpecsID",
         NameMember: "TechSpecsName"
     },
     {
-        type: "select",
+        type: "multiselect",
         Name: "TechspecsValueID",
         label: "Giá trị tham số KT áp dụng",
         value: -1,
         placeholder: "",
         icon: "",
-        listoption: [],
+        //listoption: [],
         DataSourceMember: "TechspecsValueID",
         readonly: false,
         validatonList: [],
+        isMulti: false,
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECSVALUE",
         ValueMember: "TechSpecsValueID",
         NameMember: "Value"
     },
+    // {
+    //     type: "select",
+    //     Name: "TechspecsValueID",
+    //     label: "Giá trị tham số KT áp dụng",
+    //     value: -1,
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "TechspecsValueID",
+    //     readonly: false,
+    //     validatonList: [],
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECSVALUE",
+    //     ValueMember: "TechSpecsValueID",
+    //     NameMember: "Value"
+    // },
     {
         Name: "ProductID",
         type: "productbox",
@@ -1107,7 +1149,7 @@ export const ModalFlexShipmentFeeColumnList_Edit = [
     {
         type: "select",
         Name: "ShipmentFeeTypeID",
-        label: "Mã loại chi phí vận chuyển",
+        label: "Loại chi phí vận chuyển",
         value: -1,
         placeholder: "",
         icon: "",
@@ -1121,48 +1163,68 @@ export const ModalFlexShipmentFeeColumnList_Edit = [
         NameMember: "ShipmentFeeTypeName"
     },
     {
-        type: "select",
+        type: "multiselect",
+        Name: "MainGroupID",
+        label: "Ngành hàng áp dụng",
+        value: "",
+        placeholder: "",
+        icon: "",
+        //listoption: [],
+        DataSourceMember: "MainGroupID",
+        readonly: false,
+        validatonList: [],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.MAINGROUP",
+        ValueMember: "MainGroupID",
+        NameMember: "MainGroupName"
+    },
+    {
+        type: "multiselect",
         Name: "SubGroupID",
         label: "Nhóm hàng áp dụng",
-        value: -1,
+        value: "",
         placeholder: "",
         icon: "",
         listoption: [],
         DataSourceMember: "SubGroupID",
         readonly: false,
         validatonList: [],
+        isMulti: false,
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SUBGROUP",
         ValueMember: "SubGroupID",
         NameMember: "SubGroupName"
     },
     {
-        type: "select",
+        type: "multiselect",
         Name: "TechspecsID",
         label: "Thông số kỹ thuật áp dụng",
-        value: -1,
+        value: "",
         placeholder: "",
         icon: "",
-        listoption: [],
+        //listoption: [],
         DataSourceMember: "TechspecsID",
         readonly: false,
         validatonList: [],
+        isMulti: false,
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECS",
         ValueMember: "TechSpecsID",
         NameMember: "TechSpecsName"
     },
     {
-        type: "select",
+        type: "multiselect",
         Name: "TechspecsValueID",
         label: "Giá trị tham số KT áp dụng",
-        value: -1,
+        value: "",
         placeholder: "",
         icon: "",
-        listoption: [],
+        //listoption: [],
         DataSourceMember: "TechspecsValueID",
         readonly: false,
         validatonList: [],
+        isMulti: false,
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECSVALUE",
         ValueMember: "TechSpecsValueID",
@@ -1258,6 +1320,18 @@ export const MLObjectShipmentOrderType_FlexShipmentFee = [
         DefaultValue: "",
         BindControlName: "ShipmentFeeTypeID",
         DataSourceMember: "ShipmentFeeTypeID"
+    },
+    {
+        Name: "ShipmentFeeTypeName",
+        DefaultValue: "",
+        BindControlName: "ShipmentFeeTypeName",
+        DataSourceMember: "ShipmentFeeTypeName"
+    },
+    {
+        Name: "MainGroupID",
+        DefaultValue: "",
+        BindControlName: "MainGroupID",
+        DataSourceMember: "MainGroupID"
     },
     {
         Name: "SubGroupID",

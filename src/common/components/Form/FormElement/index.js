@@ -140,12 +140,12 @@ class FormElementCom extends Component {
 
                 this.props.callGetCache(cacheKeyID).then((result) => {
                     //console.log("FormElement callGetCache: ", result)
-                    listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                    listOption = [{ value: -1, label: this.props.type == "multiselect" ? "------ Chọn ------" : "------ Vui lòng chọn ------" }];
                     if (!result.IsError && result.ResultObject.CacheData != null) {
 
                         result.ResultObject.CacheData.map((cacheItem) => {
                             // console.log("FormElement listOption: ", cacheItem)
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
+                            listOption.push({ value: cacheItem[valueMember], label: this.props.type == "multiselect" ? cacheItem[nameMember] : cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
                         });
                     }
                     else {
@@ -201,6 +201,13 @@ class FormElementCom extends Component {
             let listOption = nextProps.listoption;
             this.setState({ Listoption: listOption });
         }
+
+        if (nextProps.type == "multiselect" && nextProps.listoption != undefined && nextProps.listoption.length > 0) {
+            //console.log("FormElement componentWillReceiveProps:", nextProps);
+            let listOption = nextProps.listoption;
+            this.setState({ Listoption: listOption });
+        }
+
     }
 
     onChangeEditor() {
@@ -263,7 +270,7 @@ class FormElementCom extends Component {
     }
 
     handleSelectedFile(event) {
-        let isValidAcceptedFile =  this.checkIsValidAcceptedFile(event.target.files[0].name);
+        let isValidAcceptedFile = this.checkIsValidAcceptedFile(event.target.files[0].name);
         if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
             this.props.onHandleSelectedFile(event.target.files[0], this.props.NameMember, false);
             this.setState({ value: event.target.files[0].name, src: URL.createObjectURL(event.target.files[0]) });
@@ -271,15 +278,15 @@ class FormElementCom extends Component {
         }
     }
 
-    checkIsValidAcceptedFile(filename){
+    checkIsValidAcceptedFile(filename) {
         var _fileName = filename;
         var idxDot = _fileName.lastIndexOf(".") + 1;
         var extFile = _fileName.substr(idxDot, _fileName.length).toLowerCase();
-        if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+        if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
             return true;
-        }else{
+        } else {
             return false;
-        }   
+        }
     }
 
     formatNumeric(value) {
@@ -429,13 +436,14 @@ class FormElementCom extends Component {
                         controltype={this.props.controltype}
                         listoption={this.state.Listoption}
                         IsLabelDiv={false}
+                        isMulti={this.props.isMulti}
                         onValueChange={this.handleMultiSelectChange}
                     />
                 );
 
                 break;
             case "productbox":
-                control =(
+                control = (
                     <ProductComboBox
                         name={this.props.name}
                         value={this.props.value}
