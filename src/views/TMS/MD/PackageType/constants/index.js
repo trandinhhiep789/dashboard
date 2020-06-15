@@ -298,21 +298,21 @@ export const DataGridColumnList = [
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 100
+        Width: 140
     },
     {
         Name: "CreatedFullName",
         Type: "text",
         Caption: "Người tạo",
         DataSourceMember: "CreatedFullName",
-        Width: 150
+        Width: 140
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "PackageTypeID",
-        Width: 70,
+        Width: 80,
         Link: "/PackageType/Edit/",
         LinkText: "Chỉnh sửa"
     }

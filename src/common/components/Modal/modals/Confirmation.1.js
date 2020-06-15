@@ -33,7 +33,7 @@ class Confirmation extends React.Component {
         };
     }
     componentDidMount() {
-
+        
     }
     validationForm() {
         let formValidation;
@@ -61,7 +61,7 @@ class Confirmation extends React.Component {
             this.setState({ FormValidation: formValidation, IsSubmit: true });
         }
         else {
-            if(this.props.autoCloseModal){
+            if (this.props.autoCloseModal) {
                 this.props.hideModal();
             }
             this.props.onConfirm(true, this.state.FormData, this.state.SelectedFile);
@@ -69,9 +69,15 @@ class Confirmation extends React.Component {
     }
     handleClose() {
         this.props.hideModal();
+        if (this.props.onClose) {
+            this.props.onClose();
+        }
     }
-    handleInputChange(formData, formValidation) {
+    handleInputChange(formData, formValidation, elementName, elementValue) {
         this.setState({ FormData: formData, FormValidation: formValidation, IsSubmit: false });
+        if (this.props.onValueChange) {
+            this.props.onValueChange(formData, formValidation, elementName, elementValue);
+        }
     }
     // handleSelectedFile(filelist) {
     //     if (filelist) {
@@ -85,7 +91,7 @@ class Confirmation extends React.Component {
             this.props.onHandleSelectedFile(file, nameValue, isDeletetedFile);
         }
     }
-    
+
     render() {
         const { Title, FormData, FormValidation, ModalElementList, IsSubmit } = this.state;
         return (

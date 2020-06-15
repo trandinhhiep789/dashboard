@@ -173,7 +173,7 @@ class ModalCom extends React.Component {
             FormData: formData,
             FormValidation: formValidation
         });
-        this.props.onValueChange(formData, formValidation);
+        this.props.onValueChange(formData, formValidation, elementname, elementvalue);
     }
 
     onHandleSelectedFile(file, name, nameValue) {

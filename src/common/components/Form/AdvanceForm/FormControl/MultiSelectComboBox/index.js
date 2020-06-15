@@ -35,7 +35,7 @@ class MultiSelectComboBoxCom extends React.Component {
                     }
                     );
                     this.setState({ ListOption: listOption });
-                    const selectedOption = this.bindData(this.state.ListOption);
+                    const selectedOption = this.bindData(listOption);
                     // console.log("selectedOption: ",this.props.loaditemcachekeyid,  this.props.listoption,selectedOption);
                     this.setState({ SelectedOption: selectedOption });
                 }
@@ -66,19 +66,28 @@ class MultiSelectComboBoxCom extends React.Component {
     bindData(listOption) {
         let values = this.props.value;
         let selectedOption = [];
+        let match = [];
         if (this.props.SelectedOption)
             return this.props.SelectedOption;
         if (values == null)
             return selectedOption;
         // if (typeof values.toString() == "string")
         //     values = values.toString().split();
-        for (let i = 0; i < values.length; i++) {
-            for (let j = 0; j < listOption.length; j++) {
-                if (values[i] == listOption[j].value) {
-                    selectedOption.push({ value: listOption[j].value, label: listOption[j].name });
+        if (values && !Array.isArray(values)) {
+            match = listOption.filter(x => x.value == values);
+            if (match && match.length > 0) {
+                selectedOption.push(match[0]);
+            }
+        } else {
+            for (let i = 0; i < values.length; i++) {
+                for (let j = 0; j < listOption.length; j++) {
+                    if (values[i] == listOption[j].value) {
+                        selectedOption.push({ value: listOption[j].value, label: listOption[j].name });
+                    }
                 }
             }
         }
+
         return selectedOption;
     }
 
@@ -94,7 +103,13 @@ class MultiSelectComboBoxCom extends React.Component {
 
     handleValueChange(selectedOption) {
         this.setState({ SelectedOption: selectedOption });
-        const comboValues = this.getComboValue(selectedOption);
+        let comboValues = [];
+        if (Array.isArray(selectedOption)) {
+            comboValues = this.getComboValue(selectedOption);
+        } else {
+            comboValues.push(selectedOption.value);
+        }
+
         if (this.props.onValueChange)
             this.props.onValueChange(this.props.name, comboValues);
         if (this.props.onValueChangeCus)
@@ -105,7 +120,11 @@ class MultiSelectComboBoxCom extends React.Component {
         const listOption = this.state.ListOption;
         let listOptionNew = [];
         for (let i = 0; i < listOption.length; i++) {
+            if (!listOption[i].name) {
+                listOption[i].name = "------ Chọn ------";
+            }
             listOptionNew.push({ value: listOption[i].value, label: listOption[i].name, style: { color: 'red' } });
+
         }
         //console.log("listOptionNew:", listOptionNew,this.state.SelectedOption)
         const selectedOption = this.state.SelectedOption;
@@ -147,10 +166,10 @@ class MultiSelectComboBoxCom extends React.Component {
                         value={selectedOption}
                         onChange={this.handleValueChange}
                         options={listOptionNew}
-                        isMulti={true}
-                        isDisabled ={this.props.disabled}
+                        isMulti={this.props.isMulti !== undefined ? this.props.isMulti : true}
+                        isDisabled={this.props.disabled}
                         isSearchable={true}
-                        placeholder={"----Chọn -----"}
+                        placeholder={"------ Chọn ------"}
                     />
                 </div>
             </div>
