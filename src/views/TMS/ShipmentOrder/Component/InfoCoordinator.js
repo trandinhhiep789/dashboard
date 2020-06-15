@@ -243,6 +243,7 @@ class InfoCoordinatorCom extends Component {
                             ShipmentOrder={this.state.ShipmentOrder}
                             onChange={this.handleValueChange1}
                             listoption={[]}
+                            isMultiSelect={true}
                             datasourcemember="ShipmentOrder_DeliverUserList"
                             validatonList={["Comborequired"]}
                             validationErrorMessage={this.state.validationErroDeliverUser}
