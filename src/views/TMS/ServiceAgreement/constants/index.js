@@ -4,7 +4,9 @@ export const LoadAPIPath = "api/ServiceAgreement/Load";
 export const LoadNewAPIPath = "api/ServiceAgreement/LoadInfoNew";
 export const AddAPIPath = "api/ServiceAgreement/Add";
 export const UpdateAPIPath = "api/ServiceAgreement/Update";
-export const DeleteAPIPath = "api/ServiceAgreement/Delete";
+export const DeleteNewAPIPath = "api/ServiceAgreement/DeleteNew";
+export const DeleteAPIPath = "api/ServiceAgreement_FeeAppendix/Delete";
+export const DeleteAbilityAPIPath = "api/ServiceAgreement_Ability/Delete";
 export const UpdateOrderAPIPath = "api/ServiceAgreement/UpdateOrder";
 export const BackLink = "/ServiceAgreement";
 export const AddLink = "/ServiceAgreement/Add";
@@ -68,7 +70,7 @@ export const DataGridColumnItemListFeeAppendix = [
     {
 
         Name: "Action",
-        Type: "editnew",
+        Type: "groupAction",
         Caption: "Tác vụ",
         DataSourceMember: "FeeAppendixID",
         Width: 70,
@@ -116,7 +118,7 @@ export const DataGridColumnItemListAbiliti = [
     },
     {
         Name: "Action",
-        Type: "editnew",
+        Type: "groupAction",
         Caption: "Tác vụ",
         DataSourceMember: "AbilityID",
         Width: 70,
@@ -140,14 +142,17 @@ export const InitSearchParams = [
         SearchValue: "-1"
     },
     {
-        SearchKey: "@FromDate",
+        SearchKey: "@FROMDATE",
         SearchValue: dtFromdate
     },
     {
-        SearchKey: "@ToDate",
+        SearchKey: "@TODATE",
         SearchValue: new Date()
     },
-  
+    {
+        SearchKey: "@STATUS",
+        SearchValue: "-1"
+    },
 ];
 
 export const PagePath = [
@@ -205,10 +210,10 @@ export const DataGridColumnList = [
         Width: 140
     },
     {
-        Name: "ServiceAreaID",
+        Name: "AreaName",
         Type: "text",
         Caption: "Khu vực",
-        DataSourceMember: "ServiceAreaID",
+        DataSourceMember: "AreaName",
         Width: 100
     },
     {
@@ -223,28 +228,28 @@ export const DataGridColumnList = [
         Type: "date",
         Caption: "Ngày hết hạn hợp đồng",
         DataSourceMember: "ExpiredDate",
-        Width: 170
+        Width: 250
     },
     {
-        Name: "IsExtended",
+        Name: "ExtendLable",
         Type: "text",
-        Caption: "Đã gia hạn hợp đồng",
-        DataSourceMember: "IsExtended",
+        Caption: "Gia hạn đến",
+        DataSourceMember: "ExtendLable",
         Width: 150
     },
     {
-        Name: "Status",
+        Name: "StatusLable",
         Type: "text",
         Caption: "Trạng thái",
-        DataSourceMember: "Status",
+        DataSourceMember: "StatusLable",
         Width: 150
     },
     {
         Name: "Action",
-        Type: "editnew",
+        Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "ServiceAgreementID",
-        Width: 70,
+        Width: 100,
         Link: "/ServiceAgreement/Edit/",
         LinkText: "Chỉnh sửa"
     },
@@ -275,6 +280,11 @@ export const SearchMLObjectDefinition = [
         Name: "ExpiredDate",
         DefaultValue: "",
         BindControlName: "dtExpiredDate"
+    },
+    {
+        Name: "ServiceStatusID",
+        DefaultValue: "",
+        BindControlName: "cbServiceStatusID"
     },
 ];
 
@@ -459,7 +469,12 @@ export const MLObjectDefinition = [
         BindControlName: "txtPartnerID",
         DataSourceMember: "PartnerID"
     },
-
+    {
+        Name: "ShipmentOrder_DeliverUserList",
+        DefaultValue: {},
+        BindControlName: "ShipmentOrder_DeliverUserList",
+        DataSourceMember: "ShipmentOrder_DeliverUserList"
+    },
     {
         Name: "ServiceAreaID",
         DefaultValue: "",

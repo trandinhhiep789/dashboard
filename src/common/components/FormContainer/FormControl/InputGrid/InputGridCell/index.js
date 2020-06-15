@@ -15,6 +15,7 @@ class InputGridCellCom extends Component {
         this.handleonClickEdit = this.handleonClickEdit.bind(this);
         this.handleEditClick = this.handleEditClick.bind(this);
         this.handleonClickDelete = this.handleonClickDelete.bind(this);
+        this.handleonClickDeleteNew = this.handleonClickDeleteNew.bind(this);
 
     }
 
@@ -45,6 +46,16 @@ class InputGridCellCom extends Component {
         }
         this.props.onClickDelete(this.props.index);
     }
+
+    handleonClickDeleteNew(e) {
+        if (this.props.isSystem) {
+            return;
+        }
+        const id = e.currentTarget.dataset.id;
+        this.props.onClickDelete(id);
+    }
+
+
     handleonClickEdit(e) {
         if (this.props.isSystem) {
             return;
@@ -81,96 +92,107 @@ class InputGridCellCom extends Component {
         let linkTo;
 
         if (this.props.linkId) {
-            linkTo = link+ this.props.linkId.toString().trim() + "/"
+            linkTo = link + this.props.linkId.toString().trim() + "/"
 
         }
-            switch (type) {
-                case "text":
-                    return <label>{text}</label>;
-                case "date":
-                    {
-                        const datestring = formatDate(text);
-                        return <label>{datestring}</label>;
+        switch (type) {
+            case "text":
+                return <label>{text}</label>;
+            case "date":
+                {
+                    const datestring = formatDate(text);
+                    return <label>{datestring}</label>;
+                }
+            case "checkicon":
+                {
+                    if (text) {
+                        return <span className="fa fa-check"></span>;
                     }
-                case "checkicon":
-                    {
-                        if (text) {
-                            return <span className="fa fa-check"></span>;
+                    return null;
+                }
+            case "checkbox":
+                {
+                    let className = "form-control form-control-sm";
+                    if (this.props.CSSClassName != null)
+                        className = this.props.CSSClassName;
+                    if (this.props.IsPermisionDelete == true || this.props.IsPermisionDelete == undefined) {
+                        //return <input type="checkbox" name={this.props.name} className={className} onChange={this.handleInputChange} value={text} checked={this.props.isChecked} />;
+                        return <div className="checkbox">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    name={this.props.name}
+                                    className={className}
+                                    onChange={this.handleInputChange}
+                                    value={text}
+                                    checked={this.props.isChecked}
+                                />
+                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                            </label>
+                        </div>;
+                    } else {
+                        //return <input type="checkbox" disabled={true} checked={this.props.isChecked} name={this.props.name} className={className} value={text} />;
+                        return <div className="checkbox">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    disabled={true}
+                                    checked={this.props.isChecked}
+                                    name={this.props.name}
+                                    className={className}
+                                    value={text}
+                                />
+                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                            </label>
+                        </div>;
+                    }
+                }
+
+            case "texttolink":
+                return <Link
+                    className="linktext"
+                    to={{
+                        pathname: linkTo,
+                        state: {
+                            params: this.props.params
                         }
-                        return null;
-                    }
-                case "checkbox":
-                    {
-                        let className = "form-control form-control-sm";
-                        if (this.props.CSSClassName != null)
-                            className = this.props.CSSClassName;
-                        if (this.props.IsPermisionDelete == true || this.props.IsPermisionDelete == undefined) {
-                            //return <input type="checkbox" name={this.props.name} className={className} onChange={this.handleInputChange} value={text} checked={this.props.isChecked} />;
-                            return <div className="checkbox">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name={this.props.name}
-                                        className={className}
-                                        onChange={this.handleInputChange}
-                                        value={text}
-                                        checked={this.props.isChecked}
-                                    />
-                                    <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                </label>
-                            </div>;
-                        } else {
-                            //return <input type="checkbox" disabled={true} checked={this.props.isChecked} name={this.props.name} className={className} value={text} />;
-                            return <div className="checkbox">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        disabled={true}
-                                        checked={this.props.isChecked}
-                                        name={this.props.name}
-                                        className={className}
-                                        value={text}
-                                    />
-                                    <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                </label>
-                            </div>;
-                        }
-                    }
-            
-                case "texttolink":
-                    return <Link
-                        className="linktext"
-                        to={{
-                            pathname: linkTo,
-                            state: {
-                                params: this.props.params
-                            }
-                        }}>{text}</Link>;
-                case "link":
-                    return <Link to={to}>{linkText}</Link>;
-                case "edit":
-                    return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.value} title="Edit"><i className="ti-pencil"></i></a>;
-                case "editnew":
-                    return (
-                        <div className="group-action">
-                            <a title="" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit" className="btn-edit">
-                                <i className="ti-pencil"></i>
-                            </a>
-                            <a title="" className="table-action hover-danger" onClick={this.handleonClickDelete} data-id={this.props.index} title="Edit">
-                                <i className="ti-trash"></i>
-                            </a>
-                        </div>
-                    )
-                case "buttonEdit":
-                    return (
-                        <button type="button" className="btn" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleEditClick}>
-                            <span className="fa fa-plus ff"> Chỉnh sửa</span>
-                        </button>
-                    );
-                default:
-                    return <label>{text}</label>;
-            }
-      
+                    }}>{text}</Link>;
+            case "link":
+                return <Link to={to}>{linkText}</Link>;
+            case "edit":
+                return <a title="" className="nav-link hover-primary" onClick={this.handleonClickEdit} data-id={this.props.value} title="Edit"><i className="ti-pencil"></i></a>;
+            case "editnew":
+                return (
+                    <div className="group-action">
+                        <a title="" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit" className="btn-edit">
+                            <i className="ti-pencil"></i>
+                        </a>
+                        <a title="" className="table-action hover-danger" onClick={this.handleonClickDelete} data-id={this.props.index} title="Edit">
+                            <i className="ti-trash"></i>
+                        </a>
+                    </div>
+                )
+            case "groupAction":
+                return (
+                    <div className="group-action group-action-new">
+                        <a title="" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit" className="btn-edit">
+                            <i className="ti-pencil"></i>
+                        </a>
+                        <a title="" className="table-action hover-danger" onClick={this.handleonClickDeleteNew} data-id={this.props.idItem}  title="Delete">
+                            <i className="ti-trash"></i>
+                        </a>
+                    </div>
+                )
+            case "buttonEdit":
+                return (
+                    <button type="button" className="btn" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleEditClick}>
+                        <span className="fa fa-plus ff"> Chỉnh sửa</span>
+                    </button>
+                );
+            default:
+                return <label>{text}</label>;
+        }
+
     }
 }
 

@@ -1190,64 +1190,106 @@ export const MLObjectShipmentOrderItem = [
 export const DataGridColumnMaterialList = [
 
     {
-        Name: "IsSaleMaterial",
+        name: "IsSaleMaterial",
         Type: "checkbox",
         Caption: "Xuất bán",
-        DataSourceMember: "IsSaleMaterial",
-        Width: 80
+        label: "xuất bán",
+        datasourcemember: "IsSaleMaterial",
+        Width: 80,
+        OrderIndex: 4
     },
     {
-        Name: "ProductID",
-        Type: "textbox",
+        name: "ProductID",
+        Type: "ProductCombo",
         Caption: "Mã sản phẩm",
-        DataSourceMember: "ProductID",
-        Width: 100
+        label: "mã sản phẩm",
+        datasourcemember: "ProductID",
+        namelabel: "ProductName",
+        OrderIndex: 1,
+        Width: 150,
+        Colmd: 12,
+        labelcolspan:2,
+        colspan:10,
     },
     {
-        Name: "ProductName",
+        name: "ProductName",
         Type: "textbox",
         Caption: "Tên sản phẩm",
-        DataSourceMember: "ProductName",
+        label: "tên sản phẩm",
+        datasourcemember: "ProductName",
         Width: 300,
-        validatonList: ["required"]
+        validatonList: ["required"],
+        OrderIndex: 2,
+        Colmd: 12,
+        labelcolspan:2,
+        colspan:10,
     },
     {
-        Name: "Quantity",
-        Type: "textbox",
+        name: "Quantity",
+        Type: "TextNumber",
         Caption: "Số lượng",
-        DataSourceMember: "Quantity",
-        Width: 70,
-        validatonList: ["numbernew"]
+        label: "số lượng",
+        datasourcemember: "Quantity",
+        Width: 100,
+        min:1,
+        max:9999,
+        OrderIndex: 3
     },
     {
-        Name: "QuantityUnitName",
-        Type: "textbox",
+        name: "QuantityUnitID",
+        Type: "ComboBox",
         Caption: "Đơn vị tính",
-        DataSourceMember: "QuantityUnitName",
-        Width: 100
-    },
-    {
-        Name: "Price",
-        Type: "textbox",
-        Caption: "Giá",
-        DataSourceMember: "Price",
-        Width: 150
-    },
-    {
-        Name: "Note",
-        Type: "textbox",
-        Caption: "Ghi chú",
-        DataSourceMember: "Note",
-        Width: 150,
+        label: "Đơn vị tính",
+        datasourcemember: "QuantityUnitID",
+        validatonList:["Comborequired"],
+        isautoloaditemfromcache:true,
+        loaditemcachekeyid:"ERPCOMMONCACHE.QUANTITYUNIT",
+        valuemember:"QuantityUnitID",
+        nameMember:"QuantityUnit",
+        namelabel:"QuantityUnitName",
+        OrderIndex: 4,
         hideInput: false
     },
     {
-        Name: "Action",
+        name: "QuantityUnitName",
+        Type: "text",
+        Caption: "Đơn vị tính",
+        label: "đơn vị tính",
+        datasourcemember: "QuantityUnitName",
+        Width: 100,
+        OrderIndex: 4
+    },
+    {
+        name: "Price",
+        Type: "textbox",
+        Caption: "Giá",
+        label: "giá",
+        datasourcemember: "Price",
+        Width: 150,
+        OrderIndex: 5
+    },
+    {
+        name: "Note",
+        Type: "TextArea",
+        label: "ghi chú",
+        Caption: "Ghi chú",
+        datasourcemember: "Note",
+        Width: 150,
+        hideInput: false,
+        OrderIndex: 6,
+        Colmd: 12,
+        labelcolspan:2,
+        colspan:10
+    },
+    {
+        name: "Action",
         Type: "editnew",
         Caption: "Tác vụ",
-        DataSourceMember: "",
+        label: "tác vụ",
+        datasourcemember: "",
         Width: 70,
-        iputpop: false
+        iputpop: false,
+        OrderIndex: 7
     }
 ];
 export const GridMLMaterialDefinition = [

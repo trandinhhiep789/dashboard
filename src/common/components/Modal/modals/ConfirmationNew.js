@@ -108,11 +108,17 @@ class ConfirmationNew extends React.Component {
     //#endregion BinData
 
     //#region InputChange && InputChangeList  
-    handleInputChange(elementname, elementvalue, namelabel, valuelabel, listvalidationRow) {
+    handleInputChange(elementname, elementvalue, namelabel, valuelabel, filterrest) {
         //console.log('change')
 
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
+        if (typeof filterrest != "undefined" && filterrest != "") {
+            const objrest = filterrest.split(",");
+            for (let i = 0; i < objrest.length; i++) {
+                FormDataContolLstd[objrest[i]].value = -1;
+            }
+        }
         if (typeof namelabel != "undefined" && namelabel != "") {
             FormDataContolLstd[namelabel].value = valuelabel;
         }
@@ -166,7 +172,7 @@ class ConfirmationNew extends React.Component {
             let MLObject = {};
             mLObjectDefinition.map((Item) => {
                 const controlName = Item.BindControlName;
-                if (controlName.length > 0) {
+                if (controlName.length > 0 && this.state.FormData[controlName] != undefined) {
                     MLObject = Object.assign({}, MLObject, { [Item.Name]: this.state.FormData[controlName].value });
                 }
             });

@@ -23,16 +23,15 @@ class FeeAppendixDetailElementCom extends Component {
     }
 
     componentDidMount() {
-        //console.log("FeeAppendixDetailElementCom", this.props)
+        console.log("FeeAppendixDetailElementCom", this.props)
     }
 
     handleSubmit(From, MLObject) {
-        
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
         MLObject.FeeAppendixID = this.props.dataSource.FeeAppendixID.trim();
         MLObject.SignedDate = this.props.dataSource.SignedDate;
-        MLObject.ApplyFromDate= this.props.dataSource.ApplyFromDate;
-        MLObject.ProductID = MLObject.Product[0].ProductID;
+        MLObject.ApplyFromDate = this.props.dataSource.ApplyFromDate;
+        MLObject.ProductID = MLObject.ProductID[0].ProductID;
         if (this.props.index != undefined) {
             MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
             this.props.callFetchAPI(APIHostName, EditFeeAppendixDetailPath, MLObject).then(apiResult => {
@@ -42,7 +41,6 @@ class FeeAppendixDetailElementCom extends Component {
         else {
             MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
             this.props.callFetchAPI(APIHostName, AddFeeAppendixDetailPath, MLObject).then(apiResult => {
-                console.log("handleSubmit MLObject", MLObject, apiResult)
                 this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
             });
         }
@@ -74,6 +72,7 @@ class FeeAppendixDetailElementCom extends Component {
                             value={-1}
                             listoption={[]}
                             datasourcemember="MainGroupID"
+                            filterrest="cbSubGroupID"
                         />
 
                     </div>
@@ -93,6 +92,9 @@ class FeeAppendixDetailElementCom extends Component {
                             value={-1}
                             listoption={[]}
                             datasourcemember="SubGroupID"
+                            filterName="cbMainGroupID"
+                            filterValue=""
+                            filterobj="MainGroupID"
                         />
 
                     </div>
@@ -111,7 +113,8 @@ class FeeAppendixDetailElementCom extends Component {
                             controltype="InputControl"
                             value={-1}
                             listoption={[]}
-                            datasourcemember="TechSpecsID"
+                            datasourcemember="TechspecsID"
+                            filterrest="cbTechSpecsValueID"
                         />
                     </div>
 
@@ -129,7 +132,10 @@ class FeeAppendixDetailElementCom extends Component {
                             controltype="InputControl"
                             value={-1}
                             listoption={[]}
-                            datasourcemember="TechSpecsValueID"
+                            datasourcemember="TechspecsValueID"
+                            filterName="cbTechSpecsID"
+                            filterValue=""
+                            filterobj="TechSpecsID"
                         />
                     </div>
 
@@ -146,7 +152,8 @@ class FeeAppendixDetailElementCom extends Component {
                             validatonList={["required"]}
                             datasourcemember="ProductID"
                         /> */}
-                        <ProductComboBox 
+                        
+                        <ProductComboBox
                             colspan="9"
                             labelcolspan="3"
                             label="sản phẩm"
@@ -156,6 +163,7 @@ class FeeAppendixDetailElementCom extends Component {
                             name="cbProductID"
                             validatonList={["required"]}
                             IsLabelDiv={true}
+                            isMulti={false}
                         />
                     </div>
 

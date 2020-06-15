@@ -23,6 +23,8 @@ export const PKColumnNameFeeAppendixDetail = "FeeAppendixDetailID"
 
 export const AddFeeAppendixDetailPath ="api/ServiceAgreement_FeeAppendixDetail/Add";
 export const  EditFeeAppendixDetailPath="api/ServiceAgreement_FeeAppendixDetail/Update";
+export const  DeleteFeeAppendixDetailPath="api/ServiceAgreement_FeeAppendixDetail/Delete";
+
 
 
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
@@ -340,7 +342,7 @@ export const DataGridColumnItemListFeeAppendixDetail = [
     {
 
         Name: "Action",
-        Type: "editnew",
+        Type: "groupAction",
         Caption: "Tác vụ",
         DataSourceMember: "FeeAppendixID",
         Width: 70,
@@ -350,6 +352,13 @@ export const DataGridColumnItemListFeeAppendixDetail = [
 ];
 
 export const MLObjectFeeAppendixDetailItem = [
+    {
+
+        Name: "MainGroupID",
+        DefaultValue: "",
+        BindControlName: "cbMainGroupID",
+        DataSourceMember: "MainGroupID"
+    },
     {
 
         Name: "SubGroupID",
@@ -371,10 +380,10 @@ export const MLObjectFeeAppendixDetailItem = [
     },
     {
         
-        Name: "Product",
+        Name: "ProductID",
         DefaultValue: "",
         BindControlName: "cbProductID",
-        DataSourceMember: "Product"
+        DataSourceMember: "ProductID"
     },
     {
         

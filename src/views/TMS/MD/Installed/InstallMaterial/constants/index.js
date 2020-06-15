@@ -109,6 +109,24 @@ export const AddElementList = [
     },
     {
         type: "select",
+        name: "cbMainGroupID",
+        label: "Ngành hàng",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        datasourcemember: "MainGroupID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.MAINGROUP",
+        valuemember: "MainGroupID",
+        nameMember: "MainGroupName",
+        filterrest: "cbSubGroupID,cbTechspecsValueID,cbTechspecsID",
+        OrderIndex: 5
+    },
+    {
+        type: "select",
         name: "cbSubGroupID",
         label: "Nhóm hàng",
         value: -1,
@@ -122,7 +140,11 @@ export const AddElementList = [
         loaditemcachekeyid: "ERPCOMMONCACHE.SUBGROUP",
         valuemember: "SubGroupID",
         nameMember: "SubGroupName",
-        OrderIndex: 5
+        filterName: "cbMainGroupID",
+        filterValue: "",
+        filterobj: "MainGroupID",
+        filterrest: "cbTechspecsValueID,cbTechspecsID",
+        OrderIndex: 6
     },
     {
         type: "select",
@@ -135,11 +157,14 @@ export const AddElementList = [
         datasourcemember: "TechspecsID",
         readonly: false,
         isautoloaditemfromcache: true,
-        loaditemcachekeyid: "ERPCOMMONCACHE.TECHSPECS",
-        valuemember: "TechSpecsID",
-        nameMember: "TechSpecsName",
+        loaditemcachekeyid: "ERPCOMMONCACHE.SUBGROUPTECHSPECS",
+        valuemember: "TechspecsID",
+        nameMember: "TechspecsName",
+        filterName: "cbSubGroupID",
+        filterValue: "",
+        filterobj: "SubGroupID",
         filterrest: "cbTechspecsValueID",
-        OrderIndex: 6
+        OrderIndex: 7
     },
     {
         type: "select",
@@ -158,7 +183,7 @@ export const AddElementList = [
         filterName: "cbTechspecsID",
         filterValue: "",
         filterobj: "TechSpecsID",
-        OrderIndex: 7
+        OrderIndex: 8
     },
     {
         type: "TextArea",
@@ -173,7 +198,7 @@ export const AddElementList = [
         Colmd:12,
         labelcolspan:2,
         colspan:10,
-        OrderIndex: 8
+        OrderIndex: 9
     },
     {
         type: "checkbox",
@@ -182,7 +207,7 @@ export const AddElementList = [
         value: true,
         datasourcemember: "IsActived",
         readonly: false,
-        OrderIndex: 9
+        OrderIndex: 10
     },
     {
         type: "checkbox",
@@ -191,7 +216,7 @@ export const AddElementList = [
         value: "",
         readonly: false,
         datasourcemember: "IsSystem",
-        OrderIndex: 10
+        OrderIndex: 11
     }
 ];
 
@@ -256,6 +281,24 @@ export const EditElementList = [
     },
     {
         type: "select",
+        name: "cbMainGroupID",
+        label: "Ngành hàng",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        datasourcemember: "MainGroupID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.MAINGROUP",
+        valuemember: "MainGroupID",
+        nameMember: "MainGroupName",
+        filterrest: "cbSubGroupID,cbTechspecsValueID,cbTechspecsID",
+        OrderIndex: 5
+    },
+    {
+        type: "select",
         name: "cbSubGroupID",
         label: "Nhóm hàng",
         value: -1,
@@ -269,7 +312,11 @@ export const EditElementList = [
         loaditemcachekeyid: "ERPCOMMONCACHE.SUBGROUP",
         valuemember: "SubGroupID",
         nameMember: "SubGroupName",
-        OrderIndex: 5
+        filterName: "cbMainGroupID",
+        filterValue: "",
+        filterobj: "MainGroupID",
+        filterrest: "cbTechspecsValueID,cbTechspecsID",
+        OrderIndex: 6
     },
     {
         type: "select",
@@ -281,13 +328,15 @@ export const EditElementList = [
         listoption: [],
         datasourcemember: "TechspecsID",
         readonly: false,
-        validatonList: ["Comborequired"],
         isautoloaditemfromcache: true,
-        loaditemcachekeyid: "ERPCOMMONCACHE.TECHSPECS",
-        valuemember: "TechSpecsID",
-        nameMember: "TechSpecsName",
+        loaditemcachekeyid: "ERPCOMMONCACHE.SUBGROUPTECHSPECS",
+        valuemember: "TechspecsID",
+        nameMember: "TechspecsName",
+        filterName: "cbSubGroupID",
+        filterValue: "",
+        filterobj: "SubGroupID",
         filterrest: "cbTechspecsValueID",
-        OrderIndex: 6
+        OrderIndex: 7
     },
     {
         type: "select",
@@ -306,7 +355,7 @@ export const EditElementList = [
         filterName: "cbTechspecsID",
         filterValue: "",
         filterobj: "TechSpecsID",
-        OrderIndex: 7
+        OrderIndex: 8
     },
     {
         type: "TextArea",
@@ -321,7 +370,7 @@ export const EditElementList = [
         Colmd:12,
         labelcolspan:2,
         colspan:10,
-        OrderIndex: 8
+        OrderIndex: 9
     },
     {
         type: "checkbox",
@@ -330,7 +379,7 @@ export const EditElementList = [
         value: "",
         readonly: false,
         datasourcemember: "IsActived",
-        OrderIndex: 9
+        OrderIndex: 10
     },
     {
         type: "checkbox",
@@ -339,7 +388,7 @@ export const EditElementList = [
         value: "",
         readonly: false,
         datasourcemember: "IsSystem",
-        OrderIndex: 10
+        OrderIndex: 11
     }
 ];
 
@@ -375,6 +424,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "cbPartnerID",
         DataSourceMember: "PartnerID"
+    },
+    {
+        Name: "MainGroupID",
+        DefaultValue: "",
+        BindControlName: "cbMainGroupID",
+        DataSourceMember: "MainGroupID"
     },
     {
         Name: "SubGroupID",
@@ -531,8 +586,8 @@ export const InputMcRoleColumnList = [
     {
         name: "ProductID",
         Type: "ProductCombo",
-        Caption: "Mã sản phẩm",
-        label: "mã sản phẩm",
+        Caption: "Tên sản phẩm",
+        label: "tên sản phẩm",
         datasourcemember: "ProductID",
         Width: 100,
         validatonList: ["Comborequired"],

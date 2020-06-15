@@ -5,6 +5,7 @@ import { ModalManager } from "react-dynamic-modal";
 import ModelFormContainer from "../../../../common/components/Modal/ModelFormContainer";
 import FormContainer from "../../../../common/components/FormContainer";
 import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
+import InputGrid from "../../../../common/components/FormContainer/FormControl/InputGrid";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../common/components/Modal";
 import {
@@ -31,7 +32,7 @@ import { callGetCache } from "../../../../actions/cacheAction";
 import indexedDBLib from "../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import MultiUserComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiUserComboBox";
-import ProductComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/ProductComboBox";
+import DeliverUserList from "../Component/DeliverUserList"
 
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
@@ -125,7 +126,6 @@ class EditCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        console.log("handleSubmit",formData, MLObject);
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -179,7 +179,7 @@ class EditCom extends React.Component {
                         <div className="card-body">
                             <div className="row">
                                 <div className="col-md-6">
-                                    <FormControl.TextBox
+                                    <FormControl.FormControlTextBox
                                         name="txtShipmentOrderID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -192,7 +192,7 @@ class EditCom extends React.Component {
                                     />
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ComboBoxSelect
+                                    <FormControl.FormControlComboBox
                                         name="txtShipmentOrderTypeID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -209,7 +209,7 @@ class EditCom extends React.Component {
 
                                 </div>
                                 <div className="col-md-6">
-                                    <FormControl.ComboBoxSelect
+                                    <FormControl.FormControlComboBox
                                         name="txtRequestPartnerID"
                                         colspan="8"
                                         labelcolspan="4"
@@ -224,28 +224,14 @@ class EditCom extends React.Component {
                                         listoption={null}
                                         datasourcemember="RequestPartnerID" />
                                 </div>
+
                                 <div className="col-md-6">
-                                    <FormControl.ComboBoxSelect
-                                        name="txtCarrierPartnerID"
-                                        colspan="8"
-                                        labelcolspan="4"
-                                        label="đơn vị vận chuyển"
-                                        validatonList={["Comborequired"]}
-                                        isautoloaditemfromcache={true}
-                                        loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
-                                        valuemember="PartnerID"
-                                        nameMember="PartnerName"
-                                        controltype="InputControl"
-                                        value={""}
-                                        listoption={null}
-                                        datasourcemember="CarrierPartnerID" />
-                                </div>
-                                <div className="col-md-6">
-                                    <FormControl.ComboBoxSelect
+                                    <FormControl.FormControlComboBox
                                         name="txtShipmentServiceTypeID"
                                         colspan="8"
                                         labelcolspan="4"
                                         label="loại dịch vụ"
+                                        placeholder="---Vui lòng chọn---"
                                         validatonList={["Comborequired"]}
                                         isautoloaditemfromcache={true}
                                         loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTSERVICETYPE"
@@ -256,25 +242,7 @@ class EditCom extends React.Component {
                                         listoption={null}
                                         datasourcemember="ShipmentServiceTypeID" />
                                 </div>
-                                <div className="col-md-6">
-                                    <FormControl.ComboBoxSelect
-                                        name="txtCarrierTypeID"
-                                        colspan="8"
-                                        labelcolspan="4"
-                                        label="phương tiện vận chuyển"
-                                        validatonList={["Comborequired"]}
-                                        isautoloaditemfromcache={true}
-                                        loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
-                                        valuemember="CarrierTypeID"
-                                        nameMember="CarrierTypeName"
-                                        controltype="InputControl"
-                                        value={-1}
-                                        listoption={null}
-                                        datasourcemember="CarrierTypeID"
-                                        placeholder="---Vui lòng chọn---"
-                                        isMultiSelect={false}
-                                    />
-                                </div>
+
                                 <div className="col-md-6">
                                     <FormControl.FormControlDatetime
                                         name="dtCreatedOrderTime"
@@ -384,11 +352,12 @@ class EditCom extends React.Component {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <FormControl.ComboBox
+                                            <FormControl.FormControlComboBox
                                                 name="cbSenderPartnerID"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 label="đối tác gửi"
+                                                placeholder="---Vui lòng chọn---"
                                                 validatonList={["Comborequired"]}
                                                 isautoloaditemfromcache={true}
                                                 loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
@@ -400,11 +369,12 @@ class EditCom extends React.Component {
                                                 datasourcemember="SenderPartnerID" />
                                         </div>
                                         <div className="col-md-6">
-                                            <FormControl.ComboBox
+                                            <FormControl.FormControlComboBox
                                                 name="cbSenderStoreID"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 label="kho gửi hàng"
+                                                placeholder="---Vui lòng chọn---"
                                                 validatonList={["Comborequired"]}
                                                 isautoloaditemfromcache={true}
                                                 loaditemcachekeyid="ERPCOMMONCACHE.STORE"
@@ -475,11 +445,12 @@ class EditCom extends React.Component {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <FormControl.ComboBoxSelect
+                                            <FormControl.FormControlComboBox
                                                 name="cbReceiverPartnerID"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 label="đối tác nhận"
+                                                placeholder="---Vui lòng chọn---"
                                                 isautoloaditemfromcache={true}
                                                 loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
                                                 valuemember="PartnerID"
@@ -490,12 +461,12 @@ class EditCom extends React.Component {
                                                 datasourcemember="ReceiverPartnerID" />
                                         </div>
                                         <div className="col-md-6">
-                                            <FormControl.ComboBoxSelect
+                                            <FormControl.FormControlComboBox
                                                 name="cbReceiverStoreID"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 label="kho nhận"
-                                              
+                                                placeholder="---Vui lòng chọn---"
                                                 isautoloaditemfromcache={true}
                                                 loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
                                                 valuemember="PartnerID"
@@ -571,11 +542,12 @@ class EditCom extends React.Component {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <FormControl.ComboBoxSelect
+                                            <FormControl.FormControlComboBox
                                                 name="cbShipmentGoodsTypeID"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 label="loại hàng"
+                                                placeholder="---Vui lòng chọn---"
                                                 validatonList={["Comborequired"]}
                                                 isautoloaditemfromcache={true}
                                                 loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTGOODSTYPE"
@@ -686,11 +658,12 @@ class EditCom extends React.Component {
 
                                         </div>
                                         <div className="col-md-6">
-                                            <FormControl.ComboBoxSelect
+                                            <FormControl.FormControlComboBox
                                                 name="cbShipmentFeePaymentMethodID"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 label="phương thức thanh toán phí dịch vụ vc"
+                                                placeholder="---Vui lòng chọn---"
                                                 validatonList={["Comborequired"]}
                                                 isautoloaditemfromcache={true}
                                                 loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTFEEPAYMENTMETHOD"
@@ -753,17 +726,19 @@ class EditCom extends React.Component {
                                 title="Danh sách hàng hóa"
                                 IDSelectColumnName={"ProductID"}
                                 listColumn={DataGridColumnItemList}
+                                PKColumnName={"ProductID"}
                                 dataSource={this.state.DataSource.ShipmentOrder_ItemList}
                                 onInsertClick={this.handleItemInsert}
                                 onEditClick={this.handleItemEdit}
                                 onDeleteClick={this.handleItemDelete}
                             />
-                            <InputGridControl
+                            <InputGrid
                                 name="ShipmentOrder_MaterialList"
                                 controltype="InputGridControl"
                                 title="Vật tư lắp đặt"
                                 Ispopup={true}
                                 IDSelectColumnName={"ProductID"}
+                                PKColumnName={""}
                                 MLObjectDefinition={GridMLMaterialDefinition}
                                 listColumn={DataGridColumnMaterialList}
                                 dataSource={this.state.DataSource.ShipmentOrder_MaterialList}
@@ -775,28 +750,60 @@ class EditCom extends React.Component {
                             <h4 className="title">Điều phối</h4>
                         </div>
                         <div className="card-body">
-                            <MultiUserComboBox
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <FormControl.FormControlComboBox
+                                        name="txtCarrierPartnerID"
+                                        colspan="8"
+                                        labelcolspan="4"
+                                        label="đơn vị vận chuyển"
+                                        isautoloaditemfromcache={true}
+                                        loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                                        valuemember="PartnerID"
+                                        nameMember="PartnerName"
+                                        controltype="InputControl"
+                                        placeholder="---Vui lòng chọn---"
+                                        value={""}
+                                        listoption={null}
+                                        filterValue = {2}
+                                        filterobj= "PartnerTypeID"
+                                        filterrest="ShipmentOrder_DeliverUserList"
+                                        datasourcemember="CarrierPartnerID" />
+                                </div>
+                                <div className="col-md-6">
+                                    <FormControl.FormControlComboBox
+                                        name="txtCarrierTypeID"
+                                        colspan="8"
+                                        labelcolspan="4"
+                                        label="phương tiện vận chuyển"
+                                        validatonList={["Comborequired"]}
+                                        isautoloaditemfromcache={true}
+                                        loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                        valuemember="CarrierTypeID"
+                                        nameMember="CarrierTypeName"
+                                        controltype="InputControl"
+                                        value={-1}
+                                        listoption={null}
+                                        datasourcemember="CarrierTypeID"
+                                        placeholder="---Vui lòng chọn---"
+                                        isMultiSelect={false}
+                                    />
+                                </div>
+                            </div>
+                            <DeliverUserList
                                 name="ShipmentOrder_DeliverUserList"
                                 colspan="10"
                                 labelcolspan="2"
                                 label="Nhân viên  giao"
                                 IsLabelDiv={true}
+                                validatonList={["Comborequired"]}
                                 controltype="InputMultiControl"
                                 MLObjectDefinition={GridMLDeliverUserDefinition}
                                 datasourcemember="ShipmentOrder_DeliverUserList"
+                                filterName="txtCarrierPartnerID"
+                                isMultiSelect={true}
                             />
-{/* 
-                            <ProductComboBox
-                                name="Product"
-                                colspan="10"
-                                labelcolspan="2"
-                                label="Mã sản phẩm"
-                                IsLabelDiv={true}
-                                controltype="InputMultiControl"
-                                MLObjectDefinition={GridMLDeliverUserDefinition}
-                                datasourcemember="Product"
-                            /> */}
-                            <FormControl.TextBox
+                            <FormControl.TextArea
                                 name="txtCoordinatorNote"
                                 colspan="10"
                                 labelcolspan="2"

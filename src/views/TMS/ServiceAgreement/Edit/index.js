@@ -12,7 +12,8 @@ import {
     BackLink,
     MLObjectDefinition,
     LoadNewAPIPath,
-    APIHostName
+    APIHostName,
+    UpdateAPIPath
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -21,6 +22,8 @@ import indexedDBLib from "../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
+
+import DeliverUserList from "../../ShipmentOrder/Component/DeliverUserList";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -37,14 +40,19 @@ class EditCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
-        console.log('edit', this.props)
+   
         this.callLoadData(this.props.match.params.id);
     }
 
     handleSubmit(formData, MLObject) {
+        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.DeputyUserName = MLObject.ShipmentOrder_DeliverUserList[0].UserName;
+        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
 
-        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        });
+
     }
 
 
@@ -65,7 +73,7 @@ class EditCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            console.log('111', apiResult)
+
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -73,10 +81,12 @@ class EditCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+                apiResult.ResultObject.ShipmentOrder_DeliverUserList = [{ UserName: apiResult.ResultObject.DeputyUserName, FullName: apiResult.ResultObject.FullName }]
                 this.setState({
                     DataSource: apiResult.ResultObject,
                     IsLoadDataComplete: true
                 });
+                console.log('111', apiResult.ResultObject)
             }
         });
     }
@@ -149,7 +159,7 @@ class EditCom extends React.Component {
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
+                            {/* <FormControl.ComboBoxSelect
                                 name="txtPartnerID"
                                 colspan="8"
                                 labelcolspan="4"
@@ -162,6 +172,24 @@ class EditCom extends React.Component {
                                 controltype="InputControl"
                                 value={""}
                                 listoption={null}
+                                datasourcemember="PartnerID" /> */}
+
+                            <FormControl.FormControlComboBox
+                                name="txtPartnerID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="đơn vị vận chuyển"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                                valuemember="PartnerID"
+                                nameMember="PartnerName"
+                                controltype="InputControl"
+                                placeholder="---Vui lòng chọn---"
+                                value={""}
+                                listoption={null}
+                                filterValue={2}
+                                filterobj="PartnerTypeID"
+                                filterrest="ShipmentOrder_DeliverUserList"
                                 datasourcemember="PartnerID" />
                         </div>
 
@@ -184,7 +212,7 @@ class EditCom extends React.Component {
 
                         <div className="col-md-6">
 
-                            <MultiSelectComboBox
+                            {/* <MultiSelectComboBox
                                 name="ShipmentOrder_DeliverUserList"
                                 colspan="8"
                                 labelcolspan="4"
@@ -202,6 +230,20 @@ class EditCom extends React.Component {
                                 datasourcemember="ShipmentOrder_DeliverUserList"
                                 //validatonList={["Comborequired"]}
                                 validationErrorMessage={''}
+                            /> */}
+
+                            <DeliverUserList
+                                name="ShipmentOrder_DeliverUserList"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="Nhân viên  giao"
+                                IsLabelDiv={true}
+                                validatonList={["Comborequired"]}
+                                controltype="InputMultiControl"
+                                //MLObjectDefinition={GridMLDeliverUserDefinition}
+                                datasourcemember="ShipmentOrder_DeliverUserList"
+                                filterName="txtPartnerID"
+                                isMultiSelect={false}
                             />
                         </div>
 

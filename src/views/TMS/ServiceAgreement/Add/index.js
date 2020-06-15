@@ -22,6 +22,8 @@ import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 
+import DeliverUserList from "../../ShipmentOrder/Component/DeliverUserList";
+
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -40,14 +42,12 @@ class AddCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-       
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-            console.log('handleSubmit', MLObject, apiResult)
+        MLObject.DeputyUserName = MLObject.ShipmentOrder_DeliverUserList[0].UserName;
+        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-          
+
         });
     }
 
@@ -134,7 +134,7 @@ class AddCom extends React.Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.ComboBoxSelect
+                        {/* <FormControl.ComboBoxSelect
                             name="txtPartnerID"
                             colspan="8"
                             labelcolspan="4"
@@ -147,6 +147,23 @@ class AddCom extends React.Component {
                             controltype="InputControl"
                             value={""}
                             listoption={null}
+                            datasourcemember="PartnerID" /> */}
+                        <FormControl.FormControlComboBox
+                            name="txtPartnerID"
+                            colspan="8"
+                            labelcolspan="4"
+                            label="đơn vị vận chuyển"
+                            isautoloaditemfromcache={true}
+                            loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                            valuemember="PartnerID"
+                            nameMember="PartnerName"
+                            controltype="InputControl"
+                            placeholder="---Vui lòng chọn---"
+                            value={""}
+                            listoption={null}
+                            filterValue={2}
+                            filterobj="PartnerTypeID"
+                            filterrest="ShipmentOrder_DeliverUserList"
                             datasourcemember="PartnerID" />
                     </div>
 
@@ -169,7 +186,21 @@ class AddCom extends React.Component {
 
                     <div className="col-md-6">
 
-                        <MultiSelectComboBox
+                        <DeliverUserList
+                            name="ShipmentOrder_DeliverUserList"
+                            colspan="8"
+                            labelcolspan="4"
+                            label="Nhân viên  giao"
+                            IsLabelDiv={true}
+                            validatonList={["Comborequired"]}
+                            controltype="InputMultiControl"
+                            //MLObjectDefinition={GridMLDeliverUserDefinition}
+                            datasourcemember="ShipmentOrder_DeliverUserList"
+                            filterName="txtPartnerID"
+                            isMultiSelect={false}
+                        />
+
+                        {/* <MultiSelectComboBox
                             name="ShipmentOrder_DeliverUserList"
                             colspan="8"
                             labelcolspan="4"
@@ -187,7 +218,7 @@ class AddCom extends React.Component {
                             datasourcemember="ShipmentOrder_DeliverUserList"
                             //validatonList={["Comborequired"]}
                             validationErrorMessage={''}
-                        />
+                        /> */}
                     </div>
 
                     <div className="col-md-6">
@@ -278,7 +309,7 @@ class AddCom extends React.Component {
                             placeholder="Ngày thanh lý hợp đồng"
                             controltype="InputControl"
                             value=""
-                           // validatonList={[]}
+                            // validatonList={[]}
                             datasourcemember="Liquidateddate"
                         />
                     </div>

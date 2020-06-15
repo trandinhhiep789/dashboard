@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+import { formatMoney } from '../../../../utils/function';
 import {
     DataGridColumnItemList
 } from "../constants";
@@ -59,13 +60,13 @@ class InfoProductCom extends Component {
                             <label className="col-form-label bold">Phí vận chuyển:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label" >{this.state.ShipmentOrder.TotalShipmentFee}đ</label>
+                            <label className="col-form-label" >{formatMoney(this.state.ShipmentOrder.TotalShipmentFee,0)}đ</label>
                         </div>
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Tổng tiền COD:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label">{this.state.ShipmentOrder.TotalCOD}đ</label>
+                            <label className="col-form-label">{formatMoney(this.state.ShipmentOrder.TotalCOD,0)}đ</label>
                         </div>
                     </div>
                     {/* <div className="form-row">
@@ -132,7 +133,7 @@ class InfoProductCom extends Component {
                                                 <td>{item.ProductID}</td>
                                                 <td>{item.ProductName}</td>
                                                 <td>{item.PackingUnitName}</td>
-                                                <td>{item.Price}đ</td>
+                                                <td>{formatMoney(item.Price,0)}đ</td>
                                                 <td>{item.Quantity}</td>
                                                 <td>{item.QuantityUnitName}</td>
                                                 <td>{item.SizeItem}</td>
@@ -180,7 +181,7 @@ class InfoProductCom extends Component {
                                                 <td>{item.ProductName}</td>
                                                 <td>{item.Quantity}</td>
                                                 <td>{item.QuantityUnitName}</td>
-                                                <td>{item.Price}đ</td>
+                                                <td>{formatMoney(item.Price,0)}đ</td>
                                                 <td>{item.SaleOrderID}</td>
                                             </tr>)
                                         })}
