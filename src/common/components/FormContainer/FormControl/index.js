@@ -273,11 +273,11 @@ class FormControlComboBoxCom extends Component {
                 listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     if (typeof filterobj != undefined && filterValue != "") {
+                      
                         result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
                             listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
                         }
                         );
-
                     }
                     else {
                         result.ResultObject.CacheData.map((cacheItem) => {
@@ -285,10 +285,6 @@ class FormControlComboBoxCom extends Component {
                         }
                         );
                     }
-                    // result.ResultObject.CacheData.map((cacheItem) => {
-                    //     listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
-                    // });
-
                     this.setState({ Listoption: listOption, Data: result.ResultObject.CacheData });
                     const strSelectedOption = this.bindcombox(this.props.value, listOption);
                     this.setState({ SelectedOption: strSelectedOption });
