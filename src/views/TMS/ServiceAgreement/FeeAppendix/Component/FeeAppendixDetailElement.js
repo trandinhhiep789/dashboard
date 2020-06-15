@@ -27,12 +27,14 @@ class FeeAppendixDetailElementCom extends Component {
     }
 
     handleSubmit(From, MLObject) {
+        console.log('MLObject',MLObject)
+        debugger
 
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
         MLObject.FeeAppendixID = this.props.dataSource.FeeAppendixID.trim();
         MLObject.SignedDate = this.props.dataSource.SignedDate;
         MLObject.ApplyFromDate = this.props.dataSource.ApplyFromDate;
-        MLObject.ProductID = MLObject.Product[0].ProductID;
+        MLObject.ProductID = MLObject.ProductID[0].ProductID;
         if (this.props.index != undefined) {
             MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
             this.props.callFetchAPI(APIHostName, EditFeeAppendixDetailPath, MLObject).then(apiResult => {
