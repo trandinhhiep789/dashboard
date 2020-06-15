@@ -152,7 +152,6 @@ class DeliverUserListCom extends React.Component {
                         listoption={[]}
                         datasourcemember="ShipmentOrder_DeliverUserList"
                         validationErrorMessage={this.props.validationErrorMessage}
-                        isMulti={isMulti}
 
                     /> :
                     <FormControl.FormControlComboBox
