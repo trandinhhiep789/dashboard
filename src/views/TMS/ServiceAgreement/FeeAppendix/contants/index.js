@@ -380,10 +380,10 @@ export const MLObjectFeeAppendixDetailItem = [
     },
     {
         
-        Name: "Product",
+        Name: "ProductID",
         DefaultValue: "",
         BindControlName: "cbProductID",
-        DataSourceMember: "Product"
+        DataSourceMember: "ProductID"
     },
     {
         

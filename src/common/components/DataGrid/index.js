@@ -529,8 +529,8 @@ class DataGridCom extends Component {
         if (this.state.IsPermision === 'error') {
             return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
         }
-
         return (
+
             <div className="col-lg-12 SearchForm">
                 <div className="card">
                     <div className="card-body">
@@ -567,6 +567,12 @@ class DataGridCom extends Component {
                                                     <span className="fa fa-remove"> Xóa </span>
                                                 </button>)
                                         }
+                                        {this.props.IsExportFile == true &&
+                                            <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" >
+                                                <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                            </button>
+                                        }
+
                                     </div>
                                 </div>
                             </div>
