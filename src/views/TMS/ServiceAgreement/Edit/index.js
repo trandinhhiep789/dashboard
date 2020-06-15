@@ -22,6 +22,8 @@ import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 
+import DeliverUserList from "../../ShipmentOrder/Component/DeliverUserList";
+
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
@@ -149,7 +151,7 @@ class EditCom extends React.Component {
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
+                            {/* <FormControl.ComboBoxSelect
                                 name="txtPartnerID"
                                 colspan="8"
                                 labelcolspan="4"
@@ -162,6 +164,24 @@ class EditCom extends React.Component {
                                 controltype="InputControl"
                                 value={""}
                                 listoption={null}
+                                datasourcemember="PartnerID" /> */}
+
+                            <FormControl.FormControlComboBox
+                                name="txtPartnerID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="đơn vị vận chuyển"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                                valuemember="PartnerID"
+                                nameMember="PartnerName"
+                                controltype="InputControl"
+                                placeholder="---Vui lòng chọn---"
+                                value={""}
+                                listoption={null}
+                                filterValue={2}
+                                filterobj="PartnerTypeID"
+                                filterrest="ShipmentOrder_DeliverUserList"
                                 datasourcemember="PartnerID" />
                         </div>
 
@@ -184,7 +204,7 @@ class EditCom extends React.Component {
 
                         <div className="col-md-6">
 
-                            <MultiSelectComboBox
+                            {/* <MultiSelectComboBox
                                 name="ShipmentOrder_DeliverUserList"
                                 colspan="8"
                                 labelcolspan="4"
@@ -202,6 +222,19 @@ class EditCom extends React.Component {
                                 datasourcemember="ShipmentOrder_DeliverUserList"
                                 //validatonList={["Comborequired"]}
                                 validationErrorMessage={''}
+                            /> */}
+
+                            <DeliverUserList
+                                name="ShipmentOrder_DeliverUserList"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="Nhân viên  giao"
+                                IsLabelDiv={true}
+                                validatonList={["Comborequired"]}
+                                controltype="InputMultiControl"
+                                //MLObjectDefinition={GridMLDeliverUserDefinition}
+                                datasourcemember="ShipmentOrder_DeliverUserList"
+                                filterName="txtPartnerID"
                             />
                         </div>
 

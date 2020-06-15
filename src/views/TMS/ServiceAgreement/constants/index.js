@@ -469,7 +469,12 @@ export const MLObjectDefinition = [
         BindControlName: "txtPartnerID",
         DataSourceMember: "PartnerID"
     },
-
+    {
+        Name: "ShipmentOrder_DeliverUserList",
+        DefaultValue: {},
+        BindControlName: "ShipmentOrder_DeliverUserList",
+        DataSourceMember: "ShipmentOrder_DeliverUserList"
+    },
     {
         Name: "ServiceAreaID",
         DefaultValue: "",
