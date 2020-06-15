@@ -170,7 +170,7 @@ class ElementModalNumber extends React.Component {
                             max={this.props.max}
                             value={this.props.value}
                             onChange={this.handleValueChange}
-                            disabled= {this.props.disabled == true ? true : this.props.readonly}
+                            disabled={this.props.disabled == true ? true : this.props.readonly}
                             ref={this.props.inputRef}
                             className={className}
                         />
@@ -190,7 +190,6 @@ class ElementModalComboBoxCom extends Component {
     }
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
-        debugger
         if (this.props.onValueChange != null)
             this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.label : "", this.props.filterrest);
     }
@@ -239,7 +238,6 @@ class ElementModalComboBoxCom extends Component {
                             listOption.push({ value: cacheItem[valuemember], label: cacheItem[nameMember] });
                         }
                         );
-
                     }
                     else {
                         result.ResultObject.CacheData.map((cacheItem) => {
@@ -247,6 +245,7 @@ class ElementModalComboBoxCom extends Component {
                         }
                         );
                     }
+                    //console.log("componentDidMount",loaditemcachekeyid,result.ResultObject.CacheData)
                     this.setState({ Listoption: listOption, Data: result.ResultObject.CacheData });
                     const strSelectedOption = this.bindcombox(this.props.value, listOption);
                     this.setState({ SelectedOption: strSelectedOption });
@@ -267,12 +266,15 @@ class ElementModalComboBoxCom extends Component {
         if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             let { filterobj, valuemember, nameMember } = this.props;
+            console.log("componentWillReceiveProps", filterobj, valuemember, this.props.filterValue, nextProps.filterValue)
             if (typeof filterobj != undefined) {
                 let listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
-                this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
-                    listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[nameMember] });
+                if (typeof nextProps.filterValue != "undefined") {
+                    this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
+                        listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[nameMember] });
+                    }
+                    );
                 }
-                );
                 this.setState({ Listoption: listoptionnew });
             }
 
@@ -476,7 +478,7 @@ class ProductComboBoxCom extends React.Component {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
         this.handleValueonKeyDown = this.handleValueonKeyDown.bind(this);
-        this.state = { ListOption: [], SelectedOption: [] }
+        this.state = { ListOption: [{ value: -1, label: "--vui lòng chọn--" }], SelectedOption: [] }
     }
 
     componentDidMount() {
@@ -519,7 +521,7 @@ class ProductComboBoxCom extends React.Component {
             "IsCompressResultData": false
         }
         this.props.callFetchAPI("ERPAPI", 'api/ProductSearch/Search', listMLObject).then(apiResult => {
-            let listOptionNew = [];
+            let listOptionNew = [{ value: -1, label: "--vui lòng chọn--" }];
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
                 listOptionNew.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
             }
@@ -543,7 +545,7 @@ class ProductComboBoxCom extends React.Component {
 
     handleValueChange(selectedOption) {
         if (this.props.onValueChange)
-            this.props.onValueChange(this.props.name, selectedOption.value, this.props.namelabel, selectedOption.label);
+            this.props.onValueChange(this.props.name, selectedOption.value, this.props.namelabel, selectedOption.value != -1 ? selectedOption.label : "");
     }
 
     handleValueonKeyDown(e) {

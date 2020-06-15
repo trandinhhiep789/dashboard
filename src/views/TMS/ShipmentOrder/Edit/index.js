@@ -760,6 +760,7 @@ class EditCom extends React.Component {
                                 title="Danh sách hàng hóa"
                                 IDSelectColumnName={"ProductID"}
                                 listColumn={DataGridColumnItemList}
+                                PKColumnName={"ProductID"}
                                 dataSource={this.state.DataSource.ShipmentOrder_ItemList}
                                 onInsertClick={this.handleItemInsert}
                                 onEditClick={this.handleItemEdit}
@@ -771,6 +772,7 @@ class EditCom extends React.Component {
                                 title="Vật tư lắp đặt"
                                 Ispopup={true}
                                 IDSelectColumnName={"ProductID"}
+                                PKColumnName={""}
                                 MLObjectDefinition={GridMLMaterialDefinition}
                                 listColumn={DataGridColumnMaterialList}
                                 dataSource={this.state.DataSource.ShipmentOrder_MaterialList}
