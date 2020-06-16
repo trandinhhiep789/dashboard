@@ -50,7 +50,9 @@ class DetailCom extends React.Component {
             FeeAppendix: {},
             PageNumber: 1,
             Abiliti: {},
-            IsLoadDataComplete: false
+            IsLoadDataComplete: false,
+            dataExportFeeAppendix:[],
+            dataExportAbility:[]
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -62,7 +64,6 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            console.log('DetailCom', apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -70,7 +71,29 @@ class DetailCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+                const tempDataFeeAppendix = apiResult.ResultObject.FeeAppendix_ItemList.map((item, index) => {
+                    let elementFeeAppendix = {};
+                    elementFeeAppendix.FeeAppendixName = item.FeeAppendixName;
+                    elementFeeAppendix.ServiceSeasonTypeName = item.ServiceSeasonTypeName;
+                    elementFeeAppendix.ApplyFromDate = item.ApplyFromDate;
+                    elementFeeAppendix.ApplyToDate = item.ApplyToDate;
+                    return elementFeeAppendix;
+        
+                })
+                const tempDataAbility = apiResult.ResultObject.Ability_ItemList.map((item, index) => {
+                    let elementAbility  = {};
+                    elementAbility.ServiceSeasonTypeName = item.ServiceSeasonTypeName;
+                    elementAbility.FromDate = item.FromDate;
+                    elementAbility.ToDate = item.ToDate;
+                    elementAbility.MonthlyAbilityValue = item.MonthlyAbilityValue;
+                    elementAbility.DailyAbilityValue = item.DailyAbilityValue;
+                    return elementAbility;
+        
+                })
+
                 this.setState({
+                    dataExportFeeAppendix: tempDataFeeAppendix,
+                    dataExportAbility: tempDataAbility,
                     DataSource: apiResult.ResultObject,
                     ServiceAgreementInfo: apiResult.ResultObject,
                     IsLoadDataComplete: true
@@ -182,23 +205,28 @@ class DetailCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification= "notification-custom-success";
+            iconNotification="fa fa-check"
+            // this.setState({
+            //     cssNotification: "notification-custom-success",
+            //     iconNotification: "fa fa-check"
+            // });
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification= "notification-danger";
+            iconNotification="fa fa-exclamation"
+            // this.setState({
+            //     cssNotification: "notification-danger",
+            //     iconNotification: "fa fa-exclamation"
+            // });
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -214,6 +242,13 @@ class DetailCom extends React.Component {
         });
     }
 
+    handleExportFileFeeAppendix(result){
+        this.addNotification(result.Message, result.IsError);
+    }
+
+    handleExportFileAbility(result){
+        this.addNotification(result.Message, result.IsError);
+    }
 
 
     render() {
@@ -243,6 +278,10 @@ class DetailCom extends React.Component {
                                 onEditClick={this.handleItemEditFeeAppendix.bind(this)}
                                 onDeleteClick={this.handleItemDeleteFeeAppendix.bind(this)}
                                 ref={this.gridref}
+                                IsExportFile={true}
+                                DataExport={this.state.dataExportFeeAppendix}
+                                fileName={TitleFromFeeAppendix}
+                                onExportFile={this.handleExportFileFeeAppendix.bind(this)}
                             />
 
                             <InputGridControl
@@ -257,6 +296,10 @@ class DetailCom extends React.Component {
                                 onEditClick={this.handleItemEditAbiliti.bind(this)}
                                 onDeleteClick={this.handleItemDeleteAbiliti.bind(this)}
                                 ref={this.gridref}
+                                IsExportFile={true}
+                                DataExport={this.state.dataExportAbility}
+                                fileName={TitleFromFeeAppendix}
+                                onExportFile={this.handleExportFileAbility.bind(this)}
                             />
                         </div>
                     </div>

@@ -31,7 +31,6 @@ class EditCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(AddPagePath);
-        console.log("FeeAppendix edit",this.props)
     }
 
     handleSubmit(formData, MLObject) {
@@ -39,7 +38,6 @@ class EditCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
          this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-            console.log('handleSubmit', MLObject, apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
           
