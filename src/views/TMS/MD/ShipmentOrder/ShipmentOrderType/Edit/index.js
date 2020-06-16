@@ -375,12 +375,13 @@ class EditCom extends React.Component {
     }
 
     resetCombobox() {
+        let listOptionNull = [{ value: -1, label: "------ Chọn ------" }];
         let _ModalFlexShipmentFeeColumnList = this.state.ModalFlexShipmentFeeColumnList_Edit;
         _ModalFlexShipmentFeeColumnList.forEach(function (objElement) {
             if (objElement.Name == "GetFeeType") {
                 objElement.listoption = [{ value: -1, label: "---Vui lòng chọn---" }, { value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }];
             } else {
-                objElement.listoption = [];
+                objElement.listoption = listOptionNull;
             }
         });
         this.setState({ ModalFlexShipmentFeeColumnList_Edit: _ModalFlexShipmentFeeColumnList });

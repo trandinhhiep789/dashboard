@@ -76,7 +76,8 @@ class MultiSelectComboBoxCom extends React.Component {
         if (values && !Array.isArray(values)) {
             match = listOption.filter(x => x.value == values);
             if (match && match.length > 0) {
-                match[0].label = match[0].name;
+                if (!match[0].label)
+                    match[0].label = match[0].name;
                 selectedOption.push(match[0]);
             }
         } else {
