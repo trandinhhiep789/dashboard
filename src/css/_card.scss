@@ -1,4 +1,15 @@
 .card {
+    .btn-toolbar{
+        &.btn-toolbar-inputgirdcontroll{
+            clear: both;
+            button{
+                border-radius: 4px !important;
+                &.btn-export{
+                    margin-top: 5px;
+                }
+            }
+        }
+    }
     .table {
         tr {
             .img-product {

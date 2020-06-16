@@ -23,11 +23,9 @@ class FeeAppendixDetailElementCom extends Component {
     }
 
     componentDidMount() {
-        console.log("FeeAppendixDetailElementCom", this.props)
     }
 
     handleSubmit(From, MLObject) {
-        console.log('12', MLObject)
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
         MLObject.FeeAppendixID = this.props.dataSource.FeeAppendixID.trim();
         MLObject.SignedDate = this.props.dataSource.SignedDate;
@@ -37,7 +35,6 @@ class FeeAppendixDetailElementCom extends Component {
             MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
             MLObject.FeeAppendixDetailID = 
             this.props.callFetchAPI(APIHostName, EditFeeAppendixDetailPath, MLObject).then(apiResult => {
-                console.log('12', apiResult, MLObject)
                 this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
             });
         }

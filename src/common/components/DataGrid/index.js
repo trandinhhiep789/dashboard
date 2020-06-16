@@ -11,6 +11,12 @@ import { GET_CACHE_USER_FUNCTION_LIST } from "../../../constants/functionLists";
 import { hideModal } from '../../../actions/modal';
 import Media from "react-media";
 
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+
+
+
+
 class DataGridCom extends Component {
     constructor(props) {
         super(props);
@@ -255,6 +261,31 @@ class DataGridCom extends Component {
         }
     }
 
+    handleExportCSV() {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        let result;
+        if (this.props.DataExport.length == 0){
+            result= {
+               IsError: true,
+               Message: "Dữ liệu không tồn tại. Không thể xuất file!"
+           };
+       }
+       else{
+           const ws = XLSX.utils.json_to_sheet(this.props.DataExport);
+           const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+           const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+           const data = new Blob([excelBuffer], { type: fileType });
+           FileSaver.saveAs(data, this.props.fileName + fileExtension);
+           result= {
+               IsError: false,
+               Message: "Xuất file thành công!"
+           };
+       }
+       this.props.onExportFile(result);
+      
+    }
+
     handleSearchSubmit(event) {
         event.preventDefault();
         let MLObject = {};
@@ -347,7 +378,7 @@ class DataGridCom extends Component {
         const checkList = this.state.GridData[idSelectColumnName];
         return (
             <div className=" table-responsive">
-                <table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0" >
+                <table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0">
                     <thead className="thead-light">
                         <tr>
                             {
@@ -568,7 +599,7 @@ class DataGridCom extends Component {
                                                 </button>)
                                         }
                                         {this.props.IsExportFile == true &&
-                                            <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" >
+                                            <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)}>
                                                 <span className="fa fa-file-excel-o"> Xuất file excel </span>
                                             </button>
                                         }
