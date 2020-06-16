@@ -1024,7 +1024,6 @@ class ShipmentOrderAddressCom extends Component {
     }
 
     handleMapSender() {
-        console.log('sender map', this.props)
     }
 
     handleShowModalSenderReceiver() {
