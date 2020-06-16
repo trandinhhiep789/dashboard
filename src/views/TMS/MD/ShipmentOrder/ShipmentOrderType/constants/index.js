@@ -1027,9 +1027,9 @@ export const ModalFlexShipmentFeeColumnList = [
         validatonList: [],
         isMulti: false,
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECS",
-        ValueMember: "TechSpecsID",
-        NameMember: "TechSpecsName"
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SUBGROUPTECHSPECS",
+        ValueMember: "TechspecsID",
+        NameMember: "TechspecsName"
     },
     {
         type: "multiselect",
@@ -1209,9 +1209,9 @@ export const ModalFlexShipmentFeeColumnList_Edit = [
         validatonList: [],
         isMulti: false,
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECS",
-        ValueMember: "TechSpecsID",
-        NameMember: "TechSpecsName"
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SUBGROUPTECHSPECS",
+        ValueMember: "TechspecsID",
+        NameMember: "TechspecsName"
     },
     {
         type: "multiselect",

@@ -18,11 +18,10 @@ import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import ShipmentOrderTypeWorkflow from '../../ShipmentOrderTypeWorkflow';
 import { showModal, hideModal } from '../../../../../../actions/modal';
-import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_CONFIRMATION, MODAL_TYPE_CONFIRMATIONNEW } from '../../../../../../constants/actionTypes';
+import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_CONFIRMATION } from '../../../../../../constants/actionTypes';
 import InputGrid from '../../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
 import FormContainer from '../../../../../../common/components/Form/AdvanceForm/FormContainer';
 import FormControl from '../../../../../../common/components/Form/AdvanceForm/FormControl';
-import { PIEREQUESTTYPE_UPDATE } from "../../../../../../constants/functionLists";
 import { DeleteAPIPath } from '../../ShipmentOrderTypeWorkflow/constants';
 import DataGrid from "../../../../../../common/components/DataGrid";
 import { GetMLObjectData } from "../../../../../../common/library/form/FormLib";
@@ -34,7 +33,7 @@ import Collapsible from 'react-collapsible';
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import {
     ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION,
-    ERPCOMMONCACHE_TECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_MAINGROUP
+    ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_MAINGROUP
 } from "../../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
@@ -82,8 +81,6 @@ class EditCom extends React.Component {
             ModalFlexShipmentFeeColumnList_Edit: ModalFlexShipmentFeeColumnList_Edit,
             ModalFlexShipmentFeeColumnList_Edit_Old: ModalFlexShipmentFeeColumnList_Edit_Old,
             IsInsert: true
-            // PartnerList: [],
-            // ShipmentStatusList: []
         };
     }
 
@@ -132,8 +129,6 @@ class EditCom extends React.Component {
     }
 
     editShipmentOrderTypeWorkflowPopup(index) {
-        // let objPieRequestTypeWorkflow = this.state.FormData.PieRequestTypeWorkflow.filter(x => x.PieRequestStepID == pieRequestStepID)[0];
-        // let shipmentOrderTypeWorkflowNext = this.state.FormData.PieRequestTypeWorkflow.filter((x,i) => x.PieRequestStepID != pieRequestStepID);
         let objShipmentOrderTypeWorkflow = this.state.FormData.ShipmentOrderTypeWorkflow[index];
         let shipmentOrderTypeWorkflowNext = this.state.FormData.ShipmentOrderTypeWorkflow.filter((x, i) => i != index);
         let dataSource = [];
@@ -184,12 +179,6 @@ class EditCom extends React.Component {
 
     removeShipmentOrderTypeWorkflow(deleteList, dataSource, pkColumnName) {
         let listMLObject = [];
-        // deleteList.map((row, index) => {
-        //     let MLObject = {};
-        //     MLObject[pkColumnName] = row;
-        //     MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
-        //     listMLObject.push(MLObject);
-        // });
         deleteList.map((selectItem) => {
             let isMath = false;
             dataSource.map((row) => {
@@ -315,28 +304,8 @@ class EditCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
         });
     }
-
     //---------------------------------------------------------------------------------------------------
-
-
     initMultiSelectCombobox() {
-        this.props.callGetCache(ERPCOMMONCACHE_TECHSPECS).then((result) => {
-            if (!result.IsError && result.ResultObject.CacheData != null) {
-                this.setState({
-                    Techspecs: result.ResultObject.CacheData
-                });
-            }
-        });
-
-        //lấy cache giá trị tham số kỹ thuật áp dụng
-        this.props.callGetCache(ERPCOMMONCACHE_TECHSPECSVALUE).then((result) => {
-            if (!result.IsError && result.ResultObject.CacheData != null) {
-                this.setState({
-                    TechspecsValue: result.ResultObject.CacheData
-                });
-            }
-        });
-
         //lấy cache ngành hàng
         this.props.callGetCache(ERPCOMMONCACHE_MAINGROUP).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
@@ -351,6 +320,23 @@ class EditCom extends React.Component {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 this.setState({
                     SubGroup: result.ResultObject.CacheData
+                });
+            }
+        });
+
+        this.props.callGetCache(ERPCOMMONCACHE_SUBGROUPTECHSPECS).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                this.setState({
+                    Techspecs: result.ResultObject.CacheData
+                });
+            }
+        });
+
+        //lấy cache giá trị tham số kỹ thuật áp dụng
+        this.props.callGetCache(ERPCOMMONCACHE_TECHSPECSVALUE).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                this.setState({
+                    TechspecsValue: result.ResultObject.CacheData
                 });
             }
         });
@@ -388,19 +374,33 @@ class EditCom extends React.Component {
 
     handleModalChange(formData, formValidation, elementName, elementValue) {
         //console.log("formData", formData);  
+        let listOptionNull = [{ value: -1, label: "------ Chọn ------" }];
         let listOption = [];
         let isInsert = this.state.IsInsert;
         let _ModalFlexShipmentFeeColumnList = isInsert ? this.state.ModalFlexShipmentFeeColumnList : this.state.ModalFlexShipmentFeeColumnList_Edit;
         _ModalFlexShipmentFeeColumnList.forEach(function (objElement) {
-            if (elementName == "TechspecsID") {
-                if (objElement.Name == "TechspecsValueID") {
-                    listOption = this.getDataCombobox(this.state.TechspecsValue, "TechSpecsValueID", "Value", "TechSpecsID", elementValue);
+            if (elementName == "MainGroupID") {
+                if (objElement.Name == "SubGroupID") {
+                    listOption = this.getDataCombobox(this.state.SubGroup, "SubGroupID", "SubGroupName", "MainGroupID", elementValue);
                     objElement.listoption = listOption;
                     objElement.value = "-1";
                 }
-            } else if (elementName == "MainGroupID") {
-                if (objElement.Name == "SubGroupID") {
-                    listOption = this.getDataCombobox(this.state.SubGroup, "SubGroupID", "SubGroupName", "MainGroupID", elementValue);
+                if (objElement.Name == "TechspecsID")
+                    objElement.listoption = listOptionNull;
+                if (objElement.Name == "TechspecsValueID")
+                    objElement.listoption = listOptionNull;
+
+            } else if (elementName == "SubGroupID") {
+                if (objElement.Name == "TechspecsID") {
+                    listOption = this.getDataCombobox(this.state.Techspecs, "TechspecsID", "TechspecsName", "SubGroupID", elementValue);
+                    objElement.listoption = listOption;
+                    objElement.value = "-1";
+                }
+                if (objElement.Name == "TechspecsValueID")
+                    objElement.listoption = listOptionNull;
+            } else if (elementName == "TechspecsID") {
+                if (objElement.Name == "TechspecsValueID") {
+                    listOption = this.getDataCombobox(this.state.TechspecsValue, "TechSpecsValueID", "Value", "TechSpecsID", elementValue);
                     objElement.listoption = listOption;
                     objElement.value = "-1";
                 }
@@ -473,7 +473,7 @@ class EditCom extends React.Component {
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
-        //console.log("delete_ShipmentOrderType_FlexShipmentFee",listMLObject);
+
         this.props.callFetchAPI(APIHostName, DeleteAPIPath_FlexShipmentFee, listMLObject).then((apiResult) => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
@@ -484,7 +484,6 @@ class EditCom extends React.Component {
     }
 
     editShipmentOrderType_FlexShipmentFeePopup(value, pkColumnName) {
-        //console.log("pkColumnName", this.state.ModalFlexShipmentFeeColumnList_Edit);
         this.setState({ IsInsert: false });
         let _flexShipmentFee = {};
         this.state.FormData.ShipmentOrderTypeFlexShipmentFee.map((item, index) => {
@@ -503,8 +502,6 @@ class EditCom extends React.Component {
             }
         });
 
-
-
         let _ModalFlexShipmentFeeColumnList_Edit = this.state.ModalFlexShipmentFeeColumnList_Edit;
         _ModalFlexShipmentFeeColumnList_Edit.forEach(function (objElement) {
             let sub = [];
@@ -519,8 +516,6 @@ class EditCom extends React.Component {
             }
 
         }.bind(this));
-
-        // this.setState({ IsInsert: false, ModalFlexShipmentFeeColumnList_Edit: _ModalFlexShipmentFeeColumnList_Edit });
 
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Chỉnh sửa chi phí vận chuyển thay đổi của một loại yêu cầu vận chuyển',
@@ -827,24 +822,6 @@ class EditCom extends React.Component {
         this.setState({ ShipmentStatusList });
     }
 
-
-    // comboPartner(data) {
-    //     const convertdata = data.map(function (objData) {
-    //         return { value: objData.PartnerID, name: objData.PartnerName, label: objData.PartnerName }
-    //     });
-    //     convertdata.unshift({ value: -1, name: "---Vui lòng chọn---", label: "---Vui lòng chọn---" });
-    //     return convertdata;
-
-    // }
-
-    // comboStatus(data) {
-    //     const convertdata = data.map(function (objData) {
-    //         return { value: objData.ShipmentOrderStatusID, name: objData.StatusName, label: objData.ShipmentOrderStatusName }
-    //     });
-    //     convertdata.unshift({ value: -1, name: "---Vui lòng chọn---", label: "---Vui lòng chọn---" });
-    //     return convertdata;
-
-    // }
     addNotification(message1, IsError) {
         if (!IsError) {
             this.setState({
@@ -913,7 +890,7 @@ class EditCom extends React.Component {
                                 labelcolspan={4} colspan={8} rowspan={8}
                                 maxSize={200} isRequired={true}
                             />
-                            <FormControl.ComboBox
+                            {/* <FormControl.ComboBox
                                 name="AddFunctionID"
                                 type="select"
                                 isautoloaditemfromcache={true}
@@ -925,9 +902,9 @@ class EditCom extends React.Component {
                                 listoption={[]}
                                 datasourcemember="AddFunctionID"
                                 labelcolspan={4} colspan={8} rowspan={8}
-                            />
+                            /> */}
 
-                            {/* <FormControl.MultiSelectComboBox name="AddFunctionID" label="Quyền thêm yêu cầu này"
+                            <FormControl.MultiSelectComboBox name="AddFunctionID" label="Quyền thêm yêu cầu này"
                                 labelcolspan={4} colspan={8} rowspan={8}
                                 IsLabelDiv={true} controltype="InputControl"
                                 isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_FUNCTION} valuemember="FunctionID" nameMember="FunctionName"
@@ -935,7 +912,7 @@ class EditCom extends React.Component {
                                 isMulti={false}
                                 value={this.state.FormData.ShipmentOrderType && this.state.FormData.ShipmentOrderType.AddFunctionID ? this.state.FormData.ShipmentOrderType.AddFunctionID : null}
                             //onValueChangeCus={this.changeSelecPartner}
-                            /> */}
+                            />
 
                             <FormControl.CheckBox label="Cho phép chọn đối tác gửi" name="IsSelectSenderPartner"
                                 datasourcemember="IsSelectSenderPartner" controltype="InputControl"
@@ -982,17 +959,6 @@ class EditCom extends React.Component {
                                 onValueChangeCus={this.changeSelectShipmentStatus}
                             />
 
-                            {/* <FormControl.ComboBox name="PartnerID" type="select" isautoloaditemfromcache={false}
-                            loaditemcachekeyid="" valuemember="PartnerID" nameMember="PartnerName" value={this.state.FormData.ShipmentOrderType.PartnerID}
-                            label="Mã đối tác" controltype="InputControl" listoption={this.state.FormData.ListPartner} datasourcemember="PartnerID"
-                            labelcolspan={4} colspan={8} rowspan={8}
-                        /> */}
-
-                            {/* <FormControl.ComboBox name="StatusID" type="select" isautoloaditemfromcache={false}
-                            loaditemcachekeyid="" valuemember="StatusID" nameMember="StatusName" value={this.state.FormData.ShipmentOrderType.StatusID}
-                            label="Trạng thái vận chuyển" controltype="InputControl" listoption={this.state.FormData.ListStatus} datasourcemember="StatusID"
-                            labelcolspan={4} colspan={8} rowspan={8}
-                        /> */}
                             {/* ------------------------------------------------------------------ */}
 
                             <FormControl.TextArea name="Description" label="Mô tả"

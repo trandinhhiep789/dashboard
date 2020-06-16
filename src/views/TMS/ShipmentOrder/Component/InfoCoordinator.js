@@ -3,9 +3,13 @@ import { connect } from 'react-redux';
 import { ModalManager } from 'react-dynamic-modal';
 import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import { callGetCache } from "../../../../actions/cacheAction";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../common/components/Modal";
+import Select from 'react-select';
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 import {
     APIHostName,
 } from "../constants";
@@ -17,10 +21,9 @@ class InfoCoordinatorCom extends Component {
         this.handleValueChange1 = this.handleValueChange1.bind(this);
         this.handleOnValueChange = this.handleOnValueChange.bind(this);
 
-        this.handleShipWorkFlowInsert = this.handleShipWorkFlowInsert.bind(this);
         this.handleOnValueChangeDeliverUser = this.handleOnValueChangeDeliverUser.bind(this);
-
-
+        this.handleCancelDelivery = this.handleCancelDelivery.bind(this);
+        this.handleCancelDeliveryInsert = this.handleCancelDeliveryInsert.bind(this);
 
         this.state = {
             ShipmentOrder: this.props.InfoCoordinator,
@@ -33,12 +36,33 @@ class InfoCoordinatorCom extends Component {
             IsCloseForm: false,
             DeliverUserList: {},
             DeliverUserServerList: [],
+            CANCELDELIVERYREASON: [],
+            validationErrorCancelDeliveryReason: null,
+            validationCancelDeliveryReasonNote: null,
+            CancelDeliveryReasonID: null,
+            CancelDeliveryReasonNote: "",
+            selectedOption: []
         }
+        this.notificationDOMRef = React.createRef();
     }
 
 
-    componentDidMount(){
-        console.log('this.props.InfoCoordinator', this.props.InfoCoordinator)
+    componentDidMount() {
+        // tỉnh thành phố
+        this.props.callGetCache("ERPCOMMONCACHE.CANCELDELIVERYREASON").then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                //console.log("FormElement listOption: ", listOption)
+                let listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                result.ResultObject.CacheData.map((cacheItem) => {
+                    listOption.push({ value: cacheItem["CancelDeliveryReasonID"], label: cacheItem["CancelDeliveryReasonName"] });
+                }
+                );
+                this.setState({
+                    CANCELDELIVERYREASON: listOption
+                });
+            }
+        });
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -48,6 +72,123 @@ class InfoCoordinatorCom extends Component {
                 ShipmentOrder: nextProps.InfoCoordinator
             })
         }
+    }
+
+    handleValueCancelDeliveryReason(selectedOption) {
+        let validationErrorCancelDeliveryReason = null
+        if (selectedOption.value == undefined || selectedOption.value == -1) {
+            validationErrorCancelDeliveryReason = "Vui lòng chọn lý do hủy giào"
+        }
+
+        this.setState({ selectedOption: selectedOption, validationErrorCancelDeliveryReason: validationErrorCancelDeliveryReason }, () => {
+            this.openCancelDeliveryModal();
+        });
+
+    }
+    handleValueCancelDeliveryReasonNote(e) {
+        let value = e.target.value;
+        let { validationCancelDeliveryReasonNote } = this.state;
+        if (value == undefined || value.length == 0 || String(value).trim() == "") {
+            validationCancelDeliveryReasonNote = "Vui lòng nhập nội dung"
+        }
+        else {
+            validationCancelDeliveryReasonNote = null
+        }
+
+
+        this.setState({ CancelDeliveryReasonNote: value, validationCancelDeliveryReasonNote: validationCancelDeliveryReasonNote }, () => {
+            this.openCancelDeliveryModal();
+        });
+
+    }
+    handleCancelDelivery() {
+
+
+        this.openCancelDeliveryModal();
+
+
+    }
+
+    openCancelDeliveryModal() {
+        let formGroupclassName = "form-group col-md-9";
+        let selectclassName = "form-control form-control-sm";
+        if (this.state.validationCancelDeliveryReasonNote != null) {
+            if (this.state.validationCancelDeliveryReasonNote.length > 0) {
+                formGroupclassName += " has-error has-danger";
+                selectclassName += " is-invalid";
+            }
+        }
+        ModalManager.open(
+            <ModelContainer
+                title="Thông tin hủy giao hàng"
+                name=""
+                content={"Cập nhật loại đơn vị thành công!"} onRequestClose={() => false}
+                onChangeModal={this.handleCancelDeliveryInsert}  >
+                <div className="form-row">
+                    <div className="form-group col-md-3">
+                        <label className="col-form-label 6">Lý do hủy giao hàng<span className="text-danger">*</span></label>
+                    </div>
+                    <div className="form-group col-md-9">
+                        <div className="form-group-input-select">
+                            <Select
+                                value={this.state.selectedOption}
+                                name={"CancelDeliveryReasonID"}
+                                onChange={this.handleValueCancelDeliveryReason.bind(this)}
+                                options={this.state.CANCELDELIVERYREASON}
+                                isMulti={false}
+                                isSearchable={true}
+                                className={(this.state.validationErrorCancelDeliveryReason != null ? "react-select is-invalid" : "react-select")}
+                                placeholder="--Vui lòng chọn--"
+                            />
+                            <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.state.validationErrorCancelDeliveryReason}</li></ul></div>
+                        </div>
+                    </div>
+                </div>
+                <div className="form-row">
+                    <div className="form-group col-md-3">
+                        <label className="col-form-label bold">Nội dung hủy giao hàng <span className="text-danger"> *</span></label>
+                    </div>
+                    <div className={formGroupclassName}>
+                        <textarea className={selectclassName} maxLength={1950}
+                            rows="5" cols="50" name="Title"
+                            value={this.state.CancelDeliveryReasonNote}
+                            onChange={this.handleValueCancelDeliveryReasonNote.bind(this)}
+                            placeholder="Nội dung" />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.state.validationCancelDeliveryReasonNote}</li></ul></div>
+                    </div>
+                </div>
+            </ModelContainer>
+        );
+    }
+
+    handleCancelDeliveryInsert() {
+
+        let { ShipmentOrder,selectedOption, CancelDeliveryReasonNote,validationErrorCancelDeliveryReason,validationCancelDeliveryReasonNote} = this.state;
+        if (selectedOption.value == undefined || selectedOption.length == 0) {
+            validationErrorCancelDeliveryReason = "Vui lòng chọn lý do hủy giào"
+            this.setState({ validationErrorCancelDeliveryReason: validationErrorCancelDeliveryReason }, () => {
+                this.openCancelDeliveryModal();
+            });
+        }
+        else if (CancelDeliveryReasonNote == undefined || CancelDeliveryReasonNote.length == 0 || String(CancelDeliveryReasonNote).trim() == "") {
+            validationCancelDeliveryReasonNote = "Vui lòng nhập nội dung"
+            this.setState({ validationCancelDeliveryReasonNote: validationCancelDeliveryReasonNote }, () => {
+                this.openCancelDeliveryModal();
+            });
+        }
+        else
+        {
+            ShipmentOrder.CancelDeliveryReasonID = selectedOption.value;
+            ShipmentOrder.CancelDeliveryUser = this.props.AppInfo.LoginInfo.Username;
+            ShipmentOrder.CancelDeliveryReasonNote = CancelDeliveryReasonNote;
+            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateCancelDelivery', ShipmentOrder).then((apiResult) => {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                if (!apiResult.IsError) {
+                    ModalManager.close();
+                }
+            });
+        }
+
     }
 
     handleValueChange(e) {
@@ -137,6 +278,39 @@ class InfoCoordinatorCom extends Component {
         );
     }
 
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
 
     handleShipWorkFlowInsert() {
         let { ShipmentOrder, validationErroDeliverUser, validationErroCarrierPartner } = this.state;
@@ -177,6 +351,7 @@ class InfoCoordinatorCom extends Component {
 
         return (
             <div className="card">
+                    <ReactNotification ref={this.notificationDOMRef} />
                 <div className="card-title group-card-title">
                     <h4 className="title">Thông tin điều phối</h4>
                 </div>
@@ -287,11 +462,15 @@ class InfoCoordinatorCom extends Component {
                         </div>
                     </div>
                     <div className="form-row">
-                        <div className="form-group form-group-btncustom">
+                        <div className="form-group col-md-2 form-group-btncustom">
+                            {
+                                this.props.IsCancelDelivery == true ? <button className="btn btnEditCard" type="submit" onClick={this.handleCancelDelivery}> Hủy giao hàng</button> : <button className="btn btnEditCard" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit"> Hủy giao hàng</span></button>
+                            }
+                        </div>
+                        <div className="form-group col-md-10 form-group-btncustom">
                             {
                                 this.props.IsCoordinator == true ? <button className="btn btnEditCard" type="submit" onClick={this.handleShipWorkFlowInsert}> Cập nhật</button> : <button className="btn btnEditCard" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit"> Cập nhật</span></button>
                             }
-
                         </div>
 
                     </div>
@@ -315,6 +494,9 @@ const mapDispatchToProps = dispatch => {
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
+        },
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
         }
     }
 }
