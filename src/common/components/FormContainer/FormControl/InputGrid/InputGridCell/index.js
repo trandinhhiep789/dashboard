@@ -167,7 +167,7 @@ class InputGridCellCom extends Component {
                         <a title="" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit" className="btn-edit">
                             <i className="ti-pencil"></i>
                         </a>
-                        <a title="" className="table-action hover-danger" onClick={this.handleonClickDelete} data-id={this.props.index} title="Edit">
+                        <a title="" className="table-action hover-danger" onClick={this.handleonClickDelete} data-id={this.props.index} title="Delete">
                             <i className="ti-trash"></i>
                         </a>
                     </div>

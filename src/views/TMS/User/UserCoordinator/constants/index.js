@@ -15,20 +15,10 @@ import {CDN_LOGO_IMAGE} from '../../../../../constants/systemVars';
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ" },
-    { Link: "", Title: "Danh sách đối tác" }
+    { Link: "", Title: "Cấp quyền nhân viên theo kho" }
 ];
 
-export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ" },
-    { Link: "/Partner", Title: "Danh sách đối tác" },
-    { Link: "", Title: "Sửa" }
-];
 
-export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ" },
-    { Link: "/Partner", Title: "Danh sách đối tác" },
-    { Link: "", Title: "Thêm" }
-];
 
 export const SearchElementList = [
     {
