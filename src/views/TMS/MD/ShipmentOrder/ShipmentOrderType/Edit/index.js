@@ -34,7 +34,7 @@ import Collapsible from 'react-collapsible';
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import {
     ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION,
-    ERPCOMMONCACHE_TECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_MAINGROUP
+    ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_MAINGROUP
 } from "../../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
@@ -320,23 +320,6 @@ class EditCom extends React.Component {
 
 
     initMultiSelectCombobox() {
-        this.props.callGetCache(ERPCOMMONCACHE_TECHSPECS).then((result) => {
-            if (!result.IsError && result.ResultObject.CacheData != null) {
-                this.setState({
-                    Techspecs: result.ResultObject.CacheData
-                });
-            }
-        });
-
-        //lấy cache giá trị tham số kỹ thuật áp dụng
-        this.props.callGetCache(ERPCOMMONCACHE_TECHSPECSVALUE).then((result) => {
-            if (!result.IsError && result.ResultObject.CacheData != null) {
-                this.setState({
-                    TechspecsValue: result.ResultObject.CacheData
-                });
-            }
-        });
-
         //lấy cache ngành hàng
         this.props.callGetCache(ERPCOMMONCACHE_MAINGROUP).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
@@ -351,6 +334,23 @@ class EditCom extends React.Component {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 this.setState({
                     SubGroup: result.ResultObject.CacheData
+                });
+            }
+        });
+
+        this.props.callGetCache(ERPCOMMONCACHE_SUBGROUPTECHSPECS).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                this.setState({
+                    Techspecs: result.ResultObject.CacheData
+                });
+            }
+        });
+
+        //lấy cache giá trị tham số kỹ thuật áp dụng
+        this.props.callGetCache(ERPCOMMONCACHE_TECHSPECSVALUE).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                this.setState({
+                    TechspecsValue: result.ResultObject.CacheData
                 });
             }
         });
@@ -388,19 +388,33 @@ class EditCom extends React.Component {
 
     handleModalChange(formData, formValidation, elementName, elementValue) {
         //console.log("formData", formData);  
+        let listOptionNull = [{ value: -1, label: "------ Chọn ------" }];
         let listOption = [];
         let isInsert = this.state.IsInsert;
         let _ModalFlexShipmentFeeColumnList = isInsert ? this.state.ModalFlexShipmentFeeColumnList : this.state.ModalFlexShipmentFeeColumnList_Edit;
         _ModalFlexShipmentFeeColumnList.forEach(function (objElement) {
-            if (elementName == "TechspecsID") {
-                if (objElement.Name == "TechspecsValueID") {
-                    listOption = this.getDataCombobox(this.state.TechspecsValue, "TechSpecsValueID", "Value", "TechSpecsID", elementValue);
+            if (elementName == "MainGroupID") {
+                if (objElement.Name == "SubGroupID") {
+                    listOption = this.getDataCombobox(this.state.SubGroup, "SubGroupID", "SubGroupName", "MainGroupID", elementValue);
                     objElement.listoption = listOption;
                     objElement.value = "-1";
                 }
-            } else if (elementName == "MainGroupID") {
-                if (objElement.Name == "SubGroupID") {
-                    listOption = this.getDataCombobox(this.state.SubGroup, "SubGroupID", "SubGroupName", "MainGroupID", elementValue);
+                if (objElement.Name == "TechspecsID")
+                    objElement.listoption = listOptionNull;
+                if (objElement.Name == "TechspecsValueID")
+                    objElement.listoption = listOptionNull;
+
+            } else if (elementName == "SubGroupID") {
+                if (objElement.Name == "TechspecsID") {
+                    listOption = this.getDataCombobox(this.state.Techspecs, "TechspecsID", "TechspecsName", "SubGroupID", elementValue);
+                    objElement.listoption = listOption;
+                    objElement.value = "-1";
+                }
+                if (objElement.Name == "TechspecsValueID")
+                    objElement.listoption = listOptionNull;
+            } else if (elementName == "TechspecsID") {
+                if (objElement.Name == "TechspecsValueID") {
+                    listOption = this.getDataCombobox(this.state.TechspecsValue, "TechSpecsValueID", "Value", "TechSpecsID", elementValue);
                     objElement.listoption = listOption;
                     objElement.value = "-1";
                 }
