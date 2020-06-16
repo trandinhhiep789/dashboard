@@ -31,7 +31,6 @@ class FormContainerCom extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.elementItemRefs = [];
         const formData = this.bindData();
-       // console.log("formData", formData, this.props.dataSource)
         this.state = {
             FormData: formData,
             FormValidation: {},
@@ -583,7 +582,7 @@ class FormContainerCom extends Component {
             }
         }
         let cssSearchButton = "";
-        console.log("this.props.isSubmitForm ", this.props.isSubmitFrom )
+        // console.log("this.props.isSubmitForm ", this.props.isSubmitFrom )
         return (
             <div className="col-lg-12">
                 <form className="card" action="" onSubmit={this.handleSubmit}>
