@@ -31,7 +31,6 @@ class FormContainerCom extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.elementItemRefs = [];
         const formData = this.bindData();
-        console.log("formData", formData, this.props.dataSource)
         this.state = {
             FormData: formData,
             FormValidation: {},
@@ -583,7 +582,7 @@ class FormContainerCom extends Component {
             }
         }
         let cssSearchButton = "";
-        //console.log("this.props.isSubmitForm ", this.props.isSubmitForm )
+        // console.log("this.props.isSubmitForm ", this.props.isSubmitFrom )
         return (
             <div className="col-lg-12">
                 <form className="card" action="" onSubmit={this.handleSubmit}>
@@ -597,7 +596,6 @@ class FormContainerCom extends Component {
                     <footer className="card-footer text-right" hidden={this.props.IsHideFooter}>
                         {(this.props.isSubmitForm == undefined || this.props.isSubmitForm == true) &&
                             <button className="btn btn-primary mr-3" type="submit">{cssSearchButton} Cập nhật</button>
-
                         }
                         {backLinkButton}
                     </footer>

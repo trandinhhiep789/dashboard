@@ -51,13 +51,12 @@ class DetailCom extends React.Component {
     }
 
     componentDidMount() {
-     
+
         this.callLoadData(this.props.match.params.id);
     }
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            console.log('ssss', apiResult);
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -70,10 +69,10 @@ class DetailCom extends React.Component {
                     ServiceAgreementID: apiResult.ResultObject.ServiceAgreementID,
                     FeeAppendixDetailInfo: apiResult.ResultObject,
                     FeeAppendixDetailItemList: apiResult.ResultObject.FeeAppendixDetail_ItemList,
-                    
+
                     IsLoadDataComplete: true
                 });
-                const id= apiResult.ResultObject.ServiceAgreementID;
+                const id = apiResult.ResultObject.ServiceAgreementID;
                 const PagePath = [
                     { Link: "/", Title: "Trang chủ" },
                     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ " },
@@ -89,6 +88,7 @@ class DetailCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
 
@@ -158,6 +158,7 @@ class DetailCom extends React.Component {
     }
 
     handleInputChangeObjItem(id, apiResult) {
+        this.addNotification(apiResult.Message, apiResult.IsError);
         this.callLoadData(id);
         this.props.hideModal();
 
@@ -203,7 +204,8 @@ class DetailCom extends React.Component {
                 dataSource={this.state.DataSource}
                 listelement={[]}
                 BackLink={BackLink}
-                onSubmit={this.handleSubmit}
+                isSubmitForm={false}
+
             >
                 <ReactNotification ref={this.notificationDOMRef} />
                 <FeeAppendixInfo
