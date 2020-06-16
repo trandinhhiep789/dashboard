@@ -913,7 +913,7 @@ class EditCom extends React.Component {
                                 labelcolspan={4} colspan={8} rowspan={8}
                                 maxSize={200} isRequired={true}
                             />
-                            <FormControl.ComboBox
+                            {/* <FormControl.ComboBox
                                 name="AddFunctionID"
                                 type="select"
                                 isautoloaditemfromcache={true}
@@ -925,9 +925,9 @@ class EditCom extends React.Component {
                                 listoption={[]}
                                 datasourcemember="AddFunctionID"
                                 labelcolspan={4} colspan={8} rowspan={8}
-                            />
+                            /> */}
 
-                            {/* <FormControl.MultiSelectComboBox name="AddFunctionID" label="Quyền thêm yêu cầu này"
+                            <FormControl.MultiSelectComboBox name="AddFunctionID" label="Quyền thêm yêu cầu này"
                                 labelcolspan={4} colspan={8} rowspan={8}
                                 IsLabelDiv={true} controltype="InputControl"
                                 isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_FUNCTION} valuemember="FunctionID" nameMember="FunctionName"
@@ -935,7 +935,7 @@ class EditCom extends React.Component {
                                 isMulti={false}
                                 value={this.state.FormData.ShipmentOrderType && this.state.FormData.ShipmentOrderType.AddFunctionID ? this.state.FormData.ShipmentOrderType.AddFunctionID : null}
                             //onValueChangeCus={this.changeSelecPartner}
-                            /> */}
+                            />
 
                             <FormControl.CheckBox label="Cho phép chọn đối tác gửi" name="IsSelectSenderPartner"
                                 datasourcemember="IsSelectSenderPartner" controltype="InputControl"
