@@ -42,7 +42,8 @@ class DetailCom extends React.Component {
             DataSource: {},
             FeeAppendixDetailInfo: {},
             FeeAppendixDetailItemList: [],
-            ServiceAgreementID: ''
+            ServiceAgreementID: '',
+            dataExport: []
 
         };
         this.gridref = React.createRef();
@@ -64,7 +65,19 @@ class DetailCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+                const tempData = apiResult.ResultObject.FeeAppendixDetail_ItemList.map((item, index) => {
+                    let element  = {};
+                    element.SubGroupName = item.SubGroupName;
+                    element.TechspecsName = item.TechspecsName;
+                    element.TechspecsValue = item.TechspecsValue;
+                    element.ProductName = item.ProductName;
+                    element.ServiceFee = item.ServiceFee;
+                    return element;
+        
+                })
+
                 this.setState({
+                    dataExport: tempData,
                     DataSource: apiResult.ResultObject,
                     ServiceAgreementID: apiResult.ResultObject.ServiceAgreementID,
                     FeeAppendixDetailInfo: apiResult.ResultObject,
@@ -125,23 +138,23 @@ class DetailCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification= "notification-custom-success";
+            iconNotification="fa fa-check"
+        
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification= "notification-danger";
+            iconNotification="fa fa-exclamation"
+        
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -191,6 +204,10 @@ class DetailCom extends React.Component {
         });
 
     }
+    handleExportFile(result){
+        this.addNotification(result.Message, result.IsError);
+    }
+
 
     render() {
         if (this.state.IsCloseForm) {
@@ -223,6 +240,10 @@ class DetailCom extends React.Component {
                     onInsertClick={this.handleItemInsert}
                     onEditClick={this.handleItemEdit}
                     onDeleteClick={this.handleItemDeleteFeeAppendixDetail.bind(this)}
+                    IsExportFile={true}
+                    DataExport={this.state.dataExport}
+                    fileName={TitleFromFeeAppendixDetail}
+                    onExportFile={this.handleExportFile.bind(this)}
                 />
             </FormContainer>
         );
