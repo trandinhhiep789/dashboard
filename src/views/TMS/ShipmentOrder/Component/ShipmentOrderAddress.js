@@ -107,6 +107,10 @@ class ShipmentOrderAddressCom extends Component {
         else {
             ShipmentOrderEdit[name] = value;
         }
+
+        if (name == "SenderAddress") {
+            ShipmentOrderEdit.SenderFullAddress = this.getfulladress(value, ShipmentOrderEdit.SenderWardID, ShipmentOrderEdit.SenderDistrictID, ShipmentOrderEdit.SenderProvinceID);
+        }
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
             this.ShowModalSender();
         });
@@ -130,6 +134,7 @@ class ShipmentOrderAddressCom extends Component {
         if (name == "ReceiverAddress") {
             ShipmentOrderEdit.ReceiverGeoLocation = "10.852982,105.700";
         }
+        ShipmentOrderEdit.ReceiverFullAddress = this.getfulladress(ShipmentOrderEdit.ReceiverAddress, ShipmentOrderEdit.ReceiverWardID, ShipmentOrderEdit.ReceiverDistrictID, ShipmentOrderEdit.ReceiverProvinceID);
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
             this.ShowModalReceiver();
         });
@@ -243,6 +248,7 @@ class ShipmentOrderAddressCom extends Component {
         formData = Object.assign({}, formData, { ["SenderProvinceID"]: ObjectName });
         formData = Object.assign({}, formData, { ["SenderDistrictID"]: ObjectNameDistrict });
         formData = Object.assign({}, formData, { ["SenderWardID"]: ObjectNameWard });
+        ShipmentOrderEdit.SenderFullAddress = this.getfulladress(ShipmentOrderEdit.SenderAddress, ShipmentOrderEdit.SenderWardID, ShipmentOrderEdit.SenderDistrictID, ShipmentOrderEdit.SenderProvinceID);
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
             this.ShowModalSender();
         });
@@ -267,7 +273,7 @@ class ShipmentOrderAddressCom extends Component {
             formData = Object.assign({}, formData, { ["SenderDistrictID"]: ObjectNameDistrict });
             formData = Object.assign({}, formData, { ["SenderWardID"]: ObjectNameWard });
         }
-
+        ShipmentOrderEdit.SenderFullAddress = this.getfulladress(ShipmentOrderEdit.SenderAddress, ShipmentOrderEdit.SenderWardID, ShipmentOrderEdit.SenderDistrictID, ShipmentOrderEdit.SenderProvinceID);
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
             this.ShowModalSender();
         });
@@ -287,6 +293,7 @@ class ShipmentOrderAddressCom extends Component {
             const ObjectNameWard = { ErrorLst: { IsValidatonError: false, ValidatonErrorMessage: "" } };
             formData = Object.assign({}, formData, { ["SenderWardID"]: ObjectNameWard });
         }
+        ShipmentOrderEdit.SenderFullAddress = this.getfulladress(ShipmentOrderEdit.SenderAddress, ShipmentOrderEdit.SenderWardID, ShipmentOrderEdit.SenderDistrictID, ShipmentOrderEdit.SenderProvinceID);
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
             this.ShowModalSender();
         });
@@ -309,6 +316,7 @@ class ShipmentOrderAddressCom extends Component {
         formData = Object.assign({}, formData, { ["ReceiverProvinceID"]: ObjectName });
         formData = Object.assign({}, formData, { ["ReceiverDistrictID"]: ObjectNameDistrict });
         formData = Object.assign({}, formData, { ["ReceiverWardID"]: ObjectNameWard });
+        ShipmentOrderEdit.ReceiverFullAddress = this.getfulladress(ShipmentOrderEdit.ReceiverAddress, ShipmentOrderEdit.ReceiverWardID, ShipmentOrderEdit.ReceiverDistrictID, ShipmentOrderEdit.ReceiverProvinceID);
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
             this.ShowModalReceiver();
         });
@@ -318,7 +326,7 @@ class ShipmentOrderAddressCom extends Component {
         const comboValues = this.getComboValue(selectedOption);
         ShipmentOrderEdit['ReceiverDistrictID'] = comboValues;
         ShipmentOrderEdit['ReceiverWardID'] = -1;
-        this.setValueCombobox(2, ShipmentOrderEdit.SenderProvinceID, comboValues)
+        this.setValueCombobox(2, ShipmentOrderEdit.ReceiverProvinceID, comboValues)
         let formData = FormDataSenderLst;
         if (parseInt(comboValues) < 0) {
             const ObjectNameDistrict = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn quận/huyện" } };
@@ -332,7 +340,7 @@ class ShipmentOrderAddressCom extends Component {
             formData = Object.assign({}, formData, { ["ReceiverDistrictID"]: ObjectNameDistrict });
             formData = Object.assign({}, formData, { ["ReceiverWardID"]: ObjectNameWard });
         }
-
+        ShipmentOrderEdit.ReceiverFullAddress = this.getfulladress(ShipmentOrderEdit.ReceiverAddress, ShipmentOrderEdit.ReceiverWardID, ShipmentOrderEdit.ReceiverDistrictID, ShipmentOrderEdit.ReceiverProvinceID);
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
             this.ShowModalReceiver();
         });
@@ -342,7 +350,7 @@ class ShipmentOrderAddressCom extends Component {
         const comboValues = this.getComboValue(selectedOption);
         let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
         ShipmentOrderEdit['ReceiverWardID'] = comboValues;
-        this.setValueCombobox(2, ShipmentOrderEdit.SenderProvinceID, ShipmentOrderEdit.SenderDistrictID)
+        this.setValueCombobox(2, ShipmentOrderEdit.ReceiverProvinceID, ShipmentOrderEdit.ReceiverDistrictID)
         let formData = FormDataSenderLst;
         if (parseInt(comboValues) < 0) {
             const ObjectNameWard = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn phường/xã" } };
@@ -352,8 +360,9 @@ class ShipmentOrderAddressCom extends Component {
             const ObjectNameWard = { ErrorLst: { IsValidatonError: false, ValidatonErrorMessage: "" } };
             formData = Object.assign({}, formData, { ["ReceiverWardID"]: ObjectNameWard });
         }
+        ShipmentOrderEdit.ReceiverFullAddress = this.getfulladress(ShipmentOrderEdit.ReceiverAddress, ShipmentOrderEdit.ReceiverWardID, ShipmentOrderEdit.ReceiverDistrictID, ShipmentOrderEdit.ReceiverProvinceID);
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
-            this.ShowModalSender();
+            this.ShowModalReceiver();
         });
     }
 
@@ -560,51 +569,7 @@ class ShipmentOrderAddressCom extends Component {
         }
     }
 
-    handleUpdateAddressReceiver() {
-        let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
 
-        let formData = FormDataSenderLst;
-        if (ShipmentOrderEdit.ReceiverFullName.length == 0 || String(ShipmentOrderEdit.ReceiverFullName).trim() == "") {
-            const ObjectNameReceiverFullName = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập họ và tên" } };
-            formData = Object.assign({}, formData, { ["ReceiverFullName"]: ObjectNameReceiverFullName });
-        }
-        if (ShipmentOrderEdit.ReceiverPhoneNumber.length == 0 || String(ShipmentOrderEdit.ReceiverPhoneNumber).trim() == "") {
-            const ObjectNameReceiverPhoneNumber = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập số điện thoại" } };
-            formData = Object.assign({}, formData, { ["ReceiverPhoneNumber"]: ObjectNameReceiverPhoneNumber });
-        }
-        if (parseInt(ShipmentOrderEdit.ReceiverProvinceID) < 0) {
-            const ObjectNameReceiverProvinceID = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn tỉnh/thành phố" } };
-            formData = Object.assign({}, formData, { ["ReceiverProvinceID"]: ObjectNameReceiverProvinceID });
-        }
-        if (parseInt(ShipmentOrderEdit.ReceiverDistrictID) < 0) {
-            const ObjectNameReceiverDistrictID = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn quận/huyện" } };
-            formData = Object.assign({}, formData, { ["ReceiverDistrictID"]: ObjectNameReceiverDistrictID });
-        }
-        if (parseInt(ShipmentOrderEdit.ReceiverWardID) < 0) {
-            const ObjectNameReceiverWardID = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn phường/xã" } };
-            formData = Object.assign({}, formData, { ["ReceiverWardID"]: ObjectNameReceiverWardID });
-        }
-        if (ShipmentOrderEdit.ReceiverAddress.length == 0 || String(ShipmentOrderEdit.ReceiverAddress).trim() == "") {
-            const ObjectNameReceiverAddress = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập số nhà/đường" } };
-            formData = Object.assign({}, formData, { ["ReceiverAddress"]: ObjectNameReceiverAddress });
-        }
-        if (this.checkInputName(formData) != "") {
-            this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
-                this.ShowModalSender();
-            });
-        }
-        else {
-            ShipmentOrderEdit.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
-            ShipmentOrderEdit.ReceiverGeoLocation = this.state.ReceiverGeoLocation;
-            ShipmentOrderEdit.ReceiverFullAddress = this.getfulladress(ShipmentOrderEdit.ReceiverAddress, ShipmentOrderEdit.ReceiverWardID, ShipmentOrderEdit.ReceiverDistrictID, ShipmentOrderEdit.ReceiverProvinceID);
-            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
-                this.addNotification(apiResult.Message, apiResult.IsError);
-                if (!apiResult.IsError) {
-                    ModalManager.close();
-                }
-            });
-        }
-    }
 
     handleShowModalSender() {
 
@@ -779,6 +744,19 @@ class ShipmentOrderAddressCom extends Component {
                             datasourcemember="SenderAddress"
                             validatonList={["required"]}
                             validationErrorMessage={""}
+                        />
+                    </div>
+
+                    <div className="form-group col-md-12">
+                        <FormControl.TextBox
+                            name="SenderFullAddress"
+                            colspan="10"
+                            labelcolspan="2"
+                            label="địa chỉ"
+                            readOnly={true}
+                            controltype="InputControl"
+                            value={this.state.ShipmentOrderEdit.SenderFullAddress}
+                            datasourcemember="SenderFullAddress"
                         />
                     </div>
                 </div>
@@ -974,7 +952,20 @@ class ShipmentOrderAddressCom extends Component {
                             validationErrorMessage={""}
                         />
                     </div>
+                    <div className="form-group col-md-12">
+                        <FormControl.TextBox
+                            name="ReceiverFullAddress"
+                            colspan="10"
+                            labelcolspan="2"
+                            label="địa chỉ"
+                            readOnly={true}
+                            controltype="InputControl"
+                            value={this.state.ShipmentOrderEdit.ReceiverFullAddress}
+                            datasourcemember="ReceiverFullAddress"
+                        />
+                    </div>
                 </div>
+
 
                 <div className="form-row">
                     <div className="form-group col-md-6">
@@ -1022,6 +1013,51 @@ class ShipmentOrderAddressCom extends Component {
             </ModelContainer>
         )
     }
+    handleUpdateAddressReceiver() {
+        let { ShipmentOrderEdit, FormDataSenderLst } = this.state;
+
+        let formData = FormDataSenderLst;
+        if (ShipmentOrderEdit.ReceiverFullName.length == 0 || String(ShipmentOrderEdit.ReceiverFullName).trim() == "") {
+            const ObjectNameReceiverFullName = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập họ và tên" } };
+            formData = Object.assign({}, formData, { ["ReceiverFullName"]: ObjectNameReceiverFullName });
+        }
+        if (ShipmentOrderEdit.ReceiverPhoneNumber.length == 0 || String(ShipmentOrderEdit.ReceiverPhoneNumber).trim() == "") {
+            const ObjectNameReceiverPhoneNumber = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập số điện thoại" } };
+            formData = Object.assign({}, formData, { ["ReceiverPhoneNumber"]: ObjectNameReceiverPhoneNumber });
+        }
+        if (parseInt(ShipmentOrderEdit.ReceiverProvinceID) < 0) {
+            const ObjectNameReceiverProvinceID = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn tỉnh/thành phố" } };
+            formData = Object.assign({}, formData, { ["ReceiverProvinceID"]: ObjectNameReceiverProvinceID });
+        }
+        if (parseInt(ShipmentOrderEdit.ReceiverDistrictID) < 0) {
+            const ObjectNameReceiverDistrictID = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn quận/huyện" } };
+            formData = Object.assign({}, formData, { ["ReceiverDistrictID"]: ObjectNameReceiverDistrictID });
+        }
+        if (parseInt(ShipmentOrderEdit.ReceiverWardID) < 0) {
+            const ObjectNameReceiverWardID = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng chọn phường/xã" } };
+            formData = Object.assign({}, formData, { ["ReceiverWardID"]: ObjectNameReceiverWardID });
+        }
+        if (ShipmentOrderEdit.ReceiverAddress.length == 0 || String(ShipmentOrderEdit.ReceiverAddress).trim() == "") {
+            const ObjectNameReceiverAddress = { ErrorLst: { IsValidatonError: true, ValidatonErrorMessage: "Vui lòng nhập số nhà/đường" } };
+            formData = Object.assign({}, formData, { ["ReceiverAddress"]: ObjectNameReceiverAddress });
+        }
+        if (this.checkInputName(formData) != "") {
+            this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
+                this.ShowModalSender();
+            });
+        }
+        else {
+            ShipmentOrderEdit.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+            ShipmentOrderEdit.ReceiverGeoLocation = this.state.ReceiverGeoLocation;
+            ShipmentOrderEdit.ReceiverFullAddress = this.getfulladress(ShipmentOrderEdit.ReceiverAddress, ShipmentOrderEdit.ReceiverWardID, ShipmentOrderEdit.ReceiverDistrictID, ShipmentOrderEdit.ReceiverProvinceID);
+            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                if (!apiResult.IsError) {
+                    ModalManager.close();
+                }
+            });
+        }
+    }
 
     handleMapSender() {
     }
@@ -1062,12 +1098,11 @@ class ShipmentOrderAddressCom extends Component {
                 }
             });
         }
-        else
-        {
+        else {
             this.setState({
                 SenderGeoLocation: this.state.SenderGeoLocation,
                 ReceiverGeoLocation: this.state.ReceiverGeoLocation,
-                Geometry:this.state.Geometry
+                Geometry: this.state.Geometry
             }, () => {
                 this.ShowModalSenderReceiver();
             });
