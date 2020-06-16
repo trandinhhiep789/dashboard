@@ -38,7 +38,6 @@ class DetailCom extends React.Component {
     }
 
     componentDidMount() {
-        console.log("DetailCom",this.props)
         this.props.updatePagePath(DetailAPIPath);
         this.callLoadData(this.props.match.params.id);
     }
@@ -51,8 +50,7 @@ class DetailCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-                console.log("apiResult.ResultObject",apiResult.ResultObject);
-           //    console.log("apiResult.ResultObject.ShipmentOrderType_WorkFlowList",apiResult.ResultObject.ShipmentOrderType_WorkFlowList)
+                //    console.log("apiResult.ResultObject.ShipmentOrderType_WorkFlowList",apiResult.ResultObject.ShipmentOrderType_WorkFlowList)
                 this.setState({
                     DataSource: apiResult.ResultObject,
                     ShipmentOrderType_WorkFlowList: apiResult.ResultObject.ShipmentOrderType_WorkFlowList,
@@ -62,7 +60,7 @@ class DetailCom extends React.Component {
             }
         });
     }
-    
+
     CheckPermissionUser(id) {
         if (this.state.DataSource.CurrentStepPermissionList && this.state.DataSource.CurrentStepPermissionList.length > 0) {
             if (this.state.DataSource.CurrentStepPermissionList.some(a => a.ShipmentOrderPermissionID === id)) {
@@ -72,7 +70,7 @@ class DetailCom extends React.Component {
         return false;
     }
     ChangeLoadData(ShipmentOrderData) {
-       
+
 
         this.setState({
             ShipmentOrderType_WorkFlowList: ShipmentOrderData.ShipmentOrderType_WorkFlowList,
@@ -115,6 +113,7 @@ class DetailCom extends React.Component {
                         onhandleChange={this.ChangeLoadData}
                         IsUserCoordinator={this.CheckPermissionUser(16)}
                         IsCoordinator={this.CheckPermissionUser(17)}
+                        IsCancelDelivery={(this.CheckPermissionUser(23) && !this.state.DataSource.IsCancelDelivery)}
                     />
 
                     <InfoHistoryWF
@@ -125,7 +124,7 @@ class DetailCom extends React.Component {
                     <ShipmentOrderAttachment
                         ShipmentOrderID={this.props.match.params.id}
                         ShipmentOrderAttachment={this.state.DataSource}
-                        IsAttachment={this.CheckPermissionUser(18)} 
+                        IsAttachment={this.CheckPermissionUser(18)}
                     />
 
                     <ShipmentOrderComment
