@@ -47,6 +47,8 @@ import ServiceType from '../../views/TMS/MD/ServiceType';
 import ServiceSeasonType from '../../views/TMS/MD/ServiceSeasonType';
 import ServiceAgreementType from '../../views/TMS/MD/ServiceAgreementType';
 import IDDocumentType from '../../views/TMS/MD/IDDocumentType';
+import UserCoordinator from '../../views/TMS/User/UserCoordinator';
+
 
 
 
@@ -147,7 +149,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/Map" component={Maps} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/InstallBundle" component={InstallBundle} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/InstallMaterial" component={InstallMaterial} isLoggedIn={isLoggedIn} />
-
+                                <PrivateRoute path="/UserCoordinator" component={UserCoordinator} isLoggedIn={isLoggedIn} />
+                                
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} />
 
                             </Switch>

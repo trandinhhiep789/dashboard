@@ -248,6 +248,13 @@ const AppMenu = [
                 LinkTo: '/ShipmentOrder',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'UserCoordinator',
+                MenuTitle: 'Cấp quyền nhân viên theo kho',
+                LinkTo: '/UserCoordinator',
+                MenuIcon: '',
+                SubMenu: []
             }
         ]
     }

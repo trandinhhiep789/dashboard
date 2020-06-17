@@ -4,6 +4,8 @@ import { formatDate } from "../../../../common/library/CommonLib.js";
 import { ModalManager } from 'react-dynamic-modal';
 import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 import {
     APIHostName,
 } from "../constants";
@@ -16,6 +18,7 @@ class ShipmentOrderDetailCom extends Component {
             validationErrorMessage: null,
             ShipmentOrder_WorkFlow: {}
         }
+        this.notificationDOMRef = React.createRef();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -106,6 +109,7 @@ class ShipmentOrderDetailCom extends Component {
             ShipmentOrder_WorkFlow.CreatedOrderTime = this.state.ShipmentOrder.CreatedOrderTime;
             ShipmentOrder_WorkFlow.CreatedUser = this.props.AppInfo.LoginInfo.Username;
             this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/InsertWorkFlow', ShipmentOrder_WorkFlow).then((apiResult) => {
+                this.addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
                     this.setState({
                         ShipmentOrder: apiResult.ResultObject
@@ -118,6 +122,39 @@ class ShipmentOrderDetailCom extends Component {
         }
     }
 
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
     render() {
         let strShipmentOrderStepName = ""
         if (this.state.ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === this.state.ShipmentOrder.CurrentShipmentOrderStepID).length > 0) {
@@ -127,6 +164,7 @@ class ShipmentOrderDetailCom extends Component {
 
         return (
             <div className="card">
+                   <ReactNotification ref={this.notificationDOMRef} />
                 <h4 className="card-title"><strong>Thông tin yêu cầu vận chuyển</strong></h4>
                 <div className="card-body">
                     <div className="form-row">

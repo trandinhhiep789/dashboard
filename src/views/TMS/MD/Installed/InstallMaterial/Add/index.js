@@ -87,7 +87,7 @@ class AddCom extends React.Component {
                 listelement={this.state.AddElementList}
                 onSubmit={this.handleSubmit}
                 BackLink={BackLink}
-                dataSource={this.state.DataSource}
+                dataSource={[]}
             >
                 <InputGrid
                     name="InstallMaterial_ProductList"
