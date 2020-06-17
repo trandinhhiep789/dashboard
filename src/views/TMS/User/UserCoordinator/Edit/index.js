@@ -103,133 +103,264 @@ class EditCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
         return (
-            <div className="col-lg-12 page-detail">
-                <div className="card">
-                    <div className="card-title">
-                        <h4 className="title">Cấp quyền nhân viên theo kho</h4>
-                    </div>
-
-                    <div className="card-body">
-                        <div className="row">
-                            <div className="col-md-6">
-                                <MultiSelectComboBox
-                                    name="User"
-                                    colspan="8"
-                                    labelcolspan="4"
-                                    label="Người dùng"
-                                    disabled={false}
-                                    IsLabelDiv={true}
-                                    isautoloaditemfromcache={false}
-                                    onChange={this.onChangeUser.bind(this)}
-                                    controltype="InputControl"
-                                    value={[]}
-                                    listoption={[]}
-                                    isMultiSelect={false}
-                                    datasourcemember="User"
-                                    validationErrorMessage={''}
-                                />
-                            </div>
-                            <div className="col-md-6">
-                            </div>
-                            <div className="col-md-6">
-                                <FormControl.TextBox
-                                    name="txtSenderFullName"
-                                    colspan="8"
-                                    labelcolspan="4"
-                                    readOnly={false}
-                                    label="Phòng ban"
-                                    placeholder=""
-                                    controltype="InputControl"
-                                    value={this.state.DepartmentName}
-                                    datasourcemember="SenderFullName"
-                                />
-                            </div>
-                            <div className="col-md-6">
-                                <FormControl.TextBox
-                                    name="txtSenderFullName"
-                                    colspan="8"
-                                    labelcolspan="4"
-                                    readOnly={false}
-                                    label="Chức vụ"
-                                    placeholder=""
-                                    controltype="InputControl"
-                                    value={this.state.PositionName}
-                                    datasourcemember="SenderFullName"
-                                />
-                            </div>
-
-                            <div className="col-md-12">
-                                <FormControl.TextBox
-                                    name="txtSenderFullName"
-                                    colspan="10"
-                                    labelcolspan="2"
-                                    readOnly={false}
-                                    label="Nơi làm việc"
-                                    placeholder=""
-                                    controltype="InputControl"
-                                    value={this.state.Address}
-                                    datasourcemember="SenderFullName"
-                                />
-                            </div>
-
+            <React.Fragment>
+                <div className="col-lg-6 page-detail">
+                    <div className="card">
+                        <div className="card-title">
+                            <h4 className="title">Cấp quyền kho theo nhân viên</h4>
                         </div>
 
-                        <div className="row">
-                            <div className="col-md-12">
-                                <h3 className="title">Danh sách kho</h3>
+                        <div className="card-body">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <MultiSelectComboBox
+                                        name="User"
+                                        colspan="9"
+                                        labelcolspan="3"
+                                        label="Người dùng"
+                                        disabled={false}
+                                        IsLabelDiv={true}
+                                        isautoloaditemfromcache={false}
+                                        onChange={this.onChangeUser.bind(this)}
+                                        controltype="InputControl"
+                                        value={[]}
+                                        listoption={[]}
+                                        isMultiSelect={false}
+                                        datasourcemember="User"
+                                        validationErrorMessage={''}
+                                    />
+                                </div>
+                                <div className="col-md-12">
+                                    <FormControl.TextBox
+                                        name="txtSenderFullName"
+                                        colspan="9"
+                                        labelcolspan="3"
+                                        readOnly={false}
+                                        label="Phòng ban"
+                                        placeholder=""
+                                        controltype="InputControl"
+                                        value={this.state.DepartmentName}
+                                        datasourcemember="SenderFullName"
+                                    />
+                                </div>
+                                <div className="col-md-12">
+                                    <FormControl.TextBox
+                                        name="txtSenderFullName"
+                                        colspan="9"
+                                        labelcolspan="3"
+                                        readOnly={false}
+                                        label="Chức vụ"
+                                        placeholder=""
+                                        controltype="InputControl"
+                                        value={this.state.PositionName}
+                                        datasourcemember="SenderFullName"
+                                    />
+                                </div>
+
+                                <div className="col-md-12">
+                                    <FormControl.TextBox
+                                        name="txtSenderFullName"
+                                        colspan="9"
+                                        labelcolspan="3"
+                                        readOnly={false}
+                                        label="Nơi làm việc"
+                                        placeholder=""
+                                        controltype="InputControl"
+                                        value={this.state.Address}
+                                        datasourcemember="SenderFullName"
+                                    />
+                                </div>
+
                             </div>
 
+                            <div className="row">
 
-                            <div className="table-responsive">
-                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                    <thead className="thead-light">
-                                        <tr>
-                                            <th className="jsgrid-header-cell"  style={{ width: "30%" }}>Mã kho</th>
-                                            <th className="jsgrid-header-cell" style={{ width: "60%" }}>tên kho</th>
-                                            <th className="jsgrid-header-cell" style={{ width: "10%" }}>Tác vụ</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                <div className="col-md-12">
+                                    <h3 className="title">Danh sách kho</h3>
+                                </div>
+                                <div className="col-md-12">
+                                    <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                        <thead className="thead-light">
+                                            <tr>
+                                                <th className="jsgrid-header-cell" style={{ width: "30%" }}>Mã kho</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "60%" }}>Tên kho</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Tác vụ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                        <tr>
-                                            <td> <MultiSelectComboBox
-                                                name="User"
-                                                colspan="8"
-                                                labelcolspan="4"
-                                                label="Người dùng"
-                                                disabled={false}
-                                                IsLabelDiv={false}
-                                                isautoloaditemfromcache={false}
-                                                onChange={this.onChangeUser.bind(this)}
-                                                controltype="InputControl"
-                                                value={[]}
-                                                listoption={[]}
-                                                isMultiSelect={false}
-                                                datasourcemember="User"
-                                                validationErrorMessage={''}
-                                            /></td>
-                                            <td></td>
-                                            <td>     <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm" >
-                                                      <span className="fa fa-plus ff"> Thêm</span>
+                                            <tr>
+                                                <td> <MultiSelectComboBox
+                                                    name="User"
+                                                    colspan="8"
+                                                    labelcolspan="4"
+                                                    label="Người dùng"
+                                                    disabled={false}
+                                                    IsLabelDiv={false}
+                                                    isautoloaditemfromcache={false}
+                                                    onChange={this.onChangeUser.bind(this)}
+                                                    controltype="InputControl"
+                                                    value={[]}
+                                                    listoption={[]}
+                                                    isMultiSelect={false}
+                                                    datasourcemember="User"
+                                                    validationErrorMessage={''}
+                                                /></td>
+                                                <td></td>
+                                                <td>
+                                                    <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                        <span className="fa fa-plus ff"> Thêm</span>
                                                     </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Kho tân bình</td>
-                                            <td>  <button type="button" className="btn btn-label btn-danger" title="" data-provide="tooltip" data-original-title="Xóa" >
-                                                      <span className="fa fa-plus ff">Xóa</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Kho tân bình</td>
+                                                <td>
+                                                    <button type="button" className="btn btnDeleteTable" title="" data-provide="tooltip" data-original-title="Xóa" >
+                                                        <i class="ti-trash"></i>
                                                     </button>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                            </tr>
 
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div className="col-lg-6 page-detail">
+                    <div className="card">
+                        <div className="card-title">
+                            <h4 className="title">Cấp quyền nhân viên theo kho </h4>
+                        </div>
+
+                        <div className="card-body">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <MultiSelectComboBox
+                                        name="User"
+                                        colspan="9"
+                                        labelcolspan="3"
+                                        label="Mã kho"
+                                        disabled={false}
+                                        IsLabelDiv={true}
+                                        isautoloaditemfromcache={false}
+                                        onChange={this.onChangeUser.bind(this)}
+                                        controltype="InputControl"
+                                        value={[]}
+                                        listoption={[]}
+                                        isMultiSelect={false}
+                                        datasourcemember="User"
+                                        validationErrorMessage={''}
+                                    />
+                                </div>
+                                <div className="col-md-12">
+                                    <FormControl.TextBox
+                                        name="txtSenderFullName"
+                                        colspan="9"
+                                        labelcolspan="3"
+                                        readOnly={false}
+                                        label="Tên kho"
+                                        placeholder=""
+                                        controltype="InputControl"
+                                        value={this.state.DepartmentName}
+                                        datasourcemember="SenderFullName"
+                                    />
+                                </div>
+                                <div className="col-md-12">
+                                    <FormControl.TextBox
+                                        name="txtSenderFullName"
+                                        colspan="9"
+                                        labelcolspan="3"
+                                        readOnly={false}
+                                        label="khu vực"
+                                        placeholder=""
+                                        controltype="InputControl"
+                                        value={this.state.PositionName}
+                                        datasourcemember="SenderFullName"
+                                    />
+                                </div>
+
+                                <div className="col-md-12">
+                                    <FormControl.TextBox
+                                        name="txtSenderFullName"
+                                        colspan="9"
+                                        labelcolspan="3"
+                                        readOnly={false}
+                                        label="địa chỉ kho"
+                                        placeholder=""
+                                        controltype="InputControl"
+                                        value={this.state.Address}
+                                        datasourcemember="SenderFullName"
+                                    />
+                                </div>
+
+                            </div>
+
+                            <div className="row">
+
+                                <div className="col-md-12">
+                                    <h3 className="title">Danh sách nhân viên</h3>
+                                </div>
+                                <div className="col-md-12">
+                                    <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                        <thead className="thead-light">
+                                            <tr>
+                                                <th className="jsgrid-header-cell" style={{ width: "30%" }}>Mã nhân viên</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "60%" }}>Tên nhân viên</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Tác vụ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr>
+                                                <td> <MultiSelectComboBox
+                                                    name="User"
+                                                    colspan="8"
+                                                    labelcolspan="4"
+                                                    label="Người dùng"
+                                                    disabled={false}
+                                                    IsLabelDiv={false}
+                                                    isautoloaditemfromcache={false}
+                                                    onChange={this.onChangeUser.bind(this)}
+                                                    controltype="InputControl"
+                                                    value={[]}
+                                                    listoption={[]}
+                                                    isMultiSelect={false}
+                                                    datasourcemember="User"
+                                                    validationErrorMessage={''}
+                                                /></td>
+                                                <td></td>
+                                                <td>
+                                                    <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                        <span className="fa fa-plus ff"> Thêm</span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Kho tân bình</td>
+                                                <td>
+                                                    <button type="button" className="btn btnDeleteTable" title="" data-provide="tooltip" data-original-title="Xóa" >
+                                                        <i class="ti-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </React.Fragment>
+
         );
     }
 }
