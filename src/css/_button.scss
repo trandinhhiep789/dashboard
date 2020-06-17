@@ -68,6 +68,7 @@ button {
         margin-top: 5px;
         font-size: 12px;
     }
+
     &.btnCoordinates{
         background-color: #ffffff;
         border-color: #8a8a8afa;
@@ -79,5 +80,18 @@ button {
         padding: 0px 5px;
         margin-top: 5px;
         font-size: 12px;
+    }
+    &.btnDeleteTable{
+        border: none;
+        background: transparent;
+        padding: 0;
+        text-align: center;
+        width: 100%;
+        display: block;
+        &:hover{
+            i{
+                color: #f96868;
+            }
+        }
     }
 }
