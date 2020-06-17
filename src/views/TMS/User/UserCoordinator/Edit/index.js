@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../../common/components/Modal";
+import MultiSelectComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
+import InputGrid from "../../../../../common/components/FormContainer/FormControl/InputGrid";
 import {
     APIHostName,
     PagePath,
@@ -12,8 +14,8 @@ import {
     EditElementList,
     MLObjectDefinition,
     BackLink,
-    EditPagePath,
-    AddLogAPIPath
+    MLObjectStoreItem,
+    DataGridColumnStoreList
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -30,7 +32,11 @@ class EditCom extends React.Component {
             IsCallAPIError: false,
             FormContent: "",
             IsLoadDataComplete: false,
-            IsCloseForm: false
+            IsCloseForm: false,
+            Username: "",
+            DepartmentName: "",
+            PositionName: "",
+            Address: ""
         };
     }
 
@@ -55,7 +61,15 @@ class EditCom extends React.Component {
         //     });
     }
 
-  
+    onChangeUser(name, objuser) {
+        this.setState({
+            Username: objuser.value,
+            DepartmentName: objuser.DepartmentName,
+            PositionName: objuser.PositionName,
+            Address: objuser.Address
+        });
+    }
+
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
@@ -94,11 +108,83 @@ class EditCom extends React.Component {
                     <div className="card-title">
                         <h4 className="title">Cấp quyền nhân viên theo kho</h4>
                     </div>
-                    
-                    <div className="card-body">
 
-                        aa
+                    <div className="card-body">
+                        <div className="row">
+                            <div className="col-md-6">
+                                <MultiSelectComboBox
+                                    name="User"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    label="Người dùng"
+                                    disabled={false}
+                                    IsLabelDiv={true}
+                                    isautoloaditemfromcache={false}
+                                    onChange={this.onChangeUser.bind(this)}
+                                    controltype="InputControl"
+                                    value={[]}
+                                    listoption={[]}
+                                    isMultiSelect={false}
+                                    datasourcemember="User"
+                                    validationErrorMessage={''}
+                                />
+                            </div>
+                            <div className="col-md-6">
+                            </div>
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    name="txtSenderFullName"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    readOnly={false}
+                                    label="Phòng ban"
+                                    placeholder=""
+                                    controltype="InputControl"
+                                    value={this.state.DepartmentName}
+                                    datasourcemember="SenderFullName"
+                                />
+                            </div>
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    name="txtSenderFullName"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    readOnly={false}
+                                    label="Chức vụ"
+                                    placeholder=""
+                                    controltype="InputControl"
+                                    value={this.state.PositionName}
+                                    datasourcemember="SenderFullName"
+                                />
+                            </div>
+
+                            <div className="col-md-12">
+                                <FormControl.TextBox
+                                    name="txtSenderFullName"
+                                    colspan="10"
+                                    labelcolspan="2"
+                                    readOnly={false}
+                                    label="Nơi làm việc"
+                                    placeholder=""
+                                    controltype="InputControl"
+                                    value={this.state.Address}
+                                    datasourcemember="SenderFullName"
+                                />
+                            </div>
+
+                        </div>
                     </div>
+                    <InputGrid
+                        name="Store"
+                        controltype="InputGridControl"
+                        title="Vật tư lắp đặt"
+                        Ispopup={false}
+                        IDSelectColumnName={"ProductID"}
+                        PKColumnName={""}
+                        MLObjectDefinition={MLObjectStoreItem}
+                        listColumn={DataGridColumnStoreList}
+                        dataSource={[]}
+                    />
                 </div>
             </div>
         );
