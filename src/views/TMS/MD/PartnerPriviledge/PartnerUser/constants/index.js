@@ -61,7 +61,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtUserName",
-        label: "Tên truy cập người dùng:",
+        label: "tên truy cập người dùng:",
         value: "",
         maxSize: "20",
         placeholder: "",
@@ -242,7 +242,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtUserName",
-        label: "Tên truy cập người dùng:",
+        label: "tên truy cập người dùng:",
         value: "",
         maxSize: "20",
         placeholder: "",
