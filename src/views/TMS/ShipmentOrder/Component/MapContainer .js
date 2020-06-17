@@ -17,7 +17,6 @@ export class MapContainer extends Component {
             v1 = parseFloat(values[0])
             v2 = parseFloat(values[1])
         }
-
         const mapContainer = document.getElementById("map-container");
         const mapProp = {
             center: new vbd.LatLng(v1, v2),
@@ -25,6 +24,7 @@ export class MapContainer extends Component {
             zoom: 15,
             minZoom: 2,
             registerKey: "6a50ea65-8dd9-4c03-aa6e-6c839b611eea",
+            //registerKey: "c1602ab5-74da-473c-9601-aa53a2a4505e",//
             scaleControlOptions: { showScale: true },
             zoomControl: true
         };
@@ -61,12 +61,40 @@ export class MapContainer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-
         if (JSON.stringify(this.props.SenderGeoLocation) !== JSON.stringify(nextProps.SenderGeoLocation)) {
             const values = nextProps.SenderGeoLocation.split(",")
             const v1 = parseFloat(values[0])
             const v2 = parseFloat(values[1])
-            this.state.marker.setPosition(new vbd.LatLng(v1, v2))
+
+            //this.state.marker.setPosition(new vbd.LatLng(v1, v2))
+            
+            const mapContainer = document.getElementById("map-container");
+            const mapProp = {
+                center: new vbd.LatLng(v1, v2),
+                maxZoom: 19,
+                zoom: 15,
+                minZoom: 2,
+                registerKey: "6a50ea65-8dd9-4c03-aa6e-6c839b611eea",
+                //registerKey: "c1602ab5-74da-473c-9601-aa53a2a4505e",//
+                scaleControlOptions: { showScale: true },
+                zoomControl: true
+            };
+            let map = new vbd.Map(mapContainer, mapProp);
+            var position = map.getCenter()
+            var marker = new vbd.Marker({
+                position: position
+            });
+            
+                marker.setMap(map);
+        
+            this.setState({
+                map: map,
+                marker: marker
+            })
+
+            vbd.event.addListener(map, 'click', this.onHandleClick.bind(this))
+
+
             // const mapContainer = document.getElementById("map-container");
             // const mapProp = {
             //     center: new vbd.LatLng(v1, v2),

@@ -55,6 +55,7 @@ class FeeAppendixDetailElementCom extends Component {
                 dataSource={this.props.index != undefined ? this.props.dataSource.FeeAppendixDetail_ItemList[this.props.index] : null}
                 listelement={[]}
                 onSubmit={this.handleSubmit}
+                IsCloseModal={true}
             >
                 <div className="row">
 
@@ -124,7 +125,7 @@ class FeeAppendixDetailElementCom extends Component {
                             colspan="9"
                             labelcolspan="3"
                             label="thông số kỹ thuật"
-                            validatonList={["Comborequired"]}
+                            // validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.SUBGROUPTECHSPECS"
                             valuemember="TechspecsID"
@@ -146,7 +147,7 @@ class FeeAppendixDetailElementCom extends Component {
                             colspan="9"
                             labelcolspan="3"
                             label="giá trị"
-                            validatonList={["Comborequired"]}
+                            // validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.TECHSPECSVALUE"
                             valuemember="TechSpecsValueID"
@@ -257,9 +258,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        showModal: (type, props) => {
-            dispatch(showModal(type, props));
-        },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         }

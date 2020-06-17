@@ -7,6 +7,8 @@ import { callGetCache } from "../../../actions/cacheAction";
 import { Link } from "react-router-dom";
 import FormElement from '../FormContainer/FormElement';
 import ElementModal from '../FormContainer/FormElement/ElementModal';
+import { showModal, hideModal } from '../../../actions/modal';
+
 function isEmpty(obj) {
     for (var key in obj) {
         if (obj.hasOwnProperty(key))
@@ -562,6 +564,12 @@ class FormContainerCom extends Component {
             </div>
         );
     }
+
+    handleCloseModle(){
+        debugger
+        this.props.hideModal();
+    }
+
     render() {
         let elmentRender = this.renderOneColumnForm();
         if (this.state.IsPermision == undefined) {
@@ -581,6 +589,14 @@ class FormContainerCom extends Component {
                     <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button></Link>);
             }
         }
+        let closeLinkButton = "";
+        if (this.props.IsCloseModal != undefined) {
+            if (this.props.IsCloseModal == true) {
+                closeLinkButton = (
+                    <button onClick={this.handleCloseModle.bind(this)} className="btn btn-sm btn-outline btn-primary" type="button">Đóng</button>);
+            }
+        }
+
         let cssSearchButton = "";
         // console.log("this.props.isSubmitForm ", this.props.isSubmitFrom )
         return (
@@ -598,6 +614,7 @@ class FormContainerCom extends Component {
                             <button className="btn btn-primary mr-3" type="submit">{cssSearchButton} Cập nhật</button>
                         }
                         {backLinkButton}
+                        {closeLinkButton}
                     </footer>
                 </form>
             </div>
@@ -615,6 +632,12 @@ const mapDispatchToProps = dispatch => {
     return {
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: () => {
+            dispatch(hideModal());
         }
     }
 }
