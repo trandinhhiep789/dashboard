@@ -11,6 +11,10 @@ import { DEFAULT_ROW_PER_PAGE } from "../../../../../constants/systemVars.js";
 import { ValidationField } from "../../../../library/validation.js";
 import { MODAL_TYPE_CONFIRMATIONNEW, MODAL_TYPE_CONFICOMPONET } from '../../../../../constants/actionTypes';
 
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+
+
 class InputGridControlCom extends Component {
     static defaultProps = {
         componenttype: 'InputControl'
@@ -166,6 +170,30 @@ class InputGridControlCom extends Component {
 
     }
     //#endregion onValueChange
+
+    handleExportCSV() {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        let result;
+        if (this.props.DataExport.length == 0){
+             result= {
+                IsError: true,
+                Message: "Dữ liệu không tồn tại. Không thể xuất file!"
+            };
+        }
+        else{
+            const ws = XLSX.utils.json_to_sheet(this.props.DataExport);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+            FileSaver.saveAs(data, this.props.fileName + fileExtension);
+            result= {
+                IsError: false,
+                Message: "Xuất file thành công!"
+            };
+        }
+        this.props.onExportFile(result);
+    }
 
     handleInsertClick() {
         if (this.props.onInsertClick === undefined) {
@@ -400,32 +428,43 @@ class InputGridControlCom extends Component {
                 <div className="card-title">
                     <h4 className="title">{this.props.title}</h4>
 
-                    {(this.props.IsPermisionAdd == true || this.props.IsPermisionAdd == undefined) && this.state.IsSystem == false ?
-                        (this.props.IsCustomAddLink == true || this.props.IsCustomAddLink != undefined ?
-                            (<Link
-                                to={{
-                                    pathname: this.props.AddLink,
-                                    state: {
-                                        params: this.props.params
-                                    }
-                                }}
-                            >
-                                <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                    <span className="fa fa-plus ff"> Thêm </span>
+                    <div className="btn-toolbar btn-toolbar-inputgirdcontroll">
+                        <div className="btn-group btn-group-sm">
+                            {(this.props.IsPermisionAdd == true || this.props.IsPermisionAdd == undefined) && this.state.IsSystem == false ?
+                                (this.props.IsCustomAddLink == true || this.props.IsCustomAddLink != undefined ?
+                                    (<Link
+                                        to={{
+                                            pathname: this.props.AddLink,
+                                            state: {
+                                                params: this.props.params
+                                            }
+                                        }}
+                                    >
+                                        <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                            <span className="fa fa-plus ff"> Thêm </span>
+                                        </button>
+                                    </Link>)
+                                    : (
+                                        <button type="button" className="btn btnEditCard" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleInsertClick}>
+                                            <span className="fa fa-plus ff"> Thêm </span>
+                                        </button>
+                                    )
+                                )
+                                : (
+                                    <button type="button" className="btn btnEditCard" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Thêm">
+                                        <span className="fa fa-plus ff"> Thêm </span>
+                                    </button>
+                                )
+
+                            }
+                            {this.props.IsExportFile == true &&
+                                <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)}>
+                                    <span className="fa fa-file-excel-o"> Xuất file excel </span>
                                 </button>
-                            </Link>)
-                            : (
-                                <button type="button" className="btn btnEditCard" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleInsertClick}>
-                                    <span className="fa fa-plus ff"> Thêm </span>
-                                </button>
-                            )
-                        )
-                        : (
-                            <button type="button" className="btn btnEditCard" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Thêm">
-                                <span className="fa fa-plus ff"> Thêm </span>
-                            </button>
-                        )
-                    }
+                            }
+                        </div>
+                    </div>
+
                 </div>
                 <div className="card-body">
                     <div className="table-responsive">

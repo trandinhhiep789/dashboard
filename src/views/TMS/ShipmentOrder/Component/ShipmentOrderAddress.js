@@ -131,9 +131,9 @@ class ShipmentOrderAddressCom extends Component {
             ShipmentOrderEdit[name] = value;
         }
 
-        if (name == "ReceiverAddress") {
-            ShipmentOrderEdit.ReceiverGeoLocation = "10.852982,105.700";
-        }
+        // if (name == "ReceiverAddress") {
+        //     ShipmentOrderEdit.ReceiverGeoLocation = "10.852982,105.700";
+        // }
         ShipmentOrderEdit.ReceiverFullAddress = this.getfulladress(ShipmentOrderEdit.ReceiverAddress, ShipmentOrderEdit.ReceiverWardID, ShipmentOrderEdit.ReceiverDistrictID, ShipmentOrderEdit.ReceiverProvinceID);
         this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, FormDataSenderLst: formData }, () => {
             this.ShowModalReceiver();
@@ -218,6 +218,7 @@ class ShipmentOrderAddressCom extends Component {
                     const Durations = Math.floor(JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Durations[1] / 60);
                     ShipmentOrderEdit["EstimateDeliveryDistance"] = JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Distances[1] / 1000;
                     ShipmentOrderEdit["EstimateDeliveryLong"] = Durations;
+               
                     this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, SenderGeoLocation: lat + "," + lng }, () => {
                         this.ShowModalSender();
                     });
@@ -770,6 +771,9 @@ class ShipmentOrderAddressCom extends Component {
                             <div className="form-group col-md-8">
                                 <label className="col-form-label">{this.state.SenderGeoLocation}</label>
                             </div>
+                            <div className="form-group col-md-2">
+                                {this.state.SenderGeoLocation != "" ? "" : <button className="btn btnEditCard" onClick={this.handleSenderGeoLocation.bind(this)} type="submit">Lấy tạo độ</button>}
+                            </div>
                         </div>
                     </div>
                     <div className="form-group col-md-3">
@@ -806,6 +810,24 @@ class ShipmentOrderAddressCom extends Component {
 
             </ModelContainer>
         )
+    }
+    handleSenderGeoLocation()
+    {
+        let { ShipmentOrderEdit } = this.state;
+        let paramsRequest = {
+            "Keyword": ShipmentOrderEdit.SenderFullAddress,
+            "Page": 1,
+            "PageSize": 1
+        }
+        this.props.callFetchAPI(APIHostName, 'api/Maps/SearchAll', paramsRequest).then((apiResult) => {
+            if (!apiResult.IsError) {
+               
+                ShipmentOrderEdit.SenderGeoLocation = JSON.parse(apiResult.ResultObject).List[0].Latitude + "," + JSON.parse(apiResult.ResultObject).List[0].Longitude;
+                this.setState({ ShipmentOrderEdit: ShipmentOrderEdit,SenderGeoLocation:ShipmentOrderEdit.SenderGeoLocation }, () => {
+                    this.ShowModalSender();
+                });
+            }
+        });
     }
 
     ShowModalReceiver() {
@@ -973,8 +995,11 @@ class ShipmentOrderAddressCom extends Component {
                             <div className="form-group col-md-4">
                                 <label className="col-form-label">Tọa độ:</label>
                             </div>
-                            <div className="form-group col-md-8">
+                            <div className="form-group col-md-6">
                                 <label className="col-form-label">{this.state.ReceiverGeoLocation}</label>
+                            </div>
+                            <div className="form-group col-md-2">
+                                {this.state.ReceiverGeoLocation != "" ? "" : <button className="btn btnEditCard" onClick={this.handleReceiverGeoLocation.bind(this)} type="submit">Lấy tạo độ</button>}
                             </div>
                         </div>
                     </div>
@@ -1012,6 +1037,23 @@ class ShipmentOrderAddressCom extends Component {
 
             </ModelContainer>
         )
+    }
+    handleReceiverGeoLocation()
+    {
+        let { ShipmentOrderEdit } = this.state;
+        let paramsRequest = {
+            "Keyword": ShipmentOrderEdit.ReceiverFullAddress,
+            "Page": 1,
+            "PageSize": 1
+        }
+        this.props.callFetchAPI(APIHostName, 'api/Maps/SearchAll', paramsRequest).then((apiResult) => {
+            if (!apiResult.IsError) {
+                ShipmentOrderEdit.ReceiverGeoLocation = JSON.parse(apiResult.ResultObject).List[0].Latitude + "," + JSON.parse(apiResult.ResultObject).List[0].Longitude;
+                this.setState({ ShipmentOrderEdit: ShipmentOrderEdit,ReceiverGeoLocation:ShipmentOrderEdit.ReceiverGeoLocation }, () => {
+                    this.ShowModalReceiver();
+                });
+            }
+        });
     }
     handleUpdateAddressReceiver() {
         let { ShipmentOrderEdit, FormDataSenderLst } = this.state;

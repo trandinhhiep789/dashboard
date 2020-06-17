@@ -38,7 +38,6 @@ class SearchCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleDelete = this.handleDelete.bind(this);
-        this.handleonChangePage = this.handleonChangePage.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.state = {
@@ -50,6 +49,7 @@ class SearchCom extends React.Component {
             iconNotification: "",
             PageNumber: 1,
             IsLoadDataComplete: false,
+            dataExport: []
 
         };
         this.gridref = React.createRef();
@@ -72,19 +72,19 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-                const dtdate = new Date();
-                //dtFromdate.setDate(new Date().getDate() - 365);
+              
                 const result = apiResult.ResultObject.map((item) => {
                     item.ExtendLable = item.ExtendedDate ? formatDate(item.ExtendedDate) : 'Chưa gia hạn';
 
-                    if (isBefore(new Date(item.ExpiredDate), new Date())) {
+                    const ExpiredDate = new Date(item.ExpiredDate);
+                    let currentDate = new Date();
+                    var timeDiff = Math.abs(currentDate.getTime() - ExpiredDate.getTime());
+                    var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
+
+                    if (ExpiredDate.getTime()- currentDate.getTime() <0 ) {
                         item.StatusLable = <span className='lblstatus text-danger'>Hết hạn</span>;
                     }
                     else {
-                        const ExpiredDate = new Date(item.ExpiredDate);
-                        let currentDate = new Date();
-                        var timeDiff = Math.abs(currentDate.getTime() - ExpiredDate.getTime());
-                        var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
                         if (diffDays < 30) {
                             item.StatusLable = <span className='lblstatus text-warning'>Còn {diffDays} ngày</span>;
                         }
@@ -93,11 +93,46 @@ class SearchCom extends React.Component {
                         }
                     }
 
+                    
+
                     return item;
+
+                   
+                })
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                    item.ExtendLable = item.ExtendedDate ? formatDate(item.ExtendedDate) : 'Chưa gia hạn';
+                    let element = {};
+                    const ExpiredDate = new Date(item.ExpiredDate);
+                    let currentDate = new Date();
+                    if (ExpiredDate.getTime() - currentDate.getTime() < 0) {
+                        item.StatusLable = "Hết hạn";
+                    }
+                    else {
+                        var timeDiff = Math.abs(currentDate.getTime() - ExpiredDate.getTime());
+                        var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
+                        if (diffDays < 30) {
+                            item.StatusLable = `Còn ${diffDays} ngày`;
+                        }
+                        else {
+                            item.StatusLable = "Còn hạn";
+                        }
+                    }
+                    element.ServiceAgreementID = item.ServiceAgreementID;
+                    element.PartnerName = item.PartnerName;
+                    element.ServiceTypeName = item.ServiceTypeName;
+                    element.AreaName = item.AreaName;
+                    element.SignedDate = item.SignedDate;
+                    element.ExpiredDate = item.ExpiredDate;
+                    element.ExtendLable = item.ExtendLable;
+                    element.StatusLable = item.StatusLable;
+        
+                    return element;
+        
                 })
 
                 this.setState({
                     gridDataSource: result,
+                    dataExport: tempData,
                     IsCallAPIError: apiResult.IsError,
                 });
             }
@@ -135,30 +170,30 @@ class SearchCom extends React.Component {
         });
     }
 
-    handleonChangePage(pageNum) {
-        console.log('handleonChangePage', pageNum)
-
-    }
-
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification= "notification-custom-success";
+            iconNotification="fa fa-check"
+            // this.setState({
+            //     cssNotification: "notification-custom-success",
+            //     iconNotification: "fa fa-check"
+            // });
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification= "notification-danger";
+            iconNotification="fa fa-exclamation"
+            // this.setState({
+            //     cssNotification: "notification-danger",
+            //     iconNotification: "fa fa-exclamation"
+            // });
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -210,6 +245,9 @@ class SearchCom extends React.Component {
         this.callSearchData(DataSearch);
     }
 
+    handleExportFile(result){
+        this.addNotification(result.Message);
+    }
 
     render() {
         return (
@@ -235,6 +273,9 @@ class SearchCom extends React.Component {
                     IsAutoPaging={true}
                     RowsPerPage={10}
                     IsExportFile={true}
+                    DataExport={this.state.dataExport}
+                    fileName="Danh sách hợp đồng"
+                    onExportFile={this.handleExportFile.bind(this)}
                 />
             </React.Fragment>
         );
