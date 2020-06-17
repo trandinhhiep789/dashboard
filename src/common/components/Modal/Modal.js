@@ -296,7 +296,7 @@ class ModalCom extends React.Component {
         if (this.props.typeMedia) elmentRender = this.renderModalPreviewMedia();
         if (this.props.maxWidth) maxWidth = this.props.maxWidth;
         return (
-            <div className='modals mfp-zoom-out modalconfirmcus'>
+            <div className='modals mfp-zoom-out modalconfirmcus modalconfirmcus4'>
                 <Overlay />
                 <Content onClick={this.onOverlayClick}>
                     <Dialog onClick={this.onDialogClick} customStyle={{ maxWidth: maxWidth }}>

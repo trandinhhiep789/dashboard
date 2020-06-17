@@ -23,9 +23,6 @@ class AbilityElementCom extends Component {
 
     }
 
-    componentDidMount() {
-    }
-
     handleSubmit(From, MLObject) {
 
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
@@ -58,6 +55,7 @@ class AbilityElementCom extends Component {
                 dataSource={this.props.index != undefined ? this.props.dataSource.Ability_ItemList[this.props.index] : null}
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
+                IsCloseModal={true}
             >
 
                 <div className="row">
@@ -218,15 +216,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        showModal: (type, props) => {
-            dispatch(showModal(type, props));
-        },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         },
-        hideModal: () => {
-            dispatch(hideModal());
-        }
+        
     }
 }
 

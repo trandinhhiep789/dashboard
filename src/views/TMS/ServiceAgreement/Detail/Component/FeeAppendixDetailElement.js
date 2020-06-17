@@ -11,6 +11,7 @@ import {
     EditAPIFeeAppendixPath
 } from "../contants/index.js";
 
+
 class FeeAppendixDetailElementCom extends Component {
     constructor(props) {
         super(props);
@@ -52,6 +53,7 @@ class FeeAppendixDetailElementCom extends Component {
                 dataSource={this.props.index != undefined ? this.props.dataSource.FeeAppendix_ItemList[this.props.index] : null}
                 listelement={AddElementListFeeAppendix}
                 onSubmit={this.handleSubmit}
+                IsCloseModal={true}
             >
                 <div className="row">
                     <div className="col-md-6">
@@ -204,15 +206,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        showModal: (type, props) => {
-            dispatch(showModal(type, props));
-        },
+    
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         },
-        hideModal: () => {
-            dispatch(hideModal());
-        }
+        
     }
 }
 
