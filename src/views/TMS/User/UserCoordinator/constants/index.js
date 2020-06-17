@@ -992,3 +992,60 @@ export const DataGridColumnList = [
         LinkText: "Chỉnh sửa"
     }
 ];
+
+
+export const MLObjectStoreItem = [
+    {
+        Name: "StoreID",
+        DefaultValue: "",
+        BindControlName: "StoreID",
+        DataSourceMember: "StoreID"
+    },
+    {
+        Name: "UserName",
+        DefaultValue: "",
+        BindControlName: "UserName",
+        DataSourceMember: "UserName"
+    }
+]
+
+export const DataGridColumnStoreList = [
+    {
+        name: "StoreID",
+        Type: "textbox",
+        Caption: "Mã kho",
+        label: "Mã kho",
+        datasourcemember: "StoreID",
+        Width: 300,
+        validatonList: ["required"],
+        OrderIndex: 2,
+        Colmd: 12,
+        labelcolspan:2,
+        colspan:10,
+    },
+    {
+        name: "StoreName",
+        Type: "textbox",
+        Caption: "Tên kho",
+        label: "tên kho",
+        datasourcemember: "StoreName",
+        Width: 300,
+        validatonList: ["required"],
+        OrderIndex: 2,
+        Colmd: 12,
+        labelcolspan:2,
+        colspan:10,
+    },
+   
+    {
+        name: "Action",
+        Type: "editnew",
+        Caption: "Tác vụ",
+        label: "tác vụ",
+        datasourcemember: "",
+        Width: 70,
+        iputpop: false,
+        OrderIndex: 7
+    }
+];
+

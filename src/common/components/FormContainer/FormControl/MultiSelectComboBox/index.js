@@ -59,9 +59,16 @@ class MultiSelectComboBoxCom extends React.Component {
         }
 
         this.props.callFetchAPI("ERPAPI", 'api/UserSearch/Search', listMLObject).then(apiResult => {
+            console.log("apiResult.ResultObject",apiResult.ResultObject)
             let listOptionNew1 = [];
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
-                listOptionNew1.push({ value: apiResult.ResultObject[i].UserName, name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName });
+                listOptionNew1.push({ value: apiResult.ResultObject[i].UserName, 
+                                     name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
+                                     DepartmentName:apiResult.ResultObject[i].DepartmentName,
+                                     PositionName:apiResult.ResultObject[i].PositionName,
+                                     Address:apiResult.ResultObject[i].Address
+
+                                    });
             }
             this.setState({
                 ListOption: listOptionNew1
@@ -99,7 +106,12 @@ class MultiSelectComboBoxCom extends React.Component {
         const listOption = this.state.ListOption;
         let listOptionNew = [];
         for (let i = 0; i < listOption.length; i++) {
-            listOptionNew.push({ value: listOption[i].value, label: listOption[i].name, style: { color: 'red' } });
+            listOptionNew.push({ value: listOption[i].value,
+                                label: listOption[i].name,
+                                DepartmentName: listOption[i].DepartmentName,
+                                PositionName:listOption[i].PositionName,
+                                Address:listOption[i].Address,
+                                style: { color: 'red' } });
         }
         const selectedOption = this.state.SelectedOption;
         let formRowClassName = "form-row";
