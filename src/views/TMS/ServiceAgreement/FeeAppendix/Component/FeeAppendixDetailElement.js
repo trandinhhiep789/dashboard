@@ -125,7 +125,7 @@ class FeeAppendixDetailElementCom extends Component {
                             colspan="9"
                             labelcolspan="3"
                             label="thông số kỹ thuật"
-                            validatonList={["Comborequired"]}
+                            // validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.SUBGROUPTECHSPECS"
                             valuemember="TechspecsID"
@@ -147,7 +147,7 @@ class FeeAppendixDetailElementCom extends Component {
                             colspan="9"
                             labelcolspan="3"
                             label="giá trị"
-                            validatonList={["Comborequired"]}
+                            // validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.TECHSPECSVALUE"
                             valuemember="TechSpecsValueID"
