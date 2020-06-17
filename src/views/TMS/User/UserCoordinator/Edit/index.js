@@ -173,18 +173,61 @@ class EditCom extends React.Component {
                             </div>
 
                         </div>
+
+                        <div className="row">
+                            <div className="col-md-12">
+                                <h3 className="title">Danh sách kho</h3>
+                            </div>
+
+
+                            <div className="table-responsive">
+                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                    <thead className="thead-light">
+                                        <tr>
+                                            <th className="jsgrid-header-cell"  style={{ width: "30%" }}>Mã kho</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "60%" }}>tên kho</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "10%" }}>Tác vụ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr>
+                                            <td> <MultiSelectComboBox
+                                                name="User"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                label="Người dùng"
+                                                disabled={false}
+                                                IsLabelDiv={false}
+                                                isautoloaditemfromcache={false}
+                                                onChange={this.onChangeUser.bind(this)}
+                                                controltype="InputControl"
+                                                value={[]}
+                                                listoption={[]}
+                                                isMultiSelect={false}
+                                                datasourcemember="User"
+                                                validationErrorMessage={''}
+                                            /></td>
+                                            <td></td>
+                                            <td>     <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm" >
+                                                      <span className="fa fa-plus ff"> Thêm</span>
+                                                    </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Kho tân bình</td>
+                                            <td>  <button type="button" className="btn btn-label btn-danger" title="" data-provide="tooltip" data-original-title="Xóa" >
+                                                      <span className="fa fa-plus ff">Xóa</span>
+                                                    </button>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <InputGrid
-                        name="Store"
-                        controltype="InputGridControl"
-                        title="Vật tư lắp đặt"
-                        Ispopup={false}
-                        IDSelectColumnName={"ProductID"}
-                        PKColumnName={""}
-                        MLObjectDefinition={MLObjectStoreItem}
-                        listColumn={DataGridColumnStoreList}
-                        dataSource={[]}
-                    />
                 </div>
             </div>
         );

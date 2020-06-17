@@ -75,21 +75,6 @@ class ShipmentOrderAddressCom extends Component {
         return false;
     }
     handKeyDown(name, value, label, e, validatonList) {
-        let paramsRequest = {
-            "Keyword": value + "Phường" + "413 Lê Văn Quới, Phường Bình Trị Đông A, Quận Bình Tân, Thành Phố Hồ Chí Minh",
-            "Page": 1,
-            "PageSize": 1
-        }
-        this.props.callFetchAPI(APIHostName, 'api/Maps/SearchAll', paramsRequest).then((apiResult) => {
-            if (!apiResult.IsError) {
-                console.log(JSON.parse(apiResult.ResultObject).List[0].Latitude, JSON.parse(apiResult.ResultObject).List[0].Longitude);
-                let { ShipmentOrderEdit } = this.state;
-                ShipmentOrderEdit.SenderGeoLocation = JSON.parse(apiResult.ResultObject).List[0].Latitude + "," + JSON.parse(apiResult.ResultObject).List[0].Longitude;
-                this.setState({ ShipmentOrderEdit: ShipmentOrderEdit }, () => {
-                    this.ShowModalSender();
-                });
-            }
-        });
 
     }
 
@@ -1047,6 +1032,7 @@ class ShipmentOrderAddressCom extends Component {
             "PageSize": 1
         }
         this.props.callFetchAPI(APIHostName, 'api/Maps/SearchAll', paramsRequest).then((apiResult) => {
+            debugger;
             if (!apiResult.IsError) {
                 ShipmentOrderEdit.ReceiverGeoLocation = JSON.parse(apiResult.ResultObject).List[0].Latitude + "," + JSON.parse(apiResult.ResultObject).List[0].Longitude;
                 this.setState({ ShipmentOrderEdit: ShipmentOrderEdit,ReceiverGeoLocation:ShipmentOrderEdit.ReceiverGeoLocation }, () => {

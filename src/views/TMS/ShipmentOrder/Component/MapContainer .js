@@ -61,7 +61,7 @@ export class MapContainer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-
+debugger;
         if (JSON.stringify(this.props.SenderGeoLocation) !== JSON.stringify(nextProps.SenderGeoLocation)) {
             const values = nextProps.SenderGeoLocation.split(",")
             const v1 = parseFloat(values[0])
