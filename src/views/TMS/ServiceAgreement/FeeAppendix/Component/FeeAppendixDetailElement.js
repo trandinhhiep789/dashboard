@@ -55,6 +55,7 @@ class FeeAppendixDetailElementCom extends Component {
                 dataSource={this.props.index != undefined ? this.props.dataSource.FeeAppendixDetail_ItemList[this.props.index] : null}
                 listelement={[]}
                 onSubmit={this.handleSubmit}
+                IsCloseModal={true}
             >
                 <div className="row">
 
@@ -257,9 +258,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        showModal: (type, props) => {
-            dispatch(showModal(type, props));
-        },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         }

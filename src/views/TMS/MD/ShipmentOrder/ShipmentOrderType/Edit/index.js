@@ -343,7 +343,7 @@ class EditCom extends React.Component {
     }
 
     getDataCombobox(data, valueMember, nameMember, conditionName, conditionValue) {
-        let listOption = [{ value: -1, label: "------ Chọn ------" }];
+        let listOption = [{ value: "-1", label: "------ Chọn ------" }];
         if (data) {
             data.map((cacheItem) => {
                 if (conditionName && conditionValue != -1) {
@@ -364,7 +364,7 @@ class EditCom extends React.Component {
         let _ModalFlexShipmentFeeColumnList = this.state.ModalFlexShipmentFeeColumnList_Edit;
         _ModalFlexShipmentFeeColumnList.forEach(function (objElement) {
             if (objElement.Name == "GetFeeType") {
-                objElement.listoption = [{ value: -1, label: "---Vui lòng chọn---" }, { value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }];
+                objElement.listoption = [{ value: "-1", label: "---Vui lòng chọn---" }, { value: "1", label: "Lấy giá trị cố định" }, { value: "2", label: "Lấy từ bảng làm giá" }];
             } else {
                 objElement.listoption = [];
             }
@@ -374,7 +374,7 @@ class EditCom extends React.Component {
 
     handleModalChange(formData, formValidation, elementName, elementValue) {
         //console.log("formData", formData);  
-        let listOptionNull = [{ value: -1, label: "------ Chọn ------" }];
+        let listOptionNull = [{ value: "-1", label: "------ Chọn ------" }];
         let listOption = [];
         let isInsert = this.state.IsInsert;
         let _ModalFlexShipmentFeeColumnList = isInsert ? this.state.ModalFlexShipmentFeeColumnList : this.state.ModalFlexShipmentFeeColumnList_Edit;
@@ -385,19 +385,24 @@ class EditCom extends React.Component {
                     objElement.listoption = listOption;
                     objElement.value = "-1";
                 }
-                if (objElement.Name == "TechspecsID")
+                if (objElement.Name == "TechspecsID") {
                     objElement.listoption = listOptionNull;
-                if (objElement.Name == "TechspecsValueID")
+                    objElement.value = "-1";
+                }
+                if (objElement.Name == "TechspecsValueID") {
                     objElement.listoption = listOptionNull;
-
+                    objElement.value = "-1";
+                }
             } else if (elementName == "SubGroupID") {
                 if (objElement.Name == "TechspecsID") {
                     listOption = this.getDataCombobox(this.state.Techspecs, "TechspecsID", "TechspecsName", "SubGroupID", elementValue);
                     objElement.listoption = listOption;
                     objElement.value = "-1";
                 }
-                if (objElement.Name == "TechspecsValueID")
+                if (objElement.Name == "TechspecsValueID") {
                     objElement.listoption = listOptionNull;
+                    objElement.value = "-1";
+                }
             } else if (elementName == "TechspecsID") {
                 if (objElement.Name == "TechspecsValueID") {
                     listOption = this.getDataCombobox(this.state.TechspecsValue, "TechSpecsValueID", "Value", "TechSpecsID", elementValue);

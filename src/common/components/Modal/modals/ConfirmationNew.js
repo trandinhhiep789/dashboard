@@ -282,7 +282,7 @@ class ConfirmationNew extends React.Component {
         let maxWidth = '900px';
         if (this.props.maxWidth) maxWidth = this.props.maxWidth;
         return (
-            <div className='modals mfp-zoom-out modalconfirmcus'>
+            <div className='modals mfp-zoom-out modalconfirmcus modalconfirmcus1'>
                 <Overlay />
                 <Content onClick={this.onOverlayClick}>
                     <Dialog onClick={this.onDialogClick} customStyle={{ maxWidth: maxWidth }}>

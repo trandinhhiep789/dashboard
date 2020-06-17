@@ -98,12 +98,12 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                 //console.log("FormElement listOption: ", listOption)
                 let wf_Next = [];
                 let match = [];
-                
+
                 if (this.props.dataSource && this.props.dataSource.ShipmentOrderType_WF_Next) {
                     wf_Next = this.props.dataSource.ShipmentOrderType_WF_Next.map(function (item, index) {
                         match = [];
                         match = result.ResultObject.CacheData.filter(x => x.FunctionID == item.ChooseFunctionID);
-                        if (match) {
+                        if (match && match.length > 0) {
                             item.ChooseFunctionName = match[0].FunctionName;
                             return item;
                         }
@@ -165,11 +165,13 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
             let elementItem = this.state.FormData.ShipmentOrderType_WF_Next.filter(x => { return x.NextShipmentOrderStep == NextShipmentOrderStep });
             if (elementItem.length == 0) {
                 const NextShipmentOrderStepListOption = this.state.NextShipmentOrderStepListOption.filter(x => { return x.value == NextShipmentOrderStep });
-                const NextShipmentOrderStepName = NextShipmentOrderStepListOption[0].label;
-                let ShipmentOrderType_WF_Next = this.state.FormData.ShipmentOrderType_WF_Next;
-                ShipmentOrderType_WF_Next.push({ ShipmentOrderStepID: ShipmentOrderStepID, NextShipmentOrderStep: NextShipmentOrderStep, NextShipmentOrderStepName: NextShipmentOrderStepName, ChooseFunctionID: ChooseFunctionID, ChooseFunctionName: ChooseFunctionName })
-                const FormData = Object.assign({}, this.state.FormData, { ShipmentOrderType_WF_Next });
-                this.setState({ FormData });
+                if (NextShipmentOrderStepListOption && NextShipmentOrderStepListOption.length > 0) {
+                    const NextShipmentOrderStepName = NextShipmentOrderStepListOption[0].label;
+                    let ShipmentOrderType_WF_Next = this.state.FormData.ShipmentOrderType_WF_Next;
+                    ShipmentOrderType_WF_Next.push({ ShipmentOrderStepID: ShipmentOrderStepID, NextShipmentOrderStep: NextShipmentOrderStep, NextShipmentOrderStepName: NextShipmentOrderStepName, ChooseFunctionID: ChooseFunctionID, ChooseFunctionName: ChooseFunctionName })
+                    const FormData = Object.assign({}, this.state.FormData, { ShipmentOrderType_WF_Next });
+                    this.setState({ FormData });
+                }
             }
             else {
                 if (this.state.FormData.ShipmentOrderType_WF_Next.filter(x => { return x.NextShipmentOrderStep == NextShipmentOrderStep && x.ChooseFunctionID == ChooseFunctionID }).length == 0) {

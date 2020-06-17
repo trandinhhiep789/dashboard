@@ -2,7 +2,8 @@ import React from "react";
 import {
     BrowserRouter as Router,
     Route,
-    Switch
+    Switch,
+    Link
 } from "react-router-dom";
 import { ModalManager } from "react-dynamic-modal";
 import { connect } from "react-redux";
@@ -51,8 +52,8 @@ class DetailCom extends React.Component {
             PageNumber: 1,
             Abiliti: {},
             IsLoadDataComplete: false,
-            dataExportFeeAppendix:[],
-            dataExportAbility:[]
+            dataExportFeeAppendix: [],
+            dataExportAbility: []
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -78,17 +79,17 @@ class DetailCom extends React.Component {
                     elementFeeAppendix.ApplyFromDate = item.ApplyFromDate;
                     elementFeeAppendix.ApplyToDate = item.ApplyToDate;
                     return elementFeeAppendix;
-        
+
                 })
                 const tempDataAbility = apiResult.ResultObject.Ability_ItemList.map((item, index) => {
-                    let elementAbility  = {};
+                    let elementAbility = {};
                     elementAbility.ServiceSeasonTypeName = item.ServiceSeasonTypeName;
                     elementAbility.FromDate = item.FromDate;
                     elementAbility.ToDate = item.ToDate;
                     elementAbility.MonthlyAbilityValue = item.MonthlyAbilityValue;
                     elementAbility.DailyAbilityValue = item.DailyAbilityValue;
                     return elementAbility;
-        
+
                 })
 
                 this.setState({
@@ -207,15 +208,15 @@ class DetailCom extends React.Component {
     addNotification(message1, IsError) {
         let cssNotification, iconNotification;
         if (!IsError) {
-            cssNotification= "notification-custom-success";
-            iconNotification="fa fa-check"
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
             // this.setState({
             //     cssNotification: "notification-custom-success",
             //     iconNotification: "fa fa-check"
             // });
         } else {
-            cssNotification= "notification-danger";
-            iconNotification="fa fa-exclamation"
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
             // this.setState({
             //     cssNotification: "notification-danger",
             //     iconNotification: "fa fa-exclamation"
@@ -242,11 +243,11 @@ class DetailCom extends React.Component {
         });
     }
 
-    handleExportFileFeeAppendix(result){
+    handleExportFileFeeAppendix(result) {
         this.addNotification(result.Message, result.IsError);
     }
 
-    handleExportFileAbility(result){
+    handleExportFileAbility(result) {
         this.addNotification(result.Message, result.IsError);
     }
 
@@ -302,6 +303,11 @@ class DetailCom extends React.Component {
                                 onExportFile={this.handleExportFileAbility.bind(this)}
                             />
                         </div>
+                        <footer className="card-footer text-right">
+                            <Link to="/ServiceAgreement">
+                                <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
+                            </Link>
+                        </footer>
                     </div>
                 </div>
 
