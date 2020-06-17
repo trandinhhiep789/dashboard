@@ -11,40 +11,73 @@ button {
         margin-top: 5px;
         font-size: 12px;
     }
-    &.btn.btn-info{
+
+    &.btn.btn-info {
         line-height: 30px;
         height: 30px;
         padding: 0px 5px;
         border-radius: 4px !important;
-        &:focus{
+
+        &:focus {
             box-shadow: none;
         }
     }
-    &.btn-delete{
+
+    &.btn-delete {
         line-height: 30px;
         height: 30px;
         padding: 0px 5px;
         border-radius: 4px !important;
-        &:focus{
+
+        &:focus {
             box-shadow: none;
         }
     }
-    &.btn-secondary{
+
+    &.btn-secondary {
         line-height: 30px;
         height: 30px;
         padding: 0px 5px;
         border-radius: 4px !important;
-        &:focus{
+
+        &:focus {
             box-shadow: none;
         }
     }
-    &.btn-export{
+
+    &.btn-export {
         line-height: 30px;
         height: 30px;
         padding: 0px 5px;
         border-radius: 4px !important;
-        &:focus{
+
+        &:focus {
             box-shadow: none;
         }
+    }
+
+    &.btnDelivery {
+        background-color: #d64343fa;
+        border-color: #d64343fa;
+        color: #fff;
+        border-radius: 4px;
+        text-transform: capitalize;
+        line-height: 30px;
+        height: 30px;
+        padding: 0px 5px;
+        margin-top: 5px;
+        font-size: 12px;
+    }
+    &.btnCoordinates{
+        background-color: #ffffff;
+        border-color: #8a8a8afa;
+        color: #4d5259;
+        border-radius: 4px;
+        text-transform: capitalize;
+        line-height: 30px;
+        height: 30px;
+        padding: 0px 5px;
+        margin-top: 5px;
+        font-size: 12px;
     }
 }

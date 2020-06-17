@@ -462,12 +462,12 @@ class InfoCoordinatorCom extends Component {
                         </div>
                     </div>
                     <div className="form-row">
-                        <div className="form-group col-md-2 form-group-btncustom">
+                        <div className="form-group col-md-6">
                             {
-                                this.props.IsCancelDelivery == true ? <button className="btn btnEditCard" type="submit" onClick={this.handleCancelDelivery}> Hủy giao hàng</button> : <button className="btn btnEditCard" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit"> Hủy giao hàng</span></button>
+                                this.props.IsCancelDelivery == true ? <button className="btn btnDelivery" type="submit" onClick={this.handleCancelDelivery}> Hủy giao hàng</button> : <button className="btn btnDelivery" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit"> Hủy giao hàng</span></button>
                             }
                         </div>
-                        <div className="form-group col-md-10 form-group-btncustom">
+                        <div className="form-group col-md-6 form-group-btncustom">
                             {
                                 this.props.IsCoordinator == true ? <button className="btn btnEditCard" type="submit" onClick={this.handleShipWorkFlowInsert}> Cập nhật</button> : <button className="btn btnEditCard" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit"> Cập nhật</span></button>
                             }
