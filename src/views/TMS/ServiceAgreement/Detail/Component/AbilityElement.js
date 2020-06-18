@@ -18,9 +18,17 @@ class AbilityElementCom extends Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
-
+            IsSystem: false
         }
 
+    }
+
+    componentDidMount() {
+        if (this.props.index != undefined) {
+            this.setState({
+                IsSystem: this.props.dataSource.Ability_ItemList[this.props.index].IsSystem
+            })
+        }
     }
 
     handleSubmit(From, MLObject) {
@@ -46,9 +54,8 @@ class AbilityElementCom extends Component {
 
 
     render() {
-        const AddElementList = [
-
-        ]
+        const AddElementList = []
+        const { IsSystem } = this.state;
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectAbilitiItem}
@@ -80,6 +87,7 @@ class AbilityElementCom extends Component {
                             colspan="9"
                             labelcolspan="3"
                             label="loại mùa vụ"
+                            disabled={IsSystem}
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.SERVICESEASONTYPE"
@@ -100,6 +108,8 @@ class AbilityElementCom extends Component {
                             labelcolspan="3"
                             readOnly={false}
                             timeFormat={false}
+                            showTime={false}
+                            disabled={IsSystem}
                             dateFormat="YYYY-MM-DD"
                             label="Từ ngày"
                             placeholder="Từ ngày"
@@ -117,6 +127,8 @@ class AbilityElementCom extends Component {
                             colspan="9"
                             labelcolspan="3"
                             readOnly={false}
+                            disabled={IsSystem}
+                            showTime={false}
                             timeFormat={false}
                             dateFormat="YYYY-MM-DD"
                             label="đến ngày"
@@ -134,7 +146,8 @@ class AbilityElementCom extends Component {
                             name="txtMonthlyAbilityValue"
                             colspan="9"
                             labelcolspan="3"
-                            readOnly={false}
+                            readOnly={IsSystem}
+                            disabled={IsSystem}
                             label="theo tháng"
                             placeholder="theo tháng"
                             controltype="InputControl"
@@ -148,7 +161,8 @@ class AbilityElementCom extends Component {
                             name="txtDailyAbilityValue"
                             colspan="9"
                             labelcolspan="3"
-                            readOnly={false}
+                            readOnly={IsSystem}
+                            disabled={IsSystem}
                             label="theo ngày"
                             placeholder="theo ngày"
                             controltype="InputControl"
@@ -163,7 +177,8 @@ class AbilityElementCom extends Component {
                             name="txtNote"
                             colspan="9"
                             labelcolspan="3"
-                            readOnly={false}
+                            readOnly={IsSystem}
+                            disabled={IsSystem}
                             label="Ghi chú"
                             controltype="InputControl"
                             value=""
@@ -178,7 +193,8 @@ class AbilityElementCom extends Component {
                             name="ckIsActived"
                             colspan="9"
                             labelcolspan="3"
-                            readOnly={false}
+                            readOnly={IsSystem}
+                            disabled={IsSystem}
                             label="kích hoạt"
                             controltype="InputControl"
                             value=""
@@ -219,7 +235,7 @@ const mapDispatchToProps = dispatch => {
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         },
-        
+
     }
 }
 

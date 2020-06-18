@@ -162,6 +162,8 @@ class DeliverUserListCom extends React.Component {
                         colspan={this.props.colspan}
                         labelcolspan={this.props.labelcolspan}
                         label="Nhân viên giao"
+                        disabled={this.props.disabled}
+                        readOnly={this.props.readOnly}
                         IsLabelDiv={true}
                         isautoloaditemfromcache={false}
                         validatonList={["Comborequired"]}
@@ -180,6 +182,8 @@ class DeliverUserListCom extends React.Component {
                         labelcolspan={this.props.labelcolspan}
                         label="Nhân viên giao"
                         validatonList={["Comborequired"]}
+                        disabled={this.props.disabled}
+                        readOnly={this.props.readOnly}
                         isautoloaditemfromcache={true}
                         loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
                         valuemember="UserName"

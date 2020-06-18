@@ -16,6 +16,7 @@ import Datetime from 'react-datetime';
 import "antd/dist/antd.css";
 import Select from 'react-select';
 import { formatMoney } from '../../../../utils/function';
+import { el } from 'date-fns/locale';
 
 //#region connect
 const mapStateToProps = state => {
@@ -227,7 +228,7 @@ class FormControlComboBoxCom extends Component {
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.name : "",this.props.filterrest);
+            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.name : "", this.props.filterrest);
     }
 
     bindcombox(value, listOption) {
@@ -273,7 +274,7 @@ class FormControlComboBoxCom extends Component {
                 listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     if (typeof filterobj != undefined && filterValue != "") {
-                      
+
                         result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
                             listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
                         }
@@ -301,7 +302,7 @@ class FormControlComboBoxCom extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        
+
         if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             let { filterobj, valuemember, nameMember } = this.props;
@@ -311,7 +312,7 @@ class FormControlComboBoxCom extends Component {
                     listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[nameMember] });
                 }
                 );
-                this.setState({ Listoption: listoptionnew }); 
+                this.setState({ Listoption: listoptionnew });
             }
         }
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
@@ -412,6 +413,15 @@ class FormControlDatetimeCom extends Component {
         if (validationErrorMessage != "" && validationErrorMessage != undefined) {
             className += " is-invalid";
         }
+        ;
+
+        let isShowTime;
+        if (this.props.showTime == undefined || this.props.showTime == true) {
+            isShowTime = true
+        }
+        else {
+            isShowTime = false
+        }
         return (
             <div className={formRowClassName} >
                 <div className={labelDivClassName}>
@@ -422,14 +432,15 @@ class FormControlDatetimeCom extends Component {
 
                 <div className={formGroupClassName}>
                     <DatePicker
-                        showTime
+                        showTime={isShowTime}
                         value={(value != '' && value != null) ? moment(value, dateFormat) : ''}
                         format={dateFormat}
                         className={className}
                         dropdownClassName="tree-select-custom"
                         ref={this.props.inputRef}
-                        placeholder={'vui lòng chọn ngày'}
+                        placeholder={this.props.placeholder}
                         onChange={this.handleValueChange}
+                        disabled={this.props.disabled}
                     />
                     <div className="invalid-feedback">
                         <ul className="list-unstyled">
@@ -611,6 +622,7 @@ class TextArea extends React.Component {
                         placeholder={this.props.placeholder}
                         readOnly={this.props.readonly}
                         rows="5"
+                        disabled={this.props.disabled}
                     />
                 </div>
             </div>
@@ -668,9 +680,15 @@ class CheckBox extends React.Component {
 
                     <div className={classNameCustom}>
                         <label>
-                            <input className={this.props.CSSClassName} name={this.props.name} type="checkbox"
-                                checked={this.props.value} onChange={this.handleValueChange} readOnly={this.props.readonly}
+                            <input
                                 className={this.props.CSSClassName}
+                                name={this.props.name}
+                                type="checkbox"
+                                checked={this.props.value}
+                                onChange={this.handleValueChange}
+                                readOnly={this.props.readonly}
+                                className={this.props.CSSClassName}
+                                disabled={this.props.disabled}
                             />
                             <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                         </label>

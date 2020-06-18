@@ -163,7 +163,7 @@ class InfoCoordinatorCom extends Component {
 
     handleCancelDeliveryInsert() {
 
-        let { ShipmentOrder,selectedOption, CancelDeliveryReasonNote,validationErrorCancelDeliveryReason,validationCancelDeliveryReasonNote} = this.state;
+        let { ShipmentOrder, selectedOption, CancelDeliveryReasonNote, validationErrorCancelDeliveryReason, validationCancelDeliveryReasonNote } = this.state;
         if (selectedOption.value == undefined || selectedOption.length == 0) {
             validationErrorCancelDeliveryReason = "Vui lòng chọn lý do hủy giào"
             this.setState({ validationErrorCancelDeliveryReason: validationErrorCancelDeliveryReason }, () => {
@@ -176,8 +176,7 @@ class InfoCoordinatorCom extends Component {
                 this.openCancelDeliveryModal();
             });
         }
-        else
-        {
+        else {
             ShipmentOrder.CancelDeliveryReasonID = selectedOption.value;
             ShipmentOrder.CancelDeliveryUser = this.props.AppInfo.LoginInfo.Username;
             ShipmentOrder.CancelDeliveryReasonNote = CancelDeliveryReasonNote;
@@ -351,7 +350,7 @@ class InfoCoordinatorCom extends Component {
 
         return (
             <div className="card">
-                    <ReactNotification ref={this.notificationDOMRef} />
+                <ReactNotification ref={this.notificationDOMRef} />
                 <div className="card-title group-card-title">
                     <h4 className="title">Thông tin điều phối</h4>
                 </div>
@@ -462,12 +461,11 @@ class InfoCoordinatorCom extends Component {
                         </div>
                     </div>
                     <div className="form-row">
-                        <div className="form-group col-md-6">
+
+                        <div className="form-group col-md-12 form-group-btncustom">
                             {
-                                this.props.IsCancelDelivery == true ? <button className="btn btnDelivery" type="submit" onClick={this.handleCancelDelivery}> Hủy giao hàng</button> : <button className="btn btnDelivery" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit"> Hủy giao hàng</span></button>
+                                this.props.IsCancelDelivery == true ? <button className="btn btnDelivery mr-10" type="submit" onClick={this.handleCancelDelivery}> Hủy giao hàng</button> : <button className="btn btnDelivery mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit"> Hủy giao hàng</span></button>
                             }
-                        </div>
-                        <div className="form-group col-md-6 form-group-btncustom">
                             {
                                 this.props.IsCoordinator == true ? <button className="btn btnEditCard" type="submit" onClick={this.handleShipWorkFlowInsert}> Cập nhật</button> : <button className="btn btnEditCard" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit"> Cập nhật</span></button>
                             }

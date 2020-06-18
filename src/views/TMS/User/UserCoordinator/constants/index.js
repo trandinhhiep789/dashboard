@@ -1,10 +1,13 @@
 export const APIHostName = "PIMAPI";
-export const SearchAPIPath = "api/Partner/Search";
-export const LoadAPIPath = "api/Partner/Load";
-export const AddAPIPath = "api/Partner/Add";
-export const UpdateAPIPath = "api/Partner/Update";
-export const DeleteAPIPath = "api/Partner/Delete";
-export const UpdateOrderAPIPath = "api/Partner/UpdateOrder";
+export const SearchAPIPath = "api/User_CoordinatorStore/Search";
+export const SearchAPISearchUser = "api/User_CoordinatorStore/SearchUser";
+export const LoadAPIPath = "api/User_CoordinatorStore/Load";
+export const AddAPIPath = "api/User_CoordinatorStore/Add";
+export const UpdateAPIPath = "api/User_CoordinatorStore/Update";
+export const DeleteAPIPath = "api/User_CoordinatorStore/Delete";
+export const DeleteUserAPIPath = "api/User_CoordinatorStore/DeleteUser";
+
+export const UpdateOrderAPIPath = "api/User_CoordinatorStore/UpdateOrder";
 export const BackLink = "/Partner";
 export const AddLink = "/Partner/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";

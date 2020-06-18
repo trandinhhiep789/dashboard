@@ -17,12 +17,16 @@ class FeeAppendixDetailElementCom extends Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
-
+            IsSystem: false
         }
     }
 
     componentDidMount() {
-        console.log('FeeAppendixDetailElementCom', this.props)
+        if (this.props.index != undefined) {
+            this.setState({
+                IsSystem: this.props.dataSource.FeeAppendix_ItemList[this.props.index].IsSystem
+            })
+        }
     }
 
     handleSubmit(From, MLObject) {
@@ -46,7 +50,7 @@ class FeeAppendixDetailElementCom extends Component {
 
     render() {
         const AddElementListFeeAppendix = []
-
+        const { IsSystem } = this.state;
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectFeeAppendixDetailItem}
@@ -77,6 +81,7 @@ class FeeAppendixDetailElementCom extends Component {
                             name="cbServiceSeasonTypeID"
                             colspan="9"
                             labelcolspan="3"
+                            disabled={IsSystem}
                             label="loại thời vụ"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
@@ -96,7 +101,7 @@ class FeeAppendixDetailElementCom extends Component {
                             name="txtFeeAppendixName"
                             colspan="9"
                             labelcolspan="3"
-                            readOnly={false}
+                            readOnly={IsSystem}
                             label="tên phụ lục"
                             placeholder="Tên phụ lục"
                             controltype="InputControl"
@@ -117,6 +122,8 @@ class FeeAppendixDetailElementCom extends Component {
                             labelcolspan="3"
                             readOnly={true}
                             timeFormat={false}
+                            showTime={false}
+                            disabled={IsSystem}
                             dateFormat="YYYY-MM-DD"
                             label="từ ngày"
                             placeholder="Từ ngày"
@@ -134,7 +141,9 @@ class FeeAppendixDetailElementCom extends Component {
                             colspan="9"
                             labelcolspan="3"
                             readOnly={true}
+                            showTime={false}
                             timeFormat={false}
+                            disabled={IsSystem}
                             dateFormat="YYYY-MM-DD"
                             label="đến ngày"
                             placeholder="Đến ngày"
@@ -152,7 +161,8 @@ class FeeAppendixDetailElementCom extends Component {
                             name="txtDescription"
                             colspan="9"
                             labelcolspan="3"
-                            readOnly={false}
+                            readOnly={IsSystem}
+                            disabled={IsSystem}
                             label="mô tả"
                             controltype="InputControl"
                             placeholder="Mô tả"
@@ -168,7 +178,8 @@ class FeeAppendixDetailElementCom extends Component {
                             name="chkIsActived"
                             colspan="9"
                             labelcolspan="3"
-                            readOnly={false}
+                            readOnly={IsSystem}
+                            disabled={IsSystem}
                             label="kích hoạt"
                             controltype="InputControl"
                             value=""
@@ -206,11 +217,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-    
+
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         },
-        
+
     }
 }
 

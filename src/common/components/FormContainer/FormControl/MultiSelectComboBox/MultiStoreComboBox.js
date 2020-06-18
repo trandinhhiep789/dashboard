@@ -4,7 +4,7 @@ import Select from 'react-select';
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 
-class MultiSelectComboBoxCom extends React.Component {
+class MultiStoreComboBoxCom extends React.Component {
     static defaultProps = {
         componenttype: 'InputControl'
     }
@@ -29,46 +29,43 @@ class MultiSelectComboBoxCom extends React.Component {
     }
 
     callSearchData(KeyWord) {
+
         let listMLObject = {
-            "IndexName": "user",
-            "TypeName": "user",
-            "Top": 10,
-            "IsCompressResultData": false,
-            "QueryParamList":
-                [
-                    {
-                        "QueryKey": "", "QueryValue": "", "QueryType": 18, "IsNotQuery": false,
-                        "SubQueryParamList":
-                            [
-                                {
-                                    "QueryKey": "uSERNAME",
-                                    "QueryValue": KeyWord,
-                                    "QueryType": 2,
-                                    "IsNotQuery": false
-                                },
-
-                                {
-                                    "QueryKey": "fULLNAME",
-                                    "QueryValue": KeyWord,
-                                    "QueryType": 2,
-                                    "IsNotQuery": false
-                                }
-                            ]
-                    }
+            "QueryParamList": [
+              {
+                "QueryKey": "",
+                "QueryValue": "",
+                "QueryType": 18,
+                "IsNotQuery": false,
+                "SubQueryParamList": [
+                  {
+                    "QueryKey": "sTOREID",
+                    "QueryValue": /^[0-9][0-9]*$/.test(KeyWord)==true? KeyWord:"",
+                    "QueryType": 3,
+                    "IsNotQuery": false
+                  },
+                  {
+                    "QueryKey": "sTORENAME",
+                    "QueryValue": KeyWord,
+                    "QueryType": 2,
+                    "IsNotQuery": false
+                  }
                 ]
-        }
-
-        this.props.callFetchAPI("ERPAPI", 'api/UserSearch/Search', listMLObject).then(apiResult => {
-            console.log("apiResult.ResultObject",apiResult.ResultObject)
+              }
+            ],
+            "Top": 500,
+            "IndexName": "store",
+            "TypeName": "store",
+            "IsCompressResultData": false
+          }
+          this.props.callFetchAPI("ERPAPI", 'api/CommonSearch/Search', listMLObject).then(apiResult => {
+            const objStore=JSON.parse(apiResult.ResultObject).hits.hits;
             let listOptionNew1 = [];
-            for (let i = 0; i < apiResult.ResultObject.length; i++) {
-                listOptionNew1.push({ value: apiResult.ResultObject[i].UserName, 
-                                     name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
-                                     FullName:apiResult.ResultObject[i].FullName,
-                                     DepartmentName:apiResult.ResultObject[i].DepartmentName,
-                                     PositionName:apiResult.ResultObject[i].PositionName,
-                                     Address:apiResult.ResultObject[i].Address
-
+            for (let i = 0; i < objStore.length; i++) {
+                listOptionNew1.push({ value: objStore[i]._source.sTOREID, 
+                                     name: objStore[i]._source.sTORENAME,
+                                     StoreFax:objStore[i]._source.sTOREPHONENUM,
+                                     StoreAddress:objStore[i]._source.sTOREADDRESS
                                     });
             }
             this.setState({
@@ -98,7 +95,7 @@ class MultiSelectComboBoxCom extends React.Component {
     handleValueChange1(e) {
         let value = e.target.value;
         if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38) {
-            this.callSearchData("*" + value + "*");
+            this.callSearchData(value);
         }
 
     }
@@ -108,11 +105,10 @@ class MultiSelectComboBoxCom extends React.Component {
         let listOptionNew = [];
         for (let i = 0; i < listOption.length; i++) {
             listOptionNew.push({ value: listOption[i].value,
-                                label: listOption[i].name,
-                                FullName:listOption[i].FullName,
-                                DepartmentName: listOption[i].DepartmentName,
-                                PositionName:listOption[i].PositionName,
-                                Address:listOption[i].Address,
+                                label:listOption[i].value+"-"+ listOption[i].name,
+                                name: listOption[i].name,
+                                StoreFax: listOption[i].StoreFax,
+                                StoreAddress:listOption[i].StoreAddress,
                                 style: { color: 'red' } });
         }
         const selectedOption = this.state.SelectedOption;
@@ -188,5 +184,5 @@ const mapDispatchToProps = dispatch => {
         }
     }
 }
-const MultiSelectComboBox = connect(mapStateToProps, mapDispatchToProps)(MultiSelectComboBoxCom);
-export default MultiSelectComboBox;
+const MultiStoreComboBox = connect(mapStateToProps, mapDispatchToProps)(MultiStoreComboBoxCom);
+export default MultiStoreComboBox;

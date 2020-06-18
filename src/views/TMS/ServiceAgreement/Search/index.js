@@ -19,7 +19,7 @@ import {
     AddLink,
     APIHostName,
     SearchAPIPath,
-    DeleteAPIPath,
+    DeleteNewAPIPath,
     IDSelectColumnName,
     PKColumnName,
     InitSearchParams,
@@ -64,7 +64,6 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -99,22 +98,23 @@ class SearchCom extends React.Component {
 
                    
                 })
+
                 const tempData = apiResult.ResultObject.map((item, index) => {
-                    item.ExtendLable = item.ExtendedDate ? formatDate(item.ExtendedDate) : 'Chưa gia hạn';
+                    item.ExtendAgreement = item.ExtendedDate ? formatDate(item.ExtendedDate) : 'Chưa gia hạn';
                     let element = {};
                     const ExpiredDate = new Date(item.ExpiredDate);
                     let currentDate = new Date();
                     if (ExpiredDate.getTime() - currentDate.getTime() < 0) {
-                        item.StatusLable = "Hết hạn";
+                        item.StatusAgreement = "Hết hạn";
                     }
                     else {
                         var timeDiff = Math.abs(currentDate.getTime() - ExpiredDate.getTime());
                         var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
                         if (diffDays < 30) {
-                            item.StatusLable = `Còn ${diffDays} ngày`;
+                            item.StatusAgreement = `Còn ${diffDays} ngày`;
                         }
                         else {
-                            item.StatusLable = "Còn hạn";
+                            item.StatusAgreement = "Còn hạn";
                         }
                     }
                     element.ServiceAgreementID = item.ServiceAgreementID;
@@ -123,8 +123,8 @@ class SearchCom extends React.Component {
                     element.AreaName = item.AreaName;
                     element.SignedDate = item.SignedDate;
                     element.ExpiredDate = item.ExpiredDate;
-                    element.ExtendLable = item.ExtendLable;
-                    element.StatusLable = item.StatusLable;
+                    element.ExtendAgreement = item.ExtendAgreement;
+                    element.StatusAgreement = item.StatusAgreement;
         
                     return element;
         
@@ -151,6 +151,7 @@ class SearchCom extends React.Component {
     }
 
     handleDelete(deleteList, pkColumnName) {
+        debugger
         let listMLObject = [];
         deleteList.map((row, index) => {
             let MLObject = {};
@@ -160,7 +161,7 @@ class SearchCom extends React.Component {
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
-        this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {

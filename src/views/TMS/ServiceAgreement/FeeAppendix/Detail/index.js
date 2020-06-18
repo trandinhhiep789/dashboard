@@ -36,6 +36,7 @@ class DetailCom extends React.Component {
         this.handleItemInsert = this.handleItemInsert.bind(this);
         this.handleItemEdit = this.handleItemEdit.bind(this);
         this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
+
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -43,7 +44,8 @@ class DetailCom extends React.Component {
             FeeAppendixDetailInfo: {},
             FeeAppendixDetailItemList: [],
             ServiceAgreementID: '',
-            dataExport: []
+            dataExport: [],
+            IsSystem: false,
 
         };
         this.gridref = React.createRef();
@@ -66,14 +68,14 @@ class DetailCom extends React.Component {
             }
             else {
                 const tempData = apiResult.ResultObject.FeeAppendixDetail_ItemList.map((item, index) => {
-                    let element  = {};
+                    let element = {};
                     element.SubGroupName = item.SubGroupName;
                     element.TechspecsName = item.TechspecsName;
                     element.TechspecsValue = item.TechspecsValue;
                     element.ProductName = item.ProductName;
                     element.ServiceFee = item.ServiceFee;
                     return element;
-        
+
                 })
 
                 this.setState({
@@ -82,7 +84,7 @@ class DetailCom extends React.Component {
                     ServiceAgreementID: apiResult.ResultObject.ServiceAgreementID,
                     FeeAppendixDetailInfo: apiResult.ResultObject,
                     FeeAppendixDetailItemList: apiResult.ResultObject.FeeAppendixDetail_ItemList,
-
+                    IsSystem: apiResult.ResultObject.IsSystem,
                     IsLoadDataComplete: true
                 });
                 const id = apiResult.ResultObject.ServiceAgreementID;
@@ -141,13 +143,13 @@ class DetailCom extends React.Component {
 
         let cssNotification, iconNotification;
         if (!IsError) {
-            cssNotification= "notification-custom-success";
-            iconNotification="fa fa-check"
-        
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
+
         } else {
-            cssNotification= "notification-danger";
-            iconNotification="fa fa-exclamation"
-        
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
+
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
@@ -204,49 +206,62 @@ class DetailCom extends React.Component {
         });
 
     }
-    handleExportFile(result){
+
+    handleExportFile(result) {
         this.addNotification(result.Message, result.IsError);
     }
 
 
     render() {
-        if (this.state.IsCloseForm) {
-            return <Redirect to={BackLink} />;
+       
+
+        const { IsSystem, FeeAppendixDetailInfo, FeeAppendixDetailItemList, dataExport, DataSource } = this.state;
+        if (this.state.IsLoadDataComplete) {
+            const id = DataSource.ServiceAgreementID;
+            const backLink = "/ServiceAgreement/Detail/" + id;
+            if (this.state.IsCloseForm) {
+                return <Redirect to={backLink} />;
+            }
+            return (
+                <FormContainer
+                    FormName={TitleFormDetail}
+                    MLObjectDefinition={MLObjectDefinition}
+                    dataSource={DataSource}
+                    listelement={[]}
+                    BackLink={backLink}
+                    isSubmitForm={false}
+
+                >
+                    <ReactNotification ref={this.notificationDOMRef} />
+
+                    <FeeAppendixInfo
+                        FeeAppendixInfo={FeeAppendixDetailInfo}
+                    />
+
+                    <InputGridControl
+                        name="FeeAppendixDetail_ItemList"
+                        controltype="InputGridControl"
+                        title={TitleFromFeeAppendixDetail}
+                        IDSelectColumnName={"FeeAppendixDetailID"}
+                        PKColumnName={"FeeAppendixDetailID"}
+                        listColumn={DataGridColumnItemListFeeAppendixDetail}
+                        dataSource={FeeAppendixDetailItemList}
+                        onInsertClick={this.handleItemInsert}
+                        onEditClick={this.handleItemEdit}
+                        onDeleteClick={this.handleItemDeleteFeeAppendixDetail.bind(this)}
+                        IsExportFile={true}
+                        DataExport={dataExport}
+                        fileName={TitleFromFeeAppendixDetail}
+                        onExportFile={this.handleExportFile.bind(this)}
+                        isSystem={IsSystem}
+                    />
+                </FormContainer>
+            );
         }
-
         return (
-            <FormContainer
-                FormName={TitleFormDetail}
-                MLObjectDefinition={MLObjectDefinition}
-                dataSource={this.state.DataSource}
-                listelement={[]}
-                BackLink={BackLink}
-                isSubmitForm={false}
-
-            >
-                <ReactNotification ref={this.notificationDOMRef} />
-                <FeeAppendixInfo
-                    FeeAppendixInfo={this.state.FeeAppendixDetailInfo}
-                />
-
-                <InputGridControl
-                    name="FeeAppendixDetail_ItemList"
-                    controltype="InputGridControl"
-                    title={TitleFromFeeAppendixDetail}
-                    IDSelectColumnName={"FeeAppendixDetailID"}
-                    PKColumnName={"FeeAppendixDetailID"}
-                    listColumn={DataGridColumnItemListFeeAppendixDetail}
-                    dataSource={this.state.DataSource.FeeAppendixDetailItemList}
-                    onInsertClick={this.handleItemInsert}
-                    onEditClick={this.handleItemEdit}
-                    onDeleteClick={this.handleItemDeleteFeeAppendixDetail.bind(this)}
-                    IsExportFile={true}
-                    DataExport={this.state.dataExport}
-                    fileName={TitleFromFeeAppendixDetail}
-                    onExportFile={this.handleExportFile.bind(this)}
-                />
-            </FormContainer>
+            <label>Đang nạp dữ liệu...</label>
         );
+
     }
 }
 
