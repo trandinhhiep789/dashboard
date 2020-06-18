@@ -12,16 +12,9 @@ class FeeAppendixInfoInfoCom extends Component {
 
     componentDidMount() {
     }
-    componentWillReceiveProps(nextProps) {
-        if (JSON.stringify(this.props.FeeAppendixInfo) !== JSON.stringify(nextProps.FeeAppendixInfo)) {
-            this.setState({
-                FeeAppendixInfo: nextProps.FeeAppendixInfo
-            })
-        }
-    }
-
 
     render() {
+        
         return (
             <React.Fragment>
                 <div className="form-row">
@@ -29,13 +22,13 @@ class FeeAppendixInfoInfoCom extends Component {
                         <label className="col-form-label bold">Tên phụ lục:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{this.state.FeeAppendixInfo.FeeAppendixName}</label>
+                        <label className="col-form-label">{this.props.FeeAppendixInfo.FeeAppendixName}</label>
                     </div><div className="form-group col-md-2">
                         <label className="col-form-label bold">Loại thời vụ:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {this.state.FeeAppendixInfo.ServiceSeasonTypeName}
+                            {this.props.FeeAppendixInfo.ServiceSeasonTypeName}
                         </label>
                     </div>
                 </div>
@@ -46,7 +39,7 @@ class FeeAppendixInfoInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {formatDate(this.state.FeeAppendixInfo.ApplyFromDate)}
+                            {formatDate(this.props.FeeAppendixInfo.ApplyFromDate)}
                         </label>
                     </div>
                     <div className="form-group col-md-2">
@@ -54,7 +47,7 @@ class FeeAppendixInfoInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {formatDate(this.state.FeeAppendixInfo.ApplyToDate)}
+                            {formatDate(this.props.FeeAppendixInfo.ApplyToDate)}
                         </label>
                     </div>
                 </div>
@@ -65,7 +58,7 @@ class FeeAppendixInfoInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-10">
                         <label className="col-form-label">
-                            {this.state.FeeAppendixInfo.Description}
+                            {this.props.FeeAppendixInfo.Description}
                         </label>
                     </div>
                 </div>
@@ -77,7 +70,7 @@ class FeeAppendixInfoInfoCom extends Component {
                         <label className="col-form-label">
                             <div className="checkbox customCheckbox">
                                 <label>
-                                    <input type="checkbox" defaultChecked={this.state.FeeAppendixInfo.IsActived} disabled={true} />
+                                    <input type="checkbox" defaultChecked={this.props.FeeAppendixInfo.IsActived} disabled={true} />
                                     <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                                 </label>
                             </div>
@@ -90,7 +83,7 @@ class FeeAppendixInfoInfoCom extends Component {
                         <label className="col-form-label">
                             <div className="checkbox customCheckbox">
                                 <label>
-                                    <input type="checkbox" defaultChecked={this.state.FeeAppendixInfo.IsSystem} disabled={true} />
+                                    <input type="checkbox" defaultChecked={this.props.FeeAppendixInfo.IsSystem} disabled={true} />
                                     <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                                 </label>
                             </div>

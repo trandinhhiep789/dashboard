@@ -204,6 +204,7 @@
 .checkbox label input[type="checkbox"]:disabled + .cr,
 .radio label input[type="radio"]:disabled + .cr {
     opacity: .5;
+    background: #f5f5f5;
 }
 .player-wrapper {
   position: relative;

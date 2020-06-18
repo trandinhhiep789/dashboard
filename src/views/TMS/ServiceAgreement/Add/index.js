@@ -124,7 +124,7 @@ class AddCom extends React.Component {
                             label="loại dịch vụ"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.SERVICETYPE"
+                            loaditemcachekeyid="ERPCOMMONCACHE.TMS_SERVICETYPE"
                             valuemember="ServiceTypeID"
                             nameMember="ServiceTypeName"
                             controltype="InputControl"
@@ -222,7 +222,7 @@ class AddCom extends React.Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.ElementDatetime
+                        {/* <FormControl.ElementDatetime
                             name="dtSignedDate"
                             colspan="8"
                             labelcolspan="4"
@@ -235,11 +235,26 @@ class AddCom extends React.Component {
                             value=""
                             validatonList={["required"]}
                             datasourcemember="SignedDate"
+                        /> */}
+                        <FormControl.FormControlDatetime
+                            name="dtSignedDate"
+                            colspan="8"
+                            labelcolspan="4"
+                            readOnly={true}
+                            showTime={false}
+                            timeFormat={false}
+                            dateFormat="YYYY-MM-DD"
+                            label="ngày ký hợp đồng"
+                            placeholder="Ngày ký hợp đồng"
+                            controltype="InputControl"
+                            value=""
+                            validatonList={["required"]}
+                            datasourcemember="SignedDate"
                         />
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.ElementDatetime
+                        {/* <FormControl.ElementDatetime
                             name="dtExpiredDate"
                             colspan="8"
                             labelcolspan="4"
@@ -252,8 +267,22 @@ class AddCom extends React.Component {
                             value=""
                             validatonList={["required"]}
                             datasourcemember="ExpiredDate"
+                        /> */}
+                        <FormControl.FormControlDatetime
+                            name="dtExpiredDate"
+                            colspan="8"
+                            labelcolspan="4"
+                            readOnly={true}
+                            showTime={false}
+                            timeFormat={false}
+                            dateFormat="YYYY-MM-DD"
+                            label="ngày hết hạn hợp đồng"
+                            placeholder="Ngày hết hạn hợp đồng"
+                            controltype="InputControl"
+                            value=""
+                            validatonList={["required"]}
+                            datasourcemember="ExpiredDate"
                         />
-
                     </div>
 
                     <div className="col-md-6">
@@ -269,7 +298,7 @@ class AddCom extends React.Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.ElementDatetime
+                        {/* <FormControl.ElementDatetime
                             name="dtExtendedDate"
                             colspan="8"
                             labelcolspan="4"
@@ -281,6 +310,21 @@ class AddCom extends React.Component {
                             controltype="InputControl"
                             value=""
                             //validatonList={[]}
+                            datasourcemember="ExtendedDate"
+                        /> */}
+
+                        <FormControl.FormControlDatetime
+                            name="dtExtendedDate"
+                            colspan="8"
+                            labelcolspan="4"
+                            readOnly={true}
+                            showTime={false}
+                            timeFormat={false}
+                            dateFormat="YYYY-MM-DD"
+                            label="gia hạn đến ngày"
+                            placeholder="Gia hạn đến ngày"
+                            controltype="InputControl"
+                            value=""
                             datasourcemember="ExtendedDate"
                         />
                     </div>
@@ -298,7 +342,7 @@ class AddCom extends React.Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.ElementDatetime
+                        {/* <FormControl.ElementDatetime
                             name="dtLiquidateddate"
                             colspan="8"
                             labelcolspan="4"
@@ -310,6 +354,20 @@ class AddCom extends React.Component {
                             controltype="InputControl"
                             value=""
                             // validatonList={[]}
+                            datasourcemember="Liquidateddate"
+                        /> */}
+                        <FormControl.FormControlDatetime
+                            name="dtLiquidateddate"
+                            colspan="8"
+                            labelcolspan="4"
+                            readOnly={true}
+                            showTime={false}
+                            timeFormat={false}
+                            dateFormat="YYYY-MM-DD"
+                            label="ngày thanh lý hợp đồng"
+                            placeholder="Ngày thanh lý hợp đồng"
+                            controltype="InputControl"
+                            value=""
                             datasourcemember="Liquidateddate"
                         />
                     </div>
@@ -337,17 +395,32 @@ class AddCom extends React.Component {
                             controltype="InputControl"
                             value=""
                             datasourcemember="DepositMoney"
+                            validatonList={["number"]}
                         />
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.ElementDatetime
+                        {/* <FormControl.ElementDatetime
                             name="dtDepositedDate"
                             colspan="8"
                             labelcolspan="4"
                             readOnly={false}
                             timeFormat={false}
                             dateFormat="DD/MM/YYYY"
+                            label="ngày ký quỹ"
+                            placeholder="Ngày ký quỹ"
+                            controltype="InputControl"
+                            value=""
+                            datasourcemember="DepositedDate"
+                        /> */}
+                        <FormControl.FormControlDatetime
+                            name="dtDepositedDate"
+                            colspan="8"
+                            labelcolspan="4"
+                            readOnly={true}
+                            showTime={false}
+                            timeFormat={false}
+                            dateFormat="YYYY-MM-DD"
                             label="ngày ký quỹ"
                             placeholder="Ngày ký quỹ"
                             controltype="InputControl"

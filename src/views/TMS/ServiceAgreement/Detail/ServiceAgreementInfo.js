@@ -16,7 +16,6 @@ class ServiceAgreementInfoCom extends Component {
     }
 
     componentDidMount() {
-        console.log('ServiceAgreementInfoCom', this.props.ServiceAgreementInfo)
     }
 
 
