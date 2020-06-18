@@ -87,11 +87,7 @@ class SearchCom extends React.Component {
 
 
     callSearchData(searchData) {
-        console.log("callSearchData: ", APIHostName, SearchAPIPath, searchData);
-        this.props
-            .callFetchAPI(APIHostName, SearchAPIPath, searchData)
-            .then(apiResult => {
-                console.log("callSearchData apiResultIsError: ", apiResult, apiResult.IsError);
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
                 if (apiResult && !apiResult.IsError) {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
