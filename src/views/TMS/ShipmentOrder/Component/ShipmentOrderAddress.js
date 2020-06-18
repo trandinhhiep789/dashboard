@@ -1032,7 +1032,6 @@ class ShipmentOrderAddressCom extends Component {
             "PageSize": 1
         }
         this.props.callFetchAPI(APIHostName, 'api/Maps/SearchAll', paramsRequest).then((apiResult) => {
-            debugger;
             if (!apiResult.IsError) {
                 ShipmentOrderEdit.ReceiverGeoLocation = JSON.parse(apiResult.ResultObject).List[0].Latitude + "," + JSON.parse(apiResult.ResultObject).List[0].Longitude;
                 this.setState({ ShipmentOrderEdit: ShipmentOrderEdit,ReceiverGeoLocation:ShipmentOrderEdit.ReceiverGeoLocation }, () => {
