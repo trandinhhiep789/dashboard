@@ -566,7 +566,6 @@ class FormContainerCom extends Component {
     }
 
     handleCloseModle(){
-        debugger
         this.props.hideModal();
     }
 
