@@ -35,12 +35,13 @@ class EditCom extends React.Component {
             IsCloseForm: false,
             DataSource: {},
             IsLoadDataComplete: false,
+            IsSystem: false
         };
     }
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
-   
+
         this.callLoadData(this.props.match.params.id);
     }
 
@@ -73,7 +74,6 @@ class EditCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -84,9 +84,9 @@ class EditCom extends React.Component {
                 apiResult.ResultObject.ShipmentOrder_DeliverUserList = [{ UserName: apiResult.ResultObject.DeputyUserName, FullName: apiResult.ResultObject.FullName }]
                 this.setState({
                     DataSource: apiResult.ResultObject,
-                    IsLoadDataComplete: true
+                    IsLoadDataComplete: true,
+                    IsSystem: apiResult.ResultObject.IsSystem,
                 });
-                console.log('111', apiResult.ResultObject)
             }
         });
     }
@@ -113,7 +113,7 @@ class EditCom extends React.Component {
                                 name="txtServiceAgreementID"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                readOnly={true}
                                 label="mã hợp đồng"
                                 placeholder="Mã hợp đồng"
                                 controltype="InputControl"
@@ -128,6 +128,8 @@ class EditCom extends React.Component {
                                 name="txtServiceAgreementTypeID"
                                 colspan="8"
                                 labelcolspan="4"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 label="loại hợp đồng"
                                 validatonList={["Comborequired"]}
                                 isautoloaditemfromcache={true}
@@ -147,6 +149,8 @@ class EditCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 label="loại dịch vụ"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 validatonList={["Comborequired"]}
                                 isautoloaditemfromcache={true}
                                 loaditemcachekeyid="ERPCOMMONCACHE.SERVICETYPE"
@@ -179,6 +183,8 @@ class EditCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 label="đơn vị vận chuyển"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 isautoloaditemfromcache={true}
                                 loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
                                 valuemember="PartnerID"
@@ -199,6 +205,8 @@ class EditCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 label="khu vực"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 validatonList={["Comborequired"]}
                                 isautoloaditemfromcache={true}
                                 loaditemcachekeyid="ERPCOMMONCACHE.AREA"
@@ -237,6 +245,8 @@ class EditCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 label="Nhân viên  giao"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 IsLabelDiv={true}
                                 validatonList={["Comborequired"]}
                                 controltype="InputMultiControl"
@@ -248,7 +258,7 @@ class EditCom extends React.Component {
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.ElementDatetime
+                            {/* <FormControl.ElementDatetime
                                 name="dtSignedDate"
                                 colspan="8"
                                 labelcolspan="4"
@@ -261,11 +271,27 @@ class EditCom extends React.Component {
                                 value=""
                                 validatonList={["required"]}
                                 datasourcemember="SignedDate"
+                            /> */}
+                            <FormControl.FormControlDatetime
+                                name="dtSignedDate"
+                                colspan="8"
+                                labelcolspan="4"
+                                disabled={this.state.IsSystem}
+                                readOnly={false}
+                                showTime={false}
+                                timeFormat={false}
+                                dateFormat="YYYY-MM-DD"
+                                label="ngày ký hợp đồng"
+                                placeholder="Ngày ký hợp đồng"
+                                controltype="InputControl"
+                                value=""
+                                validatonList={["required"]}
+                                datasourcemember="SignedDate"
                             />
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.ElementDatetime
+                            {/* <FormControl.ElementDatetime
                                 name="dtExpiredDate"
                                 colspan="8"
                                 labelcolspan="4"
@@ -278,8 +304,23 @@ class EditCom extends React.Component {
                                 value=""
                                 validatonList={["required"]}
                                 datasourcemember="ExpiredDate"
+                            /> */}
+                            <FormControl.FormControlDatetime
+                                name="dtExpiredDate"
+                                colspan="8"
+                                labelcolspan="4"
+                                disabled={this.state.IsSystem}
+                                readOnly={false}
+                                showTime={false}
+                                timeFormat={false}
+                                dateFormat="YYYY-MM-DD"
+                                label="ngày hết hạn hợp đồng"
+                                placeholder="Ngày hết hạn hợp đồng"
+                                controltype="InputControl"
+                                value=""
+                                validatonList={["required"]}
+                                datasourcemember="ExpiredDate"
                             />
-
                         </div>
 
                         <div className="col-md-6">
@@ -291,11 +332,13 @@ class EditCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 classNameCustom="customCheckbox"
+                                readOnly={this.state.IsSystem}
+                                disabled={this.state.IsSystem}
                             />
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.ElementDatetime
+                            {/* <FormControl.ElementDatetime
                                 name="dtExtendedDate"
                                 colspan="8"
                                 labelcolspan="4"
@@ -307,6 +350,21 @@ class EditCom extends React.Component {
                                 controltype="InputControl"
                                 value=""
                                 //validatonList={[]}
+                                datasourcemember="ExtendedDate"
+                            /> */}
+                            <FormControl.FormControlDatetime
+                                name="dtExtendedDate"
+                                colspan="8"
+                                labelcolspan="4"
+                                disabled={this.state.IsSystem}
+                                readOnly={false}
+                                showTime={false}
+                                timeFormat={false}
+                                dateFormat="YYYY-MM-DD"
+                                label="gia hạn đến ngày"
+                                placeholder="Gia hạn đến ngày"
+                                controltype="InputControl"
+                                value=""
                                 datasourcemember="ExtendedDate"
                             />
                         </div>
@@ -320,11 +378,13 @@ class EditCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 classNameCustom="customCheckbox"
+                                readOnly={this.state.IsSystem}
+                                disabled={this.state.IsSystem}
                             />
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.ElementDatetime
+                            {/* <FormControl.ElementDatetime
                                 name="dtLiquidateddate"
                                 colspan="8"
                                 labelcolspan="4"
@@ -336,6 +396,21 @@ class EditCom extends React.Component {
                                 controltype="InputControl"
                                 value=""
                                 // validatonList={[]}
+                                datasourcemember="Liquidateddate"
+                            /> */}
+                            <FormControl.FormControlDatetime
+                                name="dtLiquidateddate"
+                                colspan="8"
+                                labelcolspan="4"
+                                disabled={this.state.IsSystem}
+                                readOnly={false}
+                                showTime={false}
+                                timeFormat={false}
+                                dateFormat="YYYY-MM-DD"
+                                label="ngày thanh lý hợp đồng"
+                                placeholder="Ngày thanh lý hợp đồng"
+                                controltype="InputControl"
+                                value=""
                                 datasourcemember="Liquidateddate"
                             />
                         </div>
@@ -349,6 +424,8 @@ class EditCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 classNameCustom="customCheckbox"
+                                readOnly={this.state.IsSystem}
+                                disabled={this.state.IsSystem}
                             />
                         </div>
 
@@ -357,7 +434,7 @@ class EditCom extends React.Component {
                                 name="txtDepositMoney"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                readOnly={this.state.IsSystem}
                                 label="số tiền ký quỹ"
                                 placeholder="Số tiền ký quỹ"
                                 controltype="InputControl"
@@ -367,13 +444,16 @@ class EditCom extends React.Component {
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.ElementDatetime
+
+                            <FormControl.FormControlDatetime
                                 name="dtDepositedDate"
                                 colspan="8"
                                 labelcolspan="4"
+                                disabled={this.state.IsSystem}
                                 readOnly={false}
+                                showTime={false}
                                 timeFormat={false}
-                                dateFormat="DD/MM/YYYY"
+                                dateFormat="YYYY-MM-DD"
                                 label="ngày ký quỹ"
                                 placeholder="Ngày ký quỹ"
                                 controltype="InputControl"
@@ -393,6 +473,7 @@ class EditCom extends React.Component {
                                 controltype="InputControl"
                                 value=""
                                 datasourcemember="DepositNote"
+                                readOnly={this.state.IsSystem}
                             />
                         </div>
 
@@ -408,6 +489,8 @@ class EditCom extends React.Component {
                                 rows={6}
                                 maxSize={500}
                                 classNameCustom="customcontrol"
+                                readOnly={this.state.IsSystem}
+                                disabled={this.state.IsSystem}
                             />
                         </div>
 
@@ -420,6 +503,8 @@ class EditCom extends React.Component {
                                 colspan={10}
                                 labelcolspan={2}
                                 classNameCustom="customCheckbox"
+                                readOnly={this.state.IsSystem}
+                                disabled={this.state.IsSystem}
                             />
                         </div>
 

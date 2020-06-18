@@ -64,7 +64,6 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError

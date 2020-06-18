@@ -117,6 +117,7 @@ class FeeAppendixDetailElementCom extends Component {
                             labelcolspan="3"
                             readOnly={true}
                             timeFormat={false}
+                            showTime={false}
                             dateFormat="YYYY-MM-DD"
                             label="từ ngày"
                             placeholder="Từ ngày"
@@ -134,6 +135,7 @@ class FeeAppendixDetailElementCom extends Component {
                             colspan="9"
                             labelcolspan="3"
                             readOnly={true}
+                            showTime={false}
                             timeFormat={false}
                             dateFormat="YYYY-MM-DD"
                             label="đến ngày"
