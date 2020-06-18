@@ -422,7 +422,6 @@ class FormControlDatetimeCom extends Component {
         else {
             isShowTime = false
         }
-        console.log('DatePicker', isShowTime)
         return (
             <div className={formRowClassName} >
                 <div className={labelDivClassName}>
