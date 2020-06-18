@@ -53,7 +53,8 @@ class DetailCom extends React.Component {
             Abiliti: {},
             IsLoadDataComplete: false,
             dataExportFeeAppendix: [],
-            dataExportAbility: []
+            dataExportAbility: [],
+            IsSystem: false,
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -65,6 +66,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
+           
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -97,7 +99,8 @@ class DetailCom extends React.Component {
                     dataExportAbility: tempDataAbility,
                     DataSource: apiResult.ResultObject,
                     ServiceAgreementInfo: apiResult.ResultObject,
-                    IsLoadDataComplete: true
+                    IsLoadDataComplete: true,
+                    IsSystem: apiResult.ResultObject.IsSystem
                 });
             }
         });
@@ -113,8 +116,6 @@ class DetailCom extends React.Component {
             />
         );
     }
-
-
 
     handleItemEditFeeAppendix(index) {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
@@ -253,6 +254,7 @@ class DetailCom extends React.Component {
 
 
     render() {
+        const { IsSystem } = this.state;
         if (this.state.IsLoadDataComplete) {
             return (
                 <div className="col-lg-12">
@@ -283,6 +285,7 @@ class DetailCom extends React.Component {
                                 DataExport={this.state.dataExportFeeAppendix}
                                 fileName={TitleFromFeeAppendix}
                                 onExportFile={this.handleExportFileFeeAppendix.bind(this)}
+                                isSystem= {IsSystem}
                             />
 
                             <InputGridControl
@@ -301,6 +304,7 @@ class DetailCom extends React.Component {
                                 DataExport={this.state.dataExportAbility}
                                 fileName={TitleFromFeeAppendix}
                                 onExportFile={this.handleExportFileAbility.bind(this)}
+                                isSystem= {IsSystem}
                             />
                         </div>
                         <footer className="card-footer text-right">
@@ -310,9 +314,6 @@ class DetailCom extends React.Component {
                         </footer>
                     </div>
                 </div>
-
-
-
             );
         }
         return (

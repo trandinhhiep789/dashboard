@@ -153,7 +153,7 @@ class EditCom extends React.Component {
                                 readOnly={this.state.IsSystem}
                                 validatonList={["Comborequired"]}
                                 isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.SERVICETYPE"
+                                loaditemcachekeyid="ERPCOMMONCACHE.TMS_SERVICETYPE"
                                 valuemember="ServiceTypeID"
                                 nameMember="ServiceTypeName"
                                 controltype="InputControl"

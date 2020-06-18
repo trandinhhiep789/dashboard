@@ -19,7 +19,7 @@ import {
     AddLink,
     APIHostName,
     SearchAPIPath,
-    DeleteAPIPath,
+    DeleteNewAPIPath,
     IDSelectColumnName,
     PKColumnName,
     InitSearchParams,
@@ -151,6 +151,7 @@ class SearchCom extends React.Component {
     }
 
     handleDelete(deleteList, pkColumnName) {
+        debugger
         let listMLObject = [];
         deleteList.map((row, index) => {
             let MLObject = {};
@@ -160,7 +161,7 @@ class SearchCom extends React.Component {
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
-        this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {

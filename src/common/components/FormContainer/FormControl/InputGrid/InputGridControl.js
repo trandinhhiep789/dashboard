@@ -175,19 +175,19 @@ class InputGridControlCom extends Component {
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         const fileExtension = '.xlsx';
         let result;
-        if (this.props.DataExport.length == 0){
-             result= {
+        if (this.props.DataExport.length == 0) {
+            result = {
                 IsError: true,
                 Message: "Dữ liệu không tồn tại. Không thể xuất file!"
             };
         }
-        else{
+        else {
             const ws = XLSX.utils.json_to_sheet(this.props.DataExport);
             const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
             const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
             const data = new Blob([excelBuffer], { type: fileType });
             FileSaver.saveAs(data, this.props.fileName + fileExtension);
-            result= {
+            result = {
                 IsError: false,
                 Message: "Xuất file thành công!"
             };
@@ -422,7 +422,7 @@ class InputGridControlCom extends Component {
     //#endregion get Page
 
     render() {
-        //console.log('button link', this.props.IsCustomAddLink, this.props.AddLink, this.props.params)
+       
         return (
             <div className="card">
                 <div className="card-title">
@@ -440,28 +440,43 @@ class InputGridControlCom extends Component {
                                             }
                                         }}
                                     >
-                                        <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                        <button type="button" className="btn btn-info btnEditCard1" title="" data-provide="tooltip" data-original-title="Thêm">
                                             <span className="fa fa-plus ff"> Thêm </span>
                                         </button>
                                     </Link>)
                                     : (
-                                        <button type="button" className="btn btnEditCard" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleInsertClick}>
-                                            <span className="fa fa-plus ff"> Thêm </span>
-                                        </button>
+                                        <React.Fragment>
+                                            <button type="button" className="btn btnEditCard btnEditCard2" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleInsertClick}>
+                                                <span className="fa fa-plus ff"> Thêm </span>
+                                            </button>
+
+                                            {this.props.IsExportFile == true &&
+                                                <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)} >
+                                                    <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                                </button>
+                                            }
+                                        </React.Fragment>
                                     )
                                 )
                                 : (
-                                    <button type="button" className="btn btnEditCard" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Thêm">
-                                        <span className="fa fa-plus ff"> Thêm </span>
-                                    </button>
+                                    <React.Fragment>
+                                        <button type="button" className="btn btnEditCard btnEditCard3" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Thêm">
+                                            <span className="fa fa-plus ff"> Thêm </span>
+                                        </button>
+                                        {
+                                            this.props.IsExportFile == true &&
+                                            <button type="button" className="btn btn-export ml-10" title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Xuất file excel" onClick={this.handleExportCSV.bind(this)} disabled>
+                                                <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                            </button>
+                                        }
+
+
+                                    </React.Fragment>
+
                                 )
 
                             }
-                            {this.props.IsExportFile == true &&
-                                <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)}>
-                                    <span className="fa fa-file-excel-o"> Xuất file excel </span>
-                                </button>
-                            }
+
                         </div>
                     </div>
 

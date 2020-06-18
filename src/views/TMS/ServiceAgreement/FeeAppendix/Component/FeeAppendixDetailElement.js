@@ -18,11 +18,16 @@ class FeeAppendixDetailElementCom extends Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
-
+            IsSystem: false
         }
     }
 
     componentDidMount() {
+        if (this.props.index != undefined) {
+            this.setState({
+                IsSystem: this.props.dataSource.FeeAppendixDetail_ItemList[this.props.index].IsSystem
+            })
+        }
     }
 
     handleSubmit(From, MLObject) {
@@ -33,14 +38,14 @@ class FeeAppendixDetailElementCom extends Component {
         MLObject.ProductID = MLObject.ProductID[0].ProductID;
         if (this.props.index != undefined) {
             MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
-            MLObject.FeeAppendixDetailID = 
-            this.props.callFetchAPI(APIHostName, EditFeeAppendixDetailPath, MLObject).then(apiResult => {
-                this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
-            });
+            MLObject.FeeAppendixDetailID =
+                this.props.callFetchAPI(APIHostName, EditFeeAppendixDetailPath, MLObject).then(apiResult => {
+                    this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
+                });
         }
         else {
             MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-            
+
             this.props.callFetchAPI(APIHostName, AddFeeAppendixDetailPath, MLObject).then(apiResult => {
                 this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
             });
@@ -48,7 +53,7 @@ class FeeAppendixDetailElementCom extends Component {
     }
 
     render() {
-
+        const { IsSystem } = this.state;
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectFeeAppendixDetailItem}
@@ -59,7 +64,7 @@ class FeeAppendixDetailElementCom extends Component {
             >
                 <div className="row">
 
-                <div className="col-md-6">
+                    <div className="col-md-6">
                         <FormControl.FormControlTextBox
                             name="txtFeeAppendixDetailID"
                             colspan="9"
@@ -81,6 +86,7 @@ class FeeAppendixDetailElementCom extends Component {
                             name="cbMainGroupID"
                             colspan="9"
                             labelcolspan="3"
+                            disabled={IsSystem}
                             label="nghành hàng"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
@@ -109,6 +115,7 @@ class FeeAppendixDetailElementCom extends Component {
                             nameMember="SubGroupName"
                             controltype="InputControl"
                             value={-1}
+                            disabled={IsSystem}
                             listoption={[]}
                             datasourcemember="SubGroupID"
                             filterName="cbMainGroupID"
@@ -132,6 +139,7 @@ class FeeAppendixDetailElementCom extends Component {
                             nameMember="TechspecsName"
                             controltype="InputControl"
                             value={-1}
+                            disabled={IsSystem}
                             listoption={[]}
                             datasourcemember="TechspecsID"
                             filterobj="SubGroupID"
@@ -149,6 +157,7 @@ class FeeAppendixDetailElementCom extends Component {
                             label="giá trị"
                             // validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
+                            disabled={IsSystem}
                             loaditemcachekeyid="ERPCOMMONCACHE.TECHSPECSVALUE"
                             valuemember="TechSpecsValueID"
                             nameMember="Value"
@@ -187,6 +196,7 @@ class FeeAppendixDetailElementCom extends Component {
                             validatonList={["required"]}
                             IsLabelDiv={true}
                             isMulti={false}
+                            disabled={IsSystem}
                         />
                     </div>
 
@@ -195,13 +205,14 @@ class FeeAppendixDetailElementCom extends Component {
                             name="txtServiceFee"
                             colspan="9"
                             labelcolspan="3"
-                            readOnly={false}
+                            readOnly={IsSystem}
                             label="giá dịch vụ"
                             placeholder="Giá dịch vụ"
                             controltype="InputControl"
                             value=""
                             validatonList={["required"]}
                             datasourcemember="ServiceFee"
+                            disabled={IsSystem}
                         />
                     </div>
 
@@ -210,12 +221,13 @@ class FeeAppendixDetailElementCom extends Component {
                             name="txtNote"
                             colspan="9"
                             labelcolspan="3"
-                            readOnly={false}
+                            readOnly={IsSystem}
                             label="Ghi chú"
                             controltype="InputControl"
                             value=""
                             datasourcemember="Note"
                             classNameCustom="customcontrol"
+                            disabled={IsSystem}
                         />
                     </div>
                     <div className="col-md-6">
@@ -223,7 +235,8 @@ class FeeAppendixDetailElementCom extends Component {
                             name="ckIsActived"
                             colspan="9"
                             labelcolspan="3"
-                            readOnly={false}
+                            readOnly={IsSystem}
+                            disabled={IsSystem}
                             label="kích hoạt"
                             controltype="InputControl"
                             value=""
