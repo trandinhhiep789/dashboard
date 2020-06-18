@@ -213,19 +213,22 @@ class DetailCom extends React.Component {
 
 
     render() {
-        if (this.state.IsCloseForm) {
-            return <Redirect to={BackLink} />;
-        }
+       
 
         const { IsSystem, FeeAppendixDetailInfo, FeeAppendixDetailItemList, dataExport, DataSource } = this.state;
         if (this.state.IsLoadDataComplete) {
+            const id = DataSource.ServiceAgreementID;
+            const backLink = "/ServiceAgreement/Detail/" + id;
+            if (this.state.IsCloseForm) {
+                return <Redirect to={backLink} />;
+            }
             return (
                 <FormContainer
                     FormName={TitleFormDetail}
                     MLObjectDefinition={MLObjectDefinition}
                     dataSource={DataSource}
                     listelement={[]}
-                    BackLink={BackLink}
+                    BackLink={backLink}
                     isSubmitForm={false}
 
                 >
