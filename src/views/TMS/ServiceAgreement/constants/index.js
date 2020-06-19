@@ -23,12 +23,48 @@ export const PKColumnNameFeeAppendix = "FeeAppendixID";
 export const TitleFromFeeAppendix = "Phụ lục biểu phí";
 
 export const PKColumnNameAbiliti = "AbilityID";
-export const TitleFromAbiliti= "Năng lực";
+export const TitleFromAbiliti = "Năng lực";
 
 export const IDSelectColumnNameFeeAppendix = "chkSelect";
 export const AddLinkFeeAppendix = "/ServiceAgreement/FeeAppendix/Add";
 
+export const ElementServiceAgreementList = [
+    {
+        type: "text",
+        name: "txtDepositNote",
+        colspan: "8",
+        labelcolspan: "4",
+        readOnly: false,
+        label: "ghi chú ký quỹ",
+        placeholder: "Ghi chú ký quỹ",
+        value: "",
+        DataSourceMember: "DepositNote",
 
+    },
+    {
+        type: "checkbox",
+        name: "chkIsLiquidated",
+        label: "đã thanh lý hợp đồng",
+        colspan: "8",
+        labelcolspan: "4",
+        value: false,
+        placeholder: "",
+        icon: "",
+        DataSourceMember: "IsLiquidated",
+        listoption: [],
+        readonly: false,
+        validatonList: []
+    }
+];
+
+export const GridMLObjectServiceAgreement = [
+    {
+        Name: "DepositNote",
+        DefaultValue: "",
+        BindControlName: "txtDepositNote",
+        DataSourceMember: "DepositNote"
+    },
+]
 
 export const DataGridColumnItemListFeeAppendix = [
     // {
@@ -177,7 +213,6 @@ export const DetailAPIPath = [
     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ" },
     { Link: "", Title: "Chi tiết" }
 ];
-
 
 export const DataGridColumnList = [
     {
@@ -336,7 +371,7 @@ export const SearchElementList = [
         name: "dtSignedDate",
         DataSourceMember: "SignedDate",
         label: "Từ ngày",
-        value:  dtFromdate ,
+        value: dtFromdate,
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,

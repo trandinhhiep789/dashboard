@@ -151,7 +151,6 @@ class SearchCom extends React.Component {
     }
 
     handleDelete(deleteList, pkColumnName) {
-        debugger
         let listMLObject = [];
         deleteList.map((row, index) => {
             let MLObject = {};
