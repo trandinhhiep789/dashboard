@@ -47,6 +47,7 @@ class AddCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
+     
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.DeputyUserName = MLObject.ShipmentOrder_DeliverUserList[0].UserName;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
@@ -73,10 +74,19 @@ class AddCom extends React.Component {
     }
 
     handleChange(formData, MLObject) {
-        if (formData.dtSignedDate.value >= formData.dtExpiredDate.value) {
-            formData.dtExpiredDate.ErrorLst.IsValidatonError = true;
-            formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc hợp đồng phải lớn hơn ngày kí hợp đồng";
+        
+        if (formData.dtExpiredDate.value.length > 0) {
+            debugger
+            if (formData.dtSignedDate.value >= formData.dtExpiredDate.value) {
+                formData.dtExpiredDate.ErrorLst.IsValidatonError = true;
+                formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc hợp đồng phải lớn hơn ngày kí hợp đồng";
+            }
+            else {
+                formData.dtExpiredDate.ErrorLst.IsValidatonError = false;
+                formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "";
+            }
         }
+
 
         if (this.state.IsExtended) {
 
@@ -128,16 +138,16 @@ class AddCom extends React.Component {
         }
         else {
             IsDeposited = false
-            formData.txtDepositMoney.value="";
-            formData.dtDepositedDate.value="";
-            formData.txtDepositNote.value="";
+            formData.txtDepositMoney.value = "";
+            formData.dtDepositedDate.value = "";
+            formData.txtDepositNote.value = "";
         }
         if (formData.chkIsLiquidated.value) {
             IsLiquidated = true
         }
         else {
             IsLiquidated = false;
-            formData.dtLiquidateddate.value="";
+            formData.dtLiquidateddate.value = "";
         }
 
         this.setState({
@@ -187,7 +197,6 @@ class AddCom extends React.Component {
             <FormContainer
                 FormName={TitleFormAdd}
                 MLObjectDefinition={MLObjectDefinition}
-                dataSource={this.state.DataSource}
                 listelement={[]}
                 BackLink={BackLink}
                 onSubmit={this.handleSubmit}
@@ -313,42 +322,10 @@ class AddCom extends React.Component {
                             isMultiSelect={false}
                         />
 
-                        {/* <MultiSelectComboBox
-                            name="ShipmentOrder_DeliverUserList"
-                            colspan="8"
-                            labelcolspan="4"
-                            label="Nhân viên  giao"
-                            IsLabelDiv={true}
-                            isautoloaditemfromcache={false}
-                            loaditemcachekeyid={"PIMCACHE_PIM_SHIPPINGMETHOD"}
-                            valuemember="ShippingMethodID"
-                            nameMember="ShippingMethodName"
-                            controltype="InputControl"
-                            value={''}
-                            ShipmentOrder={this.state.ShipmentOrder}
-                            onChange={this.handleValueChange1}
-                            listoption={[]}
-                            datasourcemember="ShipmentOrder_DeliverUserList"
-                            //validatonList={["Comborequired"]}
-                            validationErrorMessage={''}
-                        /> */}
                     </div>
 
                     <div className="col-md-6">
-                        {/* <FormControl.ElementDatetime
-                            name="dtSignedDate"
-                            colspan="8"
-                            labelcolspan="4"
-                            readOnly={false}
-                            timeFormat={false}
-                            dateFormat="DD/MM/YYYY"
-                            label="ngày ký hợp đồng"
-                            placeholder="Ngày ký hợp đồng"
-                            controltype="InputControl"
-                            value=""
-                            validatonList={["required"]}
-                            datasourcemember="SignedDate"
-                        /> */}
+              
                         <FormControl.FormControlDatetime
                             name="dtSignedDate"
                             colspan="8"
@@ -442,7 +419,7 @@ class AddCom extends React.Component {
                             datasourcemember="ExtendedDate"
                         />
                     </div>
-              
+
                     <div className="col-md-6">
                         <FormControl.CheckBox
                             label="đã thanh lý hợp đồng"

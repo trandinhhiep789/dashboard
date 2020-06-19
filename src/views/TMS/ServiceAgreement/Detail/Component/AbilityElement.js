@@ -50,7 +50,18 @@ class AbilityElementCom extends Component {
         }
 
     }
-
+    handleChange(formData, MLObject) {
+        if(formData.dtToDate.value.length >0){
+            if (formData.dtFromDate.value >= formData.dtToDate.value ) {
+                formData.dtToDate.ErrorLst.IsValidatonError = true;
+                formData.dtToDate.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc phải lớn hơn bắt đầu";
+            }
+            else{
+                formData.dtToDate.ErrorLst.IsValidatonError = false;
+                formData.dtToDate.ErrorLst.ValidatonErrorMessage = "";
+            }
+        }
+    }
 
 
     render() {
@@ -63,6 +74,7 @@ class AbilityElementCom extends Component {
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
                 IsCloseModal={true}
+                onchange={this.handleChange.bind(this)}
             >
 
                 <div className="row">

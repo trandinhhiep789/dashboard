@@ -122,7 +122,7 @@ class FormContainerCom extends Component {
         if (controltype == "InputControl") {
 
             const datasourcemember = child.props.datasourcemember;
-            if (dataSource != null && dataSource.length > 0 && datasourcemember != null) {
+            if (dataSource != null &&  datasourcemember != null) {
                 controlvalue = dataSource[datasourcemember];
             }
 

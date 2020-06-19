@@ -128,10 +128,17 @@ class EditCom extends React.Component {
             IsLiquidated,
             IsDeposited
         })
-        if (formData.dtSignedDate.value >= formData.dtExpiredDate.value) {
-            formData.dtExpiredDate.ErrorLst.IsValidatonError = true;
-            formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc hợp đồng phải lớn hơn ngày kí hợp đồng";
+        if(formData.dtExpiredDate.value.length >0){
+            if (formData.dtSignedDate.value >= formData.dtExpiredDate.value) {
+                formData.dtExpiredDate.ErrorLst.IsValidatonError = true;
+                formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc hợp đồng phải lớn hơn ngày kí hợp đồng";
+            }
+            else{
+                formData.dtExpiredDate.ErrorLst.IsValidatonError = false;
+                formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "";
+            }
         }
+        
 
         if (this.state.IsExtended) {
 
