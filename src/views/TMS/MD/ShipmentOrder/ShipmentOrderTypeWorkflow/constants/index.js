@@ -172,6 +172,36 @@ export const MLObjectDefinition = [
         DataSourceMember: "Description"
     },
     {
+        Name: "IsOnlyShowOnHasCollection",
+        DefaultValue: "",
+        BindControlName: "IsOnlyShowOnHasCollection",
+        DataSourceMember: "IsOnlyShowOnHasCollection"
+    },
+    {
+        Name: "IsPaidInStep",
+        DefaultValue: "",
+        BindControlName: "IsPaidInStep",
+        DataSourceMember: "IsPaidInStep"
+    },
+    {
+        Name: "IsArrivalReceiverLocationStep",
+        DefaultValue: "",
+        BindControlName: "IsArrivalReceiverLocationStep",
+        DataSourceMember: "IsArrivalReceiverLocationStep"
+    },
+    {
+        Name: "AutoChangeStepType",
+        DefaultValue: "0",
+        BindControlName: "AutoChangeStepType",
+        DataSourceMember: "AutoChangeStepType"
+    },
+    {
+        Name: "AutoChangeToShipmentOrderStepID",
+        DefaultValue: "",
+        BindControlName: "AutoChangeToShipmentOrderStepID",
+        DataSourceMember: "AutoChangeToShipmentOrderStepID"
+    },
+    {
         Name: "OrderIndex",
         DefaultValue: "",
         BindControlName: "OrderIndex",
@@ -246,7 +276,7 @@ export const InputNextColumnList = [
     //     Caption: "Quyền chuyển bước",
     //     DataSourceMember: "ChooseFunctionID",
     //     Width: 200
-    // }
+    // },
     {
         Name: "ChooseFunctionName",
         Type: "text",
@@ -319,5 +349,11 @@ export const GridMLObjectModelNext = [
         DefaultValue: "",
         BindControlName: "ChooseFunctionID",
         DataSourceMember: "ChooseFunctionID"
+    },
+    {
+        Name: "ChooseFunctionName",
+        DefaultValue: "",
+        BindControlName: "ChooseFunctionName",
+        DataSourceMember: "ChooseFunctionName"
     }
 ];

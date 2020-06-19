@@ -139,7 +139,7 @@ class ElementCheckboxCom extends Component {
                     <input type="checkbox" id="search-avd" className="custom-control-input" defaultChecked />
                     {labeldiv}
                 </div> */}
-                <div class="form-group form-group-input">
+                <div className="form-group form-group-input">
                     <label>&nbsp;</label>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" id="search-avd" className="custom-control-input" defaultChecked />

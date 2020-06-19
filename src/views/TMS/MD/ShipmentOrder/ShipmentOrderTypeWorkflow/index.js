@@ -16,6 +16,7 @@ import { ModalManager } from 'react-dynamic-modal/lib';
 import { MessageModal } from "../../../../../common/components/Modal";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_USERGROUP, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_SHIPMENTORDERSTEP } from "../../../../../constants/keyCache";
+import { intervalToDuration } from "date-fns";
 
 class ShipmentOrderTypeWorkflowCom extends React.Component {
     constructor(props) {
@@ -204,8 +205,36 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     }
 
     handleInputChangeList(formData, tabNameList, tabMLObjectDefinitionList) {
-        //console.log("handleInputChangeList_wf", formData);
-        // console.log("formData", this.state.FormData);
+        // console.log("handleInputChangeList_wf_formData", formData);
+        // console.log("ShipmentOrderTypeWorkflow", this.props.ShipmentOrderTypeWorkflow);
+        // console.log("datasource", this.props.dataSource);
+
+        //load mã bước tự động chuyển
+        let listAutoChangeToShipmentOrderStepID = [];
+        let autoChangeToShipmentOrderStepID = formData.ShipmentOrderTypeWorkflow.AutoChangeToShipmentOrderStepID;
+        if (parseInt(formData.ShipmentOrderTypeWorkflow.AutoChangeStepType) > 0) {
+            if (this.props.ShipmentOrderTypeWorkflow && this.props.ShipmentOrderTypeWorkflow.length > 0) {
+                if (!autoChangeToShipmentOrderStepID) {
+                    autoChangeToShipmentOrderStepID = this.props.ShipmentOrderTypeWorkflow[0].ShipmentOrderStepID;
+                    formData.ShipmentOrderTypeWorkflow.AutoChangeToShipmentOrderStepID = this.props.ShipmentOrderTypeWorkflow[0].ShipmentOrderStepID;
+                }
+                listAutoChangeToShipmentOrderStepID = this.props.ShipmentOrderTypeWorkflow.map(function (item, index) {
+                    return {
+                        value: item.ShipmentOrderStepID,
+                        label: item.ShipmentOrderStepName
+                    };
+                });
+            }
+        } else {
+            formData.ShipmentOrderTypeWorkflow.AutoChangeToShipmentOrderStepID = "";
+        }
+
+        this.setState({
+            ListAutoChangeToShipmentOrderStepID: listAutoChangeToShipmentOrderStepID,
+            AutoChangeToShipmentOrderStepID: autoChangeToShipmentOrderStepID
+
+        });
+
         let keys = []
         //formData.ShipmentOrderType_WF_Next = this.state.FormData.ShipmentOrderType_WF_Next;
         //formData.ShipmentOrderType_WF_Permis = this.state.ShipmentOrderType_WF_PermisData;
@@ -294,6 +323,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                     this.props.hideModal();
                 }
             });
+            //console.log("newFormData", newFormData);
 
         }
     }
@@ -394,6 +424,22 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         labelcolspan={4} colspan={8}
                                     />
 
+                                    <FormControl.ComboBox
+                                        name="AutoChangeStepType" type="select" isautoloaditemfromcache={false} isRequired={false}
+                                        label="Loại tự động chuyển bước" controltype="InputControl" datasourcemember="AutoChangeStepType"
+                                        listoption={[{ value: "0", label: "Không tự động" },
+                                        { value: "1", label: "Chuyển bước khi có thu tiền" }, { value: "2", label: "Chuyển bước không điều kiện" }]}
+                                        labelcolspan={4} colspan={8}
+                                    />
+
+                                    <FormControl.ComboBox
+                                        name="AutoChangeToShipmentOrderStepID" type="select" isautoloaditemfromcache={false}
+                                        isRequired={false}
+                                        value={this.state.AutoChangeToShipmentOrderStepID}
+                                        label="Mã bước tự động chuyển" controltype="InputControl" datasourcemember="AutoChangeToShipmentOrderStepID"
+                                        listoption={this.state.ListAutoChangeToShipmentOrderStepID ? this.state.ListAutoChangeToShipmentOrderStepID : []} labelcolspan={4} colspan={8}
+                                    />
+
                                     <FormControl.TextBox labelcolspan={4} colspan={8} readonly={false} name="StepColorCode" label="Màu sắc của bước"
                                         controltype="InputControl" datasourcemember="StepColorCode" maxSize={20} required={false}
                                     />
@@ -478,6 +524,18 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     />
                                     <FormControl.CheckBox labelcolspan={1} colspan={11} label="Có thông báo đến hệ thống của đối tác" name="IsNotifyToPartnerSystem"
                                         controltype="InputControl" datasourcemember="IsNotifyToPartnerSystem"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Chỉ hiển thị khi có phải thu tiền của khách hàng(có tiền COD hoặc tiền vật tư)" name="IsOnlyShowOnHasCollection"
+                                        controltype="InputControl" datasourcemember="IsOnlyShowOnHasCollection"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước nộp tiền cho thu ngân" name="IsPaidInStep"
+                                        controltype="InputControl" datasourcemember="IsPaidInStep"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước đến nhà khách" name="IsArrivalReceiverLocationStep"
+                                        controltype="InputControl" datasourcemember="IsArrivalReceiverLocationStep"
                                         swaplabelModal={true}
                                     />
                                 </div>

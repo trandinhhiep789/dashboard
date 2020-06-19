@@ -394,6 +394,15 @@ class ComboBoxCom extends Component {
 
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            this.setState({Listoption: nextProps.listoption})
+            const selectedValue = nextProps.value;
+            this.setState({ value: selectedValue });
+        }
+    }
+
     componentDidMount() {
         let listOption = this.props.listoption;
         // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
