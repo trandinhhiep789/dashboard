@@ -36,6 +36,7 @@ class InfoHistoryWFCom extends Component {
                             </thead>
                             <tbody>
                                 {this.state.ShipmentOrderType_WF && a.map((item, index) => {
+                                    const objlst = item.ImageFileURL.split(",");
                                     if (item.ProcessDate != null) {
                                         return (<tr key={index}>
                                             <td>{formatDate(item.ProcessDate)}</td>
@@ -43,13 +44,12 @@ class InfoHistoryWFCom extends Component {
                                             <td>{item.ProcessUser}</td>
                                             <td>
                                                 <div className="media">
-                                                    <img className="avatar" src='http://wfimagecdn.tterpbeta.vn/Normal_3b026f1e-8ce0-44a2-bc02-2c1ec1ac2561_202005211115.jpg' />
-                                                    <img className="avatar" src='http://wfimagecdn.tterpbeta.vn/Normal_3b026f1e-8ce0-44a2-bc02-2c1ec1ac2561_202005211115.jpg' />
-                                                    <img className="avatar" src='http://wfimagecdn.tterpbeta.vn/Normal_3b026f1e-8ce0-44a2-bc02-2c1ec1ac2561_202005211115.jpg' />
-                                                    <img className="avatar" src='http://wfimagecdn.tterpbeta.vn/Normal_3b026f1e-8ce0-44a2-bc02-2c1ec1ac2561_202005211115.jpg' />
+                                                    {objlst[0]!="" && objlst.map((item, index) =>
+
+                                                        <img src={item} key={index} className="avatar" />
+                                                    )}
 
                                                 </div>
-
                                             </td>
                                             <td>{item.Note}</td>
                                         </tr>)

@@ -16,9 +16,7 @@ class ShipmentOrderTypeWFCom extends Component {
             })
         }
     }
-
     render() {
-        console.log("ShipmentOrderType_WF", this.state.ShipmentOrderType_WF)
         return (
             <div className="card">
                 <div className="card-body">
