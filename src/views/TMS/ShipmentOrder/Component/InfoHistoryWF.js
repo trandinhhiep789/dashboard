@@ -41,7 +41,16 @@ class InfoHistoryWFCom extends Component {
                                             <td>{formatDate(item.ProcessDate)}</td>
                                             <td>{item.ShipmentOrderStepName}</td>
                                             <td>{item.ProcessUser}</td>
-                                            <td></td>
+                                            <td>
+                                                <div className="media">
+                                                    <img className="avatar" src='http://wfimagecdn.tterpbeta.vn/Normal_3b026f1e-8ce0-44a2-bc02-2c1ec1ac2561_202005211115.jpg' />
+                                                    <img className="avatar" src='http://wfimagecdn.tterpbeta.vn/Normal_3b026f1e-8ce0-44a2-bc02-2c1ec1ac2561_202005211115.jpg' />
+                                                    <img className="avatar" src='http://wfimagecdn.tterpbeta.vn/Normal_3b026f1e-8ce0-44a2-bc02-2c1ec1ac2561_202005211115.jpg' />
+                                                    <img className="avatar" src='http://wfimagecdn.tterpbeta.vn/Normal_3b026f1e-8ce0-44a2-bc02-2c1ec1ac2561_202005211115.jpg' />
+
+                                                </div>
+
+                                            </td>
                                             <td>{item.Note}</td>
                                         </tr>)
                                     }

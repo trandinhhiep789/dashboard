@@ -164,7 +164,7 @@ class ShipmentOrderDetailCom extends Component {
 
         return (
             <div className="card">
-                   <ReactNotification ref={this.notificationDOMRef} />
+                <ReactNotification ref={this.notificationDOMRef} />
                 <h4 className="card-title"><strong>Thông tin yêu cầu vận chuyển</strong></h4>
                 <div className="card-body">
                     <div className="form-row">
@@ -263,6 +263,22 @@ class ShipmentOrderDetailCom extends Component {
                             </div>
                         </div>
                     </div>
+                    {
+                        this.state.ShipmentOrder.IsCancelDelivery == true ?
+                            <div className="form-row">
+                                <div className="form-group col-md-2">
+                                    <span className="badge badge-danger">Hủy giao hàng</span>
+                                </div>
+                                <div className="form-group col-md-2">
+                                    <label className="col-form-label" >Lúc: {formatDate(this.state.ShipmentOrder.CancelDeliveryTime)}</label>
+                                </div>
+                                <div className="form-group col-md-8">
+                                    <label className="col-form-label" >Ghi chú lý do hủy: {this.state.ShipmentOrder.CancelDeliveryReasonNote}</label>
+                                </div>
+                            </div>
+                            : ""
+                    }
+
                 </div>
             </div>
         );

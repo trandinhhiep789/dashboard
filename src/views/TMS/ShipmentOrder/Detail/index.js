@@ -89,25 +89,14 @@ class DetailCom extends React.Component {
                         ShipmentOrderID={this.props.match.params.id}
                         ShipmentOrderTypeWF={this.state.ShipmentOrderType_WorkFlowList}
                         CurrentShipmentOrderStepID={this.state.CurrentShipmentOrderStepID}
+                        TotalMoney={this.state.DataSource.CollectedTotalMoney + this.state.DataSource.TotalCOD}
                     />
                     <ShipmentOrderDetail
                         ShipmentOrderID={this.props.match.params.id}
                         ShipmentOrderDetail={this.state.DataSource}
                         onhandleChange={this.ChangeLoadData}
                     />
-                    <ShipmentOrderAddress
-                        ShipmentOrderID={this.props.match.params.id}
-                        ShipmentOrderAddress={this.state.DataSource}
-                        ShipmentOrderAddressEdit={this.state.DataSource}
-
-                    />
-
-                    <InfoProduct
-                        ShipmentOrderID={this.props.match.params.id}
-                        InfoProduct={this.state.DataSource}
-                    />
-
-                    <InfoCoordinator
+                     <InfoCoordinator
                         ShipmentOrderID={this.props.match.params.id}
                         InfoCoordinator={this.state.DataSource}
                         onhandleChange={this.ChangeLoadData}
@@ -115,7 +104,16 @@ class DetailCom extends React.Component {
                         IsCoordinator={this.CheckPermissionUser(17)}
                         IsCancelDelivery={(this.CheckPermissionUser(23) && !this.state.DataSource.IsCancelDelivery)}
                     />
+                    <ShipmentOrderAddress
+                        ShipmentOrderID={this.props.match.params.id}
+                        ShipmentOrderAddress={this.state.DataSource}
+                        ShipmentOrderAddressEdit={this.state.DataSource}
+                    />
 
+                    <InfoProduct
+                        ShipmentOrderID={this.props.match.params.id}
+                        InfoProduct={this.state.DataSource}
+                    />
                     <InfoHistoryWF
                         ShipmentOrderID={this.props.match.params.id}
                         InfoHistoryWF={this.state.ShipmentOrderType_WorkFlowList}
