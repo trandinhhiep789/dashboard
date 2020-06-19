@@ -81,7 +81,7 @@ export const AddElementList = [
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "ShipmentOrderTypeID",
+        datasourcemember: "ShipmentOrderTypeID",
         readonly: false,
         validatonList: ["Comborequired"],
         isautoloaditemfromcache: true,

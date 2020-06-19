@@ -33,6 +33,7 @@ class FormContainerCom extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.elementItemRefs = [];
         const formData = this.bindData();
+        console.log("formData",formData)
         this.state = {
             FormData: formData,
             FormValidation: {},
@@ -47,6 +48,7 @@ class FormContainerCom extends Component {
 
     }
     componentDidMount() {
+        console.log("formData");
         this.setState({
             isDisabled: (this.props.dataSource != undefined ? this.props.dataSource.IsSystem : false)
         })
@@ -62,7 +64,6 @@ class FormContainerCom extends Component {
                 FormData: FormDataContol
             });
         }
-
     }
     //#region BinData
     bindData() {
@@ -566,7 +567,6 @@ class FormContainerCom extends Component {
     }
 
     handleCloseModle(){
-        debugger
         this.props.hideModal();
     }
 

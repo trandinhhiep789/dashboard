@@ -20,10 +20,6 @@ import {
     AddPagePath,
     GridMLMcRoleDefinition,
     InputMcRoleColumnList,
-    SearchMLmoldeDefinition,
-    SearchElementModeList,
-    SearchMcRoleAPIPath,
-    DataGridColumnListMultiple
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
@@ -40,7 +36,7 @@ class AddCom extends React.Component {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
-            AddElementList: AddElementList,
+           
             DataSource: {}
         };
         this.searchref = React.createRef();
@@ -78,6 +74,7 @@ class AddCom extends React.Component {
         });
     }
     render() {
+        console.log("AddElementList",AddElementList)
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -85,7 +82,7 @@ class AddCom extends React.Component {
             <FormContainer
                 FormName="Thêm gói sản phẩm lắp đặt kèm theo"
                 MLObjectDefinition={MLObjectDefinition}
-                listelement={this.state.AddElementList}
+                listelement={AddElementList}
                 onSubmit={this.handleSubmit}
                 BackLink={BackLink}
                 dataSource={[]}
