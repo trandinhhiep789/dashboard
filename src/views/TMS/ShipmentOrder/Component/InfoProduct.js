@@ -57,32 +57,43 @@ class InfoProductCom extends Component {
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Phí vận chuyển:</label>
+                            <label className="col-form-label bold">Tổng tiền bán vật tư:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label" >{formatMoney(this.state.ShipmentOrder.TotalShipmentFee,0)}đ</label>
+                            <label className="col-form-label" >{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney, 0)}đ</label>
                         </div>
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Tổng tiền COD:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label">{formatMoney(this.state.ShipmentOrder.TotalCOD,0)}đ</label>
+                            <label className="col-form-label">{formatMoney(this.state.ShipmentOrder.TotalCOD, 0)}đ</label>
                         </div>
                     </div>
-                    {/* <div className="form-row">
+                    <div className="form-row">
                         <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Có lắp đặt:</label>
+                            <label className="col-form-label bold">Tổng tiền phải thu:</label>
                         </div>
-                        <div className="form-group col-md-10">
-                            <div className="checkbox customCheckbox">
-                                <label>
-                                    <input type="checkbox" readOnly  checked={this.state.ShipmentOrder.IsInstall} />
-                                    <span className="cr">
-                                        <i className="cr-icon fa fa-check"></i></span>
-                                </label>
-                            </div>
+                        <div className="form-group col-md-4">
+                            <label className="col-form-label" >{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD, 0)}đ</label>
                         </div>
-                    </div> */}
+
+                    </div>
+                    <div className="form-row">
+                        <div className="form-group col-md-2">
+                            <label className="col-form-label bold">Thu tiền khách hàng:</label>
+                        </div>
+                        <div className="form-group col-md-4">
+                            {this.state.ShipmentOrder.IsCollectedMoney==true?<span className="badge badge-success">Đã thu tiền</span>: <span className="badge badge-danger">Chưa thu tiền</span>}
+                        </div>
+                        <div className="form-group col-md-2">
+                            <label className="col-form-label bold">Tổng tiền thu:</label>
+                        </div>
+                        <div className="form-group col-md-4">
+                        <label className="col-form-label">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney, 0)}đ</label>
+                        </div>
+
+                    </div>
+
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Ghi chú:</label>
@@ -95,8 +106,6 @@ class InfoProductCom extends Component {
                         <div className="col-md-12">
                             <h3 className="title">Danh sách hàng hóa:</h3>
                         </div>
-
-
                         <div className="table-responsive">
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                 <thead className="thead-light">
@@ -133,7 +142,7 @@ class InfoProductCom extends Component {
                                                 <td>{item.ProductID}</td>
                                                 <td>{item.ProductName}</td>
                                                 <td>{item.PackingUnitName}</td>
-                                                <td>{formatMoney(item.Price,0)}đ</td>
+                                                <td>{formatMoney(item.Price, 0)}đ</td>
                                                 <td>{item.Quantity}</td>
                                                 <td>{item.QuantityUnitName}</td>
                                                 <td>{item.SizeItem}</td>
@@ -181,7 +190,7 @@ class InfoProductCom extends Component {
                                                 <td>{item.ProductName}</td>
                                                 <td>{item.Quantity}</td>
                                                 <td>{item.QuantityUnitName}</td>
-                                                <td>{formatMoney(item.Price,0)}đ</td>
+                                                <td>{formatMoney(item.Price, 0)}đ</td>
                                                 <td>{item.SaleOrderID}</td>
                                             </tr>)
                                         })}
