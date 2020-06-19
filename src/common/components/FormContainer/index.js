@@ -33,7 +33,6 @@ class FormContainerCom extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.elementItemRefs = [];
         const formData = this.bindData();
-        console.log("formData",formData)
         this.state = {
             FormData: formData,
             FormValidation: {},
@@ -116,14 +115,17 @@ class FormContainerCom extends Component {
         return formDataList;
     }
     bindFormControlData(child, dataSource) {
+
         const controltype = child.props.controltype;
         let controlvalue = child.props.value;
         let controlname = child.props.name;
         if (controltype == "InputControl") {
+
             const datasourcemember = child.props.datasourcemember;
-            if (dataSource != null && datasourcemember != null) {
+            if (dataSource != null && dataSource.length > 0 && datasourcemember != null) {
                 controlvalue = dataSource[datasourcemember];
             }
+
             const ObjectName = { Name: controlname, datasourcemember: datasourcemember, value: controlvalue, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList };
             return { [controlname]: ObjectName };
         }
@@ -177,7 +179,7 @@ class FormContainerCom extends Component {
 
     //#region InputChange && InputChangeList
     handleInputChange(elementname, elementvalue, namelabel, valuelabel, filterrest) {
-        //console.log('change')
+
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
         if (typeof filterrest != "undefined" && filterrest != "") {
@@ -198,6 +200,9 @@ class FormContainerCom extends Component {
         this.setState({
             FormData: FormDataContolLstd,
         });
+        if (this.props.onchange != null) {
+            this.props.onchange(this.state.FormData, this.props.MLObjectDefinition);
+        }
 
     }
 
@@ -566,7 +571,7 @@ class FormContainerCom extends Component {
         );
     }
 
-    handleCloseModle(){
+    handleCloseModle() {
         this.props.hideModal();
     }
 
