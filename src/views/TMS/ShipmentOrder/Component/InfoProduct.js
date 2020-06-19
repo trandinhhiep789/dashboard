@@ -57,16 +57,16 @@ class InfoProductCom extends Component {
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Tổng tiền bán vật tư:</label>
-                        </div>
-                        <div className="form-group col-md-4">
-                            <label className="col-form-label" >{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney, 0)}đ</label>
-                        </div>
-                        <div className="form-group col-md-2">
                             <label className="col-form-label bold">Tổng tiền COD:</label>
                         </div>
                         <div className="form-group col-md-4">
                             <label className="col-form-label">{formatMoney(this.state.ShipmentOrder.TotalCOD, 0)}đ</label>
+                        </div>
+                        <div className="form-group col-md-2">
+                            <label className="col-form-label bold">Tổng tiền bán vật tư:</label>
+                        </div>
+                        <div className="form-group col-md-4">
+                            <label className="col-form-label" >{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney, 0)}đ</label>
                         </div>
                     </div>
                     <div className="form-row">
