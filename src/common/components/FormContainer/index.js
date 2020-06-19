@@ -33,11 +33,6 @@ class FormContainerCom extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.elementItemRefs = [];
         const formData = this.bindData();
-<<<<<<< HEAD
-        console.log('formData', formData)
-=======
-        console.log("formData",formData)
->>>>>>> bcc77969d53a4b9fe3b9adb749ec7f850ba5d268
         this.state = {
             FormData: formData,
             FormValidation: {},
@@ -125,7 +120,7 @@ class FormContainerCom extends Component {
         let controlvalue = child.props.value;
         let controlname = child.props.name;
         if (controltype == "InputControl") {
-            
+
             const datasourcemember = child.props.datasourcemember;
             if (dataSource != null && dataSource.length > 0 && datasourcemember != null) {
                 controlvalue = dataSource[datasourcemember];
