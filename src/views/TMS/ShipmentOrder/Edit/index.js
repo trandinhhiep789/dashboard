@@ -250,7 +250,7 @@ class EditCom extends React.Component {
                                         labelcolspan="4"
                                         readOnly={true}
                                         timeFormat={false}
-                                        dateFormat="YYYY-MM-DD HH:mm"
+                                        dateFormat="DD-MM-YYYY HH:mm"
                                         label="ngày tạo yêu cầu"
                                         placeholder="Ngày tạo yêu cầu"
                                         controltype="InputControl"
