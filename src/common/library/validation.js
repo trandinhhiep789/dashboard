@@ -44,8 +44,8 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
     }
 
     if (typelist.includes("Comborequired") && IsEr == 0) {
-        // console.log("Comborequired")
-        if (fieldValue == undefined || parseInt(fieldValue) < 0) {
+        //console.log("Comborequired")
+        if (fieldValue == undefined || parseInt(fieldValue) < 0 || String(fieldValue).trim() == "") {
             IsEr = 1;
             result = {
                 IsError: true,
