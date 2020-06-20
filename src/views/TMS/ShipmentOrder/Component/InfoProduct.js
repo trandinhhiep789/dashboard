@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
 import { formatMoney } from '../../../../utils/function';
-import {
-    DataGridColumnItemList
-} from "../constants";
 class InfoProductCom extends Component {
     constructor(props) {
         super(props);
@@ -22,6 +18,7 @@ class InfoProductCom extends Component {
     }
 
     render() {
+       
         return (
             <div className="card">
                 <h4 className="card-title"><strong>Thông tin hàng hóa</strong></h4>
