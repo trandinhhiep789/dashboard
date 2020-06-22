@@ -223,12 +223,6 @@ class ShipmentOrderDetailCom extends Component {
                         <div className="form-group col-md-4">
                             <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentServiceTypeName}</label>
                         </div>
-                        <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Phương tiện vận chuyển:</label>
-                        </div>
-                        <div className="form-group col-md-4">
-                            <label className="col-form-label">{this.state.ShipmentOrder.CarrierTypeName}</label>
-                        </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-2">
