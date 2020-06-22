@@ -55,4 +55,32 @@
             }
         }
     }
+    .img-group{
+        padding-left: 0;
+        li{
+            list-style: none;
+            float: left;
+            margin: 0;
+            .img-item {
+                width: 40px;
+                height: 40px;
+                border: 2px solid #fff;
+                border-radius: 50%;
+                overflow: hidden;
+                cursor: pointer;
+                & > img {
+                    width: 100%;
+                    min-height: 100%;
+                    height: auto;
+                }
+                &:hover{
+                    -webkit-box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.5);
+                    -moz-box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.5);
+                    box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.5);
+                    transform: translateY(-3px);
+                }
+            }
+        }
+    }
+
 }
