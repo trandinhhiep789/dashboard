@@ -4,6 +4,27 @@
 
         .card-title {
             padding: 6px 20px;
+            display: flex;
+            justify-content: space-between;
+           .title{
+            max-width: 50%;
+            line-height: 30px;
+            margin-bottom: 0;
+           }
+            .form-group-dropdown-custom{
+                max-width: 300px;
+                width: 100%;
+                margin-bottom: 0 !important;
+
+                button{
+                    &.dropdown-toggle{
+                        border-color: #1c84e4;
+                        background-color: #1c84e4;
+                        color: #fff !important;
+                    }
+                }
+                
+            }
         }
 
         .col-form-label {
