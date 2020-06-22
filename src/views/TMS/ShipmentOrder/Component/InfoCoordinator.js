@@ -342,7 +342,6 @@ class InfoCoordinatorCom extends Component {
                 listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName });
             })
         }
-console.log("this.state.ShipmentOrder.CarrierPartnerID",this.state.ShipmentOrder.CarrierPartnerID);
         return (
            
             <div className="card">
