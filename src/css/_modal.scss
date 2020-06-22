@@ -1,0 +1,18 @@
+.modals {
+    .image-gallery {
+        .image-gallery-content {
+            .image-gallery-slide-wrapper {
+                clear: both;
+                .image-gallery-swipe {
+                    .image-gallery-image {
+                        img {
+                            max-width: 100%;
+                            width: auto;
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+}
