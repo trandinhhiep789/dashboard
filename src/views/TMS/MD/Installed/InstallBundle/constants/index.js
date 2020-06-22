@@ -322,6 +322,13 @@ export const DataGridColumnList = [
         Width: 70
     },
     {
+        Name: "InstallBundleID",
+        Type: "text",
+        Caption: "Mã gói sản phẩm lắp đặt",
+        DataSourceMember: "InstallBundleID",
+        Width: 150
+    },
+    {
         Name: "InstallBundleName",
         Type: "text",
         Caption: "Tên gói sản phẩm lắp đặt",
