@@ -225,6 +225,7 @@ class ModalCom extends React.Component {
                                 <FormElement type={elementItem.type} name={elementItem.Name}
                                     CSSClassName="form-control form-control-sm"
                                     value={this.state.FormData[elementItem.Name]}
+                                    selectedValue = {elementItem.selectedValue}
                                     label={elementItem.label} placeholder={elementItem.placeholder}
                                     labelError={elementItem.labelError}
                                     colspan={elementItem.colspan}
