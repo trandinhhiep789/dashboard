@@ -223,6 +223,12 @@ class ShipmentOrderDetailCom extends Component {
                         <div className="form-group col-md-4">
                             <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentServiceTypeName}</label>
                         </div>
+                        <div className="form-group col-md-2">
+                            <label className="col-form-label bold">Trạng thái:</label>
+                        </div>
+                        <div className="form-group col-md-4">
+                            <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentOrderStatusName}</label>
+                        </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-2">
@@ -252,33 +258,6 @@ class ShipmentOrderDetailCom extends Component {
                             <label className="col-form-label">{formatDate(this.state.ShipmentOrder.EarliestDeliveryTime)}  - {formatDate(this.state.ShipmentOrder.LatestDeliveryTime)}</label>
                         </div>
                     </div>
-                    <div className="form-row">
-                        <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Trạng thái:</label>
-                        </div>
-                        <div className="form-group col-md-4">
-                            <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentOrderStatusName}</label>
-                        </div>
-                        {/* <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Xử lý qui trình:</label>
-                        </div>
-                        <div className="form-group form-group-dropdown col-md-4 ">
-                            <div className="input-group input-group-dropdown-custom">
-                                <div className="input-group-append">
-
-                                    <button className="btn dropdown-toggle" type="button" data-toggle="dropdown">{strShipmentOrderStepName}</button>
-                                    <div className="dropdown dropdown-menu">
-                                        {this.state.ShipmentOrder.ShipmentOrderType_WF_NextList && this.state.ShipmentOrder.ShipmentOrderType_WF_NextList.map(item =>
-                                            <a className={item.NextShipmentOrderStep === this.state.ShipmentOrder.CurrentShipmentOrderStepID ? "dropdown-item active" : "dropdown-item"}
-                                                key={item.NextShipmentOrderStep} name={item.NextShipmentOrderStep} data-option={item.NextShipmentOrderStep}
-                                                data-lable={item.NextShipmentOrderStepName} onClick={this.onChangeInput.bind(this)}>
-                                                {item.NextShipmentOrderStepName}</a>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </div> */}
-                    </div>
                     {
                         this.state.ShipmentOrder.IsCancelDelivery == true ?
                             <div className="form-row">
@@ -294,7 +273,6 @@ class ShipmentOrderDetailCom extends Component {
                             </div>
                             : ""
                     }
-
                 </div>
             </div>
         );

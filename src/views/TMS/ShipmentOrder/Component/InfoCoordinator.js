@@ -48,7 +48,6 @@ class InfoCoordinatorCom extends Component {
 
 
     componentDidMount() {
-        // tỉnh thành phố
         this.props.callGetCache("ERPCOMMONCACHE.CANCELDELIVERYREASON").then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 //console.log("FormElement listOption: ", listOption)
@@ -102,11 +101,7 @@ class InfoCoordinatorCom extends Component {
 
     }
     handleCancelDelivery() {
-
-
         this.openCancelDeliveryModal();
-
-
     }
 
     openCancelDeliveryModal() {
@@ -347,8 +342,9 @@ class InfoCoordinatorCom extends Component {
                 listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName });
             })
         }
-
+console.log("this.state.ShipmentOrder.CarrierPartnerID",this.state.ShipmentOrder.CarrierPartnerID);
         return (
+           
             <div className="card">
                 <ReactNotification ref={this.notificationDOMRef} />
                 <div className="card-title group-card-title">
@@ -400,7 +396,8 @@ class InfoCoordinatorCom extends Component {
                             />
                         </div>
                     </div>
-                    {this.state.ShipmentOrder.CarrierPartnerID == -1 ?
+                    
+                    {(this.state.ShipmentOrder.CarrierPartnerID == -1||this.state.ShipmentOrder.CarrierPartnerID == 0) ?
                         <MultiSelectComboBox
                             name="ShipmentOrder_DeliverUserList"
                             colspan="10"

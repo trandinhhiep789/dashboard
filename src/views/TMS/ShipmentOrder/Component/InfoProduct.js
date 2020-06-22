@@ -16,21 +16,22 @@ class InfoProductCom extends Component {
             })
         }
     }
-     groupBy = (array, key) => {
-        return array.reduce((result, currentValue) => {
-          // get the nested propert value
-          const objKey = currentValue[key];
-          result[objKey] = (result[objKey] || []).concat(
-            currentValue)
-          return result;
-        }, {});
-      };
+     groupBy(data, fields, sumBy='Quantity') {
+        let r=[], cmp= (x,y) => fields.reduce((a,b)=> a && x[b]==y[b], true);
+        data.forEach(x=> {
+          let y=r.find(z=>cmp(x,z));
+          let w= [...fields,sumBy].reduce((a,b) => (a[b]=x[b],a), {})
+          y ? y[sumBy]=+y[sumBy]+(+x[sumBy]) : r.push(w);
+        });
+        return r;
+      }
+      Pricevat(sl, Price,vat) {
+          debugger
+        let r= ((1+(vat/100))*Price)*sl
+        return r;
+      }
     render() {
-        // if(this.state.ShipmentOrder.ShipmentOrder_MaterialList !=[])
-        // {
-        //     console.log(this.groupBy(this.state.ShipmentOrder.ShipmentOrder_MaterialList,"ProductID"))
-
-        // }
+        console.log(this.state.ShipmentOrder.ShipmentOrder_MaterialList)
         return (
             <div className="card">
                 <h4 className="card-title"><strong>Thông tin hàng hóa</strong></h4>
@@ -132,7 +133,7 @@ class InfoProductCom extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.state.ShipmentOrder.ShipmentOrder_ItemList && this.state.ShipmentOrder.ShipmentOrder_ItemList.map((item, index) => {
+                                    {this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList,['ProductID','ProductName','QuantityUnitName','Price','IsInstallItem','PackingUnitName','SizeItem','Weight']).map((item, index) => {
                                         return (
                                             <tr key={index}>
                                                 <td>
@@ -178,12 +179,11 @@ class InfoProductCom extends Component {
                                             <th className="jsgrid-header-cell">Tên sản phẩm</th>
                                             <th className="jsgrid-header-cell">Số lượng</th>
                                             <th className="jsgrid-header-cell">Đơn vị tính</th>
-                                            <th className="jsgrid-header-cell">Giá</th>
-                                            <th className="jsgrid-header-cell">Mã đơn hàng xuất</th>
+                                            <th className="jsgrid-header-cell">Giá(Vat)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.state.ShipmentOrder.ShipmentOrder_MaterialList && this.state.ShipmentOrder.ShipmentOrder_MaterialList.map((item, index) => {
+                                        {this.state.ShipmentOrder.ShipmentOrder_MaterialList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_MaterialList,['ProductID','ProductName','QuantityUnitName','Price','IsSaleMaterial','VAT']).map((item, index) => {
                                             return (<tr key={index}>
                                                 <td>
                                                     <div className="checkbox">
@@ -199,8 +199,7 @@ class InfoProductCom extends Component {
                                                 <td>{item.ProductName}</td>
                                                 <td>{item.Quantity}</td>
                                                 <td>{item.QuantityUnitName}</td>
-                                                <td>{formatMoney(item.Price, 0)}đ</td>
-                                                <td>{item.SaleOrderID}</td>
+                                                <td>{formatMoney(this.Pricevat(item.Quantity,item.Price,item.VAT), 0)}đ</td>
                                             </tr>)
                                         })}
                                     </tbody>
