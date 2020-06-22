@@ -20,12 +20,12 @@ const ModalSlideImage = ({ title, afterClose, hideModal, content, id, maxWidth }
 
     return (
         <Modal title={title} onClose={onClose} id={"modalid-" + id} maxWidth={maxWidth}>
-            {content.lstImage!=undefined && content.lstImage.length > 1 ? <ImageGallery items={content.lstImage} />
-                :
-                <img src={content.lstImage[0].original} />
-
+            {content.lstImage != undefined && content.lstImage.length > 1 ? <ImageGallery
+                items={content.lstImage}
+                originalClass="img-original"
+            />
+            : <img src={content.lstImage[0].original} />
             }
-
         </Modal>
     );
 };
