@@ -8,6 +8,7 @@ import App from "./views/App";
 import authenticationReducer from "./reducers";
 import { FETCH_API_REQUEST, FETCH_API_SUCCESS, FETCH_API_FAILURE } from "./constants/actionTypes";
 import { logout,calllogout } from "./actions/loginAction";
+import '../node_modules/react-image-gallery/styles/css/image-gallery.css';
 import "./css/core.min.css";
 import "./css/app.min.css";
 import "./css/style.min.css";
