@@ -26,12 +26,10 @@ class InfoProductCom extends Component {
         return r;
       }
       Pricevat(sl, Price,vat) {
-          debugger
         let r= ((1+(vat/100))*Price)*sl
         return r;
       }
     render() {
-        console.log(this.state.ShipmentOrder.ShipmentOrder_MaterialList)
         return (
             <div className="card">
                 <h4 className="card-title"><strong>Thông tin hàng hóa</strong></h4>

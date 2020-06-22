@@ -21,21 +21,13 @@ class InfoHistoryWFCom extends Component {
         }
     }
 
-    handleShowImage() {
-        const { ShipmentOrderType_WF } = this.state;
-        console.log('ShipmentOrderType_WF', ShipmentOrderType_WF)
-        const images = [
-            {
-                original: 'https://picsum.photos/id/1018/1000/600/',
-                thumbnail: 'https://picsum.photos/id/1018/250/150/',
-            },
-            {
-                original: 'https://picsum.photos/id/1015/1000/600/',
-                thumbnail: 'https://picsum.photos/id/1015/250/150/',
-            },
-        ];
-
-
+    handleShowImage(e) {
+        let images = [];
+        const objIme = e.currentTarget.dataset.id;
+        const objlst = objIme.split(",");
+        for (let i = 0; i < objlst.length; i++) {
+            images.push({ original:objlst[i], thumbnail:objlst[i] });
+        }
         this.props.showModal(MODAL_TYPE_IMAGE_SLIDE, {
             title: 'Danh sách hình ảnh',
             content: {
@@ -70,7 +62,7 @@ class InfoHistoryWFCom extends Component {
                                             <td>{item.ShipmentOrderStepName}</td>
                                             <td>{item.ProcessUser}</td>
                                             <td>
-                                                <ul className="img-group" onClick={this.handleShowImage.bind(this)}>
+                                                <ul className="img-group" data-id={item.ImageFileURL} onClick={this.handleShowImage.bind(this)}>
                                                     {objlst[0] != "" && objlst.map((item, index) =>
                                                         <li key={index}>
                                                             <div className="img-item">
