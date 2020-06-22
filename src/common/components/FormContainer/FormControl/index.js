@@ -265,13 +265,19 @@ class FormControlComboBoxCom extends Component {
 
     componentDidMount() {
         let listOption = this.props.listoption;
-        let { filterValue, filterobj } = this.props;
+        let { filterValue, filterobj, isMultiSelect } = this.props;
         if (this.props.isautoloaditemfromcache) {
             const cacheKeyID = this.props.loaditemcachekeyid;
             const valueMember = this.props.valuemember;
             const nameMember = this.props.nameMember;
             this.props.callGetCache(cacheKeyID).then((result) => {
-                listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                if (!isMultiSelect) {
+                    listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                }
+                else {
+                    listOption = [];
+                }
+
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     if (typeof filterobj != undefined && filterValue != "") {
 
@@ -305,9 +311,11 @@ class FormControlComboBoxCom extends Component {
 
         if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
         {
-            let { filterobj, valuemember, nameMember } = this.props;
+            let { filterobj, valuemember, nameMember, isMultiSelect } = this.props;
             if (typeof filterobj != undefined && nextProps.filterValue != "") {
-                let listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
+                let listoptionnew = []
+                if (!isMultiSelect)
+                    listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
                 this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
                     listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[nameMember] });
                 }
