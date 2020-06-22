@@ -81,7 +81,7 @@ export const AddElementList = [
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "ShipmentOrderTypeID",
+        datasourcemember: "ShipmentOrderTypeID",
         readonly: false,
         validatonList: ["Comborequired"],
         isautoloaditemfromcache: true,
@@ -320,6 +320,13 @@ export const DataGridColumnList = [
         Caption: "Chọn",
         DataSourceMember: "InstallBundleID",
         Width: 70
+    },
+    {
+        Name: "InstallBundleID",
+        Type: "text",
+        Caption: "Mã gói sản phẩm lắp đặt",
+        DataSourceMember: "InstallBundleID",
+        Width: 150
     },
     {
         Name: "InstallBundleName",

@@ -48,6 +48,19 @@ class FeeAppendixDetailElementCom extends Component {
         }
     }
 
+    handleChange(formData, MLObject) {
+        if (formData.dtApplyToDate.value.length > 0) {
+            if (formData.dtApplyFromDate.value >= formData.dtApplyToDate.value) {
+                formData.dtApplyToDate.ErrorLst.IsValidatonError = true;
+                formData.dtApplyToDate.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc phải lớn hơn bắt đầu";
+            }
+            else {
+                formData.dtApplyToDate.ErrorLst.IsValidatonError = false;
+                formData.dtApplyToDate.ErrorLst.ValidatonErrorMessage = "";
+            }
+        }
+    }
+
     render() {
         const AddElementListFeeAppendix = []
         const { IsSystem } = this.state;
@@ -58,6 +71,7 @@ class FeeAppendixDetailElementCom extends Component {
                 listelement={AddElementListFeeAppendix}
                 onSubmit={this.handleSubmit}
                 IsCloseModal={true}
+                onchange={this.handleChange.bind(this)}
             >
                 <div className="row">
                     <div className="col-md-6">

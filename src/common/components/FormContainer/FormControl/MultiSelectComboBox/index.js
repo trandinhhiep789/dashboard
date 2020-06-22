@@ -12,16 +12,12 @@ class MultiSelectComboBoxCom extends React.Component {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
         this.handleValueChange1 = this.handleValueChange1.bind(this);
-
-        let SelectedOption = [];
-
         this.state = { ListOption: [], SelectedOption: [] }
     }
 
 
 
     componentDidMount() {
-
         this.setState({
             ListOption: this.props.listoption,
             SelectedOption: this.props.value
@@ -59,7 +55,6 @@ class MultiSelectComboBoxCom extends React.Component {
         }
 
         this.props.callFetchAPI("ERPAPI", 'api/UserSearch/Search', listMLObject).then(apiResult => {
-            console.log("apiResult.ResultObject",apiResult.ResultObject)
             let listOptionNew1 = [];
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
                 listOptionNew1.push({ value: apiResult.ResultObject[i].UserName, 
@@ -96,6 +91,7 @@ class MultiSelectComboBoxCom extends React.Component {
     }
 
     handleValueChange1(e) {
+        debugger
         let value = e.target.value;
         if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38) {
             this.callSearchData("*" + value + "*");

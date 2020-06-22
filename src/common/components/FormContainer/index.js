@@ -47,6 +47,7 @@ class FormContainerCom extends Component {
 
     }
     componentDidMount() {
+        console.log("formData");
         this.setState({
             isDisabled: (this.props.dataSource != undefined ? this.props.dataSource.IsSystem : false)
         })
@@ -62,7 +63,6 @@ class FormContainerCom extends Component {
                 FormData: FormDataContol
             });
         }
-
     }
     //#region BinData
     bindData() {
@@ -115,13 +115,16 @@ class FormContainerCom extends Component {
         return formDataList;
     }
     bindFormControlData(child, dataSource) {
+
         const controltype = child.props.controltype;
         let controlvalue = child.props.value;
         let controlname = child.props.name;
         if (controltype == "InputControl") {
             const datasourcemember = child.props.datasourcemember;
             if (dataSource != null && datasourcemember != null) {
-                controlvalue = dataSource[datasourcemember];
+                if (typeof dataSource != "undefined" && datasourcemember != null) {
+                    controlvalue = dataSource[datasourcemember];
+                }
             }
             const ObjectName = { Name: controlname, datasourcemember: datasourcemember, value: controlvalue, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList };
             return { [controlname]: ObjectName };
@@ -140,7 +143,7 @@ class FormContainerCom extends Component {
             let controlname = child.props.name;
             let controlvalue = child.props.dataSource;
             const datasourcemember = child.props.datasourcemember;
-            if (dataSource != null && datasourcemember != null) {
+            if (typeof dataSource != "undefined" && datasourcemember != null) {
                 controlvalue = dataSource[datasourcemember];
             }
             const ObjectName = { Name: controlname, datasourcemember: controlname, value: controlvalue, Controltype: controltype, label: child.props.label, ErrorLst: [], validatonList: child.props.validatonList };
@@ -148,7 +151,7 @@ class FormContainerCom extends Component {
         }
 
         const datasourcemember = child.props.datasourcemember;
-        if (dataSource != null && datasourcemember != null) {
+        if (typeof dataSource != "undefined" && datasourcemember != null) {
             controlvalue = dataSource[datasourcemember];
             return { [controlname]: controlvalue };
         }
@@ -176,7 +179,7 @@ class FormContainerCom extends Component {
 
     //#region InputChange && InputChangeList
     handleInputChange(elementname, elementvalue, namelabel, valuelabel, filterrest) {
-        //console.log('change')
+
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
         if (typeof filterrest != "undefined" && filterrest != "") {
@@ -194,9 +197,14 @@ class FormContainerCom extends Component {
             FormDataContolLstd[namelabel].value = valuelabel;
         }
 
+
+
         this.setState({
             FormData: FormDataContolLstd,
         });
+        if (this.props.onchange != null) {
+            this.props.onchange(this.state.FormData, this.props.MLObjectDefinition);
+        }
 
     }
 
@@ -462,7 +470,7 @@ class FormContainerCom extends Component {
     // }
 
     renderOneColumnForm() {
-        const listElement = this.props.listelement;
+        let listElement = this.props.listelement;
         if (listElement == null)
             return null;
 
@@ -472,8 +480,6 @@ class FormContainerCom extends Component {
                     listElement.sort((a, b) => (a.OrderIndex > b.OrderIndex) ? 1 : -1).map((elementItem, index) => {
                         switch (elementItem.type) {
                             case "text":
-                                elementItem.value = this.state.FormData[elementItem.name].value
-                                elementItem.disabled = this.state.isDisabled
                                 return (
                                     <ElementModal.ElementModalText
                                         onValueChange={this.handleInputChange}
@@ -481,30 +487,33 @@ class FormContainerCom extends Component {
                                         validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        disabled={this.state.isDisabled}
                                         key={index}
                                     />
                                 );
                             case "TextNumber":
-                                elementItem.value = this.state.FormData[elementItem.name].value
-                                elementItem.disabled = this.state.isDisabled
                                 return (
                                     <ElementModal.ElementModalNumber
                                         onValueChange={this.handleInputChange}
                                         validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        disabled={this.state.isDisabled}
                                         key={index}
                                     />
                                 );
                             case "TextArea":
-                                elementItem.value = this.state.FormData[elementItem.name].value
-                                elementItem.disabled = this.state.isDisabled
                                 return (
                                     <ElementModal.TextArea
                                         onValueChange={this.handleInputChange}
                                         validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        disabled={this.state.isDisabled}
+
                                         key={index}
                                     />
                                 );
@@ -514,14 +523,15 @@ class FormContainerCom extends Component {
                                 if (typeof elementItem.filterName != "undefined") {
                                     elementItem.filterValue = this.state.FormData[elementItem.filterName].value;
                                 }
-                                elementItem.value = this.state.FormData[elementItem.name].value
-                                elementItem.disabled = this.state.isDisabled
                                 return (
                                     <ElementModal.ElementModalComboBox
                                         onValueChange={this.handleInputChange}
                                         validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        disabled={this.state.isDisabled}
+
                                         key={index}
                                     />
                                 );
@@ -529,21 +539,21 @@ class FormContainerCom extends Component {
                                 if (this.state.FormData[elementItem.name].value != "" && typeof this.state.FormData[elementItem.name].value != "undefined")
                                     elementItem.value = { value: this.state.FormData[elementItem.name].value, label: this.state.FormData[elementItem.namelabel].value }
 
-                                elementItem.disabled = this.state.isDisabled
+
 
                                 return (
                                     <ElementModal.ProductComboBox
                                         onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.name].value}
                                         validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        disabled={this.state.isDisabled}
                                         key={index}
                                     />
                                 );
 
                             case "checkbox":
-                                elementItem.value = this.state.FormData[elementItem.name].value
                                 if (elementItem.datasourcemember != "IsSystem")
                                     elementItem.disabled = this.state.isDisabled
 
@@ -553,6 +563,7 @@ class FormContainerCom extends Component {
                                         validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
                                         key={index}
                                     />
                                 );
@@ -565,7 +576,7 @@ class FormContainerCom extends Component {
         );
     }
 
-    handleCloseModle(){
+    handleCloseModle() {
         this.props.hideModal();
     }
 

@@ -16,14 +16,13 @@ class ShipmentOrderTypeWFCom extends Component {
             })
         }
     }
-
     render() {
         return (
             <div className="card">
                 <div className="card-body">
                     <div className="stepper">
                         {this.state.ShipmentOrderType_WF && this.state.ShipmentOrderType_WF.sort((a, b) => (a.ShipmentOrderStepID > b.ShipmentOrderStepID) ? 1 : -1).map((item, index) => {
-                            if (index == 0 && item.CountStep == 1) {
+                            if (index == 0 && item.CountStep == 1 && (item.IsOnlyShowOnHasCollection == false || (item.IsOnlyShowOnHasCollection == true && this.props.TotalMoney > 0))) {
                                 return (<div className={(item.IsProcess == true ? "stepper-item step-completed" : "stepper-item")} key={index}>
                                     <span className="stepLabel">
                                         <span className="step-icon">
@@ -37,7 +36,7 @@ class ShipmentOrderTypeWFCom extends Component {
                                 </div>
                                 )
                             }
-                            else if (item.CountStep == 1) {
+                            else if (item.CountStep == 1 && (item.IsOnlyShowOnHasCollection == false || (item.IsOnlyShowOnHasCollection == true && this.props.TotalMoney > 0))) {
                                 return (<div className={((item.IsProcess == true && item.ShipmentOrderStepID <= this.props.CurrentShipmentOrderStepID) ? "stepper-item step-completed" : "stepper-item")} key={index}>
                                     <div className="step-line">
                                         <span className="stepConnector-line"></span>
@@ -54,7 +53,6 @@ class ShipmentOrderTypeWFCom extends Component {
                                 </div>)
                             }
                         })}
-
                     </div>
                 </div>
             </div>

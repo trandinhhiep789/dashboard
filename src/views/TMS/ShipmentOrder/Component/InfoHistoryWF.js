@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { formatDate } from "../../../../common/library/CommonLib.js";
+import { showModal, hideModal } from '../../../../actions/modal';
+import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_IMAGE_SLIDE } from '../../../../constants/actionTypes';
+
+
 class InfoHistoryWFCom extends Component {
     constructor(props) {
         super(props);
@@ -15,6 +19,29 @@ class InfoHistoryWFCom extends Component {
                 ShipmentOrderType_WF: nextProps.InfoHistoryWF
             })
         }
+    }
+
+    handleShowImage() {
+        const { ShipmentOrderType_WF } = this.state;
+        console.log('ShipmentOrderType_WF', ShipmentOrderType_WF)
+        const images = [
+            {
+                original: 'https://picsum.photos/id/1018/1000/600/',
+                thumbnail: 'https://picsum.photos/id/1018/250/150/',
+            },
+            {
+                original: 'https://picsum.photos/id/1015/1000/600/',
+                thumbnail: 'https://picsum.photos/id/1015/250/150/',
+            },
+        ];
+
+
+        this.props.showModal(MODAL_TYPE_IMAGE_SLIDE, {
+            title: 'Danh sách hình ảnh',
+            content: {
+                lstImage: images
+            },
+        });
     }
 
     render() {
@@ -36,12 +63,24 @@ class InfoHistoryWFCom extends Component {
                             </thead>
                             <tbody>
                                 {this.state.ShipmentOrderType_WF && a.map((item, index) => {
+                                    const objlst = item.ImageFileURL.split(",");
                                     if (item.ProcessDate != null) {
                                         return (<tr key={index}>
                                             <td>{formatDate(item.ProcessDate)}</td>
                                             <td>{item.ShipmentOrderStepName}</td>
                                             <td>{item.ProcessUser}</td>
-                                            <td></td>
+                                            <td>
+                                                <ul className="img-group" onClick={this.handleShowImage.bind(this)}>
+                                                    {objlst[0] != "" && objlst.map((item, index) =>
+                                                        <li key={index}>
+                                                            <div className="img-item">
+                                                                <img src={item} />
+                                                            </div>
+                                                        </li>
+                                                    )}
+
+                                                </ul>
+                                            </td>
                                             <td>{item.Note}</td>
                                         </tr>)
                                     }
@@ -66,6 +105,9 @@ const mapDispatchToProps = dispatch => {
     return {
         showModal: (type, props) => {
             dispatch(showModal(type, props));
+        },
+        hideModal: () => {
+            dispatch(hideModal());
         }
     }
 }

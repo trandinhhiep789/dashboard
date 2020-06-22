@@ -22,6 +22,7 @@ import indexedDBLib from "../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
+import { formatDate } from "../../../../common/library/CommonLib.js";
 
 import DeliverUserList from "../../ShipmentOrder/Component/DeliverUserList";
 
@@ -35,23 +36,25 @@ class EditCom extends React.Component {
             IsCloseForm: false,
             DataSource: {},
             IsLoadDataComplete: false,
-            IsSystem: false
+            IsSystem: false,
+            IsExtended: false,
+            IsLiquidated: false,
+            IsDeposited: false,
         };
     }
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
-
         this.callLoadData(this.props.match.params.id);
     }
 
     handleSubmit(formData, MLObject) {
+
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.DeputyUserName = MLObject.ShipmentOrder_DeliverUserList[0].UserName;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-
         });
 
     }
@@ -86,16 +89,133 @@ class EditCom extends React.Component {
                     DataSource: apiResult.ResultObject,
                     IsLoadDataComplete: true,
                     IsSystem: apiResult.ResultObject.IsSystem,
+                    IsExtended: apiResult.ResultObject.IsExtended,
+                    IsLiquidated: apiResult.ResultObject.IsLiquidated,
+                    IsDeposited: apiResult.ResultObject.IsDeposited,
                 });
             }
         });
     }
 
+    handleChange(formData, MLObject) {
+        let IsExtended, IsLiquidated, IsDeposited;
+        if (formData.chkIsExtended.value) {
+            IsExtended = true
+        }
+        else {
+            IsExtended = false
+            formData.dtExtendedDate.value = ""
+        }
+        if (formData.chkIsDeposited.value) {
+            IsDeposited = true
+        }
+        else {
+            IsDeposited = false
+            formData.txtDepositMoney.value="";
+            formData.dtDepositedDate.value="";
+            formData.txtDepositNote.value="";
+        }
+        if (formData.chkIsLiquidated.value) {
+            IsLiquidated = true
+        }
+        else {
+            IsLiquidated = false;
+            formData.dtLiquidateddate.value="";
+        }
+
+        this.setState({
+            IsExtended,
+            IsLiquidated,
+            IsDeposited
+        })
+        if(formData.dtExpiredDate.value.length >0){
+            if (formData.dtSignedDate.value >= formData.dtExpiredDate.value) {
+                formData.dtExpiredDate.ErrorLst.IsValidatonError = true;
+                formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc hợp đồng phải lớn hơn ngày kí hợp đồng";
+            }
+            else{
+                formData.dtExpiredDate.ErrorLst.IsValidatonError = false;
+                formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "";
+            }
+        }
+        
+
+        if (this.state.IsExtended) {
+
+            if (formData.dtExpiredDate.value >= formData.dtExtendedDate.value) {
+                formData.dtExtendedDate.ErrorLst.IsValidatonError = true;
+                formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "Ngày gia hạn hợp đồng phải lớn hơn ngày hết hạn hợp đồng";
+            }
+
+            else {
+                formData.dtExtendedDate.ErrorLst.IsValidatonError = false;
+                formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "";
+            }
+        }
+
+        if (this.state.IsLiquidated) {
+            if (this.state.IsExtended) {
+                if (formData.dtExtendedDate.value <= formData.dtLiquidateddate.value || formData.dtLiquidateddate.value <= formData.dtSignedDate.value) {
+                    formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
+                    formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng phải nằm trong khoảng thời gian kí hợp đồng";
+                }
+                else {
+                    formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
+                    formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
+                }
+            }
+            else {
+                if (formData.dtExpiredDate.value <= formData.dtLiquidateddate.value || formData.dtLiquidateddate.value <= formData.dtSignedDate.value) {
+                    formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
+                    formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng phải nằm trong khoảng thời gian kí hợp đồng";
+                }
+                else {
+                    formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
+                    formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
+                }
+            }
+
+        }
+
+      
+    }
 
     render() {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
+        const { IsExtended, IsLiquidated, IsDeposited } = this.state;
+
+        let isDisableExtended, isDisableLiquidated, isDisableDeposited;
+
+        if (this.state.IsSystem == true) {
+            isDisableExtended = true;
+            isDisableLiquidated = true;
+            isDisableDeposited = true;
+        }
+        else {
+            if (IsExtended == true) {
+                isDisableExtended = false;
+            }
+            else {
+                isDisableExtended = true;
+            }
+
+            if (IsLiquidated == true) {
+                isDisableLiquidated = false;
+            }
+            else {
+                isDisableLiquidated = true;
+            }
+            if (IsDeposited == true) {
+                isDisableDeposited = false;
+            }
+            else {
+                isDisableDeposited = true;
+            }
+        }
+
+        let currentDate = new Date();
         if (this.state.IsLoadDataComplete) {
             return (
                 <FormContainer
@@ -105,6 +225,7 @@ class EditCom extends React.Component {
                     listelement={[]}
                     BackLink={BackLink}
                     onSubmit={this.handleSubmit}
+                    onchange={this.handleChange.bind(this)}
                 >
 
                     <div className="row">
@@ -356,13 +477,13 @@ class EditCom extends React.Component {
                                 name="dtExtendedDate"
                                 colspan="8"
                                 labelcolspan="4"
-                                disabled={this.state.IsSystem}
+                                disabled={isDisableExtended}
                                 readOnly={false}
                                 showTime={false}
                                 timeFormat={false}
                                 dateFormat="YYYY-MM-DD"
                                 label="gia hạn đến ngày"
-                                placeholder="Gia hạn đến ngày"
+                                placeholder={formatDate(currentDate)}
                                 controltype="InputControl"
                                 value=""
                                 datasourcemember="ExtendedDate"
@@ -402,13 +523,13 @@ class EditCom extends React.Component {
                                 name="dtLiquidateddate"
                                 colspan="8"
                                 labelcolspan="4"
-                                disabled={this.state.IsSystem}
+                                disabled={isDisableLiquidated}
                                 readOnly={false}
                                 showTime={false}
                                 timeFormat={false}
                                 dateFormat="YYYY-MM-DD"
                                 label="ngày thanh lý hợp đồng"
-                                placeholder="Ngày thanh lý hợp đồng"
+                                placeholder={formatDate(currentDate)}
                                 controltype="InputControl"
                                 value=""
                                 datasourcemember="Liquidateddate"
@@ -434,7 +555,7 @@ class EditCom extends React.Component {
                                 name="txtDepositMoney"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={this.state.IsSystem}
+                                readOnly={isDisableDeposited}
                                 label="số tiền ký quỹ"
                                 placeholder="Số tiền ký quỹ"
                                 controltype="InputControl"
@@ -449,13 +570,13 @@ class EditCom extends React.Component {
                                 name="dtDepositedDate"
                                 colspan="8"
                                 labelcolspan="4"
-                                disabled={this.state.IsSystem}
+                                disabled={isDisableDeposited}
                                 readOnly={false}
                                 showTime={false}
                                 timeFormat={false}
                                 dateFormat="YYYY-MM-DD"
                                 label="ngày ký quỹ"
-                                placeholder="Ngày ký quỹ"
+                                placeholder={formatDate(currentDate)}
                                 controltype="InputControl"
                                 value=""
                                 datasourcemember="DepositedDate"
@@ -467,13 +588,12 @@ class EditCom extends React.Component {
                                 name="txtDepositNote"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                readOnly={isDisableDeposited}
                                 label="ghi chú ký quỹ"
                                 placeholder="Ghi chú ký quỹ"
                                 controltype="InputControl"
                                 value=""
                                 datasourcemember="DepositNote"
-                                readOnly={this.state.IsSystem}
                             />
                         </div>
 

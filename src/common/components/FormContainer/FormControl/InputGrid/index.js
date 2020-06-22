@@ -207,7 +207,7 @@ class InputGridCom extends Component {
 			if (this.props.onInsertClick === undefined) {
 
 				this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
-					title: 'Cập nhật ' + this.props.title,
+					title: 'Thêm mới ' + this.props.title,
 					autoCloseModal: this.state.AutoCloseModal,
 					onConfirm: (isConfirmed, formData) => {
 						let dataSource = this.props.value;
@@ -240,7 +240,7 @@ class InputGridCom extends Component {
 		}
 
 		this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
-			title: 'Chỉnh sửa ' + this.props.title,
+			title: 'Cập nhật ' + this.props.title,
 			autoCloseModal: this.state.AutoCloseModal,
 			onConfirm: (isConfirmed, formData) => {
 				let dataSource = this.props.dataSource;
