@@ -405,11 +405,28 @@ class EditCom extends React.Component {
     }
 
     handleModalFlexShipmentFeeChange(formData, formValidation, elementName, elementValue) {
-        //console.log("formData", formData);  
-        let listOptionNull = [{ value: "-1", label: "------ Chọn ------" }];
-        let listOption = [];
+
+        //combobox getfeetype
+        let shipmentFeeType = this.state.FormData.ShipmentFeeType ? this.state.FormData.ShipmentFeeType : [];
+        let getFeeType = "";
         let isInsert = this.state.IsInsert;
         let _ModalFlexShipmentFeeColumnList = isInsert ? this.state.ModalFlexShipmentFeeColumnList : this.state.ModalFlexShipmentFeeColumnList_Edit;
+        if (elementName == "ShipmentFeeTypeID") {
+            let match = shipmentFeeType.filter(x => x.ShipmentFeeTypeID == elementValue);
+            if (match && match.length > 0) {
+                getFeeType = match[0].GetFeeType;
+            }
+        }
+
+        _ModalFlexShipmentFeeColumnList.forEach(function (objElement) {
+            if (objElement.Name == "GetFeeType") {
+                objElement.selectedValue = getFeeType;
+            }
+        }.bind(this));
+
+        
+        let listOptionNull = [{ value: "-1", label: "------ Chọn ------" }];
+        let listOption = [];
         _ModalFlexShipmentFeeColumnList.forEach(function (objElement) {
             if (elementName == "MainGroupID") {
                 if (objElement.Name == "SubGroupID") {
