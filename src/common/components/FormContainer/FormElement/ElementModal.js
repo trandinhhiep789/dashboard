@@ -523,7 +523,7 @@ class ProductComboBoxCom extends React.Component {
         this.props.callFetchAPI("ERPAPI", 'api/ProductSearch/Search', listMLObject).then(apiResult => {
             let listOptionNew = [{ value: -1, label: "--vui lòng chọn--" }];
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
-                listOptionNew.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
+                listOptionNew.push({ value: apiResult.ResultObject[i].ProductID, label:apiResult.ResultObject[i].ProductID+"-"+ apiResult.ResultObject[i].ProductName,name:apiResult.ResultObject[i].ProductName });
             }
             this.setState({
                 ListOption: listOptionNew,
@@ -545,7 +545,7 @@ class ProductComboBoxCom extends React.Component {
 
     handleValueChange(selectedOption) {
         if (this.props.onValueChange)
-            this.props.onValueChange(this.props.name, selectedOption.value, this.props.namelabel, selectedOption.value != -1 ? selectedOption.label : "");
+            this.props.onValueChange(this.props.name, selectedOption.value, this.props.namelabel, selectedOption.value != -1 ? selectedOption.name : "");
     }
 
     handleValueonKeyDown(e) {
