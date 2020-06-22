@@ -59,7 +59,6 @@ class MultiSelectComboBoxCom extends React.Component {
         }
 
         this.props.callFetchAPI("ERPAPI", 'api/UserSearch/Search', listMLObject).then(apiResult => {
-            console.log("apiResult.ResultObject",apiResult.ResultObject)
             let listOptionNew1 = [];
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
                 listOptionNew1.push({ value: apiResult.ResultObject[i].UserName, 

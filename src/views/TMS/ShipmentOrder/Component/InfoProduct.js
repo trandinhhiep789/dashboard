@@ -16,9 +16,21 @@ class InfoProductCom extends Component {
             })
         }
     }
-
+     groupBy = (array, key) => {
+        return array.reduce((result, currentValue) => {
+          // get the nested propert value
+          const objKey = currentValue[key];
+          result[objKey] = (result[objKey] || []).concat(
+            currentValue)
+          return result;
+        }, {});
+      };
     render() {
-       
+        // if(this.state.ShipmentOrder.ShipmentOrder_MaterialList !=[])
+        // {
+        //     console.log(this.groupBy(this.state.ShipmentOrder.ShipmentOrder_MaterialList,"ProductID"))
+
+        // }
         return (
             <div className="card">
                 <h4 className="card-title"><strong>Thông tin hàng hóa</strong></h4>
