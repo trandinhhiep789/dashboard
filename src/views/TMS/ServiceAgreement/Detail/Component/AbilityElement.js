@@ -31,40 +31,92 @@ class AbilityElementCom extends Component {
         }
     }
 
-    handleSubmit(From, MLObject) {
+    handleSubmit(formData, MLObject) {
 
-        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
-        MLObject.SignedDate = this.props.dataSource.SignedDate;
-        if (this.props.index != undefined) {
-            MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
-            this.props.callFetchAPI(APIHostName, EditAPIAbilitiPath, MLObject).then(apiResult => {
-                this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
-            });
+        if (MLObject.MonthlyAbilityValue == "" && MLObject.DailyAbilityValue == "") {
+            formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = true;
+            formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng thêm dữ liệu";
+
+            formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = true;
+            formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng thêm dữ liệu";
         }
         else {
-            MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-            this.props.callFetchAPI(APIHostName, AddAPIAbilitiPath, MLObject).then(apiResult => {
-                this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
-            });
+            MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+            MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
+            MLObject.SignedDate = this.props.dataSource.SignedDate;
+            if (this.props.index != undefined) {
+                MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+                this.props.callFetchAPI(APIHostName, EditAPIAbilitiPath, MLObject).then(apiResult => {
+                    this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
+                });
+            }
+            else {
+                MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+                this.props.callFetchAPI(APIHostName, AddAPIAbilitiPath, MLObject).then(apiResult => {
+                    this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
+                });
+            }
         }
 
+
     }
+
+
     handleChange(formData, MLObject) {
-        if(formData.dtToDate.value.length >0){
-            if (formData.dtFromDate.value >= formData.dtToDate.value ) {
+
+        if (formData.dtToDate.value.length > 0) {
+            if (formData.dtFromDate.value >= formData.dtToDate.value) {
                 formData.dtToDate.ErrorLst.IsValidatonError = true;
                 formData.dtToDate.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc phải lớn hơn bắt đầu";
             }
-            else{
+            else {
                 formData.dtToDate.ErrorLst.IsValidatonError = false;
                 formData.dtToDate.ErrorLst.ValidatonErrorMessage = "";
             }
         }
+        if (formData.txtDailyAbilityValue.value.length > 0 || formData.txtMonthlyAbilityValue.value.length > 0) {
+            if(formData.txtDailyAbilityValue.value.length > 0){
+                if (/^[0-9][0-9]*$/.test(formData.txtDailyAbilityValue.value.toString())) {
+                    formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
+                    formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
+                    formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
+                    formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = ""
+                }else{
+                    
+                    formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = true;
+                    formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập số";
+                }
+            }
+            
+            if(formData.txtMonthlyAbilityValue.value.length > 0){
+                if( /^[0-9][0-9]*$/.test(formData.txtMonthlyAbilityValue.value.toString())){
+                    formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
+                    formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = ""
+                    formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
+                    formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
+                }
+                else{
+                    ;
+                    formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = true;
+                    formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập số";
+                }
+            }
+           
+            
+        }
+        else{
+            formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = true;
+            formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng thêm dữ liệu";
+
+            formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = true;
+            formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng thêm dữ liệu";
+        }
+
     }
 
 
     render() {
+
         const AddElementList = []
         const { IsSystem } = this.state;
         return (
