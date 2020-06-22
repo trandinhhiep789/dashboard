@@ -247,8 +247,6 @@ class ConfirmationNew extends React.Component {
                                 if (this.state.FormData[elementItem.name].value != "" && typeof this.state.FormData[elementItem.name].value != "undefined" && this.state.FormData[elementItem.name].value != -1) {
                                     valuename= { value: this.state.FormData[elementItem.name].value, label: this.state.FormData[elementItem.name].value + "-" + this.state.FormData[elementItem.namelabel].value }
                                 }
-                               
-
                                 return (
                                     <ElementModal.ProductComboBox
                                         onValueChange={this.handleInputChange}
