@@ -61,11 +61,11 @@ class EditCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.checkValidStep = this.checkValidStep.bind(this);
         this.initMultiSelectCombobox = this.initMultiSelectCombobox.bind(this);
-        this.handleModalChange = this.handleModalChange.bind(this);
+        this.handleModalFlexShipmentFeeChange = this.handleModalFlexShipmentFeeChange.bind(this);
+        this.handleModalFixShipmentChange = this.handleModalFixShipmentChange.bind(this);
         this.onClose = this.onClose.bind(this);
         this.resetCombobox = this.resetCombobox.bind(this);
         this.notificationDOMRef = React.createRef();
-        const ModalFlexShipmentFeeColumnList_Edit_Old = ModalFlexShipmentFeeColumnList_Edit;
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -77,9 +77,10 @@ class EditCom extends React.Component {
                 TotalStepCompletePercent: 0
             },
             IsValidStep: false,
+            ModalFixShipmentFeeColumnList: ModalFixShipmentFeeColumnList,
+            ModalFixShipmentFeeColumnList_Edit: ModalFixShipmentFeeColumnList_Edit,
             ModalFlexShipmentFeeColumnList: ModalFlexShipmentFeeColumnList,
             ModalFlexShipmentFeeColumnList_Edit: ModalFlexShipmentFeeColumnList_Edit,
-            ModalFlexShipmentFeeColumnList_Edit_Old: ModalFlexShipmentFeeColumnList_Edit_Old,
             IsInsert: true
         };
     }
@@ -206,12 +207,40 @@ class EditCom extends React.Component {
         });
     }
 
+    handleModalFixShipmentChange(formData, formValidation, elementName, elementValue) {
+        let shipmentFeeType = this.state.FormData.ShipmentFeeType ? this.state.FormData.ShipmentFeeType : [];
+        let getFeeType = "";
+        let isInsert = this.state.IsInsert;
+        let _ModalFixShipmentFeeColumnList = isInsert ? this.state.ModalFixShipmentFeeColumnList : this.state.ModalFixShipmentFeeColumnList_Edit;
+        if (elementName == "ShipmentFeeTypeID") {
+            let match = shipmentFeeType.filter(x => x.ShipmentFeeTypeID == elementValue);
+            if (match && match.length > 0) {
+                getFeeType = match[0].GetFeeType;
+            }
+        }
+
+        _ModalFixShipmentFeeColumnList.forEach(function (objElement) {
+            if (objElement.Name == "GetFeeType") {
+                objElement.selectedValue = getFeeType;
+            }
+        }.bind(this));
+
+        if(isInsert){
+            this.setState({ ModalFixShipmentFeeColumnList: _ModalFixShipmentFeeColumnList });
+        }else{
+            this.setState({ ModalFixShipmentFeeColumnList_Edit: _ModalFixShipmentFeeColumnList });
+        }
+    }
+
     //----------------------- Chi phí vận chuyển cố định ------------------------------------------------------------
 
     addShipmentOrderType_FixShipmentFeePopup(MLObjectDefinition, modalElementList, dataSource) {
+        this.setState({ IsInsert: true });
+
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Thêm mới chi phí vận chuyển cố định của một loại yêu cầu vận chuyển',
             autoCloseModal: false,
+            onValueChange: this.handleModalFixShipmentChange,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
@@ -231,7 +260,7 @@ class EditCom extends React.Component {
                             }
                             this.setState({ IsCallAPIError: apiResult.IsError });
                         });
-                        //console.log("MLObject",MLObject);
+                        //console.log("MLObject", MLObject);
                     }
                 }
             },
@@ -240,6 +269,7 @@ class EditCom extends React.Component {
     }
 
     editShipmentOrderType_FixShipmentFeePopup(value, pkColumnName) {
+        this.setState({ IsInsert: false });
         let _fixShipmentFee = {};
         this.state.FormData.ShipmentOrderTypeFixShipmentFee.map((item, index) => {
             let isMath = false;
@@ -259,6 +289,8 @@ class EditCom extends React.Component {
 
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Chỉnh sửa chi phí vận chuyển cố định của một loại yêu cầu vận chuyển',
+            onValueChange: this.handleModalFixShipmentChange,
+            autoCloseModal: false,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectShipmentOrderType_FixShipmentFee, formData, _fixShipmentFee);
@@ -280,7 +312,7 @@ class EditCom extends React.Component {
                     }
                 }
             },
-            modalElementList: ModalFixShipmentFeeColumnList_Edit,
+            modalElementList: this.state.ModalFixShipmentFeeColumnList_Edit,
             formData: _fixShipmentFee
         });
     }
@@ -372,7 +404,7 @@ class EditCom extends React.Component {
         this.setState({ ModalFlexShipmentFeeColumnList_Edit: _ModalFlexShipmentFeeColumnList });
     }
 
-    handleModalChange(formData, formValidation, elementName, elementValue) {
+    handleModalFlexShipmentFeeChange(formData, formValidation, elementName, elementValue) {
         //console.log("formData", formData);  
         let listOptionNull = [{ value: "-1", label: "------ Chọn ------" }];
         let listOption = [];
@@ -435,7 +467,7 @@ class EditCom extends React.Component {
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Thêm mới chi phí vận chuyển thay đổi của một loại yêu cầu vận chuyển',
             autoCloseModal: false,
-            onValueChange: this.handleModalChange,
+            onValueChange: this.handleModalFlexShipmentFeeChange,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
@@ -524,7 +556,7 @@ class EditCom extends React.Component {
 
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Chỉnh sửa chi phí vận chuyển thay đổi của một loại yêu cầu vận chuyển',
-            onValueChange: this.handleModalChange,
+            onValueChange: this.handleModalFlexShipmentFeeChange,
             autoCloseModal: false,
             onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
@@ -570,7 +602,7 @@ class EditCom extends React.Component {
     }
 
     handleInputChangeList(formData, tabNameList, tabMLObjectDefinitionList, formValidation) {
-        //console.log("edithandel",formValidation);
+        //console.log("edithandel", this.state.FormData.ShipmentFeeType);
         let formDataTemp = {};
         //const oldPieRequestType = this.state.FormData.PieRequestType;
         Object.keys(this.state.FormData.ShipmentOrderType).forEach(function (key) {
@@ -725,6 +757,12 @@ class EditCom extends React.Component {
                     })
                 }
 
+                //loại chi phí vận chuyển
+                let _shipmentFeeType = [];
+                if (apiResult.ResultObject.ShipmentFeeType) {
+                    _shipmentFeeType = apiResult.ResultObject.ShipmentFeeType;
+                }
+
                 //chi phí vận chuyển cố định
                 let _ShipmentOrderTypeFixShipmentFee = [];
                 if (apiResult.ResultObject.ShipmentOrderTypeFixShipmentFee) {
@@ -760,7 +798,8 @@ class EditCom extends React.Component {
                             ShipmentOrderTypeWorkflow: apiResult.ResultObject.ShipmentOrderTypeWorkflow,
                             TotalStepCompletePercent: TotalStepCompletePercent,
                             ShipmentOrderTypeFixShipmentFee: _ShipmentOrderTypeFixShipmentFee,
-                            ShipmentOrderTypeFlexShipmentFee: _ShipmentOrderTypeFlexShipmentFee
+                            ShipmentOrderTypeFlexShipmentFee: _ShipmentOrderTypeFlexShipmentFee,
+                            ShipmentFeeType: _shipmentFeeType
                         },
                         SelectedPartnerList: selectedOptionPartner,
                         SelectedShipmentStatusList: selectedOptionStatus,
@@ -774,7 +813,8 @@ class EditCom extends React.Component {
                             ShipmentOrderType: apiResult.ResultObject,
                             ShipmentOrderTypeWorkflow: [],
                             ShipmentOrderTypeFixShipmentFee: _ShipmentOrderTypeFixShipmentFee,
-                            ShipmentOrderTypeFlexShipmentFee: _ShipmentOrderTypeFlexShipmentFee
+                            ShipmentOrderTypeFlexShipmentFee: _ShipmentOrderTypeFlexShipmentFee,
+                            ShipmentFeeType: _shipmentFeeType
                         },
                         SelectedPartnerList: selectedOptionPartner,
                         SelectedShipmentStatusList: selectedOptionStatus,
@@ -1006,7 +1046,7 @@ class EditCom extends React.Component {
                             <Collapsible trigger="Chi phí vận chuyển cố định" easing="ease-in" open={true}>
                                 <DataGrid listColumn={FixShipmentFeeColumnList}
                                     dataSource={this.state.FormData.ShipmentOrderTypeFixShipmentFee}
-                                    modalElementList={ModalFixShipmentFeeColumnList}
+                                    modalElementList={this.state.ModalFixShipmentFeeColumnList}
                                     MLObjectDefinition={MLObjectShipmentOrderType_FixShipmentFee}
                                     IDSelectColumnName={"chkSelectShipmentFeeTypeID"}
                                     PKColumnName={"ShipmentFeeTypeID"}

@@ -190,6 +190,30 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsArrivalReceiverLocationStep"
     },
     {
+        Name: "IsMustCompleteCollection",
+        DefaultValue: "",
+        BindControlName: "IsMustCompleteCollection",
+        DataSourceMember: "IsMustCompleteCollection"
+    },
+    {
+        Name: "IsOutputSaleMaterialStep",
+        DefaultValue: "",
+        BindControlName: "IsOutputSaleMaterialStep",
+        DataSourceMember: "IsOutputSaleMaterialStep"
+    },
+    {
+        Name: "IsShowMaterialList",
+        DefaultValue: "",
+        BindControlName: "IsShowMaterialList",
+        DataSourceMember: "IsShowMaterialList"
+    },
+    {
+        Name: "IsShowCollectionButton",
+        DefaultValue: "",
+        BindControlName: "IsShowCollectionButton",
+        DataSourceMember: "IsShowCollectionButton"
+    },
+    {
         Name: "AutoChangeStepType",
         DefaultValue: "0",
         BindControlName: "AutoChangeStepType",

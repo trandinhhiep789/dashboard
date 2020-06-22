@@ -1057,7 +1057,13 @@ class FormContainerCom extends Component {
                 break;
         }
 
+
         let backLinkButton = "";
+        if (this.props.ClosePopup) {
+            backLinkButton = (<Link to={"#"}>
+                <button className="btn btn-sm btn-outline btn-primary" type="button" onClick={this.props.ClosePopup}>Bỏ qua</button></Link>);
+        }
+
         if (this.props.BackLink != null) {
             if (this.props.BackLink.length > 0) {
                 backLinkButton = (<Link to={this.props.BackLink}>

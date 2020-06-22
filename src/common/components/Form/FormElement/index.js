@@ -197,7 +197,7 @@ class FormElementCom extends Component {
         //console.log("FormElement componentWillReceiveProps:", this.props);
         //this.setState({value: this.props.value});
         if (nextProps.type == "select" && nextProps.listoption != undefined && nextProps.listoption.length > 0) {
-            //console.log("FormElement componentWillReceiveProps:", nextProps);
+            //console.log("FormElement componentWillReceiveProps:", nextProps.selectedValue);
             let listOption = nextProps.listoption;
             this.setState({ Listoption: listOption });
         }
@@ -412,8 +412,15 @@ class FormElementCom extends Component {
                     }
                 }
 
+                let selectedValue= this.props.selectedValue;
+                let value = this.props.value;
+                if(selectedValue){
+                    value = selectedValue;
+                    this.validateInput(this.props.name, selectedValue);
+                    
+                }
                 control = (
-                    <select className={controlCSSClassName} name={this.props.name} ref={this.props.inputRef} onChange={this.handleInputChange} value={this.props.value} disabled={disabled}>
+                    <select className={controlCSSClassName} name={this.props.name} ref={this.props.inputRef} onChange={this.handleInputChange} value={value} disabled={disabled}>
                         {this.state.Listoption && this.state.Listoption.map((optionItem) =>
                             <option value={optionItem.value} key={optionItem.value} >{optionItem.label}</option>
                         )}

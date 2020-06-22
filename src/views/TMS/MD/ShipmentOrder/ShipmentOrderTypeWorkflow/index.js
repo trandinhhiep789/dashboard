@@ -31,6 +31,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         this.changeSelectUser = this.changeSelectUser.bind(this);
         this.createInputPermissColumnList = this.createInputPermissColumnList.bind(this);
         this.getFunctionCache = this.getFunctionCache.bind(this);
+        this.handleClosePopup = this.handleClosePopup.bind(this);
         this.state = {
             FormData: {
                 ShipmentOrderTypeWorkflow: [],
@@ -388,6 +389,9 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         //     this.setState({ IsCloseForm: true });
     }
 
+    handleClosePopup() {
+        this.props.hideModal();
+    }
     render() {
         return (
             <div className="row" style={{ textAlign: 'left' }}>
@@ -397,6 +401,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                     listelement={[]}
                     onInputChangeList={this.handleInputChangeList}
                     onSubmit={(formData, MLObject) => this.handleSubmit(formData, MLObject)}
+                    ClosePopup={this.handleClosePopup}
                 >
                     <TabContainer
                         defaultActiveTabIndex={0} IsAutoLayout={true} controltype="TabContainer">
@@ -536,6 +541,22 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     />
                                     <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước đến nhà khách" name="IsArrivalReceiverLocationStep"
                                         controltype="InputControl" datasourcemember="IsArrivalReceiverLocationStep"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Phải thu tiền mới được chuyển bước kế tiếp" name="IsMustCompleteCollection"
+                                        controltype="InputControl" datasourcemember="IsMustCompleteCollection"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước xuất vật tư bán cho khách" name="IsOutputSaleMaterialStep"
+                                        controltype="InputControl" datasourcemember="IsOutputSaleMaterialStep"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Hiển thị danh sách vật tư để chỉnh sửa" name="IsShowMaterialList"
+                                        controltype="InputControl" datasourcemember="IsShowMaterialList"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Hiển thị nút nhấn thu tiền" name="IsShowCollectionButton"
+                                        controltype="InputControl" datasourcemember="IsShowCollectionButton"
                                         swaplabelModal={true}
                                     />
                                 </div>

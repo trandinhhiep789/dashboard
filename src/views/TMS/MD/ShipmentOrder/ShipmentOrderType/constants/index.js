@@ -658,13 +658,13 @@ export const ModalFixShipmentFeeColumnList = [
         type: "select",
         Name: "GetFeeType",
         label: "Kiểu lấy chi phí",
-        value: -1,
+        value: "1",
         placeholder: "",
         icon: "",
-        listoption: [{ value: -1, label: "---Vui lòng chọn---" }, { value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
+        listoption: [{ value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
         DataSourceMember: "GetFeeType",
         readonly: false,
-        validatonList: ["Comborequired"],
+        validatonList: [],
         IsAutoLoadItemFromCache: false
     },
     {
@@ -738,13 +738,13 @@ export const ModalFixShipmentFeeColumnList_Edit = [
         type: "select",
         Name: "GetFeeType",
         label: "Kiểu lấy chi phí",
-        value: -1,
+        value: "1",
         placeholder: "",
         icon: "",
-        listoption: [{ value: -1, label: "---Vui lòng chọn---" }, { value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
+        listoption: [{ value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
         DataSourceMember: "GetFeeType",
         readonly: false,
-        validatonList: ["Comborequired"],
+        validatonList: [],
         IsAutoLoadItemFromCache: false
     },
     {
