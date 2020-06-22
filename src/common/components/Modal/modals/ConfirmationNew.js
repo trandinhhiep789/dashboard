@@ -200,10 +200,10 @@ class ConfirmationNew extends React.Component {
                                 return (
                                     <ElementModal.ElementModalText
                                         onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.name].value}
                                         validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
                                         key={index}
                                     />
                                 );
@@ -211,10 +211,11 @@ class ConfirmationNew extends React.Component {
                                 return (
                                     <ElementModal.ElementModalNumber
                                         onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.name].value}
+                                      
                                         validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
                                         key={index}
                                     />
                                 );
@@ -222,10 +223,10 @@ class ConfirmationNew extends React.Component {
                                 return (
                                     <ElementModal.TextArea
                                         onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.name].value}
                                         validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
                                         key={index}
                                     />
                                 );
@@ -242,15 +243,19 @@ class ConfirmationNew extends React.Component {
                                     />
                                 );
                             case "ProductCombo":
-                                if (this.state.FormData[elementItem.name].value != "" && typeof this.state.FormData[elementItem.name].value != "undefined")
-                                    elementItem.value = { value: this.state.FormData[elementItem.name].value, label: this.state.FormData[elementItem.namelabel].value }
+                               let valuename =[]
+                                if (this.state.FormData[elementItem.name].value != "" && typeof this.state.FormData[elementItem.name].value != "undefined" && this.state.FormData[elementItem.name].value != -1) {
+                                    valuename= { value: this.state.FormData[elementItem.name].value, label: this.state.FormData[elementItem.name].value + "-" + this.state.FormData[elementItem.namelabel].value }
+                                }
+                               
+
                                 return (
                                     <ElementModal.ProductComboBox
                                         onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.name].value}
                                         validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={valuename}
                                         key={index}
                                     />
                                 );
@@ -259,10 +264,10 @@ class ConfirmationNew extends React.Component {
                                 return (
                                     <ElementModal.CheckBox
                                         onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.name].value}
                                         validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
                                         key={index}
                                     />
                                 );
