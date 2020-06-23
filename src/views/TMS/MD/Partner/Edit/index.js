@@ -21,7 +21,7 @@ import { ATTRIBUTE_CATEGORY_TYPE_UPDATE } from "../../../../../constants/functio
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_COUNTRY, ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_COUNTRY, ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD, ERPCOMMONCACHE_STORE } from "../../../../../constants/keyCache";
 import PartnerCoordinatorStore from "../../PartnerCoordinatorStore";
 class EditCom extends React.Component {
     constructor(props) {
@@ -49,6 +49,7 @@ class EditCom extends React.Component {
             Ward: [],
             EditElementList: EditElementList,
             PartnerCoordinatorStore: [],
+            Store: [],
             FullAddress: ""
 
         };
@@ -137,7 +138,13 @@ class EditCom extends React.Component {
             }
         });
 
-
+        this.props.callGetCache(ERPCOMMONCACHE_STORE).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                this.setState({
+                    Store: result.ResultObject.CacheData
+                });   
+            }
+        });
     }
 
     setValueCombobox(c, p, d, w) {
@@ -364,6 +371,7 @@ class EditCom extends React.Component {
                         <PartnerCoordinatorStore
                             PartnerID={this.props.match.params.id}
                             partnerCoordinatorStore={this.state.PartnerCoordinatorStore}
+                            Store={this.state.Store}
                             onPartnerCoordinatorStoreChange={this.onPartnerCoordinatorStoreChange}
                         />
                     </SimpleForm>

@@ -64,7 +64,7 @@ class FeeAppendixDetailElementCom extends Component {
             >
                 <div className="row">
 
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                         <FormControl.FormControlTextBox
                             name="txtFeeAppendixDetailID"
                             colspan="9"
@@ -78,9 +78,6 @@ class FeeAppendixDetailElementCom extends Component {
                             datasourcemember="FeeAppendixDetailID"
                         />
                     </div>
-
-                    <div className="col-md-6"></div>
-
                     <div className="col-md-6">
                         <FormControl.FormControlComboBox
                             name="cbMainGroupID"
