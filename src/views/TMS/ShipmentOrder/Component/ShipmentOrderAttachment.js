@@ -9,14 +9,14 @@ class ShipmentOrderAttachmentCom extends Component {
         super(props);
         this._handleselectedFile = this._handleselectedFile.bind(this);
         this.state = {
-            ShipmentOrder: this.props.ShipmentOrderAttachment.ShipmentOrder_AttachmentList
+            ShipmentOrderAttachment: this.props.ShipmentOrderAttachment.ShipmentOrder_AttachmentList
         }
     }
 
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.ShipmentOrderAttachment) !== JSON.stringify(nextProps.ShipmentOrderAttachment)) {
             this.setState({
-                ShipmentOrder: nextProps.ShipmentOrderAttachment.ShipmentOrder_AttachmentList
+                ShipmentOrderAttachment: nextProps.ShipmentOrderAttachment.ShipmentOrder_AttachmentList
             })
         }
     }
@@ -31,7 +31,7 @@ class ShipmentOrderAttachmentCom extends Component {
             if (apiResult)
                 if (apiResult.IsError == false) {
                     this.setState({
-                        ShipmentOrder: apiResult.ResultObject
+                        ShipmentOrderAttachment: apiResult.ResultObject
                     });
 
                 }
@@ -48,7 +48,22 @@ class ShipmentOrderAttachmentCom extends Component {
         });
     }
 
-    onDeletefile(e) { }
+    onDeletefile(e) {
+        e.preventDefault();
+        const postData = {
+            ShipmentOrderID: this.props.ShipmentOrderAttachment.ShipmentOrderID,
+            AttachmentID: e.target.dataset.id,
+            DeletedUser: this.props.AppInfo.LoginInfo.Username
+
+        }
+        this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_Attachment/Delete', postData).then((apiResult) => {
+            if (apiResult && !apiResult.IsError && apiResult.ResultObject) {
+                this.setState({
+                    ShipmentOrderAttachment: apiResult.ResultObject
+                })
+            }
+        });
+    }
 
 
     render() {
@@ -68,7 +83,7 @@ class ShipmentOrderAttachmentCom extends Component {
                                 </div>)
                             }
                         </li>
-                        {this.state.ShipmentOrder != [] && this.state.ShipmentOrder.map((item, index) => {
+                        {this.state.ShipmentOrderAttachment != [] && this.state.ShipmentOrderAttachment.map((item, index) => {
                             if (item.FileName.split(".")[1] == "docx" || item.FileName.split(".")[1] == "doc") {
                                 return (
                                     <li key={index}>
@@ -76,7 +91,7 @@ class ShipmentOrderAttachmentCom extends Component {
                                             (<div className="delIcon" data-id={item.AttachmentID} onClick={this.onDeletefile.bind(this)} >˟</div>) :
                                             (<div className="delIcon" >˟</div>)
                                         }
-                                        <a>
+                                        <a href={"http://wfimagecdn.tterpbeta.vn/" + item.FilePath} target="_blank" download >
                                             <div className="pull-left fileType"><span className="doctype docx"></span></div>
                                             <div className="attachName">
                                                 <div className="hideCont bold">{item.FileName}</div>
@@ -94,7 +109,7 @@ class ShipmentOrderAttachmentCom extends Component {
                                             (<div className="delIcon" data-id={item.AttachmentID} onClick={this.onDeletefile.bind(this)} >˟</div>) :
                                             (<div className="delIcon" >˟</div>)
                                         }
-                                        <a >
+                                        <a href={"http://wfimagecdn.tterpbeta.vn/" + item.FilePath} target="_blank" download >
                                             <div className="pull-left fileType"><span className="doctype xlsx"></span></div>
                                             <div className="attachName">
                                                 <div className="hideCont bold">{item.FileName}</div>
@@ -112,7 +127,7 @@ class ShipmentOrderAttachmentCom extends Component {
                                             (<div className="delIcon" data-id={item.AttachmentID} onClick={this.onDeletefile.bind(this)} >˟</div>) :
                                             (<div className="delIcon" >˟</div>)
                                         }
-                                        <a >
+                                        <a href={"http://wfimagecdn.tterpbeta.vn/" + item.FilePath} target="_blank" download >
                                             <div className="pull-left fileType"><span className="doctype zip"></span></div>
                                             <div className="attachName">
                                                 <div className="hideCont bold">{item.FileName}</div>
@@ -123,6 +138,22 @@ class ShipmentOrderAttachmentCom extends Component {
                                     </li>
                                 )
                             }
+                            else if (item.FileName.split(".")[1] == "pdf") {
+                                return (
+                                    <li key={index}>
+                                        {this.props.IsAttachment == true ?
+                                            (<div className="delIcon" data-id={item.AttachmentID} onClick={this.onDeletefile.bind(this)} >˟</div>) :
+                                            (<div className="delIcon" >˟</div>)
+                                        }
+                                        <a href={"http://wfimagecdn.tterpbeta.vn/" + item.FilePath} target="_blank" download >
+                                            <div className="pull-left fileType"><span className="doctype pdf"></span></div>
+                                            <div className="attachName">
+                                                <div className="hideCont bold">{item.FileName}</div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                )
+                            }
                             else {
                                 return (
                                     <li key={index}>
@@ -130,7 +161,7 @@ class ShipmentOrderAttachmentCom extends Component {
                                             (<div className="delIcon" data-id={item.AttachmentID} onClick={this.onDeletefile.bind(this)} >˟</div>) :
                                             (<div className="delIcon" >˟</div>)
                                         }
-                                        <a >
+                                        <a href={"http://wfimagecdn.tterpbeta.vn/" + item.FilePath} target="_blank" download >
                                             <div className="pull-left fileType"><span className="doctype other"></span></div>
                                             <div className="attachName">
                                                 <div className="hideCont bold">{item.FileName}</div>
