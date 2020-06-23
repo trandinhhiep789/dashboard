@@ -477,7 +477,7 @@ class AddCom extends React.Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.TextBox
+                        <FormControl.TextBoxCurrency
                             name="txtDepositMoney"
                             colspan="8"
                             labelcolspan="4"
@@ -487,7 +487,6 @@ class AddCom extends React.Component {
                             controltype="InputControl"
                             value=""
                             datasourcemember="DepositMoney"
-                            validatonList={["number"]}
                         />
                     </div>
 

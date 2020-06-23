@@ -222,14 +222,23 @@ class EditCom extends React.Component {
         _ModalFixShipmentFeeColumnList.forEach(function (objElement) {
             if (objElement.Name == "GetFeeType") {
                 objElement.selectedValue = getFeeType;
+            } else if (getFeeType && objElement.Name == "FeeValue") {
+                if (parseInt(getFeeType) == 2) {//lấy từ bảng làm giá
+                    objElement.readonly = true;
+                } else {
+                    objElement.readonly = false;
+                }
+
             }
         }.bind(this));
 
-        if(isInsert){
+        if (isInsert) {
             this.setState({ ModalFixShipmentFeeColumnList: _ModalFixShipmentFeeColumnList });
-        }else{
+        } else {
             this.setState({ ModalFixShipmentFeeColumnList_Edit: _ModalFixShipmentFeeColumnList });
         }
+
+
     }
 
     //----------------------- Chi phí vận chuyển cố định ------------------------------------------------------------
@@ -286,6 +295,17 @@ class EditCom extends React.Component {
                 _fixShipmentFee = item;
             }
         });
+
+        this.state.ModalFixShipmentFeeColumnList_Edit.forEach(function (objElement) {
+            if (objElement.Name == "FeeValue") {
+                if (_fixShipmentFee.GetFeeType == 2) {//lấy từ bảng làm giá
+                    objElement.readonly = true;
+                } else {
+                    objElement.readonly = false;
+                }
+
+            }
+        }.bind(this));
 
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Chỉnh sửa chi phí vận chuyển cố định của một loại yêu cầu vận chuyển',
@@ -421,10 +441,18 @@ class EditCom extends React.Component {
         _ModalFlexShipmentFeeColumnList.forEach(function (objElement) {
             if (objElement.Name == "GetFeeType") {
                 objElement.selectedValue = getFeeType;
+            } else if (getFeeType && objElement.Name == "FeeValue") {
+                if (parseInt(getFeeType) == 2) {//lấy từ bảng làm giá
+                    objElement.readonly = true;
+                } else {
+                    objElement.readonly = false;
+                }
+
             }
         }.bind(this));
 
-        
+
+
         let listOptionNull = [{ value: "-1", label: "------ Chọn ------" }];
         let listOption = [];
         _ModalFlexShipmentFeeColumnList.forEach(function (objElement) {
@@ -556,8 +584,7 @@ class EditCom extends React.Component {
             }
         });
 
-        let _ModalFlexShipmentFeeColumnList_Edit = this.state.ModalFlexShipmentFeeColumnList_Edit;
-        _ModalFlexShipmentFeeColumnList_Edit.forEach(function (objElement) {
+        this.state.ModalFlexShipmentFeeColumnList_Edit.forEach(function (objElement) {
             let sub = [];
             let mainGroupID = "";
             let listOption = [];
@@ -567,6 +594,13 @@ class EditCom extends React.Component {
                     mainGroupID = sub[0].MainGroupID;
                     objElement.value = mainGroupID;
                 }
+            } else if (objElement.Name == "FeeValue") {
+                if (_flexShipmentFee.GetFeeType == 2) {//lấy từ bảng làm giá
+                    objElement.readonly = true;
+                } else {
+                    objElement.readonly = false;
+                }
+
             }
 
         }.bind(this));
@@ -603,7 +637,7 @@ class EditCom extends React.Component {
                     }
                 }
             },
-            modalElementList: _ModalFlexShipmentFeeColumnList_Edit,
+            modalElementList: this.state.ModalFlexShipmentFeeColumnList_Edit,
             formData: _flexShipmentFee
         });
     }

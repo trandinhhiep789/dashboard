@@ -663,18 +663,19 @@ export const ModalFixShipmentFeeColumnList = [
         icon: "",
         listoption: [{ value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
         DataSourceMember: "GetFeeType",
-        readonly: false,
+        readonly: true,
+        disabled: true,
         validatonList: [],
         IsAutoLoadItemFromCache: false
     },
     {
         Name: "FeeValue",
-        type: "text",
+        type: "numeric",
         label: "Chi phí",
         maxSize: "19",
         DataSourceMember: "FeeValue",
         readonly: false,
-        validatonList: ["number"]
+        validatonList: []
     },
     {
         Name: "Note",
@@ -744,17 +745,18 @@ export const ModalFixShipmentFeeColumnList_Edit = [
         listoption: [{ value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
         DataSourceMember: "GetFeeType",
         readonly: false,
+        disabled: true,
         validatonList: [],
         IsAutoLoadItemFromCache: false
     },
     {
         Name: "FeeValue",
-        type: "text",
+        type: "numeric",
         label: "Chi phí",
         maxSize: "19",
         DataSourceMember: "FeeValue",
         readonly: false,
-        validatonList: ["number"]
+        validatonList: []
     },
     {
         Name: "Note",
@@ -1094,17 +1096,18 @@ export const ModalFlexShipmentFeeColumnList = [
         listoption: [{ value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
         DataSourceMember: "GetFeeType",
         readonly: false,
+        disabled: true,
         validatonList: [],
         IsAutoLoadItemFromCache: false
     },
     {
         Name: "FeeValue",
-        type: "text",
+        type: "numeric",
         label: "Chi phí",
         maxSize: "19",
         DataSourceMember: "FeeValue",
         readonly: false,
-        validatonList: ["number"]
+        validatonList: []
     },
     {
         Name: "Note",
@@ -1260,17 +1263,18 @@ export const ModalFlexShipmentFeeColumnList_Edit = [
         listoption: [{ value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
         DataSourceMember: "GetFeeType",
         readonly: false,
+        disabled: true,
         validatonList: [],
         IsAutoLoadItemFromCache: false
     },
     {
         Name: "FeeValue",
-        type: "text",
+        type: "numeric",
         label: "Chi phí",
         maxSize: "19",
         DataSourceMember: "FeeValue",
         readonly: false,
-        validatonList: ["number"]
+        validatonList: []
     },
     {
         Name: "Note",
