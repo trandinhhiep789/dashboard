@@ -16,6 +16,7 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_STORE } from "../../../../constants/keyCache";
+import { store } from "react-notifications-component";
 
 class PartnerCoordinatorStoreCom extends React.Component {
     constructor(props) {
@@ -24,11 +25,12 @@ class PartnerCoordinatorStoreCom extends React.Component {
         this.handleInsert = this.handleInsert.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.getStoreName = this.getStoreName.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
-            Store: [],
+            Store: this.props.Store,
             PartnerCoordinatorStore: this.props.partnerCoordinatorStore ? this.props.partnerCoordinatorStore : [],
             PartnerID: this.props.PartnerID
         };
@@ -39,18 +41,16 @@ class PartnerCoordinatorStoreCom extends React.Component {
         if (nextProps.PartnerID !== this.state.PartnerID) {
             this.setState({ PartnerID: nextProps.PartnerID });
         }
+        if(nextProps.Store !== this.state.Store){
+            this.setState({ Store: nextProps.Store });
+        }
     }
 
     componentDidMount() {
-        this.props.callGetCache(ERPCOMMONCACHE_STORE).then((result) => {
-            if (!result.IsError && result.ResultObject.CacheData != null) {
-                this.setState({
-                    Store: result.ResultObject.CacheData
-                });
-            }
-        });
 
     }
+
+
 
     handleCloseMessage() {
         //if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
@@ -68,9 +68,10 @@ class PartnerCoordinatorStoreCom extends React.Component {
     }
 
     getStoreName(storeId) {
+        debugger;
         let _store = this.state.Store.filter(item => item.StoreID == storeId);
         let _storeName = "";
-        if (_store) {
+        if (_store && _store.length > 0) {
             _storeName = _store[0].StoreName;
         }
         return _storeName;
@@ -183,6 +184,7 @@ class PartnerCoordinatorStoreCom extends React.Component {
     }
 
     handleDelete(deleteList, pkColumnName) {
+        debugger;
         //let datasource = this.state.PartnerCoordinatorStore;
         let _PartnerCoordinatorStore = this.state.PartnerCoordinatorStore;
         deleteList.map((row, index) => {
@@ -219,7 +221,16 @@ class PartnerCoordinatorStoreCom extends React.Component {
     }
 
     render() {
-        let datasource = this.state.PartnerCoordinatorStore.filter(item => item.IsDeleted == undefined || item.IsDeleted == false);
+        //let datasource = this.state.PartnerCoordinatorStore.filter(item => item.IsDeleted == undefined || item.IsDeleted == false);
+        let datasource = this.state.PartnerCoordinatorStore.map(function (item, index) {
+            if (item.IsDeleted == undefined || item.IsDeleted == false) {
+                item.CoordinatorStoreName = item.CoordinatorStoreID + " - " + this.getStoreName(item.CoordinatorStoreID);
+                item.PartnerStoreName = item.PartnerStoreID + " - " + this.getStoreName(item.PartnerStoreID);
+                return item;
+            }
+
+        }.bind(this)).filter(item => item != undefined);
+
 
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
@@ -231,23 +242,34 @@ class PartnerCoordinatorStoreCom extends React.Component {
                 </Collapsible>
             );
         }
-        return (
-            <Collapsible trigger="Danh sách kho điều phối giao hàng cho các kho của đối tác" easing="ease-in" open={true}>
-                <DataGrid listColumn={DataGridColumnList}
-                    dataSource={datasource}
-                    modalElementList={ModalColumnList_Insert}
-                    MLObjectDefinition={MLObjectDefinition}
-                    IDSelectColumnName={"chkSelectPartnerCSID"}
-                    PKColumnName={"PartnerCSID"}
-                    onDeleteClick={this.handleDelete}
-                    onInsertClick={this.handleInsert}
-                    onInsertClickEdit={this.handleEdit}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                    IsCustomAddLink={true}
-                />
-            </Collapsible>
-        );
+        if (this.state.Store) {
+            return (
+                <Collapsible trigger="Danh sách kho điều phối giao hàng cho các kho của đối tác" easing="ease-in" open={true}>
+                    <DataGrid listColumn={DataGridColumnList}
+                        dataSource={datasource}
+                        modalElementList={ModalColumnList_Insert}
+                        MLObjectDefinition={MLObjectDefinition}
+                        IDSelectColumnName={"chkSelectPartnerCSID"}
+                        PKColumnName={"PartnerCSID"}
+                        onDeleteClick={this.handleDelete}
+                        onInsertClick={this.handleInsert}
+                        onInsertClickEdit={this.handleEdit}
+                        IsAutoPaging={true}
+                        RowsPerPage={10}
+                        IsCustomAddLink={true}
+                    />
+                </Collapsible>
+            );
+        } else {
+            return (
+                <Collapsible trigger="Danh sách kho điều phối giao hàng cho các kho của đối tác" easing="ease-in" open={true}>
+                    Đang nạp dữ liệu ......
+                </Collapsible>
+            );
+        }
+
+
+
     }
 }
 

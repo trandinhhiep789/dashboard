@@ -3,19 +3,35 @@ export const UpdateAPIPath = "api/Partner_CoordinatorStore/Update";
 export const DeleteAPIPath = "api/Partner_CoordinatorStore/Delete";
 
 export const ModalColumnList_Insert = [
+    // {
+    //     Name: "CoordinatorStoreID",
+    //     type: "text",
+    //     label: "Mã kho điều phối",
+    //     maxSize: "10",
+    //     DataSourceMember: "CoordinatorStoreID",
+    //     readonly: false,
+    //     validatonList: ["required","number"]
+    // },
     {
+        type: "select",
         Name: "CoordinatorStoreID",
-        type: "text",
-        label: "Mã kho điều phối",
-        maxSize: "10",
+        label: "kho điều phối",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
         DataSourceMember: "CoordinatorStoreID",
         readonly: false,
-        validatonList: ["required","number"]
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
+        ValueMember: "StoreID",
+        NameMember: "StoreName"
     },
     {
         type: "select",
         Name: "PartnerStoreID",
-        label: "Kho đối tác",
+        label: "kho đối tác",
         value: -1,
         placeholder: "",
         icon: "",
@@ -49,14 +65,31 @@ export const ModalColumnList_Insert = [
 ];
 
 export const ModalColumnList_Edit = [
+    // {
+    //     Name: "CoordinatorStoreID",
+    //     type: "text",
+    //     label: "Mã kho điều phối",
+    //     maxSize: "10",
+    //     DataSourceMember: "CoordinatorStoreID",
+    //     readonly: true,
+    //     validatonList: ["required","number"]
+    // },
     {
+        type: "select",
         Name: "CoordinatorStoreID",
-        type: "text",
-        label: "Mã kho điều phối",
-        maxSize: "10",
+        label: "kho điều phối",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
         DataSourceMember: "CoordinatorStoreID",
         readonly: true,
-        validatonList: ["required","number"]
+        disabled: true,
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
+        ValueMember: "StoreID",
+        NameMember: "StoreName"
     },
     {
         type: "select",
@@ -103,17 +136,24 @@ export const DataGridColumnList = [
         DataSourceMember: "PartnerCSID",
         Width: 60
     },
+    // {
+    //     Name: "CoordinatorStoreID",
+    //     Type: "text",
+    //     Caption: "Mã kho điều phối",
+    //     DataSourceMember: "CoordinatorStoreID",
+    //     Width: 200
+    // },
     {
-        Name: "CoordinatorStoreID",
+        Name: "CoordinatorStoreName",
         Type: "text",
-        Caption: "Mã kho điều phối",
-        DataSourceMember: "CoordinatorStoreID",
-        Width: 200
+        Caption: "kho điều phối",
+        DataSourceMember: "CoordinatorStoreName",
+        Width: 350
     },
     {
         Name: "PartnerStoreName",
         Type: "text",
-        Caption: "Tên kho đối tác",
+        Caption: "kho đối tác",
         DataSourceMember: "PartnerStoreName",
         Width: 350
     },
@@ -152,6 +192,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "CoordinatorStoreID",
         DataSourceMember: "CoordinatorStoreID"
+    },
+    {
+        Name: "CoordinatorStoreName",
+        DefaultValue: "",
+        BindControlName: "CoordinatorStoreName",
+        DataSourceMember: "CoordinatorStoreName"
     },
     {
         Name: "PartnerStoreID",
