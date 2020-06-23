@@ -175,9 +175,10 @@ class InfoProductCom extends Component {
                                             <th className="jsgrid-header-cell">Xuất bán</th>
                                             <th className="jsgrid-header-cell">Mã sản phẩm</th>
                                             <th className="jsgrid-header-cell">Tên sản phẩm</th>
-                                            <th className="jsgrid-header-cell">Số lượng</th>
                                             <th className="jsgrid-header-cell">Đơn vị tính</th>
-                                            <th className="jsgrid-header-cell">Giá(Vat)</th>
+                                            <th className="jsgrid-header-cell">Số lượng</th>
+                                            <th className="jsgrid-header-cell">Giá</th>
+                                            <th className="jsgrid-header-cell">Thành tiền</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -195,8 +196,9 @@ class InfoProductCom extends Component {
                                                 </td>
                                                 <td>{item.ProductID}</td>
                                                 <td>{item.ProductName}</td>
-                                                <td>{item.Quantity}</td>
                                                 <td>{item.QuantityUnitName}</td>
+                                                <td>{item.Quantity}</td>
+                                                <td>{item.Price}</td>
                                                 <td>{formatMoney(this.Pricevat(item.Quantity,item.Price,item.VAT), 0)}đ</td>
                                             </tr>)
                                         })}

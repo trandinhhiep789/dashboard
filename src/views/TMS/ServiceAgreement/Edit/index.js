@@ -551,7 +551,7 @@ class EditCom extends React.Component {
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.TextBox
+                            <FormControl.TextBoxCurrency
                                 name="txtDepositMoney"
                                 colspan="8"
                                 labelcolspan="4"

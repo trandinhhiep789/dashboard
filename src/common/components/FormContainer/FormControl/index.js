@@ -179,17 +179,28 @@ class FormControlTextBox extends React.Component {
             star = '*'
         }
 
-        let formRowClassName = "form-row ";
+        let formRowClassName = "form-row ss ";
+
         if (this.props.classNameCustom != null) {
             formRowClassName += this.props.classNameCustom;
+            debugger
+
         }
         if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
             className += " is-invalid";
         }
-        // console.log("FormControlTextBox", this.props.hidenControll)
+        
+        let hidenUIControll;
+        if (this.props.hidenControll == undefined || this.props.hidenControll == false) {
+            hidenUIControll = ''
+        }
+        else (
+            hidenUIControll = ' d-none'
+        )
+
         return (
 
-            <div className={formRowClassName} >
+            <div className={formRowClassName + hidenUIControll} >
                 {this.props.label.length > 0 ?
                     <div className={labelDivClassName}>
                         <label className="col-form-label 2">
@@ -215,6 +226,7 @@ class FormControlTextBox extends React.Component {
                     <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
                 </div>
             </div>
+
         );
     }
 }
@@ -479,7 +491,7 @@ class TextBoxCurrency extends React.Component {
 
     handleValueChange(e) {
         if (this.props.onValueChange != null) {
-            this.props.onValueChange(e.target.name, e.target.value, "", e, this.props.validatonList);
+            this.props.onValueChange(e.target.name, e.target.value, "", e, undefined);
         }
 
     }

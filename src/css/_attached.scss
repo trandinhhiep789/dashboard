@@ -42,6 +42,11 @@
                         background-position: -133px -38px;
                     }
                 }
+                &.pdf {
+                    &::before {
+                        background-position: -135px 0px;
+                    }
+                }
             }
         }
 

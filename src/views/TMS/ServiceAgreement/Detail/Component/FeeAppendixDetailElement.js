@@ -74,14 +74,14 @@ class FeeAppendixDetailElementCom extends Component {
                 onchange={this.handleChange.bind(this)}
             >
                 <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                         <FormControl.FormControlTextBox
                             name="txtFeeAppendixID"
                             colspan="9"
                             labelcolspan="3"
                             readOnly={true}
                             hidenControll={true}
-                            label="mã phụ lục"
+                            label="mã phụ lục sss"
                             placeholder="Mã phụ lục tự động nhập"
                             controltype="InputControl"
                             value=""
@@ -89,7 +89,6 @@ class FeeAppendixDetailElementCom extends Component {
                         />
 
                     </div>
-                    <div className="col-md-6"></div>
                     <div className="col-md-6">
                         <FormControl.FormControlComboBox
                             name="cbServiceSeasonTypeID"
