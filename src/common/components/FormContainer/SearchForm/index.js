@@ -115,10 +115,10 @@ export default class SearchForm extends Component {
                                 return (
                                     <ElementSearch.ElementText
                                         onValueChange={this.onValueChange}
-                                        value={this.state.FormData[elementItem.name].value}
                                         ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
                                         key={index}
                                     />
                                 );
@@ -126,11 +126,11 @@ export default class SearchForm extends Component {
                                 return (
                                     <ElementSearch.ElementTextdropdown
                                         onValueChange={this.onValueChange}
-                                        value={this.state.FormData[elementItem.name].value}
                                         valuenameOption={this.state.FormData[elementItem.nameOption].value}
                                         ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
                                         key={index}
                                     />
                                 );
@@ -138,9 +138,9 @@ export default class SearchForm extends Component {
                                 return (
                                     <ElementSearch.ElementCheckbox
                                         onValueChange={this.onValueChange}
-                                        value={this.state.FormData[elementItem.name].value}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
                                         key={index}
                                     />
                                 );
@@ -148,13 +148,14 @@ export default class SearchForm extends Component {
                                 if (typeof elementItem.filterName != "undefined") {
                                     elementItem.filterValue = this.state.FormData[elementItem.filterName].value;
                                 }
-                                elementItem.value = this.state.FormData[elementItem.name].value
+                           
                                 return (
                                     <ElementSearch.ElementComboBox
                                         onValueChange={this.onValueChange}
                                         ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value = {this.state.FormData[elementItem.name].value}
                                         key={index}
                                     />
                                 );
@@ -162,10 +163,10 @@ export default class SearchForm extends Component {
                                 return (
                                     <ElementSearch.ElementDatetime
                                         onValueChange={this.onValueChange}
-                                        value={this.state.FormData[elementItem.name].value}
                                         ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
                                         key={index}
                                     />
                                 );
@@ -173,10 +174,10 @@ export default class SearchForm extends Component {
                                 return (
                                     <ElementSearch.ElementDatetimeFromTo
                                         onValueChange={this.onValueChange}
-                                        value={this.state.FormData[elementItem.name].value}
                                         ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
                                         key={index}
                                     />
                                 );

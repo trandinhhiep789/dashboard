@@ -176,6 +176,21 @@ const AppMenu = [
                     
                 ]
             },
+            {
+                MenuName: 'grantrights',
+                MenuTitle: 'Cấp quyền',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'UserCoordinator',
+                        MenuTitle: 'Cấp quyền nhân viên theo kho',
+                        LinkTo: '/UserCoordinator',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+                ]
+            },
         ]
     },
     {
@@ -249,13 +264,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            {
-                MenuName: 'UserCoordinator',
-                MenuTitle: 'Cấp quyền nhân viên theo kho',
-                LinkTo: '/UserCoordinator',
-                MenuIcon: '',
-                SubMenu: []
-            }
+          
         ]
     }
    
