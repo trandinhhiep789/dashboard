@@ -130,7 +130,7 @@ class AbilityElementCom extends Component {
             >
 
                 <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                         <FormControl.FormControlTextBox
                             name="txtAbilityID"
                             colspan="9"
@@ -250,7 +250,6 @@ class AbilityElementCom extends Component {
                             classNameCustom="customcontrol"
                         />
                     </div>
-                    <div className="col-md-6"></div>
 
                     <div className="col-md-6">
                         <FormControl.CheckBox
