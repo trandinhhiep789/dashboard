@@ -253,6 +253,7 @@ class EditCom extends React.Component {
                                 readOnly={this.state.IsSystem}
                                 label="loại hợp đồng"
                                 validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
                                 isautoloaditemfromcache={true}
                                 loaditemcachekeyid="ERPCOMMONCACHE.SERVICEAGREEMENTTYPE"
                                 valuemember="ServiceAgreementTypeID"
@@ -272,6 +273,7 @@ class EditCom extends React.Component {
                                 label="loại dịch vụ"
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
+                                placeholder="-- Vui lòng chọn --"
                                 validatonList={["Comborequired"]}
                                 isautoloaditemfromcache={true}
                                 loaditemcachekeyid="ERPCOMMONCACHE.TMS_SERVICETYPE"
@@ -327,6 +329,7 @@ class EditCom extends React.Component {
                                 labelcolspan="4"
                                 label="khu vực"
                                 disabled={this.state.IsSystem}
+                                placeholder="-- Vui lòng chọn --"
                                 readOnly={this.state.IsSystem}
                                 validatonList={["Comborequired"]}
                                 isautoloaditemfromcache={true}
