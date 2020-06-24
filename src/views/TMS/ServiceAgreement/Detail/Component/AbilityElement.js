@@ -63,7 +63,6 @@ class AbilityElementCom extends Component {
 
 
     handleChange(formData, MLObject) {
-
         if (formData.dtToDate.value.length > 0) {
             if (formData.dtFromDate.value >= formData.dtToDate.value) {
                 formData.dtToDate.ErrorLst.IsValidatonError = true;
@@ -74,37 +73,35 @@ class AbilityElementCom extends Component {
                 formData.dtToDate.ErrorLst.ValidatonErrorMessage = "";
             }
         }
-        if (formData.txtDailyAbilityValue.value.length > 0 || formData.txtMonthlyAbilityValue.value.length > 0) {
-            if(formData.txtDailyAbilityValue.value.length > 0){
+        if (formData.txtDailyAbilityValue.value > 0 || formData.txtMonthlyAbilityValue.value > 0) {
+            if (formData.txtDailyAbilityValue.value > 0) {
                 if (/^[0-9][0-9]*$/.test(formData.txtDailyAbilityValue.value.toString())) {
                     formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
                     formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
                     formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
                     formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = ""
-                }else{
-                    
+                } else {
+
                     formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = true;
                     formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập số";
                 }
             }
-            
-            if(formData.txtMonthlyAbilityValue.value.length > 0){
-                if( /^[0-9][0-9]*$/.test(formData.txtMonthlyAbilityValue.value.toString())){
+
+            if (formData.txtMonthlyAbilityValue.value > 0) {
+                if (/^[0-9][0-9]*$/.test(formData.txtMonthlyAbilityValue.value.toString())) {
                     formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
                     formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = ""
                     formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
                     formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
                 }
-                else{
+                else {
                     ;
                     formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = true;
                     formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập số";
                 }
             }
-           
-            
         }
-        else{
+        else {
             formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = true;
             formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng thêm dữ liệu";
 
@@ -165,6 +162,8 @@ class AbilityElementCom extends Component {
 
                     </div>
 
+                    <div className="col-md-6"></div>
+
                     <div className="col-md-6">
                         <FormControl.FormControlDatetime
                             name="dtFromDate"
@@ -218,6 +217,7 @@ class AbilityElementCom extends Component {
                             value=""
                             datasourcemember="MonthlyAbilityValue"
                             classNameCustom="customcontrol"
+                            maxSize={6}
                         />
                     </div>
                     <div className="col-md-6">
@@ -233,6 +233,7 @@ class AbilityElementCom extends Component {
                             value=""
                             datasourcemember="DailyAbilityValue"
                             classNameCustom="customcontrol"
+                            maxSize={6}
                         />
                     </div>
 
@@ -251,6 +252,8 @@ class AbilityElementCom extends Component {
                         />
                     </div>
 
+                    <div className="col-md-6"></div>
+
                     <div className="col-md-6">
                         <FormControl.CheckBox
                             name="ckIsActived"
@@ -260,7 +263,7 @@ class AbilityElementCom extends Component {
                             disabled={IsSystem}
                             label="kích hoạt"
                             controltype="InputControl"
-                            value=""
+                            value={true}
                             datasourcemember="IsActived"
                             classNameCustom="customCheckbox"
                         />

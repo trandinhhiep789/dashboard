@@ -124,9 +124,11 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+        let objsearchData=[]
+        const objUser = { SearchKey: "@CREATEDUSERSTORE", SearchValue: this.props.AppInfo.LoginInfo.Username};
+        objsearchData = Object.assign([], searchData, { [10]: objUser });
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, objsearchData).then(apiResult => {
             if (!apiResult.IsError) {
-
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
@@ -216,7 +218,24 @@ class SearchCom extends React.Component {
                 </React.Fragment>
             );
         }
-        return <label>Đang nạp dữ liệu...</label>;
+        else
+        {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm
+                        FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                        className="multiple"
+
+                    />
+                  <label>Đang nạp dữ liệu...</label>
+                </React.Fragment>
+            );
+        }
     }
 }
 
