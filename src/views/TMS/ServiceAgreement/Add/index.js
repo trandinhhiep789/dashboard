@@ -227,6 +227,7 @@ class AddCom extends React.Component {
                             labelcolspan="4"
                             label="loại hợp đồng"
                             validatonList={["Comborequired"]}
+                            placeholder="-- Vui lòng chọn --"
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.SERVICEAGREEMENTTYPE"
                             valuemember="ServiceAgreementTypeID"
@@ -246,6 +247,7 @@ class AddCom extends React.Component {
                             label="loại dịch vụ"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
+                            placeholder="-- Vui lòng chọn --"
                             loaditemcachekeyid="ERPCOMMONCACHE.TMS_SERVICETYPE"
                             valuemember="ServiceTypeID"
                             nameMember="ServiceTypeName"
@@ -297,6 +299,7 @@ class AddCom extends React.Component {
                             label="khu vực"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
+                            placeholder="-- Vui lòng chọn --"
                             loaditemcachekeyid="ERPCOMMONCACHE.AREA"
                             valuemember="AreaID"
                             nameMember="AreaName"
