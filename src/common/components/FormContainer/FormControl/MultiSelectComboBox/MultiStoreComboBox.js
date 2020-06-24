@@ -52,6 +52,14 @@ class MultiStoreComboBoxCom extends React.Component {
                   }
                 ]
               }
+     ,
+     {
+                "QueryKey": "cOMPANYID",
+                "QueryValue": "10",
+                "QueryType": 1,
+                "IsNotQuery": false,
+                
+              }
             ],
             "Top": 500,
             "IndexName": "store",
