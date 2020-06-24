@@ -201,6 +201,9 @@ class FlexShipmentFeeCom extends React.Component {
         let listOption = [];
         _ModalFlexShipmentFeeColumnList.forEach(function (objElement) {
             if (elementName == "MainGroupID") {
+                if (objElement.Name == "MainGroupID") {
+                    objElement.value = elementValue;
+                }
                 if (objElement.Name == "SubGroupID") {
                     listOption = this.getDataCombobox(this.state.SubGroup, "SubGroupID", "SubGroupName", "MainGroupID", elementValue);
                     objElement.listoption = listOption;
@@ -215,6 +218,9 @@ class FlexShipmentFeeCom extends React.Component {
                     objElement.value = "-1";
                 }
             } else if (elementName == "SubGroupID") {
+                if (objElement.Name == "SubGroupID") {
+                    objElement.value = elementValue;
+                }
                 if (objElement.Name == "TechspecsID") {
                     listOption = this.getDataCombobox(this.state.Techspecs, "TechspecsID", "TechspecsName", "SubGroupID", elementValue);
                     objElement.listoption = listOption;
@@ -225,10 +231,17 @@ class FlexShipmentFeeCom extends React.Component {
                     objElement.value = "-1";
                 }
             } else if (elementName == "TechspecsID") {
+                if (objElement.Name == "TechspecsID") {
+                    objElement.value = elementValue;
+                }
                 if (objElement.Name == "TechspecsValueID") {
                     listOption = this.getDataCombobox(this.state.TechspecsValue, "TechSpecsValueID", "Value", "TechSpecsID", elementValue);
                     objElement.listoption = listOption;
                     objElement.value = "-1";
+                }
+            } else if (elementName == "TechspecsValueID") {
+                if (objElement.Name == "TechspecsValueID") {
+                    objElement.value = elementValue;
                 }
             }
 
@@ -264,11 +277,24 @@ class FlexShipmentFeeCom extends React.Component {
                         MLObject.ShipmentOrderTypeID = this.props.ShipmentOrderTypeID;
                         MLObject.OutputServiceProductID = MLObject.OutputServiceProductID && MLObject.OutputServiceProductID[0].ProductID ? MLObject.OutputServiceProductID[0].ProductID : MLObject.OutputServiceProductID;
                         MLObject.ProductID = MLObject.ProductID && MLObject.ProductID[0].ProductID ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
-                        MLObject.SubGroupID = MLObject.SubGroupID && Array.isArray(MLObject.SubGroupID) ? MLObject.SubGroupID[0] : MLObject.SubGroupID;
-                        MLObject.TechspecsID = MLObject.TechspecsID && Array.isArray(MLObject.TechspecsID) ? MLObject.TechspecsID[0] : MLObject.TechspecsID;
-                        MLObject.TechspecsValueID = MLObject.TechspecsValueID && Array.isArray(MLObject.TechspecsValueID) ? MLObject.TechspecsValueID[0] : MLObject.TechspecsValueID;
+                        // MLObject.SubGroupID = MLObject.SubGroupID && Array.isArray(MLObject.SubGroupID) ? MLObject.SubGroupID[0] : MLObject.SubGroupID;
+                        // MLObject.TechspecsID = MLObject.TechspecsID && Array.isArray(MLObject.TechspecsID) ? MLObject.TechspecsID[0] : MLObject.TechspecsID;
+                        // MLObject.TechspecsValueID = MLObject.TechspecsValueID && Array.isArray(MLObject.TechspecsValueID) ? MLObject.TechspecsValueID[0] : MLObject.TechspecsValueID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+                        
+                        this.state.ModalFlexShipmentFeeColumnList.forEach(function (objElement) {
+                            if (objElement.Name == "SubGroupID") {
+                                MLObject.SubGroupID = objElement.value && Array.isArray(objElement.value) ? objElement.value[0] : objElement.value;
+                            }
+                            else if (objElement.Name == "TechspecsID") {
+                                MLObject.TechspecsID = objElement.value && Array.isArray(objElement.value) ? objElement.value[0] : objElement.value;
+                            }
+                            else if (objElement.Name == "TechspecsValueID") {
+                                MLObject.TechspecsValueID = objElement.value && Array.isArray(objElement.value) ? objElement.value[0] : objElement.value;
+                            }
+                        }.bind(this));
+                        
                         this.props.callFetchAPI(APIHostName, AddAPIPath_FlexShipmentFee, MLObject).then((apiResult) => {
                             if (!apiResult.IsError) {
                                 //this.handleSubmitInsertLog(MLObject);
@@ -317,7 +343,17 @@ class FlexShipmentFeeCom extends React.Component {
                     mainGroupID = sub[0].MainGroupID;
                     objElement.value = mainGroupID;
                 }
-            } else if (objElement.Name == "FeeValue") {
+            }
+            else if (objElement.Name == "SubGroupID") {
+                objElement.value = _flexShipmentFee.SubGroupID;
+            }
+            else if (objElement.Name == "TechspecsID") {
+                objElement.value = _flexShipmentFee.TechspecsID;
+            }
+            else if (objElement.Name == "TechspecsValueID") {
+                objElement.value = _flexShipmentFee.TechspecsValueID;
+            }
+            else if (objElement.Name == "FeeValue") {
                 if (_flexShipmentFee.GetFeeType == 2) {//lấy từ bảng làm giá
                     objElement.readonly = true;
                 } else {
@@ -340,11 +376,24 @@ class FlexShipmentFeeCom extends React.Component {
                         MLObject.ShipmentOrderTypeID = this.props.ShipmentOrderTypeID;
                         MLObject.OutputServiceProductID = MLObject.OutputServiceProductID && MLObject.OutputServiceProductID[0].ProductID ? MLObject.OutputServiceProductID[0].ProductID : MLObject.OutputServiceProductID;
                         MLObject.ProductID = MLObject.ProductID && MLObject.ProductID[0].ProductID ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
-                        MLObject.SubGroupID = MLObject.SubGroupID && Array.isArray(MLObject.SubGroupID) ? MLObject.SubGroupID[0] : MLObject.SubGroupID;
-                        MLObject.TechspecsID = MLObject.TechspecsID && Array.isArray(MLObject.TechspecsID) ? MLObject.TechspecsID[0] : MLObject.TechspecsID;
-                        MLObject.TechspecsValueID = MLObject.TechspecsValueID && Array.isArray(MLObject.TechspecsValueID) ? MLObject.TechspecsValueID[0] : MLObject.TechspecsValueID;
+                        // MLObject.SubGroupID = MLObject.SubGroupID && Array.isArray(MLObject.SubGroupID) ? MLObject.SubGroupID[0] : MLObject.SubGroupID;
+                        // MLObject.TechspecsID = MLObject.TechspecsID && Array.isArray(MLObject.TechspecsID) ? MLObject.TechspecsID[0] : MLObject.TechspecsID;
+                        // MLObject.TechspecsValueID = MLObject.TechspecsValueID && Array.isArray(MLObject.TechspecsValueID) ? MLObject.TechspecsValueID[0] : MLObject.TechspecsValueID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+
+                        this.state.ModalFlexShipmentFeeColumnList_Edit.forEach(function (objElement) {
+                            if (objElement.Name == "SubGroupID") {
+                                MLObject.SubGroupID = objElement.value && Array.isArray(objElement.value) ? objElement.value[0] : objElement.value;
+                            }
+                            else if (objElement.Name == "TechspecsID") {
+                                MLObject.TechspecsID = objElement.value && Array.isArray(objElement.value) ? objElement.value[0] : objElement.value;
+                            }
+                            else if (objElement.Name == "TechspecsValueID") {
+                                MLObject.TechspecsValueID = objElement.value && Array.isArray(objElement.value) ? objElement.value[0] : objElement.value;
+                            }
+                        }.bind(this));
+
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath_FlexShipmentFee, MLObject).then((apiResult) => {
                             if (!apiResult.IsError) {
                                 //this.props.hideModal();
@@ -385,7 +434,7 @@ class FlexShipmentFeeCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
         });
     }
-   
+
     render() {
         return (
             <React.Fragment>
