@@ -198,7 +198,7 @@ class FeeAppendixDetailElementCom extends Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.FormControlTextBox
+                        <FormControl.TextBoxCurrency
                             name="txtServiceFee"
                             colspan="9"
                             labelcolspan="3"
@@ -210,6 +210,7 @@ class FeeAppendixDetailElementCom extends Component {
                             validatonList={["required"]}
                             datasourcemember="ServiceFee"
                             disabled={IsSystem}
+                            maxSize={15}
                         />
                     </div>
 
@@ -236,7 +237,7 @@ class FeeAppendixDetailElementCom extends Component {
                             disabled={IsSystem}
                             label="kích hoạt"
                             controltype="InputControl"
-                            value=""
+                            value={true}
                             datasourcemember="IsActived"
                             classNameCustom="customCheckbox"
                         />

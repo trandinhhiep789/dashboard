@@ -195,7 +195,7 @@ class FeeAppendixDetailElementCom extends Component {
                             disabled={IsSystem}
                             label="kích hoạt"
                             controltype="InputControl"
-                            value=""
+                            value={true}
                             datasourcemember="IsActived"
                             classNameCustom="customCheckbox"
                         />

@@ -160,9 +160,15 @@ class DetailCom extends React.Component {
     }
 
     handleInputChangeObjItem(id, apiResult) {
-        this.addNotification(apiResult.Message, apiResult.IsError);
-        this.callLoadData(id);
-        this.props.hideModal();
+        if(apiResult.IsError){
+            this.showMessage(apiResult.Message);
+        }
+        else{
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            this.callLoadData(id);
+            this.props.hideModal();
+        }
+        
     }
 
     handleItemInsertAbiliti() {
