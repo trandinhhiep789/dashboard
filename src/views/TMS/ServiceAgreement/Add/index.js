@@ -487,6 +487,7 @@ class AddCom extends React.Component {
                             controltype="InputControl"
                             value=""
                             datasourcemember="DepositMoney"
+                            maxSize={15}
                         />
                     </div>
 

@@ -560,6 +560,7 @@ class EditCom extends React.Component {
                                 placeholder="Số tiền ký quỹ"
                                 controltype="InputControl"
                                 value=""
+                                maxSize={15}
                                 datasourcemember="DepositMoney"
                             />
                         </div>
