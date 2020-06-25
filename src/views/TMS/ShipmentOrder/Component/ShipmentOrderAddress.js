@@ -1168,7 +1168,7 @@ class ShipmentOrderAddressCom extends Component {
                     <div className="card-body">
                         <div className="card">
                             <div className="card-title">
-                                <h4 className="title">Ngưởi gửi</h4>
+                                <h4 className="title">Người gửi</h4>
                                 <button className="btn btnEditCard" onClick={this.handleShowModalSender.bind(this)}>chỉnh sửa</button>
                             </div>
                             <div className="card-body">

@@ -3,11 +3,16 @@ import { connect } from 'react-redux';
 import { formatMoney } from '../../../../utils/function';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import {
+    APIHostName,
+} from "../constants";
 class InfoProductCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ShipmentOrder: this.props.InfoProduct
+            ShipmentOrder: this.props.InfoProduct,
+            ShipmentOrder_FeeLst: []
         }
     }
 
@@ -35,10 +40,51 @@ class InfoProductCom extends Component {
     }
 
     handleShowTotalSaleMaterialMoney() {
+
+        // this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
+        //     if (!apiResult.IsError) {
+        //         this.setState({
+        //             ShipmentOrder_FeeLst: apiResult.ResultObject
+        //         });
+        //     }
+        // });
+
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Thông tin tiền bán vật tư',
             content: {
-                text: <div>aaa</div>
+                text:
+                    <div className="col-lg-12">
+                        <div className="table-responsive mt-3">
+                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                <thead className="thead-light">
+                                    <tr>
+                                        <th className="jsgrid-header-cell"></th>
+                                        <th className="jsgrid-header-cell">Cần lắp đặt</th>
+                                        <th className="jsgrid-header-cell">Mã sản phẩm</th>
+                                        <th className="jsgrid-header-cell">Sản phẩm</th>
+                                        <th className="jsgrid-header-cell">Kiện</th>
+                                        <th className="jsgrid-header-cell">Giá</th>
+                                        <th className="jsgrid-header-cell">Số lượng</th>
+                                        <th className="jsgrid-header-cell">Đơn vị tính</th>
+                                        <th className="jsgrid-header-cell">Kích thước(DxRxC)</th>
+                                        <th className="jsgrid-header-cell">Khối lượng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.state.ShipmentOrder_FeeLst && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).map((item, index) => {
+                                        return (
+                                            <tr key={index}>
+                                            </tr>
+                                        )
+                                    })
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
             },
             maxWidth: '1000px'
         });
@@ -47,7 +93,7 @@ class InfoProductCom extends Component {
     render() {
         return (
             <div className="card">
-                <h4 className="card-title"><strong>Thông tin hàng hóa 2222</strong></h4>
+                <h4 className="card-title"><strong>Thông tin hàng hóa</strong></h4>
                 <div className="card-body">
 
                     <div className="form-row">
@@ -80,6 +126,14 @@ class InfoProductCom extends Component {
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-2">
+                            <label className="col-form-label bold">Xem thông tin phí dịch vụ:</label>
+                        </div>
+                        <div className="form-group col-md-4">
+                            <button className="btn btn-icon-modal" onClick={this.handleShowTotalSaleMaterialMoney.bind(this)}>
+                                <i className="fa fa-pencil"></i>
+                            </button>
+                        </div>
+                        <div className="form-group col-md-2">
                             <label className="col-form-label bold">Tổng tiền COD:</label>
                         </div>
                         <div className="form-group col-md-4">
@@ -87,17 +141,14 @@ class InfoProductCom extends Component {
                                 {formatMoney(this.state.ShipmentOrder.TotalCOD, 0)}đ
                             </label>
                         </div>
+                    </div>
+                    <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Tổng tiền bán vật tư:</label>
                         </div>
                         <div className="form-group col-md-4">
                             <label className="col-form-label lbl-currency">{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney, 0)}đ</label>
-                            <button className="btn btn-icon-modal" onClick={this.handleShowTotalSaleMaterialMoney.bind(this)}>
-                                <i className="fa fa-pencil"></i>
-                            </button>
                         </div>
-                    </div>
-                    <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Tổng tiền phải thu:</label>
                         </div>
@@ -185,6 +236,8 @@ class InfoProductCom extends Component {
                             </table>
                         </div>
                     </div>
+
+
                     <div className="form-row">
                         <div className="col-md-12">
                             <h3 className="title">Vật tư lắp đặt:</h3>
@@ -248,6 +301,9 @@ const mapDispatchToProps = dispatch => {
         },
         hideModal: () => {
             dispatch(hideModal());
+        },
+        callFetchAPI: (hostname, hostURL, postData) => {
+            return dispatch(callFetchAPI(hostname, hostURL, postData));
         }
     }
 }

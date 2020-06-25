@@ -28,7 +28,6 @@ import "react-notifications-component/dist/theme.css";
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleInputChange = this.handleInputChange.bind(this);
         this.state = {
             Username: "",
             DepartmentName: "",
@@ -43,8 +42,7 @@ class EditCom extends React.Component {
             objUserStore: { StoreName: "", StoreID: 0 },
             validationUserStore: "",
             validationStoreUser: "",
-            objStoreUser: { UserName: "", FullName: "" },
-            DataUserGroup: []
+            objStoreUser: { UserName: "", FullName: "" }
         };
 
         this.notificationDOMRef = React.createRef();
@@ -86,7 +84,6 @@ class EditCom extends React.Component {
                     }
                 ];
                 this.callSearchDataUser(postData);
-                this.callSearchDataUserGroup(postData)
             }
         }
     }
@@ -132,17 +129,11 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, postData).then(apiResult => {
             if (!apiResult.IsError) {
                 this.setState({ DataSourceStore: apiResult.ResultObject });
+
             }
         });
     }
 
-    callSearchDataUserGroup(postData) {
-        this.props.callFetchAPI(APIHostName, 'api/User_UserGroup/Search', postData).then(apiResult => {
-            if (!apiResult.IsError) {
-                this.setState({ DataUserGroup: apiResult.ResultObject });
-            }
-        });
-    }
     callSearchDataStore(postData) {
         this.props.callFetchAPI(APIHostName, SearchAPISearchUser, postData).then(apiResult => {
             if (!apiResult.IsError) {
@@ -261,32 +252,19 @@ class EditCom extends React.Component {
         });
     }
 
-    handleInputChange(e) {
-        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
-        const inputvalue = e.target.value;
-        const index = e.target.name;
-        let { DataUserGroup } = this.state
-        DataUserGroup[index].IsSelected = ischecked
-        this.setState({ DataUserGroup: DataUserGroup });
-    }
-    onClickUserGroup() {
-        this.props.callFetchAPI(APIHostName, "api/User_UserGroup/InsertUserGroupList", this.state.DataUserGroup).then(apiResult => {
-            this.addNotification(apiResult.Message, apiResult.IsError);
-        });
-    }
 
     render() {
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
-                <div className="col-lg-12 page-detail">
+                <div className="col-lg-6 page-detail">
                     <div className="card">
                         <div className="card-title">
                             <h4 className="title">Cấp quyền kho theo nhân viên</h4>
                         </div>
                         <div className="card-body">
                             <div className="row">
-                                <div className="col-md-6">
+                                <div className="col-md-12">
                                     <MultiSelectComboBox
                                         name="User"
                                         colspan="9"
@@ -304,7 +282,7 @@ class EditCom extends React.Component {
                                         validationErrorMessage={''}
                                     />
                                 </div>
-                                <div className="col-md-6">
+                                <div className="col-md-12">
                                     <FormControl.TextBox
                                         name="txtSenderFullName"
                                         colspan="9"
@@ -317,7 +295,7 @@ class EditCom extends React.Component {
                                         datasourcemember="SenderFullName"
                                     />
                                 </div>
-                                <div className="col-md-6">
+                                <div className="col-md-12">
                                     <FormControl.TextBox
                                         name="txtSenderFullName"
                                         colspan="9"
@@ -331,7 +309,7 @@ class EditCom extends React.Component {
                                     />
                                 </div>
 
-                                <div className="col-md-6">
+                                <div className="col-md-12">
                                     <FormControl.TextBox
                                         name="txtSenderFullName"
                                         colspan="9"
@@ -346,133 +324,212 @@ class EditCom extends React.Component {
                                 </div>
 
                             </div>
-
                             <div className="row">
-                                <div className="col-lg-6">
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <h3 className="title">Danh sách kho</h3>
-                                        </div>
-                                        <div className="col-md-12">
-                                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                                <thead className="thead-light">
-                                                    <tr>
-                                                        <th className="jsgrid-header-cell" style={{ width: "30%" }}>Mã kho</th>
-                                                        <th className="jsgrid-header-cell" style={{ width: "60%" }}>Tên kho</th>
-                                                        <th className="jsgrid-header-cell" style={{ width: "10%" }}>Tác vụ</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
 
-                                                    <tr>
-                                                        <td> <MultiStoreComboBox
-                                                            name="UserStore"
-                                                            colspan="8"
-                                                            labelcolspan="4"
-                                                            label="Người dùng"
-                                                            disabled={false}
-                                                            IsLabelDiv={false}
-                                                            isautoloaditemfromcache={false}
-                                                            onChange={this.onChangeStore.bind(this)}
-                                                            controltype="InputControl"
-                                                            value={[]}
-                                                            listoption={[]}
-                                                            isMultiSelect={false}
-                                                            datasourcemember="User"
-                                                            validationErrorMessage={this.state.validationUserStore}
-                                                        /></td>
-                                                        <td>{this.state.objUserStore.StoreName}</td>
+                                <div className="col-md-12">
+                                    <h3 className="title">Danh sách kho</h3>
+                                </div>
+                                <div className="col-md-12">
+                                    <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                        <thead className="thead-light">
+                                            <tr>
+                                                <th className="jsgrid-header-cell" style={{ width: "30%" }}>Mã kho</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "60%" }}>Tên kho</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Tác vụ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr>
+                                                <td> <MultiStoreComboBox
+                                                    name="UserStore"
+                                                    colspan="8"
+                                                    labelcolspan="4"
+                                                    label="Người dùng"
+                                                    disabled={false}
+                                                    IsLabelDiv={false}
+                                                    isautoloaditemfromcache={false}
+                                                    onChange={this.onChangeStore.bind(this)}
+                                                    controltype="InputControl"
+                                                    value={[]}
+                                                    listoption={[]}
+                                                    isMultiSelect={false}
+                                                    datasourcemember="User"
+                                                    validationErrorMessage={this.state.validationUserStore}
+                                                /></td>
+                                                <td>{this.state.objUserStore.StoreName}</td>
+                                                <td>
+                                                    {
+                                                        this.state.Username != "" ? <button type="button" className="btn btn-info" onClick={this.onClickUserStore.bind(this)} data-provide="tooltip" data-original-title="Thêm">
+                                                            <span className="fa fa-plus ff"> Thêm</span>
+                                                        </button> : ""
+                                                    }
+
+                                                </td>
+                                            </tr>
+
+                                            {this.state.DataSourceStore && this.state.DataSourceStore.map((item, index) => {
+                                                return (
+                                                    <tr key={index}>
+                                                        <td>{item.StoreID}</td>
+                                                        <td>{item.StoreName}</td>
                                                         <td>
-                                                            {
-                                                                this.state.Username != "" ? <button type="button" className="btn btn-info" onClick={this.onClickUserStore.bind(this)} data-provide="tooltip" data-original-title="Thêm">
-                                                                    <span className="fa fa-plus ff"> Thêm</span>
-                                                                </button> : ""
-                                                            }
 
+                                                            <button type="button" className="btn btnDeleteTable" title=""
+                                                                data-provide="tooltip" data-original-title="Xóa"
+                                                                onClick={this.handleonClickDeleteStore.bind(this)}
+                                                                data-id={item.StoreID}
+                                                            >
+                                                                <i className="ti-trash"></i>
+                                                            </button>
                                                         </td>
                                                     </tr>
+                                                )
+                                            })
+                                            }
 
-                                                    {this.state.DataSourceStore && this.state.DataSourceStore.map((item, index) => {
-                                                        return (
-                                                            <tr key={index}>
-                                                                <td>{item.StoreID}</td>
-                                                                <td>{item.StoreName}</td>
-                                                                <td>
-
-                                                                    <button type="button" className="btn btnDeleteTable" title=""
-                                                                        data-provide="tooltip" data-original-title="Xóa"
-                                                                        onClick={this.handleonClickDeleteStore.bind(this)}
-                                                                        data-id={item.StoreID}
-                                                                    >
-                                                                        <i className="ti-trash"></i>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    })
-                                                    }
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                        </tbody>
+                                    </table>
                                 </div>
 
-                                <div className="col-lg-6">
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <h3 className="title">Danh nhóm quyền</h3>
-                                        </div>
-                                        <div className="col-md-12">
-                                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                                <thead className="thead-light">
-                                                    <tr>
-                                                        <th className="jsgrid-header-cell" style={{ width: "10%" }}>Tác vụ</th>
-                                                        <th className="jsgrid-header-cell" style={{ width: "30%" }}>Mã nhóm quyền</th>
-                                                        <th className="jsgrid-header-cell" style={{ width: "60%" }}>Tên nhóm quyền</th>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-lg-6 page-detail">
+                    <div className="card">
+                        <div className="card-title">
+                            <h4 className="title">Cấp quyền nhân viên theo kho </h4>
+                        </div>
 
+                        <div className="card-body">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <MultiStoreComboBox
+                                        name="User"
+                                        colspan="9"
+                                        labelcolspan="3"
+                                        label="Mã kho"
+                                        disabled={false}
+                                        IsLabelDiv={true}
+                                        isautoloaditemfromcache={false}
+                                        onChange={this.onChangeStore.bind(this)}
+                                        controltype="InputControl"
+                                        value={[]}
+                                        listoption={[]}
+                                        isMultiSelect={false}
+                                        datasourcemember="User"
+                                        validationErrorMessage={''}
+                                    />
+                                </div>
+                                <div className="col-md-12">
+                                    <FormControl.TextBox
+                                        name="txtSenderFullName"
+                                        colspan="9"
+                                        labelcolspan="3"
+                                        readOnly={false}
+                                        label="Tên kho"
+                                        placeholder=""
+                                        controltype="InputControl"
+                                        value={this.state.StoreName}
+                                        datasourcemember="SenderFullName"
+                                    />
+                                </div>
+                                <div className="col-md-12">
+                                    <FormControl.TextBox
+                                        name="txtSenderFullName"
+                                        colspan="9"
+                                        labelcolspan="3"
+                                        readOnly={false}
+                                        label="số điện thoại"
+                                        placeholder=""
+                                        controltype="InputControl"
+                                        value={this.state.StoreFax}
+                                        datasourcemember="SenderFullName"
+                                    />
+                                </div>
+
+                                <div className="col-md-12">
+                                    <FormControl.TextBox
+                                        name="txtSenderFullName"
+                                        colspan="9"
+                                        labelcolspan="3"
+                                        readOnly={false}
+                                        label="địa chỉ kho"
+                                        placeholder=""
+                                        controltype="InputControl"
+                                        value={this.state.StoreAddress}
+                                        datasourcemember="SenderFullName"
+                                    />
+                                </div>
+
+                            </div>
+
+                            <div className="row">
+
+                                <div className="col-md-12">
+                                    <h3 className="title">Danh sách nhân viên</h3>
+                                </div>
+                                <div className="col-md-12">
+                                    <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                        <thead className="thead-light">
+                                            <tr>
+                                                <th className="jsgrid-header-cell" style={{ width: "30%" }}>Mã nhân viên</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "60%" }}>Tên nhân viên</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Tác vụ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr>
+                                                <td> <MultiSelectComboBox
+                                                    name="StoreUser"
+                                                    colspan="8"
+                                                    labelcolspan="4"
+                                                    label="Người dùng"
+                                                    disabled={false}
+                                                    IsLabelDiv={false}
+                                                    isautoloaditemfromcache={false}
+                                                    onChange={this.onChangeUser.bind(this)}
+                                                    controltype="InputControl"
+                                                    value={[]}
+                                                    listoption={[]}
+                                                    isMultiSelect={false}
+                                                    datasourcemember="User"
+                                                    validationErrorMessage={this.state.validationStoreUser}
+                                                /></td>
+                                                <td>{this.state.objStoreUser.FullName}</td>
+                                                <td>
+
+                                                    {
+                                                        this.state.StoreID != "" ? <button type="button" className="btn btn-info" onClick={this.onClickStoreUser.bind(this)} data-provide="tooltip" data-original-title="Thêm">
+                                                            <span className="fa fa-plus ff"> Thêm</span>
+                                                        </button> : ""
+                                                    }
+                                                </td>
+                                            </tr>
+                                            {this.state.DataSourceUser && this.state.DataSourceUser.map((item, index) => {
+                                                return (
+                                                    <tr key={index}>
+                                                        <td>{item.UserName}</td>
+                                                        <td>{item.FullName}</td>
+                                                        <td>
+                                                            <button type="button" className="btn btnDeleteTable" 
+                                                                onClick={this.handleonClickDeleteUser.bind(this)}
+                                                                data-id={item.UserName}
+                                                                data-provide="tooltip" data-original-title="Xóa" >
+                                                                <i className="ti-trash"></i>
+                                                            </button>
+                                                        </td>
                                                     </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {this.state.DataUserGroup && this.state.DataUserGroup.map((item, index) => {
-                                                        return (
-                                                            <tr key={index}>
-                                                                <td>
-                                                                    <div className="checkbox">
-                                                                        <label>
-                                                                            <input type="checkbox" className="form-control form-control-sm"
-                                                                                onChange={this.handleInputChange} value={item.UserGroupID}
-                                                                                name={index}
-                                                                                checked={item.IsSelected} />
-                                                                            <span className="cr">
-                                                                                <i className="cr-icon fa fa-check"></i>
-                                                                            </span>
-                                                                        </label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>{item.UserGroupID}</td>
-                                                                <td>{item.UserGroupName}</td>
-                                                            </tr>
-                                                        )
-                                                    })
-                                                    }
+                                                )
+                                            })
+                                            }
 
-                                                </tbody>
-                                            </table>
-                                            <div className="text-right">
-                                                {
-                                                    this.state.Username != "" ? <button type="button" className="btn btn-info" onClick={this.onClickUserGroup.bind(this)} data-provide="tooltip" data-original-title="Thêm">
-                                                        <span className="fa fa-plus ff"> Thêm</span>
-                                                    </button> : ""
-                                                }
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-
-
+                                        </tbody>
+                                    </table>
                                 </div>
+
                             </div>
                         </div>
                     </div>
