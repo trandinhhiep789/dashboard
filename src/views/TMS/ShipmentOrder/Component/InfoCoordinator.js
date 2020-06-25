@@ -332,7 +332,7 @@ class InfoCoordinatorCom extends Component {
     render() {
         let listOption = [];
         let objDeliverUser = [];
-        if (this.state.ShipmentOrder.CarrierPartnerID != -1) {
+        if (this.state.ShipmentOrder.CarrierPartnerID != -1&&this.state.ShipmentOrder.CarrierPartnerID != 0) {
             this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
                 objDeliverUser.push(item.UserName)
             })
