@@ -433,7 +433,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         name="AutoChangeStepType" type="select" isautoloaditemfromcache={false} isRequired={false}
                                         label="Loại tự động chuyển bước" controltype="InputControl" datasourcemember="AutoChangeStepType"
                                         listoption={[{ value: "0", label: "Không tự động" },
-                                        { value: "1", label: "Chuyển bước khi có thu tiền" }, { value: "2", label: "Chuyển bước không điều kiện" }]}
+                                        { value: "1", label: "Tự động chuyển bước khi không có thu tiền" }, { value: "2", label: "Tự động chuyển bước không điều kiện" }]}
                                         labelcolspan={4} colspan={8}
                                     />
 

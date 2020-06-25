@@ -62,11 +62,8 @@ class InfoProductCom extends Component {
             title: 'Thông tin tiền bán vật tư',
             content: {
                 text:
-                    <div className="form-row">
-                        <div className="col-md-12">
-                            <h3 className="title">Danh sách hàng hóa:</h3>
-                        </div>
-                        <div className="table-responsive">
+                    <div className="col-lg-12">
+                        <div className="table-responsive mt-3">
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                 <thead className="thead-light">
                                     <tr>
