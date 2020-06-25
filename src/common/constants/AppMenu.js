@@ -184,8 +184,15 @@ const AppMenu = [
                 SubMenu: [
                     {
                         MenuName: 'UserCoordinator',
-                        MenuTitle: 'Cấp quyền nhân viên theo kho',
+                        MenuTitle: 'Cấp quyền nhóm quyền và kho',
                         LinkTo: '/UserCoordinator',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'UserGroup',
+                        MenuTitle: 'Cấp quyền nhân viên theo kho',
+                        LinkTo: '/UserGroup',
                         MenuIcon: '',
                         SubMenu: []
                     }

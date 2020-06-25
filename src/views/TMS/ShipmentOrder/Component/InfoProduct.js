@@ -47,7 +47,7 @@ class InfoProductCom extends Component {
     render() {
         return (
             <div className="card">
-                <h4 className="card-title"><strong>Thông tin hàng hóa 2222</strong></h4>
+                <h4 className="card-title"><strong>Thông tin hàng hóa</strong></h4>
                 <div className="card-body">
 
                     <div className="form-row">
