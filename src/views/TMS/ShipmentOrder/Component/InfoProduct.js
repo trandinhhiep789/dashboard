@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { formatMoney } from '../../../../utils/function';
+import { showModal, hideModal } from '../../../../actions/modal';
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 class InfoProductCom extends Component {
     constructor(props) {
         super(props);
@@ -16,23 +18,36 @@ class InfoProductCom extends Component {
             })
         }
     }
-     groupBy(data, fields, sumBy='Quantity') {
-        let r=[], cmp= (x,y) => fields.reduce((a,b)=> a && x[b]==y[b], true);
-        data.forEach(x=> {
-          let y=r.find(z=>cmp(x,z));
-          let w= [...fields,sumBy].reduce((a,b) => (a[b]=x[b],a), {})
-          y ? y[sumBy]=+y[sumBy]+(+x[sumBy]) : r.push(w);
+
+    groupBy(data, fields, sumBy = 'Quantity') {
+        let r = [], cmp = (x, y) => fields.reduce((a, b) => a && x[b] == y[b], true);
+        data.forEach(x => {
+            let y = r.find(z => cmp(x, z));
+            let w = [...fields, sumBy].reduce((a, b) => (a[b] = x[b], a), {})
+            y ? y[sumBy] = +y[sumBy] + (+x[sumBy]) : r.push(w);
         });
         return r;
-      }
-      Pricevat(sl, Price,vat) {
-        let r= ((1+(vat/100))*Price)*sl
+    }
+
+    Pricevat(sl, Price, vat) {
+        let r = ((1 + (vat / 100)) * Price) * sl
         return r;
-      }
+    }
+
+    handleShowTotalSaleMaterialMoney() {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Thông tin tiền bán vật tư',
+            content: {
+                text: <div>aaa</div>
+            },
+            maxWidth: '1000px'
+        });
+    }
+
     render() {
         return (
             <div className="card">
-                <h4 className="card-title"><strong>Thông tin hàng hóa</strong></h4>
+                <h4 className="card-title"><strong>Thông tin hàng hóa 2222</strong></h4>
                 <div className="card-body">
 
                     <div className="form-row">
@@ -68,13 +83,18 @@ class InfoProductCom extends Component {
                             <label className="col-form-label bold">Tổng tiền COD:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label">{formatMoney(this.state.ShipmentOrder.TotalCOD, 0)}đ</label>
+                            <label className="col-form-label lbl-currency">
+                                {formatMoney(this.state.ShipmentOrder.TotalCOD, 0)}đ
+                            </label>
                         </div>
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Tổng tiền bán vật tư:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label" >{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney, 0)}đ</label>
+                            <label className="col-form-label lbl-currency">{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney, 0)}đ</label>
+                            <button className="btn btn-icon-modal" onClick={this.handleShowTotalSaleMaterialMoney.bind(this)}>
+                                <i className="fa fa-pencil"></i>
+                            </button>
                         </div>
                     </div>
                     <div className="form-row">
@@ -82,7 +102,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label bold">Tổng tiền phải thu:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label" >{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD, 0)}đ</label>
+                            <label className="col-form-label lbl-currency-total" >{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD, 0)}đ</label>
                         </div>
 
                     </div>
@@ -91,13 +111,13 @@ class InfoProductCom extends Component {
                             <label className="col-form-label bold">Thu tiền khách hàng:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            {this.state.ShipmentOrder.IsCollectedMoney==true?<span className="badge badge-success">Đã thu tiền</span>: <span className="badge badge-danger">Chưa thu tiền</span>}
+                            {this.state.ShipmentOrder.IsCollectedMoney == true ? <span className="badge badge-success">Đã thu tiền</span> : <span className="badge badge-danger">Chưa thu tiền</span>}
                         </div>
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Tổng tiền thu:</label>
                         </div>
                         <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney, 0)}đ</label>
+                            <label className="col-form-label">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney, 0)}đ</label>
                         </div>
 
                     </div>
@@ -131,7 +151,7 @@ class InfoProductCom extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList,['ProductID','ProductName','QuantityUnitName','Price','IsInstallItem','PackingUnitName','SizeItem','Weight']).map((item, index) => {
+                                    {this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).map((item, index) => {
                                         return (
                                             <tr key={index}>
                                                 <td>
@@ -182,7 +202,7 @@ class InfoProductCom extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.state.ShipmentOrder.ShipmentOrder_MaterialList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_MaterialList,['ProductID','ProductName','QuantityUnitName','Price','IsSaleMaterial','VAT']).map((item, index) => {
+                                        {this.state.ShipmentOrder.ShipmentOrder_MaterialList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_MaterialList, ['ProductID', 'ProductName', 'QuantityUnitName', 'Price', 'IsSaleMaterial', 'VAT']).map((item, index) => {
                                             return (<tr key={index}>
                                                 <td>
                                                     <div className="checkbox">
@@ -199,7 +219,7 @@ class InfoProductCom extends Component {
                                                 <td>{item.QuantityUnitName}</td>
                                                 <td>{item.Quantity}</td>
                                                 <td>{item.Price}</td>
-                                                <td>{formatMoney(this.Pricevat(item.Quantity,item.Price,item.VAT), 0)}đ</td>
+                                                <td>{formatMoney(this.Pricevat(item.Quantity, item.Price, item.VAT), 0)}đ</td>
                                             </tr>)
                                         })}
                                     </tbody>
@@ -225,6 +245,9 @@ const mapDispatchToProps = dispatch => {
     return {
         showModal: (type, props) => {
             dispatch(showModal(type, props));
+        },
+        hideModal: () => {
+            dispatch(hideModal());
         }
     }
 }

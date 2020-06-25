@@ -283,6 +283,22 @@
         font-size: 13px;
         font-weight: 300;
     }
+    &.lbl-currency{
+        background: #827f7f;
+        padding: 0 5px;
+        border-radius: 4px;
+        color: #e2e2e2;
+        & ~ button{
+            margin-left: 10px;
+        }
+    }
+    &.lbl-currency-total{
+        background: #f5a34a;
+        padding: 0 5px;
+        border-radius: 4px;
+        color: #ffffff;
+        font-weight: 500;
+    }
 }
 .checkbox{
     &.customCheckbox{

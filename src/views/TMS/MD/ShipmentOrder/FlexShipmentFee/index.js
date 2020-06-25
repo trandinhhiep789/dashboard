@@ -159,15 +159,22 @@ class FlexShipmentFeeCom extends React.Component {
     }
 
     resetCombobox() {
-        let _ModalFlexShipmentFeeColumnList = this.state.ModalFlexShipmentFeeColumnList_Edit;
-        _ModalFlexShipmentFeeColumnList.forEach(function (objElement) {
+        this.state.ModalFlexShipmentFeeColumnList.forEach(function (objElement) {
             if (objElement.Name == "GetFeeType") {
-                objElement.listoption = [{ value: "-1", label: "---Vui lòng chọn---" }, { value: "1", label: "Lấy giá trị cố định" }, { value: "2", label: "Lấy từ bảng làm giá" }];
+                objElement.listoption = [{ value: "1", label: "Lấy giá trị cố định" }, { value: "2", label: "Lấy từ bảng làm giá" }];
+            } else {
+                objElement.listoption = [];
+                objElement.value = "";
+            }
+        });
+
+        this.state.ModalFlexShipmentFeeColumnList_Edit.forEach(function (objElement) {
+            if (objElement.Name == "GetFeeType") {
+                objElement.listoption = [{ value: "1", label: "Lấy giá trị cố định" }, { value: "2", label: "Lấy từ bảng làm giá" }];
             } else {
                 objElement.listoption = [];
             }
         });
-        this.setState({ ModalFlexShipmentFeeColumnList_Edit: _ModalFlexShipmentFeeColumnList });
     }
 
     handleModalFlexShipmentFeeChange(formData, formValidation, elementName, elementValue) {
@@ -269,6 +276,7 @@ class FlexShipmentFeeCom extends React.Component {
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Thêm mới chi phí vận chuyển thay đổi của một loại yêu cầu vận chuyển',
             autoCloseModal: false,
+            onClose: this.onClose,
             onValueChange: this.handleModalFlexShipmentFeeChange,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
@@ -282,7 +290,7 @@ class FlexShipmentFeeCom extends React.Component {
                         // MLObject.TechspecsValueID = MLObject.TechspecsValueID && Array.isArray(MLObject.TechspecsValueID) ? MLObject.TechspecsValueID[0] : MLObject.TechspecsValueID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-                        
+
                         this.state.ModalFlexShipmentFeeColumnList.forEach(function (objElement) {
                             if (objElement.Name == "SubGroupID") {
                                 MLObject.SubGroupID = objElement.value && Array.isArray(objElement.value) ? objElement.value[0] : objElement.value;
@@ -294,7 +302,7 @@ class FlexShipmentFeeCom extends React.Component {
                                 MLObject.TechspecsValueID = objElement.value && Array.isArray(objElement.value) ? objElement.value[0] : objElement.value;
                             }
                         }.bind(this));
-                        
+
                         this.props.callFetchAPI(APIHostName, AddAPIPath_FlexShipmentFee, MLObject).then((apiResult) => {
                             if (!apiResult.IsError) {
                                 //this.handleSubmitInsertLog(MLObject);
@@ -306,6 +314,7 @@ class FlexShipmentFeeCom extends React.Component {
                             }
                             this.setState({ IsCallAPIError: apiResult.IsError });
                         });
+                        this.resetCombobox();
                         //console.log("MLObject", MLObject);
                     }
                 }
