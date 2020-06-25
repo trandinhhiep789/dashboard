@@ -41,7 +41,7 @@ class InfoProductCom extends Component {
 
     handleShowTotalSaleMaterialMoney() {
 
-        // this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
+        // this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_Fee/Search', ShipmentOrderEdit).then((apiResult) => {
         //     if (!apiResult.IsError) {
         //         this.setState({
         //             ShipmentOrder_FeeLst: apiResult.ResultObject
