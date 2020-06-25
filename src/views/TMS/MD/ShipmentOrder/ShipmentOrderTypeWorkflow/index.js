@@ -559,6 +559,10 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         controltype="InputControl" datasourcemember="IsShowCollectionButton"
                                         swaplabelModal={true}
                                     />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước hủy giao hàng" name="IsCancelDeliveryStep"
+                                        controltype="InputControl" datasourcemember="IsCancelDeliveryStep"
+                                        swaplabelModal={true}
+                                    />
                                 </div>
                             </div>
                         </TabPage>

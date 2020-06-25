@@ -338,7 +338,7 @@ class AddCom extends React.Component {
                             timeFormat={false}
                             dateFormat="YYYY-MM-DD"
                             label="ngày ký hợp đồng"
-                            placeholder={formatDate(currentDate)}
+                            placeholder={formatDate(currentDate, true)}
                             controltype="InputControl"
                             value=""
                             validatonList={["required"]}
@@ -370,7 +370,7 @@ class AddCom extends React.Component {
                             timeFormat={false}
                             dateFormat="YYYY-MM-DD"
                             label="ngày hết hạn hợp đồng"
-                            placeholder={formatDate(currentDate)}
+                            placeholder={formatDate(currentDate, true)}
                             controltype="InputControl"
                             value=""
                             validatonList={["required"]}
@@ -416,7 +416,7 @@ class AddCom extends React.Component {
                             timeFormat={false}
                             dateFormat="YYYY-MM-DD"
                             label="gia hạn đến ngày"
-                            placeholder={formatDate(currentDate)}
+                            placeholder={formatDate(currentDate, true)}
                             controltype="InputControl"
                             value=""
                             datasourcemember="ExtendedDate"
@@ -460,7 +460,7 @@ class AddCom extends React.Component {
                             timeFormat={false}
                             dateFormat="YYYY-MM-DD"
                             label="ngày thanh lý hợp đồng"
-                            placeholder={formatDate(currentDate)}
+                            placeholder={formatDate(currentDate, true)}
                             controltype="InputControl"
                             value=""
                             datasourcemember="Liquidateddate"
@@ -517,7 +517,7 @@ class AddCom extends React.Component {
                             timeFormat={false}
                             dateFormat="YYYY-MM-DD"
                             label="ngày ký quỹ"
-                            placeholder={formatDate(currentDate)}
+                            placeholder={formatDate(currentDate, true)}
                             disabled={isDisableDeposited}
                             controltype="InputControl"
                             value=""

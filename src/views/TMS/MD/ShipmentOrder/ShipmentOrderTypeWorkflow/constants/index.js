@@ -148,6 +148,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsNotifyToPartnerSystem"
     },
     {
+        Name: "IsCancelDeliveryStep",
+        DefaultValue: "",
+        BindControlName: "IsCancelDeliveryStep",
+        DataSourceMember: "IsCancelDeliveryStep"
+    },
+    {
         Name: "SMSTemplate",
         DefaultValue: "",
         BindControlName: "SMSTemplate",
