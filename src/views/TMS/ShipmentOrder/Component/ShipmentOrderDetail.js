@@ -108,7 +108,14 @@ class ShipmentOrderDetailCom extends Component {
             ShipmentOrder_WorkFlow.ProcessUser = this.props.AppInfo.LoginInfo.Username;
             ShipmentOrder_WorkFlow.CreatedOrderTime = this.state.ShipmentOrder.CreatedOrderTime;
             ShipmentOrder_WorkFlow.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/InsertWorkFlow', ShipmentOrder_WorkFlow).then((apiResult) => {
+            let objWorkFlowProcessingRequest={
+                ShipmentOrderID:ShipmentOrder_WorkFlow.ShipmentOrderID,
+                ShipmentOrderStepID:ShipmentOrder_WorkFlow.ShipmentOrderStepID,
+                ProcessUser:ShipmentOrder_WorkFlow.ProcessUser,
+                ProcessGeoLocation:"",
+                Note:ShipmentOrder_WorkFlow.Note
+            }
+            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/ProcessWorkFlow', objWorkFlowProcessingRequest).then((apiResult) => {
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
                     this.setState({
