@@ -28,7 +28,7 @@ import { convertNodeToElement } from "react-html-parser";
 import Collapsible from 'react-collapsible';
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import {
-    ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION
+    ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS
 } from "../../../../../../constants/keyCache";
 
 import FixShipmentFee from "../../FixShipmentFee/";
@@ -52,6 +52,7 @@ class EditCom extends React.Component {
         this.callLoadData = this.callLoadData.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.checkValidStep = this.checkValidStep.bind(this);
+        this.initFlexShipmentFeeDatasource = this.initFlexShipmentFeeDatasource.bind(this);
         this.notificationDOMRef = React.createRef();
         this.state = {
             IsCallAPIError: false,
@@ -339,6 +340,15 @@ class EditCom extends React.Component {
             });
             //console.log("SysUserList", SysUserList);
         });
+
+        //lấy cache thông số kỹ thuật áp dụng
+        this.props.callGetCache(ERPCOMMONCACHE_SUBGROUPTECHSPECS).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                this.setState({
+                    Techspecs: result.ResultObject.CacheData
+                });
+            }
+        });
     }
 
     getCacheShipmentStatus() {
@@ -353,6 +363,23 @@ class EditCom extends React.Component {
             //console.log("SysUserList", SysUserList);
         });
     }
+
+
+
+    initFlexShipmentFeeDatasource(dataSource) {
+        let techspecs = this.state.Techspecs ? this.state.Techspecs : [];
+        let match = [];
+        dataSource = dataSource.map(function (item, index) {
+            match = techspecs.filter(x => x.TechspecsID == item.TechspecsID);
+            if (match && match.length > 0) {
+                item.TechspecsName = match[0].TechspecsName;
+            }
+            return item;
+        }.bind(this));
+        return dataSource;
+
+    }
+
 
     callLoadData() {
         const id = this.props.match.params.id;
@@ -399,7 +426,7 @@ class EditCom extends React.Component {
                 //chi phí vận chuyển thay đổi
                 let _ShipmentOrderTypeFlexShipmentFee = [];
                 if (apiResult.ResultObject.ShipmentOrderTypeFlexShipmentFee) {
-                    _ShipmentOrderTypeFlexShipmentFee = apiResult.ResultObject.ShipmentOrderTypeFlexShipmentFee;
+                    _ShipmentOrderTypeFlexShipmentFee = this.initFlexShipmentFeeDatasource(apiResult.ResultObject.ShipmentOrderTypeFlexShipmentFee);
                 }
 
                 let TotalStepCompletePercent = 0;

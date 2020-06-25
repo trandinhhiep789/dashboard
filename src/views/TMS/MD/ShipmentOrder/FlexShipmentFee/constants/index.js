@@ -20,11 +20,25 @@ export const FlexShipmentFeeColumnList = [
     //     Width: 200
     // },
     {
+        Name: "OutputServiceProductID",
+        Type: "text",
+        Caption: "Mã sản phẩm dịch vụ cần xuất",
+        DataSourceMember: "OutputServiceProductID",
+        Width: 200
+    },
+    {
+        Name: "TechspecsName",
+        Type: "text",
+        Caption: "Thông số kỹ thuật",
+        DataSourceMember: "TechspecsName",
+        Width: 200
+    },
+    {
         Name: "ShipmentFeeTypeName",
         Type: "text",
         Caption: "Loại chi phí vận chuyển",
         DataSourceMember: "ShipmentFeeTypeName",
-        Width: 220
+        Width: 160
     },
     {
         Name: "GetFeeTypeName",
@@ -45,14 +59,14 @@ export const FlexShipmentFeeColumnList = [
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 100
+        Width: 80
     },
     {
         Name: "EditFlexShipmentFeeID",
         Type: "edit",
         Caption: "Sửa",
         DataSourceMember: "FlexShipmentFeeID",
-        Width: 100
+        Width: 80
     }
 
 ];
@@ -440,6 +454,12 @@ export const MLObjectShipmentOrderType_FlexShipmentFee = [
         DefaultValue: "",
         BindControlName: "TechspecsID",
         DataSourceMember: "TechspecsID"
+    },
+    {
+        Name: "TechspecsName",
+        DefaultValue: "",
+        BindControlName: "TechspecsName",
+        DataSourceMember: "TechspecsName"
     },
     {
         Name: "TechspecsValueID",

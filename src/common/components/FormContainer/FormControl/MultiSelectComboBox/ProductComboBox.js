@@ -76,9 +76,14 @@ class ProductComboBoxCom extends React.Component {
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
                 listOptionNew.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
             }
+            
+            if (!isFirstLoad) {
+                listOptionNew.unshift({ value: null, label: "------ Chọn ------" });
+            }
+
             this.setState({
                 ListOption: listOptionNew,
-                SelectedOption: isFirstLoad? listOptionNew: []
+                SelectedOption: isFirstLoad ? listOptionNew : []
             });
             return listOptionNew;
         });
