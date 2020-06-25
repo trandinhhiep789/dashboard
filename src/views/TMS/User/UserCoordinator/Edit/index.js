@@ -346,122 +346,131 @@ class EditCom extends React.Component {
                                 </div>
 
                             </div>
+
                             <div className="row">
-                                <div className=" col-lg-6">
-                                    <div className="col-md-12">
-                                        <h3 className="title">Danh sách kho</h3>
-                                    </div>
-                                    <div className="col-md-12">
-                                        <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                            <thead className="thead-light">
-                                                <tr>
-                                                    <th className="jsgrid-header-cell" style={{ width: "30%" }}>Mã kho</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "60%" }}>Tên kho</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "10%" }}>Tác vụ</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                                <tr>
-                                                    <td> <MultiStoreComboBox
-                                                        name="UserStore"
-                                                        colspan="8"
-                                                        labelcolspan="4"
-                                                        label="Người dùng"
-                                                        disabled={false}
-                                                        IsLabelDiv={false}
-                                                        isautoloaditemfromcache={false}
-                                                        onChange={this.onChangeStore.bind(this)}
-                                                        controltype="InputControl"
-                                                        value={[]}
-                                                        listoption={[]}
-                                                        isMultiSelect={false}
-                                                        datasourcemember="User"
-                                                        validationErrorMessage={this.state.validationUserStore}
-                                                    /></td>
-                                                    <td>{this.state.objUserStore.StoreName}</td>
-                                                    <td>
-                                                        {
-                                                            this.state.Username != "" ? <button type="button" className="btn btn-info" onClick={this.onClickUserStore.bind(this)} data-provide="tooltip" data-original-title="Thêm">
-                                                                <span className="fa fa-plus ff"> Thêm</span>
-                                                            </button> : ""
-                                                        }
-
-                                                    </td>
-                                                </tr>
-
-                                                {this.state.DataSourceStore && this.state.DataSourceStore.map((item, index) => {
-                                                    return (
-                                                        <tr key={index}>
-                                                            <td>{item.StoreID}</td>
-                                                            <td>{item.StoreName}</td>
-                                                            <td>
-
-                                                                <button type="button" className="btn btnDeleteTable" title=""
-                                                                    data-provide="tooltip" data-original-title="Xóa"
-                                                                    onClick={this.handleonClickDeleteStore.bind(this)}
-                                                                    data-id={item.StoreID}
-                                                                >
-                                                                    <i className="ti-trash"></i>
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    )
-                                                })
-                                                }
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
                                 <div className="col-lg-6">
-                                    <div className="col-md-12">
-                                        <h3 className="title">Danh nhóm quyền</h3>
-                                    </div>
-                                    <div className="col-md-12">
-                                        <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                            <thead className="thead-light">
-                                                <tr>
-                                                    <th className="jsgrid-header-cell" style={{ width: "10%" }}>Tác vụ</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "30%" }}>Mã nhóm quyền</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "60%" }}>Tên nhóm quyền</th>
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <h3 className="title">Danh sách kho</h3>
+                                        </div>
+                                        <div className="col-md-12">
+                                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                                <thead className="thead-light">
+                                                    <tr>
+                                                        <th className="jsgrid-header-cell" style={{ width: "30%" }}>Mã kho</th>
+                                                        <th className="jsgrid-header-cell" style={{ width: "60%" }}>Tên kho</th>
+                                                        <th className="jsgrid-header-cell" style={{ width: "10%" }}>Tác vụ</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
 
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {this.state.DataUserGroup && this.state.DataUserGroup.map((item, index) => {
-                                                    return (
-                                                        <tr key={index}>
-                                                            <td>
-                                                                <div className="checkbox">
-                                                                    <label>
-                                                                        <input type="checkbox" className="form-control form-control-sm"
-                                                                            onChange={this.handleInputChange} value={item.UserGroupID}
-                                                                            name={index}
-                                                                            checked={item.IsSelected} />
-                                                                        <span className="cr">
-                                                                            <i className="cr-icon fa fa-check"></i>
-                                                                        </span>
-                                                                    </label>
-                                                                </div>
-                                                            </td>
-                                                            <td>{item.UserGroupID}</td>
-                                                            <td>{item.UserGroupName}</td>
-                                                        </tr>
-                                                    )
-                                                })
-                                                }
-                                                <tr>
-                                                        {
-                                                            this.state.Username != "" ? <button type="button" className="btn btn-info" onClick={this.onClickUserGroup.bind(this)} data-provide="tooltip" data-original-title="Thêm">
-                                                                <span className="fa fa-plus ff"> Thêm</span>
-                                                            </button> : ""
-                                                        }
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                                    <tr>
+                                                        <td> <MultiStoreComboBox
+                                                            name="UserStore"
+                                                            colspan="8"
+                                                            labelcolspan="4"
+                                                            label="Người dùng"
+                                                            disabled={false}
+                                                            IsLabelDiv={false}
+                                                            isautoloaditemfromcache={false}
+                                                            onChange={this.onChangeStore.bind(this)}
+                                                            controltype="InputControl"
+                                                            value={[]}
+                                                            listoption={[]}
+                                                            isMultiSelect={false}
+                                                            datasourcemember="User"
+                                                            validationErrorMessage={this.state.validationUserStore}
+                                                        /></td>
+                                                        <td>{this.state.objUserStore.StoreName}</td>
+                                                        <td>
+                                                            {
+                                                                this.state.Username != "" ? <button type="button" className="btn btn-info" onClick={this.onClickUserStore.bind(this)} data-provide="tooltip" data-original-title="Thêm">
+                                                                    <span className="fa fa-plus ff"> Thêm</span>
+                                                                </button> : ""
+                                                            }
+
+                                                        </td>
+                                                    </tr>
+
+                                                    {this.state.DataSourceStore && this.state.DataSourceStore.map((item, index) => {
+                                                        return (
+                                                            <tr key={index}>
+                                                                <td>{item.StoreID}</td>
+                                                                <td>{item.StoreName}</td>
+                                                                <td>
+
+                                                                    <button type="button" className="btn btnDeleteTable" title=""
+                                                                        data-provide="tooltip" data-original-title="Xóa"
+                                                                        onClick={this.handleonClickDeleteStore.bind(this)}
+                                                                        data-id={item.StoreID}
+                                                                    >
+                                                                        <i className="ti-trash"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
+                                </div>
+
+                                <div className="col-lg-6">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <h3 className="title">Danh nhóm quyền</h3>
+                                        </div>
+                                        <div className="col-md-12">
+                                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                                <thead className="thead-light">
+                                                    <tr>
+                                                        <th className="jsgrid-header-cell" style={{ width: "10%" }}>Tác vụ</th>
+                                                        <th className="jsgrid-header-cell" style={{ width: "30%" }}>Mã nhóm quyền</th>
+                                                        <th className="jsgrid-header-cell" style={{ width: "60%" }}>Tên nhóm quyền</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {this.state.DataUserGroup && this.state.DataUserGroup.map((item, index) => {
+                                                        return (
+                                                            <tr key={index}>
+                                                                <td>
+                                                                    <div className="checkbox">
+                                                                        <label>
+                                                                            <input type="checkbox" className="form-control form-control-sm"
+                                                                                onChange={this.handleInputChange} value={item.UserGroupID}
+                                                                                name={index}
+                                                                                checked={item.IsSelected} />
+                                                                            <span className="cr">
+                                                                                <i className="cr-icon fa fa-check"></i>
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td>{item.UserGroupID}</td>
+                                                                <td>{item.UserGroupName}</td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                            <div className="text-right">
+                                                {
+                                                    this.state.Username != "" ? <button type="button" className="btn btn-info" onClick={this.onClickUserGroup.bind(this)} data-provide="tooltip" data-original-title="Thêm">
+                                                        <span className="fa fa-plus ff"> Thêm</span>
+                                                    </button> : ""
+                                                }
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
 
                                 </div>
                             </div>
