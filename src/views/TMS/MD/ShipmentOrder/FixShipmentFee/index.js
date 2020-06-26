@@ -146,7 +146,7 @@ class FixShipmentFeeCom extends React.Component {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
                     if (MLObject) {
                         MLObject.ShipmentOrderTypeID = this.props.ShipmentOrderTypeID;
-                        MLObject.OutputServiceProductID = MLObject.OutputServiceProductID && MLObject.OutputServiceProductID[0].ProductID ? MLObject.OutputServiceProductID[0].ProductID : MLObject.OutputServiceProductID;
+                        MLObject.OutputServiceProductID = MLObject.OutputServiceProductID && Array.isArray(MLObject.OutputServiceProductID) ? MLObject.OutputServiceProductID[0].ProductID : MLObject.OutputServiceProductID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         this.props.callFetchAPI(APIHostName, AddAPIPath_FixShipmentFee, MLObject).then((apiResult) => {
@@ -207,7 +207,7 @@ class FixShipmentFeeCom extends React.Component {
                     let MLObject = GetMLObjectData(MLObjectShipmentOrderType_FixShipmentFee, formData, _fixShipmentFee);
                     if (MLObject) {
                         MLObject.ShipmentOrderTypeID = this.props.ShipmentOrderTypeID;
-                        MLObject.OutputServiceProductID = MLObject.OutputServiceProductID && MLObject.OutputServiceProductID[0].ProductID ? MLObject.OutputServiceProductID[0].ProductID : MLObject.OutputServiceProductID;
+                        MLObject.OutputServiceProductID = MLObject.OutputServiceProductID && Array.isArray(MLObject.OutputServiceProductID) ? MLObject.OutputServiceProductID[0].ProductID : MLObject.OutputServiceProductID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath_FixShipmentFee, MLObject).then((apiResult) => {

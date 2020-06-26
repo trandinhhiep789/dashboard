@@ -28,7 +28,7 @@ import { convertNodeToElement } from "react-html-parser";
 import Collapsible from 'react-collapsible';
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import {
-    ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS
+    ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE
 } from "../../../../../../constants/keyCache";
 
 import FixShipmentFee from "../../FixShipmentFee/";
@@ -341,11 +341,20 @@ class EditCom extends React.Component {
             //console.log("SysUserList", SysUserList);
         });
 
-        //lấy cache thông số kỹ thuật áp dụng
+        //lấy cache thông số kỹ thuật 
         this.props.callGetCache(ERPCOMMONCACHE_SUBGROUPTECHSPECS).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 this.setState({
                     Techspecs: result.ResultObject.CacheData
+                });
+            }
+        });
+
+        //lấy cache giá trị tham số kỹ thuật áp dụng
+        this.props.callGetCache(ERPCOMMONCACHE_TECHSPECSVALUE).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                this.setState({
+                    TechspecsValue: result.ResultObject.CacheData
                 });
             }
         });
@@ -367,12 +376,19 @@ class EditCom extends React.Component {
 
 
     initFlexShipmentFeeDatasource(dataSource) {
+        debugger;
         let techspecs = this.state.Techspecs ? this.state.Techspecs : [];
+        let techspecsValue = this.state.TechspecsValue ? this.state.TechspecsValue : [];
         let match = [];
+        let match2 = [];
         dataSource = dataSource.map(function (item, index) {
             match = techspecs.filter(x => x.TechspecsID == item.TechspecsID);
+            match2 = techspecsValue.filter(x => x.TechSpecsValueID == item.TechspecsValueID);
             if (match && match.length > 0) {
                 item.TechspecsName = match[0].TechspecsName;
+            }
+            if (match2 && match2.length > 0) {
+                item.TechspecsValueName = match2[0].Value;
             }
             return item;
         }.bind(this));
@@ -708,6 +724,8 @@ class EditCom extends React.Component {
                                 ShipmentOrderTypeFlexShipmentFee={this.state.FormData.ShipmentOrderTypeFlexShipmentFee}
                                 ShipmentFeeType={this.state.FormData.ShipmentFeeType}
                                 ShipmentOrderTypeID={this.state.FormData.ShipmentOrderType.ShipmentOrderTypeID}
+                                TechspecsCache={this.state.Techspecs}
+                                TechspecsValueCache={this.state.TechspecsValue}
                                 onFlexShipmentFeeComplete={(data) => this.onWorkflowPopupSubmit(data)}
                             />
                         </TabPage>
