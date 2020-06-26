@@ -43,7 +43,7 @@ class InfoProductCom extends Component {
         const postData = [
             {
                 SearchKey: "@SHIPMENTORDERID",
-                SearchValue: "200619000000108"
+                SearchValue: this.props.ShipmentOrderID
             }
         ];
 
@@ -59,7 +59,7 @@ class InfoProductCom extends Component {
 
     showModalFeeLst() {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Thông tin tiền bán vật tư',
+            title: 'Thông tin phí dịch vụ vận chuyển',
             content: {
                 text:
                     <div className="col-lg-12">
@@ -67,29 +67,28 @@ class InfoProductCom extends Component {
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                 <thead className="thead-light">
                                     <tr>
-                                        <th className="jsgrid-header-cell"></th>
-                                        <th className="jsgrid-header-cell">Cần lắp đặt</th>
+                                        <th className="jsgrid-header-cell">Mã </th>
+                                        <th className="jsgrid-header-cell">Loại phí dịch vụ</th>
                                         <th className="jsgrid-header-cell">Mã sản phẩm</th>
-                                        <th className="jsgrid-header-cell">Sản phẩm</th>
-                                        <th className="jsgrid-header-cell">Kiện</th>
-                                        <th className="jsgrid-header-cell">Giá</th>
-                                        <th className="jsgrid-header-cell">Số lượng</th>
-                                        <th className="jsgrid-header-cell">Đơn vị tính</th>
-                                        <th className="jsgrid-header-cell">Kích thước(DxRxC)</th>
-                                        <th className="jsgrid-header-cell">Khối lượng</th>
+                                        <th className="jsgrid-header-cell">Tên sản phẩm</th>
+                                        <th className="jsgrid-header-cell">Phí dịch vụ</th>
+                                        <th className="jsgrid-header-cell">Ghi chú</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     {this.state.ShipmentOrder_FeeLst && this.state.ShipmentOrder_FeeLst.map((item, index) => {
                                         return (
                                             <tr key={index}>
-                                                <td>d</td>
+                                                 <td>{item.ShipmentOrderID}</td>
+                                                <td>{item.ShipmentFeeTypeName}</td>
+                                                <td>{item.ProductID}</td>
+                                                <td>{item.ProductName}</td>
+                                                <td>{item.Fee}</td>
+                                                <td>{item.Note}</td>
                                             </tr>
                                         )
                                     })
                                     }
-
                                 </tbody>
                             </table>
                         </div>
