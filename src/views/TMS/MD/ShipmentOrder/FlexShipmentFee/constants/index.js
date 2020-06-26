@@ -24,13 +24,20 @@ export const FlexShipmentFeeColumnList = [
         Type: "text",
         Caption: "Mã sản phẩm dịch vụ cần xuất",
         DataSourceMember: "OutputServiceProductID",
-        Width: 200
+        Width: 150
     },
     {
         Name: "TechspecsName",
         Type: "text",
         Caption: "Thông số kỹ thuật",
         DataSourceMember: "TechspecsName",
+        Width: 160
+    },
+    {
+        Name: "TechspecsValueName",
+        Type: "text",
+        Caption: "Giá trị tham số KT",
+        DataSourceMember: "TechspecsValueName",
         Width: 200
     },
     {
@@ -466,6 +473,12 @@ export const MLObjectShipmentOrderType_FlexShipmentFee = [
         DefaultValue: "",
         BindControlName: "TechspecsValueID",
         DataSourceMember: "TechspecsValueID"
+    },
+    {
+        Name: "TechspecsValueName",
+        DefaultValue: "",
+        BindControlName: "TechspecsValueName",
+        DataSourceMember: "TechspecsValueName"
     },
     {
         Name: "ProductID",

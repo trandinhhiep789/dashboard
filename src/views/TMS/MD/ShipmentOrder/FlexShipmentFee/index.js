@@ -124,21 +124,27 @@ class FlexShipmentFeeCom extends React.Component {
         });
 
         //lấy cache thông số kỹ thuật áp dụng
-        this.props.callGetCache(ERPCOMMONCACHE_SUBGROUPTECHSPECS).then((result) => {
-            if (!result.IsError && result.ResultObject.CacheData != null) {
-                this.setState({
-                    Techspecs: result.ResultObject.CacheData
-                });
-            }
-        });
+        // this.props.callGetCache(ERPCOMMONCACHE_SUBGROUPTECHSPECS).then((result) => {
+        //     if (!result.IsError && result.ResultObject.CacheData != null) {
+        //         this.setState({
+        //             Techspecs: result.ResultObject.CacheData
+        //         });
+        //     }
+        // });
 
         //lấy cache giá trị tham số kỹ thuật áp dụng
-        this.props.callGetCache(ERPCOMMONCACHE_TECHSPECSVALUE).then((result) => {
-            if (!result.IsError && result.ResultObject.CacheData != null) {
-                this.setState({
-                    TechspecsValue: result.ResultObject.CacheData
-                });
-            }
+        // this.props.callGetCache(ERPCOMMONCACHE_TECHSPECSVALUE).then((result) => {
+        //     if (!result.IsError && result.ResultObject.CacheData != null) {
+        //         this.setState({
+        //             TechspecsValue: result.ResultObject.CacheData
+        //         });
+        //     }
+        // });
+
+        this.setState({
+            Techspecs: this.props.TechspecsCache ? this.props.TechspecsCache : [],
+            TechspecsValue: this.props.TechspecsValueCache ? this.props.TechspecsValueCache : [],
+
         });
     }
 
