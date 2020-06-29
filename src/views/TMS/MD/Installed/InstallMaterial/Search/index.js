@@ -23,7 +23,7 @@ import { updatePagePath } from "../../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
-import { MCUSER_VIEW, MCUSER_DELETE } from "../../../../../../constants/functionLists";
+import { INSTALLMATERIAL_VIEW, INSTALLMATERIAL_DELETE, INSTALLBUNDLE_VIEW } from "../../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -167,6 +167,8 @@ class SearchCom extends React.Component {
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
+                    RequirePermission={INSTALLMATERIAL_VIEW}
+                    DeletePermission={INSTALLMATERIAL_DELETE}
                     ref={this.gridref}
                     IsAutoPaging={true}
                     RowsPerPage={10}

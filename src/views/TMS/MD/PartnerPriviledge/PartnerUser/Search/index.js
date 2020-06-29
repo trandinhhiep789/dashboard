@@ -19,12 +19,9 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-
-//import { MCUSER_VIEW, MCUSER_DELETE } from "../../../../../../constants/functionLists";
-
+import { PARTNERUSER_VIEW, PARTNERUSER_DELETE } from "../../../../../../constants/functionLists";
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -168,8 +165,8 @@ class SearchCom extends React.Component {
                     ref={this.gridref}
                     IsAutoPaging={true}
                     RowsPerPage={10}
-                    // RequirePermission={MCUSER_VIEW}
-                    // DeletePermission={MCUSER_DELETE}
+                    RequirePermission={PARTNERUSER_VIEW}
+                    DeletePermission={PARTNERUSER_DELETE}
                 />
             </React.Fragment>
         );

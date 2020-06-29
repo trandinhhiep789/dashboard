@@ -30,6 +30,7 @@ import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../../actions/cacheAction";
 import Collapsible from 'react-collapsible';
+import { PARTNERUSER_ADD } from "../../../../../../constants/functionLists";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -177,7 +178,7 @@ class AddCom extends React.Component {
         MLObject.FirstName = firstName.trim();
         MLObject.LastName = lastName.trim();
         MLObject.ListPartnerUser_Role = this.state.ListPartnerUser_Role;
-        
+
         if (MLObject.Birthday) {
             let temp = MLObject.Birthday.trim().split('/');
             let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
@@ -205,9 +206,9 @@ class AddCom extends React.Component {
                 BackLink={BackLink}
                 dataSource={this.state.DataSource}
                 onValueChange={this.handleOnInputChange}
-            //RequirePermission={MCUSER_ADD}
+                RequirePermission={PARTNERUSER_ADD}
             >
-                
+
                 {/* <Collapsible trigger="Danh sách vai trò của người dùng" easing="ease-in" open={true}>
                     <InputGrid
                         name="LstPartnerUser_Role"

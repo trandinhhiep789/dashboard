@@ -14,14 +14,14 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { MCPRIVILEGE_ADD } from "../../../../../../constants/functionLists";
+import { PARTNERPRIVILEDGE_ADD } from "../../../../../../constants/functionLists";
 
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-     
+
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -35,16 +35,16 @@ class AddCom extends React.Component {
         this.props.updatePagePath(AddPagePath);
     }
 
-  
-  
+
+
 
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                this.showMessage(apiResult.Message);
-            });
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
+        });
     }
 
     handleCloseMessage() {
@@ -80,7 +80,7 @@ class AddCom extends React.Component {
                 dataSource={dataSource}
                 BackLink={BackLink}
                 ref={this.searchref}
-                RequirePermission={MCPRIVILEGE_ADD}
+                RequirePermission={PARTNERPRIVILEDGE_ADD}
             />
         );
     }

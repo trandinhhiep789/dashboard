@@ -16,7 +16,7 @@ import {
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 
-import { MCPRIVILEGE_EDIT } from "../../../../../../constants/functionLists";
+import { PARTNERPRIVILEDGE_UPDATE } from "../../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -91,7 +91,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={MCPRIVILEGE_EDIT}
+                    RequirePermission={PARTNERPRIVILEDGE_UPDATE}
                 />
             );
         }

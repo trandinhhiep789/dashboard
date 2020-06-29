@@ -22,6 +22,7 @@ import { updatePagePath } from "../../../../../../actions/pageAction";
 
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
+import { PARTNERPRIVILEDGE_VIEW, PARTNERPRIVILEDGE_DELETE } from "../../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -165,6 +166,8 @@ class SearchCom extends React.Component {
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
+                    RequirePermission={PARTNERPRIVILEDGE_VIEW}
+                    DeletePermission={PARTNERPRIVILEDGE_DELETE}
                     hasSearch={false}
                     IsAutoPaging={true}
                     RowsPerPage={10}

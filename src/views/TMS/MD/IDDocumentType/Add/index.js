@@ -12,6 +12,7 @@ import {
     BackLink,
     AddPagePath
 } from "../constants";
+import { IDDOCUMENTTYPE_ADD } from "../../../../../constants/functionLists";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
@@ -77,7 +78,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                //RequirePermission={ATTRIBUTE_CATEGORY_TYPE_ADD}
+                RequirePermission={IDDOCUMENTTYPE_ADD}
                 ref={this.searchref}
             />
         );

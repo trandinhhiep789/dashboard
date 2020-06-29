@@ -19,11 +19,9 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-
-import { MCUSER_VIEW, MCUSER_DELETE } from "../../../../../../constants/functionLists";
+import { INSTALLBUNDLE_VIEW, INSTALLBUNDLE_DELETE } from "../../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -154,7 +152,7 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    FormName="Tìm kiếm loại tài khoản"
+                    FormName="Tìm kiếm sản phẩm lắp đặt kèm theo"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={this.state.SearchElementList}
                     onSubmit={this.handleSearchSubmit}
@@ -167,6 +165,8 @@ class SearchCom extends React.Component {
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
+                    RequirePermission={INSTALLBUNDLE_VIEW}
+                    DeletePermission={INSTALLBUNDLE_DELETE}
                     ref={this.gridref}
                     IsAutoPaging={true}
                     RowsPerPage={10}

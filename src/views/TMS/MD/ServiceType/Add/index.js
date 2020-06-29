@@ -16,6 +16,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SERVICETYPE } from "../../../../../constants/keyCache";
+import { SERVICETYPE_ADD } from "../../../../../constants/functionLists";
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -77,7 +78,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                //RequirePermission={ATTRIBUTE_CATEGORY_TYPE_ADD}
+                RequirePermission={SERVICETYPE_ADD}
                 ref={this.searchref}
             />
         );

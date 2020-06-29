@@ -14,7 +14,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { MCPRIVILEGEGROUP_ADD } from "../../../../../../constants/functionLists";
+import { PARTNERPRIVILEDGEGROUP_ADD } from "../../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_PARTNERPRIVILEDGEGROUP } from "../../../../../../constants/keyCache";
 
@@ -83,6 +83,7 @@ class AddCom extends React.Component {
                 dataSource={this.state.DataSource}
                 ref={this.searchref}
                 BackLink={BackLink}
+                RequirePermission={PARTNERPRIVILEDGEGROUP_ADD}
             />
         );
     }

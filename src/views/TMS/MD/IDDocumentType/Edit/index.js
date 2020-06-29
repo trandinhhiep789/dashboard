@@ -14,6 +14,7 @@ import {
     BackLink,
     EditPagePath
 } from "../constants";
+import { IDDOCUMENTTYPE_UPDATE } from "../../../../../constants/functionLists";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
@@ -94,7 +95,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    //RequirePermission={ATTRIBUTE_CATEGORY_TYPE_UPDATE}
+                    RequirePermission={IDDOCUMENTTYPE_UPDATE}
                     ref={this.searchref}
                 />
             );

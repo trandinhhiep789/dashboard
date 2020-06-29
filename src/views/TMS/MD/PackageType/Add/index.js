@@ -15,7 +15,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { ATTRIBUTE_CATEGORY_TYPE_ADD } from "../../../../../constants/functionLists";
+import { PACKAGETYPE_ADD } from "../../../../../constants/functionLists";
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache } from "../../../../../actions/cacheAction";
@@ -54,7 +54,7 @@ class AddCom extends React.Component {
     //     }
     //     );
     // }
-    
+
 
     // handleGetCache() {
     //     this.props.callGetCache("PIMCACHE.PIMATTRIBUTECATEGORYTYPE").then((result) => {
@@ -76,10 +76,10 @@ class AddCom extends React.Component {
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            if(!apiResult.IsError){
+            if (!apiResult.IsError) {
                 //this.handleClearLocalCache();
                 //this.handleSubmitInsertLog(MLObject);
-            }            
+            }
             this.showMessage(apiResult.Message);
         });
     }
@@ -116,7 +116,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                //RequirePermission={ATTRIBUTE_CATEGORY_TYPE_ADD}
+                RequirePermission={PACKAGETYPE_ADD}
                 ref={this.searchref}
             />
         );

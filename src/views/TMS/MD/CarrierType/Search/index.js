@@ -20,10 +20,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-// import {
-//     ATTRIBUTE_CATEGORY_TYPE_VIEW,
-//     ATTRIBUTE_CATEGORY_TYPE_DELETE
-// } from "../../../../../constants/functionLists";
+import { CARRIERTYPE_VIEW, CARRIERTYPE_DELETE} from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
@@ -204,8 +201,8 @@ class SearchCom extends React.Component {
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
                     ref={this.gridref}
-                    // RequirePermission={ATTRIBUTE_CATEGORY_TYPE_VIEW}
-                    // DeletePermission={ATTRIBUTE_CATEGORY_TYPE_DELETE}
+                    RequirePermission={CARRIERTYPE_VIEW}
+                    DeletePermission={CARRIERTYPE_DELETE}
                     IsAutoPaging={true}
                     RowsPerPage={10}
                 />

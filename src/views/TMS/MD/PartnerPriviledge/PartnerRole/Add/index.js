@@ -31,6 +31,7 @@ import { updatePagePath } from "../../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../../actions/cacheAction";
 import Collapsible from 'react-collapsible';
 import Search from "antd/lib/transfer/search";
+import { PARTNERROLE_ADD } from "../../../../../../constants/functionLists";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -155,6 +156,7 @@ class AddCom extends React.Component {
                 ref={this.searchref}
                 BackLink={BackLink}
                 dataSource={DataSource}
+                RequirePermission={PARTNERROLE_ADD}
             >
                 <br />
                 <Collapsible trigger="Danh sách quyền của nhà cung cấp" easing="ease-in" open={true}>

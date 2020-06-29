@@ -33,6 +33,7 @@ import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../../actions/cacheAction";
 import Collapsible from 'react-collapsible';
+import { PARTNERROLE_UPDATE } from "../../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -173,7 +174,7 @@ class EditCom extends React.Component {
                     ref={this.searchref}
                     BackLink={BackLink}
                     dataSource={this.state.DataSource}
-                    //RequirePermission={MCROLE_EDIT}
+                    RequirePermission={PARTNERROLE_UPDATE}
                 >
                     <br />
                     <Collapsible trigger="Danh sách quyền của nhà cung cấp" easing="ease-in" open={true}>

@@ -15,7 +15,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { MCPRIVILEGEGROUP_EDIT } from "../../../../../../constants/functionLists";
+import { PARTNERPRIVILEDGEGROUP_UPDATE } from "../../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_PARTNERPRIVILEDGEGROUP } from "../../../../../../constants/keyCache";
 
@@ -93,6 +93,7 @@ class EditCom extends React.Component {
                     dataSource={this.state.DataSource}
                     ref={this.searchref}
                     BackLink={BackLink}
+                    RequirePermission={PARTNERPRIVILEDGEGROUP_UPDATE}
                 />
             );
         }

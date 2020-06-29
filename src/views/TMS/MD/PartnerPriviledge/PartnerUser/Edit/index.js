@@ -34,6 +34,7 @@ import { updatePagePath } from "../../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../../actions/cacheAction";
 import Collapsible from 'react-collapsible';
 import { Prompt } from 'react-router';
+import { PARTNERUSER_UPDATE } from "../../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -452,7 +453,7 @@ class EditCom extends React.Component {
                         BackLink={BackLink}
                         dataSource={this.state.DataSource}
                         onValueChange={this.handleOnInputChange}
-                    //RequirePermission={MCUSER_EDIT}
+                        RequirePermission={PARTNERUSER_UPDATE}
                     >
                         <br />
                         <Collapsible trigger="Vai trò của người dùng" easing="ease-in" open={true}>

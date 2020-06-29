@@ -23,6 +23,7 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { SHIPMENTFEEPAYMENTMETHOD_VIEW, SHIPMENTFEEPAYMENTMETHOD_DELETE } from "../../../../../constants/functionLists";
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -194,8 +195,8 @@ class SearchCom extends React.Component {
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
                     ref={this.gridref}
-                    // RequirePermission={ATTRIBUTE_CATEGORY_TYPE_VIEW}
-                    // DeletePermission={ATTRIBUTE_CATEGORY_TYPE_DELETE}
+                    RequirePermission={SHIPMENTFEEPAYMENTMETHOD_VIEW}
+                    DeletePermission={SHIPMENTFEEPAYMENTMETHOD_DELETE}
                     IsAutoPaging={true}
                     RowsPerPage={10}
                 />

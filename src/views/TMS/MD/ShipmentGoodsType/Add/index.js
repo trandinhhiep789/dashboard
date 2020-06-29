@@ -17,6 +17,7 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SHIPMENTGOODSTYPE } from "../../../../../constants/keyCache";
 import { createListTree } from '../../../../../common/library/ultils';
+import { SHIPMENTGOODSTYPE_ADD } from "../../../../../constants/functionLists";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -172,6 +173,7 @@ class AddCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={dataSource}
                     BackLink={BackLink}
+                    RequirePermission={SHIPMENTGOODSTYPE_ADD}
                 >
                 </FormContainer>
             );

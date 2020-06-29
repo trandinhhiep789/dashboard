@@ -23,7 +23,7 @@ import { updatePagePath } from "../../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
-import { MCPRIVILEGEGROUP_VIEW, MCPRIVILEGEGROUP_DELETE } from "../../../../../../constants/functionLists";
+import { PARTNERPRIVILEDGEGROUP_VIEW, PARTNERPRIVILEDGEGROUP_DELETE } from "../../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_PARTNERPRIVILEDGEGROUP } from "../../../../../../constants/keyCache";
 
@@ -158,7 +158,7 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    FormName="Tìm kiếm loại tài khoản"
+                    FormName="Tìm kiếm nhóm quyền nhà cung cấp"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={this.state.SearchElementList}
                     onSubmit={this.handleSearchSubmit}
@@ -174,8 +174,8 @@ class SearchCom extends React.Component {
                     ref={this.gridref}
                     IsAutoPaging={true}
                     RowsPerPage={10}
-                    RequirePermission={MCPRIVILEGEGROUP_VIEW}
-                    DeletePermission={MCPRIVILEGEGROUP_DELETE}
+                    RequirePermission={PARTNERPRIVILEDGEGROUP_VIEW}
+                    DeletePermission={PARTNERPRIVILEDGEGROUP_DELETE}
                 />
             </React.Fragment>
         );

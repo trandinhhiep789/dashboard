@@ -27,11 +27,11 @@ import {
     callFetchAPI
 } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { PIEREQUESTTYPE_VIEW, PIEREQUESTTYPE_DELETE } from "../../../../../../constants/functionLists";
+import { SHIPMENTORDERTYPE_VIEW, SHIPMENTORDERTYPE_DELETE, SHIPMENTORDERTYPE_ADD } from "../../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SHIPMENTORDERTYPE } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPUSERCACHE_FUNCTION } from "../../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -40,20 +40,37 @@ class SearchCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleInputGridInsert = this.handleInputGridInsert.bind(this);
+        this.checkAddPermission = this.checkAddPermission.bind(this);
         this.addNotification = this.addNotification.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
             IsCallAPIError: false,
-            SearchData: InitSearchParams
+            SearchData: InitSearchParams,
+            IsAllowAdd: false
         };
         this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
         this.callSearchData(this.state.SearchData);
+        this.checkAddPermission();
         this.props.updatePagePath(PagePath);
     }
+
+
+    checkAddPermission() {
+        this.props.callGetCache(ERPUSERCACHE_FUNCTION).then((result) => {
+            if (result && !result.IsError && result.ResultObject) {
+                let match = result.ResultObject.CacheData.filter(x => x.FunctionID == SHIPMENTORDERTYPE_ADD);
+                if (match && match.length > 0) {
+                    this.setState({ IsAllowAdd: true });
+                }
+            }
+            //console.log("handleGetCache: ", result);
+        });
+    }
+
 
     handleDeleteInsertLog() {
         let MLObject = {};
@@ -105,31 +122,37 @@ class SearchCom extends React.Component {
 
 
     handleInputGridInsert(MLObjectDefinition, modalElementList, dataSource) {
-        this.props.showModal(MODAL_TYPE_CONFIRMATION, {
-            title: 'Thêm mới loại yêu cầu vận chuyển',
-            autoCloseModal: false,
-            onConfirm: (isConfirmed, formData) => {
-                if (isConfirmed) {
-                    let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
-                    if (MLObject) {
-                        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-                        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-                        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then((apiResult) => {
-                            if (!apiResult.IsError) {
-                                this.callSearchData(this.state.SearchData);
-                                this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERTYPE);
-                                this.props.hideModal();
-                                this.addNotification(apiResult.Message, apiResult.IsError);
-                            } else {
-                                this.showMessage(apiResult.Message);
-                            }
-                            this.setState({ IsCallAPIError: apiResult.IsError });
-                        });
+        //kiểm tra quyền thêm mới loại yêu cầu vận chuyển
+        if (!this.state.IsAllowAdd) {
+            this.showMessage("Bạn không có quyền thao tác.");
+        } else {
+            this.props.showModal(MODAL_TYPE_CONFIRMATION, {
+                title: 'Thêm mới loại yêu cầu vận chuyển',
+                autoCloseModal: false,
+                onConfirm: (isConfirmed, formData) => {
+                    if (isConfirmed) {
+                        let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
+                        if (MLObject) {
+                            MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+                            MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+                            this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then((apiResult) => {
+                                if (!apiResult.IsError) {
+                                    this.callSearchData(this.state.SearchData);
+                                    this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERTYPE);
+                                    this.props.hideModal();
+                                    this.addNotification(apiResult.Message, apiResult.IsError);
+                                } else {
+                                    this.showMessage(apiResult.Message);
+                                }
+                                this.setState({ IsCallAPIError: apiResult.IsError });
+                            });
+                        }
                     }
-                }
-            },
-            modalElementList: modalElementList
-        });
+                },
+                modalElementList: modalElementList
+            });
+        }
+
     }
 
     callSearchData(searchData) {
@@ -217,8 +240,8 @@ class SearchCom extends React.Component {
                     IsAutoPaging={true}
                     RowsPerPage={10}
                     IsCustomAddLink={true}
-                    // RequirePermission={PIEREQUESTTYPE_VIEW}
-                    // DeletePermission={PIEREQUESTTYPE_DELETE}
+                    RequirePermission={SHIPMENTORDERTYPE_VIEW}
+                    DeletePermission={SHIPMENTORDERTYPE_DELETE}
                 />
             </ React.Fragment >
         );
@@ -245,6 +268,9 @@ const mapDispatchToProps = dispatch => {
         },
         hideModal: () => {
             dispatch(hideModal());
+        },
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));

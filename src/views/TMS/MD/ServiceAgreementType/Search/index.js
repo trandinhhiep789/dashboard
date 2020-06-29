@@ -23,6 +23,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SERVICEAGREEMENTTYPE } from "../../../../../constants/keyCache";
+import { SERVICEAGREEMENTTYPE_VIEW, SERVICEAGREEMENTTYPE_DELETE } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -162,8 +163,8 @@ class SearchCom extends React.Component {
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
                     ref={this.gridref}
-                    // RequirePermission={ATTRIBUTE_CATEGORY_TYPE_VIEW}
-                    // DeletePermission={ATTRIBUTE_CATEGORY_TYPE_DELETE}
+                    RequirePermission={SERVICEAGREEMENTTYPE_VIEW}
+                    DeletePermission={SERVICEAGREEMENTTYPE_DELETE}
                     IsAutoPaging={true}
                     RowsPerPage={10}
                 />

@@ -18,6 +18,7 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_PARTNERTYPE } from "../../../../constants/keyCache";
+import { PARTNERTYPE_UPDATE } from "../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -100,6 +101,7 @@ class EditCom extends React.Component {
                     dataSource={this.state.DataSource}
                     ref={this.searchref} 
                     BackLink={BackLink}
+                    RequirePermission={PARTNERTYPE_UPDATE}
                 >
                 </FormContainer>
             );

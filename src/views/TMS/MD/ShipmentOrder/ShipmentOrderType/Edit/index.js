@@ -33,6 +33,7 @@ import {
 
 import FixShipmentFee from "../../FixShipmentFee/";
 import FlexShipmentFee from "../../FlexShipmentFee/";
+import { SHIPMENTORDERTYPE_UPDATE } from "../../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -587,7 +588,7 @@ class EditCom extends React.Component {
                     IsAutoLayout={true}
                     listelement={[]}
                     dataSource={this.state.FormData}
-                    //RequirePermission={PIEREQUESTTYPE_UPDATE}
+                    RequirePermission={SHIPMENTORDERTYPE_UPDATE}
                     onInputChangeList={this.handleInputChangeList}
                     onSubmit={(formData, MLObject) => this.handleSubmit(formData, MLObject)}
                     BackLink={BackLink}>

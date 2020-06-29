@@ -17,6 +17,7 @@ import {
     InitSearchParams,
     PagePath
 } from "../constants";
+import { IDDOCUMENTTYPE_VIEW, IDDOCUMENTTYPE_DELETE} from "../../../../../constants/functionLists";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
@@ -162,8 +163,8 @@ class SearchCom extends React.Component {
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
                     ref={this.gridref}
-                    // RequirePermission={ATTRIBUTE_CATEGORY_TYPE_VIEW}
-                    // DeletePermission={ATTRIBUTE_CATEGORY_TYPE_DELETE}
+                    RequirePermission={IDDOCUMENTTYPE_VIEW}
+                    DeletePermission={IDDOCUMENTTYPE_DELETE}
                     IsAutoPaging={true}
                     RowsPerPage={10}
                 />

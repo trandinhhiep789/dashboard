@@ -20,7 +20,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
-import { BRAND_VIEW, BRAND_DELETE } from "../../../../constants/functionLists";
+import { PARTNERTYPE_VIEW, PARTNERTYPE_DELETE } from "../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import indexedDBLib from "../../../../common/library/indexedDBLib.js";
@@ -189,6 +189,8 @@ class SearchCom extends React.Component {
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
+                    RequirePermission={PARTNERTYPE_VIEW}
+                    DeletePermission={PARTNERTYPE_DELETE}
                     ref={this.gridref}
                     IsAutoPaging={true}
                     RowsPerPage={10}

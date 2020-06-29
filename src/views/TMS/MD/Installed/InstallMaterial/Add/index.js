@@ -28,7 +28,7 @@ import {
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../../actions/cacheAction";
-import { MCUSER_ADD } from "../../../../../../constants/functionLists";
+import { INSTALLMATERIAL_ADD } from "../../../../../../constants/functionLists";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -88,6 +88,7 @@ class AddCom extends React.Component {
                 onSubmit={this.handleSubmit}
                 BackLink={BackLink}
                 dataSource={[]}
+                RequirePermission={INSTALLMATERIAL_ADD}
             >
                 <InputGrid
                     name="InstallMaterial_ProductList"

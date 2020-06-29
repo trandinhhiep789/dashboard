@@ -20,6 +20,7 @@ import { createListTree } from '../../../../../common/library/ultils';
 import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SHIPMENTGOODSTYPE } from "../../../../../constants/keyCache";
+import { SHIPMENTGOODSTYPE_UPDATE } from "../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -183,6 +184,7 @@ class EditCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={this.state.DataSource}
                 BackLink={BackLink}
+                RequirePermission={SHIPMENTGOODSTYPE_UPDATE}
             >
             </FormContainer>
             );

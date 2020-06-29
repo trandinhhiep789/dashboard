@@ -28,7 +28,7 @@ import {
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../../actions/cacheAction";
-import { MCUSER_EDIT } from "../../../../../../constants/functionLists";
+import { INSTALLMATERIAL_UPDATE } from "../../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -101,6 +101,7 @@ class EditCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                     dataSource={this.state.DataSource}
+                    RequirePermission={INSTALLMATERIAL_UPDATE}
                 >
                     <InputGrid
                         name="InstallMaterial_ProductList"
