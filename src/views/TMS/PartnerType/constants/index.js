@@ -13,18 +13,18 @@ export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "PartnerTypeID";
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Loại đối tác" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/PartnerType", Title: "Loại đối tác" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/PartnerType", Title: "Loại đối tác" },
     { Link: "", Title: "Thêm" }
 ];

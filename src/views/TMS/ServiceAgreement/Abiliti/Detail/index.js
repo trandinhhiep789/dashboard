@@ -43,7 +43,7 @@ class DetailCom extends React.Component {
                 });
                 const id= apiResult.ResultObject.ServiceAgreementID;
                 const PagePath = [
-                    { Link: "/", Title: "Trang chủ" },
+                    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
                     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ " },
                     { Link: "/ServiceAgreement/Detail/" + id, Title: "Danh sách hợp đồng dịch vụ " },
                     { Link: "", Title: "Chi tiết năng lực" },

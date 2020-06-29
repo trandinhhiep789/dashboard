@@ -13,18 +13,18 @@ export const PKColumnName = "IDDocumentTypeID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Danh sách loại giấy tờ tùy thân" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/IDDocumentType", Title: "Danh sách loại giấy tờ tùy thân" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/IDDocumentType", Title: "Danh sách loại giấy tờ tùy thân" },
     { Link: "", Title: "Thêm" }
 ];

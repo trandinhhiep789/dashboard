@@ -28,11 +28,11 @@ export const InitSearchParams = [{
     SearchValue: ""
 }];
 
-export const PagePath = [{ Link: "/", Title: "Trang chủ" },
+export const PagePath = [{ Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
 { Link: "/ShipmentOrderType", Title: "Loại yêu cầu vận chuyển" }
 ];
 
-export const EditPagePath = [{ Link: "/", Title: "Trang chủ" },
+export const EditPagePath = [{ Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
 { Link: "/ShipmentOrderType", Title: "Loại yêu cầu vận chuyển" },
 { Link: "", Title: "Chỉnh sửa Loại yêu cầu vận chuyển" }
 ];

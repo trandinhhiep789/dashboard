@@ -10,17 +10,17 @@ export const AddLink = "/Category/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "CategoryID";
 
-export const PagePath = [{ Link: "/", Title: "Trang chủ" },
+export const PagePath = [{ Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
 { Link: "/Category", Title: "Danh mục sản phẩm" }
 ];
 
-export const EditPagePath = [{ Link: "/", Title: "Trang chủ" },
+export const EditPagePath = [{ Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
 { Link: "/Category", Title: "Danh mục sản phẩm" },
 { Link: "", Title: "Sửa Danh mục sản phẩm" }
 
 ];
 
-export const AddPagePath = [{ Link: "/", Title: "Trang chủ" },
+export const AddPagePath = [{ Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
 { Link: "/Category", Title: "Danh mục sản phẩm" },
 { Link: "", Title: "Thêm danh mục sản phẩm" }
 

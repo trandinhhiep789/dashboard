@@ -12,18 +12,18 @@ export const PKColumnName = "InstallBundleID";
 export const SearchMcRoleAPIPath = "api/McRole/Search";
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/InstallBundle", Title: "Danh sách gói sản phẩm lắp đặt kèm theo" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/InstallBundle", Title: "Danh sách gói sản phẩm lắp đặt kèm theo" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/InstallBundle", Title: "Danh sách gói sản phẩm lắp đặt kèm theo" },
     { Link: "", Title: "Thêm" }
 ];

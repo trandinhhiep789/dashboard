@@ -21,18 +21,18 @@ export const InitSearchParams = [
     }
 ];
 export const PagePath = [
-    { Link: "/home/", Title: "Trang chủ" },
+    { Link: "/home/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Danh sách quyền nhà cung cấp" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/PartnerPriviledge", Title: "Danh sách quyền nhà cung cấp" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home"},
     { Link: "/PartnerPriviledge", Title: "Danh sách quyền nhà cung cấp" },
     { Link: "", Title: "Thêm" }
 ];
