@@ -14,18 +14,18 @@ export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 import {CDN_LOGO_IMAGE} from '../../../../../constants/systemVars';
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Danh sách đối tác" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/Partner", Title: "Danh sách đối tác" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/Partner", Title: "Danh sách đối tác" },
     { Link: "", Title: "Thêm" }
 ];

@@ -13,18 +13,18 @@ export const PKColumnName = "CancelDeliveryReasonID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Danh sách lý do hủy giao hàng" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/CancelDeliveryReason", Title: "Danh sách lý do hủy giao hàng" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/CancelDeliveryReason", Title: "Danh sách lý do hủy giao hàng" },
     { Link: "", Title: "Thêm" }
 ];

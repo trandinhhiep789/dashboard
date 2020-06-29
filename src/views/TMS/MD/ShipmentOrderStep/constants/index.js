@@ -13,18 +13,18 @@ export const PKColumnName = "ShipmentOrderStepID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Danh sách bước xử lý yêu cầu vận chuyển" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/ShipmentOrderStep", Title: "Danh sách bước xử lý yêu cầu vận chuyển" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/ShipmentOrderStep", Title: "Danh sách bước xử lý yêu cầu vận chuyển" },
     { Link: "", Title: "Thêm" }
 ];

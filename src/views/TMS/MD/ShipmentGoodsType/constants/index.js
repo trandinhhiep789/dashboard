@@ -13,18 +13,18 @@ export const PKColumnName = "ShipmentGoodsTypeID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Danh sách loại hàng hóa vận chuyển" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/ShipmentGoodsType", Title: "Danh sách loại hàng hóa vận chuyển" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ" , icon: "fa fa-home"},
     { Link: "/ShipmentGoodsType", Title: "Danh sách loại hàng hóa vận chuyển" },
     { Link: "", Title: "Thêm" }
 ];

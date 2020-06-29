@@ -13,18 +13,18 @@ export const SearchPartnerRoleAPIPath = "api/PartnerRole/Search2";
 import {CDN_LOGO_IMAGE} from '../../../../../../constants/systemVars';
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/PartnerUser", Title: "Người dùng của nhà cung cấp" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/PartnerUser", Title: "Người dùng của nhà cung cấp" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/PartnerUser", Title: "Người dùng của nhà cung cấp" },
     { Link: "", Title: "Thêm" }
 ];

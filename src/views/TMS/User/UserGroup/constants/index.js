@@ -17,7 +17,7 @@ export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 import {CDN_LOGO_IMAGE} from '../../../../../constants/systemVars';
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Cấp quyền nhân viên theo kho" }
 ];
 

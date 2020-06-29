@@ -376,7 +376,6 @@ class EditCom extends React.Component {
 
 
     initFlexShipmentFeeDatasource(dataSource) {
-        debugger;
         let techspecs = this.state.Techspecs ? this.state.Techspecs : [];
         let techspecsValue = this.state.TechspecsValue ? this.state.TechspecsValue : [];
         let match = [];

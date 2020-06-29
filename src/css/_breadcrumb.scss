@@ -1,0 +1,109 @@
+.nav-breadcrumb {
+    background-color: #ffffff;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    display: flex;
+
+    .left-icon {
+        background-color: #777777;
+        text-align: center;
+        color: white;
+        font-size: 17px;
+        padding: .3rem .1rem .3rem .1rem;
+        justify-content: center;
+        align-content: center;
+        display: inline-flex;
+        border-radius: 4px 0 0 4px;
+
+        i {
+            display: none;
+        }
+    }
+
+    .breadcrumb {
+        background-color: transparent;
+        margin-bottom: 0;
+
+        li {
+            line-height: 34px;
+            height: 34px;
+            &.breadcrumb-item {
+                position: relative;
+                float: left;
+                padding-left: 10px;
+                padding-right: 10px;
+                &::before {
+                    content: " ";
+                    display: block;
+                    width: 0;
+                    height: 0;
+                    border-top: 17px solid transparent;
+                    border-bottom: 17px solid transparent;
+                    border-left: 10px solid rgb(173, 173, 173);
+                    position: absolute;
+                    top: 50%;
+                    margin-top: -17px;
+                    margin-left: 1px;
+                    left: 100%;
+                    z-index: 3;
+                }
+
+                &::after {
+                    content: " ";
+                    display: block;
+                    width: 0;
+                    height: 0;
+                    border-top: 17px solid transparent;
+                    border-bottom: 17px solid transparent;
+                    border-left: 10px solid white;
+                    position: absolute;
+                    top: 50%;
+                    margin-top: -17px;
+                    left: 100%;
+                    z-index: 3;
+                }
+
+                &+.breadcrumb-item {
+                    padding-left: 20px;
+                    padding-right: 10px;
+                }
+
+
+                &:last-child {
+                    &::before {
+                        border-top-left-radius: 0;
+                        border-bottom-left-radius: 0;
+                        content: none;
+                    }
+                    &::after {
+                        content: none;
+                    }
+                }
+            }
+
+            a {
+                clear: both;
+            }
+
+            &:hover {
+                &.breadcrumb-item {
+                   
+                    background-color: #e6e6e6;
+                    border-color: #adadad;
+                    a{
+                        color: #333;
+                    }
+                    &::before {
+                        clear: both;
+                        border-left: 10px solid #e6e6e6;
+                    }
+
+                    &::after {
+                        clear: both;
+                        border-left: 10px solid #e6e6e6;
+                    }
+                }
+            }
+        }
+    }
+}

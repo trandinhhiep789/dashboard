@@ -13,18 +13,18 @@ export const PKColumnName = "ServiceAgreementTypeID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Danh sách loại hợp đồng dịch vụ" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/ServiceAgreementType", Title: "Danh sách loại hợp đồng dịch vụ" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/ServiceAgreementType", Title: "Danh sách loại hợp đồng dịch vụ" },
     { Link: "", Title: "Thêm" }
 ];

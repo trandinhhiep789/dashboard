@@ -32,20 +32,20 @@ export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ" },
     { Link: "/ServiceAgreement/FeeAppendix", Title: "Danh sách phụ lục biểu phí" },
     { Link: "", Title: "Sửa" }
 ];
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ" },
     { Link: "/ServiceAgreement/FeeAppendix", Title: "Danh sách phụ lục biểu phí" },
     { Link: "", Title: "Thêm" }
 ];
 
 export const DetailAPIPath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ" },
     { Link: "/ServiceAgreement/FeeAppendix", Title: "Danh sách phụ lục biểu phí" },
     { Link: "", Title: "Chi tiết" }

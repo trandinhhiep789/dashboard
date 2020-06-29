@@ -12,18 +12,18 @@ export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "PartnerRoleID";
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Danh sách vai trò nhà cung cấp" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/PartnerRole", Title: "Danh sách vai trò nhà cung cấp" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/PartnerRole", Title: "Danh sách vai trò nhà cung cấp" },
     { Link: "", Title: "Thêm" }
 ];

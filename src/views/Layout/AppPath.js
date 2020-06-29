@@ -19,25 +19,42 @@ class AppPathCom extends React.Component {
     render() {
         let { pagePath } = this.state;
         if (!pagePath || pagePath.length == 0) {
-            pagePath = [{ Link: "/", Title: "Trang chủ" }];
+            pagePath = [{ Link: "/", Title: "Trang chủ", icon: "fa fa-home" }];
         }
         return (
             <div className="row">
                 <div className="col-md-12">
-                    <nav aria-label="breadcrumb">
+                    <nav aria-label="breadcrumb" className="nav-breadcrumb">
+                        <span className='left-icon'>
+                            <i className='fa fa-ellipsis-v'></i>
+                        </span>
                         <ol className="breadcrumb">
                             {
                                 pagePath.map((item, index) => {
+                                    
                                     if (index == pagePath.length - 1) {
                                         if (item.Link.length > 0) {
-                                            return <li className="breadcrumb-item active" key={"li" + index}><Link key={index} to={item.Link}>{item.Title}</Link></li>
+                                            return <li className="breadcrumb-item active 2" key={"li" + index}>
+                                                <Link key={index} to={item.Link}>
+                                                    <i className={item.icon}></i>
+                                                    {item.Title}
+                                                </Link>
+                                            </li>
                                         }
                                         else {
-                                            return <li className="breadcrumb-item active" key={"li" + index}>{item.Title}</li>
+                                            return <li className="breadcrumb-item active 3" key={"li" + index}>
+                                                <i className={item.icon}></i>
+                                                {item.Title}
+                                            </li>
                                         }
                                     }
                                     else {
-                                        return <li className="breadcrumb-item" key={"li" + index}><Link key={index} to={item.Link}>{item.Title}</Link></li>
+                                        return <li className="breadcrumb-item 1" key={"li" + index}>
+                                            <Link key={index} to={item.Link}>
+                                                <i className={item.icon}></i>
+                                                {item.Title}
+                                            </Link>
+                                        </li>
                                     }
                                 }
                                 )
