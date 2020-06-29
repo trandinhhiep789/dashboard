@@ -12,18 +12,18 @@ export const PKColumnName = "InstallMaterialID";
 export const SearchMcRoleAPIPath = "api/McRole/Search";
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/InstallMaterial", Title: "Danh sách nhóm sản phẩm cần vật tư lắp đặt" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/InstallMaterial", Title: "Danh sách nhóm sản phẩm cần vật tư lắp đặt" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ" , icon: "fa fa-home"},
     { Link: "/InstallMaterial", Title: "Danh sách nhóm sản phẩm cần vật tư lắp đặt" },
     { Link: "", Title: "Thêm" }
 ];

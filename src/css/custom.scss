@@ -20,7 +20,12 @@
 @import "./datePicker";
 @import "./antpicker";
 @import "./modal";
+@import "./breadcrumb";
 
+
+.main-content{
+    padding: 10px 20px 0 !important;
+}
 // Css menu trang sản phẩm
 .sidebar-left{
     transition: margin-left 0.3s ease;

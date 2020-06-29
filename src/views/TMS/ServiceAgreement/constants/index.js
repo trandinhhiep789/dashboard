@@ -192,24 +192,24 @@ export const InitSearchParams = [
 ];
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
     { Link: "", Title: "Danh sách hợp đồng dịch vụ" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ" },
     { Link: "", Title: "Cập nhật" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ" },
     { Link: "", Title: "Thêm" }
 ];
 
 export const DetailAPIPath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ" },
     { Link: "", Title: "Chi tiết" }
 ];

@@ -11,7 +11,7 @@ export const IDSelectColumnName= "chkSelect";
 
 
 export const SearchPath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/", Title: "Danh sách chi tiết phụ lục biểu phí" },
 ];
 

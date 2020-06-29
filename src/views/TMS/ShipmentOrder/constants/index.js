@@ -12,24 +12,24 @@ export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "ShipmentOrderID";
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Danh sách yêu cầu vận chuyển" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/ShipmentOrder", Title: "Danh sách yêu cầu vận chuyển" },
     { Link: "", Title: "Sửa" }
 ];
 export const DetailAPIPath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/ShipmentOrder", Title: "Danh sách yêu cầu vận chuyển" },
     { Link: "", Title: "Chi tiết" }
 ];
 
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ" },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/ShipmentOrder", Title: "Danh sách yêu cầu vận chuyển" },
     { Link: "", Title: "Thêm" }
 ];

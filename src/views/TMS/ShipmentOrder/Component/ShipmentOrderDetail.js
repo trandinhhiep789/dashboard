@@ -111,6 +111,7 @@ class ShipmentOrderDetailCom extends Component {
             let objWorkFlowProcessingRequest={
                 ShipmentOrderID:ShipmentOrder_WorkFlow.ShipmentOrderID,
                 ShipmentOrderStepID:ShipmentOrder_WorkFlow.ShipmentOrderStepID,
+                CurrentShipmentOrderStepID:this.state.ShipmentOrder.CurrentShipmentOrderStepID,
                 ProcessUser:ShipmentOrder_WorkFlow.ProcessUser,
                 ProcessGeoLocation:"",
                 Note:ShipmentOrder_WorkFlow.Note

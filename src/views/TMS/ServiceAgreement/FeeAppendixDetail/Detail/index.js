@@ -45,7 +45,7 @@ class DetailCom extends React.Component {
                 const idFeeAppendix =apiResult.ResultObject.FeeAppendixID;
 
                 const DetailAPIPath = [
-                    { Link: "/", Title: "Trang chủ" },
+                    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
                     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ " },
                     { Link: "/ServiceAgreement/Detail/" + idAgreement, Title: "Danh sách hợp đồng dịch vụ " },
                     { Link: "/ServiceAgreement/FeeAppendix/Detail/" + idFeeAppendix, Title: "Danh sách hợp đồng dịch vụ " },
