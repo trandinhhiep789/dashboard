@@ -280,7 +280,7 @@ class InfoProductCom extends Component {
                                                 <td>{item.ProductName}</td>
                                                 <td>{item.QuantityUnitName}</td>
                                                 <td>{item.Quantity}</td>
-                                                <td>{item.Price}</td>
+                                                <td>{formatMoney(this.Pricevat(1, item.Price, item.VAT), 0)}đ</td>
                                                 <td>{formatMoney(this.Pricevat(item.Quantity, item.Price, item.VAT), 0)}đ</td>
                                             </tr>)
                                         })}
