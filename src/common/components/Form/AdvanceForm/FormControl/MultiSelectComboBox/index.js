@@ -136,9 +136,9 @@ class MultiSelectComboBoxCom extends React.Component {
         let className = "form-control form-control-sm";
         if (this.props.CSSClassName != null)
             className = this.props.CSSClassName;
-        let formGroupClassName = "form-group col-md-4";
+        let formGroupClassName = "col-md-4";
         if (this.props.colspan != null) {
-            formGroupClassName = "form-group col-md-" + this.props.colspan;
+            formGroupClassName = "col-md-" + this.props.colspan;
         }
         let labelDivClassName = "form-group col-md-2";
         if (this.props.labelcolspan != null) {
@@ -148,7 +148,7 @@ class MultiSelectComboBoxCom extends React.Component {
         if (typeof this.props.IsLabelDiv !== 'undefined' || typeof this.props.IsLabelDiv !== null)
             isLabelDiv = this.props.IsLabelDiv;
         if (isLabelDiv == false)
-            formGroupClassName = "form-group col-md-12";
+            formGroupClassName = "col-md-12";
         // const CustomStyle = {
         //     option: (base, state) => ({
         //         ...base,
@@ -164,15 +164,19 @@ class MultiSelectComboBoxCom extends React.Component {
                     </div>
                 }
                 <div className={formGroupClassName}>
-                    <Select
-                        value={selectedOption}
-                        onChange={this.handleValueChange}
-                        options={listOptionNew}
-                        isMulti={this.props.isMulti !== undefined ? this.props.isMulti : true}
-                        isDisabled={this.props.disabled}
-                        isSearchable={true}
-                        placeholder={"------ Chọn ------"}
-                    />
+                    <div className="form-group form-group-input form-group-input-select">
+                        <Select
+                            value={selectedOption}
+                            onChange={this.handleValueChange}
+                            options={listOptionNew}
+                            isMulti={this.props.isMulti !== undefined ? this.props.isMulti : true}
+                            isDisabled={this.props.disabled}
+                            isSearchable={true}
+                            placeholder={"------ Chọn ------"}
+                            className="select"
+                        />
+                    </div>
+
                 </div>
             </div>
         );

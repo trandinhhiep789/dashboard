@@ -415,17 +415,30 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         controltype="InputControl" datasourcemember="ShipmentOrderStepID"
                                     /> */}
                                     <FormControl.ComboBox
-                                        name="ShipmentOrderStepID" type="select" isautoloaditemfromcache={true}
-                                        loaditemcachekeyid={ERPCOMMONCACHE_SHIPMENTORDERSTEP} valuemember="ShipmentOrderStepID" nameMember="ShipmentOrderStepName"
-                                        label="Tên bước xử lý" controltype="InputControl" datasourcemember="ShipmentOrderStepID"
-                                        listoption={[]} isRequired={true} disabled={this.props.IsUpdateData}
+                                        name="ShipmentOrderStepID"
+                                        type="select"
+                                        isautoloaditemfromcache={true}
+                                        loaditemcachekeyid={ERPCOMMONCACHE_SHIPMENTORDERSTEP}
+                                        valuemember="ShipmentOrderStepID"
+                                        nameMember="ShipmentOrderStepName"
+                                        label="Tên bước xử lý"
+                                        controltype="InputControl"
+                                        datasourcemember="ShipmentOrderStepID"
+                                        listoption={[]}
+                                        isRequired={true}
+                                        disabled={this.props.IsUpdateData}
                                         labelcolspan={4} colspan={8}
                                     />
 
                                     <FormControl.ComboBox
-                                        name="AutoChangeToShipmentOrderStatusID" type="select" isautoloaditemfromcache={true}
-                                        loaditemcachekeyid={ERPCOMMONCACHE_SHIPMENTORDERSTATUS} valuemember="ShipmentOrderStatusID" nameMember="ShipmentOrderStatusName"
-                                        label="Tự động chuyển sang trạng thái yêu cầu vận chuyển" controltype="InputControl" datasourcemember="AutoChangeToShipmentOrderStatusID"
+                                        name="AutoChangeToShipmentOrderStatusID"
+                                        type="select" isautoloaditemfromcache={true}
+                                        loaditemcachekeyid={ERPCOMMONCACHE_SHIPMENTORDERSTATUS}
+                                        valuemember="ShipmentOrderStatusID"
+                                        nameMember="ShipmentOrderStatusName"
+                                        label="Tự động chuyển sang trạng thái yêu cầu vận chuyển"
+                                        controltype="InputControl"
+                                        datasourcemember="AutoChangeToShipmentOrderStatusID"
                                         listoption={[]} isRequired={true}
                                         labelcolspan={4} colspan={8}
                                     />
@@ -608,10 +621,17 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     colspan={9}
                                 />
 
-                                <FormControl.MultiSelectComboBox name="ChooseFunctionID" label="Quyền chuyển bước"
-                                    labelcolspan={3} colspan={9} rowspan={6}
-                                    IsLabelDiv={true} controltype="InputControl"
-                                    isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_FUNCTION} valuemember="FunctionID" nameMember="FunctionName"
+                                <FormControl.MultiSelectComboBox
+                                    name="ChooseFunctionID"
+                                    label="Quyền chuyển bước"
+                                    labelcolspan={3}
+                                    colspan={9}
+                                    rowspan={6}
+                                    IsLabelDiv={true}
+                                    controltype="InputControl"
+                                    isautoloaditemfromcache={true}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_FUNCTION}
+                                    valuemember="FunctionID" nameMember="FunctionName"
                                     listoption={[]} datasourcemember="ChooseFunctionID"
                                     isMulti={false}
                                     value={this.state.FormData.ShipmentOrderType_WF_Next && this.state.FormData.ShipmentOrderType_WF_Next.ChooseFunctionID ? this.state.FormData.ShipmentOrderType_WF_Next.ChooseFunctionID : null}
