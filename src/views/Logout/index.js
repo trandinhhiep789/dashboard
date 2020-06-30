@@ -9,6 +9,7 @@ import { MessageModal } from "../../common/components/Modal";
 import { COOKIELOGIN } from '../../constants/systemVars'
 import { callFetchAPI } from "../../actions/fetchAPIAction";
 import { deleteCookie } from "../../common/library/CommonLib.js";
+import { clearAllLocalCacheData } from "../../common/library/CommonLib.js";
 
 class LogoutCom extends React.Component {
     constructor(props) {
@@ -48,12 +49,15 @@ class LogoutCom extends React.Component {
             }
         });
         deleteCookie(COOKIELOGIN);
+        clearAllLocalCacheData();
         localStorage.removeItem('LoginInfo')
     }
 
     delete_cookie(name) {
         document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
+
+    
 
     render() {
         if (this.state.IsLogoutSuccess) {
