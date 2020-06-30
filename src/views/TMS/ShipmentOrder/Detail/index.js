@@ -31,6 +31,7 @@ class DetailCom extends React.Component {
             DataSource: {},
             ShipmentOrderType_WorkFlowList: null,
             CurrentShipmentOrderStepID: 0,
+            IsCancelDelivery:false,
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsLoadDataComplete: false,
@@ -74,7 +75,8 @@ class DetailCom extends React.Component {
 
         this.setState({
             ShipmentOrderType_WorkFlowList: ShipmentOrderData.ShipmentOrderType_WorkFlowList,
-            CurrentShipmentOrderStepID: ShipmentOrderData.CurrentShipmentOrderStepID
+            CurrentShipmentOrderStepID: ShipmentOrderData.CurrentShipmentOrderStepID,
+            IsCancelDelivery:ShipmentOrderData.IsCancelDelivery
         });
     }
 
@@ -90,7 +92,7 @@ class DetailCom extends React.Component {
                         ShipmentOrderTypeWF={this.state.ShipmentOrderType_WorkFlowList}
                         CurrentShipmentOrderStepID={this.state.CurrentShipmentOrderStepID}
                         TotalMoney={this.state.DataSource.CollectedTotalMoney + this.state.DataSource.TotalCOD}
-                        IsCancelDelivery={this.state.DataSource.IsCancelDelivery}
+                        IsCancelDelivery={this.state.IsCancelDelivery}
                     />
                     <ShipmentOrderDetail
                         ShipmentOrderID={this.props.match.params.id}
