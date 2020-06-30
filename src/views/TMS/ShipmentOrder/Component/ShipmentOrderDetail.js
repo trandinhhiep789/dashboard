@@ -109,6 +109,7 @@ class ShipmentOrderDetailCom extends Component {
             this.openViewStepModal();
         });
     }
+
     openViewStepModalFunction() {
 
         ModalManager.open(
@@ -118,16 +119,16 @@ class ShipmentOrderDetailCom extends Component {
                 IsButton={true}
                 content={"Cập nhật loại đơn vị thành công!"} onRequestClose={() => true}
             >
-                <div className="form-row">
+                {/* <div className="form-row">
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Chuyển bước kế tiếp</label>
                     </div>
                     <div className="form-group col-md-10">
                         <label className="col-form-label">{this.state.ShipmentOrder_WorkFlow.ShipmentOrderStepName}</label>
                     </div>
-                </div>
+                </div> */}
                 <div className="form-row">
-                    Không có  quyền
+                    <span className="lblstatus lbl-permission">Bạn không có quyền xử lý chuyển bước kế tiếp.</span>
                 </div>
             </ModelContainer>
         );

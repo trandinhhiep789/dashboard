@@ -161,7 +161,8 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         //console.log("this.state.FormData.NextShipmentOrderStep", this.state.FormData.NextShipmentOrderStep);
         if (this.state.FormData.NextShipmentOrderStep != "" && this.state.FormData.NextShipmentOrderStep != "-1") {
             const NextShipmentOrderStep = this.state.FormData.NextShipmentOrderStep;
-            const ChooseFunctionID = this.state.FormData.ChooseFunctionID ? this.state.FormData.ChooseFunctionID : "";
+            //const ChooseFunctionID = this.state.FormData.ChooseFunctionID ? this.state.FormData.ChooseFunctionID : "";
+            const ChooseFunctionID = this.state.FormData.ChooseFunctionID && Array.isArray(this.state.FormData.ChooseFunctionID) ? this.state.FormData.ChooseFunctionID[0] : "";
             const ChooseFunctionName = ChooseFunctionID != "" ? (this.state.ChooseFunctionCache.filter(x => x.FunctionID == ChooseFunctionID))[0].FunctionName : "";
             const ShipmentOrderStepID = this.state.FormData.ShipmentOrderTypeWorkflow.ShipmentOrderStepID;
             let elementItem = this.state.FormData.ShipmentOrderType_WF_Next.filter(x => { return x.NextShipmentOrderStep == NextShipmentOrderStep });
@@ -607,7 +608,17 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     colspan={9}
                                 />
 
-                                <FormControl.ComboBox
+                                <FormControl.MultiSelectComboBox name="ChooseFunctionID" label="Quyền chuyển bước"
+                                    labelcolspan={3} colspan={9} rowspan={6}
+                                    IsLabelDiv={true} controltype="InputControl"
+                                    isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_FUNCTION} valuemember="FunctionID" nameMember="FunctionName"
+                                    listoption={[]} datasourcemember="ChooseFunctionID"
+                                    isMulti={false}
+                                    value={this.state.FormData.ShipmentOrderType_WF_Next && this.state.FormData.ShipmentOrderType_WF_Next.ChooseFunctionID ? this.state.FormData.ShipmentOrderType_WF_Next.ChooseFunctionID : null}
+                                //onValueChangeCus={this.changeSelecPartner}
+                                />
+
+                                {/* <FormControl.ComboBox
                                     name="ChooseFunctionID"
                                     type="select"
                                     isautoloaditemfromcache={true}
@@ -619,7 +630,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     listoption={[]}
                                     datasourcemember="ChooseFunctionID"
                                     labelcolspan={3} colspan={9} rowspan={6}
-                                />
+                                /> */}
                                 {/* <FormControl.TextBox
                                     name="ChooseFunctionID"
                                     label="Quyền chuyển bước"
@@ -631,6 +642,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     colspan={9}
                                 /> */}
                             </div>
+                            <br />
                             <InputGrid name="ShipmentOrderType_WF_Next"
                                 controltype="GridControl"
                                 colspan="12"
