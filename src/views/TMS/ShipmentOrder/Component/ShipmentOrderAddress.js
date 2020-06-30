@@ -986,7 +986,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">{this.state.ReceiverGeoLocation}</label>
                             </div>
                             <div className="form-group col-md-3">
-                                {this.state.ReceiverGeoLocation != "" ? "" : <button className="btn btnCoordinates" onClick={this.handleReceiverGeoLocation.bind(this)} type="submit">Lấy tạo độ</button>}
+                              <button className="btn btnCoordinates" onClick={this.handleReceiverGeoLocation.bind(this)} type="submit">Lấy tạo độ</button>
                             </div>
                         </div>
                     </div>

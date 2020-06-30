@@ -90,6 +90,7 @@ class DetailCom extends React.Component {
                         ShipmentOrderTypeWF={this.state.ShipmentOrderType_WorkFlowList}
                         CurrentShipmentOrderStepID={this.state.CurrentShipmentOrderStepID}
                         TotalMoney={this.state.DataSource.CollectedTotalMoney + this.state.DataSource.TotalCOD}
+                        IsCancelDelivery={this.state.DataSource.IsCancelDelivery}
                     />
                     <ShipmentOrderDetail
                         ShipmentOrderID={this.props.match.params.id}

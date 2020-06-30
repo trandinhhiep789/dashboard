@@ -206,8 +206,6 @@ class InfoProductCom extends Component {
                                         <th className="jsgrid-header-cell">Giá</th>
                                         <th className="jsgrid-header-cell">Số lượng</th>
                                         <th className="jsgrid-header-cell">Đơn vị tính</th>
-                                        <th className="jsgrid-header-cell">Kích thước(DxRxC)</th>
-                                        <th className="jsgrid-header-cell">Khối lượng</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -233,8 +231,6 @@ class InfoProductCom extends Component {
                                                 <td>{formatMoney(item.Price, 0)}đ</td>
                                                 <td>{item.Quantity}</td>
                                                 <td>{item.QuantityUnitName}</td>
-                                                <td>{item.SizeItem}</td>
-                                                <td>{item.Weight}kg</td>
                                             </tr>
 
                                         )
