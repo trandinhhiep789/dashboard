@@ -10,7 +10,10 @@ import { formatDate } from "../../../../common/library/CommonLib.js";
 import isBefore from 'date-fns/isBefore';
 import formatDistance from 'date-fns/formatDistance';
 import viLocale from "date-fns/locale/vi";
-import { compareAsc, format, add } from 'date-fns'
+import { compareAsc, format, add } from 'date-fns';
+
+import { SERVICEAGREEMENT_VIEW, SERVICEAGREEMENT_DELETE } from "../../../../constants/functionLists";
+
 
 import {
     SearchElementList,
@@ -273,6 +276,8 @@ class SearchCom extends React.Component {
                     RowsPerPage={10}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
+                    RequirePermission={SERVICEAGREEMENT_VIEW}
+                    DeletePermission={SERVICEAGREEMENT_DELETE}
                     fileName="Danh sách hợp đồng"
                     onExportFile={this.handleExportFile.bind(this)}
                 />
