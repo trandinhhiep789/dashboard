@@ -178,6 +178,9 @@ class InfoCoordinatorCom extends Component {
             this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateCancelDelivery', ShipmentOrder).then((apiResult) => {
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
+                    if (this.props.onhandleChange != null)
+                        this.props.onhandleChange(apiResult.ResultObject)
+                        
                     ModalManager.close();
                 }
             });
@@ -332,7 +335,7 @@ class InfoCoordinatorCom extends Component {
     render() {
         let listOption = [];
         let objDeliverUser = [];
-        if (this.state.ShipmentOrder.CarrierPartnerID != -1&&this.state.ShipmentOrder.CarrierPartnerID != 0) {
+        if (this.state.ShipmentOrder.CarrierPartnerID != -1 && this.state.ShipmentOrder.CarrierPartnerID != 0) {
             this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
                 objDeliverUser.push(item.UserName)
             })
@@ -343,7 +346,7 @@ class InfoCoordinatorCom extends Component {
             })
         }
         return (
-           
+
             <div className="card">
                 <ReactNotification ref={this.notificationDOMRef} />
                 <div className="card-title group-card-title">
@@ -395,8 +398,8 @@ class InfoCoordinatorCom extends Component {
                             />
                         </div>
                     </div>
-                    
-                    {(this.state.ShipmentOrder.CarrierPartnerID == -1||this.state.ShipmentOrder.CarrierPartnerID == 0) ?
+
+                    {(this.state.ShipmentOrder.CarrierPartnerID == -1 || this.state.ShipmentOrder.CarrierPartnerID == 0) ?
                         <MultiSelectComboBox
                             name="ShipmentOrder_DeliverUserList"
                             colspan="10"

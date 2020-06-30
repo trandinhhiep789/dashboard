@@ -63,7 +63,6 @@ class ShipmentOrderDetailCom extends Component {
         let value = e.currentTarget.dataset.option;
         let lable = e.currentTarget.dataset.lable;
         let ChooseFunctionID = e.currentTarget.dataset.functionid;
-        ChooseFunctionID="dddd";
         let { ShipmentOrder_WorkFlow } = this.state;
         ShipmentOrder_WorkFlow.ShipmentOrderID = this.state.ShipmentOrder.ShipmentOrderID
         ShipmentOrder_WorkFlow.ShipmentOrderStepID = value
