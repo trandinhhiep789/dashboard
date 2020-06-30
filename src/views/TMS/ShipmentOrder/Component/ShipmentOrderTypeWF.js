@@ -17,6 +17,7 @@ class ShipmentOrderTypeWFCom extends Component {
         }
     }
     render() {
+        console.log(this.state.ShipmentOrderType_WF,this.props.IsCancelDelivery)
         return (
             <div className="card">
                 <div className="card-body">
@@ -37,20 +38,40 @@ class ShipmentOrderTypeWFCom extends Component {
                                 )
                             }
                             else if (item.CountStep == 1 && (item.IsOnlyShowOnHasCollection == false || (item.IsOnlyShowOnHasCollection == true && this.props.TotalMoney > 0))) {
-                                return (<div className={((item.IsProcess == true && item.ShipmentOrderStepID <= this.props.CurrentShipmentOrderStepID) ? "stepper-item step-completed" : "stepper-item")} key={index}>
-                                    <div className="step-line">
-                                        <span className="stepConnector-line"></span>
-                                    </div>
-                                    <span className="stepLabel">
-                                        <span className="step-icon">
-                                            <div className="icon">
-                                                <i className={item.IconURL} aria-hidden='true'></i>
-                                            </div>
+                                if (item.IsCancelDeliveryStep == false) {
+
+                                    return (<div className={((item.IsProcess == true && item.ShipmentOrderStepID <= this.props.CurrentShipmentOrderStepID) ? "stepper-item step-completed" : "stepper-item")} key={index}>
+                                        <div className="step-line">
+                                            <span className="stepConnector-line"></span>
+                                        </div>
+                                        <span className="stepLabel">
+                                            <span className="step-icon">
+                                                <div className="icon">
+                                                    <i className={item.IconURL} aria-hidden='true'></i>
+                                                </div>
+                                            </span>
+                                            <span className="step-label">{item.ShipmentOrderStepName}</span>
+                                            <span className={((item.IsProcess == true && item.ShipmentOrderStepID <= this.props.CurrentShipmentOrderStepID) ? "step-time" : "")}>{((item.IsProcess == true && item.ShipmentOrderStepID <= this.props.CurrentShipmentOrderStepID) ? formatDate(item.ProcessDate) : "")}</span>
                                         </span>
-                                        <span className="step-label">{item.ShipmentOrderStepName}</span>
-                                        <span className={((item.IsProcess == true && item.ShipmentOrderStepID <= this.props.CurrentShipmentOrderStepID) ? "step-time" : "")}>{((item.IsProcess == true && item.ShipmentOrderStepID <= this.props.CurrentShipmentOrderStepID) ? formatDate(item.ProcessDate) : "")}</span>
-                                    </span>
-                                </div>)
+                                    </div>)
+                                }
+                                else if (item.IsCancelDeliveryStep == true && this.props.IsCancelDelivery == true) {
+
+                                    return (<div className={((item.IsProcess == true && item.ShipmentOrderStepID <= this.props.CurrentShipmentOrderStepID) ? "stepper-item step-completed" : "stepper-item")} key={index}>
+                                        <div className="step-line">
+                                            <span className="stepConnector-line"></span>
+                                        </div>
+                                        <span className="stepLabel">
+                                            <span className="step-icon">
+                                                <div className="icon">
+                                                    <i className={item.IconURL} aria-hidden='true'></i>
+                                                </div>
+                                            </span>
+                                            <span className="step-label">{item.ShipmentOrderStepName}</span>
+                                            <span className={((item.IsProcess == true && item.ShipmentOrderStepID <= this.props.CurrentShipmentOrderStepID) ? "step-time" : "")}>{((item.IsProcess == true && item.ShipmentOrderStepID <= this.props.CurrentShipmentOrderStepID) ? formatDate(item.ProcessDate) : "")}</span>
+                                        </span>
+                                    </div>)
+                                }
                             }
                         })}
                     </div>

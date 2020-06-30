@@ -4,6 +4,8 @@ import { formatDate } from "../../../../common/library/CommonLib.js";
 import { ModalManager } from 'react-dynamic-modal';
 import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
+import { callGetCache } from "../../../../actions/cacheAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import {
@@ -16,7 +18,8 @@ class ShipmentOrderDetailCom extends Component {
         this.state = {
             ShipmentOrder: this.props.ShipmentOrderDetail,
             validationErrorMessage: null,
-            ShipmentOrder_WorkFlow: {}
+            ShipmentOrder_WorkFlow: {},
+            IsPermision: false
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -29,18 +32,67 @@ class ShipmentOrderDetailCom extends Component {
         }
     }
 
+
+    checkPermission(permissionKey) {
+        return new Promise((resolve, reject) => {
+            if (permissionKey == "") {
+                resolve(true);
+                return
+            }
+            else {
+                this.props.callGetCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
+                            if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
+                                resolve(true);
+                                return;
+                            }
+                        }
+                        resolve(false)
+                    } else {
+                        resolve('error');
+                    }
+                });
+            }
+        });
+
+    }
+
     onChangeInput(e) {
         e.preventDefault();
         let value = e.currentTarget.dataset.option;
         let lable = e.currentTarget.dataset.lable;
+        let ChooseFunctionID = e.currentTarget.dataset.functionid;
+        ChooseFunctionID="dddd";
         let { ShipmentOrder_WorkFlow } = this.state;
         ShipmentOrder_WorkFlow.ShipmentOrderID = this.state.ShipmentOrder.ShipmentOrderID
         ShipmentOrder_WorkFlow.ShipmentOrderStepID = value
         ShipmentOrder_WorkFlow.Note = ""
         ShipmentOrder_WorkFlow.ShipmentOrderStepName = lable
-        this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
-            this.openViewStepModal();
-        });
+        if (ChooseFunctionID != "") {
+            this.checkPermission(ChooseFunctionID).then(result => {
+                if (result == true) {
+                    this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
+                        this.openViewStepModal();
+                    });
+                }
+                else if (result == 'error') {
+                    this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
+                        this.openViewStepModalFunction();
+                    });
+                
+                } else {
+                    this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
+                        this.openViewStepModalFunction();
+                    });
+                
+                }
+            })
+        } else {
+            this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
+                this.openViewStepModal();
+            });
+        }
     }
 
     onChangetextarea(e) {
@@ -57,6 +109,29 @@ class ShipmentOrderDetailCom extends Component {
         this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: validationErrorMessage }, () => {
             this.openViewStepModal();
         });
+    }
+    openViewStepModalFunction() {
+
+        ModalManager.open(
+            <ModelContainer
+                title="Chuyển bước xử lý"
+                name=""
+                IsButton={true}
+                content={"Cập nhật loại đơn vị thành công!"} onRequestClose={() => true}
+            >
+                <div className="form-row">
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Chuyển bước kế tiếp</label>
+                    </div>
+                    <div className="form-group col-md-10">
+                        <label className="col-form-label">{this.state.ShipmentOrder_WorkFlow.ShipmentOrderStepName}</label>
+                    </div>
+                </div>
+                <div className="form-row">
+                    Không có  quyền
+                </div>
+            </ModelContainer>
+        );
     }
 
     openViewStepModal() {
@@ -79,9 +154,10 @@ class ShipmentOrderDetailCom extends Component {
                         <label className="col-form-label bold">Chuyển bước kế tiếp</label>
                     </div>
                     <div className="form-group col-md-10">
-                        <label class="col-form-label">{this.state.ShipmentOrder_WorkFlow.ShipmentOrderStepName}</label>
+                        <label className="col-form-label">{this.state.ShipmentOrder_WorkFlow.ShipmentOrderStepName}</label>
                     </div>
                 </div>
+
                 <div className="form-row">
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Nội dung <span className="text-danger"> *</span></label>
@@ -91,6 +167,7 @@ class ShipmentOrderDetailCom extends Component {
                         <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.state.validationErrorMessage}</li></ul></div>
                     </div>
                 </div>
+
             </ModelContainer>
         );
     }
@@ -108,13 +185,13 @@ class ShipmentOrderDetailCom extends Component {
             ShipmentOrder_WorkFlow.ProcessUser = this.props.AppInfo.LoginInfo.Username;
             ShipmentOrder_WorkFlow.CreatedOrderTime = this.state.ShipmentOrder.CreatedOrderTime;
             ShipmentOrder_WorkFlow.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-            let objWorkFlowProcessingRequest={
-                ShipmentOrderID:ShipmentOrder_WorkFlow.ShipmentOrderID,
-                ShipmentOrderStepID:ShipmentOrder_WorkFlow.ShipmentOrderStepID,
-                CurrentShipmentOrderStepID:this.state.ShipmentOrder.CurrentShipmentOrderStepID,
-                ProcessUser:ShipmentOrder_WorkFlow.ProcessUser,
-                ProcessGeoLocation:"",
-                Note:ShipmentOrder_WorkFlow.Note
+            let objWorkFlowProcessingRequest = {
+                ShipmentOrderID: ShipmentOrder_WorkFlow.ShipmentOrderID,
+                ShipmentOrderStepID: ShipmentOrder_WorkFlow.ShipmentOrderStepID,
+                CurrentShipmentOrderStepID: this.state.ShipmentOrder.CurrentShipmentOrderStepID,
+                ProcessUser: ShipmentOrder_WorkFlow.ProcessUser,
+                ProcessGeoLocation: "",
+                Note: ShipmentOrder_WorkFlow.Note
             }
             this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/ProcessWorkFlow', objWorkFlowProcessingRequest).then((apiResult) => {
                 this.addNotification(apiResult.Message, apiResult.IsError);
@@ -167,7 +244,6 @@ class ShipmentOrderDetailCom extends Component {
         let strShipmentOrderStepName = ""
         if (this.state.ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === this.state.ShipmentOrder.CurrentShipmentOrderStepID).length > 0) {
             strShipmentOrderStepName = this.state.ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === this.state.ShipmentOrder.CurrentShipmentOrderStepID)[0].ShipmentOrderStepName
-
         }
 
         return (
@@ -187,6 +263,7 @@ class ShipmentOrderDetailCom extends Component {
                                         {this.state.ShipmentOrder.ShipmentOrderType_WF_NextList && this.state.ShipmentOrder.ShipmentOrderType_WF_NextList.map(item =>
                                             <a className={item.NextShipmentOrderStep === this.state.ShipmentOrder.CurrentShipmentOrderStepID ? "dropdown-item active" : "dropdown-item"}
                                                 key={item.NextShipmentOrderStep} name={item.NextShipmentOrderStep} data-option={item.NextShipmentOrderStep}
+                                                data-functionid={item.ChooseFunctionID}
                                                 data-lable={item.NextShipmentOrderStepName} onClick={this.onChangeInput.bind(this)}>
                                                 {item.NextShipmentOrderStepName}</a>
                                         )}
@@ -298,6 +375,9 @@ const mapDispatchToProps = dispatch => {
     return {
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
