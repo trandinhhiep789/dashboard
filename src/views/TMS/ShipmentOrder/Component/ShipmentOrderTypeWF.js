@@ -17,7 +17,6 @@ class ShipmentOrderTypeWFCom extends Component {
         }
     }
     render() {
-        console.log(this.state.ShipmentOrderType_WF,this.props.IsCancelDelivery)
         return (
             <div className="card">
                 <div className="card-body">
