@@ -319,7 +319,7 @@ export const DataGridColumnList = [
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "InstallBundleID",
-        Width: 70
+        Width: 60
     },
     {
         Name: "InstallBundleID",
@@ -361,7 +361,7 @@ export const DataGridColumnList = [
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 100
+        Width: 120
     },
     {
         Name: "Action",

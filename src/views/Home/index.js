@@ -50,6 +50,7 @@ import ServiceAgreementType from '../../views/TMS/MD/ServiceAgreementType';
 import IDDocumentType from '../../views/TMS/MD/IDDocumentType';
 import UserCoordinator from '../../views/TMS/User/UserCoordinator';
 import UserGroup from '../../views/TMS/User/UserGroup';
+import PartnerTransaction from '../../views/TMS/MD/PartnerTransaction';
 
 
 
@@ -146,6 +147,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/ServiceSeasonType" component={ServiceSeasonType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ServiceAgreementType" component={ServiceAgreementType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/IDDocumentType" component={IDDocumentType} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/PartnerTransaction" component={PartnerTransaction} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentOrderControl" component={ShipmentOrderControl} isLoggedIn={isLoggedIn} />

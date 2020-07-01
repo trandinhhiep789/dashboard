@@ -122,13 +122,12 @@ class MultiSelectComboBoxCom extends React.Component {
         const listOption = this.state.ListOption;
         let listOptionNew = [];
         for (let i = 0; i < listOption.length; i++) {
-            if (!listOption[i].name) {
-                listOption[i].name = "------ Chọn ------";
+            if (listOption[i].name) {
+                listOptionNew.push({ value: listOption[i].value, label: listOption[i].name, style: { color: 'red' } });
             }
-            listOptionNew.push({ value: listOption[i].value, label: listOption[i].name, style: { color: 'red' } });
-
         }
-        //console.log("listOptionNew:", listOptionNew,this.state.SelectedOption)
+        listOptionNew.unshift({ value: "", label: "------ Chọn -----", style: { color: 'red' } });
+        //console.log("listOptionNew:", listOption, this.state.SelectedOption)
         const selectedOption = this.state.SelectedOption;
         let formRowClassName = "form-row";
         if (this.props.rowspan)
