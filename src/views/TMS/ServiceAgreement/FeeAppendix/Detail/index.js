@@ -68,12 +68,14 @@ class DetailCom extends React.Component {
             }
             else {
                 const tempData = apiResult.ResultObject.FeeAppendixDetail_ItemList.map((item, index) => {
-                    let element = {};
-                    element.SubGroupName = item.SubGroupName;
-                    element.TechspecsName = item.TechspecsName;
-                    element.TechspecsValue = item.TechspecsValue;
-                    element.ProductName = item.ProductName;
-                    element.ServiceFee = item.ServiceFee;
+                    let element = {
+                        "Nhóm hàng": item.SubGroupName,
+                        "Thông số kỹ thuật": item.TechspecsName,
+                        "Giá trị": item.TechspecsValue,
+                        "Sản phẩm": item.ProductName,
+                        "Giá dịch vụ": item.ServiceFee,
+                    };
+
                     return element;
 
                 })
@@ -213,7 +215,7 @@ class DetailCom extends React.Component {
 
 
     render() {
-       
+
 
         const { IsSystem, FeeAppendixDetailInfo, FeeAppendixDetailItemList, dataExport, DataSource } = this.state;
         if (this.state.IsLoadDataComplete) {

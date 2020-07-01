@@ -72,7 +72,6 @@ class ShipmentOrderDetailCom extends Component {
         if (ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === ShipmentOrder.CurrentShipmentOrderStepID).length > 0) {
             IsMustCompleteCollection = ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === ShipmentOrder.CurrentShipmentOrderStepID)[0].IsMustCompleteCollection
         }
-        debugger
         if (ChooseFunctionID != "") {
             if (IsMustCompleteCollection == false) {
                 this.checkPermission(ChooseFunctionID).then(result => {
@@ -140,12 +139,12 @@ class ShipmentOrderDetailCom extends Component {
     onChangetextarea(e) {
         let value = e.target.value;
         let { ShipmentOrder_WorkFlow, validationErrorMessage } = this.state;
-        if (value == undefined || value.length == 0 || String(value).trim() == "") {
-            validationErrorMessage = "Vui lòng nhập nội dung"
-        }
-        else {
-            validationErrorMessage = null
-        }
+        // if (value == undefined || value.length == 0 || String(value).trim() == "") {
+        //     validationErrorMessage = "Vui lòng nhập nội dung"
+        // }
+        // else {
+        //     validationErrorMessage = null
+        // }
 
         ShipmentOrder_WorkFlow.Note = value
         this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: validationErrorMessage }, () => {
@@ -211,7 +210,7 @@ class ShipmentOrderDetailCom extends Component {
 
                 <div className="form-row">
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Nội dung <span className="text-danger"> *</span></label>
+                        <label className="col-form-label bold">Nội dung </label>
                     </div>
                     <div className={formGroupclassName}>
                         <textarea className={selectclassName} maxLength={1950} rows="10" cols="50" name="Title" value={this.state.ShipmentOrder_WorkFlow.Note} placeholder="Nội dung" onChange={this.onChangetextarea.bind(this)} />
@@ -225,13 +224,13 @@ class ShipmentOrderDetailCom extends Component {
     handleShipWorkFlowInsert() {
         let { ShipmentOrder_WorkFlow, validationErrorMessage } = this.state;
 
-        if (ShipmentOrder_WorkFlow.Note == undefined || ShipmentOrder_WorkFlow.Note.length == 0 || String(ShipmentOrder_WorkFlow.Note).trim() == "") {
-            validationErrorMessage = "Vui lòng nhập nội dung"
-            this.setState({ validationErrorMessage: validationErrorMessage }, () => {
-                this.openViewStepModal();
-            });
-        }
-        else {
+        // if (ShipmentOrder_WorkFlow.Note == undefined || ShipmentOrder_WorkFlow.Note.length == 0 || String(ShipmentOrder_WorkFlow.Note).trim() == "") {
+        //     validationErrorMessage = "Vui lòng nhập nội dung"
+        //     this.setState({ validationErrorMessage: validationErrorMessage }, () => {
+        //         this.openViewStepModal();
+        //     });
+        // }
+        // else {
             ShipmentOrder_WorkFlow.IsProcess = true;
             ShipmentOrder_WorkFlow.ProcessUser = this.props.AppInfo.LoginInfo.Username;
             ShipmentOrder_WorkFlow.CreatedOrderTime = this.state.ShipmentOrder.CreatedOrderTime;
@@ -255,7 +254,7 @@ class ShipmentOrderDetailCom extends Component {
                     ModalManager.close();
                 }
             });
-        }
+        //}
     }
 
     addNotification(message1, IsError) {
