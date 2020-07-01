@@ -27,6 +27,7 @@ class FormContainerCom extends Component {
         this.handleFocusTab = this.handleFocusTab.bind(this);
         this.handleInputChangeList = this.handleInputChangeList.bind(this);
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
+        this.handleButtonClick = this.handleButtonClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         const formData = this.bindData();
         this.elementItemRefs = [];
@@ -477,6 +478,12 @@ class FormContainerCom extends Component {
 
     }
 
+    handleButtonClick(){
+        if(this.props.handleButtonClick){
+            this.props.handleButtonClick();
+        }
+    }
+
     handleSubmit(e) {
         e.preventDefault();
         const mLObjectDefinition = this.props.MLObjectDefinition;
@@ -553,6 +560,7 @@ class FormContainerCom extends Component {
                     inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                     isCategory={elementItem.isCategory}
                     elementItem={elementItem}
+                    handleButtonClick={this.handleButtonClick}
                 />
             </div>);
         }

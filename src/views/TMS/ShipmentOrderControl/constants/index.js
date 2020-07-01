@@ -5,7 +5,7 @@ export const AddAPIPath = "api/ShipmentOrder/Add";
 export const UpdateAPIPath = "api/ShipmentOrder/UpdateWeb";
 export const DeleteAPIPath = "api/ShipmentOrder/Delete";
 export const UpdateOrderAPIPath = "api/ShipmentOrder/UpdateOrder";
-export const BackLink = "/ShipmentOrderNew";
+export const BackLink = "/ShipmentOrderControl";
 export const AddLink = "/ShipmentOrder/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
@@ -18,19 +18,19 @@ export const PagePath = [
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ShipmentOrderNew", Title: "Danh sách yêu cầu vận chuyển" },
+    { Link: "/ShipmentOrderControl", Title: "Danh sách yêu cầu vận chuyển" },
     { Link: "", Title: "Sửa" }
 ];
 export const DetailAPIPath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ShipmentOrderNew", Title: "Danh sách yêu cầu vận chuyển" },
+    { Link: "/ShipmentOrderControl", Title: "Danh sách yêu cầu vận chuyển" },
     { Link: "", Title: "Chi tiết" }
 ];
 
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ShipmentOrderNew", Title: "Danh sách yêu cầu vận chuyển" },
+    { Link: "/ShipmentOrderControl", Title: "Danh sách yêu cầu vận chuyển" },
     { Link: "", Title: "Thêm" }
 ];
 

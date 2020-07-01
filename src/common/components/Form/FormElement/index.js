@@ -39,6 +39,7 @@ class FormElementCom extends Component {
         this.showUploadModal = this.showUploadModal.bind(this);
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
         this.handleUpload = this.handleUpload.bind(this);
+        this.handleButtonClick = this.handleButtonClick.bind(this);
         this.handleMultiSelectChange = this.handleMultiSelectChange.bind(this);
         this.resetFile = this.resetFile.bind(this);
         this.state = {
@@ -269,6 +270,12 @@ class FormElementCom extends Component {
         />);
     }
 
+    handleButtonClick() {
+        if (this.props.handleButtonClick) {
+            this.props.handleButtonClick();
+        }
+    }
+
     handleSelectedFile(event) {
         let isValidAcceptedFile = this.checkIsValidAcceptedFile(event.target.files[0].name);
         if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
@@ -412,12 +419,12 @@ class FormElementCom extends Component {
                     }
                 }
 
-                let selectedValue= this.props.selectedValue;
+                let selectedValue = this.props.selectedValue;
                 let value = this.props.value;
-                if(selectedValue){
+                if (selectedValue) {
                     value = selectedValue;
                     this.validateInput(this.props.name, selectedValue);
-                    
+
                 }
                 control = (
                     <select className={controlCSSClassName} name={this.props.name} ref={this.props.inputRef} onChange={this.handleInputChange} value={value} disabled={disabled}>
@@ -491,6 +498,12 @@ class FormElementCom extends Component {
                 break;
             case "textType":
                 control = <input className={controlCSSClassName} name={this.props.name} type={this.props.type} type="text" placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsDisabled} />;
+                break;
+            case "button":
+                const CSSClassNamebtn = "btn btn-info";
+                control = (
+                    <button className={CSSClassNamebtn} type="button" onClick={this.handleButtonClick}>{this.props.label}</button>
+                );
                 break;
             case "number":
                 control = (
@@ -601,7 +614,7 @@ class FormElementCom extends Component {
             <React.Fragment>
                 <div className="form-group col-md-2">
                     <label className="col-form-label 11">
-                        {this.props.label}<span className="text-danger"> {star}</span>
+                        {this.props.type != "button" ? this.props.label : ""}<span className="text-danger"> {star}</span>
                     </label>
                 </div>
                 <div className={formGroupclassName}>

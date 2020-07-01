@@ -33,7 +33,14 @@ const AppMenu = [
                         LinkTo: '/Partner',
                         MenuIcon: '',
                         SubMenu: []
-                    }
+                    },
+                    // {
+                    //     MenuName: 'PartnerTransaction',
+                    //     MenuTitle: 'Thông tin giao dịch với đối tác',
+                    //     LinkTo: '/PartnerTransaction',
+                    //     MenuIcon: '',
+                    //     SubMenu: []
+                    // }
                 ]
             },
             {
@@ -272,9 +279,9 @@ const AppMenu = [
                 SubMenu: []
             },
             {
-                MenuName: 'ShipmentOrderNew',
+                MenuName: 'ShipmentOrderControl',
                 MenuTitle: 'Kiểm sát giao hàng',
-                LinkTo: '/ShipmentOrderNew',
+                LinkTo: '/ShipmentOrderControl',
                 MenuIcon: '',
                 SubMenu: []
             },

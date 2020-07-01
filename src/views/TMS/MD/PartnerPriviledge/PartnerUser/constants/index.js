@@ -10,7 +10,8 @@ export const AddLink = "/PartnerUser/add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "UserName";
 export const SearchPartnerRoleAPIPath = "api/PartnerRole/Search2";
-import {CDN_LOGO_IMAGE} from '../../../../../../constants/systemVars';
+export const CreateUserNameAPIPath = "api/PartnerUser/CreateNewUserID";
+import { CDN_LOGO_IMAGE } from '../../../../../../constants/systemVars';
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -68,8 +69,21 @@ export const AddElementList = [
         icon: "",
         listoption: [],
         DataSourceMember: "UserName",
+        readonly: true,
+        validatonList: []
+    },
+    {
+        type: "button",
+        name: "btnCreateUserName",
+        label: "Lấy tên đăng nhập",
+        value: "",
+        maxSize: "20",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "",
         readonly: false,
-        validatonList: ["required"]
+        validatonList: []
     },
     {
         type: "select",

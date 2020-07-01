@@ -5,14 +5,12 @@ import {
     Switch
 } from "react-router-dom";
 import { connect } from "react-redux";
-import { callFetchAPI } from "../../../actions/fetchAPIAction";
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
-import Detail from "./Detail";
+import Add from "./Add";
 import Edit from "./Edit";
-import MapContainer from "./Component/MapContainer ";
-
-import NotFound from '../../NotFound'
-class ShipmentOrderNewCom extends React.Component {
+import NotFound from '../../../NotFound'
+class PartnerTransactionCom extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -20,8 +18,9 @@ class ShipmentOrderNewCom extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/ShipmentOrderNew" component={Search} />
-                <Route exact path="/ShipmentOrderNew/Detail/:id" component={Detail} />
+                <Route exact path="/PartnerTransaction" component={Search} />
+                <Route exact path="/PartnerTransaction/Add" component={Add} />
+                <Route exact path="/PartnerTransaction/Edit/:id" component={Edit} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
@@ -43,8 +42,8 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const ShipmentOrderNew = connect(
+const PartnerTransaction = connect(
     mapStateToProps,
     mapDispatchToProps
-)(ShipmentOrderNewCom);
-export default ShipmentOrderNew;
+)(PartnerTransactionCom);
+export default PartnerTransaction;

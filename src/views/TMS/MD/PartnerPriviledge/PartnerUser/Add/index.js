@@ -23,7 +23,8 @@ import {
     SearchPartnerRoleAPIPath,
     DataGridColumnListMultiple,
     IDSelectColumnName,
-    InitSearchParamsModeList
+    InitSearchParamsModeList,
+    CreateUserNameAPIPath
 
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
@@ -40,6 +41,7 @@ class AddCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleInputUserRoleInsert = this.handleInputUserRoleInsert.bind(this);
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
+        this.handleButtonClick = this.handleButtonClick.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -72,6 +74,7 @@ class AddCom extends React.Component {
             />
         );
     }
+
     handleinsertItem(lstOption) {
         let _PartnerUserRole = [];
         if (this.state.ListPartnerUser_Role) {
@@ -131,6 +134,22 @@ class AddCom extends React.Component {
         });
     }
 
+    handleButtonClick() {
+        if(!this.state.UserID){
+            this.props.callFetchAPI(APIHostName, CreateUserNameAPIPath, "abc").then(apiResult => {
+                this.setState({ IsCallAPIError: apiResult.IsError });
+                if (!apiResult.IsError) {
+                    this.setState({ UserID: apiResult.ResultObject })
+                    document.getElementsByName("txtUserName")[0].value = apiResult.ResultObject;
+                } else {
+                    this.showMessage("Lỗi tạo tên đăng nhập.");
+                }
+                //console.log("username", apiResult);
+            });
+        }
+        
+    }
+
     handleOnInputChange(name, value) {
         if (name == "txtPassWord") {
             this.setState({ PassWord: value });
@@ -163,6 +182,12 @@ class AddCom extends React.Component {
             return false;
         }
 
+        if(!this.state.UserID){
+            this.setState({ IsCallAPIError: true });
+            this.showMessage("Chưa có tên đăng nhập. Vui lòng bấm nút tạo tên đăng nhập.");
+            return false;
+        }
+
         let fullName = MLObject.FullName.split(" ");
         let firstName = fullName[fullName.length - 1];
         let lastName = "";
@@ -178,6 +203,7 @@ class AddCom extends React.Component {
         MLObject.FirstName = firstName.trim();
         MLObject.LastName = lastName.trim();
         MLObject.ListPartnerUser_Role = this.state.ListPartnerUser_Role;
+        MLObject.UserName = this.state.UserID;
 
         if (MLObject.Birthday) {
             let temp = MLObject.Birthday.trim().split('/');
@@ -207,6 +233,7 @@ class AddCom extends React.Component {
                 dataSource={this.state.DataSource}
                 onValueChange={this.handleOnInputChange}
                 RequirePermission={PARTNERUSER_ADD}
+                handleButtonClick={this.handleButtonClick}
             >
 
                 {/* <Collapsible trigger="Danh sách vai trò của người dùng" easing="ease-in" open={true}>
