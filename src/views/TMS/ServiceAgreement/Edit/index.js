@@ -49,9 +49,34 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.DeputyUserName = MLObject.ShipmentOrder_DeliverUserList[0].UserName;
+
+        if(MLObject.IsExtended){
+            if(MLObject.ExtendedDate == null){
+                formData.dtExtendedDate.ErrorLst.IsValidatonError = true;
+                formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "Ngày gia hạn hợp đồng không được để trống";
+                return;
+            }
+        }
+
+        if(MLObject.IsLiquidated){
+            if(MLObject.Liquidateddate == null){
+                formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
+                formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng không được để trống";
+                return;
+            }
+
+        }
+
+        if(MLObject.IsDeposited){
+            if(MLObject.DepositedDate == null){
+                formData.dtDepositedDate.ErrorLst.IsValidatonError = true;
+                formData.dtDepositedDate.ErrorLst.ValidatonErrorMessage = "Ngày kí quỹ không được để trống";
+                return;
+            }
+        }
+
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -111,16 +136,16 @@ class EditCom extends React.Component {
         }
         else {
             IsDeposited = false
-            formData.txtDepositMoney.value="";
-            formData.dtDepositedDate.value="";
-            formData.txtDepositNote.value="";
+            formData.txtDepositMoney.value = "";
+            formData.dtDepositedDate.value = "";
+            formData.txtDepositNote.value = "";
         }
         if (formData.chkIsLiquidated.value) {
             IsLiquidated = true
         }
         else {
             IsLiquidated = false;
-            formData.dtLiquidateddate.value="";
+            formData.dtLiquidateddate.value = "";
         }
 
         this.setState({
@@ -128,56 +153,87 @@ class EditCom extends React.Component {
             IsLiquidated,
             IsDeposited
         })
-        if(formData.dtExpiredDate.value.length >0){
+
+        if (formData.dtExpiredDate.value.length > 0) {
             if (formData.dtSignedDate.value >= formData.dtExpiredDate.value) {
                 formData.dtExpiredDate.ErrorLst.IsValidatonError = true;
                 formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc hợp đồng phải lớn hơn ngày kí hợp đồng";
             }
-            else{
+            else {
                 formData.dtExpiredDate.ErrorLst.IsValidatonError = false;
                 formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "";
             }
         }
-        
 
-        if (this.state.IsExtended) {
-
-            if (formData.dtExpiredDate.value >= formData.dtExtendedDate.value) {
-                formData.dtExtendedDate.ErrorLst.IsValidatonError = true;
-                formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "Ngày gia hạn hợp đồng phải lớn hơn ngày hết hạn hợp đồng";
+        // kiểm tra ngày gia hạn hợp đồng
+        if (IsExtended) {
+            if(formData.dtExtendedDate.value != ''){
+                if (formData.dtExpiredDate.value >= formData.dtExtendedDate.value) {
+                    formData.dtExtendedDate.ErrorLst.IsValidatonError = true;
+                    formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "Ngày gia hạn hợp đồng phải lớn hơn ngày hết hạn hợp đồng";
+                }
+    
+                else {
+                    formData.dtExtendedDate.ErrorLst.IsValidatonError = false;
+                    formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "";
+                }
             }
-
             else {
                 formData.dtExtendedDate.ErrorLst.IsValidatonError = false;
                 formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "";
             }
+            
+        }
+        else {
+            formData.dtExtendedDate.ErrorLst.IsValidatonError = false;
+            formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "";
         }
 
-        if (this.state.IsLiquidated) {
-            if (this.state.IsExtended) {
-                if (formData.dtExtendedDate.value <= formData.dtLiquidateddate.value || formData.dtLiquidateddate.value <= formData.dtSignedDate.value) {
-                    formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
-                    formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng phải nằm trong khoảng thời gian kí hợp đồng";
+        //kiểm ngày thanh lý hợp đồng
+
+        if (IsLiquidated) {
+            if (IsExtended) {
+                if(formData.dtExtendedDate.value != '' && formData.dtLiquidateddate.value !=''){
+                    if (formData.dtExtendedDate.value <= formData.dtLiquidateddate.value || formData.dtLiquidateddate.value <= formData.dtSignedDate.value) {
+                        formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
+                        formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng phải nằm trong khoảng thời gian kí hợp đồng";
+                    }
+                    else {
+                        formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
+                        formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
+                    }
                 }
                 else {
                     formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
                     formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
                 }
+                
             }
             else {
-                if (formData.dtExpiredDate.value <= formData.dtLiquidateddate.value || formData.dtLiquidateddate.value <= formData.dtSignedDate.value) {
-                    formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
-                    formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng phải nằm trong khoảng thời gian kí hợp đồng";
+                if(formData.dtLiquidateddate.value != ''){
+                    if (formData.dtExpiredDate.value <= formData.dtLiquidateddate.value || formData.dtLiquidateddate.value <= formData.dtSignedDate.value) {
+                        formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
+                        formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng phải nằm trong khoảng thời gian kí hợp đồng";
+                    }
+                    else {
+                        formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
+                        formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
+                    }
                 }
                 else {
                     formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
                     formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
                 }
+                
             }
 
         }
+        else {
+            formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
+            formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
+        }
 
-      
+
     }
 
     render() {
@@ -486,7 +542,7 @@ class EditCom extends React.Component {
                                 timeFormat={false}
                                 dateFormat="YYYY-MM-DD"
                                 label="gia hạn đến ngày"
-                                placeholder={formatDate(currentDate)}
+                                placeholder={formatDate(currentDate, true)}
                                 controltype="InputControl"
                                 value=""
                                 datasourcemember="ExtendedDate"
@@ -532,7 +588,7 @@ class EditCom extends React.Component {
                                 timeFormat={false}
                                 dateFormat="YYYY-MM-DD"
                                 label="ngày thanh lý hợp đồng"
-                                placeholder={formatDate(currentDate)}
+                                placeholder={formatDate(currentDate, true)}
                                 controltype="InputControl"
                                 value=""
                                 datasourcemember="Liquidateddate"
@@ -580,7 +636,7 @@ class EditCom extends React.Component {
                                 timeFormat={false}
                                 dateFormat="YYYY-MM-DD"
                                 label="ngày ký quỹ"
-                                placeholder={formatDate(currentDate)}
+                                placeholder={formatDate(currentDate, true)}
                                 controltype="InputControl"
                                 value=""
                                 datasourcemember="DepositedDate"

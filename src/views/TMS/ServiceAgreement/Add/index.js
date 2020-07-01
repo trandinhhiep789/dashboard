@@ -47,7 +47,30 @@ class AddCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-     
+        if(MLObject.IsExtended){
+            if(MLObject.ExtendedDate == ''){
+                formData.dtExtendedDate.ErrorLst.IsValidatonError = true;
+                formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "Ngày gia hạn hợp đồng không được để trống";
+                return;
+            }
+        }
+
+        if(MLObject.IsLiquidated){
+            if(MLObject.Liquidateddate == ''){
+                formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
+                formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng không được để trống";
+                return;
+            }
+
+        }
+
+        if(MLObject.IsDeposited){
+            if(MLObject.DepositedDate == ''){
+                formData.dtDepositedDate.ErrorLst.IsValidatonError = true;
+                formData.dtDepositedDate.ErrorLst.ValidatonErrorMessage = "Ngày kí quỹ không được để trống";
+                return;
+            }
+        }
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.DeputyUserName = MLObject.ShipmentOrder_DeliverUserList[0].UserName;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
@@ -74,57 +97,6 @@ class AddCom extends React.Component {
     }
 
     handleChange(formData, MLObject) {
-        
-        if (formData.dtExpiredDate.value.length > 0) {
-            debugger
-            if (formData.dtSignedDate.value >= formData.dtExpiredDate.value) {
-                formData.dtExpiredDate.ErrorLst.IsValidatonError = true;
-                formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc hợp đồng phải lớn hơn ngày kí hợp đồng";
-            }
-            else {
-                formData.dtExpiredDate.ErrorLst.IsValidatonError = false;
-                formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "";
-            }
-        }
-
-
-        if (this.state.IsExtended) {
-
-            if (formData.dtExpiredDate.value >= formData.dtExtendedDate.value) {
-                formData.dtExtendedDate.ErrorLst.IsValidatonError = true;
-                formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "Ngày gia hạn hợp đồng phải lớn hơn ngày hết hạn hợp đồng";
-            }
-
-            else {
-                formData.dtExtendedDate.ErrorLst.IsValidatonError = false;
-                formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "";
-            }
-        }
-
-        if (this.state.IsLiquidated) {
-            if (this.state.IsExtended) {
-                if (formData.dtExtendedDate.value <= formData.dtLiquidateddate.value || formData.dtLiquidateddate.value <= formData.dtSignedDate.value) {
-                    formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
-                    formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng phải nằm trong khoảng thời gian kí hợp đồng";
-                }
-                else {
-                    formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
-                    formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
-                }
-            }
-            else {
-                if (formData.dtExpiredDate.value <= formData.dtLiquidateddate.value || formData.dtLiquidateddate.value <= formData.dtSignedDate.value) {
-                    formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
-                    formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng phải nằm trong khoảng thời gian kí hợp đồng";
-                }
-                else {
-                    formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
-                    formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
-                }
-            }
-
-        }
-
         let IsExtended, IsLiquidated, IsDeposited;
         if (formData.chkIsExtended.value) {
             IsExtended = true
@@ -155,6 +127,85 @@ class AddCom extends React.Component {
             IsLiquidated,
             IsDeposited
         })
+
+        if (formData.dtExpiredDate.value.length > 0) {
+            if (formData.dtSignedDate.value >= formData.dtExpiredDate.value) {
+                formData.dtExpiredDate.ErrorLst.IsValidatonError = true;
+                formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc hợp đồng phải lớn hơn ngày kí hợp đồng";
+            }
+            else {
+                formData.dtExpiredDate.ErrorLst.IsValidatonError = false;
+                formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "";
+            }
+        }
+
+        // kiểm tra ngày gia hạn hợp đồng
+        if (IsExtended) {
+            if(formData.dtExtendedDate.value != ''){
+                if (formData.dtExpiredDate.value >= formData.dtExtendedDate.value) {
+                    formData.dtExtendedDate.ErrorLst.IsValidatonError = true;
+                    formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "Ngày gia hạn hợp đồng phải lớn hơn ngày hết hạn hợp đồng";
+                }
+    
+                else {
+                    formData.dtExtendedDate.ErrorLst.IsValidatonError = false;
+                    formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "";
+                }
+            }
+            else {
+                formData.dtExtendedDate.ErrorLst.IsValidatonError = false;
+                formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "";
+            }
+            
+        }
+        else {
+            formData.dtExtendedDate.ErrorLst.IsValidatonError = false;
+            formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "";
+        }
+
+        //kiểm ngày thanh lý hợp đồng
+
+        if (IsLiquidated) {
+            if (IsExtended) {
+                if(formData.dtExtendedDate.value != '' && formData.dtLiquidateddate.value !=''){
+                    if (formData.dtExtendedDate.value <= formData.dtLiquidateddate.value || formData.dtLiquidateddate.value <= formData.dtSignedDate.value) {
+                        formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
+                        formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng phải nằm trong khoảng thời gian kí hợp đồng";
+                    }
+                    else {
+                        formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
+                        formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
+                    }
+                }
+                else {
+                    formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
+                    formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
+                }
+                
+            }
+            else {
+                if(formData.dtLiquidateddate.value != ''){
+                    if (formData.dtExpiredDate.value <= formData.dtLiquidateddate.value || formData.dtLiquidateddate.value <= formData.dtSignedDate.value) {
+                        formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
+                        formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng phải nằm trong khoảng thời gian kí hợp đồng";
+                    }
+                    else {
+                        formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
+                        formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
+                    }
+                }
+                else {
+                    formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
+                    formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
+                }
+                
+            }
+
+        }
+        else {
+            formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
+            formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
+        }
     }
 
 
