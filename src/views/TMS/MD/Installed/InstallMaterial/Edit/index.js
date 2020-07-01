@@ -89,6 +89,7 @@ class EditCom extends React.Component {
         });
     }
     render() {
+        console.log("h",this.state.DataSource)
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
