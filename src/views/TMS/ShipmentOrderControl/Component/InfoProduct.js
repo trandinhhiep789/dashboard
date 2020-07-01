@@ -79,7 +79,7 @@ class InfoProductCom extends Component {
                                     {this.state.ShipmentOrder_FeeLst && this.state.ShipmentOrder_FeeLst.map((item, index) => {
                                         return (
                                             <tr key={index}>
-                                                <td>{item.ShipmentOrderID}</td>
+                                                 <td>{item.ShipmentOrderID}</td>
                                                 <td>{item.ShipmentFeeTypeName}</td>
                                                 <td>{item.ProductID}</td>
                                                 <td>{item.ProductName}</td>
@@ -177,10 +177,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label bold">Tổng tiền thu:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label">
-                            {this.state.ShipmentOrder.IsCollectedMoney == true ? <span className="badge badge-success">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney, 0)}đ</span> : <span className="badge badge-danger">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney, 0)}đ</span>}
-                                
-                                </label>
+                            <label className="col-form-label">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney, 0)}đ</label>
                         </div>
 
                     </div>

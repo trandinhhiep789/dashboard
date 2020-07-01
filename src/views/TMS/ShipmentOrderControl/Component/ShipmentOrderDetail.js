@@ -63,77 +63,34 @@ class ShipmentOrderDetailCom extends Component {
         let value = e.currentTarget.dataset.option;
         let lable = e.currentTarget.dataset.lable;
         let ChooseFunctionID = e.currentTarget.dataset.functionid;
-        let { ShipmentOrder_WorkFlow, ShipmentOrder } = this.state;
-        ShipmentOrder_WorkFlow.ShipmentOrderID = ShipmentOrder.ShipmentOrderID
+        let { ShipmentOrder_WorkFlow } = this.state;
+        ShipmentOrder_WorkFlow.ShipmentOrderID = this.state.ShipmentOrder.ShipmentOrderID
         ShipmentOrder_WorkFlow.ShipmentOrderStepID = value
         ShipmentOrder_WorkFlow.Note = ""
         ShipmentOrder_WorkFlow.ShipmentOrderStepName = lable
-        let IsMustCompleteCollection = false;
-        if (ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === ShipmentOrder.CurrentShipmentOrderStepID).length > 0) {
-            IsMustCompleteCollection = ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === ShipmentOrder.CurrentShipmentOrderStepID)[0].IsMustCompleteCollection
-        }
-        debugger
         if (ChooseFunctionID != "") {
-            if (IsMustCompleteCollection == false) {
-                this.checkPermission(ChooseFunctionID).then(result => {
-                    if (result == true) {
-                        this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
-                            this.openViewStepModal();
-                        });
-                    }
-                    else if (result == 'error') {
-                        this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
-                            this.openViewStepModalFunction();
-                        });
-
-                    } else {
-                        this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
-                            this.openViewStepModalFunction();
-                        });
-
-                    }
-                })
-            }
-            else {
-                if (ShipmentOrder.IsCollectedMoney == true) {
-                    this.checkPermission(ChooseFunctionID).then(result => {
-                        if (result == true) {
-                            this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
-                                this.openViewStepModal();
-                            });
-                        }
-                        else if (result == 'error') {
-                            this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
-                                this.openViewStepModalFunction();
-                            });
-    
-                        } else {
-                            this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
-                                this.openViewStepModalFunction();
-                            });
-    
-                        }
-                    })
-                }
-                else {
+            this.checkPermission(ChooseFunctionID).then(result => {
+                if (result == true) {
                     this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
-                        this.openViewIsCollectedMoney();
+                        this.openViewStepModal();
                     });
                 }
-              
-            }
-        }
-        else {
-            if (IsMustCompleteCollection == true && ShipmentOrder.IsCollectedMoney == true) {
-                this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
-                    this.openViewIsCollectedMoney();
-                });
-            }
-            else {
-                this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
-                    this.openViewStepModal();
-                });
-            }
+                else if (result == 'error') {
+                    this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
+                        this.openViewStepModalFunction();
+                    });
+                
+                } else {
+                    this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
+                        this.openViewStepModalFunction();
+                    });
+                
+                }
+            })
+        } else {
+            this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
+                this.openViewStepModal();
+            });
         }
     }
 
@@ -162,24 +119,16 @@ class ShipmentOrderDetailCom extends Component {
                 IsButton={true}
                 content={"Cập nhật loại đơn vị thành công!"} onRequestClose={() => true}
             >
+                {/* <div className="form-row">
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Chuyển bước kế tiếp</label>
+                    </div>
+                    <div className="form-group col-md-10">
+                        <label className="col-form-label">{this.state.ShipmentOrder_WorkFlow.ShipmentOrderStepName}</label>
+                    </div>
+                </div> */}
                 <div className="form-row">
                     <span className="lblstatus lbl-permission">Bạn không có quyền xử lý chuyển bước kế tiếp.</span>
-                </div>
-            </ModelContainer>
-        );
-    }
-
-    openViewIsCollectedMoney() {
-
-        ModalManager.open(
-            <ModelContainer
-                title="Chuyển bước xử lý"
-                name=""
-                IsButton={true}
-                content={"Cập nhật loại đơn vị thành công!"} onRequestClose={() => true}
-            >
-                <div className="form-row">
-                    <span className="lblstatus lbl-permission">Vui lòng hoàn tất thu tiền đơn hàng này để tiếp tục.</span>
                 </div>
             </ModelContainer>
         );
@@ -292,11 +241,9 @@ class ShipmentOrderDetailCom extends Component {
     }
 
     render() {
-        let strShipmentOrderStepName = "";
-        let IsMustCompleteCollection = false;
+        let strShipmentOrderStepName = ""
         if (this.state.ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === this.state.ShipmentOrder.CurrentShipmentOrderStepID).length > 0) {
             strShipmentOrderStepName = this.state.ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === this.state.ShipmentOrder.CurrentShipmentOrderStepID)[0].ShipmentOrderStepName
-            IsMustCompleteCollection = this.state.ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === this.state.ShipmentOrder.CurrentShipmentOrderStepID)[0].IsMustCompleteCollection
         }
 
         return (

@@ -273,8 +273,15 @@ const AppMenu = [
         SubMenu: [
             {
                 MenuName: 'ShipmentOrder',
-                MenuTitle: 'Danh sách yêu cầu vận chuyển',
+                MenuTitle: 'Điều phối giao hàng',
                 LinkTo: '/ShipmentOrder',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'ShipmentOrderControl',
+                MenuTitle: 'Kiểm sát giao hàng',
+                LinkTo: '/ShipmentOrderControl',
                 MenuIcon: '',
                 SubMenu: []
             },
