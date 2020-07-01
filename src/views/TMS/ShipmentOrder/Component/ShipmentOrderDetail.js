@@ -155,7 +155,7 @@ class ShipmentOrderDetailCom extends Component {
                 content={"Cập nhật loại đơn vị thành công!"} onRequestClose={() => true}
             >
                 <div className="form-row">
-                    <span className="lblstatus lbl-permission">Bạn phải thực hiện thu tiền hoàn thành mới chuyển bước kế tiếp.</span>
+                    <span className="lblstatus lbl-permission">Vui lòng hoàn tất thu tiền đơn hàng này để tiếp tục.</span>
                 </div>
             </ModelContainer>
         );
