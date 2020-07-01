@@ -41,7 +41,7 @@ class AddCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleInputUserRoleInsert = this.handleInputUserRoleInsert.bind(this);
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
-        this.handleButtonClick = this.handleButtonClick.bind(this);
+        this.CreateUserName = this.CreateUserName.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -58,6 +58,7 @@ class AddCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(AddPagePath);
+        this.CreateUserName();
     }
 
     handleCloseMessage() {
@@ -134,7 +135,7 @@ class AddCom extends React.Component {
         });
     }
 
-    handleButtonClick() {
+    CreateUserName() {
         if(!this.state.UserID){
             this.props.callFetchAPI(APIHostName, CreateUserNameAPIPath, "abc").then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
@@ -233,7 +234,6 @@ class AddCom extends React.Component {
                 dataSource={this.state.DataSource}
                 onValueChange={this.handleOnInputChange}
                 RequirePermission={PARTNERUSER_ADD}
-                handleButtonClick={this.handleButtonClick}
             >
 
                 {/* <Collapsible trigger="Danh sách vai trò của người dùng" easing="ease-in" open={true}>

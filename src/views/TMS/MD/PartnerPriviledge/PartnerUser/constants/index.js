@@ -72,19 +72,19 @@ export const AddElementList = [
         readonly: true,
         validatonList: []
     },
-    {
-        type: "button",
-        name: "btnCreateUserName",
-        label: "Lấy tên đăng nhập",
-        value: "",
-        maxSize: "20",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "",
-        readonly: false,
-        validatonList: []
-    },
+    // {
+    //     type: "button",
+    //     name: "btnCreateUserName",
+    //     label: "Lấy tên đăng nhập",
+    //     value: "",
+    //     maxSize: "20",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "",
+    //     readonly: false,
+    //     validatonList: []
+    // },
     {
         type: "select",
         name: "txtPartnerID",
