@@ -112,12 +112,7 @@ class SearchCom extends React.Component {
                             }
                         }
                     }
-
-
-
-
                     return item;
-
 
                 })
 
