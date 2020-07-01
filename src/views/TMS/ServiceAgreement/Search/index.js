@@ -74,32 +74,46 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-              
+
                 const result = apiResult.ResultObject.map((item) => {
                     item.ExtendLable = item.ExtendedDate ? formatDate(item.ExtendedDate) : 'Chưa gia hạn';
-
-                    const ExpiredDate = new Date(item.ExpiredDate);
                     let currentDate = new Date();
-                    var timeDiff = Math.abs(currentDate.getTime() - ExpiredDate.getTime());
-                    var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
+                    if (item.ExtendedDate != null) {
+                        const ExtendedDate = new Date(item.ExtendedDate);
+                        var timeDiff = Math.abs(currentDate.getTime() - ExtendedDate.getTime());
+                        var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
 
-                    if (ExpiredDate.getTime()- currentDate.getTime() <0 ) {
-                        item.StatusLable = <span className='lblstatus text-danger'>Hết hạn</span>;
+                        if (ExtendedDate.getTime() - currentDate.getTime() < 0) {
+                            item.StatusLable = <span className='lblstatus text-danger'>Hết hạn</span>;
+                        }
+                        else {
+                            if (diffDays < 30) {
+                                item.StatusLable = <span className='lblstatus text-warning'>Còn {diffDays} ngày</span>;
+                            }
+                            else {
+                                item.StatusLable = <span className='lblstatus text-success'>Còn hạn</span>;
+                            }
+                        }
                     }
                     else {
-                        if (diffDays < 30) {
-                            item.StatusLable = <span className='lblstatus text-warning'>Còn {diffDays} ngày</span>;
+
+                        const ExpiredDate = new Date(item.ExpiredDate);
+                        var timeDiff = Math.abs(currentDate.getTime() - ExpiredDate.getTime());
+                        var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
+                        if (ExpiredDate.getTime() - currentDate.getTime() < 0) {
+                            item.StatusLable = <span className='lblstatus text-danger'>Hết hạn</span>;
                         }
-                        else{
-                            item.StatusLable = <span className='lblstatus text-success'>Còn hạn</span>;
+                        else {
+                            if (diffDays < 30) {
+                                item.StatusLable = <span className='lblstatus text-warning'>Còn {diffDays} ngày</span>;
+                            }
+                            else {
+                                item.StatusLable = <span className='lblstatus text-success'>Còn hạn</span>;
+                            }
                         }
                     }
-
-                    
-
                     return item;
 
-                   
                 })
 
                 const tempData = apiResult.ResultObject.map((item, index) => {
@@ -128,9 +142,9 @@ class SearchCom extends React.Component {
                     element.ExpiredDate = item.ExpiredDate;
                     element.ExtendAgreement = item.ExtendAgreement;
                     element.StatusAgreement = item.StatusAgreement;
-        
+
                     return element;
-        
+
                 })
 
                 this.setState({
@@ -176,15 +190,15 @@ class SearchCom extends React.Component {
     addNotification(message1, IsError) {
         let cssNotification, iconNotification;
         if (!IsError) {
-            cssNotification= "notification-custom-success";
-            iconNotification="fa fa-check"
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
             // this.setState({
             //     cssNotification: "notification-custom-success",
             //     iconNotification: "fa fa-check"
             // });
         } else {
-            cssNotification= "notification-danger";
-            iconNotification="fa fa-exclamation"
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
             // this.setState({
             //     cssNotification: "notification-danger",
             //     iconNotification: "fa fa-exclamation"
@@ -247,7 +261,7 @@ class SearchCom extends React.Component {
         this.callSearchData(DataSearch);
     }
 
-    handleExportFile(result){
+    handleExportFile(result) {
         this.addNotification(result.Message);
     }
 
