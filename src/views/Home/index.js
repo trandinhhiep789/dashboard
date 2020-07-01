@@ -34,7 +34,7 @@ import ShipmentOrderType from '../../views/TMS/MD/ShipmentOrder/ShipmentOrderTyp
 import ShipmentOrderStep from '../../views/TMS/MD/ShipmentOrderStep';
 import PartnerPriviledgeGroup from '../../views/TMS/MD/PartnerPriviledge/PartnerPriviledgeGroup';
 import ShipmentOrder from '../../views/TMS/ShipmentOrder';
-import ShipmentOrderNew from '../../views/TMS/ShipmentOrderNew';
+import ShipmentOrderControl from '../../views/TMS/ShipmentOrderControl';
 import MapContainer from '../../views/TMS/ShipmentOrder/Component/MapContainer ';
 import Maps from '../../views/TMS/ShipmentOrder/Component/Maps';
 import McPriviledge from '../../views/TMS/MD/PartnerPriviledge/McPriviledge';
@@ -148,7 +148,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/IDDocumentType" component={IDDocumentType} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/ShipmentOrderNew" component={ShipmentOrderNew} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/ShipmentOrderControl" component={ShipmentOrderControl} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Maps" component={MapContainer} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Map" component={Maps} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/InstallBundle" component={InstallBundle} isLoggedIn={isLoggedIn} />

@@ -272,9 +272,9 @@ const AppMenu = [
                 SubMenu: []
             },
             {
-                MenuName: 'ShipmentOrderNew',
+                MenuName: 'ShipmentOrderControl',
                 MenuTitle: 'Kiểm sát giao hàng',
-                LinkTo: '/ShipmentOrderNew',
+                LinkTo: '/ShipmentOrderControl',
                 MenuIcon: '',
                 SubMenu: []
             },

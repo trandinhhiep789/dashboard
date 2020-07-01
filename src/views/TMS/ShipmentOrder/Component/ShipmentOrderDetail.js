@@ -72,8 +72,9 @@ class ShipmentOrderDetailCom extends Component {
         if (ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === ShipmentOrder.CurrentShipmentOrderStepID).length > 0) {
             IsMustCompleteCollection = ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === ShipmentOrder.CurrentShipmentOrderStepID)[0].IsMustCompleteCollection
         }
+        debugger
         if (ChooseFunctionID != "") {
-            if (IsMustCompleteCollection == true && ShipmentOrder.IsCollectedMoney == true) {
+            if (IsMustCompleteCollection == false) {
                 this.checkPermission(ChooseFunctionID).then(result => {
                     if (result == true) {
                         this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
@@ -94,9 +95,32 @@ class ShipmentOrderDetailCom extends Component {
                 })
             }
             else {
-                this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
-                    this.openViewIsCollectedMoney();
-                });
+                if (ShipmentOrder.IsCollectedMoney == true) {
+                    this.checkPermission(ChooseFunctionID).then(result => {
+                        if (result == true) {
+                            this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
+                                this.openViewStepModal();
+                            });
+                        }
+                        else if (result == 'error') {
+                            this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
+                                this.openViewStepModalFunction();
+                            });
+    
+                        } else {
+                            this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
+                                this.openViewStepModalFunction();
+                            });
+    
+                        }
+                    })
+                }
+                else {
+                    this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
+                        this.openViewIsCollectedMoney();
+                    });
+                }
+              
             }
         }
         else {

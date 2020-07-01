@@ -12,7 +12,7 @@ import Edit from "./Edit";
 import MapContainer from "./Component/MapContainer ";
 
 import NotFound from '../../NotFound'
-class ShipmentOrderNewCom extends React.Component {
+class ShipmentOrderControlCom extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -20,8 +20,8 @@ class ShipmentOrderNewCom extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/ShipmentOrderNew" component={Search} />
-                <Route exact path="/ShipmentOrderNew/Detail/:id" component={Detail} />
+                <Route exact path="/ShipmentOrderControl" component={Search} />
+                <Route exact path="/ShipmentOrderControl/Detail/:id" component={Detail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
@@ -43,8 +43,8 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const ShipmentOrderNew = connect(
+const ShipmentOrderControl = connect(
     mapStateToProps,
     mapDispatchToProps
-)(ShipmentOrderNewCom);
-export default ShipmentOrderNew;
+)(ShipmentOrderControlCom);
+export default ShipmentOrderControl;
