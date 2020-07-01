@@ -118,30 +118,58 @@ class SearchCom extends React.Component {
 
                 const tempData = apiResult.ResultObject.map((item, index) => {
                     item.ExtendAgreement = item.ExtendedDate ? formatDate(item.ExtendedDate) : 'Chưa gia hạn';
-                    let element = {};
+                    
                     const ExpiredDate = new Date(item.ExpiredDate);
                     let currentDate = new Date();
-                    if (ExpiredDate.getTime() - currentDate.getTime() < 0) {
-                        item.StatusAgreement = "Hết hạn";
-                    }
-                    else {
-                        var timeDiff = Math.abs(currentDate.getTime() - ExpiredDate.getTime());
+
+
+                    if (item.ExtendedDate != null) {
+                        const ExtendedDate = new Date(item.ExtendedDate);
+                        var timeDiff = Math.abs(currentDate.getTime() - ExtendedDate.getTime());
                         var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
-                        if (diffDays < 30) {
-                            item.StatusAgreement = `Còn ${diffDays} ngày`;
+
+                        if (ExtendedDate.getTime() - currentDate.getTime() < 0) {
+                            item.StatusAgreement = "Hết hạn";
                         }
                         else {
-                            item.StatusAgreement = "Còn hạn";
+                            if (diffDays < 30) {
+                                item.StatusAgreement = `Còn ${diffDays} ngày`;
+                            }
+                            else {
+                                item.StatusAgreement = "Còn hạn";
+                            }
                         }
                     }
-                    element.ServiceAgreementID = item.ServiceAgreementID;
-                    element.PartnerName = item.PartnerName;
-                    element.ServiceTypeName = item.ServiceTypeName;
-                    element.AreaName = item.AreaName;
-                    element.SignedDate = item.SignedDate;
-                    element.ExpiredDate = item.ExpiredDate;
-                    element.ExtendAgreement = item.ExtendAgreement;
-                    element.StatusAgreement = item.StatusAgreement;
+                    else {
+
+                        const ExpiredDate = new Date(item.ExpiredDate);
+                        var timeDiff = Math.abs(currentDate.getTime() - ExpiredDate.getTime());
+                        var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
+                        if (ExpiredDate.getTime() - currentDate.getTime() < 0) {
+                            item.StatusAgreement = "Hết hạn";
+                        }
+                        else {
+                            var timeDiff = Math.abs(currentDate.getTime() - ExpiredDate.getTime());
+                            var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
+                            if (diffDays < 30) {
+                                item.StatusAgreement = `Còn ${diffDays} ngày`;
+                            }
+                            else {
+                                item.StatusAgreement = "Còn hạn";
+                            }
+                        }
+                    }
+
+                    let element = {
+                        "Mã hợp đồng": item.ServiceAgreementID,
+                        "Đối tác": item.PartnerName,
+                        "Loại dịch vụ": item.ServiceTypeName,
+                        "Khu vực": item.AreaName,
+                        "Ngày ký hợp đồng":  item.SignedDate,
+                        "Ngày hết hạn hợp đồng": item.ExpiredDate,
+                        "Gia hạn đến": item.ExtendAgreement,
+                        "Trạng thái": item.StatusAgreement
+                    };
 
                     return element;
 

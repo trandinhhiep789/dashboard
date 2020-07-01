@@ -265,25 +265,27 @@ class DataGridCom extends Component {
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         const fileExtension = '.xlsx';
         let result;
-        if (this.props.DataExport.length == 0){
-            result= {
-               IsError: true,
-               Message: "Dữ liệu không tồn tại. Không thể xuất file!"
-           };
-       }
-       else{
-           const ws = XLSX.utils.json_to_sheet(this.props.DataExport);
-           const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
-           const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-           const data = new Blob([excelBuffer], { type: fileType });
-           FileSaver.saveAs(data, this.props.fileName + fileExtension);
-           result= {
-               IsError: false,
-               Message: "Xuất file thành công!"
-           };
-       }
-       this.props.onExportFile(result);
-      
+        if (this.props.DataExport.length == 0) {
+            result = {
+                IsError: true,
+                Message: "Dữ liệu không tồn tại. Không thể xuất file!"
+            };
+        }
+        else {
+           
+            const ws = XLSX.utils.json_to_sheet(this.props.DataExport);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+
+            FileSaver.saveAs(data, this.props.fileName + fileExtension);
+            result = {
+                IsError: false,
+                Message: "Xuất file thành công!"
+            };
+        }
+        this.props.onExportFile(result);
+
     }
 
     handleSearchSubmit(event) {

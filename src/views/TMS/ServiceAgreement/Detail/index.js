@@ -75,21 +75,25 @@ class DetailCom extends React.Component {
             }
             else {
                 const tempDataFeeAppendix = apiResult.ResultObject.FeeAppendix_ItemList.map((item, index) => {
-                    let elementFeeAppendix = {};
-                    elementFeeAppendix.FeeAppendixName = item.FeeAppendixName;
-                    elementFeeAppendix.ServiceSeasonTypeName = item.ServiceSeasonTypeName;
-                    elementFeeAppendix.ApplyFromDate = item.ApplyFromDate;
-                    elementFeeAppendix.ApplyToDate = item.ApplyToDate;
+                    let elementFeeAppendix = {
+                        "Tên Phụ lục" : item.FeeAppendixName,
+                        "Loại thời vụ" : item.ServiceSeasonTypeName,
+                        "Từ ngày" : item.ApplyFromDate,
+                        "Đến ngày" :  item.ApplyToDate,
+                    };
+                  
                     return elementFeeAppendix;
 
                 })
                 const tempDataAbility = apiResult.ResultObject.Ability_ItemList.map((item, index) => {
-                    let elementAbility = {};
-                    elementAbility.ServiceSeasonTypeName = item.ServiceSeasonTypeName;
-                    elementAbility.FromDate = item.FromDate;
-                    elementAbility.ToDate = item.ToDate;
-                    elementAbility.MonthlyAbilityValue = item.MonthlyAbilityValue;
-                    elementAbility.DailyAbilityValue = item.DailyAbilityValue;
+                    let elementAbility = {
+                        "Tên Phụ lục": item.ServiceSeasonTypeName,
+                        "Từ ngày" : item.FromDate,
+                        "Đến ngày" : item.ToDate,
+                        "Theo tháng": item.MonthlyAbilityValue,
+                        "Theo ngày" : item.DailyAbilityValue,
+                    };
+                    
                     return elementAbility;
 
                 })
@@ -308,7 +312,7 @@ class DetailCom extends React.Component {
                                 ref={this.gridref}
                                 IsExportFile={true}
                                 DataExport={this.state.dataExportAbility}
-                                fileName={TitleFromFeeAppendix}
+                                fileName={TitleFromAbiliti}
                                 onExportFile={this.handleExportFileAbility.bind(this)}
                                 isSystem= {IsSystem}
                             />
