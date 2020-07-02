@@ -146,14 +146,14 @@ export const DataGridColumnList = [
     {
         Name: "CoordinatorStoreName",
         Type: "text",
-        Caption: "kho điều phối",
+        Caption: "Kho điều phối",
         DataSourceMember: "CoordinatorStoreName",
         Width: 350
     },
     {
         Name: "PartnerStoreName",
         Type: "text",
-        Caption: "kho đối tác",
+        Caption: "Kho đối tác",
         DataSourceMember: "PartnerStoreName",
         Width: 350
     },

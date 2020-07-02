@@ -79,11 +79,28 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
+            },
+            {
+                SearchKey: "@PartnerTransactionTypeID",
+                SearchValue: MLObject.PartnerTransactionTypeID
+            },
+            {
+                SearchKey: "@PartnerID",
+                SearchValue: MLObject.PartnerID
+            },
+            {
+                SearchKey: "@FromDate",
+                SearchValue: MLObject.FromDate
+            },
+            {
+                SearchKey: "@ToDate",
+                SearchValue: MLObject.ToDate
             }
         ];
         this.setState({ SearchData: postData });
         this.callSearchData(postData);
         //this.gridref.current.clearData();
+        //console.log("handleSearchSubmit",MLObject);
     }
 
     callSearchData(searchData) {
@@ -163,6 +180,8 @@ class SearchCom extends React.Component {
                     listColumn={DataGridColumnList}
                     dataSource={this.state.gridDataSource}
                     //AddLink={AddLink}
+                    IsShowButtonAdd={false}
+                    IsShowButtonDelete={false}
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
                     //onDeleteClick={this.handleDelete}

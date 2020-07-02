@@ -21,16 +21,17 @@ import { CANCELDELIVERYREASON_UPDATE } from "../../../../../constants/functionLi
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { format } from "date-fns";
+import { formatDate } from "../../../../../common/library/CommonLib";
+
 
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
-            FormContent: "",
             IsLoadDataComplete: false,
             IsCloseForm: false
         };
@@ -40,63 +41,23 @@ class EditCom extends React.Component {
         this.props.updatePagePath(EditPagePath);
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
-                if (apiResult.IsError) {
-                    this.setState({
-                        IsCallAPIError: apiResult.IsError
-                    });
-                    this.showMessage(apiResult.Message);
-                } else {
-                    this.setState({ DataSource: apiResult.ResultObject });
-                }
+            if (apiResult.IsError) {
                 this.setState({
-                    IsLoadDataComplete: true
+                    IsCallAPIError: apiResult.IsError
                 });
-            });
-    }
-
-    // handleClearLocalCache() {
-    //     const cacheKeyID = "PIMCACHE.PIMATTRIBUTECATEGORYTYPE";
-    //     const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-    //     return db.delete(cacheKeyID).then((result) => {
-    //         const postData = {
-    //             CacheKeyID: cacheKeyID,
-    //             UserName: this.props.AppInfo.LoginInfo.Username,
-    //             AdditionParamList: []
-    //         };
-    //         this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-    //             this.handleGetCache();
-    //             //console.log("apiResult", apiResult)
-    //         });
-    //     }
-    //     );
-    // }
-
-    // handleGetCache() {
-    //     this.props.callGetCache("PIMCACHE.PIMATTRIBUTECATEGORYTYPE").then((result) => {
-    //         console.log("handleGetCache: ", result);
-    //     });
-    // }
-
-    // handleSubmitInsertLog(MLObject) {
-    //     MLObject.ActivityTitle = `Cập nhật loại danh mục thuộc tính: ${MLObject.AttributeCategoryTypeName}`;
-    //     MLObject.ActivityDetail = `Cập nhật loại danh mục thuộc tính: ${MLObject.AttributeCategoryTypeName} ${"\n"}Mô tả: ${MLObject.Description}`;
-    //     MLObject.ObjectID = "PIM_ATTRIBUTECATEGORYTYPE";
-    //     MLObject.ActivityUser = MLObject.UpdatedUser;
-    //     this.props.callFetchAPI(APIHostName, AddLogAPIPath, MLObject);
-    // }
-
-    handleSubmit(formData, MLObject) {
-        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                if(!apiResult.IsError){
-                    // this.handleClearLocalCache();
-                    // this.handleSubmitInsertLog(MLObject);
-                }      
                 this.showMessage(apiResult.Message);
+            } else {
+                this.setState({ DataSource: apiResult.ResultObject });
+            }
+            this.setState({
+                IsLoadDataComplete: true
             });
+            console.log("apiResult", apiResult);
+        });
     }
+
+
+
 
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
@@ -117,20 +78,157 @@ class EditCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
+
         if (this.state.IsLoadDataComplete) {
             return (
-                <SimpleForm
-                    FormName="Cập nhật lý do hủy giao hàng"
-                    MLObjectDefinition={MLObjectDefinition}
-                    listelement={EditElementList}
-                    onSubmit={this.handleSubmit}
-                    FormMessage={this.state.CallAPIMessage}
-                    IsErrorMessage={this.state.IsCallAPIError}
-                    dataSource={this.state.DataSource}
-                    BackLink={BackLink}
-                    RequirePermission={CANCELDELIVERYREASON_UPDATE}
-                    ref={this.searchref}
-                />
+                <React.Fragment>
+                    <div className="col-md-12 col-sm-12 col-xs-12">
+                        <div className="x_panel">
+                            <div className="x_title">
+                                <h2>Thông tin giao dịch với đối tác</h2>
+                                <div className="clearfix"></div>
+                            </div>
+
+                            <div className="x_content col-md-12">
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Mã giao dịch: </span>
+                                            <span className="xcode">{this.state.DataSource.PartnerTransactionID}</span>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Loại giao dịch: </span>
+                                            <span>{this.state.DataSource.PartnerTransactionTypeID}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Ngày giao dịch: </span>
+                                            <span>{formatDate(this.state.DataSource.PartnerTransactionDate)}</span>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Đối tác: </span>
+                                            <span>{this.state.DataSource.PartnerID}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Mã yêu cầu: </span>
+                                            <span>{this.state.DataSource.RequestID}</span>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Ngày yêu cầu: </span>
+                                            <span>{formatDate(this.state.DataSource.RequestTime)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Địa chỉ URL yêu cầu: </span>
+                                            <span>{this.state.DataSource.RequestURL}</span>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        {/* <div className="form-group">
+                                            <span>Nội dung yêu cầu: </span>
+                                            <span className="col-form-label">{this.state.DataSource.RequestContent}</span>
+                                        </div> */}
+
+
+                                    </div>
+                                    <div className="form-group col-md-2">
+                                        <span>Nội dung yêu cầu: </span>
+                                    </div>
+                                    <div className="form-group col-md-4">
+                                        <span className="col-form-label">{this.state.DataSource.RequestContent}</span>
+                                    </div>
+                                </div>
+
+
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group checkbox customCheckbox">
+                                            <span>Đã phản hồi: </span>
+                                            <label>
+                                                <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.RequestURL} />
+                                                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Thời gian phản hồi (tính bằng giây): </span>
+                                            <span>{this.state.DataSource.ResponseInterval}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Nội dung phản hồi: </span>
+                                            <span>{this.state.DataSource.ResponseContent}</span>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Mã trạng thái phản hồi: </span>
+                                            <span>{this.state.DataSource.ResponseStatusID}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Tên trạng thái phản hồi: </span>
+                                            <span>{this.state.DataSource.ResponseStatusMessage}</span>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Thời gian phản hồi: </span>
+                                            <span>{formatDate(this.state.DataSource.ResponseTime)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group checkbox customCheckbox">
+                                            <span>Lỗi phản hồi: </span>
+                                            <label>
+                                                <input name="IsResponseError" type="checkbox" id="IsResponseError" checked={this.state.DataSource.RequestURL} />
+                                                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Nội dung lỗi: </span>
+                                            <span>{this.state.DataSource.ErrorContent}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </React.Fragment >
             );
         }
         return (
