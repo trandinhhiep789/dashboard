@@ -212,6 +212,8 @@ class SearchCom extends React.Component {
                         onChangePage={this.handleonChangePage}
                         IsDelete={false}
                         PageNumber={this.state.PageNumber}
+                        DeletePermission={"SHIPMENTORDER_DELETE"}
+                        EditPermission={"SHIPMENTORDER_UPDATE"}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />

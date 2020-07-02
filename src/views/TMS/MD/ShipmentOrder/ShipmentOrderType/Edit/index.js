@@ -158,7 +158,7 @@ class EditCom extends React.Component {
                 />
             },
             afterClose: this.onWorkflowPopupSubmit,
-            maxWidth: '1200px'
+            maxWidth: '1500px'
         });
     }
 
