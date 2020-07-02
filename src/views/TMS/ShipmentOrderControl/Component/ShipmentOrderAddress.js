@@ -1172,7 +1172,6 @@ class ShipmentOrderAddressCom extends Component {
                         <div className="card">
                             <div className="card-title">
                                 <h4 className="title">Người gửi</h4>
-                                <button className="btn btnEditCard" onClick={this.handleShowModalSender.bind(this)}>chỉnh sửa</button>
                             </div>
                             <div className="card-body">
                                 <div className="form-row">
@@ -1209,7 +1208,6 @@ class ShipmentOrderAddressCom extends Component {
                         <div className="card">
                             <div className="card-title">
                                 <h4 className="title">Người nhận</h4>
-                                <button className="btn btnEditCard" onClick={this.handleShowModalReceiver.bind(this)}>chỉnh sửa</button>
                             </div>
                             <div className="card-body">
                                 <div className="form-row">

@@ -5,8 +5,12 @@
         white-space: nowrap;
         .menu-item{
             position: relative;
+            .menu-link{
+                color: #4d5259;
+            }
             .menu-submenu{
                 .menu-link{
+                   
                     &.item-link{
                         &::after{
                             content: "\f105";
@@ -92,7 +96,13 @@
             }
         }
     }
-    
+    .topbar-right{
+        .topbar-btns{
+            .topbar-btn{
+                color: #848484;
+            }
+        }
+    }
 }
 
 .sidebar-mobile{

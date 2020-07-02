@@ -242,14 +242,14 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Loại dịch vụ",
         DataSourceMember: "ServiceTypeName",
-        Width: 140
+        Width: 180
     },
     {
         Name: "AreaName",
         Type: "text",
         Caption: "Khu vực",
         DataSourceMember: "AreaName",
-        Width: 100
+        Width: 180
     },
     {
         Name: "SignedDate",
@@ -263,7 +263,7 @@ export const DataGridColumnList = [
         Type: "date",
         Caption: "Ngày hết hạn hợp đồng",
         DataSourceMember: "ExpiredDate",
-        Width: 250
+        Width: 150
     },
     {
         Name: "ExtendLable",
@@ -277,7 +277,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Trạng thái",
         DataSourceMember: "StatusLable",
-        Width: 150
+        Width: 130
     },
     {
         Name: "Action",

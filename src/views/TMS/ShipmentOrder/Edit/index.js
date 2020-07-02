@@ -169,6 +169,7 @@ class EditCom extends React.Component {
                     MLObjectDefinition={MLObjectDefinition}
                     dataSource={this.state.DataSource}
                     listelement={[]}
+                    RequirePermission={"SHIPMENTORDER_UPDATE"}
                     BackLink={BackLink}
                     onSubmit={this.handleSubmit}
                 >
