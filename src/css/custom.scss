@@ -356,7 +356,7 @@ select.form-control:-webkit-autofill:focus {
             float: left;
             display: block;
             font-size: 18px;
-            font-weight: 400;
+            font-weight: 500;
             white-space: nowrap;
             color: #73879C;
         }
@@ -371,17 +371,29 @@ select.form-control:-webkit-autofill:focus {
         div {
             clear: both;
             span:first-child{
-                min-width: 240px;
+                min-width: 172px;
                 display: inline-block;
-                font-weight: 400;
+                font-weight: 500;
+                vertical-align: top;
             }
             span.xcode{
                 color: #349ae0;
+                font-weight: 500;
+            }
+            span.xcontent{
+                max-width: 400px;
+                display: inline-block;
+                // word-break: break-all;
+                // white-space: pre-wrap;
+                // white-space: -moz-pre-wrap;
             }
             
         }
         .customCheckbox{
             margin-bottom: 0px !important;
+            label{
+                padding-top: 0px;
+            }
         }
     }
    

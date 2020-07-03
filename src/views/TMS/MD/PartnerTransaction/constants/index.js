@@ -69,14 +69,14 @@ export const SearchElementList = [
         value: -1,
         placeholder: "",
         icon: "",
-        listoption: [{ value: -1, label: "---Vui lòng chọn---" }, { value: 1, label: "Loại giao dịch 1" }, { value: 6, label: "Loại giao dịch 6" }],
+        listoption: [],
         DataSourceMember: "PartnerTransactionTypeID",
         readonly: false,
         validatonList: [],
-        IsAutoLoadItemFromCache: false,
-        LoadItemCacheKeyID: "PIMCACHE_PIMATTRIBUTECATEGORYTYPE",
-        ValueMember: "AttributeCategoryTypeID",
-        NameMember: "AttributeCategoryTypeName"
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNERTRANSACTIONTYPE",
+        ValueMember: "PartnerTransactionTypeID",
+        NameMember: "PartnerTransactionTypeName"
     },
     {
         type: "select",
@@ -85,14 +85,14 @@ export const SearchElementList = [
         value: -1,
         placeholder: "",
         icon: "",
-        listoption: [{ value: -1, label: "---Vui lòng chọn---" }, { value: 1, label: "đối tác 1" }, { value: 6, label: "đối tác 6" }],
+        listoption: [],
         DataSourceMember: "PartnerID",
         readonly: false,
         validatonList: [],
-        IsAutoLoadItemFromCache: false,
-        LoadItemCacheKeyID: "PIMCACHE_PIMATTRIBUTECATEGORYTYPE",
-        ValueMember: "AttributeCategoryTypeID",
-        NameMember: "AttributeCategoryTypeName"
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
+        ValueMember: "PartnerID",
+        NameMember: "PartnerName"
     },
     {
         type: "date",
@@ -159,25 +159,25 @@ export const DataGridColumnList = [
         Width: 100
     },
     {
-        Name: "PartnerTransactionTypeID",
+        Name: "PartnerTransactionTypeName",
         Type: "text",
         Caption: "Loại giao dịch",
-        DataSourceMember: "PartnerTransactionTypeID",
-        Width: 160
+        DataSourceMember: "PartnerTransactionTypeName",
+        Width: 250
     },
     {
         Name: "PartnerTransactionDate",
         Type: "date",
         Caption: "Ngày giao dịch",
         DataSourceMember: "PartnerTransactionDate",
-        Width: 250
+        Width: 150
     },
     {
-        Name: "PartnerID",
+        Name: "PartnerName",
         Type: "text",
         Caption: "Đối tác",
-        DataSourceMember: "PartnerID",
-        Width: 200
+        DataSourceMember: "PartnerName",
+        Width: 220
     },
     {
         Name: "RequestTime",
