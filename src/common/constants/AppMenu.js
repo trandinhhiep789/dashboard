@@ -205,6 +205,13 @@ const AppMenu = [
                     }
                 ]
             },
+            {
+                MenuName: 'CoordinatorStore',
+                MenuTitle: 'kho điều phối giao hàng',
+                LinkTo: '/CoordinatorStore',
+                MenuIcon: '',
+                SubMenu: []
+            },
         ]
     },
     {
