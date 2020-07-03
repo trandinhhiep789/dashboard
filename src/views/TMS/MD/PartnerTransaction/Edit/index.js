@@ -156,7 +156,7 @@ class EditCom extends React.Component {
                                         <div className="form-group checkbox customCheckbox">
                                             <span>Đã phản hồi: </span>
                                             <label>
-                                                <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.RequestURL} />
+                                                <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.IsResponse} />
                                                 <span class="cr"><i class="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
@@ -204,7 +204,7 @@ class EditCom extends React.Component {
                                         <div className="form-group checkbox customCheckbox">
                                             <span>Lỗi phản hồi: </span>
                                             <label>
-                                                <input name="IsResponseError" type="checkbox" id="IsResponseError" checked={this.state.DataSource.RequestURL} />
+                                                <input name="IsResponseError" type="checkbox" id="IsResponseError" checked={this.state.DataSource.IsResponseError} />
                                                 <span class="cr"><i class="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
