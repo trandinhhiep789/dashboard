@@ -20,7 +20,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import {CANCELDELIVERYREASON_VIEW, CANCELDELIVERYREASON_DELETE} from "../../../../../constants/functionLists";
+import { PARTNERTRANSACTION_VIEW } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
@@ -64,14 +64,14 @@ class SearchCom extends React.Component {
             listMLObject.push(MLObject);
         });
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                this.addNotification(apiResult.Message, apiResult.IsError);
-                if(!apiResult.IsError){
-                    this.callSearchData(this.state.SearchData);
-                    // this.handleClearLocalCache();
-                    // this.handleSubmitInsertLog();
-                }             
-            });
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callSearchData(this.state.SearchData);
+                // this.handleClearLocalCache();
+                // this.handleSubmitInsertLog();
+            }
+        });
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -105,14 +105,14 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-                this.searchref.current.changeLoadComplete();
-                if (!apiResult.IsError) {
-                    this.setState({
-                        gridDataSource: apiResult.ResultObject,
-                        IsCallAPIError: apiResult.IsError
-                    });
-                }
-            });
+            this.searchref.current.changeLoadComplete();
+            if (!apiResult.IsError) {
+                this.setState({
+                    gridDataSource: apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError
+                });
+            }
+        });
     }
 
     handleCloseMessage() {
@@ -186,8 +186,8 @@ class SearchCom extends React.Component {
                     PKColumnName={PKColumnName}
                     //onDeleteClick={this.handleDelete}
                     ref={this.gridref}
-                    RequirePermission={CANCELDELIVERYREASON_VIEW}
-                    DeletePermission={CANCELDELIVERYREASON_DELETE}
+                    //RequirePermission={PARTNERTRANSACTION_VIEW}
+                    //DeletePermission={CANCELDELIVERYREASON_DELETE}
                     IsAutoPaging={true}
                     RowsPerPage={10}
                 />
@@ -217,5 +217,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Search = connect(mapStateToProps,mapDispatchToProps)(SearchCom);
+const Search = connect(mapStateToProps, mapDispatchToProps)(SearchCom);
 export default Search;
