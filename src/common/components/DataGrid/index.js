@@ -272,7 +272,7 @@ class DataGridCom extends Component {
             };
         }
         else {
-           
+
             const ws = XLSX.utils.json_to_sheet(this.props.DataExport);
             const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
             const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
@@ -553,6 +553,15 @@ class DataGridCom extends Component {
         let MultipleCheck = false;
         if (this.props.isMultipleCheck)
             MultipleCheck = true;
+
+        let isShowButtonAdd = true;
+        if (this.props.IsShowButtonAdd != undefined && this.props.IsShowButtonAdd == false) {
+            isShowButtonAdd = false;
+        }
+        let isShowButtonDelete = true;
+        if (this.props.IsShowButtonDelete != undefined && this.props.IsShowButtonDelete == false) {
+            isShowButtonDelete = false;
+        }
         if (this.state.IsPermision == undefined) {
             return <p className="col-md-12">Đang kiểm tra quyền...</p>
         }
@@ -572,33 +581,44 @@ class DataGridCom extends Component {
                                 {searchTextbox}
                                 <div className="btn-toolbar">
                                     <div className="btn-group btn-group-sm">
-                                        {(this.props.IsAdd == true || this.props.IsAdd == undefined) ?
-                                            (!this.props.IsCustomAddLink == true ?
-                                                (<Link to={this.props.AddLink}>
-                                                    <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                        <span className="fa fa-plus ff"> Thêm </span>
-                                                    </button>
-                                                </Link>)
-                                                : (
-                                                    <button type="button" onClick={this.handleInsertClick} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                        <span className="fa fa-plus ff"> Thêm </span>
-                                                    </button>
+                                        {
+                                            //hiển thị nút thêm
+                                            isShowButtonAdd ?
+                                                (
+                                                    (this.props.IsAdd == true || this.props.IsAdd == undefined) ?
+                                                        (!this.props.IsCustomAddLink == true ?
+                                                            (<Link to={this.props.AddLink}>
+                                                                <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                                    <span className="fa fa-plus ff"> Thêm </span>
+                                                                </button>
+                                                            </Link>)
+                                                            : (
+                                                                <button type="button" onClick={this.handleInsertClick} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                                    <span className="fa fa-plus ff"> Thêm </span>
+                                                                </button>
+                                                            )
+                                                        )
+                                                        : (
+                                                            <button type="button" className="btn btn-info" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Thêm">
+                                                                <span className="fa fa-plus ff"> Thêm </span>
+                                                            </button>
+                                                        )
                                                 )
-                                            )
-                                            : (
-                                                <button type="button" className="btn btn-info" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Thêm">
-                                                    <span className="fa fa-plus ff"> Thêm </span>
-                                                </button>
-                                            )
+                                                : ""
                                         }
                                         {
-                                            (this.props.IsDelete == true || this.props.IsDelete == undefined) ?
-                                                (<button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa" onClick={this.handleDeleteClick}>
-                                                    <span className="fa fa-remove"> Xóa </span>
-                                                </button>)
-                                                : (<button type="button" className="btn btn-danger btn-delete ml-10" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Xóa" >
-                                                    <span className="fa fa-remove"> Xóa </span>
-                                                </button>)
+                                            //hiển thị nút xóa
+                                            isShowButtonDelete ?
+                                                (
+                                                    (this.props.IsDelete == true || this.props.IsDelete == undefined) ?
+                                                        (<button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa" onClick={this.handleDeleteClick}>
+                                                            <span className="fa fa-remove"> Xóa </span>
+                                                        </button>)
+                                                        : (<button type="button" className="btn btn-danger btn-delete ml-10" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Xóa" >
+                                                            <span className="fa fa-remove"> Xóa </span>
+                                                        </button>)
+                                                )
+                                                : ""
                                         }
                                         {this.props.IsExportFile == true &&
                                             <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)}>

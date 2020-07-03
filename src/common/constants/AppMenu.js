@@ -280,7 +280,7 @@ const AppMenu = [
             },
             {
                 MenuName: 'ShipmentOrderControl',
-                MenuTitle: 'Kiểm sát giao hàng',
+                MenuTitle: 'Kiểm soát giao hàng',
                 LinkTo: '/ShipmentOrderControl',
                 MenuIcon: '',
                 SubMenu: []

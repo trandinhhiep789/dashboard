@@ -73,7 +73,7 @@ export default class SearchForm extends Component {
                 {
                     listElement.map((elementItem, index) => {
                         return (
-                            <div className="col-md-3 item" key={"div" + elementItem.name}>
+                            <div className="col-md-2 item" key={"div" + elementItem.name}>
                                 <FormElement type={elementItem.type} name={elementItem.name}
                                     CSSClassName="form-control form-control-sm"
                                     value={this.state.FormData[elementItem.name]}
