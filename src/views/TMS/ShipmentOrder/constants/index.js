@@ -69,7 +69,7 @@ export const SearchElementList = [
         name: "dtCreatedOrderTimeFo",
         DataSourceMember: "CreatedOrderTimeFo",
         label: "Từ ngày",
-        value: dtFromdate,
+        value: new Date(),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
@@ -165,7 +165,7 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@FromDate",
-        SearchValue: dtFromdate
+        SearchValue: new Date()
     },
     {
         SearchKey: "@ToDate",
