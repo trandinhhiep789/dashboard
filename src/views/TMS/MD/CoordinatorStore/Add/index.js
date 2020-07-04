@@ -13,7 +13,7 @@ import InputGridControl from "../../../../../common/components/FormContainer/For
 import MD5Digest from "../../../../../common/library/cryptography/MD5Digest.js";
 import {
     APIHostName,
-    AddAPIPath,
+    AddNewAPIPath,
     MLObjectDefinition,
     BackLink,
     AddPagePath,
@@ -79,7 +79,7 @@ class AddCom extends React.Component {
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         console.log("handleSubmit", MLObject)
 
-        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, AddNewAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
         });
@@ -107,7 +107,7 @@ class AddCom extends React.Component {
             title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
             content: {
                 text: <StoreWard
-                    dataSource={this.state.DataSource}
+                    DataWard={this.state.DataWard}
                     onInputChangeObj={this.handleInputChangeObjItem}
 
                 />
@@ -125,7 +125,7 @@ class AddCom extends React.Component {
             title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
             content: {
                 text: <StoreWard
-                    dataSource={this.state.DataSource}
+                    DataWard={this.state.DataWard}
                     index={index}
                     onInputChangeObj={this.handleInputChangeObjItem}
 
@@ -140,7 +140,7 @@ class AddCom extends React.Component {
     }
 
     render() {
-        const { DataSource, IsShowCustomerAddress } = this.state;
+        const { DataSource, IsShowCustomerAddress, DataWard } = this.state;
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -293,7 +293,7 @@ class AddCom extends React.Component {
                     IDSelectColumnName={"WardID"}
                     listColumn={DataGridColumnList}
                     PKColumnName={PKColumnNameWard}
-                    dataSource={DataSource}
+                    dataSource={DataWard}
                     onInsertClick={this.handleInsertNew}
                     onEditClick={this.handleEdit}
                     onDeleteClick={this.handleDelete}
