@@ -11,7 +11,7 @@ import {
     AddLink,
     APIHostName,
     SearchAPIPath,
-    DeleteAPIPath,
+    DeleteNewAPIPath,
     IDSelectColumnName,
     PKColumnName,
     InitSearchParams,
@@ -64,13 +64,11 @@ class SearchCom extends React.Component {
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
-        this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if(!apiResult.IsError){
                     this.callSearchData(this.state.SearchData);
-                    this.props.callClearLocalCache(ERPCOMMONCACHE_CARRIERTYPE);
-                    // this.handleSubmitInsertLog();
                 }             
             });
     }
@@ -88,8 +86,6 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-
-                console.log('callSearchData', apiResult)
                 if (!apiResult.IsError) {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
