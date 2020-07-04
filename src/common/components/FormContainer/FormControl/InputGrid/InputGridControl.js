@@ -367,7 +367,7 @@ class InputGridControlCom extends Component {
                                         let ovjvalue = rowItem[columnItem.DataSourceMember];
 
                                         let objlink = rowItem[this.props.PKColumnName];
-                                        let objID = rowItem[this.props.PKColumnName].trim();
+                                        let objID = rowItem[this.props.PKColumnName];
 
                                         const cellData = <InputGridCell type={columnItem.Type}
                                             idItem={objID}
@@ -422,7 +422,6 @@ class InputGridControlCom extends Component {
     //#endregion get Page
 
     render() {
-       
         return (
             <div className="card">
                 <div className="card-title">
@@ -446,9 +445,12 @@ class InputGridControlCom extends Component {
                                     </Link>)
                                     : (
                                         <React.Fragment>
-                                            <button type="button" className="btn btnEditCard btnEditCard2" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleInsertClick}>
-                                                <span className="fa fa-plus ff"> Thêm </span>
-                                            </button>
+                                            {(this.props.isHiddenButtonAdd == undefined || this.props.isHiddenButtonAdd == false) && 
+                                                <button type="button" className="btn btnEditCard btnEditCard2" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleInsertClick}>
+                                                    <span className="fa fa-plus ff"> Thêm </span>
+                                                </button>
+                                            }
+
 
                                             {this.props.IsExportFile == true &&
                                                 <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)} >

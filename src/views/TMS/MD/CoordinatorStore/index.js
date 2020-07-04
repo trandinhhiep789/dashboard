@@ -7,9 +7,12 @@ import {
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
+import Add from "./Add";
+import AddNew from "./Add/AddNew.js";
 import Edit from "./Edit";
 import NotFound from '../../../NotFound'
-class PartnerTransactionCom extends React.Component {
+
+class CoordinatorStoreCom extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -17,8 +20,9 @@ class PartnerTransactionCom extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/PartnerTransaction" component={Search} />
-                <Route exact path="/PartnerTransaction/Edit/:id" component={Edit} />
+                <Route exact path="/CoordinatorStore" component={Search} />
+                <Route exact path="/CoordinatorStore/Add" component={AddNew} />
+                <Route exact path="/CoordinatorStore/Edit/:id" component={Edit} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
@@ -40,8 +44,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const PartnerTransaction = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(PartnerTransactionCom);
-export default PartnerTransaction;
+const CoordinatorStore = connect(mapStateToProps, mapDispatchToProps)(CoordinatorStoreCom);
+export default CoordinatorStore;

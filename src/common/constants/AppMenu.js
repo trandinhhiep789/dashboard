@@ -34,13 +34,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
-                    // {
-                    //     MenuName: 'PartnerTransaction',
-                    //     MenuTitle: 'Thông tin giao dịch với đối tác',
-                    //     LinkTo: '/PartnerTransaction',
-                    //     MenuIcon: '',
-                    //     SubMenu: []
-                    // }
+                    {
+                        MenuName: 'PartnerTransaction',
+                        MenuTitle: 'Thông tin giao dịch với đối tác',
+                        LinkTo: '/PartnerTransaction',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
                 ]
             },
             {
@@ -204,6 +204,13 @@ const AppMenu = [
                         SubMenu: []
                     }
                 ]
+            },
+            {
+                MenuName: 'CoordinatorStore',
+                MenuTitle: 'kho điều phối giao hàng',
+                LinkTo: '/CoordinatorStore',
+                MenuIcon: '',
+                SubMenu: []
             },
         ]
     },

@@ -52,7 +52,7 @@ class EditCom extends React.Component {
             this.setState({
                 IsLoadDataComplete: true
             });
-            console.log("apiResult", apiResult);
+            //console.log("apiResult", apiResult);
         });
     }
 
@@ -100,7 +100,7 @@ class EditCom extends React.Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Loại giao dịch: </span>
-                                            <span>{this.state.DataSource.PartnerTransactionTypeID}</span>
+                                            <span>{this.state.DataSource.PartnerTransactionTypeName}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -115,7 +115,7 @@ class EditCom extends React.Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Đối tác: </span>
-                                            <span>{this.state.DataSource.PartnerID}</span>
+                                            <span>{this.state.DataSource.PartnerName}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -143,18 +143,10 @@ class EditCom extends React.Component {
                                         </div>
                                     </div>
                                     <div className="col-md-6">
-                                        {/* <div className="form-group">
+                                        <div className="form-group">
                                             <span>Nội dung yêu cầu: </span>
-                                            <span className="col-form-label">{this.state.DataSource.RequestContent}</span>
-                                        </div> */}
-
-
-                                    </div>
-                                    <div className="form-group col-md-2">
-                                        <span>Nội dung yêu cầu: </span>
-                                    </div>
-                                    <div className="form-group col-md-4">
-                                        <span className="col-form-label">{this.state.DataSource.RequestContent}</span>
+                                            <span className="xcontent">{this.state.DataSource.RequestContent}</span>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -164,14 +156,14 @@ class EditCom extends React.Component {
                                         <div className="form-group checkbox customCheckbox">
                                             <span>Đã phản hồi: </span>
                                             <label>
-                                                <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.RequestURL} />
+                                                <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.IsResponse} />
                                                 <span class="cr"><i class="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Thời gian phản hồi (tính bằng giây): </span>
+                                            <span>Thời gian phản hồi (giây): </span>
                                             <span>{this.state.DataSource.ResponseInterval}</span>
                                         </div>
                                     </div>
@@ -181,7 +173,7 @@ class EditCom extends React.Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Nội dung phản hồi: </span>
-                                            <span>{this.state.DataSource.ResponseContent}</span>
+                                            <span className="xcontent">{this.state.DataSource.ResponseContent}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
@@ -212,7 +204,7 @@ class EditCom extends React.Component {
                                         <div className="form-group checkbox customCheckbox">
                                             <span>Lỗi phản hồi: </span>
                                             <label>
-                                                <input name="IsResponseError" type="checkbox" id="IsResponseError" checked={this.state.DataSource.RequestURL} />
+                                                <input name="IsResponseError" type="checkbox" id="IsResponseError" checked={this.state.DataSource.IsResponseError} />
                                                 <span class="cr"><i class="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
@@ -220,7 +212,7 @@ class EditCom extends React.Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Nội dung lỗi: </span>
-                                            <span>{this.state.DataSource.ErrorContent}</span>
+                                            <span className="xcontent">{this.state.DataSource.ErrorContent}</span>
                                         </div>
                                     </div>
                                 </div>
