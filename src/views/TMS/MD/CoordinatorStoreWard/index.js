@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import { MessageModal } from "../../../../common/components/Modal";
 import DataGrid from "../../../../common/components/DataGrid";
-import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_CONFIRMATION } from '../../../../constants/actionTypes';
+import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { GetMLObjectData } from "../../../../common/library/form/FormLib";
 import Collapsible from 'react-collapsible';
@@ -23,8 +24,10 @@ class CoordinatorStoreWardCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleInsert = this.handleInsert.bind(this);
+        this.handleInsertNew = this.handleInsertNew.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -32,7 +35,7 @@ class CoordinatorStoreWardCom extends React.Component {
             Store: this.props.Store,
             PartnerCoordinatorStore: this.props.partnerCoordinatorStore ? this.props.partnerCoordinatorStore : [],
             PartnerID: this.props.PartnerID,
-            DataSource: {}
+            DataSource: []
         };
     }
 
@@ -62,17 +65,42 @@ class CoordinatorStoreWardCom extends React.Component {
         );
     }
 
+    handleInsertNew() {
 
-
-    handleInsert() {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
             content: {
                 text: <StoreWard
                     dataSource={this.state.DataSource}
+                    onInputChangeObj={this.handleInputChangeObjItem}
+
                 />
             },
             maxWidth: '1000px'
+        })
+    }
+
+    handleInputChangeObjItem(ObjItem) {
+
+        // const formData = Object.assign({}, ObjItem);
+        //console.log("handleInputChangeObjItem", formData, ObjItem)
+
+        //this.setState({ DataSource: formData });
+        this.props.hideModal();
+
+    }
+
+    handleInsert(MLObjectDefinition, modalElementList, dataSource) {
+        this.props.showModal(MODAL_TYPE_CONFIRMATION, {
+            title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
+            autoCloseModal: false,
+            onConfirm: (isConfirmed, formData) => {
+                console.log("onConfirm", isConfirmed, formData)
+                if (isConfirmed) {
+
+                }
+            },
+            modalElementList: modalElementList,
         });
     }
 
@@ -141,27 +169,30 @@ class CoordinatorStoreWardCom extends React.Component {
 
     render() {
 
+        const { DataSource } = this.state;
+
+        console.log("DataSource", DataSource)
+
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
         return (
-
-            <DataGrid
-                listColumn={DataGridColumnList}
-                dataSource={[]}
-                modalElementList={ModalColumnList_Insert}
-                MLObjectDefinition={MLObjectDefinition}
-                IDSelectColumnName={"chkSelectPartnerCSID"}
-                PKColumnName={"PartnerCSID"}
-                onDeleteClick={this.handleDelete}
-                onInsertClick={this.handleInsert}
-                onInsertClickEdit={this.handleEdit}
-                IsAutoPaging={true}
-                RowsPerPage={10}
-                IsCustomAddLink={true}
-            />
-
-
+            <React.Fragment>
+                <DataGrid
+                    listColumn={DataGridColumnList}
+                    dataSource={DataSource}
+                    MLObjectDefinition={MLObjectDefinition}
+                    IDSelectColumnName={"chkSelectWardID"}
+                    PKColumnName={"WardID"}
+                    onDeleteClick={this.handleDelete}
+                    onInsertClick={this.handleInsertNew}
+                    onInsertClickEdit={this.handleEdit}
+                    IsAutoPaging={true}
+                    RowsPerPage={10}
+                    IsCustomAddLink={true}
+                />
+              
+            </React.Fragment>
         );
     }
 }

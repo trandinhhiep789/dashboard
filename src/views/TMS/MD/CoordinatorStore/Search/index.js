@@ -16,7 +16,7 @@ import {
     PKColumnName,
     InitSearchParams,
     PagePath,
-    AddLogAPIPath
+    DataGridCoordinatorStoreColumnList
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -88,7 +88,8 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-                this.searchref.current.changeLoadComplete();
+
+                console.log('callSearchData', apiResult)
                 if (!apiResult.IsError) {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
@@ -160,7 +161,7 @@ class SearchCom extends React.Component {
                     ref={this.searchref}
                 />
                 <DataGrid
-                    listColumn={DataGridColumnList}
+                    listColumn={DataGridCoordinatorStoreColumnList}
                     dataSource={this.state.gridDataSource}
                     AddLink={AddLink}
                     IDSelectColumnName={IDSelectColumnName}

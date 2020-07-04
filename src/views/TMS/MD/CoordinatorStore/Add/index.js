@@ -6,51 +6,61 @@ import InputGrid from "../../../../../common/components/FormContainer/FormContro
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../../common/components/Modal";
-import { showModal } from '../../../../../actions/modal';
-import { MODAL_TYPE_SEARCH } from '../../../../../constants/actionTypes';
+import { showModal, hideModal } from '../../../../../actions/modal';
+import { MODAL_TYPE_SEARCH, MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_CONFIRMATION } from '../../../../../constants/actionTypes';
 import SearchModal from "../../../../../common/components/Form/AdvanceForm/FormControl/FormSearchModal"
+import InputGridControl from "../../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
 import MD5Digest from "../../../../../common/library/cryptography/MD5Digest.js";
 import {
     APIHostName,
     AddAPIPath,
-    AddElementList,
     MLObjectDefinition,
     BackLink,
     AddPagePath,
-    GridMLCoordinatorStoreWardDefinition,
-    InputCoordinatorStoreWardColumnList,
+    DataGridColumnList,
+    PKColumnNameWard
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { COORDINATORSTORE_ADD } from "../../../../../constants/functionLists";
 import CoordinatorStoreWard from '../../CoordinatorStoreWard'
-
+import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
 
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-
+        this.onCoordinatorStoreWardChange = this.onCoordinatorStoreWardChange.bind(this)
+        this.handleInsertNew = this.handleInsertNew.bind(this)
+        this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
-            IsShowCustomerAddress: false,
-            DataSource: {}
+            IsShowCustomerAddress: true,
+            DataSource: [],
+            DataWard: []
         };
         this.searchref = React.createRef();
+        this.gridref = React.createRef();
     }
 
 
     componentDidMount() {
         this.props.updatePagePath(AddPagePath);
+
     }
 
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
     }
+
+
 
     showMessage(message) {
         ModalManager.open(
@@ -64,11 +74,11 @@ class AddCom extends React.Component {
     }
 
 
-
     handleSubmit(formData, MLObject) {
-        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        console.log("handleSubmit", MLObject)
+
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -76,19 +86,65 @@ class AddCom extends React.Component {
     }
 
     handleChange(formData, MLObject) {
-        console.log('handleChange', formData, MLObject)
         if (formData.chkIsCheckCustomerAddress.value) {
+            this.setState({
+                IsShowCustomerAddress: false
+            })
+        }
+        else {
             this.setState({
                 IsShowCustomerAddress: true
             })
         }
     }
+    onCoordinatorStoreWardChange(list, deleteList) {
+
+    }
+
+    handleInsertNew() {
+
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
+            content: {
+                text: <StoreWard
+                    dataSource={this.state.DataSource}
+                    onInputChangeObj={this.handleInputChangeObjItem}
+
+                />
+            },
+            maxWidth: '1000px'
+        })
+    }
+
+    handleInputChangeObjItem(ObjItem) {
+        this.props.hideModal()
+    }
+
+    handleEdit(index) {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
+            content: {
+                text: <StoreWard
+                    dataSource={this.state.DataSource}
+                    index={index}
+                    onInputChangeObj={this.handleInputChangeObjItem}
+
+                />
+            },
+            maxWidth: '1000px'
+        })
+    }
+
+    handleDelete() {
+
+    }
 
     render() {
-        const { IsShowCustomerAddress } = this.state;
+        const { DataSource, IsShowCustomerAddress } = this.state;
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
+
         return (
             <FormContainer
                 FormName="Thêm định nghĩa kho điều phối giao hàng"
@@ -182,11 +238,39 @@ class AddCom extends React.Component {
                     </div>
                     <div className="col-md-6">
                         <FormControl.CheckBox
+                            name="chkIsActived"
+                            colspan="8"
+                            labelcolspan="4"
+                            readOnly={false}
+                            label="kích hoạt"
+                            controltype="InputControl"
+                            value={true}
+                            datasourcemember="IsActived"
+                            classNameCustom="customCheckbox"
+                        />
+                    </div>
+
+                    <div className="col-md-6">
+                        <FormControl.CheckBox
+                            name="chkIsSystem"
+                            colspan="8"
+                            labelcolspan="4"
+                            readOnly={false}
+                            label="hệ thống"
+                            controltype="InputControl"
+                            value=""
+                            datasourcemember="IsSystem"
+                            classNameCustom="customCheckbox"
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <FormControl.CheckBox
                             label="kiểm tra địa chỉ khách hàng"
                             name="chkIsCheckCustomerAddress"
                             datasourcemember="IsCheckCustomerAddress"
                             controltype="InputControl"
                             colspan="8"
+                            value={false}
                             labelcolspan="4"
                             classNameCustom="customCheckbox"
                         />
@@ -195,10 +279,28 @@ class AddCom extends React.Component {
                 </div>
 
                 <div className="row">
-                    <CoordinatorStoreWard />
 
+                    {/* <CoordinatorStoreWard 
+                        onCoordinatorStoreWardChange={this.onCoordinatorStoreWardChange}
+                    /> */}
 
                 </div>
+
+                <InputGridControl
+                    name="CoordinatorStoreWard_ItemList"
+                    controltype="InputGridControl"
+                    title="Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối"
+                    IDSelectColumnName={"WardID"}
+                    listColumn={DataGridColumnList}
+                    PKColumnName={PKColumnNameWard}
+                    dataSource={DataSource}
+                    onInsertClick={this.handleInsertNew}
+                    onEditClick={this.handleEdit}
+                    onDeleteClick={this.handleDelete}
+                    isHiddenButtonAdd={IsShowCustomerAddress}
+                    ref={this.gridref}
+                />
+
 
 
             </FormContainer>
@@ -227,6 +329,9 @@ const mapDispatchToProps = dispatch => {
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
+        },
+        hideModal: () => {
+            dispatch(hideModal());
         }
     };
 };

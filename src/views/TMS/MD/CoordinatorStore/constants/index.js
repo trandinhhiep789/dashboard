@@ -1,8 +1,11 @@
 export const APIHostName = "PIMAPI";
 export const SearchAPIPath = "api/CoordinatorStore/Search";
 export const LoadAPIPath = "api/CoordinatorStore/Load";
+export const LoadNewAPIPath = "api/CoordinatorStore/LoadNew";
 export const AddAPIPath = "api/CoordinatorStore/Add";
+export const AddNewAPIPath = "api/CoordinatorStore/AddNew";
 export const UpdateAPIPath = "api/CoordinatorStore/Update";
+export const UpdateNewAPIPath = "api/CoordinatorStore/UpdateNew";
 export const DeleteAPIPath = "api/CoordinatorStore/Delete";
 export const UpdateOrderAPIPath = "api/CoordinatorStore/UpdateOrder";
 export const BackLink = "/CoordinatorStore";
@@ -10,6 +13,7 @@ export const AddLink = "/CoordinatorStore/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "CoordinatorStoreID";
+export const PKColumnNameWard = "WardID";
 
 
 export const PagePath = [
@@ -57,69 +61,92 @@ export const SearchMLObjectDefinition = [
 ];
 
 export const DataGridColumnList = [
-    {
-        Name: "chkSelect",
-        Type: "checkbox",
-        Caption: "Chọn",
-        DataSourceMember: "CoordinatorStoreID",
-        Width: 60
-    },
-    {
-        Name: "CoordinatorStoreID",
-        Type: "text",
-        Caption: "Mã định nghĩa",
-        DataSourceMember: "CoordinatorStoreID",
-        Width: 150
-    },
-    {
-        Name: "ShipmentOrderTypeID",
-        Type: "text",
-        Caption: "Tên loại yêu cầu xuất",
-        DataSourceMember: "ShipmentOrderTypeID",
-        Width: 250
-    },
 
     {
-        Name: "PartnerID",
+        Name: "WardID",
         Type: "text",
-        Caption: "Tên đối tác",
-        DataSourceMember: "PartnerID",
-        Width: 250
+        Caption: "Phường/xã",
+        DataSourceMember: "WardID",
+        Width: 350
     },
     {
-        Name: "StoreID",
+        Name: "WardName",
         Type: "text",
-        Caption: "Kho điều phối",
-        DataSourceMember: "StoreID",
-        Width: 250
+        Caption: "Phường/xã",
+        DataSourceMember: "WardName",
+        Width: 350
     },
+    
+
     {
-        Name: "SenderStoreID",
-        Type: "text",
-        Caption: "Kho gửi",
-        DataSourceMember: "SenderStoreID",
-        Width: 250
+        Name: "chkIsSystem",
+        Type: "checkbox",
+        Caption: "Hệ thống",
+        DataSourceMember: "IsSystem",
+        Width: 70
     },
+  
     {
-        Name: "IsCheckCustomerAddress",
-        Type: "text",
-        Caption: "Mã phường",
-        DataSourceMember: "IsCheckCustomerAddress",
-        Width: 250
-    },
-    {
+
         Name: "Action",
-        Type: "link",
+        Type: "groupAction",
         Caption: "Tác vụ",
-        DataSourceMember: "CarrierTypeID",
-        Width: 100,
-        Link: "/Partner/Edit/",
+        DataSourceMember: "WardID",
+        Width: 50,
+        Link: "/ServiceAgreement/FeeAppendix/Edit/",
         LinkText: "Chỉnh sửa"
     }
 ]
 
 export const MLObjectDefinition = [
-
+    {
+        Name: "ShipmentOrderTypeID",
+        DefaultValue: {},
+        BindControlName: "cbShipmentOrderTypeID",
+        DataSourceMember: "ShipmentOrderTypeID"
+    },
+    {
+        Name: "PartnerID",
+        DefaultValue: {},
+        BindControlName: "cbPartnerID",
+        DataSourceMember: "PartnerID"
+    },
+    {
+        Name: "StoreID",
+        DefaultValue: {},
+        BindControlName: "cbStoreID",
+        DataSourceMember: "StoreID"
+    },
+    {
+        Name: "SenderStoreID",
+        DefaultValue: {},
+        BindControlName: "cbSenderStoreID",
+        DataSourceMember: "SenderStoreID"
+    },
+    {
+        Name: "IsCheckCustomerAddress",
+        DefaultValue: {},
+        BindControlName: "chkIsCheckCustomerAddress",
+        DataSourceMember: "IsCheckCustomerAddress"
+    },
+    {
+        Name: "IsActived",
+        DefaultValue: true,
+        BindControlName: "chkIsActived",
+        DataSourceMember: "IsActived"
+    },
+    {
+        Name: "IsSystem",
+        DefaultValue: false,
+        BindControlName: "chkIsSystem",
+        DataSourceMember: "IsSystem"
+    },
+    {
+        Name: "CoordinatorStoreWard_ItemList",
+        DefaultValue: {},
+        BindControlName: "CoordinatorStoreWard_ItemList",
+        DataSourceMember: "CoordinatorStoreWard_ItemList"
+    },
 ]
 
 
@@ -217,3 +244,50 @@ export const GridMLCoordinatorStoreWardDefinition = []
 export const EditElementList = [
 
 ];
+
+export const DataGridCoordinatorStoreColumnList=[
+    {
+        Name: "chkSelect",
+        Type: "checkbox",
+        Caption: "Chọn",
+        DataSourceMember: "CoordinatorStoreID",
+        Width: 60
+    },
+    {
+        Name: "ShipmentOrderTypeName",
+        Type: "text",
+        Caption: "Loại yêu cầu xuất",
+        DataSourceMember: "ShipmentOrderTypeName",
+        Width: 250
+    },
+    {
+        Name: "PartnerName",
+        Type: "text",
+        Caption: "Đối tác",
+        DataSourceMember: "PartnerName",
+        Width: 250
+    },
+    {
+        Name: "StoreID",
+        Type: "text",
+        Caption: "Kho điều phối",
+        DataSourceMember: "StoreID",
+        Width: 250
+    },
+    {
+        Name: "SenderStoreID",
+        Type: "text",
+        Caption: "Kho gửi",
+        DataSourceMember: "SenderStoreID",
+        Width: 250
+    },
+    {
+        Name: "Action",
+        Type: "link",
+        Caption: "Tác vụ",
+        DataSourceMember: "CoordinatorStoreID",
+        Width: 100,
+        Link: "/CoordinatorStore/Edit/",
+        LinkText: "Chỉnh sửa"
+    },
+]

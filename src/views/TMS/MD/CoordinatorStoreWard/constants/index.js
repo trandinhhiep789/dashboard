@@ -122,38 +122,32 @@ export const ModalColumnList_Edit = [
 
 export const DataGridColumnList = [
     {
-        Name: "chkSelectPartnerCSID",
+        Name: "chkSelectWardID",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "PartnerCSID",
+        DataSourceMember: "WardID",
         Width: 60
     },
 
     {
-        Name: "CoordinatorStoreName",
+        Name: "WardID",
         Type: "text",
         Caption: "phường/xã",
-        DataSourceMember: "CoordinatorStoreName",
+        DataSourceMember: "WardID",
         Width: 350
     },
   
     {
-        Name: "EditPartnerCoordinatorStore",
+        Name: "EditWardID",
         Type: "edit",
         Caption: "Tác vụ",
-        DataSourceMember: "CoordinatorStoreID",
+        DataSourceMember: "WardID",
         Width: 100
     }
 
 ];
 
 export const MLObjectDefinition = [
-    {
-        Name: "CoordinatorStoreID",
-        DefaultValue: "",
-        BindControlName: "CoordinatorStoreID",
-        DataSourceMember: "PartnerCSID"
-    },
     {
         Name: "WardID",
         DefaultValue: "",
@@ -199,7 +193,13 @@ export const MLObjectStoreWardItem= [
         Name: "WardID",
         DefaultValue: "",
         BindControlName: "cbWardID",
-        DataSourceMember: "WardID"
+        DataSourceMember: "Ward"
+    },
+    {
+        Name: "IsSystem",
+        DefaultValue: "",
+        BindControlName: "chkIsSystem",
+        DataSourceMember: "IsSystem"
     },
  
 ]

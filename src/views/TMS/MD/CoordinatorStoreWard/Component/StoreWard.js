@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-
+import { callGetCache } from "../../../../../actions/cacheAction";
 import {
     MLObjectStoreWardItem,
     ElementSenderQHPXList,
@@ -14,17 +14,41 @@ class StoreWardCom extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleGetCacheWard = this.handleGetCacheWard.bind(this);
         this.state = {
-            IsSystem: false
+            IsSystem: false,
+            DataWard: []
         }
     }
 
-    componentDidMount() {
+    handleGetCacheWard() {
+        const { DataSource } = this.state;
+        this.props.callGetCache('ERPCOMMONCACHE.WARD').then(apiResult => {
+            if (!apiResult.IsError && apiResult.ResultObject.CacheData != null) {
+                this.setState({
+                    DataWard: apiResult.ResultObject.CacheData
+                })
+            }
+        });
+    }
 
+    componentDidMount() {
+        this.handleGetCacheWard()
+        console.log("item",this.props.DataWard[this.props.index])
     }
 
     handleSubmit(From, MLObject) {
+        let CoordinatorStoreWard_ItemList = this.props.DataWard;
+        
+        let dataWardItem = this.state.DataWard.filter((item, index) => {
+            return item.WardID == MLObject.WardID
+        })
+        MLObject.WardName = dataWardItem[0].WardName
 
+        CoordinatorStoreWard_ItemList.push(MLObject)
+        if (this.props.onInputChangeObj != null) {
+            this.props.onInputChangeObj(CoordinatorStoreWard_ItemList);
+        }
     }
 
     handleChange(formData, MLObject) {
@@ -37,8 +61,8 @@ class StoreWardCom extends Component {
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectStoreWardItem}
-                //dataSource={}
-                listelement={AddElementListStoreWard}
+                listelement={[]}
+                dataSource={this.props.index != undefined ? this.props.DataWard[this.props.index] : null}
                 onSubmit={this.handleSubmit}
                 IsCloseModal={true}
                 onchange={this.handleChange.bind(this)}
@@ -141,7 +165,9 @@ const mapDispatchToProps = dispatch => {
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         },
-
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
+        },
     }
 }
 

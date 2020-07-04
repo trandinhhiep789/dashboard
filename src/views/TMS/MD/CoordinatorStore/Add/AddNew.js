@@ -13,11 +13,10 @@ import InputGridControl from "../../../../../common/components/FormContainer/For
 import MD5Digest from "../../../../../common/library/cryptography/MD5Digest.js";
 import {
     APIHostName,
-    BackLink,
-    EditPagePath,
-    UpdateNewAPIPath,
-    LoadNewAPIPath,
+    AddAPIPath,
     MLObjectDefinition,
+    BackLink,
+    AddPagePath,
     DataGridColumnList,
     PKColumnNameWard
 } from "../constants";
@@ -28,25 +27,18 @@ import { COORDINATORSTORE_ADD } from "../../../../../constants/functionLists";
 import CoordinatorStoreWard from '../../CoordinatorStoreWard'
 import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
 
-class EditCom extends React.Component {
+class AddNewCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.onCoordinatorStoreWardChange = this.onCoordinatorStoreWardChange.bind(this)
-        this.handleInsertNew = this.handleInsertNew.bind(this)
-        this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
-        this.handleEdit = this.handleEdit.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
-        this.handleChange = this.handleChange.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
             IsShowCustomerAddress: true,
             DataSource: [],
-            DataWard: [],
-            IsLoadDataComplete: false,
+            DataWard: []
         };
         this.searchref = React.createRef();
         this.gridref = React.createRef();
@@ -54,8 +46,7 @@ class EditCom extends React.Component {
 
 
     componentDidMount() {
-        this.props.updatePagePath(EditPagePath);
-        this.callLoadData(this.props.match.params.id);
+        this.props.updatePagePath(AddPagePath);
 
     }
 
@@ -63,33 +54,6 @@ class EditCom extends React.Component {
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
     }
 
-    callLoadData(id) {
-        this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            console.log('callLoadData', apiResult, id)
-            if (apiResult.IsError) {
-                this.setState({
-                    IsCallAPIError: !apiResult.IsError
-                });
-                this.showMessage(apiResult.Message);
-            }
-            else {
-                let IsShowCustomerAddress;
-                if(apiResult.ResultObject.IsCheckCustomerAddress){
-                    IsShowCustomerAddress= false
-                }
-                else{
-                    IsShowCustomerAddress= true
-                }
-                
-                this.setState({
-                    DataSource: apiResult.ResultObject,
-                    IsLoadDataComplete: true,
-                    DataWard: apiResult.ResultObject.CoordinatorStoreWard_ItemList,
-                    IsShowCustomerAddress,
-                });
-            }
-        });
-    }
 
 
     showMessage(message) {
@@ -107,72 +71,17 @@ class EditCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.CoordinatorStoreID = this.props.match.params.id.trim();
-        console.log("edit", MLObject)
+        console.log("handleSubmit", MLObject)
 
-        this.props.callFetchAPI(APIHostName, UpdateNewAPIPath, MLObject).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
         });
     }
 
-    handleChange(formData, MLObject) {
-        if (formData.chkIsCheckCustomerAddress.value) {
-            this.setState({
-                IsShowCustomerAddress: false
-            })
-        }
-        else {
-            this.setState({
-                IsShowCustomerAddress: true
-            })
-        }
-    }
-    onCoordinatorStoreWardChange(list, deleteList) {
-
-    }
-
-    handleInsertNew() {
-
-        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
-            content: {
-                text: <StoreWard
-                    DataWard={this.state.DataWard}
-                    onInputChangeObj={this.handleInputChangeObjItem}
-
-                />
-            },
-            maxWidth: '1000px'
-        })
-    }
-
-    handleInputChangeObjItem(ObjItem) {
-        console.log("aaa", ObjItem);
-        this.props.hideModal()
-    }
-
-    handleEdit(index) {
-        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
-            content: {
-                text: <StoreWard
-                    DataWard={this.state.DataWard}
-                    index={index}
-                    onInputChangeObj={this.handleInputChangeObjItem}
-
-                />
-            },
-            maxWidth: '1000px'
-        })
-    }
-
-    handleDelete() {
-
-    }
 
     render() {
-        const { DataSource, IsShowCustomerAddress, DataWard } = this.state;
+        const { DataSource, IsShowCustomerAddress } = this.state;
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -182,10 +91,8 @@ class EditCom extends React.Component {
                 FormName="Thêm định nghĩa kho điều phối giao hàng"
                 MLObjectDefinition={MLObjectDefinition}
                 listelement={[]}
-                dataSource={this.state.DataSource}
                 onSubmit={this.handleSubmit}
                 BackLink={BackLink}
-                onchange={this.handleChange.bind(this)}
             //RequirePermission={COORDINATORSTORE_ADD}
             >
                 <div className="row">
@@ -310,32 +217,6 @@ class EditCom extends React.Component {
                     </div>
                     <div className="col-md-6"></div>
                 </div>
-
-                <div className="row">
-
-                    {/* <CoordinatorStoreWard 
-                        onCoordinatorStoreWardChange={this.onCoordinatorStoreWardChange}
-                    /> */}
-
-                </div>
-
-                <InputGridControl
-                    name="CoordinatorStoreWard_ItemList"
-                    controltype="InputGridControl"
-                    title="Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối"
-                    IDSelectColumnName={"WardID"}
-                    listColumn={DataGridColumnList}
-                    PKColumnName={PKColumnNameWard}
-                    dataSource={DataWard}
-                    onInsertClick={this.handleInsertNew}
-                    onEditClick={this.handleEdit}
-                    onDeleteClick={this.handleDelete}
-                    isHiddenButtonAdd={IsShowCustomerAddress}
-                    ref={this.gridref}
-                />
-
-
-
             </FormContainer>
 
         );
@@ -369,5 +250,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Edit = connect(mapStateToProps, mapDispatchToProps)(EditCom);
-export default Edit;
+const AddNew = connect(mapStateToProps, mapDispatchToProps)(AddNewCom);
+export default AddNew;
