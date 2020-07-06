@@ -10,6 +10,7 @@ import { callGetCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
 import { hideModal } from '../../../../actions/modal';
 import { formatDate } from "../../../../common/library/CommonLib.js";
+import { formatMoney } from '../../../../utils/function';
 
 class DataGridShipmentOderCom extends Component {
     constructor(props) {
@@ -590,11 +591,11 @@ class DataGridShipmentOderCom extends Component {
                                     <td></td>
                                     <td className="group-price">
                                         <div className="group-row">
-                                            <span className="item pricecod">0</span> 
-                                            <span className="item price-supplies">5,500,000</span>
+                                            <span className="item pricecod"> {formatMoney(rowItem.TotalCOD, 0)}</span> 
+                                            <span className="item price-supplies">{formatMoney(rowItem.TotalSaleMaterialMoney, 0)}</span>
                                             <span className="item price3">
                                                 <span className="price-title">Nợ: </span>
-                                                <span className="price-debt">5,500,000</span>
+                                                <span className="price-debt">{formatMoney(rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD, 0)}</span>
                                             </span>
                                         </div>
                                     </td>
