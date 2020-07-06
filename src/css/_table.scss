@@ -101,13 +101,14 @@
 
                     .item {
                         width: 100%;
-                        display: flex;
+                        display: inherit;
                         height: 20px;
-                        float: none;
+                        float: initial;
                         justify-content: flex-start;
                         align-content: center;
                         margin-bottom: 5px;
                         font-size: 14px;
+                        text-align: left;
 
                         i {
                             margin-right: 10px;
@@ -156,9 +157,8 @@
                             color: #6c757d;
 
                             span {
-                                display: flex;
+                                display: initial;
                                 width: 100%;
-                                justify-content: flex-start;
 
                                 &.times {
 
@@ -218,9 +218,9 @@
 
                     .item {
                         width: 100%;
-                        display: flex;
+                        display: inherit;
                         height: 20px;
-                        text-align: center;
+                        text-align: left;
                         float: none;
                         justify-content: flex-start;
                         align-content: center;
