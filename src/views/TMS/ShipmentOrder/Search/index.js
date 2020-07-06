@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import DataGrid from "../../../../common/components/DataGrid/getdataserver.js";
+import DataGridShipmentOder from "../Component/DataGridShipmentOrder";
+
 import InputGridNew from "../../../../common/components/FormContainer/FormControl/InputGridNew";
 import { MessageModal } from "../../../../common/components/Modal";
 import {
@@ -215,7 +217,7 @@ class SearchCom extends React.Component {
                         classNamebtnSearch="btn-custom-right" 
 
                     />
-                    <DataGrid
+                    <DataGridShipmentOder
                         listColumn={DataGridColumnList}
                         dataSource={this.state.gridDataSource}
                         AddLink={AddLink}
