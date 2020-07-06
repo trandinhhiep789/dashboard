@@ -47,14 +47,14 @@ class MapsCom extends React.Component {
             "VehicleType": 2
         };
         const mapContainer = document.getElementById("map-container");
-        /// registerKey: "7f65a9df-4910-434d-b2ce-5cf7d783ad8b",
+        /// registerKey: "7f65a9df-4910-434d-b2ce-5cf7d783ad8b,6a50ea65-8dd9-4c03-aa6e-6c839b611eea/563f09d1-4fb8-4fe6-8307-0effd4e06de4",
 
         const mapProp = {
             center: new vbd.LatLng(LatitudeSender, LongitudeSender),
             maxZoom: 19,
             zoom: 15,
             minZoom: 2,
-            registerKey: "6a50ea65-8dd9-4c03-aa6e-6c839b611eea",
+            registerKey: "563f09d1-4fb8-4fe6-8307-0effd4e06de4",
             scaleControlOptions: { showScale: true },
             zoomControl: true
         };

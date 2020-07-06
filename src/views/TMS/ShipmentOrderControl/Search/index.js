@@ -124,10 +124,8 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-        let objsearchData=[]
-        const objUser = { SearchKey: "@CREATEDUSERSTORE", SearchValue: this.props.AppInfo.LoginInfo.Username};
-        objsearchData = Object.assign([], searchData, { [10]: objUser });
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, objsearchData).then(apiResult => {
+    
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,

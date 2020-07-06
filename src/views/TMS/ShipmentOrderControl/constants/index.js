@@ -42,73 +42,84 @@ export const SearchElementList = [
         type: "text",
         name: "txtKeyword",
         DataSourceMember: "Keyword",
-        label: "Từ khóa",
         value: "",
         colspan: 2,
         placeholder: "Từ khóa",
-        icon: ""
+        icon: "",
+        classNameCol:"col-custom"
+        
+    },
+    {
+        type: "text",
+        name: "txReceiverPhoneNumber",
+        DataSourceMember: "ReceiverPhoneNumber",
+        value: "",
+        colspan: 2,
+        placeholder: " Sđt người nhận hàng",
+        icon: "",
+        classNameCol:"col-custom"
     },
     {
         type: "ComboBox",
-        name: "cbRequestPartnerID",
-        DataSourceMember: "RequestPartnerID",
-        label: "Công ty",
+        name: "cbShipmentOrderTypeID",
+        DataSourceMember: "ShipmentOrderTypeID",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
-        placeholder: "---Vui lòng chọn---",
+        placeholder: "---Loại yêu cầu vận chuyển---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
-        ValueMember: "PartnerID",
-        NameMember: "PartnerName"
-
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
+        ValueMember: "ShipmentOrderTypeID",
+        NameMember: "ShipmentOrderTypeName",
+        classNameCol:"col-custom"
     },
     {
         type: "Datetime",
         name: "dtCreatedOrderTimeFo",
         DataSourceMember: "CreatedOrderTimeFo",
-        label: "Từ ngày",
-        value: dtFromdate,
+        placeholder: "Từ ngày",
+        value: new Date(),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
+        classNameCol:"col-custom"
     },
     {
         type: "Datetime",
         name: "dtCreatedOrderTimeTo",
         DataSourceMember: "CreatedOrderTimeTo",
-        label: "Đến ngày",
+        placeholder: "Đến ngày",
         value: new Date(),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
+        classNameCol:"col-custom"
     },
     {
         type: "ComboBox",
         name: "cbReceiverProvinceID",
         DataSourceMember: "ReceiverProvinceID",
-        label: "Tỉnh /thành phố",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
-        placeholder: "---Vui lòng chọn---",
+        placeholder: "---Tỉnh /thành phố---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
         ValueMember: "ProvinceID",
         NameMember: "ProvinceName",
-        filterrest:"cbReceiverDistrictID,cbSenderStoreID"
+        filterrest:"cbReceiverDistrictID,cbSenderStoreID",
+        classNameCol:"col-custom"
     },
     {
         type: "ComboBox",
         name: "cbReceiverDistrictID",
         DataSourceMember: "ReceiverDistrictID",
-        label: "Quận/huyện",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
-        placeholder: "---Vui lòng chọn---",
+        placeholder: "---Quận/huyện---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
         filterName: "cbReceiverProvinceID",
@@ -117,17 +128,17 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
         ValueMember: "DistrictID",
         NameMember: "DistrictName",
-        filterrest:"cbSenderStoreID"
+        filterrest:"cbSenderStoreID",
+        classNameCol:"col-custom"
     },
     {
         type: "ComboBox",
         name: "cbSenderStoreID",
         DataSourceMember: "SenderStoreID",
-        label: "Kho giao",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
-        placeholder: "---Vui lòng chọn---",
+        placeholder: "---Kho gửi---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
@@ -135,23 +146,62 @@ export const SearchElementList = [
         NameMember: "StoreName",
         filterName: "cbReceiverDistrictID",
         filterValue: "",
-        filterobj:"DistrictID"
-
+        filterobj:"DistrictID",
+        classNameCol:"col-custom"
+    },
+    {
+        type: "ComboBox",
+        name: "cbCoordinatorStoreID",
+        DataSourceMember: "CoordinatorStoreID",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Kho điều phối---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
+        ValueMember: "StoreID",
+        NameMember: "StoreName",
+        filterValue: 10,
+        filterobj:"CompanyID",
+        classNameCol:"col-custom"
     },
     {
         type: "ComboBox",
         name: "cbShipmentOrderStatusID",
         DataSourceMember: "ShipmentOrderStatusID",
-        label: "Trạng thái",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
-        placeholder: "---Vui lòng chọn---",
+        placeholder: "---Trạng thái---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUS",
         ValueMember: "ShipmentOrderStatusID",
         NameMember: "ShipmentOrderStatusName",
+        classNameCol:"col-custom"
+    },
+    {
+        type: "ComboBox",
+        name: "cbIsCoordinator",
+        DataSourceMember: "IsCoordinator",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "--Trạng thái điều phối--",
+        listoption: [{ value: -1, label: "--Điều phối--" },{ value: 1, label: "Đã điều phối" },{ value: 2, label: "Chưa điều phối" }],
+        classNameCol:"col-custom"
+    },
+    {
+        type: "ComboBox",
+        name: "cbIsView",
+        DataSourceMember: "IsView",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "--Trạng thái xem--",
+        listoption: [{ value: -1, label: "--Trạng thái xem--" },{ value: 1, label: "Đã xem" },{ value: 2, label: "Chưa xem" }],
+        classNameCol:"col-custom"
     }
 ];
 export const InitSearchParams = [
@@ -160,12 +210,16 @@ export const InitSearchParams = [
         SearchValue: ""
     },
     {
-        SearchKey: "@REQUESTPARTNERID",
+        SearchKey: "@RECEIVERPHONENUMBER",
+        SearchValue: ""
+    },
+    {
+        SearchKey: "@SHIPMENTORDERTYPEID",
         SearchValue: "-1"
     },
     {
         SearchKey: "@FromDate",
-        SearchValue: dtFromdate
+        SearchValue: new Date()
     },
     {
         SearchKey: "@ToDate",
@@ -185,7 +239,19 @@ export const InitSearchParams = [
         SearchValue: -1
     },
     {
+        SearchKey: "@COORDINATORSTOREID",
+        SearchValue: -1
+    },
+    {
         SearchKey: "@SHIPMENTORDERSTATUSID",
+        SearchValue: -1
+    },
+    {
+        SearchKey: "@IsCoordinator",
+        SearchValue: -1
+    },
+    {
+        SearchKey: "@IsView",
         SearchValue: -1
     },
     {
@@ -205,9 +271,14 @@ export const SearchMLObjectDefinition = [
         BindControlName: "txtKeyword"
     },
     {
-        Name: "RequestPartnerID",
+        Name: "ReceiverPhoneNumber",
         DefaultValue: "",
-        BindControlName: "cbRequestPartnerID"
+        BindControlName: "txReceiverPhoneNumber"
+    },
+    {
+        Name: "ShipmentOrderTypeID",
+        DefaultValue: "",
+        BindControlName: "cbShipmentOrderTypeID"
     },
     {
         Name: "CreatedOrderTimeFo",
@@ -235,12 +306,27 @@ export const SearchMLObjectDefinition = [
         BindControlName: "cbSenderStoreID"
     },
     {
+        Name: "CoordinatorStoreID",
+        DefaultValue: "",
+        BindControlName: "cbCoordinatorStoreID"
+    },
+    {
         Name: "ShipmentOrderStatusID",
         DefaultValue: "",
         BindControlName: "cbShipmentOrderStatusID"
-    }
+    },
+    {
+        Name: "IsCoordinator",
+        DefaultValue: "",
+        BindControlName: "cbIsCoordinator"
+    },
+    {
+        Name: "IsView",
+        DefaultValue: "",
+        BindControlName: "cbIsView"
+    },
+    
 ];
-
 export const AddElementList = [
     {
         type: "numeric",
