@@ -201,7 +201,7 @@ class ElementComboBoxCom extends Component {
         let values = value;
         let selectedOption = [];
         if (values == null || values === -1)
-            return { value: -1, label: "--Vui lòng chọn--" };
+            return { value: -1, label: this.props.placeholder };
         if (typeof values.toString() == "string")
             values = values.toString().split();
         for (let i = 0; i < values.length; i++) {
@@ -217,12 +217,15 @@ class ElementComboBoxCom extends Component {
         let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterName, filterValue,filterobj } = this.props;
         // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
         if (IsAutoLoadItemFromCache) {
+           
             this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
-                //  console.log("this.props.isautoloaditemfromcach2: ",this.props.loaditemcachekeyid, this.state.Listoption);
-                listoption = [{ value: -1, label: "--Vui lòng chọn--" }];
+              
+                // console.log("this.props.isautoloaditemfromcach2: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                listoption = [{ value: -1, label: this.props.placeholder }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
-                    if (typeof filterName != undefined) {
-                        result.ResultObject.CacheData.filter(n => n.filterobj == filterValue).map((cacheItem) => {
+                    if (typeof filterobj != undefined) {
+                        console.log(filterobj,result.ResultObject.CacheData,result.ResultObject.CacheData.filter(n => n.filterobj == 1))
+                        result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
                             listoption.push({ value: cacheItem[ValueMember], label: cacheItem[NameMember] });
                         }
                         );
@@ -278,8 +281,9 @@ class ElementComboBoxCom extends Component {
         if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             let {filterName,filterobj,ValueMember,NameMember } = this.props;
-            if (typeof filterName != undefined) {
-                let listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
+            if (typeof filterobj != undefined) {
+                let listoptionnew = [{ value: -1, label: this.props.placeholder }];
+                console.log(filterobj,this.state.Data.filter(n => n[filterobj] == nextProps.filterValue))
                 this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
                     listoptionnew.push({ value: cacheItem[ValueMember], label: cacheItem[NameMember] });
                 }

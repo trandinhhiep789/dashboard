@@ -82,12 +82,8 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.Keyword
             },
             {
-                SearchKey: "@RECEIVERPHONENUMBER",
-                SearchValue: MLObject.ReceiverPhoneNumber
-            },
-            {
-                SearchKey: "@SHIPMENTORDERTYPEID",
-                SearchValue: MLObject.ShipmentOrderTypeID
+                SearchKey: "@REQUESTPARTNERID",
+                SearchValue: MLObject.RequestPartnerID
             },
             {
                 SearchKey: "@FromDate",
@@ -96,7 +92,8 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@ToDate",
                 SearchValue: MLObject.CreatedOrderTimeTo
-            },
+            }
+            ,
             {
                 SearchKey: "@RECEIVERPROVINCEID",
                 SearchValue: MLObject.ReceiverProvinceID
@@ -110,20 +107,8 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.SenderStoreID
             },
             {
-                SearchKey: "@COORDINATORSTOREID",
-                SearchValue: MLObject.CoordinatorStoreID
-            },
-            {
                 SearchKey: "@SHIPMENTORDERSTATUSID",
                 SearchValue: MLObject.ShipmentOrderStatusID
-            },
-            {
-                SearchKey: "@IsCoordinator",
-                SearchValue: MLObject.IsCoordinator
-            },
-            {
-                SearchKey: "@IsView",
-                SearchValue: MLObject.IsView
             },
             {
                 SearchKey: "@PAGESIZE",
@@ -139,10 +124,9 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-        debugger;
         let objsearchData=[]
         const objUser = { SearchKey: "@CREATEDUSERSTORE", SearchValue: this.props.AppInfo.LoginInfo.Username};
-        objsearchData = Object.assign([], searchData, { [14]: objUser });
+        objsearchData = Object.assign([], searchData, { [10]: objUser });
         this.props.callFetchAPI(APIHostName, SearchAPIPath, objsearchData).then(apiResult => {
             if (!apiResult.IsError) {
                 this.setState({
