@@ -403,34 +403,75 @@ class DataGridShipmentOderCom extends Component {
                                     rowClass = "jsgrid-alt-row";
                                 }
                                 return (<tr key={rowIndex}>
-                                    <td>
-                                        <div className="checkbox">
-                                            <label>
-                                                <input type="checkbox" readOnly className="form-control form-control-sm" />
-                                                <span className="cr">
-                                                    <i className="cr-icon fa fa-check"></i>
+                                    <td className="btngroupleft">
+                                        <div className="group-action">
+                                            <div className="checkbox item-action">
+                                                <label>
+                                                    <input type="checkbox" readOnly className="form-control form-control-sm" />
+                                                    <span className="cr">
+                                                        <i className="cr-icon fa fa-check"></i>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <a title="" className="nav-link hover-primary  item-action" title="Edit">
+                                                <i className="ti-pencil"></i>
+                                            </a>
+                                            <a title="" className="table-action hover-danger item-action" title="Xóa">
+                                                <i className="ti-trash"></i>
+                                            </a>
+                                        </div>
+
+                                    </td>
+                                    <td className="groupInfoAction">
+                                        <div className="group-info-row">
+                                            <label className="item time">
+                                                <i className="ti ti-timer"></i>
+                                                <span>{rowItem.ShipmentOrderID}</span>
+                                            </label>
+                                            <label className="item status">
+                                                <i className="fa fa-location-arrow"></i>
+                                                <span>{rowItem.ShipmentOrderID}</span>
+                                            </label>
+                                            <label className="item vehicle">
+                                                <i className="fa fa-motorcycle"></i>
+                                                <span>{rowItem.ShipmentOrderID}</span>
+                                            </label>
+                                            <label className="item printing">
+                                                <i className="ti ti-printer"></i>
+                                                <span>{rowItem.ShipmentOrderID}</span>
+                                            </label>
+                                        </div>
+
+                                    </td>
+                                    <td className="group-address">
+                                        <div className="group-info-row">
+                                            <label className="item person">
+                                                <i className="fa fa-user"></i>
+                                                <span className="person-info">
+                                                    <span className="name">
+                                                        nguyễn văn a
+                                                    </span>
+                                                    <span className="line">-</span>
+                                                    <span className="phone">0961545142</span>
+                                                </span>
+                                            </label>
+                                            <label className="item address-receiver">
+                                                <span>182/21 gò xoài, phường tân thành, quận tân phú, hồ chí mình</span>
+                                            </label>
+                                            <label className="item address-repository-created">
+                                                <span>
+                                                    Phường tân thạnh, quận tân phú, hồ chí minh
+                                                </span>
+                                            </label>
+                                            <label className="item creacte-time">
+                                                <i className="ti ti-timer"></i>
+                                                <span className="times">
+                                                    <span className="item pull-left">Tạo lúc: </span>
+                                                    <span className="item pull-right">16:40 20/07</span>
                                                 </span>
                                             </label>
                                         </div>
-                                        <a
-                                            title=""
-                                            className="nav-link hover-primary"
-                                            title="Edit">
-                                            <i className="ti-pencil"></i>
-                                        </a>
-                                        <a
-                                            title=""
-                                            className="table-action hover-danger"
-                                            title="Xóa">
-                                            <i className="ti-trash"></i>
-                                        </a>
                                     </td>
-                                    <td><label>{rowItem.ShipmentOrderID}</label>
-                                    <label>{rowItem.ShipmentOrderID}</label>
-                                    <label>{rowItem.ShipmentOrderID}</label>
-                                    
-                                    </td>
-                                    <td>{rowItem.ShipmentOrderID}</td>
                                     <td>{rowItem.ShipmentOrderID}</td>
                                     <td>{rowItem.ShipmentOrderID}</td>
                                     <td>{rowItem.ShipmentOrderID}</td>
