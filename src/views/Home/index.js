@@ -53,7 +53,8 @@ import UserGroup from '../../views/TMS/User/UserGroup';
 import PartnerTransaction from '../../views/TMS/MD/PartnerTransaction';
 
 import CoordinatorStore from '../../views/TMS/MD/CoordinatorStore';
-
+import Vehicle from '../../views/TMS/MD/Vehicle';
+import WorkingShift from '../../views/TMS/MD/WorkingShift';
 
 
 import NotFound from '../NotFound'
@@ -149,6 +150,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/IDDocumentType" component={IDDocumentType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerTransaction" component={PartnerTransaction} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/CoordinatorStore" component={CoordinatorStore} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} />
                                 
 
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
