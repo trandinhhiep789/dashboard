@@ -45,7 +45,9 @@ export const SearchElementList = [
         value: "",
         colspan: 2,
         placeholder: "Từ khóa",
-        icon: ""
+        icon: "",
+        classNameCol:"col-custom"
+        
     },
     {
         type: "text",
@@ -54,7 +56,8 @@ export const SearchElementList = [
         value: "",
         colspan: 2,
         placeholder: " Sđt người nhận hàng",
-        icon: ""
+        icon: "",
+        classNameCol:"col-custom"
     },
     {
         type: "ComboBox",
@@ -68,8 +71,8 @@ export const SearchElementList = [
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
         ValueMember: "ShipmentOrderTypeID",
-        NameMember: "ShipmentOrderTypeName"
-
+        NameMember: "ShipmentOrderTypeName",
+        classNameCol:"col-custom"
     },
     {
         type: "Datetime",
@@ -80,6 +83,7 @@ export const SearchElementList = [
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
+        classNameCol:"col-custom"
     },
     {
         type: "Datetime",
@@ -90,6 +94,7 @@ export const SearchElementList = [
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
+        classNameCol:"col-custom"
     },
     {
         type: "ComboBox",
@@ -104,7 +109,8 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
         ValueMember: "ProvinceID",
         NameMember: "ProvinceName",
-        filterrest:"cbReceiverDistrictID,cbSenderStoreID"
+        filterrest:"cbReceiverDistrictID,cbSenderStoreID",
+        classNameCol:"col-custom"
     },
     {
         type: "ComboBox",
@@ -122,7 +128,8 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
         ValueMember: "DistrictID",
         NameMember: "DistrictName",
-        filterrest:"cbSenderStoreID"
+        filterrest:"cbSenderStoreID",
+        classNameCol:"col-custom"
     },
     {
         type: "ComboBox",
@@ -139,8 +146,8 @@ export const SearchElementList = [
         NameMember: "StoreName",
         filterName: "cbReceiverDistrictID",
         filterValue: "",
-        filterobj:"DistrictID"
-
+        filterobj:"DistrictID",
+        classNameCol:"col-custom"
     },
     {
         type: "ComboBox",
@@ -156,7 +163,8 @@ export const SearchElementList = [
         ValueMember: "StoreID",
         NameMember: "StoreName",
         filterValue: 10,
-        filterobj:"CompanyID"
+        filterobj:"CompanyID",
+        classNameCol:"col-custom"
     },
     {
         type: "ComboBox",
@@ -171,26 +179,29 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUS",
         ValueMember: "ShipmentOrderStatusID",
         NameMember: "ShipmentOrderStatusName",
+        classNameCol:"col-custom"
     },
     {
         type: "ComboBox",
         name: "cbIsCoordinator",
         DataSourceMember: "IsCoordinator",
-        colspan: 1,
+        colspan: 2,
         value: 2,
         isMultiSelect: false,
         placeholder: "--Trạng thái điều phối--",
         listoption: [{ value: -1, label: "--Điều phối--" },{ value: 1, label: "Đã điều phối" },{ value: 2, label: "Chưa điều phối" }],
+        classNameCol:"col-custom"
     },
     {
         type: "ComboBox",
         name: "cbIsView",
         DataSourceMember: "IsView",
-        colspan: 1,
+        colspan: 2,
         value: -1,
         isMultiSelect: false,
         placeholder: "--Trạng thái xem--",
         listoption: [{ value: -1, label: "--Trạng thái xem--" },{ value: 1, label: "Đã xem" },{ value: 2, label: "Chưa xem" }],
+        classNameCol:"col-custom"
     }
 ];
 export const InitSearchParams = [

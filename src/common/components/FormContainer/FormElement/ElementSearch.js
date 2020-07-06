@@ -15,11 +15,16 @@ class ElementTextCom extends Component {
             this.props.onValueChange(e.target.name, e.target.value);
     }
     render() {
-        let { name, label, placeholder, icon, colspan, value, readonly, ValidatonErrorMessage } = this.props;
+        let { name, label, placeholder, icon, colspan, value, readonly, ValidatonErrorMessage, classNameCol } = this.props;
         let className = "form-control form-control-sm";
         let colspanClassName = "col-md-3";
         if (colspan) {
-            colspanClassName = "col-md-" + this.props.colspan;
+            if(classNameCol){
+                colspanClassName = "col-md-" + this.props.colspan + " " +classNameCol;
+            }
+            else{
+                colspanClassName = "col-md-" + this.props.colspan;
+            }
         }
         let labeldiv;
         if (label) {
@@ -67,11 +72,16 @@ class ElementTextdropdownCom extends Component {
             this.props.onValueChange(e.target.name, e.currentTarget.dataset.option);
     }
     render() {
-        let { name, label, placeholder, icon, colspan, value, readonly, ValidatonErrorMessage, nameOption, valuenameOption, listoption } = this.props;
+        let { name, label, placeholder, icon, colspan, value, readonly, ValidatonErrorMessage, nameOption, valuenameOption, listoption, classNameCol } = this.props;
         let className = "form-control form-control-sm txtKeyword";
         let colspanClassName = "col-md-3";
         if (colspan) {
-            colspanClassName = "col-md-" + this.props.colspan;
+            if(classNameCol){
+                colspanClassName = "col-md-" + this.props.colspan + " " +classNameCol;
+            }
+            else{
+                colspanClassName = "col-md-" + this.props.colspan;
+            }
         }
         let labeldiv;
         if (label) {
@@ -123,10 +133,15 @@ class ElementCheckboxCom extends Component {
             this.props.onValueChange(e.target.name, e.target.value);
     }
     render() {
-        let { name, label, value, colspan } = this.props;
+        let { name, label, value, colspan, classNameCol } = this.props;
         let colspanClassName = "col-md-1";
         if (colspan) {
-            colspanClassName = "col-md-" + this.props.colspan;
+            if(classNameCol){
+                colspanClassName = "col-md-" + this.props.colspan + " " +classNameCol;
+            }
+            else{
+                colspanClassName = "col-md-" + this.props.colspan;
+            }
         }
 
         let labeldiv;
@@ -163,10 +178,15 @@ class ElementCheckLDivboxCom extends Component {
             this.props.onValueChange(e.target.name, e.target.value);
     }
     render() {
-        let { name, label, value, colspan } = this.props;
+        let { name, label, value, colspan, classNameCol } = this.props;
         let colspanClassName = "col-md-4";
         if (colspan) {
-            colspanClassName = "col-md-" + this.props.colspan;
+            if(classNameCol){
+                colspanClassName = "col-md-" + this.props.colspan + " " +classNameCol;
+            }
+            else{
+                colspanClassName = "col-md-" + this.props.colspan;
+            }
         }
 
         let labeldiv;
@@ -300,11 +320,16 @@ class ElementComboBoxCom extends Component {
     }
 
     render() {
-        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder } = this.props;
+        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder, classNameCol } = this.props;
         let className = "select";
         let colspanClassName = "col-md-3";
         if (colspan) {
-            colspanClassName = "col-md-" + this.props.colspan;
+            if(classNameCol){
+                colspanClassName = "col-md-" + this.props.colspan + " " +classNameCol;
+            }
+            else{
+                colspanClassName = "col-md-" + this.props.colspan;
+            }
         }
         let labeldiv;
         if (label) {
@@ -409,7 +434,7 @@ class ElementComboBoxNewCom extends Component {
     }
 
     render() {
-        let { name, label, icon, colspan, isMultiSelect, validationErrorMessage, placeholder } = this.props;
+        let { name, label, icon, colspan, isMultiSelect, validationErrorMessage, placeholder, classNameCol } = this.props;
         let className = "select";
 
         let formRowClassName = "form-row";
@@ -423,7 +448,12 @@ class ElementComboBoxNewCom extends Component {
         }
         let formGroupClassName = "form-group col-md-8";
         if (this.props.colspan != null) {
-            formGroupClassName = "form-group col-md-" + this.props.colspan;
+            if(classNameCol){
+                formGroupClassName = "form-group col-md-" + this.props.colspan + " " +classNameCol;
+            }
+            else{
+                formGroupClassName = "form-group col-md-" + this.props.colspan;
+            }
         }
 
         if (validationErrorMessage && validationErrorMessage != "") {
@@ -478,13 +508,18 @@ class ElementTextNewCom extends Component {
             this.props.onValueChange(e.target.name, e.target.value);
     }
     render() {
-        let { name, label, placeholder, icon, colspan, value, readonly, validationErrorMessage } = this.props;
+        let { name, label, placeholder, icon, colspan, value, readonly, validationErrorMessage, classNameCol } = this.props;
         let className = "form-control form-control-sm";
         if (this.props.CSSClassName != null)
             className = this.props.CSSClassName;
         let formGroupClassName = "form-group col-md-2";
         if (this.props.colspan != null) {
-            formGroupClassName = "form-group col-md-" + this.props.colspan;
+            if(classNameCol){
+                formGroupClassName = "form-group col-md-" + this.props.colspan + " " +classNameCol;
+            }
+            else{
+                formGroupClassName = "form-group col-md-" + this.props.colspan;
+            }
         }
         let labelDivClassName = "form-group col-md-2";
         if (this.props.labelcolspan != null) {
@@ -538,13 +573,18 @@ class ElementTextNewFullCom extends Component {
             this.props.onValueChange(e.target.name, e.target.value);
     }
     render() {
-        let { name, label, placeholder, icon, colspan, value, readonly, validationErrorMessage } = this.props;
+        let { name, label, placeholder, icon, colspan, value, readonly, validationErrorMessage, classNameCol } = this.props;
         let className = "form-control form-control-sm";
         if (this.props.CSSClassName != null)
             className = this.props.CSSClassName;
         let formGroupClassName = "form-group col-md-2";
         if (this.props.colspan != null) {
-            formGroupClassName = "form-group col-md-" + this.props.colspan;
+            if(classNameCol){
+                formGroupClassName = "form-group col-md-" + this.props.colspan + " " +classNameCol;
+            }
+            else{
+                formGroupClassName = "form-group col-md-" + this.props.colspan;
+            }
         }
         let labelDivClassName = "form-group col-md-2";
         if (this.props.labelcolspan != null) {
@@ -598,11 +638,16 @@ class ElementDatetimeCom extends Component {
             this.props.onValueChange(name, moment);
     }
     render() {
-        let { name, label, timeFormat, dateFormat, colspan, value, ValidatonErrorMessage } = this.props;
+        let { name, label, timeFormat, dateFormat, colspan, value, ValidatonErrorMessage, classNameCol } = this.props;
         let className = "";
         let colspanClassName = "col-md-3";
         if (colspan) {
-            colspanClassName = "col-md-" + this.props.colspan;
+            if(classNameCol){
+                colspanClassName = "form-group col-md-" + this.props.colspan + " " +classNameCol;
+            }
+            else{
+                colspanClassName = "form-group col-md-" + this.props.colspan;
+            }
         }
         let labeldiv;
         if (label) {
@@ -645,14 +690,19 @@ class ElementDatetimeFromToCom extends Component {
             this.props.onValueChange(name, moment);
     }
     render() {
-        let { name, label, nameOption, valueOption, timeFormat, dateFormat, colspan, value, ValidatonErrorMessage } = this.props;
+        
+        let { name, label, nameOption, valueOption, timeFormat, dateFormat, colspan, value, ValidatonErrorMessage, classNameCol } = this.props;
         let className = "";
         let colspanClassName = "col-md-4";
         if (colspan) {
-            colspanClassName = "col-md-" + this.props.colspan;
+            if(classNameCol){
+                colspanClassName = "form-group col-md-" + this.props.colspan + " " +classNameCol;
+            }
+            else{
+                colspanClassName = "form-group col-md-" + this.props.colspan;
+            }
         }
         let labeldiv;
-        console.log("zzzz", label)
         if (label) {
             labeldiv = <label className="col-form-label" htmlFor="input-normal">{label}</label>;
         }

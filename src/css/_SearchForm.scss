@@ -135,6 +135,27 @@
                   
                 }
             }
+            &.multiple-custom-display{
+                .input-group{
+                    @media (max-width: 767px) {
+                        margin-bottom: 0.5rem;
+                    }
+                }
+                .col-custom{
+                    padding-right: 2px;
+                    padding-left: 2px;
+                    &.btn-custom-right{
+                        clear: both;
+                        width: 100% ;
+                        display: block;
+                        max-width: initial;
+                        flex: auto;
+                        .btnSearch {
+                            text-align: end;
+                        }
+                    }
+                }
+            }
         }
     }
 }

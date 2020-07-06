@@ -106,6 +106,13 @@ export default class SearchForm extends Component {
     renderSearchForm() {
         const listElement = this.props.listelement;
         let cssSearchButton = "";
+        let classNamebtnSearch;
+        if(this.props.classNamebtnSearch){
+            classNamebtnSearch = "col-md-2 item  col-custom " + this.props.classNamebtnSearch;
+        }
+        else{
+            classNamebtnSearch = "col-md-2 item  col-custom";
+        }
         return (
             <div className="row">
                 {
@@ -120,6 +127,7 @@ export default class SearchForm extends Component {
                                         {...elementItem}
                                         value={this.state.FormData[elementItem.name].value}
                                         key={index}
+
                                     />
                                 );
                             case "textdropdown":
@@ -187,8 +195,8 @@ export default class SearchForm extends Component {
                     })
                 }
 
-                <div className="col-md-2 item">
-                    <div className="btnSearch">
+                <div className={classNamebtnSearch}>
+                    <div className="btnSearch btncustom">
                         <button className="btn btn-primary" type="submit">
                             <span className="fa fa-search"> Tìm Kiếm</span>
                         </button>
@@ -204,7 +212,7 @@ export default class SearchForm extends Component {
         let elmentRender = this.renderSearchForm();
         let classNameCustom;
         if (this.props.className == undefined && this.props.className == '') {
-            classNameCustom = "col-lg-12 SearchForm";
+            classNameCustom = "col-lg-12 SearchForm ";
         } else {
             classNameCustom = "col-lg-12 SearchForm " + this.props.className;
         }

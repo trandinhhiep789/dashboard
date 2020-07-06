@@ -211,7 +211,8 @@ class SearchCom extends React.Component {
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
-                        className="multiple"
+                        className="multiple multiple-custom multiple-custom-display"
+                        classNamebtnSearch="btn-custom-right" 
 
                     />
                     <DataGrid
@@ -244,7 +245,8 @@ class SearchCom extends React.Component {
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
-                        className="multiple"
+                        className="multiple multiple-custom multiple-custom-display" 
+                        classNamebtnSearch="btn-custom-right" 
 
                     />
                   <label>Đang nạp dữ liệu...</label>
