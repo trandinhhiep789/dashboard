@@ -121,6 +121,10 @@ class AddCom extends React.Component {
     }
 
     handleInputChangeObjItem(ObjItem, result) {
+      
+        const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: ObjItem });
+        this.setState({ DataSource: formData});
+
         this.addNotification(result.Message, result.IsError);
         this.props.hideModal()
     }
@@ -140,11 +144,12 @@ class AddCom extends React.Component {
         })
     }
 
-    handleDelete(index) {
-        let dataSourceValue = this.state.DataWard.filter(function (value, index1) { return index1 != index; });
-        console.log('aa',dataSourceValue, index )
-        //const formData = Object.assign({}, this.state.DataWard, { ["ShipmentOrder_ItemList"]: dataSourceValue });
-        //this.setState({ DataSource: formData });
+    handleDelete(id) {
+        let dataSourceValue = this.state.DataSource.CoordinatorStoreWard_ItemList.filter(function (value, index) {
+            return value.WardID != id;
+        });
+         const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: dataSourceValue });
+        this.setState({ DataSource: formData });
     }
 
     addNotification(message1, IsError) {
@@ -337,7 +342,7 @@ class AddCom extends React.Component {
                         IDSelectColumnName={"WardID"}
                         listColumn={DataGridColumnList}
                         PKColumnName={PKColumnNameWard}
-                        dataSource={DataWard}
+                        dataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
                         onInsertClick={this.handleInsertNew}
                         onEditClick={this.handleEdit}
                         onDeleteClick={this.handleDelete}
