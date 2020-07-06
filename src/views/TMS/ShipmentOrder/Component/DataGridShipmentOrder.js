@@ -475,7 +475,16 @@ class DataGridShipmentOderCom extends Component {
                                     <td>{rowItem.ShipmentOrderID}</td>
                                     <td>{rowItem.ShipmentOrderID}</td>
                                     <td>{rowItem.ShipmentOrderID}</td>
-                                    <td>{rowItem.ShipmentOrderID}</td>
+                                    <td className="group-price">
+                                        <div className="group-row">
+                                            <span className="item pricecod">0</span> 
+                                            <span className="item price-supplies">5,500,000</span>
+                                            <span className="item price3">
+                                                <span className="price-title">Nợ: </span>
+                                                <span className="price-debt">5,500,000</span>
+                                            </span>
+                                        </div>
+                                    </td>
                                 </tr>
                                 );
                             })
