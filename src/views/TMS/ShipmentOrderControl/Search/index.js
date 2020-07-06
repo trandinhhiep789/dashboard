@@ -211,6 +211,7 @@ class SearchCom extends React.Component {
                         onDeleteClick={this.handleDelete}
                         onChangePage={this.handleonChangePage}
                         IsDelete={false}
+                        IsAdd={false}
                         PageNumber={this.state.PageNumber}
                         IsAutoPaging={true}
                         RowsPerPage={10}

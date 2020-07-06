@@ -462,7 +462,7 @@ class EditCom extends React.Component {
                                             <div className="text-right">
                                                 {
                                                     this.state.Username != "" ? <button type="button" className="btn btn-info" onClick={this.onClickUserGroup.bind(this)} data-provide="tooltip" data-original-title="Thêm">
-                                                        <span className="fa fa-plus ff"> Thêm</span>
+                                                        <span className="fa fa-plus ff">Cập nhật</span>
                                                     </button> : ""
                                                 }
                                             </div>

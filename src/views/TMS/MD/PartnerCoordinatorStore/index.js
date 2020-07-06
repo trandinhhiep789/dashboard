@@ -68,7 +68,6 @@ class PartnerCoordinatorStoreCom extends React.Component {
     }
 
     getStoreName(storeId) {
-        debugger;
         let _store = this.state.Store.filter(item => item.StoreID == storeId);
         let _storeName = "";
         if (_store && _store.length > 0) {
@@ -184,7 +183,6 @@ class PartnerCoordinatorStoreCom extends React.Component {
     }
 
     handleDelete(deleteList, pkColumnName) {
-        debugger;
         //let datasource = this.state.PartnerCoordinatorStore;
         let _PartnerCoordinatorStore = this.state.PartnerCoordinatorStore;
         deleteList.map((row, index) => {

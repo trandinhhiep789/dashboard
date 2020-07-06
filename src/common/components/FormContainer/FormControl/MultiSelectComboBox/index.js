@@ -91,7 +91,6 @@ class MultiSelectComboBoxCom extends React.Component {
     }
 
     handleValueChange1(e) {
-        debugger
         let value = e.target.value;
         if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38) {
             this.callSearchData("*" + value + "*");

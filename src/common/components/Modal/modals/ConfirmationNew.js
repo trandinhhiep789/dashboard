@@ -80,7 +80,6 @@ class ConfirmationNew extends React.Component {
         const dataSource = this.props.dataSource;
         let formData = {};
         const listElement = this.bindDataToControl(this.props.modalElementList, this.props.dataSource);
-        debugger;
         listElement.map((elementItem) => {
             const elementname = elementItem.name;
             const ObjectName = { Name: elementname, value: elementItem.value, Controltype: elementItem.Type, label: elementItem.label, labelError: elementItem.label, ErrorLst: [], validatonList: elementItem.validatonList };

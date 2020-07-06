@@ -183,7 +183,6 @@ class FormControlTextBox extends React.Component {
 
         if (this.props.classNameCustom != null) {
             formRowClassName += this.props.classNameCustom;
-            debugger
 
         }
         if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {

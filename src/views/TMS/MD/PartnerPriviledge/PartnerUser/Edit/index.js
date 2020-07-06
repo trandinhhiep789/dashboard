@@ -91,7 +91,6 @@ class EditCom extends React.Component {
 
     //file upload
     handleSelectedFile(file, nameValue, isDeletetedFile) {
-        debugger;
         const filelist = { [nameValue]: file, "KeyName": nameValue, IsDeletetedFile: isDeletetedFile };
         let files = this.state.Files;
         let result = [];
