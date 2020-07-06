@@ -46,8 +46,12 @@ class StoreWardCom extends Component {
         MLObject.WardName = dataWardItem[0].WardName
 
         CoordinatorStoreWard_ItemList.push(MLObject)
+        const result= {
+            IsError: false,
+            Message: 'Thêm mới phường/xã địa thành công'
+        }
         if (this.props.onInputChangeObj != null) {
-            this.props.onInputChangeObj(CoordinatorStoreWard_ItemList);
+            this.props.onInputChangeObj(CoordinatorStoreWard_ItemList, result);
         }
     }
 

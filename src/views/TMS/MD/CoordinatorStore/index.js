@@ -21,7 +21,7 @@ class CoordinatorStoreCom extends React.Component {
         return (
             <Switch>
                 <Route exact path="/CoordinatorStore" component={Search} />
-                <Route exact path="/CoordinatorStore/Add" component={AddNew} />
+                <Route exact path="/CoordinatorStore/Add" component={Add} />
                 <Route exact path="/CoordinatorStore/Edit/:id" component={Edit} />
                 <Route path="*" component={NotFound} />
             </Switch>

@@ -7,6 +7,7 @@ export const AddNewAPIPath = "api/CoordinatorStore/AddNew";
 export const UpdateAPIPath = "api/CoordinatorStore/Update";
 export const UpdateNewAPIPath = "api/CoordinatorStore/UpdateNew";
 export const DeleteAPIPath = "api/CoordinatorStore/Delete";
+export const DeleteNewAPIPath = "api/CoordinatorStore/DeleteNew";
 export const UpdateOrderAPIPath = "api/CoordinatorStore/UpdateOrder";
 export const BackLink = "/CoordinatorStore";
 export const AddLink = "/CoordinatorStore/Add";
@@ -62,13 +63,7 @@ export const SearchMLObjectDefinition = [
 
 export const DataGridColumnList = [
 
-    {
-        Name: "WardID",
-        Type: "text",
-        Caption: "Phường/xã",
-        DataSourceMember: "WardID",
-        Width: 350
-    },
+  
     {
         Name: "WardName",
         Type: "text",
@@ -268,17 +263,17 @@ export const DataGridCoordinatorStoreColumnList=[
         Width: 250
     },
     {
-        Name: "StoreID",
+        Name: "StoreName",
         Type: "text",
         Caption: "Kho điều phối",
-        DataSourceMember: "StoreID",
+        DataSourceMember: "StoreName",
         Width: 250
     },
     {
-        Name: "SenderStoreID",
+        Name: "SenderStoreName",
         Type: "text",
         Caption: "Kho gửi",
-        DataSourceMember: "SenderStoreID",
+        DataSourceMember: "SenderStoreName",
         Width: 250
     },
     {
