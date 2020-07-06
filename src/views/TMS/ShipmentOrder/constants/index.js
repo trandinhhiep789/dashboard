@@ -186,7 +186,7 @@ export const SearchElementList = [
         name: "cbIsCoordinator",
         DataSourceMember: "IsCoordinator",
         colspan: 2,
-        value: 2,
+        value: -1,
         isMultiSelect: false,
         placeholder: "--Trạng thái điều phối--",
         listoption: [{ value: -1, label: "--Điều phối--" },{ value: 1, label: "Đã điều phối" },{ value: 2, label: "Chưa điều phối" }],
@@ -248,7 +248,7 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@IsCoordinator",
-        SearchValue: 2
+        SearchValue: -1
     },
     {
         SearchKey: "@IsView",

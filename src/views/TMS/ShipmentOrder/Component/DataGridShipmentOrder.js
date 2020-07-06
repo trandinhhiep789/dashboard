@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { callGetCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
 import { hideModal } from '../../../../actions/modal';
+import { formatDate } from "../../../../common/library/CommonLib.js";
 
 class DataGridShipmentOderCom extends Component {
     constructor(props) {
@@ -373,118 +374,7 @@ class DataGridShipmentOderCom extends Component {
         return { [idSelectColumnName]: checkList };
     }
 
-    renderDataGrid() {
-        const listColumn = this.props.listColumn;
-        const dataSource = this.state.DataSource;
-        const pkColumnName = this.state.ListPKColumnName;
-        const idSelectColumnName = this.props.IDSelectColumnName;
-        const checkList = this.state.GridData[idSelectColumnName];
-        return (
-            <div className=" table-responsive">
-                <table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0" >
-                    <thead className="thead-light">
-                        <tr>
 
-                            <th className="jsgrid-header-cell" >Tác vụ</th>
-                            <th className="jsgrid-header-cell" >Thời gian giao</th>
-                            <th className="jsgrid-header-cell" >Địa chỉ</th>
-                            <th className="jsgrid-header-cell" >Kho gửi/Kho điều phối</th>
-                            <th className="jsgrid-header-cell" >Loại yêu cầu vận chuyển</th>
-                            <th className="jsgrid-header-cell" >Ghi chú</th>
-                            <th className="jsgrid-header-cell" >COD/Vật tư/Tổng tiền</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {dataSource != null &&
-                            dataSource.map((rowItem, rowIndex) => {
-                                let rowClass = "jsgrid-row";
-                                if (index % 2 != 0) {
-                                    rowClass = "jsgrid-alt-row";
-                                }
-                                return (<tr key={rowIndex}>
-                                    <td className="btngroupleft">
-                                        <div className="group-action">
-                                            <div className="checkbox item-action">
-                                                <label>
-                                                    <input type="checkbox" readOnly className="form-control form-control-sm" />
-                                                    <span className="cr">
-                                                        <i className="cr-icon fa fa-check"></i>
-                                                    </span>
-                                                </label>
-                                            </div>
-                                            <a title="" className="nav-link hover-primary  item-action" title="Edit">
-                                                <i className="ti-pencil"></i>
-                                            </a>
-                                            <a title="" className="table-action hover-danger item-action" title="Xóa">
-                                                <i className="ti-trash"></i>
-                                            </a>
-                                        </div>
-
-                                    </td>
-                                    <td className="groupInfoAction">
-                                        <div className="group-info-row">
-                                            <label className="item time">
-                                                <i className="ti ti-timer"></i>
-                                                <span>{rowItem.ShipmentOrderID}</span>
-                                            </label>
-                                            <label className="item status">
-                                                <i className="fa fa-location-arrow"></i>
-                                                <span>{rowItem.ShipmentOrderID}</span>
-                                            </label>
-                                            <label className="item vehicle">
-                                                <i className="fa fa-motorcycle"></i>
-                                                <span>{rowItem.ShipmentOrderID}</span>
-                                            </label>
-                                            <label className="item printing">
-                                                <i className="ti ti-printer"></i>
-                                                <span>{rowItem.ShipmentOrderID}</span>
-                                            </label>
-                                        </div>
-
-                                    </td>
-                                    <td className="group-address">
-                                        <div className="group-info-row">
-                                            <label className="item person">
-                                                <i className="fa fa-user"></i>
-                                                <span className="person-info">
-                                                    <span className="name">
-                                                        nguyễn văn a
-                                                    </span>
-                                                    <span className="line">-</span>
-                                                    <span className="phone">0961545142</span>
-                                                </span>
-                                            </label>
-                                            <label className="item address-receiver">
-                                                <span>182/21 gò xoài, phường tân thành, quận tân phú, hồ chí mình</span>
-                                            </label>
-                                            <label className="item address-repository-created">
-                                                <span>
-                                                    Phường tân thạnh, quận tân phú, hồ chí minh
-                                                </span>
-                                            </label>
-                                            <label className="item creacte-time">
-                                                <i className="ti ti-timer"></i>
-                                                <span className="times">
-                                                    <span className="item pull-left">Tạo lúc: </span>
-                                                    <span className="item pull-right">16:40 20/07</span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>{rowItem.ShipmentOrderID}</td>
-                                    <td>{rowItem.ShipmentOrderID}</td>
-                                    <td>{rowItem.ShipmentOrderID}</td>
-                                    <td>{rowItem.ShipmentOrderID}</td>
-                                </tr>
-                                );
-                            })
-                        }
-                    </tbody>
-                </table>
-            </div>
-        );
-    }
 
     checkPermission(permissionKey) {
         return new Promise((resolve, reject) => {
@@ -549,6 +439,162 @@ class DataGridShipmentOderCom extends Component {
             listMLObject.push(MLObject);
         });
         this.props.onSubmitItem(listMLObject);
+    }
+    _genCommentTime(dates) {
+        const date = new Date(Date.parse(dates));
+        let currentDate = new Date();
+        let hour = date.getHours();
+        let minute = date.getMinutes();
+        let timeDisplay = (hour < 10 ? '0' + hour : hour) + ':' + (minute < 10 ? '0' + minute : minute)
+        var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
+        var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
+        var diffMinutes = parseInt((timeDiff / (3600 * 24)));
+        if (diffDays < 1) {
+            if (diffMinutes < 20) {
+                return 'Vừa mới';
+            }
+            else {
+                return 'Hôm nay ' + timeDisplay;
+            }
+        } else if (diffDays == 1) {
+            return 'Hôm qua ' + timeDisplay;
+        } else {
+            let month = date.getMonth() + 1;
+            return date.getDate() + '/' + (month < 10 ? '0' + month : month) + date.getFullYear() + " " + timeDisplay;
+        }
+    }
+    _genCommentCarrierPartner(CarrierTypeID, CarrierTypeName) {
+        if (CarrierTypeID < 1) {
+
+            return (<label className="item vehicle"><span>Chưa chọn phương tiện</span></label>)
+
+        } else if (CarrierTypeID == 1) {
+            return (<label className="item vehicle">
+                <i className="fa fa-motorcycle"></i>
+                <span>{CarrierTypeName}</span>
+            </label>
+            );
+        }
+        else {
+            return (<label className="item vehicle">
+                <i className="fa fa-motorcycle"></i>
+                <span>{CarrierTypeName}</span>
+            </label>
+            );
+        }
+
+    }
+
+    renderDataGrid() {
+        const listColumn = this.props.listColumn;
+        const dataSource = this.state.DataSource;
+        const pkColumnName = this.state.ListPKColumnName;
+        const idSelectColumnName = this.props.IDSelectColumnName;
+        const checkList = this.state.GridData[idSelectColumnName];
+        return (
+            <div className=" table-responsive">
+                <table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0" >
+                    <thead className="thead-light">
+                        <tr>
+
+                            <th className="jsgrid-header-cell" >Tác vụ</th>
+                            <th className="jsgrid-header-cell" >Thời gian giao</th>
+                            <th className="jsgrid-header-cell" >Địa chỉ</th>
+                            <th className="jsgrid-header-cell" >Loại yêu cầu vận chuyển</th>
+                            <th className="jsgrid-header-cell" >Ghi chú</th>
+                            <th className="jsgrid-header-cell" >COD/Vật tư/Tổng tiền</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {dataSource != null &&
+                            dataSource.map((rowItem, rowIndex) => {
+                                let rowClass = "jsgrid-row";
+                                if (index % 2 != 0) {
+                                    rowClass = "jsgrid-alt-row";
+                                }
+                                return (<tr key={rowIndex}>
+                                    <td className="btngroupleft">
+                                        <div className="group-action">
+                                            <div className="checkbox item-action">
+                                                <label>
+                                                    <input type="checkbox" readOnly className="form-control form-control-sm" />
+                                                    <span className="cr">
+                                                        <i className="cr-icon fa fa-check"></i>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            {/* <a title="" className="nav-link hover-primary  item-action" title="Edit">
+                                                <i className="ti-pencil"></i>
+                                            </a>
+                                            <a title="" className="table-action hover-danger item-action" title="Xóa">
+                                                <i className="ti-trash"></i>
+                                            </a> */}
+                                        </div>
+
+                                    </td>
+                                    <td className="groupInfoAction">
+                                        <div className="group-info-row">
+                                            <label className="item time">
+                                                <i className="ti ti-timer"></i>
+                                                <span>{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
+                                            </label>
+                                            <label className="item status">
+                                                <i className="fa fa-location-arrow"></i>
+                                                <span>{rowItem.ShipmentOrderStatusName}</span>
+                                            </label>
+                                            <label className="item vehicle">
+                                                {
+                                                    this._genCommentCarrierPartner(rowItem.CarrierTypeID, rowItem.CarrierTypeName)
+                                                }
+                                            </label>
+                                            <label className="item printing">
+                                                <i className="ti ti-printer"></i>
+                                                <span>In</span>
+                                            </label>
+                                        </div>
+
+                                    </td>
+                                    <td className="group-address">
+                                        <div className="group-info-row">
+                                            <label className="item person">
+                                                <i className="fa fa-user"></i>
+                                                <span className="person-info">
+                                                    <span className="name">
+                                                       {rowItem.ReceiverFullName}
+                                                    </span>
+                                                    <span className="line">-</span>
+                                                    <span className="phone">({rowItem.ReceiverPhoneNumber.substr(0,6)}****)</span>
+                                                </span>
+                                            </label>
+                                            <label className="item address-receiver">
+                                                <span>{rowItem.ReceiverFullAddress}</span>
+                                            </label>
+                                            <label className="item address-repository-created">
+                                                <span>
+                                                {rowItem.SenderFullName}
+                                                </span>
+                                            </label>
+                                            <label className="item creacte-time">
+                                                <i className="ti ti-timer"></i>
+                                                <span className="times">
+                                                    <span className="item pull-left">Tạo lúc: </span>
+                                                    <span className="item pull-right"> {formatDate(rowItem.CreatedOrderTime)}</span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>{rowItem.ShipmentOrderTypeName}</td>
+                                    <td>{rowItem.OrderNote}</td>
+                                    <td>{rowItem.ShipmentOrderID}</td>
+                                </tr>
+                                );
+                            })
+                        }
+                    </tbody>
+                </table>
+            </div>
+        );
     }
 
     render() {
