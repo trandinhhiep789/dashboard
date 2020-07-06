@@ -373,8 +373,6 @@ class EditCom extends React.Component {
 
                 </FormContainer>
             </React.Fragment>
-
-
         );
     }
 }
