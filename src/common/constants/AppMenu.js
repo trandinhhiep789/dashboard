@@ -212,6 +212,20 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'Vehicle',
+                MenuTitle: 'Danh sách xe',
+                LinkTo: '/Vehicle',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'WorkingShift',
+                MenuTitle: 'Ca làm việc',
+                LinkTo: '/WorkingShift',
+                MenuIcon: '',
+                SubMenu: []
+            },
         ]
     },
     {

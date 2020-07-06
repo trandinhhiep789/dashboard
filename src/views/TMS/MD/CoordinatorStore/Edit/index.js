@@ -70,7 +70,6 @@ class EditCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            console.log('callLoadData', apiResult, id)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -113,8 +112,6 @@ class EditCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.CoordinatorStoreID = this.props.match.params.id.trim();
-        console.log("edit", MLObject)
-
         this.props.callFetchAPI(APIHostName, UpdateNewAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -172,12 +169,12 @@ class EditCom extends React.Component {
         })
     }
 
-    handleDelete(index) {
-       
-        let dataSourceValue = this.state.DataWard.filter(function (value, index1) { return index1 != index; });
-        const formData = Object.assign({}, this.state.DataWard,[{ dataSourceValue }]);
-        console.log('aa',dataSourceValue, index )
-        this.setState({ DataWard: formData });
+    handleDelete(id) {
+        let dataSourceValue = this.state.DataWard.filter(function (value, index) {
+            return value.WardID != id;
+        });
+         const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: dataSourceValue });
+        this.setState({ DataSource: formData });
     }
 
     addNotification(message1, IsError) {
@@ -218,7 +215,7 @@ class EditCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-
+        console.log('DataWardq222', this.state.DataWard, DataSource)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -230,7 +227,7 @@ class EditCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                     onchange={this.handleChange.bind(this)}
-                //RequirePermission={COORDINATORSTORE_ADD}
+                    RequirePermission={COORDINATORSTORE_ADD}
                 >
                     <div className="row">
                         <div className="col-md-6">
@@ -355,7 +352,7 @@ class EditCom extends React.Component {
                         <div className="col-md-6"></div>
                     </div>
 
-             
+
 
                     <InputGridControl
                         name="CoordinatorStoreWard_ItemList"
@@ -364,7 +361,8 @@ class EditCom extends React.Component {
                         IDSelectColumnName={"WardID"}
                         listColumn={DataGridColumnList}
                         PKColumnName={"WardID"}
-                        dataSource={DataWard}
+                        dataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
+                        // value={null}
                         onInsertClick={this.handleInsertNew}
                         onEditClick={this.handleEdit}
                         onDeleteClick={this.handleDelete}
