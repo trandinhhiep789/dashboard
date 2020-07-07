@@ -217,7 +217,7 @@ class SearchCom extends React.Component {
                         classNamebtnSearch="btn-custom-right" 
 
                     />
-                    <DataGrid
+                    <DataGridShipmentOder
                         listColumn={DataGridColumnList}
                         dataSource={this.state.gridDataSource}
                         AddLink={AddLink}

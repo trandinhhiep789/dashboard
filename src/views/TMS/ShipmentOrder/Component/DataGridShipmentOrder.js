@@ -498,12 +498,12 @@ class DataGridShipmentOderCom extends Component {
                     <thead className="thead-light">
                         <tr>
 
-                            <th className="jsgrid-header-cell" style={{width: 70}} >Tác vụ</th>
-                            <th className="jsgrid-header-cell" style={{width: 200,minWidth: 200}} >Thời gian giao</th>
-                            <th className="jsgrid-header-cell" style={{width: 300,minWidth: 350}}>Địa chỉ</th>
-                            <th className="jsgrid-header-cell" style={{width: 200}}>Loại yêu cầu vận chuyển</th>
-                            <th className="jsgrid-header-cell" style={{width: 250}} >Ghi chú</th>
-                            <th className="jsgrid-header-cell" style={{width: 150}} >COD/Vật tư/Tổng tiền</th>
+                            <th className="jsgrid-header-cell" style={{ width: 70 }} >Tác vụ</th>
+                            <th className="jsgrid-header-cell" style={{ width: 200, minWidth: 200 }} >Thời gian giao</th>
+                            <th className="jsgrid-header-cell" style={{ width: 300, minWidth: 350 }}>Địa chỉ</th>
+                            <th className="jsgrid-header-cell" style={{ width: 200 }}>Mã/Loại yêu cầu vận chuyển</th>
+                            <th className="jsgrid-header-cell" style={{ width: 250 }} >Ghi chú</th>
+                            <th className="jsgrid-header-cell" style={{ width: 150 }} >COD/Vật tư/Tổng tiền</th>
 
                         </tr>
                     </thead>
@@ -562,10 +562,10 @@ class DataGridShipmentOderCom extends Component {
                                                 <i className="fa fa-user"></i>
                                                 <span className="person-info">
                                                     <span className="name">
-                                                       {rowItem.ReceiverFullName}
+                                                        {rowItem.ReceiverFullName}
                                                     </span>
                                                     <span className="line">-</span>
-                                                    <span className="phone">({rowItem.ReceiverPhoneNumber.substr(0,6)}****)</span>
+                                                    <span className="phone">({rowItem.ReceiverPhoneNumber.substr(0, 6)}****)</span>
                                                 </span>
                                             </label>
                                             <label className="item address-receiver">
@@ -573,7 +573,7 @@ class DataGridShipmentOderCom extends Component {
                                             </label>
                                             <label className="item address-repository-created">
                                                 <span>
-                                                {rowItem.SenderFullName}
+                                                    {rowItem.SenderFullName}
                                                 </span>
                                             </label>
                                             <label className="item creacte-time">
@@ -585,16 +585,37 @@ class DataGridShipmentOderCom extends Component {
                                             </label>
                                         </div>
                                     </td>
-                                    <td>{rowItem.ShipmentOrderTypeName}</td>
+                                    <td>
+                                        <div className="group-info-row">
+                                            <label className="item person">
+                                                <span className="person-info">
+                                                    <Link to={"/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID}>{rowItem.ShipmentOrderID}</Link>
+                                                </span>
+                                            </label>
+                                            <label className="item address-receiver">
+                                                <span>{rowItem.ShipmentOrderTypeName}</span>
+                                            </label>
+                                        </div>
+                                    </td>
                                     <td>{rowItem.OrderNote}</td>
                                     <td className="group-price">
                                         <div className="group-row">
-                                            <span className="item pricecod"> {formatMoney(rowItem.TotalCOD, 0)}</span> 
+                                            <span className="item pricecod"> {formatMoney(rowItem.TotalCOD, 0)}</span>
                                             <span className="item price-supplies">{formatMoney(rowItem.TotalSaleMaterialMoney, 0)}</span>
-                                            <span className="item price3">
-                                                <span className="price-title">Nợ: </span>
-                                                <span className="price-debt">{formatMoney(rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD, 0)}</span>
-                                            </span>
+                                            {rowItem.IsCollectedMoney == true ?
+                                                (
+                                                    <span className="item price3">
+                                                        <span className="price-title">Đã thu: </span>
+                                                        <span className="price-debt">{formatMoney(rowItem.CollectedTotalMoney, 0)}</span>
+                                                    </span>
+                                                ) :
+                                                (
+                                                    <span className="item price3">
+                                                        <span className="price-title">Nợ: </span>
+                                                        <span className="price-debt">-{formatMoney(rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD, 0)}</span>
+                                                    </span>
+                                                )
+                                            }
                                         </div>
                                     </td>
 
@@ -675,7 +696,7 @@ class DataGridShipmentOderCom extends Component {
                                                     </button>
                                                 )
                                             )
-                                            :""
+                                            : ""
                                         }
                                         {
                                             (this.props.IsDelete == true || this.props.IsDelete == undefined) ?
