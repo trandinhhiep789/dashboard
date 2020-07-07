@@ -82,8 +82,12 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.Keyword
             },
             {
-                SearchKey: "@REQUESTPARTNERID",
-                SearchValue: MLObject.RequestPartnerID
+                SearchKey: "@RECEIVERPHONENUMBER",
+                SearchValue: MLObject.ReceiverPhoneNumber
+            },
+            {
+                SearchKey: "@SHIPMENTORDERTYPEID",
+                SearchValue: MLObject.ShipmentOrderTypeID
             },
             {
                 SearchKey: "@FromDate",
@@ -92,8 +96,7 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@ToDate",
                 SearchValue: MLObject.CreatedOrderTimeTo
-            }
-            ,
+            },
             {
                 SearchKey: "@RECEIVERPROVINCEID",
                 SearchValue: MLObject.ReceiverProvinceID
@@ -107,8 +110,20 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.SenderStoreID
             },
             {
+                SearchKey: "@COORDINATORSTOREID",
+                SearchValue: MLObject.CoordinatorStoreID
+            },
+            {
                 SearchKey: "@SHIPMENTORDERSTATUSID",
                 SearchValue: MLObject.ShipmentOrderStatusID
+            },
+            {
+                SearchKey: "@IsCoordinator",
+                SearchValue: MLObject.IsCoordinator
+            },
+            {
+                SearchKey: "@IsView",
+                SearchValue: MLObject.IsView
             },
             {
                 SearchKey: "@PAGESIZE",

@@ -55,7 +55,7 @@ export default class SearchForm extends Component {
 
     validationFormNew() {
         const FormDataContolLst = this.state.FormData;
-        console.log("validationFormNew", FormDataContolLst)
+       // console.log("validationFormNew", FormDataContolLst)
         for (const key in FormDataContolLst) {
             if (typeof FormDataContolLst[key].validatonList != "undefined") {
                 const validation = ValidationField(FormDataContolLst[key].validatonList, FormDataContolLst[key].value, FormDataContolLst[key].label, FormDataContolLst[key]);
