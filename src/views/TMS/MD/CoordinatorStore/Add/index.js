@@ -244,7 +244,7 @@ class AddCom extends React.Component {
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
+                            <FormControl.FormControlComboBox
 
                                 name="cbStoreID"
                                 colspan="8"
@@ -266,7 +266,7 @@ class AddCom extends React.Component {
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
+                            <FormControl.FormControlComboBox
                                 name="cbSenderStoreID"
                                 colspan="8"
                                 labelcolspan="4"
