@@ -8,9 +8,11 @@ import GridPage from "../../../../common/components/DataGrid/GridPage";
 import { connect } from 'react-redux';
 import { callGetCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
-import { hideModal } from '../../../../actions/modal';
 import { formatDate } from "../../../../common/library/CommonLib.js";
 import { formatMoney } from '../../../../utils/function';
+import { showModal, hideModal } from '../../../../actions/modal';
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import InfoCoordinator from '../Component/InfoCoordinator.js';
 
 class DataGridShipmentOderCom extends Component {
     constructor(props) {
@@ -439,6 +441,23 @@ class DataGridShipmentOderCom extends Component {
         });
         this.props.onSubmitItem(listMLObject);
     }
+    handleUserCoordinator()
+    {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Điều phối nhân viên ',
+            content: {
+                text:   <InfoCoordinator
+                ShipmentOrderID={0}
+                InfoCoordinator={[]}
+                IsUserCoordinator={true}
+                IsCoordinator={true}
+                IsCancelDelivery={true}
+            />
+            },
+            maxWidth: '1000px'
+        });
+    }
+
     _genCommentTime(dates) {
         const date = new Date(Date.parse(dates));
         let currentDate = new Date();
@@ -448,7 +467,7 @@ class DataGridShipmentOderCom extends Component {
         var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
         var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
         var diffMinutes = parseInt((timeDiff / (3600 * 24)));
-       
+
         if (diffDays < 1) {
             if (diffMinutes < 120) {
                 return 'Cần giao gấp (' + timeDisplay + ')';
@@ -484,9 +503,8 @@ class DataGridShipmentOderCom extends Component {
         }
 
     }
-
     renderDataGrid() {
-    
+
         const listColumn = this.props.listColumn;
         const dataSource = this.state.DataSource;
         const pkColumnName = this.state.ListPKColumnName;
@@ -676,6 +694,9 @@ class DataGridShipmentOderCom extends Component {
                                 {searchTextbox}
                                 <div className="btn-toolbar">
                                     <div className="btn-group btn-group-sm">
+                                        {/* <button type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                            <span className="fa fa-plus ff"> Gán nhân viên giao hàng </span>
+                                        </button> */}
                                         {(this.props.IsAdd == true || this.props.IsAdd == undefined) ?
                                             (!this.props.IsCustomAddLink == true ?
                                                 (<Link
@@ -762,6 +783,12 @@ const mapDispatchToProps = dispatch => {
         },
         hideModal: () => {
             dispatch(hideModal());
+        },
+        callFetchAPI: (hostname, hostURL, postData) => {
+            return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
         }
     }
 }
