@@ -190,8 +190,18 @@
                         align-content: center;
                         margin-bottom: 5px;
                         font-size: 14px;
+                        &.price-success{
+                            .price-debt{
+                                color: #15c377;
+                            }
+                            .price-title {
+                                color: #15c377;
+                                font-weight: 500;
+                                margin-right: 5px;
+                            }
+                        }
                         .price-title {
-                            color: #444444;
+                            color: #e64343;
                             font-weight: 500;
                             margin-right: 5px;
                         }
