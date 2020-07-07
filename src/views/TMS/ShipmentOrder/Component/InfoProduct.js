@@ -190,7 +190,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label bold">Ghi chú:</label>
                         </div>
                         <div className="form-group col-md-10">
-                            <label className="col-form-label" >{this.state.ShipmentOrder.OrderNote}</label>
+                            <label className="col-form-label" >{this.state.ShipmentOrder.OrderNote.split("-")[0]}</label>
                         </div>
                     </div>
                     <div className="form-row">

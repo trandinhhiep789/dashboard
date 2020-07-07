@@ -3,8 +3,15 @@ import { connect } from 'react-redux';
 import { formatDate } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_IMAGE_SLIDE } from '../../../../constants/actionTypes';
+import ModelContainer from "../../../../common/components/Modal/ModelContainer";
+import { ModalManager } from 'react-dynamic-modal';
+import MapContainer from './MapContainer ';
 
-
+const containerStyle = {
+    position: 'absolute',
+    width: '98%',
+    height: '250px'
+}
 class InfoHistoryWFCom extends Component {
     constructor(props) {
         super(props);
@@ -26,7 +33,7 @@ class InfoHistoryWFCom extends Component {
         const objIme = e.currentTarget.dataset.id;
         const objlst = objIme.split(",");
         for (let i = 0; i < objlst.length; i++) {
-            images.push({ original:objlst[i], thumbnail:objlst[i] });
+            images.push({ original: objlst[i], thumbnail: objlst[i] });
         }
         this.props.showModal(MODAL_TYPE_IMAGE_SLIDE, {
             title: 'Danh sách hình ảnh',
@@ -36,6 +43,28 @@ class InfoHistoryWFCom extends Component {
         });
     }
 
+    handleShowGeoLocation(e)
+    {
+        const objIme = e.currentTarget.dataset.id;
+        ModalManager.open(
+            <ModelContainer
+                title="Tọa độ GPS"
+                name=""
+                content={""}
+                IsButton={true}
+                onRequestClose={() => false}
+            >
+                <div className="form-row google-maps">
+                    <MapContainer
+                        SenderGeoLocation={objIme}
+                        isGeoLocation={false}
+                        classContainerStyle={containerStyle}
+                    />
+                </div>
+            </ModelContainer>
+        )
+    }
+    
     render() {
         var a = this.state.ShipmentOrderType_WF.sort((a, b) => new Date(a.ProcessDate) - new Date(b.ProcessDate));
         return (
@@ -46,11 +75,12 @@ class InfoHistoryWFCom extends Component {
                         <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                             <thead className="thead-light">
                                 <tr>
-                                    <th className="jsgrid-header-cell">Thời gian</th>
-                                    <th className="jsgrid-header-cell">Bước xử lý</th>
-                                    <th className="jsgrid-header-cell">Nhân viên</th>
-                                    <th className="jsgrid-header-cell">Hình ảnh</th>
-                                    <th className="jsgrid-header-cell">Ghi chú</th>
+                                    <th className="jsgrid-header-cell" style={{ width: 100 }} >Thời gian</th>
+                                    <th className="jsgrid-header-cell" style={{ width: 250 }} >Bước xử lý</th>
+                                    <th className="jsgrid-header-cell" style={{ width: 150 }} >Nhân viên</th>
+                                    <th className="jsgrid-header-cell" style={{ width: 150 }} >Hình ảnh</th>
+                                    <th className="jsgrid-header-cell" style={{ width: 50 }} >Tọa độ GPS</th>
+                                    <th className="jsgrid-header-cell" style={{ width: 250 }} >Ghi chú</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -72,6 +102,10 @@ class InfoHistoryWFCom extends Component {
                                                     )}
 
                                                 </ul>
+                                            </td>
+                                            <td>
+                                                {(item.ProcessGeoLocation != "" && item.ProcessGeoLocation != null) ?
+                                                (<button className="btn btn-icon-modal" data-id={item.ProcessGeoLocation} onClick={this.handleShowGeoLocation.bind(this)}><i className="fa fa-map-marker"></i></button>) : ""}
                                             </td>
                                             <td>{item.Note}</td>
                                         </tr>)

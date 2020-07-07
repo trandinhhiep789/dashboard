@@ -505,24 +505,18 @@ class DataGridShipmentOderCom extends Component {
     }
     renderDataGrid() {
 
-        const listColumn = this.props.listColumn;
         const dataSource = this.state.DataSource;
-        const pkColumnName = this.state.ListPKColumnName;
-        const idSelectColumnName = this.props.IDSelectColumnName;
-        const checkList = this.state.GridData[idSelectColumnName];
         return (
             <div className=" table-responsive">
                 <table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0" >
                     <thead className="thead-light">
                         <tr>
-
                             <th className="jsgrid-header-cell" style={{ width: 50 }} >Tác vụ</th>
                             <th className="jsgrid-header-cell" style={{ width: 190, minWidth: 190 }} >Thời gian giao</th>
                             <th className="jsgrid-header-cell" style={{ width: 300, minWidth: 350 }}>Địa chỉ</th>
                             <th className="jsgrid-header-cell" style={{ width: 200 }}>Mã/Loại yêu cầu vận chuyển</th>
                             <th className="jsgrid-header-cell" style={{ width: 250, minWidth: 200 }} >Ghi chú</th>
                             <th className="jsgrid-header-cell" style={{ width: 150, minWidth: 150 }} >COD/Vật tư/Tổng tiền</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -572,7 +566,6 @@ class DataGridShipmentOderCom extends Component {
                                                 <span>In</span>
                                             </label>
                                         </div>
-
                                     </td>
                                     <td className="group-address">
                                         <div className="group-info-row">
@@ -615,7 +608,7 @@ class DataGridShipmentOderCom extends Component {
                                             </label>
                                         </div>
                                     </td>
-                                    <td>{rowItem.OrderNote}</td>
+                                    <td>{rowItem.OrderNote.split("-")[0]}</td>
                                     <td className="group-price">
                                         <div className="group-row">
                                             <span className="item pricecod"> {formatMoney(rowItem.TotalCOD, 0)}</span>
@@ -636,7 +629,6 @@ class DataGridShipmentOderCom extends Component {
                                             }
                                         </div>
                                     </td>
-
                                 </tr>
                                 );
                             })
