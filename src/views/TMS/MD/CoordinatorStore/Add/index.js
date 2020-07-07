@@ -118,11 +118,8 @@ class AddCom extends React.Component {
     }
 
     handleInputChangeObjItem(ObjItem, result) {
-        console.log("handleInputChangeObjItem", ObjItem);
         const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: ObjItem });
         this.setState({ DataSource: formData });
-
-        this.addNotification(result.Message, result.IsError);
         this.props.hideModal()
     }
 
