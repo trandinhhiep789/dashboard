@@ -375,8 +375,6 @@ class DataGridShipmentOderCom extends Component {
         return { [idSelectColumnName]: checkList };
     }
 
-
-
     checkPermission(permissionKey) {
         return new Promise((resolve, reject) => {
             this.props.callGetCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
@@ -450,9 +448,10 @@ class DataGridShipmentOderCom extends Component {
         var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
         var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
         var diffMinutes = parseInt((timeDiff / (3600 * 24)));
+        console.log("diffDays",diffDays,dates)
         if (diffDays < 1) {
             if (diffMinutes < 120) {
-                return 'Cần giao gấp ('+timeDisplay+')';
+                return 'Cần giao gấp (' + timeDisplay + ')';
             }
             else {
                 return 'Hôm nay ' + timeDisplay;
@@ -487,6 +486,7 @@ class DataGridShipmentOderCom extends Component {
     }
 
     renderDataGrid() {
+    
         const listColumn = this.props.listColumn;
         const dataSource = this.state.DataSource;
         const pkColumnName = this.state.ListPKColumnName;

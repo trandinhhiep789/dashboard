@@ -244,7 +244,7 @@ class ElementComboBoxCom extends Component {
                 listoption = [{ value: -1, label: this.props.placeholder }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     if (typeof filterobj != undefined) {
-                        console.log(filterobj,result.ResultObject.CacheData,result.ResultObject.CacheData.filter(n => n.filterobj == 1))
+                       // console.log(filterobj,result.ResultObject.CacheData,result.ResultObject.CacheData.filter(n => n.filterobj == 1))
                         result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
                             listoption.push({ value: cacheItem[ValueMember], label: cacheItem[NameMember] });
                         }
@@ -303,7 +303,7 @@ class ElementComboBoxCom extends Component {
             let {filterName,filterobj,ValueMember,NameMember } = this.props;
             if (typeof filterobj != undefined) {
                 let listoptionnew = [{ value: -1, label: this.props.placeholder }];
-                console.log(filterobj,this.state.Data.filter(n => n[filterobj] == nextProps.filterValue))
+              //  console.log(filterobj,this.state.Data.filter(n => n[filterobj] == nextProps.filterValue))
                 this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
                     listoptionnew.push({ value: cacheItem[ValueMember], label: cacheItem[NameMember] });
                 }
