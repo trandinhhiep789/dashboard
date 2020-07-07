@@ -164,8 +164,8 @@ class SearchCom extends React.Component {
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
                     ref={this.gridref}
-                    RequirePermission={COORDINATORSTORE_VIEW}
-                    DeletePermission={COORDINATORSTORE_DELETE}
+                    // RequirePermission={COORDINATORSTORE_VIEW}
+                    // DeletePermission={COORDINATORSTORE_DELETE}
                     IsAutoPaging={true}
                     RowsPerPage={10}
                 />

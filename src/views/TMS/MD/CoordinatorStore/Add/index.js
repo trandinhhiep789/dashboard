@@ -81,7 +81,7 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        console.log("handleSubmit", MLObject)
+        console.log("adđ", MLObject)
 
         this.props.callFetchAPI(APIHostName, AddNewAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -121,9 +121,9 @@ class AddCom extends React.Component {
     }
 
     handleInputChangeObjItem(ObjItem, result) {
-      
+
         const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: ObjItem });
-        this.setState({ DataSource: formData});
+        this.setState({ DataSource: formData });
 
         this.addNotification(result.Message, result.IsError);
         this.props.hideModal()
@@ -148,7 +148,7 @@ class AddCom extends React.Component {
         let dataSourceValue = this.state.DataSource.CoordinatorStoreWard_ItemList.filter(function (value, index) {
             return value.WardID != id;
         });
-         const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: dataSourceValue });
+        const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: dataSourceValue });
         this.setState({ DataSource: formData });
     }
 
@@ -188,6 +188,7 @@ class AddCom extends React.Component {
 
     render() {
         const { DataSource, IsShowCustomerAddress, DataWard } = this.state;
+        console.log(DataSource)
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -264,7 +265,29 @@ class AddCom extends React.Component {
                                 filterobj="CompanyID"
                             />
                         </div>
-
+                    </div>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <FormControl.FormControlComboBox
+                                name="cbDistrictID"
+                                colspan="8"
+                                labelcolspan="4"
+                                disabled=""
+                                label="Quận/huyện"
+                                validatonList={["Comborequired"]}
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.DISTRICT"
+                                valuemember="DistrictID"
+                                nameMember="DistrictName"
+                                controltype="InputControl"
+                                value={-1}
+                                listoption={[]}
+                                datasourcemember="DistrictID"
+                                filterValue=""
+                                filterobj="DistrictID"
+                                filterrest="cbSenderStoreID"
+                            />
+                        </div>
                         <div className="col-md-6">
                             <FormControl.FormControlComboBox
                                 name="cbSenderStoreID"
@@ -281,8 +304,9 @@ class AddCom extends React.Component {
                                 value={""}
                                 listoption={null}
                                 datasourcemember="SenderStoreID"
-                                filterValue={1}
-                                filterobj="CompanyID"
+                                filterName="cbDistrictID"
+                                filterValue=""
+                                filterobj="DistrictID"
                             />
                         </div>
                         <div className="col-md-6">
