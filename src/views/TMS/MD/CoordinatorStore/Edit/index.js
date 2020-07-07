@@ -136,12 +136,14 @@ class EditCom extends React.Component {
     }
 
     handleInsertNew() {
-
+        if (this.state.DataSource.CoordinatorStoreWard_ItemList == null) {
+            this.state.DataSource.CoordinatorStoreWard_ItemList = []
+        }
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
             content: {
                 text: <StoreWard
-                    DataWard={this.state.DataWard}
+                    DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
                     onInputChangeObj={this.handleInputChangeObjItem}
 
                 />
@@ -151,7 +153,8 @@ class EditCom extends React.Component {
     }
 
     handleInputChangeObjItem(ObjItem, result) {
-        this.addNotification(result.Message, result.IsError);
+        const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: ObjItem });
+        this.setState({ DataSource: formData });
         this.props.hideModal()
     }
 
@@ -160,7 +163,7 @@ class EditCom extends React.Component {
             title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
             content: {
                 text: <StoreWard
-                    DataWard={this.state.DataWard}
+                    DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
                     index={index}
                     onInputChangeObj={this.handleInputChangeObjItem}
 
@@ -171,7 +174,8 @@ class EditCom extends React.Component {
     }
 
     handleDelete(id) {
-        let dataSourceValue = this.state.DataWard.filter(function (value, index) {
+        
+        let dataSourceValue = this.state.DataSource.CoordinatorStoreWard_ItemList.filter(function (value, index) {
             return value.WardID != id;
         });
         const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: dataSourceValue });
@@ -227,7 +231,7 @@ class EditCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                     onchange={this.handleChange.bind(this)}
-                    //RequirePermission={COORDINATORSTORE_ADD}
+                //RequirePermission={COORDINATORSTORE_ADD}
                 >
                     <div className="row">
                         <div className="col-md-6">
@@ -393,8 +397,6 @@ class EditCom extends React.Component {
                         </div>
                         <div className="col-md-6"></div>
                     </div>
-
-
 
                     <InputGridControl
                         name="CoordinatorStoreWard_ItemList"
