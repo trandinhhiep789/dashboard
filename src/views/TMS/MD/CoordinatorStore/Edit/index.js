@@ -70,6 +70,7 @@ class EditCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
+            console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -173,7 +174,7 @@ class EditCom extends React.Component {
         let dataSourceValue = this.state.DataWard.filter(function (value, index) {
             return value.WardID != id;
         });
-         const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: dataSourceValue });
+        const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: dataSourceValue });
         this.setState({ DataSource: formData });
     }
 
@@ -215,7 +216,6 @@ class EditCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-        console.log('DataWardq222', this.state.DataWard, DataSource)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -227,7 +227,7 @@ class EditCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                     onchange={this.handleChange.bind(this)}
-                    RequirePermission={COORDINATORSTORE_ADD}
+                    //RequirePermission={COORDINATORSTORE_ADD}
                 >
                     <div className="row">
                         <div className="col-md-6">
@@ -289,8 +289,50 @@ class EditCom extends React.Component {
                                 filterobj="CompanyID"
                             />
                         </div>
-
+                    </div>
+                    <div className="row">
                         <div className="col-md-6">
+                            <FormControl.FormControlComboBox
+                                name="cbDistrictID"
+                                colspan="8"
+                                labelcolspan="4"
+                                disabled=""
+                                label="Quận/huyện"
+                                validatonList={["Comborequired"]}
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.DISTRICT"
+                                valuemember="DistrictID"
+                                nameMember="DistrictName"
+                                controltype="InputControl"
+                                value={-1}
+                                listoption={[]}
+                                datasourcemember="DistrictID"
+                                filterValue=""
+                                filterobj="DistrictID"
+                                filterrest="cbSenderStoreID"
+                            />
+                        </div>
+                        <div className="col-md-6">
+                            <FormControl.FormControlComboBox
+                                name="cbSenderStoreID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="kho gửi"
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.STORE"
+                                valuemember="StoreID"
+                                nameMember="StoreName"
+                                controltype="InputControl"
+                                value={""}
+                                listoption={[]}
+                                datasourcemember="SenderStoreID"
+                                filterName="cbDistrictID"
+                                filterobj="DistrictID"
+                            />
+                        </div>
+                        {/* <div className="col-md-6">
                             <FormControl.ComboBoxSelect
                                 name="cbSenderStoreID"
                                 colspan="8"
@@ -309,7 +351,7 @@ class EditCom extends React.Component {
                                 filterValue={1}
                                 filterobj="CompanyID"
                             />
-                        </div>
+                        </div> */}
                         <div className="col-md-6">
                             <FormControl.CheckBox
                                 name="chkIsActived"
