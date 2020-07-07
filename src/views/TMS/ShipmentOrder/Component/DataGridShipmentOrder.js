@@ -451,8 +451,8 @@ class DataGridShipmentOderCom extends Component {
         var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
         var diffMinutes = parseInt((timeDiff / (3600 * 24)));
         if (diffDays < 1) {
-            if (diffMinutes < 20) {
-                return 'Vừa mới';
+            if (diffMinutes < 120) {
+                return 'Cần giao gấp ('+timeDisplay+')';
             }
             else {
                 return 'Hôm nay ' + timeDisplay;
@@ -461,7 +461,7 @@ class DataGridShipmentOderCom extends Component {
             return 'Hôm qua ' + timeDisplay;
         } else {
             let month = date.getMonth() + 1;
-            return date.getDate() + '/' + (month < 10 ? '0' + month : month) + date.getFullYear() + " " + timeDisplay;
+            return date.getDate() + '/' + (month < 10 ? '0' + month : month) + '/' + date.getFullYear() + " " + timeDisplay;
         }
     }
     _genCommentCarrierPartner(CarrierTypeID, CarrierTypeName) {
@@ -502,8 +502,8 @@ class DataGridShipmentOderCom extends Component {
                             <th className="jsgrid-header-cell" style={{ width: 190, minWidth: 190 }} >Thời gian giao</th>
                             <th className="jsgrid-header-cell" style={{ width: 300, minWidth: 350 }}>Địa chỉ</th>
                             <th className="jsgrid-header-cell" style={{ width: 200 }}>Mã/Loại yêu cầu vận chuyển</th>
-                            <th className="jsgrid-header-cell" style={{ width: 250 ,minWidth: 200}} >Ghi chú</th>
-                            <th className="jsgrid-header-cell" style={{ width: 150,minWidth: 150 }} >COD/Vật tư/Tổng tiền</th>
+                            <th className="jsgrid-header-cell" style={{ width: 250, minWidth: 200 }} >Ghi chú</th>
+                            <th className="jsgrid-header-cell" style={{ width: 150, minWidth: 150 }} >COD/Vật tư/Tổng tiền</th>
 
                         </tr>
                     </thead>
@@ -588,7 +588,7 @@ class DataGridShipmentOderCom extends Component {
                                     <td>
                                         <div className="group-info-row">
                                             <label className="item person">
-                                                <span className="person-info" style={{fontSize: 15}}>
+                                                <span className="person-info" style={{ fontSize: 15 }}>
                                                     <Link to={"/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID}>{rowItem.ShipmentOrderID}</Link>
                                                 </span>
                                             </label>

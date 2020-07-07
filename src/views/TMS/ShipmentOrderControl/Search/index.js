@@ -68,7 +68,7 @@ class SearchCom extends React.Component {
     handleonChangePage(pageNum) {
         let listMLObject = [];
         const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
-        listMLObject = Object.assign([], this.state.SearchData, { [9]: aa });
+        listMLObject = Object.assign([], this.state.SearchData, { [13]: aa });
         this.callSearchData(listMLObject)
         this.setState({
             PageNumber: pageNum
@@ -192,13 +192,13 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                        FormName="Tìm kiếm danh sách vận chuyển"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
-                        className="multiple"
-
+                        className="multiple multiple-custom multiple-custom-display"
+                        classNamebtnSearch="btn-custom-right" 
                     />
                     <DataGrid
                         listColumn={DataGridColumnList}
@@ -223,12 +223,12 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                        FormName="Tìm kiếm danh sách vận chuyển"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
-                        className="multiple"
+                        className="multiple multiple-custom multiple-custom-display"
 
                     />
                   <label>Đang nạp dữ liệu...</label>
