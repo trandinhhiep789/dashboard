@@ -498,12 +498,12 @@ class DataGridShipmentOderCom extends Component {
                     <thead className="thead-light">
                         <tr>
 
-                            <th className="jsgrid-header-cell" style={{ width: 70 }} >Tác vụ</th>
-                            <th className="jsgrid-header-cell" style={{ width: 200, minWidth: 200 }} >Thời gian giao</th>
+                            <th className="jsgrid-header-cell" style={{ width: 50 }} >Tác vụ</th>
+                            <th className="jsgrid-header-cell" style={{ width: 190, minWidth: 190 }} >Thời gian giao</th>
                             <th className="jsgrid-header-cell" style={{ width: 300, minWidth: 350 }}>Địa chỉ</th>
                             <th className="jsgrid-header-cell" style={{ width: 200 }}>Mã/Loại yêu cầu vận chuyển</th>
-                            <th className="jsgrid-header-cell" style={{ width: 250 }} >Ghi chú</th>
-                            <th className="jsgrid-header-cell" style={{ width: 150 }} >COD/Vật tư/Tổng tiền</th>
+                            <th className="jsgrid-header-cell" style={{ width: 250 ,minWidth: 200}} >Ghi chú</th>
+                            <th className="jsgrid-header-cell" style={{ width: 150,minWidth: 150 }} >COD/Vật tư/Tổng tiền</th>
 
                         </tr>
                     </thead>
