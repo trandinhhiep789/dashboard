@@ -448,7 +448,7 @@ class DataGridShipmentOderCom extends Component {
         var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
         var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
         var diffMinutes = parseInt((timeDiff / (3600 * 24)));
-        console.log("diffDays",diffDays,dates)
+       
         if (diffDays < 1) {
             if (diffMinutes < 120) {
                 return 'Cần giao gấp (' + timeDisplay + ')';
