@@ -588,7 +588,7 @@ class DataGridShipmentOderCom extends Component {
                                     <td>
                                         <div className="group-info-row">
                                             <label className="item person">
-                                                <span className="person-info">
+                                                <span className="person-info" style={{fontSize: 15}}>
                                                     <Link to={"/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID}>{rowItem.ShipmentOrderID}</Link>
                                                 </span>
                                             </label>
@@ -604,8 +604,8 @@ class DataGridShipmentOderCom extends Component {
                                             <span className="item price-supplies">{formatMoney(rowItem.TotalSaleMaterialMoney, 0)}</span>
                                             {rowItem.IsCollectedMoney == true ?
                                                 (
-                                                    <span className="item price3">
-                                                        <span className="price-title">Đã thu: </span>
+                                                    <span className="item price3 price-success">
+                                                        <span className="price-title ">Đã thu: </span>
                                                         <span className="price-debt">{formatMoney(rowItem.CollectedTotalMoney, 0)}</span>
                                                     </span>
                                                 ) :
