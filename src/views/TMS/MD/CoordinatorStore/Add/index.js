@@ -33,7 +33,6 @@ class AddCom extends React.Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.onCoordinatorStoreWardChange = this.onCoordinatorStoreWardChange.bind(this)
         this.handleInsertNew = this.handleInsertNew.bind(this)
         this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
@@ -46,7 +45,7 @@ class AddCom extends React.Component {
             IsCallAPIError: false,
             IsCloseForm: false,
             IsShowCustomerAddress: true,
-            DataSource: [],
+            DataSource: {},
             DataWard: [],
             cssNotification: "",
             iconNotification: ""
@@ -81,7 +80,7 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.CoordinatorStoreWard_ItemList=this.state.DataSource.CoordinatorStoreWard_ItemList;
+        MLObject.CoordinatorStoreWard_ItemList = this.state.DataSource.CoordinatorStoreWard_ItemList;
         this.props.callFetchAPI(APIHostName, AddNewAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -100,17 +99,16 @@ class AddCom extends React.Component {
             })
         }
     }
-    onCoordinatorStoreWardChange(list, deleteList) {
-
-    }
 
     handleInsertNew() {
-
+        if(this.state.DataSource.CoordinatorStoreWard_ItemList == null){
+            this.state.DataSource.CoordinatorStoreWard_ItemList = []
+        }
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
             content: {
                 text: <StoreWard
-                    DataWard={this.state.DataWard}
+                    DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
                     onInputChangeObj={this.handleInputChangeObjItem}
 
                 />
@@ -120,11 +118,8 @@ class AddCom extends React.Component {
     }
 
     handleInputChangeObjItem(ObjItem, result) {
-
         const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: ObjItem });
         this.setState({ DataSource: formData });
-
-        this.addNotification(result.Message, result.IsError);
         this.props.hideModal()
     }
 
@@ -133,7 +128,7 @@ class AddCom extends React.Component {
             title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
             content: {
                 text: <StoreWard
-                    DataWard={this.state.DataWard}
+                    DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
                     index={index}
                     onInputChangeObj={this.handleInputChangeObjItem}
 
@@ -144,6 +139,7 @@ class AddCom extends React.Component {
     }
 
     handleDelete(id) {
+        
         let dataSourceValue = this.state.DataSource.CoordinatorStoreWard_ItemList.filter(function (value, index) {
             return value.WardID != id;
         });
@@ -187,7 +183,6 @@ class AddCom extends React.Component {
 
     render() {
         const { DataSource, IsShowCustomerAddress, DataWard } = this.state;
-        console.log(DataSource)
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -350,14 +345,6 @@ class AddCom extends React.Component {
                         <div className="col-md-6"></div>
                     </div>
 
-                    <div className="row">
-
-                        {/* <CoordinatorStoreWard 
-                        onCoordinatorStoreWardChange={this.onCoordinatorStoreWardChange}
-                    /> */}
-
-                    </div>
-
                     <InputGridControl
                         name="CoordinatorStoreWard_ItemList"
                         controltype="InputGridControl"
@@ -372,8 +359,6 @@ class AddCom extends React.Component {
                         isHiddenButtonAdd={IsShowCustomerAddress}
                         ref={this.gridref}
                     />
-
-
 
                 </FormContainer>
             </React.Fragment>

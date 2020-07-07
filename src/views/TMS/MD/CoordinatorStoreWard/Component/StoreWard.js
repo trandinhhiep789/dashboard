@@ -34,18 +34,18 @@ class StoreWardCom extends Component {
 
     componentDidMount() {
         this.handleGetCacheWard()
-        console.log("item",this.props.DataWard[this.props.index])
+        
     }
 
     handleSubmit(From, MLObject) {
-        let CoordinatorStoreWard_ItemList = this.props.DataWard;
-        
+        let CoordinatorStoreWard_ItemList = this.props.DataSource;
         let dataWardItem = this.state.DataWard.filter((item, index) => {
             return item.WardID == MLObject.WardID
         })
         MLObject.WardName = dataWardItem[0].WardName
 
         CoordinatorStoreWard_ItemList.push(MLObject)
+
         const result= {
             IsError: false,
             Message: 'Thêm mới phường/xã địa thành công'
@@ -66,7 +66,7 @@ class StoreWardCom extends Component {
             <FormContainer
                 MLObjectDefinition={MLObjectStoreWardItem}
                 listelement={[]}
-                dataSource={this.props.index != undefined ? this.props.DataWard[this.props.index] : null}
+                dataSource={this.props.index != undefined ? this.props.DataSource.CoordinatorStoreWard_ItemList[this.props.index] : null}
                 onSubmit={this.handleSubmit}
                 IsCloseModal={true}
                 onchange={this.handleChange.bind(this)}
