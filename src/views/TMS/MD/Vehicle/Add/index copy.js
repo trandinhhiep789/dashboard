@@ -14,7 +14,7 @@ import MD5Digest from "../../../../../common/library/cryptography/MD5Digest.js";
 import {
     APIHostName,
     AddAPIPath,
-    MLObjectDefinitionNew,
+    MLObjectDefinition,
     BackLink,
     AddPagePath,
 } from "../constants";
@@ -46,7 +46,6 @@ class AddCom extends React.Component {
             cssNotification: "",
             iconNotification: "",
             MainDriverUser: "",
-            MainCoordinatorStoreID: ""
         };
         this.searchref = React.createRef();
         this.gridref = React.createRef();
@@ -77,11 +76,10 @@ class AddCom extends React.Component {
 
     handleSubmit(formData, MLObject) {
 
-        const { MainDriverUser, MainCoordinatorStoreID } = this.state;
+        const { MainDriverUser } = this.state;
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.MainDriverUser = MainDriverUser;
-        MLObject.MainCoordinatorStoreID = MainCoordinatorStoreID;
         console.log("handleSubmit", MLObject)
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -131,10 +129,7 @@ class AddCom extends React.Component {
     }
 
     onChangeStore(name, objstore) {
-        this.setState({
-            MainCoordinatorStoreID: objstore.value
-        })
-        
+        console.log("onChangeStore", name, objstore)
     }
 
 
@@ -149,7 +144,7 @@ class AddCom extends React.Component {
                 <ReactNotification ref={this.notificationDOMRef} />
                 <FormContainer
                     FormName="Thêm danh sách xe"
-                    MLObjectDefinition={MLObjectDefinitionNew}
+                    MLObjectDefinition={MLObjectDefinition}
                     listelement={[]}
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
@@ -202,8 +197,40 @@ class AddCom extends React.Component {
                             />
                         </div>
 
+                        {/* <div className="col-md-6">
+
+                            <FormControl.FormControlComboBox
+                                name="txtPartnerID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="đơn vị vận chuyển"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                                valuemember="PartnerID"
+                                nameMember="PartnerName"
+                                controltype="InputControl"
+                                placeholder="---Vui lòng chọn---"
+                                value={""}
+                                listoption={null}
+                                filterValue={2}
+                                filterobj="PartnerTypeID"
+                                filterrest="ShipmentOrder_DeliverUserList"
+                                datasourcemember="PartnerID" />
+                        </div> */}
 
                         <div className="col-md-6">
+                            {/* <DeliverUserList
+                                name="ShipmentOrder_DeliverUserList"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="Nhân viên tài xế chính"
+                                IsLabelDiv={true}
+                                validatonList={["Comborequired"]}
+                                controltype="InputMultiControl"
+                                datasourcemember="ShipmentOrder_DeliverUserList"
+                                filterName="txtPartnerID"
+                                isMultiSelect={false}
+                            /> */}
 
                             <MultiSelectComboBox
                                 name="MainDriverUser"
@@ -241,6 +268,49 @@ class AddCom extends React.Component {
                                 IsLabelDiv="kho điều phối chính"
                             />
                         </div>
+
+                        {/* <div className="col-md-6">
+                            <FormControl.FormControlComboBox
+                                name="cbDistrictID"
+                                colspan="8"
+                                labelcolspan="4"
+                                disabled=""
+                                label="Quận/huyện"
+                                validatonList={["Comborequired"]}
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.DISTRICT"
+                                valuemember="DistrictID"
+                                nameMember="DistrictName"
+                                controltype="InputControl"
+                                value={-1}
+                                listoption={[]}
+                                datasourcemember="DistrictID"
+                                filterValue=""
+                                filterobj="DistrictID"
+                                filterrest="cbMainCoordinatorStoreID"
+                            />
+                        </div>
+                        <div className="col-md-6">
+                            <FormControl.FormControlComboBox
+                                name="cbMainCoordinatorStoreID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="kho điều phối chính"
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.STORE"
+                                valuemember="StoreID"
+                                nameMember="StoreName"
+                                controltype="InputControl"
+                                value={""}
+                                listoption={[]}
+                                datasourcemember="MainCoordinatorStoreID"
+                                filterName="cbDistrictID"
+                                filterobj="DistrictID"
+                            />
+                        </div> */}
+
 
                         <div className="col-md-6">
                             <FormControl.TextBox
