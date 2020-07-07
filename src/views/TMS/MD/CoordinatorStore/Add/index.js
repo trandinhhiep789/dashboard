@@ -81,8 +81,7 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        console.log("adđ", MLObject)
-
+        MLObject.CoordinatorStoreWard_ItemList=this.state.DataSource.CoordinatorStoreWard_ItemList;
         this.props.callFetchAPI(APIHostName, AddNewAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
