@@ -34,6 +34,7 @@ import ShipmentOrderType from '../../views/TMS/MD/ShipmentOrder/ShipmentOrderTyp
 import ShipmentOrderStep from '../../views/TMS/MD/ShipmentOrderStep';
 import PartnerPriviledgeGroup from '../../views/TMS/MD/PartnerPriviledge/PartnerPriviledgeGroup';
 import ShipmentOrder from '../../views/TMS/ShipmentOrder';
+import WorkingPlan from '../../views/TMS/WorkingPlan';
 import ShipmentOrderControl from '../../views/TMS/ShipmentOrderControl';
 import MapContainer from '../../views/TMS/ShipmentOrder/Component/MapContainer ';
 import Maps from '../../views/TMS/ShipmentOrder/Component/Maps';
@@ -162,6 +163,9 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/InstallMaterial" component={InstallMaterial} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserCoordinator" component={UserCoordinator} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserGroup" component={UserGroup} isLoggedIn={isLoggedIn} />
+
+                                <PrivateRoute path="/WorkingPlan" component={WorkingPlan} isLoggedIn={isLoggedIn} />
+
                                 
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} />
 
