@@ -48,8 +48,10 @@ class EditCom extends React.Component {
             DataWard: [],
             cssNotification: "",
             iconNotification: "",
-            MainDriverUser:  "",
-            MainCoordinatorStoreID:  "",
+            MainDriverUser: "",
+            MainCoordinatorStoreID: "",
+            UserValue: [],
+            StoreSelect: []
 
         };
         this.searchref = React.createRef();
@@ -65,8 +67,8 @@ class EditCom extends React.Component {
     }
 
     callLoadData(id) {
+        const { UserValue, StoreSelect } = this.state;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -74,6 +76,16 @@ class EditCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+                let UserValueItem = {};
+                let StoreItem = {};
+                UserValueItem.value = apiResult.ResultObject.MainDriverUser;
+                UserValueItem.label = apiResult.ResultObject.MainDriverUser + " - " + apiResult.ResultObject.FullName;
+
+                StoreItem.value = apiResult.ResultObject.MainCoordinatorStoreID;
+                StoreItem.label = apiResult.ResultObject.MainCoordinatorStoreID + " - " + apiResult.ResultObject.MainCoordinatorStoreName;
+
+                StoreSelect.push(StoreItem)
+                UserValue.push(UserValueItem)
 
 
                 this.setState({
@@ -157,10 +169,12 @@ class EditCom extends React.Component {
         this.setState({
             MainCoordinatorStoreID: objstore.value
         })
-        
+
     }
 
     render() {
+
+        console.log("UserValue", this.state.UserValue)
         const { DataSource } = this.state;
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
@@ -237,8 +251,8 @@ class EditCom extends React.Component {
                                 isautoloaditemfromcache={false}
                                 onChange={this.onChangeUser.bind(this)}
                                 controltype="InputControl"
-                                value={[]}
-                                listoption={[]}
+                                value={this.state.UserValue}
+                                listoption={this.state.UserValue}
                                 isMultiSelect={false}
                                 datasourcemember="MainDriverUser"
                                 validationErrorMessage={''}
@@ -256,8 +270,8 @@ class EditCom extends React.Component {
                                 isautoloaditemfromcache={false}
                                 onChange={this.onChangeStore.bind(this)}
                                 controltype="InputControl"
-                                value={[]}
-                                listoption={[]}
+                                value={this.state.StoreSelect}
+                                listoption={this.state.StoreSelect}
                                 isMultiSelect={false}
                                 datasourcemember="MainCoordinatorStoreID"
                                 validationErrorMessage={''}

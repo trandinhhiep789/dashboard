@@ -16,11 +16,10 @@ import {
     PKColumnName,
     InitSearchParams,
     PagePath,
-    DataGridCoordinatorStoreColumnList
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { WORKINGSHIFT_VIEW, WORKINGSHIFT_DELETE} from "../../../../../constants/functionLists";
+import { WORKINGSHIFT_VIEW, WORKINGSHIFT_DELETE } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
@@ -65,12 +64,12 @@ class SearchCom extends React.Component {
             listMLObject.push(MLObject);
         });
         this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                this.addNotification(apiResult.Message, apiResult.IsError);
-                if(!apiResult.IsError){
-                    this.callSearchData(this.state.SearchData);
-                }             
-            });
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callSearchData(this.state.SearchData);
+            }
+        });
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -86,13 +85,13 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-                if (!apiResult.IsError) {
-                    this.setState({
-                        gridDataSource: apiResult.ResultObject,
-                        IsCallAPIError: apiResult.IsError
-                    });
-                }
-            });
+            if (!apiResult.IsError) {
+                this.setState({
+                    gridDataSource: apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError
+                });
+            }
+        });
     }
 
     handleCloseMessage() {
@@ -157,7 +156,7 @@ class SearchCom extends React.Component {
                     ref={this.searchref}
                 />
                 <DataGrid
-                    listColumn={DataGridCoordinatorStoreColumnList}
+                    listColumn={DataGridColumnList}
                     dataSource={this.state.gridDataSource}
                     AddLink={AddLink}
                     IDSelectColumnName={IDSelectColumnName}
@@ -199,5 +198,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Search = connect(mapStateToProps,mapDispatchToProps)(SearchCom);
+const Search = connect(mapStateToProps, mapDispatchToProps)(SearchCom);
 export default Search;
