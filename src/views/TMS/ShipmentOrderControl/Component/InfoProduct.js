@@ -179,7 +179,14 @@ class InfoProductCom extends Component {
                         <div className="form-group col-md-4">
                             <label className="col-form-label">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney, 0)}đ</label>
                         </div>
-
+                    </div>
+                    <div className="form-row">
+                        <div className="form-group col-md-2">
+                            <label className="col-form-label bold">Nộp tiền thu ngân:</label>
+                        </div>
+                        <div className="form-group col-md-4">
+                            {this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : <span className="badge badge-danger">Chưa nộp tiền</span>}
+                        </div>
                     </div>
 
                     <div className="form-row">
@@ -187,7 +194,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label bold">Ghi chú:</label>
                         </div>
                         <div className="form-group col-md-10">
-                            <label className="col-form-label" >{this.state.ShipmentOrder.OrderNote}</label>
+                            <label className="col-form-label" >{this.state.ShipmentOrder.OrderNote.split("-")[0]}</label>
                         </div>
                     </div>
                     <div className="form-row">

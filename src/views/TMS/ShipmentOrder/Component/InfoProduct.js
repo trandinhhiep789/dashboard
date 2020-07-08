@@ -178,11 +178,17 @@ class InfoProductCom extends Component {
                         </div>
                         <div className="form-group col-md-4">
                             <label className="col-form-label">
-                            {this.state.ShipmentOrder.IsCollectedMoney == true ? <span className="badge badge-success">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney, 0)}đ</span> : <span className="badge badge-danger">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney, 0)}đ</span>}
-                                
-                                </label>
+                                {this.state.ShipmentOrder.IsCollectedMoney == true ? <span className="badge badge-success">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney, 0)}đ</span> : <span className="badge badge-danger">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney, 0)}đ</span>}
+                            </label>
                         </div>
-
+                    </div>
+                    <div className="form-row">
+                        <div className="form-group col-md-2">
+                            <label className="col-form-label bold">Nộp tiền thu ngân:</label>
+                        </div>
+                        <div className="form-group col-md-4">
+                            {this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : <span className="badge badge-danger">Chưa nộp tiền</span>}
+                        </div>
                     </div>
 
                     <div className="form-row">
