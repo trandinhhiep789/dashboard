@@ -21,10 +21,10 @@ class MultiStoreComboBoxCom extends React.Component {
 
 
     componentDidMount() {
-
+        console.log("STORE", this.props)
         this.setState({
             ListOption: this.props.listoption,
-            SelectedOption: this.props.value
+            SelectedOption:  this.props.value == undefined ? this.props.listoption : this.props.value
         });
     }
 
