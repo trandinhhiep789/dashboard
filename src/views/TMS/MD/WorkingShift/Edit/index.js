@@ -48,6 +48,7 @@ class EditCom extends React.Component {
             cssNotification: "",
             iconNotification: "",
             MainDriverUser: "",
+            IsSystem: false,
             MainCoordinatorStoreID: "",
 
         };
@@ -89,6 +90,7 @@ class EditCom extends React.Component {
 
                 this.setState({
                     DataSource: apiResult.ResultObject,
+                    IsSystem: apiResult.ResultObject.IsSystem,
                     IsLoadDataComplete: true,
                 });
             }
@@ -153,7 +155,8 @@ class EditCom extends React.Component {
                                 name="txtWorkingShiftID"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                disabled={true}
+                                readOnly={true}
                                 label="mã ca làm việc"
                                 placeholder="Mã ca làm việc"
                                 controltype="InputControl"
@@ -168,7 +171,8 @@ class EditCom extends React.Component {
                                 name="txtWorkingShiftName"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 label="ca làm việc"
                                 placeholder="Ca làm việc"
                                 controltype="InputControl"
@@ -183,7 +187,8 @@ class EditCom extends React.Component {
                                 name="txtTimeStart"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 label="thời gian bắt đầu"
                                 placeholder="Thời gian bắt đầu"
                                 controltype="InputControl"
@@ -201,7 +206,8 @@ class EditCom extends React.Component {
                                 name="txtTimeEnd"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 formatHour="HH:mm"
                                 label="thời gian kết thúc làm việc"
                                 placeholder="Thời gian kết thúc làm việc"
@@ -217,9 +223,10 @@ class EditCom extends React.Component {
                                 name="txtShiftNumber"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
-                                label="ca số"
-                                placeholder="Ca số"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
+                                label="ca làm việc"
+                                placeholder="Ca làm việc"
                                 controltype="InputControl"
                                 value=""
                                 maxSize={9}
@@ -244,6 +251,8 @@ class EditCom extends React.Component {
                                 rows={6}
                                 maxSize={500}
                                 classNameCustom="customcontrol"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                             />
                         </div>
 
@@ -252,7 +261,8 @@ class EditCom extends React.Component {
                                 name="chkIsActived"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 label="kích hoạt"
                                 controltype="InputControl"
                                 value={true}

@@ -138,6 +138,23 @@ class AddCom extends React.Component {
 
     }
 
+    handleChange(formData, MLObject) {
+        if (formData.txtTimeEnd.value != '' && formData.txtTimeStart.value != '') {
+            const start = formData.txtTimeStart.value.split(':');
+            const end = formData.txtTimeEnd.value.split(':');
+            const countStart = (parseInt(start[0]) * 60) + parseInt(start[1]);
+            const countEnd = (parseInt(end[0]) * 60) + parseInt(end[1]);
+            if (countEnd < countStart) {
+                formData.txtTimeEnd.ErrorLst.IsValidatonError = true;
+                formData.txtTimeEnd.ErrorLst.ValidatonErrorMessage = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu làm việc";
+            }
+            else{
+                formData.txtTimeEnd.ErrorLst.IsValidatonError = false;
+                formData.txtTimeEnd.ErrorLst.ValidatonErrorMessage = "";
+            }
+        }
+    }
+
 
     render() {
         const { DataSource } = this.state;
@@ -154,6 +171,7 @@ class AddCom extends React.Component {
                     listelement={[]}
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
+                    onchange={this.handleChange.bind(this)}
                 //RequirePermission={WORKINGSHIFT_ADD}
                 >
 
@@ -228,8 +246,8 @@ class AddCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 readOnly={false}
-                                label="ca số"
-                                placeholder="Ca số"
+                                label="ca làm việc"
+                                placeholder="Ca làm việc"
                                 controltype="InputControl"
                                 value=""
                                 maxSize={9}

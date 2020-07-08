@@ -29,15 +29,15 @@ import CoordinatorStoreWard from '../../CoordinatorStoreWard'
 import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
 import ReactNotification from "react-notifications-component";
 
+import MultiSelectComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 import MultiStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiStoreComboBox";
-import MultiAllStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiAllStoreComboBox";
-
 
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.onCoordinatorStoreWardChange = this.onCoordinatorStoreWardChange.bind(this)
         this.handleInsertNew = this.handleInsertNew.bind(this)
         this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
@@ -54,9 +54,8 @@ class EditCom extends React.Component {
             IsLoadDataComplete: false,
             cssNotification: "",
             iconNotification: "",
+            StoreID: "",
             SenderStoreID: "",
-            SenderStoreSelect: [],
-            IsSystem: false,
         };
         this.searchref = React.createRef();
         this.gridref = React.createRef();
@@ -75,8 +74,8 @@ class EditCom extends React.Component {
     }
 
     callLoadData(id) {
-        const { SenderStoreSelect, StoreSelect } = this.state;
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
+            console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -85,19 +84,8 @@ class EditCom extends React.Component {
             }
             else {
                 let IsShowCustomerAddress;
-                let SenderStoreItem = {};
-                SenderStoreItem.value = apiResult.ResultObject.SenderStoreID;
-                SenderStoreItem.label = apiResult.ResultObject.SenderStoreID + " - " + apiResult.ResultObject.SenderStoreName;
-                SenderStoreItem.name= apiResult.ResultObject.SenderStoreName;
-                SenderStoreSelect.push(SenderStoreItem);
-
                 if (apiResult.ResultObject.IsCheckCustomerAddress) {
-                    if(apiResult.ResultObject.IsSystem){
-                        IsShowCustomerAddress = true
-                    }
-                    else{
-                        IsShowCustomerAddress = false
-                    }
+                    IsShowCustomerAddress = false
                 }
                 else {
                     IsShowCustomerAddress = true
@@ -106,7 +94,6 @@ class EditCom extends React.Component {
                 this.setState({
                     DataSource: apiResult.ResultObject,
                     IsLoadDataComplete: true,
-                    IsSystem: apiResult.ResultObject.IsSystem,
                     DataWard: apiResult.ResultObject.CoordinatorStoreWard_ItemList,
                     IsShowCustomerAddress,
                 });
@@ -149,7 +136,7 @@ class EditCom extends React.Component {
             })
         }
     }
-
+   
 
     handleInsertNew() {
         if (this.state.DataSource.CoordinatorStoreWard_ItemList == null) {
@@ -190,7 +177,7 @@ class EditCom extends React.Component {
     }
 
     handleDelete(id) {
-
+        
         let dataSourceValue = this.state.DataSource.CoordinatorStoreWard_ItemList.filter(function (value, index) {
             return value.WardID != id;
         });
@@ -231,8 +218,16 @@ class EditCom extends React.Component {
         });
     }
 
+    onChangeStore(name, objstore) {
+        console.log("onChangeStore", objstore)
+        this.setState({
+            StoreID: objstore.value
+        })
+
+    }
 
     onChangeAllStore(name, objstore) {
+        console.log("onChangeAllStore", objstore)
         this.setState({
             SenderStoreID: objstore.value
         })
@@ -274,8 +269,6 @@ class EditCom extends React.Component {
                                 controltype="InputControl"
                                 value={""}
                                 listoption={null}
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
                                 datasourcemember="ShipmentOrderTypeID" />
                         </div>
                         <div className="col-md-6">
@@ -294,14 +287,12 @@ class EditCom extends React.Component {
                                 controltype="InputControl"
                                 value={""}
                                 listoption={null}
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
                                 datasourcemember="PartnerID" />
 
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.FormControlComboBox
+                            <FormControl.ComboBoxSelect
 
                                 name="cbStoreID"
                                 colspan="8"
@@ -319,45 +310,82 @@ class EditCom extends React.Component {
                                 datasourcemember="StoreID"
                                 filterValue={10}
                                 filterobj="CompanyID"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
+                            />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <FormControl.FormControlComboBox
+                                name="cbDistrictID"
+                                colspan="8"
+                                labelcolspan="4"
+                                disabled=""
+                                label="Quận/huyện"
+                                validatonList={["Comborequired"]}
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.DISTRICT"
+                                valuemember="DistrictID"
+                                nameMember="DistrictName"
+                                controltype="InputControl"
+                                value={-1}
+                                listoption={[]}
+                                datasourcemember="DistrictID"
+                                filterValue=""
+                                filterobj="DistrictID"
+                                filterrest="cbSenderStoreID"
                             />
                         </div>
                         <div className="col-md-6">
-                            <MultiAllStoreComboBox
+                            <FormControl.FormControlComboBox
                                 name="cbSenderStoreID"
                                 colspan="8"
                                 labelcolspan="4"
                                 label="kho gửi"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                IsLabelDiv={false}
-                                isautoloaditemfromcache={false}
-                                onChange={this.onChangeAllStore.bind(this)}
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.STORE"
+                                valuemember="StoreID"
+                                nameMember="StoreName"
                                 controltype="InputControl"
-                                value={this.state.SenderStoreSelect}
-                                listoption={this.state.SenderStoreSelect}
-                                isMultiSelect={false}
+                                value={""}
+                                listoption={[]}
                                 datasourcemember="SenderStoreID"
-                                validationErrorMessage={''}
-                                IsLabelDiv="kho gửi"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
+                                filterName="cbDistrictID"
+                                filterobj="DistrictID"
                             />
                         </div>
-
+                        {/* <div className="col-md-6">
+                            <FormControl.ComboBoxSelect
+                                name="cbSenderStoreID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="kho gửi"
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.STORE"
+                                valuemember="StoreID"
+                                nameMember="StoreName"
+                                controltype="InputControl"
+                                value={""}
+                                listoption={null}
+                                datasourcemember="SenderStoreID"
+                                filterValue={1}
+                                filterobj="CompanyID"
+                            />
+                        </div> */}
                         <div className="col-md-6">
                             <FormControl.CheckBox
                                 name="chkIsActived"
                                 colspan="8"
                                 labelcolspan="4"
+                                readOnly={false}
                                 label="kích hoạt"
                                 controltype="InputControl"
                                 value={true}
                                 datasourcemember="IsActived"
                                 classNameCustom="customCheckbox"
-                                 disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
                             />
                         </div>
 
@@ -384,8 +412,6 @@ class EditCom extends React.Component {
                                 value={false}
                                 labelcolspan="4"
                                 classNameCustom="customCheckbox"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
                             />
                         </div>
                         <div className="col-md-6"></div>

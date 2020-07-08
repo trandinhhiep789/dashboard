@@ -221,21 +221,21 @@ export const DataGridColumnList=[
     {
         Name: "TimeStart",
         Type: "text",
-        Caption: "Thời gian bắt đầu",
+        Caption: "Giờ bắt đầu",
         DataSourceMember: "TimeStart",
         Width: 250
     },
     {
         Name: "TimeEnd",
         Type: "text",
-        Caption: "Thời gian kết thúc làm việc",
+        Caption: "Giờ kết thúc",
         DataSourceMember: "TimeEnd",
         Width: 250
     },
     {
         Name: "ShiftNumber",
         Type: "text",
-        Caption: "Ca số",
+        Caption: "Ca làm việc",
         DataSourceMember: "ShiftNumber",
         Width: 250
     },
