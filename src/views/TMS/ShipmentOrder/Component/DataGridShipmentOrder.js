@@ -537,7 +537,7 @@ class DataGridShipmentOderCom extends Component {
                                         <div className="group-action">
                                             <div className="checkbox item-action">
                                                 <label>
-                                                    <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID}  defaultChecked={true} />
+                                                    <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID}  defaultChecked={false} />
                                                     <span className="cr">
                                                         <i className="cr-icon fa fa-check"></i>
                                                     </span>
