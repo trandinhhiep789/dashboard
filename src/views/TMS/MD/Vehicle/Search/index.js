@@ -20,7 +20,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { VEHICLE_VIEW, VEHICLE_DELETE} from "../../../../../constants/functionLists";
+import { VEHICLE_VIEW, VEHICLE_DELETE } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
@@ -65,12 +65,12 @@ class SearchCom extends React.Component {
             listMLObject.push(MLObject);
         });
         this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                this.addNotification(apiResult.Message, apiResult.IsError);
-                if(!apiResult.IsError){
-                    this.callSearchData(this.state.SearchData);
-                }             
-            });
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callSearchData(this.state.SearchData);
+            }
+        });
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -86,14 +86,14 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-                console.log('callSearchData', apiResult)
-                if (!apiResult.IsError) {
-                    this.setState({
-                        gridDataSource: apiResult.ResultObject,
-                        IsCallAPIError: apiResult.IsError
-                    });
-                }
-            });
+            console.log('callSearchData', apiResult)
+            if (!apiResult.IsError) {
+                this.setState({
+                    gridDataSource: apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError
+                });
+            }
+        });
     }
 
     handleCloseMessage() {
@@ -200,5 +200,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Search = connect(mapStateToProps,mapDispatchToProps)(SearchCom);
+const Search = connect(mapStateToProps, mapDispatchToProps)(SearchCom);
 export default Search;

@@ -13,7 +13,6 @@ import InputGridControl from "../../../../../common/components/FormContainer/For
 import MD5Digest from "../../../../../common/library/cryptography/MD5Digest.js";
 import {
     APIHostName,
-    AddAPIPath,
     MLObjectDefinitionNew,
     BackLink,
     EditPagePath,
@@ -48,8 +47,11 @@ class EditCom extends React.Component {
             DataWard: [],
             cssNotification: "",
             iconNotification: "",
-            MainDriverUser:  "",
-            MainCoordinatorStoreID:  "",
+            MainDriverUser: "",
+            MainCoordinatorStoreID: "",
+            UserValue: [],
+            StoreSelect: [],
+            IsSystem: false,
 
         };
         this.searchref = React.createRef();
@@ -65,8 +67,8 @@ class EditCom extends React.Component {
     }
 
     callLoadData(id) {
+        const { UserValue, StoreSelect } = this.state;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -74,10 +76,22 @@ class EditCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+                let UserValueItem = {};
+                let StoreItem = {};
+                UserValueItem.value = apiResult.ResultObject.MainDriverUser;
+                UserValueItem.label = apiResult.ResultObject.MainDriverUser + " - " + apiResult.ResultObject.FullName;
+
+                StoreItem.value = apiResult.ResultObject.MainCoordinatorStoreID;
+                StoreItem.label = apiResult.ResultObject.MainCoordinatorStoreID + " - " + apiResult.ResultObject.MainCoordinatorStoreName;
+                StoreItem.name = apiResult.ResultObject.MainCoordinatorStoreName;
+
+                StoreSelect.push(StoreItem)
+                UserValue.push(UserValueItem)
 
 
                 this.setState({
                     DataSource: apiResult.ResultObject,
+                    IsSystem: apiResult.ResultObject.IsSystem,
                     IsLoadDataComplete: true,
                 });
             }
@@ -103,13 +117,12 @@ class EditCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.MainDriverUser = MLObject.ShipmentOrder_DeliverUserList[0].UserName;
         console.log("handleSubmit", MLObject)
 
-        // this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-        //     this.setState({ IsCallAPIError: apiResult.IsError });
-        //     this.showMessage(apiResult.Message);
-        // });
+        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
+        });
     }
 
 
@@ -157,7 +170,7 @@ class EditCom extends React.Component {
         this.setState({
             MainCoordinatorStoreID: objstore.value
         })
-        
+
     }
 
     render() {
@@ -185,7 +198,7 @@ class EditCom extends React.Component {
                                 name="txtVehicleID"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                readOnly={true}
                                 label="mã xe"
                                 placeholder="Mã xe"
                                 controltype="InputControl"
@@ -201,6 +214,8 @@ class EditCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 readOnly={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 label="tên xe"
                                 placeholder="Tên xe"
                                 controltype="InputControl"
@@ -216,6 +231,8 @@ class EditCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 readOnly={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 label="biển số xe"
                                 placeholder="Biển số xe"
                                 controltype="InputControl"
@@ -232,13 +249,14 @@ class EditCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 label="Nhân viên tài xế chính"
-                                disabled={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 IsLabelDiv={true}
                                 isautoloaditemfromcache={false}
                                 onChange={this.onChangeUser.bind(this)}
                                 controltype="InputControl"
-                                value={[]}
-                                listoption={[]}
+                                value={this.state.UserValue}
+                                listoption={this.state.UserValue}
                                 isMultiSelect={false}
                                 datasourcemember="MainDriverUser"
                                 validationErrorMessage={''}
@@ -251,13 +269,14 @@ class EditCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 label="kho điều phối chính"
-                                disabled={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 IsLabelDiv={false}
                                 isautoloaditemfromcache={false}
                                 onChange={this.onChangeStore.bind(this)}
                                 controltype="InputControl"
-                                value={[]}
-                                listoption={[]}
+                                value={this.state.StoreSelect}
+                                listoption={this.state.StoreSelect}
                                 isMultiSelect={false}
                                 datasourcemember="MainCoordinatorStoreID"
                                 validationErrorMessage={''}
@@ -271,7 +290,8 @@ class EditCom extends React.Component {
                                 name="txtWeight"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 label="tải trọng(kg)"
                                 placeholder="Tải trọng(kg)"
                                 controltype="InputControl"
@@ -287,7 +307,8 @@ class EditCom extends React.Component {
                                 name="txtVolume"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 label="thể tích(m3)"
                                 placeholder="Thể tích(m3)"
                                 controltype="InputControl"
@@ -302,7 +323,8 @@ class EditCom extends React.Component {
                                 name="txtLength"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 label="chiều dài(m)"
                                 placeholder="Chiều dài(m)"
                                 controltype="InputControl"
@@ -318,7 +340,8 @@ class EditCom extends React.Component {
                                 name="txtWidth"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 label="chiều rộng(m)"
                                 placeholder="Chiều rộng(m)"
                                 controltype="InputControl"
@@ -334,7 +357,8 @@ class EditCom extends React.Component {
                                 name="txtHeight"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 label="chiều cao(m)"
                                 placeholder="Chiều cao(m)"
                                 controltype="InputControl"
@@ -360,6 +384,8 @@ class EditCom extends React.Component {
                                 rows={6}
                                 maxSize={500}
                                 classNameCustom="customcontrol"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                             />
                         </div>
 
@@ -368,7 +394,8 @@ class EditCom extends React.Component {
                                 name="chkIsActived"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 label="kích hoạt"
                                 controltype="InputControl"
                                 value={true}
@@ -390,9 +417,7 @@ class EditCom extends React.Component {
                                 classNameCustom="customCheckbox"
                             />
                         </div>
-
                     </div>
-
                 </FormContainer>
             </React.Fragment>
 

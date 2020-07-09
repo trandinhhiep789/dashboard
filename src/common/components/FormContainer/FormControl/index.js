@@ -10,13 +10,14 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_SEARCH } from '../../../../constants/actionTypes';
 import SearchModal from "../../Form/AdvanceForm/FormControl/FormSearchModal"
 import { createListTree } from "../../../library/ultils";
-import { TreeSelect, DatePicker } from "antd";
+import { TreeSelect, DatePicker, TimePicker } from "antd";
 import moment from 'moment';
 import Datetime from 'react-datetime';
 import "antd/dist/antd.css";
 import Select from 'react-select';
 import { formatMoney } from '../../../../utils/function';
 import { el } from 'date-fns/locale';
+
 
 //#region connect
 const mapStateToProps = state => {
@@ -188,7 +189,7 @@ class FormControlTextBox extends React.Component {
         if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
             className += " is-invalid";
         }
-        
+
         let hidenUIControll;
         if (this.props.hidenControll == undefined || this.props.hidenControll == false) {
             hidenUIControll = ''
@@ -472,6 +473,91 @@ class FormControlDatetimeCom extends Component {
     }
 }
 const FormControlDatetime = connect(null, null)(FormControlDatetimeCom);
+
+class FormControlHourCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.state = { value: "" }
+    }
+
+    handleValueChange(name, moment) {
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(this.props.name, moment);
+    }
+
+    componentDidMount() {
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
+            this.setState({ value: nextProps.value });
+        }
+    }
+
+
+    render() {
+        let { name, label, formatHour, dateFormat, colspan, value, validationErrorMessage } = this.props;
+        let formRowClassName = "form-row";
+        if (this.props.rowspan != null) {
+            formRowClassName = "form-row col-md-" + this.props.rowspan;
+        }
+        let className = "timepickercus";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-4";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+        if (validationErrorMessage != "" && validationErrorMessage != undefined) {
+            className += " is-invalid";
+        }
+        ;
+
+        let isShowTime;
+        if (this.props.showTime == undefined || this.props.showTime == true) {
+            isShowTime = true
+        }
+        else {
+            isShowTime = false
+        }
+        return (
+            <div className={formRowClassName} >
+                <div className={labelDivClassName}>
+                    <label className="col-form-label 6">
+                        {this.props.label}<span className="text-danger"> {star}</span>
+                    </label>
+                </div>
+
+                <div className={formGroupClassName}>
+                    <TimePicker
+                        value={(this.state.value != '' && this.state.value  != null) ? moment(this.state.value , formatHour) : ''}
+                        format={formatHour}
+                        className={className}
+                        ref={this.props.inputRef}
+                        placeholder={this.props.placeholder}
+                        onChange={this.handleValueChange}
+                        disabled={this.props.disabled}
+                    />
+                    <div className="invalid-feedback">
+                        <ul className="list-unstyled">
+                            <li>{validationErrorMessage}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+const FormControlHour = connect(null, null)(FormControlHourCom);
 
 class TextBoxCurrency extends React.Component {
     constructor(props) {
@@ -1393,8 +1479,17 @@ export const ComboBoxSelect = connect(mapStateToProps, mapDispatchToProps)(Combo
 
 
 export default {
-    FormControlTextBox, FormControlComboBox, FormControlDatetime, TextBox, TextArea, CheckBox, ComboBox, ComboBoxNew,
-    MultiSelectComboBox, modal, ElementDatetime,
-    ComboBoxPartner, ComboboxQTQHPX, TextBoxCurrency, ComboBoxSelect, MultiUserComboBox
+    FormControlTextBox, TextBox, TextArea, CheckBox, modal, TextBoxCurrency,
+    FormControlComboBox,
+    FormControlDatetime,
+    ComboBox,
+    ComboBoxNew,
+    MultiSelectComboBox,
+    ElementDatetime,
+    ComboBoxPartner,
+    ComboboxQTQHPX,
+    ComboBoxSelect,
+    MultiUserComboBox,
+    FormControlHour
 };
 

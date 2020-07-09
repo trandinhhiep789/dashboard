@@ -308,7 +308,22 @@ const AppMenu = [
             },
           
         ]
-    }
+    },
+    {
+        MenuName: 'WorkingPlan',
+        MenuTitle: 'Ca làm Việc',
+        LinkTo: '',
+        MenuIcon: '',
+        SubMenu: [
+            {
+                MenuName: 'WorkingPlan',
+                MenuTitle: 'Danh sách ca làm việc',
+                LinkTo: '/WorkingPlan',
+                MenuIcon: '',
+                SubMenu: []
+            }
+        ]
+    },
    
 ];
 

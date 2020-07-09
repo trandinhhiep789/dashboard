@@ -1,36 +1,35 @@
 export const APIHostName = "PIMAPI";
-export const SearchAPIPath = "api/CoordinatorStore/Search";
-export const LoadAPIPath = "api/CoordinatorStore/Load";
-export const LoadNewAPIPath = "api/CoordinatorStore/LoadNew";
-export const AddAPIPath = "api/CoordinatorStore/Add";
-export const AddNewAPIPath = "api/CoordinatorStore/AddNew";
-export const UpdateAPIPath = "api/CoordinatorStore/Update";
-export const UpdateNewAPIPath = "api/CoordinatorStore/UpdateNew";
-export const DeleteAPIPath = "api/CoordinatorStore/Delete";
-export const DeleteNewAPIPath = "api/CoordinatorStore/DeleteNew";
-export const UpdateOrderAPIPath = "api/CoordinatorStore/UpdateOrder";
-export const BackLink = "/CoordinatorStore";
-export const AddLink = "/CoordinatorStore/Add";
+export const SearchAPIPath = "api/WorkingShift/Search";
+export const LoadAPIPath = "api/WorkingShift/Load";
+export const LoadNewAPIPath = "api/WorkingShift/LoadNew";
+export const AddAPIPath = "api/WorkingShift/Add";
+export const AddNewAPIPath = "api/WorkingShift/AddNew";
+export const UpdateAPIPath = "api/WorkingShift/Update";
+export const UpdateNewAPIPath = "api/WorkingShift/UpdateNew";
+export const DeleteAPIPath = "api/WorkingShift/Delete";
+export const DeleteNewAPIPath = "api/WorkingShift/DeleteNew";
+export const UpdateOrderAPIPath = "api/WorkingShift/UpdateOrder";
+export const BackLink = "/WorkingShift";
+export const AddLink = "/WorkingShift/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "CoordinatorStoreID";
-export const PKColumnNameWard = "WardID";
+export const PKColumnName = "WorkingShiftID";
 
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách định nghĩa kho điều phối giao hàng" }
+    { Link: "", Title: "Danh sách ca làm việc" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/CoordinatorStore", Title: "Danh sách định nghĩa kho điều phối giao hàng" },
+    { Link: "/WorkingShift", Title: "Danh sách ca làm việc" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/CoordinatorStore", Title: "Danh sách định nghĩa kho điều phối giao hàng" },
+    { Link: "/WorkingShift", Title: "Danh sách ca làm việc" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -61,68 +60,42 @@ export const SearchMLObjectDefinition = [
     }
 ];
 
-export const DataGridColumnList = [
-
-  
-    {
-        Name: "WardName",
-        Type: "text",
-        Caption: "Phường/xã",
-        DataSourceMember: "WardName",
-        Width: 350
-    },
-    
-
-    {
-        Name: "chkIsSystem",
-        Type: "checkbox",
-        Caption: "Hệ thống",
-        DataSourceMember: "IsSystem",
-        Width: 70
-    },
-  
-    {
-
-        Name: "Action",
-        Type: "groupAction",
-        Caption: "Tác vụ",
-        DataSourceMember: "WardID",
-        Width: 50,
-        Link: "/ServiceAgreement/FeeAppendix/Edit/",
-        LinkText: "Chỉnh sửa"
-    }
-]
-
 export const MLObjectDefinition = [
     {
-        Name: "ShipmentOrderTypeID",
+        Name: "WorkingShiftID",
         DefaultValue: {},
-        BindControlName: "cbShipmentOrderTypeID",
-        DataSourceMember: "ShipmentOrderTypeID"
+        BindControlName: "txtWorkingShiftID",
+        DataSourceMember: "WorkingShiftID"
     },
     {
-        Name: "PartnerID",
+        Name: "WorkingShiftName",
         DefaultValue: {},
-        BindControlName: "cbPartnerID",
-        DataSourceMember: "PartnerID"
+        BindControlName: "txtWorkingShiftName",
+        DataSourceMember: "WorkingShiftName"
     },
     {
-        Name: "StoreID",
+        Name: "TimeStart",
         DefaultValue: {},
-        BindControlName: "cbStoreID",
-        DataSourceMember: "StoreID"
+        BindControlName: "txtTimeStart",
+        DataSourceMember: "TimeStart"
     },
     {
-        Name: "SenderStoreID",
+        Name: "TimeEnd",
         DefaultValue: {},
-        BindControlName: "cbSenderStoreID",
-        DataSourceMember: "SenderStoreID"
+        BindControlName: "txtTimeEnd",
+        DataSourceMember: "TimeEnd"
     },
     {
-        Name: "IsCheckCustomerAddress",
+        Name: "ShiftNumber",
         DefaultValue: {},
-        BindControlName: "chkIsCheckCustomerAddress",
-        DataSourceMember: "IsCheckCustomerAddress"
+        BindControlName: "txtShiftNumber",
+        DataSourceMember: "ShiftNumber"
+    },
+    {
+        Name: "Description",
+        DefaultValue: {},
+        BindControlName: "txtDescription",
+        DataSourceMember: "Description"
     },
     {
         Name: "IsActived",
@@ -136,12 +109,7 @@ export const MLObjectDefinition = [
         BindControlName: "chkIsSystem",
         DataSourceMember: "IsSystem"
     },
-    {
-        Name: "CoordinatorStoreWard_ItemList",
-        DefaultValue: {},
-        BindControlName: "CoordinatorStoreWard_ItemList",
-        DataSourceMember: "CoordinatorStoreWard_ItemList"
-    },
+
 ]
 
 
@@ -230,59 +198,54 @@ export const AddElementList = [
 
 ];
 
-export const InputCoordinatorStoreWardColumnList = [
-
-];
-
-export const GridMLCoordinatorStoreWardDefinition = []
 
 export const EditElementList = [
 
 ];
 
-export const DataGridCoordinatorStoreColumnList=[
+export const DataGridColumnList=[
     {
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "CoordinatorStoreID",
+        DataSourceMember: "WorkingShiftID",
         Width: 60
     },
     {
-        Name: "ShipmentOrderTypeName",
+        Name: "WorkingShiftName",
         Type: "text",
-        Caption: "Loại yêu cầu xuất",
-        DataSourceMember: "ShipmentOrderTypeName",
+        Caption: "Tên ca làm việc",
+        DataSourceMember: "WorkingShiftName",
         Width: 250
     },
     {
-        Name: "PartnerName",
+        Name: "TimeStart",
         Type: "text",
-        Caption: "Đối tác",
-        DataSourceMember: "PartnerName",
+        Caption: "Giờ bắt đầu",
+        DataSourceMember: "TimeStart",
         Width: 250
     },
     {
-        Name: "StoreName",
+        Name: "TimeEnd",
         Type: "text",
-        Caption: "Kho điều phối",
-        DataSourceMember: "StoreName",
+        Caption: "Giờ kết thúc",
+        DataSourceMember: "TimeEnd",
         Width: 250
     },
     {
-        Name: "SenderStoreName",
+        Name: "ShiftNumber",
         Type: "text",
-        Caption: "Kho gửi",
-        DataSourceMember: "SenderStoreName",
+        Caption: "Ca làm việc",
+        DataSourceMember: "ShiftNumber",
         Width: 250
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "CoordinatorStoreID",
+        DataSourceMember: "WorkingShiftID",
         Width: 100,
-        Link: "/CoordinatorStore/Edit/",
+        Link: "/WorkingShift/Edit/",
         LinkText: "Chỉnh sửa"
     },
 ]

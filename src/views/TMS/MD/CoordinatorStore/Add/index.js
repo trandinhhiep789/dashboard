@@ -27,6 +27,8 @@ import { COORDINATORSTORE_ADD } from "../../../../../constants/functionLists";
 import CoordinatorStoreWard from '../../CoordinatorStoreWard'
 import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
 import ReactNotification from "react-notifications-component";
+import MultiStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiStoreComboBox";
+import MultiAllStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiAllStoreComboBox";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -48,7 +50,8 @@ class AddCom extends React.Component {
             DataSource: {},
             DataWard: [],
             cssNotification: "",
-            iconNotification: ""
+            iconNotification: "",
+            SenderStoreID: "",
         };
         this.searchref = React.createRef();
         this.gridref = React.createRef();
@@ -78,9 +81,11 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
+        const { SenderStoreID } = this.state;
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.CoordinatorStoreWard_ItemList = this.state.DataSource.CoordinatorStoreWard_ItemList;
+        MLObject.SenderStoreID = SenderStoreID;
         this.props.callFetchAPI(APIHostName, AddNewAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -101,7 +106,7 @@ class AddCom extends React.Component {
     }
 
     handleInsertNew() {
-        if(this.state.DataSource.CoordinatorStoreWard_ItemList == null){
+        if (this.state.DataSource.CoordinatorStoreWard_ItemList == null) {
             this.state.DataSource.CoordinatorStoreWard_ItemList = []
         }
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
@@ -139,7 +144,7 @@ class AddCom extends React.Component {
     }
 
     handleDelete(id) {
-        
+
         let dataSourceValue = this.state.DataSource.CoordinatorStoreWard_ItemList.filter(function (value, index) {
             return value.WardID != id;
         });
@@ -180,6 +185,12 @@ class AddCom extends React.Component {
         });
     }
 
+    onChangeAllStore(name, objstore) {
+        this.setState({
+            SenderStoreID: objstore.value
+        })
+
+    }
 
     render() {
         const { DataSource, IsShowCustomerAddress, DataWard } = this.state;
@@ -259,9 +270,30 @@ class AddCom extends React.Component {
                                 filterobj="CompanyID"
                             />
                         </div>
+
+                        <div className="col-md-6">
+                            <MultiAllStoreComboBox
+                                name="cbSenderStoreID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="kho gửi"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
+                                IsLabelDiv={false}
+                                isautoloaditemfromcache={false}
+                                onChange={this.onChangeAllStore.bind(this)}
+                                controltype="InputControl"
+                                value={[]}
+                                listoption={[]}
+                                isMultiSelect={false}
+                                datasourcemember="SenderStoreID"
+                                validationErrorMessage={''}
+                                IsLabelDiv="kho gửi"
+                            />
+                        </div>
                     </div>
                     <div className="row">
-                        <div className="col-md-6">
+                        {/* <div className="col-md-6">
                             <FormControl.FormControlComboBox
                                 name="cbDistrictID"
                                 colspan="8"
@@ -302,7 +334,8 @@ class AddCom extends React.Component {
                                 filterValue=""
                                 filterobj="DistrictID"
                             />
-                        </div>
+                        </div> */}
+
                         <div className="col-md-6">
                             <FormControl.CheckBox
                                 name="chkIsActived"
