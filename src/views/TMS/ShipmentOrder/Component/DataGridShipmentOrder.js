@@ -459,8 +459,10 @@ class DataGridShipmentOderCom extends Component {
     }
     handleCheckShip(e)
     {
-        
+        const searchText = e.target.value;
+        const name = e.target.name;
 
+        console.log("handleCheckShip",searchText,name,e.target.checked,  this.state.DataSource.find(n => n[name] ==searchText));
     }
     _genCommentTime(dates) {
         const date = new Date(Date.parse(dates));
@@ -535,7 +537,7 @@ class DataGridShipmentOderCom extends Component {
                                         <div className="group-action">
                                             <div className="checkbox item-action">
                                                 <label>
-                                                    <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowIndex} checked={true} />
+                                                    <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID}  defaultChecked={true} />
                                                     <span className="cr">
                                                         <i className="cr-icon fa fa-check"></i>
                                                     </span>
