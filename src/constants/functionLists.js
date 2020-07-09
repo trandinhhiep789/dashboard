@@ -176,6 +176,24 @@ export const COORDINATORSTORE_DELETE = 'COORDINATORSTORE_DELETE';
 // thông tin giao dịch với đối tác
 export const PARTNERTRANSACTION_VIEW = 'PARTNERTRANSACTION_VIEW';
 
+
+// kỹ năng
+export const SKILL_VIEW = 'SKILL_VIEW';
+export const SKILL_ADD = 'SKILL_ADD';
+export const SKILL_UPDATE = 'SKILL_UPDATE';
+export const SKILL_DELETE = 'SKILL_DELETE';
+
+// danh mục kỹ năng
+export const SKILLCATEGORY_VIEW = 'SKILLCATEGORY_VIEW';
+export const SKILLCATEGORY_ADD = 'SKILLCATEGORY_ADD';
+export const SKILLCATEGORY_UPDATE = 'SKILLCATEGORY_UPDATE';
+export const SKILLCATEGORY_DELETE = 'SKILLCATEGORY_DELETE';
+
+// cấp bậc kỹ năng
+export const SKILLRANK_VIEW = 'SKILLRANK_VIEW';
+export const SKILLRANK_ADD = 'SKILLRANK_ADD';
+export const SKILLRANK_UPDATE = 'SKILLRANK_UPDATE';
+export const SKILLRANK_DELETE = 'SKILLRANK_DELETE';
 // Danh sách xe
 export const VEHICLE_VIEW = 'VEHICLE_VIEW';
 export const VEHICLE_ADD = 'VEHICLE_ADD';

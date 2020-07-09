@@ -52,13 +52,16 @@ import IDDocumentType from '../../views/TMS/MD/IDDocumentType';
 import UserCoordinator from '../../views/TMS/User/UserCoordinator';
 import UserGroup from '../../views/TMS/User/UserGroup';
 import PartnerTransaction from '../../views/TMS/MD/PartnerTransaction';
-
 import CoordinatorStore from '../../views/TMS/MD/CoordinatorStore';
+import Skill from "../TMS/MD/Skill";
+import SkillCategory from "../TMS/MD/SkillCategory";
+import SkillRank from "../TMS/MD/SkillRank";
 import Vehicle from '../../views/TMS/MD/Vehicle';
 import WorkingShift from '../../views/TMS/MD/WorkingShift';
 
-
 import NotFound from '../NotFound'
+
+
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -155,6 +158,9 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/IDDocumentType" component={IDDocumentType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerTransaction" component={PartnerTransaction} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/CoordinatorStore" component={CoordinatorStore} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/Skill" component={Skill} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/SkillCategory" component={SkillCategory} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/SkillRank" component={SkillRank} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} />
                                 

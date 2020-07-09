@@ -15,18 +15,15 @@ import {
     IDSelectColumnName,
     PKColumnName,
     InitSearchParams,
-    PagePath,
-    AddLogAPIPath
+    PagePath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { PARTNERTRANSACTION_VIEW } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_PARTNER } from "../../../../../constants/keyCache";
+import { SKILL_VIEW, SKILL_DELETE } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -52,7 +49,6 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
     }
 
-
     handleDelete(deleteList, pkColumnName) {
         let listMLObject = [];
         deleteList.map((row, index) => {
@@ -64,14 +60,15 @@ class SearchCom extends React.Component {
             listMLObject.push(MLObject);
         });
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
-            if (!apiResult.IsError) {
-                this.callSearchData(this.state.SearchData);
-                // this.handleClearLocalCache();
-                // this.handleSubmitInsertLog();
-            }
-        });
+                this.setState({ IsCallAPIError: apiResult.IsError });
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                if(!apiResult.IsError){
+                    this.callSearchData(this.state.SearchData);
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNER);
+                    // this.handleClearLocalCache();
+                    // this.handleSubmitInsertLog();
+                }             
+            });
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -79,40 +76,23 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
-            },
-            {
-                SearchKey: "@PartnerTransactionTypeID",
-                SearchValue: MLObject.PartnerTransactionTypeID
-            },
-            {
-                SearchKey: "@PartnerID",
-                SearchValue: MLObject.PartnerID
-            },
-            {
-                SearchKey: "@FromDate",
-                SearchValue: MLObject.FromDate
-            },
-            {
-                SearchKey: "@ToDate",
-                SearchValue: MLObject.ToDate
             }
         ];
         this.setState({ SearchData: postData });
         this.callSearchData(postData);
         //this.gridref.current.clearData();
-        //console.log("handleSearchSubmit",MLObject);
     }
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            this.searchref.current.changeLoadComplete();
-            if (!apiResult.IsError) {
-                this.setState({
-                    gridDataSource: apiResult.ResultObject,
-                    IsCallAPIError: apiResult.IsError
-                });
-            }
-        });
+                this.searchref.current.changeLoadComplete();
+                if (!apiResult.IsError) {
+                    this.setState({
+                        gridDataSource: apiResult.ResultObject,
+                        IsCallAPIError: apiResult.IsError
+                    });
+                }
+            });
     }
 
     handleCloseMessage() {
@@ -170,7 +150,7 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    FormName="Tìm kiếm thông tin giao dịch với đối tác"
+                    FormName="Tìm kiếm danh sách kỹ năng"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
@@ -179,15 +159,13 @@ class SearchCom extends React.Component {
                 <DataGrid
                     listColumn={DataGridColumnList}
                     dataSource={this.state.gridDataSource}
-                    //AddLink={AddLink}
-                    IsShowButtonAdd={false}
-                    IsShowButtonDelete={false}
+                    AddLink={AddLink}
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
-                    //onDeleteClick={this.handleDelete}
+                    onDeleteClick={this.handleDelete}
                     ref={this.gridref}
-                    RequirePermission={PARTNERTRANSACTION_VIEW}
-                    //DeletePermission={CANCELDELIVERYREASON_DELETE}
+                    RequirePermission={SKILL_VIEW}
+                    DeletePermission={SKILL_DELETE}
                     IsAutoPaging={true}
                     RowsPerPage={10}
                 />
@@ -213,9 +191,12 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
     };
 };
 
-const Search = connect(mapStateToProps, mapDispatchToProps)(SearchCom);
+const Search = connect(mapStateToProps,mapDispatchToProps)(SearchCom);
 export default Search;
