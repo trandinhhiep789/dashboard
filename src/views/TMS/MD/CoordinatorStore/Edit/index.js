@@ -264,7 +264,7 @@ class EditCom extends React.Component {
                                 name="cbShipmentOrderTypeID"
                                 colspan="8"
                                 labelcolspan="4"
-                                label="loại yêu cầu xuất"
+                                label="loại yêu cầu vẫn chuyển"
                                 validatonList={["Comborequired"]}
                                 placeholder="-- Vui lòng chọn --"
                                 isautoloaditemfromcache={true}

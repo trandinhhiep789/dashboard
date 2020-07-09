@@ -32,18 +32,54 @@ export const AddPagePath = [
     { Link: "", Title: "Thêm" }
 ];
 
+const dtFromdate = new Date();
+dtFromdate.setDate(new Date().getDate() - 365);
+
 export const SearchElementList = [
     {
-        type: "text",
-        name: "txtKeyword",
-        DataSourceMember: "Keyword",
-        value: "",
+        type: "Datetime",
+        name: "dtSignedDate",
+        DataSourceMember: "SignedDate",
+        label: "ngày làm việc",
+        value: dtFromdate,
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
         colspan: 2,
-        placeholder: "Từ khóa",
-        icon: "",
-        classNameCol:"col-custom"
-        
-    }
+    },
+    {
+        type: "ComboBox",
+        name: "cbServiceTypeID",
+        DataSourceMember: "ServiceTypeID",
+        label: "kho làm việc",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
+        ValueMember: "StoreID",
+        NameMember: "StoreName",
+        filterValue:10,
+        filterobj:"CompanyID",
+
+    },
+    {
+        type: "ComboBox",
+        name: "cbServiceTypeID",
+        DataSourceMember: "ServiceTypeID",
+        label: "kho làm việc",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.WORKINGSHIFT",
+        ValueMember: "WorkingShiftID",
+        NameMember: "WorkingShiftName",
+
+    },
 ]
 
 export const InitSearchParams = [
@@ -68,19 +104,54 @@ export const MLObjectDefinition = [
 export const DataGridColumnList = [
   
     {
-        Name: "WorkingDate",
-        Type: "date",
-        Caption: "Ngày làm việc",
-        DataSourceMember: "WorkingDate",
+        Name: "UserName",
+        Type: "text",
+        Caption: "Mã nhân viên",
+        DataSourceMember: "UserName",
         Width: 130
     },
     {
-        Name: "Action",
-        Type: "link",
-        Caption: "Tác vụ",
-        DataSourceMember: "ServiceAgreementID",
-        Width: 100,
-        Link: "/WorkingPlan/Edit/",
-        LinkText: "Chỉnh sửa"
+        Name: "FullName",
+        Type: "text",
+        Caption: "Tên nhân viên",
+        DataSourceMember: "FullName",
+        Width: 130
+    },
+
+    {
+        Name: "StoreName",
+        Type: "text",
+        Caption: "Kho làm việc",
+        DataSourceMember: "StoreName",
+        Width: 130
+    },
+
+    {
+        Name: "WorkingShiftName",
+        Type: "text",
+        Caption: "Ca làm việc",
+        DataSourceMember: "WorkingShiftName",
+        Width: 130
+    },
+    {
+        Name: "ShiftNumberOne",
+        Type: "checkicon",
+        Caption: "Ca một",
+        DataSourceMember: "ShiftNumberOne",
+        Width: 70
+    },
+    {
+        Name: "ShiftNumberTwo",
+        Type: "checkicon",
+        Caption: "Ca hai",
+        DataSourceMember: "ShiftNumberTwo",
+        Width: 70
+    },
+    {
+        Name: "ShiftNumberThree",
+        Type: "checkicon",
+        Caption: "Ca ba",
+        DataSourceMember: "ShiftNumberThree",
+        Width: 70
     },
 ]
