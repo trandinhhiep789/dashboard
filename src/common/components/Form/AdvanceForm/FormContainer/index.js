@@ -82,7 +82,7 @@ class FormContainerCom extends Component {
                 FormValidation: formValidation
             });
         }
-        console.log("handleInputChange", this.state);
+        //console.log("handleInputChange", this.state);
         //console.log(this.state);
         if (this.props.onValueChange) {
             this.props.onValueChange(elementname, elementvalue);
