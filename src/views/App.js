@@ -12,30 +12,18 @@ class AppCom extends React.Component {
         super(props);
     }
     render() {
-        const isLoginSuccess = this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess;
+       
         return (
             <Router>
-                {!isLoginSuccess
-                ?
-                <Redirect
-            to={{
-              pathname: "/login",
-             
-            }}
-          /> :
-          <div id="mainRouter">
-          <ModalRoot />
-          <Switch>
-              <Route exact path="/" component={Home} />
-              <Route path="/login" component={Login} />
-              <Route path="/logout" component={Logout} />
-              <Route path="*" component={Home} />
-          </Switch>
-      </div>
-                    
-                }
-
-                
+                <div id="mainRouter">
+                    <ModalRoot />
+                    <Switch>
+                        <Route exact path="/" component={Home} />
+                        <Route path="/login" component={Login} />
+                        <Route path="/logout" component={Logout} />
+                        <Route path="*" component={Home} />
+                    </Switch>
+                </div>
             </Router>
         );
     }

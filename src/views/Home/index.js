@@ -74,37 +74,41 @@ class HomeCom extends React.Component {
         addScript.setAttribute('src', '/src/js/core.min.js');
         document.body.appendChild(addScript);
 
-        // let sessionlogin = getCookie(COOKIELOGIN);
-        // if (sessionlogin) {
-        //     let LoginInfo = JSON.parse(sessionlogin);
-        //     //console.log("Login.componentDidMount LoginInfo: ", LoginInfo);
-        //     //console.log("Login.componentDidMount LoginInfo.Password: ", LoginInfo.Password);
-        //     this.props.loginSuccess(LoginInfo.LoginUserInfo, LoginInfo.TokenString, LoginInfo.Password);
-        //     this.setState({ isLoggedIn: true })
-        // }
+       
         const LoginInfo = localStorage.getItem('LoginInfo');
-        //console.log('home props.AuthenticationInfo ', this.props.AuthenticationInfo);
         if(!this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess)
         {
             if (LoginInfo) {
                 const LoginInfo1 = JSON.parse(LoginInfo)
-             //   console.log("componentDidMount Home",LoginInfo1,LoginInfo1.Password);
-                this.props.loginSuccess(LoginInfo1.LoginUserInfo, LoginInfo1.TokenString,"e10adc3949ba59abbe56e057f20f883e");
+                this.props.loginSuccess(LoginInfo1.LoginUserInfo, LoginInfo1.TokenString,LoginInfo1.Password);
                 this.setState({ isLoggedIn: true })
             }
             else {
                 this.setState({ isLoggedIn: false })
-    
             }
         }
-        //console.log('home LoginInfo', LoginInfo)
-        
+    }
 
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.AuthenticationInfo) !== JSON.stringify(nextProps.AuthenticationInfo)) {
+            const LoginInfo = localStorage.getItem('LoginInfo');
+            if(!this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess)
+            {
+                if (LoginInfo) {
+                    const LoginInfo1 = JSON.parse(LoginInfo)
+                    this.props.loginSuccess(LoginInfo1.LoginUserInfo, LoginInfo1.TokenString,LoginInfo1.Password);
+                    this.setState({ isLoggedIn: true })
+                }
+                else {
+                    this.setState({ isLoggedIn: false })
+                }
+            }
+        }
     }
 
     render() {
         let isShowAppPath = true;
-        const { isLoggedIn } = this.state
+      const { isLoggedIn } = this.state
         return (
             <React.Fragment>
                 <Header />
