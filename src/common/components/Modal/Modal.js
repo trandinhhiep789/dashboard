@@ -239,6 +239,7 @@ class ModalCom extends React.Component {
                                     key={elementItem.Name}
                                     readonly={elementItem.readonly}
                                     disabled={elementItem.disabled}
+                                    isDisabled={elementItem.disabled}
                                     validatonList={elementItem.validatonList}
                                     validationErrorMessage={validationErrorMessage}
                                     IsAutoLoadItemFromCache={elementItem.IsAutoLoadItemFromCache}

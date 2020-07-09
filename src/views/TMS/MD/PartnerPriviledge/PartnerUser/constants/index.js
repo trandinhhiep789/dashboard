@@ -710,7 +710,7 @@ export const Modal_PartnerUserIDDocument_Add = [
         maxSize: "19",
         DataSourceMember: "IDDocumentNumber",
         readonly: false,
-        validatonList: []
+        validatonList: ["number"]
     },
     {
         Name: "FullNameOnIDDocument",
@@ -803,7 +803,7 @@ export const Modal_PartnerUserIDDocument_Edit = [
         maxSize: "19",
         DataSourceMember: "IDDocumentNumber",
         readonly: false,
-        validatonList: []
+        validatonList: ["number"]
     },
     {
         Name: "FullNameOnIDDocument",
@@ -880,18 +880,25 @@ export const PartnerUserIDDocument_DataGrid_ColumnList = [
         Width: 50
     },
     {
+        Name: "IDDocumentTypeName",
+        Type: "text",
+        Caption: "Loại giấy tờ tùy thân",
+        DataSourceMember: "IDDocumentTypeName",
+        Width: 150
+    },
+    {
         Name: "IDDocumentNumber",
         Type: "text",
         Caption: "Số giấy tờ tùy thân",
         DataSourceMember: "IDDocumentNumber",
-        Width: 200
+        Width: 150
     },
     {
         Name: "FullNameOnIDDocument",
         Type: "text",
         Caption: "Tên trên giấy tờ tùy thân",
         DataSourceMember: "FullNameOnIDDocument",
-        Width: 160
+        Width: 200
     },
     {
         Name: "IsActived",
@@ -928,6 +935,12 @@ export const MLObject_PartnerUserIDDocument = [
         DefaultValue: "",
         BindControlName: "IDDocumentTypeID",
         DataSourceMember: "IDDocumentTypeID"
+    },
+    {
+        Name: "IDDocumentTypeName",
+        DefaultValue: "",
+        BindControlName: "IDDocumentTypeName",
+        DataSourceMember: "IDDocumentTypeName"
     },
     {
         Name: "IDDocumentNumber",

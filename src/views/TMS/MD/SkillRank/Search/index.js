@@ -20,12 +20,9 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { PARTNERTRANSACTION_VIEW } from "../../../../../constants/functionLists";
+import { SKILLRANK_VIEW, SKILLRANK_DELETE } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache } from "../../../../../actions/cacheAction";
 
 class SearchCom extends React.Component {
@@ -52,6 +49,39 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
     }
 
+    // handleClearLocalCache() {
+    //     const cacheKeyID = "PIMCACHE.PIMATTRIBUTECATEGORYTYPE";
+    //     const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
+    //     return db.delete(cacheKeyID).then((result) => {
+    //         const postData = {
+    //             CacheKeyID: cacheKeyID,
+    //             UserName: this.props.AppInfo.LoginInfo.Username,
+    //             AdditionParamList: []
+    //         };
+    //         this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
+    //             this.handleGetCache();
+    //             //console.log("apiResult", apiResult)
+
+    //         });
+    //     }
+    //     );
+    // }
+
+    // handleGetCache() {
+    //     this.props.callGetCache("ERPUSERCACHE.FUNCTION").then((result) => {
+    //         console.log("handleGetCache: ", result);
+    //     });
+    // }
+
+    // handleSubmitInsertLog() {
+    //     let MLObject = {};
+    //     MLObject.ActivityTitle = "Xóa loại danh mục thuộc tính";
+    //     MLObject.ActivityDetail = "Xóa loại danh mục thuộc tính";
+    //     MLObject.ObjectID = "PIM_ATTRIBUTECATEGORYTYPE";
+    //     MLObject.ActivityUser = this.props.AppInfo.LoginInfo.Username;
+    //     MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+    //     this.props.callFetchAPI(APIHostName, AddLogAPIPath, MLObject);
+    // }
 
     handleDelete(deleteList, pkColumnName) {
         let listMLObject = [];
@@ -79,28 +109,11 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
-            },
-            {
-                SearchKey: "@PartnerTransactionTypeID",
-                SearchValue: MLObject.PartnerTransactionTypeID
-            },
-            {
-                SearchKey: "@PartnerID",
-                SearchValue: MLObject.PartnerID
-            },
-            {
-                SearchKey: "@FromDate",
-                SearchValue: MLObject.FromDate
-            },
-            {
-                SearchKey: "@ToDate",
-                SearchValue: MLObject.ToDate
             }
         ];
         this.setState({ SearchData: postData });
         this.callSearchData(postData);
         //this.gridref.current.clearData();
-        //console.log("handleSearchSubmit",MLObject);
     }
 
     callSearchData(searchData) {
@@ -170,7 +183,7 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    FormName="Tìm kiếm thông tin giao dịch với đối tác"
+                    FormName="Tìm kiếm danh sách lý do hủy giao hàng"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
@@ -179,15 +192,13 @@ class SearchCom extends React.Component {
                 <DataGrid
                     listColumn={DataGridColumnList}
                     dataSource={this.state.gridDataSource}
-                    //AddLink={AddLink}
-                    IsShowButtonAdd={false}
-                    IsShowButtonDelete={false}
+                    AddLink={AddLink}
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
-                    //onDeleteClick={this.handleDelete}
+                    onDeleteClick={this.handleDelete}
                     ref={this.gridref}
-                    RequirePermission={PARTNERTRANSACTION_VIEW}
-                    //DeletePermission={CANCELDELIVERYREASON_DELETE}
+                    RequirePermission={SKILLRANK_VIEW}
+                    DeletePermission={SKILLRANK_DELETE}
                     IsAutoPaging={true}
                     RowsPerPage={10}
                 />
