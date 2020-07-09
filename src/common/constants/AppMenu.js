@@ -212,6 +212,20 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'Vehicle',
+                MenuTitle: 'Danh sách xe',
+                LinkTo: '/Vehicle',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'WorkingShift',
+                MenuTitle: 'Ca làm việc',
+                LinkTo: '/WorkingShift',
+                MenuIcon: '',
+                SubMenu: []
+            },
             // {
             //     MenuName: 'Skills',
             //     MenuTitle: 'Kỹ năng',
@@ -323,7 +337,22 @@ const AppMenu = [
             },
           
         ]
-    }
+    },
+    {
+        MenuName: 'WorkingPlan',
+        MenuTitle: 'Ca làm Việc',
+        LinkTo: '',
+        MenuIcon: '',
+        SubMenu: [
+            {
+                MenuName: 'WorkingPlan',
+                MenuTitle: 'Danh sách ca làm việc',
+                LinkTo: '/WorkingPlan',
+                MenuIcon: '',
+                SubMenu: []
+            }
+        ]
+    },
    
 ];
 

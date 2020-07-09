@@ -12,7 +12,7 @@ class AppCom extends React.Component {
         super(props);
     }
     render() {
-        const isLoginSuccess = this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess;
+       
         return (
             <Router>
                 <div id="mainRouter">

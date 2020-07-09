@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import DataGrid from "../../../../common/components/DataGrid/getdataserver.js";
+import DataGridShipmentOder from "../Component/DataGridShipmentOrder";
+
 import InputGridNew from "../../../../common/components/FormContainer/FormControl/InputGridNew";
 import { MessageModal } from "../../../../common/components/Modal";
 import {
@@ -68,7 +70,8 @@ class SearchCom extends React.Component {
     handleonChangePage(pageNum) {
         let listMLObject = [];
         const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
-        listMLObject = Object.assign([], this.state.SearchData, { [9]: aa });
+        listMLObject = Object.assign([], this.state.SearchData, { [13]: aa });
+        console.log(this.state.SearchData,listMLObject)
         this.callSearchData(listMLObject)
         this.setState({
             PageNumber: pageNum
@@ -215,7 +218,7 @@ class SearchCom extends React.Component {
                         classNamebtnSearch="btn-custom-right" 
 
                     />
-                    <DataGrid
+                    <DataGridShipmentOder
                         listColumn={DataGridColumnList}
                         dataSource={this.state.gridDataSource}
                         AddLink={AddLink}

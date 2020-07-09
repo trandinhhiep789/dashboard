@@ -68,7 +68,7 @@ class SearchCom extends React.Component {
     handleonChangePage(pageNum) {
         let listMLObject = [];
         const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
-        listMLObject = Object.assign([], this.state.SearchData, { [9]: aa });
+        listMLObject = Object.assign([], this.state.SearchData, { [13]: aa });
         this.callSearchData(listMLObject)
         this.setState({
             PageNumber: pageNum
@@ -82,8 +82,12 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.Keyword
             },
             {
-                SearchKey: "@REQUESTPARTNERID",
-                SearchValue: MLObject.RequestPartnerID
+                SearchKey: "@RECEIVERPHONENUMBER",
+                SearchValue: MLObject.ReceiverPhoneNumber
+            },
+            {
+                SearchKey: "@SHIPMENTORDERTYPEID",
+                SearchValue: MLObject.ShipmentOrderTypeID
             },
             {
                 SearchKey: "@FromDate",
@@ -92,8 +96,7 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@ToDate",
                 SearchValue: MLObject.CreatedOrderTimeTo
-            }
-            ,
+            },
             {
                 SearchKey: "@RECEIVERPROVINCEID",
                 SearchValue: MLObject.ReceiverProvinceID
@@ -107,8 +110,20 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.SenderStoreID
             },
             {
+                SearchKey: "@COORDINATORSTOREID",
+                SearchValue: MLObject.CoordinatorStoreID
+            },
+            {
                 SearchKey: "@SHIPMENTORDERSTATUSID",
                 SearchValue: MLObject.ShipmentOrderStatusID
+            },
+            {
+                SearchKey: "@IsCoordinator",
+                SearchValue: MLObject.IsCoordinator
+            },
+            {
+                SearchKey: "@IsView",
+                SearchValue: MLObject.IsView
             },
             {
                 SearchKey: "@PAGESIZE",
@@ -124,10 +139,8 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-        let objsearchData=[]
-        const objUser = { SearchKey: "@CREATEDUSERSTORE", SearchValue: this.props.AppInfo.LoginInfo.Username};
-        objsearchData = Object.assign([], searchData, { [10]: objUser });
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, objsearchData).then(apiResult => {
+    
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
@@ -194,13 +207,13 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                        FormName="Tìm kiếm danh sách vận chuyển"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
-                        className="multiple"
-
+                        className="multiple multiple-custom multiple-custom-display"
+                        classNamebtnSearch="btn-custom-right" 
                     />
                     <DataGrid
                         listColumn={DataGridColumnList}
@@ -225,12 +238,12 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                        FormName="Tìm kiếm danh sách vận chuyển"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
-                        className="multiple"
+                        className="multiple multiple-custom multiple-custom-display"
 
                     />
                   <label>Đang nạp dữ liệu...</label>

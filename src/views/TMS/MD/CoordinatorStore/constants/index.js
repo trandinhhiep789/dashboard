@@ -119,6 +119,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "SenderStoreID"
     },
     {
+        Name: "DistrictID",
+        DefaultValue: {},
+        BindControlName: "cbDistrictID",
+        DataSourceMember: "DistrictID"
+    },
+    {
         Name: "IsCheckCustomerAddress",
         DefaultValue: {},
         BindControlName: "chkIsCheckCustomerAddress",

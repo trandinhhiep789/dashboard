@@ -27,13 +27,14 @@ import { COORDINATORSTORE_ADD } from "../../../../../constants/functionLists";
 import CoordinatorStoreWard from '../../CoordinatorStoreWard'
 import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
 import ReactNotification from "react-notifications-component";
+import MultiStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiStoreComboBox";
+import MultiAllStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiAllStoreComboBox";
 
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.onCoordinatorStoreWardChange = this.onCoordinatorStoreWardChange.bind(this)
         this.handleInsertNew = this.handleInsertNew.bind(this)
         this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
@@ -46,10 +47,11 @@ class AddCom extends React.Component {
             IsCallAPIError: false,
             IsCloseForm: false,
             IsShowCustomerAddress: true,
-            DataSource: [],
+            DataSource: {},
             DataWard: [],
             cssNotification: "",
-            iconNotification: ""
+            iconNotification: "",
+            SenderStoreID: "",
         };
         this.searchref = React.createRef();
         this.gridref = React.createRef();
@@ -79,10 +81,11 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
+        const { SenderStoreID } = this.state;
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        console.log("handleSubmit", MLObject)
-
+        MLObject.CoordinatorStoreWard_ItemList = this.state.DataSource.CoordinatorStoreWard_ItemList;
+        MLObject.SenderStoreID = SenderStoreID;
         this.props.callFetchAPI(APIHostName, AddNewAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -101,17 +104,16 @@ class AddCom extends React.Component {
             })
         }
     }
-    onCoordinatorStoreWardChange(list, deleteList) {
-
-    }
 
     handleInsertNew() {
-
+        if (this.state.DataSource.CoordinatorStoreWard_ItemList == null) {
+            this.state.DataSource.CoordinatorStoreWard_ItemList = []
+        }
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
             content: {
                 text: <StoreWard
-                    DataWard={this.state.DataWard}
+                    DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
                     onInputChangeObj={this.handleInputChangeObjItem}
 
                 />
@@ -121,7 +123,8 @@ class AddCom extends React.Component {
     }
 
     handleInputChangeObjItem(ObjItem, result) {
-        this.addNotification(result.Message, result.IsError);
+        const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: ObjItem });
+        this.setState({ DataSource: formData });
         this.props.hideModal()
     }
 
@@ -130,7 +133,7 @@ class AddCom extends React.Component {
             title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
             content: {
                 text: <StoreWard
-                    DataWard={this.state.DataWard}
+                    DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
                     index={index}
                     onInputChangeObj={this.handleInputChangeObjItem}
 
@@ -140,11 +143,13 @@ class AddCom extends React.Component {
         })
     }
 
-    handleDelete(index) {
-        let dataSourceValue = this.state.DataWard.filter(function (value, index1) { return index1 != index; });
-        console.log('aa',dataSourceValue, index )
-        //const formData = Object.assign({}, this.state.DataWard, { ["ShipmentOrder_ItemList"]: dataSourceValue });
-        //this.setState({ DataSource: formData });
+    handleDelete(id) {
+
+        let dataSourceValue = this.state.DataSource.CoordinatorStoreWard_ItemList.filter(function (value, index) {
+            return value.WardID != id;
+        });
+        const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: dataSourceValue });
+        this.setState({ DataSource: formData });
     }
 
     addNotification(message1, IsError) {
@@ -180,6 +185,12 @@ class AddCom extends React.Component {
         });
     }
 
+    onChangeAllStore(name, objstore) {
+        this.setState({
+            SenderStoreID: objstore.value
+        })
+
+    }
 
     render() {
         const { DataSource, IsShowCustomerAddress, DataWard } = this.state;
@@ -206,7 +217,7 @@ class AddCom extends React.Component {
                                 name="cbShipmentOrderTypeID"
                                 colspan="8"
                                 labelcolspan="4"
-                                label="loại yêu cầu xuất"
+                                label="loại yêu cầu vận chuyển"
                                 validatonList={["Comborequired"]}
                                 placeholder="-- Vui lòng chọn --"
                                 isautoloaditemfromcache={true}
@@ -239,7 +250,7 @@ class AddCom extends React.Component {
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
+                            <FormControl.FormControlComboBox
 
                                 name="cbStoreID"
                                 colspan="8"
@@ -261,7 +272,50 @@ class AddCom extends React.Component {
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
+                            <MultiAllStoreComboBox
+                                name="cbSenderStoreID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="kho gửi"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
+                                IsLabelDiv={false}
+                                isautoloaditemfromcache={false}
+                                onChange={this.onChangeAllStore.bind(this)}
+                                controltype="InputControl"
+                                value={[]}
+                                listoption={[]}
+                                isMultiSelect={false}
+                                datasourcemember="SenderStoreID"
+                                validationErrorMessage={''}
+                                IsLabelDiv="kho gửi"
+                            />
+                        </div>
+                    </div>
+                    <div className="row">
+                        {/* <div className="col-md-6">
+                            <FormControl.FormControlComboBox
+                                name="cbDistrictID"
+                                colspan="8"
+                                labelcolspan="4"
+                                disabled=""
+                                label="Quận/huyện"
+                                validatonList={["Comborequired"]}
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.DISTRICT"
+                                valuemember="DistrictID"
+                                nameMember="DistrictName"
+                                controltype="InputControl"
+                                value={-1}
+                                listoption={[]}
+                                datasourcemember="DistrictID"
+                                filterValue=""
+                                filterobj="DistrictID"
+                                filterrest="cbSenderStoreID"
+                            />
+                        </div>
+                        <div className="col-md-6">
+                            <FormControl.FormControlComboBox
                                 name="cbSenderStoreID"
                                 colspan="8"
                                 labelcolspan="4"
@@ -276,10 +330,12 @@ class AddCom extends React.Component {
                                 value={""}
                                 listoption={null}
                                 datasourcemember="SenderStoreID"
-                                filterValue={1}
-                                filterobj="CompanyID"
+                                filterName="cbDistrictID"
+                                filterValue=""
+                                filterobj="DistrictID"
                             />
-                        </div>
+                        </div> */}
+
                         <div className="col-md-6">
                             <FormControl.CheckBox
                                 name="chkIsActived"
@@ -322,14 +378,6 @@ class AddCom extends React.Component {
                         <div className="col-md-6"></div>
                     </div>
 
-                    <div className="row">
-
-                        {/* <CoordinatorStoreWard 
-                        onCoordinatorStoreWardChange={this.onCoordinatorStoreWardChange}
-                    /> */}
-
-                    </div>
-
                     <InputGridControl
                         name="CoordinatorStoreWard_ItemList"
                         controltype="InputGridControl"
@@ -337,15 +385,13 @@ class AddCom extends React.Component {
                         IDSelectColumnName={"WardID"}
                         listColumn={DataGridColumnList}
                         PKColumnName={PKColumnNameWard}
-                        dataSource={DataWard}
+                        dataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
                         onInsertClick={this.handleInsertNew}
                         onEditClick={this.handleEdit}
                         onDeleteClick={this.handleDelete}
                         isHiddenButtonAdd={IsShowCustomerAddress}
                         ref={this.gridref}
                     />
-
-
 
                 </FormContainer>
             </React.Fragment>

@@ -34,6 +34,7 @@ import ShipmentOrderType from '../../views/TMS/MD/ShipmentOrder/ShipmentOrderTyp
 import ShipmentOrderStep from '../../views/TMS/MD/ShipmentOrderStep';
 import PartnerPriviledgeGroup from '../../views/TMS/MD/PartnerPriviledge/PartnerPriviledgeGroup';
 import ShipmentOrder from '../../views/TMS/ShipmentOrder';
+import WorkingPlan from '../../views/TMS/WorkingPlan';
 import ShipmentOrderControl from '../../views/TMS/ShipmentOrderControl';
 import MapContainer from '../../views/TMS/ShipmentOrder/Component/MapContainer ';
 import Maps from '../../views/TMS/ShipmentOrder/Component/Maps';
@@ -55,9 +56,10 @@ import CoordinatorStore from '../../views/TMS/MD/CoordinatorStore';
 import Skill from "../TMS/MD/Skill";
 import SkillCategory from "../TMS/MD/SkillCategory";
 import SkillRank from "../TMS/MD/SkillRank";
+import Vehicle from '../../views/TMS/MD/Vehicle';
+import WorkingShift from '../../views/TMS/MD/WorkingShift';
 
 import NotFound from '../NotFound'
-
 
 
 
@@ -75,37 +77,41 @@ class HomeCom extends React.Component {
         addScript.setAttribute('src', '/src/js/core.min.js');
         document.body.appendChild(addScript);
 
-        // let sessionlogin = getCookie(COOKIELOGIN);
-        // if (sessionlogin) {
-        //     let LoginInfo = JSON.parse(sessionlogin);
-        //     //console.log("Login.componentDidMount LoginInfo: ", LoginInfo);
-        //     //console.log("Login.componentDidMount LoginInfo.Password: ", LoginInfo.Password);
-        //     this.props.loginSuccess(LoginInfo.LoginUserInfo, LoginInfo.TokenString, LoginInfo.Password);
-        //     this.setState({ isLoggedIn: true })
-        // }
+       
         const LoginInfo = localStorage.getItem('LoginInfo');
-        //console.log('home props.AuthenticationInfo ', this.props.AuthenticationInfo);
         if(!this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess)
         {
             if (LoginInfo) {
                 const LoginInfo1 = JSON.parse(LoginInfo)
-             //   console.log("componentDidMount Home",LoginInfo1,LoginInfo1.Password);
-                this.props.loginSuccess(LoginInfo1.LoginUserInfo, LoginInfo1.TokenString,"e10adc3949ba59abbe56e057f20f883e");
+                this.props.loginSuccess(LoginInfo1.LoginUserInfo, LoginInfo1.TokenString,LoginInfo1.Password);
                 this.setState({ isLoggedIn: true })
             }
             else {
                 this.setState({ isLoggedIn: false })
-    
             }
         }
-        //console.log('home LoginInfo', LoginInfo)
-        
+    }
 
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.AuthenticationInfo) !== JSON.stringify(nextProps.AuthenticationInfo)) {
+            const LoginInfo = localStorage.getItem('LoginInfo');
+            if(!this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess)
+            {
+                if (LoginInfo) {
+                    const LoginInfo1 = JSON.parse(LoginInfo)
+                    this.props.loginSuccess(LoginInfo1.LoginUserInfo, LoginInfo1.TokenString,LoginInfo1.Password);
+                    this.setState({ isLoggedIn: true })
+                }
+                else {
+                    this.setState({ isLoggedIn: false })
+                }
+            }
+        }
     }
 
     render() {
         let isShowAppPath = true;
-        const { isLoggedIn } = this.state
+      const { isLoggedIn } = this.state
         return (
             <React.Fragment>
                 <Header />
@@ -155,6 +161,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/Skill" component={Skill} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/SkillCategory" component={SkillCategory} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/SkillRank" component={SkillRank} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} />
                                 
 
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
@@ -165,6 +173,9 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/InstallMaterial" component={InstallMaterial} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserCoordinator" component={UserCoordinator} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserGroup" component={UserGroup} isLoggedIn={isLoggedIn} />
+
+                                <PrivateRoute path="/WorkingPlan" component={WorkingPlan} isLoggedIn={isLoggedIn} />
+
                                 
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} />
 

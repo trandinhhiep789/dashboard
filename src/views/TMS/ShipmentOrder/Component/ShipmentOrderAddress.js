@@ -197,7 +197,7 @@ class ShipmentOrderAddressCom extends Component {
                 "VehicleType": 2
             };
             this.props.callFetchAPI(APIHostName, 'api/Maps/FindPathViaRoute', paramsRequest).then((apiResult) => {
-                console.log('FindPathViaRoute', apiResult)
+               // console.log('FindPathViaRoute', apiResult)
                 if (!apiResult.IsError) {
 
                     let { ShipmentOrderEdit } = this.state;
@@ -406,7 +406,7 @@ class ShipmentOrderAddressCom extends Component {
             ShipmentOrderEdit.SenderGeoLocation = this.state.SenderGeoLocation;
             ShipmentOrderEdit.SenderFullAddress = this.getfulladress(ShipmentOrderEdit.SenderAddress, ShipmentOrderEdit.SenderWardID, ShipmentOrderEdit.SenderDistrictID, ShipmentOrderEdit.SenderProvinceID);
             this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
-                console.log('apiResult', )
+               // console.log('apiResult', )
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
                     ModalManager.close();

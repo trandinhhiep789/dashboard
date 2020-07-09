@@ -75,7 +75,7 @@ export class MapContainer extends Component {
                 zoom: 15,
                 minZoom: 2,
                 registerKey: "6a50ea65-8dd9-4c03-aa6e-6c839b611eea",
-                //registerKey: "c1602ab5-74da-473c-9601-aa53a2a4505e",//
+                //registerKey: "563f09d1-4fb8-4fe6-8307-0effd4e06de4",//
                 scaleControlOptions: { showScale: true },
                 zoomControl: true
             };

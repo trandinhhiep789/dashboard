@@ -20,7 +20,7 @@ class MultiSelectComboBoxCom extends React.Component {
     componentDidMount() {
         this.setState({
             ListOption: this.props.listoption,
-            SelectedOption: this.props.value
+            SelectedOption: this.props.value == undefined ? this.props.listoption : this.props.value
         });
     }
 
@@ -84,6 +84,7 @@ class MultiSelectComboBoxCom extends React.Component {
     }
 
     handleValueChange(selectedOption) {
+       
         // const comboValues = this.getComboValue(selectedOption);
         this.setState({ SelectedOption: selectedOption });
         if (this.props.onChange)
