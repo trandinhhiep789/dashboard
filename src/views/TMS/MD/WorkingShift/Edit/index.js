@@ -74,16 +74,16 @@ class EditCom extends React.Component {
             }
             else {
                 const start = apiResult.ResultObject.TimeStart;
-                const hourStart = Math.floor(start/60);
-                const minStart =Math.floor((apiResult.ResultObject.TimeStart- hourStart)/60);
+                const hourStart = Math.floor(start / 60);
+                const minStart = Math.floor((apiResult.ResultObject.TimeStart - hourStart) / 60);
 
-                const timeStart = (hourStart+":"+minStart).toString()
+                const timeStart = (hourStart + ":" + minStart).toString()
 
                 const end = apiResult.ResultObject.TimeEnd;
-                const hourEnd = Math.floor(end/60);
-                const minEnd =Math.floor((apiResult.ResultObject.TimeEnd- hourEnd)/60);
+                const hourEnd = Math.floor(end / 60);
+                const minEnd = Math.floor((apiResult.ResultObject.TimeEnd - hourEnd) / 60);
 
-                const timeEnd  = (hourEnd+":"+minEnd).toString()
+                const timeEnd = (hourEnd + ":" + minEnd).toString()
 
                 apiResult.ResultObject.TimeStart = timeStart;
                 apiResult.ResultObject.TimeEnd = timeEnd;
@@ -114,6 +114,8 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
+        console.log('aa', formData, MLObject)
+
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         const start = MLObject.TimeStart.split(':');
@@ -123,10 +125,33 @@ class EditCom extends React.Component {
         MLObject.TimeStart = countStart;
         MLObject.TimeEnd = countEnd;
 
+        if (countEnd < countStart) {
+            formData.txtTimeEnd.ErrorLst.IsValidatonError = true;
+            formData.txtTimeEnd.ErrorLst.ValidatonErrorMessage = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu làm việc";
+            return;
+        }
+
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
         });
+    }
+
+    handleChange(formData, MLObject) {
+        if (formData.txtTimeEnd.value != '' && formData.txtTimeStart.value != '') {
+            const start = formData.txtTimeStart.value.split(':');
+            const end = formData.txtTimeEnd.value.split(':');
+            const countStart = (parseInt(start[0]) * 60) + parseInt(start[1]);
+            const countEnd = (parseInt(end[0]) * 60) + parseInt(end[1]);
+            if (countEnd < countStart) {
+                formData.txtTimeEnd.ErrorLst.IsValidatonError = true;
+                formData.txtTimeEnd.ErrorLst.ValidatonErrorMessage = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu làm việc";
+            }
+            else {
+                formData.txtTimeEnd.ErrorLst.IsValidatonError = false;
+                formData.txtTimeEnd.ErrorLst.ValidatonErrorMessage = "";
+            }
+        }
     }
 
 
@@ -146,6 +171,7 @@ class EditCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
+                    onchange={this.handleChange.bind(this)}
                 //RequirePermission={WORKINGSHIFT_UPDATE}
                 >
 

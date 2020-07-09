@@ -84,6 +84,12 @@ class AddCom extends React.Component {
         MLObject.TimeStart = countStart;
         MLObject.TimeEnd = countEnd;
 
+        if (countEnd < countStart) {
+            formData.txtTimeEnd.ErrorLst.IsValidatonError = true;
+            formData.txtTimeEnd.ErrorLst.ValidatonErrorMessage = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu làm việc";
+            return;
+        }
+
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
