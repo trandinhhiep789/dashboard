@@ -89,10 +89,10 @@ class SearchCom extends React.Component {
                         if (item.ShiftNumber = 1) {
                             item.ShiftNumberOne = 1;
                         }
-                        else if (item.ShiftNumber = 2) {
+                        else if(item.ShiftNumber = 2){
                             item.ShiftNumberTwo = 2;
                         }
-                        else if (item.ShiftNumber = 3) {
+                        else if(item.ShiftNumber = 3){
                             item.ShiftNumberThree = 3;
                         }
                         else {
@@ -164,88 +164,53 @@ class SearchCom extends React.Component {
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
+        if (this.state.IsLoadDataComplete) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm
+                        FormName="Tìm kiếm danh sách ca làm việc"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                        className="multiple multiple-custom"
 
-                <SearchForm
-                    FormName="Tìm kiếm danh sách ca làm việc"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
-                    onSubmit={this.handleSearchSubmit}
-                    ref={this.searchref}
-                    className="multiple"
-                />
+                    />
 
-                <DataGrid
-                    listColumn={DataGridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    AddLink={AddLink}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
-                    onDeleteClick={this.handleDelete}
-                    IsDelete={true}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                // RequirePermission={WORKINGPLAN_VIEW}
-                // DeletePermission={WORKINGPLAN_DELETE}
-                />
+                    <DataGrid
+                        listColumn={DataGridColumnList}
+                        dataSource={this.state.gridDataSource}
+                        AddLink={AddLink}
+                        IDSelectColumnName={IDSelectColumnName}
+                        PKColumnName={PKColumnName}
+                        onDeleteClick={this.handleDelete}
+                        IsDelete={true}
+                        IsAutoPaging={true}
+                        RowsPerPage={10}
+                    // RequirePermission={WORKINGPLAN_VIEW}
+                    // DeletePermission={WORKINGPLAN_DELETE}
+                    />
+                </React.Fragment>
+            );
+        }
+        else {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm
+                        FormName="Tìm kiếm danh sách ca làm việc"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                        className="multiple multiple-custom"
 
-
-                {/* <div className="col-lg-12">
-                        <div className="row">
-                            <div className="col-md-12">
-                                <h3 className="title">Danh nhóm quyền</h3>
-                            </div>
-                            <div className="col-md-12">
-                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                    <thead className="thead-light">
-                                        <tr>
-                                            <th className="jsgrid-header-cell" style={{ width: "10%" }}>Tác vụ</th>
-                                            <th className="jsgrid-header-cell" style={{ width: "30%" }}>Mã nhóm quyền</th>
-                                            <th className="jsgrid-header-cell" style={{ width: "60%" }}>Tên nhóm quyền</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {this.state.DataUserGroup && this.state.DataUserGroup.map((item, index) => {
-                                            return (
-                                                <tr key={index}>
-                                                    <td>
-                                                        <div className="checkbox">
-                                                            <label>
-                                                                <input type="checkbox" className="form-control form-control-sm"
-                                                                    onChange={this.handleInputChange} value={item.UserGroupID}
-                                                                    name={index}
-                                                                    checked={item.IsSelected} />
-                                                                <span className="cr">
-                                                                    <i className="cr-icon fa fa-check"></i>
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>{item.UserGroupID}</td>
-                                                    <td>{item.UserGroupName}</td>
-                                                </tr>
-                                            )
-                                        })
-                                        }
-
-                                    </tbody>
-                                </table>
-                                <div className="text-right">
-                                    <button type="button" className="btn btn-info" data-provide="tooltip" data-original-title="Cập nhật">
-                                        <span className="fa fa-plus ff">Cập nhật</span>
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div> */}
-            </React.Fragment>
-        );
-
+                    />
+                    <label>Đang nạp dữ liệu...</label>
+                </React.Fragment>
+            );
+        }
     }
 }
 
