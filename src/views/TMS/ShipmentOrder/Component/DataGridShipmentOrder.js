@@ -12,7 +12,7 @@ import { formatDate } from "../../../../common/library/CommonLib.js";
 import { formatMoney } from '../../../../utils/function';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
-import InfoCoordinator from '../Component/InfoCoordinator.js';
+import ListShipCoordinator from '../Component/ListShipCoordinator.js';
 
 class DataGridShipmentOderCom extends Component {
     constructor(props) {
@@ -446,7 +446,7 @@ class DataGridShipmentOderCom extends Component {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Điều phối nhân viên ',
             content: {
-                text:   <InfoCoordinator
+                text:   <ListShipCoordinator
                 ShipmentOrderID={0}
                 InfoCoordinator={[]}
                 IsUserCoordinator={true}
@@ -457,7 +457,11 @@ class DataGridShipmentOderCom extends Component {
             maxWidth: '1000px'
         });
     }
+    handleCheckShip(e)
+    {
+        
 
+    }
     _genCommentTime(dates) {
         const date = new Date(Date.parse(dates));
         let currentDate = new Date();
@@ -531,7 +535,7 @@ class DataGridShipmentOderCom extends Component {
                                         <div className="group-action">
                                             <div className="checkbox item-action">
                                                 <label>
-                                                    <input type="checkbox" readOnly className="form-control form-control-sm" />
+                                                    <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowIndex} checked={true} />
                                                     <span className="cr">
                                                         <i className="cr-icon fa fa-check"></i>
                                                     </span>
@@ -674,7 +678,6 @@ class DataGridShipmentOderCom extends Component {
         else {
             classCustom = ""
         }
-
         return (
             <div className={classCustom}>
                 <div className="card">
@@ -686,9 +689,9 @@ class DataGridShipmentOderCom extends Component {
                                 {searchTextbox}
                                 <div className="btn-toolbar">
                                     <div className="btn-group btn-group-sm">
-                                        {/* <button type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                        <button type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
                                             <span className="fa fa-plus ff"> Gán nhân viên giao hàng </span>
-                                        </button> */}
+                                        </button>
                                         {(this.props.IsAdd == true || this.props.IsAdd == undefined) ?
                                             (!this.props.IsCustomAddLink == true ?
                                                 (<Link
