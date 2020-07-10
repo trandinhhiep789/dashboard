@@ -37,7 +37,8 @@ class DataGridShipmentOderCom extends Component {
         this.state = {
             GridData: {},
             DataSource: this.props.dataSource,
-            IsCheckAll: false, PageNumber: this.props.PageNumber, ListPKColumnName: listPKColumnName
+            IsCheckAll: false, PageNumber: this.props.PageNumber, ListPKColumnName: listPKColumnName,
+            GridDataShip:[]
         };
     }
 
@@ -441,28 +442,43 @@ class DataGridShipmentOderCom extends Component {
         });
         this.props.onSubmitItem(listMLObject);
     }
-    handleUserCoordinator()
-    {
+    handleUserCoordinator() {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Điều phối nhân viên ',
             content: {
-                text:   <ListShipCoordinator
-                ShipmentOrderID={0}
-                InfoCoordinator={[]}
-                IsUserCoordinator={true}
-                IsCoordinator={true}
-                IsCancelDelivery={true}
-            />
+                text: <ListShipCoordinator
+                    ShipmentOrderID={0}
+                    InfoCoordinator={this.state.GridDataShip}
+                    IsUserCoordinator={true}
+                    IsCoordinator={true}
+                    IsCancelDelivery={true}
+                    onChangeValue={this.handleShipmentOrder.bind(this)}
+                />
             },
             maxWidth: '1000px'
         });
     }
-    handleCheckShip(e)
+    
+    handleShipmentOrder(name,value)
     {
-        const searchText = e.target.value;
+        this.state.GridDataShip.splice( this.state.GridDataShip.findIndex(n => n[name] == value) , 1);
+        this.setState({ GridDataShip:  this.state.GridDataShip });
+    }
+    handleCheckShip(e) {
+        const strShipmentOrdervalue = e.target.value;
         const name = e.target.name;
-
-        console.log("handleCheckShip",searchText,name,e.target.checked,  this.state.DataSource.find(n => n[name] ==searchText));
+        const objShipmentOrder = this.state.DataSource.find(n => n[name] == strShipmentOrdervalue)
+        let objShip={ShipmentOrderID:objShipmentOrder.ShipmentOrderID,CarrierTypeID:objShipmentOrder.CarrierTypeID};
+        if(e.target.checked)
+        {
+            this.state.GridDataShip.push(objShip);
+        }
+        else
+        {
+            this.state.GridDataShip.splice( this.state.GridDataShip.findIndex(n => n[name] == strShipmentOrdervalue) , 1);
+        }
+        
+        //console.log("handleCheckShip", searchText, name, e.target.checked, this.state.DataSource.find(n => n[name] == strShipmentOrdervalue));
     }
     _genCommentTime(dates) {
         const date = new Date(Date.parse(dates));
@@ -537,7 +553,7 @@ class DataGridShipmentOderCom extends Component {
                                         <div className="group-action">
                                             <div className="checkbox item-action">
                                                 <label>
-                                                    <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID}  defaultChecked={true} />
+                                                    <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} defaultChecked={false} />
                                                     <span className="cr">
                                                         <i className="cr-icon fa fa-check"></i>
                                                     </span>
