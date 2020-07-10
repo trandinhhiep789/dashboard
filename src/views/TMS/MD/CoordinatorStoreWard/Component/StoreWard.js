@@ -33,26 +33,43 @@ class StoreWardCom extends Component {
     }
 
     componentDidMount() {
+        console.log('StoreWardCom', this.props)
         this.handleGetCacheWard()
-        
+
     }
 
     handleSubmit(From, MLObject) {
         let CoordinatorStoreWard_ItemList = this.props.DataSource;
+        let formDatanew = [];
         let dataWardItem = this.state.DataWard.filter((item, index) => {
             return item.WardID == MLObject.WardID
         })
         MLObject.WardName = dataWardItem[0].WardName
 
-        CoordinatorStoreWard_ItemList.push(MLObject)
+        if (this.props.index != undefined) {
 
-        const result= {
-            IsError: false,
-            Message: 'Thêm mới phường/xã địa thành công'
+            formDatanew = Object.assign([], CoordinatorStoreWard_ItemList, { [this.props.index]: MLObject });
+            const result = {
+                IsError: false,
+                Message: 'Thêm mới phường/xã địa thành công'
+            }
+            if (this.props.onInputChangeObj != null) {
+                this.props.onInputChangeObj(formDatanew, result);
+            }
         }
-        if (this.props.onInputChangeObj != null) {
-            this.props.onInputChangeObj(CoordinatorStoreWard_ItemList, result);
+        else{
+            CoordinatorStoreWard_ItemList.push(MLObject)
+            const result = {
+                IsError: false,
+                Message: 'Thêm mới phường/xã địa thành công'
+            }
+            if (this.props.onInputChangeObj != null) {
+                this.props.onInputChangeObj(CoordinatorStoreWard_ItemList, result);
+            }
         }
+
+       
+        
     }
 
     handleChange(formData, MLObject) {
@@ -66,7 +83,7 @@ class StoreWardCom extends Component {
             <FormContainer
                 MLObjectDefinition={MLObjectStoreWardItem}
                 listelement={[]}
-                dataSource={this.props.index != undefined ? this.props.DataSource.CoordinatorStoreWard_ItemList[this.props.index] : null}
+                dataSource={this.props.index != undefined ? this.props.DataSource[this.props.index] : null}
                 onSubmit={this.handleSubmit}
                 IsCloseModal={true}
                 onchange={this.handleChange.bind(this)}

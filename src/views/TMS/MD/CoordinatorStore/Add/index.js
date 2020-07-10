@@ -46,7 +46,7 @@ class AddCom extends React.Component {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
-            IsShowCustomerAddress: true,
+            IsShowCustomerAddress: false,
             DataSource: {},
             DataWard: [],
             cssNotification: "",
@@ -129,12 +129,13 @@ class AddCom extends React.Component {
     }
 
     handleEdit(index) {
+        console.log('handleEdit',index)
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
             content: {
                 text: <StoreWard
-                    DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
-                    index={index}
+                    D DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
+                    index={parseInt(index)}
                     onInputChangeObj={this.handleInputChangeObjItem}
 
                 />
@@ -370,7 +371,7 @@ class AddCom extends React.Component {
                                 datasourcemember="IsCheckCustomerAddress"
                                 controltype="InputControl"
                                 colspan="8"
-                                value={false}
+                                value={true}
                                 labelcolspan="4"
                                 classNameCustom="customCheckbox"
                             />
