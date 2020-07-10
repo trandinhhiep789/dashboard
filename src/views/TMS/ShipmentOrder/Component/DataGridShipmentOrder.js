@@ -39,7 +39,7 @@ class DataGridShipmentOderCom extends Component {
             GridData: {},
             DataSource: this.props.dataSource,
             IsCheckAll: false, PageNumber: this.props.PageNumber, ListPKColumnName: listPKColumnName,
-            GridDataShip:[]
+            GridDataShip: []
         };
     }
 
@@ -458,30 +458,28 @@ class DataGridShipmentOderCom extends Component {
             },
             maxWidth: '1000px'
         });
-    
+
     }
 
-    
 
-    handleShipmentOrder(name,value)
-    {
-        this.state.GridDataShip.splice( this.state.GridDataShip.findIndex(n => n[name] == value) , 1);
-        this.setState({ GridDataShip:  this.state.GridDataShip });
+
+    handleShipmentOrder(name, value) {
+        this.state.GridDataShip.splice(this.state.GridDataShip.findIndex(n => n[name] == value), 1);
+        this.setState({ GridDataShip: this.state.GridDataShip });
     }
     handleCheckShip(e) {
         const strShipmentOrdervalue = e.target.value;
         const name = e.target.name;
         const objShipmentOrder = this.state.DataSource.find(n => n[name] == strShipmentOrdervalue)
-        let objShip={ShipmentOrderID:objShipmentOrder.ShipmentOrderID,CarrierTypeID:objShipmentOrder.CarrierTypeID};
-        if(e.target.checked)
-        {
+        let objShip = { ShipmentOrderID: objShipmentOrder.ShipmentOrderID, CarrierPartnerID: objShipmentOrder.CarrierPartnerID, CarrierTypeID: objShipmentOrder.CarrierTypeID };
+        if (e.target.checked) {
             this.state.GridDataShip.push(objShip);
         }
-        else
-        {
-            this.state.GridDataShip.splice( this.state.GridDataShip.findIndex(n => n[name] == strShipmentOrdervalue) , 1);
+        else {
+            this.state.GridDataShip.splice(this.state.GridDataShip.findIndex(n => n[name] == strShipmentOrdervalue), 1);
         }
-        
+        this.setState({ GridDataShip: this.state.GridDataShip });
+
     }
     _genCommentTime(dates) {
         const date = new Date(Date.parse(dates));
@@ -529,8 +527,8 @@ class DataGridShipmentOderCom extends Component {
 
     }
     renderDataGrid() {
-
         const dataSource = this.state.DataSource;
+
         return (
             <div className=" table-responsive">
                 <table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0" >
@@ -551,12 +549,13 @@ class DataGridShipmentOderCom extends Component {
                                 if (index % 2 != 0) {
                                     rowClass = "jsgrid-alt-row";
                                 }
+                                console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
                                 return (<tr key={rowIndex}>
                                     <td className="btngroupleft">
                                         <div className="group-action">
                                             <div className="checkbox item-action">
                                                 <label>
-                                                    <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} defaultChecked={false} />
+                                                    <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} checked={this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID)} />
                                                     <span className="cr">
                                                         <i className="cr-icon fa fa-check"></i>
                                                     </span>
