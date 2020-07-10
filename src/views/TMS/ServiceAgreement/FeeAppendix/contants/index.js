@@ -22,6 +22,7 @@ export const IDSelectColumnNameFeeAppendixDetail = "chkSelect";
 export const PKColumnNameFeeAppendixDetail = "FeeAppendixDetailID"
 
 export const AddFeeAppendixDetailPath ="api/ServiceAgreement_FeeAppendixDetail/Add";
+export const AddFeeAppendixDetailPathNew ="api/ServiceAgreement_FeeAppendixDetail/AddList";
 export const  EditFeeAppendixDetailPath="api/ServiceAgreement_FeeAppendixDetail/Update";
 export const  DeleteFeeAppendixDetailPath="api/ServiceAgreement_FeeAppendixDetail/Delete";
 
