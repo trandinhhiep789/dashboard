@@ -118,12 +118,16 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            this.searchref.current.changeLoadComplete();
+            //this.searchref.current.changeLoadComplete();
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
-                    IsCallAPIError: apiResult.IsError
+                    IsCallAPIError: apiResult.IsError,
+                    IsShowForm: true
                 });
+            } else {
+                this.showMessage(apiResult.Message);
+                this.setState({ IsShowForm: false });
             }
         });
     }
@@ -179,31 +183,40 @@ class SearchCom extends React.Component {
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
-                <SearchForm
-                    FormName="Tìm kiếm danh sách lý do hủy giao hàng"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
-                    onSubmit={this.handleSearchSubmit}
-                    ref={this.searchref}
-                />
-                <DataGrid
-                    listColumn={DataGridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    AddLink={AddLink}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
-                    onDeleteClick={this.handleDelete}
-                    ref={this.gridref}
-                    RequirePermission={SKILLRANK_VIEW}
-                    DeletePermission={SKILLRANK_DELETE}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                />
-            </React.Fragment>
-        );
+        if (this.state.IsShowForm) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm
+                        FormName="Tìm kiếm danh sách lý do hủy giao hàng"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                    />
+                    <DataGrid
+                        listColumn={DataGridColumnList}
+                        dataSource={this.state.gridDataSource}
+                        AddLink={AddLink}
+                        IDSelectColumnName={IDSelectColumnName}
+                        PKColumnName={PKColumnName}
+                        onDeleteClick={this.handleDelete}
+                        ref={this.gridref}
+                        RequirePermission={SKILLRANK_VIEW}
+                        DeletePermission={SKILLRANK_DELETE}
+                        IsAutoPaging={true}
+                        RowsPerPage={10}
+                    />
+                </React.Fragment>
+            );
+        } else {
+            return (
+                <div>
+                    <label>Đang nạp dữ liệu ......</label>
+                </div>
+            )
+        }
+
     }
 }
 

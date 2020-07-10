@@ -92,8 +92,12 @@ class SearchCom extends React.Component {
                 if (apiResult && !apiResult.IsError) {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
-                        IsCallAPIError: apiResult.IsError
+                        IsCallAPIError: apiResult.IsError,
+                        IsShowForm: true
                     });
+                } else {
+                    this.showMessage(apiResult.Message);
+                    this.setState({ IsShowForm: false });
                 }
             });
     }
@@ -149,31 +153,41 @@ class SearchCom extends React.Component {
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
-                <SearchForm
-                    FormName="Tìm vai trò người dùng "
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={this.state.SearchElementList}
-                    onSubmit={this.handleSearchSubmit}
-                    ref={this.searchref}
-                />
-                <DataGrid
-                    listColumn={DataGridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    AddLink={AddLink}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
-                    onDeleteClick={this.handleDelete}
-                    RequirePermission={PARTNERROLE_VIEW}
-                    DeletePermission={PARTNERROLE_DELETE}
-                    ref={this.gridref}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                />
-            </React.Fragment>
-        );
+        if (this.state.IsShowForm) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm
+                        FormName="Tìm vai trò người dùng "
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={this.state.SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                    />
+                    <DataGrid
+                        listColumn={DataGridColumnList}
+                        dataSource={this.state.gridDataSource}
+                        AddLink={AddLink}
+                        IDSelectColumnName={IDSelectColumnName}
+                        PKColumnName={PKColumnName}
+                        onDeleteClick={this.handleDelete}
+                        RequirePermission={PARTNERROLE_VIEW}
+                        DeletePermission={PARTNERROLE_DELETE}
+                        ref={this.gridref}
+                        IsAutoPaging={true}
+                        RowsPerPage={10}
+                    />
+                </React.Fragment>
+            );
+        } else {
+            return (
+                <div>
+                    <label>Đang nạp dữ liệu ......</label>
+                </div>
+            )
+        }
+
+
     }
 }
 
