@@ -160,12 +160,13 @@ class SearchCom extends React.Component {
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
-                    IsCallAPIError: apiResult.IsError
+                    IsCallAPIError: apiResult.IsError,
+                    IsShowForm: true
                 });
                 //console.log("gridDataSource",apiResult.ResultObject);
             }
             else {
-                this.setState({ IsCallAPIError: apiResult.IsError })
+                this.setState({ IsCallAPIError: apiResult.IsError, IsShowForm: false })
                 this.addNotification(apiResult.Message, apiResult.IsError);
             }
         });
@@ -221,30 +222,39 @@ class SearchCom extends React.Component {
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
-                <SearchForm FormName="Tìm kiếm Loại yêu cầu vận chuyển"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
-                    onSubmit={this.handleSearchSubmit}
-                />
-                <DataGrid listColumn={DataGridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    modalElementList={AddModalColumnList}
-                    MLObjectDefinition={MLObjectDefinition}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
-                    onDeleteClick={this.handleDelete}
-                    onInsertClick={this.handleInputGridInsert}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                    IsCustomAddLink={true}
-                    RequirePermission={SHIPMENTORDERTYPE_VIEW}
-                    DeletePermission={SHIPMENTORDERTYPE_DELETE}
-                />
-            </ React.Fragment >
-        );
+        if (this.state.IsShowForm) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm FormName="Tìm kiếm Loại yêu cầu vận chuyển"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                    />
+                    <DataGrid listColumn={DataGridColumnList}
+                        dataSource={this.state.gridDataSource}
+                        modalElementList={AddModalColumnList}
+                        MLObjectDefinition={MLObjectDefinition}
+                        IDSelectColumnName={IDSelectColumnName}
+                        PKColumnName={PKColumnName}
+                        onDeleteClick={this.handleDelete}
+                        onInsertClick={this.handleInputGridInsert}
+                        IsAutoPaging={true}
+                        RowsPerPage={10}
+                        IsCustomAddLink={true}
+                        RequirePermission={SHIPMENTORDERTYPE_VIEW}
+                        DeletePermission={SHIPMENTORDERTYPE_DELETE}
+                    />
+                </ React.Fragment >
+            );
+        } else {
+            return (
+                <div>
+                    <label>Đang nạp dữ liệu ......</label>
+                </div>
+            )
+        }
+
     }
 }
 

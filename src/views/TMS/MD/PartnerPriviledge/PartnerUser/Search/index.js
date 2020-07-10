@@ -85,13 +85,17 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-                if (apiResult && !apiResult.IsError) {
-                    this.setState({
-                        gridDataSource: apiResult.ResultObject,
-                        IsCallAPIError: apiResult.IsError
-                    });
-                }
-            });
+            if (apiResult && !apiResult.IsError) {
+                this.setState({
+                    gridDataSource: apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError,
+                    IsShowForm: true
+                });
+            } else {
+                this.showMessage(apiResult.Message);
+                this.setState({ IsShowForm: false });
+            }
+        });
     }
 
     handleCloseMessage() {
@@ -145,31 +149,41 @@ class SearchCom extends React.Component {
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
-                <SearchForm
-                    FormName="Tìm kiếm người dùng của nhà cung cấp"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={this.state.SearchElementList}
-                    onSubmit={this.handleSearchSubmit}
-                    ref={this.searchref}
-                />
-                <DataGrid
-                    listColumn={DataGridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    AddLink={AddLink}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
-                    onDeleteClick={this.handleDelete}
-                    ref={this.gridref}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                    RequirePermission={PARTNERUSER_VIEW}
-                    DeletePermission={PARTNERUSER_DELETE}
-                />
-            </React.Fragment>
-        );
+        if (this.state.IsShowForm) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm
+                        FormName="Tìm kiếm người dùng của nhà cung cấp"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={this.state.SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                    />
+                    <DataGrid
+                        listColumn={DataGridColumnList}
+                        dataSource={this.state.gridDataSource}
+                        AddLink={AddLink}
+                        IDSelectColumnName={IDSelectColumnName}
+                        PKColumnName={PKColumnName}
+                        onDeleteClick={this.handleDelete}
+                        ref={this.gridref}
+                        IsAutoPaging={true}
+                        RowsPerPage={10}
+                        RequirePermission={PARTNERUSER_VIEW}
+                        DeletePermission={PARTNERUSER_DELETE}
+                    />
+                </React.Fragment>
+            );
+        } else {
+            return (
+                <div>
+                    <label>Đang nạp dữ liệu ......</label>
+                </div>
+            )
+        }
+
+
     }
 }
 

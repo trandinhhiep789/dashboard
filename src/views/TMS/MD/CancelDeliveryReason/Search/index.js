@@ -20,7 +20,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import {CANCELDELIVERYREASON_VIEW, CANCELDELIVERYREASON_DELETE} from "../../../../../constants/functionLists";
+import { CANCELDELIVERYREASON_VIEW, CANCELDELIVERYREASON_DELETE } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
@@ -64,7 +64,7 @@ class SearchCom extends React.Component {
     //         this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
     //             this.handleGetCache();
     //             //console.log("apiResult", apiResult)
-                
+
     //         });
     //     }
     //     );
@@ -97,14 +97,14 @@ class SearchCom extends React.Component {
             listMLObject.push(MLObject);
         });
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                this.addNotification(apiResult.Message, apiResult.IsError);
-                if(!apiResult.IsError){
-                    this.callSearchData(this.state.SearchData);
-                    // this.handleClearLocalCache();
-                    // this.handleSubmitInsertLog();
-                }             
-            });
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callSearchData(this.state.SearchData);
+                // this.handleClearLocalCache();
+                // this.handleSubmitInsertLog();
+            }
+        });
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -121,14 +121,18 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-                this.searchref.current.changeLoadComplete();
-                if (!apiResult.IsError) {
-                    this.setState({
-                        gridDataSource: apiResult.ResultObject,
-                        IsCallAPIError: apiResult.IsError
-                    });
-                }
-            });
+            //this.searchref.current.changeLoadComplete();
+            if (!apiResult.IsError) {
+                this.setState({
+                    gridDataSource: apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError,
+                    IsShowForm: true
+                });
+            } else {
+                this.showMessage(apiResult.Message);
+                this.setState({ IsShowForm: false });
+            }
+        });
     }
 
     handleCloseMessage() {
@@ -182,31 +186,41 @@ class SearchCom extends React.Component {
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
-                <SearchForm
-                    FormName="Tìm kiếm danh sách lý do hủy giao hàng"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
-                    onSubmit={this.handleSearchSubmit}
-                    ref={this.searchref}
-                />
-                <DataGrid
-                    listColumn={DataGridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    AddLink={AddLink}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
-                    onDeleteClick={this.handleDelete}
-                    ref={this.gridref}
-                    RequirePermission={CANCELDELIVERYREASON_VIEW}
-                    DeletePermission={CANCELDELIVERYREASON_DELETE}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                />
-            </React.Fragment>
-        );
+        if (this.state.IsShowForm) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm
+                        FormName="Tìm kiếm danh sách lý do hủy giao hàng"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                    />
+                    <DataGrid
+                        listColumn={DataGridColumnList}
+                        dataSource={this.state.gridDataSource}
+                        AddLink={AddLink}
+                        IDSelectColumnName={IDSelectColumnName}
+                        PKColumnName={PKColumnName}
+                        onDeleteClick={this.handleDelete}
+                        ref={this.gridref}
+                        RequirePermission={CANCELDELIVERYREASON_VIEW}
+                        DeletePermission={CANCELDELIVERYREASON_DELETE}
+                        IsAutoPaging={true}
+                        RowsPerPage={10}
+                    />
+                </React.Fragment>
+            );
+        }
+        else {
+            return (
+                <div>
+                    <label>Đang nạp dữ liệu ......</label>
+                </div>
+            )
+        }
+
     }
 }
 
@@ -231,5 +245,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Search = connect(mapStateToProps,mapDispatchToProps)(SearchCom);
+const Search = connect(mapStateToProps, mapDispatchToProps)(SearchCom);
 export default Search;

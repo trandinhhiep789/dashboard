@@ -331,22 +331,29 @@ class ListShipCoordinatorCom extends Component {
                 });
         }
     }
+
+    handleDeleteShip(e)
+    {
+        console.log("ShipmentOrder", this.state.ShipmentOrder);
+        debugger
+        const value = e.currentTarget.dataset.id
+        this.state.ShipmentOrder.splice( this.state.ShipmentOrder.findIndex(n => n.ShipmentOrderID == value) , 1);
+        console.log("ShipmentOrder", this.state.ShipmentOrder);
+        this.setState({ ShipmentOrder:  this.state.ShipmentOrder });
+
+        if (this.props.onChangeValue != null) {
+            this.props.onChangeValue("ShipmentOrderID",value)
+        }
+     
+    }
     render() {
+        console.log("ShipmentOrder", this.state.ShipmentOrder);
         let listOption = [];
         let objDeliverUser = [];
-        if (this.state.ShipmentOrder.CarrierPartnerID != -1 && this.state.ShipmentOrder.CarrierPartnerID != 0) {
-            this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
-                objDeliverUser.push(item.UserName)
-            })
-        }
-        else {
-            this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
-                listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName });
-            })
-        }
+      
         return (
             <div className="card">
-                <div className="card-body" style={{ minHeight: 500}}>
+                <div className="card-body" style={{ minHeight: 500 }}>
                     <div className="form-row">
                         <div className="col-md-6">
                             <FormControl.ComboBoxPartner
@@ -360,7 +367,7 @@ class ListShipCoordinatorCom extends Component {
                                 nameMember="PartnerName"
                                 controltype="InputControl"
                                 onChange={this.handleOnValueChange}
-                                value={this.state.ShipmentOrder.CarrierPartnerID}
+                                value={-1}
                                 listoption={null}
                                 datasourcemember="CarrierPartnerID"
                                 placeholder="---Vui lòng chọn---"
@@ -382,7 +389,7 @@ class ListShipCoordinatorCom extends Component {
                                 nameMember="CarrierTypeName"
                                 controltype="InputControl"
                                 onValueChange={this.handleOnValueChange}
-                                value={this.state.ShipmentOrder.CarrierTypeID}
+                                value={-1}
                                 listoption={null}
                                 datasourcemember="CarrierTypeID"
                                 placeholder="---Vui lòng chọn---"
@@ -437,7 +444,7 @@ class ListShipCoordinatorCom extends Component {
                             validationErrorMessage={this.state.validationErroDeliverUser}
                         />
                     }
-                    <div className="form-row" style={{ minHeight: 200}}>
+                    <div className="form-row" style={{ minHeight: 200 }}>
                         <div className="table-responsive">
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                 <thead className="thead-light">
@@ -449,57 +456,66 @@ class ListShipCoordinatorCom extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr key={1}>
-                                        <td>200629000000143</td>
-                                        <td> <MultiSelectComboBox
-                                            name="ShipmentOrder_DeliverUserList"
-                                            colspan="10"
-                                            labelcolspan="2"
-                                            disabled={!this.props.IsUserCoordinator}
-                                            IsLabelDiv={false}
-                                            isautoloaditemfromcache={false}
-                                            loaditemcachekeyid={"PIMCACHE_PIM_SHIPPINGMETHOD"}
-                                            valuemember="ShippingMethodID"
-                                            nameMember="ShippingMethodName"
-                                            controltype="InputControl"
-                                            value={listOption}
-                                            ShipmentOrder={this.state.ShipmentOrder}
-                                            onChange={this.handleValueChange1}
-                                            listoption={[]}
-                                            isMultiSelect={true}
-                                            datasourcemember="ShipmentOrder_DeliverUserList"
-                                            validatonList={["Comborequired"]}
-                                            validationErrorMessage={this.state.validationErroDeliverUser}
-                                        /> </td>
-                                        <td>  <FormControl.FormControlComboBox
-                                            name="CarrierTypeID"
-                                            colspan="11"
-                                            labelcolspan="1"
-                                            IsLabelDiv={false}
-                                            isautoloaditemfromcache={true}
-                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
-                                            valuemember="CarrierTypeID"
-                                            nameMember="CarrierTypeName"
-                                            controltype="InputControl"
-                                            onValueChange={this.handleOnValueChange}
-                                            value={-1}
-                                            listoption={null}
-                                            datasourcemember="CarrierTypeID"
-                                            placeholder="---Vui lòng chọn---"
-                                            isMultiSelect={false}
-                                            disabled={!this.props.IsCoordinator}
-                                            validationErrorMessage={""}
-                                        /></td>
-                                        <td>xóa</td>
-                                    </tr>
+
+                                    {this.state.ShipmentOrder != null &&
+                                        this.state.ShipmentOrder.map((rowItem, rowIndex) => {
+                                            let rowClass = "jsgrid-row";
+                                            if (index % 2 != 0) {
+                                                rowClass = "jsgrid-alt-row";
+                                            }
+                                            return (<tr key={rowIndex}>
+                                                <td>{rowItem.ShipmentOrderID}</td>
+                                                <td> <MultiSelectComboBox
+                                                    name="ShipmentOrder_DeliverUserList"
+                                                    colspan="10"
+                                                    labelcolspan="2"
+                                                    disabled={!this.props.IsUserCoordinator}
+                                                    IsLabelDiv={false}
+                                                    isautoloaditemfromcache={false}
+                                                    loaditemcachekeyid={"PIMCACHE_PIM_SHIPPINGMETHOD"}
+                                                    valuemember="ShippingMethodID"
+                                                    nameMember="ShippingMethodName"
+                                                    controltype="InputControl"
+                                                    value={listOption}
+                                                    ShipmentOrder={this.state.ShipmentOrder}
+                                                    onChange={this.handleValueChange1}
+                                                    listoption={[]}
+                                                    isMultiSelect={true}
+                                                    datasourcemember="ShipmentOrder_DeliverUserList"
+                                                    validatonList={["Comborequired"]}
+                                                    validationErrorMessage={this.state.validationErroDeliverUser}
+                                                /> </td>
+                                                <td>  <FormControl.FormControlComboBox
+                                                    name="CarrierTypeID"
+                                                    colspan="11"
+                                                    labelcolspan="1"
+                                                    IsLabelDiv={false}
+                                                    isautoloaditemfromcache={true}
+                                                    loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                    valuemember="CarrierTypeID"
+                                                    nameMember="CarrierTypeName"
+                                                    controltype="InputControl"
+                                                    onValueChange={this.handleOnValueChange}
+                                                    value={-1}
+                                                    listoption={null}
+                                                    datasourcemember="CarrierTypeID"
+                                                    placeholder="---Vui lòng chọn---"
+                                                    isMultiSelect={false}
+                                                    disabled={!this.props.IsCoordinator}
+                                                    validationErrorMessage={""}
+                                                /></td>
+                                                <td> <a name="ShipmentOrderID" data-id={rowItem.ShipmentOrderID} onClick={this.handleDeleteShip.bind(this)}  className="table-action hover-danger item-action" title="Xóa">
+                                                    <i className="ti-trash"></i>
+                                                </a> </td>
+                                            </tr>
+                                            );
+                                        })
+                                    }
+
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
-
-
-
                     <div className="form-row">
                         <div className="form-group col-md-12 form-group-btncustom">
                             {

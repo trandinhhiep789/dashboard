@@ -28,8 +28,6 @@ import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_PARTNERTYPE } from "../../../../constants/keyCache";
 
-
-
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -38,8 +36,6 @@ class SearchCom extends React.Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.addNotification = this.addNotification.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
-        this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
-        this.handleGetCache = this.handleGetCache.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -48,26 +44,6 @@ class SearchCom extends React.Component {
             SearchElementList: SearchElementList
         };
         this.notificationDOMRef = React.createRef();
-    }
-
-    handleClearLocalCache() {
-        const CacheKeyID = "PIMCACHE.BRAND";
-        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-        return db.delete(CacheKeyID).then((result) => {
-            const postData = {
-                CacheKeyID: CacheKeyID,
-                UserName: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID,
-                AdditionParamList: []
-            };
-            this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-                this.handleGetCache();
-            });
-        });
-    }
-
-    handleGetCache() {
-        this.props.callGetCache("PIMCACHE.BRAND").then((result) => {
-        });
     }
 
 
@@ -91,7 +67,7 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
-            if(!apiResult.IsError){
+            if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
                 this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERTYPE);
             }
@@ -116,8 +92,12 @@ class SearchCom extends React.Component {
                 if (apiResult && !apiResult.IsError) {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
-                        IsCallAPIError: apiResult.IsError
+                        IsCallAPIError: apiResult.IsError,
+                        IsShowForm: true
                     });
+                } else {
+                    this.showMessage(apiResult.Message);
+                    this.setState({ IsShowForm: false });
                 }
             });
     }
@@ -173,31 +153,41 @@ class SearchCom extends React.Component {
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
-                <SearchForm
-                    FormName="Thêm nhãn hiệu"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={this.state.SearchElementList}
-                    onSubmit={this.handleSearchSubmit}
-                />
-                <DataGrid
-                    listColumn={DataGridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    AddLink={AddLink}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
-                    onDeleteClick={this.handleDelete}
-                    RequirePermission={PARTNERTYPE_VIEW}
-                    DeletePermission={PARTNERTYPE_DELETE}
-                    ref={this.gridref}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                />
-                <div>{this.state.CallAPIMessage}</div>
-            </React.Fragment>
-        );
+        if (this.state.IsShowForm) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm
+                        FormName="Thêm nhãn hiệu"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={this.state.SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                    />
+                    <DataGrid
+                        listColumn={DataGridColumnList}
+                        dataSource={this.state.gridDataSource}
+                        AddLink={AddLink}
+                        IDSelectColumnName={IDSelectColumnName}
+                        PKColumnName={PKColumnName}
+                        onDeleteClick={this.handleDelete}
+                        RequirePermission={PARTNERTYPE_VIEW}
+                        DeletePermission={PARTNERTYPE_DELETE}
+                        ref={this.gridref}
+                        IsAutoPaging={true}
+                        RowsPerPage={10}
+                    />
+                    <div>{this.state.CallAPIMessage}</div>
+                </React.Fragment>
+            );
+        }
+        else {
+            return (
+                <div>
+                    <label>Đang nạp dữ liệu ......</label>
+                </div>
+            )
+        }
+
     }
 }
 

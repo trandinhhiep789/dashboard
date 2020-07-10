@@ -226,35 +226,35 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            // {
-            //     MenuName: 'Skills',
-            //     MenuTitle: 'Kỹ năng',
-            //     LinkTo: '',
-            //     MenuIcon: '',
-            //     SubMenu: [
-            //         {
-            //             MenuName: 'Skill',
-            //             MenuTitle: 'Danh sách kỹ năng',
-            //             LinkTo: '/Skill',
-            //             MenuIcon: '',
-            //             SubMenu: []
-            //         },
-            //         {
-            //             MenuName: 'SkillCategory',
-            //             MenuTitle: 'Danh mục kỹ năng',
-            //             LinkTo: '/SkillCategory',
-            //             MenuIcon: '',
-            //             SubMenu: []
-            //         },
-            //         {
-            //             MenuName: 'SkillRank',
-            //             MenuTitle: 'Cấp bậc kỹ năng',
-            //             LinkTo: '/SkillRank',
-            //             MenuIcon: '',
-            //             SubMenu: []
-            //         }
-            //     ]
-            // },
+            {
+                MenuName: 'Skills',
+                MenuTitle: 'Kỹ năng',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'Skill',
+                        MenuTitle: 'Danh sách kỹ năng',
+                        LinkTo: '/Skill',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'SkillCategory',
+                        MenuTitle: 'Danh mục kỹ năng',
+                        LinkTo: '/SkillCategory',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'SkillRank',
+                        MenuTitle: 'Cấp bậc kỹ năng',
+                        LinkTo: '/SkillRank',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+                ]
+            },
         ]
     },
     {
