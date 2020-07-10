@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from "react-router-dom";
 import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
 import { MessageModal } from "../../../../common/components/Modal";
+import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { DEFAULT_ROW_PER_PAGE } from "../../../../constants/systemVars.js";
 import GridCell from "../../../../common/components/DataGrid/GridCell";
 import GridPage from "../../../../common/components/DataGrid/GridPage";
@@ -457,8 +458,11 @@ class DataGridShipmentOderCom extends Component {
             },
             maxWidth: '1000px'
         });
-    }
     
+    }
+
+    
+
     handleShipmentOrder(name,value)
     {
         this.state.GridDataShip.splice( this.state.GridDataShip.findIndex(n => n[name] == value) , 1);
@@ -478,7 +482,6 @@ class DataGridShipmentOderCom extends Component {
             this.state.GridDataShip.splice( this.state.GridDataShip.findIndex(n => n[name] == strShipmentOrdervalue) , 1);
         }
         
-        //console.log("handleCheckShip", searchText, name, e.target.checked, this.state.DataSource.find(n => n[name] == strShipmentOrdervalue));
     }
     _genCommentTime(dates) {
         const date = new Date(Date.parse(dates));
