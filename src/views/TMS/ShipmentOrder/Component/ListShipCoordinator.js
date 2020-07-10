@@ -27,20 +27,12 @@ class ListShipCoordinatorCom extends Component {
 
         this.state = {
             ShipmentOrder: this.props.InfoCoordinator,
-            validationErrorMessage: null,
-            validationErroDeliverUser: null,
-            validationErroCarrierPartner: null,
-            validationErroCarrierType: null,
             ShipmentOrder_WorkFlow: {},
             IsCallAPIError: false,
             IsCloseForm: false,
             DeliverUserList: {},
             DeliverUserServerList: [],
             CANCELDELIVERYREASON: [],
-            validationErrorCancelDeliveryReason: null,
-            validationCancelDeliveryReasonNote: null,
-            CancelDeliveryReasonID: null,
-            CancelDeliveryReasonNote: "",
             selectedOption: []
         }
         this.notificationDOMRef = React.createRef();
@@ -61,12 +53,10 @@ class ListShipCoordinatorCom extends Component {
                 });
             }
         });
-
     }
 
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.InfoCoordinator) !== JSON.stringify(nextProps.InfoCoordinator)) {
-
             this.setState({
                 ShipmentOrder: nextProps.InfoCoordinator
             })
@@ -334,20 +324,12 @@ class ListShipCoordinatorCom extends Component {
 
     handleDeleteShip(e)
     {
-        console.log("ShipmentOrder", this.state.ShipmentOrder);
-        debugger
         const value = e.currentTarget.dataset.id
         this.state.ShipmentOrder.splice( this.state.ShipmentOrder.findIndex(n => n.ShipmentOrderID == value) , 1);
-        console.log("ShipmentOrder", this.state.ShipmentOrder);
         this.setState({ ShipmentOrder:  this.state.ShipmentOrder });
-
-        if (this.props.onChangeValue != null) {
-            this.props.onChangeValue("ShipmentOrderID",value)
-        }
-     
     }
     render() {
-        console.log("ShipmentOrder", this.state.ShipmentOrder);
+      
         let listOption = [];
         let objDeliverUser = [];
       
@@ -382,20 +364,18 @@ class ListShipCoordinatorCom extends Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 label="phương tiện"
-                                validatonList={["Comborequired"]}
                                 isautoloaditemfromcache={true}
                                 loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
                                 valuemember="CarrierTypeID"
                                 nameMember="CarrierTypeName"
                                 controltype="InputControl"
                                 onValueChange={this.handleOnValueChange}
-                                value={-1}
+                                value={1}
                                 listoption={null}
                                 datasourcemember="CarrierTypeID"
                                 placeholder="---Vui lòng chọn---"
                                 isMultiSelect={false}
                                 disabled={!this.props.IsCoordinator}
-                                validationErrorMessage={this.state.validationErroCarrierType}
                             />
                         </div>
                     </div>
