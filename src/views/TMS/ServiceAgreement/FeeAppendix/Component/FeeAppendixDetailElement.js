@@ -35,7 +35,10 @@ class FeeAppendixDetailElementCom extends Component {
         MLObject.FeeAppendixID = this.props.dataSource.FeeAppendixID.trim();
         MLObject.SignedDate = this.props.dataSource.SignedDate;
         MLObject.ApplyFromDate = this.props.dataSource.ApplyFromDate;
-        MLObject.ProductID = MLObject.ProductID[0].ProductID;
+        if(MLObject.ProductID !=undefined && MLObject.ProductID !="" ){
+            MLObject.ProductID = MLObject.ProductID[0].ProductID;
+        }
+        
         if (this.props.index != undefined) {
             MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
             MLObject.FeeAppendixDetailID =
@@ -190,7 +193,7 @@ class FeeAppendixDetailElementCom extends Component {
                             controltype="InputControl"
                             datasourcemember="ProductID"
                             name="cbProductID"
-                            validatonList={["required"]}
+                            //validatonList={[]}
                             IsLabelDiv={true}
                             isMulti={false}
                             disabled={IsSystem}
