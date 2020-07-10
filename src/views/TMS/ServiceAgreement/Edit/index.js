@@ -123,6 +123,7 @@ class EditCom extends React.Component {
     }
 
     handleChange(formData, MLObject) {
+        console.log("formData, MLObject", formData, MLObject)
         let IsExtended, IsLiquidated, IsDeposited;
         if (formData.chkIsExtended.value) {
             IsExtended = true
@@ -231,6 +232,22 @@ class EditCom extends React.Component {
         else {
             formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
             formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
+        }
+
+        if (IsDeposited){
+         
+            if(formData.dtDepositedDate.value == ""){
+                formData.dtDepositedDate.ErrorLst.IsValidatonError = true;
+                formData.dtDepositedDate.ErrorLst.ValidatonErrorMessage = "Ngày kí quỹ không được để trống";
+            }
+            else{
+                formData.dtDepositedDate.ErrorLst.IsValidatonError = false;
+                formData.dtDepositedDate.ErrorLst.ValidatonErrorMessage = "";
+            }
+        }
+        else{
+            formData.dtDepositedDate.ErrorLst.IsValidatonError = false;
+            formData.dtDepositedDate.ErrorLst.ValidatonErrorMessage = "";
         }
 
 
