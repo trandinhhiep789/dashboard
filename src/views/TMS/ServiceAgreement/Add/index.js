@@ -208,7 +208,7 @@ class AddCom extends React.Component {
         }
 
         if (IsDeposited){
-            if(formData.dtDepositedDate.value == null){
+            if(formData.dtDepositedDate.value == ""){
                 formData.dtDepositedDate.ErrorLst.IsValidatonError = true;
                 formData.dtDepositedDate.ErrorLst.ValidatonErrorMessage = "Ngày kí quỹ không được để trống";
             }
@@ -216,6 +216,10 @@ class AddCom extends React.Component {
                 formData.dtDepositedDate.ErrorLst.IsValidatonError = false;
                 formData.dtDepositedDate.ErrorLst.ValidatonErrorMessage = "";
             }
+        }
+        else{
+            formData.dtDepositedDate.ErrorLst.IsValidatonError = false;
+            formData.dtDepositedDate.ErrorLst.ValidatonErrorMessage = "";
         }
     }
 
