@@ -366,7 +366,7 @@ class AddCom extends React.Component {
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid="ERPCOMMONCACHE.AREA"
+                            loaditemcachekeyid="ERPCOMMONCACHE.AREATT"
                             valuemember="AreaID"
                             nameMember="AreaName"
                             controltype="InputControl"

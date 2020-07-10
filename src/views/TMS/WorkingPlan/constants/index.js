@@ -1,6 +1,8 @@
 export const APIHostName = "PIMAPI";
 export const SearchAPIPath = "api/WorkingPlan/Search";
 export const AddAPIPath = "api/WorkingPlan/Add";
+export const UpdateWorkingPlanByUserAPIPath = "api/WorkingPlan/UpdateWorkingPlanByUser";
+export const UpdateDeleteAPIPath = "api/WorkingPlan/UpdateDelete";
 export const DeleteAPIPath = "api/WorkingPlan/Delete";
 export const UpdateOrderAPIPath = "api/WorkingPlan/UpdateOrder";
 export const BackLink = "/WorkingPlan";
@@ -64,29 +66,24 @@ export const SearchElementList = [
         filterobj:"CompanyID",
 
     },
-    {
-        type: "ComboBox",
-        name: "cbServiceTypeID",
-        DataSourceMember: "ServiceTypeID",
-        label: "kho làm việc",
-        colspan: 2,
-        value: -1,
-        isMultiSelect: false,
-        placeholder: "---Vui lòng chọn---",
-        listoption: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.WORKINGSHIFT",
-        ValueMember: "WorkingShiftID",
-        NameMember: "WorkingShiftName",
-
-    },
+ 
 ]
 
 export const InitSearchParams = [
     {
-        SearchKey: "@Keyword",
+        SearchKey: "@WORKINGSHIFTID",
+        SearchValue: -1
+    },
+    {
+        SearchKey: "@WORKINGDATE",
         SearchValue: ""
     },
+    {
+        SearchKey: "@STOREID",
+        SearchValue: -1
+    },
+
+  
 ]
 
 export const SearchMLObjectDefinition = [

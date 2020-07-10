@@ -6,8 +6,9 @@ import ProductComboBox from "../../../../../common/components/FormContainer/Form
 
 import {
     APIHostName,
+    LoadAPIPath,
     MLObjectFeeAppendixDetailItem,
-    AddFeeAppendixDetailPathNew,
+    EditFeeAppendixDetailPath,
     AddFeeAppendixDetailPath
 } from "../contants/index.js";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
@@ -18,6 +19,7 @@ class FeeAppendixDetailElementCom extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             IsSystem: false,
+            IsUpdateItem: false
         }
     }
 
@@ -25,6 +27,7 @@ class FeeAppendixDetailElementCom extends Component {
         if (this.props.index != undefined) {
             this.setState({
                 IsSystem: this.props.dataSource.FeeAppendixDetail_ItemList[this.props.index].IsSystem,
+                IsUpdateItem: true
             })
         }
     }
@@ -34,41 +37,28 @@ class FeeAppendixDetailElementCom extends Component {
         MLObject.FeeAppendixID = this.props.dataSource.FeeAppendixID.trim();
         MLObject.SignedDate = this.props.dataSource.SignedDate;
         MLObject.ApplyFromDate = this.props.dataSource.ApplyFromDate;
-        if (MLObject.ProductID != undefined && MLObject.ProductID != "") {
+        if(MLObject.ProductID !=undefined && MLObject.ProductID !="" ){
             MLObject.ProductID = MLObject.ProductID[0].ProductID;
         }
+        
+        if (this.props.index != undefined) {
+            MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+            MLObject.FeeAppendixDetailID =
+                this.props.callFetchAPI(APIHostName, EditFeeAppendixDetailPath, MLObject).then(apiResult => {
+                    this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
+                });
+        }
+        else {
+            MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
 
-        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-       let lstMLObject=[]
-        let itemNew = MLObject.TechSpecsValueID.map((item) => {
-            let temp={};
-
-            temp.FeeAppendixID= MLObject.FeeAppendixID;
-            temp.CreatedUser= MLObject.CreatedUser;
-            temp.FeeAppendixDetailID= MLObject.FeeAppendixDetailID;
-            temp.IsActived= MLObject.IsActived;
-            temp.IsSystem= MLObject.IsSystem;
-            temp.MainGroupID= MLObject.MainGroupID;
-            temp.Note= MLObject.Note;
-            temp.ProductID= MLObject.ProductID;
-            temp.ServiceAgreementID= MLObject.ServiceAgreementID;
-            temp.ServiceFee= MLObject.ServiceFee;
-            temp.SignedDate= MLObject.SignedDate;
-            temp.SubGroupID= MLObject.SubGroupID;
-            temp.TechSpecsID= MLObject.TechSpecsID;
-            temp.TechSpecsValueID = item;
-            temp.ApplyFromDate= MLObject.ApplyFromDate;
-            lstMLObject.push(temp)
-        })
-        console.log('arr', lstMLObject)
-
-        this.props.callFetchAPI(APIHostName, AddFeeAppendixDetailPathNew, lstMLObject).then(apiResult => {
-            this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
-        });
+            this.props.callFetchAPI(APIHostName, AddFeeAppendixDetailPath, MLObject).then(apiResult => {
+                this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
+            });
+        }
     }
 
     render() {
-        const { IsSystem } = this.state;
+        const { IsSystem, IsUpdateItem } = this.state;
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectFeeAppendixDetailItem}
@@ -98,7 +88,7 @@ class FeeAppendixDetailElementCom extends Component {
                             name="cbMainGroupID"
                             colspan="9"
                             labelcolspan="3"
-                            disabled={IsSystem}
+                            disabled={true}
                             label="nghành hàng"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
@@ -127,7 +117,7 @@ class FeeAppendixDetailElementCom extends Component {
                             nameMember="SubGroupName"
                             controltype="InputControl"
                             value={-1}
-                            disabled={IsSystem}
+                            disabled={true}
                             listoption={[]}
                             datasourcemember="SubGroupID"
                             filterName="cbMainGroupID"
@@ -151,7 +141,7 @@ class FeeAppendixDetailElementCom extends Component {
                             nameMember="TechspecsName"
                             controltype="InputControl"
                             value={-1}
-                            disabled={IsSystem}
+                            disabled={true}
                             listoption={[]}
                             datasourcemember="TechspecsID"
                             filterobj="SubGroupID"
@@ -169,19 +159,17 @@ class FeeAppendixDetailElementCom extends Component {
                             label="giá trị"
                             // validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
-                            disabled={IsSystem}
+                            disabled={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.TECHSPECSVALUE"
                             valuemember="TechSpecsValueID"
                             nameMember="Value"
                             controltype="InputControl"
-                            value=""
-                            placeholder="Chọn giá trị"
+                            value={-1}
                             listoption={[]}
                             datasourcemember="TechspecsValueID"
                             filterName="cbTechSpecsID"
                             filterValue=""
                             filterobj="TechSpecsID"
-                            isMultiSelect={true}
                         />
                     </div>
 
@@ -210,7 +198,7 @@ class FeeAppendixDetailElementCom extends Component {
                             //validatonList={[]}
                             IsLabelDiv={true}
                             isMulti={false}
-                            disabled={IsSystem}
+                            disabled={true}
                         />
                     </div>
 
@@ -223,7 +211,7 @@ class FeeAppendixDetailElementCom extends Component {
                             label="giá dịch vụ"
                             placeholder="Giá dịch vụ"
                             controltype="InputControl"
-                            value="0"
+                            value=""
                             validatonList={["required"]}
                             datasourcemember="ServiceFee"
                             disabled={IsSystem}

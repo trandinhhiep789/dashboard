@@ -406,7 +406,7 @@ class EditCom extends React.Component {
                                 readOnly={this.state.IsSystem}
                                 validatonList={["Comborequired"]}
                                 isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.AREA"
+                                loaditemcachekeyid="ERPCOMMONCACHE.AREATT"
                                 valuemember="AreaID"
                                 nameMember="AreaName"
                                 controltype="InputControl"
