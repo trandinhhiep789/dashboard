@@ -187,6 +187,7 @@ class AddCom extends React.Component {
     }
 
     onChangeAllStore(name, objstore) {
+        
         this.setState({
             SenderStoreID: objstore.value
         })
@@ -280,6 +281,7 @@ class AddCom extends React.Component {
                                 label="kho gửi"
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
+                                validatonList={["Comborequired"]}
                                 IsLabelDiv={false}
                                 isautoloaditemfromcache={false}
                                 onChange={this.onChangeAllStore.bind(this)}

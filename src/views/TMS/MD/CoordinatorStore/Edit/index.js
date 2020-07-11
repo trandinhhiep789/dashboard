@@ -333,6 +333,7 @@ class EditCom extends React.Component {
                                 readOnly={this.state.IsSystem}
                                 IsLabelDiv={false}
                                 isautoloaditemfromcache={false}
+                                validatonList={["Comborequired"]}
                                 onChange={this.onChangeAllStore.bind(this)}
                                 controltype="InputControl"
                                 value={this.state.SenderStoreSelect}
