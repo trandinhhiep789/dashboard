@@ -165,8 +165,8 @@ class SearchCom extends React.Component {
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
                     ref={this.gridref}
-                    // RequirePermission={VEHICLE_VIEW}
-                    // DeletePermission={VEHICLE_DELETE}
+                    RequirePermission={VEHICLE_VIEW}
+                    DeletePermission={VEHICLE_DELETE}
                     IsAutoPaging={true}
                     RowsPerPage={10}
                 />

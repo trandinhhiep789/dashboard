@@ -148,7 +148,7 @@ class EditCom extends React.Component {
             const end = formData.txtTimeEnd.value.split(':');
             const countStart = (parseInt(start[0]) * 60) + parseInt(start[1]);
             const countEnd = (parseInt(end[0]) * 60) + parseInt(end[1]);
-            if (countEnd < countStart) {
+            if (countEnd <= countStart) {
                 formData.txtTimeEnd.ErrorLst.IsValidatonError = true;
                 formData.txtTimeEnd.ErrorLst.ValidatonErrorMessage = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu làm việc";
             }
@@ -177,7 +177,7 @@ class EditCom extends React.Component {
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
                     onchange={this.handleChange.bind(this)}
-                //RequirePermission={WORKINGSHIFT_UPDATE}
+                    RequirePermission={WORKINGSHIFT_UPDATE}
                 >
 
                     <div className="row">
@@ -250,7 +250,7 @@ class EditCom extends React.Component {
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.TextBox
+                            {/* <FormControl.TextBox
                                 name="txtShiftNumber"
                                 colspan="8"
                                 labelcolspan="4"
@@ -263,7 +263,25 @@ class EditCom extends React.Component {
                                 maxSize={9}
                                 datasourcemember="ShiftNumber"
                                 validatonList={['required', 'number']}
-                            />
+                            /> */}
+                            <FormControl.ComboBoxSelect
+
+                                name="cbShiftNumber"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="ca làm việc số"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.WORKINGSHIFT"
+                                valuemember="WorkingShiftID"
+                                nameMember="WorkingShiftName"
+                                controltype="InputControl"
+                                value={""}
+                                listoption={null}
+                                datasourcemember="WorkingShiftID" />
                         </div>
 
                     </div>
