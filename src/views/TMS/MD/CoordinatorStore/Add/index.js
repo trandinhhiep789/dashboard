@@ -209,7 +209,7 @@ class AddCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                     onchange={this.handleChange.bind(this)}
-                //RequirePermission={COORDINATORSTORE_ADD}
+                    RequirePermission={COORDINATORSTORE_ADD}
                 >
                     <div className="row">
                         <div className="col-md-6">

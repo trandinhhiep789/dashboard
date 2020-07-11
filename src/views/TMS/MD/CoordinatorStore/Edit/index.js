@@ -24,7 +24,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { COORDINATORSTORE_ADD } from "../../../../../constants/functionLists";
+import { COORDINATORSTORE_ADD, COORDINATORSTORE_UPDATE } from "../../../../../constants/functionLists";
 import CoordinatorStoreWard from '../../CoordinatorStoreWard'
 import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
 import ReactNotification from "react-notifications-component";
@@ -248,14 +248,14 @@ class EditCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <FormContainer
-                    FormName="Thêm định nghĩa kho điều phối giao hàng"
+                    FormName="Cập nhật định nghĩa kho điều phối giao hàng"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={[]}
                     dataSource={this.state.DataSource}
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                     onchange={this.handleChange.bind(this)}
-                //RequirePermission={COORDINATORSTORE_ADD}
+                    RequirePermission={COORDINATORSTORE_UPDATE}
                 >
                     <div className="row">
                         <div className="col-md-6">
