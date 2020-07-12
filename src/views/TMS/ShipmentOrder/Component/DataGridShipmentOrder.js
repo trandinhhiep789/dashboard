@@ -471,7 +471,7 @@ class DataGridShipmentOderCom extends Component {
         const strShipmentOrdervalue = e.target.value;
         const name = e.target.name;
         const objShipmentOrder = this.state.DataSource.find(n => n[name] == strShipmentOrdervalue)
-        let objShip = { ShipmentOrderID: objShipmentOrder.ShipmentOrderID, CarrierPartnerID: objShipmentOrder.CarrierPartnerID, CarrierTypeID: objShipmentOrder.CarrierTypeID };
+        let objShip = { ShipmentOrderID: objShipmentOrder.ShipmentOrderID, CarrierPartnerID: objShipmentOrder.CarrierPartnerID, CarrierTypeID: objShipmentOrder.CarrierTypeID,DeliverUserList:[] };
         if (e.target.checked) {
             this.state.GridDataShip.push(objShip);
         }
@@ -549,7 +549,7 @@ class DataGridShipmentOderCom extends Component {
                                 if (index % 2 != 0) {
                                     rowClass = "jsgrid-alt-row";
                                 }
-                                console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
+                               // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
                                 return (<tr key={rowIndex}>
                                     <td className="btngroupleft">
                                         <div className="group-action">
