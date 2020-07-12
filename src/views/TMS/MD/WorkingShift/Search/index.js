@@ -163,8 +163,8 @@ class SearchCom extends React.Component {
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
                     ref={this.gridref}
-                    // RequirePermission={WORKINGSHIFT_VIEW}
-                    // DeletePermission={WORKINGSHIFT_DELETE}
+                    RequirePermission={WORKINGSHIFT_VIEW}
+                    DeletePermission={WORKINGSHIFT_DELETE}
                     IsAutoPaging={true}
                     RowsPerPage={10}
                 />

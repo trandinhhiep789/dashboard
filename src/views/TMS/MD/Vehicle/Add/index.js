@@ -21,7 +21,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { COORDINATORSTORE_ADD } from "../../../../../constants/functionLists";
+import { COORDINATORSTORE_ADD, VEHICLE_ADD } from "../../../../../constants/functionLists";
 import CoordinatorStoreWard from '../../CoordinatorStoreWard'
 import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
 import ReactNotification from "react-notifications-component";
@@ -152,7 +152,7 @@ class AddCom extends React.Component {
                     listelement={[]}
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
-                //RequirePermission={COORDINATORSTORE_ADD}
+                    RequirePermission={VEHICLE_ADD}
                 >
 
                     <div className="row">

@@ -23,7 +23,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { COORDINATORSTORE_UPDATE } from "../../../../../constants/functionLists";
+import { COORDINATORSTORE_UPDATE, VEHICLE_UPDATE } from "../../../../../constants/functionLists";
 import CoordinatorStoreWard from '../../CoordinatorStoreWard'
 import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
 import ReactNotification from "react-notifications-component";
@@ -189,7 +189,7 @@ class EditCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                //RequirePermission={COORDINATORSTORE_UPDATE}
+                    RequirePermission={VEHICLE_UPDATE}
                 >
 
                     <div className="row">

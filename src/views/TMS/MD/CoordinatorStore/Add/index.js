@@ -187,6 +187,7 @@ class AddCom extends React.Component {
     }
 
     onChangeAllStore(name, objstore) {
+        
         this.setState({
             SenderStoreID: objstore.value
         })
@@ -209,7 +210,7 @@ class AddCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                     onchange={this.handleChange.bind(this)}
-                //RequirePermission={COORDINATORSTORE_ADD}
+                    RequirePermission={COORDINATORSTORE_ADD}
                 >
                     <div className="row">
                         <div className="col-md-6">
@@ -280,6 +281,7 @@ class AddCom extends React.Component {
                                 label="kho gửi"
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
+                                validatonList={["Comborequired"]}
                                 IsLabelDiv={false}
                                 isautoloaditemfromcache={false}
                                 onChange={this.onChangeAllStore.bind(this)}

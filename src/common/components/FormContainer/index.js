@@ -47,7 +47,6 @@ class FormContainerCom extends Component {
 
     }
     componentDidMount() {
-        console.log("formData");
         this.setState({
             isDisabled: (this.props.dataSource != undefined ? this.props.dataSource.IsSystem : false)
         })
