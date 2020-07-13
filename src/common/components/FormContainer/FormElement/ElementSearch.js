@@ -19,10 +19,10 @@ class ElementTextCom extends Component {
         let className = "form-control form-control-sm";
         let colspanClassName = "col-md-3";
         if (colspan) {
-            if(classNameCol){
-                colspanClassName = "col-md-" + this.props.colspan + " " +classNameCol;
+            if (classNameCol) {
+                colspanClassName = "col-md-" + this.props.colspan + " " + classNameCol;
             }
-            else{
+            else {
                 colspanClassName = "col-md-" + this.props.colspan;
             }
         }
@@ -76,10 +76,10 @@ class ElementTextdropdownCom extends Component {
         let className = "form-control form-control-sm txtKeyword";
         let colspanClassName = "col-md-3";
         if (colspan) {
-            if(classNameCol){
-                colspanClassName = "col-md-" + this.props.colspan + " " +classNameCol;
+            if (classNameCol) {
+                colspanClassName = "col-md-" + this.props.colspan + " " + classNameCol;
             }
-            else{
+            else {
                 colspanClassName = "col-md-" + this.props.colspan;
             }
         }
@@ -136,10 +136,10 @@ class ElementCheckboxCom extends Component {
         let { name, label, value, colspan, classNameCol } = this.props;
         let colspanClassName = "col-md-1";
         if (colspan) {
-            if(classNameCol){
-                colspanClassName = "col-md-" + this.props.colspan + " " +classNameCol;
+            if (classNameCol) {
+                colspanClassName = "col-md-" + this.props.colspan + " " + classNameCol;
             }
-            else{
+            else {
                 colspanClassName = "col-md-" + this.props.colspan;
             }
         }
@@ -181,10 +181,10 @@ class ElementCheckLDivboxCom extends Component {
         let { name, label, value, colspan, classNameCol } = this.props;
         let colspanClassName = "col-md-4";
         if (colspan) {
-            if(classNameCol){
-                colspanClassName = "col-md-" + this.props.colspan + " " +classNameCol;
+            if (classNameCol) {
+                colspanClassName = "col-md-" + this.props.colspan + " " + classNameCol;
             }
-            else{
+            else {
                 colspanClassName = "col-md-" + this.props.colspan;
             }
         }
@@ -211,9 +211,11 @@ class ElementComboBoxCom extends Component {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
 
-        this.state = { ListOption: [],
-                       Data: [],
-                       SelectedOption: [] }
+        this.state = {
+            ListOption: [],
+            Data: [],
+            SelectedOption: []
+        }
 
     }
 
@@ -234,31 +236,32 @@ class ElementComboBoxCom extends Component {
         return selectedOption;
     }
     componentDidMount() {
-        let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterName, filterValue,filterobj } = this.props;
+        let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterName, filterValue, filterobj } = this.props;
         // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
         if (IsAutoLoadItemFromCache) {
-           
+
             this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
-              
-                // console.log("this.props.isautoloaditemfromcach2: ",this.props.loaditemcachekeyid, this.state.Listoption);
+
+                console.log("this.props.isautoloaditemfromcach2: ", result);
                 listoption = [{ value: -1, label: this.props.placeholder }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     if (typeof filterobj != undefined) {
-                       // console.log(filterobj,result.ResultObject.CacheData,result.ResultObject.CacheData.filter(n => n.filterobj == 1))
+                        // console.log(filterobj,result.ResultObject.CacheData,result.ResultObject.CacheData.filter(n => n.filterobj == 1))
                         result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
-                            listoption.push({ value: cacheItem[ValueMember], label: cacheItem[NameMember] });
+                            console.log("cacheItem: ", cacheItem);
+                            listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
                         }
                         );
-                      
+
                     }
                     else {
                         result.ResultObject.CacheData.map((cacheItem) => {
-                            listoption.push({ value: cacheItem[ValueMember], label: cacheItem[NameMember] });
+                            listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
                         }
                         );
                     }
-                  
-                    this.setState({ ListOption: listoption, Data:result.ResultObject.CacheData});
+
+                    this.setState({ ListOption: listoption, Data: result.ResultObject.CacheData });
                     const aa = this.bindcombox(this.props.value, listoption);
                     this.setState({ SelectedOption: aa });
                 }
@@ -294,18 +297,18 @@ class ElementComboBoxCom extends Component {
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange)
-            this.props.onValueChange(this.props.name, comboValues,this.props.filterrest);
+            this.props.onValueChange(this.props.name, comboValues, this.props.filterrest);
     }
     componentWillReceiveProps(nextProps) {
-       
+
         if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
         {
-            let {filterName,filterobj,ValueMember,NameMember } = this.props;
+            let { filterName, filterobj, ValueMember, NameMember } = this.props;
             if (typeof filterobj != undefined) {
                 let listoptionnew = [{ value: -1, label: this.props.placeholder }];
-              //  console.log(filterobj,this.state.Data.filter(n => n[filterobj] == nextProps.filterValue))
+                //  console.log(filterobj,this.state.Data.filter(n => n[filterobj] == nextProps.filterValue))
                 this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
-                    listoptionnew.push({ value: cacheItem[ValueMember], label: cacheItem[NameMember] });
+                    listoptionnew.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
                 }
                 );
                 this.setState({ ListOption: listoptionnew });
@@ -324,10 +327,10 @@ class ElementComboBoxCom extends Component {
         let className = "select";
         let colspanClassName = "col-md-3";
         if (colspan) {
-            if(classNameCol){
-                colspanClassName = "col-md-" + this.props.colspan + " " +classNameCol;
+            if (classNameCol) {
+                colspanClassName = "col-md-" + this.props.colspan + " " + classNameCol;
             }
-            else{
+            else {
                 colspanClassName = "col-md-" + this.props.colspan;
             }
         }
@@ -448,10 +451,10 @@ class ElementComboBoxNewCom extends Component {
         }
         let formGroupClassName = "form-group col-md-8";
         if (this.props.colspan != null) {
-            if(classNameCol){
-                formGroupClassName = "form-group col-md-" + this.props.colspan + " " +classNameCol;
+            if (classNameCol) {
+                formGroupClassName = "form-group col-md-" + this.props.colspan + " " + classNameCol;
             }
-            else{
+            else {
                 formGroupClassName = "form-group col-md-" + this.props.colspan;
             }
         }
@@ -514,10 +517,10 @@ class ElementTextNewCom extends Component {
             className = this.props.CSSClassName;
         let formGroupClassName = "form-group col-md-2";
         if (this.props.colspan != null) {
-            if(classNameCol){
-                formGroupClassName = "form-group col-md-" + this.props.colspan + " " +classNameCol;
+            if (classNameCol) {
+                formGroupClassName = "form-group col-md-" + this.props.colspan + " " + classNameCol;
             }
-            else{
+            else {
                 formGroupClassName = "form-group col-md-" + this.props.colspan;
             }
         }
@@ -579,10 +582,10 @@ class ElementTextNewFullCom extends Component {
             className = this.props.CSSClassName;
         let formGroupClassName = "form-group col-md-2";
         if (this.props.colspan != null) {
-            if(classNameCol){
-                formGroupClassName = "form-group col-md-" + this.props.colspan + " " +classNameCol;
+            if (classNameCol) {
+                formGroupClassName = "form-group col-md-" + this.props.colspan + " " + classNameCol;
             }
-            else{
+            else {
                 formGroupClassName = "form-group col-md-" + this.props.colspan;
             }
         }
@@ -642,10 +645,10 @@ class ElementDatetimeCom extends Component {
         let className = "";
         let colspanClassName = "col-md-3";
         if (colspan) {
-            if(classNameCol){
-                colspanClassName = "form-group col-md-" + this.props.colspan + " " +classNameCol;
+            if (classNameCol) {
+                colspanClassName = "form-group col-md-" + this.props.colspan + " " + classNameCol;
             }
-            else{
+            else {
                 colspanClassName = "form-group col-md-" + this.props.colspan;
             }
         }
@@ -690,15 +693,15 @@ class ElementDatetimeFromToCom extends Component {
             this.props.onValueChange(name, moment);
     }
     render() {
-        
+
         let { name, label, nameOption, valueOption, timeFormat, dateFormat, colspan, value, ValidatonErrorMessage, classNameCol } = this.props;
         let className = "";
         let colspanClassName = "col-md-4";
         if (colspan) {
-            if(classNameCol){
-                colspanClassName = "form-group col-md-" + this.props.colspan + " " +classNameCol;
+            if (classNameCol) {
+                colspanClassName = "form-group col-md-" + this.props.colspan + " " + classNameCol;
             }
-            else{
+            else {
                 colspanClassName = "form-group col-md-" + this.props.colspan;
             }
         }

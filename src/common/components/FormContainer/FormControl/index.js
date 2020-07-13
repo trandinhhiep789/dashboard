@@ -282,6 +282,7 @@ class FormControlComboBoxCom extends Component {
             const cacheKeyID = this.props.loaditemcachekeyid;
             const valueMember = this.props.valuemember;
             const nameMember = this.props.nameMember;
+            console.log("valueMember", valueMember)
             this.props.callGetCache(cacheKeyID).then((result) => {
                 if (!isMultiSelect) {
                     listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
@@ -294,13 +295,15 @@ class FormControlComboBoxCom extends Component {
                     if (typeof filterobj != undefined && filterValue != "") {
 
                         result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
+                            console.log("valueMember", cacheItem[valueMember])
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] +"-"+   cacheItem[nameMember] });
                         }
                         );
                     }
                     else {
                         result.ResultObject.CacheData.map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
+                            console.log("11", cacheItem[valueMember])
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] +"-"+   cacheItem[nameMember] });
                         }
                         );
                     }
@@ -329,7 +332,8 @@ class FormControlComboBoxCom extends Component {
                 if (!isMultiSelect)
                     listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
                 this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
-                    listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[nameMember] });
+                    console.log("11222", cacheItem[valueMember])
+                    listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valueMember] +"-"+  cacheItem[nameMember] });
                 }
                 );
                 this.setState({ Listoption: listoptionnew });
