@@ -248,7 +248,6 @@ class ElementComboBoxCom extends Component {
                     if (typeof filterobj != undefined) {
                         // console.log(filterobj,result.ResultObject.CacheData,result.ResultObject.CacheData.filter(n => n.filterobj == 1))
                         result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
-                            console.log("cacheItem: ", cacheItem);
                             listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
                         }
                         );
