@@ -147,13 +147,9 @@ class ListShipCoordinatorCom extends Component {
         }
 
         this.state.ShipmentOrder.map((row, indexRow) => {
-            if (row[name] == -1 || row[name] == 0) {
                 row[name] = value;
-            }
         });
         this.setState({ objCoordinator: objCoordinator, objDeliverUser: objDeliverUser })
-
-
     }
 
     handleValueChange1(e, selectedOption1) {

@@ -168,7 +168,7 @@ class ElementModalComboBoxCom extends Component {
         for (let i = 0; i < values.length; i++) {
             for (let j = 0; j < listOption.length; j++) {
                 if (values[i] == listOption[j].value) {
-                    selectedOption.push({ value: listOption[j].value, label: listOption[j].value + '-' + listOption[j].label });
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
                 }
             }
         }
