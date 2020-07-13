@@ -4,6 +4,7 @@ import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 // import DataGrid from "../../../../common/components/DataGrid/getdataserver.js";
 import DataGrid from "../../../../common/components/DataGrid";
+import { formatDate } from "../../../../common/library/CommonLib.js";
 
 import InputGridNew from "../../../../common/components/FormContainer/FormControl/InputGridNew";
 import { MessageModal } from "../../../../common/components/Modal";
@@ -69,16 +70,12 @@ class SearchCom extends React.Component {
     handleSearchSubmit(formData, MLObject) {
         const postData = [
             {
-                SearchKey: "@WORKINGSHIFTID",
-                SearchValue: ""
-            },
-            {
                 SearchKey: "@WORKINGDATE",
-                SearchValue: ""
+                SearchValue: MLObject.WorkingDate
             },
             {
                 SearchKey: "@STOREID",
-                SearchValue: ""
+                SearchValue: MLObject.ServiceTypeID
             },
 
         ];
@@ -90,26 +87,28 @@ class SearchCom extends React.Component {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             console.log("callSearchData", apiResult.ResultObject);
+
             if (!apiResult.IsError) {
-                const result = apiResult.ResultObject.map((item) => {
-                    if (item.ShiftNumber == 1) {
-                        item.IsShiftNumberOne = true
-                    }
-                    else if (item.ShiftNumber == 2) {
-                        item.IsShiftNumberTwo = true
-                    }
-                    else if (item.ShiftNumber == 3) {
-                        item.IsShiftNumberThree = true
-                    }
-                    else {
-                        item.IsShiftNumberOne = false;
-                        item.IsShiftNumberTwo = false;
-                        item.IsShiftNumberThree = false;
-                    }
+                // const result = apiResult.ResultObject.map((item, index) => {
 
-                    return item;
+                //     if (item.ShiftNumber == 1) {
+                //         item.IsShiftNumberOne = true
+                //     }
+                //     else if (item.ShiftNumber == 2) {
+                //         item.IsShiftNumberTwo = true
+                //     }
+                //     else if (item.ShiftNumber == 3) {
+                //         item.IsShiftNumberThree = true
+                //     }
+                //     else {
+                //         item.IsShiftNumberOne = false;
+                //         item.IsShiftNumberTwo = false;
+                //         item.IsShiftNumberThree = false;
+                //     }
 
-                })
+                //     return item;
+
+                // })
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
@@ -254,6 +253,7 @@ class SearchCom extends React.Component {
 
 
     render() {
+        console.log('11', this.state.gridDataSource)
 
         return (
             <React.Fragment>
@@ -275,6 +275,7 @@ class SearchCom extends React.Component {
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                 <thead className="thead-light">
                                     <tr>
+                                        <th className="jsgrid-header-cell" style={{ width: 100 }}>Ngày làm việc</th>
                                         <th className="jsgrid-header-cell" style={{ width: 100 }}>Mã nhân viên</th>
                                         <th className="jsgrid-header-cell" style={{ width: 150 }}>Tên nhân viên</th>
                                         <th className="jsgrid-header-cell" style={{ width: 250 }}>Kho làm việc</th>
@@ -286,12 +287,13 @@ class SearchCom extends React.Component {
                                 </thead>
                                 <tbody>
                                     {this.state.gridDataSource && this.state.gridDataSource.map((item, index) => {
-                                        console.log("item", item);
+                                        // console.log("item", item,);
                                         return (
                                             <tr key={index}>
-                                                <td>{item.UserName}</td>
-                                                <td>{item.FullName}</td>
-                                                <td>{item.StoreName}</td>
+                                                <td>{formatDate(item[index].WorkingDate, true)}</td>
+                                                <td>{item[index].UserName}</td>
+                                                <td>{item[index].FullName}</td>
+                                                <td>{item[index].StoreName}</td>
                                                 <td>
                                                     <div className="checkbox">
                                                         <label>

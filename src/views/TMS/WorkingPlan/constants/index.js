@@ -35,15 +35,14 @@ export const AddPagePath = [
 ];
 
 const dtFromdate = new Date();
-dtFromdate.setDate(new Date().getDate() - 365);
 
 export const SearchElementList = [
     {
         type: "Datetime",
-        name: "dtSignedDate",
-        DataSourceMember: "SignedDate",
+        name: "dtWorkingDate",
+        DataSourceMember: "WorkingDate",
         label: "ngày làm việc",
-        value: dtFromdate,
+        value: new Date(),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
@@ -69,14 +68,11 @@ export const SearchElementList = [
  
 ]
 
+
 export const InitSearchParams = [
     {
-        SearchKey: "@WORKINGSHIFTID",
-        SearchValue: -1
-    },
-    {
         SearchKey: "@WORKINGDATE",
-        SearchValue: ""
+        SearchValue: ""//new Date()
     },
     {
         SearchKey: "@STOREID",
@@ -88,9 +84,14 @@ export const InitSearchParams = [
 
 export const SearchMLObjectDefinition = [
     {
-        Name: "Keyword",
+        Name: "WorkingDate",
         DefaultValue: "",
-        BindControlName: "txtKeyword"
+        BindControlName: "dtWorkingDate"
+    },
+    {
+        Name: "ServiceTypeID",
+        DefaultValue: "",
+        BindControlName: "cbServiceTypeID"
     },
 ]
 
