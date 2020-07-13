@@ -250,7 +250,15 @@ class SearchCom extends React.Component {
             this.callSearchData(this.state.SearchData);
         });
     }
-
+    checkShift(index,value) {
+      
+        const found = this.state.gridDataSource[index].find(n => n.ShiftNumber == value);
+        if(found==undefined||found=="undefined")
+         {
+             return false;
+         }
+         return true;
+    }
 
     render() {
         console.log('11', this.state.gridDataSource)
@@ -300,7 +308,7 @@ class SearchCom extends React.Component {
                                                             <input type="checkbox" className="form-control form-control-sm"
                                                                 onChange={this.handleShiftNumberOneInputChange.bind(this)} value={item.IsShiftNumberOne}
                                                                 name={index}
-                                                                checked={item.IsShiftNumberOne} />
+                                                                checked={this.checkShift(index,1)} />
                                                             <span className="cr">
                                                                 <i className="cr-icon fa fa-check"></i>
                                                             </span>
@@ -313,7 +321,7 @@ class SearchCom extends React.Component {
                                                             <input type="checkbox" className="form-control form-control-sm"
                                                                 onChange={this.handleShiftNumberTwoInputChange.bind(this)} value={item.IsShiftNumberTwo}
                                                                 name={index}
-                                                                checked={item.IsShiftNumberTwo} />
+                                                                checked={this.checkShift(index,2)} />
                                                             <span className="cr">
                                                                 <i className="cr-icon fa fa-check"></i>
                                                             </span>
@@ -326,7 +334,7 @@ class SearchCom extends React.Component {
                                                             <input type="checkbox" className="form-control form-control-sm"
                                                                 onChange={this.handleShiftNumberThreeInputChange.bind(this)} value={item.IsShiftNumberThree}
                                                                 name={index}
-                                                                checked={item.IsShiftNumberThree} />
+                                                                checked={this.checkShift(index,3)} />
                                                             <span className="cr">
                                                                 <i className="cr-icon fa fa-check"></i>
                                                             </span>
