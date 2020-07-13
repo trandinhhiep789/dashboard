@@ -242,7 +242,7 @@ class ElementComboBoxCom extends Component {
 
             this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
 
-                console.log("this.props.isautoloaditemfromcach2: ", result);
+                // console.log("this.props.isautoloaditemfromcach2: ", result);
                 listoption = [{ value: -1, label: this.props.placeholder }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     if (typeof filterobj != undefined) {
