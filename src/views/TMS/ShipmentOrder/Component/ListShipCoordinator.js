@@ -219,7 +219,7 @@ class ListShipCoordinatorCom extends Component {
 
         let elementobject = {};
         this.state.ShipmentOrder.map((row, indexRow) => {
-
+            console.log("DeliverUserList",this.state.ShipmentOrder,row["DeliverUserList"].length)
             if (row["DeliverUserList"].length <= 0) {
                 const validationObject = { IsValidatonError: true, ValidationErrorMessage: "vui lòng chọn nhân viên" };
                 elementobject = Object.assign({}, elementobject, { ["DeliverUserList-" + indexRow]: validationObject });
@@ -239,6 +239,7 @@ class ListShipCoordinatorCom extends Component {
             }
 
         });
+        console.log("v",elementobject)
         this.setState({ FormValidation: elementobject });
     }
 
@@ -256,6 +257,7 @@ class ListShipCoordinatorCom extends Component {
         if (rowname == "CarrierPartnerID") {
             this.state.ShipmentOrder[rowIndex]["DeliverUserList"] = [];
         }
+       
         this.setState({ ShipmentOrder: this.state.ShipmentOrder });
     }
     render() {

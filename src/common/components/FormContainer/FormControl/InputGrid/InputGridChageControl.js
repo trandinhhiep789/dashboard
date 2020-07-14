@@ -83,10 +83,9 @@ class InputGridChageControlCom extends Component {
             this.props.onValueChange(rowname, rowvalue, rowIndex);
         }
     }
-    onValueChangeComboUser(rowname, rowvalue, rowIndex,a,ab,filterrest)
-    {
+    onValueChangeComboUser(rowname, rowvalue, rowIndex, a, ab, filterrest) {
         if (this.props.onValueChange != null) {
-            this.props.onValueChange(rowname, rowvalue, rowIndex);
+            this.props.onValueChange(rowname, rowvalue == -1 ? [] : rowvalue, rowIndex);
         }
     }
     //#endregion onValueChange
@@ -165,7 +164,7 @@ class InputGridChageControlCom extends Component {
                                                 />
                                                 break;
                                             case "ComboUserBox":
-                                                console.log("MultiUserComboBox",rowItem[columnItem.dataSourcemember])
+                                                //   console.log("MultiUserComboBox",rowItem[columnItem.dataSourcemember])
                                                 if (rowItem[columnItem.filterrest] != -1 && rowItem[columnItem.filterrest] != 0) {
                                                     cellData = <ElementInputModal.ElementModalComboBox
                                                         validationErrorMessage={(this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex] != undefined ? this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex].ValidationErrorMessage : "")}
@@ -177,7 +176,7 @@ class InputGridChageControlCom extends Component {
                                                     />
                                                 }
                                                 else {
-                                                   // console.log("MultiUserComboBox",rowItem[columnItem.dataSourcemember])
+                                                    // console.log("MultiUserComboBox",rowItem[columnItem.dataSourcemember])
                                                     cellData = <ElementInputModal.MultiUserComboBox
                                                         validationErrorMessage={(this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex] != undefined ? this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex].ValidationErrorMessage : "")}
                                                         onValueChange={this.onValueChangeComboUser.bind(this)}
