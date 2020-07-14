@@ -17,7 +17,9 @@ class StoreWardCom extends Component {
         this.handleGetCacheWard = this.handleGetCacheWard.bind(this);
         this.state = {
             IsSystem: false,
-            DataWard: []
+            DataWard: [],
+            DataDistrict: [],
+            DataProvince: [],
         }
     }
 
@@ -32,18 +34,38 @@ class StoreWardCom extends Component {
         });
     }
 
+    handleGetCacheDistrict() {
+        const { DataSource } = this.state;
+        this.props.callGetCache('ERPCOMMONCACHE.DISTRICT').then(apiResult => {
+            if (!apiResult.IsError && apiResult.ResultObject.CacheData != null) {
+                this.setState({
+                    DataDistrict: apiResult.ResultObject.CacheData
+                })
+                this.handleGetCacheWard()
+            }
+        });
+    }
+
     componentDidMount() {
-        console.log('StoreWardCom', this.props)
-        this.handleGetCacheWard()
+        
+        this.handleGetCacheDistrict()
 
     }
 
     handleSubmit(From, MLObject) {
         let CoordinatorStoreWard_ItemList = this.props.DataSource;
         let formDatanew = [];
+        
         let dataWardItem = this.state.DataWard.filter((item, index) => {
             return item.WardID == MLObject.WardID
         })
+
+        let dataDistrictItem = this.state.DataDistrict.filter((item, index) => {
+            return item.DistrictID == MLObject.DistrictID
+        })
+
+        MLObject.ProvinceName = dataDistrictItem[0].ProvinceName
+        MLObject.DistrictName = dataDistrictItem[0].DistrictName
         MLObject.WardName = dataWardItem[0].WardName
 
         if (this.props.index != undefined) {
@@ -51,7 +73,7 @@ class StoreWardCom extends Component {
             formDatanew = Object.assign([], CoordinatorStoreWard_ItemList, { [this.props.index]: MLObject });
             const result = {
                 IsError: false,
-                Message: 'Thêm mới phường/xã địa thành công'
+                Message: 'Thêm mới phường/xã địa bàn thành công'
             }
             if (this.props.onInputChangeObj != null) {
                 this.props.onInputChangeObj(formDatanew, result);
@@ -61,7 +83,7 @@ class StoreWardCom extends Component {
             CoordinatorStoreWard_ItemList.push(MLObject)
             const result = {
                 IsError: false,
-                Message: 'Thêm mới phường/xã địa thành công'
+                Message: 'Thêm mới phường/xã địa bàn thành công'
             }
             if (this.props.onInputChangeObj != null) {
                 this.props.onInputChangeObj(CoordinatorStoreWard_ItemList, result);
@@ -95,7 +117,7 @@ class StoreWardCom extends Component {
                             colspan="9"
                             labelcolspan="3"
                             disabled={IsSystem}
-                            label="Tỉnh /thành phố"
+                            label="Tỉnh/thành phố"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.PROVINCE"
