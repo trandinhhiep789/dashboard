@@ -41,7 +41,8 @@ class SearchCom extends React.Component {
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
-            iconNotification: ""
+            iconNotification: "",
+            IsLoadDataComplete: false,
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -90,7 +91,14 @@ class SearchCom extends React.Component {
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
-                    IsCallAPIError: apiResult.IsError
+                    IsCallAPIError: apiResult.IsError,
+                    IsLoadDataComplete: true,
+                });
+            }
+            else {
+                this.showMessage(apiResult.Message);
+                this.setState({
+                    IsLoadDataComplete: false,
                 });
             }
         });
@@ -147,31 +155,47 @@ class SearchCom extends React.Component {
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
-                <SearchForm
-                    FormName="Tìm kiếm danh sách xe"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
-                    onSubmit={this.handleSearchSubmit}
-                    ref={this.searchref}
-                />
-                <DataGrid
-                    listColumn={DataGridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    AddLink={AddLink}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
-                    onDeleteClick={this.handleDelete}
-                    ref={this.gridref}
-                    RequirePermission={VEHICLE_VIEW}
-                    DeletePermission={VEHICLE_DELETE}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                />
-            </React.Fragment>
-        );
+        if (this.state.IsLoadDataComplete) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm
+                        FormName="Tìm kiếm danh sách xe"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                    />
+                    <DataGrid
+                        listColumn={DataGridColumnList}
+                        dataSource={this.state.gridDataSource}
+                        AddLink={AddLink}
+                        IDSelectColumnName={IDSelectColumnName}
+                        PKColumnName={PKColumnName}
+                        onDeleteClick={this.handleDelete}
+                        ref={this.gridref}
+                        RequirePermission={VEHICLE_VIEW}
+                        DeletePermission={VEHICLE_DELETE}
+                        IsAutoPaging={true}
+                        RowsPerPage={10}
+                    />
+                </React.Fragment>
+            );
+        }
+        else {
+            return (
+                <React.Fragment>
+                    <SearchForm
+                        FormName="Tìm kiếm danh sách xe"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                    />
+                    <label>Đang nạp dữ liệu...</label>
+                </React.Fragment>
+            );
+        }
     }
 }
 

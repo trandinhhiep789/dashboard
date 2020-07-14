@@ -24,6 +24,8 @@ import { updatePagePath } from "../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { WORKINGPLAN_VIEW, WORKINGPLAN_DELETE } from "../../../../constants/functionLists";
+import { ERPCOMMONCACHE_WORKINGSHIFT } from "../../../../constants/keyCache";
+
 
 import { callGetCache } from "../../../../actions/cacheAction";
 
@@ -32,6 +34,7 @@ class SearchCom extends React.Component {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.getCacheWorkingShift = this.getCacheWorkingShift.bind(this);
 
         this.state = {
             CallAPIMessage: "",
@@ -44,6 +47,11 @@ class SearchCom extends React.Component {
             PageNumber: 1,
             WorkingShiftNumber: "",
             IsLoadDataComplete: false,
+            dataWorkingShift: [],
+            IsShiftNumberOne: false,
+            IsShiftNumberTwo: false,
+            IsShiftNumberThree: false,
+            data: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -54,6 +62,7 @@ class SearchCom extends React.Component {
         this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
         //  this.callDataTest()
+        this.getCacheWorkingShift()
     }
 
     callDataTest() {
@@ -66,6 +75,19 @@ class SearchCom extends React.Component {
         })
     }
 
+    getCacheWorkingShift() {
+        this.props.callGetCache(ERPCOMMONCACHE_WORKINGSHIFT).then((result) => {
+
+            if (!result.IsError) {
+                this.setState({
+                    dataWorkingShift: result.ResultObject.CacheData
+                })
+            }
+            else {
+                this.showMessage(result.Message)
+            }
+        });
+    }
 
     handleSearchSubmit(formData, MLObject) {
         const postData = [
@@ -109,6 +131,8 @@ class SearchCom extends React.Component {
                 //     return item;
 
                 // })
+
+
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
@@ -230,6 +254,7 @@ class SearchCom extends React.Component {
     }
 
     onClickDeleteWorkingPlan(objWorkingPlan) {
+        debugger
         objWorkingPlan.DELETEDUSER = this.props.AppInfo.LoginInfo.Username;
         this.props.callFetchAPI(APIHostName, UpdateDeleteAPIPath, objWorkingPlan).then(apiResult => {
             this.addNotification(apiResult.Message, apiResult.IsError);
@@ -238,31 +263,51 @@ class SearchCom extends React.Component {
         });
     }
 
-    onClickUpdateWorkingPlan(objWorkingPlan) {
+    onClickUpdateWorkingPlan(objWorkingPlan, WorkingShiftNumber) {
+        objWorkingPlan[0].LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        objWorkingPlan[0].CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        objWorkingPlan[0].UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+        objWorkingPlan[0].WorkingShiftID = WorkingShiftNumber;
 
-        objWorkingPlan.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        objWorkingPlan.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        objWorkingPlan.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
-        objWorkingPlan.WorkingShiftID = objWorkingPlan.WorkingShiftNumber;
-
-        this.props.callFetchAPI(APIHostName, UpdateWorkingPlanByUserAPIPath, objWorkingPlan).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, UpdateWorkingPlanByUserAPIPath, objWorkingPlan[0]).then(apiResult => {
             this.addNotification(apiResult.Message, apiResult.IsError);
             this.callSearchData(this.state.SearchData);
         });
     }
-    checkShift(index,value) {
-      
+
+    checkShift(index, value) {
         const found = this.state.gridDataSource[index].find(n => n.ShiftNumber == value);
-        if(found==undefined||found=="undefined")
-         {
-             return false;
-         }
-         return true;
+
+        if (found == undefined || found == "undefined") {
+            return false;
+        }
+        else {
+
+            return true;
+        }
+
+    }
+
+    handleShiftNumberInputChange(e) {
+        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
+        const inputvalue = e.target.value;
+        const index = e.target.name;
+        const dataFind = this.state.gridDataSource[index].find(n => {
+            return n.ShiftNumber == inputvalue
+        });
+
+        if (ischecked) {
+            this.onClickUpdateWorkingPlan(this.state.gridDataSource[index], inputvalue);
+        }
+        else {
+            this.onClickDeleteWorkingPlan(dataFind)
+        }
+
+
     }
 
     render() {
-        console.log('11', this.state.gridDataSource)
-
+        // console.log("this.state", this.state);
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -287,62 +332,49 @@ class SearchCom extends React.Component {
                                         <th className="jsgrid-header-cell" style={{ width: 100 }}>Mã nhân viên</th>
                                         <th className="jsgrid-header-cell" style={{ width: 150 }}>Tên nhân viên</th>
                                         <th className="jsgrid-header-cell" style={{ width: 250 }}>Kho làm việc</th>
-                                        <th className="jsgrid-header-cell" style={{ width: 100 }}>Ca một</th>
-                                        <th className="jsgrid-header-cell" style={{ width: 100 }}>Ca hai</th>
-                                        <th className="jsgrid-header-cell" style={{ width: 100 }}>Ca ba</th>
+                                        {
+                                            this.state.dataWorkingShift && this.state.dataWorkingShift.map((item, index) => {
+                                                return (
+                                                    <th key={index} className="jsgrid-header-cell" style={{ width: 100 }}>{item.WorkingShiftName}</th>
+                                                )
+                                            })
+                                        }
 
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {this.state.gridDataSource && this.state.gridDataSource.map((item, index) => {
-                                        // console.log("item", item,);
+                                        console.log("item", item);
+
                                         return (
                                             <tr key={index}>
-                                                <td>{formatDate(item[index].WorkingDate, true)}</td>
-                                                <td>{item[index].UserName}</td>
-                                                <td>{item[index].FullName}</td>
-                                                <td>{item[index].StoreName}</td>
-                                                <td>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" className="form-control form-control-sm"
-                                                                onChange={this.handleShiftNumberOneInputChange.bind(this)} value={item.IsShiftNumberOne}
-                                                                name={index}
-                                                                checked={this.checkShift(index,1)} />
-                                                            <span className="cr">
-                                                                <i className="cr-icon fa fa-check"></i>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" className="form-control form-control-sm"
-                                                                onChange={this.handleShiftNumberTwoInputChange.bind(this)} value={item.IsShiftNumberTwo}
-                                                                name={index}
-                                                                checked={this.checkShift(index,2)} />
-                                                            <span className="cr">
-                                                                <i className="cr-icon fa fa-check"></i>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" className="form-control form-control-sm"
-                                                                onChange={this.handleShiftNumberThreeInputChange.bind(this)} value={item.IsShiftNumberThree}
-                                                                name={index}
-                                                                checked={this.checkShift(index,3)} />
-                                                            <span className="cr">
-                                                                <i className="cr-icon fa fa-check"></i>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </td>
+                                                <td>{formatDate(item[0].WorkingDate, true)}</td>
+                                                <td>{item[0].UserName}</td>
+                                                <td>{item[0].FullName}</td>
+                                                <td>{item[0].StoreName}</td>
+                                                {
+                                                    this.state.dataWorkingShift && this.state.dataWorkingShift.map((item1, index1) => {
+                                                        return (
+                                                            <td key={index1}>
+                                                                <div className="checkbox">
+                                                                    <label>
+                                                                        <input type="checkbox" className="form-control form-control-sm"
+                                                                            onChange={this.handleShiftNumberInputChange.bind(this)} value={item1.WorkingShiftID}
+                                                                            name={index}
+                                                                            checked={this.checkShift(index, item1.WorkingShiftID)} />
+                                                                        <span className="cr">
+                                                                            <i className="cr-icon fa fa-check"></i>
+                                                                        </span>
+                                                                    </label>
+                                                                </div>
+                                                            </td>
+                                                        )
+                                                    })
+                                                }
+
                                             </tr>
                                         )
+
                                     })}
                                 </tbody>
                             </table>
