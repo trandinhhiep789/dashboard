@@ -61,7 +61,7 @@ class MultiAllStoreComboBoxCom extends React.Component {
 
                 }
             ],
-            "Top": 500,
+            "Top": 10,
             "IndexName": "store",
             "TypeName": "store",
             "IsCompressResultData": false

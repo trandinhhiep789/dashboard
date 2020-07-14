@@ -63,13 +63,28 @@ export const SearchMLObjectDefinition = [
 
 export const DataGridColumnList = [
 
+    {
+        Name: "ProvinceName",
+        Type: "text",
+        Caption: "Tỉnh/thành phố",
+        DataSourceMember: "ProvinceName",
+        Width: 200
+    },
+    
+    {
+        Name: "DistrictName",
+        Type: "text",
+        Caption: "Quận/huyện",
+        DataSourceMember: "DistrictName",
+        Width: 200
+    },
   
     {
         Name: "WardName",
         Type: "text",
         Caption: "Phường/xã",
         DataSourceMember: "WardName",
-        Width: 350
+        Width: 200
     },
     
 

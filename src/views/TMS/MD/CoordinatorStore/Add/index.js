@@ -199,7 +199,7 @@ class AddCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-
+    
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
