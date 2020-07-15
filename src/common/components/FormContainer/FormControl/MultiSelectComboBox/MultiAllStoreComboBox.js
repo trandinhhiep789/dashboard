@@ -104,7 +104,6 @@ class MultiAllStoreComboBoxCom extends React.Component {
     }
 
     handleValueChange1(e) {
-        console.log("handleValueChange", e)
         let value = e.target.value;
         if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38) {
             this.callSearchData(value);
