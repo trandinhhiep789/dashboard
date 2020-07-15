@@ -2,6 +2,7 @@ export const APIHostName = "PIMAPI";
 export const SearchAPIPath = "api/WorkingPlan/Search";
 export const AddAPIPath = "api/WorkingPlan/Add";
 export const UpdateWorkingPlanByUserAPIPath = "api/WorkingPlan/UpdateWorkingPlanByUser";
+export const UpdateWorkingPlanWebAPIPath = "api/WorkingPlan/UpdateWorkingPlanWeb";
 export const UpdateDeleteAPIPath = "api/WorkingPlan/UpdateDelete";
 export const DeleteAPIPath = "api/WorkingPlan/Delete";
 export const UpdateOrderAPIPath = "api/WorkingPlan/UpdateOrder";
@@ -68,6 +69,22 @@ export const SearchElementList = [
  
 ]
 
+
+export const InitSearchParamsNew = [
+        {
+            SearchKey: "@WORKINGDATE",
+            SearchValue: new Date()
+        },
+        {
+            SearchKey: "@STOREID",
+            SearchValue: 1
+        },
+        {
+            SearchKey: "@USERNAME",
+            SearchValue: ""
+        },
+
+]; 
 
 export const InitSearchParams = [
     {
