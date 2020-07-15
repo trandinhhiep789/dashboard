@@ -219,6 +219,7 @@ class InfoCoordinatorCom extends Component {
                 listMLObject.push({
                     ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
                     UserName: selectedOption[i].value,
+                    FullName:selectedOption[i].FullName,
                     CreatedUser: this.props.AppInfo.LoginInfo.Username,
                     CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
                 });

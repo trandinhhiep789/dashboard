@@ -20,7 +20,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { COORDINATORSTORE_VIEW, COORDINATORSTORE_DELETE} from "../../../../../constants/functionLists";
+import { COORDINATORSTORE_VIEW, COORDINATORSTORE_DELETE } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
@@ -41,7 +41,8 @@ class SearchCom extends React.Component {
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
-            iconNotification: ""
+            iconNotification: "",
+            IsLoadDataComplete: false,
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -65,12 +66,12 @@ class SearchCom extends React.Component {
             listMLObject.push(MLObject);
         });
         this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                this.addNotification(apiResult.Message, apiResult.IsError);
-                if(!apiResult.IsError){
-                    this.callSearchData(this.state.SearchData);
-                }             
-            });
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callSearchData(this.state.SearchData);
+            }
+        });
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -86,13 +87,21 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-                if (!apiResult.IsError) {
-                    this.setState({
-                        gridDataSource: apiResult.ResultObject,
-                        IsCallAPIError: apiResult.IsError
-                    });
-                }
-            });
+            if (!apiResult.IsError) {
+                this.setState({
+                    gridDataSource: apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError,
+                    IsLoadDataComplete: true
+                });
+            }
+            else {
+                this.showMessage(apiResult.Message);
+                this.setState({
+                    IsLoadDataComplete: false
+                });
+            }
+
+        });
     }
 
     handleCloseMessage() {
@@ -146,31 +155,48 @@ class SearchCom extends React.Component {
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
-                <SearchForm
-                    FormName="Tìm kiếm danh sách định nghĩa kho điều phối giao hàng"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
-                    onSubmit={this.handleSearchSubmit}
-                    ref={this.searchref}
-                />
-                <DataGrid
-                    listColumn={DataGridCoordinatorStoreColumnList}
-                    dataSource={this.state.gridDataSource}
-                    AddLink={AddLink}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
-                    onDeleteClick={this.handleDelete}
-                    ref={this.gridref}
-                    // RequirePermission={COORDINATORSTORE_VIEW}
-                    // DeletePermission={COORDINATORSTORE_DELETE}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                />
-            </React.Fragment>
-        );
+        if (this.state.IsLoadDataComplete) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm
+                        FormName="Tìm kiếm danh sách định nghĩa kho điều phối giao hàng"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                    />
+                    <DataGrid
+                        listColumn={DataGridCoordinatorStoreColumnList}
+                        dataSource={this.state.gridDataSource}
+                        AddLink={AddLink}
+                        IDSelectColumnName={IDSelectColumnName}
+                        PKColumnName={PKColumnName}
+                        onDeleteClick={this.handleDelete}
+                        ref={this.gridref}
+                        RequirePermission={COORDINATORSTORE_VIEW}
+                        DeletePermission={COORDINATORSTORE_DELETE}
+                        IsAutoPaging={true}
+                        RowsPerPage={10}
+                    />
+                </React.Fragment>
+            );
+        }
+        else {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm
+                        FormName="Tìm kiếm danh sách định nghĩa kho điều phối giao hàng"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                    />
+                    <label>Đang nạp dữ liệu...</label>
+                </React.Fragment>
+            );
+        }
     }
 }
 
@@ -199,5 +225,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Search = connect(mapStateToProps,mapDispatchToProps)(SearchCom);
+const Search = connect(mapStateToProps, mapDispatchToProps)(SearchCom);
 export default Search;

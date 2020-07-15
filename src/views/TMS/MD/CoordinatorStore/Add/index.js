@@ -46,7 +46,7 @@ class AddCom extends React.Component {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
-            IsShowCustomerAddress: true,
+            IsShowCustomerAddress: false,
             DataSource: {},
             DataWard: [],
             cssNotification: "",
@@ -129,12 +129,13 @@ class AddCom extends React.Component {
     }
 
     handleEdit(index) {
+        console.log('handleEdit',index)
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
             content: {
                 text: <StoreWard
-                    DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
-                    index={index}
+                    D DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
+                    index={parseInt(index)}
                     onInputChangeObj={this.handleInputChangeObjItem}
 
                 />
@@ -186,6 +187,7 @@ class AddCom extends React.Component {
     }
 
     onChangeAllStore(name, objstore) {
+        
         this.setState({
             SenderStoreID: objstore.value
         })
@@ -197,7 +199,7 @@ class AddCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-
+    
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -208,7 +210,7 @@ class AddCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                     onchange={this.handleChange.bind(this)}
-                //RequirePermission={COORDINATORSTORE_ADD}
+                    RequirePermission={COORDINATORSTORE_ADD}
                 >
                     <div className="row">
                         <div className="col-md-6">
@@ -279,6 +281,7 @@ class AddCom extends React.Component {
                                 label="kho gửi"
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
+                                validatonList={["Comborequired"]}
                                 IsLabelDiv={false}
                                 isautoloaditemfromcache={false}
                                 onChange={this.onChangeAllStore.bind(this)}
@@ -370,7 +373,7 @@ class AddCom extends React.Component {
                                 datasourcemember="IsCheckCustomerAddress"
                                 controltype="InputControl"
                                 colspan="8"
-                                value={false}
+                                value={true}
                                 labelcolspan="4"
                                 classNameCustom="customCheckbox"
                             />

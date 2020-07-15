@@ -21,7 +21,7 @@ class MultiAllStoreComboBoxCom extends React.Component {
 
 
     componentDidMount() {
-        console.log("sss", this.props)
+        console.log("aaaa", this.props);
         this.setState({
             ListOption: this.props.listoption,
             SelectedOption: this.props.value == undefined ? this.props.listoption : this.props.value
@@ -61,7 +61,7 @@ class MultiAllStoreComboBoxCom extends React.Component {
 
                 }
             ],
-            "Top": 500,
+            "Top": 10,
             "IndexName": "store",
             "TypeName": "store",
             "IsCompressResultData": false
@@ -95,13 +95,16 @@ class MultiAllStoreComboBoxCom extends React.Component {
     }
 
     handleValueChange(selectedOption) {
-        // const comboValues = this.getComboValue(selectedOption);
+        const comboValues = this.getComboValue(selectedOption);
         this.setState({ SelectedOption: selectedOption });
         if (this.props.onChange)
             this.props.onChange(this.props.name, selectedOption);
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(this.props.name, selectedOption.value, this.props.namelabel, selectedOption.name, this.props.filterrest);
     }
 
     handleValueChange1(e) {
+        console.log("handleValueChange", e)
         let value = e.target.value;
         if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38) {
             this.callSearchData(value);

@@ -26,6 +26,7 @@ import InputGridControl from "../../../../../common/components/FormContainer/For
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
 import FeeAppendixDetailElement from '../Component/FeeAppendixDetailElement';
+import FeeAppendixDetailElementEdit from '../Component/FeeAppendixDetailElementEdit';
 import ReactNotification from "react-notifications-component";
 
 class DetailCom extends React.Component {
@@ -198,7 +199,7 @@ class DetailCom extends React.Component {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Cập nhật chi tiết biểu phí',
             content: {
-                text: <FeeAppendixDetailElement
+                text: <FeeAppendixDetailElementEdit
                     dataSource={this.state.DataSource}
                     index={index}
                     onInputChangeObj={this.handleInputChangeObjItem}

@@ -294,13 +294,15 @@ class FormControlComboBoxCom extends Component {
                     if (typeof filterobj != undefined && filterValue != "") {
 
                         result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
+                            // console.log("valueMember", cacheItem[valueMember])
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember] });
                         }
                         );
                     }
                     else {
                         result.ResultObject.CacheData.map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
+                            // console.log("11", cacheItem[valueMember])
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember] });
                         }
                         );
                     }
@@ -329,7 +331,7 @@ class FormControlComboBoxCom extends Component {
                 if (!isMultiSelect)
                     listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
                 this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
-                    listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[nameMember] });
+                    listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember] });
                 }
                 );
                 this.setState({ Listoption: listoptionnew });
@@ -539,7 +541,7 @@ class FormControlHourCom extends Component {
 
                 <div className={formGroupClassName}>
                     <TimePicker
-                        value={(this.state.value != '' && this.state.value  != null) ? moment(this.state.value , formatHour) : ''}
+                        value={(this.state.value != '' && this.state.value != null) ? moment(this.state.value, formatHour) : ''}
                         format={formatHour}
                         className={className}
                         ref={this.props.inputRef}

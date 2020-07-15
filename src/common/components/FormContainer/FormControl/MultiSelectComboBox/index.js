@@ -24,6 +24,14 @@ class MultiSelectComboBoxCom extends React.Component {
         });
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
+            this.setState({
+                SelectedOption: nextProps.value
+            })
+        }
+    }
+
     callSearchData(KeyWord) {
         let listMLObject = {
             "IndexName": "user",
@@ -72,21 +80,7 @@ class MultiSelectComboBoxCom extends React.Component {
         });
     }
 
-
-    getComboValue(selectedOption) {
-        let values = [];
-        if (selectedOption == null)
-            return values;
-        for (let i = 0; i < selectedOption.length; i++) {
-            values.push(selectedOption[i].value);
-        }
-        return values;
-    }
-
     handleValueChange(selectedOption) {
-       
-        // const comboValues = this.getComboValue(selectedOption);
-        this.setState({ SelectedOption: selectedOption });
         if (this.props.onChange)
             this.props.onChange(this.props.name, selectedOption);
     }
