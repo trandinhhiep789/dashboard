@@ -53,7 +53,7 @@ class AddCom extends React.Component {
         this.props.callFetchAPI(APIHostName, GetParent, InitSearchParams).then((apiResult) => {
             if (!apiResult.IsError) {
 
-                const sortTemp = apiResult.ResultObject.sort((a, b) => (a.ParentID > b.ParentID) ? 1 : (a.ParentID === b.ParentID) ? ((a.ShipmentGoodsTypeID > b.ShipmentGoodsTypeID) ? 1 : -1) : -1)
+                const sortTemp = apiResult.ResultObject.sort((a, b) => (a.ParentID > b.ParentID) ? 1 : (a.ParentID === b.ParentID) ? ((a.SkillCategoryID > b.SkillCategoryID) ? 1 : -1) : -1)
                 let treeData = createListTree(sortTemp, -1, "ParentID", "SkillCategoryID", "SkillCategoryName")
                 treeData.unshift({
                     ParentID: -1,

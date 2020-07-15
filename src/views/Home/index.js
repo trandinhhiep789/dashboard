@@ -58,9 +58,10 @@ import SkillCategory from "../TMS/MD/SkillCategory";
 import SkillRank from "../TMS/MD/SkillRank";
 import Vehicle from '../../views/TMS/MD/Vehicle';
 import WorkingShift from '../../views/TMS/MD/WorkingShift';
+import Area from "../TMS/MD/Area";
+import AreaType from "../TMS/MD/AreaType";
 
 import NotFound from '../NotFound'
-
 
 
 class HomeCom extends React.Component {
@@ -163,6 +164,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/SkillRank" component={SkillRank} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} />
                                 
 
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />

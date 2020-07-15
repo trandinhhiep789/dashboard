@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
@@ -12,15 +13,12 @@ import {
     MLObjectDefinition,
     BackLink,
     EditPagePath,
-    GetParent
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { createListTree } from '../../../../../common/library/ultils';
-import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
+import { AREATYPE_UPDATE } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { SKILLCATEGORY_UPDATE } from "../../../../../constants/functionLists";
-import { ERPCOMMONCACHE_SKILLCATEGORY } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_AREATYPE } from "../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -32,55 +30,13 @@ class EditCom extends React.Component {
             IsCallAPIError: false,
             FormContent: "",
             IsLoadDataComplete: false,
-            IsCloseForm: false,
-            EditElementList
+            IsCloseForm: false
         };
     }
 
-    GetParentList(id) {
-        const InitSearchParams = [{
-            SearchKey: "@Keyword",
-            SearchValue: id
-        },
-        {
-            SearchKey: "@IsActived",
-            SearchValue: 1
-        }
-        ];
-
-        this.props.callFetchAPI(APIHostName, GetParent, InitSearchParams).then((apiResult) => {
-            if (!apiResult.IsError) {
-
-                const sortTemp = apiResult.ResultObject.sort((a, b) => (a.ParentID > b.ParentID) ? 1 : (a.ParentID === b.ParentID) ? ((a.SkillCategoryID > b.SkillCategoryID) ? 1 : -1) : -1)
-                let treeData = createListTree(sortTemp, -1, "ParentID", "SkillCategoryID", "SkillCategoryName")
-                treeData.unshift({
-                    ParentID: -1,
-                    SkillCategoryID: -1,
-                    SkillCategoryName: "-- Vui lòng chọn --",
-                    key: -1,
-                    value: -1,
-                    title: "-- Vui lòng chọn --",
-                })
-                this.setState({ treeData })
-                let _EditElementList = this.state.EditElementList;
-                _EditElementList.forEach(function (objElement) {
-                    if (objElement.type == 'treeSelect') {
-                        objElement.treeData = treeData;
-                    }
-                });
-                this.setState({
-                    EditElementList: _EditElementList,
-                });
-
-            }
-        });
-    }
-
-
     componentDidMount() {
-        const id = this.props.match.params.id;
         this.props.updatePagePath(EditPagePath);
-        this.GetParentList(id);
+        const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
                 if (apiResult.IsError) {
                     this.setState({
@@ -96,14 +52,15 @@ class EditCom extends React.Component {
             });
     }
 
+    
+
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 if(!apiResult.IsError){
-                    this.props.callClearLocalCache(ERPCOMMONCACHE_SKILLCATEGORY);
-                    // this.handleSubmitInsertLog(MLObject);
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_AREATYPE);
                 }      
                 this.showMessage(apiResult.Message);
             });
@@ -130,19 +87,18 @@ class EditCom extends React.Component {
         }
         if (this.state.IsLoadDataComplete) {
             return (
-                <FormContainer
-                FormName="Cập nhật danh mục kỹ năng"
-                MLObjectDefinition={MLObjectDefinition}
-                listelement={EditElementList}
-                IsAutoLayout={true}
-                onSubmit={this.handleSubmit}
-                FormMessage={this.state.CallAPIMessage}
-                IsErrorMessage={this.state.IsCallAPIError}
-                dataSource={this.state.DataSource}
-                BackLink={BackLink}
-                RequirePermission={SKILLCATEGORY_UPDATE}
-            >
-            </FormContainer>
+                <SimpleForm
+                    FormName="Cập nhật loại khu vực"
+                    MLObjectDefinition={MLObjectDefinition}
+                    listelement={EditElementList}
+                    onSubmit={this.handleSubmit}
+                    FormMessage={this.state.CallAPIMessage}
+                    IsErrorMessage={this.state.IsCallAPIError}
+                    dataSource={this.state.DataSource}
+                    BackLink={BackLink}
+                    RequirePermission={AREATYPE_UPDATE}
+                    ref={this.searchref}
+                />
             );
         }
         return (
