@@ -69,7 +69,6 @@ class SearchCom extends React.Component {
         this.callDataTestWeb(this.state.SearchDataWeb);
         this.props.updatePagePath(PagePath);
         //this.callDataTest()
-        this.callDataTestWeb();
         this.getCacheWorkingShift()
     }
 
@@ -106,7 +105,6 @@ class SearchCom extends React.Component {
                     : (a.UserName === b.UserName)
                         ? (a.WorkingShiftID > b.WorkingShiftID) ? 1 : -1 : -1)
 
-                console.log(sortResult)
                 const dataSource = sortResult.reduce((catsSoFar, item, index) => {
                     if (!catsSoFar[item.UserName]) catsSoFar[item.UserName] = [];
                     catsSoFar[item.UserName].push(item);
@@ -155,6 +153,53 @@ class SearchCom extends React.Component {
         });
     }
 
+
+    onClickWorkingPlan() {
+        let lstWorkingPlan = [];
+        const { gridDataSource } = this.state
+
+        this.state.gridDataWorking.map((item) => {
+            item.map((e) => {
+                lstWorkingPlan.push(e)
+            })
+        })
+        this.props.callFetchAPI(APIHostName, UpdateWorkingPlanWebAPIPath, lstWorkingPlan).then(apiResult => {
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            this.callDataTestWeb(this.state.SearchData);
+        });
+    }
+
+    handleChangeWorkingShift(e) {
+
+        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
+        const inputvalue = e.target.value;
+        const index = e.target.name;
+        const userItem = e.target.attributes['data-user'].value;
+
+
+        const dataFind = this.state.gridDataWorking[userItem].find(n => {
+            return n.ShiftNumber == inputvalue && n.UserName == userItem
+        });
+        if (ischecked) {
+            dataFind.IsRegister = ischecked
+        }
+        else {
+            dataFind.IsRegister = ischecked
+        }
+
+        let Item = this.state.gridDataWorking[userItem];
+        let formDatanew = []
+        let formData = []
+        formDatanew = Object.assign([], Item, { [index]: dataFind });
+        formData = Object.assign([], this.state.gridDataWorking, { [userItem]: formDatanew });
+
+        this.setState({
+            gridDataWorking: formData
+        })
+
+
+    }
+
     handleSearchSubmit(formData, MLObject) {
         const postData = [
             {
@@ -173,21 +218,6 @@ class SearchCom extends React.Component {
         ];
         this.setState({ SearchData: postData });
         this.callDataTestWeb(postData);
-    }
-
-    callSearchData(searchData) {
-
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-
-            if (!apiResult.IsError) {
-
-                this.setState({
-                    gridDataSource: apiResult.ResultObject,
-                    IsCallAPIError: apiResult.IsError,
-                    IsLoadDataComplete: true
-                });
-            }
-        });
     }
 
     handleCloseMessage() {
@@ -240,202 +270,9 @@ class SearchCom extends React.Component {
         });
     }
 
-    handleShiftNumberTwoInputChange(e) {
-        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
-        const inputvalue = e.target.value;
-        const index = e.target.name;
-        let { gridDataSource, dataSourceItem } = this.state;
-
-        if (ischecked) {
-            gridDataSource[index].IsShiftNumberTwo = ischecked;
-            gridDataSource[index].WorkingShiftNumber = 2;
-            this.setState({ gridDataSource: gridDataSource });
-            this.onClickUpdateWorkingPlan(gridDataSource[index]);
-        }
-        else {
-            gridDataSource[index].IsShiftNumberOne = ischecked;
-            gridDataSource[index].WorkingShiftNumber = 2;
-            this.setState({ gridDataSource: gridDataSource });
-            this.onClickDeleteWorkingPlan(gridDataSource[index]);
-        }
-    }
-
-    handleShiftNumberOneInputChange(e) {
-        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
-        const inputvalue = e.target.value;
-        const index = e.target.name;
-        let { gridDataSource } = this.state;
-
-        if (ischecked) {
-            gridDataSource[index].IsShiftNumberOne = ischecked;
-            gridDataSource[index].WorkingShiftNumber = 1;
-            this.setState({ gridDataSource: gridDataSource });
-            this.onClickUpdateWorkingPlan(gridDataSource[index]);
-        }
-        else {
-            gridDataSource[index].IsShiftNumberOne = ischecked;
-            gridDataSource[index].WorkingShiftNumber = 1;
-            this.setState({ gridDataSource: gridDataSource });
-            this.onClickDeleteWorkingPlan(gridDataSource[index]);
-        }
-
-    }
-
-    handleShiftNumberThreeInputChange(e) {
-        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
-        const inputvalue = e.target.value;
-        const index = e.target.name;
-        let { gridDataSource } = this.state
-
-        if (ischecked) {
-            gridDataSource[index].IsShiftNumberThree = ischecked;
-            gridDataSource[index].WorkingShiftNumber = 3;
-            this.setState({ gridDataSource: gridDataSource });
-            this.onClickUpdateWorkingPlan(gridDataSource[index]);
-        }
-        else {
-            gridDataSource[index].IsShiftNumberOne = ischecked;
-            gridDataSource[index].WorkingShiftNumber = 3;
-            this.setState({ gridDataSource: gridDataSource });
-            this.onClickDeleteWorkingPlan(gridDataSource[index]);
-        }
-    }
-
-    onClickDeleteWorkingPlan(objWorkingPlan) {
-        objWorkingPlan.DELETEDUSER = this.props.AppInfo.LoginInfo.Username;
-        this.props.callFetchAPI(APIHostName, UpdateDeleteAPIPath, objWorkingPlan).then(apiResult => {
-            this.addNotification(apiResult.Message, apiResult.IsError);
-            // this.callSearchData(this.state.SearchData);
-            this.callDataTestWeb(this.state.SearchData);
-
-        });
-    }
-
-    onClickUpdateWorkingPlan(objWorkingPlan, WorkingShiftNumber) {
-        objWorkingPlan[0].LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        objWorkingPlan[0].CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        objWorkingPlan[0].UpdatedUser = this.props.AppInfo.LoginInfo.Username;
-        objWorkingPlan[0].WorkingShiftID = WorkingShiftNumber;
-
-        this.props.callFetchAPI(APIHostName, UpdateWorkingPlanByUserAPIPath, objWorkingPlan[0]).then(apiResult => {
-            this.addNotification(apiResult.Message, apiResult.IsError);
-            // this.callSearchData(this.state.SearchData);
-            this.callDataTestWeb(this.state.SearchData);
-        });
-    }
-
-    onClickWorkingPlan() {
-
-        const { gridDataSource } = this.state
-        console.log("gridDataSource", this.state)
-        
-        // this.props.callFetchAPI(APIHostName, UpdateWorkingPlanWebAPIPath, gridDataSource).then(apiResult => {
-        //     console.log("apiResult", apiResult)
-        //     //this.addNotification(apiResult.Message, apiResult.IsError);
-        //     // this.callSearchData(this.state.SearchData);
-        //     //this.callDataTestWeb(this.state.SearchData);
-        // });
-    }
-
-    checkShift(index, value) {
-        const found = this.state.gridDataSource[index].find(n => n.ShiftNumber == value && n.IsRegister);
-        if (found == undefined || found == "undefined") {
-            return false;
-        }
-        else {
-
-            return true;
-        }
-    }
-
-    handleWorkingShiftNumberInputChange(e) {
-
-        const { DataSourceSubmit } = this.state;
-        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
-        const inputvalue = e.target.value;
-        const indexItem = e.target.name;
-        const indexWorkShift = e.target.attributes['data-id'].value;
-        const dataFind = this.state.gridDataSource[indexItem].find(n => {
-            return n.ShiftNumber == inputvalue
-        });
-
-        if (ischecked) {
-            dataFind.IsRegister = ischecked
-        }
-        else {
-            dataFind.IsRegister = ischecked
-        }
-
-        // let dataItem= DataSourceSubmit.push(dataFind);
-        let Item = this.state.gridDataSource[indexItem];
-        let formDatanew = []
-        let formData = []
-
-        formDatanew = Object.assign([], Item, { [indexWorkShift]: dataFind });
-        formData = Object.assign([], this.state.gridDataSource, { [indexItem]: formDatanew });
-        console.log("formDatanew", formDatanew);
-        //console.log("formData",formData);
-        // this.setState({
-        //     gridDataSource: formData,
-        //     DataSourceSubmit: dataItem
-
-        // })
-
-    }
-
-    handleShiftNumberInputChange(e) {
-        debugger
-        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
-        const inputvalue = e.target.value;
-        const index = e.target.name;
-        const dataFind = this.state.gridDataSource[index].find(n => {
-            return n.ShiftNumber == inputvalue
-        });
-
-        if (ischecked) {
-            this.onClickUpdateWorkingPlan(this.state.gridDataSource[index], inputvalue);
-        }
-        else {
-            this.onClickDeleteWorkingPlan(dataFind)
-        }
-    }
-
-    handleChangeWorkingShift(e){
-        
-        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
-        const inputvalue = e.target.value;
-        const index = e.target.name;
-        const userItem = e.target.attributes['data-user'].value;
-        
-
-        const dataFind = this.state.gridDataWorking[userItem].find(n => {
-            return n.ShiftNumber == inputvalue && n.UserName == userItem
-        });
-        console.log("ee",ischecked, inputvalue,index, userItem, dataFind)
-        if (ischecked) {
-            dataFind.IsRegister = ischecked
-        }
-        else {
-            dataFind.IsRegister = ischecked
-        }
-
-        let Item = this.state.gridDataWorking[userItem];
-        let formDatanew = []
-        let formData = []
-        formDatanew = Object.assign([], Item, { [index]: dataFind });
-        formData = Object.assign([], this.state.gridDataWorking, { [userItem]: formDatanew });
-
-        this.setState({
-            gridDataWorking: formData
-        })
-
-
-    }
-
 
 
     render() {
-        console.log('this', this.state)
 
         return (
             <React.Fragment>
@@ -495,7 +332,7 @@ class SearchCom extends React.Component {
                                                                                 name={index1}
                                                                                 data-index={index}
                                                                                 data-user={item.UserName}
-                                                                                checked={item1.IsRegister} 
+                                                                                checked={item1.IsRegister}
                                                                             />
                                                                             <span className="cr">
                                                                                 <i className="cr-icon fa fa-check"></i>
