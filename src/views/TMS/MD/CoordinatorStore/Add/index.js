@@ -232,7 +232,7 @@ class AddCom extends React.Component {
                                 datasourcemember="ShipmentOrderTypeID" />
                         </div>
                         <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
+                            <FormControl.FormControlComboBox
 
                                 name="cbPartnerID"
                                 colspan="8"
@@ -247,7 +247,10 @@ class AddCom extends React.Component {
                                 controltype="InputControl"
                                 value={""}
                                 listoption={null}
-                                datasourcemember="PartnerID" />
+                                datasourcemember="PartnerID" 
+                                filterValue={1}
+                                filterobj="PartnerTypeID"
+                                />
 
                         </div>
 
