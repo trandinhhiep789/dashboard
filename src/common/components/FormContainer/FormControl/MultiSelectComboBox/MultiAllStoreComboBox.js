@@ -21,7 +21,6 @@ class MultiAllStoreComboBoxCom extends React.Component {
 
 
     componentDidMount() {
-        console.log("aaaa", this.props);
         this.setState({
             ListOption: this.props.listoption,
             SelectedOption: this.props.value == undefined ? this.props.listoption : this.props.value
