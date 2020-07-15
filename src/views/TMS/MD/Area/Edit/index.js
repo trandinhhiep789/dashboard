@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
@@ -16,24 +17,25 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { createListTree } from '../../../../../common/library/ultils';
-import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
+import { AREA_UPDATE } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { SKILLCATEGORY_UPDATE } from "../../../../../constants/functionLists";
-import { ERPCOMMONCACHE_SKILLCATEGORY } from "../../../../../constants/keyCache";
-
+import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
+import { createListTree } from '../../../../../common/library/ultils';
+import Area_Store from "../../Area_Store";
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.onAreaStoreChange = this.onAreaStoreChange.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             FormContent: "",
             IsLoadDataComplete: false,
             IsCloseForm: false,
-            EditElementList
+            EditElementList: EditElementList,
+            AreaStore: []
         };
     }
 
@@ -51,12 +53,12 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, GetParent, InitSearchParams).then((apiResult) => {
             if (!apiResult.IsError) {
 
-                const sortTemp = apiResult.ResultObject.sort((a, b) => (a.ParentID > b.ParentID) ? 1 : (a.ParentID === b.ParentID) ? ((a.SkillCategoryID > b.SkillCategoryID) ? 1 : -1) : -1)
-                let treeData = createListTree(sortTemp, -1, "ParentID", "SkillCategoryID", "SkillCategoryName")
+                const sortTemp = apiResult.ResultObject.sort((a, b) => (a.ParentID > b.ParentID) ? 1 : (a.ParentID === b.ParentID) ? ((a.AreaID > b.AreaID) ? 1 : -1) : -1)
+                let treeData = createListTree(sortTemp, -1, "ParentID", "AreaID", "AreaName")
                 treeData.unshift({
                     ParentID: -1,
-                    SkillCategoryID: -1,
-                    SkillCategoryName: "-- Vui lòng chọn --",
+                    AreaID: -1,
+                    AreaName: "-- Vui lòng chọn --",
                     key: -1,
                     value: -1,
                     title: "-- Vui lòng chọn --",
@@ -78,35 +80,49 @@ class EditCom extends React.Component {
 
 
     componentDidMount() {
-        const id = this.props.match.params.id;
         this.props.updatePagePath(EditPagePath);
+        const id = this.props.match.params.id;
         this.GetParentList(id);
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
-                if (apiResult.IsError) {
-                    this.setState({
-                        IsCallAPIError: apiResult.IsError
-                    });
-                    this.showMessage(apiResult.Message);
-                } else {
-                    this.setState({ DataSource: apiResult.ResultObject });
-                }
+            if (apiResult.IsError) {
                 this.setState({
-                    IsLoadDataComplete: true
+                    IsCallAPIError: apiResult.IsError
                 });
+                this.showMessage(apiResult.Message);
+            } else {
+                this.setState({
+                    DataSource: apiResult.ResultObject,
+                    AreaStore: apiResult.ResultObject.AreaStore ? apiResult.ResultObject.AreaStore : [],
+                    //SkillSkillRank: apiResult.ResultObject.SkillSkillRank ? apiResult.ResultObject.SkillSkillRank : [],
+                });
+            }
+            this.setState({
+                IsLoadDataComplete: true
             });
+        });
+
     }
 
+    onAreaStoreChange(list) {
+        this.setState({ AreaStore: list });
+        //console.log("onAreaStoreChange", list);
+    }
+
+
+    
+
     handleSubmit(formData, MLObject) {
-        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        MLObject.AreaStore = this.state.AreaStore;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                if(!apiResult.IsError){
-                    this.props.callClearLocalCache(ERPCOMMONCACHE_SKILLCATEGORY);
-                    // this.handleSubmitInsertLog(MLObject);
-                }      
-                this.showMessage(apiResult.Message);
-            });
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
+            if (!apiResult.IsError) {
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNER);
+            }
+        });
+        //console.log("MLObject",MLObject);
     }
 
     handleCloseMessage() {
@@ -130,19 +146,29 @@ class EditCom extends React.Component {
         }
         if (this.state.IsLoadDataComplete) {
             return (
-                <FormContainer
-                FormName="Cập nhật danh mục kỹ năng"
-                MLObjectDefinition={MLObjectDefinition}
-                listelement={EditElementList}
-                IsAutoLayout={true}
-                onSubmit={this.handleSubmit}
-                FormMessage={this.state.CallAPIMessage}
-                IsErrorMessage={this.state.IsCallAPIError}
-                dataSource={this.state.DataSource}
-                BackLink={BackLink}
-                RequirePermission={SKILLCATEGORY_UPDATE}
-            >
-            </FormContainer>
+                <React.Fragment>
+
+                    <FormContainer
+                        FormName="Cập nhật khu vực"
+                        MLObjectDefinition={MLObjectDefinition}
+                        listelement={EditElementList}
+                        IsAutoLayout={true}
+                        onSubmit={this.handleSubmit}
+                        FormMessage={this.state.CallAPIMessage}
+                        IsErrorMessage={this.state.IsCallAPIError}
+                        dataSource={this.state.DataSource}
+                        BackLink={BackLink}
+                        RequirePermission={AREA_UPDATE}
+                    >
+
+                        <br />
+                        <Area_Store
+                            AreaID={this.props.match.params.id}
+                            AreaStoreDataSource={this.state.AreaStore}
+                            onAreaStoreChange={this.onAreaStoreChange}
+                        />
+                    </FormContainer>
+                </React.Fragment>
             );
         }
         return (
@@ -174,6 +200,7 @@ const mapDispatchToProps = dispatch => {
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
         }
+
     };
 };
 

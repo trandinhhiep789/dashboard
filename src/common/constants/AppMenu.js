@@ -255,6 +255,29 @@ const AppMenu = [
                     }
                 ]
             },
+            {
+                MenuName: 'Area',
+                MenuTitle: 'Khu vực',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'AreaList',
+                        MenuTitle: 'Danh sách khu vực',
+                        LinkTo: '/Area',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'AreaType',
+                        MenuTitle: 'Loại khu vực',
+                        LinkTo: '/AreaType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                   
+                ]
+            },
         ]
     },
     {

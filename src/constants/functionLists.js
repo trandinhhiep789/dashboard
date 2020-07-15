@@ -194,6 +194,7 @@ export const SKILLRANK_VIEW = 'SKILLRANK_VIEW';
 export const SKILLRANK_ADD = 'SKILLRANK_ADD';
 export const SKILLRANK_UPDATE = 'SKILLRANK_UPDATE';
 export const SKILLRANK_DELETE = 'SKILLRANK_DELETE';
+
 // Danh sách xe
 export const VEHICLE_VIEW = 'VEHICLE_VIEW';
 export const VEHICLE_ADD = 'VEHICLE_ADD';
@@ -211,4 +212,17 @@ export const WORKINGPLAN_VIEW = 'WORKINGPLAN_VIEW';
 export const WORKINGPLAN_ADD = 'WORKINGPLAN_ADD';
 export const WORKINGPLAN_UPDATE = 'WORKINGPLAN_UPDATE';
 export const WORKINGPLAN_DELETE = 'WORKINGPLAN_DELETE';
+
+// loại khu vực
+export const AREATYPE_VIEW = 'AREATYPE_VIEW';
+export const AREATYPE_ADD = 'AREATYPE_ADD';
+export const AREATYPE_UPDATE = 'AREATYPE_UPDATE';
+export const AREATYPE_DELETE = 'AREATYPE_DELETE';
+
+// khu vực
+export const AREA_VIEW = 'AREA_VIEW';
+export const AREA_ADD = 'AREA_ADD';
+export const AREA_UPDATE = 'AREA_UPDATE';
+export const AREA_DELETE = 'AREA_DELETE';
+
 
