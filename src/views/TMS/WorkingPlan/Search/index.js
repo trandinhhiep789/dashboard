@@ -85,21 +85,9 @@ class SearchCom extends React.Component {
     }
 
     callDataTestWeb(searchData) {
-        const InitSearchParams = [{
-            SearchKey: "@STOREID",
-            SearchValue: 6373
-        },
-        {
-            SearchKey: "@WORKINGDATE",
-            SearchValue: new Date()
-        },
-        {
-            SearchKey: "@USERNAME",
-            SearchValue: ""
-        },
-        ]
-        this.props.callFetchAPI(APIHostName, 'api/WorkingPlan/SearchWeb', searchData).then(apiResult => {
 
+        this.props.callFetchAPI(APIHostName, 'api/WorkingPlan/SearchWeb', searchData).then(apiResult => {
+            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
                 const sortResult = apiResult.ResultObject.sort((a, b) => (a.UserName > b.UserName) ? 1
                     : (a.UserName === b.UserName)
@@ -156,16 +144,19 @@ class SearchCom extends React.Component {
 
     onClickWorkingPlan() {
         let lstWorkingPlan = [];
-        const { gridDataSource } = this.state
 
         this.state.gridDataWorking.map((item) => {
             item.map((e) => {
                 lstWorkingPlan.push(e)
             })
         })
-        this.props.callFetchAPI(APIHostName, UpdateWorkingPlanWebAPIPath, lstWorkingPlan).then(apiResult => {
+        
+        // UpdateWorkingPlanWebAPIPath
+        this.props.callFetchAPI(APIHostName,'api/WorkingPlan/UpdateWorkingPlanWebNew', lstWorkingPlan).then(apiResult => {
+            console.log("111", apiResult)
             this.addNotification(apiResult.Message, apiResult.IsError);
-            this.callDataTestWeb(this.state.SearchData);
+            this.callDataTestWeb(this.state.SearchDataWeb);
+
         });
     }
 
@@ -222,7 +213,7 @@ class SearchCom extends React.Component {
 
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) {
-            this.callSearchData(this.state.SearchData);
+            this.callDataTestWeb(this.state.SearchData);
         }
     }
 
