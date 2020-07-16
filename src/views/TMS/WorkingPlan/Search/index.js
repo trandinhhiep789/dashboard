@@ -207,7 +207,7 @@ class SearchCom extends React.Component {
             },
 
         ];
-        this.setState({ SearchData: postData });
+        this.setState({ SearchData: postData, SearchDataWeb:postData });
         this.callDataTestWeb(postData);
     }
 
