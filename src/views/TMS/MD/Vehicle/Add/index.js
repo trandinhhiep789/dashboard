@@ -263,8 +263,8 @@ class AddCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 readOnly={false}
-                                label="thể tích(m3)"
-                                placeholder="Thể tích(m3)"
+                                label="thể tích(cm3)"
+                                placeholder="Thể tích(cm3)"
                                 controltype="InputControl"
                                 value=""
                                 maxSize={9}
@@ -278,8 +278,8 @@ class AddCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 readOnly={false}
-                                label="chiều dài(m)"
-                                placeholder="Chiều dài(m)"
+                                label="chiều dài(cm)"
+                                placeholder="Chiều dài(cm)"
                                 controltype="InputControl"
                                 value=""
                                 maxSize={9}
@@ -294,8 +294,8 @@ class AddCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 readOnly={false}
-                                label="chiều rộng(m)"
-                                placeholder="Chiều rộng(m)"
+                                label="chiều rộng(cm)"
+                                placeholder="Chiều rộng(cm)"
                                 controltype="InputControl"
                                 value=""
                                 maxSize={9}
@@ -310,8 +310,8 @@ class AddCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 readOnly={false}
-                                label="chiều cao(m)"
-                                placeholder="Chiều cao(m)"
+                                label="chiều cao(cm)"
+                                placeholder="Chiều cao(cm)"
                                 controltype="InputControl"
                                 value=""
                                 maxSize={9}
