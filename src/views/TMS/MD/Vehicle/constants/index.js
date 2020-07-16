@@ -165,7 +165,7 @@ export const MLObjectDefinitionNew = [
     {
         Name: "MainDriverUser",
         DefaultValue: {},
-        BindControlName: "MainDriverUser",
+        BindControlName: "cbMainDriverUser",
         DataSourceMember: "MainDriverUser"
     },
     

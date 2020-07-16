@@ -205,7 +205,7 @@ class AddCom extends React.Component {
                         <div className="col-md-6">
 
                             <MultiSelectComboBox
-                                name="MainDriverUser"
+                                name="cbMainDriverUser"
                                 colspan="8"
                                 labelcolspan="4"
                                 label="Nhân viên tài xế chính"
