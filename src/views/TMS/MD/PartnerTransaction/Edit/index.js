@@ -136,13 +136,17 @@ class EditCom extends React.Component {
                                 </div>
 
                                 <div className="row">
-                                    <div className="col-md-6">
+                                    <div className="col-md-12">
                                         <div className="form-group">
                                             <span>Địa chỉ URL yêu cầu: </span>
                                             <span>{this.state.DataSource.RequestURL}</span>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
+
+                                </div>
+
+                                <div className="row">
+                                    <div className="col-md-12">
                                         <div className="form-group">
                                             <span>Nội dung yêu cầu: </span>
                                             <span className="xcontent">{this.state.DataSource.RequestContent}</span>
@@ -150,6 +154,14 @@ class EditCom extends React.Component {
                                     </div>
                                 </div>
 
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="form-group">
+                                            <span>Nội dung phản hồi: </span>
+                                            <span className="xcontent">{this.state.DataSource.ResponseContent}</span>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div className="row">
                                     <div className="col-md-6">
@@ -170,13 +182,7 @@ class EditCom extends React.Component {
                                 </div>
 
                                 <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Nội dung phản hồi: </span>
-                                            <span className="xcontent">{this.state.DataSource.ResponseContent}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
+                                    <div className="col-md-12">
                                         <div className="form-group">
                                             <span>Mã trạng thái phản hồi: </span>
                                             <span>{this.state.DataSource.ResponseStatusID}</span>

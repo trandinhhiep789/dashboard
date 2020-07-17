@@ -177,13 +177,14 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                 }
             }
             else {
-                if (this.state.FormData.ShipmentOrderType_WF_Next.filter(x => { return x.NextShipmentOrderStep == NextShipmentOrderStep && x.ChooseFunctionID == ChooseFunctionID }).length == 0) {
-                    const item = Object.assign({}, elementItem[0], { ChooseFunctionID });
-                    const index = this.state.FormData.ShipmentOrderType_WF_Next.findIndex(item => item.NextShipmentOrderStep == NextShipmentOrderStep);
-                    const ShipmentOrderType_WF_Next = Object.assign([], this.state.FormData.ShipmentOrderType_WF_Next, { [index]: item });
-                    const FormData = Object.assign({}, this.state.FormData, { ShipmentOrderType_WF_Next });
-                    this.setState({ FormData });
-                }
+                this.showMessage("Dữ liệu đã tồn tại");
+                // if (this.state.FormData.ShipmentOrderType_WF_Next.filter(x => { return x.NextShipmentOrderStep == NextShipmentOrderStep && x.ChooseFunctionID == ChooseFunctionID }).length == 0) {
+                //     const item = Object.assign({}, elementItem[0], { ChooseFunctionID });
+                //     const index = this.state.FormData.ShipmentOrderType_WF_Next.findIndex(item => item.NextShipmentOrderStep == NextShipmentOrderStep);
+                //     const ShipmentOrderType_WF_Next = Object.assign([], this.state.FormData.ShipmentOrderType_WF_Next, { [index]: item });
+                //     const FormData = Object.assign({}, this.state.FormData, { ShipmentOrderType_WF_Next });
+                //     this.setState({ FormData });
+                // }
             }
         }
     }

@@ -230,7 +230,7 @@ class Area_StoreCom extends React.Component {
         dataSource = dataSource.map(function (item, index) {
             match = store.filter(x => x.StoreID == item.StoreID);
             if (match && match.length > 0) {
-                item.StoreName = match[0].StoreName;
+                item.StoreName = match[0].StoreID + " - " + match[0].StoreName;
             }
             return item;
         }.bind(this));
