@@ -279,7 +279,7 @@ class EditCom extends React.Component {
                                 datasourcemember="ShipmentOrderTypeID" />
                         </div>
                         <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
+                            <FormControl.FormControlComboBox
 
                                 name="cbPartnerID"
                                 colspan="8"
@@ -296,7 +296,10 @@ class EditCom extends React.Component {
                                 listoption={null}
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
-                                datasourcemember="PartnerID" />
+                                datasourcemember="PartnerID" 
+                                filterValue={1}
+                                filterobj="PartnerTypeID"
+                                />
 
                         </div>
 

@@ -21,7 +21,6 @@ class MultiAllStoreComboBoxCom extends React.Component {
 
 
     componentDidMount() {
-        console.log("aaaa", this.props);
         this.setState({
             ListOption: this.props.listoption,
             SelectedOption: this.props.value == undefined ? this.props.listoption : this.props.value
@@ -104,7 +103,6 @@ class MultiAllStoreComboBoxCom extends React.Component {
     }
 
     handleValueChange1(e) {
-        console.log("handleValueChange", e)
         let value = e.target.value;
         if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38) {
             this.callSearchData(value);

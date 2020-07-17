@@ -69,6 +69,7 @@ class EditCom extends React.Component {
     callLoadData(id) {
         const { UserValue, StoreSelect } = this.state;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -178,7 +179,7 @@ class EditCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-
+        console.log("DataSource", this.state)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -245,7 +246,7 @@ class EditCom extends React.Component {
                         <div className="col-md-6">
 
                             <MultiSelectComboBox
-                                name="MainDriverUser"
+                                name="cbMainDriverUser"
                                 colspan="8"
                                 labelcolspan="4"
                                 label="Nhân viên tài xế chính"
@@ -309,8 +310,8 @@ class EditCom extends React.Component {
                                 labelcolspan="4"
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
-                                label="thể tích(m3)"
-                                placeholder="Thể tích(m3)"
+                                label="thể tích(cm3)"
+                                placeholder="Thể tích(cm3)"
                                 controltype="InputControl"
                                 value=""
                                 maxSize={9}
@@ -325,8 +326,8 @@ class EditCom extends React.Component {
                                 labelcolspan="4"
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
-                                label="chiều dài(m)"
-                                placeholder="Chiều dài(m)"
+                                label="chiều dài(cm)"
+                                placeholder="Chiều dài(cm)"
                                 controltype="InputControl"
                                 value=""
                                 maxSize={9}
@@ -342,8 +343,8 @@ class EditCom extends React.Component {
                                 labelcolspan="4"
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
-                                label="chiều rộng(m)"
-                                placeholder="Chiều rộng(m)"
+                                label="chiều rộng(cm)"
+                                placeholder="Chiều rộng(cm)"
                                 controltype="InputControl"
                                 value=""
                                 maxSize={9}
@@ -359,8 +360,8 @@ class EditCom extends React.Component {
                                 labelcolspan="4"
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
-                                label="chiều cao(m)"
-                                placeholder="Chiều cao(m)"
+                                label="chiều cao(cm)"
+                                placeholder="Chiều cao(cm)"
                                 controltype="InputControl"
                                 value=""
                                 maxSize={9}

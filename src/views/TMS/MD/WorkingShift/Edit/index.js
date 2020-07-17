@@ -77,13 +77,12 @@ class EditCom extends React.Component {
             else {
                 const start = apiResult.ResultObject.TimeStart;
                 const hourStart = Math.floor(start / 60);
-                const minStart = Math.floor((apiResult.ResultObject.TimeStart - hourStart) / 60);
-
+                const minStart =  start%60;//Math.floor((apiResult.ResultObject.TimeStart - hourStart) / 60);
                 const timeStart = (hourStart + ":" + minStart).toString()
 
                 const end = apiResult.ResultObject.TimeEnd;
                 const hourEnd = Math.floor(end / 60);
-                const minEnd = Math.floor((apiResult.ResultObject.TimeEnd - hourEnd) / 60);
+                const minEnd = end%60//Math.floor((apiResult.ResultObject.TimeEnd - hourEnd) / 60);
 
                 const timeEnd = (hourEnd + ":" + minEnd).toString()
 

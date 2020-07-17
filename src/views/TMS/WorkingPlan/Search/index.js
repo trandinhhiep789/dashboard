@@ -17,7 +17,9 @@ import {
     InitSearchParams,
     PagePath,
     UpdateDeleteAPIPath,
-    UpdateWorkingPlanByUserAPIPath
+    UpdateWorkingPlanByUserAPIPath,
+    InitSearchParamsNew,
+    UpdateWorkingPlanWebAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -28,6 +30,7 @@ import { ERPCOMMONCACHE_WORKINGSHIFT } from "../../../../constants/keyCache";
 
 
 import { callGetCache } from "../../../../actions/cacheAction";
+import { da } from "date-fns/locale";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -35,19 +38,22 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.getCacheWorkingShift = this.getCacheWorkingShift.bind(this);
-
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
+            gridData: [],
+            DataSourceSubmit: [],
             dataSourceItem: {},
             IsCallAPIError: false,
             SearchData: InitSearchParams,
+            SearchDataWeb: InitSearchParamsNew,
             cssNotification: "",
             iconNotification: "",
             PageNumber: 1,
             WorkingShiftNumber: "",
             IsLoadDataComplete: false,
             dataWorkingShift: [],
+            gridDataWorking: [],
             IsShiftNumberOne: false,
             IsShiftNumberTwo: false,
             IsShiftNumberThree: false,
@@ -59,19 +65,65 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
-        this.callSearchData(this.state.SearchData);
+        //this.callSearchData(this.state.SearchData);
+        this.callDataTestWeb(this.state.SearchDataWeb);
         this.props.updatePagePath(PagePath);
-        //  this.callDataTest()
+        //this.callDataTest()
         this.getCacheWorkingShift()
     }
 
+
+
     callDataTest() {
         const APIParams = {
-            "FromDate": "",
-            "ToDate": "",
+            "FromDate": "2020-07-06 00:00",
+            "ToDate": "2020-07-12 00:00",
         };
         this.props.callFetchAPI(APIHostName, 'api/WorkingPlan/LoadByUser', APIParams).then(apiResult => {
             console.log("callDataTest", apiResult)
+        })
+    }
+
+    callDataTestWeb(searchData) {
+
+        this.props.callFetchAPI(APIHostName, 'api/WorkingPlan/SearchWeb', searchData).then(apiResult => {
+            console.log("apiResult", apiResult)
+            if (!apiResult.IsError) {
+                const sortResult = apiResult.ResultObject.sort((a, b) => (a.UserName > b.UserName) ? 1
+                    : (a.UserName === b.UserName)
+                        ? (a.WorkingShiftID > b.WorkingShiftID) ? 1 : -1 : -1)
+
+                const dataSource = sortResult.reduce((catsSoFar, item, index) => {
+                    if (!catsSoFar[item.UserName]) catsSoFar[item.UserName] = [];
+                    catsSoFar[item.UserName].push(item);
+                    return catsSoFar;
+                }, {});
+
+                let init = []
+                let userName = '';
+
+                sortResult.map((e, i) => {
+                    if (init.length <= 0) {
+                        init.push(e)
+                        userName = e.UserName
+                    }
+                    else {
+                        if (userName != e.UserName) {
+                            init.push(e)
+                            userName = e.UserName
+                        }
+                    }
+                })
+
+
+                this.setState({
+                    gridDataSource: apiResult.ResultObject,
+                    gridData: init,
+                    gridDataWorking: dataSource,
+                    IsCallAPIError: apiResult.IsError,
+                    IsLoadDataComplete: true
+                });
+            }
         })
     }
 
@@ -89,6 +141,56 @@ class SearchCom extends React.Component {
         });
     }
 
+
+    onClickWorkingPlan() {
+        let lstWorkingPlan = [];
+
+        this.state.gridDataWorking.map((item) => {
+            item.map((e) => {
+                lstWorkingPlan.push(e)
+            })
+        })
+        
+        // UpdateWorkingPlanWebAPIPath
+        this.props.callFetchAPI(APIHostName,'api/WorkingPlan/UpdateWorkingPlanWebNew', lstWorkingPlan).then(apiResult => {
+            console.log("111", apiResult)
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            this.callDataTestWeb(this.state.SearchDataWeb);
+
+        });
+    }
+
+    handleChangeWorkingShift(e) {
+
+        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
+        const inputvalue = e.target.value;
+        const index = e.target.name;
+        const userItem = e.target.attributes['data-user'].value;
+
+
+        const dataFind = this.state.gridDataWorking[userItem].find(n => {
+            return n.ShiftNumber == inputvalue && n.UserName == userItem
+        });
+        if (ischecked) {
+            dataFind.IsRegister = ischecked
+        }
+        else {
+            dataFind.IsRegister = ischecked
+        }
+
+        let Item = this.state.gridDataWorking[userItem];
+        let formDatanew = []
+        let formData = []
+        formDatanew = Object.assign([], Item, { [index]: dataFind });
+        formData = Object.assign([], this.state.gridDataWorking, { [userItem]: formDatanew });
+
+        this.setState({
+            gridDataWorking: formData
+        })
+
+
+    }
+
     handleSearchSubmit(formData, MLObject) {
         const postData = [
             {
@@ -99,52 +201,19 @@ class SearchCom extends React.Component {
                 SearchKey: "@STOREID",
                 SearchValue: MLObject.ServiceTypeID
             },
+            {
+                SearchKey: "@USERNAME",
+                SearchValue: ""
+            },
 
         ];
-        this.setState({ SearchData: postData });
-        this.callSearchData(postData);
-    }
-
-    callSearchData(searchData) {
-
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("callSearchData", apiResult.ResultObject);
-
-            if (!apiResult.IsError) {
-                // const result = apiResult.ResultObject.map((item, index) => {
-
-                //     if (item.ShiftNumber == 1) {
-                //         item.IsShiftNumberOne = true
-                //     }
-                //     else if (item.ShiftNumber == 2) {
-                //         item.IsShiftNumberTwo = true
-                //     }
-                //     else if (item.ShiftNumber == 3) {
-                //         item.IsShiftNumberThree = true
-                //     }
-                //     else {
-                //         item.IsShiftNumberOne = false;
-                //         item.IsShiftNumberTwo = false;
-                //         item.IsShiftNumberThree = false;
-                //     }
-
-                //     return item;
-
-                // })
-
-
-                this.setState({
-                    gridDataSource: apiResult.ResultObject,
-                    IsCallAPIError: apiResult.IsError,
-                    IsLoadDataComplete: true
-                });
-            }
-        });
+        this.setState({ SearchData: postData, SearchDataWeb:postData });
+        this.callDataTestWeb(postData);
     }
 
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) {
-            this.callSearchData(this.state.SearchData);
+            this.callDataTestWeb(this.state.SearchData);
         }
     }
 
@@ -192,122 +261,10 @@ class SearchCom extends React.Component {
         });
     }
 
-    handleShiftNumberTwoInputChange(e) {
-        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
-        const inputvalue = e.target.value;
-        const index = e.target.name;
-        let { gridDataSource, dataSourceItem } = this.state;
 
-        if (ischecked) {
-            gridDataSource[index].IsShiftNumberTwo = ischecked;
-            gridDataSource[index].WorkingShiftNumber = 2;
-            this.setState({ gridDataSource: gridDataSource });
-            this.onClickUpdateWorkingPlan(gridDataSource[index]);
-        }
-        else {
-            gridDataSource[index].IsShiftNumberOne = ischecked;
-            gridDataSource[index].WorkingShiftNumber = 2;
-            this.setState({ gridDataSource: gridDataSource });
-            this.onClickDeleteWorkingPlan(gridDataSource[index]);
-        }
-    }
-
-    handleShiftNumberOneInputChange(e) {
-        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
-        const inputvalue = e.target.value;
-        const index = e.target.name;
-        let { gridDataSource } = this.state;
-
-        if (ischecked) {
-            gridDataSource[index].IsShiftNumberOne = ischecked;
-            gridDataSource[index].WorkingShiftNumber = 1;
-            this.setState({ gridDataSource: gridDataSource });
-            this.onClickUpdateWorkingPlan(gridDataSource[index]);
-        }
-        else {
-            gridDataSource[index].IsShiftNumberOne = ischecked;
-            gridDataSource[index].WorkingShiftNumber = 1;
-            this.setState({ gridDataSource: gridDataSource });
-            this.onClickDeleteWorkingPlan(gridDataSource[index]);
-        }
-
-    }
-
-    handleShiftNumberThreeInputChange(e) {
-        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
-        const inputvalue = e.target.value;
-        const index = e.target.name;
-        let { gridDataSource } = this.state
-
-        if (ischecked) {
-            gridDataSource[index].IsShiftNumberThree = ischecked;
-            gridDataSource[index].WorkingShiftNumber = 3;
-            this.setState({ gridDataSource: gridDataSource });
-            this.onClickUpdateWorkingPlan(gridDataSource[index]);
-        }
-        else {
-            gridDataSource[index].IsShiftNumberOne = ischecked;
-            gridDataSource[index].WorkingShiftNumber = 3;
-            this.setState({ gridDataSource: gridDataSource });
-            this.onClickDeleteWorkingPlan(gridDataSource[index]);
-        }
-    }
-
-    onClickDeleteWorkingPlan(objWorkingPlan) {
-        debugger
-        objWorkingPlan.DELETEDUSER = this.props.AppInfo.LoginInfo.Username;
-        this.props.callFetchAPI(APIHostName, UpdateDeleteAPIPath, objWorkingPlan).then(apiResult => {
-            this.addNotification(apiResult.Message, apiResult.IsError);
-            this.callSearchData(this.state.SearchData);
-
-        });
-    }
-
-    onClickUpdateWorkingPlan(objWorkingPlan, WorkingShiftNumber) {
-        objWorkingPlan[0].LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        objWorkingPlan[0].CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        objWorkingPlan[0].UpdatedUser = this.props.AppInfo.LoginInfo.Username;
-        objWorkingPlan[0].WorkingShiftID = WorkingShiftNumber;
-
-        this.props.callFetchAPI(APIHostName, UpdateWorkingPlanByUserAPIPath, objWorkingPlan[0]).then(apiResult => {
-            this.addNotification(apiResult.Message, apiResult.IsError);
-            this.callSearchData(this.state.SearchData);
-        });
-    }
-
-    checkShift(index, value) {
-        const found = this.state.gridDataSource[index].find(n => n.ShiftNumber == value);
-
-        if (found == undefined || found == "undefined") {
-            return false;
-        }
-        else {
-
-            return true;
-        }
-
-    }
-
-    handleShiftNumberInputChange(e) {
-        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
-        const inputvalue = e.target.value;
-        const index = e.target.name;
-        const dataFind = this.state.gridDataSource[index].find(n => {
-            return n.ShiftNumber == inputvalue
-        });
-
-        if (ischecked) {
-            this.onClickUpdateWorkingPlan(this.state.gridDataSource[index], inputvalue);
-        }
-        else {
-            this.onClickDeleteWorkingPlan(dataFind)
-        }
-
-
-    }
 
     render() {
-        // console.log("this.state", this.state);
+
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -343,46 +300,55 @@ class SearchCom extends React.Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.state.gridDataSource && this.state.gridDataSource.map((item, index) => {
-                                        console.log("item", item);
 
-                                        return (
-                                            <tr key={index}>
-                                                <td>{formatDate(item[0].WorkingDate, true)}</td>
-                                                <td>{item[0].UserName}</td>
-                                                <td>{item[0].FullName}</td>
-                                                <td>{item[0].StoreName}</td>
-                                                {
-                                                    this.state.dataWorkingShift && this.state.dataWorkingShift.map((item1, index1) => {
-                                                        return (
-                                                            <td key={index1}>
-                                                                <div className="checkbox">
-                                                                    <label>
-                                                                        <input type="checkbox" className="form-control form-control-sm"
-                                                                            onChange={this.handleShiftNumberInputChange.bind(this)} value={item1.WorkingShiftID}
-                                                                            name={index}
-                                                                            checked={this.checkShift(index, item1.WorkingShiftID)} />
-                                                                        <span className="cr">
-                                                                            <i className="cr-icon fa fa-check"></i>
-                                                                        </span>
-                                                                    </label>
-                                                                </div>
-                                                            </td>
-                                                        )
-                                                    })
-                                                }
+                                    {
+                                        this.state.gridData && this.state.gridData.map((item, index) => {
+                                            return (
+                                                <tr key={index}>
+                                                    <td>{formatDate(item.WorkingDate, true)}</td>
+                                                    <td>{item.UserName}</td>
+                                                    <td>{item.FullName}</td>
+                                                    <td>{item.StoreName}</td>
 
-                                            </tr>
-                                        )
 
-                                    })}
+                                                    {
+                                                        this.state.gridDataWorking && this.state.gridDataWorking[item.UserName].map((item1, index1) => {
+                                                            return (
+                                                                <td >
+                                                                    <div className="checkbox">
+                                                                        <label>
+                                                                            <input type="checkbox" className="form-control form-control-sm"
+                                                                                onChange={this.handleChangeWorkingShift.bind(this)}
+                                                                                value={item1.ShiftNumber}
+                                                                                name={index1}
+                                                                                data-index={index}
+                                                                                data-user={item.UserName}
+                                                                                checked={item1.IsRegister}
+                                                                            />
+                                                                            <span className="cr">
+                                                                                <i className="cr-icon fa fa-check"></i>
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                            )
+                                                        })
+                                                    }
+
+
+                                                </tr>
+                                            )
+                                        })
+                                    }
+
                                 </tbody>
                             </table>
-                            {/* <div className="text-right">
-                                <button type="button" className="btn btn-info" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.onClickUpdateWorkingPlan.bind(this)}>
+
+                            <div className="text-right">
+                                <button type="button" className="btn btn-info" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.onClickWorkingPlan.bind(this)}>
                                     <span className="fa fa-check-square-o"> Cập nhật</span>
                                 </button>
-                            </div> */}
+                            </div>
                         </div>
                     </div>
                 </div>
