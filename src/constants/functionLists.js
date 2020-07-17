@@ -225,4 +225,10 @@ export const AREA_ADD = 'AREA_ADD';
 export const AREA_UPDATE = 'AREA_UPDATE';
 export const AREA_DELETE = 'AREA_DELETE';
 
+// kỹ năng của nhân viên
+export const USERSKILL_VIEW = 'USERSKILL_VIEW';
+export const USERSKILL_ADD = 'USERSKILL_ADD';
+export const USERSKILL_UPDATE = 'USERSKILL_UPDATE';
+export const USERSKILL_DELETE = 'USERSKILL_DELETE';
+
 

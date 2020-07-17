@@ -196,6 +196,7 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     }
+                    
                 ]
             },
             {
@@ -245,7 +246,14 @@ const AppMenu = [
                         LinkTo: '/SkillRank',
                         MenuIcon: '',
                         SubMenu: []
-                    }
+                    },
+                    {
+                        MenuName: 'UserSkill',
+                        MenuTitle: 'Kỹ năng của một nhân viên',
+                        LinkTo: '/UserSkill',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
                 ]
             },
             {

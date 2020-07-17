@@ -400,7 +400,7 @@ export const DataGridColumnList = [
     {
         Name: "ParentName",
         Type: "text",
-        Caption: "khu vực cha",
+        Caption: "Khu vực cha",
         DataSourceMember: "ParentName",
         Width: 150
     },

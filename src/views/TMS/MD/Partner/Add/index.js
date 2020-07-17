@@ -362,11 +362,11 @@ class AddCom extends React.Component {
                 RequirePermission={PARTNER_ADD}
                 ref={this.searchref}>
 
-                <br />
-                <PartnerCoordinatorStore
+                
+                {/* <PartnerCoordinatorStore
                     PartnerID={this.state.PartnerID}
                     onPartnerCoordinatorStoreChange={this.onPartnerCoordinatorStoreChange}
-                />
+                /> */}
             </SimpleForm>
 
         );
