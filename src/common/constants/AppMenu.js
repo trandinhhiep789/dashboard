@@ -33,13 +33,6 @@ const AppMenu = [
                         LinkTo: '/Partner',
                         MenuIcon: '',
                         SubMenu: []
-                    },
-                    {
-                        MenuName: 'PartnerTransaction',
-                        MenuTitle: 'Thông tin giao dịch với đối tác',
-                        LinkTo: '/PartnerTransaction',
-                        MenuIcon: '',
-                        SubMenu: []
                     }
                 ]
             },
@@ -376,6 +369,21 @@ const AppMenu = [
             }
         ]
     },
+    {
+        MenuName: 'PartnerTran',
+        MenuTitle: 'Lịch sử giao dịch với đối tác',
+        LinkTo: '',
+        MenuIcon: '',
+        SubMenu: [
+            {
+                MenuName: 'PartnerTransaction',
+                MenuTitle: 'Lịch sử giao dịch với đối tác',
+                LinkTo: '/PartnerTransaction',
+                MenuIcon: '',
+                SubMenu: []
+            }
+        ]
+    }
    
 ];
 
