@@ -48,6 +48,21 @@ export function ConvertStr(intNum) {
     return "0" + intNum.toString();
 }
 
+export function formatDateNew(dateString, notGetTime) {
+    if (dateString) {
+        try {
+            const d = new Date(Date.parse(dateString));
+            let dateStringFormated = ConvertStr(d.getMonth() + 1) + "/" + ConvertStr(d.getDate()) + "/" + d.getFullYear().toString()
+            if (!notGetTime)
+                dateStringFormated += " " + ConvertStr(d.getHours()) + ":" + ConvertStr(d.getMinutes());
+            return dateStringFormated;
+        } catch (error) {
+            return dateString;
+        }
+    }
+    return dateString;
+}
+
 export function formatDate(dateString, notGetTime) {
     if (dateString) {
         try {

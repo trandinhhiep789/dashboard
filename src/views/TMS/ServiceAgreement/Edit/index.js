@@ -22,9 +22,11 @@ import indexedDBLib from "../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
-import { formatDate } from "../../../../common/library/CommonLib.js";
+import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
 
 import DeliverUserList from "../../ShipmentOrder/Component/DeliverUserList";
+import { ExportStringToDate } from "../../../../common/library/ultils";
+import moment from 'moment';
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -39,7 +41,7 @@ class EditCom extends React.Component {
             IsSystem: false,
             IsExtended: false,
             IsLiquidated: false,
-            IsDeposited: false,
+            IsDeposited: false
         };
     }
 
@@ -52,16 +54,16 @@ class EditCom extends React.Component {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.DeputyUserName = MLObject.ShipmentOrder_DeliverUserList[0].UserName;
 
-        if(MLObject.IsExtended){
-            if(MLObject.ExtendedDate == null){
+        if (MLObject.IsExtended) {
+            if (MLObject.ExtendedDate == null) {
                 formData.dtExtendedDate.ErrorLst.IsValidatonError = true;
                 formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "Ngày gia hạn hợp đồng không được để trống";
                 return;
             }
         }
 
-        if(MLObject.IsLiquidated){
-            if(MLObject.Liquidateddate == null){
+        if (MLObject.IsLiquidated) {
+            if (MLObject.Liquidateddate == null) {
                 formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
                 formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng không được để trống";
                 return;
@@ -69,8 +71,8 @@ class EditCom extends React.Component {
 
         }
 
-        if(MLObject.IsDeposited){
-            if(MLObject.DepositedDate == null){
+        if (MLObject.IsDeposited) {
+            if (MLObject.DepositedDate == null) {
                 formData.dtDepositedDate.ErrorLst.IsValidatonError = true;
                 formData.dtDepositedDate.ErrorLst.ValidatonErrorMessage = "Ngày kí quỹ không được để trống";
                 return;
@@ -102,6 +104,9 @@ class EditCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
+
+            console.log("apiResult", apiResult);
+
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -110,6 +115,9 @@ class EditCom extends React.Component {
             }
             else {
                 apiResult.ResultObject.ShipmentOrder_DeliverUserList = [{ UserName: apiResult.ResultObject.DeputyUserName, FullName: apiResult.ResultObject.FullName }]
+
+                apiResult.ResultObject.SignedDateNew = formatDate(apiResult.ResultObject.SignedDate, true)
+                apiResult.ResultObject.ExpiredDateNew = formatDate(apiResult.ResultObject.ExpiredDate, true)
                 this.setState({
                     DataSource: apiResult.ResultObject,
                     IsLoadDataComplete: true,
@@ -123,7 +131,7 @@ class EditCom extends React.Component {
     }
 
     handleChange(formData, MLObject) {
-        console.log("formData, MLObject", formData, MLObject)
+
         let IsExtended, IsLiquidated, IsDeposited;
         if (formData.chkIsExtended.value) {
             IsExtended = true
@@ -152,38 +160,61 @@ class EditCom extends React.Component {
         this.setState({
             IsExtended,
             IsLiquidated,
-            IsDeposited
+            IsDeposited,
+
         })
 
+        console.log("formData, MLObject", formData, MLObject)
+
+
+
         if (formData.dtExpiredDate.value.length > 0) {
-            if (formData.dtSignedDate.value >= formData.dtExpiredDate.value) {
-                formData.dtExpiredDate.ErrorLst.IsValidatonError = true;
-                formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc hợp đồng phải lớn hơn ngày kí hợp đồng";
-            }
-            else {
+
+            const SignedDate = new Date(formData.dtSignedDate.value);
+            const ExpiredDate = new Date(formData.dtExpiredDate.value);
+
+            if (ExpiredDate >= SignedDate) {
                 formData.dtExpiredDate.ErrorLst.IsValidatonError = false;
                 formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "";
+            }
+            else {
+                formData.dtExpiredDate.ErrorLst.IsValidatonError = true;
+                formData.dtExpiredDate.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc hợp đồng phải lớn hơn ngày kí hợp đồng";
             }
         }
 
         // kiểm tra ngày gia hạn hợp đồng
         if (IsExtended) {
-            if(formData.dtExtendedDate.value != ''){
-                if (formData.dtExpiredDate.value >= formData.dtExtendedDate.value) {
-                    formData.dtExtendedDate.ErrorLst.IsValidatonError = true;
-                    formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "Ngày gia hạn hợp đồng phải lớn hơn ngày hết hạn hợp đồng";
-                }
-    
-                else {
+            if (formData.dtExtendedDate.value != null && formData.dtExtendedDate.value != "") {
+
+                let ExpiredDate = new Date(formData.dtExpiredDate.value);
+                let ExtendedDate = new Date(formData.dtExtendedDate.value);
+
+                if (ExpiredDate < ExtendedDate) {
+
                     formData.dtExtendedDate.ErrorLst.IsValidatonError = false;
                     formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "";
                 }
+                else {
+                    formData.dtExtendedDate.ErrorLst.IsValidatonError = true;
+                    formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "Ngày gia hạn hợp đồng phải lớn hơn ngày hết hạn hợp đồng";
+                }
+
+                // if (formData.dtExpiredDate.value >= formData.dtExtendedDate.value) {
+                //     formData.dtExtendedDate.ErrorLst.IsValidatonError = true;
+                //     formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "Ngày gia hạn hợp đồng phải lớn hơn ngày hết hạn hợp đồng";
+                // }
+
+                // else {
+                //     formData.dtExtendedDate.ErrorLst.IsValidatonError = false;
+                //     formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "";
+                // }
             }
             else {
                 formData.dtExtendedDate.ErrorLst.IsValidatonError = false;
                 formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "";
             }
-            
+
         }
         else {
             formData.dtExtendedDate.ErrorLst.IsValidatonError = false;
@@ -194,38 +225,50 @@ class EditCom extends React.Component {
 
         if (IsLiquidated) {
             if (IsExtended) {
-                if(formData.dtExtendedDate.value != '' && formData.dtLiquidateddate.value !=''){
-                    if (formData.dtExtendedDate.value <= formData.dtLiquidateddate.value || formData.dtLiquidateddate.value <= formData.dtSignedDate.value) {
-                        formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
-                        formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng phải nằm trong khoảng thời gian kí hợp đồng";
-                    }
-                    else {
+                if (formData.dtExtendedDate.value != '' && formData.dtLiquidateddate.value != '' && formData.dtExtendedDate.value != null && formData.dtLiquidateddate.value != null) {
+                    let SignedDate = new Date(formData.dtSignedDate.value);
+                    let ExpiredDate = new Date(formData.dtExpiredDate.value);
+                    let ExtendedDate = new Date(formData.dtExtendedDate.value);
+                    let Liquidateddate = new Date(formData.dtLiquidateddate.value);
+
+                    // if (formData.dtExtendedDate.value <= formData.dtLiquidateddate.value || formData.dtLiquidateddate.value <= formData.dtSignedDate.value) {
+                    if (Liquidateddate >= SignedDate && ExtendedDate >= Liquidateddate) {
                         formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
                         formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
+
+                    }
+                    else {
+                        formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
+                        formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng phải nằm trong khoảng thời gian kí hợp đồng";
                     }
                 }
                 else {
                     formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
                     formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
                 }
-                
+
             }
             else {
-                if(formData.dtLiquidateddate.value != ''){
-                    if (formData.dtExpiredDate.value <= formData.dtLiquidateddate.value || formData.dtLiquidateddate.value <= formData.dtSignedDate.value) {
-                        formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
-                        formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng phải nằm trong khoảng thời gian kí hợp đồng";
-                    }
-                    else {
+                if (formData.dtLiquidateddate.value != '' && formData.dtLiquidateddate.value != null) {
+                    let SignedDate = new Date(formData.dtSignedDate.value);
+                    let ExpiredDate = new Date(formData.dtExpiredDate.value);
+                    let ExtendedDate = new Date(formData.dtExtendedDate.value);
+                    let Liquidateddate = new Date(formData.dtLiquidateddate.value);
+
+                    if (Liquidateddate <= ExpiredDate && Liquidateddate >= SignedDate) {
                         formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
                         formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
+                    }
+                    else {
+                        formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
+                        formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng phải nằm trong khoảng thời gian kí hợp đồng";
                     }
                 }
                 else {
                     formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;
                     formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
                 }
-                
+
             }
 
         }
@@ -234,18 +277,18 @@ class EditCom extends React.Component {
             formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "";
         }
 
-        if (IsDeposited){
-         
-            if(formData.dtDepositedDate.value == ""){
+        if (IsDeposited) {
+
+            if (formData.dtDepositedDate.value == "") {
                 formData.dtDepositedDate.ErrorLst.IsValidatonError = true;
                 formData.dtDepositedDate.ErrorLst.ValidatonErrorMessage = "Ngày kí quỹ không được để trống";
             }
-            else{
+            else {
                 formData.dtDepositedDate.ErrorLst.IsValidatonError = false;
                 formData.dtDepositedDate.ErrorLst.ValidatonErrorMessage = "";
             }
         }
-        else{
+        else {
             formData.dtDepositedDate.ErrorLst.IsValidatonError = false;
             formData.dtDepositedDate.ErrorLst.ValidatonErrorMessage = "";
         }
@@ -254,6 +297,8 @@ class EditCom extends React.Component {
     }
 
     render() {
+
+
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -469,7 +514,7 @@ class EditCom extends React.Component {
                                 validatonList={["required"]}
                                 datasourcemember="SignedDate"
                             /> */}
-                            <FormControl.FormControlDatetime
+                            <FormControl.FormControlDatetimeNew
                                 name="dtSignedDate"
                                 colspan="8"
                                 labelcolspan="4"
@@ -477,7 +522,7 @@ class EditCom extends React.Component {
                                 readOnly={false}
                                 showTime={false}
                                 timeFormat={false}
-                                dateFormat="YYYY-MM-DD"
+                                dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
                                 label="ngày ký hợp đồng"
                                 placeholder="Ngày ký hợp đồng"
                                 controltype="InputControl"
@@ -502,7 +547,7 @@ class EditCom extends React.Component {
                                 validatonList={["required"]}
                                 datasourcemember="ExpiredDate"
                             /> */}
-                            <FormControl.FormControlDatetime
+                            <FormControl.FormControlDatetimeNew
                                 name="dtExpiredDate"
                                 colspan="8"
                                 labelcolspan="4"
@@ -510,7 +555,7 @@ class EditCom extends React.Component {
                                 readOnly={false}
                                 showTime={false}
                                 timeFormat={false}
-                                dateFormat="YYYY-MM-DD"
+                                dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
                                 label="ngày hết hạn hợp đồng"
                                 placeholder="Ngày hết hạn hợp đồng"
                                 controltype="InputControl"
@@ -549,7 +594,7 @@ class EditCom extends React.Component {
                                 //validatonList={[]}
                                 datasourcemember="ExtendedDate"
                             /> */}
-                            <FormControl.FormControlDatetime
+                            <FormControl.FormControlDatetimeNew
                                 name="dtExtendedDate"
                                 colspan="8"
                                 labelcolspan="4"
@@ -557,7 +602,7 @@ class EditCom extends React.Component {
                                 readOnly={false}
                                 showTime={false}
                                 timeFormat={false}
-                                dateFormat="YYYY-MM-DD"
+                                dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
                                 label="gia hạn đến ngày"
                                 placeholder={formatDate(currentDate, true)}
                                 controltype="InputControl"
@@ -595,7 +640,7 @@ class EditCom extends React.Component {
                                 // validatonList={[]}
                                 datasourcemember="Liquidateddate"
                             /> */}
-                            <FormControl.FormControlDatetime
+                            <FormControl.FormControlDatetimeNew
                                 name="dtLiquidateddate"
                                 colspan="8"
                                 labelcolspan="4"
@@ -603,7 +648,7 @@ class EditCom extends React.Component {
                                 readOnly={false}
                                 showTime={false}
                                 timeFormat={false}
-                                dateFormat="YYYY-MM-DD"
+                                dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
                                 label="ngày thanh lý hợp đồng"
                                 placeholder={formatDate(currentDate, true)}
                                 controltype="InputControl"
@@ -643,7 +688,7 @@ class EditCom extends React.Component {
 
                         <div className="col-md-6">
 
-                            <FormControl.FormControlDatetime
+                            <FormControl.FormControlDatetimeNew
                                 name="dtDepositedDate"
                                 colspan="8"
                                 labelcolspan="4"
@@ -651,7 +696,7 @@ class EditCom extends React.Component {
                                 readOnly={false}
                                 showTime={false}
                                 timeFormat={false}
-                                dateFormat="YYYY-MM-DD"
+                                dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
                                 label="ngày ký quỹ"
                                 placeholder={formatDate(currentDate, true)}
                                 controltype="InputControl"
