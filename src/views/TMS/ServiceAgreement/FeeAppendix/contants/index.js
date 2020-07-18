@@ -335,7 +335,7 @@ export const DataGridColumnItemListFeeAppendixDetail = [
     },
     {
         Name: "ServiceFee",
-        Type: "text",
+        Type: "textCurrency",
         Caption: "Giá dịch vụ",
         DataSourceMember: "ServiceFee",
         Width: 250,
