@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { formatDate } from "../../../../../library/CommonLib.js";
 import { callGetCache } from "../../../../../../actions/cacheAction";
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
-
+import { formatMoney } from '../../../../../../utils/function';
 class InputGridCellCom extends Component {
     constructor(props) {
         super(props);
@@ -98,6 +98,8 @@ class InputGridCellCom extends Component {
         switch (type) {
             case "text":
                 return <label>{text}</label>;
+            case "textCurrency":
+                return <label>{formatMoney(text, 0)}</label>;
             case "date":
                 {
                     const datestring = formatDate(text);
@@ -178,7 +180,7 @@ class InputGridCellCom extends Component {
                         <a title="" onClick={this.handleonClickEdit} data-id={this.props.index} title="Edit" className="btn-edit">
                             <i className="ti-pencil"></i>
                         </a>
-                        <a title="" className="table-action hover-danger" onClick={this.handleonClickDeleteNew} data-id={this.props.idItem}  title="Delete">
+                        <a title="" className="table-action hover-danger" onClick={this.handleonClickDeleteNew} data-id={this.props.idItem} title="Delete">
                             <i className="ti-trash"></i>
                         </a>
                     </div>
