@@ -317,6 +317,7 @@ class InputGridCom extends Component {
 
 	renderInputGrid() {
 		const listColumn = this.props.listColumn;
+		
 		let listColumnNew = listColumn.filter((person, index) => {
 			if (listColumn[index].hideInput == true || listColumn[index].hideInput === undefined) { return person; }
 		});

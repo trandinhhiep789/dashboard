@@ -17,12 +17,8 @@ import {
     MLObjectDefinition,
     BackLink,
     EditPagePath,
-    GridMLMcRoleDefinition,
-    InputMcRoleColumnList,
-    SearchMLmoldeDefinition,
-    SearchElementModeList,
-    SearchMcRoleAPIPath,
-    DataGridColumnListMultiple
+    GridInstallBundle_Materia,
+    InstallBundle_MateriaColumnList,
 } from "../constants";
 
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
@@ -79,7 +75,7 @@ class EditCom extends React.Component {
         });
         this.props.updatePagePath(EditPagePath);
     }
-  
+
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
@@ -105,16 +101,16 @@ class EditCom extends React.Component {
                     RequirePermission={INSTALLBUNDLE_UPDATE}
                 >
                     <InputGrid
-                        name="InstallBundle_ProductList"
-                        controltype="GridControl"
-                        title="sản phẩm của gói lắp đặt kèm theo"
-                        IDSelectColumnName={"ProductID"}
-                        listColumn={InputMcRoleColumnList}
-                        isHideHeaderToolbar={false}
-                        dataSource={this.state.DataSource.InstallBundle_ProductList}
+                        name="InstallBundle_MaterialList"
+                        controltype="InputGridControl"
+                        title="vật tư của gói lắp đặt"
                         Ispopup={true}
+                        IDSelectColumnName={"MaterialGroupID"}
+                        PKColumnName={""}
+                        MLObjectDefinition={GridInstallBundle_Materia}
+                        listColumn={InstallBundle_MateriaColumnList}
+                        dataSource={this.state.DataSource.InstallBundle_MaterialList}
                         isSystem={this.state.DataSource.IsSystem}
-                        MLObjectDefinition={GridMLMcRoleDefinition}
                         colspan="12"
                     />
                 </FormContainer>

@@ -305,10 +305,10 @@ export const MLObjectDefinition = [
         DataSourceMember: "UpdatedUser"
     },
     {
-        Name: "InstallBundle_ProductList",
+        Name: "InstallBundle_MaterialList",
         DefaultValue: {},
-        BindControlName: "InstallBundle_ProductList",
-        DataSourceMember: "InstallBundle_ProductList"
+        BindControlName: "InstallBundle_MaterialList",
+        DataSourceMember: "InstallBundle_MaterialList"
     }
 
 ];
@@ -375,29 +375,95 @@ export const DataGridColumnList = [
 ]
     
 
-export const GridMLMcRoleDefinition = [
+export const GridInstallBundle_Materia = [
 
     {
-        Name: "ProductID",
+        Name: "InstallBundleID",
         DefaultValue: "",
-        BindControlName: "ProductID",
-        DataSourceMember: "ProductID"
+        BindControlName: "InstallBundleID",
+        DataSourceMember: "InstallBundleID"
     },
     {
-        Name: "ProductName",
+        Name: "MaterialGroupID",
         DefaultValue: "",
-        BindControlName: "ProductName",
-        DataSourceMember: "ProductName"
+        BindControlName: "MaterialGroupID",
+        DataSourceMember: "MaterialGroupID"
     },
     {
-        Name: "Quantity",
+        Name: "MaterialGroupName",
         DefaultValue: "",
-        BindControlName: "Quantity",
-        DataSourceMember: "Quantity"
+        BindControlName: "MaterialGroupName",
+        DataSourceMember: "MaterialGroupName"
+    },
+    {
+        Name: "StandardUsAgeQuantity",
+        DefaultValue: "",
+        BindControlName: "StandardUsAgeQuantity",
+        DataSourceMember: "StandardUsAgeQuantity"
+    },
+    {
+        Name: "MaxUsAgeQuantity",
+        DefaultValue: "",
+        BindControlName: "MaxUsAgeQuantity",
+        DataSourceMember: "MaxUsAgeQuantity"
+    },
+    {
+        Name: "UsAgeRecordType",
+        DefaultValue: -1,
+        BindControlName: "UsAgeRecordType",
+        DataSourceMember: "UsAgeRecordType"
+    },
+    {
+        Name: "ConvertToMaterialGroupID",
+        DefaultValue: "",
+        BindControlName: "ConvertToMaterialGroupID",
+        DataSourceMember: "ConvertToMaterialGroupID"
+    },
+    {
+        Name: "OutputUsAgeType",
+        DefaultValue: "",
+        BindControlName: "OutputUsAgeType",
+        DataSourceMember: "OutputUsAgeType"
+    },
+    {
+        Name: "ConvertRatio",
+        DefaultValue: '',
+        BindControlName: "ConvertRatio",
+        DataSourceMember: "ConvertRatio"
+    },
+    {
+        Name: "IsHasPromotion",
+        DefaultValue: false,
+        BindControlName: "IsHasPromotion",
+        DataSourceMember: "IsHasPromotion"
+    },
+    {
+        Name: "PromotionQuantity",
+        DefaultValue: "",
+        BindControlName: "PromotionQuantity",
+        DataSourceMember: "PromotionQuantity"
+    },
+    {
+        Name: "AdvanceLimitType",
+        DefaultValue: '',
+        BindControlName: "AdvanceLimitType",
+        DataSourceMember: "AdvanceLimitType"
+    },
+    {
+        Name: "AdvanceLimitQuantity",
+        DefaultValue: '',
+        BindControlName: "AdvanceLimitQuantity",
+        DataSourceMember: "AdvanceLimitQuantity"
+    },
+    {
+        Name: "IsRoundIngQuantity",
+        DefaultValue: false,
+        BindControlName: "IsRoundIngQuantity",
+        DataSourceMember: "IsRoundIngQuantity"
     },
     {
         Name: "Note",
-        DefaultValue: "",
+        DefaultValue: '',
         BindControlName: "Note",
         DataSourceMember: "Note"
     },
@@ -406,56 +472,179 @@ export const GridMLMcRoleDefinition = [
         DefaultValue: true,
         BindControlName: "IsActived",
         DataSourceMember: "IsActived"
+    },
+   
+    {
+        Name: "CreatedUser",
+        DefaultValue: "",
+        BindControlName: "",
+        DataSourceMember: "CreatedUserFullName"
+    },
+    {
+        Name: "UpdatedUser",
+        DefaultValue: "",
+        BindControlName: "",
+        DataSourceMember: "UpdatedUser"
+    },
+    {
+        Name: "InstallBundle_MaterialList",
+        DefaultValue: {},
+        BindControlName: "InstallBundle_MaterialList",
+        DataSourceMember: "InstallBundle_MaterialList"
     }
 ];
-export const InputMcRoleColumnList = [
+export const InstallBundle_MateriaColumnList = [
     {
-        name: "ProductID",
-        Type: "ProductCombo",
-        Caption: "Mã sản phẩm",
-        label:"mã sản phẩm",
-        datasourcemember: "ProductID",
-        Width: 200,
-        validatonList: ["Comborequired"],
-        namelabel:"ProductName",
-        OrderIndex:1,
-        Colmd:12
-    
-    },
-    {
-        name: "ProductName",
-        Type: "textbox",
-        Caption: "Tên sản phẩm",
-        label:"Tên sản phẩm",
-        datasourcemember: "ProductName",
-        iputpop:false,
-        Width: 200,
-        OrderIndex:2,
-        Colmd:12
-      
-    },
-    {
-        name: "Quantity",
-        Type: "TextNumber",
-        label:"Số lượng",
-        Caption: "Số lượng",
-        datasourcemember: "Quantity",
-        Width: 200,
-        validatonList: ["required","number"],
-        OrderIndex:3,
+        name: "MaterialGroupID",
+        Type: "ComboBox",
+        Caption: "nhóm vật tư",
+        label: "nhóm vật tư",
+        datasourcemember: "MaterialGroupID",
+        validatonList:["Comborequired"],
+        isautoloaditemfromcache:true,
+        loaditemcachekeyid:"ERPCOMMONCACHE.MATERIALGROUP",
+        valuemember:"MaterialGroupID",
+        nameMember:"MaterialGroupName",
+        namelabel:"MaterialGroupName",
+        OrderIndex: 1,
+        hideInput: false,
         Colmd:12,
+        labelcolspan:2,
+        colspan:10
+    },
+    {
+        name: "MaterialGroupName",
+        Type: "text",
+        Caption: "nhóm vật tư",
+        label: "nhóm vật tư",
+        datasourcemember: "MaterialGroupName",
+        Width: 100,
+        OrderIndex: 1
+    },
+    {
+        name: "ConvertToMaterialGroupID",
+        Type: "ComboBox",
+        Caption: "nhóm vật tư quy đổi",
+        label: "nhóm vật tư quy đổi",
+        datasourcemember: "ConvertToMaterialGroupID",
+        isautoloaditemfromcache:true,
+        loaditemcachekeyid:"ERPCOMMONCACHE.MATERIALGROUP",
+        valuemember:"MaterialGroupID",
+        nameMember:"MaterialGroupName",
+        OrderIndex: 2,
+        hideInput: false
+    },
+    {
+        name: "ConvertRatio",
+        Type: "TextNumber",
+        Caption: "Tỷ lệ quy đổi",
+        label:"Tỷ lệ quy đổi",
+        validatonList: ["required","number"],
+        datasourcemember: "ConvertRatio",
+        OrderIndex:3,
+        hideInput: false,
         min:1,
         max:9999
     },
     {
-        name: "Note",
-        Type: "TextArea",
-        label:"Ghi chú",
-        Caption: "Ghi chú",
-        datasourcemember: "Note",
-        Width: 300,
+        name: "StandardUsAgeQuantity",
+        Type: "TextNumber",
+        label:"Số lượng chuẩn",
+        Caption: "Số lượng chuẩn",
+        datasourcemember: "StandardUsAgeQuantity",
+        Width: 200,
+        validatonList: ["required","number"],
         OrderIndex:4,
-        Colmd:12
+        min:1,
+        max:9999
+    },
+    {
+        name: "MaxUsAgeQuantity",
+        Type: "TextNumber",
+        label:"Số lượng tối đa",
+        Caption: "Số lượng tối đa",
+        datasourcemember: "MaxUsAgeQuantity",
+        Width: 200,
+        validatonList: ["required","number"],
+        OrderIndex:5,
+        min:1,
+        max:9999
+    },
+    {
+        name: "UsAgeRecordType",
+        Type: "ComboBox",
+        Caption: "Hình thức sử dụng",
+        label: "Hình thức sử dụng",
+        datasourcemember: "UsAgeRecordType",
+        isautoloaditemfromcache:false,
+        listoption:[{ value: -1, label: "--Vui lòng chọn--" },{ value: 1, label: "Nhập tay" },{ value: 2, label: "Quy đổi" }],
+        OrderIndex: 6,
+        hideInput: false
+    },
+    {
+        name: "OutputUsAgeType",
+        Type: "ComboBox",
+        Caption: "Hình thức xuất",
+        label: "Hình thức xuất",
+        datasourcemember: "OutputUsAgeType",
+        validatonList:["Comborequired"],
+        isautoloaditemfromcache:false,
+        listoption:[{ value: -1, label: "--Vui lòng chọn--" },{ value: 1, label: "Xuất tiêu hao" },{ value: 2, label: "Xuất bán" }],
+        OrderIndex: 7,
+        hideInput: false
+    },
+    {
+        name: "IsHasPromotion",
+        Type: "checkbox",
+        label:"Có khuyến mãi",
+        Caption: "Có khuyến mãi",
+        datasourcemember: "IsHasPromotion",
+        OrderIndex:8,
+        hideInput: false
+    },
+    {
+        name: "PromotionQuantity",
+        Type: "TextNumber",
+        label:"Số lượng khuyến mãi",
+        Caption: "Số lượng khuyến mãi",
+        datasourcemember: "PromotionQuantity",
+        validatonList: ["required","number"],
+        OrderIndex:9,
+        min:1,
+        max:9999,
+        hideInput: false
+    },
+    {
+        name: "AdvanceLimitType",
+        Type: "ComboBox",
+        Caption: "Loại giới hạn tạm ứng",
+        label: "Loại giới hạn tạm ứng",
+        datasourcemember: "AdvanceLimitType",
+        validatonList:["Comborequired"],
+        isautoloaditemfromcache:false,
+        listoption:[{ value: -1, label: "--Vui lòng chọn--" },{ value: 1, label: "Giới hạn theo số lượng" },{ value: 2, label: "Giới hạn theo tổng tiền"},{ value: 3, label: "Không giới hạn"}],
+        OrderIndex: 10,
+        hideInput: false
+    },
+    {
+        name: "AdvanceLimitQuantity",
+        Type: "TextNumber",
+        label:"Số lượng giới hạn tạm ứng",
+        Caption: "Số lượng giới hạn tạm ứng",
+        datasourcemember: "AdvanceLimitQuantity",
+        validatonList: ["number"],
+        OrderIndex:11,
+        min:1,
+        max:9999,
+        hideInput: false
+    },
+    {
+        name: "IsRoundIngQuantity",
+        Type: "checkbox",
+        label:"Có làm tròn số lượng",
+        datasourcemember: "IsRoundIngQuantity",
+        OrderIndex:12,
+        hideInput: false
     },
     {
         name: "IsActived",
@@ -464,8 +653,19 @@ export const InputMcRoleColumnList = [
         Caption: "Kích hoạt",
         datasourcemember: "IsActived",
         Width: 70,
-        OrderIndex:5,
-        Colmd:12
+        OrderIndex:13
+    },
+    {
+        name: "Note",
+        Type: "TextArea",
+        label:"Ghi chú",
+        Caption: "Ghi chú",
+        datasourcemember: "Note",
+        OrderIndex:14,
+        Colmd:12,
+        hideInput: false,
+        labelcolspan:2,
+        colspan:10
     },
     {
         name: "Action",
