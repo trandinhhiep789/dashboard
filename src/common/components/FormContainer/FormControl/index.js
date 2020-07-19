@@ -16,6 +16,9 @@ import Datetime from 'react-datetime';
 import "antd/dist/antd.css";
 import Select from 'react-select';
 import { formatMoney } from '../../../../utils/function';
+import { formatDateNew } from '../../../../common/library/CommonLib.js';
+import { ExportStringToDate } from "../../../../common/library/ultils";
+
 import { el } from 'date-fns/locale';
 
 
@@ -475,6 +478,87 @@ class FormControlDatetimeCom extends Component {
     }
 }
 const FormControlDatetime = connect(null, null)(FormControlDatetimeCom);
+
+
+
+class FormControlDatetimeNewCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+    }
+    handleValueChange(name, moment) {
+        const momentNew = ExportStringToDate(moment)
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(this.props.name, momentNew);
+    }
+
+
+
+    render() {
+        let { name, label, timeFormat, dateFormat, colspan, value, validationErrorMessage } = this.props;
+        let formRowClassName = "form-row";
+        if (this.props.rowspan != null) {
+            formRowClassName = "form-row col-md-" + this.props.rowspan;
+        }
+        let className = "ant-picker-custom";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-4";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+        if (validationErrorMessage != "" && validationErrorMessage != undefined) {
+            className += " is-invalid";
+        }
+        ;
+
+        let isShowTime;
+        if (this.props.showTime == undefined || this.props.showTime == true) {
+            isShowTime = true
+        }
+        else {
+            isShowTime = false
+        }
+        return (
+            <div className={formRowClassName} >
+                <div className={labelDivClassName}>
+                    <label className="col-form-label 6">
+                        {this.props.label}<span className="text-danger"> {star}</span>
+                    </label>
+                </div>
+
+                <div className={formGroupClassName}>
+                    <DatePicker
+                        showTime={isShowTime}
+                        //value={(value != '' && value != null) ?  moment(value, dateFormat): ''}// 'YYYY-MM-DD'
+                        defaultValue={(value != '' && value != null) ? moment(value, 'YYYY-MM-DD') : ''}
+                        format={dateFormat}
+                        className={className}
+                        dropdownClassName="tree-select-custom"
+                        ref={this.props.inputRef}
+                        placeholder={this.props.placeholder}
+                        onChange={this.handleValueChange}
+                        disabled={this.props.disabled}
+                    />
+                    <div className="invalid-feedback">
+                        <ul className="list-unstyled">
+                            <li>{validationErrorMessage}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+const FormControlDatetimeNew = connect(null, null)(FormControlDatetimeNewCom);
 
 class FormControlHourCom extends Component {
     constructor(props) {
@@ -1484,6 +1568,7 @@ export default {
     FormControlTextBox, TextBox, TextArea, CheckBox, modal, TextBoxCurrency,
     FormControlComboBox,
     FormControlDatetime,
+    FormControlDatetimeNew,
     ComboBox,
     ComboBoxNew,
     MultiSelectComboBox,

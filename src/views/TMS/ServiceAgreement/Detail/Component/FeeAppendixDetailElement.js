@@ -129,7 +129,7 @@ class FeeAppendixDetailElementCom extends Component {
                     <div className="col-md-6">
 
 
-                        <FormControl.FormControlDatetime
+                        <FormControl.FormControlDatetimeNew
                             name="dtApplyFromDate"
                             colspan="9"
                             labelcolspan="3"
@@ -137,7 +137,7 @@ class FeeAppendixDetailElementCom extends Component {
                             timeFormat={false}
                             showTime={false}
                             disabled={IsSystem}
-                            dateFormat="YYYY-MM-DD"
+                            dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
                             label="từ ngày"
                             placeholder="Từ ngày"
                             controltype="InputControl"
@@ -149,7 +149,7 @@ class FeeAppendixDetailElementCom extends Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.FormControlDatetime
+                        <FormControl.FormControlDatetimeNew
                             name="dtApplyToDate"
                             colspan="9"
                             labelcolspan="3"
@@ -157,7 +157,7 @@ class FeeAppendixDetailElementCom extends Component {
                             showTime={false}
                             timeFormat={false}
                             disabled={IsSystem}
-                            dateFormat="YYYY-MM-DD"
+                            dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
                             label="đến ngày"
                             placeholder="Đến ngày"
                             controltype="InputControl"

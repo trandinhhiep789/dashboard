@@ -283,7 +283,7 @@ class DetailCom extends React.Component {
                                 name="FeeAppendix_ItemList"
                                 controltype="InputGridControl"
                                 title={TitleFromFeeAppendix}
-                                IDSelectColumnName={"AbilityID"}
+                                IDSelectColumnName={"FeeAppendixID"}
                                 listColumn={DataGridColumnItemListFeeAppendix}
                                 PKColumnName={PKColumnNameFeeAppendix}
                                 dataSource={this.state.ServiceAgreementInfo.FeeAppendix_ItemList}
