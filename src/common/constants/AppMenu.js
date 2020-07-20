@@ -391,6 +391,21 @@ const AppMenu = [
                 SubMenu: []
             }
         ]
+    },
+    {
+        MenuName: 'PartnerPayable',
+        MenuTitle: 'Chi phí dịch vụ',
+        LinkTo: '',
+        MenuIcon: '',
+        SubMenu: [
+            {
+                MenuName: 'PartnerPayable',
+                MenuTitle: 'Danh sách tiền phải trả cho nhà cung cấp dịch vụ theo ngày',
+                LinkTo: '/PartnerPayable',
+                MenuIcon: '',
+                SubMenu: []
+            }
+        ]
     }
    
 ];
