@@ -55,7 +55,7 @@ export default class SearchForm extends Component {
 
     validationFormNew() {
         const FormDataContolLst = this.state.FormData;
-       // console.log("validationFormNew", FormDataContolLst)
+        // console.log("validationFormNew", FormDataContolLst)
         for (const key in FormDataContolLst) {
             if (typeof FormDataContolLst[key].validatonList != "undefined") {
                 const validation = ValidationField(FormDataContolLst[key].validatonList, FormDataContolLst[key].value, FormDataContolLst[key].label, FormDataContolLst[key]);
@@ -107,10 +107,10 @@ export default class SearchForm extends Component {
         const listElement = this.props.listelement;
         let cssSearchButton = "";
         let classNamebtnSearch;
-        if(this.props.classNamebtnSearch){
+        if (this.props.classNamebtnSearch) {
             classNamebtnSearch = "col-md-2 item  col-custom " + this.props.classNamebtnSearch;
         }
-        else{
+        else {
             classNamebtnSearch = "col-md-2 item  col-custom";
         }
         return (
@@ -156,14 +156,14 @@ export default class SearchForm extends Component {
                                 if (typeof elementItem.filterName != "undefined") {
                                     elementItem.filterValue = this.state.FormData[elementItem.filterName].value;
                                 }
-                           
+
                                 return (
                                     <ElementSearch.ElementComboBox
                                         onValueChange={this.onValueChange}
                                         ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
-                                        value = {this.state.FormData[elementItem.name].value}
+                                        value={this.state.FormData[elementItem.name].value}
                                         key={index}
                                     />
                                 );
@@ -181,6 +181,17 @@ export default class SearchForm extends Component {
                             case "DatetimeFromTo":
                                 return (
                                     <ElementSearch.ElementDatetimeFromTo
+                                        onValueChange={this.onValueChange}
+                                        ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                        {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        key={index}
+                                    />
+                                );
+                            case "MonthPicker":
+                                return (
+                                    <ElementSearch.ElementDatetimeMonthYear
                                         onValueChange={this.onValueChange}
                                         ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}

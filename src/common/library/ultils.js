@@ -70,3 +70,18 @@ export const ExportStringToDate = (dateString) => {
     }
     return dateString;
 }
+
+export const ExportStringToMonth = (dateString) => {
+
+    if (dateString) {
+        try {
+            const dataMoment = dateString.split('-');
+            let dateConvertMoment =  dataMoment[1] + "-" + dataMoment[0]
+            return dateConvertMoment;
+        } catch (error) {
+            return dateString;
+        }
+    }
+    return dateString;
+}
+
