@@ -43,6 +43,7 @@ class ElementModalText extends React.Component {
             this.props.onValueChange(e.target.name, e.target.value);
     }
 
+
     render() {
         let classNamecolmd = "col-md-6";
         if (this.props.Colmd != null)
@@ -98,7 +99,7 @@ class ElementModalText extends React.Component {
                             className={className}
                             ref={this.props.inputRef}
                             placeholder={this.props.placeholder}
-                            disabled={this.props.disabled == true ? true : this.props.readonly}
+                            disabled={this.props.Disabled}
                             maxLength={this.props.maxsize}
                         />
                         <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
@@ -170,7 +171,7 @@ class ElementModalNumber extends React.Component {
                             max={this.props.max}
                             value={this.props.value}
                             onChange={this.handleValueChange}
-                            disabled={this.props.disabled == true ? true : this.props.readonly}
+                            disabled={this.props.Disabled}
                             ref={this.props.inputRef}
                             className={className}
                         />
@@ -191,7 +192,7 @@ class ElementModalComboBoxCom extends Component {
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.label : "", this.props.filterrest);
+            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.label : "", this.props.filterrest,this.props.filterrestValue);
     }
 
     bindcombox(value, listOption) {
@@ -266,7 +267,6 @@ class ElementModalComboBoxCom extends Component {
         if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             let { filterobj, valuemember, nameMember } = this.props;
-            console.log("componentWillReceiveProps", filterobj, valuemember, this.props.filterValue, nextProps.filterValue)
             if (typeof filterobj != undefined) {
                 let listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (typeof nextProps.filterValue != "undefined") {
@@ -331,7 +331,7 @@ class ElementModalComboBoxCom extends Component {
                             ref={this.props.inputRef}
                             onChange={this.handleValueChange}
                             options={listOption}
-                            isDisabled={this.props.disabled == true ? true : this.props.readonly}
+                            isDisabled={this.props.Disabled}
                             isMulti={isMultiSelect}
                             isSearchable={true}
                             placeholder={placeholder}
@@ -400,7 +400,7 @@ class CheckBox extends React.Component {
                         <div className={classNameCustom}>
                             <label>
                                 <input className={this.props.CSSClassName} name={this.props.name} type="checkbox"
-                                    checked={this.props.value} onChange={this.handleValueChange} disabled={this.props.disabled == true ? true : this.props.readonly}
+                                    checked={this.props.value} onChange={this.handleValueChange} disabled={this.props.Disabled}
                                     className={this.props.CSSClassName}
                                 />
                                 <span className="cr"><i className="cr-icon fa fa-check"></i></span>

@@ -518,8 +518,45 @@ export const InstallBundle_MateriaColumnList = [
         Caption: "nhóm vật tư",
         label: "nhóm vật tư",
         datasourcemember: "MaterialGroupName",
-        Width: 100,
+        Width: 300,
         OrderIndex: 1
+    },
+    {
+        name: "StandardUsAgeQuantity",
+        Type: "TextNumber",
+        label:"Số lượng chuẩn",
+        Caption: "Số lượng chuẩn",
+        datasourcemember: "StandardUsAgeQuantity",
+        Width: 100,
+        validatonList: ["required","number"],
+        OrderIndex:2,
+        min:1,
+        max:9999
+    },
+    {
+        name: "MaxUsAgeQuantity",
+        Type: "TextNumber",
+        label:"Số lượng tối đa",
+        Caption: "Số lượng tối đa",
+        datasourcemember: "MaxUsAgeQuantity",
+        Width: 100,
+        validatonList: ["required","number"],
+        OrderIndex:3,
+        min:1,
+        max:9999
+    },
+    {
+        name: "UsAgeRecordType",
+        Type: "ComboBox",
+        Caption: "Hình thức ghi nhận",
+        label: "Hình thức ghi nhận",
+        datasourcemember: "UsAgeRecordType",
+        isautoloaditemfromcache:false,
+        listoption:[{ value: -1, label: "--Vui lòng chọn--" },{ value: 1, label: "Nhập tay" },{ value: 2, label: "Quy đổi" }],
+        filterrestValue:[1],
+        filterrest:"ConvertToMaterialGroupID,ConvertRatio",
+        OrderIndex: 4,
+        hideInput: false
     },
     {
         name: "ConvertToMaterialGroupID",
@@ -531,7 +568,8 @@ export const InstallBundle_MateriaColumnList = [
         loaditemcachekeyid:"ERPCOMMONCACHE.MATERIALGROUP",
         valuemember:"MaterialGroupID",
         nameMember:"MaterialGroupName",
-        OrderIndex: 2,
+        OrderIndex: 5,
+        Disabled:true,
         hideInput: false
     },
     {
@@ -539,47 +577,13 @@ export const InstallBundle_MateriaColumnList = [
         Type: "TextNumber",
         Caption: "Tỷ lệ quy đổi",
         label:"Tỷ lệ quy đổi",
-        validatonList: ["required","number"],
+        validatonList: ["number"],
         datasourcemember: "ConvertRatio",
-        OrderIndex:3,
+        OrderIndex:6,
         hideInput: false,
-        min:1,
+        Disabled:true,
+        min:0,
         max:9999
-    },
-    {
-        name: "StandardUsAgeQuantity",
-        Type: "TextNumber",
-        label:"Số lượng chuẩn",
-        Caption: "Số lượng chuẩn",
-        datasourcemember: "StandardUsAgeQuantity",
-        Width: 200,
-        validatonList: ["required","number"],
-        OrderIndex:4,
-        min:1,
-        max:9999
-    },
-    {
-        name: "MaxUsAgeQuantity",
-        Type: "TextNumber",
-        label:"Số lượng tối đa",
-        Caption: "Số lượng tối đa",
-        datasourcemember: "MaxUsAgeQuantity",
-        Width: 200,
-        validatonList: ["required","number"],
-        OrderIndex:5,
-        min:1,
-        max:9999
-    },
-    {
-        name: "UsAgeRecordType",
-        Type: "ComboBox",
-        Caption: "Hình thức sử dụng",
-        label: "Hình thức sử dụng",
-        datasourcemember: "UsAgeRecordType",
-        isautoloaditemfromcache:false,
-        listoption:[{ value: -1, label: "--Vui lòng chọn--" },{ value: 1, label: "Nhập tay" },{ value: 2, label: "Quy đổi" }],
-        OrderIndex: 6,
-        hideInput: false
     },
     {
         name: "OutputUsAgeType",
@@ -590,6 +594,8 @@ export const InstallBundle_MateriaColumnList = [
         validatonList:["Comborequired"],
         isautoloaditemfromcache:false,
         listoption:[{ value: -1, label: "--Vui lòng chọn--" },{ value: 1, label: "Xuất tiêu hao" },{ value: 2, label: "Xuất bán" }],
+        filterrestValue:[1],
+        filterrest:"IsHasPromotion,PromotionQuantity",
         OrderIndex: 7,
         hideInput: false
     },
@@ -599,6 +605,7 @@ export const InstallBundle_MateriaColumnList = [
         label:"Có khuyến mãi",
         Caption: "Có khuyến mãi",
         datasourcemember: "IsHasPromotion",
+        Disabled:true,
         OrderIndex:8,
         hideInput: false
     },
@@ -608,7 +615,8 @@ export const InstallBundle_MateriaColumnList = [
         label:"Số lượng khuyến mãi",
         Caption: "Số lượng khuyến mãi",
         datasourcemember: "PromotionQuantity",
-        validatonList: ["required","number"],
+        validatonList: ["number"],
+        Disabled:true,
         OrderIndex:9,
         min:1,
         max:9999,
@@ -623,16 +631,19 @@ export const InstallBundle_MateriaColumnList = [
         validatonList:["Comborequired"],
         isautoloaditemfromcache:false,
         listoption:[{ value: -1, label: "--Vui lòng chọn--" },{ value: 1, label: "Giới hạn theo số lượng" },{ value: 2, label: "Giới hạn theo tổng tiền"},{ value: 3, label: "Không giới hạn"}],
+        filterrestValue:[2,3],
+        filterrest:"AdvanceLimitQuantity",
         OrderIndex: 10,
         hideInput: false
     },
     {
         name: "AdvanceLimitQuantity",
         Type: "TextNumber",
-        label:"Số lượng giới hạn tạm ứng",
-        Caption: "Số lượng giới hạn tạm ứng",
+        label:"Số lượng tạm ứng tối đa",
+        Caption: "Số lượng tạm ứng tối đa",
         datasourcemember: "AdvanceLimitQuantity",
         validatonList: ["number"],
+        Disabled:true,
         OrderIndex:11,
         min:1,
         max:9999,
@@ -672,7 +683,7 @@ export const InstallBundle_MateriaColumnList = [
         Type: "editnew",
         Caption: "Tác vụ",
         datasourcemember: "ArticleID",
-        Width: 70,
+        Width: 40,
         iputpop: false
     }
 ];
