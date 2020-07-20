@@ -57,7 +57,7 @@ const Body = styled.div`
   padding-bottom: 16px;
 `;
 
-const APIHostName = "PIMAPI";
+const APIHostName = "TMS";
 const UploadAPIPath = "api/UploadFileToServer/Upload";
 
 function bindDataToControl(listElement, formData) {
