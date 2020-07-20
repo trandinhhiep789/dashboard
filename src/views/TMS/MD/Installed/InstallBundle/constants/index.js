@@ -499,6 +499,7 @@ export const InstallBundle_MateriaColumnList = [
         Type: "ComboBox",
         Caption: "nhóm vật tư",
         label: "nhóm vật tư",
+        value:-1,
         datasourcemember: "MaterialGroupID",
         validatonList:["Comborequired"],
         isautoloaditemfromcache:true,
@@ -530,7 +531,7 @@ export const InstallBundle_MateriaColumnList = [
         Width: 100,
         validatonList: ["required","number"],
         OrderIndex:2,
-        min:1,
+        min:0,
         max:9999
     },
     {
@@ -542,7 +543,7 @@ export const InstallBundle_MateriaColumnList = [
         Width: 100,
         validatonList: ["required","number"],
         OrderIndex:3,
-        min:1,
+        min:0,
         max:9999
     },
     {
@@ -556,6 +557,7 @@ export const InstallBundle_MateriaColumnList = [
         filterrestValue:[1],
         filterrest:"ConvertToMaterialGroupID,ConvertRatio",
         OrderIndex: 4,
+        value:-1,
         hideInput: false
     },
     {
@@ -568,8 +570,10 @@ export const InstallBundle_MateriaColumnList = [
         loaditemcachekeyid:"ERPCOMMONCACHE.MATERIALGROUP",
         valuemember:"MaterialGroupID",
         nameMember:"MaterialGroupName",
-        OrderIndex: 5,
+        filterrestValue:[1,-1],
+        objrestValue:"UsAgeRecordType",
         Disabled:true,
+        OrderIndex: 5,
         hideInput: false
     },
     {
@@ -581,6 +585,8 @@ export const InstallBundle_MateriaColumnList = [
         datasourcemember: "ConvertRatio",
         OrderIndex:6,
         hideInput: false,
+        filterrestValue:[1],
+        objrestValue:"UsAgeRecordType",
         Disabled:true,
         min:0,
         max:9999
@@ -595,6 +601,7 @@ export const InstallBundle_MateriaColumnList = [
         isautoloaditemfromcache:false,
         listoption:[{ value: -1, label: "--Vui lòng chọn--" },{ value: 1, label: "Xuất tiêu hao" },{ value: 2, label: "Xuất bán" }],
         filterrestValue:[1],
+        value:-1,
         filterrest:"IsHasPromotion,PromotionQuantity",
         OrderIndex: 7,
         hideInput: false
@@ -605,6 +612,8 @@ export const InstallBundle_MateriaColumnList = [
         label:"Có khuyến mãi",
         Caption: "Có khuyến mãi",
         datasourcemember: "IsHasPromotion",
+        filterrestValue:[1],
+        objrestValue:"OutputUsAgeType",
         Disabled:true,
         OrderIndex:8,
         hideInput: false
@@ -616,9 +625,11 @@ export const InstallBundle_MateriaColumnList = [
         Caption: "Số lượng khuyến mãi",
         datasourcemember: "PromotionQuantity",
         validatonList: ["number"],
+        filterrestValue:[1],
+        objrestValue:"OutputUsAgeType",
         Disabled:true,
         OrderIndex:9,
-        min:1,
+        min:0,
         max:9999,
         hideInput: false
     },
@@ -632,6 +643,7 @@ export const InstallBundle_MateriaColumnList = [
         isautoloaditemfromcache:false,
         listoption:[{ value: -1, label: "--Vui lòng chọn--" },{ value: 1, label: "Giới hạn theo số lượng" },{ value: 2, label: "Giới hạn theo tổng tiền"},{ value: 3, label: "Không giới hạn"}],
         filterrestValue:[2,3],
+        value:-1,
         filterrest:"AdvanceLimitQuantity",
         OrderIndex: 10,
         hideInput: false
@@ -643,9 +655,11 @@ export const InstallBundle_MateriaColumnList = [
         Caption: "Số lượng tạm ứng tối đa",
         datasourcemember: "AdvanceLimitQuantity",
         validatonList: ["number"],
+        filterrestValue:[2,3],
+        objrestValue:"AdvanceLimitType",
         Disabled:true,
         OrderIndex:11,
-        min:1,
+        min:0,
         max:9999,
         hideInput: false
     },
