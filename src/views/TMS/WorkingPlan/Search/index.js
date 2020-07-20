@@ -124,6 +124,9 @@ class SearchCom extends React.Component {
                     IsLoadDataComplete: true
                 });
             }
+            else{
+                this.showMessage(apiResult.MessageDetail)
+            }
         })
     }
 
