@@ -38,7 +38,7 @@ const AppMenu = [
             },
             {
                 MenuName: 'CarrierType',
-                MenuTitle: 'vận chuyển',
+                MenuTitle: 'Vận chuyển',
                 LinkTo: '',
                 MenuIcon: '',
                 SubMenu: [
@@ -201,7 +201,7 @@ const AppMenu = [
             },
             {
                 MenuName: 'CoordinatorStore',
-                MenuTitle: 'kho điều phối giao hàng',
+                MenuTitle: 'Kho điều phối giao hàng',
                 LinkTo: '/CoordinatorStore',
                 MenuIcon: '',
                 SubMenu: []

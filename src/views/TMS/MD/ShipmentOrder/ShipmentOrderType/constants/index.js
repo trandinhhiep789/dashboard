@@ -1,4 +1,4 @@
-export const APIHostName = "PIMAPI";
+export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/ShipmentOrderType/Search";
 export const LoadAPIPath = "api/ShipmentOrderType/Load";
 export const AddAPIPath = "api/ShipmentOrderType/Add";
