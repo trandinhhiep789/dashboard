@@ -805,10 +805,10 @@ class ElementDatetimeMonthYearCom extends Component {
         let colspanClassName = "col-md-3";
         if (colspan) {
             if (classNameCol) {
-                colspanClassName = "form-group col-md-" + this.props.colspan + " " + classNameCol;
+                colspanClassName = "col-md-" + this.props.colspan + " " + classNameCol;
             }
             else {
-                colspanClassName = "form-group col-md-" + this.props.colspan;
+                colspanClassName = "col-md-" + this.props.colspan;
             }
         }
         let labeldiv;

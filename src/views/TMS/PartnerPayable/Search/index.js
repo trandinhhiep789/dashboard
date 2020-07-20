@@ -21,6 +21,7 @@ import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache } from "../../../../actions/cacheAction";
 
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
+
 import { isThisHour, isThisISOWeek } from "date-fns";
 import moment from 'moment';
 
@@ -85,10 +86,11 @@ class SearchCom extends React.Component {
                     listColumn={DataGridColumnList}
                     dataSource={this.state.gridDataSource}
                     AddLink=""
-                    IDSelectColumnName=""
-                    PKColumnName=""
+                    IDSelectColumnName="PartnerID"
+                    PKColumnName="PartnerID"
                     IsAutoPaging={true}
                     RowsPerPage={10}
+                    ref={this.gridref}
                 />
             </React.Fragment>
         );

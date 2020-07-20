@@ -33,7 +33,7 @@ export const SearchElementList = [
         name: "dtPayableDate",
         DataSourceMember: "PayableDate",
         label: "Tháng",
-        value: "",
+        value:  new Date(),
         format: "MM-YYYY",
         colspan: 2,
     },
@@ -84,14 +84,15 @@ export const DataGridColumnList = [
     // },
     {
         Name: "PartnerName",
-        Type: "text",
+        Type: "texttolink",
         Caption: "Đối tác",
         DataSourceMember: "PartnerName",
+        Link: "/PartnerPayable/Detail/",
         Width: 300
     },
     {
         Name: "PayableAmount",
-        Type: "text",
+        Type: "textCurrency",
         Caption: "Số tiền trả",
         DataSourceMember: "PayableAmount",
         Width: 300

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { formatDate } from "../../../library/CommonLib.js";
 import { ModalManager } from 'react-dynamic-modal';
 import { MessageModal } from "../../../../common/components/Modal";
+import { formatMoney } from '../../../../utils/function';
 export default class GridCell extends Component {
     constructor(props) {
         super(props);
@@ -81,8 +82,10 @@ export default class GridCell extends Component {
             case "text":
                 control = <label>{text}</label>;
                 break;
+            case "textCurrency":
+                return <label>{formatMoney(text, 0)}</label>;
             case "texttolink":
-                control = <Link 
+                control = <Link
                     className="linktext"
                     to={{
                         pathname: linkTo,
@@ -171,7 +174,7 @@ export default class GridCell extends Component {
             case "editnew":
                 return (
                     <div className="group-action">
-                        <Link 
+                        <Link
                             to={{
                                 pathname: linkTo,
                                 state: {
