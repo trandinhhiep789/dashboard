@@ -180,7 +180,7 @@ class InfoCoordinatorCom extends Component {
                 if (!apiResult.IsError) {
                     if (this.props.onhandleChange != null)
                         this.props.onhandleChange(apiResult.ResultObject)
-                        
+
                     ModalManager.close();
                 }
             });
@@ -219,7 +219,7 @@ class InfoCoordinatorCom extends Component {
                 listMLObject.push({
                     ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
                     UserName: selectedOption[i].value,
-                    FullName:selectedOption[i].FullName,
+                    FullName: selectedOption[i].FullName,
                     CreatedUser: this.props.AppInfo.LoginInfo.Username,
                     CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
                 });
@@ -460,6 +460,51 @@ class InfoCoordinatorCom extends Component {
                             />
                         </div>
                     </div>
+                    <div className="form-row">
+                        <div className="form-group col-md-2">
+                        </div>
+                        <div className="form-group col-md-10">
+                            <div className="col-md-12">
+                                <h3 className="title">Gợi ý nhân viên giao hàng:</h3>
+                            </div>
+                            <div className="table-responsive">
+                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                    <thead className="thead-light">
+                                        <tr>
+                                            <th className="jsgrid-header-cell"></th>
+                                            <th className="jsgrid-header-cell">Tên nhân viên giao </th>
+                                            <th className="jsgrid-header-cell">Số lượng đơn hàng</th>
+                                            <th className="jsgrid-header-cell">đơn hoàn đã giao</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
+                                            return (
+                                                <tr key={index}>
+                                                    <td>
+                                                        <div className="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" readOnly className="form-control form-control-sm" checked={false} />
+                                                                <span className="cr">
+                                                                    <i className="cr-icon fa fa-check"></i>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                    <td>{item.UserName + "-" + item.FullName}</td>
+                                                    <td>{item.UserName}</td>
+                                                    <td>{item.UserName}</td>
+                                                </tr>
+
+                                            )
+                                        })
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="form-row">
 
                         <div className="form-group col-md-12 form-group-btncustom">
