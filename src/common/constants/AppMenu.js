@@ -76,7 +76,7 @@ const AppMenu = [
                         LinkTo: '/ShipmentFeePaymentMethod',
                         MenuIcon: '',
                         SubMenu: []
-                    } ,
+                    },
                     {
                         MenuName: 'ShipmentServiceType',
                         MenuTitle: 'Danh sách loại dịch vụ vận chuyển',
@@ -90,7 +90,7 @@ const AppMenu = [
                         LinkTo: '/ShipmentGoodsType',
                         MenuIcon: '',
                         SubMenu: []
-                    } ,
+                    },
                     {
                         MenuName: 'ShipmentOrderStatus',
                         MenuTitle: 'Danh sách trạng thái yêu cầu vận chuyển',
@@ -180,7 +180,7 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     }
-                    
+
                 ]
             },
             {
@@ -203,7 +203,7 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     }
-                    
+
                 ]
             },
             {
@@ -283,8 +283,25 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
-                   
+
                 ]
+            },
+            {
+                MenuName: 'MaterialGroup',
+                MenuTitle: 'Nhóm vật tư',
+                LinkTo: '/MaterialGroup',
+                MenuIcon: '',
+                SubMenu: []
+                // SubMenu: [
+                //     {
+                //         MenuName: 'MaterialGroup',
+                //         MenuTitle: 'Nhóm vât tư',
+                //         LinkTo: '/MaterialGroup',
+                //         MenuIcon: '',
+                //         SubMenu: []
+                //     },
+
+                // ]
             },
         ]
     },
@@ -366,7 +383,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-          
+
         ]
     },
     {
@@ -384,7 +401,7 @@ const AppMenu = [
             }
         ]
     },
-   
+
 ];
 
 export default AppMenu;
