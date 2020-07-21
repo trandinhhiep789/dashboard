@@ -11,6 +11,8 @@ const Content = ({ message }) => {
     )
 }
 
+
+
 export const showToastAlert = (message = '🦄 Wow so easy', type = '') => {
     switch (type.toString()) {
         case 'info':
@@ -34,7 +36,7 @@ export const showToastAlert = (message = '🦄 Wow so easy', type = '') => {
 export const createListTree = (resultRoot, rootID, rootKey, childrenKey, childrenName) => {
     let result = []
     const resultFilter = resultRoot.filter(e => {
-        return e[rootKey] == rootID 
+        return e[rootKey] == rootID
     })
     if (resultFilter.length > 0) {
         resultFilter.map((e, i) => {
@@ -53,3 +55,33 @@ export const createListTree = (resultRoot, rootID, rootKey, childrenKey, childre
     }
     return result;
 }
+
+
+export const ExportStringToDate = (dateString) => {
+
+    if (dateString) {
+        try {
+            const dataMoment = dateString.split('-');
+            let dateConvertMoment = dataMoment[2] + "-" + dataMoment[1] + "-" + dataMoment[0]
+            return dateConvertMoment;
+        } catch (error) {
+            return dateString;
+        }
+    }
+    return dateString;
+}
+
+export const ExportStringToMonth = (dateString) => {
+
+    if (dateString) {
+        try {
+            const dataMoment = dateString.split('-');
+            let dateConvertMoment =  dataMoment[1] + "-" + dataMoment[0]
+            return dateConvertMoment;
+        } catch (error) {
+            return dateString;
+        }
+    }
+    return dateString;
+}
+

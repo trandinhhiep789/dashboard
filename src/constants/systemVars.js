@@ -10,10 +10,10 @@ export const API_HOST_LIST = {
         HostName: "AuthenAPI",
         HostBaseURL: 'http://erpauthenapi.tterpbeta.vn/'
     },
-    PIMAPI: {
-        HostName: "PIMAPI",
-            HostBaseURL: 'http://tmsapi.tterpbeta.vn/'
-            //HostBaseURL: 'http://devtmsapi.tterpbeta.vn/'
+    TMSAPI: {
+        HostName: "TMSAPI",
+             HostBaseURL: 'http://tmsapi.tterpbeta.vn/'
+              //HostBaseURL: 'http://devtmsapi.tterpbeta.vn/'
     },
     CacheAPI: {
         HostName: "CacheAPI",

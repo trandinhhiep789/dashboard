@@ -1,5 +1,5 @@
 //----------------------------------Chi phí vận chuyển cố định-----------------------------------------
-export const APIHostName = "PIMAPI";
+export const APIHostName = "TMSAPI";
 export const AddAPIPath_FixShipmentFee = "api/ShipmentOrderType_FixShipmentFee/Add";
 export const UpdateAPIPath_FixShipmentFee = "api/ShipmentOrderType_FixShipmentFee/Update";
 export const DeleteAPIPath_FixShipmentFee = "api/ShipmentOrderType_FixShipmentFee/Delete";

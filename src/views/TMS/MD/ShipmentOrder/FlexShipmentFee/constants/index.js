@@ -1,5 +1,5 @@
 //----------------------------------Chi phí vận chuyển thay đổi-----------------------------------------
-export const APIHostName = "PIMAPI";
+export const APIHostName = "TMSAPI";
 export const AddAPIPath_FlexShipmentFee = "api/ShipmentOrderType_FlexShipmentFee/Add";
 export const UpdateAPIPath_FlexShipmentFee = "api/ShipmentOrderType_FlexShipmentFee/Update";
 export const DeleteAPIPath_FlexShipmentFee = "api/ShipmentOrderType_FlexShipmentFee/Delete";

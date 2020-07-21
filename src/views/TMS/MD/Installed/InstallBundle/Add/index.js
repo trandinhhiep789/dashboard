@@ -18,8 +18,8 @@ import {
     MLObjectDefinition,
     BackLink,
     AddPagePath,
-    GridMLMcRoleDefinition,
-    InputMcRoleColumnList,
+    GridInstallBundle_Materia,
+    InstallBundle_MateriaColumnList,
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
@@ -31,12 +31,12 @@ class AddCom extends React.Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-   
+
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
-           
+
             DataSource: {}
         };
         this.searchref = React.createRef();
@@ -61,7 +61,7 @@ class AddCom extends React.Component {
             />
         );
     }
-    
+
 
 
     handleSubmit(formData, MLObject) {
@@ -74,7 +74,6 @@ class AddCom extends React.Component {
         });
     }
     render() {
-        console.log("AddElementList",AddElementList)
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -88,16 +87,17 @@ class AddCom extends React.Component {
                 dataSource={[]}
                 RequirePermission={INSTALLBUNDLE_ADD}
             >
+
                 <InputGrid
-                    name="InstallBundle_ProductList"
-                    controltype="GridControl"
-                    title="sản phẩm của gói lắp đặt kèm theo"
-                    IDSelectColumnName={"ProductID"}
-                    listColumn={InputMcRoleColumnList}
-                    isHideHeaderToolbar={false}
-                    dataSource={[]}
+                    name="InstallBundle_MaterialList"
+                    controltype="InputGridControl"
+                    title="vật tư của gói lắp đặt"
                     Ispopup={true}
-                    MLObjectDefinition={GridMLMcRoleDefinition}
+                    IDSelectColumnName={"MaterialGroupID"}
+                    PKColumnName={""}
+                    MLObjectDefinition={GridInstallBundle_Materia}
+                    listColumn={InstallBundle_MateriaColumnList}
+                    dataSource={[]}
                     colspan="12"
                 />
 

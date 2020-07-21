@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { hideModal } from '../../../../actions/modal';
 import ElementModal from '../../../../common/components/FormContainer/FormElement/ElementModal';
 import { ValidationField } from "../../../library/validation.js"
+import { de } from 'date-fns/locale';
 
 const Overlay = styled.div`
   position: fixed;
@@ -79,10 +80,20 @@ class ConfirmationNew extends React.Component {
     bindData() {
         const dataSource = this.props.dataSource;
         let formData = {};
+
         const listElement = this.bindDataToControl(this.props.modalElementList, this.props.dataSource);
         listElement.map((elementItem) => {
             const elementname = elementItem.name;
-            const ObjectName = { Name: elementname, value: elementItem.value, Controltype: elementItem.Type, label: elementItem.label, labelError: elementItem.label, ErrorLst: [], validatonList: elementItem.validatonList };
+            const ObjectName = {
+                Name: elementname,
+                value: elementItem.value,
+                Controltype: elementItem.Type,
+                Disabled: (elementItem.Disabled == undefined ? false : elementItem.Disabled),
+                label: elementItem.label,
+                labelError: elementItem.label,
+                ErrorLst: [],
+                validatonList: elementItem.validatonList
+            };
             formData = Object.assign({}, formData, { [elementname]: ObjectName });
         });
 
@@ -90,7 +101,7 @@ class ConfirmationNew extends React.Component {
     }
 
     bindDataToControl(listElement, dataSource) {
-        //  console.log("bindDataToControl",listElement,dataSource);
+          console.log("bindDataToControl",listElement,dataSource);
         let listElement1 = listElement;
         if (typeof dataSource != "undefined") {
             listElement1 = listElement.map((elementItem) => {
@@ -107,7 +118,7 @@ class ConfirmationNew extends React.Component {
     //#endregion BinData
 
     //#region InputChange && InputChangeList  
-    handleInputChange(elementname, elementvalue, namelabel, valuelabel, filterrest) {
+    handleInputChange(elementname, elementvalue, namelabel, valuelabel, filterrest, filterrestValue) {
         //console.log('change')
 
         const FormDataContolLstd = this.state.FormData;
@@ -115,7 +126,32 @@ class ConfirmationNew extends React.Component {
         if (typeof filterrest != "undefined" && filterrest != "") {
             const objrest = filterrest.split(",");
             for (let i = 0; i < objrest.length; i++) {
-                FormDataContolLstd[objrest[i]].value = -1;
+                if (filterrestValue.includes(elementvalue) || elementvalue == -1) {
+                    if (FormDataContolLstd[objrest[i]].Controltype == "ComboBox") {
+                        FormDataContolLstd[objrest[i]].value = -1;
+                        FormDataContolLstd[objrest[i]].Disabled = true;
+                    }
+                    else if (FormDataContolLstd[objrest[i]].Controltype == "checkbox") {
+                        FormDataContolLstd[objrest[i]].value = false;
+                        FormDataContolLstd[objrest[i]].Disabled = true;
+                    }
+                    else {
+                        FormDataContolLstd[objrest[i]].value = "";
+                        FormDataContolLstd[objrest[i]].Disabled = true;
+                    }
+                }
+                else {
+                    FormDataContolLstd[objrest[i]].Disabled = false;
+                    if (FormDataContolLstd[objrest[i]].Controltype == "ComboBox") {
+                        FormDataContolLstd[objrest[i]].value = -1;
+                    }
+                    else if (FormDataContolLstd[objrest[i]].Controltype == "checkbox") {
+                        FormDataContolLstd[objrest[i]].value = false;
+                    }
+                    else {
+                        FormDataContolLstd[objrest[i]].value = "";
+                    }
+                }
             }
         }
         if (typeof namelabel != "undefined" && namelabel != "") {
@@ -127,6 +163,7 @@ class ConfirmationNew extends React.Component {
             const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
             FormDataContolLstd[elementname].ErrorLst = validationObject;
         }
+        //  console.log("FormDataContolLstd", FormDataContolLstd)
         this.setState({
             FormData: FormDataContolLstd,
         });
@@ -196,6 +233,12 @@ class ConfirmationNew extends React.Component {
                     listElement.sort((a, b) => (a.OrderIndex > b.OrderIndex) ? 1 : -1).map((elementItem, index) => {
                         switch (elementItem.Type) {
                             case "textbox":
+                                let blDisabledtx = false
+                                if (typeof elementItem.objrestValue != "undefined") {
+                                    if (elementItem.filterrestValue.includes(this.state.FormData[elementItem.objrestValue].value) || this.state.FormData[elementItem.objrestValue].value == -1) {
+                                        blDisabledtx = true;
+                                    }
+                                }
                                 return (
                                     <ElementModal.ElementModalText
                                         onValueChange={this.handleInputChange}
@@ -203,18 +246,26 @@ class ConfirmationNew extends React.Component {
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
                                         value={this.state.FormData[elementItem.name].value}
+                                        Disabled={blDisabledtx}
                                         key={index}
                                     />
                                 );
                             case "TextNumber":
+                                let blDisabledt = false
+                                if (typeof elementItem.objrestValue != "undefined") {
+                                    if (elementItem.filterrestValue.includes(this.state.FormData[elementItem.objrestValue].value) || this.state.FormData[elementItem.objrestValue].value == -1) {
+                                        blDisabledt = true;
+                                    }
+                                }
+
                                 return (
                                     <ElementModal.ElementModalNumber
                                         onValueChange={this.handleInputChange}
-                                      
                                         validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
                                         value={this.state.FormData[elementItem.name].value}
+                                        Disabled={blDisabledt}
                                         key={index}
                                     />
                                 );
@@ -231,20 +282,28 @@ class ConfirmationNew extends React.Component {
                                 );
 
                             case "ComboBox":
+                                let blDisabled = false
+                                if (typeof elementItem.objrestValue != "undefined") {
+                                    if (elementItem.filterrestValue.includes(this.state.FormData[elementItem.objrestValue].value) || this.state.FormData[elementItem.objrestValue].value == -1) {
+                                        blDisabled = true;
+                                    }
+                                }
+
                                 return (
                                     <ElementModal.ElementModalComboBox
                                         onValueChange={this.handleInputChange}
-                                        value={this.state.FormData[elementItem.name].value}
-                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        Disabled={blDisabled}
                                         key={index}
                                     />
                                 );
                             case "ProductCombo":
-                               let valuename =[]
+                                let valuename = []
                                 if (this.state.FormData[elementItem.name].value != "" && typeof this.state.FormData[elementItem.name].value != "undefined" && this.state.FormData[elementItem.name].value != -1) {
-                                    valuename= { value: this.state.FormData[elementItem.name].value, label: this.state.FormData[elementItem.name].value + "-" + this.state.FormData[elementItem.namelabel].value }
+                                    valuename = { value: this.state.FormData[elementItem.name].value, label: this.state.FormData[elementItem.name].value + "-" + this.state.FormData[elementItem.namelabel].value }
                                 }
                                 return (
                                     <ElementModal.ProductComboBox
@@ -258,6 +317,12 @@ class ConfirmationNew extends React.Component {
                                 );
 
                             case "checkbox":
+                                let blDisabledck = false
+                                if (typeof elementItem.objrestValue != "undefined") {
+                                    if (elementItem.filterrestValue.includes(this.state.FormData[elementItem.objrestValue].value) || this.state.FormData[elementItem.objrestValue].value == -1) {
+                                        blDisabledck = true;
+                                    }
+                                }
                                 return (
                                     <ElementModal.CheckBox
                                         onValueChange={this.handleInputChange}
@@ -265,6 +330,7 @@ class ConfirmationNew extends React.Component {
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                                         {...elementItem}
                                         value={this.state.FormData[elementItem.name].value}
+                                        Disabled={blDisabledck}
                                         key={index}
                                     />
                                 );

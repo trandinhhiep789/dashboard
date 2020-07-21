@@ -33,19 +33,12 @@ const AppMenu = [
                         LinkTo: '/Partner',
                         MenuIcon: '',
                         SubMenu: []
-                    },
-                    {
-                        MenuName: 'PartnerTransaction',
-                        MenuTitle: 'Thông tin giao dịch với đối tác',
-                        LinkTo: '/PartnerTransaction',
-                        MenuIcon: '',
-                        SubMenu: []
                     }
                 ]
             },
             {
                 MenuName: 'CarrierType',
-                MenuTitle: 'vận chuyển',
+                MenuTitle: 'Vận chuyển',
                 LinkTo: '',
                 MenuIcon: '',
                 SubMenu: [
@@ -208,7 +201,7 @@ const AppMenu = [
             },
             {
                 MenuName: 'CoordinatorStore',
-                MenuTitle: 'kho điều phối giao hàng',
+                MenuTitle: 'Kho điều phối giao hàng',
                 LinkTo: '/CoordinatorStore',
                 MenuIcon: '',
                 SubMenu: []
@@ -401,7 +394,37 @@ const AppMenu = [
             }
         ]
     },
-
+    {
+        MenuName: 'PartnerTran',
+        MenuTitle: 'Lịch sử giao dịch với đối tác',
+        LinkTo: '',
+        MenuIcon: '',
+        SubMenu: [
+            {
+                MenuName: 'PartnerTransaction',
+                MenuTitle: 'Lịch sử giao dịch với đối tác',
+                LinkTo: '/PartnerTransaction',
+                MenuIcon: '',
+                SubMenu: []
+            }
+        ]
+    },
+    {
+        MenuName: 'PartnerPayable',
+        MenuTitle: 'Chi phí dịch vụ',
+        LinkTo: '',
+        MenuIcon: '',
+        SubMenu: [
+            {
+                MenuName: 'PartnerPayable',
+                MenuTitle: 'Danh sách tiền phải trả cho nhà cung cấp dịch vụ theo ngày',
+                LinkTo: '/PartnerPayable',
+                MenuIcon: '',
+                SubMenu: []
+            }
+        ]
+    }
+   
 ];
 
 export default AppMenu;

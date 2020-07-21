@@ -1,4 +1,4 @@
-export const APIHostName = "PIMAPI";
+export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/Product/Search";
 export const SearchModelAPIPath = "api/Model/Search";
 export const IDSelectColumnNameMultiple = "chkSelect";
