@@ -55,7 +55,7 @@ class DetailCom extends React.Component {
     }
 
     componentDidMount() {
-
+        console.log("aaa", this.props);
         this.callLoadData(this.props.match.params.id);
     }
 
