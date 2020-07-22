@@ -8,6 +8,8 @@ import { PagePath } from "./constants"
 import { updatePagePath } from "../../actions/pageAction";
 import { COOKIELOGIN, } from "../../constants/systemVars.js";
 import { loginRequest, loginSuccess, loginFailure, callLogin } from "../../actions/loginAction";
+import { callFetchAPI } from "../../actions/fetchAPIAction";
+import { callGetCacheFromLocal,callClearLocalCache } from "../../actions/cacheAction";
 import { getCookie } from "../../common/library/CommonLib.js";
 import "../../css/custom.scss";
 import PrivateRoute from '../../Route/PrivateRoute'
@@ -82,17 +84,55 @@ class HomeCom extends React.Component {
 
        
         const LoginInfo = localStorage.getItem('LoginInfo');
+        //console.log("componentDidMount this.props.AuthenticationInfo", this.props.AuthenticationInfo);
         if(!this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess)
         {
             if (LoginInfo) {
                 const LoginInfo1 = JSON.parse(LoginInfo)
                 this.props.loginSuccess(LoginInfo1.LoginUserInfo, LoginInfo1.TokenString,LoginInfo1.Password);
-                this.setState({ isLoggedIn: true })
+                this.setState({ isLoggedIn: true });
+                this.callLoadCacheList(LoginInfo1.LoginUserInfo.UserName);
             }
             else {
                 this.setState({ isLoggedIn: false })
             }
         }
+        else
+        {
+            this.callLoadCacheList(this.props.AuthenticationInfo.LoginInfo.Username);
+            
+        }
+    }
+
+    callLoadCacheList(userName) {
+        console.log("callLoadCacheList username",userName);
+        const APIHostName = "CacheAPI";
+       
+        this.props.callFetchAPI(APIHostName, 'api/Cache/GetCacheList', userName).then(apiResult => {
+
+            //console.log("callLoadCacheList", apiResult);
+            if (!apiResult.IsError) 
+            {
+                const  listCacheItem = apiResult.ResultObject.ListCacheItem;
+                listCacheItem.map((cacheItem) =>
+                {
+                    this.props.callGetCacheFromLocal(cacheItem.CacheKeyID).then((cacheItemLocal) =>
+                    {
+                        if(cacheItemLocal != null)
+                        {
+                            if(cacheItemLocal.CreatedDate < cacheItem.CacheVersionDate)
+                            {
+                                this.props.callClearLocalCache(cacheItem.CacheKeyID);
+                            }
+                        }
+                    }
+
+                    );
+                }
+
+                );
+            }
+        })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -209,6 +249,14 @@ const mapDispatchToProps = dispatch => {
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        callGetCacheFromLocal: (cacheKeyID) =>
+        {
+            return dispatch(callGetCacheFromLocal(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) =>
+        {
+            return dispatch(callClearLocalCache(cacheKeyID));
         },
         loginSuccess: (loginInfo, token,password) => {
             return dispatch(loginSuccess(loginInfo, token, password))
