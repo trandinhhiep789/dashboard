@@ -49,8 +49,8 @@ export const ModalColumnList_Insert = [
         readonly: false,
         validatonList: [],
         isMulti: false,
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.BRAND_SUBGROUP",
+        IsAutoLoadItemFromCache: false,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.BRAND_MAINGROUP",
         ValueMember: "BrandID",
         NameMember: "BrandName"
     },
@@ -99,16 +99,28 @@ export const ModalColumnList_Insert = [
         readonly: false,
         validatonList: []
     },
+    // {
+    //     Name: "MaterialProductID",
+    //     type: "productbox",
+    //     label: "Mã sản phẩm vật tư",
+    //     //maxSize: "20",
+    //     colspan: 12,
+    //     isMulti: false,
+    //     DataSourceMember: "MaterialProductID",
+    //     readonly: false,
+    //     validatonList: []
+    // },
     {
         Name: "MaterialProductID",
-        type: "productbox",
-        label: "Mã sản phẩm vật tư",
+        type: "select",
+        label: "sản phẩm vật tư",
         //maxSize: "20",
         colspan: 12,
-        isMulti: false,
+        listoption: [],
+        IsAutoLoadItemFromCache: false,
         DataSourceMember: "MaterialProductID",
         readonly: false,
-        validatonList: []
+        validatonList: ["Comborequired"]
     },
     {
         Name: "Description",
@@ -187,7 +199,7 @@ export const ModalColumnList_Edit = [
         readonly: false,
         validatonList: [],
         isMulti: false,
-        IsAutoLoadItemFromCache: true,
+        IsAutoLoadItemFromCache: false,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.BRAND_SUBGROUP",
         ValueMember: "BrandID",
         NameMember: "BrandName"
@@ -237,16 +249,28 @@ export const ModalColumnList_Edit = [
         readonly: false,
         validatonList: []
     },
+    // {
+    //     Name: "MaterialProductID",
+    //     type: "productbox",
+    //     label: "Mã sản phẩm vật tư",
+    //     //maxSize: "20",
+    //     colspan: 12,
+    //     isMulti: false,
+    //     DataSourceMember: "MaterialProductID",
+    //     readonly: false,
+    //     validatonList: []
+    // },
     {
         Name: "MaterialProductID",
-        type: "productbox",
-        label: "Mã sản phẩm vật tư",
+        type: "select",
+        label: "sản phẩm vật tư",
         //maxSize: "20",
         colspan: 12,
-        isMulti: false,
+        listoption: [],
+        IsAutoLoadItemFromCache: false,
         DataSourceMember: "MaterialProductID",
         readonly: false,
-        validatonList: []
+        validatonList: ["Comborequired"]
     },
     {
         Name: "Description",
@@ -287,18 +311,32 @@ export const DataGridColumnList = [
         Width: 60
     },
     {
+        Name: "MaterialProductName",
+        Type: "text",
+        Caption: "Sản phẩm vật tư",
+        DataSourceMember: "MaterialProductName",
+        Width: 200
+    },
+    {
+        Name: "ApplyBrandName",
+        Type: "text",
+        Caption: "Nhà sản xuất áp dụng",
+        DataSourceMember: "ApplyBrandName",
+        Width: 200
+    },
+    {
         Name: "ApplySubGroupName",
         Type: "text",
         Caption: "Nhóm sản phẩm áp dụng",
         DataSourceMember: "ApplySubGroupName",
-        Width: 350
+        Width: 200
     },
     {
         Name: "ApplyTechspecsName",
         Type: "text",
         Caption: "Thông số kỹ thuật áp dụng",
         DataSourceMember: "ApplyTechspecsName",
-        Width: 350
+        Width: 200
     },
     {
         Name: "ApplyTechspecsValueName",
@@ -312,14 +350,14 @@ export const DataGridColumnList = [
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 150
+        Width: 120
     },
     {
         Name: "InstallCondID",
         Type: "edit",
         Caption: "Sửa",
         DataSourceMember: "InstallCondID",
-        Width: 100
+        Width: 80
     }
 
 ];
@@ -374,6 +412,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "ApplyBrandName"
     },
     {
+        Name: "ApplyBrandName",
+        DefaultValue: "",
+        BindControlName: "ApplyBrandName",
+        DataSourceMember: "ApplyBrandName"
+    },
+    {
         Name: "ApplyTechspecsID",
         DefaultValue: "",
         BindControlName: "ApplyTechspecsID",
@@ -408,6 +452,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "MaterialProductID",
         DataSourceMember: "MaterialProductID"
+    },
+    {
+        Name: "MaterialProductName",
+        DefaultValue: "",
+        BindControlName: "MaterialProductName",
+        DataSourceMember: "MaterialProductName"
     },
     {
         Name: "Description",

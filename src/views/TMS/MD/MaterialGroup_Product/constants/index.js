@@ -149,10 +149,10 @@ export const DataGridColumnList = [
         Width: 60
     },
     {
-        Name: "ProductID",
+        Name: "ProductName",
         Type: "text",
-        Caption: "Mã sản phẩm",
-        DataSourceMember: "ProductID",
+        Caption: "Sản phẩm vật tư",
+        DataSourceMember: "ProductName",
         Width: 150
     },
     {
@@ -204,6 +204,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "ProductID",
         DataSourceMember: "ProductID"
+    },
+    {
+        Name: "ProductName",
+        DefaultValue: "",
+        BindControlName: "ProductName",
+        DataSourceMember: "ProductName"
     },
     {
         Name: "ConvertRatio",
