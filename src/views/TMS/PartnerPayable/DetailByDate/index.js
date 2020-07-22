@@ -10,7 +10,7 @@ import {
     SearchByDateMLObjectDefinition,
     PagePathDate,
     InitSearchByDateParams,
-    SearchAPIPath,
+    SearchPayableDetailAPIPath,
     APIHostName,
     DataGridByDateColumnList
 
@@ -21,6 +21,8 @@ import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache } from "../../../../actions/cacheAction";
 
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
+
+import { PARTNERPAYABLEDETAIL_VIEW } from "../../../../constants/functionLists";
 
 class DetailByDateCom extends React.Component {
     constructor(props) {
@@ -34,7 +36,6 @@ class DetailByDateCom extends React.Component {
     }
 
     componentDidMount() {
-        console.log('this.props', this.props)
         const postData = [
             {
                 SearchKey: "@PAYABLEDATE",
@@ -42,7 +43,7 @@ class DetailByDateCom extends React.Component {
             },
             {
                 SearchKey: "@PARTNERID",
-                SearchValue: 101
+                SearchValue: this.props.location.state.params
             },
         ];
         this.setState({
@@ -53,10 +54,8 @@ class DetailByDateCom extends React.Component {
     }
 
     callData(SearchData) {
-        console.log('apiResult', SearchData)
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, SearchData).then(apiResult => {
-            console.log('apiResult', apiResult)
-            if(!apiResult.IsError){
+        this.props.callFetchAPI(APIHostName, SearchPayableDetailAPIPath, SearchData).then(apiResult => {
+            if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject
                 })
@@ -65,8 +64,6 @@ class DetailByDateCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        debugger
-        console.log('search', formData, MLObject);
         const postData = [
             {
                 SearchKey: "@PAYABLEDATE",
@@ -84,26 +81,28 @@ class DetailByDateCom extends React.Component {
         return (
             <React.Fragment>
                 <React.Fragment>
-                <SearchForm
+                    {/* <SearchForm
                     FormName="Tìm kiếm danh sách tiền phải trả cho nhà cung cấp dịch vụ theo đối tác"
                     MLObjectDefinition={SearchByDateMLObjectDefinition}
                     listelement={SearchByDateElementList}
                     onSubmit={this.handleSearchSubmit.bind(this)}
                     ref={this.searchref}
                     className="multiple"
-                />
+                /> */}
 
-                <DataGrid
-                    listColumn={DataGridByDateColumnList}
-                    dataSource={this.state.gridDataSource}
-                    AddLink=""
-                    IDSelectColumnName="PartnerPayableDetailID"
-                    PKColumnName="PartnerPayableDetailID"
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                    ref={this.gridref}
-                />
-            </React.Fragment>
+                    <DataGrid
+                        listColumn={DataGridByDateColumnList}
+                        dataSource={this.state.gridDataSource}
+                        AddLink=""
+                        IDSelectColumnName="PartnerPayableDetailID"
+                        PKColumnName="PartnerPayableDetailID"
+                        IsAutoPaging={true}
+                        RowsPerPage={10}
+                        RequirePermission={PARTNERPAYABLEDETAIL_VIEW}
+                        isHideHeaderToolbar={true}
+                        ref={this.gridref}
+                    />
+                </React.Fragment>
             </React.Fragment>
         );
     }
@@ -130,5 +129,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const DetailByDate = connect(mapStateToProps,mapDispatchToProps)(DetailByDateCom);
+const DetailByDate = connect(mapStateToProps, mapDispatchToProps)(DetailByDateCom);
 export default DetailByDate;
