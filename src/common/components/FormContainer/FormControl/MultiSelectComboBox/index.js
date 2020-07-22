@@ -25,13 +25,13 @@ class MultiSelectComboBoxCom extends React.Component {
         });
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //     if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
-    //         this.setState({
-    //             SelectedOption: nextProps.value
-    //         })
-    //     }
-    // }
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
+            this.setState({
+                SelectedOption: nextProps.value
+            })
+        }
+    }
 
     callSearchData(KeyWord) {
         let listMLObject = {

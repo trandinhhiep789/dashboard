@@ -309,6 +309,29 @@ class InfoCoordinatorCom extends Component {
         });
     }
 
+    handleCheckDeliverUser(e)
+    {
+        const strDeliverUservalue = e.target.value;
+        const isCheck = e.target.checked;
+        if(isCheck)
+        {
+            let { ShipmentOrder } = this.state;
+            ShipmentOrder.ShipmentOrder_DeliverUserList.push(
+                {
+                    ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
+                    UserName: strDeliverUservalue,
+                    FullName:e.currentTarget.dataset.fullname,
+                    CreatedUser: this.props.AppInfo.LoginInfo.Username,
+                    CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
+                }
+            )
+            console.log(" ShipmentOrder.ShipmentOrder_DeliverUserList", ShipmentOrder.ShipmentOrder_DeliverUserList)
+            this.setState({ ShipmentOrder: ShipmentOrder })
+       
+         //   console.log("handleCheckDeliverUser",strDeliverUservalue,isCheck,e.currentTarget.dataset.fullname)
+        }
+    }
+
 
     handleShipWorkFlowInsert() {
         let { ShipmentOrder, validationErroDeliverUser, validationErroCarrierPartner } = this.state;
@@ -346,6 +369,7 @@ class InfoCoordinatorCom extends Component {
                 listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName });
             })
         }
+        console.log("listOption",listOption)
         return (
 
             <div className="card">
@@ -478,13 +502,17 @@ class InfoCoordinatorCom extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
+                                        {this.state.ShipmentOrder.DeliverUserList && this.state.ShipmentOrder.DeliverUserList.map((item, index) => {
                                             return (
                                                 <tr key={index}>
                                                     <td>
                                                         <div className="checkbox">
                                                             <label>
-                                                                <input type="checkbox" readOnly className="form-control form-control-sm" checked={false} />
+                                                                <input type="checkbox" className="form-control form-control-sm"
+                                                                onChange={this.handleCheckDeliverUser.bind(this)}
+                                                                 value={item.UserName} 
+                                                                 data-fullname={item.FullName}
+                                                                />
                                                                 <span className="cr">
                                                                     <i className="cr-icon fa fa-check"></i>
                                                                 </span>
@@ -492,10 +520,9 @@ class InfoCoordinatorCom extends Component {
                                                         </div>
                                                     </td>
                                                     <td>{item.UserName + "-" + item.FullName}</td>
-                                                    <td>{item.UserName}</td>
-                                                    <td>{item.UserName}</td>
+                                                    <td>10</td>
+                                                    <td>6</td>
                                                 </tr>
-
                                             )
                                         })
                                         }
