@@ -21,6 +21,7 @@ import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache } from "../../../../actions/cacheAction";
 
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
+import { PARTNERPAYABLE_VIEW} from "../../../../constants/functionLists";
 
 class DetailByPartnerCom extends React.Component {
     constructor(props) {
@@ -35,13 +36,11 @@ class DetailByPartnerCom extends React.Component {
     }
 
     componentDidMount() {
-        console.log("this.props", this.props)
         this.props.updatePagePath(PagePathPartner);
         this.callData(this.props.match.params.id)
     }
 
     callData(id) {
-
         this.props.callFetchAPI(APIHostName, SearchByPartnerAPIPath, id).then(apiResult => {
             
             if(!apiResult.IsError){
@@ -50,8 +49,6 @@ class DetailByPartnerCom extends React.Component {
                     sum += curValue.PayableAmount
                     return sum
                 }, 0);
-
-                console.log('apiResult', apiResult, totalPayableAmount)
 
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
@@ -84,12 +81,15 @@ class DetailByPartnerCom extends React.Component {
                     AddLink=""
                     IDSelectColumnName="PayableDate"
                     PKColumnName="PayableDate"
+                    isHideHeaderToolbar={true}
                     IsAutoPaging={false}
                     RowsPerPage={35}
                     ref={this.gridref}
                     totalCurrency={true}
                     totalCurrencyColSpan={2}
+                    RequirePermission={PARTNERPAYABLE_VIEW}
                     totalCurrencyNumber={this.state.totalPayableAmount}
+                    params= {this.props.match.params.id}
                     
                 />
             </React.Fragment>

@@ -1,5 +1,6 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/PartnerPayable/Search";
+export const SearchPayableDetailAPIPath = "api/PartnerPayableDetail/Search";
 export const SearchByPartnerAPIPath = "api/PartnerPayable/SearchByPartner";
 export const AddAPIPath = "api/PartnerPayable/Add";
 export const UpdateDeleteAPIPath = "api/PartnerPayable/UpdateDelete";
@@ -103,7 +104,7 @@ export const SearchByPartnerElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
         ValueMember: "PartnerID",
         NameMember: "PartnerName",
-        filterValue: 1,
+        filterValue: 2,
         filterobj: "PartnerTypeID",
 
     },
@@ -158,7 +159,7 @@ export const DataGridByPartnerColumnList = [
 
     {
         Name: "PayableDate",
-        Type: "texttolink",
+        Type: "texttolinkdate",
         Caption: "Đối tác",
         DataSourceMember: "PayableDate",
         Link: "/PartnerPayable/DetailByDate/",
@@ -202,7 +203,7 @@ export const DataGridByDateColumnList = [
 
     {
         Name: "PayableDate",
-        Type: "text",
+        Type: "date",
         Caption: "Ngày",
         DataSourceMember: "PayableDate",
         Width: 100

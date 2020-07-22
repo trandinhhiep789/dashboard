@@ -23,6 +23,9 @@ import { callGetCache } from "../../../../actions/cacheAction";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 
 
+import { PARTNERPAYABLE_VIEW} from "../../../../constants/functionLists";
+
+
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -40,9 +43,7 @@ class SearchCom extends React.Component {
     }
 
     callData(SearchData) {
-        console.log('SearchData', SearchData);
         this.props.callFetchAPI(APIHostName, SearchAPIPath, SearchData).then(apiResult => {
-            console.log('apiResult', apiResult, SearchData)
             if(!apiResult.IsError){
                 this.setState({
                     gridDataSource: apiResult.ResultObject
@@ -52,7 +53,6 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log('search', formData, MLObject);
         const postData = [
             {
                 SearchKey: "@MONTH",
@@ -83,10 +83,12 @@ class SearchCom extends React.Component {
                     listColumn={DataGridColumnList}
                     dataSource={this.state.gridDataSource}
                     AddLink=""
+                    isHideHeaderToolbar={true}
                     IDSelectColumnName="PartnerID"
                     PKColumnName="PartnerID"
                     IsAutoPaging={true}
                     RowsPerPage={10}
+                    RequirePermission={PARTNERPAYABLE_VIEW}
                     ref={this.gridref}
                 />
             </React.Fragment>

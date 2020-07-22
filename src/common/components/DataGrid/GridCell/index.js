@@ -84,6 +84,17 @@ export default class GridCell extends Component {
                 break;
             case "textCurrency":
                 return <label>{formatMoney(text, 0)}</label>;
+            case "texttolinkdate":
+                control = <Link
+                    className="linktext "
+                    to={{
+                        pathname: linkTo,
+                        state: {
+                            params: this.props.params
+                        }
+                    }}>{formatDate(text)}</Link>;
+                break;
+
             case "texttolink":
                 control = <Link
                     className="linktext"

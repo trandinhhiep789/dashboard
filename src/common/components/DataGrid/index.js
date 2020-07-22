@@ -378,6 +378,7 @@ class DataGridCom extends Component {
         const pkColumnName = this.state.ListPKColumnName;
         const idSelectColumnName = this.props.IDSelectColumnName;
         const checkList = this.state.GridData[idSelectColumnName];
+        // console.log("this.props", this.props);
         return (
             <div className=" table-responsive">
                 <table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0">
@@ -456,6 +457,7 @@ class DataGridCom extends Component {
                                                     isChecked={isChecked}
                                                     onInsertClickEdit={this.handleInsertClickEdit}
                                                     pkColumnName={this.state.ListPKColumnName}
+                                                    params={this.props.params}
                                                 />;
                                                 return (
                                                     <td key={columnItem.Name} style={cellStyle}  >{cellData}</td>
