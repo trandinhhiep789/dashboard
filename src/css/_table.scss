@@ -261,6 +261,33 @@
                 }
             }
         }
+        .totalCurrency{
+            td{
+                padding: 0;
+            }
+            .groupTotalCurrency {
+                display: table;
+                width: 100%;
+                .item{
+                    font-weight: 600;
+                    width: 50%;
+                    padding: .5rem;
+                    display: table-cell;
+                    font-family: initial;
+                    font-size: 16px;
+                    &.txtTotal {
+                        border-right: 1px solid #3333;
+                        padding-right: 0;
+                        width: 49.8%;
+                        color: #757575;
+                    }
+                    &.txttotalCurrency{
+                        color: #757575;
+                    }
+                }
+            }
+            
+        }
 
     }
 

@@ -63,8 +63,12 @@ import WorkingShift from '../../views/TMS/MD/WorkingShift';
 import Area from "../TMS/MD/Area";
 import AreaType from "../TMS/MD/AreaType";
 import UserSkill from "../TMS/User/UserSkill";
+import MaterialGroup from "../TMS/MD/MaterialGroup";
+import PartnerPayable from '../../views/TMS/PartnerPayable';
+
 
 import NotFound from '../NotFound'
+
 
 
 
@@ -205,6 +209,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/SkillCategory" component={SkillCategory} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/SkillRank" component={SkillRank} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserSkill" component={UserSkill} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/MaterialGroup" component={MaterialGroup} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} />
@@ -222,6 +227,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/UserGroup" component={UserGroup} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/WorkingPlan" component={WorkingPlan} isLoggedIn={isLoggedIn} />
+
+                                <PrivateRoute path="/PartnerPayable" component={PartnerPayable} isLoggedIn={isLoggedIn} />
 
                                 
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} />

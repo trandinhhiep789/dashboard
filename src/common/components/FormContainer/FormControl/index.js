@@ -487,6 +487,7 @@ class FormControlDatetimeNewCom extends Component {
         this.handleValueChange = this.handleValueChange.bind(this);
     }
     handleValueChange(name, moment) {
+        
         const momentNew = ExportStringToDate(moment)
         if (this.props.onValueChange != null)
             this.props.onValueChange(this.props.name, momentNew);

@@ -2,7 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Datetime from 'react-datetime';
 import Select from 'react-select';
+import { DatePicker } from 'antd';
 import { callGetCache } from "../../../../actions/cacheAction";
+import vi_VN from 'antd/es/date-picker/locale/vi_VN';
+import moment from 'moment';
+import { ExportStringToMonth } from "../../../../common/library/ultils";
+
 
 class ElementTextCom extends Component {
     constructor(props) {
@@ -779,5 +784,77 @@ class ElementDatetimeFromToCom extends Component {
 }
 const ElementDatetimeFromTo = connect(null, null)(ElementDatetimeFromToCom);
 
-export default { ElementText, ElementTextdropdown, ElementCheckbox, ElementComboBox, ElementDatetime, ElementDatetimeFromTo, ElementCheckLDivbox, ElementComboBoxNew, ElementTextNew, ElementTextNewFull };
+
+class ElementDatetimeMonthYearCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+    }
+
+    handleValueChange(name, moment) {
+        //e.preventDefault();
+        console.log('moment', moment.format('LL'))
+        const momentNew = ExportStringToMonth(moment)
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(name, moment);
+    }
+
+    render() {
+        let { name, label, format, colspan, value, ValidatonErrorMessage, classNameCol } = this.props;
+        let className = "custom-month ";
+        let colspanClassName = "col-md-3";
+        if (colspan) {
+            if (classNameCol) {
+                colspanClassName = "col-md-" + this.props.colspan + " " + classNameCol;
+            }
+            else {
+                colspanClassName = "col-md-" + this.props.colspan;
+            }
+        }
+        let labeldiv;
+        if (label) {
+            labeldiv = <label htmlFor="input-normal">{label}</label>;
+        }
+        if (ValidatonErrorMessage && ValidatonErrorMessage != "") {
+            className += " is-invalid";
+        }
+        return (
+            <div className={colspanClassName}  >
+                <div className="form-group form-group-input form-group-input-date">
+                    {labeldiv}
+                    <div className="input-group ">
+                        <DatePicker
+                            picker="month"
+                            placeholder={this.props.placeholder}
+                            className={className}
+                            onChange={(moment)=>this.handleValueChange(name, moment)}
+                            value={(value != '' && value != null) ? moment(value, 'YYYY-MM') : ''}
+                            //value={value}
+                            name={name}
+                            format={format}
+                            locale={vi_VN}
+                            monthCellContentRender={() => this.handleMonthCellRender}
+                        />
+                        <div className="invalid-feedback">{ValidatonErrorMessage}</div>
+                    </div>
+                </div>
+            </div >
+        );
+    }
+}
+const ElementDatetimeMonthYear = connect(null, null)(ElementDatetimeMonthYearCom);
+
+export default {
+    ElementText,
+    ElementTextdropdown,
+    ElementCheckbox,
+    ElementComboBox,
+    ElementDatetime,
+    ElementDatetimeFromTo,
+    ElementCheckLDivbox,
+    ElementComboBoxNew,
+    ElementTextNew,
+    ElementTextNewFull,
+    ElementDatetimeMonthYear
+};
 
