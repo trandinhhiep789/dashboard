@@ -53,6 +53,29 @@
             }
             
         }
+        &.card-Coordinated{
+            border-color: #d9534f;
+            .card-body{
+                border-color: #d9534f;
+                color: #fff;
+                background-color: #d9534f;
+            }
+            .card-footer{
+                background: linear-gradient(to left, #f5f5f5 50%, #d9534f 50%);
+                background-size: 200% 100%;
+                transition: all 2s ease;
+                background-position: right bottom;
+                .view-detail{
+                    color: #d9534f;
+                }
+                &:hover{
+                    background-position: left bottom;
+                    a{
+                        color: white;
+                    }
+                }
+            }
+        }
         &.card-product{
             border-color: #337ab7;
             .card-body{
@@ -76,6 +99,60 @@
                 }
             }
             
+        }
+        &.card-Delivery{
+            border-color: #337ab7;
+            .card-body{
+                color: #fff;
+                background-color: #337ab7;
+                border-color: #337ab7;
+            }
+            .card-footer{
+                background: linear-gradient(to left, #f5f5f5 50%, #337ab7 50%);
+                background-size: 200% 100%;
+                transition: all 2s ease;
+                background-position: right bottom;
+                .view-detail{
+                    color: #337ab7;
+                }
+                &:hover{
+                    background-position: left bottom;
+                    a{
+                        color: white;
+                    }
+                }
+            }
+            
+        }
+        &.card-Delivered{
+            border-color: #5cb85c;
+            .icon {
+                i{
+                    &.ti {
+                        font-size: 4em;
+                    }
+                }
+            }
+            .card-body{
+                border-color: #5cb85c;
+                color: #fff;
+                background-color: #5cb85c;
+            }
+            .card-footer{
+                background: linear-gradient(to left, #f5f5f5 50%, #5cb85c 50%);
+                background-size: 200% 100%;
+                transition: all 2s ease;
+                background-position: right bottom;
+                .view-detail{
+                    color: #5cb85c;
+                }
+                &:hover{
+                    background-position: left bottom;
+                    a{
+                        color: white;
+                    }
+                }
+            }
         }
         &.card-category{
             border-color: #5cb85c;
@@ -101,6 +178,30 @@
             }
         }
         &.card-brand{
+            border-color: #f0ad4e;
+            .card-body{
+                border-color: #f0ad4e;
+                color: #fff;
+                background-color: #f0ad4e;
+            }
+            .card-footer{
+                background: linear-gradient(to left, #f5f5f5 50%, #f0ad4e 50%);
+                background-size: 200% 100%;
+                transition: all 2s ease;
+                background-position: right bottom;
+                .view-detail{
+                    color: #f0ad4e;
+                }
+                &:hover{
+                    background-position: left bottom;
+                    a{
+                        color: white;
+                    }
+                }
+            }
+            
+        }
+        &.card-NoDelivery{
             border-color: #f0ad4e;
             .card-body{
                 border-color: #f0ad4e;

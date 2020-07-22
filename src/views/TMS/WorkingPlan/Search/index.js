@@ -87,9 +87,21 @@ class SearchCom extends React.Component {
     callDataTestWeb(searchData) {
 
         this.props.callFetchAPI(APIHostName, 'api/WorkingPlan/SearchWeb', searchData).then(apiResult => {
-            console.log("apiResult", apiResult)
+            
             if (!apiResult.IsError) {
-                const sortResult = apiResult.ResultObject.sort((a, b) => (a.UserName > b.UserName) ? 1
+                const date = new Date();
+                const dataResult= apiResult.ResultObject.map((item, index) => {
+                   
+                    if(new Date(item.WorkingDate) > date){
+                        item.isHidden = false
+                    }
+                    else{
+                        item.isHidden = true
+                    }
+                    return item;
+                })
+                
+                const sortResult = dataResult.sort((a, b) => (a.UserName > b.UserName) ? 1
                     : (a.UserName === b.UserName)
                         ? (a.WorkingShiftID > b.WorkingShiftID) ? 1 : -1 : -1)
 
@@ -117,14 +129,14 @@ class SearchCom extends React.Component {
 
 
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource: dataResult,
                     gridData: init,
                     gridDataWorking: dataSource,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true
                 });
             }
-            else{
+            else {
                 this.showMessage(apiResult.MessageDetail)
             }
         })
@@ -153,9 +165,9 @@ class SearchCom extends React.Component {
                 lstWorkingPlan.push(e)
             })
         })
-        
+
         // UpdateWorkingPlanWebAPIPath
-        this.props.callFetchAPI(APIHostName,'api/WorkingPlan/UpdateWorkingPlanWebNew', lstWorkingPlan).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, 'api/WorkingPlan/UpdateWorkingPlanWebNew', lstWorkingPlan).then(apiResult => {
             console.log("111", apiResult)
             this.addNotification(apiResult.Message, apiResult.IsError);
             this.callDataTestWeb(this.state.SearchDataWeb);
@@ -210,7 +222,7 @@ class SearchCom extends React.Component {
             },
 
         ];
-        this.setState({ SearchData: postData, SearchDataWeb:postData });
+        this.setState({ SearchData: postData, SearchDataWeb: postData });
         this.callDataTestWeb(postData);
     }
 
@@ -316,6 +328,7 @@ class SearchCom extends React.Component {
 
                                                     {
                                                         this.state.gridDataWorking && this.state.gridDataWorking[item.UserName].map((item1, index1) => {
+                                                            console.log("item1",item1)
                                                             return (
                                                                 <td >
                                                                     <div className="checkbox">
@@ -327,6 +340,7 @@ class SearchCom extends React.Component {
                                                                                 data-index={index}
                                                                                 data-user={item.UserName}
                                                                                 checked={item1.IsRegister}
+                                                                                disabled={item1.isHidden}
                                                                             />
                                                                             <span className="cr">
                                                                                 <i className="cr-icon fa fa-check"></i>

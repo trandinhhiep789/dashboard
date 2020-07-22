@@ -126,10 +126,17 @@ const AppMenu = [
             },
             {
                 MenuName: 'INSTALL',
-                MenuTitle: 'Thông tin lắp đặt',
+                MenuTitle: 'Vật tư lắp đặt',
                 LinkTo: '',
                 MenuIcon: '',
                 SubMenu: [
+                    {
+                        MenuName: 'MaterialGroup',
+                        MenuTitle: 'Danh sách nhóm vật tư',
+                        LinkTo: '/MaterialGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
                     {
                         MenuName: 'InstallBundle',
                         MenuTitle: 'Danh sách gói sản phẩm lắp đặt kèm theo',
@@ -278,24 +285,7 @@ const AppMenu = [
                     },
 
                 ]
-            },
-            {
-                MenuName: 'MaterialGroup',
-                MenuTitle: 'Nhóm vật tư',
-                LinkTo: '/MaterialGroup',
-                MenuIcon: '',
-                SubMenu: []
-                // SubMenu: [
-                //     {
-                //         MenuName: 'MaterialGroup',
-                //         MenuTitle: 'Nhóm vât tư',
-                //         LinkTo: '/MaterialGroup',
-                //         MenuIcon: '',
-                //         SubMenu: []
-                //     },
-
-                // ]
-            },
+            }
         ]
     },
     {

@@ -3,6 +3,13 @@ import { connect } from 'react-redux';
 import { callFetchAPI } from "../../actions/fetchAPIAction";
 import { updatePagePath } from "../../actions/pageAction";
 import { PagePath } from "./constants"
+import NoCoordinated from './NoCoordinated';
+import NoDelivery from './NoDelivery';
+import Delivery from './Delivery';
+import Delivered from './Delivered';
+import ProcessHistory from './ProcessHistory';
+import WeeklyReport from './WeeklyReport';
+import ListCoordinated from './ListCoordinated';
 
 class DashboardCom extends Component {
     constructor(props) {
@@ -20,7 +27,17 @@ class DashboardCom extends Component {
         return (
             <div className="col-lg-12 dashboard">
                 <div className="row">
-                   Chưa có thông tin
+                    <NoCoordinated />
+                    <NoDelivery />
+                    <Delivery />
+                    <Delivered />
+                </div>
+                <div className="row">
+                    <WeeklyReport/>
+                    <ProcessHistory />
+                </div>
+                <div className="row">
+                    <ListCoordinated/>
                 </div>
             </div>
         );
