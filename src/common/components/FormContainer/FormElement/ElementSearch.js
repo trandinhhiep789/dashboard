@@ -825,7 +825,7 @@ class ElementDatetimeMonthYearCom extends Component {
                     <div className="input-group ">
                         <DatePicker
                             picker="month"
-                            placeholder="Chọn tháng"
+                            placeholder={this.props.placeholder}
                             className={className}
                             onChange={(moment)=>this.handleValueChange(name, moment)}
                             value={(value != '' && value != null) ? moment(value, 'YYYY-MM') : ''}

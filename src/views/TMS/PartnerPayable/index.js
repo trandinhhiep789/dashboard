@@ -7,7 +7,8 @@ import {
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import Search from "./Search";
-import Detail from "./Detail";
+import DetailByPartner from "./DetailByPartner";
+import DetailByDate from "./DetailByDate";
 
 import NotFound from '../../NotFound';
 
@@ -20,7 +21,8 @@ class PartnerPayableCom extends React.Component {
         return (
             <Switch>
                 <Route exact path="/PartnerPayable" component={Search} />
-                <Route exact path="/PartnerPayable/Detail/:id" component={Detail} /> 
+                <Route exact path="/PartnerPayable/DetailByPartner/:id" component={DetailByPartner} /> 
+                <Route exact path="/PartnerPayable/DetailByDate/:id" component={DetailByDate} /> 
                 <Route path="*" component={NotFound} />
             </Switch>
         );

@@ -6,13 +6,13 @@ import {
 } from "react-router-dom";
 import DataGrid from "../../../../common/components/DataGrid";
 import {
-    SearchElementList,
-    SearchMLObjectDefinition,
-    PagePath,
-    InitSearchParams,
-    SearchAPIPath,
+    SearchByPartnerElementList,
+    SearchByPartnerMLObjectDefinition,
+    PagePathPartner,
+    InitSearchByPartnerParams,
+    SearchByPartnerAPIPath,
     APIHostName,
-    DataGridColumnList
+    DataGridByPartnerColumnList
 
 } from "../constants";
 import { connect } from "react-redux";
@@ -22,73 +22,77 @@ import { callGetCache } from "../../../../actions/cacheAction";
 
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 
-
-class SearchCom extends React.Component {
+class DetailByPartnerCom extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            SearchData: InitSearchParams,
-            gridDataSource: []
+            SearchData: InitSearchByPartnerParams,
+            gridDataSource: [],
+            totalPayableAmount: 0
         }
         this.gridref = React.createRef();
         this.searchref = React.createRef();
     }
 
     componentDidMount() {
-        this.props.updatePagePath(PagePath);
-        this.callData(this.state.SearchData)
+        console.log("this.props", this.props)
+        this.props.updatePagePath(PagePathPartner);
+        this.callData(this.props.match.params.id)
     }
 
-    callData(SearchData) {
-        console.log('SearchData', SearchData);
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, SearchData).then(apiResult => {
-            console.log('apiResult', apiResult, SearchData)
+    callData(id) {
+
+        this.props.callFetchAPI(APIHostName, SearchByPartnerAPIPath, id).then(apiResult => {
+            
             if(!apiResult.IsError){
+
+                const totalPayableAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
+                    sum += curValue.PayableAmount
+                    return sum
+                }, 0);
+
+                console.log('apiResult', apiResult, totalPayableAmount)
+
                 this.setState({
-                    gridDataSource: apiResult.ResultObject
+                    gridDataSource: apiResult.ResultObject,
+                    totalPayableAmount
                 })
             }
         })
     }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log('search', formData, MLObject);
-        const postData = [
-            {
-                SearchKey: "@MONTH",
-                SearchValue: MLObject.PayableDate != '' ? MLObject.PayableDate.format() : MLObject.PayableDate  //.toLocaleString('en_US') //MLObject.PayableDate
-            },
-            {
-                SearchKey: "@PARTNERID",
-                SearchValue: MLObject.PartnerID
-            },
-        ];
-        this.setState({ SearchData: postData });
-        this.callData(postData);
+        this.callData(MLObject.PartnerID);
     }
 
     render() {
         return (
             <React.Fragment>
+                <React.Fragment>
                 <SearchForm
-                    FormName="Tìm kiếm danh sách tiền phải trả cho nhà cung cấp dịch vụ theo ngày"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
+                    FormName="Tìm kiếm danh sách tiền phải trả cho nhà cung cấp dịch vụ theo đối tác"
+                    MLObjectDefinition={SearchByPartnerMLObjectDefinition}
+                    listelement={SearchByPartnerElementList}
                     onSubmit={this.handleSearchSubmit.bind(this)}
                     ref={this.searchref}
                     className="multiple"
                 />
 
                 <DataGrid
-                    listColumn={DataGridColumnList}
+                    listColumn={DataGridByPartnerColumnList}
                     dataSource={this.state.gridDataSource}
                     AddLink=""
-                    IDSelectColumnName="PartnerID"
-                    PKColumnName="PartnerID"
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
+                    IDSelectColumnName="PayableDate"
+                    PKColumnName="PayableDate"
+                    IsAutoPaging={false}
+                    RowsPerPage={35}
                     ref={this.gridref}
+                    totalCurrency={true}
+                    totalCurrencyColSpan={2}
+                    totalCurrencyNumber={this.state.totalPayableAmount}
+                    
                 />
+            </React.Fragment>
             </React.Fragment>
         );
     }
@@ -115,5 +119,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Search = connect(mapStateToProps, mapDispatchToProps)(SearchCom);
-export default Search;
+const DetailByPartner = connect(mapStateToProps,mapDispatchToProps)(DetailByPartnerCom);
+export default DetailByPartner;

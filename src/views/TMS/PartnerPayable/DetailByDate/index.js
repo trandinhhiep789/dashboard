@@ -6,13 +6,13 @@ import {
 } from "react-router-dom";
 import DataGrid from "../../../../common/components/DataGrid";
 import {
-    SearchElementList,
-    SearchMLObjectDefinition,
-    PagePath,
-    InitSearchParams,
+    SearchByDateElementList,
+    SearchByDateMLObjectDefinition,
+    PagePathDate,
+    InitSearchByDateParams,
     SearchAPIPath,
     APIHostName,
-    DataGridColumnList
+    DataGridByDateColumnList
 
 } from "../constants";
 import { connect } from "react-redux";
@@ -22,12 +22,11 @@ import { callGetCache } from "../../../../actions/cacheAction";
 
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 
-
-class SearchCom extends React.Component {
+class DetailByDateCom extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            SearchData: InitSearchParams,
+            SearchData: [],
             gridDataSource: []
         }
         this.gridref = React.createRef();
@@ -35,14 +34,28 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updatePagePath(PagePath);
-        this.callData(this.state.SearchData)
+        console.log('this.props', this.props)
+        const postData = [
+            {
+                SearchKey: "@PAYABLEDATE",
+                SearchValue: this.props.match.params.id
+            },
+            {
+                SearchKey: "@PARTNERID",
+                SearchValue: 101
+            },
+        ];
+        this.setState({
+            SearchData: postData
+        })
+        this.props.updatePagePath(PagePathDate);
+        this.callData(postData)
     }
 
     callData(SearchData) {
-        console.log('SearchData', SearchData);
+        console.log('apiResult', SearchData)
         this.props.callFetchAPI(APIHostName, SearchAPIPath, SearchData).then(apiResult => {
-            console.log('apiResult', apiResult, SearchData)
+            console.log('apiResult', apiResult)
             if(!apiResult.IsError){
                 this.setState({
                     gridDataSource: apiResult.ResultObject
@@ -52,43 +65,45 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        debugger
         console.log('search', formData, MLObject);
         const postData = [
             {
-                SearchKey: "@MONTH",
-                SearchValue: MLObject.PayableDate != '' ? MLObject.PayableDate.format() : MLObject.PayableDate  //.toLocaleString('en_US') //MLObject.PayableDate
+                SearchKey: "@PAYABLEDATE",
+                SearchValue: MLObject.PayableDate
             },
             {
                 SearchKey: "@PARTNERID",
                 SearchValue: MLObject.PartnerID
             },
         ];
-        this.setState({ SearchData: postData });
         this.callData(postData);
     }
 
     render() {
         return (
             <React.Fragment>
+                <React.Fragment>
                 <SearchForm
-                    FormName="Tìm kiếm danh sách tiền phải trả cho nhà cung cấp dịch vụ theo ngày"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
+                    FormName="Tìm kiếm danh sách tiền phải trả cho nhà cung cấp dịch vụ theo đối tác"
+                    MLObjectDefinition={SearchByDateMLObjectDefinition}
+                    listelement={SearchByDateElementList}
                     onSubmit={this.handleSearchSubmit.bind(this)}
                     ref={this.searchref}
                     className="multiple"
                 />
 
                 <DataGrid
-                    listColumn={DataGridColumnList}
+                    listColumn={DataGridByDateColumnList}
                     dataSource={this.state.gridDataSource}
                     AddLink=""
-                    IDSelectColumnName="PartnerID"
-                    PKColumnName="PartnerID"
+                    IDSelectColumnName="PartnerPayableDetailID"
+                    PKColumnName="PartnerPayableDetailID"
                     IsAutoPaging={true}
                     RowsPerPage={10}
                     ref={this.gridref}
                 />
+            </React.Fragment>
             </React.Fragment>
         );
     }
@@ -115,5 +130,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Search = connect(mapStateToProps, mapDispatchToProps)(SearchCom);
-export default Search;
+const DetailByDate = connect(mapStateToProps,mapDispatchToProps)(DetailByDateCom);
+export default DetailByDate;

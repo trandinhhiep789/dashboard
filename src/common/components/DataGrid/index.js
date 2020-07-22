@@ -14,7 +14,7 @@ import Media from "react-media";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 
-
+import { formatMoney } from '../../../utils/function';
 
 
 class DataGridCom extends Component {
@@ -400,7 +400,7 @@ class DataGridCom extends Component {
                                         </div>
                                     }
                                     return (
-                                        <th key={elementItem.Name} className="jsgrid-header-cell" style={cellStyle} >{columHeader}</th>
+                                        <th key={elementItem.Name} className="jsgrid-header-cell " style={cellStyle}>{columHeader}</th>
                                     );
                                 })
                             }
@@ -432,37 +432,55 @@ class DataGridCom extends Component {
                                         }
                                     }
                                 }
-                                return (<tr key={rowIndex}>
-                                    {
-                                        listColumn.map((columnItem, index) => {
-                                            const cellStyle = {
-                                                width: columnItem.Width
-                                            };
-                                            const value = pkColumnName.map((obj, index) => {
-                                                return { key: obj.key, value: rowItem[obj.key] };
+                                return (
+                                    <tr key={rowIndex}>
+                                        {
+                                            listColumn.map((columnItem, index) => {
+                                                const cellStyle = {
+                                                    width: columnItem.Width
+                                                };
+                                                const value = pkColumnName.map((obj, index) => {
+                                                    return { key: obj.key, value: rowItem[obj.key] };
+                                                })
+                                                
+                                                const cellData = <GridCell type={columnItem.Type}
+                                                    text={rowItem[columnItem.DataSourceMember]}
+                                                    value={value}
+                                                    popupContent={rowItem[columnItem.PopupContent]}
+                                                    link={columnItem.Link}
+                                                    linkText={columnItem.LinkText}
+                                                    name={columnItem.Name}
+                                                    caption={columnItem.Caption}
+                                                    onValueChange={this.onValueChange}
+                                                    index={rowIndex}
+                                                    isChecked={isChecked}
+                                                    onInsertClickEdit={this.handleInsertClickEdit}
+                                                    pkColumnName={this.state.ListPKColumnName}
+                                                />;
+                                                return (
+                                                    <td key={columnItem.Name} style={cellStyle}  >{cellData}</td>
+                                                );
                                             })
-                                            const cellData = <GridCell type={columnItem.Type}
-                                                text={rowItem[columnItem.DataSourceMember]}
-                                                value={value}
-                                                popupContent={rowItem[columnItem.PopupContent]}
-                                                link={columnItem.Link}
-                                                linkText={columnItem.LinkText}
-                                                name={columnItem.Name}
-                                                caption={columnItem.Caption}
-                                                onValueChange={this.onValueChange}
-                                                index={rowIndex}
-                                                isChecked={isChecked}
-                                                onInsertClickEdit={this.handleInsertClickEdit}
-                                                pkColumnName={this.state.ListPKColumnName}
-                                            />;
-                                            return (
-                                                <td key={columnItem.Name} style={cellStyle}  >{cellData}</td>
-                                            );
-                                        })
-                                    }
-                                </tr>);
+                                        }
+                                    </tr>
+                                );
+
                             })
+
                         }
+                        {
+                            this.props.totalCurrency == true &&
+                             
+                            <tr className="totalCurrency">
+                                <td colSpan={this.props.totalCurrencyColSpan}>
+                                    <div className="groupTotalCurrency">
+                                        <span className="item txtTotal">Tổng</span>
+                                        <span className="item txttotalCurrency">{formatMoney(this.props.totalCurrencyNumber, 0)}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
                     </tbody>
                 </table>
             </div>
