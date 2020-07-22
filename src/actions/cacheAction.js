@@ -95,6 +95,24 @@ export function callGetCache(cacheKeyID) {
     }
 }
 
+export function callGetCacheFromLocal(cacheKeyID) {
+    return (dispatch, getState) => {
+        const state = getState();
+        const LoginInfo = localStorage.getItem('LoginInfo');
+        
+        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
+        return db.get(cacheKeyID).then((result) => {
+            return result;
+        }
+
+        ).
+            catch((error) => {
+                return null;
+            })
+
+    }
+}
+
 
 export function callGetCacheFromServer(cacheKeyID) {
     return (dispatch, getState) => {
@@ -165,6 +183,19 @@ export function callGetCacheFromServer(cacheKeyID) {
 }
 
 export function callClearLocalCache(cacheKeyID) {
+    return (dispatch, getState) => {
+        const state = getState();
+        
+
+        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
+        return db.delete(cacheKeyID).then((result) => {
+            return result;
+        });
+    }
+}
+
+
+export function callClearCache(cacheKeyID) {
     return (dispatch, getState) => {
         const state = getState();
         const LoginInfo = localStorage.getItem('LoginInfo');
