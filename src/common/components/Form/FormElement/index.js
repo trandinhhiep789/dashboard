@@ -104,8 +104,9 @@ class FormElementCom extends Component {
     }
 
     componentDidMount() {
+        console.log("this.props.isDisabled",this.props.isDisabled);
         //console.log('FormElementCom', this.props.validatonList.includes("required"))
-
+        debugger;
         if (this.props.type == "Editor") {
             this.setState({
                 content: this.props.value
@@ -452,6 +453,7 @@ class FormElementCom extends Component {
                         IsLabelDiv={false}
                         isMulti={this.props.isMulti}
                         onValueChange={this.handleMultiSelectChange}
+                        validationErrorMessage={this.props.validationErrorMessage}
                     />
                 );
 
@@ -467,6 +469,7 @@ class FormElementCom extends Component {
                         ref={this.props.inputRef}
                         IsLabelDiv={false}
                         onValueChange={this.handleMultiSelectChange}
+                        validationErrorMessage={this.props.validationErrorMessage}
                     />
                 );
                 break;

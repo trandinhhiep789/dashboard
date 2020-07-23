@@ -129,15 +129,16 @@ class MultiSelectComboBoxCom extends React.Component {
         listOptionNew.unshift({ value: "", label: "------ Chọn -----", style: { color: 'red' } });
         //console.log("listOptionNew:", listOption, this.state.SelectedOption)
         const selectedOption = this.state.SelectedOption;
+        
         let formRowClassName = "form-row";
         if (this.props.rowspan)
             formRowClassName = "form-row col-md-" + this.props.rowspan;
         let className = "form-control form-control-sm";
         if (this.props.CSSClassName != null)
             className = this.props.CSSClassName;
-        let formGroupClassName = "col-md-4";
+        let formGroupClassName = "form-group col-md-4";
         if (this.props.colspan != null) {
-            formGroupClassName = "col-md-" + this.props.colspan;
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
         }
         let labelDivClassName = "form-group col-md-2";
         if (this.props.labelcolspan != null) {
@@ -147,13 +148,18 @@ class MultiSelectComboBoxCom extends React.Component {
         if (typeof this.props.IsLabelDiv !== 'undefined' || typeof this.props.IsLabelDiv !== null)
             isLabelDiv = this.props.IsLabelDiv;
         if (isLabelDiv == false)
-            formGroupClassName = "col-md-12";
-
-
-        let star = "";
-        if (this.props.isRequired) {
-            star = " *";
+            formGroupClassName = "form-group col-md-12";
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
+            star = '*'
         }
+        let classNameselect = "react-select";
+        if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
+            classNameselect += " is-invalid";
+        }
+
+
+        
         // const CustomStyle = {
         //     option: (base, state) => ({
         //         ...base,
@@ -169,8 +175,7 @@ class MultiSelectComboBoxCom extends React.Component {
                     </div>
                 }
                 <div className={formGroupClassName}>
-                    <div className="form-group form-group-input form-group-input-select">
-                        <Select
+                    <Select
                             value={selectedOption}
                             onChange={this.handleValueChange}
                             options={listOptionNew}
@@ -178,9 +183,9 @@ class MultiSelectComboBoxCom extends React.Component {
                             isDisabled={this.props.disabled}
                             isSearchable={true}
                             placeholder={"------ Chọn ------"}
-                            className="select"
+                            className={classNameselect}
                         />
-                    </div>
+                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
 
                 </div>
             </div>

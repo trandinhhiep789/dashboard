@@ -33,14 +33,22 @@ class Confirmation extends React.Component {
         };
     }
     componentDidMount() {
-        
+
     }
     validationForm() {
         let formValidation;
         this.state.ModalElementList.map((elementItem) => {
             const validatonList = elementItem.validatonList;
             if (validatonList && validatonList.length > 0) {
-                const inputvalue = this.state.FormData[elementItem.Name];
+                let inputvalue = this.state.FormData[elementItem.Name];
+                if (inputvalue && Array.isArray(inputvalue)) {
+                    if (elementItem.type == "productbox") {
+                        inputvalue = inputvalue[0].ProductID;
+                    } else if (elementItem.type == "multiselect") {
+                        inputvalue = inputvalue[0];
+                    }
+                }
+
                 const validation = ValidationField(validatonList, inputvalue, elementItem.label, elementItem);
                 const validationObject = { IsValidationError: validation.IsError, ValidationErrorMessage: validation.Message };
                 formValidation = Object.assign({}, formValidation, { [elementItem.Name]: validationObject });
