@@ -26,7 +26,7 @@ class NoCoordinatedCom extends Component {
                                 <i className="fa fa-calendar fa-4x"></i>
                             </div>
                             <div className="col-9 text-right content">
-                                <span className="Count">{this.props.DataSource.filter(n => n.CoordinatorUser != "").length}</span>
+                                <span className="Count">{this.props.DataSource.filter(n => n.CoordinatorUser == "").length}</span>
                                 <h3 className="title">Chưa điều phối</h3>
                             </div>
                         </div>
