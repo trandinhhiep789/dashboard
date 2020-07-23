@@ -216,7 +216,7 @@ class MaterialGroup_ProductCom extends React.Component {
         let match = [];
         let tempMaterialGroupProductDataSource = [];
         let tempMaterialGroup_InstallCondDataSource = [];
-        console.log("this.state.MaterialGroup_InstallCondDataSource.length",this.state.MaterialGroup_InstallCondDataSource);
+        console.log("this.state.MaterialGroup_InstallCondDataSource.length", this.state.MaterialGroup_InstallCondDataSource);
         if (this.state.MaterialGroup_InstallCondDataSource.length > 0) {
             this.state.MaterialGroup_InstallCondDataSource.forEach(element => {
                 deleteList.forEach(item => {
@@ -292,21 +292,23 @@ class MaterialGroup_ProductCom extends React.Component {
         }
 
         return (
-            <Collapsible trigger="Sản phẩm của nhóm vật tư" easing="ease-in" open={true}>
-                <DataGrid listColumn={DataGridColumnList}
-                    dataSource={datasource}
-                    modalElementList={ModalColumnList_Insert}
-                    MLObjectDefinition={MLObjectDefinition}
-                    IDSelectColumnName={"chkSelectMaterialGroupProductCSID"}
-                    PKColumnName={"MaterialGroupProductCSID"}
-                    onDeleteClick={this.handleDelete}
-                    onInsertClick={this.handleInsert}
-                    onInsertClickEdit={this.handleEdit}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                    IsCustomAddLink={true}
-                />
-            </Collapsible>
+            // <Collapsible trigger="Sản phẩm của nhóm vật tư" easing="ease-in" open={true}>
+
+            // </Collapsible>
+            <DataGrid listColumn={DataGridColumnList}
+                dataSource={datasource}
+                modalElementList={ModalColumnList_Insert}
+                MLObjectDefinition={MLObjectDefinition}
+                IDSelectColumnName={"chkSelectMaterialGroupProductCSID"}
+                PKColumnName={"MaterialGroupProductCSID"}
+                onDeleteClick={this.handleDelete}
+                onInsertClick={this.handleInsert}
+                onInsertClickEdit={this.handleEdit}
+                IsAutoPaging={true}
+                RowsPerPage={10}
+                IsCustomAddLink={true}
+                headingTitle={"Sản phẩm của nhóm vật tư"}
+            />
         );
 
 

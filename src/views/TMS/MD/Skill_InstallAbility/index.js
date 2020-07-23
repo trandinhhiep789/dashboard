@@ -220,7 +220,7 @@ class Skill_InstallAbilityCom extends React.Component {
 
     validateForm(formData) {
         let valid = true;
-        if ((formData.SubGroupID == undefined || formData.SubGroupID == -1 || !formData.SubGroupID[0])){
+        if ((formData.SubGroupID == undefined || formData.SubGroupID == -1 || !formData.SubGroupID[0])) {
             //|| (formData.TechspecsID == undefined || formData.SubGTechspecsIDroupID == -1 || !formData.TechspecsID[0])
             //|| (formData.TechspecsValueID == undefined || formData.TechspecsValueID == -1 || !formData.TechspecsValueID[0])) {
             valid = false;
@@ -406,21 +406,20 @@ class Skill_InstallAbilityCom extends React.Component {
         }
 
         return (
-            <Collapsible trigger="Năng lực lắp đặt" easing="ease-in" open={true}>
-                <DataGrid listColumn={DataGridColumnList}
-                    dataSource={datasource}
-                    modalElementList={ModalColumnList_Insert}
-                    MLObjectDefinition={MLObjectDefinition}
-                    IDSelectColumnName={"chkSelectSkillInstallAbilityCSID"}
-                    PKColumnName={"SkillInstallAbilityCSID"}
-                    onDeleteClick={this.handleDelete}
-                    onInsertClick={this.handleInsert}
-                    onInsertClickEdit={this.handleEdit}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                    IsCustomAddLink={true}
-                />
-            </Collapsible>
+            <DataGrid listColumn={DataGridColumnList}
+                dataSource={datasource}
+                modalElementList={ModalColumnList_Insert}
+                MLObjectDefinition={MLObjectDefinition}
+                IDSelectColumnName={"chkSelectSkillInstallAbilityCSID"}
+                PKColumnName={"SkillInstallAbilityCSID"}
+                onDeleteClick={this.handleDelete}
+                onInsertClick={this.handleInsert}
+                onInsertClickEdit={this.handleEdit}
+                IsAutoPaging={true}
+                RowsPerPage={10}
+                IsCustomAddLink={true}
+                headingTitle={"Năng lực lắp đặt"}
+            />
         );
 
 

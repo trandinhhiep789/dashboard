@@ -14,7 +14,7 @@ import {
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_MAINGROUP, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE,ERPCOMMONCACHE_BRAND } from "../../../../constants/keyCache";
+import { ERPCOMMONCACHE_MAINGROUP, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_BRAND } from "../../../../constants/keyCache";
 
 class MaterialGroup_InstallCondCom extends React.Component {
     constructor(props) {
@@ -377,7 +377,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
             );
 
         }
-       
+
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Chỉnh sửa điều kiện lắp đặt của nhóm vật tư',
             onValueChange: this.handleModalChange,
@@ -469,27 +469,27 @@ class MaterialGroup_InstallCondCom extends React.Component {
             match5 = brand.filter(x => x.BrandID == item.ApplyBrandID);
             if (match && match.length > 0) {
                 item.ApplyTechspecsName = match[0].TechspecsName;
-            }else{
+            } else {
                 item.ApplyTechspecsName = "";
             }
             if (match2 && match2.length > 0) {
                 item.ApplyTechspecsValueName = match2[0].Value;
-            }else{
+            } else {
                 item.ApplyTechspecsValueName = "";
             }
             if (match3 && match3.length > 0) {
                 item.ApplySubGroupName = match3[0].SubGroupName;
-            }else{
+            } else {
                 item.ApplySubGroupName = "";
             }
             if (match4 && match4.length > 0) {
                 item.MaterialProductName = match4[0].ProductName;
-            }else{
+            } else {
                 item.MaterialProductName = "";
             }
             if (match5 && match5.length > 0) {
                 item.ApplyBrandName = match5[0].BrandName;
-            }else{
+            } else {
                 item.ApplyBrandName = "";
             }
 
@@ -504,7 +504,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
     render() {
         let datasource = this.state.MaterialGroup_InstallCondDataSource.filter(item => item.IsDeleted == undefined || item.IsDeleted == false);
         datasource = this.initDatasource(datasource);
-       
+
 
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
@@ -518,21 +518,23 @@ class MaterialGroup_InstallCondCom extends React.Component {
         }
 
         return (
-            <Collapsible trigger="Điều kiện lắp đặt của nhóm vật tư" easing="ease-in" open={true}>
-                <DataGrid listColumn={DataGridColumnList}
-                    dataSource={datasource}
-                    modalElementList={this.state.ModalColumnList_Insert}
-                    MLObjectDefinition={MLObjectDefinition}
-                    IDSelectColumnName={"chkSelectInstallCondID"}
-                    PKColumnName={"InstallCondID"}
-                    onDeleteClick={this.handleDelete}
-                    onInsertClick={this.handleInsert}
-                    onInsertClickEdit={this.handleEdit}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                    IsCustomAddLink={true}
-                />
-            </Collapsible>
+            // <Collapsible trigger="Điều kiện lắp đặt của nhóm vật tư" easing="ease-in" open={true}>
+
+            // </Collapsible>
+            <DataGrid listColumn={DataGridColumnList}
+                dataSource={datasource}
+                modalElementList={this.state.ModalColumnList_Insert}
+                MLObjectDefinition={MLObjectDefinition}
+                IDSelectColumnName={"chkSelectInstallCondID"}
+                PKColumnName={"InstallCondID"}
+                onDeleteClick={this.handleDelete}
+                onInsertClick={this.handleInsert}
+                onInsertClickEdit={this.handleEdit}
+                IsAutoPaging={true}
+                RowsPerPage={10}
+                IsCustomAddLink={true}
+                headingTitle={"Điều kiện lắp đặt của nhóm vật tư"}
+            />
         );
     }
 }

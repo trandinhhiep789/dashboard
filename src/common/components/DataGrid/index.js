@@ -443,7 +443,7 @@ class DataGridCom extends Component {
                                                 const value = pkColumnName.map((obj, index) => {
                                                     return { key: obj.key, value: rowItem[obj.key] };
                                                 })
-                                                
+
                                                 const cellData = <GridCell type={columnItem.Type}
                                                     text={rowItem[columnItem.DataSourceMember]}
                                                     value={value}
@@ -472,7 +472,7 @@ class DataGridCom extends Component {
                         }
                         {
                             this.props.totalCurrency == true &&
-                             
+
                             <tr className="totalCurrency">
                                 <td colSpan={this.props.totalCurrencyColSpan}>
                                     <div className="groupTotalCurrency">
@@ -595,6 +595,13 @@ class DataGridCom extends Component {
 
             <div className="col-lg-12 SearchForm">
                 <div className="card">
+                    {this.props.headingTitle ?
+                        <div className="card-title">
+                            <span className="title"><b>{this.props.headingTitle}</b></span>
+                        </div>
+                        : ""
+                    }
+
                     <div className="card-body">
                         {hasHeaderToolbar &&
                             <div className="flexbox mb-10 ">
