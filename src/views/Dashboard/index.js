@@ -58,7 +58,7 @@ class DashboardCom extends Component {
                         <ProcessHistory />
                     </div>
                     <div className="row">
-                        <ListCoordinated />
+                        <ListCoordinated  DataSource={this.state.LstDataSource}/>
                     </div>
                 </div>
             );
