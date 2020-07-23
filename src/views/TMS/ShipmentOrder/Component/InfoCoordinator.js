@@ -213,6 +213,7 @@ class InfoCoordinatorCom extends Component {
         this.setState({ ShipmentOrder: ShipmentOrder })
     }
     handleValueChange1(e, selectedOption) {
+        debugger;
         let listMLObject = [];
         if (selectedOption) {
             for (let i = 0; i < selectedOption.length; i++) {
@@ -325,7 +326,7 @@ class InfoCoordinatorCom extends Component {
                     CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
                 }
             )
-            console.log(" ShipmentOrder.ShipmentOrder_DeliverUserList", ShipmentOrder.ShipmentOrder_DeliverUserList)
+          //  console.log(" ShipmentOrder.ShipmentOrder_DeliverUserList", ShipmentOrder.ShipmentOrder_DeliverUserList)
             this.setState({ ShipmentOrder: ShipmentOrder })
        
          //   console.log("handleCheckDeliverUser",strDeliverUservalue,isCheck,e.currentTarget.dataset.fullname)
@@ -366,10 +367,9 @@ class InfoCoordinatorCom extends Component {
         }
         else {
             this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
-                listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName });
+                listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName , FullName:item.FullName});
             })
         }
-        console.log("listOption",listOption)
         return (
 
             <div className="card">
