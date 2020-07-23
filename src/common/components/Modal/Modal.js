@@ -159,8 +159,9 @@ class ModalCom extends React.Component {
             if (formValidation[key].IsValidationError) {
                 if (typeof this.elementItemRefs[key].focus !== "undefined") {
                     this.elementItemRefs[key].focus();
+                    return false;
                 }
-                return false;
+                
             }
 
         }

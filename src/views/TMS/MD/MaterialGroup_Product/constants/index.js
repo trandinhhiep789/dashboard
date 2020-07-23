@@ -29,7 +29,7 @@ export const ModalColumnList_Insert = [
         isMulti: false,
         DataSourceMember: "ProductID",
         readonly: false,
-        validatonList: ["ProductID"]
+        validatonList: []
     },
     {
         Name: "ConvertRatio",
@@ -99,7 +99,7 @@ export const ModalColumnList_Edit = [
         DataSourceMember: "ProductID",
         readonly: true,
         disabled: true,
-        validatonList: ["ProductID"]
+        validatonList: []
     },
     {
         Name: "ConvertRatio",
