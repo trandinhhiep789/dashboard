@@ -36,7 +36,6 @@ class FormContainerCom extends Component {
             FormValidation: {},
             focusTabIndex: -1,
             tabStateID: "",
-            isDisabled: false,
             IsSystem: false,
             IsFirstTimeLoad: true
 
@@ -47,7 +46,7 @@ class FormContainerCom extends Component {
     }
     componentDidMount() {
         this.setState({
-            isDisabled: (this.props.dataSource != undefined ? this.props.dataSource.IsSystem : false)
+            IsSystem: (this.props.dataSource && this.props.dataSource.IsSystem !== undefined ? this.props.dataSource.IsSystem : false)
         })
         this.checkPermission();
     }
@@ -478,8 +477,8 @@ class FormContainerCom extends Component {
 
     }
 
-    handleButtonClick(){
-        if(this.props.handleButtonClick){
+    handleButtonClick() {
+        if (this.props.handleButtonClick) {
             this.props.handleButtonClick();
         }
     }
@@ -556,7 +555,7 @@ class FormContainerCom extends Component {
                     multiple={elementItem.multiple}
                     maxSize={elementItem.maxSize}
                     minSize={elementItem.minSize}
-                    isDisabled={this.state.isDisabled}
+                    IsSystem={this.state.IsSystem}
                     inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
                     isCategory={elementItem.isCategory}
                     elementItem={elementItem}
@@ -595,7 +594,7 @@ class FormContainerCom extends Component {
                         multiple={elementItem.multiple}
                         maxSize={elementItem.maxSize}
                         minSize={elementItem.minSize}
-                        isDisabled={this.state.isDisabled}
+                        IsSystem={this.state.IsSystem}
                         elementItem={elementItem}
                     />
                 </div>)
@@ -622,7 +621,7 @@ class FormContainerCom extends Component {
                     multiple={elementItem.multiple}
                     maxSize={elementItem.maxSize}
                     minSize={elementItem.minSize}
-                    isDisabled={this.state.isDisabled}
+                    IsSystem={this.state.IsSystem}
                     elementItem={elementItem}
                 />
                 <FormElement type={elementItem.Item2.type} name={elementItem.Item2.name}
@@ -646,7 +645,7 @@ class FormContainerCom extends Component {
                     multiple={elementItem.multiple}
                     maxSize={elementItem.maxSize}
                     minSize={elementItem.minSize}
-                    isDisabled={this.state.isDisabled}
+                    IsSystem={this.state.IsSystem}
                     elementItem={elementItem}
                 />
             </div>);
@@ -1015,7 +1014,7 @@ class FormContainerCom extends Component {
                             onValueChange: this.handleInputChange,
                             value: controlvalue,
                             inputGridValidation: this.state.FormValidation,
-                            isDisabled: this.state.isDisabled
+                            IsSystem: this.state.IsSystem
                         }
                     );
                 }

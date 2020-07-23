@@ -139,7 +139,7 @@ class SimpleFormCom extends Component {
         this.state = {
             FormData: formData,
             FormValidation: {},
-            isDisabled: false
+            IsSystem: false
         };
     }
 
@@ -148,7 +148,7 @@ class SimpleFormCom extends Component {
     }
     componentDidMount() {
         this.setState({
-            isDisabled: (this.props.dataSource != undefined ? this.props.dataSource.IsSystem : false)
+            IsSystem: (this.props.dataSource && this.props.dataSource.IsSystem !== undefined ? this.props.dataSource.IsSystem : false)
         })
         this.checkPermission();
     }
@@ -315,7 +315,7 @@ class SimpleFormCom extends Component {
                                     multiple={elementItem.multiple}
                                     maxSize={elementItem.maxSize}
                                     minSize={elementItem.minSize}
-                                    isDisabled={this.state.isDisabled}
+                                    IsSystem={this.state.IsSystem}
                                     cdn={elementItem.cdn}
                                     elementItem={elementItem}
                                     inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
@@ -361,7 +361,7 @@ class SimpleFormCom extends Component {
                                     multiple={elementItem.multiple}
                                     maxSize={elementItem.maxSize}
                                     minSize={elementItem.minSize}
-                                    isDisabled={this.state.isDisabled}
+                                    IsSystem={this.state.IsSystem}
                                     elementItem={elementItem}
 
                                 />
@@ -386,7 +386,7 @@ class SimpleFormCom extends Component {
                                 multiple={elementItem.multiple}
                                 maxSize={elementItem.maxSize}
                                 minSize={elementItem.minSize}
-                                isDisabled={this.state.isDisabled}
+                                IsSystem={this.state.IsSystem}
                                 elementItem={elementItem}
                             />
                             <FormElement type={elementItem.Item2.type} name={elementItem.Item2.name}
@@ -407,7 +407,7 @@ class SimpleFormCom extends Component {
                                 multiple={elementItem.multiple}
                                 maxSize={elementItem.maxSize}
                                 minSize={elementItem.minSize}
-                                isDisabled={this.state.isDisabled}
+                                IsSystem={this.state.IsSystem}
                                 elementItem={elementItem}
                             />
                         </div>);
@@ -464,7 +464,7 @@ class SimpleFormCom extends Component {
                                     multiple={elementItem.multiple}
                                     maxSize={elementItem.maxSize}
                                     minSize={elementItem.minSize}
-                                    isDisabled={this.state.isDisabled}
+                                    IsSystem={this.state.IsSystem}
                                     elementItem={elementItem}
                                 />
                                 <div className="form-group col-md-2"></div>
@@ -498,7 +498,7 @@ class SimpleFormCom extends Component {
                                     multiple={elementItem.multiple}
                                     maxSize={elementItem.maxSize}
                                     minSize={elementItem.minSize}
-                                    isDisabled={this.state.isDisabled}
+                                    IsSystem={this.state.IsSystem}
                                     elementItem={elementItem}
                                 />
                                 <FormElement type={elementItem.Item2.type} name={elementItem.Item2.name}
@@ -520,7 +520,7 @@ class SimpleFormCom extends Component {
                                     multiple={elementItem.multiple}
                                     maxSize={elementItem.maxSize}
                                     minSize={elementItem.minSize}
-                                    isDisabled={this.state.isDisabled}
+                                    IsSystem={this.state.IsSystem}
                                     elementItem={elementItem}
 
 
@@ -550,7 +550,7 @@ class SimpleFormCom extends Component {
                                 multiple={elementItem.multiple}
                                 maxSize={elementItem.maxSize}
                                 minSize={elementItem.minSize}
-                                isDisabled={this.state.isDisabled}
+                                IsSystem={this.state.IsSystem}
                                 elementItem={elementItem}
 
                             />
@@ -573,7 +573,7 @@ class SimpleFormCom extends Component {
                                 multiple={elementItem.multiple}
                                 maxSize={elementItem.maxSize}
                                 minSize={elementItem.minSize}
-                                isDisabled={this.state.isDisabled}
+                                IsSystem={this.state.IsSystem}
                                 elementItem={elementItem}
 
                             />
@@ -596,7 +596,7 @@ class SimpleFormCom extends Component {
                                 multiple={elementItem.multiple}
                                 maxSize={elementItem.maxSize}
                                 minSize={elementItem.minSize}
-                                isDisabled={this.state.isDisabled}
+                                IsSystem={this.state.IsSystem}
                                 elementItem={elementItem}
 
                             />
