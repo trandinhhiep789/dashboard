@@ -99,7 +99,8 @@ class ModalCom extends React.Component {
         this.state = {
             FormData: formData,
             FormValidation: this.props.formValidation ? this.props.formValidation : {},
-            selectedFile: {}
+            selectedFile: {},
+            IsDisabled: formData && formData.IsSystem !== undefined ? formData.IsSystem : false
         };
     }
 
@@ -161,7 +162,7 @@ class ModalCom extends React.Component {
                     this.elementItemRefs[key].focus();
                     return false;
                 }
-                
+
             }
 
         }
@@ -242,7 +243,7 @@ class ModalCom extends React.Component {
                                     key={elementItem.Name}
                                     readonly={elementItem.readonly}
                                     disabled={elementItem.disabled}
-                                    isDisabled={elementItem.disabled}
+                                    isDisabled={this.state.IsDisabled}
                                     validatonList={elementItem.validatonList}
                                     validationErrorMessage={validationErrorMessage}
                                     IsAutoLoadItemFromCache={elementItem.IsAutoLoadItemFromCache}
