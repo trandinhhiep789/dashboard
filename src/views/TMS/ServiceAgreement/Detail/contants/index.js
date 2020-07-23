@@ -1,4 +1,4 @@
-export const APIHostName = "PIMAPI";
+export const APIHostName = "TMSAPI";
 export const PKColumnNameAbiliti = "AbilityID";
 export const TitleFromAbiliti = "Năng lực";
 

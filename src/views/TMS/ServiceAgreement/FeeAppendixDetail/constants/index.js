@@ -1,4 +1,4 @@
-export const APIHostName = "TMS";
+export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/ServiceAgreement_FeeAppendixDetail/SearchNew";
 export const BackLink = "/ServiceAgreement/FeeAppendix/Detail/";
 export const TitleFromFeeAppendixDetail = "Thông tin chi tiết phụ lục biểu phí";

@@ -13,7 +13,7 @@ import ListCoordinated from './ListCoordinated';
 import {
     APIHostName,
     SearchAPIPath
-} from "./Constants"
+} from "./constants"
 
 class DashboardCom extends Component {
     constructor(props) {
