@@ -22,10 +22,10 @@ class WeeklyReportCom extends Component {
             <div className="col-md-12 col-md-7 col-lg-7">
                 <div className="card shadow-1">
                     <div className="card-header">
-                        <h5 className="card-title">Nhật ký xử lý</h5>
+                        <h5 className="card-title">biểu đồ điều phối trong tuần</h5>
                     </div>
                     <div className="card-body">
-                        biểu đồ
+                        aa
                     </div>
                 </div>
             </div>
