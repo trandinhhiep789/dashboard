@@ -132,7 +132,7 @@ const AppMenu = [
                 SubMenu: [
                     {
                         MenuName: 'MaterialGroup',
-                        MenuTitle: 'Danh sách nhóm vật tư',
+                        MenuTitle: 'Nhóm vật tư',
                         LinkTo: '/MaterialGroup',
                         MenuIcon: '',
                         SubMenu: []

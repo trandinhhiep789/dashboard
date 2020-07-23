@@ -33,6 +33,7 @@ class MaterialGroup_ProductCom extends React.Component {
             IsCallAPIError: false,
             IsCloseForm: false,
             MaterialGroupProductDataSource: this.props.MaterialGroupProductDataSource ? this.props.MaterialGroupProductDataSource : [],
+            MaterialGroup_InstallCondDataSource: this.props.MaterialGroup_InstallCondDataSource ? this.props.MaterialGroup_InstallCondDataSource : [],
             MaterialGroupID: this.props.MaterialGroupID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
@@ -44,6 +45,10 @@ class MaterialGroup_ProductCom extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.MaterialGroupID !== this.state.MaterialGroupID) {
             this.setState({ MaterialGroupID: nextProps.MaterialGroupID });
+        }
+
+        if (nextProps.MaterialGroup_InstallCondDataSource !== this.state.MaterialGroup_InstallCondDataSource) {
+            this.setState({ MaterialGroup_InstallCondDataSource: nextProps.MaterialGroup_InstallCondDataSource });
         }
     }
 
@@ -100,7 +105,7 @@ class MaterialGroup_ProductCom extends React.Component {
     validateForm(formData) {
         debugger;
         let valid = true;
-        if ((formData.ProductID == undefined || formData.ProductID == -1 || !formData.ProductID[0] || !formData.ProductID[0].ProductID )) {
+        if ((formData.ProductID == undefined || formData.ProductID == -1 || !formData.ProductID[0] || !formData.ProductID[0].ProductID)) {
             valid = false;
         }
 
@@ -125,6 +130,7 @@ class MaterialGroup_ProductCom extends React.Component {
                     if (MLObject) {
                         MLObject.MaterialGroupProductCSID = this.state.MaterialGroupID + "," + MLObject.ProductID[0].ProductID;
                         MLObject.MaterialGroupID = this.state.MaterialGroupID;
+                        MLObject.ProductName = MLObject.ProductID[0].ProductName;
                         MLObject.ProductID = MLObject.ProductID[0].ProductID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
@@ -203,27 +209,57 @@ class MaterialGroup_ProductCom extends React.Component {
     }
 
     handleDelete(deleteList, pkColumnName) {
-        let _MaterialGroupProductDataSource = this.state.MaterialGroupProductDataSource;
-        deleteList.map((row, index) => {
-            let MLObject = {};
-            pkColumnName.map((pkItem, pkIndex) => {
-                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+
+
+        //kiểm tra xem mã sản phẩm vật tư có đang dc sử dụng hay không
+        debugger;
+        let match = [];
+        let tempMaterialGroupProductDataSource = [];
+        let tempMaterialGroup_InstallCondDataSource = [];
+        console.log("this.state.MaterialGroup_InstallCondDataSource.length",this.state.MaterialGroup_InstallCondDataSource);
+        if (this.state.MaterialGroup_InstallCondDataSource.length > 0) {
+            this.state.MaterialGroup_InstallCondDataSource.forEach(element => {
+                deleteList.forEach(item => {
+                    tempMaterialGroupProductDataSource = this.state.MaterialGroupProductDataSource.filter(x => x.MaterialGroupProductCSID == item.pkColumnName[0].value);
+                    tempMaterialGroup_InstallCondDataSource = tempMaterialGroupProductDataSource.filter(x => x.ProductID == element.MaterialProductID && !element.IsDeleted);
+                });
+
+                if (tempMaterialGroup_InstallCondDataSource && tempMaterialGroup_InstallCondDataSource.length > 0) {
+                    match = tempMaterialGroup_InstallCondDataSource;
+                }
             });
-            let _deleteList = _MaterialGroupProductDataSource.filter(item => item.MaterialGroupProductCSID == MLObject.MaterialGroupProductCSID);
-            _deleteList[0].IsDeleted = true;
-            _MaterialGroupProductDataSource = _MaterialGroupProductDataSource.filter(item => item.MaterialGroupProductCSID != MLObject.MaterialGroupProductCSID);
-            _MaterialGroupProductDataSource.push(_deleteList[0]);
-            _MaterialGroupProductDataSource.sort((a, b) => (a.ProductID > b.ProductID) ? 1 : ((b.ProductID > a.ProductID) ? -1 : 0));
-        });
-        this.setState({ MaterialGroupProductDataSource: _MaterialGroupProductDataSource });
-        if (this.props.onMaterialGroupProductChange) {
-            this.props.onMaterialGroupProductChange(_MaterialGroupProductDataSource);
         }
+
+        if (match && match.length > 0) {
+            let _message = "Sản phẩm vật tư " + match[0].ProductName + " đang sử dụng vui lòng không xóa";
+            this.showMessage(_message);
+        } else {
+            let _MaterialGroupProductDataSource = this.state.MaterialGroupProductDataSource;
+            deleteList.map((row, index) => {
+                let MLObject = {};
+                pkColumnName.map((pkItem, pkIndex) => {
+                    MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+                });
+                let _deleteList = _MaterialGroupProductDataSource.filter(item => item.MaterialGroupProductCSID == MLObject.MaterialGroupProductCSID);
+                _deleteList[0].IsDeleted = true;
+                _MaterialGroupProductDataSource = _MaterialGroupProductDataSource.filter(item => item.MaterialGroupProductCSID != MLObject.MaterialGroupProductCSID);
+                _MaterialGroupProductDataSource.push(_deleteList[0]);
+                _MaterialGroupProductDataSource.sort((a, b) => (a.ProductID > b.ProductID) ? 1 : ((b.ProductID > a.ProductID) ? -1 : 0));
+            });
+
+            this.setState({ MaterialGroupProductDataSource: _MaterialGroupProductDataSource });
+            if (this.props.onMaterialGroupProductChange) {
+                this.props.onMaterialGroupProductChange(_MaterialGroupProductDataSource);
+            }
+        }
+
     }
 
     isNumeric(value) {
         return /^-{0,1}\d+$/.test(value);
     }
+
+
 
     initDatasource(dataSource) {
         let skillRank = this.state.SkillRank ? this.state.SkillRank : [];

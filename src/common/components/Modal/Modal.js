@@ -122,14 +122,14 @@ class ModalCom extends React.Component {
     }
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.formValidation) !== JSON.stringify(nextProps.formValidation)) {
-            this.setState({ FormValidation: nextProps.formValidation });   
+            this.setState({ FormValidation: nextProps.formValidation });
         }
         //focus vào field không hợp lệ khi submit
-        if(nextProps.isSubmit){
+        if (nextProps.isSubmit) {
             this.checkInput(nextProps.formValidation);
         }
     }
-    
+
     get title() {
         const { title } = this.props;
 
@@ -156,11 +156,14 @@ class ModalCom extends React.Component {
 
     checkInput(formValidation) {
         for (const key in formValidation) {
-            if (formValidation[key].IsValidationError){
-                this.elementItemRefs[key].focus();
-                return false;
-            }
+            if (formValidation[key].IsValidationError) {
+                if (typeof this.elementItemRefs[key].focus !== "undefined") {
+                    this.elementItemRefs[key].focus();
+                    return false;
+                }
                 
+            }
+
         }
         return true;
     }
@@ -213,7 +216,7 @@ class ModalCom extends React.Component {
         const modalElementList = this.props.modalElementList;
         //console.log("modalElementList",modalElementList);
         return (
-            <div className="card-body" style={{textAlign: 'left'}}>
+            <div className="card-body" style={{ textAlign: 'left' }}>
                 {
                     modalElementList.map((elementItem, index) => {
                         let validationErrorMessage = "";
@@ -225,7 +228,7 @@ class ModalCom extends React.Component {
                                 <FormElement type={elementItem.type} name={elementItem.Name}
                                     CSSClassName="form-control form-control-sm"
                                     value={this.state.FormData[elementItem.Name]}
-                                    selectedValue = {elementItem.selectedValue}
+                                    selectedValue={elementItem.selectedValue}
                                     label={elementItem.label} placeholder={elementItem.placeholder}
                                     labelError={elementItem.labelError}
                                     colspan={elementItem.colspan}

@@ -465,6 +465,7 @@ class FormElementCom extends Component {
                         isMulti={this.props.isMulti}
                         disabled={this.state.IsDisabled}
                         ref={this.props.inputRef}
+                        IsLabelDiv={false}
                         onValueChange={this.handleMultiSelectChange}
                     />
                 );

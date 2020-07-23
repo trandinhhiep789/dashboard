@@ -148,6 +148,12 @@ class MultiSelectComboBoxCom extends React.Component {
             isLabelDiv = this.props.IsLabelDiv;
         if (isLabelDiv == false)
             formGroupClassName = "col-md-12";
+
+
+        let star = "";
+        if (this.props.isRequired) {
+            star = " *";
+        }
         // const CustomStyle = {
         //     option: (base, state) => ({
         //         ...base,
@@ -159,7 +165,7 @@ class MultiSelectComboBoxCom extends React.Component {
             <div className={formRowClassName} >
                 {isLabelDiv &&
                     <div className={labelDivClassName}>
-                        <label className="col-form-label">{this.props.label}</label>
+                        <label className="col-form-label">{this.props.label}<span className="text-danger">{star}</span></label>
                     </div>
                 }
                 <div className={formGroupClassName}>

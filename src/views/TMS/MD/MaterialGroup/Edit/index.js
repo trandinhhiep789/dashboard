@@ -66,6 +66,7 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
+        MLObject.MaterialGroupID = this.props.match.params.id;
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.MaterialGroup_Product = this.state.MaterialGroup_Product;
@@ -81,6 +82,7 @@ class EditCom extends React.Component {
 
     onMaterialGroupProductChange(list) {
         this.setState({ MaterialGroup_Product: list });
+        console.log("MaterialGroup_Product", list);
     }
 
     onMaterialGroup_InstallCondChange(list) {
@@ -128,12 +130,14 @@ class EditCom extends React.Component {
                     <MaterialGroup_Product
                         MaterialGroupID={this.props.match.params.id}
                         MaterialGroupProductDataSource={this.state.MaterialGroup_Product}
+                        MaterialGroup_InstallCondDataSource={this.state.MaterialGroup_InstallCond}
                         onMaterialGroupProductChange={this.onMaterialGroupProductChange}
                     />
                     <br />
                     <MaterialGroup_InstallCond
                         MaterialGroupID={this.props.match.params.id}
                         MaterialGroup_InstallCondDataSource={this.state.MaterialGroup_InstallCond}
+                        MaterialGroup_ProductDataSource={this.state.MaterialGroup_Product}
                         onMaterialGroup_InstallCondChange={this.onMaterialGroup_InstallCondChange}
                     />
                 </SimpleForm>
