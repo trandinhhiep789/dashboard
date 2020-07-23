@@ -46,7 +46,7 @@ class FormElementCom extends Component {
             value: this.props.value,
             ValidationError: "",
             Listoption: [],
-            IsDisabled: false,
+            IsSystem: this.props.IsSystem !== undefined ? this.props.IsSystem : false,
             src: this.props.cdn + this.props.value,
             content: "",
             acceptType: "image/*",
@@ -104,7 +104,7 @@ class FormElementCom extends Component {
     }
 
     componentDidMount() {
-        console.log("this.props.isDisabled",this.props.isDisabled);
+        console.log("this.props.IsSystem", this.props.IsSystem);
         //console.log('FormElementCom', this.props.validatonList.includes("required"))
         debugger;
         if (this.props.type == "Editor") {
@@ -112,17 +112,22 @@ class FormElementCom extends Component {
                 content: this.props.value
             })
         }
-        const validatonDisabled = this.props.isDisabled;
+        //const validatonDisabled = this.props.disabled;
         if (this.props.AppInfo.LoginInfo.Username == "administrator" && (this.props.name).toLowerCase().includes('system')) {
             this.setState({
-                IsDisabled: false
+                IsSystem: false
             })
         }
-        else if (validatonDisabled) {
-            this.setState({
-                IsDisabled: true
-            })
-        }
+        // else{
+        //     this.setState({
+        //         IsSystem: false
+        //     })
+        // }
+        // else if (validatonDisabled) {
+        //     this.setState({
+        //         IsDisabled: true
+        //     })
+        // }
 
 
         //singlefileupload
@@ -395,13 +400,13 @@ class FormElementCom extends Component {
                             defaultValue={this.props.value}
                             onChange={this.handleInputChange}
                             readOnly={this.props.readonly}
-                            disabled={this.state.IsDisabled} />
+                            disabled={this.state.IsSystem} />
 
                         <select className={this.props.CSSClassName + " cboption"}
                             name={this.props.nameOption}
                             onChange={this.handleInputChange}
                             value={this.props.valueOption}
-                            disabled={this.state.IsDisabled}>
+                            disabled={this.state.IsSystem}>
                             {this.state.Listoption && this.state.Listoption.map((optionItem) =>
                                 <option value={optionItem.value} key={optionItem.value} >{optionItem.label}</option>
                             )}
@@ -410,10 +415,10 @@ class FormElementCom extends Component {
                 )
                 break;
             case "textarea":
-                control = <textarea className={this.props.CSSClassName} rows={this.props.rows} name={this.props.name} ref={this.props.inputRef} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} />;
+                control = <textarea className={this.props.CSSClassName} rows={this.props.rows} name={this.props.name} ref={this.props.inputRef} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsSystem} maxLength={this.props.maxSize} />;
                 break;
             case "select":
-                let disabled = this.state.IsDisabled;
+                let disabled = this.state.IsSystem;
                 if (!disabled) {
                     if (typeof this.props.disabled !== "undefined" && this.props.disabled == true) {
                         disabled = this.props.disabled;
@@ -445,7 +450,8 @@ class FormElementCom extends Component {
                         ref={this.props.inputRef}
                         onChange={this.handleInputChange}
                         value={this.props.value}
-                        disabled={this.state.IsDisabled}
+                        IsSystem={this.state.IsSystem}
+                        disabled={this.props.disabled}
                         colspan={this.props.colspan}
                         labelcolspan={this.props.labelcolspan}
                         controltype={this.props.controltype}
@@ -465,7 +471,8 @@ class FormElementCom extends Component {
                         value={this.props.value}
                         colspan={this.props.colspan}
                         isMulti={this.props.isMulti}
-                        disabled={this.state.IsDisabled}
+                        IsSystem={this.state.IsSystem}
+                        disabled={this.props.disabled}
                         ref={this.props.inputRef}
                         IsLabelDiv={false}
                         onValueChange={this.handleMultiSelectChange}
@@ -489,7 +496,7 @@ class FormElementCom extends Component {
                 control = (
                     <div className="checkbox customCheckbox">
                         <label>
-                            <input name={this.props.name} type={this.props.type} defaultChecked={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsDisabled} />
+                            <input name={this.props.name} type={this.props.type} defaultChecked={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsSystem} />
                             <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                         </label>
                     </div>
@@ -499,10 +506,10 @@ class FormElementCom extends Component {
                 control = <input className={this.props.CSSClassName} name={this.props.name} type={this.props.type} defaultValue={this.props.value} checked={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} />;
                 break;
             case "text":
-                control = <input className={controlCSSClassName} name={this.props.name} ref={this.props.inputRef} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} />;
+                control = <input className={controlCSSClassName} name={this.props.name} ref={this.props.inputRef} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsSystem} maxLength={this.props.maxSize} />;
                 break;
             case "textType":
-                control = <input className={controlCSSClassName} name={this.props.name} type={this.props.type} type="text" placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsDisabled} />;
+                control = <input className={controlCSSClassName} name={this.props.name} type={this.props.type} type="text" placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsSystem} />;
                 break;
             case "button":
                 const CSSClassNamebtn = "btn btn-info";
@@ -514,14 +521,14 @@ class FormElementCom extends Component {
                 control = (
                     <input className={controlCSSClassName} name={this.props.name} type={this.props.type} placeholder={this.props.placeholder}
                         defaultValue={this.props.value} onChange={this.handleInputChange}
-                        readOnly={this.props.readonly} disabled={this.state.IsDisabled}
+                        readOnly={this.props.readonly} disabled={this.state.IsSystem}
                         min={this.props.min} max={this.props.max}
                     />
                 );
                 break;
             case "numeric":
                 let valueFormat = this.props.value ? Number(this.props.value).toLocaleString() : 0;
-                control = <input className={controlCSSClassName} name={this.props.name} ref={this.props.inputRef} value={valueFormat} type="text" placeholder={this.props.placeholder} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} onKeyUp={(e) => { e.target.value = Number(this.formatNumeric(e.target.value)).toLocaleString() }} />;
+                control = <input className={controlCSSClassName} name={this.props.name} ref={this.props.inputRef} value={valueFormat} type="text" placeholder={this.props.placeholder} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsSystem} maxLength={this.props.maxSize} onKeyUp={(e) => { e.target.value = Number(this.formatNumeric(e.target.value)).toLocaleString() }} />;
                 break;
             case "file":
                 const CSSClassName = this.props.CSSClassName + "btn btn-bold btn-pure btn-primary"
@@ -532,7 +539,7 @@ class FormElementCom extends Component {
                     <div className="input-group file-group">
                         {/* <input type="text" className="form-control file-value" value={this.state.value} placeholder="Choose file..." readOnly /> */}
                         <img src={this.state.src} alt="No image" style={singleFileUploadImage} />
-                        <input type="file" id={this.props.name} onChange={this.handleSelectedFile} accept={this.state.acceptType} disabled={this.state.IsDisabled} />
+                        <input type="file" id={this.props.name} onChange={this.handleSelectedFile} accept={this.state.acceptType} disabled={this.state.IsSystem} />
                         {this.state.value != null && this.state.value != "" ? <i className="fa fa-remove" style={singleFileUploadDeletebtn} onClick={this.resetFile}></i> : ""}
                         <span className="input-group-append" >
                             <label className="btn btn-light file-browser" htmlFor={this.props.name} >
@@ -570,13 +577,13 @@ class FormElementCom extends Component {
             case 'datetime':
                 const defaultDate = new Date().getDate() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getFullYear();
                 const valueDate = new Date(this.props.value).getDate() + '/' + (new Date(this.props.value).getMonth() + 1) + '/' + new Date(this.props.value).getFullYear();
-                control = <Datetime dateFormat="DD/MM/YYYY" timeFormat={false} defaultValue={defaultDate} value={this.props.value ? valueDate : defaultDate} readOnly={this.props.readonly} name={this.props.name} type={this.props.type} className={this.state.IsDisabled ? "de-active" : ""} onChange={(moment) => this.handleDateTimeChange(this.props.name, moment)}></Datetime>
+                control = <Datetime dateFormat="DD/MM/YYYY" timeFormat={false} defaultValue={defaultDate} value={this.props.value ? valueDate : defaultDate} readOnly={this.props.readonly} name={this.props.name} type={this.props.type} className={this.state.IsSystem ? "de-active" : ""} onChange={(moment) => this.handleDateTimeChange(this.props.name, moment)}></Datetime>
                 break;
             case 'date':
                 control = <Datetime timeFormat={false} dateFormat="DD/MM/YYYY" value={this.props.value} readOnly={this.props.readonly} name={this.props.name} type={this.props.type} className={CSSClassName} onChange={(moment) => this.handleDateTimeChange(this.props.name, moment)}></Datetime>
                 break;
             case "treeSelect":
-                let disabledd = this.state.IsDisabled;
+                let disabledd = this.state.IsSystem;
                 if (!disabledd) {
                     if (typeof this.props.disabled !== "undefined" && this.props.disabled == true) {
                         disabledd = this.props.disabled;
