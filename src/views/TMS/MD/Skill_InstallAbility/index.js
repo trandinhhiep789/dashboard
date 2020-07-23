@@ -220,9 +220,9 @@ class Skill_InstallAbilityCom extends React.Component {
 
     validateForm(formData) {
         let valid = true;
-        if ((formData.SubGroupID == undefined || formData.SubGroupID == -1 || !formData.SubGroupID[0])
-            || (formData.TechspecsID == undefined || formData.SubGTechspecsIDroupID == -1 || !formData.TechspecsID[0])
-            || (formData.TechspecsValueID == undefined || formData.TechspecsValueID == -1 || !formData.TechspecsValueID[0])) {
+        if ((formData.SubGroupID == undefined || formData.SubGroupID == -1 || !formData.SubGroupID[0])){
+            //|| (formData.TechspecsID == undefined || formData.SubGTechspecsIDroupID == -1 || !formData.TechspecsID[0])
+            //|| (formData.TechspecsValueID == undefined || formData.TechspecsValueID == -1 || !formData.TechspecsValueID[0])) {
             valid = false;
         }
 
@@ -240,7 +240,7 @@ class Skill_InstallAbilityCom extends React.Component {
                 if (isConfirmed) {
                     let valid = this.validateForm(formData);
                     if (!valid) {
-                        this.showMessage("Vui lòng chọn đầy đủ thông tin");
+                        this.showMessage("Vui lòng chọn nhóm hàng");
                         return;
                     }
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
