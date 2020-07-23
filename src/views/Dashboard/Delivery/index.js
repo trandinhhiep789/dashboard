@@ -26,13 +26,13 @@ class DeliveryCom extends Component {
                                 <i className="fa fa-truck fa-4x"></i>
                             </div>
                             <div className="col-9 text-right content">
-                                <span className="Count">222</span>
+                                <span className="Count">{this.props.DataSource.filter(n => n.ActualBeginDeliveryTime != null && n.IsCompleteDeliverIed == false).length}</span>
                                 <h3 className="title">Đang giao</h3>
                             </div>
                         </div>
                     </div>
                     <div className="card-footer">
-                        <Link to="/" className="view-detail">
+                        <Link to="/ShipmentOrder" className="view-detail">
                             <span className="pull-left">Chi tiết</span>
                             <span className="btn-pull-right">
                                 <i className="fa fa-arrow-circle-right"></i>

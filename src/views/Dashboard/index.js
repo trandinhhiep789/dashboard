@@ -10,37 +10,60 @@ import Delivered from './Delivered';
 import ProcessHistory from './ProcessHistory';
 import WeeklyReport from './WeeklyReport';
 import ListCoordinated from './ListCoordinated';
+import {
+    APIHostName,
+    SearchAPIPath
+} from "./Constants"
 
 class DashboardCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            LstDataSource: [],
+            IsLoadDataComplete: false,
 
         };
     }
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+        this.callSearchDataReport()
+
+    }
+
+    callSearchDataReport() {
+        const postData = [];
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, postData).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.setState({
+                    LstDataSource: apiResult.ResultObject,
+                    IsLoadDataComplete: true
+                });
+            }
+        });
     }
 
     render() {
-        return (
-            <div className="col-lg-12 dashboard">
-                <div className="row">
-                    <NoCoordinated />
-                    <NoDelivery />
-                    <Delivery />
-                    <Delivered />
+        if (this.state.IsLoadDataComplete) {
+            return (
+                <div className="col-lg-12 dashboard">
+                    <div className="row">
+                        <NoCoordinated DataSource={this.state.LstDataSource} />
+                        <NoDelivery DataSource={this.state.LstDataSource} />
+                        <Delivery DataSource={this.state.LstDataSource} />
+                        <Delivered DataSource={this.state.LstDataSource} />
+                    </div>
+                    <div className="row">
+                        <WeeklyReport />
+                        <ProcessHistory />
+                    </div>
+                    <div className="row">
+                        <ListCoordinated />
+                    </div>
                 </div>
-                <div className="row">
-                    <WeeklyReport/>
-                    <ProcessHistory />
-                </div>
-                <div className="row">
-                    <ListCoordinated/>
-                </div>
-            </div>
-        );
+            );
+        }
+        return <label>Đang nạp dữ liệu...</label>;
     }
 }
 
