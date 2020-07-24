@@ -54,7 +54,7 @@ class DashboardCom extends Component {
                         <Delivered DataSource={this.state.LstDataSource} />
                     </div>
                     <div className="row">
-                        <WeeklyReport />
+                        <WeeklyReport DataSource={this.state.LstDataSource} />
                         <ProcessHistory />
                     </div>
                     <div className="row">
