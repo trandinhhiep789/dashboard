@@ -79,7 +79,7 @@ class AddCom extends React.Component {
         // MLObject.SignedDate = new Date(ExportStringToDate(MLObject.SignedDate));
         // MLObject.ExpiredDate = new Date(ExportStringToDate(MLObject.ExpiredDate));
 
-        console.log("MLObject", MLObject)
+        // console.log("MLObject", MLObject)
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });

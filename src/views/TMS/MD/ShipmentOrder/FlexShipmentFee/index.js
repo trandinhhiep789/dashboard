@@ -450,7 +450,10 @@ class FlexShipmentFeeCom extends React.Component {
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
-                <Collapsible trigger="Chi phí vận chuyển thay đổi" easing="ease-in" open={true}>
+                {/* <Collapsible trigger="Chi phí vận chuyển thay đổi" easing="ease-in" open={true}>
+                    
+                </Collapsible> */}
+                <div className="sub-grid">
                     <DataGrid listColumn={FlexShipmentFeeColumnList}
                         dataSource={this.state.ShipmentOrderTypeFlexShipmentFee}
                         modalElementList={this.state.ModalFlexShipmentFeeColumnList}
@@ -463,8 +466,10 @@ class FlexShipmentFeeCom extends React.Component {
                         IsAutoPaging={false}
                         RowsPerPage={10}
                         IsCustomAddLink={true}
+                        headingTitle={"Chi phí vận chuyển thay đổi"}
                     />
-                </Collapsible>
+                </div>
+
             </React.Fragment>
         );
     }

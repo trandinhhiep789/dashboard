@@ -41,7 +41,7 @@ class PartnerCoordinatorStoreCom extends React.Component {
         if (nextProps.PartnerID !== this.state.PartnerID) {
             this.setState({ PartnerID: nextProps.PartnerID });
         }
-        if(nextProps.Store !== this.state.Store){
+        if (nextProps.Store !== this.state.Store) {
             this.setState({ Store: nextProps.Store });
         }
     }
@@ -242,7 +242,10 @@ class PartnerCoordinatorStoreCom extends React.Component {
         }
         if (this.state.Store) {
             return (
-                <Collapsible trigger="Danh sách kho điều phối giao hàng cho các kho của đối tác" easing="ease-in" open={true}>
+                // <Collapsible trigger="Danh sách kho điều phối giao hàng cho các kho của đối tác" easing="ease-in" open={true}>
+
+                // </Collapsible>
+                <div className="sub-grid">
                     <DataGrid listColumn={DataGridColumnList}
                         dataSource={datasource}
                         modalElementList={ModalColumnList_Insert}
@@ -255,8 +258,9 @@ class PartnerCoordinatorStoreCom extends React.Component {
                         IsAutoPaging={true}
                         RowsPerPage={10}
                         IsCustomAddLink={true}
+                        headingTitle={"Danh sách kho điều phối giao hàng cho các kho của đối tác"}
                     />
-                </Collapsible>
+                </div>
             );
         } else {
             return (

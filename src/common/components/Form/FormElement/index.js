@@ -149,7 +149,9 @@ class FormElementCom extends Component {
                     //console.log("FormElement callGetCache: ", result)
                     listOption = [{ value: -1, label: this.props.type == "multiselect" ? "------ Chọn ------" : "------ Vui lòng chọn ------" }];
                     if (!result.IsError && result.ResultObject.CacheData != null) {
-
+                        if (keyFilter && valueFilter) {
+                            result.ResultObject.CacheData = result.ResultObject.CacheData.filter(x => x[keyFilter] == valueFilter);
+                        }
                         result.ResultObject.CacheData.map((cacheItem) => {
                             // console.log("FormElement listOption: ", cacheItem)
                             listOption.push({ value: cacheItem[valueMember], label: this.props.type == "multiselect" ? cacheItem[nameMember] : cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });

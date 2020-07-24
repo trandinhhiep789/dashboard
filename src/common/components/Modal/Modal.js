@@ -258,6 +258,8 @@ class ModalCom extends React.Component {
                                     elementItem={elementItem}
                                     inputRef={ref => this.elementItemRefs[elementItem.Name] = ref}
                                     isMulti={elementItem.isMulti}
+                                    KeyFilter={elementItem.KeyFilter}
+                                    ValueFilter={elementItem.ValueFilter}
                                 />
                             </div>);
                     }

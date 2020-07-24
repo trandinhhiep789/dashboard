@@ -4,7 +4,24 @@ export const DeleteAPIPath = "api/Skill_SkillRank/Delete";
 
 export const ModalColumnList_Insert = [
     {
-        type: "select",
+        type: "multiselect",
+        Name: "AreaID",
+        label: "khu vực",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "AreaID",
+        readonly: false,
+        validatonList: [],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREA",
+        ValueMember: "AreaID",
+        NameMember: "AreaName"
+    },
+    {
+        type: "multiselect",
         Name: "StoreID",
         label: "chi nhánh",
         value: -1,
@@ -33,7 +50,7 @@ export const ModalColumnList_Insert = [
 
 export const ModalColumnList_Edit = [
     {
-        type: "select",
+        type: "multiselect",
         Name: "StoreID",
         label: "chi nhánh",
         value: -1,

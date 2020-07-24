@@ -121,11 +121,11 @@ class MaterialGroup_ProductCom extends React.Component {
             onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
-                    let valid = this.validateForm(formData);
-                    if (!valid) {
-                        this.showMessage("Vui lòng nhập mã sản phẩm vật tư");
-                        return;
-                    }
+                    // let valid = this.validateForm(formData);
+                    // if (!valid) {
+                    //     this.showMessage("Vui lòng nhập mã sản phẩm vật tư");
+                    //     return;
+                    // }
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
                     if (MLObject) {
                         MLObject.MaterialGroupProductCSID = this.state.MaterialGroupID + "," + MLObject.ProductID[0].ProductID;
@@ -295,20 +295,23 @@ class MaterialGroup_ProductCom extends React.Component {
             // <Collapsible trigger="Sản phẩm của nhóm vật tư" easing="ease-in" open={true}>
 
             // </Collapsible>
-            <DataGrid listColumn={DataGridColumnList}
-                dataSource={datasource}
-                modalElementList={ModalColumnList_Insert}
-                MLObjectDefinition={MLObjectDefinition}
-                IDSelectColumnName={"chkSelectMaterialGroupProductCSID"}
-                PKColumnName={"MaterialGroupProductCSID"}
-                onDeleteClick={this.handleDelete}
-                onInsertClick={this.handleInsert}
-                onInsertClickEdit={this.handleEdit}
-                IsAutoPaging={true}
-                RowsPerPage={10}
-                IsCustomAddLink={true}
-                headingTitle={"Sản phẩm của nhóm vật tư"}
-            />
+            <div className="sub-grid">
+                <DataGrid listColumn={DataGridColumnList}
+                    dataSource={datasource}
+                    modalElementList={ModalColumnList_Insert}
+                    MLObjectDefinition={MLObjectDefinition}
+                    IDSelectColumnName={"chkSelectMaterialGroupProductCSID"}
+                    PKColumnName={"MaterialGroupProductCSID"}
+                    onDeleteClick={this.handleDelete}
+                    onInsertClick={this.handleInsert}
+                    onInsertClickEdit={this.handleEdit}
+                    IsAutoPaging={true}
+                    RowsPerPage={10}
+                    IsCustomAddLink={true}
+                    headingTitle={"Sản phẩm của nhóm vật tư"}
+                />
+            </div>
+
         );
 
 

@@ -255,20 +255,23 @@ class Skill_SkillRankCom extends React.Component {
         }
 
         return (
-            <DataGrid listColumn={DataGridColumnList}
-                dataSource={datasource}
-                modalElementList={ModalColumnList_Insert}
-                MLObjectDefinition={MLObjectDefinition}
-                IDSelectColumnName={"chkSelectSkillSkillRankCSID"}
-                PKColumnName={"SkillSkillRankCSID"}
-                onDeleteClick={this.handleDelete}
-                onInsertClick={this.handleInsert}
-                onInsertClickEdit={this.handleEdit}
-                IsAutoPaging={true}
-                RowsPerPage={10}
-                IsCustomAddLink={true}
-                headingTitle={"Cấp bậc kỹ năng của 1 kỹ năng"}
-            />
+            <div className="sub-grid">
+                <DataGrid listColumn={DataGridColumnList}
+                    dataSource={datasource}
+                    modalElementList={ModalColumnList_Insert}
+                    MLObjectDefinition={MLObjectDefinition}
+                    IDSelectColumnName={"chkSelectSkillSkillRankCSID"}
+                    PKColumnName={"SkillSkillRankCSID"}
+                    onDeleteClick={this.handleDelete}
+                    onInsertClick={this.handleInsert}
+                    onInsertClickEdit={this.handleEdit}
+                    IsAutoPaging={true}
+                    RowsPerPage={10}
+                    IsCustomAddLink={true}
+                    headingTitle={"Cấp bậc kỹ năng của 1 kỹ năng"}
+                />
+            </div>
+
         );
 
 

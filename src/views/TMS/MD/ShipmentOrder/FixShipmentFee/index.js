@@ -256,7 +256,10 @@ class FixShipmentFeeCom extends React.Component {
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
-                <Collapsible trigger="Chi phí vận chuyển cố định" easing="ease-in" open={true}>
+                {/* <Collapsible trigger="Chi phí vận chuyển cố định" easing="ease-in" open={true}>
+                    
+                </Collapsible> */}
+                <div className="sub-grid">
                     <DataGrid listColumn={FixShipmentFeeColumnList}
                         dataSource={this.state.ShipmentOrderTypeFixShipmentFee}
                         modalElementList={this.state.ModalFixShipmentFeeColumnList}
@@ -269,8 +272,10 @@ class FixShipmentFeeCom extends React.Component {
                         IsAutoPaging={false}
                         RowsPerPage={10}
                         IsCustomAddLink={true}
+                        headingTitle={"Chi phí vận chuyển cố định"}
                     />
-                </Collapsible>
+                </div>
+
             </React.Fragment>
         );
     }

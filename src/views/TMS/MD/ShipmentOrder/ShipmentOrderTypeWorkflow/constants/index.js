@@ -232,6 +232,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "AutoChangeToShipmentOrderStepID"
     },
     {
+        Name: "IsCanAdvanceMaterialStep",
+        DefaultValue: "",
+        BindControlName: "IsCanAdvanceMaterialStep",
+        DataSourceMember: "IsCanAdvanceMaterialStep"
+    },
+    {
         Name: "OrderIndex",
         DefaultValue: "",
         BindControlName: "OrderIndex",
