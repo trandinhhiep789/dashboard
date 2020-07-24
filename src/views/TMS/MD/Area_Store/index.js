@@ -26,7 +26,7 @@ class Area_StoreCom extends React.Component {
         this.initCache = this.initCache.bind(this);
         this.resetCombobox = this.resetCombobox.bind(this);
         this.initDatasource = this.initDatasource.bind(this);
-        this.handleModalChange= this.handleModalChange.bind(this);
+        this.handleModalChange = this.handleModalChange.bind(this);
         this.onClose = this.onClose.bind(this);
         this.state = {
             CallAPIMessage: "",
@@ -297,7 +297,11 @@ class Area_StoreCom extends React.Component {
         }
 
         return (
-            <Collapsible trigger="Danh sách các chi nhánh của khu vực" easing="ease-in" open={true}>
+            // <Collapsible trigger="Danh sách các chi nhánh của khu vực" easing="ease-in" open={true}>
+
+            // </Collapsible>
+
+            <div className="sub-grid">
                 <DataGrid listColumn={DataGridColumnList}
                     dataSource={datasource}
                     modalElementList={ModalColumnList_Insert}
@@ -310,8 +314,9 @@ class Area_StoreCom extends React.Component {
                     IsAutoPaging={true}
                     RowsPerPage={10}
                     IsCustomAddLink={true}
+                    headingTitle={"Danh sách các chi nhánh của khu vực"}
                 />
-            </Collapsible>
+            </div>
         );
 
 

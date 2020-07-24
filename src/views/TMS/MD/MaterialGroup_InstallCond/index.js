@@ -521,20 +521,23 @@ class MaterialGroup_InstallCondCom extends React.Component {
             // <Collapsible trigger="Điều kiện lắp đặt của nhóm vật tư" easing="ease-in" open={true}>
 
             // </Collapsible>
-            <DataGrid listColumn={DataGridColumnList}
-                dataSource={datasource}
-                modalElementList={this.state.ModalColumnList_Insert}
-                MLObjectDefinition={MLObjectDefinition}
-                IDSelectColumnName={"chkSelectInstallCondID"}
-                PKColumnName={"InstallCondID"}
-                onDeleteClick={this.handleDelete}
-                onInsertClick={this.handleInsert}
-                onInsertClickEdit={this.handleEdit}
-                IsAutoPaging={true}
-                RowsPerPage={10}
-                IsCustomAddLink={true}
-                headingTitle={"Điều kiện lắp đặt của nhóm vật tư"}
-            />
+            <div className="sub-grid">
+                <DataGrid listColumn={DataGridColumnList}
+                    dataSource={datasource}
+                    modalElementList={this.state.ModalColumnList_Insert}
+                    MLObjectDefinition={MLObjectDefinition}
+                    IDSelectColumnName={"chkSelectInstallCondID"}
+                    PKColumnName={"InstallCondID"}
+                    onDeleteClick={this.handleDelete}
+                    onInsertClick={this.handleInsert}
+                    onInsertClickEdit={this.handleEdit}
+                    IsAutoPaging={true}
+                    RowsPerPage={10}
+                    IsCustomAddLink={true}
+                    headingTitle={"Điều kiện lắp đặt của nhóm vật tư"}
+                />
+            </div>
+
         );
     }
 }
