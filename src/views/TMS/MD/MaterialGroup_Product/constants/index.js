@@ -38,7 +38,7 @@ export const ModalColumnList_Insert = [
         maxSize: "9",
         DataSourceMember: "ConvertRatio",
         readonly: false,
-        validatonList: ["number"]
+        validatonList: ["digit"]
     },
     {
         Name: "Note",
@@ -108,7 +108,7 @@ export const ModalColumnList_Edit = [
         maxSize: "9",
         DataSourceMember: "ConvertRatio",
         readonly: false,
-        validatonList: ["number"]
+        validatonList: ["digit"]
     },
     {
         Name: "Note",

@@ -141,7 +141,7 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
                         Message: ""
                     }
                 }
-           
+
             }
             else {
                 if (/^[0-9]*$/.test(fieldValue)) {
@@ -163,6 +163,7 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
             }
         }
     }
+
     /*kiểm tra ký tự đặc biệt */
     if (typelist.includes("special") && IsEr == 0) {
 
@@ -322,6 +323,37 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
             }
         }
         else {
+            IsEr = 0;
+            result = {
+                IsError: false,
+                fieldValue: fieldValue,
+                Message: ""
+            }
+        }
+
+    }
+
+
+    /*nhập số (int, float ......)*/
+    if (typelist.includes("digit") && IsEr == 0) {
+        if (fieldValue) {
+            if (isNaN(fieldValue)) {
+                IsEr = 1;
+                result = {
+                    IsError: true,
+                    fieldValue: fieldValue,
+                    Message: "Vui lòng chọn nhập số"
+                }
+            }
+            else {
+                IsEr = 0;
+                result = {
+                    IsError: false,
+                    fieldValue: fieldValue,
+                    Message: ""
+                }
+            }
+        } else {
             IsEr = 0;
             result = {
                 IsError: false,

@@ -121,11 +121,11 @@ class MaterialGroup_ProductCom extends React.Component {
             onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
-                    let valid = this.validateForm(formData);
-                    if (!valid) {
-                        this.showMessage("Vui lòng nhập mã sản phẩm vật tư");
-                        return;
-                    }
+                    // let valid = this.validateForm(formData);
+                    // if (!valid) {
+                    //     this.showMessage("Vui lòng nhập mã sản phẩm vật tư");
+                    //     return;
+                    // }
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
                     if (MLObject) {
                         MLObject.MaterialGroupProductCSID = this.state.MaterialGroupID + "," + MLObject.ProductID[0].ProductID;
