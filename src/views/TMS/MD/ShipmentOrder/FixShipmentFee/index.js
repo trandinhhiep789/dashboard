@@ -256,21 +256,23 @@ class FixShipmentFeeCom extends React.Component {
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
-                <Collapsible trigger="Chi phí vận chuyển cố định" easing="ease-in" open={true}>
-                    <DataGrid listColumn={FixShipmentFeeColumnList}
-                        dataSource={this.state.ShipmentOrderTypeFixShipmentFee}
-                        modalElementList={this.state.ModalFixShipmentFeeColumnList}
-                        MLObjectDefinition={MLObjectShipmentOrderType_FixShipmentFee}
-                        IDSelectColumnName={"chkSelectShipmentFeeTypeID"}
-                        PKColumnName={"ShipmentFeeTypeID"}
-                        onDeleteClick={this.delete_ShipmentOrderType_FixShipmentFee}
-                        onInsertClick={this.addShipmentOrderType_FixShipmentFeePopup}
-                        onInsertClickEdit={this.editShipmentOrderType_FixShipmentFeePopup}
-                        IsAutoPaging={false}
-                        RowsPerPage={10}
-                        IsCustomAddLink={true}
-                    />
-                </Collapsible>
+                {/* <Collapsible trigger="Chi phí vận chuyển cố định" easing="ease-in" open={true}>
+                    
+                </Collapsible> */}
+                <DataGrid listColumn={FixShipmentFeeColumnList}
+                    dataSource={this.state.ShipmentOrderTypeFixShipmentFee}
+                    modalElementList={this.state.ModalFixShipmentFeeColumnList}
+                    MLObjectDefinition={MLObjectShipmentOrderType_FixShipmentFee}
+                    IDSelectColumnName={"chkSelectShipmentFeeTypeID"}
+                    PKColumnName={"ShipmentFeeTypeID"}
+                    onDeleteClick={this.delete_ShipmentOrderType_FixShipmentFee}
+                    onInsertClick={this.addShipmentOrderType_FixShipmentFeePopup}
+                    onInsertClickEdit={this.editShipmentOrderType_FixShipmentFeePopup}
+                    IsAutoPaging={false}
+                    RowsPerPage={10}
+                    IsCustomAddLink={true}
+                    headingTitle={"Chi phí vận chuyển cố định"}
+                />
             </React.Fragment>
         );
     }

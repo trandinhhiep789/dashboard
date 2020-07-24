@@ -9,13 +9,12 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { GetMLObjectData } from "../../../../common/library/form/FormLib";
 import Collapsible from 'react-collapsible';
 import {
-    AddAPIPath, UpdateAPIPath, DeleteAPIPath,
     ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition
 } from "./constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SKILLRANK, ERPCOMMONCACHE_STORE } from "../../../../constants/keyCache";
+import { ERPCOMMONCACHE_STORE, ERPCOMMONCACHE_AREA } from "../../../../constants/keyCache";
 
 class Area_StoreCom extends React.Component {
     constructor(props) {
@@ -27,6 +26,7 @@ class Area_StoreCom extends React.Component {
         this.initCache = this.initCache.bind(this);
         this.resetCombobox = this.resetCombobox.bind(this);
         this.initDatasource = this.initDatasource.bind(this);
+        this.handleModalChange= this.handleModalChange.bind(this);
         this.onClose = this.onClose.bind(this);
         this.state = {
             CallAPIMessage: "",
@@ -68,7 +68,17 @@ class Area_StoreCom extends React.Component {
     }
 
     initCache() {
-        //lấy cache cấp bậc kỹ năng
+
+        // lấy cache khu vực
+        this.props.callGetCache(ERPCOMMONCACHE_AREA).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                this.setState({
+                    Area: result.ResultObject.CacheData
+                });
+            }
+        });
+
+        //lấy cache chi nhánh
         this.props.callGetCache(ERPCOMMONCACHE_STORE).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 this.setState({
@@ -78,6 +88,53 @@ class Area_StoreCom extends React.Component {
         });
 
     }
+
+    getDataCombobox(data, valueMember, nameMember, conditionName, conditionValue) {
+        let listOption = [{ value: "-1", label: "------ Chọn ------" }];
+        if (data) {
+            data.map((cacheItem) => {
+                if (conditionName && conditionValue != -1) {
+                    if (cacheItem[conditionName] == conditionValue) {
+                        listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+                    }
+                }
+            });
+            return listOption;
+        }
+
+    }
+
+    handleModalChange(formData, formValidation, elementName, elementValue) {
+        let isInsert = this.state.IsInsert;
+        let _ModalColumnList = isInsert ? this.state.ModalColumnList_Insert : this.state.ModalColumnList_Edit;
+        let listOptionNull = [{ value: "-1", label: "------ Chọn ------" }];
+        let listOption = [];
+        _ModalColumnList.forEach(function (objElement) {
+            if (elementName == "AreaID") {
+                // if (objElement.Name == "AreaID") {
+                //     objElement.value = elementValue;
+                // }
+                if (objElement.Name == "StoreID") {
+                    listOption = this.getDataCombobox(this.state.Store, "StoreID", "StoreName", "AreaID", elementValue);
+                    objElement.listoption = listOption;
+                    objElement.value = "-1";
+                }
+            }
+
+        }.bind(this));
+
+        if (isInsert) {
+            this.setState({
+                ModalColumnList_Insert: _ModalColumnList
+            });
+        } else {
+            this.setState({
+                ModalColumnList_Edit: _ModalColumnList
+            });
+        }
+        //console.log("formData", listOption);
+    }
+
     resetCombobox() {
         // this.state.ModalColumnList_Insert.forEach(function (objElement) {
         //     if (objElement.Name != "IsActived") {
@@ -97,35 +154,20 @@ class Area_StoreCom extends React.Component {
         this.resetCombobox();
     }
 
-    validateForm(formData) {
-        debugger;
-        let valid = true;
-        if ((formData.StoreID == undefined || formData.StoreID == -1 || !formData.StoreID[0])) {
-            valid = false;
-        }
-
-        return valid;
-    }
-
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
         this.setState({ IsInsert: true });
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
-            title: 'Thêm mới khu vực của chi nhánh',
+            title: 'Thêm mới chi nhánh của khu vực',
             autoCloseModal: false,
-            //onValueChange: this.handleModalChange,
+            onValueChange: this.handleModalChange,
             onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
-                    let valid = this.validateForm(formData);
-                    // if (!valid) {
-                    //     this.showMessage("Vui lòng chọn đầy đủ thông tin");
-                    //     return;
-                    // }
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
                     if (MLObject) {
                         MLObject.AreaStoreCSID = this.state.AreaID + "," + MLObject.StoreID;
                         MLObject.AreaID = this.state.AreaID;
-                        MLObject.StoreID = MLObject.StoreID;
+                        MLObject.StoreID = MLObject.StoreID && Array.isArray(MLObject.StoreID) ? MLObject.StoreID[0] : MLObject.StoreID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         let match = this.state.AreaStoreDataSource.filter(item =>
@@ -171,7 +213,7 @@ class Area_StoreCom extends React.Component {
         });
 
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
-            title: 'Chỉnh sửa khu vực của chi nhánh',
+            title: 'Chỉnh sửa chi nhánh của khu vực',
             //onValueChange: this.handleModalChange,
             onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
@@ -248,14 +290,14 @@ class Area_StoreCom extends React.Component {
         }
         if (!this.state.AreaID || !this.isNumeric(this.state.AreaID)) {
             return (
-                <Collapsible trigger="Danh sách các khu vực của chi nhánh" easing="ease-in" open={true}>
+                <Collapsible trigger="Danh sách các chi nhánh của khu vực" easing="ease-in" open={true}>
                     Đang nạp dữ liệu ......
                 </Collapsible>
             );
         }
 
         return (
-            <Collapsible trigger="Danh sách các khu vực của chi nhánh" easing="ease-in" open={true}>
+            <Collapsible trigger="Danh sách các chi nhánh của khu vực" easing="ease-in" open={true}>
                 <DataGrid listColumn={DataGridColumnList}
                     dataSource={datasource}
                     modalElementList={ModalColumnList_Insert}
