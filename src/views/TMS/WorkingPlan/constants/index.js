@@ -50,8 +50,8 @@ export const SearchElementList = [
     },
     {
         type: "ComboBox",
-        name: "cbServiceTypeID",
-        DataSourceMember: "ServiceTypeID",
+        name: "cbStoreID",
+        DataSourceMember: "StoreID",
         label: "kho làm việc",
         colspan: 2,
         value: -1,
@@ -59,11 +59,11 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.USER_COOSTORE_BYUSER",
         ValueMember: "StoreID",
         NameMember: "StoreName",
-        filterValue:10,
-        filterobj:"CompanyID",
+        // filterValue:10,
+        // filterobj:"CompanyID",
 
     },
  
@@ -77,7 +77,7 @@ export const InitSearchParamsNew = [
         },
         {
             SearchKey: "@STOREID",
-            SearchValue: 1
+            SearchValue: -1
         },
         {
             SearchKey: "@USERNAME",
@@ -106,9 +106,9 @@ export const SearchMLObjectDefinition = [
         BindControlName: "dtWorkingDate"
     },
     {
-        Name: "ServiceTypeID",
+        Name: "StoreID",
         DefaultValue: "",
-        BindControlName: "cbServiceTypeID"
+        BindControlName: "cbStoreID"
     },
 ]
 
