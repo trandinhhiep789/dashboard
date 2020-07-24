@@ -322,16 +322,18 @@ class MaterialGroup_InstallCondCom extends React.Component {
                         //MLObject.MaterialProductID = MLObject.MaterialProductID && MLObject.MaterialProductID[0].ProductID ? MLObject.MaterialProductID[0].ProductID : MLObject.MaterialProductID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-                        let match = this.state.MaterialGroup_InstallCondDataSource.filter(item =>
-                            item.MaterialGroupID == MLObject.MaterialGroupID
-                            && item.ApplySubGroupID == MLObject.ApplySubGroupID
-                            && item.ApplyTechspecsID == MLObject.ApplyTechspecsID
-                            && item.ApplyTechspecsValueID == MLObject.ApplyTechspecsValueID
-                            && item.ApplyBrandID == MLObject.ApplyBrandID);
-                        if (match.length) {
-                            this.showMessage("Dữ liệu đã tồn tại.");
-                            return;
-                        }
+                        
+                        // let match = this.state.MaterialGroup_InstallCondDataSource.filter(item =>
+                        //     item.MaterialGroupID == MLObject.MaterialGroupID
+                        //     && item.ApplySubGroupID == MLObject.ApplySubGroupID
+                        //     && item.ApplyTechspecsID == MLObject.ApplyTechspecsID
+                        //     && item.ApplyTechspecsValueID == MLObject.ApplyTechspecsValueID
+                        //     && item.ApplyBrandID == MLObject.ApplyBrandID);
+                        // if (match.length) {
+                        //     this.showMessage("Dữ liệu đã tồn tại.");
+                        //     return;
+                        // }
+
                         let _MaterialGroup_InstallCondDataSource = this.state.MaterialGroup_InstallCondDataSource;
                         _MaterialGroup_InstallCondDataSource.push(MLObject);
                         _MaterialGroup_InstallCondDataSource.sort((a, b) => (a.ApplySubGroupID > b.ApplySubGroupID) ? 1 : ((b.ApplySubGroupID > a.ApplySubGroupID) ? -1 : 0));
@@ -397,17 +399,17 @@ class MaterialGroup_InstallCondCom extends React.Component {
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
-                        let match = this.state.MaterialGroup_InstallCondDataSource.filter(item =>
-                            item.InstallCondID != MLObject.InstallCondID
-                            && item.MaterialGroupID == MLObject.MaterialGroupID
-                            && item.ApplySubGroupID == MLObject.ApplySubGroupID
-                            && item.ApplyTechspecsID == MLObject.ApplyTechspecsID
-                            && item.ApplyTechspecsValueID == MLObject.ApplyTechspecsValueID
-                            && item.ApplyBrandID == MLObject.ApplyBrandID);
-                        if (match.length) {
-                            this.showMessage("Dữ liệu đã tồn tại.");
-                            return;
-                        }
+                        // let match = this.state.MaterialGroup_InstallCondDataSource.filter(item =>
+                        //     item.InstallCondID != MLObject.InstallCondID
+                        //     && item.MaterialGroupID == MLObject.MaterialGroupID
+                        //     && item.ApplySubGroupID == MLObject.ApplySubGroupID
+                        //     && item.ApplyTechspecsID == MLObject.ApplyTechspecsID
+                        //     && item.ApplyTechspecsValueID == MLObject.ApplyTechspecsValueID
+                        //     && item.ApplyBrandID == MLObject.ApplyBrandID);
+                        // if (match.length) {
+                        //     this.showMessage("Dữ liệu đã tồn tại.");
+                        //     return;
+                        // }
 
                         let _MaterialGroup_InstallCondDataSource = this.state.MaterialGroup_InstallCondDataSource
                             .filter(item => item.InstallCondID != MLObject.InstallCondID);
