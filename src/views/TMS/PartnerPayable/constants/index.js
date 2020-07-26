@@ -1,5 +1,7 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/PartnerPayable/Search";
+export const SearchComputeAPIPath = "api/PartnerPayable/Compute";
+
 export const SearchPayableDetailAPIPath = "api/PartnerPayableDetail/Search";
 export const SearchByPartnerAPIPath = "api/PartnerPayable/SearchByPartner";
 export const AddAPIPath = "api/PartnerPayable/Add";
@@ -89,6 +91,20 @@ export const SearchElementList = [
 
 ]
 
+export const SearchComputeElementList = [
+    {
+        type: "MonthPicker",
+        name: "dtmPayableMonth",
+        DataSourceMember: "PayableMonth",
+        label: "Tháng",
+        value: "",
+        format: "MM-YYYY",
+        colspan: 2,
+        placeholder: "MM-YYYY",
+    },
+
+]
+
 export const SearchByPartnerElementList = [
     {
         type: "ComboBox",
@@ -132,6 +148,15 @@ export const SearchMLObjectDefinition = [
         Name: "PartnerID",
         DefaultValue: "",
         BindControlName: "cbPartnerID"
+    },
+]
+
+export const SearchComputeMLObjectDefinition = [
+
+    {
+        Name: "PayableMonth",
+        DefaultValue: "",
+        BindControlName: "dtmPayableMonth"
     },
 ]
 
