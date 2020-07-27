@@ -8,7 +8,7 @@ class WeeklyReportCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-   
+
         };
     }
 
@@ -18,11 +18,14 @@ class WeeklyReportCom extends Component {
 
 
     render() {
-        const dataSource = this.props.DataSource[0].WeekShipmentOrderCoordList;
+        let dataSource = [];
+        if ( this.props.DataSource != null && this.props.DataSource.length > 0) {
+            dataSource = this.props.DataSource[0].WeekShipmentOrderCoordList;
+        }
         return (
             <div className="col-md-12 col-md-7 col-lg-7">
-            <div className="card shadow-1">
-                <div className="card-header">
+                <div className="card shadow-1">
+                    <div className="card-header">
                         <h5 className="card-title">biểu đồ điều phối trong tuần</h5>
                     </div>
                     <div className="card-body">
@@ -42,8 +45,8 @@ class WeeklyReportCom extends Component {
                                                 rowClass = "jsgrid-alt-row";
                                             }
                                             return (<tr key={rowIndex}>
-                                               <td>{formatDate(rowItem.DateDay)}</td>
-                                               <td>{rowItem.CoutShip}</td>
+                                                <td>{formatDate(rowItem.DateDay)}</td>
+                                                <td>{rowItem.CoutShip}</td>
                                             </tr>
                                             );
                                         })

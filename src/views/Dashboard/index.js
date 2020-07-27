@@ -34,9 +34,10 @@ class DashboardCom extends Component {
     callSearchDataReport() {
         const postData = [];
         this.props.callFetchAPI(APIHostName, SearchAPIPath, postData).then(apiResult => {
+
             if (!apiResult.IsError) {
                 this.setState({
-                    LstDataSource: apiResult.ResultObject,
+                    LstDataSource: apiResult.ResultObject == null ? [] : apiResult.ResultObject,
                     IsLoadDataComplete: true
                 });
             }
@@ -58,7 +59,7 @@ class DashboardCom extends Component {
                         <ProcessHistory />
                     </div>
                     <div className="row">
-                        <ListCoordinated  DataSource={this.state.LstDataSource}/>
+                        <ListCoordinated DataSource={this.state.LstDataSource} />
                     </div>
                 </div>
             );
