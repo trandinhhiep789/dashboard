@@ -76,7 +76,7 @@ class ProductComboBoxCom extends React.Component {
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
                 listOptionNew.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
             }
-            
+
             if (!isFirstLoad) {
                 listOptionNew.unshift({ value: null, label: "------ Chọn ------" });
             }
@@ -150,6 +150,8 @@ class ProductComboBoxCom extends React.Component {
         if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
             classNameselect += " is-invalid";
         }
+
+        let disabled = this.props.IsSystem ? this.props.IsSystem : this.props.disabled;
         return (
             <div className={formRowClassName} >
                 {isLabelDiv &&
@@ -167,7 +169,7 @@ class ProductComboBoxCom extends React.Component {
                         onKeyDown={this.handleValueonKeyDown}
                         options={listOption}
                         isMulti={this.props.isMulti !== undefined ? this.props.isMulti : true}
-                        isDisabled={this.props.disabled}
+                        isDisabled={disabled}
                         isSearchable={true}
                         placeholder={"Nhập mã sản phẩm"}
                         className={classNameselect}

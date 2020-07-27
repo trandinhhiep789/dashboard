@@ -46,7 +46,7 @@ class FormElementCom extends Component {
             value: this.props.value,
             ValidationError: "",
             Listoption: [],
-            IsSystem: this.props.IsSystem !== undefined ? this.props.IsSystem : false,
+            IsSystem: this.props.IsSystem,
             src: this.props.cdn + this.props.value,
             content: "",
             acceptType: "image/*",

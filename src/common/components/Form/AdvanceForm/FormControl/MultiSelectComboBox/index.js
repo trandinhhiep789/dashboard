@@ -129,7 +129,7 @@ class MultiSelectComboBoxCom extends React.Component {
         listOptionNew.unshift({ value: "", label: "------ Chọn -----", style: { color: 'red' } });
         //console.log("listOptionNew:", listOption, this.state.SelectedOption)
         const selectedOption = this.state.SelectedOption;
-        
+
         let formRowClassName = "form-row";
         if (this.props.rowspan)
             formRowClassName = "form-row col-md-" + this.props.rowspan;
@@ -158,8 +158,8 @@ class MultiSelectComboBoxCom extends React.Component {
             classNameselect += " is-invalid";
         }
 
+        let disabled = this.props.IsSystem ? this.props.IsSystem : this.props.disabled;
 
-        
         // const CustomStyle = {
         //     option: (base, state) => ({
         //         ...base,
@@ -176,15 +176,15 @@ class MultiSelectComboBoxCom extends React.Component {
                 }
                 <div className={formGroupClassName}>
                     <Select
-                            value={selectedOption}
-                            onChange={this.handleValueChange}
-                            options={listOptionNew}
-                            isMulti={this.props.isMulti !== undefined ? this.props.isMulti : true}
-                            isDisabled={this.props.disabled}
-                            isSearchable={true}
-                            placeholder={"------ Chọn ------"}
-                            className={classNameselect}
-                        />
+                        value={selectedOption}
+                        onChange={this.handleValueChange}
+                        options={listOptionNew}
+                        isMulti={this.props.isMulti !== undefined ? this.props.isMulti : true}
+                        isDisabled={disabled}
+                        isSearchable={true}
+                        placeholder={"------ Chọn ------"}
+                        className={classNameselect}
+                    />
                     <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
 
                 </div>
