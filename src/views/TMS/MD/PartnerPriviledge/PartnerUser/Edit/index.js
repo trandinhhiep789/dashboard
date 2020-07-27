@@ -455,7 +455,10 @@ class EditCom extends React.Component {
                         RequirePermission={PARTNERUSER_UPDATE}
                     >
                         <br />
-                        <Collapsible trigger="Vai trò của người dùng" easing="ease-in" open={true}>
+                        {/* <Collapsible trigger="Vai trò của người dùng" easing="ease-in" open={true}>
+                            
+                        </Collapsible> */}
+                        <div>
                             <InputGrid
                                 name="LstPartnerUser_Role"
                                 controltype="GridControl"
@@ -468,10 +471,14 @@ class EditCom extends React.Component {
                                 colspan="12"
                                 onInsertClick={this.handleInputUserRoleInsert}
                                 onDeleteClick={this.handleInputUserRoleDelete}
+                                headingTitle={"Vai trò của người dùng"}
                             />
-                        </Collapsible>
+                        </div>
                         <br />
-                        <Collapsible trigger="Giấy tờ tùy thân của người dùng" easing="ease-in" open={true}>
+                        {/* <Collapsible trigger="Giấy tờ tùy thân của người dùng" easing="ease-in" open={true}>
+                            
+                        </Collapsible> */}
+                        <div className="sub-grid">
                             <DataGrid listColumn={PartnerUserIDDocument_DataGrid_ColumnList}
                                 dataSource={this.state.ListPartnerUser_IDDocument}
                                 modalElementList={Modal_PartnerUserIDDocument_Add}
@@ -484,8 +491,9 @@ class EditCom extends React.Component {
                                 IsAutoPaging={false}
                                 RowsPerPage={10}
                                 IsCustomAddLink={true}
+                                headingTitle={"Giấy tờ tùy thân của người dùng"}
                             />
-                        </Collapsible>
+                        </div>
                     </FormContainer>
                 </React.Fragment>
             );
