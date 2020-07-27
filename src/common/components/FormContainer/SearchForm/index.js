@@ -209,7 +209,11 @@ export default class SearchForm extends Component {
                 <div className={classNamebtnSearch}>
                     <div className="btnSearch btncustom">
                         <button className="btn btn-primary" type="submit">
-                            <span className="fa fa-search"> Tìm Kiếm</span>
+                            {
+                                !!this.props.TitleButton ? this.props.TitleButton : <span className="fa fa-search">Tìm Kiếm</span>
+
+                            }
+
                         </button>
                     </div>
                 </div>

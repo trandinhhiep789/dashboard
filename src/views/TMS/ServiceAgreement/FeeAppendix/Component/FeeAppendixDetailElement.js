@@ -30,6 +30,7 @@ class FeeAppendixDetailElementCom extends Component {
     }
 
     handleSubmit(From, MLObject) {
+
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
         MLObject.FeeAppendixID = this.props.dataSource.FeeAppendixID.trim();
         MLObject.SignedDate = this.props.dataSource.SignedDate;
@@ -39,29 +40,84 @@ class FeeAppendixDetailElementCom extends Component {
         }
 
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-       let lstMLObject=[]
-        let itemNew = MLObject.TechSpecsValueID.map((item) => {
-            let temp={};
+        let lstMLObject = []
 
-            temp.FeeAppendixID= MLObject.FeeAppendixID;
-            temp.CreatedUser= MLObject.CreatedUser;
-            temp.FeeAppendixDetailID= MLObject.FeeAppendixDetailID;
-            temp.IsActived= MLObject.IsActived;
-            temp.IsSystem= MLObject.IsSystem;
-            temp.MainGroupID= MLObject.MainGroupID;
-            temp.Note= MLObject.Note;
-            temp.ProductID= MLObject.ProductID;
-            temp.ServiceAgreementID= MLObject.ServiceAgreementID;
-            temp.ServiceFee= MLObject.ServiceFee;
-            temp.SignedDate= MLObject.SignedDate;
-            temp.SubGroupID= MLObject.SubGroupID;
-            temp.TechSpecsID= MLObject.TechSpecsID;
-            temp.TechSpecsValueID = item;
-            temp.ApplyFromDate= MLObject.ApplyFromDate;
+        // console.log('MLObject', MLObject)
+        // console.log('length', MLObject.TechSpecsValueID.length)
+        if (MLObject.TechSpecsID == -1) {
+            let temp = {};
+
+            temp.FeeAppendixID = MLObject.FeeAppendixID;
+            temp.CreatedUser = MLObject.CreatedUser;
+            temp.FeeAppendixDetailID = MLObject.FeeAppendixDetailID;
+            temp.IsActived = MLObject.IsActived;
+            temp.IsSystem = MLObject.IsSystem;
+            temp.MainGroupID = MLObject.MainGroupID;
+            temp.Note = MLObject.Note;
+            temp.ProductID = MLObject.ProductID;
+            temp.ServiceAgreementID = MLObject.ServiceAgreementID;
+            temp.ServiceFee = MLObject.ServiceFee;
+            temp.SignedDate = MLObject.SignedDate;
+            temp.SubGroupID = MLObject.SubGroupID;
+            temp.TechSpecsID = MLObject.TechSpecsID;
+            temp.TechSpecsValueID = MLObject.TechSpecsValueID;
+            temp.ApplyFromDate = MLObject.ApplyFromDate;
             lstMLObject.push(temp)
-        })
-        console.log('arr', lstMLObject)
+        }
+        else {
+            if (MLObject.TechSpecsValueID.length != undefined && MLObject.TechSpecsValueID.length > 0) {
+                let itemNew = MLObject.TechSpecsValueID.map((item) => {
+                     if(item != -1){
+                        let temp = {};
 
+                        temp.FeeAppendixID = MLObject.FeeAppendixID;
+                        temp.CreatedUser = MLObject.CreatedUser;
+                        temp.FeeAppendixDetailID = MLObject.FeeAppendixDetailID;
+                        temp.IsActived = MLObject.IsActived;
+                        temp.IsSystem = MLObject.IsSystem;
+                        temp.MainGroupID = MLObject.MainGroupID;
+                        temp.Note = MLObject.Note;
+                        temp.ProductID = MLObject.ProductID;
+                        temp.ServiceAgreementID = MLObject.ServiceAgreementID;
+                        temp.ServiceFee = MLObject.ServiceFee;
+                        temp.SignedDate = MLObject.SignedDate;
+                        temp.SubGroupID = MLObject.SubGroupID;
+                        temp.TechSpecsID = MLObject.TechSpecsID;
+                        temp.TechSpecsValueID = item;
+                        temp.ApplyFromDate = MLObject.ApplyFromDate;
+                        lstMLObject.push(temp)
+                     }
+                    
+                })
+            }
+            else {
+                let temp = {};
+                let valuesTechSpecsID;
+                if (MLObject.TechSpecsValueID.length != undefined || MLObject.TechSpecsValueID.length == 0) {
+                     valuesTechSpecsID = -1
+                }
+                else {
+                     valuesTechSpecsID = MLObject.TechSpecsValueID
+                }
+                temp.FeeAppendixID = MLObject.FeeAppendixID;
+                temp.CreatedUser = MLObject.CreatedUser;
+                temp.FeeAppendixDetailID = MLObject.FeeAppendixDetailID;
+                temp.IsActived = MLObject.IsActived;
+                temp.IsSystem = MLObject.IsSystem;
+                temp.MainGroupID = MLObject.MainGroupID;
+                temp.Note = MLObject.Note;
+                temp.ProductID = MLObject.ProductID;
+                temp.ServiceAgreementID = MLObject.ServiceAgreementID;
+                temp.ServiceFee = MLObject.ServiceFee;
+                temp.SignedDate = MLObject.SignedDate;
+                temp.SubGroupID = MLObject.SubGroupID;
+                temp.TechSpecsID = MLObject.TechSpecsID;
+                temp.TechSpecsValueID = valuesTechSpecsID;
+                temp.ApplyFromDate = MLObject.ApplyFromDate;
+                lstMLObject.push(temp)
+            }
+        }
+        // console.log('arr', lstMLObject)
         this.props.callFetchAPI(APIHostName, AddFeeAppendixDetailPathNew, lstMLObject).then(apiResult => {
             this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
         });

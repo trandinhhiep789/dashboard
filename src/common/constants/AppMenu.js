@@ -411,7 +411,14 @@ const AppMenu = [
                 LinkTo: '/PartnerPayable',
                 MenuIcon: '',
                 SubMenu: []
-            }
+            },
+            {
+                MenuName: 'Compute',
+                MenuTitle: 'Danh sách chi phí',
+                LinkTo: '/Compute',
+                MenuIcon: '',
+                SubMenu: []
+            },
         ]
     }
    
