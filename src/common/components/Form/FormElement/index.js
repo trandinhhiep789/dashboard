@@ -104,7 +104,7 @@ class FormElementCom extends Component {
     }
 
     componentDidMount() {
-        console.log("this.props.IsSystem", this.props.IsSystem);
+        //console.log("this.props.IsSystem", this.props.IsSystem);
         //console.log('FormElementCom', this.props.validatonList.includes("required"))
         debugger;
         if (this.props.type == "Editor") {
