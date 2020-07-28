@@ -16,6 +16,7 @@ class ServiceAgreementInfoCom extends Component {
     }
 
     componentDidMount() {
+        console.log('info', this.props)
     }
 
 
@@ -33,7 +34,7 @@ class ServiceAgreementInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {this.props.ServiceAgreementInfo.ServiceTypeName}
+                            {this.props.ServiceAgreementInfo.ServiceAgreementTypeName}
                         </label>
                     </div>
                 </div>
@@ -43,12 +44,12 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Loại dịch vụ:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">Lắp đặt</label>
+                        <label className="col-form-label">{this.props.ServiceAgreementInfo.ServiceTypeName}</label>
                     </div><div className="form-group col-md-2">
-                        <label className="col-form-label bold">Đối tác:</label>
+                        <label className="col-form-label bold">Đơn vị vận chuyển:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">Công ty TNHH Điện lạnh Blue Sky</label>
+                        <label className="col-form-label">{this.props.ServiceAgreementInfo.PartnerName}</label>
                     </div>
                 </div>
 
@@ -71,12 +72,12 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Ngày ký hợp đồng:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(this.props.ServiceAgreementInfo.SignedDate)}</label>
+                        <label className="col-form-label">{formatDate(this.props.ServiceAgreementInfo.SignedDate, true)}</label>
                     </div><div className="form-group col-md-2">
                         <label className="col-form-label bold">Ngày hết hạn hợp đồng:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(this.props.ServiceAgreementInfo.ExpiredDate)}</label>
+                        <label className="col-form-label">{formatDate(this.props.ServiceAgreementInfo.ExpiredDate, true)}</label>
                     </div>
                 </div>
 
@@ -95,7 +96,7 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Gia hạn đến ngày:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(this.props.ServiceAgreementInfo.ExtendedDate)}</label>
+                        <label className="col-form-label">{formatDate(this.props.ServiceAgreementInfo.ExtendedDate, true)}</label>
                     </div>
                 </div>
 
@@ -115,7 +116,7 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Ngày thanh lý hợp đồng:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(this.props.ServiceAgreementInfo.Liquidateddate)}</label>
+                        <label className="col-form-label">{formatDate(this.props.ServiceAgreementInfo.Liquidateddate, true)}</label>
                     </div>
                 </div>
 
@@ -144,7 +145,7 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Ngày ký quỹ:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(this.props.ServiceAgreementInfo.DepositedDate)}</label>
+                        <label className="col-form-label">{formatDate(this.props.ServiceAgreementInfo.DepositedDate, true)}</label>
                     </div><div className="form-group col-md-2">
                         <label className="col-form-label bold">Ghi chú ký quỹ:</label>
                     </div>
