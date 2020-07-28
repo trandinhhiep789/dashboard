@@ -65,7 +65,7 @@ import AreaType from "../TMS/MD/AreaType";
 import UserSkill from "../TMS/User/UserSkill";
 import MaterialGroup from "../TMS/MD/MaterialGroup";
 import PartnerPayable from '../../views/TMS/PartnerPayable';
-
+import Compute from '../../views/TMS/PartnerPayable/Compute';
 
 import NotFound from '../NotFound'
 
@@ -229,6 +229,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/WorkingPlan" component={WorkingPlan} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/PartnerPayable" component={PartnerPayable} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/Compute" component={Compute} isLoggedIn={isLoggedIn} />
 
                                 
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} />

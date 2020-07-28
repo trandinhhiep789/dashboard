@@ -371,13 +371,13 @@ const AppMenu = [
     },
     {
         MenuName: 'WorkingPlan',
-        MenuTitle: 'Ca làm Việc',
+        MenuTitle: 'Đăng ký ca làm việc',
         LinkTo: '',
         MenuIcon: '',
         SubMenu: [
             {
                 MenuName: 'WorkingPlan',
-                MenuTitle: 'Danh sách ca làm việc',
+                MenuTitle: 'Danh sách nhân viên đăng ký ca làm việc',
                 LinkTo: '/WorkingPlan',
                 MenuIcon: '',
                 SubMenu: []

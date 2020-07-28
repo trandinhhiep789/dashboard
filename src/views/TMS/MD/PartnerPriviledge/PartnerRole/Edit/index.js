@@ -177,7 +177,10 @@ class EditCom extends React.Component {
                     RequirePermission={PARTNERROLE_UPDATE}
                 >
                     <br />
-                    <Collapsible trigger="Danh sách quyền của nhà cung cấp" easing="ease-in" open={true}>
+                    {/* <Collapsible trigger="Danh sách quyền của nhà cung cấp" easing="ease-in" open={true}>
+                        
+                    </Collapsible> */}
+                    <div>
                         <InputGrid
                             name="LstPartnerRole_Priviledge"
                             controltype="GridControl"
@@ -189,8 +192,9 @@ class EditCom extends React.Component {
                             MLObjectDefinition={GridMLPartnerRoleDefinition}
                             colspan="12"
                             onInsertClick={this.handleInputUserRoleInsert}
+                            headingTitle={"Danh sách quyền của nhà cung cấp"}
                         />
-                    </Collapsible>
+                    </div>
                 </FormContainer>
             );
         }

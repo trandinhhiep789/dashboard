@@ -912,69 +912,77 @@ class InputGridCom extends Component {
 
 
 		return (
-			<div className="card">
-				<div className="card-body">
-					{hasHeaderToolbar &&
-						<div className="flexbox mb-10 ">
-							{searchTextbox}
-							<div className="btn-toolbar">
-								<div className="btn-group btn-group-sm">
+			<div className="col-lg-12 SearchForm">
+				<div className="card">
+					{this.props.headingTitle ?
+						<div className="card-title">
+							<span className="title"><b>{this.props.headingTitle}</b></span>
+						</div>
+						: ""
+					}
+					<div className="card-body">
+						{hasHeaderToolbar &&
+							<div className="flexbox mb-10 ">
+								{searchTextbox}
+								<div className="btn-toolbar">
+									<div className="btn-group btn-group-sm">
 
-									{((this.props.IsAdd == true || this.props.IsAdd == undefined) && this.state.IsSystem == false) ?
-										(
-											<button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleInsertClick}>
-												<span className="fa fa-plus ff"> Thêm </span>
-											</button>
-										)
-										: (
-											<button type="button" className="btn btn-info" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Thêm">
-												<span className="fa fa-plus ff"> Thêm </span>
-											</button>
-										)
-									}
-									{
-										((this.props.IsDelete == true || this.props.IsDelete == undefined) && this.state.IsSystem == false) ?
-											(<button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa" onClick={this.handleDeleteClick}>
-												<span className="fa fa-remove"> Xóa </span>
-											</button>)
-											: (<button type="button" className="btn btn-danger btn-delete ml-10" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Xóa" >
-												<span className="fa fa-remove"> Xóa </span>
-											</button>)
-									}
+										{((this.props.IsAdd == true || this.props.IsAdd == undefined) && this.state.IsSystem == false) ?
+											(
+												<button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleInsertClick}>
+													<span className="fa fa-plus ff"> Thêm </span>
+												</button>
+											)
+											: (
+												<button type="button" className="btn btn-info" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Thêm">
+													<span className="fa fa-plus ff"> Thêm </span>
+												</button>
+											)
+										}
+										{
+											((this.props.IsDelete == true || this.props.IsDelete == undefined) && this.state.IsSystem == false) ?
+												(<button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa" onClick={this.handleDeleteClick}>
+													<span className="fa fa-remove"> Xóa </span>
+												</button>)
+												: (<button type="button" className="btn btn-danger btn-delete ml-10" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Xóa" >
+													<span className="fa fa-remove"> Xóa </span>
+												</button>)
+										}
+									</div>
 								</div>
 							</div>
-						</div>
-					}
-					{
-						this.renderInputGrid()
-					}
-					{hasFooterToolbar &&
-						<div className="flexbox mb-20 input-footer-button-group">
-							<div className="btn-toolbar">
-								<div className="btn-group btn-group-sm">
-									{((this.props.IsAdd == true || this.props.IsAdd == undefined) && this.state.IsSystem == false) ?
-										(
-											<button type="button" className="btn btn-w-md btn-bold btn-info" onClick={this.HandleSubmitGrid}>
-												Cập nhật
-											</button>
-										)
-										: (
-											<button type="button" className="btn btn-w-md btn-bold btn-info" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Thêm">
-												Cập nhật
-											</button>
-										)
-									}
+						}
+						{
+							this.renderInputGrid()
+						}
+						{hasFooterToolbar &&
+							<div className="flexbox mb-20 input-footer-button-group">
+								<div className="btn-toolbar">
+									<div className="btn-group btn-group-sm">
+										{((this.props.IsAdd == true || this.props.IsAdd == undefined) && this.state.IsSystem == false) ?
+											(
+												<button type="button" className="btn btn-w-md btn-bold btn-info" onClick={this.HandleSubmitGrid}>
+													Cập nhật
+												</button>
+											)
+											: (
+												<button type="button" className="btn btn-w-md btn-bold btn-info" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Thêm">
+													Cập nhật
+												</button>
+											)
+										}
 									&nbsp;
 									{/* <button type="button" className="btn btn-sm btn-outline btn-primary" onClick={this.handleCancel}>
 										<span className="fa"> Quay lại</span>
 									</button> */}
+									</div>
 								</div>
 							</div>
-						</div>
-					}
-					{this.props.IsAutoPaging &&
-						<InputGridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />
-					}
+						}
+						{this.props.IsAutoPaging &&
+							<InputGridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />
+						}
+					</div>
 				</div>
 			</div>
 		);

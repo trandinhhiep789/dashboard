@@ -14,7 +14,7 @@ export const PKColumnName = "ShipmentOrderID";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách ca làm việc" }
+    { Link: "", Title: "Danh sách nhân viên đăng ký ca làm việc" }
 ];
 
 export const EditPagePath = [
