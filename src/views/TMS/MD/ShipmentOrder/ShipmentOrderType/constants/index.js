@@ -66,7 +66,7 @@ export const AddModalColumnList = [
         maxSize: "10",
         DataSourceMember: "ShipmentOrderTypeID",
         readonly: false,
-        validatonList: ["required","number"]
+        validatonList: ["required", "number"]
     },
     {
         Name: "ShipmentOrderTypeName",
@@ -79,16 +79,19 @@ export const AddModalColumnList = [
     },
     {
         Name: "AddFunctionID",
-        type: "select",
+        type: "multiselect",
         label: "Quyền thêm yêu cầu này",
         DataSourceMember: "AddFunctionID",
         readonly: false,
         value: -1,
         validatonList: [],
+        isMulti: false,
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.FUNCTION",
         ValueMember: "FunctionID",
         NameMember: "FunctionName",
+        KeyFilter: "FunctionCategoryID",
+        ValueFilter: "1,2"
     },
     {
         Name: "IsSelectSenderPartner",

@@ -637,6 +637,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     isautoloaditemfromcache={true}
                                     loaditemcachekeyid={ERPCOMMONCACHE_FUNCTION}
                                     valuemember="FunctionID" nameMember="FunctionName"
+                                    KeyFilter="FunctionCategoryID" ValueFilter="1,2"
                                     listoption={[]} datasourcemember="ChooseFunctionID"
                                     isMulti={false}
                                     value={this.state.FormData.ShipmentOrderType_WF_Next && this.state.FormData.ShipmentOrderType_WF_Next.ChooseFunctionID ? this.state.FormData.ShipmentOrderType_WF_Next.ChooseFunctionID : null}
