@@ -55,7 +55,7 @@ class MultiSelectComboBoxCom extends React.Component {
                     );
                     this.setState({ ListOption: listOption });
                     const selectedOption = this.bindData(listOption);
-                    console.log("selectedOption: ",this.props.loaditemcachekeyid,  this.props.listoption,selectedOption, listOption);
+                    //console.log("selectedOption: ",this.props.loaditemcachekeyid,  this.props.listoption,selectedOption, listOption);
                     this.setState({ SelectedOption: selectedOption });
                 }
                 else {
