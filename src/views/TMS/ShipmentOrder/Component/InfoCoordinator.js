@@ -310,29 +310,27 @@ class InfoCoordinatorCom extends Component {
         });
     }
 
-    handleCheckDeliverUser(e)
-    {
+    handleCheckDeliverUser(e) {
+        debugger;
         const strDeliverUservalue = e.target.value;
         const isCheck = e.target.checked;
-        if(isCheck)
-        {
+        if (isCheck) {
             let { ShipmentOrder } = this.state;
             ShipmentOrder.ShipmentOrder_DeliverUserList.push(
                 {
                     ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
                     UserName: strDeliverUservalue,
-                    FullName:e.currentTarget.dataset.fullname,
+                    FullName: e.currentTarget.dataset.fullname,
                     CreatedUser: this.props.AppInfo.LoginInfo.Username,
                     CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
                 }
             )
-          //  console.log(" ShipmentOrder.ShipmentOrder_DeliverUserList", ShipmentOrder.ShipmentOrder_DeliverUserList)
+            //  console.log(" ShipmentOrder.ShipmentOrder_DeliverUserList", ShipmentOrder.ShipmentOrder_DeliverUserList)
             this.setState({ ShipmentOrder: ShipmentOrder })
-       
-         //   console.log("handleCheckDeliverUser",strDeliverUservalue,isCheck,e.currentTarget.dataset.fullname)
+
+            //   console.log("handleCheckDeliverUser",strDeliverUservalue,isCheck,e.currentTarget.dataset.fullname)
         }
     }
-
 
     handleShipWorkFlowInsert() {
         let { ShipmentOrder, validationErroDeliverUser, validationErroCarrierPartner } = this.state;
@@ -357,6 +355,64 @@ class InfoCoordinatorCom extends Component {
                 });
         }
     }
+
+    handleCancelDeliverUser() {
+        this.openCancelDeliverUserModal();
+    }
+
+    openCancelDeliverUserModal() {
+
+        ModalManager.open(
+            <ModelContainer
+                title="Gợi ý nhân viên giao hàng"
+                name=""
+                content={"Cập nhật loại đơn vị thành công!"}
+                onRequestClose={() => false}
+                IsButton={true}
+            >
+                <div className="form-row">
+                    <div className="table-responsive">
+                        <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                            <thead className="thead-light">
+                                <tr>
+                                    <th className="jsgrid-header-cell"></th>
+                                    <th className="jsgrid-header-cell">Tên nhân viên giao </th>
+                                    <th className="jsgrid-header-cell">Số lượng đơn hàng</th>
+                                    <th className="jsgrid-header-cell">đơn hoàn đã giao</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.state.ShipmentOrder.DeliverUserList && this.state.ShipmentOrder.DeliverUserList.map((item, index) => {
+                                    return (
+                                        <tr key={index}>
+                                            <td>
+                                                <div className="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" className="form-control form-control-sm"
+                                                            onChange={this.handleCheckDeliverUser.bind(this)}
+                                                            value={item.UserName}
+                                                            data-fullname={item.FullName}
+                                                        />
+                                                        <span className="cr">
+                                                            <i className="cr-icon fa fa-check"></i>
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>{item.UserName + "-" + item.FullName}</td>
+                                            <td>10</td>
+                                            <td>6</td>
+                                        </tr>
+                                    )
+                                })
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </ModelContainer>
+        );
+    }
     render() {
         let listOption = [];
         let objDeliverUser = [];
@@ -367,7 +423,7 @@ class InfoCoordinatorCom extends Component {
         }
         else {
             this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
-                listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName , FullName:item.FullName});
+                listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName, FullName: item.FullName });
             })
         }
         return (
@@ -488,6 +544,13 @@ class InfoCoordinatorCom extends Component {
                         <div className="form-group col-md-2">
                         </div>
                         <div className="form-group col-md-10">
+                            <button className="btn btnEditCard" type="submit" onClick={this.handleCancelDeliverUser.bind(this)}><span className="fa">Gợi ý nhân viên giao hàng</span></button>
+                        </div>
+                    </div>
+                    {/* <div className="form-row">
+                        <div className="form-group col-md-2">
+                        </div>
+                        <div className="form-group col-md-10">
                             <div className="col-md-12">
                                 <h3 className="title">Gợi ý nhân viên giao hàng:</h3>
                             </div>
@@ -509,9 +572,9 @@ class InfoCoordinatorCom extends Component {
                                                         <div className="checkbox">
                                                             <label>
                                                                 <input type="checkbox" className="form-control form-control-sm"
-                                                                onChange={this.handleCheckDeliverUser.bind(this)}
-                                                                 value={item.UserName} 
-                                                                 data-fullname={item.FullName}
+                                                                    onChange={this.handleCheckDeliverUser.bind(this)}
+                                                                    value={item.UserName}
+                                                                    data-fullname={item.FullName}
                                                                 />
                                                                 <span className="cr">
                                                                     <i className="cr-icon fa fa-check"></i>
@@ -530,7 +593,7 @@ class InfoCoordinatorCom extends Component {
                                 </table>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-row">
 
