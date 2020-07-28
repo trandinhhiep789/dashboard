@@ -622,7 +622,9 @@ class EditCom extends React.Component {
                             <FormControl.MultiSelectComboBox name="AddFunctionID" label="Quyền thêm yêu cầu này"
                                 labelcolspan={4} colspan={8} rowspan={8}
                                 IsLabelDiv={true} controltype="InputControl"
-                                isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_FUNCTION} valuemember="FunctionID" nameMember="FunctionName"
+                                isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_FUNCTION}
+                                valuemember="FunctionID" nameMember="FunctionName"
+                                KeyFilter="FunctionCategoryID" ValueFilter="1,2"
                                 listoption={[]} datasourcemember="AddFunctionID"
                                 isMulti={false}
                                 value={this.state.FormData.ShipmentOrderType && this.state.FormData.ShipmentOrderType.AddFunctionID ? this.state.FormData.ShipmentOrderType.AddFunctionID : null}

@@ -133,6 +133,7 @@ class SearchCom extends React.Component {
                     if (isConfirmed) {
                         let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
                         if (MLObject) {
+                            MLObject.AddFunctionID = MLObject.AddFunctionID && Array.isArray(MLObject.AddFunctionID) ? MLObject.AddFunctionID[0] : "";
                             MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                             MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                             this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then((apiResult) => {

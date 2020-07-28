@@ -25,18 +25,37 @@ class MultiSelectComboBoxCom extends React.Component {
             const cacheKeyID = this.props.loaditemcachekeyid;
             const valueMember = this.props.valuemember;
             const nameMember = this.props.nameMember;
+            const keyFilter = this.props.KeyFilter;
+            let valueFilter = this.props.ValueFilter;
+            let cacheData = [];
+            let tempCacheData = [];
+
             this.props.callGetCache(cacheKeyID).then((result) => {
 
                 //listOption = [{ value: -1, label: "--Vui lòng chọn--", name: "--Vui lòng chọn--" }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     //console.log("result.IsError: ",result.IsError, result.ResultObject.CacheData);
-                    result.ResultObject.CacheData.map((cacheItem) => {
+                    if (keyFilter && valueFilter) {
+                        valueFilter = valueFilter.toString().split(",");
+                        valueFilter.map((item, index) => {
+                            tempCacheData = result.ResultObject.CacheData.filter(x => x[keyFilter] == item);
+                            if (tempCacheData.length > 0) {
+                                cacheData = cacheData.concat(tempCacheData)
+                            }
+                            tempCacheData = [];
+                        });
+
+                    } else {
+                        cacheData = result.ResultObject.CacheData;
+                    }
+
+                    cacheData.map((cacheItem) => {
                         listOption.push({ value: cacheItem[valueMember], name: cacheItem[nameMember] });
                     }
                     );
                     this.setState({ ListOption: listOption });
                     const selectedOption = this.bindData(listOption);
-                    // console.log("selectedOption: ",this.props.loaditemcachekeyid,  this.props.listoption,selectedOption);
+                    console.log("selectedOption: ",this.props.loaditemcachekeyid,  this.props.listoption,selectedOption, listOption);
                     this.setState({ SelectedOption: selectedOption });
                 }
                 else {

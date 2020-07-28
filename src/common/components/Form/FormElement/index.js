@@ -142,16 +142,28 @@ class FormElementCom extends Component {
                 const valueMember = this.props.ValueMember;
                 const nameMember = this.props.NameMember;
                 const keyFilter = this.props.KeyFilter;
-                const valueFilter = this.props.ValueFilter;
+                let valueFilter = this.props.ValueFilter;
+                let cacheData = [];
+                let tempCacheData = [];
 
                 this.props.callGetCache(cacheKeyID).then((result) => {
                     //console.log("FormElement callGetCache: ", result)
                     listOption = [{ value: -1, label: this.props.type == "multiselect" ? "------ Chọn ------" : "------ Vui lòng chọn ------" }];
                     if (!result.IsError && result.ResultObject.CacheData != null) {
                         if (keyFilter && valueFilter) {
-                            result.ResultObject.CacheData = result.ResultObject.CacheData.filter(x => x[keyFilter] == valueFilter);
+                            valueFilter = valueFilter.toString().split(",");
+                            valueFilter.map((item, index) => {
+                                tempCacheData = result.ResultObject.CacheData.filter(x => x[keyFilter] == item);
+                                if (tempCacheData.length > 0) {
+                                    cacheData = cacheData.concat(tempCacheData)
+                                }
+                                tempCacheData = [];
+                            });
+
+                        } else {
+                            cacheData = result.ResultObject.CacheData;
                         }
-                        result.ResultObject.CacheData.map((cacheItem) => {
+                        cacheData.map((cacheItem) => {
                             // console.log("FormElement listOption: ", cacheItem)
                             listOption.push({ value: cacheItem[valueMember], label: this.props.type == "multiselect" ? cacheItem[nameMember] : cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
                         });
