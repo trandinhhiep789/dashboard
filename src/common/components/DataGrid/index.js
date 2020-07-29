@@ -474,9 +474,13 @@ class DataGridCom extends Component {
                             this.props.totalCurrency == true &&
 
                             <tr className="totalCurrency">
-                                <td colSpan={this.props.totalCurrencyColSpan}>
-                                    <div className="groupTotalCurrency">
+                                <td colSpan={this.props.totalCurrencyColSpan -1}>
+                                <div className="groupTotalCurrency">
                                         <span className="item txtTotal">Tổng</span>
+                                    </div>
+                                </td>
+                                <td colSpan="1">
+                                    <div className="groupTotalCurrency">
                                         <span className="item txttotalCurrency">{formatMoney(this.props.totalCurrencyNumber, 0)}</span>
                                     </div>
                                 </td>
