@@ -410,7 +410,7 @@ class InfoCoordinatorCom extends Component {
                                     <th className="jsgrid-header-cell"></th>
                                     <th className="jsgrid-header-cell">Tên nhân viên giao </th>
                                     <th className="jsgrid-header-cell">Số lượng đơn hàng</th>
-                                    <th className="jsgrid-header-cell">đơn hoàn đã giao</th>
+                                    <th className="jsgrid-header-cell">Đơn hàng đã giao</th>
                                 </tr>
                             </thead>
                             <tbody>
