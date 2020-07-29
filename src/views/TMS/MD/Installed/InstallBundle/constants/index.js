@@ -581,7 +581,6 @@ export const InstallBundle_MateriaColumnList = [
         Type: "TextNumber",
         Caption: "Tỷ lệ quy đổi",
         label:"Tỷ lệ quy đổi",
-        validatonList: ["number"],
         datasourcemember: "ConvertRatio",
         OrderIndex:6,
         hideInput: false,
@@ -624,7 +623,7 @@ export const InstallBundle_MateriaColumnList = [
         label:"Số lượng khuyến mãi",
         Caption: "Số lượng khuyến mãi",
         datasourcemember: "PromotionQuantity",
-        validatonList: [],
+      
         filterrestValue:[1],
         objrestValue:"OutputUsAgeType",
         Disabled:true,
@@ -654,7 +653,7 @@ export const InstallBundle_MateriaColumnList = [
         label:"Số lượng tạm ứng tối đa",
         Caption: "Số lượng tạm ứng tối đa",
         datasourcemember: "AdvanceLimitQuantity",
-        validatonList: [],
+      
         filterrestValue:[2,3],
         objrestValue:"AdvanceLimitType",
         Disabled:true,
