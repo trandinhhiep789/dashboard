@@ -93,51 +93,33 @@ class PartnerPayableDetailCom extends React.Component {
     }
 
     render() {
-        if (this.state.IsLoadDataComplete) {
-            return (
+        return (
 
-                <React.Fragment>
-                    <SearchForm
-                        FormName="Tìm kiếm danh sách tiền phải trả cho nhà cung cấp dịch vụ theo ngày"
-                        MLObjectDefinition={SearchPartnerPayableDetailMLObjectDefinition}
-                        listelement={SearchPartnerPayableDetailElementList}
-                        onSubmit={this.handleSearchSubmit.bind(this)}
-                        ref={this.searchref}
-                        className="multiple"
-                    />
+            <React.Fragment>
+                <SearchForm
+                    FormName="Tìm kiếm danh sách tiền phải trả cho nhà cung cấp dịch vụ theo ngày"
+                    MLObjectDefinition={SearchPartnerPayableDetailMLObjectDefinition}
+                    listelement={SearchPartnerPayableDetailElementList}
+                    onSubmit={this.handleSearchSubmit.bind(this)}
+                    ref={this.searchref}
+                    className="multiple"
+                />
 
-                    <DataGrid
-                        listColumn={DataPartnerPayableDetailGridColumnList}
-                        dataSource={this.state.gridDataSource}
-                        AddLink=""
-                        isHideHeaderToolbar={true}
-                        IDSelectColumnName="PartnerPayableDetailID"
-                        PKColumnName="PartnerPayableDetailID"
-                        IsAutoPaging={true}
-                        RowsPerPage={10}
-                        // RequirePermission={PARTNERPAYABLE_VIEW}
-                        ref={this.gridref}
-                    />
-                </React.Fragment>
-            );
-        }
-        else {
-            return (
+                <DataGrid
+                    listColumn={DataPartnerPayableDetailGridColumnList}
+                    dataSource={this.state.gridDataSource}
+                    AddLink=""
+                    isHideHeaderToolbar={true}
+                    IDSelectColumnName="PartnerPayableDetailID"
+                    PKColumnName="PartnerPayableDetailID"
+                    IsAutoPaging={true}
+                    RowsPerPage={10}
+                    // RequirePermission={PARTNERPAYABLE_VIEW}
+                    ref={this.gridref}
+                />
+            </React.Fragment>
+        );
 
-                <React.Fragment>
-                    <SearchForm
-                        FormName="Tìm kiếm danh sách tiền phải trả cho nhà cung cấp dịch vụ theo ngày"
-                        MLObjectDefinition={SearchPartnerPayableDetailMLObjectDefinition}
-                        listelement={SearchPartnerPayableDetailElementList}
-                        onSubmit={this.handleSearchSubmit.bind(this)}
-                        ref={this.searchref}
-                        className="multiple"
-                    />
-
-                    
-                </React.Fragment>
-            );
-        }
 
     }
 }
