@@ -34,6 +34,7 @@ class PartnerPayableDetailCom extends React.Component {
         this.state = {
             gridDataSource: [],
             IsLoadDataComplete: false,
+            totalPayableAmount: 0
         }
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -48,9 +49,15 @@ class PartnerPayableDetailCom extends React.Component {
             console.log("MLObject", SearchData, apiResult)
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
+                    const totalPayableAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
+                        sum += curValue.PayableAmount
+                        return sum
+                    }, 0);
                     this.setState({
+                        
                         gridDataSource: apiResult.ResultObject,
-                        IsLoadDataComplete: true
+                        IsLoadDataComplete: true,
+                        totalPayableAmount
                     })
                 }
                 else {
@@ -116,6 +123,9 @@ class PartnerPayableDetailCom extends React.Component {
                     RowsPerPage={10}
                     // RequirePermission={PARTNERPAYABLE_VIEW}
                     ref={this.gridref}
+                    totalCurrency={true}
+                    totalCurrencyColSpan={12}
+                    totalCurrencyNumber={this.state.totalPayableAmount}
                 />
             </React.Fragment>
         );
