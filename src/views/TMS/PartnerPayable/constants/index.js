@@ -1,5 +1,6 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/PartnerPayable/Search";
+export const SearchByDateAPIPath = "api/PartnerPayableDetail/SearchByDate";
 export const SearchComputeAPIPath = "api/PartnerPayable/Compute";
 
 export const SearchPayableDetailAPIPath = "api/PartnerPayableDetail/Search";
@@ -88,6 +89,51 @@ export const SearchElementList = [
         filterobj: "PartnerTypeID",
 
     },
+    
+
+]
+
+export const SearchPartnerPayableDetailElementList = [
+
+    {
+        type: "Datetime",
+        name: "dtFromDate",
+        DataSourceMember: "FromDate",
+        label: "Từ ngày",
+        value:  new Date(),
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 2,
+    },
+    {
+        type: "Datetime",
+        name: "dtToDate",
+        DataSourceMember: "ToDate",
+        label: "Đến ngày",
+        value: new Date(),
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 2,
+    },
+
+    {
+        type: "ComboBox",
+        name: "cbPartnerID",
+        DataSourceMember: "PartnerID",
+        label: "Đối tác",
+        colspan: 3,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
+        ValueMember: "PartnerID",
+        NameMember: "PartnerName",
+        filterValue: 2,
+        filterobj: "PartnerTypeID",
+
+    },
 
 ]
 
@@ -151,6 +197,27 @@ export const SearchMLObjectDefinition = [
     },
 ]
 
+export const SearchPartnerPayableDetailMLObjectDefinition=[
+    
+    {
+        Name: "FromDate",
+        DefaultValue: "",
+        BindControlName: "dtFromDate"
+    },
+
+    {
+        Name: "ToDate",
+        DefaultValue: "",
+        BindControlName: "dtToDate"
+    },
+
+    {
+        Name: "PartnerID",
+        DefaultValue: "",
+        BindControlName: "cbPartnerID"
+    },
+]
+
 export const SearchComputeMLObjectDefinition = [
 
     {
@@ -179,6 +246,103 @@ export const DataGridColumnList = [
     },
 
 ];
+
+export const DataPartnerPayableDetailGridColumnList = [
+
+    {
+        Name: "ShipmentOrderID",
+        Type: "text",
+        Caption: "Sale order ID",
+        DataSourceMember: "ShipmentOrderID",
+        Width: 100
+    },
+    {
+        Name: "ActualEndDeliveryTime",
+        Type: "text",
+        Caption: "Thời gian giao",
+        DataSourceMember: "ActualEndDeliveryTime",
+        Width: 100
+    },
+    {
+        Name: "ReceiverFullName",
+        Type: "text",
+        Caption: "Khách hàng",
+        DataSourceMember: "ReceiverFullName",
+        Width: 100
+    },
+    {
+        Name: "ProductName",
+        Type: "text",
+        Caption: "Sản phẩm",
+        DataSourceMember: "ProductName",
+        Width: 100
+    },
+    {
+        Name: "SubGroupName",
+        Type: "text",
+        Caption: "Nhóm hàng",
+        DataSourceMember: "SubGroupName",
+        Width: 100
+    },
+    {
+        Name: "SenderFullAddress",
+        Type: "text",
+        Caption: "Kho xuất",
+        DataSourceMember: "SenderFullAddress",
+        Width: 200
+    },
+    // {
+    //     Name: "",
+    //     Type: "text",
+    //     Caption: "Kho tạo",
+    //     DataSourceMember: "",
+    //     Width: 100
+    // },
+    {
+        Name: "CoordinatorUser",
+        Type: "text",
+        Caption: "NV điều phối",
+        DataSourceMember: "CoordinatorUser",
+        Width: 100
+    },
+    {
+        Name: "DeliveryUser",
+        Type: "text",
+        Caption: "NV giao",
+        DataSourceMember: "DeliveryUser",
+        Width: 70
+    },
+    {
+        Name: "BrandName",
+        Type: "text",
+        Caption: "Loại máy",
+        DataSourceMember: "BrandName",
+        Width: 70
+    },
+    {
+        Name: "Quantity",
+        Type: "text",
+        Caption: "SL",
+        DataSourceMember: "Quantity",
+        Width: 70
+    },
+    {
+        Name: "ServiceFee",
+        Type: "textCurrency",
+        Caption: "Đơn giá",
+        DataSourceMember: "ServiceFee",
+        Width: 100
+    },
+    {
+        Name: "PayableAmount",
+        Type: "textCurrency",
+        Caption: "Thành tiền",
+        DataSourceMember: "PayableAmount",
+        Width: 100
+    },
+
+];
+
 
 export const DataGridByPartnerColumnList = [
 
