@@ -41,7 +41,8 @@ class InfoCoordinatorCom extends Component {
             validationCancelDeliveryReasonNote: null,
             CancelDeliveryReasonID: null,
             CancelDeliveryReasonNote: "",
-            selectedOption: []
+            selectedOption: [],
+            lstPartnerUser:[]
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -62,6 +63,19 @@ class InfoCoordinatorCom extends Component {
             }
         });
 
+        this.props.callGetCache("ERPCOMMONCACHE.PARTNERUSER").then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                //console.log("FormElement listOption: ", listOption)
+                let listOption = [];
+                result.ResultObject.CacheData.map((cacheItem) => {
+                    listOption.push({ value: cacheItem["UserName"], label: cacheItem["FullName"], PartnerID: cacheItem["PartnerID"] });
+                }
+                );
+                this.setState({
+                    lstPartnerUser: listOption
+                });
+            }
+        });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -213,7 +227,6 @@ class InfoCoordinatorCom extends Component {
         this.setState({ ShipmentOrder: ShipmentOrder })
     }
     handleValueChange1(e, selectedOption) {
-        debugger;
         let listMLObject = [];
         if (selectedOption) {
             for (let i = 0; i < selectedOption.length; i++) {
@@ -311,20 +324,39 @@ class InfoCoordinatorCom extends Component {
     }
 
     handleCheckDeliverUser(e) {
-        debugger;
         const strDeliverUservalue = e.target.value;
         const isCheck = e.target.checked;
         if (isCheck) {
-            let { ShipmentOrder } = this.state;
-            ShipmentOrder.ShipmentOrder_DeliverUserList.push(
-                {
-                    ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
-                    UserName: strDeliverUservalue,
-                    FullName: e.currentTarget.dataset.fullname,
-                    CreatedUser: this.props.AppInfo.LoginInfo.Username,
-                    CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
+            let { ShipmentOrder, lstPartnerUser } = this.state;
+            if (this.state.ShipmentOrder.CarrierPartnerID != -1 && this.state.ShipmentOrder.CarrierPartnerID != 0) {
+                if (ShipmentOrder.ShipmentOrder_DeliverUserList.find(n => n.UserName == strDeliverUservalue) == undefined) {
+                    if (lstPartnerUser.filter(n => n.value == strDeliverUservalue && n.PartnerID == this.state.ShipmentOrder.CarrierPartnerID).length>0) {
+                        ShipmentOrder.ShipmentOrder_DeliverUserList.push(
+                            {
+                                ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
+                                UserName: strDeliverUservalue,
+                                FullName: e.currentTarget.dataset.fullname,
+                                CreatedUser: this.props.AppInfo.LoginInfo.Username,
+                                CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
+                            }
+                        )
+                    }
                 }
-            )
+            }
+            else {
+                if (ShipmentOrder.ShipmentOrder_DeliverUserList.find(n => n.UserName == strDeliverUservalue) == undefined) {
+                    ShipmentOrder.ShipmentOrder_DeliverUserList.push(
+                        {
+                            ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
+                            UserName: strDeliverUservalue,
+                            FullName: e.currentTarget.dataset.fullname,
+                            CreatedUser: this.props.AppInfo.LoginInfo.Username,
+                            CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
+                        }
+                    )
+                }
+            }
+
             //  console.log(" ShipmentOrder.ShipmentOrder_DeliverUserList", ShipmentOrder.ShipmentOrder_DeliverUserList)
             this.setState({ ShipmentOrder: ShipmentOrder })
 
@@ -400,8 +432,8 @@ class InfoCoordinatorCom extends Component {
                                                 </div>
                                             </td>
                                             <td>{item.UserName + "-" + item.FullName}</td>
-                                            <td>10</td>
-                                            <td>6</td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                     )
                                 })
