@@ -111,7 +111,7 @@ export default class GridCell extends Component {
 
             case "date":
                 {
-                    const datestring = formatDate(text);
+                    const datestring = formatDate(text, true);
                     control = <label>{datestring}</label>;
                     break;
                 }
