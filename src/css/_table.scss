@@ -329,7 +329,8 @@
         tbody {
             tr {
                 &:hover {
-                    background-color: #e9ecef;
+                    background-color: aliceblue;
+                    transition: 0ms;
                 }
             }
         }
