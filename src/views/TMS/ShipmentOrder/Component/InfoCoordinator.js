@@ -285,7 +285,7 @@ class InfoCoordinatorCom extends Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
-                onCloseModal={this.handleCloseMessage}
+                onCloseModal={this.handleCloseMessage.bind(this)}
             />
         );
     }
