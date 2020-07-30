@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import { formatDate } from "../../../common/library/CommonLib.js";
-import { HorizontalBar } from 'react-chartjs-2';
+import { HorizontalBar, Line, Bar } from 'react-chartjs-2';
 
 
 class WeeklyReportCom extends Component {
@@ -20,14 +20,14 @@ class WeeklyReportCom extends Component {
 
     render() {
         let dataSource = [];
-        if ( this.props.DataSource != null && this.props.DataSource.length > 0) {
+        if (this.props.DataSource != null && this.props.DataSource.length > 0) {
             dataSource = this.props.DataSource[0].WeekShipmentOrderCoordList;
         }
         const label = [];
         const data1 = [];
         if (dataSource.length > 0) {
             dataSource.map((item, i) => {
-                label.push(formatDate(item.DateDay,true))
+                label.push(formatDate(item.DateDay, true))
                 data1.push(item.CoutShip)
             })
         }
@@ -47,6 +47,24 @@ class WeeklyReportCom extends Component {
             }]
         };
 
+
+        const dataBar = {
+            labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật'],
+            datasets: [
+                {
+                    label: 'Ngày điều phối nhiều nhất',
+                    fill: false,
+                    borderColor: '#5b9bd5',
+                    backgroundColor: '#5b9bd5',
+                    pointBorderColor: '#5b9bd5',
+                    pointBackgroundColor: '#5b9bd5',
+                    pointHoverBackgroundColor: '#5b9bd5',
+                    pointHoverBorderColor: '#5b9bd5',
+                    data: data1
+                }
+            ]
+        };
+
         return (
             <div className="col-md-12 col-md-7 col-lg-7">
                 <div className="card shadow-1">
@@ -54,12 +72,18 @@ class WeeklyReportCom extends Component {
                         <h5 className="card-title">biểu đồ điều phối trong tuần</h5>
                     </div>
                     <div className="card-body">
-                    <HorizontalBar data={data} height={197} />
+                        {/* <HorizontalBar data={data} height={197} />
+                        <Line height={197} data={datanew} /> */}
+                        <Bar
+                            data={dataBar}
+                            height={197}
+                            options={{}}
+                        />
                     </div>
                 </div>
             </div>
         );
-       
+
     }
 }
 
