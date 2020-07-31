@@ -566,10 +566,6 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         controltype="InputControl" datasourcemember="IsOutputSaleMaterialStep"
                                         swaplabelModal={true}
                                     />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Hiển thị danh sách vật tư để chỉnh sửa" name="IsShowMaterialList"
-                                        controltype="InputControl" datasourcemember="IsShowMaterialList"
-                                        swaplabelModal={true}
-                                    />
                                     <FormControl.CheckBox labelcolspan={1} colspan={11} label="Hiển thị nút nhấn thu tiền" name="IsShowCollectionButton"
                                         controltype="InputControl" datasourcemember="IsShowCollectionButton"
                                         swaplabelModal={true}
@@ -580,6 +576,10 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     />
                                     <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước có thể tạm ứng vật tư" name="IsCanAdvanceMaterialStep"
                                         controltype="InputControl" datasourcemember="IsCanAdvanceMaterialStep"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Hiển thị danh sách vật tư để chỉnh sửa" name="IsShowMaterialList"
+                                        controltype="InputControl" datasourcemember="IsShowMaterialList"
                                         swaplabelModal={true}
                                     />
                                 </div>
