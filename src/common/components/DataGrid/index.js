@@ -608,10 +608,11 @@ class DataGridCom extends Component {
         if (this.props.IsShowButtonAdd != undefined && this.props.IsShowButtonAdd == false) {
             isShowButtonAdd = false;
         }
-        let isShowButtonPrint = true;
-        if (this.props.IsShowButtonPrint != undefined && this.props.IsShowButtonPrint == false) {
-            isShowButtonPrint = false;
+        let isShowButtonPrint = false;
+        if (this.props.IsShowButtonPrint != undefined && this.props.IsShowButtonPrint != false) {
+            isShowButtonPrint = true;
         }
+
         let isShowButtonDelete = true;
         if (this.props.IsShowButtonDelete != undefined && this.props.IsShowButtonDelete == false) {
             isShowButtonDelete = false;
@@ -695,18 +696,6 @@ class DataGridCom extends Component {
                                                             <button type="button" className="btn btn-Print ml-10" title="" data-provide="tooltip" data-original-title="In" onClick={this.handlePrintClick}>
                                                                 <span className="ti ti-printer"> In </span>
                                                             </button>
-                                                            // <Fragment>
-                                                            //     <ReactToPrint content={() => (this.componentRef)}>
-                                                            //         <PrintContextConsumer>
-                                                            //             {({ handlePrint }) => (
-                                                            //                 <button type="button" className="btn btn-Print ml-10" title="" data-provide="tooltip" data-original-title="In" onClick={handlePrint}>
-                                                            //                     <span className="ti ti-printer"> In </span>
-                                                            //                 </button>
-                                                            //             )}
-                                                            //         </PrintContextConsumer>
-                                                            //     </ReactToPrint>
-
-                                                            // </Fragment>
                                                         )
                                                         : (<button type="button" className="btn btn-Print ml-10" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="In" >
                                                             <span className="ti ti-printer"> In </span>
