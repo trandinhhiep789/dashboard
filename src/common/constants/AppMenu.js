@@ -285,6 +285,29 @@ const AppMenu = [
                     },
 
                 ]
+            },
+            {
+                MenuName: 'Limit',
+                MenuTitle: 'Giới hạn',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'LimitType',
+                        MenuTitle: 'Loại giới hạn',
+                        LinkTo: '/LimitType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'UserLimit',
+                        MenuTitle: 'Giới hạn theo người dùng',
+                        LinkTo: '/UserLimit',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+
+                ]
             }
         ]
     },

@@ -252,13 +252,22 @@ export const DataPartnerPayableDetailGridColumnList = [
     {
         Name: "ShipmentOrderID",
         Type: "text",
-        Caption: "Sale order ID",
+        Caption: "Mã vẫn đơn",
         DataSourceMember: "ShipmentOrderID",
         Width: 100
     },
+
+    {
+        Name: "PartnerSaleOrderID",
+        Type: "text",
+        Caption: "Mã đơn hàng",
+        DataSourceMember: "PartnerSaleOrderID",
+        Width: 100
+    },
+
     {
         Name: "ActualEndDeliveryTime",
-        Type: "text",
+        Type: "date",
         Caption: "Thời gian giao",
         DataSourceMember: "ActualEndDeliveryTime",
         Width: 100
@@ -291,13 +300,13 @@ export const DataPartnerPayableDetailGridColumnList = [
         DataSourceMember: "SenderFullAddress",
         Width: 200
     },
-    // {
-    //     Name: "",
-    //     Type: "text",
-    //     Caption: "Kho tạo",
-    //     DataSourceMember: "",
-    //     Width: 100
-    // },
+    {
+        Name: "StoreName",
+        Type: "text",
+        Caption: "Kho tạo",
+        DataSourceMember: "StoreName",
+        Width: 200
+    },
     {
         Name: "CoordinatorUser",
         Type: "text",
@@ -310,14 +319,7 @@ export const DataPartnerPayableDetailGridColumnList = [
         Type: "text",
         Caption: "NV giao",
         DataSourceMember: "DeliveryUser",
-        Width: 70
-    },
-    {
-        Name: "BrandName",
-        Type: "text",
-        Caption: "Loại máy",
-        DataSourceMember: "BrandName",
-        Width: 70
+        Width: 100
     },
     {
         Name: "Quantity",

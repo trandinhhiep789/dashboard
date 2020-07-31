@@ -49,16 +49,16 @@ export const SearchElementList = [
         classNameCol:"col-custom"
         
     },
-    {
-        type: "text",
-        name: "txReceiverPhoneNumber",
-        DataSourceMember: "ReceiverPhoneNumber",
-        value: "",
-        colspan: 2,
-        placeholder: " Sđt người nhận hàng",
-        icon: "",
-        classNameCol:"col-custom"
-    },
+    // {
+    //     type: "text",
+    //     name: "txReceiverPhoneNumber",
+    //     DataSourceMember: "ReceiverPhoneNumber",
+    //     value: "",
+    //     colspan: 2,
+    //     placeholder: " Sđt người nhận hàng",
+    //     icon: "",
+    //     classNameCol:"col-custom"
+    // },
     {
         type: "ComboBox",
         name: "cbShipmentOrderTypeID",
@@ -211,7 +211,7 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@RECEIVERPHONENUMBER",
-        SearchValue: ""
+        SearchValue: "-1"
     },
     {
         SearchKey: "@SHIPMENTORDERTYPEID",
@@ -269,11 +269,6 @@ export const SearchMLObjectDefinition = [
         Name: "Keyword",
         DefaultValue: "",
         BindControlName: "txtKeyword"
-    },
-    {
-        Name: "ReceiverPhoneNumber",
-        DefaultValue: "",
-        BindControlName: "txReceiverPhoneNumber"
     },
     {
         Name: "ShipmentOrderTypeID",
