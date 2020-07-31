@@ -19,7 +19,7 @@ class ProcessHistoryCom extends Component {
     render() {
 
         return (
-            <div className="col-12 col-md-5 col-lg-5">
+            <div className="col-12 col-md-7 col-lg-7">
                 <div className="card shadow-1">
                     <div className="card-header">
                         <h5 className="card-title">Nhật ký xử lý</h5>
