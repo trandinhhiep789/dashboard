@@ -29,9 +29,6 @@ class SearchCom extends React.Component {
     constructor(props) {
         super(props);
 
-        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-        this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -48,7 +45,6 @@ class SearchCom extends React.Component {
 
 
     componentDidMount() {
-        this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
     }
 
@@ -157,25 +153,13 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    FormName="Tìm kiếm danh sách định loại giới hạn"
+                    FormName="Tìm kiếm danh sách giới hạn theo người dùng"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                 />
-                <DataGrid
-                    listColumn={DataGridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    AddLink={AddLink}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
-                    onDeleteClick={this.handleDelete}
-                    ref={this.gridref}
-                    RequirePermission={LIMITTYPE_VIEW}
-                    DeletePermission={LIMITTYPE_DELETE}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                />
+              
             </React.Fragment>
         );
     }

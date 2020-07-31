@@ -2,10 +2,10 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
-import FormContainer from "../../../../../common/components/FormContainer";
-import FormControl from "../../../../../common/components/FormContainer/FormControl";
-import { MessageModal } from "../../../../../common/components/Modal";
-import { showModal, hideModal } from '../../../../../actions/modal';
+import FormContainer from "../../../../../../common/components/FormContainer";
+import FormControl from "../../../../../../common/components/FormContainer/FormControl";
+import { MessageModal } from "../../../../../../common/components/Modal";
+import { showModal, hideModal } from '../../../../../../actions/modal';
 import {
     APIHostName,
     AddAPIPath,
@@ -13,10 +13,10 @@ import {
     BackLink,
     AddPagePath,
 } from "../constants";
-import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../actions/pageAction";
-import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { LIMITTYPE_ADD } from "../../../../../constants/functionLists";
+import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
+import { updatePagePath } from "../../../../../../actions/pageAction";
+import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
+import { LIMITTYPE_ADD } from "../../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 
 class AddCom extends React.Component {

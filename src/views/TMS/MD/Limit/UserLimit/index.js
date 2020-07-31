@@ -7,11 +7,9 @@ import {
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import Search from "./Search";
-import Add from "./Add";
-import Edit from "./Edit";
 import NotFound from '../../../../NotFound'
 
-class LimitTypeCom extends React.Component {
+class UserLimitCom extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -20,8 +18,6 @@ class LimitTypeCom extends React.Component {
         return (
             <Switch>
                 <Route exact path="/LimitType" component={Search} />
-                <Route exact path="/LimitType/Add" component={Add} />
-                <Route exact path="/LimitType/Edit/:id" component={Edit} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
@@ -43,5 +39,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const LimitType = connect(mapStateToProps, mapDispatchToProps)(LimitTypeCom);
-export default LimitType;
+const UserLimit = connect(mapStateToProps, mapDispatchToProps)(UserLimitCom);
+export default UserLimit;
