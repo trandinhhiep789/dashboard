@@ -516,7 +516,7 @@ export const InstallBundle_MateriaColumnList = [
     {
         name: "MaterialGroupName",
         Type: "text",
-        Caption: "nhóm vật tư",
+        Caption: "Nhóm vật tư",
         label: "nhóm vật tư",
         datasourcemember: "MaterialGroupName",
         Width: 300,

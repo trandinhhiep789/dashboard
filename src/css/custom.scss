@@ -358,7 +358,7 @@ select.form-control:-webkit-autofill:focus {
             font-size: 18px;
             font-weight: 500;
             white-space: nowrap;
-            color: #73879C;
+            color: #135ead;
         }
     }
 
@@ -375,6 +375,7 @@ select.form-control:-webkit-autofill:focus {
                 display: inline-block;
                 font-weight: 500;
                 vertical-align: top;
+                margin-right: 5px;
             }
             span.xcode{
                 color: #349ae0;
@@ -384,8 +385,13 @@ select.form-control:-webkit-autofill:focus {
                 //max-width: 400px;
                 display: inline-block;
                 // word-break: break-all;
-                // white-space: pre-wrap;
+                 white-space: pre-wrap;
                 // white-space: -moz-pre-wrap;
+                width: 80%;
+                
+            }
+            span code{
+                white-space: pre-wrap;
             }
             
         }

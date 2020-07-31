@@ -67,8 +67,10 @@ import MaterialGroup from "../TMS/MD/MaterialGroup";
 import PartnerPayable from '../../views/TMS/PartnerPayable';
 import Compute from '../../views/TMS/PartnerPayable/Compute';
 import PartnerPayableDetail from '../../views/TMS/PartnerPayable/PartnerPayableDetail';
+import ApiCallLog from "../TMS/MD/ApiCallLog";
 
 import NotFound from '../NotFound'
+
 
 
 
@@ -226,6 +228,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/InstallMaterial" component={InstallMaterial} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserCoordinator" component={UserCoordinator} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserGroup" component={UserGroup} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/ApiCallLog" component={ApiCallLog} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/WorkingPlan" component={WorkingPlan} isLoggedIn={isLoggedIn} />
 
