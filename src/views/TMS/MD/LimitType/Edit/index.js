@@ -2,15 +2,10 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
-import InputGrid from "../../../../../common/components/FormContainer/FormControl/InputGrid";
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
-import { MODAL_TYPE_SEARCH, MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_CONFIRMATION } from '../../../../../constants/actionTypes';
-import SearchModal from "../../../../../common/components/Form/AdvanceForm/FormControl/FormSearchModal"
-import InputGridControl from "../../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
-import MD5Digest from "../../../../../common/library/cryptography/MD5Digest.js";
 import {
     APIHostName,
     AddAPIPath,
@@ -24,15 +19,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { WORKINGSHIFT_UPDATE } from "../../../../../constants/functionLists";
-import CoordinatorStoreWard from '../../CoordinatorStoreWard'
-import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
-import ReactNotification from "react-notifications-component";
-import DeliverUserList from "../../../ShipmentOrder/Component/DeliverUserList";
-import MultiSelectComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
-import MultiStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiStoreComboBox";
-
-import { ERPCOMMONCACHE_WORKINGSHIFT } from "../../../../../constants/keyCache";
+import { LIMITTYPE_UPDATE } from "../../../../../constants/functionLists";
 
 
 class EditCom extends React.Component {
@@ -131,7 +118,7 @@ class EditCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    // RequirePermission={WORKINGSHIFT_UPDATE}
+                    RequirePermission={LIMITTYPE_UPDATE}
                 >
                      <div className="row">
                         <div className="col-md-6">

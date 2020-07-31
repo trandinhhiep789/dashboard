@@ -18,7 +18,6 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { LIMITTYPE_ADD } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
-import { ERPCOMMONCACHE_WORKINGSHIFT } from "../../../../../constants/keyCache";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -128,7 +127,7 @@ class AddCom extends React.Component {
                     listelement={[]}
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
-                    //RequirePermission={LIMITTYPE_ADD}
+                    RequirePermission={LIMITTYPE_ADD}
                 >
 
                     <div className="row">

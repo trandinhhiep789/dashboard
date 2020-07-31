@@ -19,14 +19,12 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { WORKINGSHIFT_VIEW, WORKINGSHIFT_DELETE } from "../../../../../constants/functionLists";
+import { LIMITTYPE_VIEW, LIMITTYPE_DELETE } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_CARRIERTYPE } from "../../../../../constants/keyCache";
 
 
 class SearchCom extends React.Component {
@@ -175,8 +173,8 @@ class SearchCom extends React.Component {
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
                     ref={this.gridref}
-                    // RequirePermission={WORKINGSHIFT_VIEW}
-                    // DeletePermission={WORKINGSHIFT_DELETE}
+                    RequirePermission={LIMITTYPE_VIEW}
+                    DeletePermission={LIMITTYPE_DELETE}
                     IsAutoPaging={true}
                     RowsPerPage={10}
                 />
