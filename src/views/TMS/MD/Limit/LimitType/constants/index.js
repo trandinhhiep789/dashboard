@@ -62,34 +62,16 @@ export const SearchMLObjectDefinition = [
 
 export const MLObjectDefinition = [
     {
-        Name: "WorkingShiftID",
+        Name: "LimitTypeID",
         DefaultValue: {},
-        BindControlName: "txtWorkingShiftID",
-        DataSourceMember: "WorkingShiftID"
+        BindControlName: "txtLimitTypeID",
+        DataSourceMember: "LimitTypeID"
     },
     {
-        Name: "WorkingShiftName",
+        Name: "LimitTypeName",
         DefaultValue: {},
-        BindControlName: "txtWorkingShiftName",
-        DataSourceMember: "WorkingShiftName"
-    },
-    {
-        Name: "TimeStart",
-        DefaultValue: {},
-        BindControlName: "txtTimeStart",
-        DataSourceMember: "TimeStart"
-    },
-    {
-        Name: "TimeEnd",
-        DefaultValue: {},
-        BindControlName: "txtTimeEnd",
-        DataSourceMember: "TimeEnd"
-    },
-    {
-        Name: "ShiftNumber",
-        DefaultValue: {},
-        BindControlName: "cbShiftNumber",
-        DataSourceMember: "ShiftNumber"
+        BindControlName: "txtLimitTypeName",
+        DataSourceMember: "LimitTypeName"
     },
     {
         Name: "Description",
@@ -216,14 +198,14 @@ export const DataGridColumnList=[
         Type: "text",
         Caption: "Tên loại giới hạn",
         DataSourceMember: "LimitTypeName",
-        Width: 250
+        Width: 500
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "LimitTypeID",
-        Width: 100,
+        Width: 60,
         Link: "/LimitType/Edit/",
         LinkText: "Chỉnh sửa"
     },

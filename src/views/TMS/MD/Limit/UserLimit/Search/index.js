@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SearchForm from "../../../../../common/components/Form/SearchForm";
-import DataGrid from "../../../../../common/components/DataGrid";
-import { MessageModal } from "../../../../../common/components/Modal";
+import SearchForm from "../../../../../../common/components/Form/SearchForm";
+import DataGrid from "../../../../../../common/components/DataGrid";
+import { MessageModal } from "../../../../../../common/components/Modal";
 import {
     SearchElementList,
     SearchMLObjectDefinition,
@@ -17,25 +17,18 @@ import {
     InitSearchParams,
     PagePath,
 } from "../constants";
-import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../actions/pageAction";
-import { WORKINGSHIFT_VIEW, WORKINGSHIFT_DELETE } from "../../../../../constants/functionLists";
+import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
+import { updatePagePath } from "../../../../../../actions/pageAction";
+import { LIMITTYPE_VIEW, LIMITTYPE_DELETE } from "../../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
-import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_CARRIERTYPE } from "../../../../../constants/keyCache";
+import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
 
-        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-        this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -52,7 +45,6 @@ class SearchCom extends React.Component {
 
 
     componentDidMount() {
-        this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
     }
 
@@ -161,25 +153,13 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    FormName="Tìm kiếm danh sách định loại giới hạn"
+                    FormName="Tìm kiếm danh sách giới hạn theo người dùng"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                 />
-                <DataGrid
-                    listColumn={DataGridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    AddLink={AddLink}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
-                    onDeleteClick={this.handleDelete}
-                    ref={this.gridref}
-                    // RequirePermission={WORKINGSHIFT_VIEW}
-                    // DeletePermission={WORKINGSHIFT_DELETE}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                />
+              
             </React.Fragment>
         );
     }

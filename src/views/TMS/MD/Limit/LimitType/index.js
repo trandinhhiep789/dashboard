@@ -5,11 +5,11 @@ import {
     Switch
 } from "react-router-dom";
 import { connect } from "react-redux";
-import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
-import NotFound from '../../../NotFound'
+import NotFound from '../../../../NotFound'
 
 class LimitTypeCom extends React.Component {
     constructor(props) {
