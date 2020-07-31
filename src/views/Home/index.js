@@ -68,6 +68,8 @@ import PartnerPayable from '../../views/TMS/PartnerPayable';
 import Compute from '../../views/TMS/PartnerPayable/Compute';
 import PartnerPayableDetail from '../../views/TMS/PartnerPayable/PartnerPayableDetail';
 
+import LimitType from "../TMS/MD/LimitType";
+
 import NotFound from '../NotFound'
 
 
@@ -212,6 +214,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/UserSkill" component={UserSkill} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/MaterialGroup" component={MaterialGroup} isLoggedIn={isLoggedIn} />
 
+                                <PrivateRoute path="/LimitType" component={LimitType} isLoggedIn={isLoggedIn} />
+
                                 <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} />
@@ -233,6 +237,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/Compute" component={Compute} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerPayableDetail" component={PartnerPayableDetail} isLoggedIn={isLoggedIn} />
 
+                                
+                                
                                 
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} />
 
