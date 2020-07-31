@@ -68,6 +68,7 @@ class EditCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            console.log('callLoadData', apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -75,20 +76,7 @@ class EditCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-                const start = apiResult.ResultObject.TimeStart;
-                const hourStart = Math.floor(start / 60);
-                const minStart =  start%60;//Math.floor((apiResult.ResultObject.TimeStart - hourStart) / 60);
-                const timeStart = (hourStart + ":" + minStart).toString()
-
-                const end = apiResult.ResultObject.TimeEnd;
-                const hourEnd = Math.floor(end / 60);
-                const minEnd = end%60//Math.floor((apiResult.ResultObject.TimeEnd - hourEnd) / 60);
-
-                const timeEnd = (hourEnd + ":" + minEnd).toString()
-
-                apiResult.ResultObject.TimeStart = timeStart;
-                apiResult.ResultObject.TimeEnd = timeEnd;
-
+             
                 this.setState({
                     DataSource: apiResult.ResultObject,
                     IsSystem: apiResult.ResultObject.IsSystem,
@@ -119,43 +107,11 @@ class EditCom extends React.Component {
 
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        const start = MLObject.TimeStart.split(':');
-        const end = MLObject.TimeEnd.split(':');
-        const countStart = (parseInt(start[0]) * 60) + parseInt(start[1]);
-        const countEnd = (parseInt(end[0]) * 60) + parseInt(end[1]);
-        MLObject.TimeStart = countStart;
-        MLObject.TimeEnd = countEnd;
-
-        if (countEnd < countStart) {
-            formData.txtTimeEnd.ErrorLst.IsValidatonError = true;
-            formData.txtTimeEnd.ErrorLst.ValidatonErrorMessage = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu làm việc";
-            return;
-        }
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-            if (!apiResult.IsError) {
-                this.props.callClearLocalCache(ERPCOMMONCACHE_WORKINGSHIFT);
-            }
         });
-    }
-
-    handleChange(formData, MLObject) {
-        if (formData.txtTimeEnd.value != '' && formData.txtTimeStart.value != '') {
-            const start = formData.txtTimeStart.value.split(':');
-            const end = formData.txtTimeEnd.value.split(':');
-            const countStart = (parseInt(start[0]) * 60) + parseInt(start[1]);
-            const countEnd = (parseInt(end[0]) * 60) + parseInt(end[1]);
-            if (countEnd <= countStart) {
-                formData.txtTimeEnd.ErrorLst.IsValidatonError = true;
-                formData.txtTimeEnd.ErrorLst.ValidatonErrorMessage = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu làm việc";
-            }
-            else {
-                formData.txtTimeEnd.ErrorLst.IsValidatonError = false;
-                formData.txtTimeEnd.ErrorLst.ValidatonErrorMessage = "";
-            }
-        }
     }
 
 
@@ -175,117 +131,40 @@ class EditCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    onchange={this.handleChange.bind(this)}
-                    RequirePermission={WORKINGSHIFT_UPDATE}
+                    // RequirePermission={WORKINGSHIFT_UPDATE}
                 >
-
-                    <div className="row">
+                     <div className="row">
                         <div className="col-md-6">
                             <FormControl.TextBox
-                                name="txtWorkingShiftID"
+                                name="txtLimitTypeID"
                                 colspan="8"
                                 labelcolspan="4"
-                                disabled={true}
-                                readOnly={true}
-                                label="mã ca làm việc"
-                                placeholder="Mã ca làm việc"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
+                                label="mã loại giới hạn"
+                                placeholder="Mã loại giới hạn"
                                 controltype="InputControl"
                                 value=""
                                 maxSize={9}
-                                datasourcemember="WorkingShiftID"
+                                datasourcemember="LimitTypeID"
                                 validatonList={['required', 'number']}
                             />
                         </div>
                         <div className="col-md-6">
                             <FormControl.TextBox
-                                name="txtWorkingShiftName"
+                                name="txtLimitTypeName"
                                 colspan="8"
                                 labelcolspan="4"
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
-                                label="ca làm việc"
-                                placeholder="Ca làm việc"
+                                label="tên loại giới hạn"
+                                placeholder="Tên loại giới hạn"
                                 controltype="InputControl"
                                 value=""
-                                datasourcemember="WorkingShiftName"
+                                datasourcemember="LimitTypeName"
                                 validatonList={['required']}
                             />
                         </div>
-
-                        <div className="col-md-6">
-                            <FormControl.FormControlHour
-                                name="txtTimeStart"
-                                colspan="8"
-                                labelcolspan="4"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                label="thời gian bắt đầu"
-                                placeholder="Thời gian bắt đầu"
-                                controltype="InputControl"
-                                formatHour="HH:mm"
-                                value=""
-                                datasourcemember="TimeStart"
-                                validatonList={['required']}
-                            />
-                        </div>
-
-
-                        <div className="col-md-6">
-
-                            <FormControl.FormControlHour
-                                name="txtTimeEnd"
-                                colspan="8"
-                                labelcolspan="4"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                formatHour="HH:mm"
-                                label="thời gian kết thúc làm việc"
-                                placeholder="Thời gian kết thúc làm việc"
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="TimeEnd"
-                                validatonList={['required']}
-                            />
-                        </div>
-
-                        <div className="col-md-6">
-                            {/* <FormControl.TextBox
-                                name="txtShiftNumber"
-                                colspan="8"
-                                labelcolspan="4"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                label="ca làm việc"
-                                placeholder="Ca làm việc"
-                                controltype="InputControl"
-                                value=""
-                                maxSize={9}
-                                datasourcemember="ShiftNumber"
-                                validatonList={['required', 'number']}
-                            /> */}
-                            <FormControl.ComboBoxSelect
-
-                                name="cbShiftNumber"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="ca làm việc số"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                validatonList={["Comborequired"]}
-                                placeholder="-- Vui lòng chọn --"
-                                isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.WORKINGSHIFT"
-                                valuemember="WorkingShiftID"
-                                nameMember="WorkingShiftName"
-                                controltype="InputControl"
-                                value={""}
-                                listoption={null}
-                                datasourcemember="WorkingShiftID" />
-                        </div>
-
-                    </div>
-
-                    <div className="row">
 
                         <div className="col-md-12">
                             <FormControl.TextArea
@@ -293,17 +172,16 @@ class EditCom extends React.Component {
                                 colspan={10}
                                 name="txtDescription"
                                 label="Mô tả"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 placeholder="Mô tả"
                                 datasourcemember="Description"
                                 controltype="InputControl"
                                 rows={6}
                                 maxSize={500}
                                 classNameCustom="customcontrol"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
                             />
                         </div>
-
                         <div className="col-md-6">
                             <FormControl.CheckBox
                                 name="chkIsActived"
@@ -334,7 +212,6 @@ class EditCom extends React.Component {
                         </div>
 
                     </div>
-
                 </FormContainer>
             </React.Fragment>
 

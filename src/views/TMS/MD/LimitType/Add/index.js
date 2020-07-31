@@ -2,15 +2,10 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
-import InputGrid from "../../../../../common/components/FormContainer/FormControl/InputGrid";
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
-import { MODAL_TYPE_SEARCH, MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_CONFIRMATION } from '../../../../../constants/actionTypes';
-import SearchModal from "../../../../../common/components/Form/AdvanceForm/FormControl/FormSearchModal"
-import InputGridControl from "../../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
-import MD5Digest from "../../../../../common/library/cryptography/MD5Digest.js";
 import {
     APIHostName,
     AddAPIPath,
@@ -21,11 +16,8 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { WORKINGSHIFT_ADD } from "../../../../../constants/functionLists";
-import CoordinatorStoreWard from '../../CoordinatorStoreWard'
-import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
+import { LIMITTYPE_ADD } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
-import DeliverUserList from "../../../ShipmentOrder/Component/DeliverUserList";
 import { ERPCOMMONCACHE_WORKINGSHIFT } from "../../../../../constants/keyCache";
 
 class AddCom extends React.Component {
@@ -77,25 +69,12 @@ class AddCom extends React.Component {
 
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        const start = MLObject.TimeStart.split(':');
-        const end = MLObject.TimeEnd.split(':');
-        const countStart = (parseInt(start[0]) * 60) + parseInt(start[1]);
-        const countEnd = (parseInt(end[0]) * 60) + parseInt(end[1]);
-        MLObject.TimeStart = countStart;
-        MLObject.TimeEnd = countEnd;
 
-        if (countEnd < countStart) {
-            formData.txtTimeEnd.ErrorLst.IsValidatonError = true;
-            formData.txtTimeEnd.ErrorLst.ValidatonErrorMessage = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu làm việc";
-            return;
-        }
-
+        console.log("1111", MLObject)
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-            if (!apiResult.IsError) {
-                this.props.callClearLocalCache(ERPCOMMONCACHE_WORKINGSHIFT);
-            }
+           
         });
     }
 
@@ -133,37 +112,6 @@ class AddCom extends React.Component {
         });
     }
 
-    onChangeUser(name, objUser) {
-
-        this.setState({
-            MainDriverUser: objUser.value
-        })
-    }
-
-    onChangeStore(name, objstore) {
-        this.setState({
-            MainCoordinatorStoreID: objstore.value
-        })
-
-    }
-
-    handleChange(formData, MLObject) {
-        if (formData.txtTimeEnd.value != '' && formData.txtTimeStart.value != '') {
-            const start = formData.txtTimeStart.value.split(':');
-            const end = formData.txtTimeEnd.value.split(':');
-            const countStart = (parseInt(start[0]) * 60) + parseInt(start[1]);
-            const countEnd = (parseInt(end[0]) * 60) + parseInt(end[1]);
-            if (countEnd <= countStart) {
-                formData.txtTimeEnd.ErrorLst.IsValidatonError = true;
-                formData.txtTimeEnd.ErrorLst.ValidatonErrorMessage = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu làm việc";
-            }
-            else {
-                formData.txtTimeEnd.ErrorLst.IsValidatonError = false;
-                formData.txtTimeEnd.ErrorLst.ValidatonErrorMessage = "";
-            }
-        }
-    }
-
 
     render() {
         const { DataSource } = this.state;
@@ -175,116 +123,44 @@ class AddCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <FormContainer
-                    FormName="Thêm ca làm việc"
+                    FormName="Thêm loại giới hạn"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={[]}
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
-                    onchange={this.handleChange.bind(this)}
-                    RequirePermission={WORKINGSHIFT_ADD}
+                    //RequirePermission={LIMITTYPE_ADD}
                 >
 
                     <div className="row">
                         <div className="col-md-6">
                             <FormControl.TextBox
-                                name="txtWorkingShiftID"
+                                name="txtLimitTypeID"
                                 colspan="8"
                                 labelcolspan="4"
                                 readOnly={false}
-                                label="mã ca làm việc"
-                                placeholder="Mã ca làm việc"
+                                label="mã loại giới hạn"
+                                placeholder="Mã loại giới hạn"
                                 controltype="InputControl"
                                 value=""
                                 maxSize={9}
-                                datasourcemember="WorkingShiftID"
+                                datasourcemember="LimitTypeID"
                                 validatonList={['required', 'number']}
                             />
                         </div>
                         <div className="col-md-6">
                             <FormControl.TextBox
-                                name="txtWorkingShiftName"
+                                name="txtLimitTypeName"
                                 colspan="8"
                                 labelcolspan="4"
                                 readOnly={false}
-                                label="tên ca làm việc"
-                                placeholder="Tên ca làm việc"
+                                label="tên loại giới hạn"
+                                placeholder="Tên loại giới hạn"
                                 controltype="InputControl"
                                 value=""
-                                datasourcemember="WorkingShiftName"
+                                datasourcemember="LimitTypeName"
                                 validatonList={['required']}
                             />
                         </div>
-
-                        <div className="col-md-6">
-                            <FormControl.FormControlHour
-                                name="txtTimeStart"
-                                colspan="8"
-                                labelcolspan="4"
-                                readOnly={false}
-                                label="thời gian bắt đầu"
-                                placeholder="Thời gian bắt đầu"
-                                controltype="InputControl"
-                                formatHour="HH:mm"
-                                value=""
-                                datasourcemember="TimeStart"
-                                validatonList={['required']}
-                            />
-                        </div>
-
-
-                        <div className="col-md-6">
-
-                            <FormControl.FormControlHour
-                                name="txtTimeEnd"
-                                colspan="8"
-                                labelcolspan="4"
-                                readOnly={false}
-                                formatHour="HH:mm"
-                                label="thời gian kết thúc làm việc"
-                                placeholder="Thời gian kết thúc làm việc"
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="TimeEnd"
-                                validatonList={['required']}
-                            />
-                        </div>
-
-                        <div className="col-md-6">
-                            {/* <FormControl.TextBox
-                                name="txtShiftNumber"
-                                colspan="8"
-                                labelcolspan="4"
-                                readOnly={false}
-                                label="ca làm việc số"
-                                placeholder="Ca làm việc"
-                                controltype="InputControl"
-                                value=""
-                                maxSize={9}
-                                datasourcemember="ShiftNumber"
-                                validatonList={['required', 'number']}
-                            /> */}
-
-                            <FormControl.ComboBoxSelect
-
-                                name="cbShiftNumber"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="ca làm việc số"
-                                validatonList={["Comborequired"]}
-                                placeholder="-- Vui lòng chọn --"
-                                isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.WORKINGSHIFT"
-                                valuemember="WorkingShiftID"
-                                nameMember="WorkingShiftName"
-                                controltype="InputControl"
-                                value={""}
-                                listoption={null}
-                                datasourcemember="WorkingShiftID" />
-                        </div>
-
-                    </div>
-
-                    <div className="row">
 
                         <div className="col-md-12">
                             <FormControl.TextArea
@@ -300,7 +176,6 @@ class AddCom extends React.Component {
                                 classNameCustom="customcontrol"
                             />
                         </div>
-
                         <div className="col-md-6">
                             <FormControl.CheckBox
                                 name="chkIsActived"
