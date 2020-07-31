@@ -69,7 +69,7 @@ import Compute from '../../views/TMS/PartnerPayable/Compute';
 import PartnerPayableDetail from '../../views/TMS/PartnerPayable/PartnerPayableDetail';
 import ApiCallLog from "../TMS/MD/ApiCallLog";
 
-import LimitType from "../TMS/MD/LimitType";
+import LimitType from "../TMS/MD/Limit/LimitType";
 
 import NotFound from '../NotFound'
 
