@@ -20,6 +20,7 @@ class DashboardCom extends Component {
         super(props);
         this.state = {
             LstDataSource: [],
+            WeekShipmentOrderCoord:[],
             IsLoadDataComplete: false,
 
         };
@@ -37,7 +38,8 @@ class DashboardCom extends Component {
 
             if (!apiResult.IsError) {
                 this.setState({
-                    LstDataSource: apiResult.ResultObject == null ? [] : apiResult.ResultObject,
+                    LstDataSource: apiResult.ResultObject == null ? [] : apiResult.ResultObject.ShipmentOrderItemList,
+                    WeekShipmentOrderCoord: apiResult.ResultObject == null ? [] : apiResult.ResultObject.WeekShipmentOrderCoordList,
                     IsLoadDataComplete: true
                 });
             }
@@ -45,6 +47,7 @@ class DashboardCom extends Component {
     }
 
     render() {
+       
         if (this.state.IsLoadDataComplete) {
             return (
                 <div className="col-lg-12 dashboard">
@@ -55,7 +58,7 @@ class DashboardCom extends Component {
                         <Delivered DataSource={this.state.LstDataSource} />
                     </div>
                     <div className="row">
-                        <WeeklyReport DataSource={this.state.LstDataSource} />
+                        <WeeklyReport DataSource={this.state.WeekShipmentOrderCoord} />
                         <ProcessHistory />
                     </div>
                     <div className="row">

@@ -21,7 +21,7 @@ class WeeklyReportCom extends Component {
     render() {
         let dataSource = [];
         if (this.props.DataSource != null && this.props.DataSource.length > 0) {
-            dataSource = this.props.DataSource[0].WeekShipmentOrderCoordList;
+            dataSource = this.props.DataSource;
         }
         const label = [];
         const data1 = [];
@@ -66,17 +66,17 @@ class WeeklyReportCom extends Component {
         };
 
         return (
-            <div className="col-md-12 col-md-7 col-lg-7">
+            <div className="col-md-12 col-md-5 col-lg-5">
                 <div className="card shadow-1">
                     <div className="card-header">
-                        <h5 className="card-title">biểu đồ điều phối trong tuần</h5>
+                        <h5 className="card-title">Biểu đồ điều phối trong tuần</h5>
                     </div>
                     <div className="card-body">
                         {/* <HorizontalBar data={data} height={197} />
                         <Line height={197} data={datanew} /> */}
                         <Bar
                             data={dataBar}
-                            height={197}
+                            height={160}
                             options={{}}
                         />
                     </div>
