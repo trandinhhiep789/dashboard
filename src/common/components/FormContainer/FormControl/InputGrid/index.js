@@ -327,7 +327,7 @@ class InputGridCom extends Component {
 		}
 		const idSelectColumnName = this.props.IDSelectColumnName;
 		return (
-			<table className="table table-bordered">
+			<table className="table table-bordered table-hover">
 				<thead>
 					<tr className="jsgrid-header-row">
 						{

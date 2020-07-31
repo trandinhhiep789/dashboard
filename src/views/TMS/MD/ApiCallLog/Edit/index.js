@@ -85,7 +85,7 @@ class EditCom extends React.Component {
                     <div className="col-md-12 col-sm-12 col-xs-12">
                         <div className="x_panel">
                             <div className="x_title">
-                                <h2>Thông tin giao dịch với đối tác</h2>
+                                <h2>Nhật ký gọi API</h2>
                                 <div className="clearfix"></div>
                             </div>
 
@@ -93,14 +93,14 @@ class EditCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Mã giao dịch: </span>
-                                            <span className="xcode">{this.state.DataSource.PartnerTransactionID}</span>
+                                            <span>Mã gọi API: </span>
+                                            <span className="xcode">{this.state.DataSource.APICallLogID}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Loại giao dịch: </span>
-                                            <span>{this.state.DataSource.PartnerTransactionTypeName}</span>
+                                            <span>Danh mục API: </span>
+                                            <span>{this.state.DataSource.APICategoryID}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -108,14 +108,14 @@ class EditCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Ngày giao dịch: </span>
-                                            <span>{formatDate(this.state.DataSource.PartnerTransactionDate)}</span>
+                                            <span>Ngày gọi API: </span>
+                                            <span>{formatDate(this.state.DataSource.APICallDate)}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Đối tác: </span>
-                                            <span>{this.state.DataSource.PartnerName}</span>
+                                            <span>Mã trạng thái phản hồi: </span>
+                                            <span>{this.state.DataSource.ResponseStatusID}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -155,14 +155,14 @@ class EditCom extends React.Component {
                                     </div>
                                 </div>
 
-                                <div className="row">
+                                {/* <div className="row">
                                     <div className="col-md-12">
                                         <div className="form-group">
                                             <span>Mã trạng thái phản hồi: </span>
                                             <span>{this.state.DataSource.ResponseStatusID}</span>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
 
                                 <div className="row">
                                     <div className="col-md-6">

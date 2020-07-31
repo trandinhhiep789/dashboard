@@ -408,8 +408,8 @@ const AppMenu = [
         ]
     },
     {
-        MenuName: 'PartnerTran',
-        MenuTitle: 'Lịch sử giao dịch với đối tác',
+        MenuName: 'History',
+        MenuTitle: 'Xem nhật ký',
         LinkTo: '',
         MenuIcon: '',
         SubMenu: [
@@ -417,6 +417,13 @@ const AppMenu = [
                 MenuName: 'PartnerTransaction',
                 MenuTitle: 'Lịch sử giao dịch với đối tác',
                 LinkTo: '/PartnerTransaction',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'ApiCallLog',
+                MenuTitle: 'Nhật ký gọi API',
+                LinkTo: '/ApiCallLog',
                 MenuIcon: '',
                 SubMenu: []
             }

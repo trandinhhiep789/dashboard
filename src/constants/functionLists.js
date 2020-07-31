@@ -176,6 +176,9 @@ export const COORDINATORSTORE_DELETE = 'COORDINATORSTORE_DELETE';
 // thông tin giao dịch với đối tác
 export const PARTNERTRANSACTION_VIEW = 'PARTNERTRANSACTION_VIEW';
 
+// nhật ký gọi api
+export const APICALLLOG_VIEW = 'APICALLLOG_VIEW';
+
 
 // kỹ năng
 export const SKILL_VIEW = 'SKILL_VIEW';
