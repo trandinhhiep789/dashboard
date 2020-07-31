@@ -45,8 +45,9 @@ class PartnerPayableDetailCom extends React.Component {
     }
 
     callData(SearchData) {
+        console.log("SearchData", SearchData)
         this.props.callFetchAPI(APIHostName, SearchByDateAPIPath, SearchData).then(apiResult => {
-            console.log("MLObject", SearchData, apiResult)
+            console.log("MLObject", apiResult)
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const totalPayableAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
@@ -116,7 +117,11 @@ class PartnerPayableDetailCom extends React.Component {
                     listColumn={DataPartnerPayableDetailGridColumnList}
                     dataSource={this.state.gridDataSource}
                     AddLink=""
-                    isHideHeaderToolbar={true}
+                    isHideHeaderToolbar={false}
+                    IsShowButtonAdd={false}
+                    IsShowButtonDelete={false}
+                    IsShowButtonPrint={true}
+                    IsPrint={true}
                     IDSelectColumnName="PartnerPayableDetailID"
                     PKColumnName="PartnerPayableDetailID"
                     IsAutoPaging={true}
@@ -124,7 +129,7 @@ class PartnerPayableDetailCom extends React.Component {
                     // RequirePermission={PARTNERPAYABLE_VIEW}
                     ref={this.gridref}
                     totalCurrency={true}
-                    totalCurrencyColSpan={12}
+                    totalCurrencyColSpan={13}
                     totalCurrencyNumber={this.state.totalPayableAmount}
                 />
             </React.Fragment>

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes, Fragment } from 'react';
 import { Link } from "react-router-dom";
 import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
 import { MessageModal } from "../Modal";
@@ -16,6 +16,8 @@ import * as XLSX from 'xlsx';
 
 import { formatMoney } from '../../../utils/function';
 
+import PartnerPayaleTemplate from '../PrintTemplate/PartnerPayaleTemplate';
+
 
 class DataGridCom extends Component {
     constructor(props) {
@@ -24,6 +26,7 @@ class DataGridCom extends Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
+        this.handlePrintClick = this.handlePrintClick.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.onChangePageHandle = this.onChangePageHandle.bind(this);
         this.handleInsertClickEdit = this.handleInsertClickEdit.bind(this);
@@ -221,6 +224,29 @@ class DataGridCom extends Component {
             }
         }
     }
+
+    handlePrintClick() {
+        // window.print();
+        // return;
+        var html="<html>";
+        html= document.getElementById('print').innerHTML;
+        html+="</html>";
+
+        var mywindow = window.open('','','right=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
+        mywindow.document.write('<html><head><title>my div</title>');
+        mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(document.getElementById('print').innerHTML);
+        mywindow.document.write('</body></html>');
+        // mywindow.document.getElementsByName('body').css( "-webkit-print-color-adjust", "exact !important");
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+
+    }
+
+
 
     handleDeleteClick() {
         var doDelete = () => {
@@ -474,8 +500,8 @@ class DataGridCom extends Component {
                             this.props.totalCurrency == true &&
 
                             <tr className="totalCurrency">
-                                <td colSpan={this.props.totalCurrencyColSpan -1}>
-                                <div className="groupTotalCurrency">
+                                <td colSpan={this.props.totalCurrencyColSpan - 1}>
+                                    <div className="groupTotalCurrency">
                                         <span className="item txtTotal">Tổng</span>
                                     </div>
                                 </td>
@@ -582,6 +608,10 @@ class DataGridCom extends Component {
         if (this.props.IsShowButtonAdd != undefined && this.props.IsShowButtonAdd == false) {
             isShowButtonAdd = false;
         }
+        let isShowButtonPrint = true;
+        if (this.props.IsShowButtonPrint != undefined && this.props.IsShowButtonPrint == false) {
+            isShowButtonPrint = false;
+        }
         let isShowButtonDelete = true;
         if (this.props.IsShowButtonDelete != undefined && this.props.IsShowButtonDelete == false) {
             isShowButtonDelete = false;
@@ -656,12 +686,42 @@ class DataGridCom extends Component {
                                                 <span className="fa fa-file-excel-o"> Xuất file excel </span>
                                             </button>
                                         }
+                                        {
+                                            //hiển thị nút in 
+                                            isShowButtonPrint ?
+                                                (
+                                                    (this.props.IsPrint == true || this.props.IsPrint == undefined) ?
+                                                        (
+                                                            <button type="button" className="btn btn-Print ml-10" title="" data-provide="tooltip" data-original-title="In" onClick={this.handlePrintClick}>
+                                                                <span className="ti ti-printer"> In </span>
+                                                            </button>
+                                                            // <Fragment>
+                                                            //     <ReactToPrint content={() => (this.componentRef)}>
+                                                            //         <PrintContextConsumer>
+                                                            //             {({ handlePrint }) => (
+                                                            //                 <button type="button" className="btn btn-Print ml-10" title="" data-provide="tooltip" data-original-title="In" onClick={handlePrint}>
+                                                            //                     <span className="ti ti-printer"> In </span>
+                                                            //                 </button>
+                                                            //             )}
+                                                            //         </PrintContextConsumer>
+                                                            //     </ReactToPrint>
+
+                                                            // </Fragment>
+                                                        )
+                                                        : (<button type="button" className="btn btn-Print ml-10" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="In" >
+                                                            <span className="ti ti-printer"> In </span>
+                                                        </button>)
+                                                )
+                                                : ""
+                                        }
 
                                     </div>
                                 </div>
                             </div>
                         }
                         {datagrid}
+
+
                         {/* {this.props.IsAutoPaging &&
                             <GridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />
                         } */}
@@ -689,7 +749,12 @@ class DataGridCom extends Component {
                                 </div>
                             </div>
                         }
+
                     </div>
+                </div>
+                <div style={{ display: 'none' }}>
+                    <PartnerPayaleTemplate />
+
                 </div>
             </div>
         );
