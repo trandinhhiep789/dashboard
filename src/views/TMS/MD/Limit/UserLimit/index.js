@@ -17,7 +17,7 @@ class UserLimitCom extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/LimitType" component={Search} />
+                <Route exact path="/UserLimit" component={Search} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );

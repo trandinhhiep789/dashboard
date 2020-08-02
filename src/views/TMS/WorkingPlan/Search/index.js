@@ -88,32 +88,32 @@ class SearchCom extends React.Component {
     callDataTestWeb(searchData) {
         // console.log('searchData', searchData)
         this.props.callFetchAPI(APIHostName, 'api/WorkingPlan/SearchWeb', searchData).then(apiResult => {
-            // console.log("searchData apiResult",apiResult)
+             console.log("searchData apiResult",apiResult)
             if (!apiResult.IsError) {
                 const date = new Date();
-                const dataResult= apiResult.ResultObject.map((item, index) => {
-                   
-                    if(new Date(item.WorkingDate) > date){
+                const dataResult = apiResult.ResultObject.map((item, index) => {
+
+                    if (new Date(item.WorkingDate) > date) {
                         item.isHidden = false
                     }
-                    else{
+                    else {
                         item.isHidden = true
                     }
                     return item;
                 })
 
-                // console.log("dataResult",dataResult)
-                
+                console.log("dataResult", dataResult)
+
                 const sortResult = dataResult.sort((a, b) => (a.UserName > b.UserName) ? 1
                     : (a.UserName === b.UserName)
                         ? (a.WorkingShiftID > b.WorkingShiftID) ? 1 : -1 : -1)
-
+                console.log("sortResult", sortResult)
                 const dataSource = sortResult.reduce((catsSoFar, item, index) => {
                     if (!catsSoFar[item.UserName]) catsSoFar[item.UserName] = [];
                     catsSoFar[item.UserName].push(item);
                     return catsSoFar;
                 }, {});
-
+                console.log("dataSource", dataSource)
                 let init = []
                 let userName = '';
 
@@ -129,7 +129,9 @@ class SearchCom extends React.Component {
                         }
                     }
                 })
-                
+
+                console.log("init", init)
+
                 this.setState({
                     gridDataSource: dataResult,
                     gridData: init,
@@ -161,7 +163,7 @@ class SearchCom extends React.Component {
 
     onClickWorkingPlan() {
         let lstWorkingPlan = [];
-    //    console.log("222",this.state.gridDataWorking)
+        //    console.log("222",this.state.gridDataWorking)
         this.state.gridDataWorking.map((item) => {
             item.map((e) => {
                 lstWorkingPlan.push(e)
@@ -171,14 +173,14 @@ class SearchCom extends React.Component {
         // UpdateWorkingPlanWebAPIPath
         this.props.callFetchAPI(APIHostName, 'api/WorkingPlan/UpdateWorkingPlanWebNew', lstWorkingPlan).then(apiResult => {
             // console.log("111", apiResult)
-            if(apiResult.IsError){
+            if (apiResult.IsError) {
                 this.showMessage(apiResult.Message)
             }
-            else{
+            else {
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 this.callDataTestWeb(this.state.SearchDataWeb);
             }
-            
+
 
         });
     }
@@ -337,7 +339,7 @@ class SearchCom extends React.Component {
                                                     {
                                                         this.state.gridDataWorking && this.state.gridDataWorking[item.UserName].map((item1, index1) => {
                                                             return (
-                                                                <td >
+                                                                <td key={index1}>
                                                                     <div className="checkbox">
                                                                         <label>
                                                                             <input type="checkbox" className="form-control form-control-sm"
@@ -346,7 +348,7 @@ class SearchCom extends React.Component {
                                                                                 name={index1}
                                                                                 data-index={index}
                                                                                 data-user={item.UserName}
-                                                                                checked={item1.IsRegister}
+                                                                                defaultChecked={item1.IsRegister}
                                                                                 disabled={item1.isHidden}
                                                                             />
                                                                             <span className="cr">

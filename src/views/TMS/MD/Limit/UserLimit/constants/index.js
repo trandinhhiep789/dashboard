@@ -1,5 +1,5 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/User_Limit/Search";
+export const SearchAPIPath = "api/User_Limit/SearchNew";
 export const LoadAPIPath = "api/User_Limit/Load";
 export const LoadNewAPIPath = "api/User_Limit/LoadNew";
 export const AddAPIPath = "api/User_Limit/Add";
@@ -22,27 +22,39 @@ export const PagePath = [
 
 export const SearchMLObjectDefinition = [
     {
-        Name: "Keyword",
+        Name: "ServiceTypeID",
         DefaultValue: "",
-        BindControlName: "txtKeyword"
+        BindControlName: "cbDepartmentID"
     }
 ];
 
 export const InitSearchParams = [
     {
-        SearchKey: "@Keyword",
-        SearchValue: ""
+        SearchKey: "@DEPARTMENTID",
+        SearchValue: 944
+    },
+    {
+        SearchKey: "@USERNAMELIST",
+        SearchValue: "1125,74260"
     }
 ];
 
 export const SearchElementList = [
+
     {
-        type: "text",
-        name: "txtKeyword",
-        label: "Từ khóa:",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: {}
-    }
+        type: "ComboBox",
+        name: "cbDepartmentID",
+        DataSourceMember: "ServiceTypeID",
+        label: "Phòng ban:",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SERVICETYPE",
+        ValueMember: "ServiceTypeID",
+        NameMember: "ServiceTypeName",
+
+    },
 ];

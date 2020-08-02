@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SearchForm from "../../../../../../common/components/Form/SearchForm";
+//import SearchForm from "../../../../../../common/components/Form/SearchForm";
+import SearchForm from "../../../../../../common/components/FormContainer/SearchForm";
 import DataGrid from "../../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../../common/components/Modal";
 import {
@@ -28,10 +29,12 @@ import { callGetCache, callClearLocalCache } from "../../../../../../actions/cac
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
-
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
+            gridDataLimtType: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
@@ -46,33 +49,18 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-    }
-
-
-    handleDelete(deleteList, pkColumnName) {
-        let listMLObject = [];
-        deleteList.map((row, index) => {
-            let MLObject = {};
-            pkColumnName.map((pkItem, pkIndex) => {
-                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-            });
-            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
-            listMLObject.push(MLObject);
-        });
-        this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
-            if (!apiResult.IsError) {
-                this.callSearchData(this.state.SearchData);
-            }
-        });
+        this.callSearchData(this.state.searchData)
     }
 
     handleSearchSubmit(formData, MLObject) {
         const postData = [
             {
-                SearchKey: "@Keyword",
-                SearchValue: MLObject.Keyword
+                SearchKey: "@DEPARTMENTID",
+                SearchValue: 944
+            },
+            {
+                SearchKey: "@USERNAMELIST",
+                SearchValue: "1125,74260"
             }
         ];
         this.setState({ SearchData: postData });
@@ -83,10 +71,38 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
 
             if (!apiResult.IsError) {
+
+                const sortResult = apiResult.ResultObject.sort((a, b) => (a.UserName > b.UserName) ? 1
+                    : (a.UserName === b.UserName)
+                        ? (a.LimitTypeID > b.LimitTypeID) ? 1 : -1 : -1)
+
+                const dataSource = sortResult.reduce((catsSoFar, item, index) => {
+                    if (!catsSoFar[item.UserName]) catsSoFar[item.UserName] = [];
+                    catsSoFar[item.UserName].push(item);
+                    return catsSoFar;
+                }, {});
+
+                let init = []
+                let userName = '';
+
+                sortResult.map((e, i) => {
+                    if (init.length <= 0) {
+                        init.push(e)
+                        userName = e.UserName
+                    }
+                    else {
+                        if (userName != e.UserName) {
+                            init.push(e)
+                            userName = e.UserName
+                        }
+                    }
+                })
+
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource: init,
+                    gridDataLimtType: dataSource,
                     IsCallAPIError: apiResult.IsError,
-                    IsLoadDataComplete: true,
+                    IsLoadDataComplete: true
                 });
             }
             else {
@@ -148,6 +164,52 @@ class SearchCom extends React.Component {
         });
     }
 
+    handleChangeLimitType(e){
+        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
+        const inputvalue = e.target.value;
+        const index = e.target.name;
+        const userItem = e.target.attributes['data-user'].value;
+
+        const dataFind = this.state.gridDataLimtType[userItem].find(n => {
+            return n.LimitTypeID == inputvalue && n.UserName == userItem
+        });
+        if (ischecked) {
+            dataFind.IsRegister = ischecked
+        }
+        else {
+            dataFind.IsRegister = ischecked
+        }
+        let Item = this.state.gridDataLimtType[userItem];
+        let formDatanew = []
+        let formData = []
+        formDatanew = Object.assign([], Item, { [index]: dataFind });
+        formData = Object.assign([], this.state.gridDataLimtType, { [userItem]: formDatanew });
+
+        this.setState({
+            gridDataLimtType: formData
+        })
+    }
+
+    onClickLimitType(){
+        let lstUserLimit = [];
+        this.state.gridDataLimtType.map((item) => {
+            item.map((e) => {
+                lstUserLimit.push(e)
+            })
+        })
+        this.props.callFetchAPI(APIHostName, 'api/User_Limit/AddNew', lstUserLimit).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message)
+            }
+            else {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                this.callSearchData(this.state.searchData)
+            }
+
+
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -158,8 +220,68 @@ class SearchCom extends React.Component {
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
+                    className="multiple"
                 />
-              
+
+                <div className="col-lg-12 user-limt">
+                    <div className="card">
+                        <div className="card-body">
+                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                <thead className="thead-light">
+                                    <tr>
+                                        <th className="jsgrid-header-cell" style={{ width: 100 }}>Mã nhân viên</th>
+                                        <th className="jsgrid-header-cell" style={{ width: 300 }}>Tên nhân viên</th>
+                                        <th className="jsgrid-header-cell" style={{ width: 100 }}>Loại 1</th>
+                                        <th className="jsgrid-header-cell" style={{ width: 100 }}>Loại 2</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        this.state.gridDataSource && this.state.gridDataSource.map((item, index) => {
+                                            return (
+                                                <tr key={index}>
+                                                    <td>{item.UserName}</td>
+                                                    <td>{item.FullName}</td>
+                                                    {
+                                                        this.state.gridDataLimtType && this.state.gridDataLimtType[item.UserName].map((item1, index1) => {
+                                                            return (
+                                                                <td key={index1}>
+                                                                    <div className="checkbox">
+                                                                        <label>
+                                                                            <input type="checkbox" className="form-control form-control-sm"
+                                                                                onChange={this.handleChangeLimitType.bind(this)}
+                                                                                value={item1.LimitTypeID}
+                                                                                name={index1}
+                                                                                data-index={index}
+                                                                                data-user={item.UserName}
+                                                                                checked={item1.IsRegister}
+                                                                            />
+                                                                            <span className="cr">
+                                                                                <i className="cr-icon fa fa-check"></i>
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                            )
+                                                        })
+                                                    }
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                            <div className="text-right">
+                                <button type="button" className="btn btn-info" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.onClickLimitType.bind(this)}>
+                                    <span className="fa fa-check-square-o"> Cập nhật</span>
+                                </button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
             </React.Fragment>
         );
     }
