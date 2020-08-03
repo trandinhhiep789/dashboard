@@ -22,7 +22,7 @@ export const PagePath = [
 
 export const SearchMLObjectDefinition = [
     {
-        Name: "ServiceTypeID",
+        Name: "DepartmentID",
         DefaultValue: "",
         BindControlName: "cbDepartmentID"
     }
@@ -44,7 +44,7 @@ export const SearchElementList = [
     {
         type: "ComboBox",
         name: "cbDepartmentID",
-        DataSourceMember: "ServiceTypeID",
+        DataSourceMember: "DepartmentID",
         label: "Phòng ban:",
         colspan: 2,
         value: -1,
@@ -52,9 +52,28 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SERVICETYPE",
-        ValueMember: "ServiceTypeID",
-        NameMember: "ServiceTypeName",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.BCNBSYSTEM_DEPARTMENT",
+        ValueMember: "DepartmentID",
+        NameMember: "DepartmentName",
 
     },
+
+    {
+        type: "ComboBox",
+        name: "cbDepartmentID",
+        DataSourceMember: "DepartmentID",
+        label: "Phòng ban:",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.BCNBSYSTEM_DEPARTMENT",
+        ValueMember: "DepartmentID",
+        NameMember: "DepartmentName",
+
+    },
+
+   
 ];

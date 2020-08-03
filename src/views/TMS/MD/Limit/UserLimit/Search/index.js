@@ -24,13 +24,16 @@ import { LIMITTYPE_VIEW, LIMITTYPE_DELETE } from "../../../../../../constants/fu
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-
+import { formatMoney } from '../../../../../../utils/function';
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.callSearchData = this.callSearchData.bind(this);
+        this.handleChangeLimitType = this.handleChangeLimitType.bind(this);
+        
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -39,7 +42,8 @@ class SearchCom extends React.Component {
             SearchData: InitSearchParams,
             cssNotification: "",
             iconNotification: "",
-            IsLoadDataComplete: false
+            IsLoadDataComplete: false,
+            isValidate: false
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -49,7 +53,18 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        this.callSearchData(this.state.searchData)
+        const postData = [
+            {
+                SearchKey: "@DEPARTMENTID",
+                SearchValue: 944
+            },
+            {
+                SearchKey: "@USERNAMELIST",
+                SearchValue: "1125,74260"
+            }
+        ];
+        this.setState({ SearchData: postData });
+        this.callSearchData(postData)
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -69,7 +84,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-
+            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
 
                 const sortResult = apiResult.ResultObject.sort((a, b) => (a.UserName > b.UserName) ? 1
@@ -164,21 +179,41 @@ class SearchCom extends React.Component {
         });
     }
 
-    handleChangeLimitType(e){
-        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
+    handleChangeLimitType(e) {
         const inputvalue = e.target.value;
-        const index = e.target.name;
+        const inputName = e.target.name;
+        const inputValueNew = inputvalue.toString().replace(new RegExp(',', 'g'), "");
         const userItem = e.target.attributes['data-user'].value;
-
+        const userlimitType = e.target.attributes['data-limittype'].value;
+      
         const dataFind = this.state.gridDataLimtType[userItem].find(n => {
-            return n.LimitTypeID == inputvalue && n.UserName == userItem
+            return n.LimitTypeID == inputName && n.UserName == userItem
         });
-        if (ischecked) {
-            dataFind.IsRegister = ischecked
+
+        dataFind.LimitValue = inputValueNew;
+
+        if (inputValueNew > 0) {
+            dataFind.IsRegister = true;
         }
         else {
-            dataFind.IsRegister = ischecked
+            dataFind.IsRegister = false;
         }
+
+        if (inputValueNew.toString().length > 1) {
+            if (/^[0-9]*$/.test(inputValueNew)) {
+                this.setState({
+                    isValidate: false
+                })
+                e.target.classList.remove('is-invalid')
+            }
+            else {
+                e.target.classList.add('is-invalid')
+                this.setState({
+                    isValidate: true
+                })
+            }
+        }
+
         let Item = this.state.gridDataLimtType[userItem];
         let formDatanew = []
         let formData = []
@@ -190,27 +225,29 @@ class SearchCom extends React.Component {
         })
     }
 
-    onClickLimitType(){
+    onClickLimitType() {
         let lstUserLimit = [];
         this.state.gridDataLimtType.map((item) => {
             item.map((e) => {
                 lstUserLimit.push(e)
             })
         })
+        console.log("lstUserLimit", lstUserLimit)
         this.props.callFetchAPI(APIHostName, 'api/User_Limit/AddNew', lstUserLimit).then(apiResult => {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message)
             }
             else {
                 this.addNotification(apiResult.Message, apiResult.IsError);
+                console.log("this.state.searchData", this.state.searchData)
                 this.callSearchData(this.state.searchData)
             }
-
-
         });
     }
 
     render() {
+        let className = "form-control form-control-sm"
+        console.log("this.state.searchData", this.state.searchData)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -246,21 +283,18 @@ class SearchCom extends React.Component {
                                                         this.state.gridDataLimtType && this.state.gridDataLimtType[item.UserName].map((item1, index1) => {
                                                             return (
                                                                 <td key={index1}>
-                                                                    <div className="checkbox">
-                                                                        <label>
-                                                                            <input type="checkbox" className="form-control form-control-sm"
-                                                                                onChange={this.handleChangeLimitType.bind(this)}
-                                                                                value={item1.LimitTypeID}
-                                                                                name={index1}
-                                                                                data-index={index}
-                                                                                data-user={item.UserName}
-                                                                                checked={item1.IsRegister}
-                                                                            />
-                                                                            <span className="cr">
-                                                                                <i className="cr-icon fa fa-check"></i>
-                                                                            </span>
-                                                                        </label>
-                                                                    </div>
+                                                                    <input type="text" className={className}
+                                                                        onChange={this.handleChangeLimitType}
+                                                                        value={formatMoney(item1.LimitValue, 0)}
+                                                                        name={item1.LimitTypeID}
+                                                                        data-index={index}
+                                                                        data-user={item.UserName}
+                                                                        data-limittype={item1.LimitTypeID}
+                                                                        maxLength={15}
+                                                                    />
+
+                                                                    <div className="invalid-feedback"><ul className="list-unstyled"><li>Vui lòng nhập số</li></ul></div>
+
                                                                 </td>
                                                             )
                                                         })
