@@ -15,7 +15,6 @@ import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 
 import { formatMoney } from '../../../utils/function';
-
 import PartnerPayaleTemplate from '../PrintTemplate/PartnerPayaleTemplate';
 
 
@@ -228,12 +227,13 @@ class DataGridCom extends Component {
     handlePrintClick() {
         // window.print();
         // return;
-        var html="<html>";
-        html= document.getElementById('print').innerHTML;
-        html+="</html>";
+        var html = "<html>";
+        html = document.getElementById('print').innerHTML;
+        html += "</html>";
 
-        var mywindow = window.open('','','right=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
-        mywindow.document.write('<html><head><title>my div</title>');
+        var mywindow = window.open('', '', 'right=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
+        mywindow.document.write('<html><head>');
+        mywindow.document.write('<title>' + this.props.TitlePrint + '</title>');
         mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
         mywindow.document.write('</head><body >');
         mywindow.document.write(document.getElementById('print').innerHTML);
@@ -696,6 +696,7 @@ class DataGridCom extends Component {
                                                             <button type="button" className="btn btn-Print ml-10" title="" data-provide="tooltip" data-original-title="In" onClick={this.handlePrintClick}>
                                                                 <span className="ti ti-printer"> In </span>
                                                             </button>
+
                                                         )
                                                         : (<button type="button" className="btn btn-Print ml-10" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="In" >
                                                             <span className="ti ti-printer"> In </span>
@@ -742,7 +743,7 @@ class DataGridCom extends Component {
                     </div>
                 </div>
                 <div style={{ display: 'none' }}>
-                    <PartnerPayaleTemplate />
+                    <PartnerPayaleTemplate ref={el => (this.componentRef = el)} />
 
                 </div>
             </div>
