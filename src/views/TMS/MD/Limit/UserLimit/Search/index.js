@@ -45,7 +45,8 @@ class SearchCom extends React.Component {
             cssNotification: "",
             iconNotification: "",
             IsLoadDataComplete: false,
-            isValidate: false
+            isValidate: false,
+            lstUserNameFind: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -74,9 +75,11 @@ class SearchCom extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         let result;
+        let lstUserNameFind = [];
         if (MLObject.UserName != -1) {
             result = MLObject.UserName.reduce((data, item, index) => {
                 const comma = data.length ? "," : "";
+                lstUserNameFind.push(item.value)
                 return data + comma + item.value;
             }, '');
         }
@@ -93,7 +96,7 @@ class SearchCom extends React.Component {
                 SearchValue: result
             }
         ];
-        this.setState({ SearchData: postData });
+        this.setState({ SearchData: postData, lstUserNameFind: lstUserNameFind });
         this.callSearchData(postData);
     }
 
@@ -207,6 +210,8 @@ class SearchCom extends React.Component {
         const inputValueNew = inputvalue.toString().replace(new RegExp(',', 'g'), "");
         const userItem = e.target.attributes['data-user'].value;
         const userlimitType = e.target.attributes['data-limittype'].value;
+        const index = e.target.attributes['data-index'].value;
+
 
         const dataFind = this.state.gridDataLimtType[userItem].find(n => {
             return n.LimitTypeID == inputName && n.UserName == userItem
@@ -241,16 +246,16 @@ class SearchCom extends React.Component {
         let formData = []
         formDatanew = Object.assign([], Item, { [index]: dataFind });
         formData = Object.assign([], this.state.gridDataLimtType, { [userItem]: formDatanew });
-
         this.setState({
             gridDataLimtType: formData
         })
     }
 
     onClickLimitType() {
+        // console.log("gridDataLimtType", this.state.gridDataLimtType, this.state.gridDataLimtType.length)
         let lstUserLimit = [];
-        this.state.gridDataLimtType.map((item) => {
-            item.map((e) => {
+        this.state.lstUserNameFind.map((item) => {
+            this.state.gridDataLimtType[item].map((e) => {
                 lstUserLimit.push(e)
             })
         })
@@ -263,10 +268,13 @@ class SearchCom extends React.Component {
                 this.callSearchData(this.state.SearchData)
             }
         });
+
+
     }
 
     render() {
-        let className = "form-control form-control-sm"
+        let className = "form-control form-control-sm";
+
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
