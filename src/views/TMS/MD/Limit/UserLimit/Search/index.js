@@ -118,7 +118,6 @@ class SearchCom extends React.Component {
                     let userName = '';
 
                     sortResult.map((e, i) => {
-                        console.log()
                         if (init.length <= 0) {
                             init.push(e)
                             userName = e.UserName
