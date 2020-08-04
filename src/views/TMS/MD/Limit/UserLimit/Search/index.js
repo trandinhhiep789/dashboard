@@ -75,11 +75,10 @@ class SearchCom extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         let result;
-        let lstUserNameFind = [];
+        
         if (MLObject.UserName != -1) {
             result = MLObject.UserName.reduce((data, item, index) => {
                 const comma = data.length ? "," : "";
-                lstUserNameFind.push(item.value)
                 return data + comma + item.value;
             }, '');
         }
@@ -96,7 +95,7 @@ class SearchCom extends React.Component {
                 SearchValue: result
             }
         ];
-        this.setState({ SearchData: postData, lstUserNameFind: lstUserNameFind });
+        this.setState({ SearchData: postData,  });
         this.callSearchData(postData);
     }
 
@@ -106,11 +105,12 @@ class SearchCom extends React.Component {
                 if (apiResult.ResultObject.length > 0) {
                     const sortResult = apiResult.ResultObject.sort((a, b) => (a.UserName > b.UserName) ? 1
                         : (a.UserName === b.UserName)
-                            ? (a.LimitTypeID > b.LimitTypeID) ? 1 : -1 : -1)
+                            ? (a.LimitTypeID > b.LimitTypeID) ? 1 : -1 : -1);
 
+                   
                     const dataSource = sortResult.reduce((catsSoFar, item, index) => {
                         if (!catsSoFar[item.UserName]) catsSoFar[item.UserName] = [];
-                        catsSoFar[item.UserName].push(item);
+                            catsSoFar[item.UserName].push(item);
                         return catsSoFar;
                     }, {});
 
@@ -118,6 +118,7 @@ class SearchCom extends React.Component {
                     let userName = '';
 
                     sortResult.map((e, i) => {
+                        console.log()
                         if (init.length <= 0) {
                             init.push(e)
                             userName = e.UserName
@@ -129,12 +130,17 @@ class SearchCom extends React.Component {
                             }
                         }
                     })
+                    let lstUserNameFind = [];
+                    init.map((item, index)=>{
+                        lstUserNameFind.push(item.UserName)
+                    })
 
                     this.setState({
                         gridDataSource: init,
                         gridDataLimtType: dataSource,
                         IsCallAPIError: apiResult.IsError,
-                        IsLoadDataComplete: true
+                        IsLoadDataComplete: true,
+                        lstUserNameFind: lstUserNameFind
                     });
                 }
                 else {
