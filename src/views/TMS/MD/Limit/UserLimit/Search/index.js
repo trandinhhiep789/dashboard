@@ -260,7 +260,7 @@ class SearchCom extends React.Component {
             }
             else {
                 this.addNotification(apiResult.Message, apiResult.IsError);
-                this.callSearchData(this.state.searchData)
+                this.callSearchData(this.state.SearchData)
             }
         });
     }
