@@ -7,6 +7,7 @@ import { callGetCache } from "../../../../actions/cacheAction";
 import vi_VN from 'antd/es/date-picker/locale/vi_VN';
 import moment from 'moment';
 import { ExportStringToMonth } from "../../../../common/library/ultils";
+import MultiSelectUserComboBox from "../FormControl/MultiSelectComboBox/MultiSelectUserComboBox";
 
 
 class ElementTextCom extends Component {
@@ -855,6 +856,7 @@ export default {
     ElementComboBoxNew,
     ElementTextNew,
     ElementTextNewFull,
-    ElementDatetimeMonthYear
+    ElementDatetimeMonthYear,
+    MultiSelectUserComboBox
 };
 

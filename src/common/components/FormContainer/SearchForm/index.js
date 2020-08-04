@@ -189,6 +189,17 @@ export default class SearchForm extends Component {
                                         key={index}
                                     />
                                 );
+                            case "MultiSelectUser":
+                                return (
+                                    <ElementSearch.MultiSelectUserComboBox
+                                        onValueChange={this.onValueChange}
+                                        ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                        {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        key={index}
+                                    />
+                                );
                             case "MonthPicker":
                                 return (
                                     <ElementSearch.ElementDatetimeMonthYear

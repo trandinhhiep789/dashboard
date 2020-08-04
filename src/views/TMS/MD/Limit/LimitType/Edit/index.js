@@ -20,7 +20,7 @@ import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import { LIMITTYPE_UPDATE } from "../../../../../../constants/functionLists";
-
+import { ERPCOMMONCACHE_LIMITTYPE } from "../../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -55,7 +55,6 @@ class EditCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log('callLoadData', apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -90,7 +89,6 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        console.log('aa', formData, MLObject)
 
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
@@ -98,6 +96,9 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(ERPCOMMONCACHE_LIMITTYPE);
+            }
         });
     }
 

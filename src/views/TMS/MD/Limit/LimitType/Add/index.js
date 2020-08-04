@@ -18,6 +18,7 @@ import { updatePagePath } from "../../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import { LIMITTYPE_ADD } from "../../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
+import { ERPCOMMONCACHE_LIMITTYPE } from "../../../../../../constants/keyCache";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -69,11 +70,13 @@ class AddCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
-        console.log("1111", MLObject)
+        // console.log("1111", MLObject)
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-           
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(ERPCOMMONCACHE_LIMITTYPE);
+            }
         });
     }
 

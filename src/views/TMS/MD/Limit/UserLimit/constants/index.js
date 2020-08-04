@@ -25,6 +25,11 @@ export const SearchMLObjectDefinition = [
         Name: "DepartmentID",
         DefaultValue: "",
         BindControlName: "cbDepartmentID"
+    },
+    {
+        Name: "UserName",
+        DefaultValue: "",
+        BindControlName: "cbUserName"
     }
 ];
 
@@ -59,19 +64,19 @@ export const SearchElementList = [
     },
 
     {
-        type: "ComboBox",
-        name: "cbDepartmentID",
-        DataSourceMember: "DepartmentID",
-        label: "Phòng ban:",
-        colspan: 2,
+        type: "MultiSelectUser",
+        name: "cbUserName",
+        DataSourceMember: "UserName",
+        label: "Nhân viên",
+        colspan: 12,
+        rowspan: 3,
+        labelcolspan: 12,
+        IsLabelDiv: true,
         value: -1,
-        isMultiSelect: false,
         placeholder: "---Vui lòng chọn---",
         listoption: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.BCNBSYSTEM_DEPARTMENT",
-        ValueMember: "DepartmentID",
-        NameMember: "DepartmentName",
+        IsAutoLoadItemFromCache: false,
+        isMultiSelect: true
 
     },
 

@@ -25,6 +25,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import { formatMoney } from '../../../../../../utils/function';
+import { ERPCOMMONCACHE_LIMITTYPE } from "../../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -38,6 +39,7 @@ class SearchCom extends React.Component {
             CallAPIMessage: "",
             gridDataSource: [],
             gridDataLimtType: [],
+            dataLimitTyle: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
@@ -53,6 +55,7 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+        this.getCacheLimitTyle();
         const postData = [
             {
                 SearchKey: "@DEPARTMENTID",
@@ -65,6 +68,20 @@ class SearchCom extends React.Component {
         ];
         this.setState({ SearchData: postData });
         this.callSearchData(postData)
+    }
+
+    getCacheLimitTyle() {
+        this.props.callGetCache(ERPCOMMONCACHE_LIMITTYPE).then((result) => {
+
+            if (!result.IsError) {
+                this.setState({
+                    dataLimitTyle: result.ResultObject.CacheData
+                })
+            }
+            else {
+                this.showMessage(result.Message)
+            }
+        });
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -232,14 +249,12 @@ class SearchCom extends React.Component {
                 lstUserLimit.push(e)
             })
         })
-        console.log("lstUserLimit", lstUserLimit)
         this.props.callFetchAPI(APIHostName, 'api/User_Limit/AddNew', lstUserLimit).then(apiResult => {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message)
             }
             else {
                 this.addNotification(apiResult.Message, apiResult.IsError);
-                console.log("this.state.searchData", this.state.searchData)
                 this.callSearchData(this.state.searchData)
             }
         });
@@ -247,7 +262,6 @@ class SearchCom extends React.Component {
 
     render() {
         let className = "form-control form-control-sm"
-        console.log("this.state.searchData", this.state.searchData)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -268,8 +282,14 @@ class SearchCom extends React.Component {
                                     <tr>
                                         <th className="jsgrid-header-cell" style={{ width: 100 }}>Mã nhân viên</th>
                                         <th className="jsgrid-header-cell" style={{ width: 300 }}>Tên nhân viên</th>
-                                        <th className="jsgrid-header-cell" style={{ width: 100 }}>Loại 1</th>
-                                        <th className="jsgrid-header-cell" style={{ width: 100 }}>Loại 2</th>
+                                        {
+                                            this.state.dataLimitTyle && this.state.dataLimitTyle.map((item, index) => {
+                                                return (
+                                                    <th key={index} className="jsgrid-header-cell" style={{ width: 100 }}>{item.LimitTypeName}</th>
+                                                )
+                                            })
+                                        }
+
                                     </tr>
                                 </thead>
                                 <tbody>
