@@ -18,7 +18,6 @@ class MultiSelectUserComboBoxCom extends React.Component {
 
 
     componentDidMount() {
-       
         this.setState({
             ListOption: this.props.listoption,
             SelectedOption:  this.props.value == undefined ? this.props.listoption : this.props.value
@@ -83,8 +82,8 @@ class MultiSelectUserComboBoxCom extends React.Component {
 
     handleValueChange(selectedOption) {
         this.setState({ SelectedOption: selectedOption });
-        if (this.props.onChange)
-            this.props.onChange(this.props.name, selectedOption);
+        if (this.props.onValueChange)
+            this.props.onValueChange(this.props.name, selectedOption);
     }
 
     handleValueChange1(e) {
@@ -92,8 +91,8 @@ class MultiSelectUserComboBoxCom extends React.Component {
         if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38) {
             this.callSearchData("*" + value + "*");
         }
-
     }
+
     render() {
         const listOption = this.state.ListOption;
         let listOptionNew = [];
@@ -117,9 +116,9 @@ class MultiSelectUserComboBoxCom extends React.Component {
         if (this.props.colspan != null) {
             formGroupClassName = "form-group col-md-" + this.props.colspan;
         }
-        let labelDivClassName = "form-group col-md-2";
+        let labelDivClassName = "col-md-2";
         if (this.props.labelcolspan != null) {
-            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+            labelDivClassName = "col-md-" + this.props.labelcolspan;
         }
         let isLabelDiv = true;
         if (typeof this.props.IsLabelDiv !== 'undefined' || typeof this.props.IsLabelDiv !== null)
@@ -172,7 +171,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         callGetCache: (cacheKeyID) => {
-            return dispatch(callGetCache(cacheKeyID));
+            return dispatch(callGetCache(cacheKeyID));selectedOption 
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));

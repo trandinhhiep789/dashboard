@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ElementSearch from '../FormElement/ElementSearch';
 import { ValidationField } from "../../../library/validation";
+import MultiSelectUserComboBox from "../FormControl/MultiSelectComboBox/MultiSelectUserComboBox";
 
 export default class SearchForm extends Component {
     constructor(props) {
@@ -191,7 +192,7 @@ export default class SearchForm extends Component {
                                 );
                             case "MultiSelectUser":
                                 return (
-                                    <ElementSearch.MultiSelectUserComboBox
+                                    <MultiSelectUserComboBox
                                         onValueChange={this.onValueChange}
                                         ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}

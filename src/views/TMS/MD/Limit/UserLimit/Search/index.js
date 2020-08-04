@@ -34,7 +34,7 @@ class SearchCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
         this.handleChangeLimitType = this.handleChangeLimitType.bind(this);
-        
+
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -56,18 +56,6 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         this.getCacheLimitTyle();
-        const postData = [
-            {
-                SearchKey: "@DEPARTMENTID",
-                SearchValue: 944
-            },
-            {
-                SearchKey: "@USERNAMELIST",
-                SearchValue: "1125,74260"
-            }
-        ];
-        this.setState({ SearchData: postData });
-        this.callSearchData(postData)
     }
 
     getCacheLimitTyle() {
@@ -85,14 +73,24 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        let result;
+        if (MLObject.UserName != -1) {
+            result = MLObject.UserName.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item.value;
+            }, '');
+        }
+        else {
+            result = ""
+        }
         const postData = [
             {
                 SearchKey: "@DEPARTMENTID",
-                SearchValue: 944
+                SearchValue: MLObject.DepartmentID
             },
             {
                 SearchKey: "@USERNAMELIST",
-                SearchValue: "1125,74260"
+                SearchValue: result
             }
         ];
         this.setState({ SearchData: postData });
@@ -101,41 +99,48 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
+                if (apiResult.ResultObject.length > 0) {
+                    const sortResult = apiResult.ResultObject.sort((a, b) => (a.UserName > b.UserName) ? 1
+                        : (a.UserName === b.UserName)
+                            ? (a.LimitTypeID > b.LimitTypeID) ? 1 : -1 : -1)
 
-                const sortResult = apiResult.ResultObject.sort((a, b) => (a.UserName > b.UserName) ? 1
-                    : (a.UserName === b.UserName)
-                        ? (a.LimitTypeID > b.LimitTypeID) ? 1 : -1 : -1)
+                    const dataSource = sortResult.reduce((catsSoFar, item, index) => {
+                        if (!catsSoFar[item.UserName]) catsSoFar[item.UserName] = [];
+                        catsSoFar[item.UserName].push(item);
+                        return catsSoFar;
+                    }, {});
 
-                const dataSource = sortResult.reduce((catsSoFar, item, index) => {
-                    if (!catsSoFar[item.UserName]) catsSoFar[item.UserName] = [];
-                    catsSoFar[item.UserName].push(item);
-                    return catsSoFar;
-                }, {});
+                    let init = []
+                    let userName = '';
 
-                let init = []
-                let userName = '';
-
-                sortResult.map((e, i) => {
-                    if (init.length <= 0) {
-                        init.push(e)
-                        userName = e.UserName
-                    }
-                    else {
-                        if (userName != e.UserName) {
+                    sortResult.map((e, i) => {
+                        if (init.length <= 0) {
                             init.push(e)
                             userName = e.UserName
                         }
-                    }
-                })
+                        else {
+                            if (userName != e.UserName) {
+                                init.push(e)
+                                userName = e.UserName
+                            }
+                        }
+                    })
 
-                this.setState({
-                    gridDataSource: init,
-                    gridDataLimtType: dataSource,
-                    IsCallAPIError: apiResult.IsError,
-                    IsLoadDataComplete: true
-                });
+                    this.setState({
+                        gridDataSource: init,
+                        gridDataLimtType: dataSource,
+                        IsCallAPIError: apiResult.IsError,
+                        IsLoadDataComplete: true
+                    });
+                }
+                else {
+                    this.showMessage("Không tồn tại dữ liệu.");
+                    this.setState({
+                        IsLoadDataComplete: false,
+                    });
+                }
+
             }
             else {
                 this.showMessage(apiResult.Message);
@@ -202,7 +207,7 @@ class SearchCom extends React.Component {
         const inputValueNew = inputvalue.toString().replace(new RegExp(',', 'g'), "");
         const userItem = e.target.attributes['data-user'].value;
         const userlimitType = e.target.attributes['data-limittype'].value;
-      
+
         const dataFind = this.state.gridDataLimtType[userItem].find(n => {
             return n.LimitTypeID == inputName && n.UserName == userItem
         });

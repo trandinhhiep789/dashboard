@@ -36,11 +36,11 @@ export const SearchMLObjectDefinition = [
 export const InitSearchParams = [
     {
         SearchKey: "@DEPARTMENTID",
-        SearchValue: 944
+        SearchValue: ""
     },
     {
         SearchKey: "@USERNAMELIST",
-        SearchValue: "1125,74260"
+        SearchValue: ""
     }
 ];
 
@@ -69,7 +69,7 @@ export const SearchElementList = [
         DataSourceMember: "UserName",
         label: "Nhân viên",
         colspan: 12,
-        rowspan: 3,
+        rowspan: 5,
         labelcolspan: 12,
         IsLabelDiv: true,
         value: -1,
