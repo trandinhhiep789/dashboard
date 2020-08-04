@@ -12,69 +12,67 @@ class MultiSelectUserComboBoxCom extends React.Component {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
         this.handleValueChange1 = this.handleValueChange1.bind(this);
-
-        let SelectedOption = [];
-
         this.state = { ListOption: [], SelectedOption: [] }
     }
 
 
 
     componentDidMount() {
+       
         this.setState({
             ListOption: this.props.listoption,
             SelectedOption:  this.props.value == undefined ? this.props.listoption : this.props.value
         });
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
+            this.setState({
+                SelectedOption: nextProps.value
+            })
+        }
+    }
+
     callSearchData(KeyWord) {
-        
         let listMLObject = {
-            "QueryParamList": [
-              {
-                "QueryKey": "",
-                "QueryValue": "",
-                "QueryType": 18,
-                "IsNotQuery": false,
-                "SubQueryParamList": [
-                  {
-                    "QueryKey": "sTOREID",
-                    "QueryValue": /^[0-9][0-9]*$/.test(KeyWord)==true? KeyWord:"",
-                    "QueryType": 3,
-                    "IsNotQuery": false
-                  },
-                  {
-                    "QueryKey": "sTORENAME",
-                    "QueryValue": KeyWord,
-                    "QueryType": 2,
-                    "IsNotQuery": false
-                  }
+            "IndexName": "user",
+            "TypeName": "user",
+            "Top": 10,
+            "IsCompressResultData": false,
+            "QueryParamList":
+                [
+                    {
+                        "QueryKey": "", "QueryValue": "", "QueryType": 18, "IsNotQuery": false,
+                        "SubQueryParamList":
+                            [
+                                {
+                                    "QueryKey": "uSERNAME",
+                                    "QueryValue": KeyWord,
+                                    "QueryType": 2,
+                                    "IsNotQuery": false
+                                },
+
+                                {
+                                    "QueryKey": "fULLNAME",
+                                    "QueryValue": KeyWord,
+                                    "QueryType": 2,
+                                    "IsNotQuery": false
+                                }
+                            ]
+                    }
                 ]
-              }
-     ,
-     {
-                "QueryKey": "cOMPANYID",
-                "QueryValue": "10",
-                "QueryType": 1,
-                "IsNotQuery": false,
-                
-              }
-            ],
-            "Top": 500,
-            "IndexName": "store",
-            "TypeName": "store",
-            "IsCompressResultData": false
-          }
-          console.log("listMLObject", listMLObject)
-          this.props.callFetchAPI("ERPAPI", 'api/CommonSearch/Search', listMLObject).then(apiResult => {
-              console.log("apiResult",  apiResult)
-            const objStore=JSON.parse(apiResult.ResultObject).hits.hits;
+        }
+
+        this.props.callFetchAPI("ERPAPI", 'api/UserSearch/Search', listMLObject).then(apiResult => {
             let listOptionNew1 = [];
-            for (let i = 0; i < objStore.length; i++) {
-                listOptionNew1.push({ value: objStore[i]._source.sTOREID, 
-                                     name: objStore[i]._source.sTORENAME,
-                                     StoreFax:objStore[i]._source.sTOREPHONENUM,
-                                     StoreAddress:objStore[i]._source.sTOREADDRESS
+            for (let i = 0; i < apiResult.ResultObject.length; i++) {
+                listOptionNew1.push({ value: apiResult.ResultObject[i].UserName, 
+                                     name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
+                                     FullName:apiResult.ResultObject[i].FullName,
+                                     DepartmentName:apiResult.ResultObject[i].DepartmentName,
+                                     PositionName:apiResult.ResultObject[i].PositionName,
+                                     Address:apiResult.ResultObject[i].Address
+
                                     });
             }
             this.setState({
@@ -83,19 +81,7 @@ class MultiSelectUserComboBoxCom extends React.Component {
         });
     }
 
-
-    getComboValue(selectedOption) {
-        let values = [];
-        if (selectedOption == null)
-            return values;
-        for (let i = 0; i < selectedOption.length; i++) {
-            values.push(selectedOption[i].value);
-        }
-        return values;
-    }
-
     handleValueChange(selectedOption) {
-        // const comboValues = this.getComboValue(selectedOption);
         this.setState({ SelectedOption: selectedOption });
         if (this.props.onChange)
             this.props.onChange(this.props.name, selectedOption);
@@ -104,20 +90,20 @@ class MultiSelectUserComboBoxCom extends React.Component {
     handleValueChange1(e) {
         let value = e.target.value;
         if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38) {
-            this.callSearchData(value);
+            this.callSearchData("*" + value + "*");
         }
 
     }
     render() {
-
         const listOption = this.state.ListOption;
         let listOptionNew = [];
         for (let i = 0; i < listOption.length; i++) {
             listOptionNew.push({ value: listOption[i].value,
-                                label:listOption[i].value+"-"+ listOption[i].name,
-                                name: listOption[i].name,
-                                StoreFax: listOption[i].StoreFax,
-                                StoreAddress:listOption[i].StoreAddress,
+                                label: listOption[i].name,
+                                FullName:listOption[i].FullName,
+                                DepartmentName: listOption[i].DepartmentName,
+                                PositionName:listOption[i].PositionName,
+                                Address:listOption[i].Address,
                                 style: { color: 'red' } });
         }
         const selectedOption = this.state.SelectedOption;
@@ -131,9 +117,9 @@ class MultiSelectUserComboBoxCom extends React.Component {
         if (this.props.colspan != null) {
             formGroupClassName = "form-group col-md-" + this.props.colspan;
         }
-        let labelDivClassName = "col-md-2";
+        let labelDivClassName = "form-group col-md-2";
         if (this.props.labelcolspan != null) {
-            labelDivClassName = "col-md-" + this.props.labelcolspan;
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
         }
         let isLabelDiv = true;
         if (typeof this.props.IsLabelDiv !== 'undefined' || typeof this.props.IsLabelDiv !== null)
