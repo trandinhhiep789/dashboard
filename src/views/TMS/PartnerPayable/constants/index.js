@@ -93,6 +93,9 @@ export const SearchElementList = [
 
 ]
 
+const dtFromdate = new Date();
+dtFromdate.setDate(new Date().getDate() - 30);
+
 export const SearchPartnerPayableDetailElementList = [
 
     {
@@ -100,7 +103,7 @@ export const SearchPartnerPayableDetailElementList = [
         name: "dtFromDate",
         DataSourceMember: "FromDate",
         label: "Từ ngày",
-        value:  new Date(),
+        value:  dtFromdate,
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
