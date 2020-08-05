@@ -101,7 +101,6 @@ class InfoProductCom extends Component {
 
     render() {
 
-        console.log("this.state.ShipmentOrder", this.state.ShipmentOrder)
         return (
             <div className="card">
                 <h4 className="card-title"><strong>Thông tin hàng hóa</strong></h4>
@@ -273,7 +272,7 @@ class InfoProductCom extends Component {
                                                 <td>{item.ProductID + '-' + item.ProductName}</td>
                                                 <td>{item.FreeQuantity}</td>
                                                 <td>{item.SaleQuantity}</td>
-                                                <td>{formatMoney(this.Pricevat(item.SalePriceWithVAT, item.Price), 0)}đ</td>
+                                                <td>{formatMoney(this.Pricevat(item.SaleQuantity, item.SalePriceWithVAT), 0)}đ</td>
                                             </tr>)
                                         })}
                                         <tr className="totalCurrency">

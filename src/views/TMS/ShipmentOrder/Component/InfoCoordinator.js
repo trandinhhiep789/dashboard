@@ -42,7 +42,7 @@ class InfoCoordinatorCom extends Component {
             CancelDeliveryReasonID: null,
             CancelDeliveryReasonNote: "",
             selectedOption: [],
-            lstPartnerUser:[]
+            lstPartnerUser: []
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -114,6 +114,7 @@ class InfoCoordinatorCom extends Component {
         });
 
     }
+    
     handleCancelDelivery() {
         this.openCancelDeliveryModal();
     }
@@ -330,7 +331,7 @@ class InfoCoordinatorCom extends Component {
             let { ShipmentOrder, lstPartnerUser } = this.state;
             if (this.state.ShipmentOrder.CarrierPartnerID != -1 && this.state.ShipmentOrder.CarrierPartnerID != 0) {
                 if (ShipmentOrder.ShipmentOrder_DeliverUserList.find(n => n.UserName == strDeliverUservalue) == undefined) {
-                    if (lstPartnerUser.filter(n => n.value == strDeliverUservalue && n.PartnerID == this.state.ShipmentOrder.CarrierPartnerID).length>0) {
+                    if (lstPartnerUser.filter(n => n.value == strDeliverUservalue && n.PartnerID == this.state.ShipmentOrder.CarrierPartnerID).length > 0) {
                         ShipmentOrder.ShipmentOrder_DeliverUserList.push(
                             {
                                 ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
@@ -632,6 +633,9 @@ class InfoCoordinatorCom extends Component {
                         <div className="form-group col-md-12 form-group-btncustom">
                             {
                                 this.props.IsCancelDelivery == true ? <button className="btn btnDelivery mr-10" type="submit" onClick={this.handleCancelDelivery}><span className="fa fa-remove"> Hủy giao hàng</span></button> : <button className="btn btnDelivery mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-remove"> Hủy giao hàng</span></button>
+                            }
+                            {
+                                this.props.IsCoordinator == true ? <button className="btn btnEditCard mr-10" type="submit" onClick={this.handleShipWorkFlowInsert}>Chuyển kho điều phối</button> : <button className="btn btnEditCard mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit">Chuyển kho điều phối</span></button>
                             }
                             {
                                 this.props.IsCoordinator == true ? <button className="btn btnEditCard" type="submit" onClick={this.handleShipWorkFlowInsert}> Cập nhật</button> : <button className="btn btnEditCard" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit"> Cập nhật</span></button>
