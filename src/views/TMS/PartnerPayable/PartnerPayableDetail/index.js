@@ -121,6 +121,7 @@ class PartnerPayableDetailCom extends React.Component {
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={true}
+                    TitlePrint="Bảng kê tổng hợp đơn hàng lắp đặt"
                     IsPrint={true}
                     IDSelectColumnName="PartnerPayableDetailID"
                     PKColumnName="PartnerPayableDetailID"

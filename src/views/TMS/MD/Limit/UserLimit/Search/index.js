@@ -45,7 +45,8 @@ class SearchCom extends React.Component {
             cssNotification: "",
             iconNotification: "",
             IsLoadDataComplete: false,
-            isValidate: false
+            isValidate: false,
+            lstUserNameFind: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -74,6 +75,7 @@ class SearchCom extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         let result;
+        
         if (MLObject.UserName != -1) {
             result = MLObject.UserName.reduce((data, item, index) => {
                 const comma = data.length ? "," : "";
@@ -93,7 +95,7 @@ class SearchCom extends React.Component {
                 SearchValue: result
             }
         ];
-        this.setState({ SearchData: postData });
+        this.setState({ SearchData: postData,  });
         this.callSearchData(postData);
     }
 
@@ -103,11 +105,12 @@ class SearchCom extends React.Component {
                 if (apiResult.ResultObject.length > 0) {
                     const sortResult = apiResult.ResultObject.sort((a, b) => (a.UserName > b.UserName) ? 1
                         : (a.UserName === b.UserName)
-                            ? (a.LimitTypeID > b.LimitTypeID) ? 1 : -1 : -1)
+                            ? (a.LimitTypeID > b.LimitTypeID) ? 1 : -1 : -1);
 
+                   
                     const dataSource = sortResult.reduce((catsSoFar, item, index) => {
                         if (!catsSoFar[item.UserName]) catsSoFar[item.UserName] = [];
-                        catsSoFar[item.UserName].push(item);
+                            catsSoFar[item.UserName].push(item);
                         return catsSoFar;
                     }, {});
 
@@ -126,12 +129,17 @@ class SearchCom extends React.Component {
                             }
                         }
                     })
+                    let lstUserNameFind = [];
+                    init.map((item, index)=>{
+                        lstUserNameFind.push(item.UserName)
+                    })
 
                     this.setState({
                         gridDataSource: init,
                         gridDataLimtType: dataSource,
                         IsCallAPIError: apiResult.IsError,
-                        IsLoadDataComplete: true
+                        IsLoadDataComplete: true,
+                        lstUserNameFind: lstUserNameFind
                     });
                 }
                 else {
@@ -207,6 +215,8 @@ class SearchCom extends React.Component {
         const inputValueNew = inputvalue.toString().replace(new RegExp(',', 'g'), "");
         const userItem = e.target.attributes['data-user'].value;
         const userlimitType = e.target.attributes['data-limittype'].value;
+        const index = e.target.attributes['data-index'].value;
+
 
         const dataFind = this.state.gridDataLimtType[userItem].find(n => {
             return n.LimitTypeID == inputName && n.UserName == userItem
@@ -241,16 +251,16 @@ class SearchCom extends React.Component {
         let formData = []
         formDatanew = Object.assign([], Item, { [index]: dataFind });
         formData = Object.assign([], this.state.gridDataLimtType, { [userItem]: formDatanew });
-
         this.setState({
             gridDataLimtType: formData
         })
     }
 
     onClickLimitType() {
+        // console.log("gridDataLimtType", this.state.gridDataLimtType, this.state.gridDataLimtType.length)
         let lstUserLimit = [];
-        this.state.gridDataLimtType.map((item) => {
-            item.map((e) => {
+        this.state.lstUserNameFind.map((item) => {
+            this.state.gridDataLimtType[item].map((e) => {
                 lstUserLimit.push(e)
             })
         })
@@ -263,10 +273,13 @@ class SearchCom extends React.Component {
                 this.callSearchData(this.state.SearchData)
             }
         });
+
+
     }
 
     render() {
-        let className = "form-control form-control-sm"
+        let className = "form-control form-control-sm";
+
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
