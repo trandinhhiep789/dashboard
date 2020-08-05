@@ -34,8 +34,8 @@ class InfoProductCom extends Component {
         return r;
     }
 
-    Pricevat(sl, Price, vat) {
-        let r = ((1 + (vat / 100)) * Price) * sl
+    Pricevat(sl, Price) {
+        let r = Price * sl
         return r;
     }
 
@@ -100,6 +100,7 @@ class InfoProductCom extends Component {
     }
 
     render() {
+
         return (
             <div className="card">
                 <h4 className="card-title"><strong>Thông tin hàng hóa</strong></h4>
@@ -241,11 +242,9 @@ class InfoProductCom extends Component {
                                                 <td>{item.Quantity}</td>
                                                 <td>{item.QuantityUnitName}</td>
                                             </tr>
-
                                         )
                                     })
                                     }
-
                                 </tbody>
                             </table>
                         </div>
@@ -259,36 +258,35 @@ class InfoProductCom extends Component {
                                 <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                     <thead className="thead-light">
                                         <tr>
-                                            <th className="jsgrid-header-cell">Xuất bán</th>
-                                            <th className="jsgrid-header-cell">Mã sản phẩm</th>
-                                            <th className="jsgrid-header-cell">Tên sản phẩm</th>
-                                            <th className="jsgrid-header-cell">Đơn vị tính</th>
-                                            <th className="jsgrid-header-cell">Số lượng</th>
-                                            <th className="jsgrid-header-cell">Giá</th>
+                                            <th className="jsgrid-header-cell">Sản phẩm lắp đặt</th>
+                                            <th className="jsgrid-header-cell">Sản phẩm</th>
+                                            <th className="jsgrid-header-cell">Số lượng miễn phí</th>
+                                            <th className="jsgrid-header-cell">Số lượng bán</th>
                                             <th className="jsgrid-header-cell">Thành tiền</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.state.ShipmentOrder.ShipmentOrder_MaterialList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_MaterialList, ['ProductID', 'ProductName', 'QuantityUnitName', 'Price', 'IsSaleMaterial', 'VAT']).map((item, index) => {
+                                        {this.state.ShipmentOrder.ShipmentOrder_Material2List && this.state.ShipmentOrder.ShipmentOrder_Material2List.map((item, index) => {
                                             return (<tr key={index}>
-                                                <td>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsSaleMaterial} />
-                                                            <span className="cr">
-                                                                <i className="cr-icon fa fa-check"></i>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>{item.ProductID}</td>
-                                                <td>{item.ProductName}</td>
-                                                <td>{item.QuantityUnitName}</td>
-                                                <td>{item.Quantity}</td>
-                                                <td>{formatMoney(this.Pricevat(1, item.Price, item.VAT), 0)}đ</td>
-                                                <td>{formatMoney(this.Pricevat(item.Quantity, item.Price, item.VAT), 0)}đ</td>
+                                                <td>{item.InstallProductID + '-' + item.InstallProductName}</td>
+                                                <td>{item.ProductID + '-' + item.ProductName}</td>
+                                                <td>{item.FreeQuantity}</td>
+                                                <td>{item.SaleQuantity}</td>
+                                                <td>{formatMoney(this.Pricevat(item.SaleQuantity, item.SalePriceWithVAT), 0)}đ</td>
                                             </tr>)
                                         })}
+                                        <tr className="totalCurrency">
+                                            <td colSpan={5 - 1}>
+                                                <div className="groupTotalCurrency">
+                                                    <span className="item txtTotal">Tổng</span>
+                                                </div>
+                                            </td>
+                                            <td colSpan="1">
+                                                <div className="groupTotalCurrency">
+                                                    <span className="item txttotalCurrency">{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney, 0)}đ</span>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

@@ -14,9 +14,26 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 class PartnerPayaleTemplateCom extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            titlePartnerName:'',
+            girdDataSource: this.props.data,
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.data) !== JSON.stringify(nextProps.data)) {
+            this.setState({
+                girdDataSource: nextProps.data
+            })
+        }
+    }
+
+    componentDidMount(){
+        
     }
 
     render() {
+        console.log('this', this.state.girdDataSource)
         return (
             <div id="print">
                 <div className="header" style={{ textAlign: "center", fontSize: 26, color: '#333', fontWeight: 600, textTransform: "uppercase" }}>
