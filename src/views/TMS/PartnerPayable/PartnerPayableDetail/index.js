@@ -33,6 +33,7 @@ class PartnerPayableDetailCom extends React.Component {
         super(props);
         this.state = {
             gridDataSource: [],
+            gridDataSourcePrint: [],
             IsLoadDataComplete: false,
             totalPayableAmount: 0
         }
@@ -44,6 +45,19 @@ class PartnerPayableDetailCom extends React.Component {
         this.props.updatePagePath(PagePath);
     }
 
+    groupBy(data, fields, sumBy = 'Quantity') {
+        let r = [], cmp = (x, y) => fields.reduce((a, b) => a && x[b] == y[b], true);
+        data.forEach(x => {
+            let y = r.find(z => cmp(x, z));
+            let w = [...fields, sumBy].reduce((a, b) => (a[b] = x[b], a), {})
+            y ? y[sumBy] = +y[sumBy] + (+x[sumBy]) : r.push(w);
+        });
+        console.log("r", r)
+        return r;
+    }
+
+
+
     callData(SearchData) {
         console.log("SearchData", SearchData)
         this.props.callFetchAPI(APIHostName, SearchByDateAPIPath, SearchData).then(apiResult => {
@@ -54,10 +68,20 @@ class PartnerPayableDetailCom extends React.Component {
                         sum += curValue.PayableAmount
                         return sum
                     }, 0);
+
+                    const sortResult = apiResult.ResultObject.sort((a, b) => (a.SubGroupID > b.SubGroupID) ? 1
+                        : (a.SubGroupID === b.SubGroupID) ? 1 : -1)
+
+                    console.log("sortResult", sortResult)
+                    let gridDataSourcePrint = [];
+                    gridDataSourcePrint = this.groupBy(sortResult, ['SubGroupID', 'SubGroupName', 'PartnerName', 'ServiceFee', 'SubGroupID'])
+
+
                     this.setState({
-                        
+
                         gridDataSource: apiResult.ResultObject,
                         IsLoadDataComplete: true,
+                        gridDataSourcePrint,
                         totalPayableAmount
                     })
                 }
@@ -122,6 +146,7 @@ class PartnerPayableDetailCom extends React.Component {
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={true}
                     TitlePrint="Bảng kê tổng hợp đơn hàng lắp đặt"
+                    dataPrint={this.state.gridDataSourcePrint}
                     IsPrint={true}
                     IDSelectColumnName="PartnerPayableDetailID"
                     PKColumnName="PartnerPayableDetailID"

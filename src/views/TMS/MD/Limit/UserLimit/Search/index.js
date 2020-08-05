@@ -76,7 +76,7 @@ class SearchCom extends React.Component {
     handleSearchSubmit(formData, MLObject) {
         let result;
         
-        if (MLObject.UserName != -1) {
+        if (MLObject.UserName != -1 && MLObject.UserName!=null) {
             result = MLObject.UserName.reduce((data, item, index) => {
                 const comma = data.length ? "," : "";
                 return data + comma + item.value;
@@ -106,7 +106,6 @@ class SearchCom extends React.Component {
                     const sortResult = apiResult.ResultObject.sort((a, b) => (a.UserName > b.UserName) ? 1
                         : (a.UserName === b.UserName)
                             ? (a.LimitTypeID > b.LimitTypeID) ? 1 : -1 : -1);
-
                    
                     const dataSource = sortResult.reduce((catsSoFar, item, index) => {
                         if (!catsSoFar[item.UserName]) catsSoFar[item.UserName] = [];
@@ -217,11 +216,9 @@ class SearchCom extends React.Component {
         const userlimitType = e.target.attributes['data-limittype'].value;
         const index = e.target.attributes['data-index'].value;
 
-
         const dataFind = this.state.gridDataLimtType[userItem].find(n => {
             return n.LimitTypeID == inputName && n.UserName == userItem
         });
-
         dataFind.LimitValue = inputValueNew;
 
         if (inputValueNew > 0) {
@@ -325,7 +322,7 @@ class SearchCom extends React.Component {
                                                                         onChange={this.handleChangeLimitType}
                                                                         value={formatMoney(item1.LimitValue, 0)}
                                                                         name={item1.LimitTypeID}
-                                                                        data-index={index}
+                                                                        data-index={index1}
                                                                         data-user={item.UserName}
                                                                         data-limittype={item1.LimitTypeID}
                                                                         maxLength={15}

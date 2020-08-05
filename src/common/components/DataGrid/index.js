@@ -227,10 +227,6 @@ class DataGridCom extends Component {
     handlePrintClick() {
         // window.print();
         // return;
-        var html = "<html>";
-        html = document.getElementById('print').innerHTML;
-        html += "</html>";
-
         var mywindow = window.open('', '', 'right=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
         mywindow.document.write('<html><head>');
         mywindow.document.write('<title>' + this.props.TitlePrint + '</title>');
@@ -626,6 +622,7 @@ class DataGridCom extends Component {
         if (this.state.IsPermision === 'error') {
             return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
         }
+        console.log("this.props", this.props)
         return (
 
             <div className="col-lg-12 SearchForm">
@@ -691,7 +688,7 @@ class DataGridCom extends Component {
                                             //hiển thị nút in 
                                             isShowButtonPrint ?
                                                 (
-                                                    (this.props.IsPrint == true || this.props.IsPrint == undefined) ?
+                                                    (this.props.IsPrint == true) ?
                                                         (
                                                             <button type="button" className="btn btn-Print ml-10" title="" data-provide="tooltip" data-original-title="In" onClick={this.handlePrintClick}>
                                                                 <span className="ti ti-printer"> In </span>
@@ -742,10 +739,13 @@ class DataGridCom extends Component {
 
                     </div>
                 </div>
-                <div style={{ display: 'none' }}>
-                    <PartnerPayaleTemplate ref={el => (this.componentRef = el)} />
+                {
+                    this.props.IsPrint == true &&
+                    <div style={{ display: 'none' }}>
+                        <PartnerPayaleTemplate ref={el => (this.componentRef = el)} data={this.props.dataPrint} />
+                    </div>
+                }
 
-                </div>
             </div>
         );
     }
