@@ -367,13 +367,13 @@ class EditCom extends React.Component {
                         RequirePermission={PARTNER_UPDATE}
                         ref={this.searchref}>
 
-                        <br />
+                        {/* <br />
                         <PartnerCoordinatorStore
                             PartnerID={this.props.match.params.id}
                             partnerCoordinatorStore={this.state.PartnerCoordinatorStore}
                             Store={this.state.Store}
                             onPartnerCoordinatorStoreChange={this.onPartnerCoordinatorStoreChange}
-                        />
+                        /> */}
                     </SimpleForm>
 
 
