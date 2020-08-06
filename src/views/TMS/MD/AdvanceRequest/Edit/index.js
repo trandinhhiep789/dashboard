@@ -23,6 +23,7 @@ import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { format } from "date-fns";
 import { formatDate } from "../../../../../common/library/CommonLib";
+import AdvanceRequestDetail from "../../AdvanceRequestDetail";
 
 
 class EditCom extends React.Component {
@@ -85,7 +86,7 @@ class EditCom extends React.Component {
                     <div className="col-md-12 col-sm-12 col-xs-12">
                         <div className="x_panel">
                             <div className="x_title">
-                                <h2>Nhật ký gọi API</h2>
+                                <h2>Thông tin yêu cầu tạm ứng</h2>
                                 <div className="clearfix"></div>
                             </div>
 
@@ -93,14 +94,14 @@ class EditCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Mã gọi API: </span>
-                                            <span className="xcode">{this.state.DataSource.APICallLogID}</span>
+                                            <span>Mã yêu cầu tạm ứng: </span>
+                                            <span className="xcode">{this.state.DataSource.AdvanceRequestID}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Danh mục API: </span>
-                                            <span>{this.state.DataSource.APICategoryID}</span>
+                                            <span>Loại yêu cầu tạm ứng: </span>
+                                            <span>{this.state.DataSource.AdvanceRequestTypeName}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -108,73 +109,63 @@ class EditCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Ngày gọi API: </span>
-                                            <span>{formatDate(this.state.DataSource.APICallDate)}</span>
+                                            <span>Tiêu đề yêu cầu tạm ứng: </span>
+                                            <span>{this.state.DataSource.AdvanceRequestTitle}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Mã trạng thái phản hồi: </span>
-                                            <span>{this.state.DataSource.ResponseStatusID}</span>
+                                            <span>Mã yêu cầu vận chuyển: </span>
+                                            <span>{this.state.DataSource.ShipmentOrderID}</span>
                                         </div>
                                     </div>
                                 </div>
 
+
                                 <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Mã yêu cầu: </span>
-                                            <span>{this.state.DataSource.RequestID}</span>
-                                        </div>
-                                    </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Ngày yêu cầu: </span>
-                                            <span>{formatDate(this.state.DataSource.RequestTime)}</span>
+                                            <span>{formatDate(this.state.DataSource.RequestDate)}</span>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Người yêu cầu: </span>
+                                            <span>{this.state.DataSource.RequestUserName}</span>
                                         </div>
                                     </div>
                                 </div>
 
-
-
                                 <div className="row">
                                     <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span> Mô tả: </span>
+                                            <span>{this.state.DataSource.Description}</span>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
                                         <div className="form-group checkbox customCheckbox">
-                                            <span>Đã phản hồi: </span>
+                                            <span>Đã duyệt: </span>
                                             <label>
-                                                <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.IsResponse} />
+                                                <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.IsReviewed} />
                                                 <span class="cr"><i class="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Thời gian phản hồi (giây): </span>
-                                            <span>{this.state.DataSource.ResponseInterval}</span>
-                                        </div>
-                                    </div>
                                 </div>
-
-                                {/* <div className="row">
-                                    <div className="col-md-12">
-                                        <div className="form-group">
-                                            <span>Mã trạng thái phản hồi: </span>
-                                            <span>{this.state.DataSource.ResponseStatusID}</span>
-                                        </div>
-                                    </div>
-                                </div> */}
 
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Tên trạng thái phản hồi: </span>
-                                            <span>{this.state.DataSource.ResponseStatusMessage}</span>
+                                            <span>Người duyệt: </span>
+                                            <span>{this.state.DataSource.ReviewedUser}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Thời gian phản hồi: </span>
-                                            <span>{formatDate(this.state.DataSource.ResponseTime)}</span>
+                                            <span>Ngày duyệt: </span>
+                                            <span>{formatDate(this.state.DataSource.ReviewedDate)}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -182,52 +173,81 @@ class EditCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group checkbox customCheckbox">
-                                            <span>Lỗi phản hồi: </span>
+                                            <span>Đã tạo đơn hàng tạm ứng: </span>
                                             <label>
-                                                <input name="IsResponseError" type="checkbox" id="IsResponseError" checked={this.state.DataSource.IsResponseError} />
+                                                <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.IsCreatedOrder} />
                                                 <span class="cr"><i class="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Nội dung lỗi: </span>
-                                            <span><code>{this.state.DataSource.ErrorContent}</code></span>
+                                            <span> Người tạo đơn hàng tạm ứng: </span>
+                                            <span>{this.state.DataSource.CreatedOrderUser}</span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="row">
-                                    <div className="col-md-12">
+                                    <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Địa chỉ URL yêu cầu: </span>
-                                            <span>{this.state.DataSource.RequestURL}</span>
+                                            <span> Ngày tạo đơn hàng tạm ứng: </span>
+                                            <span>{formatDate(this.state.DataSource.CreatedOrderDate)}</span>
                                         </div>
                                     </div>
-
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-md-12">
+                                    <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Nội dung yêu cầu: </span>
-                                            <span className="xcontent"><code>{this.state.DataSource.RequestContent}</code></span>
+                                            <span>Mã đơn hàng tạm ứng: </span>
+                                            <span>{this.state.DataSource.SaleOrderID}</span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="row">
-                                    <div className="col-md-12">
+                                    <div className="col-md-6">
+                                        <div className="form-group checkbox customCheckbox">
+                                            <span>Đã xuất tạm ứng: </span>
+                                            <label>
+                                                <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.IsOutput} />
+                                                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Nội dung phản hồi: </span>
-                                            <span className="xcontent"><code>{this.state.DataSource.ResponseContent}</code></span>
+                                            <span> Người xuất tạm ứng: </span>
+                                            <span>{this.state.DataSource.OutputUser}</span>
                                         </div>
                                     </div>
                                 </div>
+
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span> Ngày xuất: </span>
+                                            <span>{formatDate(this.state.DataSource.OutputDate)}</span>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span> Mã phiếu xuất: </span>
+                                            <span>{this.state.DataSource.OutputVoucherID}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
 
                             </div>
                         </div>
                     </div>
+
+                    <br />
+                    <AdvanceRequestDetail
+                        AdvanceRequestID={this.props.match.params.id}
+                        AdvanceRequestDetailDataSource={this.state.DataSource.AdvanceRequestDetailList}
+                    />
                 </React.Fragment >
             );
         }

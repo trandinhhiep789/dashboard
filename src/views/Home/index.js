@@ -68,11 +68,13 @@ import PartnerPayable from '../../views/TMS/PartnerPayable';
 import Compute from '../../views/TMS/PartnerPayable/Compute';
 import PartnerPayableDetail from '../../views/TMS/PartnerPayable/PartnerPayableDetail';
 import ApiCallLog from "../TMS/MD/ApiCallLog";
+import AdvanceRequest from "../TMS/MD/AdvanceRequest";
 
 import LimitType from "../TMS/MD/Limit/LimitType";
 import UserLimit from "../TMS/MD/Limit/UserLimit";
 
 import NotFound from '../NotFound'
+
 
 
 
@@ -237,6 +239,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/UserCoordinator" component={UserCoordinator} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserGroup" component={UserGroup} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ApiCallLog" component={ApiCallLog} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/AdvanceRequest" component={AdvanceRequest} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/WorkingPlan" component={WorkingPlan} isLoggedIn={isLoggedIn} />
 

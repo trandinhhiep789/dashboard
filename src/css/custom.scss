@@ -372,11 +372,11 @@ select.form-control:-webkit-autofill:focus {
         div {
             clear: both;
             span:first-child{
-                min-width: 172px;
+                min-width: 200px;
                 display: inline-block;
                 font-weight: 500;
                 vertical-align: top;
-                margin-right: 5px;
+                margin-right: 10px;
             }
             span.xcode{
                 color: #349ae0;
@@ -411,6 +411,16 @@ select.form-control:-webkit-autofill:focus {
         padding-top: .2rem;
         padding-bottom: .2rem;
     }
+}
+
+.message-detail {
+    label{
+        font-size: 15px;
+        text-align: center;
+        display: block;
+        margin-top: 60px;
+    }
+    
 }
 
 

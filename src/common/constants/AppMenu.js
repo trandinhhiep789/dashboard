@@ -426,6 +426,13 @@ const AppMenu = [
                 LinkTo: '/ApiCallLog',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'AdvanceRequest',
+                MenuTitle: 'Xem yêu cầu tạm ứng',
+                LinkTo: '/AdvanceRequest',
+                MenuIcon: '',
+                SubMenu: []
             }
         ]
     },

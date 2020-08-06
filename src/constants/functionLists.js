@@ -179,6 +179,9 @@ export const PARTNERTRANSACTION_VIEW = 'PARTNERTRANSACTION_VIEW';
 // nhật ký gọi api
 export const APICALLLOG_VIEW = 'APICALLLOG_VIEW';
 
+// yêu cầu tạm ứng
+export const ADVANCEREQUEST_VIEW = 'ADVANCEREQUEST_VIEW';
+
 
 // kỹ năng
 export const SKILL_VIEW = 'SKILL_VIEW';

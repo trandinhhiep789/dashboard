@@ -20,12 +20,9 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { APICALLLOG_VIEW } from "../../../../../constants/functionLists";
+import { ADVANCEREQUEST_VIEW } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache } from "../../../../../actions/cacheAction";
 
 class SearchCom extends React.Component {
@@ -80,14 +77,10 @@ class SearchCom extends React.Component {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
             },
-            // {
-            //     SearchKey: "@PartnerTransactionTypeID",
-            //     SearchValue: MLObject.PartnerTransactionTypeID
-            // },
-            // {
-            //     SearchKey: "@PartnerID",
-            //     SearchValue: MLObject.PartnerID
-            // },
+            {
+                SearchKey: "@AdvanceRequestTypeID",
+                SearchValue: MLObject.AdvanceRequestTypeID
+            },
             {
                 SearchKey: "@FromDate",
                 SearchValue: MLObject.FromDate
@@ -175,7 +168,7 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm thông tin giao dịch với đối tác"
+                        FormName="Tìm kiếm thông tin yêu cầu tạm ứng"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
@@ -191,7 +184,7 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         //onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={APICALLLOG_VIEW}
+                        RequirePermission={ADVANCEREQUEST_VIEW}
                         //DeletePermission={CANCELDELIVERYREASON_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
