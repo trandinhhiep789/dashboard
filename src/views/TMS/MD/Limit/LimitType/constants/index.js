@@ -194,6 +194,13 @@ export const DataGridColumnList=[
         Width: 60
     },
     {
+        Name: "LimitTypeID",
+        Type: "text",
+        Caption: "Mã loại giới hạn",
+        DataSourceMember: "LimitTypeID",
+        Width: 70
+    },
+    {
         Name: "LimitTypeName",
         Type: "text",
         Caption: "Tên loại giới hạn",
