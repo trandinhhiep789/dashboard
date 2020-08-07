@@ -301,6 +301,7 @@ class DataGridCom extends Component {
             const data = new Blob([excelBuffer], { type: fileType });
 
             FileSaver.saveAs(data, this.props.fileName + fileExtension);
+
             result = {
                 IsError: false,
                 Message: "Xuất file thành công!"
