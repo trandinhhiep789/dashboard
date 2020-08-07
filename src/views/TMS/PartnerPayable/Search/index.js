@@ -5,6 +5,8 @@ import {
     Switch
 } from "react-router-dom";
 import DataGrid from "../../../../common/components/DataGrid";
+import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import { MessageModal } from "../../../../common/components/Modal";
 import {
     SearchElementList,
     SearchMLObjectDefinition,
@@ -39,19 +41,40 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        this.callData(this.state.SearchData)
+        //this.callData(this.state.SearchData)
     }
 
     callData(SearchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, SearchData).then(apiResult => {
             if(!apiResult.IsError){
-                this.setState({
-                    gridDataSource: apiResult.ResultObject
-                })
+                if (apiResult.ResultObject.length > 0) {
+                    this.setState({
+                        gridDataSource: apiResult.ResultObject
+                    })
+                }
+                else {
+                    this.showMessage('Không có dữ liệu cần tim.')
+                    this.setState({
+                        gridDataSource: apiResult.ResultObject,
+                    })
+                }
+                
+            }
+            else {
+                this.showMessage(apiResult.Message)
             }
         })
     }
 
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+            />
+        );
+    }
     handleSearchSubmit(formData, MLObject) {
         const postData = [
             {

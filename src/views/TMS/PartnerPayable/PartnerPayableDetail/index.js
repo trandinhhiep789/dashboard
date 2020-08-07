@@ -74,7 +74,6 @@ class PartnerPayableDetailCom extends React.Component {
 
 
                     this.setState({
-
                         gridDataSource: apiResult.ResultObject,
                         IsLoadDataComplete: true,
                         gridDataSourcePrint,
@@ -83,11 +82,18 @@ class PartnerPayableDetailCom extends React.Component {
                 }
                 else {
                     this.showMessage('Không có dữ liệu cần tim.')
+                    this.setState({
+                        IsLoadDataComplete: true,
+                        gridDataSourcePrint : [],
+                        totalPayableAmount: 0,
+                        gridDataSource: apiResult.ResultObject,
+                    })
                 }
             }
             else {
                 this.showMessage(apiResult.Message)
             }
+           
         })
     }
 

@@ -622,7 +622,7 @@ class DataGridCom extends Component {
         if (this.state.IsPermision === 'error') {
             return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
         }
-        console.log("this.props", this.props)
+       // console.log("this.props", this.props)
         return (
 
             <div className="col-lg-12 SearchForm">
