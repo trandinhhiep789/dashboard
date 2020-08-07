@@ -52,16 +52,13 @@ class PartnerPayableDetailCom extends React.Component {
             let w = [...fields, sumBy].reduce((a, b) => (a[b] = x[b], a), {})
             y ? y[sumBy] = +y[sumBy] + (+x[sumBy]) : r.push(w);
         });
-        console.log("r", r)
         return r;
     }
 
 
 
     callData(SearchData) {
-        console.log("SearchData", SearchData)
         this.props.callFetchAPI(APIHostName, SearchByDateAPIPath, SearchData).then(apiResult => {
-            console.log("MLObject", apiResult)
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const totalPayableAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
@@ -72,7 +69,6 @@ class PartnerPayableDetailCom extends React.Component {
                     const sortResult = apiResult.ResultObject.sort((a, b) => (a.SubGroupID > b.SubGroupID) ? 1
                         : (a.SubGroupID === b.SubGroupID) ? 1 : -1)
 
-                    console.log("sortResult", sortResult)
                     let gridDataSourcePrint = [];
                     gridDataSourcePrint = this.groupBy(sortResult, ['SubGroupID', 'SubGroupName', 'PartnerName', 'ServiceFee', 'SubGroupID'])
 
@@ -150,7 +146,7 @@ class PartnerPayableDetailCom extends React.Component {
                     IsPrint={true}
                     IDSelectColumnName="PartnerPayableDetailID"
                     PKColumnName="PartnerPayableDetailID"
-                    IsAutoPaging={true}
+                    IsAutoPaging={false}
                     RowsPerPage={10}
                     // RequirePermission={PARTNERPAYABLE_VIEW}
                     ref={this.gridref}
