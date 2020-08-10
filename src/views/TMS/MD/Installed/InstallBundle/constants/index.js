@@ -462,6 +462,13 @@ export const GridInstallBundle_Materia = [
         DataSourceMember: "IsRoundIngQuantity"
     },
     {
+        Name: "RoundingMultiple",
+        DefaultValue: '',
+        BindControlName: "RoundingMultiple",
+        DataSourceMember: "RoundingMultiple"
+    },
+    
+    {
         Name: "Note",
         DefaultValue: '',
         BindControlName: "Note",
@@ -680,12 +687,23 @@ export const InstallBundle_MateriaColumnList = [
         OrderIndex:13
     },
     {
+        name: "RoundingMultiple",
+        Type: "TextNumber",
+        Caption: "Bội số làm tròn",
+        label:"Bội số làm tròn",
+        datasourcemember: "RoundingMultiple",
+        OrderIndex:14,
+        hideInput: false,
+        min:0,
+        max:9999
+    },
+    {
         name: "Note",
         Type: "TextArea",
         label:"Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex:14,
+        OrderIndex:15,
         Colmd:12,
         hideInput: false,
         labelcolspan:2,
