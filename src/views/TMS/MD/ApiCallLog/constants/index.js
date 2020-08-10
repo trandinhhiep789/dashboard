@@ -165,8 +165,8 @@ export const DataGridColumnList = [
     },
     {
         Name: "RequestTime",
-        Type: "date",
-        Caption: "Ngày yêu cầu",
+        Type: "text",
+        Caption: "Thời gian yêu cầu",
         DataSourceMember: "RequestTime",
         Width: 120
     },
