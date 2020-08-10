@@ -8,32 +8,44 @@ import {
 } from "react-router-dom";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-
+import { formatMoney } from '../../../../utils/function';
 
 
 class PartnerPayaleTemplateCom extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            titlePartnerName:'',
+            titlePartnerName: '',
             girdDataSource: this.props.data,
+            totalPayableAmount: 0
         }
     }
 
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.data) !== JSON.stringify(nextProps.data)) {
+            const result = nextProps.data.map((item) => {
+                item.totalCost = item.ServiceFee * item.Quantity
+                return item
+            })
+            const totalPayableAmount = result.reduce((sum, curValue, curIndex, []) => {
+                sum += curValue.totalCost
+                return sum
+            }, 0);
+
             this.setState({
-                girdDataSource: nextProps.data
+                girdDataSource: result,
+                totalPayableAmount
+
             })
         }
+
     }
 
-    componentDidMount(){
-        
+    componentDidMount() {
     }
 
     render() {
-        console.log('this', this.state.girdDataSource)
+
         return (
             <div id="print">
                 <div className="header" style={{ textAlign: "center", fontSize: 26, color: '#333', fontWeight: 600, textTransform: "uppercase" }}>
@@ -41,40 +53,44 @@ class PartnerPayaleTemplateCom extends React.Component {
                     <p>(Siêu thị .............................................)</p>
                 </div>
                 <div style={{ width: '100%', marginTop: 50, }} >
-                    <div style={{width: '100%', display: 'block', flex: 1, flexDirection: 'row', border: 1, borderColor: 'red'}}>
+                    <div style={{ width: '100%', display: 'block', flex: 1, flexDirection: 'row', border: 1, borderColor: 'red' }}>
                         <div style={{ width: '100%', display: 'inline-block', marginBottom: 30 }}>
-                            <div style={{width: '60%',float: "left", textAlign: 'left'}}>
-                                <h3 style={{textTransform: 'uppercase', fontSize: 15}}>Đối tác: 101-Công ty TNHH TMDV kỹ thuật bão nguyên cơ </h3>
+                            <div style={{ width: '60%', float: "left", textAlign: 'left' }}>
+                                <h3 style={{ textTransform: 'uppercase', fontSize: 15 }}>Đối tác: {this.state.girdDataSource.length > 0 ? this.state.girdDataSource[0].PartnerName : ''}</h3>
                             </div>
-                            <div style={{width: '40%',float: 'right', textAlign: 'right', lineHeight: 2}}>
-                                <span style={{ fontSize: 20,  }}>Nhân viên: 74260-Nguyễn Văn Phận</span>
+                            <div style={{ width: '40%', float: 'right', textAlign: 'right', lineHeight: 2 }}>
+                                <span style={{ fontSize: 20, }}>Nhân viên: 74260-Nguyễn Văn Phận</span>
                             </div>
                         </div>
                     </div>
                     <table style={{ width: '100%' }} border='1'>
                         <thead>
                             <tr>
-                                <td>STT</td>
-                                <td>Sản phẩm</td>
-                                <td>Số lượng đơn hàng</td>
-                                <td>Giá tiền</td>
-                                <td>Thành tiền</td>
+                                <td style={{padding: 6}}>STT</td>
+                                <td style={{padding: 6}}>Sản phẩm</td>
+                                <td style={{padding: 6}}>Số lượng đơn hàng</td>
+                                <td style={{padding: 6}}>Giá tiền</td>
+                                <td style={{padding: 6}}>Thành tiền</td>
                             </tr>
                         </thead>
                         <tbody>
+                            {
+                                this.state.girdDataSource && this.state.girdDataSource.map((item, index) => {
+                                    return (
+                                        <tr key={index}>
+                                            <td style={{padding: 6}}>{index + 1}</td>
+                                            <td style={{padding: 6}}>{item.SubGroupName}</td>
+                                            <td style={{padding: 6}}>{item.Quantity}</td>
+                                            <td style={{padding: 6}}>{item.ServiceFee}</td>
+                                            <td style={{padding: 6}}>{formatMoney(item.totalCost, 0)}</td>
+                                        </tr>
+                                    )
+                                })
+                            }
                             <tr>
-                                <td>1</td>
-                                <td>Máy lạnh 1 HP</td>
-                                <td>0</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Máy lạnh 1.5 HP</td>
-                                <td>0</td>
-                                <td></td>
-                                <td></td>
+                                <td colSpan="4" style={{ fontSize: 25, fontWeight: 500, padding: 6,}}>Tổng cộng</td>
+                                <td style={{padding: 6, fontSize: 25, fontWeight: 500,}}>{formatMoney(this.state.totalPayableAmount, 0)}</td>
+
                             </tr>
                         </tbody>
                     </table>

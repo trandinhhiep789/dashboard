@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 import { ModalManager } from 'react-dynamic-modal';
 import ModelContainer from "../../../../common/components/Modal/ModelContainer";
@@ -7,11 +8,14 @@ import { callGetCache } from "../../../../actions/cacheAction";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../common/components/Modal";
+import { showModal, hideModal } from '../../../../actions/modal';
+import { MODAL_TYPE_SEARCH, MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_CONFIRMATION } from '../../../../constants/actionTypes';
 import Select from 'react-select';
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import {
     APIHostName,
+    BackLink
 } from "../constants";
 class InfoCoordinatorCom extends Component {
     constructor(props) {
@@ -41,8 +45,11 @@ class InfoCoordinatorCom extends Component {
             validationCancelDeliveryReasonNote: null,
             CancelDeliveryReasonID: null,
             CancelDeliveryReasonNote: "",
+            validationErrorCancelStore: null,
             selectedOption: [],
-            lstPartnerUser: []
+            selectedOptionStore: [],
+            lstPartnerUser: [],
+            lstStore: []
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -73,6 +80,19 @@ class InfoCoordinatorCom extends Component {
                 );
                 this.setState({
                     lstPartnerUser: listOption
+                });
+            }
+        });
+
+        this.props.callGetCache("ERPCOMMONCACHE.STORE").then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                let listOptionStore = [{ value: -1, label: "--Vui lòng chọn--" }];
+                result.ResultObject.CacheData.filter(n => n["CompanyID"] == 10 && n["StoreID"] != this.state.ShipmentOrder.CoordinatorStoreID).map((cacheItem) => {
+                    listOptionStore.push({ value: cacheItem["StoreID"], label: cacheItem["StoreID"] + '-' + cacheItem["StoreName"] });
+                }
+                );
+                this.setState({
+                    lstStore: listOptionStore
                 });
             }
         });
@@ -114,7 +134,7 @@ class InfoCoordinatorCom extends Component {
         });
 
     }
-    
+
     handleCancelDelivery() {
         this.openCancelDeliveryModal();
     }
@@ -175,7 +195,7 @@ class InfoCoordinatorCom extends Component {
 
         let { ShipmentOrder, selectedOption, CancelDeliveryReasonNote, validationErrorCancelDeliveryReason, validationCancelDeliveryReasonNote } = this.state;
         if (selectedOption.value == undefined || selectedOption.length == 0) {
-            validationErrorCancelDeliveryReason = "Vui lòng chọn lý do hủy giào"
+            validationErrorCancelDeliveryReason = "Vui lòng chọn lý do hủy giao"
             this.setState({ validationErrorCancelDeliveryReason: validationErrorCancelDeliveryReason }, () => {
                 this.openCancelDeliveryModal();
             });
@@ -446,7 +466,87 @@ class InfoCoordinatorCom extends Component {
             </ModelContainer>
         );
     }
+
+    //Chuyển kho điều phối
+    handleCoordinatorStore() {
+        this.openCoordinatorStoreModal();
+    }
+
+    handleValueCancelStore(selectedOption) {
+        let validationErrorCancelStore = null
+        if (selectedOption.value == undefined || selectedOption.value == -1) {
+            validationErrorCancelStore = "Vui lòng chọn lý do hủy giao"
+        }
+
+        this.setState({ selectedOptionStore: selectedOption, validationErrorCancelStore: validationErrorCancelStore }, () => {
+            this.openCoordinatorStoreModal();
+        });
+
+    }
+
+    openCoordinatorStoreModal() {
+        ModalManager.open(
+            <ModelContainer
+                title="Thông tin kho điều phối"
+                name=""
+                content={"Cập nhật kho điều phối thành công!"} onRequestClose={() => false}
+                onChangeModal={this.handleCoordinatorStoreInsert.bind(this)}  >
+                <div className="form-row">
+
+                    <div className="form-group col-md-3">
+                        <label className="col-form-label 6">Kho điều phối<span className="text-danger">*</span></label>
+                    </div>
+                    <div className="form-group col-md-9">
+                        <div className="form-group-input-select">
+                            <Select
+                                value={this.state.selectedOptionStore}
+                                name={"StoreID"}
+                                onChange={this.handleValueCancelStore.bind(this)}
+                                options={this.state.lstStore}
+                                isMulti={false}
+                                isSearchable={true}
+                                className={(this.state.validationErrorCancelStore != null ? "react-select is-invalid" : "react-select")}
+                                placeholder="--Vui lòng chọn--"
+                            />
+                            <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.state.validationErrorCancelStore}</li></ul></div>
+                        </div>
+                    </div>
+                </div>
+
+            </ModelContainer>
+        );
+    }
+
+    handleCoordinatorStoreInsert() {
+        let { ShipmentOrder, selectedOptionStore, validationErrorCancelStore } = this.state;
+        if (selectedOptionStore.value == undefined || selectedOptionStore.length == 0) {
+            validationErrorCancelStore = "Vui lòng chọn kho điều phối"
+            this.setState({ validationErrorCancelStore: validationErrorCancelStore }, () => {
+                this.openCoordinatorStoreModal();
+            });
+        }
+        else {
+            ShipmentOrder.CoordinatorStoreNewID = selectedOptionStore.value;
+            ShipmentOrder.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateCoordinatorStore', ShipmentOrder).then((apiResult) => {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                if (!apiResult.IsError) {
+                    ModalManager.close();
+                    this.setState({ IsCloseForm: true })
+
+                }
+            });
+        }
+
+    }
+    //End chuyển kho điều phối
+
     render() {
+
+        if (this.state.IsCloseForm) {
+            return <Redirect to={BackLink} />;
+        }
+
         let listOption = [];
         let objDeliverUser = [];
         if (this.state.ShipmentOrder.CarrierPartnerID != -1 && this.state.ShipmentOrder.CarrierPartnerID != 0) {
@@ -635,7 +735,7 @@ class InfoCoordinatorCom extends Component {
                                 this.props.IsCancelDelivery == true ? <button className="btn btnDelivery mr-10" type="submit" onClick={this.handleCancelDelivery}><span className="fa fa-remove"> Hủy giao hàng</span></button> : <button className="btn btnDelivery mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-remove"> Hủy giao hàng</span></button>
                             }
                             {
-                                this.props.IsCoordinator == true ? <button className="btn btnEditCard mr-10" type="submit" onClick={this.handleShipWorkFlowInsert}>Chuyển kho điều phối</button> : <button className="btn btnEditCard mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit">Chuyển kho điều phối</span></button>
+                                this.props.IsCoordinator == true ? <button className="btn btnEditCard mr-10" type="submit" onClick={this.handleCoordinatorStore.bind(this)}>Chuyển kho điều phối</button> : <button className="btn btnEditCard mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit">Chuyển kho điều phối</span></button>
                             }
                             {
                                 this.props.IsCoordinator == true ? <button className="btn btnEditCard" type="submit" onClick={this.handleShipWorkFlowInsert}> Cập nhật</button> : <button className="btn btnEditCard" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit"> Cập nhật</span></button>
