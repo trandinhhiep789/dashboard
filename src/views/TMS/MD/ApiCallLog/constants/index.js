@@ -164,11 +164,11 @@ export const DataGridColumnList = [
         Width: 120
     },
     {
-        Name: "RequestTime",
+        Name: "RequestTimeString",
         Type: "text",
         Caption: "Thời gian yêu cầu",
-        DataSourceMember: "RequestTime",
-        Width: 120
+        DataSourceMember: "RequestTimeString",
+        Width: 150
     },
     {
         Name: "RequestURL",
@@ -185,10 +185,10 @@ export const DataGridColumnList = [
         Width: 120
     },
     {
-        Name: "ResponseTime",
-        Type: "date",
+        Name: "ResponseTimeString",
+        Type: "text",
         Caption: "Thời gian phản hồi",
-        DataSourceMember: "ResponseTime",
+        DataSourceMember: "ResponseTimeString",
         Width: 160
     }
 ];

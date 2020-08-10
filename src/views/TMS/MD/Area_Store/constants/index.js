@@ -35,7 +35,9 @@ export const ModalColumnList_Insert = [
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
         ValueMember: "StoreID",
-        NameMember: "StoreName"
+        NameMember: "StoreName",
+        KeyFilter: "CompanyID",
+        ValueFilter: 10
     },
     {
         Name: "IsSystem",
