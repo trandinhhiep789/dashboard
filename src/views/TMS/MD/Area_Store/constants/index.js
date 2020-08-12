@@ -23,7 +23,7 @@ export const ModalColumnList_Insert = [
     {
         type: "multiselect",
         Name: "StoreID",
-        label: "chi nhánh",
+        label: "kho điều phối",
         value: -1,
         placeholder: "",
         icon: "",
@@ -37,7 +37,7 @@ export const ModalColumnList_Insert = [
         ValueMember: "StoreID",
         NameMember: "StoreName",
         KeyFilter: "CompanyID",
-        ValueFilter: 10
+        ValueFilter: "10"
     },
     {
         Name: "IsSystem",
@@ -54,7 +54,7 @@ export const ModalColumnList_Edit = [
     {
         type: "multiselect",
         Name: "StoreID",
-        label: "chi nhánh",
+        label: "kho điều phối",
         value: -1,
         placeholder: "",
         icon: "",
@@ -91,7 +91,7 @@ export const DataGridColumnList = [
     {
         Name: "StoreName",
         Type: "text",
-        Caption: "Chi nhánh",
+        Caption: "Kho điều phối",
         DataSourceMember: "StoreName",
         Width: 350
     },
