@@ -93,7 +93,7 @@ class Area_StoreCom extends React.Component {
         let listOption = [{ value: "-1", label: "------ Chọn ------" }];
         if (data) {
             data.map((cacheItem) => {
-                if (conditionName && conditionValue != -1) {
+                if (conditionName && conditionValue != -1 && cacheItem.CompanyID == 10) {
                     if (cacheItem[conditionName] == conditionValue) {
                         listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
                     }
@@ -157,7 +157,7 @@ class Area_StoreCom extends React.Component {
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
         this.setState({ IsInsert: true });
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
-            title: 'Thêm mới chi nhánh của khu vực',
+            title: 'Thêm mới kho điều phối của khu vực',
             autoCloseModal: false,
             onValueChange: this.handleModalChange,
             onClose: this.onClose,
@@ -213,7 +213,7 @@ class Area_StoreCom extends React.Component {
         });
 
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
-            title: 'Chỉnh sửa chi nhánh của khu vực',
+            title: 'Chỉnh sửa kho điều phối của khu vực',
             //onValueChange: this.handleModalChange,
             onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
@@ -314,7 +314,7 @@ class Area_StoreCom extends React.Component {
                     IsAutoPaging={true}
                     RowsPerPage={10}
                     IsCustomAddLink={true}
-                    headingTitle={"Danh sách các chi nhánh của khu vực"}
+                    headingTitle={"Danh sách kho điều phối của khu vực"}
                 />
             </div>
         );
