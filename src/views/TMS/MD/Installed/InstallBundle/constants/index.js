@@ -57,8 +57,8 @@ export const AddElementList = [
         maxsize: "20",
         placeholder: "Mã gói sản phẩm lắp đặt",
         datasourcemember: "InstallBundleID",
-        readonly: false,
-        validatonList: ["required"],
+        readonly: true,
+        Disabled:true,
         OrderIndex:1
     },
     {
@@ -152,6 +152,7 @@ export const EditElementList = [
         placeholder: "Mã gói sản phẩm lắp đặt",
         datasourcemember: "InstallBundleID",
         readonly: true,
+        Disabled:true,
         validatonList: ["required"],
         OrderIndex:1
 
