@@ -409,7 +409,7 @@ const AppMenu = [
     },
     {
         MenuName: 'History',
-        MenuTitle: 'Xem nhật ký',
+        MenuTitle: 'Nhật ký',
         LinkTo: '',
         MenuIcon: '',
         SubMenu: [
