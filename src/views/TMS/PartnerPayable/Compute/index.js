@@ -9,8 +9,7 @@ import { MessageModal } from "../../../../common/components/Modal";
 import {
     SearchComputeElementList ,
     SearchComputeMLObjectDefinition ,
-    PagePath,
-    InitSearchComputeParams,
+    PagePathCompute,
     SearchComputeAPIPath,
     APIHostName,
 
@@ -37,7 +36,7 @@ class ComputeCom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updatePagePath(PagePath);
+        this.props.updatePagePath(PagePathCompute);
     }
 
     callData(postData) {

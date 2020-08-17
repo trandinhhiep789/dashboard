@@ -18,18 +18,18 @@ export const PKColumnName = "VehicleID";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách định nghĩa kho điều phối giao hàng" }
+    { Link: "", Title: "Danh sách đăng kí xe" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/Vehicle", Title: "Danh sách định nghĩa kho điều phối giao hàng" },
+    { Link: "/Vehicle", Title: "Danh sách đăng kí xe" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/Vehicle", Title: "Danh sách định nghĩa kho điều phối giao hàng" },
+    { Link: "/Vehicle", Title: "Danh sách đăng kí xe" },
     { Link: "", Title: "Thêm" }
 ];
 

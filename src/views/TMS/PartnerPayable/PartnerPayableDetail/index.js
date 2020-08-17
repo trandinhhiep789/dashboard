@@ -10,7 +10,7 @@ import { MessageModal } from "../../../../common/components/Modal";
 import {
     SearchPartnerPayableDetailElementList,
     SearchPartnerPayableDetailMLObjectDefinition,
-    PagePath,
+    PagePathDate,
     InitSearchParams,
     SearchByDateAPIPath,
     APIHostName,
@@ -45,7 +45,7 @@ class PartnerPayableDetailCom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updatePagePath(PagePath);
+        this.props.updatePagePath(PagePathDate);
     }
 
     groupBy(data, fields, sumBy = 'Quantity') {

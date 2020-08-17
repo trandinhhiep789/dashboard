@@ -348,7 +348,7 @@ class SearchCom extends React.Component {
                                                                                 name={index1}
                                                                                 data-index={index}
                                                                                 data-user={item.UserName}
-                                                                                defaultChecked={item1.IsRegister}
+                                                                                checked={item1.IsRegister}
                                                                                 disabled={item1.isHidden}
                                                                             />
                                                                             <span className="cr">

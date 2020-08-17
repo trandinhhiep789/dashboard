@@ -26,7 +26,12 @@ export const PagePathPartner = [
 
 export const PagePathDate = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách tiền phải trả cho nhà cung cấp dịch vụ theo ngày" }
+    { Link: "", Title: "Danh sách tiền phải trả cho NCC dịch vụ theo ngày" }
+];
+
+export const PagePathCompute = [
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
+    { Link: "", Title: "Tính chi phí theo tháng" }
 ];
 
 export const InitSearchParams = [
