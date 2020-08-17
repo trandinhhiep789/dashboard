@@ -143,14 +143,8 @@ const AppMenu = [
                         LinkTo: '/InstallBundle',
                         MenuIcon: '',
                         SubMenu: []
-                    },
-                    {
-                        MenuName: 'InstallMaterial',
-                        MenuTitle: 'Danh sách nhóm sản phẩm cần vật tư lắp đặt',
-                        LinkTo: '/InstallMaterial',
-                        MenuIcon: '',
-                        SubMenu: []
                     }
+                  
                 ]
             },
             {
@@ -354,21 +348,7 @@ const AppMenu = [
             }
         ]
     },
-    {
-        MenuName: 'HD',
-        MenuTitle: 'Hợp đồng',
-        LinkTo: '',
-        MenuIcon: '',
-        SubMenu: [
-            {
-                MenuName: 'ServiceAgreement',
-                MenuTitle: 'Danh sách hợp đồng',
-                LinkTo: '/ServiceAgreement',
-                MenuIcon: '',
-                SubMenu: []
-            }
-        ]
-    },
+
     {
         MenuName: 'ShipmentOrder',
         MenuTitle: 'Vận chuyển',
@@ -376,37 +356,104 @@ const AppMenu = [
         MenuIcon: '',
         SubMenu: [
             {
-                MenuName: 'ShipmentOrder',
-                MenuTitle: 'Điều phối giao hàng',
-                LinkTo: '/ShipmentOrder',
+                MenuName: 'ShipmentOrderdeltai',
+                MenuTitle: 'Yêu cầu vận chuyển',
+                LinkTo: '',
                 MenuIcon: '',
-                SubMenu: []
+                SubMenu: [
+                    {
+                        MenuName: 'ShipmentOrder',
+                        MenuTitle: 'Điều phối giao hàng',
+                        LinkTo: '/ShipmentOrder',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'ShipmentOrderControl',
+                        MenuTitle: 'Kiểm soát giao hàng',
+                        LinkTo: '/ShipmentOrderControl',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
             },
             {
-                MenuName: 'ShipmentOrderControl',
-                MenuTitle: 'Kiểm soát giao hàng',
-                LinkTo: '/ShipmentOrderControl',
+                MenuName: 'HD',
+                MenuTitle: 'Hợp đồng',
+                LinkTo: '',
                 MenuIcon: '',
-                SubMenu: []
+                SubMenu: [
+                    {
+                        MenuName: 'ServiceAgreement',
+                        MenuTitle: 'Danh sách hợp đồng',
+                        LinkTo: '/ServiceAgreement',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+                ]
             },
-
-        ]
-    },
-    {
-        MenuName: 'WorkingPlan',
-        MenuTitle: 'Đăng ký ca làm việc',
-        LinkTo: '',
-        MenuIcon: '',
-        SubMenu: [
             {
                 MenuName: 'WorkingPlan',
-                MenuTitle: 'Danh sách nhân viên đăng ký ca làm việc',
-                LinkTo: '/WorkingPlan',
+                MenuTitle: 'Đăng ký ca làm việc',
+                LinkTo: '',
                 MenuIcon: '',
-                SubMenu: []
-            }
+                SubMenu: [
+                    {
+                        MenuName: 'WorkingPlan',
+                        MenuTitle: 'Danh sách nhân viên đăng ký ca làm việc',
+                        LinkTo: '/WorkingPlan',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+                ]
+            },
+            {
+                MenuName: 'PartnerPayable',
+                MenuTitle: 'Chi phí dịch vụ',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'PartnerPayable',
+                        MenuTitle: 'Danh sách tiền phải trả cho nhà cung cấp dịch vụ theo tháng',
+                        LinkTo: '/PartnerPayable',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'PartnerPayableDetail',
+                        MenuTitle: 'Danh sách tiền phải trả cho nhà cung cấp dịch vụ theo ngày',
+                        LinkTo: '/PartnerPayableDetail',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'Compute',
+                        MenuTitle: 'Danh sách chi phí',
+                        LinkTo: '/Compute',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
+            },
+            {
+                MenuName: 'WorkingPlan',
+                MenuTitle: 'Tạm ứng',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'AdvanceRequest',
+                        MenuTitle: 'Danh sách yêu cầu tạm ứng',
+                        LinkTo: '/AdvanceRequest',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+                ]
+            },
         ]
     },
+
     {
         MenuName: 'History',
         MenuTitle: 'Nhật ký',
@@ -427,45 +474,10 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            {
-                MenuName: 'AdvanceRequest',
-                MenuTitle: 'Xem yêu cầu tạm ứng',
-                LinkTo: '/AdvanceRequest',
-                MenuIcon: '',
-                SubMenu: []
-            }
-        ]
-    },
-    {
-        MenuName: 'PartnerPayable',
-        MenuTitle: 'Chi phí dịch vụ',
-        LinkTo: '',
-        MenuIcon: '',
-        SubMenu: [
-            {
-                MenuName: 'PartnerPayable',
-                MenuTitle: 'Danh sách tiền phải trả cho nhà cung cấp dịch vụ theo tháng',
-                LinkTo: '/PartnerPayable',
-                MenuIcon: '',
-                SubMenu: []
-            },
-            {
-                MenuName: 'PartnerPayableDetail',
-                MenuTitle: 'Danh sách tiền phải trả cho nhà cung cấp dịch vụ theo ngày',
-                LinkTo: '/PartnerPayableDetail',
-                MenuIcon: '',
-                SubMenu: []
-            },
-            {
-                MenuName: 'Compute',
-                MenuTitle: 'Danh sách chi phí',
-                LinkTo: '/Compute',
-                MenuIcon: '',
-                SubMenu: []
-            },
+           
         ]
     }
-   
+
 ];
 
 export default AppMenu;
