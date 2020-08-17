@@ -76,7 +76,6 @@ class PartnerPayableDetailCom extends React.Component {
                     gridDataSourcePrint = this.groupBy(sortResult, ['SubGroupID', 'SubGroupName', 'PartnerName', 'ServiceFee', 'SubGroupID'])
 
                     const dataExport = apiResult.ResultObject.map((item, index) => {
-                        
                         let element = {
                             "Mã vẫn đơn": item.ShipmentOrderID,
                             "Mã đơn hàng": item.PartnerSaleOrderID,
@@ -85,9 +84,9 @@ class PartnerPayableDetailCom extends React.Component {
                             "Sản phẩm":  item.ProductID,
                             "Nhóm hàng": item.SubGroupID,
                             "Kho xuất": item.SenderFullAddress,
-                            "Kho tạo": "",
+                            "Kho tạo": item.StoreName,
                             "NV điều phối": item.CoordinatorUser, 
-                            "NV giao": "", 
+                            "NV giao": item.DeliveryUser, 
                             "Số lượng": item.Quantity, 
                             "Đơn giá": item.ServiceFee, 
                             "Thành tiền": item.PayableAmount, 
