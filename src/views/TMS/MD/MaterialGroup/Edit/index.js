@@ -29,6 +29,7 @@ class EditCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.onMaterialGroupProductChange = this.onMaterialGroupProductChange.bind(this);
         this.onMaterialGroup_InstallCondChange = this.onMaterialGroup_InstallCondChange.bind(this);
+        this.callLoadData = this.callLoadData.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -43,6 +44,11 @@ class EditCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
+        this.callLoadData();
+
+    }
+
+    callLoadData() {
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
             if (apiResult.IsError) {
@@ -81,14 +87,16 @@ class EditCom extends React.Component {
     }
 
     onMaterialGroupProductChange(list) {
-        this.setState({ MaterialGroup_Product: list });
-        console.log("MaterialGroup_Product", list);
+        //this.setState({ MaterialGroup_Product: list });
+        //console.log("MaterialGroup_Product", list);
+        this.callLoadData();
     }
 
     onMaterialGroup_InstallCondChange(list) {
-        debugger;
-        this.setState({ MaterialGroup_InstallCond: list });
-        console.log("MaterialGroup_InstallCond", list);
+        // debugger;
+        // this.setState({ MaterialGroup_InstallCond: list });
+        // console.log("MaterialGroup_InstallCond", list);
+        this.callLoadData();
     }
 
 

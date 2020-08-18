@@ -1,6 +1,7 @@
-export const AddAPIPath = "api/Skill_InstallAbility/Add";
-export const UpdateAPIPath = "api/Skill_InstallAbility/Update";
-export const DeleteAPIPath = "api/Skill_InstallAbility/Delete";
+export const APIHostName = "TMSAPI";
+export const AddAPIPath = "api/MaterialGroup_InstallCond/Add";
+export const UpdateAPIPath = "api/MaterialGroup_InstallCond/Update";
+export const DeleteAPIPath = "api/MaterialGroup_InstallCond/Delete";
 
 export const ModalColumnList_Insert = [
     {

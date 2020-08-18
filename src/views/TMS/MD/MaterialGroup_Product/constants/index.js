@@ -1,6 +1,7 @@
-export const AddAPIPath = "api/Skill_SkillRank/Add";
-export const UpdateAPIPath = "api/Skill_SkillRank/Update";
-export const DeleteAPIPath = "api/Skill_SkillRank/Delete";
+export const APIHostName = "TMSAPI";
+export const AddAPIPath = "api/MaterialGroup_Product/Add";
+export const UpdateAPIPath = "api/MaterialGroup_Product/Update";
+export const DeleteAPIPath = "api/MaterialGroup_Product/Delete";
 
 export const ModalColumnList_Insert = [
     // {

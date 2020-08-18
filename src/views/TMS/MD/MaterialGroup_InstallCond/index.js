@@ -9,6 +9,7 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { GetMLObjectData } from "../../../../common/library/form/FormLib";
 import Collapsible from 'react-collapsible';
 import {
+    APIHostName, AddAPIPath, UpdateAPIPath, DeleteAPIPath,
     ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition
 } from "./constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -49,8 +50,13 @@ class MaterialGroup_InstallCondCom extends React.Component {
             this.setState({ MaterialGroupID: nextProps.MaterialGroupID });
         }
 
-        if (nextProps.MaterialGroup_ProductDataSource) {
+        if (nextProps.MaterialGroup_ProductDataSource !== this.state.MaterialGroup_ProductDataSource) {
+            this.setState({ MaterialGroup_ProductDataSource: nextProps.MaterialGroup_ProductDataSource });
             this.initComboboxMaterialProduct(nextProps.MaterialGroup_ProductDataSource);
+        }
+
+        if (nextProps.MaterialGroup_InstallCondDataSource !== this.state.MaterialGroup_InstallCondDataSource) {
+            this.setState({ MaterialGroup_InstallCondDataSource: nextProps.MaterialGroup_InstallCondDataSource });
         }
     }
 
@@ -126,29 +132,30 @@ class MaterialGroup_InstallCondCom extends React.Component {
     //khỏi tạo combo mã sp vật tư
     initComboboxMaterialProduct(datasource) {
         //load combo sản phẩm vật tư
-        if (datasource.length > 0) {
-            let _listoption = [{ value: -1, label: "------ Chọn ------" }]
+        let _listoption = [{ value: -1, label: "------ Chọn ------" }]
+        if (Array.isArray(datasource) && datasource.length > 0) {
             datasource.map((item, index) => {
                 if (!item.IsDeleted) {
                     _listoption.push({ value: item.ProductID, label: item.ProductName });
                 }
 
             })
-            this.state.ModalColumnList_Insert.forEach(function (objElement) {
-                if (objElement.Name == "MaterialProductID") {
-                    objElement.listoption = _listoption;
-                    objElement.value = "";
-                }
-
-            });
-            this.state.ModalColumnList_Edit.forEach(function (objElement) {
-                if (objElement.Name == "MaterialProductID") {
-                    objElement.listoption = _listoption;
-                }
-
-            });
-            //console.log("this.state.ModalColumnList_Insert", this.state.ModalColumnList_Insert);
         }
+
+        this.state.ModalColumnList_Insert.forEach(function (objElement) {
+            if (objElement.Name == "MaterialProductID") {
+                objElement.listoption = _listoption;
+                objElement.value = "";
+            }
+
+        });
+        
+        this.state.ModalColumnList_Edit.forEach(function (objElement) {
+            if (objElement.Name == "MaterialProductID") {
+                objElement.listoption = _listoption;
+            }
+
+        });
     }
 
     resetCombobox() {
@@ -322,27 +329,19 @@ class MaterialGroup_InstallCondCom extends React.Component {
                         //MLObject.MaterialProductID = MLObject.MaterialProductID && MLObject.MaterialProductID[0].ProductID ? MLObject.MaterialProductID[0].ProductID : MLObject.MaterialProductID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-                        
-                        // let match = this.state.MaterialGroup_InstallCondDataSource.filter(item =>
-                        //     item.MaterialGroupID == MLObject.MaterialGroupID
-                        //     && item.ApplySubGroupID == MLObject.ApplySubGroupID
-                        //     && item.ApplyTechspecsID == MLObject.ApplyTechspecsID
-                        //     && item.ApplyTechspecsValueID == MLObject.ApplyTechspecsValueID
-                        //     && item.ApplyBrandID == MLObject.ApplyBrandID);
-                        // if (match.length) {
-                        //     this.showMessage("Dữ liệu đã tồn tại.");
-                        //     return;
-                        // }
 
-                        let _MaterialGroup_InstallCondDataSource = this.state.MaterialGroup_InstallCondDataSource;
-                        _MaterialGroup_InstallCondDataSource.push(MLObject);
-                        _MaterialGroup_InstallCondDataSource.sort((a, b) => (a.ApplySubGroupID > b.ApplySubGroupID) ? 1 : ((b.ApplySubGroupID > a.ApplySubGroupID) ? -1 : 0));
-                        this.setState({ MaterialGroup_InstallCondDataSource: _MaterialGroup_InstallCondDataSource });
-                        if (this.props.onMaterialGroup_InstallCondChange) {
-                            this.props.onMaterialGroup_InstallCondChange(_MaterialGroup_InstallCondDataSource);
-                        }
-                        this.props.hideModal();
-                        this.resetCombobox();
+                        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+                            if (!apiResult.IsError) {
+                                if (this.props.onMaterialGroup_InstallCondChange) {
+                                    this.props.onMaterialGroup_InstallCondChange();
+                                }
+                                this.props.hideModal();
+                                this.resetCombobox();
+                            }
+                            this.showMessage(apiResult.Message);
+                        });
+
+
                     }
                 }
             },
@@ -399,28 +398,18 @@ class MaterialGroup_InstallCondCom extends React.Component {
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
-                        // let match = this.state.MaterialGroup_InstallCondDataSource.filter(item =>
-                        //     item.InstallCondID != MLObject.InstallCondID
-                        //     && item.MaterialGroupID == MLObject.MaterialGroupID
-                        //     && item.ApplySubGroupID == MLObject.ApplySubGroupID
-                        //     && item.ApplyTechspecsID == MLObject.ApplyTechspecsID
-                        //     && item.ApplyTechspecsValueID == MLObject.ApplyTechspecsValueID
-                        //     && item.ApplyBrandID == MLObject.ApplyBrandID);
-                        // if (match.length) {
-                        //     this.showMessage("Dữ liệu đã tồn tại.");
-                        //     return;
-                        // }
+                        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+                            if (!apiResult.IsError) {
+                                if (this.props.onMaterialGroup_InstallCondChange) {
+                                    this.props.onMaterialGroup_InstallCondChange();
+                                }
+                                this.props.hideModal();
+                                this.resetCombobox();
+                            }
+                            this.showMessage(apiResult.Message);
+                        });
 
-                        let _MaterialGroup_InstallCondDataSource = this.state.MaterialGroup_InstallCondDataSource
-                            .filter(item => item.InstallCondID != MLObject.InstallCondID);
-                        _MaterialGroup_InstallCondDataSource.push(MLObject);
-                        _MaterialGroup_InstallCondDataSource.sort((a, b) => (a.ApplySubGroupID > b.ApplySubGroupID) ? 1 : ((b.ApplySubGroupID > a.ApplySubGroupID) ? -1 : 0));
-                        this.setState({ MaterialGroup_InstallCondDataSource: _MaterialGroup_InstallCondDataSource });
-                        if (this.props.onMaterialGroup_InstallCondChange) {
-                            this.props.onMaterialGroup_InstallCondChange(_MaterialGroup_InstallCondDataSource);
-                        }
-                        this.props.hideModal();
-                        this.resetCombobox();
+
                     }
                 }
             },
@@ -430,22 +419,27 @@ class MaterialGroup_InstallCondCom extends React.Component {
     }
 
     handleDelete(deleteList, pkColumnName) {
+        let listMLObject = [];
         let _MaterialGroup_InstallCondDataSource = this.state.MaterialGroup_InstallCondDataSource;
         deleteList.map((row, index) => {
             let MLObject = {};
             pkColumnName.map((pkItem, pkIndex) => {
                 MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
             });
-            let _deleteList = _MaterialGroup_InstallCondDataSource.filter(item => item.InstallCondID == MLObject.InstallCondID);
-            _deleteList[0].IsDeleted = true;
-            _MaterialGroup_InstallCondDataSource = _MaterialGroup_InstallCondDataSource.filter(item => item.InstallCondID != MLObject.InstallCondID);
-            _MaterialGroup_InstallCondDataSource.push(_deleteList[0]);
-            _MaterialGroup_InstallCondDataSource.sort((a, b) => (a.SubGroupID > b.SubGroupID) ? 1 : ((b.SubGroupID > a.SubGroupID) ? -1 : 0));
+
+            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+            listMLObject.push(MLObject);
+
         });
-        this.setState({ MaterialGroup_InstallCondDataSource: _MaterialGroup_InstallCondDataSource });
-        if (this.props.onMaterialGroup_InstallCondChange) {
-            this.props.onMaterialGroup_InstallCondChange(_MaterialGroup_InstallCondDataSource);
-        }
+        this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
+            if (!apiResult.IsError) {
+                if (this.props.onMaterialGroup_InstallCondChange) {
+                    this.props.onMaterialGroup_InstallCondChange();
+                }
+                this.props.hideModal();
+            }
+            this.showMessage(apiResult.Message);
+        });
     }
 
     isNumeric(value) {

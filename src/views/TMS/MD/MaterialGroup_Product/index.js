@@ -9,7 +9,7 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { GetMLObjectData } from "../../../../common/library/form/FormLib";
 import Collapsible from 'react-collapsible';
 import {
-    AddAPIPath, UpdateAPIPath, DeleteAPIPath,
+    AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName,
     ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition
 } from "./constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -45,6 +45,10 @@ class MaterialGroup_ProductCom extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.MaterialGroupID !== this.state.MaterialGroupID) {
             this.setState({ MaterialGroupID: nextProps.MaterialGroupID });
+        }
+
+        if (nextProps.MaterialGroupProductDataSource !== this.state.MaterialGroupProductDataSource) {
+            this.setState({ MaterialGroupProductDataSource: nextProps.MaterialGroupProductDataSource });
         }
 
         if (nextProps.MaterialGroup_InstallCondDataSource !== this.state.MaterialGroup_InstallCondDataSource) {
@@ -121,11 +125,6 @@ class MaterialGroup_ProductCom extends React.Component {
             onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
-                    // let valid = this.validateForm(formData);
-                    // if (!valid) {
-                    //     this.showMessage("Vui lòng nhập mã sản phẩm vật tư");
-                    //     return;
-                    // }
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
                     if (MLObject) {
                         MLObject.MaterialGroupProductCSID = this.state.MaterialGroupID + "," + MLObject.ProductID[0].ProductID;
@@ -141,15 +140,17 @@ class MaterialGroup_ProductCom extends React.Component {
                             this.showMessage("Dữ liệu đã tồn tại.");
                             return;
                         }
-                        let _MaterialGroupProductDataSource = this.state.MaterialGroupProductDataSource;
-                        _MaterialGroupProductDataSource.push(MLObject);
-                        _MaterialGroupProductDataSource.sort((a, b) => (a.ProductID > b.ProductID) ? 1 : ((b.ProductID > a.ProductID) ? -1 : 0));
-                        this.setState({ MaterialGroupProductDataSource: _MaterialGroupProductDataSource });
-                        if (this.props.onMaterialGroupProductChange) {
-                            this.props.onMaterialGroupProductChange(_MaterialGroupProductDataSource);
-                        }
-                        this.props.hideModal();
-                        this.resetCombobox();
+
+                        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+                            if (!apiResult.IsError) {
+                                if (this.props.onMaterialGroupProductChange) {
+                                    this.props.onMaterialGroupProductChange();
+                                }
+                                this.props.hideModal();
+                            }
+                            this.showMessage(apiResult.Message);
+                        });
+                        //this.resetCombobox();
                     }
                 }
             },
@@ -184,22 +185,18 @@ class MaterialGroup_ProductCom extends React.Component {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, _MaterialGroupProductDataSource);
                     if (MLObject) {
-                        //MLObject.MaterialGroupProductCSID = this.state.MaterialGroupID + "," + MLObject.ProductID;
-                        //MLObject.MaterialGroupID = this.state.MaterialGroupID;
-                        //MLObject.ProductID = MLObject.ProductID[0].ProductID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-                        let _MaterialGroupProductDataSource = this.state.MaterialGroupProductDataSource
-                            .filter(item => item.MaterialGroupID != MLObject.MaterialGroupID
-                                || item.ProductID != MLObject.ProductID);
-                        _MaterialGroupProductDataSource.push(MLObject);
-                        _MaterialGroupProductDataSource.sort((a, b) => (a.ProductID > b.ProductID) ? 1 : ((b.ProductID > a.ProductID) ? -1 : 0));
-                        this.setState({ MaterialGroupProductDataSource: _MaterialGroupProductDataSource });
-                        if (this.props.onMaterialGroupProductChange) {
-                            this.props.onMaterialGroupProductChange(_MaterialGroupProductDataSource);
-                        }
-                        this.props.hideModal();
-                        this.resetCombobox();
+                        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+                            if (!apiResult.IsError) {
+                                if (this.props.onMaterialGroupProductChange) {
+                                    this.props.onMaterialGroupProductChange();
+                                }
+                                this.props.hideModal();
+                            }
+                            this.showMessage(apiResult.Message);
+                        });
+                        //this.resetCombobox();
                     }
                 }
             },
@@ -209,48 +206,59 @@ class MaterialGroup_ProductCom extends React.Component {
     }
 
     handleDelete(deleteList, pkColumnName) {
-
-
-        //kiểm tra xem mã sản phẩm vật tư có đang dc sử dụng hay không
         debugger;
+        //kiểm tra xem mã sản phẩm vật tư có đang dc sử dụng hay không
         let match = [];
         let tempMaterialGroupProductDataSource = [];
         let tempMaterialGroup_InstallCondDataSource = [];
-        console.log("this.state.MaterialGroup_InstallCondDataSource.length", this.state.MaterialGroup_InstallCondDataSource);
+        //console.log("this.state.MaterialGroup_InstallCondDataSource.length", this.state.MaterialGroup_InstallCondDataSource);
         if (this.state.MaterialGroup_InstallCondDataSource.length > 0) {
             this.state.MaterialGroup_InstallCondDataSource.forEach(element => {
-                deleteList.forEach(item => {
-                    tempMaterialGroupProductDataSource = this.state.MaterialGroupProductDataSource.filter(x => x.MaterialGroupProductCSID == item.pkColumnName[0].value);
-                    tempMaterialGroup_InstallCondDataSource = tempMaterialGroupProductDataSource.filter(x => x.ProductID == element.MaterialProductID && !element.IsDeleted);
-                });
+                if (match.length <= 0) {
+                    deleteList.forEach(item => {
+                        if (tempMaterialGroup_InstallCondDataSource.length <= 0) {
+                            tempMaterialGroupProductDataSource = this.state.MaterialGroupProductDataSource.filter(x => x.MaterialGroupProductCSID == item.pkColumnName[0].value);
+                            tempMaterialGroup_InstallCondDataSource = tempMaterialGroupProductDataSource.filter(x => x.ProductID == element.MaterialProductID);
+                        }
 
-                if (tempMaterialGroup_InstallCondDataSource && tempMaterialGroup_InstallCondDataSource.length > 0) {
-                    match = tempMaterialGroup_InstallCondDataSource;
+                    });
+
+                    if (tempMaterialGroup_InstallCondDataSource && tempMaterialGroup_InstallCondDataSource.length > 0) {
+                        match = tempMaterialGroup_InstallCondDataSource;
+                    }
                 }
+
             });
         }
 
         if (match && match.length > 0) {
             let _message = "Sản phẩm vật tư " + match[0].ProductName + " đang sử dụng vui lòng không xóa";
             this.showMessage(_message);
+            return;
         } else {
-            let _MaterialGroupProductDataSource = this.state.MaterialGroupProductDataSource;
+            let listMLObject = [];
             deleteList.map((row, index) => {
                 let MLObject = {};
                 pkColumnName.map((pkItem, pkIndex) => {
                     MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
                 });
-                let _deleteList = _MaterialGroupProductDataSource.filter(item => item.MaterialGroupProductCSID == MLObject.MaterialGroupProductCSID);
-                _deleteList[0].IsDeleted = true;
-                _MaterialGroupProductDataSource = _MaterialGroupProductDataSource.filter(item => item.MaterialGroupProductCSID != MLObject.MaterialGroupProductCSID);
-                _MaterialGroupProductDataSource.push(_deleteList[0]);
-                _MaterialGroupProductDataSource.sort((a, b) => (a.ProductID > b.ProductID) ? 1 : ((b.ProductID > a.ProductID) ? -1 : 0));
+
+                MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+                MLObject.MaterialGroupID = this.state.MaterialGroupID;
+                MLObject.ProductID = MLObject.MaterialGroupProductCSID.toString().split(",")[1];
+                listMLObject.push(MLObject);
             });
 
-            this.setState({ MaterialGroupProductDataSource: _MaterialGroupProductDataSource });
-            if (this.props.onMaterialGroupProductChange) {
-                this.props.onMaterialGroupProductChange(_MaterialGroupProductDataSource);
-            }
+
+            this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
+                if (!apiResult.IsError) {
+                    if (this.props.onMaterialGroupProductChange) {
+                        this.props.onMaterialGroupProductChange();
+                    }
+                    this.props.hideModal();
+                }
+                this.showMessage(apiResult.Message);
+            });
         }
 
     }
