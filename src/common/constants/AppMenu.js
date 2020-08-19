@@ -408,7 +408,7 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'PartnerPayable',
+                MenuName: 'PP',
                 MenuTitle: 'Chi phí dịch vụ',
                 LinkTo: '',
                 MenuIcon: '',
@@ -437,7 +437,7 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'WorkingPlan',
+                MenuName: 'Advance',
                 MenuTitle: 'Tạm ứng',
                 LinkTo: '',
                 MenuIcon: '',
