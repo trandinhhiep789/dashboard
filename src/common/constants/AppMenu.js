@@ -468,9 +468,9 @@ const AppMenu = [
                 SubMenu: []
             },
             {
-                MenuName: 'ApiCallLog',
+                MenuName: 'CallLog',
                 MenuTitle: 'Nhật ký gọi API',
-                LinkTo: '/ApiCallLog',
+                LinkTo: '/CallLog',
                 MenuIcon: '',
                 SubMenu: []
             },

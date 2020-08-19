@@ -17,8 +17,8 @@ class ApiCallLogCom extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/ApiCallLog" component={Search} />
-                <Route exact path="/ApiCallLog/Edit/:id" component={Edit} />
+                <Route exact path="/CallLog" component={Search} />
+                <Route exact path="/CallLog/Edit/:id" component={Edit} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
