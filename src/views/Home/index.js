@@ -238,7 +238,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/InstallMaterial" component={InstallMaterial} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserCoordinator" component={UserCoordinator} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserGroup" component={UserGroup} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/ApiCallLog" component={ApiCallLog} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/CallLog" component={ApiCallLog} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/AdvanceRequest" component={AdvanceRequest} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/WorkingPlan" component={WorkingPlan} isLoggedIn={isLoggedIn} />

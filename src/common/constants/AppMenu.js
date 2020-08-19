@@ -393,7 +393,7 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'WorkingPlan',
+                MenuName: 'WP',
                 MenuTitle: 'Đăng ký ca làm việc',
                 LinkTo: '',
                 MenuIcon: '',
@@ -408,7 +408,7 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'PartnerPayable',
+                MenuName: 'PP',
                 MenuTitle: 'Chi phí dịch vụ',
                 LinkTo: '',
                 MenuIcon: '',
@@ -437,7 +437,7 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'WorkingPlan',
+                MenuName: 'Advance',
                 MenuTitle: 'Tạm ứng',
                 LinkTo: '',
                 MenuIcon: '',
@@ -468,9 +468,9 @@ const AppMenu = [
                 SubMenu: []
             },
             {
-                MenuName: 'ApiCallLog',
+                MenuName: 'CallLog',
                 MenuTitle: 'Nhật ký gọi API',
-                LinkTo: '/ApiCallLog',
+                LinkTo: '/CallLog',
                 MenuIcon: '',
                 SubMenu: []
             },
