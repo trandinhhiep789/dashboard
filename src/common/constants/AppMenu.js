@@ -393,7 +393,7 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'WorkingPlan',
+                MenuName: 'WP',
                 MenuTitle: 'Đăng ký ca làm việc',
                 LinkTo: '',
                 MenuIcon: '',
