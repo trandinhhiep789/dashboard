@@ -58,38 +58,6 @@ export const SearchElementList = [
         icon: "",
         listoption: {}
     },
-    // {
-    //     type: "select",
-    //     name: "slAPICategoryID",
-    //     label: "Danh mục API",
-    //     value: -1,
-    //     placeholder: "",
-    //     icon: "",
-    //     listoption: [],
-    //     DataSourceMember: "APICategoryID",
-    //     readonly: false,
-    //     validatonList: [],
-    //     IsAutoLoadItemFromCache: true,
-    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.ApiCallLogTYPE",
-    //     ValueMember: "ApiCallLogTypeID",
-    //     NameMember: "ApiCallLogTypeName"
-    // },
-    // {
-    //     type: "select",
-    //     name: "slPartnerID",
-    //     label: "Đối tác",
-    //     value: -1,
-    //     placeholder: "",
-    //     icon: "",
-    //     listoption: [],
-    //     DataSourceMember: "PartnerID",
-    //     readonly: false,
-    //     validatonList: [],
-    //     IsAutoLoadItemFromCache: true,
-    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
-    //     ValueMember: "PartnerID",
-    //     NameMember: "PartnerName"
-    // },
     {
         type: "date",
         name: "dtFromDate",
@@ -145,7 +113,7 @@ export const DataGridColumnList = [
         Name: "APICallLogID",
         Type: "texttolink",
         Caption: "Mã gọi API",
-        Link: "/ApiCallLog/Edit/",
+        Link: "/CallLog/Edit/",
         DataSourceMember: "APICallLogID",
         Width: 100
     },
