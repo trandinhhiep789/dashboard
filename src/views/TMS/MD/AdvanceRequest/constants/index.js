@@ -4,7 +4,7 @@ export const LoadAPIPath = "api/AdvanceRequest/Load";
 export const AddAPIPath = "api/AdvanceRequest/Add";
 export const UpdateAPIPath = "api/AdvanceRequest/Update";
 export const DeleteAPIPath = "api/AdvanceRequest/Delete";
-export const UpdateOrderAPIPath = "api/AdvanceRequest/UpdateOrder";
+export const GetAdvanceRequestAPIPath = "api/AdvanceRequest/GetAdvanceRequest";
 export const BackLink = "/AdvanceRequest";
 
 export const AddLogAPIPath = "api/UserActivity/Add";
@@ -184,4 +184,39 @@ export const DataGridColumnList = [
     //     DataSourceMember: "IsResponse",
     //     Width: 120
     // },
+];
+
+
+export const MLObjectDefinition = [
+
+    {
+        Name: "AdvanceRequestTypeID",
+        DefaultValue: -1,
+        BindControlName: "txtAdvanceRequestTypeID"
+    },
+    {
+        Name: "ShipmentOrderID",
+        DefaultValue: "",
+        BindControlName: "txtShipmentOrderID"
+    },
+    {
+        Name: "AdvanceRequestTitle",
+        DefaultValue: "",
+        BindControlName: "txtAdvanceRequestTitle"
+    },
+    {
+        Name: "Description",
+        DefaultValue: "",
+        BindControlName: "txtDescription"
+    },
+    {
+        Name: "IsActived",
+        DefaultValue: true,
+        BindControlName: "chkIsActived"
+    },
+    {
+        Name: "IsSystem",
+        DefaultValue: false,
+        BindControlName: "chkIsSystem"
+    }
 ];

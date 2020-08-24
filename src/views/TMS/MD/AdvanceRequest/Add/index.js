@@ -3,7 +3,8 @@ import ReactDOM from "react-dom";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SimpleForm from "../../../../../common/components/Form/SimpleForm";
+import FormContainer from "../../../../../common/components/FormContainer";
+import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
@@ -13,13 +14,14 @@ import {
     MLObjectDefinition,
     BackLink,
     AddPagePath,
-    AddLogAPIPath
+    GetAdvanceRequestAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { formatDate } from "../../../../../common/library/CommonLib";
-import AdvanceRequestDetail from "../../AdvanceRequestDetail";
+import AdvanceRequestDetailNew from "../Component/AdvanceRequestDetailNew";
 import { updatePagePath } from "../../../../../actions/pageAction";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 
 
 class AddCom extends React.Component {
@@ -30,12 +32,13 @@ class AddCom extends React.Component {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsLoadDataComplete: true,
-            IsCloseForm: false
+            IsCloseForm: false,
+            gridDataSource: [],
         };
     }
 
     componentDidMount() {
-       this.props.updatePagePath(AddPagePath);
+        this.props.updatePagePath(AddPagePath);
     }
 
 
@@ -56,6 +59,67 @@ class AddCom extends React.Component {
         );
     }
 
+    handleChange(formData, MLObject) {
+    }
+    handleSubmit(formData, MLObject) {
+        console.log("handleSubmit", formData, MLObject)
+    }
+    onValueChangeCustom(name, value) {
+
+
+        const postData = [
+            {
+                SearchKey: "@ADVANCEREQUESTTYPEID",
+                SearchValue: value
+            }
+        ];
+        this.props.callFetchAPI(APIHostName, GetAdvanceRequestAPIPath, postData).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.setState({
+                    gridDataSource: apiResult.ResultObject,
+                });
+            }
+            else {
+                this.setState({
+                    gridDataSource: [],
+                });
+
+            }
+        });
+    }
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
     render() {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
@@ -64,85 +128,124 @@ class AddCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
-                    <div className="col-md-12 col-sm-12 col-xs-12">
-                        <div className="x_panel">
-                            <div className="x_title">
-                                <h2>Thông tin yêu cầu tạm ứng</h2>
-                                <div className="clearfix"></div>
-                            </div>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <FormContainer
+                        FormName="Cập nhật thông tin yêu cầu tạm ứng"
+                        MLObjectDefinition={MLObjectDefinition}
+                        dataSource={[]}
+                        listelement={[]}
+                        BackLink={BackLink}
+                        onSubmit={this.handleSubmit.bind(this)}
+                    >
+                        <div className="row">
+                            <div className="col-md-6">
+                                <FormControl.ComboBoxSelect
+                                    name="txtAdvanceRequestTypeID"
+                                    colspan="8"
 
-                            <div className="x_content col-md-12">
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Mã yêu cầu tạm ứng: </span>
-                                            <span className="xcode"></span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Loại yêu cầu tạm ứng: </span>
-                                            <span></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Tiêu đề yêu cầu tạm ứng: </span>
-                                            <span></span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Mã yêu cầu vận chuyển: </span>
-                                            <span></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Ngày yêu cầu: </span>
-                                            <span></span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Người yêu cầu: </span>
-                                            <span></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span> Mô tả: </span>
-                                            <span></span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group checkbox customCheckbox">
-                                            <span>Đã duyệt: </span>
-                                            <label>
-                                                <input name="IsResponse" type="checkbox" id="IsResponse"  />
-                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                                    labelcolspan="4"
+                                    onValueChangeCustom={this.onValueChangeCustom.bind(this)}
+                                    disabled={this.state.IsSystem}
+                                    readOnly={this.state.IsSystem}
+                                    label="loại yêu cầu tạm ứng"
+                                    validatonList={["Comborequired"]}
+                                    placeholder="-- Vui lòng chọn --"
+                                    isautoloaditemfromcache={true}
+                                    loaditemcachekeyid="ERPCOMMONCACHE.ADVANCEREQUESTTYPE"
+                                    valuemember="AdvanceRequestTypeID"
+                                    nameMember="AdvanceRequestTypeName"
+                                    controltype="InputControl"
+                                    value={""}
+                                    listoption={null}
+                                    datasourcemember="AdvanceRequestTypeID" />
 
                             </div>
+
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    name="txtShipmentOrderID"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    readOnly={false}
+                                    label="mã yêu cầu tạm ứng"
+                                    placeholder="mã yêu cầu tạm ứng"
+                                    controltype="InputControl"
+                                    value=""
+                                    datasourcemember="ShipmentOrderID"
+                                    validatonList={['required']}
+                                    disabled={false}
+                                />
+                            </div>
+                            <div className="col-md-12">
+                                <FormControl.TextBox
+                                    name="txtAdvanceRequestTitle"
+                                    colspan="10"
+                                    labelcolspan="2"
+                                    readOnly={false}
+                                    disabled={false}
+                                    label="tiêu đề yêu cầu tạm ứng"
+                                    placeholder="tiêu đề yêu cầu tạm ứng"
+                                    controltype="InputControl"
+                                    value=""
+                                    datasourcemember="AdvanceRequestTitle"
+                                    validatonList={['required']}
+                                />
+                            </div>
+
+                            <div className="col-md-12">
+                                <FormControl.TextArea
+                                    labelcolspan={2}
+                                    colspan={10}
+                                    name="txtDescription"
+                                    label="Mô tả"
+                                    placeholder="Mô tả"
+                                    datasourcemember="Description"
+                                    controltype="InputControl"
+                                    rows={6}
+                                    maxSize={500}
+                                    classNameCustom="customcontrol"
+                                    readOnly={this.state.IsSystem}
+                                    disabled={this.state.IsSystem}
+                                />
+                            </div>
+
+                            <div className="col-md-6">
+                                <FormControl.CheckBox
+                                    label="kích hoạt"
+                                    name="chkIsActived"
+                                    datasourcemember="IsActived"
+                                    controltype="InputControl"
+                                    colspan={10}
+                                    labelcolspan={2}
+                                    value={true}
+                                    classNameCustom="customCheckbox"
+                                    readOnly={this.state.IsSystem}
+                                    disabled={this.state.IsSystem}
+                                />
+                            </div>
+
+                            <div className="col-md-6">
+                                <FormControl.CheckBox
+                                    label="hệ thống"
+                                    name="chkIsSystem"
+                                    datasourcemember="IsSystem"
+                                    controltype="InputControl"
+                                    colspan={10}
+                                    labelcolspan={2}
+                                    value={false}
+                                    classNameCustom="customCheckbox"
+                                />
+                            </div>
+
+                            <AdvanceRequestDetailNew
+                                AdvanceRequestDetail={this.state.gridDataSource}
+                            />
                         </div>
-                    </div>
 
-                    <br />
-                  
-                </React.Fragment >
+
+
+                    </FormContainer>
+                </React.Fragment>
             );
         }
         return (

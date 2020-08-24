@@ -487,7 +487,7 @@ class FormControlDatetimeNewCom extends Component {
         this.handleValueChange = this.handleValueChange.bind(this);
     }
     handleValueChange(name, moment) {
-        
+
         const momentNew = ExportStringToDate(moment)
         if (this.props.onValueChange != null)
             this.props.onValueChange(this.props.name, momentNew);
@@ -1403,8 +1403,13 @@ class ComboBoxSelectCom extends Component {
     }
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
-        if (this.props.onValueChange != null)
+        if (this.props.onValueChange != null) {
             this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption.name, this.props.filterrest);
+
+        }
+
+        if (this.props.onValueChangeCustom != null)
+            this.props.onValueChangeCustom(this.props.name, comboValues);
     }
 
     bindcombox(value, listOption) {
