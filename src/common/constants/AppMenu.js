@@ -451,6 +451,13 @@ const AppMenu = [
                     }
                 ]
             },
+            {
+                MenuName: 'DestroyRequest',
+                MenuTitle: 'Danh sách yêu cầu hủy vật tư',
+                LinkTo: '/DestroyRequest',
+                MenuIcon: '',
+                SubMenu: []
+            },
         ]
     },
 

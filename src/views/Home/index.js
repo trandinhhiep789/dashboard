@@ -72,6 +72,8 @@ import AdvanceRequest from "../TMS/MD/AdvanceRequest";
 
 import LimitType from "../TMS/MD/Limit/LimitType";
 import UserLimit from "../TMS/MD/Limit/UserLimit";
+import DestroyRequest from "../TMS/DestroyRequest";
+
 
 import NotFound from '../NotFound'
 
@@ -247,6 +249,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/Compute" component={Compute} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerPayableDetail" component={PartnerPayableDetail} isLoggedIn={isLoggedIn} />
 
+
+                                <PrivateRoute path="/DestroyRequest" component={DestroyRequest} isLoggedIn={isLoggedIn} />
                                 
                                 
                                 
