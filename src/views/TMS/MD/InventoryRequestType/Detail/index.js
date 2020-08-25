@@ -134,7 +134,7 @@ class DetailCom extends React.Component {
                                             <span>Có tự động duyệt: </span>
                                             <label>
                                                 <input name="IsAutoReview" type="checkbox" id="IsAutoReview" checked={this.state.DataSource.IsAutoReview} />
-                                                <span className="cr"><i class="cr-icon fa fa-check"></i></span>
+                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
                                     </div>
@@ -143,7 +143,7 @@ class DetailCom extends React.Component {
                                             <span>Có tự động xuất: </span>
                                             <label>
                                                 <input name="IsAutoOutput" type="checkbox" id="IsAutoOutput" checked={this.state.DataSource.IsAutoOutput} />
-                                                <span className="cr"><i class="cr-icon fa fa-check"></i></span>
+                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
                                     </div>
@@ -156,7 +156,7 @@ class DetailCom extends React.Component {
                                             <span>Kích hoạt: </span>
                                             <label>
                                                 <input name="IsActived" type="checkbox" id="IsActived" checked={this.state.DataSource.IsActived} />
-                                                <span className="cr"><i class="cr-icon fa fa-check"></i></span>
+                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
                                     </div>
@@ -165,7 +165,7 @@ class DetailCom extends React.Component {
                                             <span>Hệ thống: </span>
                                             <label>
                                                 <input name="IsSystem" type="checkbox" id="IsSystem" checked={this.state.DataSource.IsSystem} />
-                                                <span className="cr"><i class="cr-icon fa fa-check"></i></span>
+                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
                                     </div>
