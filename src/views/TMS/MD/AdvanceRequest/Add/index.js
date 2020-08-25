@@ -8,7 +8,7 @@ import FormControl from "../../../../../common/components/FormContainer/FormCont
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
-    LoadAPIPath,
+    AddAPIPath,
     UpdateAPIPath,
     EditElementList,
     MLObjectDefinition,
@@ -34,6 +34,7 @@ class AddCom extends React.Component {
             IsLoadDataComplete: true,
             IsCloseForm: false,
             gridDataSource: [],
+            AdvanceRequestDetailList:[]
         };
     }
 
@@ -59,10 +60,17 @@ class AddCom extends React.Component {
         );
     }
 
-    handleChange(formData, MLObject) {
-    }
+   
     handleSubmit(formData, MLObject) {
-        console.log("handleSubmit", formData, MLObject)
+        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        MLObject.AdvanceRequestDetailList=this.state.AdvanceRequestDetailList
+        //console.log("MLObject",MLObject)
+        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
+        });
     }
     onValueChangeCustom(name, value) {
 
@@ -117,6 +125,13 @@ class AddCom extends React.Component {
             ),
             dismiss: { duration: 6000 },
             dismissable: { click: true }
+        });
+    }
+
+    handleInputChangeGrid(obj)
+    {
+        this.setState({
+            AdvanceRequestDetailList: obj,
         });
     }
 
@@ -239,7 +254,7 @@ class AddCom extends React.Component {
 
                             <AdvanceRequestDetailNew
                                 AdvanceRequestDetail={this.state.gridDataSource}
-                             
+                                onValueChangeGrid= {this.handleInputChangeGrid.bind(this)}
                             />
                         </div>
 
