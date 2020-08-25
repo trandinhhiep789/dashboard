@@ -26,13 +26,18 @@ class AdvanceRequestDetailNewCom extends Component {
         let { AdvanceRequestDetail } = this.state
         AdvanceRequestDetail[index].Quantity = inputvalue
         this.setState({ AdvanceRequestDetail: AdvanceRequestDetail });
+        if (this.props.onValueChangeGrid != null)
+            this.props.onValueChangeGrid(AdvanceRequestDetail);
+
     }
     handleInputChangeBox(name, inputvalue, index) {
         let { AdvanceRequestDetail } = this.state
         AdvanceRequestDetail[index].QuantityUnitID = inputvalue
         this.setState({ AdvanceRequestDetail: AdvanceRequestDetail });
+        if (this.props.onValueChangeGrid != null)
+            this.props.onValueChangeGrid(AdvanceRequestDetail);
 
-        
+
     }
 
     render() {
