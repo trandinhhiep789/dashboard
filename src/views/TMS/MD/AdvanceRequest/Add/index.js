@@ -239,6 +239,7 @@ class AddCom extends React.Component {
 
                             <AdvanceRequestDetailNew
                                 AdvanceRequestDetail={this.state.gridDataSource}
+                             
                             />
                         </div>
 

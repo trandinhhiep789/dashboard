@@ -444,7 +444,7 @@ const AppMenu = [
                 SubMenu: [
                     {
                         MenuName: 'AdvanceRequestAdd',
-                        MenuTitle: 'Tạm ứng ga',
+                        MenuTitle: 'Thêm yêu cầu tạm ứng',
                         LinkTo: '/AdvanceRequest/Add',
                         MenuIcon: '',
                         SubMenu: []

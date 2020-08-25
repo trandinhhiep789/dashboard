@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
+import ElementInputModal from '../../../../../common/components/FormContainer/FormElement/ElementInputModal';
 import {
     APIHostName,
 } from "../constants";
@@ -19,6 +20,19 @@ class AdvanceRequestDetailNewCom extends Component {
                 AdvanceRequestDetail: nextProps.AdvanceRequestDetail
             })
         }
+    }
+
+    handleInputChange(name, inputvalue, index) {
+        let { AdvanceRequestDetail } = this.state
+        AdvanceRequestDetail[index].Quantity = inputvalue
+        this.setState({ AdvanceRequestDetail: AdvanceRequestDetail });
+    }
+    handleInputChangeBox(name, inputvalue, index) {
+        let { AdvanceRequestDetail } = this.state
+        AdvanceRequestDetail[index].QuantityUnitID = inputvalue
+        this.setState({ AdvanceRequestDetail: AdvanceRequestDetail });
+
+        
     }
 
     render() {
@@ -46,8 +60,35 @@ class AdvanceRequestDetailNewCom extends Component {
                                                         <td>{item.MaterialGroupName}</td>
                                                         <td>{item.ProductID}</td>
                                                         <td>{item.ProductName}</td>
-                                                        <td>{item.Quantity}</td>
-                                                        <td>{item.QuantityUnit}</td>
+                                                        <td><ElementInputModal.ElementModalNumber
+                                                            validationErrorMessage={""}
+                                                            name="Quantity"
+                                                            type="text"
+                                                            caption="số lượng"
+                                                            label=''
+                                                            dataSourcemember="Quantity"
+                                                            Colmd='12'
+                                                            min={0}
+                                                            max={50}
+                                                            value={item.Quantity}
+                                                            indexRow={index}
+                                                            onValueChange={this.handleInputChange.bind(this)}
+
+                                                        /></td>
+                                                        <td><ElementInputModal.ElementModalComboBox
+                                                            validationErrorMessage={""}
+                                                            caption="Đơn vị tính"
+                                                            label=''
+                                                            placeholder="--Chọn đơn vị tính"
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.QUANTITYUNIT"
+                                                            valuemember="QuantityUnitID"
+                                                            nameMember="QuantityUnit"
+                                                            value={item.QuantityUnitID}
+                                                            rowIndex={index}
+                                                            onValueChange={this.handleInputChangeBox.bind(this)}
+
+                                                        /></td>
                                                     </tr>
                                                 )
                                             })

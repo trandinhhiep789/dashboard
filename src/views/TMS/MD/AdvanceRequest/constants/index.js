@@ -218,5 +218,12 @@ export const MLObjectDefinition = [
         Name: "IsSystem",
         DefaultValue: false,
         BindControlName: "chkIsSystem"
+    },
+    {
+        Name: "AdvanceRequestDetailList",
+        DefaultValue: {},
+        BindControlName: "AdvanceRequestDetailList",
+        DataSourceMember: "AdvanceRequestDetailList"
     }
+
 ];
