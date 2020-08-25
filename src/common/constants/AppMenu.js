@@ -393,7 +393,7 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'WorkingPlan',
+                MenuName: 'WP',
                 MenuTitle: 'Đăng ký ca làm việc',
                 LinkTo: '',
                 MenuIcon: '',
@@ -408,7 +408,7 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'PartnerPayable',
+                MenuName: 'PP',
                 MenuTitle: 'Chi phí dịch vụ',
                 LinkTo: '',
                 MenuIcon: '',
@@ -443,6 +443,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: [
                     {
+                        MenuName: 'AdvanceRequestAdd',
+                        MenuTitle: 'Thêm yêu cầu tạm ứng',
+                        LinkTo: '/AdvanceRequest/Add',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'AdvanceRequest',
                         MenuTitle: 'Yêu cầu tạm ứng',
                         LinkTo: '/AdvanceRequest',
@@ -472,6 +479,13 @@ const AppMenu = [
                     }
                 ]
             },
+            {
+                MenuName: 'DestroyRequest',
+                MenuTitle: 'Danh sách yêu cầu hủy vật tư',
+                LinkTo: '/DestroyRequest',
+                MenuIcon: '',
+                SubMenu: []
+            },
         ]
     },
 
@@ -489,9 +503,9 @@ const AppMenu = [
                 SubMenu: []
             },
             {
-                MenuName: 'ApiCallLog',
+                MenuName: 'CallLog',
                 MenuTitle: 'Nhật ký gọi API',
-                LinkTo: '/ApiCallLog',
+                LinkTo: '/CallLog',
                 MenuIcon: '',
                 SubMenu: []
             },

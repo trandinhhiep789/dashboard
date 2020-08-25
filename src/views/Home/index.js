@@ -74,6 +74,8 @@ import DestroyRequestType from "../TMS/MD/DestroyRequestType";
 
 import LimitType from "../TMS/MD/Limit/LimitType";
 import UserLimit from "../TMS/MD/Limit/UserLimit";
+import DestroyRequest from "../TMS/DestroyRequest";
+
 
 import NotFound from '../NotFound'
 import InventoryRequestType from "../TMS/MD/InventoryRequestType";
@@ -243,7 +245,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/InstallMaterial" component={InstallMaterial} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserCoordinator" component={UserCoordinator} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserGroup" component={UserGroup} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/ApiCallLog" component={ApiCallLog} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/CallLog" component={ApiCallLog} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/AdvanceRequest" component={AdvanceRequest} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/AdvanceRequestType" component={AdvanceRequestType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/DestroyRequestType" component={DestroyRequestType} isLoggedIn={isLoggedIn} />
@@ -255,6 +257,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/Compute" component={Compute} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerPayableDetail" component={PartnerPayableDetail} isLoggedIn={isLoggedIn} />
 
+
+                                <PrivateRoute path="/DestroyRequest" component={DestroyRequest} isLoggedIn={isLoggedIn} />
                                 
                                 
                                 

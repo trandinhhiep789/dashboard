@@ -149,7 +149,7 @@ class EditCom extends React.Component {
                                             <span>Đã duyệt: </span>
                                             <label>
                                                 <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.IsReviewed} />
-                                                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
                                     </div>

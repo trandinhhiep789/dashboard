@@ -1,30 +1,30 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/AdvanceRequest/Search";
 export const LoadAPIPath = "api/AdvanceRequest/Load";
-export const AddAPIPath = "api/AdvanceRequest/Add";
+export const AddAPIPath = "api/AdvanceRequest/InsertAdvanceRequest";
 export const UpdateAPIPath = "api/AdvanceRequest/Update";
 export const DeleteAPIPath = "api/AdvanceRequest/Delete";
-export const UpdateOrderAPIPath = "api/AdvanceRequest/UpdateOrder";
+export const GetAdvanceRequestAPIPath = "api/AdvanceRequest/GetAdvanceRequest";
 export const BackLink = "/AdvanceRequest";
-export const AddLink = "/AdvanceRequest/Add";
+
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "AdvanceRequestID";
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Yêu cầu tạm ứng" }
+    { Link: "", Title: "Danh sách yêu cầu tạm ứng" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/AdvanceRequest", Title: "Yêu cầu tạm ứng" },
+    { Link: "/AdvanceRequest", Title: "Danh sách Yêu cầu tạm ứng" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/AdvanceRequest", Title: "Yêu cầu tạm ứng" },
-    { Link: "", Title: "Thêm" }
+    { Link: "/AdvanceRequest", Title: "Danh sách Yêu cầu tạm ứng" },
+    { Link: "", Title: "Thêm tạm ứng ga" }
 ];
 
 const dtFromdate = new Date()
@@ -184,4 +184,46 @@ export const DataGridColumnList = [
     //     DataSourceMember: "IsResponse",
     //     Width: 120
     // },
+];
+
+
+export const MLObjectDefinition = [
+
+    {
+        Name: "AdvanceRequestTypeID",
+        DefaultValue: -1,
+        BindControlName: "txtAdvanceRequestTypeID"
+    },
+    {
+        Name: "ShipmentOrderID",
+        DefaultValue: "",
+        BindControlName: "txtShipmentOrderID"
+    },
+    {
+        Name: "AdvanceRequestTitle",
+        DefaultValue: "",
+        BindControlName: "txtAdvanceRequestTitle"
+    },
+    {
+        Name: "Description",
+        DefaultValue: "",
+        BindControlName: "txtDescription"
+    },
+    {
+        Name: "IsActived",
+        DefaultValue: true,
+        BindControlName: "chkIsActived"
+    },
+    {
+        Name: "IsSystem",
+        DefaultValue: false,
+        BindControlName: "chkIsSystem"
+    },
+    {
+        Name: "AdvanceRequestDetailList",
+        DefaultValue: {},
+        BindControlName: "AdvanceRequestDetailList",
+        DataSourceMember: "AdvanceRequestDetailList"
+    }
+
 ];

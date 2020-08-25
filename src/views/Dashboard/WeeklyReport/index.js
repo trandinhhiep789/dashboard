@@ -52,7 +52,7 @@ class WeeklyReportCom extends Component {
             labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật'],
             datasets: [
                 {
-                    label: 'Ngày điều phối nhiều nhất',
+                    label: 'Số lượng vận đơn',
                     fill: false,
                     borderColor: '#5b9bd5',
                     backgroundColor: '#5b9bd5',

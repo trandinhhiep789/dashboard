@@ -5,8 +5,8 @@ export const AddAPIPath = "api/ApiCallLog/Add";
 export const UpdateAPIPath = "api/ApiCallLog/Update";
 export const DeleteAPIPath = "api/ApiCallLog/Delete";
 export const UpdateOrderAPIPath = "api/ApiCallLog/UpdateOrder";
-export const BackLink = "/ApiCallLog";
-export const AddLink = "/ApiCallLog/Add";
+export const BackLink = "/CallLog";
+export const AddLink = "/CallLog/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "APICallLogID";
@@ -17,13 +17,13 @@ export const PagePath = [
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ApiCallLog", Title: "Nhật ký gọi API" },
+    { Link: "/CallLog", Title: "Nhật ký gọi API" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ApiCallLog", Title: "Nhật ký gọi API" },
+    { Link: "/CallLog", Title: "Nhật ký gọi API" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -58,38 +58,6 @@ export const SearchElementList = [
         icon: "",
         listoption: {}
     },
-    // {
-    //     type: "select",
-    //     name: "slAPICategoryID",
-    //     label: "Danh mục API",
-    //     value: -1,
-    //     placeholder: "",
-    //     icon: "",
-    //     listoption: [],
-    //     DataSourceMember: "APICategoryID",
-    //     readonly: false,
-    //     validatonList: [],
-    //     IsAutoLoadItemFromCache: true,
-    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.ApiCallLogTYPE",
-    //     ValueMember: "ApiCallLogTypeID",
-    //     NameMember: "ApiCallLogTypeName"
-    // },
-    // {
-    //     type: "select",
-    //     name: "slPartnerID",
-    //     label: "Đối tác",
-    //     value: -1,
-    //     placeholder: "",
-    //     icon: "",
-    //     listoption: [],
-    //     DataSourceMember: "PartnerID",
-    //     readonly: false,
-    //     validatonList: [],
-    //     IsAutoLoadItemFromCache: true,
-    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
-    //     ValueMember: "PartnerID",
-    //     NameMember: "PartnerName"
-    // },
     {
         type: "date",
         name: "dtFromDate",
@@ -145,7 +113,7 @@ export const DataGridColumnList = [
         Name: "APICallLogID",
         Type: "texttolink",
         Caption: "Mã gọi API",
-        Link: "/ApiCallLog/Edit/",
+        Link: "/CallLog/Edit/",
         DataSourceMember: "APICallLogID",
         Width: 100
     },

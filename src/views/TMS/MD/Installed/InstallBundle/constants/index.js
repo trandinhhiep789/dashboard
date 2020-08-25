@@ -93,7 +93,7 @@ export const AddElementList = [
     {
         type: "select",
         name: "cbPartnerID",
-        label: "đối tác vận chuyển",
+        label: "khách hàng đối tác",
         value: -1,
         placeholder: "",
         icon: "",
@@ -187,7 +187,7 @@ export const EditElementList = [
     {
         type: "select",
         name: "cbPartnerID",
-        label: "đối tác vận chuyển",
+        label: "khách hàng đối tác",
         value: "",
         placeholder: "",
         icon: "",
@@ -199,6 +199,7 @@ export const EditElementList = [
         loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
         valuemember: "PartnerID",
         nameMember: "PartnerName",
+       
         OrderIndex:4
     },
     {

@@ -143,7 +143,7 @@ class EditCom extends React.Component {
                                             <span>Đã phản hồi: </span>
                                             <label>
                                                 <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.IsResponse} />
-                                                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
                                     </div>
@@ -185,7 +185,7 @@ class EditCom extends React.Component {
                                             <span>Lỗi phản hồi: </span>
                                             <label>
                                                 <input name="IsResponseError" type="checkbox" id="IsResponseError" checked={this.state.DataSource.IsResponseError} />
-                                                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
                                     </div>
