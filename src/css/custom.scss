@@ -397,19 +397,43 @@ select.form-control:-webkit-autofill:focus {
             
         }
         .customCheckbox{
-            margin-bottom: 0px !important;
+            //margin-bottom: 0px !important;
             label{
                 padding-top: 0px;
             }
+        }
+        .cr{
+            vertical-align: text-bottom;
         }
     }
    
 }
 
 .sub-grid{
-    table tr td{
-        padding-top: .2rem;
-        padding-bottom: .2rem;
+    width: 100%;
+    // td,th{
+    //      padding-top: .5rem;
+    //      padding-bottom: .5rem;
+    // }
+    td{
+        .nav-link{
+            line-height: 0;
+        }
+    }
+    .card-title{
+        border-bottom: 0px solid #d9d9d9;
+        
+        b{
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+    }
+    &.detail{
+        .card-title{
+            margin-bottom: -65px;
+        }
+        
     }
 }
 

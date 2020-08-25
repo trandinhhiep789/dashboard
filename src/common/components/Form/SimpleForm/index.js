@@ -319,6 +319,9 @@ class SimpleFormCom extends Component {
                                     cdn={elementItem.cdn}
                                     elementItem={elementItem}
                                     inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                    isMulti={elementItem.isMulti}
+                                    KeyFilter={elementItem.KeyFilter}
+                                    ValueFilter={elementItem.ValueFilter}
                                 />
                             </div>);
                     }

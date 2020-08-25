@@ -437,15 +437,36 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'WorkingPlan',
+                MenuName: 'Advance',
                 MenuTitle: 'Tạm ứng',
                 LinkTo: '',
                 MenuIcon: '',
                 SubMenu: [
                     {
                         MenuName: 'AdvanceRequest',
-                        MenuTitle: 'Danh sách yêu cầu tạm ứng',
+                        MenuTitle: 'Yêu cầu tạm ứng',
                         LinkTo: '/AdvanceRequest',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'AdvanceRequestType',
+                        MenuTitle: 'Loại yêu cầu tạm ứng',
+                        LinkTo: '/AdvanceRequestType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'DestroyRequestType',
+                        MenuTitle: 'Loại yêu cầu hủy vật tư',
+                        LinkTo: '/DestroyRequestType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'InventoryRequestType',
+                        MenuTitle: 'Loại yêu cầu kiểm kê',
+                        LinkTo: '/InventoryRequestType',
                         MenuIcon: '',
                         SubMenu: []
                     }

@@ -397,7 +397,7 @@ class ComboBoxCom extends Component {
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
         {
-            this.setState({Listoption: nextProps.listoption})
+            this.setState({ Listoption: nextProps.listoption })
             const selectedValue = nextProps.value;
             this.setState({ value: selectedValue });
         }
@@ -411,6 +411,10 @@ class ComboBoxCom extends Component {
             const valueMember = this.props.valuemember;
             const nameMember = this.props.nameMember;
             const isCategory = this.props.isCategory;
+            const keyFilter = this.props.KeyFilter;
+            let valueFilter = this.props.ValueFilter;
+            let cacheData = [];
+            let tempCacheData = [];
             //    console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
             this.props.callGetCache(cacheKeyID).then((result) => {
                 //  console.log("this.props.isautoloaditemfromcach2: ",this.props.loaditemcachekeyid, this.state.Listoption);
@@ -418,7 +422,21 @@ class ComboBoxCom extends Component {
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     if (!isCategory) {
 
-                        result.ResultObject.CacheData.map((cacheItem) => {
+                        if (keyFilter && valueFilter) {
+                            valueFilter = valueFilter.toString().split(",");
+                            valueFilter.map((item, index) => {
+                                tempCacheData = result.ResultObject.CacheData.filter(x => x[keyFilter] == item);
+                                if (tempCacheData.length > 0) {
+                                    cacheData = cacheData.concat(tempCacheData)
+                                }
+                                tempCacheData = [];
+                            });
+
+                        } else {
+                            cacheData = result.ResultObject.CacheData;
+                        }
+
+                        cacheData.map((cacheItem) => {
                             listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
                         }
                         );
