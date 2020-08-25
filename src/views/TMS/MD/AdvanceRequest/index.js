@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Edit from "./Edit";
+import Add from "./Add";
 import NotFound from '../../../NotFound'
 class AdvanceRequestCom extends React.Component {
     constructor(props) {
@@ -18,6 +19,7 @@ class AdvanceRequestCom extends React.Component {
         return (
             <Switch>
                 <Route exact path="/AdvanceRequest" component={Search} />
+                <Route exact path="/AdvanceRequest/Add" component={Add} />
                 <Route exact path="/AdvanceRequest/Edit/:id" component={Edit} />
                 <Route path="*" component={NotFound} />
             </Switch>

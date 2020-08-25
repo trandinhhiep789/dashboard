@@ -80,7 +80,7 @@ class ElementModalNumber extends React.Component {
     }
     handleValueChange(evalue) {
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, evalue);
+            this.props.onValueChange(this.props.name, evalue,this.props.indexRow);
     }
 
     render() {

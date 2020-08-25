@@ -5,8 +5,8 @@ export const AddAPIPath = "api/ApiCallLog/Add";
 export const UpdateAPIPath = "api/ApiCallLog/Update";
 export const DeleteAPIPath = "api/ApiCallLog/Delete";
 export const UpdateOrderAPIPath = "api/ApiCallLog/UpdateOrder";
-export const BackLink = "/ApiCallLog";
-export const AddLink = "/ApiCallLog/Add";
+export const BackLink = "/CallLog";
+export const AddLink = "/CallLog/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "APICallLogID";
@@ -17,13 +17,13 @@ export const PagePath = [
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ApiCallLog", Title: "Nhật ký gọi API" },
+    { Link: "/CallLog", Title: "Nhật ký gọi API" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ApiCallLog", Title: "Nhật ký gọi API" },
+    { Link: "/CallLog", Title: "Nhật ký gọi API" },
     { Link: "", Title: "Thêm" }
 ];
 

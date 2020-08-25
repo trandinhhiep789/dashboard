@@ -443,6 +443,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: [
                     {
+                        MenuName: 'AdvanceRequestAdd',
+                        MenuTitle: 'Thêm yêu cầu tạm ứng',
+                        LinkTo: '/AdvanceRequest/Add',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'AdvanceRequest',
                         MenuTitle: 'Danh sách yêu cầu tạm ứng',
                         LinkTo: '/AdvanceRequest',
