@@ -8,6 +8,7 @@
             background: transparent;
             border-radius: 4px;
             height: 35px;
+
             @media (max-width: 767px) {
                 position: static;
             }
@@ -79,9 +80,9 @@
             left: 15px;
             bottom: 0;
             margin: 0 auto;
-            button{
-            
-            }
+
+            button {}
+
             @media (max-width: 767px) {
                 margin-top: 20px;
                 position: static;
@@ -89,25 +90,25 @@
         }
     }
 
-    &.multiple{
+    &.multiple {
         .item {
             clear: both;
             position: relative;
-    
+
             .input-group {
                 input {
                     border-radius: 5px;
-    
+
                     @media (min-width: 768px) {
                         height: 35px;
                     }
                 }
-    
+
                 select {
                     height: 35px !important;
                 }
             }
-    
+
             .btnSearch {
                 width: 100%;
                 position: absolute;
@@ -115,43 +116,59 @@
                 bottom: 7px;
                 margin: 0 auto;
                 clear: both;
-                button{
-                
-                }
+
+                button {}
+
                 @media (max-width: 767px) {
                     margin-top: 20px;
                     position: static;
                 }
             }
         }
-        &.multiple-custom{
+
+        &.multiple-custom {
             .item {
                 clear: both;
-        
-                
+
+
                 .btnSearch {
                     position: static;
                     clear: both;
-                  
+
                 }
             }
-            &.multiple-custom-display{
-                .input-group{
+
+            &.multiple-custom-display {
+                .input-group {
                     @media (max-width: 767px) {
                         margin-bottom: 0.5rem;
                     }
                 }
-                .col-custom{
+
+                .col-custom {
                     padding-right: 2px;
                     padding-left: 2px;
-                    &.btn-custom-right{
+
+                    &.btn-custom-right {
                         clear: both;
-                        width: 100% ;
+                        width: 100%;
                         display: block;
                         max-width: initial;
                         flex: auto;
+
                         .btnSearch {
                             text-align: end;
+                        }
+                    }
+
+                    &.btn-custom-bottom {
+                        position: relative;
+
+                        .btnSearch {
+                            text-align: initial;
+                            position: absolute;
+                            left: 0;
+                            width: 100%;
                         }
                     }
                 }
