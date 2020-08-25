@@ -7,7 +7,7 @@ export const ModalColumnList_Insert = [
     {
         Name: "ProductID",
         type: "productbox",
-        label: "Mã sản phẩm tạm ứng",
+        label: "Mã sản phẩm vật tư",
         colspan: 12,
         isMulti: false,
         DataSourceMember: "ProductID",
@@ -42,14 +42,14 @@ export const DataGridColumnList = [
     {
         Name: "ProductID",
         Type: "text",
-        Caption: "Mã sản phẩm tạm ứng",
+        Caption: "Mã sản phẩm vật tư",
         DataSourceMember: "ProductID",
         Width: 500
     },
     {
         Name: "ProductName",
         Type: "text",
-        Caption: "Tên sản phẩm tạm ứng",
+        Caption: "Tên sản phẩm vật tư",
         DataSourceMember: "ProductName",
         Width: 500
     },

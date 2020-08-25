@@ -180,7 +180,7 @@ class InventoryRequestType_ProductCom extends React.Component {
                     IsAutoPaging={false}
                     //RowsPerPage={10}
                     IsCustomAddLink={true}
-                    headingTitle={"Sản phẩm tạm ứng"}
+                    headingTitle={"Sản phẩm vật tư"}
                 />
             </div>
         );
