@@ -19,18 +19,18 @@ export const TitleFormDetail = "Thông tin yêu cầu hủy vật tư";
 
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Danh sách yêu cầu hủy vật tư" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/DestroyRequest", Title: "Danh sách  yêu cầu hủy vật tư" },
     { Link: "", Title: "Cập nhật" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/DestroyRequest", Title: "Danh sách  yêu cầu hủy vật tư" },
     { Link: "", Title: "Thêm" }
 ];
@@ -215,7 +215,7 @@ export const DataGridColumnList = [
         DataSourceMember: "SignedDate",
         Width: 150
     },
-    
+
     {
         Name: "ExtendLable",
         Type: "text",
@@ -246,4 +246,84 @@ export const DataGridColumnList = [
         Link: "/ServiceAgreement/Edit/",
         LinkText: "Chỉnh sửa"
     },
+];
+
+export const InputDestroyRequestDetailColumnList = [
+    {
+        Name: "MaterialGroupID",
+        Type: "text",
+        Caption: "Nhóm vật tư",
+        DataSourceMember: "MaterialGroupID",
+        Width: 150
+    },
+    {
+        Name: "ProductID",
+        Type: "text",
+        Caption: "Mã sản phẩm",
+        DataSourceMember: "ProductID",
+        Width: 150
+    },
+    {
+        Name: "ProductName",
+        Type: "text",
+        Caption: "Tên sản phẩm",
+        DataSourceMember: "ProductName",
+        Width: 150
+    },
+    {
+        Name: "Quantity",
+        Type: "textbox",
+        Caption: "Số lượng hủy",
+        DataSourceMember: "Quantity",
+        Width: 200,
+    },
+   
+];
+
+export const GridMLObjectDefinition = [
+    {
+        Name: "MaterialGroupID",
+        DefaultValue: "",
+        BindControlName: "MaterialGroupID",
+        DataSourceMember: "MaterialGroupID"
+    },
+    {
+        Name: "ProductID",
+        DefaultValue: "",
+        BindControlName: "ProductID",
+        DataSourceMember: "ProductID"
+    },
+    {
+        Name: "ProductName",
+        DefaultValue: "",
+        BindControlName: "ProductName",
+        DataSourceMember: "ProductName"
+    },
+
+    {
+        Name: "Quantity",
+        DefaultValue: "",
+        BindControlName: "Quantity",
+        DataSourceMember: "Quantity"
+    }
+];
+
+export const AddElementList = [
+    {
+        type: "text",
+        name: "txtDestroyRequestID",
+        label: "mã yêu cầu",
+        value: "",
+        maxSize: "200",
+        placeholder: "Mã yêu cầu",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "DestroyRequestID",
+        readonly: false,
+        validatonList: ["required"]
+    },
+];
+
+export const MLObjectDefinition = [
+    
 ];

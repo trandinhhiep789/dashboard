@@ -3,8 +3,10 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 import FormContainer from "../../../../common/components/FormContainer";
+// import FormContainer from "../../../../common/components/Form/AdvanceForm/FormContainer";
 import { MessageModal } from "../../../../common/components/Modal";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
+import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
 import {
     APIHostName,
     AddAPIPath,
@@ -13,8 +15,8 @@ import {
     BackLink,
     AddPagePath,
     TitleFormAdd,
-    ElementServiceAgreementList,
-    GridMLObjectServiceAgreement
+    GridMLObjectDefinition,
+    InputDestroyRequestDetailColumnList
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -22,7 +24,7 @@ import { updatePagePath } from "../../../../actions/pageAction";
 import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
-
+import { showModal, hideModal } from '../../../../actions/modal';
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -36,11 +38,27 @@ class AddCom extends React.Component {
             IsExtended: false,
             IsLiquidated: false,
             IsDeposited: false,
+            DestroyRequestDetail: [],
+            DestroyRequestTypeID: ''
         };
     }
 
     componentDidMount() {
+        console.log("add", this.props, this.props.location.state.DestroyRequestTypeID)
+        this.setState({
+            DestroyRequestTypeID: this.props.location.state.DestroyRequestTypeID
+        })
+        this.props.hideModal()
         this.props.updatePagePath(AddPagePath);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("nextProps", nextProps)
+        if (JSON.stringify(this.props.location.state.DestroyRequestTypeID) !== JSON.stringify(nextProps.location.state.DestroyRequestTypeID)) {
+            this.setState({
+                DestroyRequestTypeID: nextProps.location.state.DestroyRequestTypeID
+            })
+        }
     }
 
     handleSubmit(formData, MLObject) {
@@ -63,13 +81,26 @@ class AddCom extends React.Component {
         );
     }
 
-
+    valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
+        console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
+    }
 
     render() {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
         let currentDate = new Date();
+
+        const DestroyRequestDetail = [
+            {
+                LanguageID: 1,
+                LanguageName: "English"
+            },
+            {
+                LanguageID: 2,
+                LanguageName: "Khmer"
+            }
+        ]
         return (
             <React.Fragment>
                 <FormContainer
@@ -106,15 +137,16 @@ class AddCom extends React.Component {
                                 validatonList={["Comborequired"]}
                                 placeholder="-- Vui lòng chọn --"
                                 isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.SERVICEAGREEMENTTYPE"
-                                valuemember="ServiceAgreementTypeID"
-                                nameMember="ServiceAgreementTypeName"
+                                loaditemcachekeyid="ERPCOMMONCACHE.DESTROYREQUESTTYPE"
+                                valuemember="DestroyRequestTypeID"
+                                nameMember="DestroyRequestTypeName"
                                 controltype="InputControl"
-                                value={""}
+                                value={this.props.location.state.DestroyRequestTypeID}
                                 listoption={null}
                                 datasourcemember="DESTROYREQUESTTYPEID" />
 
                         </div>
+
                         <div className="col-md-12">
                             <FormControl.TextBox
                                 name="txtDestroyRequestTitle"
@@ -130,6 +162,7 @@ class AddCom extends React.Component {
                                 classNameCustom="customcontrol"
                             />
                         </div>
+
                         <div className="col-md-6">
                             <FormControl.ComboBoxSelect
                                 name="cboRequestStoreID"
@@ -167,6 +200,7 @@ class AddCom extends React.Component {
                                 datasourcemember="RequestDate"
                             />
                         </div>
+
                         <div className="col-md-12">
                             <FormControl.TextArea
                                 labelcolspan={2}
@@ -182,6 +216,18 @@ class AddCom extends React.Component {
                             />
                         </div>
                     </div>
+
+                    <InputGrid
+                        name="DestroyRequestDetail"
+                        controltype="InputControl"
+                        listColumn={InputDestroyRequestDetailColumnList}
+                        dataSource={DestroyRequestDetail}
+                        isHideHeaderToolbar={true}
+                        MLObjectDefinition={GridMLObjectDefinition}
+                        colspan="12"
+                        onValueChangeInputGrid={this.valueChangeInputGrid}
+                    />
+
 
                 </FormContainer>
             </React.Fragment>
@@ -209,6 +255,12 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
         }
     };
 };
