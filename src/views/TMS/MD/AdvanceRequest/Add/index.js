@@ -183,12 +183,11 @@ class AddCom extends React.Component {
                                     colspan="8"
                                     labelcolspan="4"
                                     readOnly={false}
-                                    label="mã yêu cầu tạm ứng"
-                                    placeholder="mã yêu cầu tạm ứng"
+                                    label="mã yêu cầu vận chuyển"
+                                    placeholder="mã yêu cầu vận chuyển"
                                     controltype="InputControl"
                                     value=""
                                     datasourcemember="ShipmentOrderID"
-                                    validatonList={['required']}
                                     disabled={false}
                                 />
                             </div>
