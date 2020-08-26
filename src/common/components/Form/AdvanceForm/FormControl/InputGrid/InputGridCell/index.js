@@ -275,6 +275,8 @@ class InputGridCellCom extends Component {
         switch (type) {
             case "text":
                 return <label>{ReactHtmlParser(text)}</label>;
+            case "textNew":
+                return <label>{text}</label>;
             case "date":
                 {
                     const datestring = formatDate(text);
