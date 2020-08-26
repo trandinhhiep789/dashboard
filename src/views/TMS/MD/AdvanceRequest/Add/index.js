@@ -68,6 +68,7 @@ class AddCom extends React.Component {
         MLObject.AdvanceRequestDetailList=this.state.AdvanceRequestDetailList
         //console.log("MLObject",MLObject)
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+            
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
         });
