@@ -69,6 +69,8 @@ import Compute from '../../views/TMS/PartnerPayable/Compute';
 import PartnerPayableDetail from '../../views/TMS/PartnerPayable/PartnerPayableDetail';
 import ApiCallLog from "../TMS/MD/ApiCallLog";
 import AdvanceRequest from "../TMS/MD/AdvanceRequest";
+import AdvanceRequestType from "../TMS/MD/AdvanceRequestType";
+import DestroyRequestType from "../TMS/MD/DestroyRequestType";
 
 import LimitType from "../TMS/MD/Limit/LimitType";
 import UserLimit from "../TMS/MD/Limit/UserLimit";
@@ -76,6 +78,9 @@ import DestroyRequest from "../TMS/DestroyRequest";
 
 
 import NotFound from '../NotFound'
+import InventoryRequestType from "../TMS/MD/InventoryRequestType";
+
+
 
 
 
@@ -242,6 +247,9 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/UserGroup" component={UserGroup} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/CallLog" component={ApiCallLog} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/AdvanceRequest" component={AdvanceRequest} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/AdvanceRequestType" component={AdvanceRequestType} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/DestroyRequestType" component={DestroyRequestType} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/InventoryRequestType" component={InventoryRequestType} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/WorkingPlan" component={WorkingPlan} isLoggedIn={isLoggedIn} />
 
