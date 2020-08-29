@@ -34,7 +34,9 @@ class AddCom extends React.Component {
             IsLoadDataComplete: true,
             IsCloseForm: false,
             gridDataSource: [],
-            AdvanceRequestDetailList:[]
+            AdvanceRequestDetailList: [],
+            StoreID: 0,
+            DataSource: { AdvanceRequestTypeID: -1 }
         };
     }
 
@@ -60,28 +62,35 @@ class AddCom extends React.Component {
         );
     }
 
-   
+
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.AdvanceRequestDetailList=this.state.AdvanceRequestDetailList
+        MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList
         //console.log("MLObject",MLObject)
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-            
-            this.setState({ IsCallAPIError: apiResult.IsError });
+
+            this.setState({ IsCallAPIError: !apiResult.IsError });
             this.showMessage(apiResult.Message);
         });
     }
     onValueChangeCustom(name, value) {
-
-
         const postData = [
             {
                 SearchKey: "@ADVANCEREQUESTTYPEID",
                 SearchValue: value
+            },
+            {
+                SearchKey: "@CREATEDUSER",
+                SearchValue: this.props.AppInfo.LoginInfo.Username
+            },
+            {
+                SearchKey: "@STOREID",
+                SearchValue: this.state.StoreID
             }
         ];
+
         this.props.callFetchAPI(APIHostName, GetAdvanceRequestAPIPath, postData).then(apiResult => {
             if (!apiResult.IsError) {
                 this.setState({
@@ -96,6 +105,10 @@ class AddCom extends React.Component {
             }
         });
     }
+    onValueChangeSote(name, value) {
+        this.setState({ StoreID: value, DataSource: { AdvanceRequestTypeID: -1 }, gridDataSource: [] });
+    }
+
     addNotification(message1, IsError) {
         if (!IsError) {
             this.setState({
@@ -129,26 +142,28 @@ class AddCom extends React.Component {
         });
     }
 
-    handleInputChangeGrid(obj)
-    {
+    handleInputChangeGrid(obj) {
         this.setState({
             AdvanceRequestDetailList: obj,
         });
     }
 
     render() {
+
+
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
 
         if (this.state.IsLoadDataComplete) {
+
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <FormContainer
                         FormName="Cập nhật thông tin yêu cầu tạm ứng"
                         MLObjectDefinition={MLObjectDefinition}
-                        dataSource={[]}
+                        dataSource={this.state.DataSource}
                         listelement={[]}
                         BackLink={BackLink}
                         onSubmit={this.handleSubmit.bind(this)}
@@ -156,9 +171,29 @@ class AddCom extends React.Component {
                         <div className="row">
                             <div className="col-md-6">
                                 <FormControl.ComboBoxSelect
+                                    name="txtStoreID"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    onValueChangeCustom={this.onValueChangeSote.bind(this)}
+                                    disabled={this.state.IsSystem}
+                                    readOnly={this.state.IsSystem}
+                                    label="Kho tạm ứng"
+                                    validatonList={["Comborequired"]}
+                                    placeholder="-- Vui lòng chọn --"
+                                    isautoloaditemfromcache={true}
+                                    loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
+                                    valuemember="StoreID"
+                                    nameMember="StoreName"
+                                    controltype="InputControl"
+                                    value={this.state.intAdvanceRequestTypeID}
+                                    listoption={null}
+                                    datasourcemember="StoreName" />
+                            </div>
+                            <div className="col-md-6"></div>
+                            <div className="col-md-6">
+                                <FormControl.ComboBoxSelect
                                     name="txtAdvanceRequestTypeID"
                                     colspan="8"
-
                                     labelcolspan="4"
                                     onValueChangeCustom={this.onValueChangeCustom.bind(this)}
                                     disabled={this.state.IsSystem}
@@ -171,10 +206,9 @@ class AddCom extends React.Component {
                                     valuemember="AdvanceRequestTypeID"
                                     nameMember="AdvanceRequestTypeName"
                                     controltype="InputControl"
-                                    value={""}
+                                    value={''}
                                     listoption={null}
                                     datasourcemember="AdvanceRequestTypeID" />
-
                             </div>
 
                             <div className="col-md-6">
@@ -187,6 +221,7 @@ class AddCom extends React.Component {
                                     placeholder="mã yêu cầu vận chuyển"
                                     controltype="InputControl"
                                     value=""
+                                    maxSize={19}
                                     datasourcemember="ShipmentOrderID"
                                     disabled={false}
                                 />
@@ -254,7 +289,7 @@ class AddCom extends React.Component {
 
                             <AdvanceRequestDetailNew
                                 AdvanceRequestDetail={this.state.gridDataSource}
-                                onValueChangeGrid= {this.handleInputChangeGrid.bind(this)}
+                                onValueChangeGrid={this.handleInputChangeGrid.bind(this)}
                             />
                         </div>
 
