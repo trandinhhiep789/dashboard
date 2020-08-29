@@ -188,7 +188,11 @@ export const DataGridColumnList = [
 
 
 export const MLObjectDefinition = [
-
+    {
+        Name: "ReceiverStoreID",
+        DefaultValue: -1,
+        BindControlName: "txtReceiverStoreID"
+    },
     {
         Name: "AdvanceRequestTypeID",
         DefaultValue: -1,

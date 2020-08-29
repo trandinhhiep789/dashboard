@@ -35,8 +35,8 @@ class AddCom extends React.Component {
             IsCloseForm: false,
             gridDataSource: [],
             AdvanceRequestDetailList: [],
-            StoreID: 0,
-            DataSource: { AdvanceRequestTypeID: -1 },
+            StoreID: -1,
+            AdvanceRequestTypeID: -1,
             errorAdvanceRequestDetail: ""
         };
     }
@@ -51,7 +51,6 @@ class AddCom extends React.Component {
     handleCloseMessage() {
         if (this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
     }
-
     showMessage(message) {
         ModalManager.open(
             <MessageModal
@@ -62,8 +61,6 @@ class AddCom extends React.Component {
             />
         );
     }
-
-
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
@@ -74,49 +71,99 @@ class AddCom extends React.Component {
             return prev + cur.Quantity;
         }, 0);
 
-        console.log("MLObject", MLObject, msgTotal)
         if (msgTotal < 1) {
-            this.setState({ errorAdvanceRequestDetail: " vui lòng chọn vật tư tạm ứng" });
+            this.setState({ errorAdvanceRequestDetail: "Vui lòng chọn vật tư tạm ứng" });
         }
         else {
             this.setState({ errorAdvanceRequestDetail: "" });
+            this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+
+                this.setState({ IsCallAPIError: !apiResult.IsError });
+                this.showMessage(apiResult.Message);
+            });
 
         }
-        // this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
 
-        //     this.setState({ IsCallAPIError: !apiResult.IsError });
-        //     this.showMessage(apiResult.Message);
-        // });
     }
     onValueChangeCustom(name, value) {
-        const postData = [
-            {
-                SearchKey: "@ADVANCEREQUESTTYPEID",
-                SearchValue: value
-            },
-            {
-                SearchKey: "@STOREID",
-                SearchValue: this.state.StoreID
-            }
-        ];
+        if (value > -1 && this.state.StoreID > -1) {
+            const postData = [
+                {
+                    SearchKey: "@ADVANCEREQUESTTYPEID",
+                    SearchValue: value
+                },
+                {
+                    SearchKey: "@STOREID",
+                    SearchValue: this.state.StoreID
+                }
+            ];
 
-        this.props.callFetchAPI(APIHostName, GetAdvanceRequestAPIPath, postData).then(apiResult => {
-            if (!apiResult.IsError) {
-                this.setState({
-                    AdvanceRequestDetailList: apiResult.ResultObject,
-                    gridDataSource: apiResult.ResultObject
-                });
-            }
-            else {
-                this.setState({
-                    gridDataSource: [],
-                });
+            this.props.callFetchAPI(APIHostName, GetAdvanceRequestAPIPath, postData).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.setState({
+                        AdvanceRequestDetailList: apiResult.ResultObject,
+                        gridDataSource: apiResult.ResultObject,
+                        AdvanceRequestTypeID: value
+                    });
+                }
+                else {
+                    this.setState({
+                        gridDataSource: [],
+                        AdvanceRequestTypeID: value
+                    });
 
-            }
-        });
+                }
+            });
+
+        }
+        else {
+            this.setState({
+                AdvanceRequestDetailList: [],
+                gridDataSource: [],
+                AdvanceRequestTypeID: value
+            });
+        }
+
     }
     onValueChangeSote(name, value) {
-        this.setState({ StoreID: value, DataSource: { AdvanceRequestTypeID: 0 }, gridDataSource: [] });
+
+        if (value > -1 && this.state.AdvanceRequestTypeID > -1) {
+            const postData = [
+                {
+                    SearchKey: "@ADVANCEREQUESTTYPEID",
+                    SearchValue: this.state.AdvanceRequestTypeID
+                },
+                {
+                    SearchKey: "@STOREID",
+                    SearchValue: value
+                }
+            ];
+
+            this.props.callFetchAPI(APIHostName, GetAdvanceRequestAPIPath, postData).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.setState({
+                        AdvanceRequestDetailList: apiResult.ResultObject,
+                        gridDataSource: apiResult.ResultObject,
+                        StoreID: value
+                    });
+                }
+                else {
+                    this.setState({
+                        gridDataSource: [],
+                        StoreID: value
+                    });
+
+                }
+            });
+
+        }
+        else {
+            this.setState({
+                AdvanceRequestDetailList: [],
+                gridDataSource: [],
+                StoreID: value
+            });
+        }
     }
 
     addNotification(message1, IsError) {
@@ -171,7 +218,7 @@ class AddCom extends React.Component {
                     <FormContainer
                         FormName="Cập nhật thông tin yêu cầu tạm ứng"
                         MLObjectDefinition={MLObjectDefinition}
-                        dataSource={this.state.DataSource}
+                        dataSource={null}
                         listelement={[]}
                         BackLink={BackLink}
                         onSubmit={this.handleSubmit.bind(this)}
@@ -179,7 +226,7 @@ class AddCom extends React.Component {
                         <div className="row">
                             <div className="col-md-6">
                                 <FormControl.ComboBoxSelect
-                                    name="txtStoreID"
+                                    name="txtReceiverStoreID"
                                     colspan="8"
                                     labelcolspan="4"
                                     onValueChangeCustom={this.onValueChangeSote.bind(this)}
@@ -193,9 +240,9 @@ class AddCom extends React.Component {
                                     valuemember="StoreID"
                                     nameMember="StoreName"
                                     controltype="InputControl"
-                                    value={this.state.intAdvanceRequestTypeID}
+                                    value={""}
                                     listoption={null}
-                                    datasourcemember="StoreName" />
+                                    datasourcemember="ReceiverStoreID" />
                             </div>
                             <div className="col-md-6"></div>
                             <div className="col-md-6">
