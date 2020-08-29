@@ -24,7 +24,7 @@ export const EditPagePath = [
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/AdvanceRequest", Title: "Danh sách Yêu cầu tạm ứng" },
-    { Link: "", Title: "Thêm tạm ứng ga" }
+    { Link: "", Title: "Thêm tạm ứng" }
 ];
 
 const dtFromdate = new Date()
