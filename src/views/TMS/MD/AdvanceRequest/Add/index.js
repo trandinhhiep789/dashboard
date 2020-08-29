@@ -36,7 +36,8 @@ class AddCom extends React.Component {
             gridDataSource: [],
             AdvanceRequestDetailList: [],
             StoreID: 0,
-            DataSource: { AdvanceRequestTypeID: -1 }
+            DataSource: { AdvanceRequestTypeID: -1 },
+            errorAdvanceRequestDetail: ""
         };
     }
 
@@ -68,22 +69,30 @@ class AddCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList
-        //console.log("MLObject",MLObject)
-        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
 
-            this.setState({ IsCallAPIError: !apiResult.IsError });
-            this.showMessage(apiResult.Message);
-        });
+        var msgTotal = MLObject.AdvanceRequestDetailList.reduce(function (prev, cur) {
+            return prev + cur.Quantity;
+        }, 0);
+
+        console.log("MLObject", MLObject, msgTotal)
+        if (msgTotal < 1) {
+            this.setState({ errorAdvanceRequestDetail: " vui lòng chọn vật tư tạm ứng" });
+        }
+        else {
+            this.setState({ errorAdvanceRequestDetail: "" });
+
+        }
+        // this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+
+        //     this.setState({ IsCallAPIError: !apiResult.IsError });
+        //     this.showMessage(apiResult.Message);
+        // });
     }
     onValueChangeCustom(name, value) {
         const postData = [
             {
                 SearchKey: "@ADVANCEREQUESTTYPEID",
                 SearchValue: value
-            },
-            {
-                SearchKey: "@CREATEDUSER",
-                SearchValue: this.props.AppInfo.LoginInfo.Username
             },
             {
                 SearchKey: "@STOREID",
@@ -94,7 +103,8 @@ class AddCom extends React.Component {
         this.props.callFetchAPI(APIHostName, GetAdvanceRequestAPIPath, postData).then(apiResult => {
             if (!apiResult.IsError) {
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    AdvanceRequestDetailList: apiResult.ResultObject,
+                    gridDataSource: apiResult.ResultObject
                 });
             }
             else {
@@ -106,7 +116,7 @@ class AddCom extends React.Component {
         });
     }
     onValueChangeSote(name, value) {
-        this.setState({ StoreID: value, DataSource: { AdvanceRequestTypeID: -1 }, gridDataSource: [] });
+        this.setState({ StoreID: value, DataSource: { AdvanceRequestTypeID: 0 }, gridDataSource: [] });
     }
 
     addNotification(message1, IsError) {
@@ -149,8 +159,6 @@ class AddCom extends React.Component {
     }
 
     render() {
-
-
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -286,7 +294,7 @@ class AddCom extends React.Component {
                                     classNameCustom="customCheckbox"
                                 />
                             </div>
-
+                            <label>{this.state.errorAdvanceRequestDetail}</label>
                             <AdvanceRequestDetailNew
                                 AdvanceRequestDetail={this.state.gridDataSource}
                                 onValueChangeGrid={this.handleInputChangeGrid.bind(this)}
