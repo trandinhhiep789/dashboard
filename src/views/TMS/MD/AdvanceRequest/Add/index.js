@@ -314,7 +314,7 @@ class AddCom extends React.Component {
                                 />
                             </div>
 
-                            <div className="col-md-6">
+                            {/* <div className="col-md-6">
                                 <FormControl.CheckBox
                                     label="kích hoạt"
                                     name="chkIsActived"
@@ -327,7 +327,7 @@ class AddCom extends React.Component {
                                     readOnly={this.state.IsSystem}
                                     disabled={this.state.IsSystem}
                                 />
-                            </div>
+                            </div> */}
 
                             <div className="col-md-6">
                                 <FormControl.CheckBox

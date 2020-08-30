@@ -3,7 +3,8 @@ import ReactDOM from "react-dom";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SimpleForm from "../../../../../common/components/Form/SimpleForm";
+import FormContainer from "../../../../../common/components/FormContainer";
+import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
@@ -17,13 +18,11 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { CANCELDELIVERYREASON_UPDATE } from "../../../../../constants/functionLists";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
+
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { format } from "date-fns";
-import { formatDate } from "../../../../../common/library/CommonLib";
-import AdvanceRequestDetail from "../../AdvanceRequestDetail";
+
 
 
 class EditNewCom extends React.Component {
@@ -57,7 +56,110 @@ class EditNewCom extends React.Component {
         });
     }
 
+    handleSubmit(formData, MLObject) {
+        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList
 
+        var msgTotal = MLObject.AdvanceRequestDetailList.reduce(function (prev, cur) {
+            return prev + cur.Quantity;
+        }, 0);
+
+        if (msgTotal < 1) {
+            this.setState({ errorAdvanceRequestDetail: "Vui lòng chọn vật tư tạm ứng" });
+        }
+        else {
+            this.setState({ errorAdvanceRequestDetail: "" });
+            this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+
+                this.setState({ IsCallAPIError: !apiResult.IsError });
+                this.showMessage(apiResult.Message);
+            });
+
+        }
+
+    }
+    onValueChangeCustom(name, value) {
+        if (value > -1 && this.state.StoreID > -1) {
+            const postData = [
+                {
+                    SearchKey: "@ADVANCEREQUESTTYPEID",
+                    SearchValue: value
+                },
+                {
+                    SearchKey: "@STOREID",
+                    SearchValue: this.state.StoreID
+                }
+            ];
+
+            this.props.callFetchAPI(APIHostName, GetAdvanceRequestAPIPath, postData).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.setState({
+                        AdvanceRequestDetailList: apiResult.ResultObject,
+                        gridDataSource: apiResult.ResultObject,
+                        AdvanceRequestTypeID: value
+                    });
+                }
+                else {
+                    this.setState({
+                        gridDataSource: [],
+                        AdvanceRequestTypeID: value
+                    });
+
+                }
+            });
+
+        }
+        else {
+            this.setState({
+                AdvanceRequestDetailList: [],
+                gridDataSource: [],
+                AdvanceRequestTypeID: value
+            });
+        }
+
+    }
+    onValueChangeSote(name, value) {
+
+        if (value > -1 && this.state.AdvanceRequestTypeID > -1) {
+            const postData = [
+                {
+                    SearchKey: "@ADVANCEREQUESTTYPEID",
+                    SearchValue: this.state.AdvanceRequestTypeID
+                },
+                {
+                    SearchKey: "@STOREID",
+                    SearchValue: value
+                }
+            ];
+
+            this.props.callFetchAPI(APIHostName, GetAdvanceRequestAPIPath, postData).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.setState({
+                        AdvanceRequestDetailList: apiResult.ResultObject,
+                        gridDataSource: apiResult.ResultObject,
+                        StoreID: value
+                    });
+                }
+                else {
+                    this.setState({
+                        gridDataSource: [],
+                        StoreID: value
+                    });
+
+                }
+            });
+
+        }
+        else {
+            this.setState({
+                AdvanceRequestDetailList: [],
+                gridDataSource: [],
+                StoreID: value
+            });
+        }
+    }
 
 
     handleCloseMessage() {
@@ -83,172 +185,137 @@ class EditNewCom extends React.Component {
         if (this.state.IsLoadDataComplete && !this.state.IsCallAPIError) {
             return (
                 <React.Fragment>
-                    <div className="col-md-12 col-sm-12 col-xs-12">
-                        <div className="x_panel">
-                            <div className="x_title">
-                                <h2>Thông tin yêu cầu tạm ứng</h2>
-                                <div className="clearfix"></div>
-                            </div>
-
-                            <div className="x_content col-md-12">
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Mã yêu cầu tạm ứng: </span>
-                                            <span className="xcode">{this.state.DataSource.AdvanceRequestID}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Loại yêu cầu tạm ứng: </span>
-                                            <span>{this.state.DataSource.AdvanceRequestTypeName}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Tiêu đề yêu cầu tạm ứng: </span>
-                                            <span>{this.state.DataSource.AdvanceRequestTitle}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Mã yêu cầu vận chuyển: </span>
-                                            <span>{this.state.DataSource.ShipmentOrderID}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Ngày yêu cầu: </span>
-                                            <span>{formatDate(this.state.DataSource.RequestDate)}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Người yêu cầu: </span>
-                                            <span>{this.state.DataSource.RequestUserName}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span> Mô tả: </span>
-                                            <span>{this.state.DataSource.Description}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group checkbox customCheckbox">
-                                            <span>Đã duyệt: </span>
-                                            <label>
-                                                <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.IsReviewed} />
-                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Người duyệt: </span>
-                                            <span>{this.state.DataSource.ReviewedUser}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Ngày duyệt: </span>
-                                            <span>{formatDate(this.state.DataSource.ReviewedDate)}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group checkbox customCheckbox">
-                                            <span>Đã tạo đơn hàng tạm ứng: </span>
-                                            <label>
-                                                <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.IsCreatedOrder} />
-                                                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span> Người tạo đơn hàng tạm ứng: </span>
-                                            <span>{this.state.DataSource.CreatedOrderUser}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span> Ngày tạo đơn hàng tạm ứng: </span>
-                                            <span>{formatDate(this.state.DataSource.CreatedOrderDate)}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Mã đơn hàng tạm ứng: </span>
-                                            <span>{this.state.DataSource.SaleOrderID}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group checkbox customCheckbox">
-                                            <span>Đã xuất tạm ứng: </span>
-                                            <label>
-                                                <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.IsOutput} />
-                                                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span> Người xuất tạm ứng: </span>
-                                            <span>{this.state.DataSource.OutputUser}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span> Ngày xuất: </span>
-                                            <span>{formatDate(this.state.DataSource.OutputDate)}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span> Mã phiếu xuất: </span>
-                                            <span>{this.state.DataSource.OutputVoucherID}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-
-                            </div>
+                <ReactNotification ref={this.notificationDOMRef} />
+                <FormContainer
+                    FormName="Cập nhật thông tin yêu cầu tạm ứng"
+                    MLObjectDefinition={MLObjectDefinition}
+                    dataSource={this.state.DataSource}
+                    listelement={[]}
+                    BackLink={BackLink}
+                    onSubmit={this.handleSubmit.bind(this)}
+                >
+                    <div className="row">
+                        <div className="col-md-6">
+                            <FormControl.ComboBoxSelect
+                                name="txtReceiverStoreID"
+                                colspan="8"
+                                labelcolspan="4"
+                                onValueChangeCustom={this.onValueChangeSote.bind(this)}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
+                                label="Kho tạm ứng"
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
+                                valuemember="StoreID"
+                                nameMember="StoreName"
+                                controltype="InputControl"
+                                value={""}
+                                listoption={null}
+                                datasourcemember="ReceiverStoreID" />
                         </div>
-                    </div>
+                        <div className="col-md-6"></div>
+                        <div className="col-md-6">
+                            <FormControl.ComboBoxSelect
+                                name="txtAdvanceRequestTypeID"
+                                colspan="8"
+                                labelcolspan="4"
+                                onValueChangeCustom={this.onValueChangeCustom.bind(this)}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
+                                label="loại yêu cầu tạm ứng"
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.ADVANCEREQUESTTYPE"
+                                valuemember="AdvanceRequestTypeID"
+                                nameMember="AdvanceRequestTypeName"
+                                controltype="InputControl"
+                                value={''}
+                                listoption={null}
+                                datasourcemember="AdvanceRequestTypeID" />
+                        </div>
 
-                    <br />
-                    <AdvanceRequestDetail
-                        AdvanceRequestID={this.props.match.params.id}
-                        AdvanceRequestDetailDataSource={this.state.DataSource.AdvanceRequestDetailList}
-                    />
-                </React.Fragment >
+                        <div className="col-md-6">
+                            <FormControl.TextBox
+                                name="txtShipmentOrderID"
+                                colspan="8"
+                                labelcolspan="4"
+                                readOnly={false}
+                                label="mã yêu cầu vận chuyển"
+                                placeholder="mã yêu cầu vận chuyển"
+                                controltype="InputControl"
+                                value=""
+                                maxSize={19}
+                                datasourcemember="ShipmentOrderID"
+                                disabled={false}
+                            />
+                        </div>
+                        <div className="col-md-12">
+                            <FormControl.TextBox
+                                name="txtAdvanceRequestTitle"
+                                colspan="10"
+                                labelcolspan="2"
+                                readOnly={false}
+                                disabled={false}
+                                label="tiêu đề yêu cầu tạm ứng"
+                                placeholder="tiêu đề yêu cầu tạm ứng"
+                                controltype="InputControl"
+                                value=""
+                                datasourcemember="AdvanceRequestTitle"
+                                validatonList={['required']}
+                            />
+                        </div>
+
+                        <div className="col-md-12">
+                            <FormControl.TextArea
+                                labelcolspan={2}
+                                colspan={10}
+                                name="txtDescription"
+                                label="Mô tả"
+                                placeholder="Mô tả"
+                                datasourcemember="Description"
+                                controltype="InputControl"
+                                rows={6}
+                                maxSize={500}
+                                classNameCustom="customcontrol"
+                                readOnly={this.state.IsSystem}
+                                disabled={this.state.IsSystem}
+                            />
+                        </div>
+
+                        {/* <div className="col-md-6">
+                            <FormControl.CheckBox
+                                label="kích hoạt"
+                                name="chkIsActived"
+                                datasourcemember="IsActived"
+                                controltype="InputControl"
+                                colspan={10}
+                                labelcolspan={2}
+                                value={true}
+                                classNameCustom="customCheckbox"
+                                readOnly={this.state.IsSystem}
+                                disabled={this.state.IsSystem}
+                            />
+                        </div> */}
+
+                        <div className="col-md-6">
+                            <FormControl.CheckBox
+                                label="hệ thống"
+                                name="chkIsSystem"
+                                datasourcemember="IsSystem"
+                                controltype="InputControl"
+                                colspan={8}
+                                labelcolspan={4}
+                                value={false}
+                                classNameCustom="customCheckbox"
+                            />
+                        </div>
+                        
+                    </div>
+                </FormContainer>
+            </React.Fragment>
             );
         }
         return (

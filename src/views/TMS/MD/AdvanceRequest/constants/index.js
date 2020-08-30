@@ -213,11 +213,11 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtDescription"
     },
-    {
-        Name: "IsActived",
-        DefaultValue: true,
-        BindControlName: "chkIsActived"
-    },
+    // {
+    //     Name: "IsActived",
+    //     DefaultValue: true,
+    //     BindControlName: "chkIsActived"
+    // },
     {
         Name: "IsSystem",
         DefaultValue: false,
