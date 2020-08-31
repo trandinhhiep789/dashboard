@@ -106,7 +106,7 @@ export const AddElementList = [
         valuemember: "PartnerID",
         nameMember: "PartnerName",
         OrderIndex:4,
-        filterValue:2,
+        filterValue:1,
         filterobj:"PartnerTypeID"
     },
     {
@@ -201,7 +201,7 @@ export const EditElementList = [
         loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
         valuemember: "PartnerID",
         nameMember: "PartnerName",
-        filterValue:2,
+        filterValue:1,
         filterobj:"PartnerTypeID",
         OrderIndex:4
     },
