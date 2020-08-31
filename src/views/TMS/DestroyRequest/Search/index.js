@@ -13,7 +13,8 @@ import viLocale from "date-fns/locale/vi";
 import { compareAsc, format, add } from 'date-fns';
 
 import { SERVICEAGREEMENT_VIEW, SERVICEAGREEMENT_DELETE } from "../../../../constants/functionLists";
-
+import { showModal, hideModal } from '../../../../actions/modal';
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 
 import {
     SearchElementList,
@@ -36,6 +37,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
 import { callGetCache } from "../../../../actions/cacheAction";
+import ListDestroyRequestType from "../Component/ListDestroyRequestType";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -43,6 +45,7 @@ class SearchCom extends React.Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.handleInputGridInsert = this.handleInputGridInsert.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -186,6 +189,19 @@ class SearchCom extends React.Component {
         this.addNotification(result.Message);
     }
 
+    handleInputGridInsert(MLObjectDefinition, modalElementList, dataSource) {
+        console.log("handleInputGridInsert", MLObjectDefinition, modalElementList, dataSource)
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Loại yêu cầu hủy vật tư',
+            content: {
+                text: <ListDestroyRequestType />
+            },
+            maxWidth: '800px'
+        });
+
+
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -203,10 +219,12 @@ class SearchCom extends React.Component {
                 <DataGrid
                     listColumn={DataGridColumnList}
                     dataSource={this.state.gridDataSource}
-                    AddLink={AddLink}
+                    //AddLink={AddLink}
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
+                    onInsertClick={this.handleInputGridInsert}
+                    IsCustomAddLink={true}
                     IsDelete={true}
                     IsAutoPaging={true}
                     RowsPerPage={10}
@@ -240,6 +258,12 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
         }
     };
 };

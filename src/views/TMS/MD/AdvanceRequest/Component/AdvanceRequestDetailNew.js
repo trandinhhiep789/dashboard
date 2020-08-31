@@ -55,6 +55,7 @@ class AdvanceRequestDetailNewCom extends Component {
                                                 <th className="jsgrid-header-cell" style={{ width: "15%" }}>Mã sản phẩm</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "25%" }}>Tên sản phẩm</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "15%" }}>Số lượng tạm ứng</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "15%" }}>Đơn giá</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "10%" }}>Đơn vị tính</th>
                                             </tr>
                                         </thead>
@@ -74,12 +75,14 @@ class AdvanceRequestDetailNewCom extends Component {
                                                             dataSourcemember="Quantity"
                                                             Colmd='12'
                                                             min={0}
-                                                            max={50}
+                                                            max={(item.AdvanceLimitType == 1 ? item.AdvanceLimitQuantity-item.TotalQuantity : 50)}
                                                             value={item.Quantity}
                                                             indexRow={index}
+                                                            disabled={item.CostPrice==0?true:false}
                                                             onValueChange={this.handleInputChange.bind(this)}
 
                                                         /></td>
+                                                         <td>{item.CostPrice}</td>
                                                         <td><ElementInputModal.ElementModalComboBox
                                                             validationErrorMessage={""}
                                                             caption="Đơn vị tính"
@@ -91,8 +94,7 @@ class AdvanceRequestDetailNewCom extends Component {
                                                             nameMember="QuantityUnit"
                                                             value={item.QuantityUnitID}
                                                             rowIndex={index}
-                                                            onValueChange={this.handleInputChangeBox.bind(this)}
-
+                                                            disabled={true}
                                                         /></td>
                                                     </tr>
                                                 )

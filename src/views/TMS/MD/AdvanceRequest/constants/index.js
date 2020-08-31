@@ -24,7 +24,7 @@ export const EditPagePath = [
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/AdvanceRequest", Title: "Danh sách Yêu cầu tạm ứng" },
-    { Link: "", Title: "Thêm tạm ứng ga" }
+    { Link: "", Title: "Thêm tạm ứng" }
 ];
 
 const dtFromdate = new Date()
@@ -188,7 +188,11 @@ export const DataGridColumnList = [
 
 
 export const MLObjectDefinition = [
-
+    {
+        Name: "ReceiverStoreID",
+        DefaultValue: -1,
+        BindControlName: "txtReceiverStoreID"
+    },
     {
         Name: "AdvanceRequestTypeID",
         DefaultValue: -1,
@@ -209,11 +213,11 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtDescription"
     },
-    {
-        Name: "IsActived",
-        DefaultValue: true,
-        BindControlName: "chkIsActived"
-    },
+    // {
+    //     Name: "IsActived",
+    //     DefaultValue: true,
+    //     BindControlName: "chkIsActived"
+    // },
     {
         Name: "IsSystem",
         DefaultValue: false,

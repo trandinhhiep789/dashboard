@@ -55,6 +55,7 @@ class FormContainerCom extends Component {
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.dataSource) !== JSON.stringify(nextProps.dataSource)) {
             const FormDataContol = this.state.FormData;
+         
             for (const key in FormDataContol) {
                 FormDataContol[key].value = nextProps.dataSource[FormDataContol[key].datasourcemember];
             }
