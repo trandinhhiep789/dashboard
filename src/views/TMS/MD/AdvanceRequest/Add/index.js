@@ -35,8 +35,9 @@ class AddCom extends React.Component {
             IsCloseForm: false,
             gridDataSource: [],
             AdvanceRequestDetailList: [],
-            StoreID: 0,
-            DataSource: { AdvanceRequestTypeID: -1 }
+            StoreID: -1,
+            AdvanceRequestTypeID: -1,
+            errorAdvanceRequestDetail: ""
         };
     }
 
@@ -50,7 +51,6 @@ class AddCom extends React.Component {
     handleCloseMessage() {
         if (this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
     }
-
     showMessage(message) {
         ModalManager.open(
             <MessageModal
@@ -61,52 +61,109 @@ class AddCom extends React.Component {
             />
         );
     }
-
-
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList
-        //console.log("MLObject",MLObject)
-        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
 
-            this.setState({ IsCallAPIError: !apiResult.IsError });
-            this.showMessage(apiResult.Message);
-        });
+        var msgTotal = MLObject.AdvanceRequestDetailList.reduce(function (prev, cur) {
+            return prev + cur.Quantity;
+        }, 0);
+
+        if (msgTotal < 1) {
+            this.setState({ errorAdvanceRequestDetail: "Vui lòng chọn vật tư tạm ứng" });
+        }
+        else {
+            this.setState({ errorAdvanceRequestDetail: "" });
+            this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+
+                this.setState({ IsCallAPIError: !apiResult.IsError });
+                this.showMessage(apiResult.Message);
+            });
+
+        }
+
     }
     onValueChangeCustom(name, value) {
-        const postData = [
-            {
-                SearchKey: "@ADVANCEREQUESTTYPEID",
-                SearchValue: value
-            },
-            {
-                SearchKey: "@CREATEDUSER",
-                SearchValue: this.props.AppInfo.LoginInfo.Username
-            },
-            {
-                SearchKey: "@STOREID",
-                SearchValue: this.state.StoreID
-            }
-        ];
+        if (value > -1 && this.state.StoreID > -1) {
+            const postData = [
+                {
+                    SearchKey: "@ADVANCEREQUESTTYPEID",
+                    SearchValue: value
+                },
+                {
+                    SearchKey: "@STOREID",
+                    SearchValue: this.state.StoreID
+                }
+            ];
 
-        this.props.callFetchAPI(APIHostName, GetAdvanceRequestAPIPath, postData).then(apiResult => {
-            if (!apiResult.IsError) {
-                this.setState({
-                    gridDataSource: apiResult.ResultObject,
-                });
-            }
-            else {
-                this.setState({
-                    gridDataSource: [],
-                });
+            this.props.callFetchAPI(APIHostName, GetAdvanceRequestAPIPath, postData).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.setState({
+                        AdvanceRequestDetailList: apiResult.ResultObject,
+                        gridDataSource: apiResult.ResultObject,
+                        AdvanceRequestTypeID: value
+                    });
+                }
+                else {
+                    this.setState({
+                        gridDataSource: [],
+                        AdvanceRequestTypeID: value
+                    });
 
-            }
-        });
+                }
+            });
+
+        }
+        else {
+            this.setState({
+                AdvanceRequestDetailList: [],
+                gridDataSource: [],
+                AdvanceRequestTypeID: value
+            });
+        }
+
     }
     onValueChangeSote(name, value) {
-        this.setState({ StoreID: value, DataSource: { AdvanceRequestTypeID: -1 }, gridDataSource: [] });
+
+        if (value > -1 && this.state.AdvanceRequestTypeID > -1) {
+            const postData = [
+                {
+                    SearchKey: "@ADVANCEREQUESTTYPEID",
+                    SearchValue: this.state.AdvanceRequestTypeID
+                },
+                {
+                    SearchKey: "@STOREID",
+                    SearchValue: value
+                }
+            ];
+
+            this.props.callFetchAPI(APIHostName, GetAdvanceRequestAPIPath, postData).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.setState({
+                        AdvanceRequestDetailList: apiResult.ResultObject,
+                        gridDataSource: apiResult.ResultObject,
+                        StoreID: value
+                    });
+                }
+                else {
+                    this.setState({
+                        gridDataSource: [],
+                        StoreID: value
+                    });
+
+                }
+            });
+
+        }
+        else {
+            this.setState({
+                AdvanceRequestDetailList: [],
+                gridDataSource: [],
+                StoreID: value
+            });
+        }
     }
 
     addNotification(message1, IsError) {
@@ -149,8 +206,6 @@ class AddCom extends React.Component {
     }
 
     render() {
-
-
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -163,7 +218,7 @@ class AddCom extends React.Component {
                     <FormContainer
                         FormName="Cập nhật thông tin yêu cầu tạm ứng"
                         MLObjectDefinition={MLObjectDefinition}
-                        dataSource={this.state.DataSource}
+                        dataSource={null}
                         listelement={[]}
                         BackLink={BackLink}
                         onSubmit={this.handleSubmit.bind(this)}
@@ -171,7 +226,7 @@ class AddCom extends React.Component {
                         <div className="row">
                             <div className="col-md-6">
                                 <FormControl.ComboBoxSelect
-                                    name="txtStoreID"
+                                    name="txtReceiverStoreID"
                                     colspan="8"
                                     labelcolspan="4"
                                     onValueChangeCustom={this.onValueChangeSote.bind(this)}
@@ -185,9 +240,9 @@ class AddCom extends React.Component {
                                     valuemember="StoreID"
                                     nameMember="StoreName"
                                     controltype="InputControl"
-                                    value={this.state.intAdvanceRequestTypeID}
+                                    value={""}
                                     listoption={null}
-                                    datasourcemember="StoreName" />
+                                    datasourcemember="ReceiverStoreID" />
                             </div>
                             <div className="col-md-6"></div>
                             <div className="col-md-6">
@@ -259,7 +314,7 @@ class AddCom extends React.Component {
                                 />
                             </div>
 
-                            <div className="col-md-6">
+                            {/* <div className="col-md-6">
                                 <FormControl.CheckBox
                                     label="kích hoạt"
                                     name="chkIsActived"
@@ -272,7 +327,7 @@ class AddCom extends React.Component {
                                     readOnly={this.state.IsSystem}
                                     disabled={this.state.IsSystem}
                                 />
-                            </div>
+                            </div> */}
 
                             <div className="col-md-6">
                                 <FormControl.CheckBox
@@ -286,7 +341,7 @@ class AddCom extends React.Component {
                                     classNameCustom="customCheckbox"
                                 />
                             </div>
-
+                            <label>{this.state.errorAdvanceRequestDetail}</label>
                             <AdvanceRequestDetailNew
                                 AdvanceRequestDetail={this.state.gridDataSource}
                                 onValueChangeGrid={this.handleInputChangeGrid.bind(this)}
