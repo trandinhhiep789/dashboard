@@ -62,11 +62,7 @@ class AddCom extends React.Component {
         );
     }
     handleSubmit(formData, MLObject) {
-        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList
-
         var msgTotal = MLObject.AdvanceRequestDetailList.reduce(function (prev, cur) {
             return prev + cur.Quantity;
         }, 0);
