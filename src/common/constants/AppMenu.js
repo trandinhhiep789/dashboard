@@ -144,7 +144,7 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     }
-                  
+
                 ]
             },
             {
@@ -302,6 +302,35 @@ const AppMenu = [
                     },
 
                 ]
+            },
+            {
+                MenuName: 'Advance',
+                MenuTitle: 'Tạm ứng',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'AdvanceRequestType',
+                        MenuTitle: 'Loại yêu cầu tạm ứng',
+                        LinkTo: '/AdvanceRequestType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'DestroyRequestType',
+                        MenuTitle: 'Loại yêu cầu hủy vật tư',
+                        LinkTo: '/DestroyRequestType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'InventoryRequestType',
+                        MenuTitle: 'Loại yêu cầu kiểm kê',
+                        LinkTo: '/InventoryRequestType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+                ]
             }
         ]
     },
@@ -455,27 +484,6 @@ const AppMenu = [
                         LinkTo: '/AdvanceRequest',
                         MenuIcon: '',
                         SubMenu: []
-                    },
-                    {
-                        MenuName: 'AdvanceRequestType',
-                        MenuTitle: 'Loại yêu cầu tạm ứng',
-                        LinkTo: '/AdvanceRequestType',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'DestroyRequestType',
-                        MenuTitle: 'Loại yêu cầu hủy vật tư',
-                        LinkTo: '/DestroyRequestType',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'InventoryRequestType',
-                        MenuTitle: 'Loại yêu cầu kiểm kê',
-                        LinkTo: '/InventoryRequestType',
-                        MenuIcon: '',
-                        SubMenu: []
                     }
                 ]
             },
@@ -488,7 +496,6 @@ const AppMenu = [
             },
         ]
     },
-
     {
         MenuName: 'History',
         MenuTitle: 'Nhật ký',
@@ -509,7 +516,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-           
+
         ]
     }
 
