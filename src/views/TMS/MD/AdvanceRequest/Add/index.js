@@ -209,7 +209,7 @@ class AddCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-
+        const { errorAdvanceRequestDetail } = this.state;
         if (this.state.IsLoadDataComplete) {
 
             return (
@@ -341,7 +341,14 @@ class AddCom extends React.Component {
                                     classNameCustom="customCheckbox"
                                 />
                             </div>
-                            <label>{this.state.errorAdvanceRequestDetail}</label>
+                            {
+                                errorAdvanceRequestDetail != '' ?
+                                    <div className="col-md-12 errorAdvanceRequestDetail">
+                                        <p>{this.state.errorAdvanceRequestDetail}</p>
+                                    </div> 
+                                : <div></div>
+                            }
+
                             <AdvanceRequestDetailNew
                                 AdvanceRequestDetail={this.state.gridDataSource}
                                 onValueChangeGrid={this.handleInputChangeGrid.bind(this)}
