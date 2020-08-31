@@ -8,6 +8,8 @@ export const DeleteNewAPIPath = "api/DestroyRequest/DeleteNew";
 export const DeleteAPIPath = "api/DestroyRequest/Delete";
 export const BackLink = "/DestroyRequest";
 export const AddLink = "/DestroyRequest/Add";
+export const LoadAPIByRequestTypeIDPath = "api/CurrentAdvanceDebt/GetListByRequestTypeID";
+export const LoadUserNameAPIByStoreIDPath = "api/DestroyRequestType_ReviewLevel_User/LoadByStoreID";
 export const AddLogAPIPath = "api/DestroyRequest/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "DestroyRequestID";
@@ -271,6 +273,13 @@ export const InputDestroyRequestDetailColumnList = [
         Width: 150
     },
     {
+        Name: "UsableQuantity",
+        Type: "textNew",
+        Caption: "Số dư tạm ứng",
+        DataSourceMember: "UsableQuantity",
+        Width: 150
+    },
+    {
         Name: "Quantity",
         Type: "textbox",
         Caption: "Số lượng hủy",
@@ -299,7 +308,12 @@ export const GridMLObjectDefinition = [
         BindControlName: "ProductName",
         DataSourceMember: "ProductName"
     },
-
+    {
+        Name: "UsableQuantity",
+        DefaultValue: "",
+        BindControlName: "UsableQuantity",
+        DataSourceMember: "UsableQuantity"
+    },
     {
         Name: "Quantity",
         DefaultValue: "",
@@ -325,5 +339,93 @@ export const AddElementList = [
 ];
 
 export const MLObjectDefinition = [
-    
+    {
+        Name: "DestroyRequestID",
+        DefaultValue: "",
+        BindControlName: "txtDestroyRequestID",
+        DataSourceMember: "DestroyRequestID"
+    },
+    {
+        Name: "DestroyRequestTypeID",
+        DefaultValue: "",
+        BindControlName: "cboDestroyRequestType",
+        DataSourceMember: "DestroyRequestTypeID"
+    },
+    {
+        Name: "DestroyRequestTitle",
+        DefaultValue: "",
+        BindControlName: "txtDestroyRequestTitle",
+        DataSourceMember: "DestroyRequestTitle"
+    },
+    {
+        Name: "RequestStore",
+        DefaultValue: "",
+        BindControlName: "cboRequestStore",
+        DataSourceMember: "RequestStore"
+    },
+    {
+        Name: "RequestDate",
+        DefaultValue: "",
+        BindControlName: "dtRequestDate",
+        DataSourceMember: "RequestDate"
+    },
+    {
+        Name: "Description",
+        DefaultValue: "",
+        BindControlName: "txtDescription",
+        DataSourceMember: "Description"
+    },
+    {
+        Name: "lstDestroyRequestDetail",
+        DefaultValue: {},
+        BindControlName: "lstDestroyRequestDetail",
+        DataSourceMember: "lstDestroyRequestDetail"
+    },
+    {
+        Name: "lstDestroyRequestReviewLevel",
+        DefaultValue: {},
+        BindControlName: "lstDestroyRequestReviewLevel",
+        DataSourceMember: "lstDestroyRequestReviewLevel"
+    }
+
+];
+
+
+export const GridDestroyRequestRLMLObjectDefinition = [
+    {
+        Name: "ReviewLevelName",
+        DefaultValue: "",
+        BindControlName: "txtReviewLevelName",
+        DataSourceMember: "ReviewLevelName"
+    },
+    {
+        Name: "UserName",
+        DefaultValue: "",
+        BindControlName: "cboUserName",
+        DataSourceMember: "UserName"
+    },
+   
+];
+
+export const InputDestroyRequestRLColumnList = [
+    {
+        Name: "txtReviewLevelName",
+        Type: "text",
+        Caption: "Mức duyệt",
+        DataSourceMember: "ReviewLevelName",
+        Width: 100
+    },
+    {
+        Name: "cboUserName",
+        Type: "combobox",
+        Caption: "Người duyệt",
+        DataSourceMember: "UserName",
+        Width: 250,
+        IsAutoLoadItemFromCache: false,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SERVICETYPE",
+        ValueMember: "ServiceTypeID",
+        NameMember: "ServiceTypeName",
+        listoption:[]
+    },
+   
 ];
