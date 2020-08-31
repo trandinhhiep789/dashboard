@@ -75,7 +75,7 @@ class AdvanceRequestDetailNewCom extends Component {
                                                             dataSourcemember="Quantity"
                                                             Colmd='12'
                                                             min={0}
-                                                            max={(item.AdvanceLimitType == 1 ? item.AdvanceLimitQuantity-item.TotalQuantity : 50)}
+                                                            max={(item.AdvanceLimitType == 1 ? item.AdvanceLimitQuantity : 50)}
                                                             value={item.Quantity}
                                                             indexRow={index}
                                                             disabled={item.CostPrice==0?true:false}
