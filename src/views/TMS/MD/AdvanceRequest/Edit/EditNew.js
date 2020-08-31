@@ -8,13 +8,12 @@ import FormControl from "../../../../../common/components/FormContainer/FormCont
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
-    LoadAPIPath,
-    UpdateAPIPath,
+    LoadLoadWebAPIPath,
+    GetAdvanceRequestAPIPath,
     EditElementList,
     MLObjectDefinition,
     BackLink,
     EditPagePath,
-    AddLogAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -22,6 +21,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
 import { callGetCache } from "../../../../../actions/cacheAction";
+import AdvanceRequestDetailNew from "../Component/AdvanceRequestDetailNew";
 
 
 
@@ -33,21 +33,31 @@ class EditNewCom extends React.Component {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsLoadDataComplete: false,
-            IsCloseForm: false
+            IsCloseForm: false,
+            gridDataSource: [],
+            AdvanceRequestDetailList: [],
+            StoreID: -1,
+            AdvanceRequestTypeID: -1,
+            errorAdvanceRequestDetail: ""
         };
     }
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
         const id = this.props.match.params.id;
-        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, LoadLoadWebAPIPath, id).then(apiResult => {
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: apiResult.IsError
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                this.setState({ DataSource: apiResult.ResultObject });
+                this.setState({
+                    DataSource: apiResult.ResultObject,
+                    StoreID:apiResult.ResultObject.ReceiverStoreID, 
+                    AdvanceRequestTypeID:apiResult.ResultObject.AdvanceRequestTypeID,
+                    gridDataSource: apiResult.ResultObject.AdvanceRequestDetailList
+                });
             }
             this.setState({
                 IsLoadDataComplete: true
@@ -90,6 +100,10 @@ class EditNewCom extends React.Component {
                 {
                     SearchKey: "@STOREID",
                     SearchValue: this.state.StoreID
+                },
+                {
+                    SearchKey: "@ADVANCEREQUESTID",
+                    SearchValue: this.props.match.params.id
                 }
             ];
 
@@ -131,6 +145,10 @@ class EditNewCom extends React.Component {
                 {
                     SearchKey: "@STOREID",
                     SearchValue: value
+                },
+                {
+                    SearchKey: "@ADVANCEREQUESTID",
+                    SearchValue: this.props.match.params.id
                 }
             ];
 
@@ -160,7 +178,11 @@ class EditNewCom extends React.Component {
             });
         }
     }
-
+    handleInputChangeGrid(obj) {
+        this.setState({
+            AdvanceRequestDetailList: obj,
+        });
+    }
 
     handleCloseMessage() {
         if (this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
@@ -181,141 +203,138 @@ class EditNewCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-
+        const { errorAdvanceRequestDetail } = this.state;
         if (this.state.IsLoadDataComplete && !this.state.IsCallAPIError) {
             return (
                 <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
-                <FormContainer
-                    FormName="Cập nhật thông tin yêu cầu tạm ứng"
-                    MLObjectDefinition={MLObjectDefinition}
-                    dataSource={this.state.DataSource}
-                    listelement={[]}
-                    BackLink={BackLink}
-                    onSubmit={this.handleSubmit.bind(this)}
-                >
-                    <div className="row">
-                        <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
-                                name="txtReceiverStoreID"
-                                colspan="8"
-                                labelcolspan="4"
-                                onValueChangeCustom={this.onValueChangeSote.bind(this)}
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                label="Kho tạm ứng"
-                                validatonList={["Comborequired"]}
-                                placeholder="-- Vui lòng chọn --"
-                                isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
-                                valuemember="StoreID"
-                                nameMember="StoreName"
-                                controltype="InputControl"
-                                value={""}
-                                listoption={null}
-                                datasourcemember="ReceiverStoreID" />
-                        </div>
-                        <div className="col-md-6"></div>
-                        <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
-                                name="txtAdvanceRequestTypeID"
-                                colspan="8"
-                                labelcolspan="4"
-                                onValueChangeCustom={this.onValueChangeCustom.bind(this)}
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                label="loại yêu cầu tạm ứng"
-                                validatonList={["Comborequired"]}
-                                placeholder="-- Vui lòng chọn --"
-                                isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.ADVANCEREQUESTTYPE"
-                                valuemember="AdvanceRequestTypeID"
-                                nameMember="AdvanceRequestTypeName"
-                                controltype="InputControl"
-                                value={''}
-                                listoption={null}
-                                datasourcemember="AdvanceRequestTypeID" />
-                        </div>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <FormContainer
+                        FormName="Cập nhật thông tin yêu cầu tạm ứng"
+                        MLObjectDefinition={MLObjectDefinition}
+                        dataSource={this.state.DataSource}
+                        listelement={[]}
+                        BackLink={BackLink}
+                        onSubmit={this.handleSubmit.bind(this)}
+                    >
+                        <div className="row">
+                            <div className="col-md-6">
+                                <FormControl.ComboBoxSelect
+                                    name="txtReceiverStoreID"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    onValueChangeCustom={this.onValueChangeSote.bind(this)}
+                                    disabled={this.state.IsSystem}
+                                    readOnly={this.state.IsSystem}
+                                    label="Kho tạm ứng"
+                                    validatonList={["Comborequired"]}
+                                    placeholder="-- Vui lòng chọn --"
+                                    isautoloaditemfromcache={true}
+                                    loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
+                                    valuemember="StoreID"
+                                    nameMember="StoreName"
+                                    controltype="InputControl"
+                                    value={""}
+                                    listoption={null}
+                                    datasourcemember="ReceiverStoreID" />
+                            </div>
+                            <div className="col-md-6"></div>
+                            <div className="col-md-6">
+                                <FormControl.ComboBoxSelect
+                                    name="txtAdvanceRequestTypeID"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    onValueChangeCustom={this.onValueChangeCustom.bind(this)}
+                                    disabled={this.state.IsSystem}
+                                    readOnly={this.state.IsSystem}
+                                    label="loại yêu cầu tạm ứng"
+                                    validatonList={["Comborequired"]}
+                                    placeholder="-- Vui lòng chọn --"
+                                    isautoloaditemfromcache={true}
+                                    loaditemcachekeyid="ERPCOMMONCACHE.ADVANCEREQUESTTYPE"
+                                    valuemember="AdvanceRequestTypeID"
+                                    nameMember="AdvanceRequestTypeName"
+                                    controltype="InputControl"
+                                    value={''}
+                                    listoption={null}
+                                    datasourcemember="AdvanceRequestTypeID" />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                name="txtShipmentOrderID"
-                                colspan="8"
-                                labelcolspan="4"
-                                readOnly={false}
-                                label="mã yêu cầu vận chuyển"
-                                placeholder="mã yêu cầu vận chuyển"
-                                controltype="InputControl"
-                                value=""
-                                maxSize={19}
-                                datasourcemember="ShipmentOrderID"
-                                disabled={false}
-                            />
-                        </div>
-                        <div className="col-md-12">
-                            <FormControl.TextBox
-                                name="txtAdvanceRequestTitle"
-                                colspan="10"
-                                labelcolspan="2"
-                                readOnly={false}
-                                disabled={false}
-                                label="tiêu đề yêu cầu tạm ứng"
-                                placeholder="tiêu đề yêu cầu tạm ứng"
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="AdvanceRequestTitle"
-                                validatonList={['required']}
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    name="txtShipmentOrderID"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    readOnly={false}
+                                    label="mã yêu cầu vận chuyển"
+                                    placeholder="mã yêu cầu vận chuyển"
+                                    controltype="InputControl"
+                                    value=""
+                                    maxSize={19}
+                                    datasourcemember="ShipmentOrderID"
+                                    disabled={false}
+                                />
+                            </div>
+                            <div className="col-md-12">
+                                <FormControl.TextBox
+                                    name="txtAdvanceRequestTitle"
+                                    colspan="10"
+                                    labelcolspan="2"
+                                    readOnly={false}
+                                    disabled={false}
+                                    label="tiêu đề yêu cầu tạm ứng"
+                                    placeholder="tiêu đề yêu cầu tạm ứng"
+                                    controltype="InputControl"
+                                    value=""
+                                    datasourcemember="AdvanceRequestTitle"
+                                    validatonList={['required']}
+                                />
+                            </div>
 
-                        <div className="col-md-12">
-                            <FormControl.TextArea
-                                labelcolspan={2}
-                                colspan={10}
-                                name="txtDescription"
-                                label="Mô tả"
-                                placeholder="Mô tả"
-                                datasourcemember="Description"
-                                controltype="InputControl"
-                                rows={6}
-                                maxSize={500}
-                                classNameCustom="customcontrol"
-                                readOnly={this.state.IsSystem}
-                                disabled={this.state.IsSystem}
-                            />
-                        </div>
+                            <div className="col-md-12">
+                                <FormControl.TextArea
+                                    labelcolspan={2}
+                                    colspan={10}
+                                    name="txtDescription"
+                                    label="Mô tả"
+                                    placeholder="Mô tả"
+                                    datasourcemember="Description"
+                                    controltype="InputControl"
+                                    rows={6}
+                                    maxSize={500}
+                                    classNameCustom="customcontrol"
+                                    readOnly={this.state.IsSystem}
+                                    disabled={this.state.IsSystem}
+                                />
+                            </div>
+                            <div className="col-md-6">
+                                <FormControl.CheckBox
+                                    label="hệ thống"
+                                    name="chkIsSystem"
+                                    datasourcemember="IsSystem"
+                                    controltype="InputControl"
+                                    colspan={8}
+                                    labelcolspan={4}
+                                    value={false}
+                                    classNameCustom="customCheckbox"
+                                />
+                            </div>
 
-                        {/* <div className="col-md-6">
-                            <FormControl.CheckBox
-                                label="kích hoạt"
-                                name="chkIsActived"
-                                datasourcemember="IsActived"
-                                controltype="InputControl"
-                                colspan={10}
-                                labelcolspan={2}
-                                value={true}
-                                classNameCustom="customCheckbox"
-                                readOnly={this.state.IsSystem}
-                                disabled={this.state.IsSystem}
-                            />
-                        </div> */}
+                            {
+                                errorAdvanceRequestDetail != '' ?
+                                    <div className="col-md-12 errorAdvanceRequestDetail">
+                                        <p>{this.state.errorAdvanceRequestDetail}</p>
+                                    </div>
+                                    : <div></div>
+                            }
 
-                        <div className="col-md-6">
-                            <FormControl.CheckBox
-                                label="hệ thống"
-                                name="chkIsSystem"
-                                datasourcemember="IsSystem"
-                                controltype="InputControl"
-                                colspan={8}
-                                labelcolspan={4}
-                                value={false}
-                                classNameCustom="customCheckbox"
+                            <AdvanceRequestDetailNew
+                                AdvanceRequestDetail={this.state.gridDataSource}
+                                onValueChangeGrid={this.handleInputChangeGrid.bind(this)}
                             />
+
                         </div>
-                        
-                    </div>
-                </FormContainer>
-            </React.Fragment>
+                    </FormContainer>
+                </React.Fragment>
             );
         }
         return (

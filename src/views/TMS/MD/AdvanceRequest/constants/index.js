@@ -1,6 +1,7 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/AdvanceRequest/Search";
 export const LoadAPIPath = "api/AdvanceRequest/Load";
+export const LoadLoadWebAPIPath = "api/AdvanceRequest/LoadWeb";
 export const AddAPIPath = "api/AdvanceRequest/InsertAdvanceRequest";
 export const UpdateAPIPath = "api/AdvanceRequest/Update";
 export const DeleteAPIPath = "api/AdvanceRequest/Delete";

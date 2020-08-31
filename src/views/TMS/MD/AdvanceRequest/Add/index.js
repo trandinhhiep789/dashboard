@@ -62,11 +62,7 @@ class AddCom extends React.Component {
         );
     }
     handleSubmit(formData, MLObject) {
-        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList
-
         var msgTotal = MLObject.AdvanceRequestDetailList.reduce(function (prev, cur) {
             return prev + cur.Quantity;
         }, 0);
@@ -209,7 +205,7 @@ class AddCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-
+        const { errorAdvanceRequestDetail } = this.state;
         if (this.state.IsLoadDataComplete) {
 
             return (
@@ -341,7 +337,14 @@ class AddCom extends React.Component {
                                     classNameCustom="customCheckbox"
                                 />
                             </div>
-                            <label>{this.state.errorAdvanceRequestDetail}</label>
+                            {
+                                errorAdvanceRequestDetail != '' ?
+                                    <div className="col-md-12 errorAdvanceRequestDetail">
+                                        <p>{this.state.errorAdvanceRequestDetail}</p>
+                                    </div> 
+                                : <div></div>
+                            }
+
                             <AdvanceRequestDetailNew
                                 AdvanceRequestDetail={this.state.gridDataSource}
                                 onValueChangeGrid={this.handleInputChangeGrid.bind(this)}

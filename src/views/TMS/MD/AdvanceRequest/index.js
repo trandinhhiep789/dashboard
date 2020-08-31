@@ -23,7 +23,7 @@ class AdvanceRequestCom extends React.Component {
                 <Route exact path="/AdvanceRequest" component={Search} />
                 <Route exact path="/AdvanceRequest/Add" component={Add} />
                 <Route exact path="/AdvanceRequest/Edit/:id" component={Edit} />
-                <Route exact path="/AdvanceRequest/EditNew/:id" component={EditNew} />
+                {/* <Route exact path="/AdvanceRequest/EditNew/:id" component={EditNew} /> */}
                 <Route path="*" component={NotFound} />
             </Switch>
         );

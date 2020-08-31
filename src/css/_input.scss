@@ -291,3 +291,9 @@ textarea {
         padding: 0;
     }
 }
+
+.ant-input-number-disabled{
+    .ant-input-number-input{
+        background: #f2f2f2;
+    }
+}
