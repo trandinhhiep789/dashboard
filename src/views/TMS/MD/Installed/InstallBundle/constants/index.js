@@ -105,7 +105,9 @@ export const AddElementList = [
         loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
         valuemember: "PartnerID",
         nameMember: "PartnerName",
-        OrderIndex:4
+        OrderIndex:4,
+        filterValue:2,
+        filterobj:"PartnerTypeID"
     },
     {
         type: "TextArea",
@@ -199,7 +201,8 @@ export const EditElementList = [
         loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
         valuemember: "PartnerID",
         nameMember: "PartnerName",
-       
+        filterValue:2,
+        filterobj:"PartnerTypeID",
         OrderIndex:4
     },
     {
