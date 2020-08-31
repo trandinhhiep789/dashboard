@@ -19,6 +19,9 @@ class InputGridCellCom extends Component {
         this.previewMedia = this.previewMedia.bind(this);
         this.handleInputFocus = this.handleInputFocus.bind(this);
     }
+    
+    
+    
 
     componentDidMount() {
         const validatonDisabled = this.props.isDisabled;
@@ -27,6 +30,7 @@ class InputGridCellCom extends Component {
                 IsDisabled: true
             })
         }
+        
 
         if (this.props.type == "combobox" || this.props.type == "comboboxCus") {
             let listOption = [];
@@ -78,6 +82,12 @@ class InputGridCellCom extends Component {
             }
             else {
                 listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                listOption.push()
+                if(this.props.listoption != undefined && this.props.listoption.length > 0 ){
+                    this.props.listoption.map((item)=>{
+                        listOption.push({ value: item.value, label: item.label })
+                    })
+                }
                 this.setState({ Listoption: listOption });
             }
             //console.log("FormElement listOption 2: ", listOption)
