@@ -171,6 +171,7 @@ class InputGridCellCom extends Component {
     }
 
     validateInput(e) {
+        console.log("this.props", this.props)
         const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
         let inputvalue = e.target.value;
         // if (e.target.type == 'checkbox') {
@@ -183,9 +184,10 @@ class InputGridCellCom extends Component {
         let elementdata = { Name: inputname, Value: inputvalue, IsChecked: ischecked, HasChanged: true };
         let isVavalidatonError = false;
         let validationErrorMessage = "";
+        const objItemValidation = { labelError: undefined }
         if (this.props.validatonList != null) {
             if (this.props.validatonList.length > 0) {
-                const validation = ValidationField(this.props.validatonList, elementdata.Value, this.props.label)
+                const validation = ValidationField(this.props.validatonList, elementdata.Value, this.props.label,objItemValidation )
                 if (validation.IsError) {
                     this.setState({ ValidationError: validation.Message });
                     isVavalidatonError = true;
