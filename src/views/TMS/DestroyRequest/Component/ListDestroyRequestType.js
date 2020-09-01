@@ -26,7 +26,9 @@ class ListDestroyRequestTypeCom extends Component {
             IsCallAPIError: false,
             IsCloseForm: false,
             DestroyRequestType: '',
-            MessageError: ''
+            RequestStoreID: '',
+            MessageError: '',
+            MessageErrorRequestStore: ''
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -52,18 +54,35 @@ class ListDestroyRequestTypeCom extends Component {
 
     handleOnValueChange(name, value) {
         console.log("handleOnValueChange", name, value)
-        if (value > 0) {
-            this.setState({
-                DestroyRequestType: value,
-                MessageError: ''
-            })
+        if (name == 'cboRequestStore') {
+            if (value > 0) {
+                this.setState({
+                    RequestStoreID: value,
+                    MessageErrorRequestStore: ''
+                })
+            }
+            else {
+                this.setState({
+                    RequestStoreID: value,
+                    MessageErrorRequestStore: 'Vui lòng chọn kho yêu cầu',
+                })
+            }
         }
-        else {
-            this.setState({
-                DestroyRequestType: value,
-                MessageError: 'Vui lòng chọn loại yêu cầu hủy vật tư',
-            })
+        if (name == 'DestroyRequestTypeID') {
+            if (value > 0) {
+                this.setState({
+                    DestroyRequestType: value,
+                    MessageError: ''
+                })
+            }
+            else {
+                this.setState({
+                    DestroyRequestType: value,
+                    MessageError: 'Vui lòng chọn loại yêu cầu hủy vật tư',
+                })
+            }
         }
+
 
     }
 
@@ -72,24 +91,32 @@ class ListDestroyRequestTypeCom extends Component {
     }
 
     handleSubmit = () => {
-        const { DestroyRequestType } = this.state;
-        if (DestroyRequestType > 0) {
+        const { DestroyRequestType, RequestStoreID } = this.state;
+        if (DestroyRequestType > 0 && RequestStoreID > 0) {
             this.setState({
                 MessageError: ''
             })
             this.props.history.push(AddLink, {
-                DestroyRequestTypeID: DestroyRequestType
+                DestroyRequestTypeID: DestroyRequestType,
+                RequestStoreID: RequestStoreID
             })
         }
         else {
-            this.setState({
-                MessageError: 'Vui lòng chọn loại yêu cầu hủy vật tư',
-            })
+            if (DestroyRequestType < 0 || DestroyRequestType == "") {
+                this.setState({
+                    MessageError: 'Vui lòng chọn loại yêu cầu hủy vật tư',
+                })
+            }
+            if (RequestStoreID < 0 || RequestStoreID == "") {
+                this.setState({
+                    MessageErrorRequestStore: 'Vui lòng chọn kho yêu cầu',
+                })
+            }
+
         }
     }
 
     render() {
-        console.log("this.state.DestroyRequestType", this.state.DestroyRequestType)
         return (
             <div className="card modalForm">
                 <div className="card-body">
@@ -112,8 +139,29 @@ class ListDestroyRequestTypeCom extends Component {
                                 placeholder="---Vui lòng chọn---"
                                 validationErrorMessage={this.state.MessageError}
                                 isMultiSelect={false}
+                                validatonList={["Comborequired"]}
                             //disabled={}
                             />
+                        </div>
+                        <div className="col-md-12">
+
+                            <FormControl.FormControlComboBox
+                                name="cboRequestStore"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="kho yêu cầu"
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isautoloaditemfromcache={true}
+                                onValueChange={this.handleOnValueChange}
+                                loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
+                                valuemember="StoreID"
+                                nameMember="StoreName"
+                                controltype="InputControl"
+                                value={this.state.RequestStoreID}
+                                listoption={null}
+                                validationErrorMessage={this.state.MessageErrorRequestStore}
+                                datasourcemember="StoreID" />
                         </div>
                     </div>
                 </div>

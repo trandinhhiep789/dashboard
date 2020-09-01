@@ -44,7 +44,41 @@ export const DetailAPIPath = [
 ];
 
 const dtFromdate = new Date();
-dtFromdate.setDate(new Date().getDate() - 365);
+dtFromdate.setDate(new Date().getDate() - 30);
+
+export const InitSearchParams = [
+
+
+    {
+        SearchKey: "@Keyword",
+        SearchValue: ""
+    },
+    {
+        SearchKey: "@DESTROYREQUESTTYPEID",
+        SearchValue: "-1"
+    },
+    {
+        SearchKey: "@REQUESTSTOREID",
+        SearchValue: "-1"
+    },
+    {
+        SearchKey: "@FROMDATE",
+        SearchValue: dtFromdate
+    },
+    {
+        SearchKey: "@TODATE",
+        SearchValue: new Date()
+    },
+    {
+        SearchKey: "@ISREVIEWED",
+        SearchValue: "-1"
+    },
+    {
+        SearchKey: "@ISOUTPUT",
+        SearchValue: "-1"
+    }
+
+];
 
 export const SearchMLObjectDefinition = [
     {
@@ -53,29 +87,34 @@ export const SearchMLObjectDefinition = [
         BindControlName: "txtKeyword"
     },
     {
-        Name: "ServiceTypeID",
+        Name: "DestroyRequestTypeID",
         DefaultValue: "",
-        BindControlName: "cbServiceTypeID"
+        BindControlName: "cbDestroyRequestTypeID"
     },
     {
-        Name: "AreaID",
+        Name: "RequestStoreID",
         DefaultValue: "",
-        BindControlName: "cbAreaID"
+        BindControlName: "cbRequestStoreID"
     },
     {
-        Name: "SignedDate",
+        Name: "FromDate",
         DefaultValue: "",
-        BindControlName: "dtSignedDate"
+        BindControlName: "dtFromDate"
     },
     {
-        Name: "ExpiredDate",
+        Name: "ToDate",
         DefaultValue: "",
-        BindControlName: "dtExpiredDate"
+        BindControlName: "dtToDate"
     },
     {
-        Name: "ServiceStatusID",
+        Name: "IsreViewed",
         DefaultValue: "",
-        BindControlName: "cbServiceStatusID"
+        BindControlName: "cbIsreViewed"
+    },
+    {
+        Name: "IsOutput",
+        DefaultValue: "",
+        BindControlName: "cbIsOutput"
     },
 ];
 
@@ -92,8 +131,8 @@ export const SearchElementList = [
     },
     {
         type: "ComboBox",
-        name: "cbServiceTypeID",
-        DataSourceMember: "ServiceTypeID",
+        name: "cbDestroyRequestTypeID",
+        DataSourceMember: "DestroyRequestTypeID",
         label: "Loại yêu cầu hủy vật tư",
         colspan: 2,
         value: -1,
@@ -101,15 +140,15 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SERVICETYPE",
-        ValueMember: "ServiceTypeID",
-        NameMember: "ServiceTypeName",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.DESTROYREQUESTTYPE",
+        ValueMember: "DestroyRequestTypeID",
+        NameMember: "DestroyRequestTypeName",
 
     },
     {
         type: "ComboBox",
-        name: "cbAreaID",
-        DataSourceMember: "AreaID",
+        name: "cbRequestStoreID",
+        DataSourceMember: "RequestStoreID",
         label: "Kho yêu cầu",
         colspan: 2,
         value: -1,
@@ -117,15 +156,15 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREA",
-        ValueMember: "AreaID",
-        NameMember: "AreaName"
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.USER_COOSTORE_BYUSER",
+        ValueMember: "StoreID",
+        NameMember: "StoreName"
 
     },
     {
         type: "Datetime",
-        name: "dtSignedDate",
-        DataSourceMember: "SignedDate",
+        name: "dtFromDate",
+        DataSourceMember: "FromDate",
         label: "Từ ngày",
         value: dtFromdate,
         timeFormat: false,
@@ -134,8 +173,8 @@ export const SearchElementList = [
     },
     {
         type: "Datetime",
-        name: "dtExpiredDate",
-        DataSourceMember: "ExpiredDate",
+        name: "dtToDate",
+        DataSourceMember: "ToDate",
         label: "Đến ngày",
         value: new Date(),
         timeFormat: false,
@@ -144,8 +183,8 @@ export const SearchElementList = [
     },
     {
         type: "ComboBox",
-        name: "cbServiceStatusID",
-        DataSourceMember: "ServiceStatusID",
+        name: "cbIsreViewed",
+        DataSourceMember: "IsreViewed",
         label: "Trạng thái duyệt",
         colspan: 2,
         value: -1,
@@ -156,14 +195,13 @@ export const SearchElementList = [
             { value: 1, label: 'Hết hạn' },
             { value: 2, label: 'Còn hạn' },
         ],
-        ValueMember: "ServiceStatusID",
-        NameMember: "ServiceStatusName"
+       
 
     },
     {
         type: "ComboBox",
-        name: "cbServiceStatusID",
-        DataSourceMember: "ServiceStatusID",
+        name: "cbIsOutput",
+        DataSourceMember: "IsOutput",
         label: "Trạng thái xuất",
         colspan: 2,
         value: -1,
@@ -171,11 +209,10 @@ export const SearchElementList = [
         placeholder: "--Tất cả--",
         listoption: [
             { value: -1, label: '--Tất cả--' },
-            { value: 1, label: 'Hết hạn' },
-            { value: 2, label: 'Còn hạn' },
+            { value: 1, label: 'Chưa Xuất hủy vật tư' },
+            { value: 2, label: 'Đã xuất hủy vật tư' },
         ],
-        ValueMember: "ServiceStatusID",
-        NameMember: "ServiceStatusName"
+ 
 
     },
 ];
@@ -185,44 +222,44 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "ServiceAgreementID",
+        DataSourceMember: "DestroyRequestID",
         Width: 60
     },
     {
-        Name: "ServiceAgreementID",
+        Name: "DestroyRequestID",
         Type: "texttolink",
         Caption: "Mã yêu cầu",
-        DataSourceMember: "ServiceAgreementID",
-        Link: "/ServiceAgreement/Detail/",
+        DataSourceMember: "DestroyRequestID",
+        Link: "/DestroyRequest/Detail/",
         Width: 140
     },
     {
-        Name: "PartnerName",
+        Name: "DestroyRequestTypeName",
         Type: "text",
         Caption: "Loại yêu cầu hủy vật tư",
-        DataSourceMember: "PartnerName",
+        DataSourceMember: "DestroyRequestTypeName",
         Width: 300
     },
     {
-        Name: "ServiceTypeName",
+        Name: "StoreName",
         Type: "text",
         Caption: "Kho yêu cầu",
-        DataSourceMember: "ServiceTypeName",
+        DataSourceMember: "StoreName",
         Width: 180
     },
     {
-        Name: "SignedDate",
+        Name: "RequestDate",
         Type: "date",
         Caption: "Ngày yêu cầu",
-        DataSourceMember: "SignedDate",
+        DataSourceMember: "RequestDate",
         Width: 150
     },
 
     {
-        Name: "ExtendLable",
+        Name: "RequestUser",
         Type: "text",
         Caption: "Người yêu cầu",
-        DataSourceMember: "ExtendLable",
+        DataSourceMember: "RequestUser",
         Width: 150
     },
     {
@@ -243,9 +280,9 @@ export const DataGridColumnList = [
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "ServiceAgreementID",
+        DataSourceMember: "DestroyRequestID",
         Width: 100,
-        Link: "/ServiceAgreement/Edit/",
+        Link: "/DestroyRequest/Edit/",
         LinkText: "Chỉnh sửa"
     },
 ];
@@ -283,8 +320,10 @@ export const InputDestroyRequestDetailColumnList = [
         Name: "Quantity",
         Type: "textbox",
         Caption: "Số lượng hủy",
+        labelError: 'aaa',
         DataSourceMember: "Quantity",
         Width: 200,
+        validatonList: ["number"],
     },
    
 ];
@@ -358,10 +397,10 @@ export const MLObjectDefinition = [
         DataSourceMember: "DestroyRequestTitle"
     },
     {
-        Name: "RequestStore",
+        Name: "RequestStoreID",
         DefaultValue: "",
         BindControlName: "cboRequestStore",
-        DataSourceMember: "RequestStore"
+        DataSourceMember: "RequestStoreID"
     },
     {
         Name: "RequestDate",
@@ -392,10 +431,17 @@ export const MLObjectDefinition = [
 
 
 export const GridDestroyRequestRLMLObjectDefinition = [
+    
+    {
+        Name: "ReviewLevelID",
+        DefaultValue: "",
+        BindControlName: "ReviewLevelID",
+        DataSourceMember: "ReviewLevelID"
+    },
     {
         Name: "ReviewLevelName",
         DefaultValue: "",
-        BindControlName: "txtReviewLevelName",
+        BindControlName: "ReviewLevelName",
         DataSourceMember: "ReviewLevelName"
     },
     {
@@ -409,7 +455,7 @@ export const GridDestroyRequestRLMLObjectDefinition = [
 
 export const InputDestroyRequestRLColumnList = [
     {
-        Name: "txtReviewLevelName",
+        Name: "ReviewLevelName",
         Type: "text",
         Caption: "Mức duyệt",
         DataSourceMember: "ReviewLevelName",
@@ -425,7 +471,8 @@ export const InputDestroyRequestRLColumnList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SERVICETYPE",
         ValueMember: "ServiceTypeID",
         NameMember: "ServiceTypeName",
-        listoption:[]
+        listoption:[],
+        validatonList: ["Comborequired"],
     },
    
 ];

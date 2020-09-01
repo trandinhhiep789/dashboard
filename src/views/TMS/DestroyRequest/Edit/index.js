@@ -26,6 +26,8 @@ class EditCom extends React.Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.callLoadData = this.callLoadData.bind(this);
+
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -44,7 +46,7 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-      
+
 
     }
 
@@ -65,7 +67,11 @@ class EditCom extends React.Component {
     }
 
     callLoadData(id) {
-     
+
+    }
+
+    handleChange(formData, MLObject) {
+        console.log('handleSubmit', formData, MLObject)
     }
 
 
@@ -75,13 +81,132 @@ class EditCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-      
-        return (
-            <React.Fragment>
-                edit
-            </React.Fragment>
-        )
+        if (this.state.IsLoadDataComplete) {
+            return (
+                <React.Fragment>
+                    <FormContainer
+                        FormName={TitleFormEdit}
+                        MLObjectDefinition={MLObjectDefinition}
+                        dataSource={this.state.DataSource}
+                        listelement={[]}
+                        BackLink={BackLink}
+                        onSubmit={this.handleSubmit}
+                        onchange={this.handleChange.bind(this)}
+                    >
+                    </FormContainer>
 
+                    <div className="row">
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    name="txtDestroyRequestID"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    readOnly={false}
+                                    label="mã yêu cầu"
+                                    placeholder="Mã yêu cầu"
+                                    controltype="InputControl"
+                                    value=""
+                                    datasourcemember="DestroyRequestID"
+                                    validatonList={['required']}
+                                />
+                            </div>
+
+                            <div className="col-md-6">
+                                <FormControl.FormControlComboBox
+                                    name="cboDestroyRequestType"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    label="loại yêu cầu hủy vật tư"
+                                    validatonList={["Comborequired"]}
+                                    placeholder="-- Vui lòng chọn --"
+                                    isautoloaditemfromcache={true}
+                                    disabled={true}
+                                    loaditemcachekeyid="ERPCOMMONCACHE.DESTROYREQUESTTYPE"
+                                    valuemember="DestroyRequestTypeID"
+                                    nameMember="DestroyRequestTypeName"
+                                    controltype="InputControl"
+                                    value={this.props.location.state.DestroyRequestTypeID}
+                                    listoption={null}
+                                    datasourcemember="DestroyRequestTypeID" />
+
+                            </div>
+
+                            <div className="col-md-12">
+                                <FormControl.TextBox
+                                    name="txtDestroyRequestTitle"
+                                    labelcolspan={2}
+                                    colspan={10}
+                                    readOnly={false}
+                                    label="tiêu đề"
+                                    placeholder="Tiêu đề"
+                                    controltype="InputControl"
+                                    value=""
+                                    datasourcemember="DestroyRequestTitle"
+                                    validatonList={['required']}
+                                    classNameCustom="customcontrol"
+                                />
+                            </div>
+
+                            <div className="col-md-6">
+                                <FormControl.FormControlComboBox
+                                    name="cboRequestStore"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    label="kho yêu cầu"
+                                    disabled={true}
+                                    validatonList={["Comborequired"]}
+                                    placeholder="-- Vui lòng chọn --"
+                                    isautoloaditemfromcache={true}
+                                    loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
+                                    valuemember="StoreID"
+                                    nameMember="StoreName"
+                                    controltype="InputControl"
+                                    value={this.props.location.state.RequestStoreID}
+                                    listoption={null}
+                                    datasourcemember="RequestStoreID" />
+
+                            </div>
+
+                            <div className="col-md-6">
+
+                                <FormControl.FormControlDatetimeNew
+                                    name="dtRequestDate"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    readOnly={true}
+                                    showTime={false}
+                                    timeFormat={false}
+                                    dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
+                                    label="Ngày yêu cầu"
+                                    placeholder={formatDate(currentDate, true)}
+                                    controltype="InputControl"
+                                    value=""
+                                    validatonList={["required"]}
+                                    datasourcemember="RequestDate"
+                                />
+                            </div>
+
+                            <div className="col-md-12">
+                                <FormControl.TextArea
+                                    labelcolspan={2}
+                                    colspan={10}
+                                    name="txtDescription"
+                                    label="Mô tả"
+                                    placeholder="Mô tả"
+                                    datasourcemember="Description"
+                                    controltype="InputControl"
+                                    rows={6}
+                                    maxSize={500}
+                                    classNameCustom="customcontrol"
+                                />
+                            </div>
+                        </div>
+                </React.Fragment>
+            )
+    
+        }
+        return <label>Đang nạp dữ liệu...</label>;
+        
     }
 }
 
