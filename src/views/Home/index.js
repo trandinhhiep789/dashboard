@@ -71,11 +71,10 @@ import ApiCallLog from "../TMS/MD/ApiCallLog";
 import AdvanceRequest from "../TMS/MD/AdvanceRequest";
 import AdvanceRequestType from "../TMS/MD/AdvanceRequestType";
 import DestroyRequestType from "../TMS/MD/DestroyRequestType";
-
 import LimitType from "../TMS/MD/Limit/LimitType";
 import UserLimit from "../TMS/MD/Limit/UserLimit";
 import DestroyRequest from "../TMS/DestroyRequest";
-
+import InventoryRequest from "../TMS/InventoryRequest";
 
 import NotFound from '../NotFound'
 import InventoryRequestType from "../TMS/MD/InventoryRequestType";
@@ -225,18 +224,12 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/SkillRank" component={SkillRank} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserSkill" component={UserSkill} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/MaterialGroup" component={MaterialGroup} isLoggedIn={isLoggedIn} />
-
                                 <PrivateRoute path="/LimitType" component={LimitType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserLimit" component={UserLimit} isLoggedIn={isLoggedIn} />
-
-                                
-
                                 <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} />
-                                
-
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentOrderControl" component={ShipmentOrderControl} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Maps" component={MapContainer} isLoggedIn={isLoggedIn} />
@@ -250,15 +243,12 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/AdvanceRequestType" component={AdvanceRequestType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/DestroyRequestType" component={DestroyRequestType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/InventoryRequestType" component={InventoryRequestType} isLoggedIn={isLoggedIn} />
-
                                 <PrivateRoute path="/WorkingPlan" component={WorkingPlan} isLoggedIn={isLoggedIn} />
-
                                 <PrivateRoute path="/PartnerPayable" component={PartnerPayable} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Compute" component={Compute} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerPayableDetail" component={PartnerPayableDetail} isLoggedIn={isLoggedIn} />
-
-
                                 <PrivateRoute path="/DestroyRequest" component={DestroyRequest} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/InventoryRequest" component={InventoryRequest} isLoggedIn={isLoggedIn} />
                                 
                                 
                                 

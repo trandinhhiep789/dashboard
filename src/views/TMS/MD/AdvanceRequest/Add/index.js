@@ -6,6 +6,7 @@ import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../../common/components/Modal";
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import {
     APIHostName,
     AddAPIPath,
@@ -79,7 +80,8 @@ class AddCom extends React.Component {
             this.setState({ errorAdvanceRequestDetail: "" });
             this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: !apiResult.IsError });
-                this.showMessage(apiResult.Message);
+                let strMessage = ReactHtmlParser(apiResult.Message);
+                this.showMessage(strMessage);
             });
 
         }
