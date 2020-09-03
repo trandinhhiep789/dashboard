@@ -107,6 +107,17 @@ export const AddElementList = [
         validatonList: []
     },
     {
+        type: "checkbox",
+        name: "IsAdvanceByShipmentOrder",
+        label: "Tạm ứng theo vận đơn",
+        value: 0,
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        readonly: false,
+        validatonList: []
+    },
+    {
         type: "select",
         name: "InstallBundleID",
         label: "gói lắp đặt cần tạm ứng",
@@ -241,6 +252,18 @@ export const EditElementList = [
         validatonList: []
     },
     {
+        type: "checkbox",
+        name: "IsAdvanceByShipmentOrder",
+        label: "Tạm ứng theo vận đơn",
+        value: 0,
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "IsAdvanceByShipmentOrder",
+        readonly: false,
+        validatonList: []
+    },
+    {
         type: "select",
         name: "InstallBundleID",
         label: "gói lắp đặt cần tạm ứng",
@@ -347,6 +370,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "IsAutoOutput",
         DataSourceMember: "IsAutoOutput"
+    },
+    {
+        Name: "IsAdvanceByShipmentOrder",
+        DefaultValue: "",
+        BindControlName: "IsAdvanceByShipmentOrder",
+        DataSourceMember: "IsAdvanceByShipmentOrder"
     },
     {
         Name: "InstallBundleID",
