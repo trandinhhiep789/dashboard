@@ -64,7 +64,7 @@ class AddCom extends React.Component {
         );
     }
     handleSubmit(formData, MLObject) {
-        MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList.filter(n => n.Quantity > 0);
+        MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList;
         var msgTotal = MLObject.AdvanceRequestDetailList.reduce(function (prev, cur) {
             return prev + cur.Quantity;
         }, 0);
