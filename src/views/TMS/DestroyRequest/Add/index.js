@@ -20,7 +20,8 @@ import {
     LoadAPIByRequestTypeIDPath,
     InputDestroyRequestRLColumnList,
     GridDestroyRequestRLMLObjectDefinition,
-    LoadUserNameAPIByStoreIDPath
+    LoadUserNameAPIByStoreIDPath,
+    LoadAPIByDestroyRequestTypeIDPath
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -40,6 +41,7 @@ class AddCom extends React.Component {
         this.GetUserByStoreID = this.GetUserByStoreID.bind(this);
         this.setValueCombobox = this.setValueCombobox.bind(this);
         this.valueChangeInputGrid = this.valueChangeInputGrid.bind(this);
+        this.getDataDestroyRequestRLByDestroyRequestType = this.getDataDestroyRequestRLByDestroyRequestType.bind(this);
 
         this.state = {
             IsCallAPIError: false,
@@ -60,7 +62,6 @@ class AddCom extends React.Component {
     }
 
     componentDidMount() {
-        console.log("add", this.props, this.props.location.state.DestroyRequestTypeID)
         this.setState({
             DestroyRequestTypeID: this.props.location.state.DestroyRequestTypeID,
             RequestStoreID: this.props.location.state.RequestStoreID,
@@ -69,23 +70,27 @@ class AddCom extends React.Component {
         this.props.updatePagePath(AddPagePath);
         this.GetDataByRequestTypeID(this.props.location.state.DestroyRequestTypeID);
         this.GetUserByStoreID(this.props.location.state.RequestStoreID);
-        this.getCacheDesRVL();
+        this.getDataDestroyRequestRLByDestroyRequestType(this.props.location.state.DestroyRequestTypeID);
     }
 
-    getCacheDesRVL() {
-        this.props.callGetCache(ERPCOMMONCACHE_DES_RVLEVEL).then((result) => {
 
-            if (!result.IsError) {
+    getDataDestroyRequestRLByDestroyRequestType(DestroyRequestTypeID) {
+        this.props.callFetchAPI(APIHostName, LoadAPIByDestroyRequestTypeIDPath, DestroyRequestTypeID).then(apiResult => {
+            // console.log("222",apiResult, DestroyRequestTypeID)
+            if (apiResult.IsError) {
                 this.setState({
-                    DestroyRequestRL: result.ResultObject.CacheData
-                })
+                    IsCallAPIError: !apiResult.IsError
+                });
+                //this.showMessage(apiResult.Message);
             }
             else {
-                this.showMessage(result.Message)
+
+                this.setState({
+                    DestroyRequestRL: apiResult.ResultObject,
+                });
             }
         });
     }
-
     // componentWillReceiveProps(nextProps) {
     //     if (JSON.stringify(this.props.location.state.DestroyRequestTypeID) !== JSON.stringify(nextProps.location.state.DestroyRequestTypeID)) {
     //         this.setState({
@@ -96,7 +101,7 @@ class AddCom extends React.Component {
 
     GetDataByRequestTypeID(DestroyRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByRequestTypeIDPath, DestroyRequestTypeID).then(apiResult => {
-            // console.log('byID', apiResult)
+            console.log("333", DestroyRequestTypeID, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -115,10 +120,11 @@ class AddCom extends React.Component {
 
     GetUserByStoreID(StoreID) {
         this.props.callFetchAPI(APIHostName, LoadUserNameAPIByStoreIDPath, StoreID).then(apiResult => {
+            console.log('GetUserByStoreID', apiResult)
             let listOption = []
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
-                    apiResult.ResultObject.map((item) => {
+                    apiResult.ResultObject.map((item, index) => {
                         listOption.push({ value: item.UserName, label: item.FullName })
                     })
                 }
@@ -140,6 +146,7 @@ class AddCom extends React.Component {
                 objElement.value = -1;
             }
         }.bind(this));
+
         this.setState({
             InputDestroyRequestRLColumnList: _InputDestroyRequestRLColumnList,
             IsLoadDataComplete: true
@@ -147,14 +154,44 @@ class AddCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        console.log("handleSubmit", formData, MLObject);
         const { isError } = this.state;
-        if (!isError) {
+
+        if (isError == false) {
+            const ReviewLevel = MLObject.lstDestroyRequestReviewLevel.reduce(function (prev, cur) {
+                return cur.UserName;
+            }, 0);
+
+            const DestroyRequestDetail = MLObject.lstDestroyRequestDetail.filter((item, index) => {
+                if (item.Quantity != undefined && item.Quantity > 0) {
+                    return item;
+                }
+            });
+
+
+
+            if (ReviewLevel == undefined || ReviewLevel == 0) {
+                this.showMessage('Danh sách duyệt người chưa được chọn. Vui lòng kiểm tra lại.');
+                this.setState({
+                    IsCallAPIError: true,
+                })
+                return;
+            }
+            if (DestroyRequestDetail.length <= 0) {
+                this.showMessage('Danh sách vật tư chưa được chọn.');
+                this.setState({
+                    IsCallAPIError: true,
+                })
+                return;
+            }
+
+            MLObject.lstDestroyRequestDetail = DestroyRequestDetail;
+            MLObject.CurrentReviewLevelID = MLObject.lstDestroyRequestReviewLevel[0].ReviewLevelID;
+            console.log("MLObject", MLObject)
             this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 this.showMessage(apiResult.MessageDetail);
-
             });
+
         }
         else {
             this.showMessage('Thông tin nhập vào bị lỗi. Vui lòng kiểm tra lại.');
@@ -180,12 +217,13 @@ class AddCom extends React.Component {
     }
 
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
+        console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
         const { DestroyRequestDetail } = this.state;
-        let Quantity = DestroyRequestDetail[index].UsableQuantity;
-        let item = elementdata.Name + '_' + index;
-        if (!gridFormValidation[item].IsValidationError) {
-            if (elementdata.Name == 'Quantity') {
-                if (elementdata.Value > Quantity) {
+        if (elementdata.Name == 'Quantity') {
+            let Quantity = DestroyRequestDetail[index].UsableQuantity;
+            let item = elementdata.Name + '_' + index;
+            if (!gridFormValidation[item].IsValidationError) {
+                if (elementdata.Value > Quantity || elementdata.Value == 0) {
                     gridFormValidation[item].IsValidationError = true;
                     gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
                     this.setState({
@@ -193,23 +231,27 @@ class AddCom extends React.Component {
                         IsCallAPIError: true,
                     })
                 }
+                else {
+                    this.setState({
+                        isError: false,
+                        IsCallAPIError: false,
+                    })
+                }
+
+
             }
+        }
+        else {
             this.setState({
                 isError: false,
                 IsCallAPIError: false,
             })
         }
-        else {
-            this.setState({
-                isError: true,
-                IsCallAPIError: true,
-            })
-        }
-       
+
     }
 
     handleChange(formData, MLObject) {
-        console.log("handleChange", formData, MLObject)
+        // console.log("handleChange", formData, MLObject)
         if (formData.cboDestroyRequestType.Name == 'cboDestroyRequestType') {
             this.GetDataByRequestTypeID(formData.cboDestroyRequestType.value)
         }
@@ -226,7 +268,6 @@ class AddCom extends React.Component {
         let currentDate = new Date();
 
         const { DestroyRequestDetail, DestroyRequestRL, InputDestroyRequestRLColumnList, isError } = this.state;
-
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>

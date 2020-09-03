@@ -5,15 +5,21 @@ import { ModalManager } from "react-dynamic-modal";
 import FormContainer from "../../../../common/components/FormContainer";
 import { MessageModal } from "../../../../common/components/Modal";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
+import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
 import {
 
     TitleFormEdit,
     EditPagePath,
     BackLink,
     MLObjectDefinition,
-    LoadNewAPIPath,
+    LoadAPIPath,
     APIHostName,
-    UpdateAPIPath
+    UpdateAPIPath,
+    InputDestroyRequestDetailColumnList,
+    InputDestroyRequestRLColumnList,
+    GridMLObjectDefinition,
+    GridDestroyRequestRLMLObjectDefinition 
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -36,7 +42,9 @@ class EditCom extends React.Component {
             IsSystem: false,
             IsExtended: false,
             IsLiquidated: false,
-            IsDeposited: false
+            IsDeposited: false,
+            DestroyRequestDetail: [],
+            DestroyRequestRL: []
         };
     }
 
@@ -67,7 +75,25 @@ class EditCom extends React.Component {
     }
 
     callLoadData(id) {
+        console.log('callLoadData', id)
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            console.log("222", apiResult);
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
 
+                this.setState({
+                    DataSource: apiResult.ResultObject,
+                    IsLoadDataComplete: true,
+                    IsSystem: apiResult.ResultObject.IsSystem,
+
+                });
+            }
+        });
     }
 
     handleChange(formData, MLObject) {
@@ -81,6 +107,8 @@ class EditCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
+        let currentDate = new Date();
+        const { DestroyRequestDetail, DestroyRequestRL } = this.state;
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
@@ -93,15 +121,14 @@ class EditCom extends React.Component {
                         onSubmit={this.handleSubmit}
                         onchange={this.handleChange.bind(this)}
                     >
-                    </FormContainer>
 
-                    <div className="row">
+                        <div className="row">
                             <div className="col-md-6">
                                 <FormControl.TextBox
                                     name="txtDestroyRequestID"
                                     colspan="8"
                                     labelcolspan="4"
-                                    readOnly={false}
+                                    readOnly={true}
                                     label="mã yêu cầu"
                                     placeholder="Mã yêu cầu"
                                     controltype="InputControl"
@@ -120,12 +147,13 @@ class EditCom extends React.Component {
                                     validatonList={["Comborequired"]}
                                     placeholder="-- Vui lòng chọn --"
                                     isautoloaditemfromcache={true}
-                                    disabled={true}
+                                    disabled={this.state.IsSystem}
+                                    readOnly={this.state.IsSystem}
                                     loaditemcachekeyid="ERPCOMMONCACHE.DESTROYREQUESTTYPE"
                                     valuemember="DestroyRequestTypeID"
                                     nameMember="DestroyRequestTypeName"
                                     controltype="InputControl"
-                                    value={this.props.location.state.DestroyRequestTypeID}
+                                    value={""}
                                     listoption={null}
                                     datasourcemember="DestroyRequestTypeID" />
 
@@ -136,7 +164,8 @@ class EditCom extends React.Component {
                                     name="txtDestroyRequestTitle"
                                     labelcolspan={2}
                                     colspan={10}
-                                    readOnly={false}
+                                    disabled={this.state.IsSystem}
+                                    readOnly={this.state.IsSystem}
                                     label="tiêu đề"
                                     placeholder="Tiêu đề"
                                     controltype="InputControl"
@@ -153,7 +182,8 @@ class EditCom extends React.Component {
                                     colspan="8"
                                     labelcolspan="4"
                                     label="kho yêu cầu"
-                                    disabled={true}
+                                    disabled={this.state.IsSystem}
+                                    readOnly={this.state.IsSystem}
                                     validatonList={["Comborequired"]}
                                     placeholder="-- Vui lòng chọn --"
                                     isautoloaditemfromcache={true}
@@ -161,7 +191,7 @@ class EditCom extends React.Component {
                                     valuemember="StoreID"
                                     nameMember="StoreName"
                                     controltype="InputControl"
-                                    value={this.props.location.state.RequestStoreID}
+                                    value={""}
                                     listoption={null}
                                     datasourcemember="RequestStoreID" />
 
@@ -173,7 +203,8 @@ class EditCom extends React.Component {
                                     name="dtRequestDate"
                                     colspan="8"
                                     labelcolspan="4"
-                                    readOnly={true}
+                                    disabled={this.state.IsSystem}
+                                    readOnly={this.state.IsSystem}
                                     showTime={false}
                                     timeFormat={false}
                                     dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
@@ -198,15 +229,59 @@ class EditCom extends React.Component {
                                     rows={6}
                                     maxSize={500}
                                     classNameCustom="customcontrol"
+                                    readOnly={this.state.IsSystem}
+                                    disabled={this.state.IsSystem}
                                 />
                             </div>
                         </div>
+
+
+                        <div className="card">
+                            <div className="card-title group-card-title">
+                                <h4 className="title">Danh sách vật tư</h4>
+                            </div>
+                            <div className="card-body">
+                                <InputGrid
+                                    name="lstDestroyRequestDetail"
+                                    controltype="GridControl"
+                                    listColumn={InputDestroyRequestDetailColumnList}
+                                    dataSource={DestroyRequestDetail}
+                                    isHideHeaderToolbar={true}
+                                    MLObjectDefinition={GridMLObjectDefinition}
+                                    colspan="12"
+                                    onValueChangeInputGrid={this.valueChangeInputGrid}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="card">
+                            <div className="card-title group-card-title">
+                                <h4 className="title">Danh sách duyệt</h4>
+                            </div>
+                            <div className="card-body">
+                                <InputGrid
+                                    name="lstDestroyRequestReviewLevel"
+                                    controltype="GridControl"
+                                    listColumn={InputDestroyRequestRLColumnList}
+                                    dataSource={DestroyRequestRL}
+                                    isHideHeaderToolbar={true}
+                                    MLObjectDefinition={GridDestroyRequestRLMLObjectDefinition}
+                                    colspan="12"
+                                    onValueChangeInputGrid={this.valueChangeInputGrid}
+                                />
+                            </div>
+                        </div>
+
+
+                    </FormContainer>
+
+
                 </React.Fragment>
             )
-    
+
         }
         return <label>Đang nạp dữ liệu...</label>;
-        
+
     }
 }
 

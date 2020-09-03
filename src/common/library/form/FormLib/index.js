@@ -52,7 +52,7 @@ export function transform1To3Column(inputArray) {
 
 export function bindDataToControl(listElement, dataSource) {
     let listElement1 = listElement;
-    console.log("dataSource:", dataSource);
+   // console.log("dataSource:", dataSource);
     //console.log("listElement:", listElement)
     if (typeof dataSource != "undefined") {
         listElement1 = listElement.map((elementItem) => {

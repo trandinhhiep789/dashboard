@@ -4,11 +4,14 @@ export const LoadAPIPath = "api/DestroyRequest/Load";
 export const LoadNewAPIPath = "api/DestroyRequest/LoadInfoNew";
 export const AddAPIPath = "api/DestroyRequest/Add";
 export const UpdateAPIPath = "api/DestroyRequest/Update";
+export const UpdateOutputAPIPath = "api/DestroyRequest/UpdateOutput";
+
 export const DeleteNewAPIPath = "api/DestroyRequest/DeleteNew";
 export const DeleteAPIPath = "api/DestroyRequest/Delete";
 export const BackLink = "/DestroyRequest";
 export const AddLink = "/DestroyRequest/Add";
 export const LoadAPIByRequestTypeIDPath = "api/CurrentAdvanceDebt/GetListByRequestTypeID";
+export const LoadAPIByDestroyRequestTypeIDPath = "api/DestroyRequestType_ReviewLevel/LoadByDestroyRequestTypeID";
 export const LoadUserNameAPIByStoreIDPath = "api/DestroyRequestType_ReviewLevel_User/LoadByStoreID";
 export const AddLogAPIPath = "api/DestroyRequest/Add";
 export const IDSelectColumnName = "chkSelect";
@@ -320,10 +323,11 @@ export const InputDestroyRequestDetailColumnList = [
         Name: "Quantity",
         Type: "textbox",
         Caption: "Số lượng hủy",
-        labelError: 'aaa',
+        Value: '',
+        labelError: 'số lượng hủy',
         DataSourceMember: "Quantity",
         Width: 200,
-        validatonList: ["number"],
+        validatonList: [ "number"],
     },
    
 ];
@@ -446,7 +450,7 @@ export const GridDestroyRequestRLMLObjectDefinition = [
     },
     {
         Name: "UserName",
-        DefaultValue: "",
+        DefaultValue: "-1",
         BindControlName: "cboUserName",
         DataSourceMember: "UserName"
     },
@@ -476,3 +480,80 @@ export const InputDestroyRequestRLColumnList = [
     },
    
 ];
+
+export const GirdDestroyRequestDetailColumnList = [
+    {
+        Name: "MaterialGroupID",
+        Type: "text",
+        Caption: "Nhóm vật tư",
+        DataSourceMember: "MaterialGroupID",
+        Width: 150
+    },
+    {
+        Name: "ProductID",
+        Type: "text",
+        Caption: "Mã sản phẩm",
+        DataSourceMember: "ProductID",
+        Width: 150
+    },
+    {
+        Name: "ProductName",
+        Type: "text",
+        Caption: "Tên sản phẩm",
+        DataSourceMember: "ProductName",
+        Width: 150
+    },
+    {
+        Name: "UsableQuantity",
+        Type: "textNew",
+        Caption: "Số dư tạm ứng",
+        DataSourceMember: "UsableQuantity",
+        Width: 150
+    },
+    {
+        Name: "Quantity",
+        Type: "text",
+        Caption: "Số lượng hủy",
+        labelError: 'aaa',
+        DataSourceMember: "Quantity",
+        Width: 200,
+    },
+]
+
+export const GirdDestroyRequestRLColumnList=[
+    {
+        Name: "ReviewLevelName",
+        Type: "text",
+        Caption: "Mức duyệt",
+        DataSourceMember: "ReviewLevelName",
+        Width: 100
+    },
+    {
+        Name: "UserName",
+        Type: "text",
+        Caption: "Người duyệt",
+        DataSourceMember: "UserName",
+        Width: 100
+    },
+    {
+        Name: "ReviewStatus",
+        Type: "text",
+        Caption: "Trạng thái duyệt",
+        DataSourceMember: "ReviewStatus",
+        Width: 100
+    },
+    {
+        Name: "reViewedDate",
+        Type: "text",
+        Caption: "Ngày duyệt",
+        DataSourceMember: "reViewedDate",
+        Width: 100
+    },
+    {
+        Name: "reViewedNote",
+        Type: "text",
+        Caption: "Ghi chú duyệt",
+        DataSourceMember: "reViewedNote",
+        Width: 100
+    },
+]
