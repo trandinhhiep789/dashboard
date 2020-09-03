@@ -87,10 +87,10 @@ export const DataGridColumnList = [
         Width: 500
     },
     {
-        Name: "UserName",
+        Name: "FullName",
         Type: "text",
         Caption: "Người duyệt",
-        DataSourceMember: "UserName",
+        DataSourceMember: "FullName",
         Width: 500
     },
     
@@ -135,6 +135,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "UserName",
         DataSourceMember: "UserName"
+    },
+    {
+        Name: "FullName",
+        DefaultValue: "",
+        BindControlName: "FullName",
+        DataSourceMember: "FullName"
     },
     {
         Name: "CreatedDate",

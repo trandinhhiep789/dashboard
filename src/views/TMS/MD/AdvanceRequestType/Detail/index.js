@@ -17,6 +17,7 @@ import { callGetCache } from "../../../../../actions/cacheAction";
 import { format } from "date-fns";
 import { formatDate } from "../../../../../common/library/CommonLib";
 import AdvanceRequestType_Product from "../../AdvanceRequestType_Product";
+import AdvanceRequestType_SoType from "../../AdvanceRequestType_SoType";
 
 
 class DetailCom extends React.Component {
@@ -36,10 +37,10 @@ class DetailCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
         this.callLoadData();
-        
+
     }
 
-    callLoadData(){
+    callLoadData() {
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
             if (apiResult.IsError) {
@@ -57,7 +58,7 @@ class DetailCom extends React.Component {
         });
     }
 
-    onComponentChange(){
+    onComponentChange() {
         this.callLoadData();
     }
 
@@ -209,8 +210,16 @@ class DetailCom extends React.Component {
                     <AdvanceRequestType_Product
                         AdvanceRequestTypeID={this.props.match.params.id}
                         AdvanceRequestType_Product_DataSource={this.state.DataSource.ListAdvanceRequestType_Product ? this.state.DataSource.ListAdvanceRequestType_Product : []}
-                        onComponentChange = {this.onComponentChange}
+                        onComponentChange={this.onComponentChange}
                     />
+
+                    <br />
+                    <AdvanceRequestType_SoType
+                        AdvanceRequestTypeID={this.props.match.params.id}
+                        AdvanceRequestType_SoType_DataSource={this.state.DataSource.ListAdvanceRequestType_SoType ? this.state.DataSource.ListAdvanceRequestType_SoType : []}
+                        onComponentChange={this.onComponentChange}
+                    />
+
                 </React.Fragment >
             );
         }
