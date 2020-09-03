@@ -494,6 +494,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'InventoryRequest',
+                MenuTitle: 'Danh sách yêu cầu kiểm kê',
+                LinkTo: '/InventoryRequest',
+                MenuIcon: '',
+                SubMenu: []
+            }
         ]
     },
     {
