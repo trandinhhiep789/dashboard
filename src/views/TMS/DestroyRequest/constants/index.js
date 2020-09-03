@@ -536,10 +536,10 @@ export const GirdDestroyRequestRLColumnList=[
         Width: 100
     },
     {
-        Name: "ReviewStatus",
+        Name: "ReviewStatusLable",
         Type: "text",
         Caption: "Trạng thái duyệt",
-        DataSourceMember: "ReviewStatus",
+        DataSourceMember: "ReviewStatusLable",
         Width: 100
     },
     {

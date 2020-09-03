@@ -58,6 +58,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            console.log("apiResult",apiResult, id)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -66,6 +67,16 @@ class DetailCom extends React.Component {
             }
             else {
 
+                const result =  apiResult.ResultObject.lstDestroyRequestReviewLevel.map((item, index)=>{
+                    if(item.ReviewStatus==0){
+                        item.ReviewStatusLable = "Chưa duyệt";
+                    }
+                    else{
+                        item.ReviewStatusLable = "Đã duyệt";
+                    }
+                    return item;
+                })
+                console.log("result",result)
                 this.setState({
                     DestroyRequest: apiResult.ResultObject,
                     DestroyRequestDetail: apiResult.ResultObject.lstDestroyRequestDetail,
