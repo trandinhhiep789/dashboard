@@ -16,6 +16,7 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST, DESTROYREQUESTTYPE_ADD, DESTROYREQUESTTYPE_DELETE, DESTROYREQUESTTYPE_UPDATE } from "../../../../constants/functionLists";
+import { ERPCOMMONCACHE_DES_RVLEVEL } from "../../../../constants/keyCache";
 
 class DestroyRequestType_ReviewLevelCom extends React.Component {
     constructor(props) {
@@ -127,6 +128,7 @@ class DestroyRequestType_ReviewLevelCom extends React.Component {
                                 this.props.hideModal();
                             }
                             this.showMessage(apiResult.Message);
+                            this.props.callClearLocalCache(ERPCOMMONCACHE_DES_RVLEVEL);
                         });
                     }
                 }

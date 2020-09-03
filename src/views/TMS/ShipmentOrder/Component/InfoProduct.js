@@ -269,7 +269,7 @@ class InfoProductCom extends Component {
                                     </thead>
                                     <tbody>
                                         {this.state.ShipmentOrder.ShipmentOrder_Material2List && this.state.ShipmentOrder.ShipmentOrder_Material2List.map((item, index) => {
-                                            // if (item.ProductID != "" && item.ProductID != null) {
+                                             if (item.ProductID != "" && item.ProductID != null) {
                                                 return (<tr key={index}>
                                                     <td>{item.InstallProductID + '-' + item.InstallProductName}</td>
                                                     <td>{item.ProductID + '-' + item.ProductName}</td>
@@ -280,7 +280,7 @@ class InfoProductCom extends Component {
                                                     <td>{formatMoney(this.Pricevat(item.SaleQuantity, item.SalePriceWithVAT), 0)}đ</td>
                                                 </tr>)
 
-                                           // }
+                                            }
                                         })
                                         }
 

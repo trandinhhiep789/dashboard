@@ -260,7 +260,7 @@ export const DataPartnerPayableDetailGridColumnList = [
     {
         Name: "ShipmentOrderID",
         Type: "text",
-        Caption: "Mã vẫn đơn",
+        Caption: "Mã vận đơn",
         DataSourceMember: "ShipmentOrderID",
         Width: 100
     },
@@ -417,7 +417,7 @@ export const DataGridByDateColumnList = [
     {
         Name: "ShipmentOrderID",
         Type: "text",
-        Caption: "Mã vẫn đơn",
+        Caption: "Mã vận đơn",
         DataSourceMember: "ShipmentOrderID",
         Width: 100
     },

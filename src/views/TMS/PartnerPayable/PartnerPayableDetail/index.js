@@ -77,7 +77,7 @@ class PartnerPayableDetailCom extends React.Component {
 
                     const dataExport = apiResult.ResultObject.map((item, index) => {
                         let element = {
-                            "Mã vẫn đơn": item.ShipmentOrderID,
+                            "Mã vận đơn": item.ShipmentOrderID,
                             "Mã đơn hàng": item.PartnerSaleOrderID,
                             "Thời gian giao": item.PayableDate,
                             "Khách hàng": item.ReceiverFullName,

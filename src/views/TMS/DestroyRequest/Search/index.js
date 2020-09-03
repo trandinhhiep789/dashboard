@@ -12,7 +12,7 @@ import formatDistance from 'date-fns/formatDistance';
 import viLocale from "date-fns/locale/vi";
 import { compareAsc, format, add } from 'date-fns';
 
-import { SERVICEAGREEMENT_VIEW, SERVICEAGREEMENT_DELETE } from "../../../../constants/functionLists";
+import { DESTROYREQUEST_VIEW, DESTROYREQUEST_DELETE } from "../../../../constants/functionLists";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 
@@ -70,7 +70,8 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            
+            console.log('callSearchData', searchData, apiResult)
+
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -78,9 +79,22 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã yêu cầu": item.DestroyRequestID,
+                        "Tiêu Đề yêu cầu": item.DestroyRequestTitle,
+                        "Loại yêu cầu hủy vật tư": item.DestroyRequestTypeID + "-" + item.DestroyRequestTypeName,
+                        "Kho yêu cầu": item.RequestStoreID + "-" + item.StoreName,
+                        "Ngày yêu cầu": item.RequestDate,
+                        "Người yêu cầu": item.RequestUser,
+                        "Đã duyệt": item.IsreViewed,
+                        "Đã xuất": item.IsOutput,
+                    };
 
+                    return element;
+                })
                 this.setState({
-                    gridDataSource: result,
+                    gridDataSource: apiResult.ResultObject,
                     dataExport: tempData,
                     IsCallAPIError: apiResult.IsError,
                 });
@@ -156,24 +170,28 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.Keyword
             },
             {
-                SearchKey: "@SERVICETYPEID",
-                SearchValue: MLObject.ServiceTypeID
+                SearchKey: "@DESTROYREQUESTTYPEID",
+                SearchValue: MLObject.DestroyRequestTypeID
             },
             {
-                SearchKey: "@AREAID",
-                SearchValue: MLObject.AreaID
+                SearchKey: "@REQUESTSTOREID",
+                SearchValue: MLObject.RequestStoreID
             },
             {
-                SearchKey: "@FromDate",
-                SearchValue: MLObject.SignedDate
+                SearchKey: "@FROMDATE",
+                SearchValue: MLObject.FromDate
             },
             {
-                SearchKey: "@ToDate",
-                SearchValue: MLObject.ExpiredDate
+                SearchKey: "@TODATE",
+                SearchValue: MLObject.ToDate
             },
             {
-                SearchKey: "@STATUS",
-                SearchValue: MLObject.ServiceStatusID
+                SearchKey: "@ISREVIEWED",
+                SearchValue: MLObject.IsreViewed
+            },
+            {
+                SearchKey: "@ISOUTPUT",
+                SearchValue: MLObject.IsOutput
             }
 
         ];
@@ -190,7 +208,6 @@ class SearchCom extends React.Component {
     }
 
     handleInputGridInsert(MLObjectDefinition, modalElementList, dataSource) {
-        console.log("handleInputGridInsert", MLObjectDefinition, modalElementList, dataSource)
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Loại yêu cầu hủy vật tư',
             content: {
@@ -213,7 +230,7 @@ class SearchCom extends React.Component {
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                     className="multiple multiple-custom multiple-custom-display"
-                    classNamebtnSearch="btn-custom-bottom" 
+                    classNamebtnSearch="btn-custom-bottom"
 
                 />
                 <DataGrid
@@ -230,8 +247,8 @@ class SearchCom extends React.Component {
                     RowsPerPage={10}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
-                    // RequirePermission={SERVICEAGREEMENT_VIEW}
-                    // DeletePermission={SERVICEAGREEMENT_DELETE}
+                    // RequirePermission={DESTROYREQUEST_VIEW}
+                    // DeletePermission={DESTROYREQUEST_DELETE}
                     fileName="Danh sách yêu cầu hủy vật tư"
                     onExportFile={this.handleExportFile.bind(this)}
                 />

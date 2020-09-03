@@ -62,18 +62,22 @@ class AddCom extends React.Component {
         );
     }
     handleSubmit(formData, MLObject) {
-        MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList
+        MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList.filter(n => n.Quantity > 0);
         var msgTotal = MLObject.AdvanceRequestDetailList.reduce(function (prev, cur) {
             return prev + cur.Quantity;
         }, 0);
 
+       
         if (msgTotal < 1) {
             this.setState({ errorAdvanceRequestDetail: "Vui lòng chọn vật tư tạm ứng" });
         }
         else {
+            MLObject.AdvanceRequestDetailList.map((Item) => {
+                Item.ReceiverStoreID= this.state.StoreID
+            });
+    
             this.setState({ errorAdvanceRequestDetail: "" });
             this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-
                 this.setState({ IsCallAPIError: !apiResult.IsError });
                 this.showMessage(apiResult.Message);
             });

@@ -19,9 +19,9 @@ class InputGridCellCom extends Component {
         this.previewMedia = this.previewMedia.bind(this);
         this.handleInputFocus = this.handleInputFocus.bind(this);
     }
-    
-    
-    
+
+
+
 
     componentDidMount() {
         const validatonDisabled = this.props.isDisabled;
@@ -30,7 +30,7 @@ class InputGridCellCom extends Component {
                 IsDisabled: true
             })
         }
-        
+
 
         if (this.props.type == "combobox" || this.props.type == "comboboxCus") {
             let listOption = [];
@@ -83,8 +83,8 @@ class InputGridCellCom extends Component {
             else {
                 listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                 listOption.push()
-                if(this.props.listoption != undefined && this.props.listoption.length > 0 ){
-                    this.props.listoption.map((item)=>{
+                if (this.props.listoption != undefined && this.props.listoption.length > 0) {
+                    this.props.listoption.map((item) => {
                         listOption.push({ value: item.value, label: item.label })
                     })
                 }
@@ -183,9 +183,10 @@ class InputGridCellCom extends Component {
         let elementdata = { Name: inputname, Value: inputvalue, IsChecked: ischecked, HasChanged: true };
         let isVavalidatonError = false;
         let validationErrorMessage = "";
+        const objItemValidation = { labelError: undefined }
         if (this.props.validatonList != null) {
             if (this.props.validatonList.length > 0) {
-                const validation = ValidationField(this.props.validatonList, elementdata.Value, this.props.label)
+                const validation = ValidationField(this.props.validatonList, elementdata.Value, this.props.label, objItemValidation)
                 if (validation.IsError) {
                     this.setState({ ValidationError: validation.Message });
                     isVavalidatonError = true;
@@ -406,19 +407,56 @@ class InputGridCellCom extends Component {
                         className = this.props.CSSClassName;
 
                     let listOption = this.state.Listoption;
-                    return (
-                        <select className={this.props.CSSClassName} name={this.props.name} readOnly={isSystem} disabled={isSystem ? "disabled" : ""}
-                            onChange={this.handleInputChange} value={this.props.text}
-                            className={className} >
-                            {
-                                listOption && listOption.map((optionItem) => {
-                                    return (
-                                        <option value={optionItem.value} key={optionItem.value} >{optionItem.label}</option>
-                                    )
-                                }
-                                )}
-                        </select>
-                    );
+
+                    let formGroupclassName = "";
+                    if (this.props.validationErrorMessage != null) {
+                        if (this.props.validationErrorMessage.length > 0) {
+                            formGroupclassName += " has-error has-danger";
+                            className += " is-invalid";
+                        }
+                    }
+                    if (this.props.validationErrorMessage != null && this.props.validationErrorMessage.length > 0) {
+                        return (
+
+                            <React.Fragment>
+
+                                <div className={formGroupclassName}>
+                                    <select className={this.props.CSSClassName} name={this.props.name} readOnly={isSystem} disabled={isSystem ? "disabled" : ""}
+                                        onChange={this.handleInputChange} value={this.props.text}
+                                        className={className} >
+                                        {
+                                            listOption && listOption.map((optionItem) => {
+                                                return (
+                                                    <option value={optionItem.value} key={optionItem.value} >{optionItem.label}</option>
+                                                )
+                                            }
+                                            )}
+                                    </select>
+                                    <div className="invalid-feedback">
+                                        <ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul>
+                                    </div>
+                                </div>
+
+                            </React.Fragment>
+                        );
+                    }
+                    else {
+                        return (
+                            <select className={this.props.CSSClassName} name={this.props.name} readOnly={isSystem} disabled={isSystem ? "disabled" : ""}
+                                onChange={this.handleInputChange} value={this.props.text}
+                                className={className} >
+                                {
+                                    listOption && listOption.map((optionItem) => {
+                                        return (
+                                            <option value={optionItem.value} key={optionItem.value} >{optionItem.label}</option>
+                                        )
+                                    }
+                                    )}
+                            </select>
+                        );
+                    }
+
+
                 }
 
             case "comboboxCus":
