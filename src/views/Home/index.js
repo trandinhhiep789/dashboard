@@ -173,7 +173,9 @@ class HomeCom extends React.Component {
 
     render() {
         let isShowAppPath = true;
-      const { isLoggedIn } = this.state
+      const { isLoggedIn } = this.state;
+      const isRelogin = this.props.AuthenticationInfo.LoginInfo.IsRelogin;
+       // console.log("Home this.props.AuthenticationInfo.LoginInfo: ", this.props.AuthenticationInfo.LoginInfo);
         return (
             <React.Fragment>
                 <Header />
@@ -185,84 +187,84 @@ class HomeCom extends React.Component {
                         <div className="row">
                             {this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL ? <div className="preloader"><div className="spinner-linear"><div className="line"></div></div></div> : ''}
                             <Switch>
-                                <PrivateRoute exact path="/" component={Dashboard} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/accountinfo" component={AccountInfo} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/TestModal" component={TestModal} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/TestCache" component={TestCache} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/TestFormContainer" component={TestFormContainer} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/TestTabs" component={TestTabs} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/TestPageLayout" component={TestPageLayout} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute exact path="/" component={Dashboard} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/accountinfo" component={AccountInfo} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/TestModal" component={TestModal} isLoggedIn={isLoggedIn} isRelogin = {isRelogin}/>
+                                <PrivateRoute path="/TestCache" component={TestCache} isLoggedIn={isLoggedIn}  isRelogin = {isRelogin}/>
+                                <PrivateRoute path="/TestFormContainer" component={TestFormContainer} isLoggedIn={isLoggedIn}  isRelogin = {isRelogin} />
+                                <PrivateRoute path="/TestTabs" component={TestTabs} isLoggedIn={isLoggedIn} isRelogin = {isRelogin}  />
+                                <PrivateRoute path="/TestPageLayout" component={TestPageLayout} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
 
-                                <PrivateRoute path="/CacheManager" component={CacheManager} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/CacheManager" component={CacheManager} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
                                 {/* <PrivateRoute path="*" component={Category} isLoggedIn={isLoggedIn} /> */}
 
                                 {/*menu tận tâm*/}
-                                <PrivateRoute path="/CancelDeliveryReason" component={CancelDeliveryReason} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/CarrierType" component={CarrierType} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/Partner" component={Partner} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/PartnerType" component={PartnerType} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/PackageType" component={PackageType} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/ShipmentFeePaymentMethod" component={ShipmentFeePaymentMethod} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/ShipmentServiceType" component={ShipmentServiceType} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/ShipmentGoodsType" component={ShipmentGoodsType} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/ShipmentOrderStatus" component={ShipmentOrderStatus} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/ShipmentOrderType" component={ShipmentOrderType} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/ShipmentOrderStep" component={ShipmentOrderStep} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/PartnerPriviledgeGroup" component={PartnerPriviledgeGroup} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/PartnerPriviledge" component={McPriviledge} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/PartnerRole" component={PartnerRole} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/PartnerUser" component={PartnerUser} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/ShipmentFeeType" component={ShipmentFeeType} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/ServiceAgreement" component={ServiceAgreement} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/ServiceType" component={ServiceType} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/ServiceSeasonType" component={ServiceSeasonType} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/ServiceAgreementType" component={ServiceAgreementType} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/IDDocumentType" component={IDDocumentType} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/PartnerTransaction" component={PartnerTransaction} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/CoordinatorStore" component={CoordinatorStore} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/Skill" component={Skill} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/SkillCategory" component={SkillCategory} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/SkillRank" component={SkillRank} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/UserSkill" component={UserSkill} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/MaterialGroup" component={MaterialGroup} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/CancelDeliveryReason" component={CancelDeliveryReason} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/CarrierType" component={CarrierType} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/Partner" component={Partner} isLoggedIn={isLoggedIn} isRelogin = {isRelogin}/>
+                                <PrivateRoute path="/PartnerType" component={PartnerType} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/PackageType" component={PackageType} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/ShipmentFeePaymentMethod" component={ShipmentFeePaymentMethod} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/ShipmentServiceType" component={ShipmentServiceType} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/ShipmentGoodsType" component={ShipmentGoodsType} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/ShipmentOrderStatus" component={ShipmentOrderStatus} isLoggedIn={isLoggedIn}  isRelogin = {isRelogin}/>
+                                <PrivateRoute path="/ShipmentOrderType" component={ShipmentOrderType} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/ShipmentOrderStep" component={ShipmentOrderStep} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/PartnerPriviledgeGroup" component={PartnerPriviledgeGroup} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/PartnerPriviledge" component={McPriviledge} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/PartnerRole" component={PartnerRole} isLoggedIn={isLoggedIn} isRelogin = {isRelogin}  />
+                                <PrivateRoute path="/PartnerUser" component={PartnerUser} isLoggedIn={isLoggedIn}  isRelogin = {isRelogin}/>
+                                <PrivateRoute path="/ShipmentFeeType" component={ShipmentFeeType} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/ServiceAgreement" component={ServiceAgreement} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/ServiceType" component={ServiceType} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/ServiceSeasonType" component={ServiceSeasonType} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/ServiceAgreementType" component={ServiceAgreementType} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/IDDocumentType" component={IDDocumentType} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/PartnerTransaction" component={PartnerTransaction} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/CoordinatorStore" component={CoordinatorStore} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/Skill" component={Skill} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/SkillCategory" component={SkillCategory} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/SkillRank" component={SkillRank} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/UserSkill" component={UserSkill} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/MaterialGroup" component={MaterialGroup} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
 
-                                <PrivateRoute path="/LimitType" component={LimitType} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/UserLimit" component={UserLimit} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/LimitType" component={LimitType} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/UserLimit" component={UserLimit} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
 
                                 
 
-                                <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
                                 
 
-                                <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/ShipmentOrderControl" component={ShipmentOrderControl} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/Maps" component={MapContainer} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/Map" component={Maps} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/InstallBundle" component={InstallBundle} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/InstallMaterial" component={InstallMaterial} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/UserCoordinator" component={UserCoordinator} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/UserGroup" component={UserGroup} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/CallLog" component={ApiCallLog} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/AdvanceRequest" component={AdvanceRequest} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/AdvanceRequestType" component={AdvanceRequestType} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/DestroyRequestType" component={DestroyRequestType} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/InventoryRequestType" component={InventoryRequestType} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn}  isRelogin = {isRelogin} />
+                                <PrivateRoute path="/ShipmentOrderControl" component={ShipmentOrderControl} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/Maps" component={MapContainer} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/Map" component={Maps} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/InstallBundle" component={InstallBundle} isLoggedIn={isLoggedIn} isRelogin = {isRelogin}  />
+                                <PrivateRoute path="/InstallMaterial" component={InstallMaterial} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/UserCoordinator" component={UserCoordinator} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/UserGroup" component={UserGroup} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/CallLog" component={ApiCallLog} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/AdvanceRequest" component={AdvanceRequest} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/AdvanceRequestType" component={AdvanceRequestType} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/DestroyRequestType" component={DestroyRequestType} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/InventoryRequestType" component={InventoryRequestType} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
 
-                                <PrivateRoute path="/WorkingPlan" component={WorkingPlan} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/WorkingPlan" component={WorkingPlan} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
 
-                                <PrivateRoute path="/PartnerPayable" component={PartnerPayable} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/Compute" component={Compute} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/PartnerPayableDetail" component={PartnerPayableDetail} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/PartnerPayable" component={PartnerPayable} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/Compute" component={Compute} isLoggedIn={isLoggedIn}  isRelogin = {isRelogin} />
+                                <PrivateRoute path="/PartnerPayableDetail" component={PartnerPayableDetail} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
 
 
-                                <PrivateRoute path="/DestroyRequest" component={DestroyRequest} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/DestroyRequest" component={DestroyRequest} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
                                 
                                 
                                 
-                                <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
 
                             </Switch>
                         </div>

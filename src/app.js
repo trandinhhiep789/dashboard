@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Route, Link, Redirect, HashRouter } from "reac
 import App from "./views/App";
 import authenticationReducer from "./reducers";
 import { FETCH_API_REQUEST, FETCH_API_SUCCESS, FETCH_API_FAILURE } from "./constants/actionTypes";
-import { logout,calllogout } from "./actions/loginAction";
+import { logout,calllogout,relogin } from "./actions/loginAction";
 import '../node_modules/react-image-gallery/styles/css/image-gallery.css';
 import "./css/core.min.css";
 import "./css/app.min.css";
@@ -22,7 +22,8 @@ const customMiddleWare = store => next => action => {
         const unAuthenStatus = [10, 11, 12, 13, 18];
         const state = store.getState();
         if (unAuthenStatus.includes(action.ErrorStatus)) {
-            store.dispatch(calllogout());
+            //store.dispatch(calllogout());
+            store.dispatch(relogin());
             return;
         }
     }

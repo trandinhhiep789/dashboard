@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import {
   REGISTER_CLIENT_REQUEST, REGISTER_CLIENT_SUCCESS, REGISTER_CLIENT_FAILURE,
   REGISTER_CLIENT_LOAD_FROM_LOCAL,
-  LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT,
+  LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGIN_RELOGIN, LOGOUT,
   FETCH_API_REQUEST, FETCH_API_SUCCESS, FETCH_API_FAILURE,
   CHECK_PERMISSION_SUCCESS,
   GET_CACHE_REQUEST, GET_CACHE_SUCCESS, GET_CACHE_FAILURE, GET_CACHE_FROM_LOCAL,
@@ -141,6 +141,7 @@ function loginInfo(state = initialLoginInfoState, action) {
       IsLoginSuccess: false,
       IsLoginCompleted: false,
       IsLoginError: false,
+      IsRelogin: false,
       Username: action.Username,
       Password: action.Password
     });
@@ -149,6 +150,7 @@ function loginInfo(state = initialLoginInfoState, action) {
       IsLoginCompleted: true,
       IsLoginSuccess: true,
       IsLoginError: false,
+      IsRelogin: false,
       LoginUserInfo: action.LoginUserInfo,
       TokenString: action.TokenString,
       Username: action.LoginUserInfo.UserName,
@@ -160,6 +162,7 @@ function loginInfo(state = initialLoginInfoState, action) {
       IsLoginCompleted: true,
       IsLoginSuccess: false,
       IsLoginError: true,
+      IsRelogin: false,
       ErrorMessage: action.ErrorMessage
     });
 
@@ -167,6 +170,16 @@ function loginInfo(state = initialLoginInfoState, action) {
       IsLoginCompleted: false,
       IsLoginSuccess: false,
       IsLogout: true,
+      IsRelogin: false,
+      LoginUserInfo: {},
+      TokenString: ""
+    });
+
+    case LOGIN_RELOGIN: return Object.assign({}, state, {
+      IsLoginCompleted: false,
+      IsLoginSuccess: false,
+      IsLogout: false,
+      IsRelogin: true,
       LoginUserInfo: {},
       TokenString: ""
     });

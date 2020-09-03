@@ -1,4 +1,4 @@
-import {LOGIN_REQUEST,  LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT}  from "../constants/actionTypes";
+import {LOGIN_REQUEST,  LOGIN_SUCCESS, LOGIN_FAILURE, LOGIN_RELOGIN, LOGOUT}  from "../constants/actionTypes";
 import {AUTHEN_HOSTNAME,  AUTHEN_HOST_BASEURL,CLIENT_INFO_OBJECT_STORENAME}  from "../constants/systemVars.js";
 import { COOKIELOGIN } from '../constants/systemVars';
 import WebRequest from "../common/library/net/WebRequest.js";
@@ -47,6 +47,16 @@ export function logout()
         type: LOGOUT
     };
 }
+
+export function relogin()
+{
+  //  console.log(LOGOUT);
+    return {
+        type: LOGIN_RELOGIN
+    };
+}
+
+
 
 export function calllogout()
 {
