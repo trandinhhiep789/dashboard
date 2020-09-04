@@ -328,6 +328,7 @@ export const InputDestroyRequestDetailColumnList = [
         DataSourceMember: "Quantity",
         Width: 200,
         validatonList: [ "number"],
+        IsNoneZero: true
     },
    
 ];
