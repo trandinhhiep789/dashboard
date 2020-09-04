@@ -265,6 +265,7 @@ class InputGridCellCom extends Component {
         let link = this.props.link;
         const type = this.props.type;
         const text = this.props.text;
+
         const listValue = this.props.value;
         // const to = this.props.to + text;
         const linkText = this.props.linkText;
@@ -350,6 +351,7 @@ class InputGridCellCom extends Component {
                 }
             case "textbox":
                 {
+                    
                     let className = "form-control form-control-sm";
                     if (this.props.CSSClassName != null)
                         className = this.props.CSSClassName;
@@ -366,9 +368,10 @@ class InputGridCellCom extends Component {
                             className += " is-invalid";
                         }
                     }
-
+                    const textNoneZero = !!this.props.isNoneZero && text == 0 ? "" : text;
+                    console.log('textbox', this.props.isNoneZero, textNoneZero)
                     let control = <input type="text" name={this.props.name} className={className} readOnly={isSystem}
-                        onChange={this.handleInputChange} defaultValue={text} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} />;
+                        onChange={this.handleInputChange} defaultValue={textNoneZero} value={textNoneZero} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} />;
 
                     return this.checkValidation(control, formGroupclassName);
 

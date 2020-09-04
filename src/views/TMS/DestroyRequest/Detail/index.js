@@ -67,7 +67,7 @@ class DetailCom extends React.Component {
             }
             else {
 
-                const result =  apiResult.ResultObject.lstDestroyRequestReviewLevel.map((item, index)=>{
+                const resultDestroyRequestReviewLevel =  apiResult.ResultObject.lstDestroyRequestReviewLevel.map((item, index)=>{
                     if(item.ReviewStatus==0){
                         item.ReviewStatusLable = "Chưa duyệt";
                     }
@@ -76,11 +76,11 @@ class DetailCom extends React.Component {
                     }
                     return item;
                 })
-                console.log("result",result)
+                console.log("result",resultDestroyRequestReviewLevel)
                 this.setState({
                     DestroyRequest: apiResult.ResultObject,
                     DestroyRequestDetail: apiResult.ResultObject.lstDestroyRequestDetail,
-                    DestroyRequestRL: apiResult.ResultObject.lstDestroyRequestReviewLevel,
+                    DestroyRequestRL: resultDestroyRequestReviewLevel,
                     DataSource: apiResult.ResultObject,
                     IsLoadDataComplete: true,
                     IsSystem: apiResult.ResultObject.IsSystem,
