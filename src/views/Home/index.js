@@ -71,11 +71,10 @@ import ApiCallLog from "../TMS/MD/ApiCallLog";
 import AdvanceRequest from "../TMS/MD/AdvanceRequest";
 import AdvanceRequestType from "../TMS/MD/AdvanceRequestType";
 import DestroyRequestType from "../TMS/MD/DestroyRequestType";
-
 import LimitType from "../TMS/MD/Limit/LimitType";
 import UserLimit from "../TMS/MD/Limit/UserLimit";
 import DestroyRequest from "../TMS/DestroyRequest";
-
+import InventoryRequest from "../TMS/InventoryRequest";
 
 import NotFound from '../NotFound'
 import InventoryRequestType from "../TMS/MD/InventoryRequestType";
@@ -173,7 +172,9 @@ class HomeCom extends React.Component {
 
     render() {
         let isShowAppPath = true;
-      const { isLoggedIn } = this.state
+      const { isLoggedIn } = this.state;
+      const isRelogin = this.props.AuthenticationInfo.LoginInfo.IsRelogin;
+       // console.log("Home this.props.AuthenticationInfo.LoginInfo: ", this.props.AuthenticationInfo.LoginInfo);
         return (
             <React.Fragment>
                 <Header />
@@ -185,15 +186,15 @@ class HomeCom extends React.Component {
                         <div className="row">
                             {this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL ? <div className="preloader"><div className="spinner-linear"><div className="line"></div></div></div> : ''}
                             <Switch>
-                                <PrivateRoute exact path="/" component={Dashboard} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/accountinfo" component={AccountInfo} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/TestModal" component={TestModal} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/TestCache" component={TestCache} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/TestFormContainer" component={TestFormContainer} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/TestTabs" component={TestTabs} isLoggedIn={isLoggedIn} />
-                                <PrivateRoute path="/TestPageLayout" component={TestPageLayout} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute exact path="/" component={Dashboard} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/accountinfo" component={AccountInfo} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/TestModal" component={TestModal} isLoggedIn={isLoggedIn} isRelogin = {isRelogin}/>
+                                <PrivateRoute path="/TestCache" component={TestCache} isLoggedIn={isLoggedIn}  isRelogin = {isRelogin}/>
+                                <PrivateRoute path="/TestFormContainer" component={TestFormContainer} isLoggedIn={isLoggedIn}  isRelogin = {isRelogin} />
+                                <PrivateRoute path="/TestTabs" component={TestTabs} isLoggedIn={isLoggedIn} isRelogin = {isRelogin}  />
+                                <PrivateRoute path="/TestPageLayout" component={TestPageLayout} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
 
-                                <PrivateRoute path="/CacheManager" component={CacheManager} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/CacheManager" component={CacheManager} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
                                 {/* <PrivateRoute path="*" component={Category} isLoggedIn={isLoggedIn} /> */}
 
                                 {/*menu tận tâm*/}
@@ -225,18 +226,12 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/SkillRank" component={SkillRank} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserSkill" component={UserSkill} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/MaterialGroup" component={MaterialGroup} isLoggedIn={isLoggedIn} />
-
                                 <PrivateRoute path="/LimitType" component={LimitType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserLimit" component={UserLimit} isLoggedIn={isLoggedIn} />
-
-                                
-
                                 <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} />
-                                
-
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentOrderControl" component={ShipmentOrderControl} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Maps" component={MapContainer} isLoggedIn={isLoggedIn} />
@@ -250,19 +245,14 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/AdvanceRequestType" component={AdvanceRequestType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/DestroyRequestType" component={DestroyRequestType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/InventoryRequestType" component={InventoryRequestType} isLoggedIn={isLoggedIn} />
-
                                 <PrivateRoute path="/WorkingPlan" component={WorkingPlan} isLoggedIn={isLoggedIn} />
-
                                 <PrivateRoute path="/PartnerPayable" component={PartnerPayable} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Compute" component={Compute} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerPayableDetail" component={PartnerPayableDetail} isLoggedIn={isLoggedIn} />
-
-
                                 <PrivateRoute path="/DestroyRequest" component={DestroyRequest} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/InventoryRequest" component={InventoryRequest} isLoggedIn={isLoggedIn} />
                                 
-                                
-                                
-                                <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
 
                             </Switch>
                         </div>

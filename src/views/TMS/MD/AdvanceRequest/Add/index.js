@@ -6,6 +6,7 @@ import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../../common/components/Modal";
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import {
     APIHostName,
     AddAPIPath,
@@ -37,7 +38,8 @@ class AddCom extends React.Component {
             AdvanceRequestDetailList: [],
             StoreID: -1,
             AdvanceRequestTypeID: -1,
-            errorAdvanceRequestDetail: ""
+            errorAdvanceRequestDetail: "",
+            MaterialList: []
         };
     }
 
@@ -62,24 +64,25 @@ class AddCom extends React.Component {
         );
     }
     handleSubmit(formData, MLObject) {
-        MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList.filter(n => n.Quantity > 0);
+        MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList;
         var msgTotal = MLObject.AdvanceRequestDetailList.reduce(function (prev, cur) {
             return prev + cur.Quantity;
         }, 0);
 
-       
+
         if (msgTotal < 1) {
             this.setState({ errorAdvanceRequestDetail: "Vui lòng chọn vật tư tạm ứng" });
         }
         else {
             MLObject.AdvanceRequestDetailList.map((Item) => {
-                Item.ReceiverStoreID= this.state.StoreID
+                Item.ReceiverStoreID = this.state.StoreID
             });
-    
+
             this.setState({ errorAdvanceRequestDetail: "" });
             this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: !apiResult.IsError });
-                this.showMessage(apiResult.Message);
+                let strMessage = ReactHtmlParser(apiResult.Message);
+                this.showMessage(strMessage);
             });
 
         }
@@ -101,8 +104,9 @@ class AddCom extends React.Component {
             this.props.callFetchAPI(APIHostName, GetAdvanceRequestAPIPath, postData).then(apiResult => {
                 if (!apiResult.IsError) {
                     this.setState({
-                        AdvanceRequestDetailList: apiResult.ResultObject,
-                        gridDataSource: apiResult.ResultObject,
+                        AdvanceRequestDetailList: apiResult.ResultObject.AdvanceRequestDetailList,
+                        gridDataSource: apiResult.ResultObject.AdvanceRequestDetailList,
+                        MaterialList: apiResult.ResultObject.MaterialList,
                         AdvanceRequestTypeID: value
                     });
                 }
@@ -142,8 +146,9 @@ class AddCom extends React.Component {
             this.props.callFetchAPI(APIHostName, GetAdvanceRequestAPIPath, postData).then(apiResult => {
                 if (!apiResult.IsError) {
                     this.setState({
-                        AdvanceRequestDetailList: apiResult.ResultObject,
-                        gridDataSource: apiResult.ResultObject,
+                        AdvanceRequestDetailList: apiResult.ResultObject.AdvanceRequestDetailList,
+                        gridDataSource: apiResult.ResultObject.AdvanceRequestDetailList,
+                        MaterialList: apiResult.ResultObject.MaterialList,
                         StoreID: value
                     });
                 }
@@ -204,6 +209,15 @@ class AddCom extends React.Component {
             AdvanceRequestDetailList: obj,
         });
     }
+    groupBy(data, fields, sumBy = 'Quantity') {
+        let r = [], cmp = (x, y) => fields.reduce((a, b) => a && x[b] == y[b], true);
+        data.forEach(x => {
+            let y = r.find(z => cmp(x, z));
+            let w = [...fields, sumBy].reduce((a, b) => (a[b] = x[b], a), {})
+            y ? y[sumBy] = +y[sumBy] + (+x[sumBy]) : r.push(w);
+        });
+        return r;
+    }
 
     render() {
         if (this.state.IsCloseForm) {
@@ -211,6 +225,8 @@ class AddCom extends React.Component {
         }
         const { errorAdvanceRequestDetail } = this.state;
         if (this.state.IsLoadDataComplete) {
+
+            console.log("MaterialListgroupBy,", this.groupBy(this.state.MaterialList, ['ShipmentOrderID']).length);
 
             return (
                 <React.Fragment>
@@ -329,6 +345,8 @@ class AddCom extends React.Component {
                                 />
                             </div> */}
 
+
+
                             <div className="col-md-6">
                                 <FormControl.CheckBox
                                     label="hệ thống"
@@ -341,16 +359,59 @@ class AddCom extends React.Component {
                                     classNameCustom="customCheckbox"
                                 />
                             </div>
+
+                            {this.state.MaterialList.length > 0 ?
+                                <React.Fragment>
+                                    <div className="col-lg-12 page-detail">
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <div className="row">
+                                                    <div className="col-md-12">
+                                                        <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                                            <thead className="thead-light">
+
+                                                                <tr>
+                                                                    <th className="jsgrid-header-cell" style={{ width: "100%" }}>Mã vận đơn cần tạm ứng</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {this.groupBy(this.state.MaterialList, ['ShipmentOrderID']).map((item, index) => {
+                                                                    return (
+                                                                        <tr key={index}>
+                                                                            <td>{item.ShipmentOrderID}</td>
+                                                                        </tr>
+                                                                    )
+                                                                })
+                                                                }
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </React.Fragment>
+
+                                : <div></div>}
+
+
+
+
+
+
                             {
                                 errorAdvanceRequestDetail != '' ?
                                     <div className="col-md-12 errorAdvanceRequestDetail">
                                         <p>{this.state.errorAdvanceRequestDetail}</p>
-                                    </div> 
-                                : <div></div>
+                                    </div>
+                                    : <div></div>
                             }
 
                             <AdvanceRequestDetailNew
                                 AdvanceRequestDetail={this.state.gridDataSource}
+                                ShipmentOrderCount={this.groupBy(this.state.MaterialList, ['ShipmentOrderID']).length > 0 ? this.groupBy(this.state.MaterialList, ['ShipmentOrderID']).length : 0}
                                 onValueChangeGrid={this.handleInputChangeGrid.bind(this)}
                             />
                         </div>

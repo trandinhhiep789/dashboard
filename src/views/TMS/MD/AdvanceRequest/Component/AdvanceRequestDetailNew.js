@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import ElementInputModal from '../../../../../common/components/FormContainer/FormElement/ElementInputModal';
+import { formatMoney } from '../../../../../utils/function';
 import {
     APIHostName,
 } from "../constants";
@@ -41,7 +42,17 @@ class AdvanceRequestDetailNewCom extends Component {
     }
 
     render() {
+        let intSumTotalUserLimit = 0;
+        let intSumTotalMoney = 0;
+        if (this.state.AdvanceRequestDetail.length > 0) {
+            intSumTotalUserLimit = this.state.AdvanceRequestDetail[0].SumTotalUserLimit;
+            intSumTotalMoney = this.state.AdvanceRequestDetail[0].SumTotalMoney;
+
+        }
+console.log("this.props.ShipmentOrderCount",this.props.ShipmentOrderCount);
+
         return (
+
             <React.Fragment>
                 <div className="col-lg-12 page-detail">
                     <div className="card">
@@ -50,13 +61,16 @@ class AdvanceRequestDetailNewCom extends Component {
                                 <div className="col-md-12">
                                     <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                         <thead className="thead-light">
+
                                             <tr>
                                                 <th className="jsgrid-header-cell" style={{ width: "15%" }}>Nhóm vật tư</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "15%" }}>Mã sản phẩm</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "25%" }}>Tên sản phẩm</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "7%" }}>SL tối Đa</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "7%" }}>SL có thể ứng</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "15%" }}>Số lượng tạm ứng</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "15%" }}>Đơn giá</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Đơn vị tính</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Đơn giá</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "15%" }}>Đơn vị tính</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -66,6 +80,8 @@ class AdvanceRequestDetailNewCom extends Component {
                                                         <td>{item.MaterialGroupName}</td>
                                                         <td>{item.ProductID}</td>
                                                         <td>{item.ProductName}</td>
+                                                        <td>{(item.AdvanceLimitType == 1 ? item.AdvanceLimitQuantity * (this.props.ShipmentOrderCount == 0 ? 1 : this.props.ShipmentOrderCount) : 0)}</td>
+                                                        <td>{(item.AdvanceLimitQuantity*(this.props.ShipmentOrderCount == 0 ?1:this.props.ShipmentOrderCount)) - item.TotalQuantity}</td>
                                                         <td><ElementInputModal.ElementModalNumber
                                                             validationErrorMessage={""}
                                                             name="Quantity"
@@ -75,14 +91,14 @@ class AdvanceRequestDetailNewCom extends Component {
                                                             dataSourcemember="Quantity"
                                                             Colmd='12'
                                                             min={0}
-                                                            max={(item.AdvanceLimitType == 1 ? item.AdvanceLimitQuantity : 50)}
+                                                            max={(item.AdvanceLimitType == 1 ? (item.AdvanceLimitQuantity*(this.props.ShipmentOrderCount == 0 ?1:this.props.ShipmentOrderCount)) - item.TotalQuantity : 1000)}
                                                             value={item.Quantity}
                                                             indexRow={index}
-                                                            disabled={item.CostPrice==0?true:false}
+                                                            disabled={item.CostPrice == 0 ? true : false}
                                                             onValueChange={this.handleInputChange.bind(this)}
 
                                                         /></td>
-                                                         <td>{item.CostPrice}</td>
+                                                        <td>{item.CostPrice}</td>
                                                         <td><ElementInputModal.ElementModalComboBox
                                                             validationErrorMessage={""}
                                                             caption="Đơn vị tính"
@@ -100,6 +116,27 @@ class AdvanceRequestDetailNewCom extends Component {
                                                 )
                                             })
                                             }
+
+
+                                            <tr className="totalCurrency">
+                                                <td colSpan={2}>
+                                                    <div className="groupTotalCurrency">
+                                                        <span className="item txtTotal">Tổng tiền hạn mức nhân viên: {formatMoney(intSumTotalUserLimit, 0)}đ</span>
+                                                    </div>
+                                                </td>
+                                                <td colSpan={3}>
+                                                    <div className="groupTotalCurrency">
+                                                        <span className="item txtTotal">Tổng tiền đã tạm ứng: {formatMoney(intSumTotalMoney, 0)}đ</span>
+                                                    </div>
+                                                </td>
+
+                                                <td colSpan={3}>
+                                                    <div className="groupTotalCurrency">
+                                                        <span className="item txtTotal">Tổng tiền còn lại có thể tạm ứng: {formatMoney(intSumTotalUserLimit - intSumTotalMoney, 0)}đ</span>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -107,7 +144,6 @@ class AdvanceRequestDetailNewCom extends Component {
                         </div>
                     </div>
                 </div>
-
             </React.Fragment>
 
         )
