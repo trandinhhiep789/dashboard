@@ -468,7 +468,6 @@ class InputGridCellCom extends Component {
                     if (this.props.CSSClassName != null)
                         className = this.props.CSSClassName;
                     let listOption = this.state.Listoption;
-                    console.log("listOption", listOption);
                     return (
                         <select className={this.props.CSSClassName}
                             name={this.props.name}

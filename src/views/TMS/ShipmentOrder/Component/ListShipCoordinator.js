@@ -239,7 +239,6 @@ class ListShipCoordinatorCom extends Component {
             }
 
         });
-        console.log("v",elementobject)
         this.setState({ FormValidation: elementobject });
     }
 
