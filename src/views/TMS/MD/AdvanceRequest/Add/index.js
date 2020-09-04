@@ -64,7 +64,7 @@ class AddCom extends React.Component {
         );
     }
     handleSubmit(formData, MLObject) {
-        MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList;
+        MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList.filter(n => n.Quantity > 0);
         var msgTotal = MLObject.AdvanceRequestDetailList.reduce(function (prev, cur) {
             return prev + cur.Quantity;
         }, 0);
@@ -107,7 +107,8 @@ class AddCom extends React.Component {
                         AdvanceRequestDetailList: apiResult.ResultObject.AdvanceRequestDetailList,
                         gridDataSource: apiResult.ResultObject.AdvanceRequestDetailList,
                         MaterialList: apiResult.ResultObject.MaterialList,
-                        AdvanceRequestTypeID: value
+                        AdvanceRequestTypeID: value,
+                        IsLoadDataComplete:true
                     });
                 }
                 else {
@@ -149,7 +150,8 @@ class AddCom extends React.Component {
                         AdvanceRequestDetailList: apiResult.ResultObject.AdvanceRequestDetailList,
                         gridDataSource: apiResult.ResultObject.AdvanceRequestDetailList,
                         MaterialList: apiResult.ResultObject.MaterialList,
-                        StoreID: value
+                        StoreID: value,
+                        IsLoadDataComplete:true
                     });
                 }
                 else {
@@ -224,10 +226,8 @@ class AddCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
         const { errorAdvanceRequestDetail } = this.state;
+        console.log("this.state.MaterialList.length",this.state.MaterialList,this.state.MaterialList.length)
         if (this.state.IsLoadDataComplete) {
-
-            console.log("MaterialListgroupBy,", this.groupBy(this.state.MaterialList, ['ShipmentOrderID']).length);
-
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
@@ -393,13 +393,7 @@ class AddCom extends React.Component {
                                     </div>
 
                                 </React.Fragment>
-
                                 : <div></div>}
-
-
-
-
-
 
                             {
                                 errorAdvanceRequestDetail != '' ?
