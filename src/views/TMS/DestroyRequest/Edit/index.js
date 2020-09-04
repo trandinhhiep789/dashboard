@@ -19,7 +19,7 @@ import {
     InputDestroyRequestDetailColumnList,
     InputDestroyRequestRLColumnList,
     GridMLObjectDefinition,
-    GridDestroyRequestRLMLObjectDefinition 
+    GridDestroyRequestRLMLObjectDefinition
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -85,12 +85,22 @@ class EditCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+                const resultDestroyRequestReviewLevel = apiResult.ResultObject.lstDestroyRequestReviewLevel.map((item, index) => {
+                    if (item.ReviewStatus == 0) {
+                        item.ReviewStatusLable = "Chưa duyệt";
+                    }
+                    else {
+                        item.ReviewStatusLable = "Đã duyệt";
+                    }
+                    return item;
+                })
 
                 this.setState({
                     DataSource: apiResult.ResultObject,
                     IsLoadDataComplete: true,
                     IsSystem: apiResult.ResultObject.IsSystem,
-
+                    DestroyRequestRL: resultDestroyRequestReviewLevel,
+                    DestroyRequestDetail: apiResult.ResultObject.lstDestroyRequestDetail
                 });
             }
         });

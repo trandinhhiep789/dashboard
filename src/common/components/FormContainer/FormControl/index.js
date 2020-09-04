@@ -241,6 +241,7 @@ class FormControlComboBoxCom extends Component {
         this.state = { Listoption: [], SelectedOption: [] }
     }
     handleValueChange(selectedOption) {
+    debugger
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null)
             this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.name : "", this.props.filterrest);
