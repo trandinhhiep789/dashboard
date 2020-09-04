@@ -560,6 +560,9 @@ class FormContainerCom extends Component {
                     isCategory={elementItem.isCategory}
                     elementItem={elementItem}
                     handleButtonClick={this.handleButtonClick}
+                    isMulti={elementItem.isMulti}
+                    KeyFilter={elementItem.KeyFilter}
+                    ValueFilter={elementItem.ValueFilter}
                 />
             </div>);
         }

@@ -43,19 +43,19 @@ export const SearchElementList = [
 ];
 
 export const AddElementList = [
-    {
-        type: "text",
-        name: "txtPartnerID",
-        label: "Mã đối tác",
-        value: "",
-        maxSize: "9",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "PartnerID",
-        readonly: false,
-        validatonList: ["required", "number"]
-    },
+    // {
+    //     type: "text",
+    //     name: "txtPartnerID",
+    //     label: "Mã đối tác",
+    //     value: "",
+    //     maxSize: "9",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: {},
+    //     DataSourceMember: "PartnerID",
+    //     readonly: false,
+    //     validatonList: ["required", "number"]
+    // },
     {
         type: "select",
         name: "txtPartnerTypeID",

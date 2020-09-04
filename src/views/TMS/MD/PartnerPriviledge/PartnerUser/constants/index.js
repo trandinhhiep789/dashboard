@@ -86,7 +86,7 @@ export const AddElementList = [
     //     validatonList: []
     // },
     {
-        type: "select",
+        type: "multiselect",
         name: "txtPartnerID",
         label: "Nhà cung cấp:",
         value: -1,
@@ -96,6 +96,7 @@ export const AddElementList = [
         DataSourceMember: "PartnerID",
         readonly: false,
         validatonList: [],
+        isMulti: false,
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
         ValueMember: "PartnerID",

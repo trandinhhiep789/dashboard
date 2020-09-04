@@ -205,6 +205,7 @@ class AddCom extends React.Component {
         MLObject.LastName = lastName.trim();
         MLObject.ListPartnerUser_Role = this.state.ListPartnerUser_Role;
         MLObject.UserName = this.state.UserID;
+        MLObject.PartnerID = MLObject.PartnerID && Array.isArray(MLObject.PartnerID) ? MLObject.PartnerID[0] : MLObject.PartnerID;
 
         if (MLObject.Birthday) {
             let temp = MLObject.Birthday.trim().split('/');
