@@ -41,6 +41,13 @@ class AdvanceRequestDetailNewCom extends Component {
 
     }
 
+     groupBy(list, props) {
+        return list.reduce((a, b) => {
+           (a[b[props]] = a[b[props]] || []).push(b);
+           return a;
+        }, {});
+      }
+
     render() {
         let intSumTotalUserLimit = 0;
         let intSumTotalMoney = 0;
@@ -49,10 +56,9 @@ class AdvanceRequestDetailNewCom extends Component {
             intSumTotalMoney = this.state.AdvanceRequestDetail[0].SumTotalMoney;
 
         }
-console.log("this.props.ShipmentOrderCount",this.props.ShipmentOrderCount);
 
+       
         return (
-
             <React.Fragment>
                 <div className="col-lg-12 page-detail">
                     <div className="card">
@@ -74,13 +80,14 @@ console.log("this.props.ShipmentOrderCount",this.props.ShipmentOrderCount);
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {this.state.AdvanceRequestDetail && this.state.AdvanceRequestDetail.map((item, index) => {
+                                            
+                                           {this.state.AdvanceRequestDetail && this.state.AdvanceRequestDetail.map((item, index) => {
                                                 return (
                                                     <tr key={index}>
                                                         <td>{item.MaterialGroupName}</td>
                                                         <td>{item.ProductID}</td>
                                                         <td>{item.ProductName}</td>
-                                                        <td>{(item.AdvanceLimitType == 1 ? item.AdvanceLimitQuantity * (this.props.ShipmentOrderCount == 0 ? 1 : this.props.ShipmentOrderCount) : 0)}</td>
+                                                        <td>{(item.AdvanceLimitType == 1 ? item.AdvanceLimitQuantity * this.props.ShipmentOrderCount :0)}</td>
                                                         <td>{(item.AdvanceLimitQuantity*(this.props.ShipmentOrderCount == 0 ?1:this.props.ShipmentOrderCount)) - item.TotalQuantity}</td>
                                                         <td><ElementInputModal.ElementModalNumber
                                                             validationErrorMessage={""}
@@ -91,7 +98,7 @@ console.log("this.props.ShipmentOrderCount",this.props.ShipmentOrderCount);
                                                             dataSourcemember="Quantity"
                                                             Colmd='12'
                                                             min={0}
-                                                            max={(item.AdvanceLimitType == 1 ? (item.AdvanceLimitQuantity*(this.props.ShipmentOrderCount == 0 ?1:this.props.ShipmentOrderCount)) - item.TotalQuantity : 1000)}
+                                                            max={(item.AdvanceLimitType == 1 ? (item.AdvanceLimitQuantity*this.props.ShipmentOrderCount  - item.TotalQuantity) : 1000)}
                                                             value={item.Quantity}
                                                             indexRow={index}
                                                             disabled={item.CostPrice == 0 ? true : false}
@@ -99,23 +106,11 @@ console.log("this.props.ShipmentOrderCount",this.props.ShipmentOrderCount);
 
                                                         /></td>
                                                         <td>{item.CostPrice}</td>
-                                                        <td><ElementInputModal.ElementModalComboBox
-                                                            validationErrorMessage={""}
-                                                            caption="Đơn vị tính"
-                                                            label=''
-                                                            placeholder="--Chọn đơn vị tính"
-                                                            isautoloaditemfromcache={true}
-                                                            loaditemcachekeyid="ERPCOMMONCACHE.QUANTITYUNIT"
-                                                            valuemember="QuantityUnitID"
-                                                            nameMember="QuantityUnit"
-                                                            value={item.QuantityUnitID}
-                                                            rowIndex={index}
-                                                            disabled={true}
-                                                        /></td>
+                                                        <td>{item.QuantityUnit}</td>
                                                     </tr>
                                                 )
                                             })
-                                            }
+                                            } 
 
 
                                             <tr className="totalCurrency">
