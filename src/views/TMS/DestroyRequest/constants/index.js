@@ -3,9 +3,10 @@ export const SearchAPIPath = "api/DestroyRequest/Search";
 export const LoadAPIPath = "api/DestroyRequest/Load";
 export const LoadNewAPIPath = "api/DestroyRequest/LoadInfoNew";
 export const AddAPIPath = "api/DestroyRequest/Add";
-export const UpdateAPIPath = "api/DestroyRequest/Update";
+export const UpdateAPIPath = "api/DestroyRequest/UpdateNew";
 export const UpdateOutputAPIPath = "api/DestroyRequest/UpdateOutput";
 
+export const UpdateCurrentReviewLevelAPIPath = "api/DestroyRequest/UpdateCurrentReviewLevel";
 export const DeleteNewAPIPath = "api/DestroyRequest/DeleteNew";
 export const DeleteAPIPath = "api/DestroyRequest/Delete";
 export const BackLink = "/DestroyRequest";
@@ -335,6 +336,12 @@ export const InputDestroyRequestDetailColumnList = [
 
 export const GridMLObjectDefinition = [
     {
+        Name: "DestroyRequestDetailID",
+        DefaultValue: "",
+        BindControlName: "DestroyRequestDetailID",
+        DataSourceMember: "DestroyRequestDetailID"
+    },
+    {
         Name: "MaterialGroupID",
         DefaultValue: "",
         BindControlName: "MaterialGroupID",
@@ -530,10 +537,10 @@ export const GirdDestroyRequestRLColumnList=[
         Width: 100
     },
     {
-        Name: "UserName",
+        Name: "ApproverName",
         Type: "text",
         Caption: "Người duyệt",
-        DataSourceMember: "UserName",
+        DataSourceMember: "ApproverName",
         Width: 100
     },
     {

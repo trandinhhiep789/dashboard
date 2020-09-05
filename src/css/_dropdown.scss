@@ -1,0 +1,25 @@
+.btn-group-dropdown {
+    .dropdown-menu {
+        width: 100%;
+        overflow: hidden;
+
+        .dropdown-item {
+            width: 95%;
+            padding: 5px;
+            font-size: 15px;
+            text-align: center;
+            font-weight: 400;
+            color: #465161;
+
+            &:hover {
+                background: #007bff;
+                color: #fff;
+
+            }
+
+            &:focus {
+                box-shadow: none;
+            }
+        }
+    }
+}
