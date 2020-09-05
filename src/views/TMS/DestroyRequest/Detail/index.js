@@ -19,7 +19,8 @@ import {
     TitleFormDetail,
     GirdDestroyRequestDetailColumnList,
     GirdDestroyRequestRLColumnList,
-    UpdateOutputAPIPath
+    UpdateOutputAPIPath,
+    UpdateCurrentReviewLevelAPIPath
 
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
@@ -41,6 +42,8 @@ class DetailCom extends React.Component {
             DestroyRequestRL: [],
             DestroyRequestID: '',
             IsOutPut: false,
+            CurrentReviewLevelID: '',
+            CurrentReviewLevelName: '',
         }
         this.callLoadData = this.callLoadData.bind(this);
         this.handleSubmitOutputDestroyRequest = this.handleSubmitOutputDestroyRequest.bind(this);
@@ -58,7 +61,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("apiResult",apiResult, id)
+            console.log("apiResult", apiResult, id)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -67,16 +70,17 @@ class DetailCom extends React.Component {
             }
             else {
 
-                const resultDestroyRequestReviewLevel =  apiResult.ResultObject.lstDestroyRequestReviewLevel.map((item, index)=>{
-                    if(item.ReviewStatus==0){
+                const resultDestroyRequestReviewLevel = apiResult.ResultObject.lstDestroyRequestReviewLevel.map((item, index) => {
+                    item.ApproverName = item.UserName + " - " + item.FullName;
+                    if (item.ReviewStatus == 0) {
                         item.ReviewStatusLable = "Chưa duyệt";
                     }
-                    else{
+                    else {
                         item.ReviewStatusLable = "Đã duyệt";
                     }
                     return item;
                 })
-                console.log("result",resultDestroyRequestReviewLevel)
+                console.log("result", resultDestroyRequestReviewLevel)
                 this.setState({
                     DestroyRequest: apiResult.ResultObject,
                     DestroyRequestDetail: apiResult.ResultObject.lstDestroyRequestDetail,
@@ -85,6 +89,8 @@ class DetailCom extends React.Component {
                     IsLoadDataComplete: true,
                     IsSystem: apiResult.ResultObject.IsSystem,
                     IsOutPut: apiResult.ResultObject.IsOutput,
+                    CurrentReviewLevelID: apiResult.ResultObject.CurrentReviewLevelID,
+                    CurrentReviewLevelName: apiResult.ResultObject.ReviewLevelName,
 
                 });
             }
@@ -150,8 +156,46 @@ class DetailCom extends React.Component {
         })
     }
 
+    handleRequestRL(id) {
+        let MLObject = {};
+        const { DataSource, DestroyRequestRL, CurrentReviewLevelID , DestroyRequestID} = this.state;
+        MLObject.DestroyRequestID = DataSource.DestroyRequestID;
+        const aa = DestroyRequestRL.filter((item, index) => {
+            if (item.ReviewLevelID != CurrentReviewLevelID) {
+                return item;
+            }
+        });
+
+        MLObject.CurrentReviewLevelID = aa[0].ReviewLevelID;
+        MLObject.ReviewLevelID = CurrentReviewLevelID;
+        MLObject.IsreViewed = 1;
+
+        if (id == 1) {
+            MLObject.ReviewStatus = 1;
+            MLObject.reViewedNote = "Đồng ý"; //Trạng thái duyệt;(0: Chưa duyệt, 1: Đồng ý, 2: Từ chối)
+        }
+        else {
+
+            MLObject.ReviewStatus = 2;
+            MLObject.reViewedNote = "Từ chối";
+        }
+        this.props.callFetchAPI(APIHostName, UpdateCurrentReviewLevelAPIPath, MLObject).then((apiResult) => {
+            console.log("id", id, MLObject, apiResult)
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.callLoadData(DestroyRequestID);
+                this.addNotification(apiResult.Message, apiResult.IsError)
+            }
+        })
+    }
+
     render() {
-        const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL } = this.state;
+        const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL, CurrentReviewLevelName } = this.state;
         if (this.state.IsLoadDataComplete) {
             return (
                 <div className="col-lg-12">
@@ -204,8 +248,14 @@ class DetailCom extends React.Component {
 
                         </div>
 
-                        <footer className="card-footer text-right">
-                            <button className="btn btn-primary mr-3" type="submit">Mức duyệt</button>
+                        <footer className="card-footer text-right ">
+                            <div className="btn-group btn-group-dropdown mr-3">
+                                <button className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                <div class="dropdown-menu" x-placement="bottom-start" >
+                                    <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(1)}>Đồng ý</button>
+                                    <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(2)}>Từ chối</button>
+                                </div>
+                            </div>
                             <button disabled={IsOutPut} className="btn btn-primary mr-3" type="submit" onClick={this.handleSubmitOutputDestroyRequest}>Tạo phiếu xuất</button>
                             <Link to="/DestroyRequest">
                                 <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>

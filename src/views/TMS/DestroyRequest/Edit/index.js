@@ -19,7 +19,8 @@ import {
     InputDestroyRequestDetailColumnList,
     InputDestroyRequestRLColumnList,
     GridMLObjectDefinition,
-    GridDestroyRequestRLMLObjectDefinition
+    GridDestroyRequestRLMLObjectDefinition,
+    LoadAPIByDestroyRequestTypeIDPath
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -30,10 +31,11 @@ import { callGetCache, callClearLocalCache } from "../../../../actions/cacheActi
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.prevDataSubmit = this.prevDataSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.callLoadData = this.callLoadData.bind(this);
-
+        this.valueChangeInputGrid = this.valueChangeInputGrid.bind(this);
+        this.getDataDestroyRequestRLByDestroyRequestType = this.getDataDestroyRequestRLByDestroyRequestType.bind(this);
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -44,7 +46,9 @@ class EditCom extends React.Component {
             IsLiquidated: false,
             IsDeposited: false,
             DestroyRequestDetail: [],
-            DestroyRequestRL: []
+            DestroyRequestRL: [],
+            gridDestroyRequestRL: {},
+            isError: false,
         };
     }
 
@@ -53,8 +57,124 @@ class EditCom extends React.Component {
         this.callLoadData(this.props.match.params.id);
     }
 
-    handleSubmit(formData, MLObject) {
+    getDataDestroyRequestRLByDestroyRequestType(param) {
+        const { DataSource, DestroyRequestRL } = this.state;
+        this.props.callFetchAPI(APIHostName, LoadAPIByDestroyRequestTypeIDPath, param).then(apiResult => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+            }
+            else {
+                apiResult.ResultObject.map(e => {
+                    e.value = e.UserName
+                    e.label = e.UserName + "-" + e.FullName
+                    return e;
+                })
 
+
+                let lstoption = apiResult.ResultObject.reduce((r, a) => {
+                    if (!r[`${a.ReviewLevelID}`]) r[`${a.ReviewLevelID}`] = {};
+                    if (!r[`${a.ReviewLevelID}`]["ReviewLevelID"]) r[`${a.ReviewLevelID}`]["ReviewLevelID"] = "";
+                    if (!r[`${a.ReviewLevelID}`]["ReviewLevelName"]) r[`${a.ReviewLevelID}`]["ReviewLevelName"] = "";
+                    if (!r[`${a.ReviewLevelID}`]["UserName"]) r[`${a.ReviewLevelID}`]["UserName"] = "";
+                    if (!r[`${a.ReviewLevelID}`]["FullName"]) r[`${a.ReviewLevelID}`]["FullName"] = "";
+                    if (!r[`${a.ReviewLevelID}`]["Child"]) r[`${a.ReviewLevelID}`]["Child"] = [];
+                    a.value = a.UserName
+                    a.name = a.UserName + " - " + a.FullName
+                    a.label = a.UserName + " - " + a.FullName
+                    r[`${a.ReviewLevelID}`]["Child"].push(a);
+
+                    return r;
+                }, {});
+
+                Object.keys(lstoption).map(function (key) {
+                    const filterItem = DestroyRequestRL.filter(e => { return e.ReviewLevelID == key });
+                    lstoption[key]["ReviewLevelID"] = lstoption[key]["Child"][0].ReviewLevelID;
+                    lstoption[key]["ReviewLevelName"] = lstoption[key]["Child"][0].ReviewLevelName;
+                    lstoption[key]["UserName"] = !!filterItem && filterItem.length > 0 ? filterItem[0].UserName : lstoption[key]["Child"][0].UserName
+                    lstoption[key]["FullName"] = !!filterItem && filterItem.length > 0 ? filterItem[0].FullName : lstoption[key]["Child"][0].FullName
+                    lstoption[key]["Child"].unshift({ value: "-1", name: "-- Vui lòng chọn --", UserName: "-1", FullName: "-- Vui lòng chọn --" })
+
+                })
+
+                const dataSource = apiResult.ResultObject.reduce((catsSoFar, item, index) => {
+                    if (!catsSoFar[item.ReviewLevelID]) catsSoFar[item.ReviewLevelID] = [];
+                    catsSoFar[item.ReviewLevelID].push(item);
+                    return catsSoFar;
+                }, {});
+
+                // console.log("lstoption", lstoption)
+                this.setState({
+                    DestroyRequestRL: apiResult.ResultObject,
+                    IsLoadDataComplete: true,
+                    gridDestroyRequestRL: lstoption
+                });
+            }
+        });
+    }
+
+
+    prevDataSubmit(formData, MLObject) {
+        const { isError, gridDestroyRequestRL } = this.state;
+
+        console.log("prevDataSubmit", gridDestroyRequestRL, MLObject);
+
+        let arrReviewLevel = [];
+        Object.keys(gridDestroyRequestRL).map(function (key) {
+            let objItem = {}
+            objItem.ReviewLevelID = key;
+            objItem.UserName = gridDestroyRequestRL[key].UserName;
+
+            arrReviewLevel.push(objItem)
+            return objItem;
+        })
+
+        MLObject.lstDestroyRequestReviewLevel = arrReviewLevel;
+
+        if (isError == false) {
+            const ReviewLevel = MLObject.lstDestroyRequestReviewLevel.reduce(function (prev, cur) {
+                return cur.UserName;
+            }, 0);
+
+            const DestroyRequestDetail = MLObject.lstDestroyRequestDetail.filter((item, index) => {
+                if (item.Quantity != undefined && item.Quantity > 0) {
+                    return item;
+                }
+            });
+
+
+            if (ReviewLevel == undefined || ReviewLevel == 0) {
+                this.showMessage('Danh sách duyệt người chưa được chọn. Vui lòng kiểm tra lại.');
+                this.setState({
+                    IsCallAPIError: true,
+                })
+                return;
+            }
+            if (DestroyRequestDetail.length <= 0) {
+                this.showMessage('Danh sách vật tư chưa được chọn.');
+                this.setState({
+                    IsCallAPIError: true,
+                })
+                return;
+            }
+
+            MLObject.lstDestroyRequestDetail = DestroyRequestDetail;
+            MLObject.CurrentReviewLevelID = MLObject.lstDestroyRequestReviewLevel[0].ReviewLevelID;
+             console.log("MLObject", MLObject)
+            this.handleSubmit(MLObject)
+
+        }
+        else {
+            this.showMessage('Thông tin nhập vào bị lỗi. Vui lòng kiểm tra lại.');
+        }
+    }
+
+    handleSubmit(MLObject) {
+        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.MessageDetail);
+        });
 
     }
 
@@ -102,12 +222,57 @@ class EditCom extends React.Component {
                     DestroyRequestRL: resultDestroyRequestReviewLevel,
                     DestroyRequestDetail: apiResult.ResultObject.lstDestroyRequestDetail
                 });
+
+
+                const param = [
+                    {
+                        SearchKey: "@DESTROYREQUESTTYPEID",
+                        SearchValue: apiResult.ResultObject.DestroyRequestTypeID
+                    },
+                    {
+                        SearchKey: "@STOREID",
+                        SearchValue: apiResult.ResultObject.RequestStoreID
+                    }
+                ];
+                this.getDataDestroyRequestRLByDestroyRequestType(param);
             }
         });
     }
 
     handleChange(formData, MLObject) {
         console.log('handleSubmit', formData, MLObject)
+    }
+
+    valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
+        // console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
+        const { DestroyRequestDetail } = this.state;
+        if (elementdata.Name == 'Quantity') {
+            let Quantity = DestroyRequestDetail[index].UsableQuantity;
+            let item = elementdata.Name + '_' + index;
+            if (!gridFormValidation[item].IsValidationError) {
+                if (elementdata.Value > Quantity) {
+                    gridFormValidation[item].IsValidationError = true;
+                    gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                    this.setState({
+                        isError: true,
+                        IsCallAPIError: true,
+                    })
+                }
+                else {
+                    this.setState({
+                        isError: false,
+                        IsCallAPIError: false,
+                    })
+                }
+            }
+        }
+        else {
+            this.setState({
+                isError: false,
+                IsCallAPIError: false,
+            })
+        }
+
     }
 
 
@@ -118,7 +283,41 @@ class EditCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
         let currentDate = new Date();
-        const { DestroyRequestDetail, DestroyRequestRL } = this.state;
+        const { DestroyRequestDetail, DestroyRequestRL, gridDestroyRequestRL } = this.state;
+
+        const onChange = (aaa, event) => {
+            const value = event.target.value;
+            const name = event.target.name;
+            const DestroyRequestRLID = aaa;
+
+            if (value <= 0) {
+
+                this.setState({
+                    IsCallAPIError: true,
+                    isError: true
+                })
+            }
+            else {
+                this.setState({
+                    IsCallAPIError: false,
+                    isError: false
+
+                })
+            }
+
+            const element = Object.assign({}, gridDestroyRequestRL[DestroyRequestRLID], {
+                "UserName": value,
+                "FullName": name,
+            })
+            // console.log("element", element);
+
+            const parent = Object.assign({}, gridDestroyRequestRL, { [DestroyRequestRLID]: element });
+
+            // console.log("parent", parent);
+
+            this.setState({ gridDestroyRequestRL: parent })
+        }
+
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
@@ -128,7 +327,7 @@ class EditCom extends React.Component {
                         dataSource={this.state.DataSource}
                         listelement={[]}
                         BackLink={BackLink}
-                        onSubmit={this.handleSubmit}
+                        onSubmit={this.prevDataSubmit}
                         onchange={this.handleChange.bind(this)}
                     >
 
@@ -157,7 +356,7 @@ class EditCom extends React.Component {
                                     validatonList={["Comborequired"]}
                                     placeholder="-- Vui lòng chọn --"
                                     isautoloaditemfromcache={true}
-                                    disabled={this.state.IsSystem}
+                                    disabled={true}
                                     readOnly={this.state.IsSystem}
                                     loaditemcachekeyid="ERPCOMMONCACHE.DESTROYREQUESTTYPE"
                                     valuemember="DestroyRequestTypeID"
@@ -192,7 +391,7 @@ class EditCom extends React.Component {
                                     colspan="8"
                                     labelcolspan="4"
                                     label="kho yêu cầu"
-                                    disabled={this.state.IsSystem}
+                                    disabled={true}
                                     readOnly={this.state.IsSystem}
                                     validatonList={["Comborequired"]}
                                     placeholder="-- Vui lòng chọn --"
@@ -264,25 +463,51 @@ class EditCom extends React.Component {
                             </div>
                         </div>
 
+
                         <div className="card">
                             <div className="card-title group-card-title">
                                 <h4 className="title">Danh sách duyệt</h4>
                             </div>
                             <div className="card-body">
-                                <InputGrid
-                                    name="lstDestroyRequestReviewLevel"
-                                    controltype="GridControl"
-                                    listColumn={InputDestroyRequestRLColumnList}
-                                    dataSource={DestroyRequestRL}
-                                    isHideHeaderToolbar={true}
-                                    MLObjectDefinition={GridDestroyRequestRLMLObjectDefinition}
-                                    colspan="12"
-                                    onValueChangeInputGrid={this.valueChangeInputGrid}
-                                />
+
+                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                    <thead className="thead-light">
+                                        <tr>
+                                            <th className="jsgrid-header-cell">Mức duyệt</th>
+                                            <th className="jsgrid-header-cell">Người duyệt</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {/* {this.renderChild(this.state.gridDestroyRequestRL)} */}
+                                        {!!gridDestroyRequestRL && Object.keys(gridDestroyRequestRL).length > 0 &&
+                                            Object.keys(gridDestroyRequestRL).map(function (key) {
+                                                return (
+
+                                                    <tr key={key}>
+                                                        <td>{gridDestroyRequestRL[key].ReviewLevelName}</td>
+                                                        <td>
+                                                            <select id={key} value={gridDestroyRequestRL[key].UserName}
+                                                                className={`form-control form-control-sm ${gridDestroyRequestRL[key].UserName == "-1" ? "is-invalid" : ""}`}
+                                                                onChange={selectOption => onChange(key, selectOption)}>
+                                                                {gridDestroyRequestRL[key]["Child"].map(e => {
+                                                                    return <option value={e.value} name={e.name} key={e.value}>{e.name}</option>
+                                                                })}
+                                                            </select>
+                                                            <div className="invalid-feedback">
+                                                                <ul className="list-unstyled">
+                                                                    <li>Vui lòng chọn người duyệt cho mức duyệt.</li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
+                                    </tbody>
+                                </table>
+
                             </div>
                         </div>
-
-
                     </FormContainer>
 
 

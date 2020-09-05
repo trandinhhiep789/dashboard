@@ -369,9 +369,8 @@ class InputGridCellCom extends Component {
                         }
                     }
                     const textNoneZero = !!this.props.isNoneZero && text == 0 ? "" : text;
-                    console.log('textbox', this.props.isNoneZero, textNoneZero)
                     let control = <input type="text" name={this.props.name} className={className} readOnly={isSystem}
-                        onChange={this.handleInputChange} defaultValue={textNoneZero} value={textNoneZero} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} />;
+                        onChange={this.handleInputChange} defaultValue={text} value={textNoneZero} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} />;
 
                     return this.checkValidation(control, formGroupclassName);
 
