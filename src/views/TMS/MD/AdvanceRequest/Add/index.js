@@ -39,7 +39,7 @@ class AddCom extends React.Component {
             AdvanceRequestTypeID: -1,
             errorAdvanceRequestDetail: "",
             MaterialList: [],
-            AdvanceCostLimit:0,
+            AdvanceCostLimit: 0,
             MaterialAdvanceDebtList: [],
         };
     }
@@ -65,7 +65,8 @@ class AddCom extends React.Component {
         );
     }
     handleSubmit(formData, MLObject) {
-        MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList.filter(n => n.Quantity > 0);
+        MLObject.IsAdvanceByShipmentOrder=this.state.AdvanceRequestDetailList.IsAdvanceByShipmentOrder;
+        MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList.MaterialList
         var msgTotal = MLObject.AdvanceRequestDetailList.reduce(function (prev, cur) {
             return prev + cur.Quantity;
         }, 0);
@@ -202,7 +203,6 @@ class AddCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
         const { errorAdvanceRequestDetail } = this.state;
-        console.log("gridDataSource",this.state.gridDataSource)
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
@@ -256,7 +256,6 @@ class AddCom extends React.Component {
                                     listoption={null}
                                     datasourcemember="AdvanceRequestTypeID" />
                             </div>
-
                             <div className="col-md-12">
                                 <FormControl.TextBox
                                     name="txtAdvanceRequestTitle"
@@ -272,7 +271,6 @@ class AddCom extends React.Component {
                                     validatonList={['required']}
                                 />
                             </div>
-
                             <div className="col-md-12">
                                 <FormControl.TextArea
                                     labelcolspan={2}
@@ -289,24 +287,6 @@ class AddCom extends React.Component {
                                     disabled={this.state.IsSystem}
                                 />
                             </div>
-
-                            {/* <div className="col-md-6">
-                                <FormControl.CheckBox
-                                    label="kích hoạt"
-                                    name="chkIsActived"
-                                    datasourcemember="IsActived"
-                                    controltype="InputControl"
-                                    colspan={10}
-                                    labelcolspan={2}
-                                    value={true}
-                                    classNameCustom="customCheckbox"
-                                    readOnly={this.state.IsSystem}
-                                    disabled={this.state.IsSystem}
-                                />
-                            </div> */}
-
-
-
                             <div className="col-md-6">
                                 <FormControl.CheckBox
                                     label="hệ thống"
@@ -319,8 +299,7 @@ class AddCom extends React.Component {
                                     classNameCustom="customCheckbox"
                                 />
                             </div>
-
-                            {/* {this.state.MaterialList.length > 0 ?
+                            {(this.state.gridDataSource.ShipmentOrderNewList != undefined && this.state.gridDataSource.IsAdvanceByShipmentOrder ==true)?
                                 <React.Fragment>
                                     <div className="col-lg-12 page-detail">
                                         <div className="card">
@@ -335,7 +314,7 @@ class AddCom extends React.Component {
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                {this.groupBy(this.state.MaterialList, ['ShipmentOrderID']).map((item, index) => {
+                                                                {this.state.gridDataSource.ShipmentOrderNewList.map((item, index) => {
                                                                     return (
                                                                         <tr key={index}>
                                                                             <td>{item.ShipmentOrderID}</td>
@@ -343,7 +322,6 @@ class AddCom extends React.Component {
                                                                     )
                                                                 })
                                                                 }
-
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -353,8 +331,7 @@ class AddCom extends React.Component {
                                     </div>
 
                                 </React.Fragment>
-                                : <div></div>} */}
-
+                                : <div></div>}
                             {
                                 errorAdvanceRequestDetail != '' ?
                                     <div className="col-md-12 errorAdvanceRequestDetail">
@@ -369,9 +346,6 @@ class AddCom extends React.Component {
                                 onValueChangeGrid={this.handleInputChangeGrid.bind(this)}
                             />
                         </div>
-
-
-
                     </FormContainer>
                 </React.Fragment>
             );
