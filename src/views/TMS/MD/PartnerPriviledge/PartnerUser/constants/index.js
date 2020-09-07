@@ -268,20 +268,21 @@ export const EditElementList = [
         validatonList: ["required"]
     },
     {
-        type: "select",
+        type: "multiselect",
         name: "txtPartnerID",
         label: "Nhà cung cấp:",
-        value: "",
+        value: -1,
         placeholder: "",
         icon: "",
         listoption: [],
         DataSourceMember: "PartnerID",
         readonly: false,
         validatonList: [],
+        isMulti: false,
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
         ValueMember: "PartnerID",
-        NameMember: "PartnerName"
+        NameMember: "PartnerName",
     },
     {
         type: "password",
