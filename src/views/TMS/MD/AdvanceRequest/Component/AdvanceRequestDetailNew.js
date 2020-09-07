@@ -82,6 +82,29 @@ class AdvanceRequestDetailNewCom extends Component {
             this.props.onValueChangeGrid(AdvanceRequestDetail);
 
     }
+    handleInputChangeNewProduct(e) {
+        e.preventDefault();
+        let value = e.target.value;
+
+        let MaterialGroupID = e.target.getAttribute('data-MaterialGroupID');
+        let InstallProductID = e.target.getAttribute('data-InstallProductID');
+        let { AdvanceRequestDetail } = this.state
+        const objAdvanceRequestDetail = AdvanceRequestDetail.MaterialList.find(n => n['MaterialGroupID'] == MaterialGroupID && n['InstallProductID'] == InstallProductID)
+        if (parseInt(value) > 0) {
+            objAdvanceRequestDetail.Quantity = parseInt(value);
+        }
+        else {
+            objAdvanceRequestDetail.Quantity = 0;
+        }
+
+
+        this.setState({
+            AdvanceRequestDetail: AdvanceRequestDetail
+        })
+        if (this.props.onValueChangeGrid != null)
+            this.props.onValueChangeGrid(AdvanceRequestDetail);
+
+    }
 
     groupBy(list, props) {
         return list.reduce((a, b) => {
@@ -119,21 +142,37 @@ class AdvanceRequestDetailNewCom extends Component {
             // intSumTotalMoney = this.state.AdvanceRequestDetail[0].SumTotalMoney;
 
         }
+
         let objgroupByInstallBundleID = [];
         let materialListForAdvance = {};
         if (this.state.AdvanceRequestDetail.MaterialList != undefined && this.state.AdvanceRequestDetail.MaterialList.length > 0) {
+            if (!this.state.AdvanceRequestDetail.IsAdvanceByShipmentOrder) {
+                intSumTotalMoney = this.state.AdvanceRequestDetail.MaterialAdvanceDebtList[0].SumTotalMoney;
+                objgroupByInstallBundleID = this.groupByNew(this.state.AdvanceRequestDetail.MaterialList, ['InstallBundleID', 'InstallProductName']);
+                materialListForAdvance = this.state.AdvanceRequestDetail.MaterialList.reduce((r, a) => {
+                    r[`${a.InstallBundleID}`] = [...r[`${a.InstallBundleID}`] || [], a];
+                    return r;
+                }, {});
 
-            materialListForAdvance = this.state.AdvanceRequestDetail.MaterialList.reduce((r, a) => {
-                r[`${a.InstallBundleID}`] = [...r[`${a.InstallBundleID}`] || [], a];
-                return r;
-            }, {});
+            }
+            else {
+                intSumTotalMoney = this.state.AdvanceRequestDetail.MaterialAdvanceDebtList[0].SumTotalMoney;
+                objgroupByInstallBundleID = this.groupByNew(this.state.AdvanceRequestDetail.MaterialList, ['InstallProductID', 'InstallProductName']);
+                materialListForAdvance = this.state.AdvanceRequestDetail.MaterialList.reduce((r, a) => {
+                    r[`${a.InstallProductID}`] = [...r[`${a.InstallProductID}`] || [], a];
+                    return r;
+                }, {});
 
-            objgroupByInstallBundleID = this.groupByNew(this.state.AdvanceRequestDetail.MaterialList, ['InstallBundleID', 'InstallProductName']);
+            }
+
+
+
             //console.log("InstallBundleID", this.groupByNew(this.state.AdvanceRequestDetail.MaterialList, ['InstallBundleID', 'InstallProductName']));
             //  console.log("InstallBundleID", this.groupBy(this.state.AdvanceRequestDetail.MaterialList, 'InstallBundleID'), Object.keys(this.groupBy(this.state.AdvanceRequestDetail.MaterialList, 'InstallBundleID')).length)
         }
+        console.log("materialListForAdvance", materialListForAdvance, this.state.AdvanceRequestDetail.MaterialList)
 
-        console.log("InstallBundleID", this.state.AdvanceRequestDetail.MaterialList);
+
         if (!this.state.AdvanceRequestDetail.IsAdvanceByShipmentOrder) {
             return (
                 <React.Fragment>
@@ -261,59 +300,61 @@ class AdvanceRequestDetailNewCom extends Component {
                                             <tbody>
                                                 {objgroupByInstallBundleID != null &&
                                                     objgroupByInstallBundleID.map((rowItem, rowIndex) => {
-                                                        let obj = materialListForAdvance[rowItem.InstallBundleID];
+                                                        let obj = materialListForAdvance[rowItem.InstallProductID];
                                                         return (
                                                             <React.Fragment>
                                                                 <tr className="totalCurrency" key={"totalCurrency" + rowIndex}>
                                                                     <td colSpan={7}>
                                                                         <div className="groupTotalCurrency">
-                                                                            <span className="item txtTotal">{rowItem.InstallBundleID + " - " + rowItem.InstallProductName}</span>
+                                                                            <span className="item txtTotal">{rowItem.InstallProductID + " - " + rowItem.InstallProductName}</span>
                                                                         </div>
                                                                     </td>
                                                                 </tr>
                                                                 {obj.map((rowItemobj, Index) => {
-                                                                    return (
-                                                                        <tr key={"totalCurrency" + Index}>
-                                                                            <td>{rowItemobj.MaterialGroupName}</td>
-                                                                            {rowItemobj.MaterialProductList.length > 1 ?
-                                                                                <div>
-                                                                                    <select className="form-control form-control-sm" name="ProductID"
-                                                                                        value={rowItemobj.ProductID}
-                                                                                        id={rowItemobj.MaterialGroupID}
-                                                                                        onChange={this.handleProductChange.bind(this)}
-                                                                                    >
-                                                                                        <option key={"ProductID0"} value={0}>--vui lòng chọn--</option>
-                                                                                        {rowItemobj.MaterialProductList.map((optionItem) =>
-                                                                                            <option key={optionItem.MaterialProductID}
-                                                                                                value={optionItem.MaterialProductID}
-                                                                                                data-ProductName={optionItem.MaterialProductName}
-                                                                                                data-QuantityUnitID={optionItem.QuantityUnitID}
-                                                                                                data-QuantityUnit={optionItem.QuantityUnit}
-                                                                                                data-CostPrice={optionItem.CostPrice}
-                                                                                                data-VAT={optionItem.VAT}
-                                                                                            >
-                                                                                                {optionItem.MaterialProductID}</option>
-                                                                                        )}
-                                                                                    </select>
-                                                                                </div> : <td>{rowItemobj.ProductID}</td>}
-                                                                            <td>{rowItemobj.ProductName}</td>
-                                                                            <td>{(rowItemobj.AdvanceLimitType == 1 ? rowItemobj.AdvanceLimitQuantity : "")}</td>
-                                                                            <td>{(rowItemobj.AdvanceLimitType == 1 ? (rowItemobj.AdvanceLimitQuantity - this.AdvanceLimitQuantity(rowItemobj.MaterialGroupID, rowItemobj.ProductID)) : "")}</td>
-                                                                            <td>
-                                                                                <input type="text" name={'Quantity'}
-                                                                                    onChange={this.handleInputChangeNew.bind(this)}
-                                                                                    value={rowItemobj.Quantity}
-                                                                                    className={"form-control form-control-sm"}
-                                                                                    disabled={rowItemobj.CostPrice == 0 ? true : false}
-                                                                                    data-MaterialGroupID={rowItemobj.MaterialGroupID}
-                                                                                    data-InstallBundleID={rowItem.InstallBundleID}
-                                                                                    maxLength={5}
-                                                                                />
-                                                                            </td>
-                                                                            <td>{rowItemobj.CostPrice}</td>
-                                                                            <td>{rowItemobj.QuantityUnit}</td>
-                                                                        </tr>
-                                                                    );
+                                                                    if (rowItemobj.MaterialProductList.length > 0) {
+                                                                        return (
+                                                                            <tr key={"totalCurrency" + Index}>
+                                                                                <td>{rowItemobj.MaterialGroupName}</td>
+                                                                                {rowItemobj.MaterialProductList.length > 1 ?
+                                                                                    <div>
+                                                                                        <select className="form-control form-control-sm" name="ProductID"
+                                                                                            value={rowItemobj.ProductID}
+                                                                                            id={rowItemobj.MaterialGroupID}
+                                                                                            onChange={this.handleProductChange.bind(this)}
+                                                                                        >
+                                                                                            <option key={"ProductID0"} value={0}>--vui lòng chọn--</option>
+                                                                                            {rowItemobj.MaterialProductList.map((optionItem) =>
+                                                                                                <option key={optionItem.MaterialProductID}
+                                                                                                    value={optionItem.MaterialProductID}
+                                                                                                    data-ProductName={optionItem.MaterialProductName}
+                                                                                                    data-QuantityUnitID={optionItem.QuantityUnitID}
+                                                                                                    data-QuantityUnit={optionItem.QuantityUnit}
+                                                                                                    data-CostPrice={optionItem.CostPrice}
+                                                                                                    data-VAT={optionItem.VAT}
+                                                                                                >
+                                                                                                    {optionItem.MaterialProductID}</option>
+                                                                                            )}
+                                                                                        </select>
+                                                                                    </div> : <td>{rowItemobj.ProductID}</td>}
+                                                                                <td>{rowItemobj.ProductName}</td>
+                                                                                <td>{(rowItemobj.AdvanceLimitType == 1 ? rowItemobj.AdvanceLimitQuantity : "")}</td>
+                                                                                <td>{(rowItemobj.AdvanceLimitType == 1 ? (rowItemobj.AdvanceLimitQuantity - this.AdvanceLimitQuantity(rowItemobj.MaterialGroupID, rowItemobj.ProductID)) : "")}</td>
+                                                                                <td>
+                                                                                    <input type="text" name={'Quantity'}
+                                                                                        onChange={this.handleInputChangeNewProduct.bind(this)}
+                                                                                        value={rowItemobj.Quantity}
+                                                                                        className={"form-control form-control-sm"}
+                                                                                        disabled={rowItemobj.CostPrice == 0 ? true : false}
+                                                                                        data-MaterialGroupID={rowItemobj.MaterialGroupID}
+                                                                                        data-InstallProductID={rowItem.InstallProductID}
+                                                                                        maxLength={5}
+                                                                                    />
+                                                                                </td>
+                                                                                <td>{rowItemobj.CostPrice}</td>
+                                                                                <td>{rowItemobj.QuantityUnit}</td>
+                                                                            </tr>
+                                                                        );
+                                                                    }
                                                                 })
                                                                 }
 
