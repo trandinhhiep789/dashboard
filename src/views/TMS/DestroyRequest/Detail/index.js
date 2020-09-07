@@ -196,6 +196,7 @@ class DetailCom extends React.Component {
 
     render() {
         const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL, CurrentReviewLevelName } = this.state;
+        //console.log("CurrentReviewLevelName", CurrentReviewLevelName)
         if (this.state.IsLoadDataComplete) {
             return (
                 <div className="col-lg-12">

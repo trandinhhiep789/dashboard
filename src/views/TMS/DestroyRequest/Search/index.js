@@ -247,8 +247,8 @@ class SearchCom extends React.Component {
                     RowsPerPage={10}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
-                    // RequirePermission={DESTROYREQUEST_VIEW}
-                    // DeletePermission={DESTROYREQUEST_DELETE}
+                    RequirePermission={DESTROYREQUEST_VIEW}
+                    DeletePermission={DESTROYREQUEST_DELETE}
                     fileName="Danh sách yêu cầu hủy vật tư"
                     onExportFile={this.handleExportFile.bind(this)}
                 />
