@@ -34,6 +34,7 @@ import { callGetCache, callClearLocalCache } from "../../../../actions/cacheActi
 import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { ERPCOMMONCACHE_DES_RVLEVEL } from "../../../../constants/keyCache";
+import { DESTROYREQUEST_ADD } from "../../../../constants/functionLists";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -120,7 +121,7 @@ class AddCom extends React.Component {
 
                     return r;
                 }, {});
-                console.log("111", lstoption)
+                // console.log("111", lstoption)
                 Object.keys(lstoption).map(function (key) {
                     lstoption[key]["ReviewLevelID"] = lstoption[key]["Child"][0].ReviewLevelID;
                     lstoption[key]["ReviewLevelName"] = lstoption[key]["Child"][0].ReviewLevelName;
@@ -130,7 +131,7 @@ class AddCom extends React.Component {
 
                 })
 
-                console.log("lstoption", lstoption)
+                // console.log("lstoption", lstoption)
 
                 const dataSource = apiResult.ResultObject.reduce((catsSoFar, item, index) => {
                     if (!catsSoFar[item.ReviewLevelID]) catsSoFar[item.ReviewLevelID] = [];
@@ -387,6 +388,7 @@ class AddCom extends React.Component {
                         MLObjectDefinition={MLObjectDefinition}
                         listelement={[]}
                         BackLink={BackLink}
+                        RequirePermission={DESTROYREQUEST_ADD}
                         onSubmit={this.prevDataSubmit}
                         onchange={this.handleChange.bind(this)}
                     >

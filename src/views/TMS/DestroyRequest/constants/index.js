@@ -267,17 +267,17 @@ export const DataGridColumnList = [
         Width: 150
     },
     {
-        Name: "StatusLable1",
+        Name: "ReviewStatusLable",
         Type: "text",
         Caption: "Đã duyệt",
-        DataSourceMember: "StatusLable1",
+        DataSourceMember: "ReviewStatusLable",
         Width: 130
     },
     {
-        Name: "StatusLable2",
+        Name: "OutputStatusLable",
         Type: "text",
         Caption: " Đã xuất",
-        DataSourceMember: "StatusLable2",
+        DataSourceMember: "OutputStatusLable",
         Width: 130
     },
     {
