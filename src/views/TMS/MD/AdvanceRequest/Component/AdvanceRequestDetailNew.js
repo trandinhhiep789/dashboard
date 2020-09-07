@@ -308,8 +308,9 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                         return (
                                                                             <tr key={"totalCurrency" + Index}>
                                                                                 <td>{rowItemobj.MaterialGroupName}</td>
+                                                                                
                                                                                 {rowItemobj.MaterialProductList.length > 1 ?
-                                                                                    <div>
+                                                                                    <td>
                                                                                         <select className="form-control form-control-sm" name="ProductID"
                                                                                             value={rowItemobj.ProductID}
                                                                                             id={rowItemobj.MaterialGroupID}
@@ -328,7 +329,7 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                                                     {optionItem.MaterialProductID}</option>
                                                                                             )}
                                                                                         </select>
-                                                                                    </div> : <td>{rowItemobj.ProductID}</td>}
+                                                                                    </td> : <td>{rowItemobj.ProductID}</td>}
                                                                                 <td>{rowItemobj.ProductName}</td>
                                                                                 <td>{(rowItemobj.AdvanceLimitType == 1 ? rowItemobj.AdvanceLimitQuantity : "")}</td>
                                                                                 <td>{(rowItemobj.AdvanceLimitType == 1 ? (rowItemobj.AdvanceLimitQuantity - this.AdvanceLimitQuantity(rowItemobj.MaterialGroupID, rowItemobj.ProductID)) : "")}</td>
