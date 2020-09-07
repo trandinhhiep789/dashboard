@@ -164,14 +164,7 @@ class AdvanceRequestDetailNewCom extends Component {
                 }, {});
 
             }
-
-
-
-            //console.log("InstallBundleID", this.groupByNew(this.state.AdvanceRequestDetail.MaterialList, ['InstallBundleID', 'InstallProductName']));
-            //  console.log("InstallBundleID", this.groupBy(this.state.AdvanceRequestDetail.MaterialList, 'InstallBundleID'), Object.keys(this.groupBy(this.state.AdvanceRequestDetail.MaterialList, 'InstallBundleID')).length)
         }
-        console.log("materialListForAdvance", materialListForAdvance, this.state.AdvanceRequestDetail.MaterialList)
-
 
         if (!this.state.AdvanceRequestDetail.IsAdvanceByShipmentOrder) {
             return (
