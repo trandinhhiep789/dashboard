@@ -26,6 +26,7 @@ import {
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
+import { DESTROYREQUEST_UPDATE } from "../../../../constants/functionLists";
 
 
 class EditCom extends React.Component {
@@ -328,6 +329,7 @@ class EditCom extends React.Component {
                         listelement={[]}
                         BackLink={BackLink}
                         onSubmit={this.prevDataSubmit}
+                        RequirePermission={DESTROYREQUEST_UPDATE}
                         onchange={this.handleChange.bind(this)}
                     >
 
