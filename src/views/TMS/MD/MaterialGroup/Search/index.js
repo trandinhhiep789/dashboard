@@ -91,8 +91,10 @@ class SearchCom extends React.Component {
                     IsShowForm: true
                 });
             } else {
-                this.showMessage(apiResult.Message);
-                this.setState({ IsShowForm: false });
+                this.setState({ IsShowForm: false,
+                    IsCallAPIError:!apiResult.IsError,
+                 });
+                 this.showMessage(apiResult.Message);
             }
         });
     }
