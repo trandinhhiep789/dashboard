@@ -102,10 +102,14 @@ class AddCom extends React.Component {
                     });
                 }
                 else {
+                  
                     this.setState({
+                        IsCallAPIError:!apiResult.IsError,
                         gridDataSource: [],
                         AdvanceRequestTypeID: value
                     });
+                    let strMessage = ReactHtmlParser(apiResult.Message);
+                    this.showMessage(strMessage);
 
                 }
             });
@@ -132,10 +136,14 @@ class AddCom extends React.Component {
                     });
                 }
                 else {
+
                     this.setState({
+                        IsCallAPIError:!apiResult.IsError,
                         gridDataSource: [],
                         StoreID: value
                     });
+                    let strMessage = ReactHtmlParser(apiResult.Message);
+                    this.showMessage(strMessage);
 
                 }
             });

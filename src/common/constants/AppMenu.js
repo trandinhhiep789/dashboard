@@ -480,7 +480,7 @@ const AppMenu = [
                     },
                     {
                         MenuName: 'AdvanceRequest',
-                        MenuTitle: 'Yêu cầu tạm ứng',
+                        MenuTitle: 'Danh sách Yêu cầu tạm ứng',
                         LinkTo: '/AdvanceRequest',
                         MenuIcon: '',
                         SubMenu: []
