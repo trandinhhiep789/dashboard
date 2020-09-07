@@ -259,7 +259,7 @@ class AddCom extends React.Component {
 
             MLObject.lstDestroyRequestDetail = DestroyRequestDetail;
             MLObject.CurrentReviewLevelID = MLObject.lstDestroyRequestReviewLevel[0].ReviewLevelID;
-            console.log("MLObject", MLObject)
+            // console.log("MLObject", MLObject)
             this.handleSubmit(MLObject)
 
         }
@@ -293,7 +293,7 @@ class AddCom extends React.Component {
     }
 
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
-        console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
+        // console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
         const { DestroyRequestDetail } = this.state;
         if (elementdata.Name == 'Quantity') {
             let Quantity = DestroyRequestDetail[index].UsableQuantity;
@@ -313,8 +313,6 @@ class AddCom extends React.Component {
                         IsCallAPIError: false,
                     })
                 }
-
-
             }
         }
         else {
