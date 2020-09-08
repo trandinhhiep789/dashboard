@@ -2,6 +2,15 @@ export const APIHostName = "TMSAPI";
 export const AddAPIPath = "api/DestroyRequestType_ReviewLevel/Add";
 export const UpdateAPIPath = "api/DestroyRequestType_ReviewLevel/Update";
 export const DeleteAPIPath = "api/DestroyRequestType_ReviewLevel/Delete";
+export const LoadAPIPath = "api/DestroyRequestType_ReviewLevel/Load";
+
+export const DetailPagePath = [
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
+    { Link: "/DestroyRequestType", Title: "Loại yêu cầu hủy vật tư" },
+    //{ Link: "/InventoryRequestType/ReviewLevelDetail", Title: "Mức duyệt" },
+    { Link: "", Title: "Mức duyệt" }
+];
+
 
 export const ModalColumnList_Insert = [
     {
@@ -138,7 +147,8 @@ export const DataGridColumnList = [
     },
     {
         Name: "ReviewLevelName",
-        Type: "text",
+        Type: "texttolink",
+        Link: "/DestroyRequestType/ReviewLevelDetail/",
         Caption: "Tên mức duyệt",
         DataSourceMember: "ReviewLevelName",
         Width: 300

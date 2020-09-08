@@ -9,19 +9,19 @@ import {
     APIHostName,
     LoadAPIPath,
     BackLink,
-    EditPagePath
+    EditPagePath,
+    DetailPagePath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { format } from "date-fns";
 import { formatDate } from "../../../../../common/library/CommonLib";
-import DestroyRequestType_Product from "../../DestroyRequestType_Product";
-import DestroyRequestType_ReviewLevel from "../../DestroyRequestType_ReviewLevel";
-import DestroyRequestType_ReviewLevel_User from "../../DestroyRequestType_ReviewLevel_User";
+import InventoryRequestType_ReviewLevel_User from "../../InventoryRequestType_ReviewLevel_User";
 
 
-class DetailCom extends React.Component {
+
+class ReviewLevelDetailCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
@@ -36,7 +36,7 @@ class DetailCom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updatePagePath(EditPagePath);
+        this.props.updatePagePath(DetailPagePath);
         this.callLoadData();
 
     }
@@ -91,7 +91,7 @@ class DetailCom extends React.Component {
                     <div className="col-md-12 col-sm-12 col-xs-12">
                         <div className="x_panel">
                             <div className="x_title">
-                                <h2>Thông tin loại yêu cầu hủy vật tư</h2>
+                                <h2>Thông tin mức duyệt</h2>
                                 <div className="clearfix"></div>
                             </div>
 
@@ -99,14 +99,14 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Mã loại yêu cầu hủy vật tư: </span>
-                                            <span className="xcode">{this.state.DataSource.DestroyRequestTypeID}</span>
+                                            <span>Mã mức duyệt: </span>
+                                            <span className="xcode">{this.state.DataSource.ReviewLevelID}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Tên loại yêu cầu hủy vật tư: </span>
-                                            <span>{this.state.DataSource.DestroyRequestTypeName}</span>
+                                            <span>Tên mức duyệt: </span>
+                                            <span>{this.state.DataSource.ReviewLevelName}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -114,42 +114,18 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Quyền thêm: </span>
-                                            <span>{this.state.DataSource.AddFunctionName}</span>
+                                            <span>Mô tả: </span>
+                                            <span>{this.state.DataSource.Description}</span>
                                         </div>
                                     </div>
 
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span> Thứ tự hiển thị: </span>
-                                            <span>{this.state.DataSource.OrderIndex}</span>
+                                            <span>{this.state.DataSource.ReviewOrderIndex}</span>
                                         </div>
                                     </div>
                                 </div>
-
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group checkbox customCheckbox">
-                                            <span>Có tự động duyệt: </span>
-                                            <label>
-                                                <input name="IsAutoReview" type="checkbox" id="IsAutoReview" checked={this.state.DataSource.IsAutoReview} />
-                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group checkbox customCheckbox">
-                                            <span>Có tự động xuất: </span>
-                                            <label>
-                                                <input name="IsAutoOutput" type="checkbox" id="IsAutoOutput" checked={this.state.DataSource.IsAutoOutput} />
-                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group checkbox customCheckbox">
@@ -184,47 +160,17 @@ class DetailCom extends React.Component {
                                             <span>{formatDate(this.state.DataSource.CreatedDate)}</span>
                                         </div>
                                     </div>
-
                                 </div>
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span> Mô tả: </span>
-                                            <span>{this.state.DataSource.Description}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
                             </div>
                         </div>
                     </div>
 
                     <br />
-                    <DestroyRequestType_Product
-                        DestroyRequestTypeID={this.props.match.params.id}
-                        DestroyRequestType_Product_DataSource={this.state.DataSource.ListDestroyRequestType_Product ? this.state.DataSource.ListDestroyRequestType_Product : []}
+                    <InventoryRequestType_ReviewLevel_User
+                        ReviewLevelID={this.props.match.params.id}
+                        InventoryRequestType_ReviewLevel_User_DataSource={this.state.DataSource.ListInventoryRequestType_ReviewLevel_User ? this.state.DataSource.ListInventoryRequestType_ReviewLevel_User : []}
                         onComponentChange={this.onComponentChange}
                     />
-                    <br />
-                    {
-                        !this.state.DataSource.IsAutoReview ?
-                            <DestroyRequestType_ReviewLevel
-                                DestroyRequestTypeID={this.props.match.params.id}
-                                DestroyRequestType_ReviewLevel_DataSource={this.state.DataSource.ListDestroyRequestType_ReviewLevel ? this.state.DataSource.ListDestroyRequestType_ReviewLevel : []}
-                                onComponentChange={this.onComponentChange}
-                            />
-                            : ""
-                    }
-
-                    {/* <DestroyRequestType_ReviewLevel_User
-                        DestroyRequestTypeID={this.props.match.params.id}
-                        DestroyRequestType_ReviewLevel_DataSource={this.state.DataSource.ListDestroyRequestType_ReviewLevel ? this.state.DataSource.ListDestroyRequestType_ReviewLevel : []}
-                        DestroyRequestType_ReviewLevel_User_DataSource={this.state.DataSource.ListDestroyRequestType_ReviewLevel_User ? this.state.DataSource.ListDestroyRequestType_ReviewLevel_User : []}
-                        onComponentChange={this.onComponentChange}
-                    /> */}
                 </React.Fragment >
             );
         }
@@ -257,8 +203,8 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Detail = connect(
+const ReviewLevelDetail = connect(
     mapStateToProps,
     mapDispatchToProps
-)(DetailCom);
-export default Detail;
+)(ReviewLevelDetailCom);
+export default ReviewLevelDetail;

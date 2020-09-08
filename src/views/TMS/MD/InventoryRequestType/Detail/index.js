@@ -9,7 +9,8 @@ import {
     APIHostName,
     LoadAPIPath,
     BackLink,
-    EditPagePath
+    EditPagePath,
+    DetailPagePath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -36,7 +37,7 @@ class DetailCom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updatePagePath(EditPagePath);
+        this.props.updatePagePath(DetailPagePath);
         this.callLoadData();
 
     }
@@ -210,18 +211,23 @@ class DetailCom extends React.Component {
                     />
 
                     <br />
-                    <InventoryRequestType_ReviewLevel
-                        InventoryRequestTypeID={this.props.match.params.id}
-                        InventoryRequestType_ReviewLevel_DataSource={this.state.DataSource.ListInventoryRequestType_ReviewLevel ? this.state.DataSource.ListInventoryRequestType_ReviewLevel : []}
-                        onComponentChange={this.onComponentChange}
-                    />
+                    {!this.state.DataSource.IsAutoReview ?
+                        <InventoryRequestType_ReviewLevel
+                            InventoryRequestTypeID={this.props.match.params.id}
+                            InventoryRequestType_ReviewLevel_DataSource={this.state.DataSource.ListInventoryRequestType_ReviewLevel ? this.state.DataSource.ListInventoryRequestType_ReviewLevel : []}
+                            //InventoryRequestType_ReviewLevel_User_DataSource={this.state.DataSource.ListInventoryRequestType_ReviewLevel_User ? this.state.DataSource.ListInventoryRequestType_ReviewLevel_User : []}
+                            onComponentChange={this.onComponentChange}
+                        />
+                        : ""
+                    }
 
-                    <InventoryRequestType_ReviewLevel_User
+
+                    {/* <InventoryRequestType_ReviewLevel_User
                         InventoryRequestTypeID={this.props.match.params.id}
                         InventoryRequestType_ReviewLevel_DataSource={this.state.DataSource.ListInventoryRequestType_ReviewLevel ? this.state.DataSource.ListInventoryRequestType_ReviewLevel : []}
                         InventoryRequestType_ReviewLevel_User_DataSource={this.state.DataSource.ListInventoryRequestType_ReviewLevel_User ? this.state.DataSource.ListInventoryRequestType_ReviewLevel_User : []}
                         onComponentChange={this.onComponentChange}
-                    />
+                    /> */}
                 </React.Fragment >
             );
         }

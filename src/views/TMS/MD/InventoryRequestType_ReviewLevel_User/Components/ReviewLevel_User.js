@@ -63,9 +63,8 @@ class ReviewLevel_UserCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        // MLObject.UserName = this.state.Username;
         MLObject.UserName = MLObject.UserName && Array.isArray(MLObject.UserName) ? MLObject.UserName[0] : MLObject.UserName;
-
+        MLObject.ReviewLevelID = this.props.ReviewLevelID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -155,7 +154,7 @@ class ReviewLevel_UserCom extends React.Component {
                 //RequirePermission={AREA_UPDATE}
                 >
 
-                    <FormControl.FormControlComboBox
+                    {/* <FormControl.FormControlComboBox
                         name="ReviewLevelID"
                         label="Mức duyệt"
                         isautoloaditemfromcache={false}
@@ -165,7 +164,7 @@ class ReviewLevel_UserCom extends React.Component {
                         datasourcemember="ReviewLevelID"
                         labelcolspan={4} colspan={8} rowspan={8}
                         validatonList={["Comborequired"]}
-                    />
+                    /> */}
 
 
                     <FormControl.FormControlComboBox
