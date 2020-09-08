@@ -44,6 +44,7 @@ class DetailCom extends React.Component {
             IsOutPut: false,
             CurrentReviewLevelID: '',
             CurrentReviewLevelName: '',
+            isAutoReview: false,
         }
         this.callLoadData = this.callLoadData.bind(this);
         this.handleSubmitOutputDestroyRequest = this.handleSubmitOutputDestroyRequest.bind(this);
@@ -61,7 +62,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("apiResult", apiResult, id)
+            // console.log("apiResult", apiResult, id)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -80,7 +81,7 @@ class DetailCom extends React.Component {
                     }
                     return item;
                 })
-                console.log("result", resultDestroyRequestReviewLevel)
+                // console.log("result", resultDestroyRequestReviewLevel)
                 this.setState({
                     DestroyRequest: apiResult.ResultObject,
                     DestroyRequestDetail: apiResult.ResultObject.lstDestroyRequestDetail,
@@ -91,6 +92,7 @@ class DetailCom extends React.Component {
                     IsOutPut: apiResult.ResultObject.IsOutput,
                     CurrentReviewLevelID: apiResult.ResultObject.CurrentReviewLevelID,
                     CurrentReviewLevelName: apiResult.ResultObject.ReviewLevelName,
+                    isAutoReview: apiResult.ResultObject.IsreViewed
 
                 });
             }
@@ -158,7 +160,7 @@ class DetailCom extends React.Component {
 
     handleRequestRL(id) {
         let MLObject = {};
-        const { DataSource, DestroyRequestRL, CurrentReviewLevelID , DestroyRequestID} = this.state;
+        const { DataSource, DestroyRequestRL, CurrentReviewLevelID, DestroyRequestID } = this.state;
         MLObject.DestroyRequestID = DataSource.DestroyRequestID;
         const aa = DestroyRequestRL.filter((item, index) => {
             if (item.ReviewLevelID != CurrentReviewLevelID) {
@@ -180,7 +182,7 @@ class DetailCom extends React.Component {
             MLObject.reViewedNote = "Từ chối";
         }
         this.props.callFetchAPI(APIHostName, UpdateCurrentReviewLevelAPIPath, MLObject).then((apiResult) => {
-            console.log("id", id, MLObject, apiResult)
+            // console.log("id", id, MLObject, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -195,7 +197,15 @@ class DetailCom extends React.Component {
     }
 
     render() {
-        const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL, CurrentReviewLevelName } = this.state;
+        const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL, CurrentReviewLevelName, isAutoReview, CurrentReviewLevelID } = this.state;
+        let IsAutoReview;
+        if(isAutoReview == true && CurrentReviewLevelID == 0){
+            IsAutoReview= true
+        }
+        else{
+            IsAutoReview= false 
+        }
+
         //console.log("CurrentReviewLevelName", CurrentReviewLevelName)
         if (this.state.IsLoadDataComplete) {
             return (
@@ -227,36 +237,40 @@ class DetailCom extends React.Component {
                                     />
                                 </div>
                             </div>
-
-                            <div className="card">
-                                <div className="card-title group-card-title">
-                                    <h4 className="title">Danh sách duyệt</h4>
+                            {IsAutoReview == false  ?
+                                <div className="card">
+                                    <div className="card-title group-card-title">
+                                        <h4 className="title">Danh sách duyệt</h4>
+                                    </div>
+                                    <div className="card-body">
+                                        <InputGrid
+                                            name="lstDestroyRequestReviewLevel"
+                                            controltype="GridControl"
+                                            listColumn={GirdDestroyRequestRLColumnList}
+                                            dataSource={DestroyRequestRL}
+                                            isHideHeaderToolbar={true}
+                                            //MLObjectDefinition={GridDestroyRequestRLMLObjectDefinition}
+                                            colspan="12"
+                                            onValueChangeInputGrid={this.valueChangeInputGrid}
+                                        />
+                                    </div>
                                 </div>
-                                <div className="card-body">
-                                    <InputGrid
-                                        name="lstDestroyRequestReviewLevel"
-                                        controltype="GridControl"
-                                        listColumn={GirdDestroyRequestRLColumnList}
-                                        dataSource={DestroyRequestRL}
-                                        isHideHeaderToolbar={true}
-                                        //MLObjectDefinition={GridDestroyRequestRLMLObjectDefinition}
-                                        colspan="12"
-                                        onValueChangeInputGrid={this.valueChangeInputGrid}
-                                    />
-                                </div>
-                            </div>
-
+                                : <div></div>
+                            }
 
                         </div>
 
                         <footer className="card-footer text-right ">
-                            <div className="btn-group btn-group-dropdown mr-3">
-                                <button className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
-                                <div class="dropdown-menu" x-placement="bottom-start" >
-                                    <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(1)}>Đồng ý</button>
-                                    <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(2)}>Từ chối</button>
+                            {IsAutoReview == false ?
+                                <div className="btn-group btn-group-dropdown mr-3">
+                                    <button className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                    <div class="dropdown-menu" x-placement="bottom-start" >
+                                        <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(1)}>Đồng ý</button>
+                                        <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(2)}>Từ chối</button>
+                                    </div>
                                 </div>
-                            </div>
+                                : <div></div>
+                            }
                             <button disabled={IsOutPut} className="btn btn-primary mr-3" type="submit" onClick={this.handleSubmitOutputDestroyRequest}>Tạo phiếu xuất</button>
                             <Link to="/DestroyRequest">
                                 <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
