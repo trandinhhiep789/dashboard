@@ -11,6 +11,7 @@ import Add from "./Add";
 import Edit from "./Edit";
 import Detail from "./Detail";
 import NotFound from '../../../NotFound'
+import ReviewLevelDetail from "../InventoryRequestType_ReviewLevel/Detail";
 
 class InventoryRequestTypeCom extends React.Component {
     constructor(props) {
@@ -24,6 +25,7 @@ class InventoryRequestTypeCom extends React.Component {
                 <Route exact path="/InventoryRequestType/Add" component={Add} />
                 <Route exact path="/InventoryRequestType/Edit/:id" component={Edit} />
                 <Route exact path="/InventoryRequestType/Detail/:id" component={Detail} />
+                <Route exact path="/InventoryRequestType/ReviewLevelDetail/:id" component={ReviewLevelDetail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );

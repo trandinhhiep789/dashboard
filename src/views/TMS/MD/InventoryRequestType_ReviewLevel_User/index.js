@@ -30,8 +30,6 @@ class InventoryRequestType_ReviewLevel_UserCom extends React.Component {
             IsCallAPIError: false,
             IsCloseForm: false,
             InventoryRequestType_ReviewLevel_User_DataSource: this.props.InventoryRequestType_ReviewLevel_User_DataSource ? this.props.InventoryRequestType_ReviewLevel_User_DataSource : [],
-            InventoryRequestType_ReviewLevel_User_DataSource: this.props.InventoryRequestType_ReviewLevel_User_DataSource ? this.props.InventoryRequestType_ReviewLevel_User_DataSource : [],
-            InventoryRequestTypeID: this.props.InventoryRequestTypeID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
             ModalColumnList_Edit: ModalColumnList_Edit
@@ -42,10 +40,6 @@ class InventoryRequestType_ReviewLevel_UserCom extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.InventoryRequestTypeID !== this.state.InventoryRequestTypeID) {
             this.setState({ InventoryRequestTypeID: nextProps.InventoryRequestTypeID });
-        }
-
-        if (nextProps.InventoryRequestType_ReviewLevel_DataSource !== this.state.InventoryRequestType_ReviewLevel_DataSource) {
-            this.setState({ InventoryRequestType_ReviewLevel_DataSource: nextProps.InventoryRequestType_ReviewLevel_DataSource });
         }
 
         if (nextProps.InventoryRequestType_ReviewLevel_User_DataSource !== this.state.InventoryRequestType_ReviewLevel_User_DataSource) {
@@ -141,14 +135,14 @@ class InventoryRequestType_ReviewLevel_UserCom extends React.Component {
     }
 
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
-        let reviewLevelOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+        // let reviewLevelOption = [{ value: -1, label: "--Vui lòng chọn--" }];
 
-        if (this.state.InventoryRequestType_ReviewLevel_DataSource.length > 0) {
-            let reviewLevel_DataSource = this.state.InventoryRequestType_ReviewLevel_DataSource;
-            reviewLevel_DataSource.forEach(element => {
-                reviewLevelOption.push({ value: element.ReviewLevelID, label: element.ReviewLevelName });
-            });
-        }
+        // if (this.state.InventoryRequestType_ReviewLevel_DataSource.length > 0) {
+        //     let reviewLevel_DataSource = this.state.InventoryRequestType_ReviewLevel_DataSource;
+        //     reviewLevel_DataSource.forEach(element => {
+        //         reviewLevelOption.push({ value: element.ReviewLevelID, label: element.ReviewLevelName });
+        //     });
+        // }
 
         if (!this.state.IsAllowedAdd) {
             this.showMessage("Bạn không có quyền");
@@ -159,7 +153,8 @@ class InventoryRequestType_ReviewLevel_UserCom extends React.Component {
             title: 'Người duyệt',
             content: {
                 text: <ReviewLevel_User
-                    ReviewLevelOptions={reviewLevelOption}
+                    //ReviewLevelOptions={reviewLevelOption}
+                    ReviewLevelID={this.props.ReviewLevelID}
                     onComponentChange={this.props.onComponentChange}
                     closePopup={this.onClose}
 
