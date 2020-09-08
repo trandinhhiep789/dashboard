@@ -472,6 +472,12 @@ export const GridInstallBundle_Materia = [
         BindControlName: "RoundingMultiple",
         DataSourceMember: "RoundingMultiple"
     },
+    {
+        Name: "QuantityUnitID",
+        DefaultValue: 0,
+        BindControlName: "QuantityUnitID",
+        DataSourceMember: "QuantityUnitID"
+    },
     
     {
         Name: "Note",
@@ -703,12 +709,25 @@ export const InstallBundle_MateriaColumnList = [
         max:9999
     },
     {
+        name: "QuantityUnitID",
+        Type: "ComboBox",
+        Caption: "đơn vị tính",
+        label: "đơn vị tính",
+        datasourcemember: "QuantityUnitID",
+        isautoloaditemfromcache:true,
+        loaditemcachekeyid:"ERPCOMMONCACHE.QUANTITYUNIT",
+        valuemember:"QuantityUnitID",
+        nameMember:"QuantityUnit",
+        OrderIndex: 15,
+        hideInput: false
+    },
+    {
         name: "Note",
         Type: "TextArea",
         label:"Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex:15,
+        OrderIndex:16,
         Colmd:12,
         hideInput: false,
         labelcolspan:2,
