@@ -50,6 +50,8 @@ class EditCom extends React.Component {
             DestroyRequestRL: [],
             gridDestroyRequestRL: {},
             isError: false,
+            isAutoReview: false,
+            isAutoOutput: false,
         };
     }
 
@@ -117,9 +119,9 @@ class EditCom extends React.Component {
 
 
     prevDataSubmit(formData, MLObject) {
-        const { isError, gridDestroyRequestRL } = this.state;
+        const { isError, gridDestroyRequestRL, isAutoReview, isAutoOutput } = this.state;
 
-        console.log("prevDataSubmit", gridDestroyRequestRL, MLObject);
+        // console.log("prevDataSubmit", gridDestroyRequestRL, MLObject);
 
         let arrReviewLevel = [];
         Object.keys(gridDestroyRequestRL).map(function (key) {
@@ -144,14 +146,19 @@ class EditCom extends React.Component {
                 }
             });
 
-
-            if (ReviewLevel == undefined || ReviewLevel == 0) {
-                this.showMessage('Danh sách duyệt người chưa được chọn. Vui lòng kiểm tra lại.');
-                this.setState({
-                    IsCallAPIError: true,
-                })
-                return;
+            if (!isAutoReview) {
+                MLObject.CurrentReviewLevelID = MLObject.lstDestroyRequestReviewLevel[0].ReviewLevelID;
+                if (ReviewLevel == undefined || ReviewLevel == 0) {
+                    this.showMessage('Danh sách duyệt người chưa được chọn. Vui lòng kiểm tra lại.');
+                    this.setState({
+                        IsCallAPIError: true,
+                    })
+                    return;
+                }
             }
+
+
+
             if (DestroyRequestDetail.length <= 0) {
                 this.showMessage('Danh sách vật tư chưa được chọn.');
                 this.setState({
@@ -161,8 +168,7 @@ class EditCom extends React.Component {
             }
 
             MLObject.lstDestroyRequestDetail = DestroyRequestDetail;
-            MLObject.CurrentReviewLevelID = MLObject.lstDestroyRequestReviewLevel[0].ReviewLevelID;
-             console.log("MLObject", MLObject)
+            // console.log("MLObject", MLObject)
             this.handleSubmit(MLObject)
 
         }
@@ -196,9 +202,9 @@ class EditCom extends React.Component {
     }
 
     callLoadData(id) {
-        console.log('callLoadData', id)
+        // console.log('callLoadData', id)
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("222", apiResult);
+            // console.log("222", apiResult);
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -221,7 +227,9 @@ class EditCom extends React.Component {
                     IsLoadDataComplete: true,
                     IsSystem: apiResult.ResultObject.IsSystem,
                     DestroyRequestRL: resultDestroyRequestReviewLevel,
-                    DestroyRequestDetail: apiResult.ResultObject.lstDestroyRequestDetail
+                    DestroyRequestDetail: apiResult.ResultObject.lstDestroyRequestDetail,
+                    isAutoReview: apiResult.ResultObject.IsreViewed,
+                    isAutoOutput: apiResult.ResultObject.IsOutput
                 });
 
 
@@ -284,7 +292,7 @@ class EditCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
         let currentDate = new Date();
-        const { DestroyRequestDetail, DestroyRequestRL, gridDestroyRequestRL } = this.state;
+        const { DestroyRequestDetail, DestroyRequestRL, gridDestroyRequestRL, isAutoReview } = this.state;
 
         const onChange = (aaa, event) => {
             const value = event.target.value;
@@ -465,51 +473,53 @@ class EditCom extends React.Component {
                             </div>
                         </div>
 
+                        {isAutoReview == false ?
+                            <div className="card">
+                                <div className="card-title group-card-title">
+                                    <h4 className="title">Danh sách duyệt</h4>
+                                </div>
+                                <div className="card-body">
 
-                        <div className="card">
-                            <div className="card-title group-card-title">
-                                <h4 className="title">Danh sách duyệt</h4>
+                                    <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                        <thead className="thead-light">
+                                            <tr>
+                                                <th className="jsgrid-header-cell">Mức duyệt</th>
+                                                <th className="jsgrid-header-cell">Người duyệt</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {/* {this.renderChild(this.state.gridDestroyRequestRL)} */}
+                                            {!!gridDestroyRequestRL && Object.keys(gridDestroyRequestRL).length > 0 &&
+                                                Object.keys(gridDestroyRequestRL).map(function (key) {
+                                                    return (
+
+                                                        <tr key={key}>
+                                                            <td>{gridDestroyRequestRL[key].ReviewLevelName}</td>
+                                                            <td>
+                                                                <select id={key} value={gridDestroyRequestRL[key].UserName}
+                                                                    className={`form-control form-control-sm ${gridDestroyRequestRL[key].UserName == "-1" ? "is-invalid" : ""}`}
+                                                                    onChange={selectOption => onChange(key, selectOption)}>
+                                                                    {gridDestroyRequestRL[key]["Child"].map(e => {
+                                                                        return <option value={e.value} name={e.name} key={e.value}>{e.name}</option>
+                                                                    })}
+                                                                </select>
+                                                                <div className="invalid-feedback">
+                                                                    <ul className="list-unstyled">
+                                                                        <li>Vui lòng chọn người duyệt cho mức duyệt.</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
                             </div>
-                            <div className="card-body">
-
-                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                    <thead className="thead-light">
-                                        <tr>
-                                            <th className="jsgrid-header-cell">Mức duyệt</th>
-                                            <th className="jsgrid-header-cell">Người duyệt</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {/* {this.renderChild(this.state.gridDestroyRequestRL)} */}
-                                        {!!gridDestroyRequestRL && Object.keys(gridDestroyRequestRL).length > 0 &&
-                                            Object.keys(gridDestroyRequestRL).map(function (key) {
-                                                return (
-
-                                                    <tr key={key}>
-                                                        <td>{gridDestroyRequestRL[key].ReviewLevelName}</td>
-                                                        <td>
-                                                            <select id={key} value={gridDestroyRequestRL[key].UserName}
-                                                                className={`form-control form-control-sm ${gridDestroyRequestRL[key].UserName == "-1" ? "is-invalid" : ""}`}
-                                                                onChange={selectOption => onChange(key, selectOption)}>
-                                                                {gridDestroyRequestRL[key]["Child"].map(e => {
-                                                                    return <option value={e.value} name={e.name} key={e.value}>{e.name}</option>
-                                                                })}
-                                                            </select>
-                                                            <div className="invalid-feedback">
-                                                                <ul className="list-unstyled">
-                                                                    <li>Vui lòng chọn người duyệt cho mức duyệt.</li>
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            })
-                                        }
-                                    </tbody>
-                                </table>
-
-                            </div>
-                        </div>
+                            : <div></div>
+                        }
                     </FormContainer>
 
 

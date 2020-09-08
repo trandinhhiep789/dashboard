@@ -64,6 +64,8 @@ class AddCom extends React.Component {
             gridDestroyRequestRL: {},
             validationErrorMessageSelect: '',
             isValidationSelect: false,
+            isAutoReview: false,
+            isAutoOutput: false,
         };
     }
 
@@ -162,7 +164,7 @@ class AddCom extends React.Component {
 
     GetDataByRequestTypeID(DestroyRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByRequestTypeIDPath, DestroyRequestTypeID).then(apiResult => {
-            // console.log("333", DestroyRequestTypeID, apiResult)
+            // console.log("RequestTypeID", DestroyRequestTypeID, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -174,6 +176,8 @@ class AddCom extends React.Component {
                 this.setState({
                     DestroyRequestDetail: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
+                    isAutoReview: apiResult.ResultObject[0].IsAutoReview,
+                    isAutoOutput: apiResult.ResultObject[0].IsAutoOutput,
                 });
             }
         });
@@ -215,7 +219,7 @@ class AddCom extends React.Component {
     }
 
     prevDataSubmit(formData, MLObject) {
-        const { isError, gridDestroyRequestRL } = this.state;
+        const { isError, gridDestroyRequestRL, isAutoReview, isAutoOutput } = this.state;
 
         // console.log("gridDestroyRequestRL", gridDestroyRequestRL, MLObject);
 
@@ -242,14 +246,27 @@ class AddCom extends React.Component {
                 }
             });
 
-
-            if (ReviewLevel == undefined || ReviewLevel == 0) {
-                this.showMessage('Danh sách duyệt người chưa được chọn. Vui lòng kiểm tra lại.');
-                this.setState({
-                    IsCallAPIError: true,
-                })
-                return;
+            if (isAutoReview) {
+                MLObject.IsreViewed = isAutoReview;
+                MLObject.CurrentReviewLevelID = 0;
+                MLObject.reViewedDate = new Date();
             }
+            else {
+                MLObject.IsreViewed = isAutoReview;
+                MLObject.CurrentReviewLevelID = MLObject.lstDestroyRequestReviewLevel[0].ReviewLevelID;
+                if (ReviewLevel == undefined || ReviewLevel == 0) {
+                    this.showMessage('Danh sách duyệt người chưa được chọn. Vui lòng kiểm tra lại.');
+                    this.setState({
+                        IsCallAPIError: true,
+                    })
+                    return;
+                }
+            }
+            if (isAutoOutput) {
+                MLObject.IsOutput = isAutoReview;
+                MLObject.OutputDate = new Date();
+            }
+            
             if (DestroyRequestDetail.length <= 0) {
                 this.showMessage('Danh sách vật tư chưa được chọn.');
                 this.setState({
@@ -257,9 +274,10 @@ class AddCom extends React.Component {
                 })
                 return;
             }
+            
 
             MLObject.lstDestroyRequestDetail = DestroyRequestDetail;
-            MLObject.CurrentReviewLevelID = MLObject.lstDestroyRequestReviewLevel[0].ReviewLevelID;
+
             // console.log("MLObject", MLObject)
             this.handleSubmit(MLObject)
 
@@ -342,7 +360,7 @@ class AddCom extends React.Component {
         }
         let currentDate = new Date();
 
-        const { DestroyRequestDetail, DestroyRequestRL, InputDestroyRequestRLColumnList, isError, gridDestroyRequestRL, validationErrorMessageSelect, isValidationSelect } = this.state;
+        const { DestroyRequestDetail, DestroyRequestRL, InputDestroyRequestRLColumnList, isError, gridDestroyRequestRL, validationErrorMessageSelect, isValidationSelect, isAutoReview, isAutoOutput } = this.state;
 
         const onChange = (aaa, event) => {
             const value = event.target.value;
@@ -360,7 +378,7 @@ class AddCom extends React.Component {
                 this.setState({
                     IsCallAPIError: false,
                     isError: false
-                    
+
                 })
             }
 
@@ -539,51 +557,54 @@ class AddCom extends React.Component {
                             </div>
                         </div> */}
 
-                        <div className="card">
-                            <div className="card-title group-card-title">
-                                <h4 className="title">Danh sách duyệt</h4>
+                        {isAutoReview == false ?
+
+                            <div className="card">
+                                <div className="card-title group-card-title">
+                                    <h4 className="title">Danh sách duyệt</h4>
+                                </div>
+                                <div className="card-body">
+
+                                    <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                        <thead className="thead-light">
+                                            <tr>
+                                                <th className="jsgrid-header-cell">Mức duyệt</th>
+                                                <th className="jsgrid-header-cell">Người duyệt</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {/* {this.renderChild(this.state.gridDestroyRequestRL)} */}
+                                            {!!gridDestroyRequestRL && Object.keys(gridDestroyRequestRL).length > 0 &&
+                                                Object.keys(gridDestroyRequestRL).map(function (key) {
+                                                    return (
+
+                                                        <tr key={key}>
+                                                            <td>{gridDestroyRequestRL[key].ReviewLevelName}</td>
+                                                            <td>
+                                                                <select id={key} value={gridDestroyRequestRL[key].UserName}
+                                                                    className={`form-control form-control-sm ${gridDestroyRequestRL[key].UserName == "-1" ? "is-invalid" : ""}`}
+                                                                    onChange={selectOption => onChange(key, selectOption)}>
+                                                                    {gridDestroyRequestRL[key]["Child"].map(e => {
+                                                                        return <option value={e.value} name={e.name} key={e.value}>{e.name}</option>
+                                                                    })}
+                                                                </select>
+                                                                <div className="invalid-feedback">
+                                                                    <ul className="list-unstyled">
+                                                                        <li>Vui lòng chọn người duyệt cho mức duyệt.</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
                             </div>
-                            <div className="card-body">
-
-                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                    <thead className="thead-light">
-                                        <tr>
-                                            <th className="jsgrid-header-cell">Mức duyệt</th>
-                                            <th className="jsgrid-header-cell">Người duyệt</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {/* {this.renderChild(this.state.gridDestroyRequestRL)} */}
-                                        {!!gridDestroyRequestRL && Object.keys(gridDestroyRequestRL).length > 0 &&
-                                            Object.keys(gridDestroyRequestRL).map(function (key) {
-                                                return (
-
-                                                    <tr key={key}>
-                                                        <td>{gridDestroyRequestRL[key].ReviewLevelName}</td>
-                                                        <td>
-                                                            <select  id={key} value={gridDestroyRequestRL[key].UserName}
-                                                                className={`form-control form-control-sm ${gridDestroyRequestRL[key].UserName == "-1" ? "is-invalid" : ""}`}
-                                                                onChange={selectOption => onChange(key, selectOption)}>
-                                                                {gridDestroyRequestRL[key]["Child"].map(e => {
-                                                                    return <option value={e.value} name={e.name} key={e.value}>{e.name}</option>
-                                                                })}
-                                                            </select>
-                                                            <div className="invalid-feedback">
-                                                                <ul className="list-unstyled">
-                                                                    <li>Vui lòng chọn người duyệt cho mức duyệt.</li>
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            })
-                                        }
-                                    </tbody>
-                                </table>
-
-                            </div>
-                        </div>
-
+                            : <div></div>
+                        }
 
                     </FormContainer>
                 </React.Fragment>
