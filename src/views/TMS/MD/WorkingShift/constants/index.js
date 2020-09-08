@@ -88,7 +88,7 @@ export const MLObjectDefinition = [
     {
         Name: "ShiftNumber",
         DefaultValue: {},
-        BindControlName: "cbShiftNumber",
+        BindControlName: "txtShiftNumber",
         DataSourceMember: "ShiftNumber"
     },
     {
