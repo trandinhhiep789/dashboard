@@ -216,7 +216,7 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                 </div> : <td>{item.ProductID}</td>}
                                                             <td>{item.ProductName}</td>
                                                             <td>{(item.AdvanceLimitType == 1 ? item.AdvanceLimitQuantity : "")}</td>
-                                                            <td>{(item.AdvanceLimitType == 1 ? (item.AdvanceLimitQuantity - item.TotalQuantity) : "")}</td>
+                                                            <td>{(item.AdvanceLimitType == 1 ? ((item.AdvanceLimitQuantity - item.TotalQuantity).toFixed(1)>0?(item.AdvanceLimitQuantity - item.TotalQuantity).toFixed(1):0) : "")}</td>
                                                             <td><ElementInputModal.ElementModalNumber
                                                                 validationErrorMessage={""}
                                                                 name="Quantity"
@@ -226,7 +226,7 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                 dataSourcemember="Quantity"
                                                                 Colmd='12'
                                                                 min={0}
-                                                                max={(item.AdvanceLimitType == 1 ? (item.AdvanceLimitQuantity - item.TotalQuantity) : 1000)}
+                                                                max={(item.AdvanceLimitType == 1 ? ((item.AdvanceLimitQuantity - item.TotalQuantity).toFixed(1)>0?(item.AdvanceLimitQuantity - item.TotalQuantity).toFixed(1):0) : 1000)}
                                                                 value={item.Quantity}
                                                                 indexRow={index}
                                                                 disabled={item.CostPrice == 0 ? true : false}
