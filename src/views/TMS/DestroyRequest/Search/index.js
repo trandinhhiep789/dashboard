@@ -70,7 +70,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            // console.log('callSearchData', searchData, apiResult)
+             console.log('callSearchData', searchData, apiResult)
 
             if (apiResult.IsError) {
                 this.setState({
@@ -88,7 +88,7 @@ class SearchCom extends React.Component {
                         "Ngày yêu cầu": item.RequestDate,
                         "Người yêu cầu": item.RequestUser,
                         "Đã duyệt": item.IsreViewed,
-                        "Đã xuất": item.IsOutput,
+                        "Đã xuất": item.IsCreatedOrder,
                     };
 
                     return element;
@@ -98,7 +98,7 @@ class SearchCom extends React.Component {
 
                 const dataSource = apiResult.ResultObject.map((item, index) => {
                     item.ApproverName = item.UserName + " - " + item.FullName;
-                    if (item.IsOutput) {
+                    if (item.IsCreatedOrder) {
                         item.OutputStatusLable = <span className='lblstatus text-success'>Đã xuất</span>;
                     }
                     else {

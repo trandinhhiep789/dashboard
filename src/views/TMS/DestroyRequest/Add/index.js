@@ -263,10 +263,10 @@ class AddCom extends React.Component {
                 }
             }
             if (isAutoOutput) {
-                MLObject.IsOutput = isAutoReview;
-                MLObject.OutputDate = new Date();
+                MLObject.IsCreatedOrder = isAutoOutput;
+                MLObject.CreatedOrderDate = new Date();
             }
-            
+
             if (DestroyRequestDetail.length <= 0) {
                 this.showMessage('Danh sách vật tư chưa được chọn.');
                 this.setState({
@@ -274,11 +274,11 @@ class AddCom extends React.Component {
                 })
                 return;
             }
-            
+
 
             MLObject.lstDestroyRequestDetail = DestroyRequestDetail;
 
-            // console.log("MLObject", MLObject)
+            console.log("MLObject", MLObject)
             this.handleSubmit(MLObject)
 
         }
@@ -412,7 +412,7 @@ class AddCom extends React.Component {
                     >
 
                         <div className="row">
-                            <div className="col-md-6">
+                            {/* <div className="col-md-6">
                                 <FormControl.TextBox
                                     name="txtDestroyRequestID"
                                     colspan="8"
@@ -425,7 +425,7 @@ class AddCom extends React.Component {
                                     datasourcemember="DestroyRequestID"
                                     validatonList={['required']}
                                 />
-                            </div>
+                            </div> */}
 
                             <div className="col-md-6">
                                 <FormControl.FormControlComboBox
@@ -447,41 +447,6 @@ class AddCom extends React.Component {
 
                             </div>
 
-                            <div className="col-md-12">
-                                <FormControl.TextBox
-                                    name="txtDestroyRequestTitle"
-                                    labelcolspan={2}
-                                    colspan={10}
-                                    readOnly={false}
-                                    label="tiêu đề"
-                                    placeholder="Tiêu đề"
-                                    controltype="InputControl"
-                                    value=""
-                                    datasourcemember="DestroyRequestTitle"
-                                    validatonList={['required']}
-                                    classNameCustom="customcontrol"
-                                />
-                            </div>
-
-                            <div className="col-md-6">
-                                <FormControl.FormControlComboBox
-                                    name="cboRequestStore"
-                                    colspan="8"
-                                    labelcolspan="4"
-                                    label="kho yêu cầu"
-                                    disabled={true}
-                                    validatonList={["Comborequired"]}
-                                    placeholder="-- Vui lòng chọn --"
-                                    isautoloaditemfromcache={true}
-                                    loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
-                                    valuemember="StoreID"
-                                    nameMember="StoreName"
-                                    controltype="InputControl"
-                                    value={this.props.location.state.RequestStoreID}
-                                    listoption={null}
-                                    datasourcemember="RequestStoreID" />
-
-                            </div>
 
                             <div className="col-md-6">
 
@@ -499,6 +464,45 @@ class AddCom extends React.Component {
                                     value=""
                                     validatonList={["required"]}
                                     datasourcemember="RequestDate"
+                                />
+                            </div>
+
+                            <div className="col-md-12">
+                                <FormControl.FormControlComboBox
+                                    name="cboRequestStore"
+                                    colspan="10"
+                                    labelcolspan="2"
+                                    label="kho yêu cầu"
+                                    disabled={true}
+                                    validatonList={["Comborequired"]}
+                                    placeholder="-- Vui lòng chọn --"
+                                    isautoloaditemfromcache={true}
+                                    loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
+                                    valuemember="StoreID"
+                                    nameMember="StoreName"
+                                    controltype="InputControl"
+                                    value={this.props.location.state.RequestStoreID}
+                                    listoption={null}
+                                    datasourcemember="RequestStoreID"
+                                    classNameCustom="customcontrol"
+                                />
+
+                            </div>
+
+
+                            <div className="col-md-12">
+                                <FormControl.TextBox
+                                    name="txtDestroyRequestTitle"
+                                    labelcolspan={2}
+                                    colspan={10}
+                                    readOnly={false}
+                                    label="tiêu đề"
+                                    placeholder="Tiêu đề"
+                                    controltype="InputControl"
+                                    value=""
+                                    datasourcemember="DestroyRequestTitle"
+                                    validatonList={['required']}
+                                    classNameCustom="customcontrol"
                                 />
                             </div>
 
