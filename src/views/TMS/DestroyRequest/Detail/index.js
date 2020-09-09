@@ -19,7 +19,7 @@ import {
     TitleFormDetail,
     GirdDestroyRequestDetailColumnList,
     GirdDestroyRequestRLColumnList,
-    UpdateOutputAPIPath,
+    UpdateCreateSaleOrderAPIPath,
     UpdateCurrentReviewLevelAPIPath
 
 } from "../constants";
@@ -144,7 +144,11 @@ class DetailCom extends React.Component {
 
     handleSubmitOutputDestroyRequest() {
         const { DestroyRequestID } = this.state;
-        this.props.callFetchAPI(APIHostName, UpdateOutputAPIPath, DestroyRequestID).then((apiResult) => {
+        let MLObject ={};
+        MLObject.DestroyRequestID = DestroyRequestID;
+        MLObject.SaleOrderID = "";
+        MLObject.IsCreatedOrder = true;
+        this.props.callFetchAPI(APIHostName, UpdateCreateSaleOrderAPIPath, MLObject).then((apiResult) => {
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
