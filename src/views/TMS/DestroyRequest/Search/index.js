@@ -97,7 +97,7 @@ class SearchCom extends React.Component {
                 
 
                 const dataSource = apiResult.ResultObject.map((item, index) => {
-                    item.ApproverName = item.UserName + " - " + item.FullName;
+                    item.ApproverName = item.RequestUser + " - " + item.FullName;
                     if (item.IsCreatedOrder) {
                         item.OutputStatusLable = <span className='lblstatus text-success'>Đã xuất</span>;
                     }

@@ -1,4 +1,11 @@
 .btn-group-dropdown {
+    .dropdown-toggle-disabled {
+        background: #b5b4b4 !important;
+        border-radius: 4px !important;
+        color: #171717 !important;
+        opacity: .5 !important;
+    }
+
     .dropdown-menu {
         width: 100%;
         overflow: hidden;

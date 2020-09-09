@@ -46,6 +46,7 @@ class DetailCom extends React.Component {
             CurrentReviewLevelName: '',
             isAutoReview: false,
             lastReviewLevelID: '',
+            isUserNameReviewLevel: false,
         }
         this.callLoadData = this.callLoadData.bind(this);
         this.handleSubmitOutputDestroyRequest = this.handleSubmitOutputDestroyRequest.bind(this);
@@ -75,7 +76,8 @@ class DetailCom extends React.Component {
                     lstDestroyRequestReviewLevel, lstDestroyRequestDetail,
                     IsSystem, IsCreatedOrder, CurrentReviewLevelID, ReviewLevelName,
                     IsreViewed
-                } = apiResult.ResultObject
+                } = apiResult.ResultObject;
+
                 const resultDestroyRequestReviewLevel = lstDestroyRequestReviewLevel.map((item, index) => {
                     item.ApproverName = item.UserName + " - " + item.FullName;
                     if (item.ReviewStatus == 0) {
@@ -86,6 +88,26 @@ class DetailCom extends React.Component {
                     }
                     return item;
                 })
+
+                if (lstDestroyRequestReviewLevel.length > 0) {
+                    const resultUserNameReviewLevel = lstDestroyRequestReviewLevel.filter((item, index) => {
+                        if (item.ReviewLevelID == CurrentReviewLevelID) {
+                            return item;
+                        }
+                    })
+
+                    const Username = this.props.AppInfo.LoginInfo.Username;
+                    if(resultUserNameReviewLevel.length > 0){
+                        if (resultUserNameReviewLevel[0].UserName.trim() == Username.trim()) {
+                            this.setState({
+                                isUserNameReviewLevel: true
+                            })
+                        }
+                    }
+                   
+
+                }
+
                 // console.log("result", resultDestroyRequestReviewLevel)
                 this.setState({
                     DestroyRequest: apiResult.ResultObject,
@@ -154,14 +176,7 @@ class DetailCom extends React.Component {
         MLObject.DestroyRequestID = DestroyRequestID;
         MLObject.SaleOrderID = "";
         MLObject.IsCreatedOrder = true;
-        let arrDestroyRequestDetail =[]
-        DestroyRequestDetail.map((item, index)=>{
-            item.IsCreatedOrder = true,
-            arrDestroyRequestDetail.push(item)
-        })
 
-        MLObject.DestroyRequestDetailList = arrDestroyRequestDetail;
-        debugger
         this.props.callFetchAPI(APIHostName, UpdateCreateSaleOrderAPIPath, MLObject).then((apiResult) => {
             console.log("MLObject", MLObject, apiResult)
             if (apiResult.IsError) {
@@ -233,8 +248,9 @@ class DetailCom extends React.Component {
     }
 
     render() {
-        const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL, CurrentReviewLevelName, isAutoReview, CurrentReviewLevelID } = this.state;
+        const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL, CurrentReviewLevelName, isAutoReview, CurrentReviewLevelID, isUserNameReviewLevel } = this.state;
         let IsAutoReview;
+
         if (isAutoReview == true && CurrentReviewLevelID == 0) {
             IsAutoReview = true
         }
@@ -242,7 +258,7 @@ class DetailCom extends React.Component {
             IsAutoReview = false
         }
 
-        //console.log("CurrentReviewLevelName", CurrentReviewLevelName)
+        console.log("IsAutoReview", IsAutoReview)
         if (this.state.IsLoadDataComplete) {
             return (
                 <div className="col-lg-12">
@@ -298,14 +314,24 @@ class DetailCom extends React.Component {
 
                         <footer className="card-footer text-right ">
                             {IsAutoReview == false ?
-                                <div className="btn-group btn-group-dropdown mr-3">
-                                    <button className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
-                                    <div className="dropdown-menu" x-placement="bottom-start" >
-                                        <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(1)}>Đồng ý</button>
-                                        <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(2)}>Từ chối</button>
+                                isUserNameReviewLevel == true ?
+                                    <div className="btn-group btn-group-dropdown mr-3">
+                                        <button className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                        <div className="dropdown-menu" x-placement="bottom-start" >
+                                            <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(1)}>Đồng ý</button>
+                                            <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(2)}>Từ chối</button>
+                                        </div>
                                     </div>
-                                </div>
+                                    :
+                                    <div className="btn-group btn-group-dropdown mr-3">
+                                        <button className="btn btn-light dropdown-toggle dropdown-toggle-disabled" disabled title="Bạn không có quyền duyệt" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                        <div className="dropdown-menu" x-placement="bottom-start" >
+                                            <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(1)}>Đồng ý</button>
+                                            <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(2)}>Từ chối</button>
+                                        </div>
+                                    </div>
                                 : <div></div>
+
                             }
                             <button disabled={IsOutPut} className="btn btn-primary mr-3" type="submit" onClick={this.handleSubmitOutputDestroyRequest}>Tạo phiếu xuất</button>
                             <Link to="/DestroyRequest">
