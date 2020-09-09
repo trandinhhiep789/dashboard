@@ -134,7 +134,7 @@ class EditCom extends React.Component {
                     RequirePermission={MATERIALGROUP_UPDATE}
                     ref={this.searchref}
                 >
-                    <br />
+                    {/* <br />
                     <MaterialGroup_Product
                         MaterialGroupID={this.props.match.params.id}
                         MaterialGroupProductDataSource={this.state.MaterialGroup_Product}
@@ -147,7 +147,7 @@ class EditCom extends React.Component {
                         MaterialGroup_InstallCondDataSource={this.state.MaterialGroup_InstallCond}
                         MaterialGroup_ProductDataSource={this.state.MaterialGroup_Product}
                         onMaterialGroup_InstallCondChange={this.onMaterialGroup_InstallCondChange}
-                    />
+                    /> */}
                 </SimpleForm>
             );
         }

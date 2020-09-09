@@ -176,7 +176,7 @@ class DetailCom extends React.Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Người tạo: </span>
-                                            <span>{this.state.DataSource.CreatedUser}</span>
+                                            <span>{this.state.DataSource.CreatedUserFullName}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">

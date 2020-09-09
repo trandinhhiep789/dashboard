@@ -29,6 +29,12 @@ export const AddPagePath = [
     { Link: "", Title: "Thêm" }
 ];
 
+export const DetailPagePath = [
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
+    { Link: "/MaterialGroup", Title: "Danh sách nhóm vật tư lắp đặt" },
+    { Link: "", Title: "Chi tiết" }
+];
+
 export const SearchElementList = [
     {
         type: "text",
@@ -95,17 +101,17 @@ export const AddElementList = [
     //     readonly: false,
     //     validatonList: ["number"]
     // },
-    {
-        type: "checkbox",
-        name: "chkIsActived",
-        label: "Kích hoạt:",
-        value: true,
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        readonly: false,
-        validatonList: []
-    },
+    // {
+    //     type: "checkbox",
+    //     name: "chkIsActived",
+    //     label: "Kích hoạt:",
+    //     value: false,
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: {},
+    //     readonly: false,
+    //     validatonList: []
+    // },
     {
         type: "checkbox",
         name: "chkIsSystem",
@@ -234,7 +240,7 @@ export const MLObjectDefinition = [
     },
     {
         Name: "IsActived",
-        DefaultValue: true,
+        DefaultValue: false,
         BindControlName: "chkIsActived",
         DataSourceMember: "IsActived"
     },
@@ -281,7 +287,8 @@ export const DataGridColumnList = [
     },
     {
         Name: "MaterialGroupName",
-        Type: "text",
+        Type: "texttolink",
+        Link: "/MaterialGroup/Detail/",
         Caption: "Tên nhóm vật tư",
         DataSourceMember: "MaterialGroupName",
         Width: 250

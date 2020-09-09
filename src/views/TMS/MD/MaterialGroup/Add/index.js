@@ -65,7 +65,7 @@ class AddCom extends React.Component {
 
     render() {
         const dataSource = {
-            IsActived: true
+            IsActived: false
         };
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;

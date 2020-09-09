@@ -9,16 +9,16 @@ import {
     APIHostName,
     LoadAPIPath,
     BackLink,
-    EditPagePath
+    EditPagePath,
+    DetailPagePath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { format } from "date-fns";
 import { formatDate } from "../../../../../common/library/CommonLib";
-import DestroyRequestType_Product from "../../DestroyRequestType_Product";
-import DestroyRequestType_ReviewLevel from "../../DestroyRequestType_ReviewLevel";
-import DestroyRequestType_ReviewLevel_User from "../../DestroyRequestType_ReviewLevel_User";
+import MaterialGroup_Product from "../../MaterialGroup_Product";
+import MaterialGroup_InstallCond from "../../MaterialGroup_InstallCond";
 
 
 class DetailCom extends React.Component {
@@ -26,7 +26,8 @@ class DetailCom extends React.Component {
         super(props);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.callLoadData = this.callLoadData.bind(this);
-        this.onComponentChange = this.onComponentChange.bind(this);
+        this.onMaterialGroupProductChange = this.onMaterialGroupProductChange.bind(this);
+        this.onMaterialGroup_InstallCondChange = this.onMaterialGroup_InstallCondChange.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -36,7 +37,7 @@ class DetailCom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updatePagePath(EditPagePath);
+        this.props.updatePagePath(DetailPagePath);
         this.callLoadData();
 
     }
@@ -50,16 +51,23 @@ class DetailCom extends React.Component {
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                this.setState({ DataSource: apiResult.ResultObject });
+                this.setState({
+                    DataSource: apiResult.ResultObject,
+                    MaterialGroup_Product: apiResult.ResultObject.MaterialGroup_Product ? apiResult.ResultObject.MaterialGroup_Product : [],
+                    MaterialGroup_InstallCond: apiResult.ResultObject.MaterialGroup_InstallCond ? apiResult.ResultObject.MaterialGroup_InstallCond : []
+                });
             }
             this.setState({
                 IsLoadDataComplete: true
             });
-            //console.log("apiResult", apiResult);
         });
     }
 
-    onComponentChange() {
+    onMaterialGroupProductChange() {
+        this.callLoadData();
+    }
+
+    onMaterialGroup_InstallCondChange() {
         this.callLoadData();
     }
 
@@ -91,7 +99,7 @@ class DetailCom extends React.Component {
                     <div className="col-md-12 col-sm-12 col-xs-12">
                         <div className="x_panel">
                             <div className="x_title">
-                                <h2>Thông tin loại yêu cầu hủy vật tư</h2>
+                                <h2>Thông tin nhóm vật tư</h2>
                                 <div className="clearfix"></div>
                             </div>
 
@@ -99,57 +107,20 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Mã loại yêu cầu hủy vật tư: </span>
-                                            <span className="xcode">{this.state.DataSource.DestroyRequestTypeID}</span>
+                                            <span>Mã nhóm vật tư: </span>
+                                            <span className="xcode">{this.state.DataSource.MaterialGroupID}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Tên loại yêu cầu hủy vật tư: </span>
-                                            <span>{this.state.DataSource.DestroyRequestTypeName}</span>
+                                            <span>Tên nhóm vật tư: </span>
+                                            <span>{this.state.DataSource.MaterialGroupName}</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Quyền thêm: </span>
-                                            <span>{this.state.DataSource.AddFunctionName}</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span> Thứ tự hiển thị: </span>
-                                            <span>{this.state.DataSource.OrderIndex}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group checkbox customCheckbox">
-                                            <span>Có tự động duyệt: </span>
-                                            <label>
-                                                <input name="IsAutoReview" type="checkbox" id="IsAutoReview" checked={this.state.DataSource.IsAutoReview} />
-                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group checkbox customCheckbox">
-                                            <span>Có tự động xuất: </span>
-                                            <label>
-                                                <input name="IsAutoOutput" type="checkbox" id="IsAutoOutput" checked={this.state.DataSource.IsAutoOutput} />
-                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-
+                                
+                       
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group checkbox customCheckbox">
@@ -194,6 +165,12 @@ class DetailCom extends React.Component {
                                             <span>{this.state.DataSource.Description}</span>
                                         </div>
                                     </div>
+                                    {/* <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span> Thứ tự hiển thị: </span>
+                                            <span>{this.state.DataSource.OrderIndex}</span>
+                                        </div>
+                                    </div> */}
                                 </div>
 
 
@@ -203,28 +180,20 @@ class DetailCom extends React.Component {
                     </div>
 
                     <br />
-                    <DestroyRequestType_Product
-                        DestroyRequestTypeID={this.props.match.params.id}
-                        DestroyRequestType_Product_DataSource={this.state.DataSource.ListDestroyRequestType_Product ? this.state.DataSource.ListDestroyRequestType_Product : []}
-                        onComponentChange={this.onComponentChange}
+                    <MaterialGroup_Product
+                        MaterialGroupID={this.props.match.params.id}
+                        MaterialGroupProductDataSource={this.state.MaterialGroup_Product}
+                        MaterialGroup_InstallCondDataSource={this.state.MaterialGroup_InstallCond}
+                        onMaterialGroupProductChange={this.onMaterialGroupProductChange}
                     />
                     <br />
-                    {
-                        !this.state.DataSource.IsAutoReview ?
-                            <DestroyRequestType_ReviewLevel
-                                DestroyRequestTypeID={this.props.match.params.id}
-                                DestroyRequestType_ReviewLevel_DataSource={this.state.DataSource.ListDestroyRequestType_ReviewLevel ? this.state.DataSource.ListDestroyRequestType_ReviewLevel : []}
-                                onComponentChange={this.onComponentChange}
-                            />
-                            : ""
-                    }
+                    <MaterialGroup_InstallCond
+                        MaterialGroupID={this.props.match.params.id}
+                        MaterialGroup_InstallCondDataSource={this.state.MaterialGroup_InstallCond}
+                        MaterialGroup_ProductDataSource={this.state.MaterialGroup_Product}
+                        onMaterialGroup_InstallCondChange={this.onMaterialGroup_InstallCondChange}
+                    />
 
-                    {/* <DestroyRequestType_ReviewLevel_User
-                        DestroyRequestTypeID={this.props.match.params.id}
-                        DestroyRequestType_ReviewLevel_DataSource={this.state.DataSource.ListDestroyRequestType_ReviewLevel ? this.state.DataSource.ListDestroyRequestType_ReviewLevel : []}
-                        DestroyRequestType_ReviewLevel_User_DataSource={this.state.DataSource.ListDestroyRequestType_ReviewLevel_User ? this.state.DataSource.ListDestroyRequestType_ReviewLevel_User : []}
-                        onComponentChange={this.onComponentChange}
-                    /> */}
                 </React.Fragment >
             );
         }

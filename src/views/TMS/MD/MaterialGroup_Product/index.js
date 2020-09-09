@@ -131,6 +131,10 @@ class MaterialGroup_ProductCom extends React.Component {
                         MLObject.MaterialGroupID = this.state.MaterialGroupID;
                         MLObject.ProductName = MLObject.ProductID[0].ProductName;
                         MLObject.ProductID = MLObject.ProductID[0].ProductID;
+
+                        MLObject.AdvanceQuantityUnitID = MLObject.AdvanceQuantityUnitID && Array.isArray(MLObject.AdvanceQuantityUnitID) ? MLObject.AdvanceQuantityUnitID[0] : MLObject.AdvanceQuantityUnitID;
+                        MLObject.AdvanceProductID = MLObject.AdvanceProductID && Array.isArray(MLObject.AdvanceProductID) ? MLObject.AdvanceProductID[0].ProductID : MLObject.AdvanceProductID;
+                        
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         let match = this.state.MaterialGroupProductDataSource.filter(item =>
@@ -150,7 +154,7 @@ class MaterialGroup_ProductCom extends React.Component {
                             }
                             this.showMessage(apiResult.Message);
                         });
-                        //this.resetCombobox();
+                        //console.log("MLObject",MLObject);
                     }
                 }
             },
@@ -187,6 +191,10 @@ class MaterialGroup_ProductCom extends React.Component {
                     if (MLObject) {
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+
+                        MLObject.AdvanceQuantityUnitID = MLObject.AdvanceQuantityUnitID && Array.isArray(MLObject.AdvanceQuantityUnitID) ? MLObject.AdvanceQuantityUnitID[0] : MLObject.AdvanceQuantityUnitID;
+                        MLObject.AdvanceProductID = MLObject.AdvanceProductID && Array.isArray(MLObject.AdvanceProductID) ? MLObject.AdvanceProductID[0].ProductID : MLObject.AdvanceProductID;
+                        
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
                                 if (this.props.onMaterialGroupProductChange) {
@@ -303,7 +311,7 @@ class MaterialGroup_ProductCom extends React.Component {
             // <Collapsible trigger="Sản phẩm của nhóm vật tư" easing="ease-in" open={true}>
 
             // </Collapsible>
-            <div className="sub-grid">
+            <div className="sub-grid detail">
                 <DataGrid listColumn={DataGridColumnList}
                     dataSource={datasource}
                     modalElementList={ModalColumnList_Insert}
@@ -313,13 +321,12 @@ class MaterialGroup_ProductCom extends React.Component {
                     onDeleteClick={this.handleDelete}
                     onInsertClick={this.handleInsert}
                     onInsertClickEdit={this.handleEdit}
-                    IsAutoPaging={true}
+                    IsAutoPaging={false}
                     RowsPerPage={10}
                     IsCustomAddLink={true}
                     headingTitle={"Sản phẩm của nhóm vật tư"}
                 />
             </div>
-
         );
 
 
