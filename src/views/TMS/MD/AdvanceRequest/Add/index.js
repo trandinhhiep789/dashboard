@@ -97,6 +97,7 @@ class AddCom extends React.Component {
                 if (!apiResult.IsError) {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
+                        AdvanceRequestDetailList:apiResult.ResultObject,
                         AdvanceRequestTypeID: value,
                         IsLoadDataComplete: true
                     });
@@ -131,6 +132,7 @@ class AddCom extends React.Component {
                 if (!apiResult.IsError) {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
+                        AdvanceRequestDetailList:apiResult.ResultObject,
                         StoreID: value,
                         IsLoadDataComplete: true
                     });
