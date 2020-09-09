@@ -19,7 +19,7 @@ import {
     TitleFormDetail,
     GirdDestroyRequestDetailColumnList,
     GirdDestroyRequestRLColumnList,
-    UpdateOutputAPIPath,
+    UpdateCreateSaleOrderAPIPath,
     UpdateCurrentReviewLevelAPIPath
 
 } from "../constants";
@@ -144,7 +144,11 @@ class DetailCom extends React.Component {
 
     handleSubmitOutputDestroyRequest() {
         const { DestroyRequestID } = this.state;
-        this.props.callFetchAPI(APIHostName, UpdateOutputAPIPath, DestroyRequestID).then((apiResult) => {
+        let MLObject ={};
+        MLObject.DestroyRequestID = DestroyRequestID;
+        MLObject.SaleOrderID = "";
+        MLObject.IsCreatedOrder = true;
+        this.props.callFetchAPI(APIHostName, UpdateCreateSaleOrderAPIPath, MLObject).then((apiResult) => {
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -162,12 +166,23 @@ class DetailCom extends React.Component {
         let MLObject = {};
         const { DataSource, DestroyRequestRL, CurrentReviewLevelID, DestroyRequestID } = this.state;
         MLObject.DestroyRequestID = DataSource.DestroyRequestID;
-        const aa = DestroyRequestRL.filter((item, index) => {
-            if (item.ReviewLevelID != CurrentReviewLevelID) {
-                return item;
-            }
-        });
-
+        let aa;
+        if(DestroyRequestRL.length > 1){
+            aa = DestroyRequestRL.filter((item, index) => {
+                if (item.ReviewLevelID != CurrentReviewLevelID) {
+                    return item;
+                }
+            });
+        }
+        else{
+            aa = DestroyRequestRL.filter((item, index) => {
+                if (item.ReviewLevelID == CurrentReviewLevelID) {
+                    return item;
+                }
+            });
+        }
+        
+        console.log("aa", aa, DestroyRequestRL, CurrentReviewLevelID)
         MLObject.CurrentReviewLevelID = aa[0].ReviewLevelID;
         MLObject.ReviewLevelID = CurrentReviewLevelID;
         MLObject.IsreViewed = 1;
@@ -199,11 +214,11 @@ class DetailCom extends React.Component {
     render() {
         const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL, CurrentReviewLevelName, isAutoReview, CurrentReviewLevelID } = this.state;
         let IsAutoReview;
-        if(isAutoReview == true && CurrentReviewLevelID == 0){
-            IsAutoReview= true
+        if (isAutoReview == true && CurrentReviewLevelID == 0) {
+            IsAutoReview = true
         }
-        else{
-            IsAutoReview= false 
+        else {
+            IsAutoReview = false
         }
 
         //console.log("CurrentReviewLevelName", CurrentReviewLevelName)
@@ -237,7 +252,7 @@ class DetailCom extends React.Component {
                                     />
                                 </div>
                             </div>
-                            {IsAutoReview == false  ?
+                            {IsAutoReview == false ?
                                 <div className="card">
                                     <div className="card-title group-card-title">
                                         <h4 className="title">Danh sách duyệt</h4>
