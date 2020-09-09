@@ -4,7 +4,7 @@ export const LoadAPIPath = "api/DestroyRequest/Load";
 export const LoadNewAPIPath = "api/DestroyRequest/LoadInfoNew";
 export const AddAPIPath = "api/DestroyRequest/Add";
 export const UpdateAPIPath = "api/DestroyRequest/UpdateNew";
-export const UpdateOutputAPIPath = "api/DestroyRequest/UpdateOutput";
+export const UpdateCreateSaleOrderAPIPath = "api/DestroyRequest/UpdateCreateSaleOrder";
 
 export const UpdateCurrentReviewLevelAPIPath = "api/DestroyRequest/UpdateCurrentReviewLevel";
 export const DeleteNewAPIPath = "api/DestroyRequest/DeleteNew";
