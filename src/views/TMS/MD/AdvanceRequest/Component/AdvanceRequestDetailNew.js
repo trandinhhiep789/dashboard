@@ -174,9 +174,8 @@ class AdvanceRequestDetailNewCom extends Component {
                             <div className="card-body">
                                 <div className="row">
                                     <div className="col-md-12">
-                                        <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                    <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                             <thead className="thead-light">
-
                                                 <tr>
                                                     <th className="jsgrid-header-cell" style={{ width: "15%" }}>Nhóm vật tư</th>
                                                     <th className="jsgrid-header-cell" style={{ width: "15%" }}>Mã sản phẩm</th>
@@ -191,7 +190,7 @@ class AdvanceRequestDetailNewCom extends Component {
                                             <tbody>
                                                 {this.state.AdvanceRequestDetail.MaterialList && this.state.AdvanceRequestDetail.MaterialList.map((item, index) => {
                                                     return (
-                                                        <tr key={index}>
+                                                        <tr key={"totalCurrency" + index}>
                                                             <td>{item.MaterialGroupName}</td>
                                                             {item.MaterialProductList.length > 1 ?
                                                                 <div>
@@ -304,7 +303,11 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                     </td>
                                                                 </tr>
                                                                 {obj.map((rowItemobj, Index) => {
-                                                                    let TotalBundleQuantity = this.state.AdvanceRequestDetail.MaterialAdvanceDebtList.find(n => n.MaterialGroupID = rowItemobj.MaterialGroupID).TotalBundleQuantity;
+                                                                    let TotalBundleQuantity = 1;
+                                                                    let objMaterialAdvanceDebtList = this.state.AdvanceRequestDetail.MaterialAdvanceDebtList.find(n => n.MaterialGroupID == rowItemobj.MaterialGroupID && n.ProductID == rowItemobj.ProductID);
+                                                                    if (objMaterialAdvanceDebtList)
+                                                                           TotalBundleQuantity= objMaterialAdvanceDebtList.TotalBundleQuantity;
+
                                                                     if (rowItemobj.MaterialProductList.length > 0) {
                                                                         return (
                                                                             <tr key={"totalCurrency" + Index}>
