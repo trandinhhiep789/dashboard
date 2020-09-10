@@ -45,6 +45,8 @@ class DetailCom extends React.Component {
             CurrentReviewLevelID: '',
             CurrentReviewLevelName: '',
             isAutoReview: false,
+            lastReviewLevelID: '',
+            isUserNameReviewLevel: false,
         }
         this.callLoadData = this.callLoadData.bind(this);
         this.handleSubmitOutputDestroyRequest = this.handleSubmitOutputDestroyRequest.bind(this);
@@ -62,7 +64,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-             console.log("apiResult", apiResult, id)
+            console.log("apiResult", apiResult, id)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -70,8 +72,13 @@ class DetailCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+                const {
+                    lstDestroyRequestReviewLevel, lstDestroyRequestDetail,
+                    IsSystem, IsCreatedOrder, CurrentReviewLevelID, ReviewLevelName,
+                    IsreViewed
+                } = apiResult.ResultObject;
 
-                const resultDestroyRequestReviewLevel = apiResult.ResultObject.lstDestroyRequestReviewLevel.map((item, index) => {
+                const resultDestroyRequestReviewLevel = lstDestroyRequestReviewLevel.map((item, index) => {
                     item.ApproverName = item.UserName + " - " + item.FullName;
                     if (item.ReviewStatus == 0) {
                         item.ReviewStatusLable = "Chưa duyệt";
@@ -81,18 +88,39 @@ class DetailCom extends React.Component {
                     }
                     return item;
                 })
+
+                if (lstDestroyRequestReviewLevel.length > 0) {
+                    const resultUserNameReviewLevel = lstDestroyRequestReviewLevel.filter((item, index) => {
+                        if (item.ReviewLevelID == CurrentReviewLevelID) {
+                            return item;
+                        }
+                    })
+
+                    const Username = this.props.AppInfo.LoginInfo.Username;
+                    if(resultUserNameReviewLevel.length > 0){
+                        if (resultUserNameReviewLevel[0].UserName.trim() == Username.trim()) {
+                            this.setState({
+                                isUserNameReviewLevel: true
+                            })
+                        }
+                    }
+                   
+
+                }
+
                 // console.log("result", resultDestroyRequestReviewLevel)
                 this.setState({
                     DestroyRequest: apiResult.ResultObject,
-                    DestroyRequestDetail: apiResult.ResultObject.lstDestroyRequestDetail,
+                    DestroyRequestDetail: lstDestroyRequestDetail,
                     DestroyRequestRL: resultDestroyRequestReviewLevel,
                     DataSource: apiResult.ResultObject,
                     IsLoadDataComplete: true,
-                    IsSystem: apiResult.ResultObject.IsSystem,
-                    IsOutPut: apiResult.ResultObject.IsCreatedOrder,
-                    CurrentReviewLevelID: apiResult.ResultObject.CurrentReviewLevelID,
-                    CurrentReviewLevelName: apiResult.ResultObject.ReviewLevelName,
-                    isAutoReview: apiResult.ResultObject.IsreViewed
+                    IsSystem: IsSystem,
+                    IsOutPut: IsCreatedOrder,
+                    CurrentReviewLevelID: CurrentReviewLevelID,
+                    CurrentReviewLevelName: ReviewLevelName,
+                    isAutoReview: IsreViewed,
+                    lastReviewLevelID: lstDestroyRequestReviewLevel.length > 0 ? lstDestroyRequestReviewLevel[lstDestroyRequestReviewLevel.length - 1].ReviewLevelID : 0
 
                 });
             }
@@ -143,12 +171,14 @@ class DetailCom extends React.Component {
     }
 
     handleSubmitOutputDestroyRequest() {
-        const { DestroyRequestID } = this.state;
-        let MLObject ={};
+        const { DestroyRequestID, DestroyRequestDetail } = this.state;
+        let MLObject = {};
         MLObject.DestroyRequestID = DestroyRequestID;
         MLObject.SaleOrderID = "";
         MLObject.IsCreatedOrder = true;
+
         this.props.callFetchAPI(APIHostName, UpdateCreateSaleOrderAPIPath, MLObject).then((apiResult) => {
+            console.log("MLObject", MLObject, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -164,40 +194,46 @@ class DetailCom extends React.Component {
 
     handleRequestRL(id) {
         let MLObject = {};
-        const { DataSource, DestroyRequestRL, CurrentReviewLevelID, DestroyRequestID } = this.state;
+        const { DataSource, DestroyRequestRL, CurrentReviewLevelID, DestroyRequestID, lastReviewLevelID } = this.state;
         MLObject.DestroyRequestID = DataSource.DestroyRequestID;
-        let aa;
-        if(DestroyRequestRL.length > 1){
-            aa = DestroyRequestRL.filter((item, index) => {
-                if (item.ReviewLevelID != CurrentReviewLevelID) {
-                    return item;
-                }
-            });
-        }
-        else{
-            aa = DestroyRequestRL.filter((item, index) => {
-                if (item.ReviewLevelID == CurrentReviewLevelID) {
-                    return item;
-                }
-            });
-        }
-        
-        console.log("aa", aa, DestroyRequestRL, CurrentReviewLevelID)
-        MLObject.CurrentReviewLevelID = aa[0].ReviewLevelID;
-        MLObject.ReviewLevelID = CurrentReviewLevelID;
         MLObject.IsreViewed = 1;
-
         if (id == 1) {
             MLObject.ReviewStatus = 1;
             MLObject.reViewedNote = "Đồng ý"; //Trạng thái duyệt;(0: Chưa duyệt, 1: Đồng ý, 2: Từ chối)
         }
         else {
-
             MLObject.ReviewStatus = 2;
             MLObject.reViewedNote = "Từ chối";
         }
+
+
+        let nextReviewLevelID;
+
+        if (DestroyRequestRL.length > 1) {
+            nextReviewLevelID = DestroyRequestRL.filter((item, index) => {
+                if (item.ReviewLevelID != CurrentReviewLevelID) {
+                    return item;
+                }
+            });
+        }
+        else {
+            nextReviewLevelID = DestroyRequestRL.filter((item, index) => {
+                if (item.ReviewLevelID == CurrentReviewLevelID) {
+                    return item;
+                }
+            });
+        }
+        const isLastList = CurrentReviewLevelID == lastReviewLevelID ? true : false
+
+        MLObject.IsreViewedDestroyRequest = !!isLastList ? 1 : 0;
+
+        MLObject.ReviewLevelID = CurrentReviewLevelID;
+
+        MLObject.CurrentReviewLevelID = !!isLastList ? CurrentReviewLevelID : nextReviewLevelID[0].ReviewLevelID;
+
+        console.log("aa", MLObject);
         this.props.callFetchAPI(APIHostName, UpdateCurrentReviewLevelAPIPath, MLObject).then((apiResult) => {
-            // console.log("id", id, MLObject, apiResult)
+            console.log("id", id, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -212,8 +248,9 @@ class DetailCom extends React.Component {
     }
 
     render() {
-        const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL, CurrentReviewLevelName, isAutoReview, CurrentReviewLevelID } = this.state;
+        const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL, CurrentReviewLevelName, isAutoReview, CurrentReviewLevelID, isUserNameReviewLevel } = this.state;
         let IsAutoReview;
+
         if (isAutoReview == true && CurrentReviewLevelID == 0) {
             IsAutoReview = true
         }
@@ -221,7 +258,7 @@ class DetailCom extends React.Component {
             IsAutoReview = false
         }
 
-        //console.log("CurrentReviewLevelName", CurrentReviewLevelName)
+        console.log("IsAutoReview", IsAutoReview)
         if (this.state.IsLoadDataComplete) {
             return (
                 <div className="col-lg-12">
@@ -277,14 +314,24 @@ class DetailCom extends React.Component {
 
                         <footer className="card-footer text-right ">
                             {IsAutoReview == false ?
-                                <div className="btn-group btn-group-dropdown mr-3">
-                                    <button className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
-                                    <div class="dropdown-menu" x-placement="bottom-start" >
-                                        <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(1)}>Đồng ý</button>
-                                        <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(2)}>Từ chối</button>
+                                isUserNameReviewLevel == true ?
+                                    <div className="btn-group btn-group-dropdown mr-3">
+                                        <button className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                        <div className="dropdown-menu" x-placement="bottom-start" >
+                                            <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(1)}>Đồng ý</button>
+                                            <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(2)}>Từ chối</button>
+                                        </div>
                                     </div>
-                                </div>
+                                    :
+                                    <div className="btn-group btn-group-dropdown mr-3">
+                                        <button className="btn btn-light dropdown-toggle dropdown-toggle-disabled" disabled title="Bạn không có quyền duyệt" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                        <div className="dropdown-menu" x-placement="bottom-start" >
+                                            <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(1)}>Đồng ý</button>
+                                            <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(2)}>Từ chối</button>
+                                        </div>
+                                    </div>
                                 : <div></div>
+
                             }
                             <button disabled={IsOutPut} className="btn btn-primary mr-3" type="submit" onClick={this.handleSubmitOutputDestroyRequest}>Tạo phiếu xuất</button>
                             <Link to="/DestroyRequest">
