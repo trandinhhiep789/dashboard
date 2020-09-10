@@ -8,18 +8,24 @@ import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionList
 import { callGetCache } from "../../../../actions/cacheAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
+import FormControl from "../../../../common/components/FormContainer/FormControl";
 import {
     APIHostName,
 } from "../constants";
+import { Link } from "react-router-dom";
 class ShipmentOrderDetailCom extends Component {
     constructor(props) {
         super(props);
         this.handleShipWorkFlowInsert = this.handleShipWorkFlowInsert.bind(this);
+        this.handleUpdateExpectedDelivery = this.handleUpdateExpectedDelivery.bind(this);
+
         this.state = {
             ShipmentOrder: this.props.ShipmentOrderDetail,
             validationErrorMessage: null,
             ShipmentOrder_WorkFlow: {},
-            IsPermision: false
+            IsPermision: false,
+            IsUpdateDate: false,
+            IsDisable: true,
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -105,12 +111,12 @@ class ShipmentOrderDetailCom extends Component {
                             this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
                                 this.openViewStepModalFunction();
                             });
-    
+
                         } else {
                             this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
                                 this.openViewStepModalFunction();
                             });
-    
+
                         }
                     })
                 }
@@ -119,7 +125,7 @@ class ShipmentOrderDetailCom extends Component {
                         this.openViewIsCollectedMoney();
                     });
                 }
-              
+
             }
         }
         else {
@@ -231,29 +237,29 @@ class ShipmentOrderDetailCom extends Component {
         //     });
         // }
         // else {
-            ShipmentOrder_WorkFlow.IsProcess = true;
-            ShipmentOrder_WorkFlow.ProcessUser = this.props.AppInfo.LoginInfo.Username;
-            ShipmentOrder_WorkFlow.CreatedOrderTime = this.state.ShipmentOrder.CreatedOrderTime;
-            ShipmentOrder_WorkFlow.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-            let objWorkFlowProcessingRequest = {
-                ShipmentOrderID: ShipmentOrder_WorkFlow.ShipmentOrderID,
-                ShipmentOrderStepID: ShipmentOrder_WorkFlow.ShipmentOrderStepID,
-                CurrentShipmentOrderStepID: this.state.ShipmentOrder.CurrentShipmentOrderStepID,
-                ProcessUser: ShipmentOrder_WorkFlow.ProcessUser,
-                ProcessGeoLocation: "",
-                Note: ShipmentOrder_WorkFlow.Note
+        ShipmentOrder_WorkFlow.IsProcess = true;
+        ShipmentOrder_WorkFlow.ProcessUser = this.props.AppInfo.LoginInfo.Username;
+        ShipmentOrder_WorkFlow.CreatedOrderTime = this.state.ShipmentOrder.CreatedOrderTime;
+        ShipmentOrder_WorkFlow.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        let objWorkFlowProcessingRequest = {
+            ShipmentOrderID: ShipmentOrder_WorkFlow.ShipmentOrderID,
+            ShipmentOrderStepID: ShipmentOrder_WorkFlow.ShipmentOrderStepID,
+            CurrentShipmentOrderStepID: this.state.ShipmentOrder.CurrentShipmentOrderStepID,
+            ProcessUser: ShipmentOrder_WorkFlow.ProcessUser,
+            ProcessGeoLocation: "",
+            Note: ShipmentOrder_WorkFlow.Note
+        }
+        this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/ProcessWorkFlow', objWorkFlowProcessingRequest).then((apiResult) => {
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.setState({
+                    ShipmentOrder: apiResult.ResultObject
+                });
+                if (this.props.onhandleChange != null)
+                    this.props.onhandleChange(apiResult.ResultObject)
+                ModalManager.close();
             }
-            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/ProcessWorkFlow', objWorkFlowProcessingRequest).then((apiResult) => {
-                this.addNotification(apiResult.Message, apiResult.IsError);
-                if (!apiResult.IsError) {
-                    this.setState({
-                        ShipmentOrder: apiResult.ResultObject
-                    });
-                    if (this.props.onhandleChange != null)
-                        this.props.onhandleChange(apiResult.ResultObject)
-                    ModalManager.close();
-                }
-            });
+        });
         //}
     }
 
@@ -290,6 +296,27 @@ class ShipmentOrderDetailCom extends Component {
         });
     }
 
+    handleUpdateExpectedDelivery(id) {
+        console.log("aa")
+
+        if (id == 1) {
+            this.setState({
+                IsUpdateDate: true,
+                IsDisable: false
+            })
+        }
+        if (id == 2) {
+            this.setState({
+                IsUpdateDate: false,
+                IsDisable: true
+            })
+        }
+        if (id == 3) {
+            console.log("bb")
+        }
+    }
+
+
     render() {
         let strShipmentOrderStepName = "";
         let IsMustCompleteCollection = false;
@@ -297,7 +324,8 @@ class ShipmentOrderDetailCom extends Component {
             strShipmentOrderStepName = this.state.ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === this.state.ShipmentOrder.CurrentShipmentOrderStepID)[0].ShipmentOrderStepName
             IsMustCompleteCollection = this.state.ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === this.state.ShipmentOrder.CurrentShipmentOrderStepID)[0].IsMustCompleteCollection
         }
-
+        const { ShipmentOrder, IsUpdateDate, IsDisable } = this.state;
+        const linkHistoryTransaction = "/PartnerTransaction/Edit/" + ShipmentOrder.PartnerTransactionID;
         return (
             <div className="card">
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -374,12 +402,52 @@ class ShipmentOrderDetailCom extends Component {
                         <div className="form-group col-md-4">
                             <label className="col-form-label" >{formatDate(this.state.ShipmentOrder.CreatedOrderTime)}</label>
                         </div>
-                        <div className="form-group col-md-2">
+                        <div className="form-group col-md-5">
+                            <FormControl.FormControlDatetime
+                                name="dtCreatedOrderTime"
+                                colspan="8"
+                                labelcolspan="4"
+                                readOnly={true}
+                                disabled={IsDisable}
+                                timeFormat={false}
+                                dateFormat="DD-MM-YYYY HH:mm"
+                                label="Thời gian giao dự kiến:"
+                                placeholder="Thời gian giao dự kiến"
+                                controltype="InputControl"
+                                value={this.state.ShipmentOrder.ExpectedDeliveryDate}
+                                validatonList={["required"]}
+                                datasourcemember="CreatedOrderTime"
+
+                            />
+
+                        </div>
+                        <div className="form-group col-md-1">
+                            <div className="group-btn-update">
+                                {
+                                    IsUpdateDate == false ?
+                                        <button className="btn btn-update-submit" type="button" onClick={() => this.handleUpdateExpectedDelivery(1)}>
+                                            <i className="ti ti-pencil-alt"></i>
+                                        </button>
+                                        :
+                                        <React.Fragment>
+                                            <button className="btn btn-update-submit" type="button" onClick={() => this.handleUpdateExpectedDelivery(3)}>
+                                                <i className="ti-check"></i>
+                                            </button>
+                                            <button className="btn btn-update-cancel" type="button" onClick={() => this.handleUpdateExpectedDelivery(2)}>
+                                                <i className="ti-close"></i>
+                                            </button>
+                                        </React.Fragment>
+                                }
+
+                            </div>
+                        </div>
+                        {/* <div className="form-group col-md-2">
                             <label className="col-form-label bold">Thời gian giao dự kiến:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label">{formatDate(this.state.ShipmentOrder.ExpectedDeliveryDate)}</label>
-                        </div>
+                             <label className="col-form-label">{formatDate(this.state.ShipmentOrder.ExpectedDeliveryDate)}</label> 
+                            
+                        </div> */}
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-2">
@@ -410,6 +478,16 @@ class ShipmentOrderDetailCom extends Component {
                             </div>
                             : ""
                     }
+                    <div className="form-row">
+                        <div className="form-group col-md-2">
+                            <label className="col-form-label bold">Lịch sử giao dịch:</label>
+                        </div>
+                        <div className="form-group col-md-4">
+                            <Link to={linkHistoryTransaction} target="_blank" className="btn-link">
+                                <i className="fa fa-history"></i>
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
