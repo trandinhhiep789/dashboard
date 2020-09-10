@@ -81,7 +81,7 @@ class DestroyRequestInfoCom extends Component {
                         <label className="col-form-label bold">Người yêu cầu:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{DestroyRequest.RequestUser}</label>
+                        <label className="col-form-label">{DestroyRequest.RequestUser + " - " + DestroyRequest.FullName}</label>
                     </div>
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Mô tả:</label>

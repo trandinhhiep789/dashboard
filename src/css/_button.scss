@@ -115,3 +115,32 @@ button {
         border: none;
     }
 }
+
+.btn-link {
+    font-size: 20px;
+    color: #48b0f7;
+    &:focus{
+        color: #48b0f7;
+    }
+}
+
+.group-btn-update{
+    button{
+        &.btn{
+            &.btn-update-submit{
+                padding: 0 10px;
+                height: 33px;
+                color: white;
+                background: #48b0f7;
+                border-radius: 5px;
+            }
+            &.btn-update-cancel{
+                padding: 0 10px;
+                height: 33px;
+                color: white;
+                background: #8e8e8e;
+                border-radius: 5px;
+            }
+        }
+    }
+}

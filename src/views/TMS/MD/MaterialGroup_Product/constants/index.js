@@ -42,6 +42,43 @@ export const ModalColumnList_Insert = [
         validatonList: ["digit"]
     },
     {
+        type: "multiselect",
+        Name: "AdvanceQuantityUnitID",
+        label: "Đơn vị tính sản phẩm tạm ứng",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "AdvanceQuantityUnitID",
+        readonly: false,
+        validatonList: [],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.QUANTITYUNIT",
+        ValueMember: "QuantityUnitID",
+        NameMember: "QuantityUnit"
+    },
+    {
+        Name: "AdvanceProductID",
+        type: "productbox",
+        label: "Mã sản phẩm tạm ứng",
+        //maxSize: "20",
+        colspan: 12,
+        isMulti: false,
+        DataSourceMember: "AdvanceProductID",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        Name: "AdvanceConveratio",
+        type: "text",
+        label: "Tỷ lệ quy đổi tạm ứng",
+        maxSize: "9",
+        DataSourceMember: "AdvanceConveratio",
+        readonly: false,
+        validatonList: ["digit"]
+    },
+    {
         Name: "Note",
         type: "textarea",
         label: "Ghi chú",
@@ -108,6 +145,43 @@ export const ModalColumnList_Edit = [
         label: "Tỷ lệ quy đổi",
         maxSize: "9",
         DataSourceMember: "ConvertRatio",
+        readonly: false,
+        validatonList: ["digit"]
+    },
+    {
+        type: "multiselect",
+        Name: "AdvanceQuantityUnitID",
+        label: "Đơn vị tính sản phẩm tạm ứng",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "AdvanceQuantityUnitID",
+        readonly: false,
+        validatonList: [],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.QUANTITYUNIT",
+        ValueMember: "QuantityUnitID",
+        NameMember: "QuantityUnit"
+    },
+    {
+        Name: "AdvanceProductID",
+        type: "productbox",
+        label: "Mã sản phẩm tạm ứng",
+        //maxSize: "20",
+        colspan: 12,
+        isMulti: false,
+        DataSourceMember: "AdvanceProductID",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        Name: "AdvanceConveratio",
+        type: "text",
+        label: "Tỷ lệ quy đổi tạm ứng",
+        maxSize: "9",
+        DataSourceMember: "AdvanceConveratio",
         readonly: false,
         validatonList: ["digit"]
     },
@@ -235,6 +309,24 @@ export const MLObjectDefinition = [
         DefaultValue: false,
         BindControlName: "IsSystem",
         DataSourceMember: "IsSystem"
+    },
+    {
+        Name: "AdvanceQuantityUnitID",
+        DefaultValue: "",
+        BindControlName: "AdvanceQuantityUnitID",
+        DataSourceMember: "AdvanceQuantityUnitID"
+    },
+    {
+        Name: "AdvanceProductID",
+        DefaultValue: "",
+        BindControlName: "AdvanceProductID",
+        DataSourceMember: "AdvanceProductID"
+    },
+    {
+        Name: "AdvanceConveratio",
+        DefaultValue: "",
+        BindControlName: "AdvanceConveratio",
+        DataSourceMember: "AdvanceConveratio"
     },
     {
         Name: "CreatedDate",
