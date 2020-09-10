@@ -249,7 +249,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Kho yêu cầu",
         DataSourceMember: "StoreName",
-        Width: 180
+        Width: 250
     },
     {
         Name: "RequestDate",
@@ -552,7 +552,7 @@ export const GirdDestroyRequestRLColumnList=[
     },
     {
         Name: "reViewedDate",
-        Type: "text",
+        Type: "date",
         Caption: "Ngày duyệt",
         DataSourceMember: "reViewedDate",
         Width: 100
