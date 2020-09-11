@@ -9,7 +9,7 @@ import { updatePagePath } from "../../actions/pageAction";
 import { COOKIELOGIN, } from "../../constants/systemVars.js";
 import { loginRequest, loginSuccess, loginFailure, callLogin } from "../../actions/loginAction";
 import { callFetchAPI } from "../../actions/fetchAPIAction";
-import { callGetCacheFromLocal,callClearLocalCache } from "../../actions/cacheAction";
+import { callGetCacheFromLocal, callClearLocalCache } from "../../actions/cacheAction";
 import { getCookie } from "../../common/library/CommonLib.js";
 import "../../css/custom.scss";
 import PrivateRoute from '../../Route/PrivateRoute'
@@ -79,13 +79,6 @@ import InventoryRequest from "../TMS/InventoryRequest";
 import NotFound from '../NotFound'
 import InventoryRequestType from "../TMS/MD/InventoryRequestType";
 
-
-
-
-
-
-
-
 class HomeCom extends React.Component {
     constructor(props) {
         super(props);
@@ -96,18 +89,13 @@ class HomeCom extends React.Component {
 
     componentDidMount() {
         // this.props.updatePagePath(PagePath);
-        var addScript = document.createElement('script');
-        addScript.setAttribute('src', '/src/js/core.min.js');
-        document.body.appendChild(addScript);
 
-       
         const LoginInfo = localStorage.getItem('LoginInfo');
         //console.log("componentDidMount this.props.AuthenticationInfo", this.props.AuthenticationInfo);
-        if(!this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess)
-        {
+        if (!this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess) {
             if (LoginInfo) {
                 const LoginInfo1 = JSON.parse(LoginInfo)
-                this.props.loginSuccess(LoginInfo1.LoginUserInfo, LoginInfo1.TokenString,LoginInfo1.Password);
+                this.props.loginSuccess(LoginInfo1.LoginUserInfo, LoginInfo1.TokenString, LoginInfo1.Password);
                 this.setState({ isLoggedIn: true });
                 this.callLoadCacheList(LoginInfo1.LoginUserInfo.UserName);
             }
@@ -115,31 +103,23 @@ class HomeCom extends React.Component {
                 this.setState({ isLoggedIn: false })
             }
         }
-        else
-        {
+        else {
             this.callLoadCacheList(this.props.AuthenticationInfo.LoginInfo.Username);
-            
+
         }
     }
 
     callLoadCacheList(userName) {
-        console.log("callLoadCacheList username",userName);
         const APIHostName = "CacheAPI";
-       
         this.props.callFetchAPI(APIHostName, 'api/Cache/GetCacheList', userName).then(apiResult => {
 
             //console.log("callLoadCacheList", apiResult);
-            if (!apiResult.IsError) 
-            {
-                const  listCacheItem = apiResult.ResultObject.ListCacheItem;
-                listCacheItem.map((cacheItem) =>
-                {
-                    this.props.callGetCacheFromLocal(cacheItem.CacheKeyID).then((cacheItemLocal) =>
-                    {
-                        if(cacheItemLocal != null)
-                        {
-                            if(cacheItemLocal.CreatedDate < cacheItem.CacheVersionDate)
-                            {
+            if (!apiResult.IsError) {
+                const listCacheItem = apiResult.ResultObject.ListCacheItem;
+                listCacheItem.map((cacheItem) => {
+                    this.props.callGetCacheFromLocal(cacheItem.CacheKeyID).then((cacheItemLocal) => {
+                        if (cacheItemLocal != null) {
+                            if (cacheItemLocal.CreatedDate < cacheItem.CacheVersionDate) {
                                 this.props.callClearLocalCache(cacheItem.CacheKeyID);
                             }
                         }
@@ -156,11 +136,11 @@ class HomeCom extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.AuthenticationInfo) !== JSON.stringify(nextProps.AuthenticationInfo)) {
             const LoginInfo = localStorage.getItem('LoginInfo');
-            if(!this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess)
-            {
+
+            if (!this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess) {
                 if (LoginInfo) {
                     const LoginInfo1 = JSON.parse(LoginInfo)
-                    this.props.loginSuccess(LoginInfo1.LoginUserInfo, LoginInfo1.TokenString,LoginInfo1.Password);
+                    this.props.loginSuccess(LoginInfo1.LoginUserInfo, LoginInfo1.TokenString, LoginInfo1.Password);
                     this.setState({ isLoggedIn: true })
                 }
                 else {
@@ -172,9 +152,12 @@ class HomeCom extends React.Component {
 
     render() {
         let isShowAppPath = true;
-      const { isLoggedIn } = this.state;
-      const isRelogin = this.props.AuthenticationInfo.LoginInfo.IsRelogin;
-       // console.log("Home this.props.AuthenticationInfo.LoginInfo: ", this.props.AuthenticationInfo.LoginInfo);
+        const { isLoggedIn } = this.state;
+        const isRelogin = this.props.AuthenticationInfo.LoginInfo.IsRelogin;
+        // console.log("Home this.props.AuthenticationInfo.LoginInfo: ", this.props.AuthenticationInfo.LoginInfo);
+
+           
+
         return (
             <React.Fragment>
                 <Header />
@@ -186,15 +169,15 @@ class HomeCom extends React.Component {
                         <div className="row">
                             {this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL ? <div className="preloader"><div className="spinner-linear"><div className="line"></div></div></div> : ''}
                             <Switch>
-                                <PrivateRoute exact path="/" component={Dashboard} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
-                                <PrivateRoute path="/accountinfo" component={AccountInfo} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
-                                <PrivateRoute path="/TestModal" component={TestModal} isLoggedIn={isLoggedIn} isRelogin = {isRelogin}/>
-                                <PrivateRoute path="/TestCache" component={TestCache} isLoggedIn={isLoggedIn}  isRelogin = {isRelogin}/>
-                                <PrivateRoute path="/TestFormContainer" component={TestFormContainer} isLoggedIn={isLoggedIn}  isRelogin = {isRelogin} />
-                                <PrivateRoute path="/TestTabs" component={TestTabs} isLoggedIn={isLoggedIn} isRelogin = {isRelogin}  />
-                                <PrivateRoute path="/TestPageLayout" component={TestPageLayout} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute exact path="/" component={Dashboard} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/accountinfo" component={AccountInfo} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/TestModal" component={TestModal} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/TestCache" component={TestCache} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/TestFormContainer" component={TestFormContainer} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/TestTabs" component={TestTabs} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/TestPageLayout" component={TestPageLayout} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
-                                <PrivateRoute path="/CacheManager" component={CacheManager} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+                                <PrivateRoute path="/CacheManager" component={CacheManager} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 {/* <PrivateRoute path="*" component={Category} isLoggedIn={isLoggedIn} /> */}
 
                                 {/*menu tận tâm*/}
@@ -251,8 +234,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/PartnerPayableDetail" component={PartnerPayableDetail} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/DestroyRequest" component={DestroyRequest} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/InventoryRequest" component={InventoryRequest} isLoggedIn={isLoggedIn} />
-                                
-                                <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin = {isRelogin} />
+
+                                <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                             </Switch>
                         </div>
@@ -278,15 +261,13 @@ const mapDispatchToProps = dispatch => {
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         },
-        callGetCacheFromLocal: (cacheKeyID) =>
-        {
+        callGetCacheFromLocal: (cacheKeyID) => {
             return dispatch(callGetCacheFromLocal(cacheKeyID));
         },
-        callClearLocalCache: (cacheKeyID) =>
-        {
+        callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
         },
-        loginSuccess: (loginInfo, token,password) => {
+        loginSuccess: (loginInfo, token, password) => {
             return dispatch(loginSuccess(loginInfo, token, password))
         },
     }
