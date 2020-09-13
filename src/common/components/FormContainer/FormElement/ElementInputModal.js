@@ -146,6 +146,81 @@ class ElementModalNumber extends React.Component {
     }
 }
 
+class ElementModalNumberParser extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+    }
+    handleValueChange(evalue) {
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(this.props.name, evalue,this.props.indexRow);
+    }
+
+    render() {
+        let classNamecolmd = "col-md-6";
+        if (this.props.Colmd != null)
+            classNamecolmd = "col-md-" + this.props.Colmd;
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        if (this.props.Colmd == 12) {
+            className = className + " customcontrol";
+        }
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-8";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-4";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null) {
+            formRowClassName += this.props.classNameCustom;
+        }
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
+            className += " is-invalid";
+        }
+        return (
+            <div className={classNamecolmd}>
+                <div className={formRowClassName} >
+                    {this.props.label.length > 0 ?
+                        <div className={labelDivClassName}>
+                            <label className="col-form-label 2">
+                                {this.props.label}<span className="text-danger"> {star}</span>
+                            </label>
+                        </div>
+                        : ""
+                    }
+
+                    <div className={formGroupClassName}>
+                        <InputNumber
+                            name={this.props.name}
+                            min={this.props.min}
+                            max={this.props.max}
+                            parser={value => value.replace('.', '')}
+                            value={this.props.value}
+                            onChange={this.handleValueChange}
+                            disabled={this.props.disabled == true ? true : this.props.readonly}
+                            ref={this.props.inputRef}
+                            className={className}
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+
 class ElementModalComboBoxCom extends Component {
     constructor(props) {
         super(props);
@@ -631,5 +706,5 @@ class MultiUserComboBoxCom extends React.Component {
 
 const MultiUserComboBox = connect(mapStateToProps, mapDispatchToProps)(MultiUserComboBoxCom);
 
-export default { ElementModalText, ElementModalComboBox, CheckBox, ElementModalNumber, ProductComboBox, MultiUserComboBox };
+export default { ElementModalText, ElementModalComboBox, CheckBox, ElementModalNumber,ElementModalNumberParser, ProductComboBox, MultiUserComboBox };
 
