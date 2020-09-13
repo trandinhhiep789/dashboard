@@ -89,10 +89,6 @@ class HomeCom extends React.Component {
 
     componentDidMount() {
         // this.props.updatePagePath(PagePath);
-        var addScript = document.createElement('script');
-        addScript.setAttribute('src', '/src/js/core.min.js');
-        document.body.appendChild(addScript);
-
 
         const LoginInfo = localStorage.getItem('LoginInfo');
         //console.log("componentDidMount this.props.AuthenticationInfo", this.props.AuthenticationInfo);
@@ -140,9 +136,7 @@ class HomeCom extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.AuthenticationInfo) !== JSON.stringify(nextProps.AuthenticationInfo)) {
             const LoginInfo = localStorage.getItem('LoginInfo');
-            var addScript = document.createElement('script');
-            addScript.setAttribute('src', '/src/js/core.min.js');
-            document.body.appendChild(addScript);
+
             if (!this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess) {
                 if (LoginInfo) {
                     const LoginInfo1 = JSON.parse(LoginInfo)
@@ -161,6 +155,9 @@ class HomeCom extends React.Component {
         const { isLoggedIn } = this.state;
         const isRelogin = this.props.AuthenticationInfo.LoginInfo.IsRelogin;
         // console.log("Home this.props.AuthenticationInfo.LoginInfo: ", this.props.AuthenticationInfo.LoginInfo);
+
+           
+
         return (
             <React.Fragment>
                 <Header />

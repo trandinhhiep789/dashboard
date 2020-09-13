@@ -24,7 +24,7 @@ export const ModalColumnList_Insert = [
     {
         Name: "ProductID",
         type: "productbox",
-        label: "Mã sản phẩm vật tư",
+        label: "mã sản phẩm vật tư",
         //maxSize: "20",
         colspan: 12,
         isMulti: false,
@@ -35,23 +35,24 @@ export const ModalColumnList_Insert = [
     {
         Name: "ConvertRatio",
         type: "text",
-        label: "Tỷ lệ quy đổi",
+        label: "tỷ lệ quy đổi",
         maxSize: "9",
+        value: 0,
         DataSourceMember: "ConvertRatio",
         readonly: false,
-        validatonList: ["digit"]
+        validatonList: ["required","digit"]
     },
     {
         type: "multiselect",
         Name: "AdvanceQuantityUnitID",
-        label: "Đơn vị tính sản phẩm tạm ứng",
+        label: "đơn vị tính SP tạm ứng",
         value: -1,
         placeholder: "",
         icon: "",
         listoption: [],
         DataSourceMember: "AdvanceQuantityUnitID",
         readonly: false,
-        validatonList: [],
+        validatonList: ["Comborequired"],
         isMulti: false,
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.QUANTITYUNIT",
@@ -61,22 +62,23 @@ export const ModalColumnList_Insert = [
     {
         Name: "AdvanceProductID",
         type: "productbox",
-        label: "Mã sản phẩm tạm ứng",
+        label: "mã sản phẩm tạm ứng",
         //maxSize: "20",
         colspan: 12,
         isMulti: false,
         DataSourceMember: "AdvanceProductID",
         readonly: false,
-        validatonList: []
+        validatonList: ["Comborequired"]
     },
     {
         Name: "AdvanceConveratio",
         type: "text",
-        label: "Tỷ lệ quy đổi tạm ứng",
+        label: "tỷ lệ quy đổi tạm ứng",
         maxSize: "9",
+        value: 0,
         DataSourceMember: "AdvanceConveratio",
         readonly: false,
-        validatonList: ["digit"]
+        validatonList: ["required","digit"]
     },
     {
         Name: "Note",
@@ -130,7 +132,7 @@ export const ModalColumnList_Edit = [
     {
         Name: "ProductID",
         type: "productbox",
-        label: "Mã sản phẩm vật tư",
+        label: "mã sản phẩm vật tư",
         //maxSize: "20",
         colspan: 12,
         isMulti: false,
@@ -142,23 +144,24 @@ export const ModalColumnList_Edit = [
     {
         Name: "ConvertRatio",
         type: "text",
-        label: "Tỷ lệ quy đổi",
+        label: "tỷ lệ quy đổi",
         maxSize: "9",
+        value: 0,
         DataSourceMember: "ConvertRatio",
         readonly: false,
-        validatonList: ["digit"]
+        validatonList: ["required","digit"]
     },
     {
         type: "multiselect",
         Name: "AdvanceQuantityUnitID",
-        label: "Đơn vị tính sản phẩm tạm ứng",
+        label: "đơn vị tính SP tạm ứng",
         value: -1,
         placeholder: "",
         icon: "",
         listoption: [],
         DataSourceMember: "AdvanceQuantityUnitID",
         readonly: false,
-        validatonList: [],
+        validatonList: ["Comborequired"],
         isMulti: false,
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.QUANTITYUNIT",
@@ -168,22 +171,23 @@ export const ModalColumnList_Edit = [
     {
         Name: "AdvanceProductID",
         type: "productbox",
-        label: "Mã sản phẩm tạm ứng",
+        label: "mã sản phẩm tạm ứng",
         //maxSize: "20",
         colspan: 12,
         isMulti: false,
         DataSourceMember: "AdvanceProductID",
         readonly: false,
-        validatonList: []
+        validatonList: ["Comborequired"]
     },
     {
         Name: "AdvanceConveratio",
         type: "text",
-        label: "Tỷ lệ quy đổi tạm ứng",
+        label: "tỷ lệ quy đổi tạm ứng",
         maxSize: "9",
+        value: 0,
         DataSourceMember: "AdvanceConveratio",
         readonly: false,
-        validatonList: ["digit"]
+        validatonList: ["required","digit"]
     },
     {
         Name: "Note",
