@@ -39,18 +39,21 @@ class AdvanceRequestDetailNewCom extends Component {
         let AdvanceQuantityUnitName = e.target[e.target.selectedIndex].getAttribute('data-AdvanceQuantityUnitName');
         let AdvanceConvertRatio = e.target[e.target.selectedIndex].getAttribute('data-AdvanceConvertRatio');
         let VAT = e.target[e.target.selectedIndex].getAttribute('data-VAT');
+        console.log(MaterialGroupID, CostPrice)
         let { AdvanceRequestDetail } = this.state
         const objAdvanceRequestDetail = AdvanceRequestDetail.MaterialList.find(n => n['MaterialGroupID'] == MaterialGroupID)
         objAdvanceRequestDetail.ProductID = ProductID;
         objAdvanceRequestDetail.ProductName = ProductName;
         objAdvanceRequestDetail.QuantityUnitID = QuantityUnitID;
         objAdvanceRequestDetail.QuantityUnit = QuantityUnit;
-        objAdvanceRequestDetail.CostPrice = CostPrice;
+        objAdvanceRequestDetail.CostPrice = CostPrice == null ? 0 : CostPrice;
         objAdvanceRequestDetail.AdvanceProductID = AdvanceProductID;
         objAdvanceRequestDetail.AdvanceProductName = AdvanceProductName;
         objAdvanceRequestDetail.AdvanceQuantityUnitID = AdvanceQuantityUnitID;
         objAdvanceRequestDetail.AdvanceQuantityUnitName = AdvanceQuantityUnitName;
         objAdvanceRequestDetail.AdvanceConvertRatio = AdvanceConvertRatio;
+        objAdvanceRequestDetail.Quantity = 0;
+        objAdvanceRequestDetail.AdvanceQuantity = '';
         objAdvanceRequestDetail.VAT = VAT;
         // console.log("objAdvanceRequestDetail",objAdvanceRequestDetail,AdvanceRequestDetail);
         this.setState({
@@ -76,18 +79,21 @@ class AdvanceRequestDetailNewCom extends Component {
         let AdvanceQuantityUnitName = e.target[e.target.selectedIndex].getAttribute('data-AdvanceQuantityUnitName');
         let AdvanceConvertRatio = e.target[e.target.selectedIndex].getAttribute('data-AdvanceConvertRatio');
         let VAT = e.target[e.target.selectedIndex].getAttribute('data-VAT');
+        console.log(MaterialGroupID, CostPrice)
         let { AdvanceRequestDetail } = this.state
         const objAdvanceRequestDetail = AdvanceRequestDetail.MaterialList.find(n => n['MaterialGroupID'] == MaterialGroupID && n['InstallProductID'] == InstallProductID)
         objAdvanceRequestDetail.ProductID = ProductID;
         objAdvanceRequestDetail.ProductName = ProductName;
         objAdvanceRequestDetail.QuantityUnitID = QuantityUnitID;
         objAdvanceRequestDetail.QuantityUnit = QuantityUnit;
-        objAdvanceRequestDetail.CostPrice = CostPrice;
+        objAdvanceRequestDetail.CostPrice = CostPrice == null ? 0 : CostPrice;
         objAdvanceRequestDetail.AdvanceProductID = AdvanceProductID;
         objAdvanceRequestDetail.AdvanceProductName = AdvanceProductName;
         objAdvanceRequestDetail.AdvanceQuantityUnitID = AdvanceQuantityUnitID;
         objAdvanceRequestDetail.AdvanceQuantityUnitName = AdvanceQuantityUnitName;
         objAdvanceRequestDetail.AdvanceConvertRatio = AdvanceConvertRatio;
+        objAdvanceRequestDetail.Quantity = 0;
+        objAdvanceRequestDetail.AdvanceQuantity = '';
         objAdvanceRequestDetail.VAT = VAT;
         // console.log("objAdvanceRequestDetail",objAdvanceRequestDetail,AdvanceRequestDetail);
         this.setState({
@@ -133,7 +139,6 @@ class AdvanceRequestDetailNewCom extends Component {
     }
     handleInputChangeNewProduct(e) {
         e.preventDefault();
-        debugger;
         let value = e.target.value;
         let MaterialGroupID = e.target.getAttribute('data-MaterialGroupID');
         let InstallProductID = e.target.getAttribute('data-InstallProductID');
@@ -195,7 +200,7 @@ class AdvanceRequestDetailNewCom extends Component {
         let materialListForAdvance = {};
         if (this.state.AdvanceRequestDetail.MaterialList != undefined && this.state.AdvanceRequestDetail.MaterialList.length > 0) {
             if (!this.state.AdvanceRequestDetail.IsAdvanceByShipmentOrder) {
-                intSumTotalMoney = this.state.AdvanceRequestDetail.MaterialAdvanceDebtList[0].SumTotalMoney;
+                intSumTotalMoney = this.state.AdvanceRequestDetail.MaterialList[0].SumTotalMoney;
                 objgroupByInstallBundleID = this.groupByNew(this.state.AdvanceRequestDetail.MaterialList, ['InstallBundleID', 'InstallProductName']);
                 materialListForAdvance = this.state.AdvanceRequestDetail.MaterialList.reduce((r, a) => {
                     r[`${a.InstallBundleID}`] = [...r[`${a.InstallBundleID}`] || [], a];
@@ -225,8 +230,7 @@ class AdvanceRequestDetailNewCom extends Component {
                                             <thead className="thead-light">
                                                 <tr>
                                                     <th className="jsgrid-header-cell" style={{ width: "15%" }}>Nhóm vật tư</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "25%" }}>Tên sản phẩm</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "25%" }}>Sản phẩm</th>
                                                     <th className="jsgrid-header-cell" style={{ width: "10%" }}>Đơn vị tính</th>
                                                     <th className="jsgrid-header-cell" style={{ width: "10%" }}>Số lượng tạm ứng</th>
                                                     <th className="jsgrid-header-cell" style={{ width: "7%" }}>Tỷ lệ qui đổi</th>
@@ -241,7 +245,7 @@ class AdvanceRequestDetailNewCom extends Component {
                                                         <tr key={"totalCurrency" + index}>
                                                             <td>{item.MaterialGroupName}</td>
                                                             {item.MaterialProductList.length > 1 ?
-                                                                <div>
+                                                                <td>
                                                                     <select className="form-control form-control-sm" name="ProductID"
                                                                         value={item.ProductID}
                                                                         id={item.MaterialGroupID}
@@ -262,11 +266,10 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                                 data-CostPrice={optionItem.CostPrice}
                                                                                 data-VAT={optionItem.VAT}
                                                                             >
-                                                                                {optionItem.AdvanceProductID}</option>
+                                                                                {optionItem.AdvanceProductID+"-"+optionItem.AdvanceProductName}</option>
                                                                         )}
                                                                     </select>
-                                                                </div> : <td>{item.AdvanceProductID}</td>}
-                                                            <td>{item.AdvanceProductName}</td>
+                                                                </td> : <td>{item.AdvanceProductID+"-"+item.AdvanceProductName}</td>}
                                                             <td>{item.AdvanceQuantityUnitName}</td>
                                                             <td>{item.IsAllowDecimal == false ?
                                                                 <ElementInputModal.ElementModalNumberParser
@@ -277,9 +280,10 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                     label=''
                                                                     dataSourcemember="Quantity"
                                                                     Colmd='12'
+                                                                    colspan='12'
                                                                     min={0}
                                                                     max={(item.AdvanceLimitType == 1 ? ((item.AdvanceLimitQuantity - item.TotalQuantity * item.AdvanceConvertRatio) > 0 ? item.AdvanceLimitQuantity / item.AdvanceConvertRatio : 0) : 1000)}
-                                                                    value={item.AdvanceQuantity}
+                                                                    value={item.AdvanceQuantity > 0 ? item.AdvanceQuantity : ''}
                                                                     indexRow={index}
                                                                     disabled={item.CostPrice == 0 ? true : false}
                                                                     onValueChange={this.handleInputChange.bind(this)}
@@ -292,9 +296,10 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                     label=''
                                                                     dataSourcemember="Quantity"
                                                                     Colmd='12'
+                                                                    colspan='12'
                                                                     min={0}
                                                                     max={(item.AdvanceLimitType == 1 ? ((item.AdvanceLimitQuantity - item.TotalQuantity * item.AdvanceConvertRatio) > 0 ? (item.AdvanceLimitQuantity - item.TotalQuantity).toFixed(1) : 0) : 1000)}
-                                                                    value={item.AdvanceQuantity}
+                                                                    value={item.AdvanceQuantity > 0 ? item.AdvanceQuantity : ''}
                                                                     indexRow={index}
                                                                     disabled={item.CostPrice == 0 ? true : false}
                                                                     onValueChange={this.handleInputChange.bind(this)}
@@ -352,8 +357,7 @@ class AdvanceRequestDetailNewCom extends Component {
 
                                                 <tr>
                                                     <th className="jsgrid-header-cell" style={{ width: "15%" }}>Nhóm vật tư</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "25%" }}>Tên sản phẩm</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "25%" }}>Sản phẩm</th>
                                                     <th className="jsgrid-header-cell" style={{ width: "10%" }}>Đơn vị tính</th>
                                                     <th className="jsgrid-header-cell" style={{ width: "10%" }}>Số lượng tạm ứng</th>
                                                     <th className="jsgrid-header-cell" style={{ width: "7%" }}>Tỷ lệ qui đổi</th>
@@ -377,9 +381,13 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                 </tr>
                                                                 {obj.map((rowItemobj, Index) => {
                                                                     let TotalBundleQuantity = 1;
+                                                                    let deTotalQuantity = 0;
                                                                     let objMaterialAdvanceDebtList = this.state.AdvanceRequestDetail.MaterialAdvanceDebtList.find(n => n.MaterialGroupID == rowItemobj.MaterialGroupID && n.ProductID == rowItemobj.ProductID);
-                                                                    if (objMaterialAdvanceDebtList)
+                                                                    if (objMaterialAdvanceDebtList) {
                                                                         TotalBundleQuantity = objMaterialAdvanceDebtList.TotalBundleQuantity;
+                                                                        deTotalQuantity = objMaterialAdvanceDebtList.TotalQuantity;
+                                                                    }
+
 
                                                                     if (rowItemobj.MaterialProductList.length > 0) {
                                                                         return (
@@ -409,16 +417,15 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                                                     data-InstallProductID={rowItemobj.InstallProductID}
                                                                                                     data-VAT={optionItem.VAT}
                                                                                                 >
-                                                                                                    {optionItem.AdvanceProductID}</option>
+                                                                                                    {optionItem.AdvanceProductID+"-"+optionItem.AdvanceProductName}</option>
                                                                                             )}
                                                                                         </select>
-                                                                                    </td> : <td>{rowItemobj.AdvanceProductID}</td>}
-                                                                                <td>{rowItemobj.AdvanceProductName}</td>
+                                                                                    </td> : <td>{rowItemobj.AdvanceProductID+""+rowItemobj.AdvanceProductName}</td>}
                                                                                 <td>{rowItemobj.AdvanceQuantityUnitName}</td>
                                                                                 <td>
                                                                                     <input type="text" name={'Quantity'}
                                                                                         onChange={this.handleInputChangeNewProduct.bind(this)}
-                                                                                        value={rowItemobj.AdvanceQuantity}
+                                                                                        value={rowItemobj.AdvanceQuantity > 0 ? rowItemobj.AdvanceQuantity : ''}
                                                                                         className={"form-control form-control-sm"}
                                                                                         disabled={rowItemobj.AdvanceProductID == "" ? true : false}
                                                                                         data-MaterialGroupID={rowItemobj.MaterialGroupID}
@@ -428,9 +435,9 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                                 </td>
                                                                                 <td>{rowItemobj.AdvanceConvertRatio}</td>
                                                                                 <td>{rowItemobj.Quantity}</td>
-                                                                                <td>{(rowItemobj.AdvanceLimitType == 1 ? rowItemobj.AdvanceLimitQuantity*TotalBundleQuantity : "")}</td>
+                                                                                <td>{(rowItemobj.AdvanceLimitType == 1 ? rowItemobj.AdvanceLimitQuantity * TotalBundleQuantity : "")}</td>
                                                                                 {/* <td>{item.AdvanceLimitQuantity + "-" + item.TotalQuantity}</td> */}
-                                                                                <td>{(rowItemobj.AdvanceLimitType == 1 ? ((rowItemobj.AdvanceLimitQuantity - rowItemobj.TotalQuantity * rowItemobj.AdvanceConvertRatio) > 0 ? (rowItemobj.AdvanceLimitQuantity - rowItemobj.TotalQuantity * rowItemobj.AdvanceConvertRatio).toFixed(1) : 0) : "")}</td>
+                                                                                <td>{(rowItemobj.AdvanceLimitType == 1 ? ((rowItemobj.AdvanceLimitQuantity - deTotalQuantity * rowItemobj.AdvanceConvertRatio) > 0 ? (rowItemobj.AdvanceLimitQuantity - deTotalQuantity * rowItemobj.AdvanceConvertRatio).toFixed(1) : 0) : "")}</td>
                                                                             </tr>
                                                                         );
                                                                     }
