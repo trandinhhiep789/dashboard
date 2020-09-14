@@ -6,6 +6,7 @@ export const AddAPIPath = "api/AdvanceRequest/InsertAdvanceRequest";
 export const UpdateAPIPath = "api/AdvanceRequest/Update";
 export const DeleteAPIPath = "api/AdvanceRequest/Delete";
 export const GetAdvanceRequestAPIPath = "api/AdvanceRequest/GetAdvanceRequest";
+export const GetCreateAdSaleOrderAPIPath = "api/AdvanceRequest/CreateAdvanceRequestSaleOrder";
 export const BackLink = "/AdvanceRequest";
 
 export const AddLogAPIPath = "api/UserActivity/Add";
