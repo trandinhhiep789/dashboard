@@ -14,7 +14,7 @@ import {
 } from "./constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
-import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache,callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST, ADVANCEREQUESTTYPE_ADD, ADVANCEREQUESTTYPE_DELETE } from "../../../../constants/functionLists";
 
 class AdvanceRequestType_ProductCom extends React.Component {
@@ -69,7 +69,7 @@ class AdvanceRequestType_ProductCom extends React.Component {
     checkPermission() {
         let IsAllowedAdd = false;
         let IsAllowedDelete = false;
-        this.props.callGetCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == ADVANCEREQUESTTYPE_ADD);
                 if (isAllowAdd && isAllowAdd.length > 0) {
@@ -218,6 +218,9 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
         }
 
     };

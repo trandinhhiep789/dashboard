@@ -5,7 +5,7 @@ import { ValidationField } from "../../../../library/validation.js";
 import { bindDataToControl, GetMLObjectData, transform1To2Column, transform1To3Column } from "../../../../library/form/FormLib";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../../constants/functionLists";
 import { connect } from 'react-redux';
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache ,callGetUserCache} from "../../../../../actions/cacheAction";
 import { debug } from 'util';
 
 function isEmpty(obj) {
@@ -299,7 +299,7 @@ class FormContainerCom extends Component {
             this.setState({ IsPermision: true });
             return;
         }
-        this.props.callGetCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
                     if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
@@ -1145,7 +1145,10 @@ const mapDispatchToProps = dispatch => {
     return {
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
-        }
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
+        },
     }
 }
 const FormContainer = connect(mapStateToProps, mapDispatchToProps)(FormContainerCom);

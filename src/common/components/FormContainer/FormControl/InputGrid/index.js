@@ -7,10 +7,9 @@ import { connect } from 'react-redux';
 import { MessageModal } from "../../../Modal";
 import InputGridCell from "./InputGridCell";
 import { GetMLObjectData, GetMLObjectDataList } from "../../../../library/form/FormLib";
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache,callGetUserCache } from "../../../../../actions/cacheAction";
 import { DEFAULT_ROW_PER_PAGE } from "../../../../../constants/systemVars.js";
 import InputGridPage from "./InputGridPage";
-import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../../constants/functionLists";
 import { ValidationField } from "../../../../library/validation.js";
 import { MODAL_TYPE_CONFIRMATIONNEW, MODAL_TYPE_CONFICOMPONET } from '../../../../../constants/actionTypes';
 

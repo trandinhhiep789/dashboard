@@ -14,7 +14,7 @@ import {
 } from "./constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
-import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache,callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST, INVENTORYREQUESTTYPE_ADD, INVENTORYREQUESTTYPE_DELETE, INVENTORYREQUESTTYPE_UPDATE } from "../../../../constants/functionLists";
 
 class InventoryRequestType_ReviewLevelCom extends React.Component {
@@ -72,7 +72,7 @@ class InventoryRequestType_ReviewLevelCom extends React.Component {
         let IsAllowedUpdate = false;
         let IsAllowedDelete = false;
         
-        this.props.callGetCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == INVENTORYREQUESTTYPE_ADD);
                 if (isAllowAdd && isAllowAdd.length > 0) {
@@ -274,6 +274,9 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
         }
 
     };

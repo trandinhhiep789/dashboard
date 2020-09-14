@@ -131,14 +131,14 @@ export function callGetUserCache(cacheKeyID) {
                     UserName: userName,
                     AdditionParamList: []
                 };
-                return dispatch(callGetCacheFromServer(cacheKeyID));
+                return dispatch(callGetUserCacheFromServer(cacheKeyID));
             }
         }
 
         ).
             catch((error) => {
                 //console.log("callGetCache: ", error);
-                return dispatch(callGetCacheFromServer(cacheKeyID));
+                return dispatch(callGetUserCacheFromServer(cacheKeyID));
                 //return dispatch(callRegisterClientFromServer(hostname,username,password));
             })
 

@@ -4,7 +4,7 @@ import { ValidationField } from "../../../library/validation.js";
 import FormElement from '../FormElement';
 
 import { connect } from 'react-redux';
-import { callGetCache } from "../../../../actions/cacheAction";
+import { callGetCache,callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
 
 function isEmpty(obj) {
@@ -159,7 +159,7 @@ class SimpleFormCom extends Component {
             this.setState({ IsPermision: true });
             return;
         }
-        this.props.callGetCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             //console.log("result callGetCache simple form: ", result)
             //console.log("permissionKey simple form: ", permissionKey)
             if (!result.IsError && result.ResultObject.CacheData != null) {
@@ -692,7 +692,6 @@ const mapStateToProps = state => {
     return {
         AppInfo: state,
         FetchAPIInfo: state.FetchAPIInfo
-
     }
 }
 
@@ -700,6 +699,9 @@ const mapDispatchToProps = dispatch => {
     return {
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
         }
     }
 }

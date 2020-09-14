@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ValidationField } from "../../library/validation.js";
 import { GetMLObjectData, GetMLObjectObjData } from "../../library/form/FormLib";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../constants/functionLists";
-import { callGetCache } from "../../../actions/cacheAction";
+import { callGetCache,callGetUserCache } from "../../../actions/cacheAction";
 import { Link } from "react-router-dom";
 import FormElement from '../FormContainer/FormElement';
 import ElementModal from '../FormContainer/FormElement/ElementModal';
@@ -289,7 +289,7 @@ class FormContainerCom extends Component {
             this.setState({ IsPermision: true });
             return;
         }
-        this.props.callGetCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
                     if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
@@ -642,6 +642,9 @@ const mapDispatchToProps = dispatch => {
     return {
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));

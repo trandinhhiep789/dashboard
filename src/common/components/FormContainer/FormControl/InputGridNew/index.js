@@ -10,7 +10,6 @@ import { GetMLObjectData, GetMLObjectDataList } from "../../../../library/form/F
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { DEFAULT_ROW_PER_PAGE } from "../../../../../constants/systemVars.js";
 import InputGridPage from "./InputGridPage";
-import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../../constants/functionLists";
 import { ValidationField } from "../../../../library/validation.js";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { MODAL_TYPE_CONFIRMATIONNEW, MODAL_TYPE_CONFICOMPONET } from '../../../../../constants/actionTypes';
