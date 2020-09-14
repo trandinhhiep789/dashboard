@@ -6,24 +6,27 @@
             padding: 6px 20px;
             display: flex;
             justify-content: space-between;
-           .title{
-            max-width: 50%;
-            line-height: 30px;
-            margin-bottom: 0;
-           }
-            .form-group-dropdown-custom{
+
+            .title {
+                max-width: 50%;
+                line-height: 35px;
+                margin-bottom: 0;
+                margin-top: 5px;
+            }
+
+            .form-group-dropdown-custom {
                 max-width: 300px;
                 width: 100%;
                 margin-bottom: 0 !important;
 
-                button{
-                    &.dropdown-toggle{
+                button {
+                    &.dropdown-toggle {
                         border-color: #1c84e4;
                         background-color: #1c84e4;
                         color: #fff !important;
                     }
                 }
-                
+
             }
         }
 
@@ -150,8 +153,8 @@
                         padding-right: 7px;
                         font-size: 13px;
                         box-sizing: border-box;
-                        
-                        &:hover{
+
+                        &:hover {
                             background-color: #FFBDAD;
                             color: #DE350B;
                             font-weight: 500;
