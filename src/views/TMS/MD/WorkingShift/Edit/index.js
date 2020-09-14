@@ -249,7 +249,7 @@ class EditCom extends React.Component {
                         </div>
 
                         <div className="col-md-6">
-                            {/* <FormControl.TextBox
+                            <FormControl.TextBox
                                 name="txtShiftNumber"
                                 colspan="8"
                                 labelcolspan="4"
@@ -262,8 +262,8 @@ class EditCom extends React.Component {
                                 maxSize={9}
                                 datasourcemember="ShiftNumber"
                                 validatonList={['required', 'number']}
-                            /> */}
-                            <FormControl.ComboBoxSelect
+                            />
+                            {/* <FormControl.ComboBoxSelect
 
                                 name="cbShiftNumber"
                                 colspan="8"
@@ -280,7 +280,7 @@ class EditCom extends React.Component {
                                 controltype="InputControl"
                                 value={""}
                                 listoption={null}
-                                datasourcemember="WorkingShiftID" />
+                                datasourcemember="WorkingShiftID" /> */}
                         </div>
 
                     </div>

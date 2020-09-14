@@ -480,7 +480,7 @@ const AppMenu = [
                     },
                     {
                         MenuName: 'AdvanceRequest',
-                        MenuTitle: 'Yêu cầu tạm ứng',
+                        MenuTitle: 'Danh sách Yêu cầu tạm ứng',
                         LinkTo: '/AdvanceRequest',
                         MenuIcon: '',
                         SubMenu: []
@@ -494,6 +494,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'InventoryRequest',
+                MenuTitle: 'Danh sách yêu cầu kiểm kê',
+                LinkTo: '/InventoryRequest',
+                MenuIcon: '',
+                SubMenu: []
+            }
         ]
     },
     {

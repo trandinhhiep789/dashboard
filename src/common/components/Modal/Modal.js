@@ -161,6 +161,8 @@ class ModalCom extends React.Component {
                 if (typeof this.elementItemRefs[key].focus !== "undefined") {
                     this.elementItemRefs[key].focus();
                     return false;
+                } else {
+                    return false;
                 }
 
             }

@@ -3,9 +3,10 @@ export const SearchAPIPath = "api/DestroyRequest/Search";
 export const LoadAPIPath = "api/DestroyRequest/Load";
 export const LoadNewAPIPath = "api/DestroyRequest/LoadInfoNew";
 export const AddAPIPath = "api/DestroyRequest/Add";
-export const UpdateAPIPath = "api/DestroyRequest/Update";
-export const UpdateOutputAPIPath = "api/DestroyRequest/UpdateOutput";
+export const UpdateAPIPath = "api/DestroyRequest/UpdateNew";
+export const UpdateCreateSaleOrderAPIPath = "api/DestroyRequest/UpdateCreateSaleOrder";
 
+export const UpdateCurrentReviewLevelAPIPath = "api/DestroyRequest/UpdateCurrentReviewLevel";
 export const DeleteNewAPIPath = "api/DestroyRequest/DeleteNew";
 export const DeleteAPIPath = "api/DestroyRequest/Delete";
 export const BackLink = "/DestroyRequest";
@@ -248,7 +249,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Kho yêu cầu",
         DataSourceMember: "StoreName",
-        Width: 180
+        Width: 250
     },
     {
         Name: "RequestDate",
@@ -259,24 +260,24 @@ export const DataGridColumnList = [
     },
 
     {
-        Name: "RequestUser",
+        Name: "ApproverName",
         Type: "text",
         Caption: "Người yêu cầu",
-        DataSourceMember: "RequestUser",
+        DataSourceMember: "ApproverName",
         Width: 150
     },
     {
-        Name: "StatusLable1",
+        Name: "ReviewStatusLable",
         Type: "text",
         Caption: "Đã duyệt",
-        DataSourceMember: "StatusLable1",
+        DataSourceMember: "ReviewStatusLable",
         Width: 130
     },
     {
-        Name: "StatusLable2",
+        Name: "OutputStatusLable",
         Type: "text",
         Caption: " Đã xuất",
-        DataSourceMember: "StatusLable2",
+        DataSourceMember: "OutputStatusLable",
         Width: 130
     },
     {
@@ -328,11 +329,18 @@ export const InputDestroyRequestDetailColumnList = [
         DataSourceMember: "Quantity",
         Width: 200,
         validatonList: [ "number"],
+        IsNoneZero: true
     },
    
 ];
 
 export const GridMLObjectDefinition = [
+    {
+        Name: "DestroyRequestDetailID",
+        DefaultValue: "",
+        BindControlName: "DestroyRequestDetailID",
+        DataSourceMember: "DestroyRequestDetailID"
+    },
     {
         Name: "MaterialGroupID",
         DefaultValue: "",
@@ -529,10 +537,10 @@ export const GirdDestroyRequestRLColumnList=[
         Width: 100
     },
     {
-        Name: "UserName",
+        Name: "ApproverName",
         Type: "text",
         Caption: "Người duyệt",
-        DataSourceMember: "UserName",
+        DataSourceMember: "ApproverName",
         Width: 100
     },
     {
@@ -544,7 +552,7 @@ export const GirdDestroyRequestRLColumnList=[
     },
     {
         Name: "reViewedDate",
-        Type: "text",
+        Type: "date",
         Caption: "Ngày duyệt",
         DataSourceMember: "reViewedDate",
         Width: 100

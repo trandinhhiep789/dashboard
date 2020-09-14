@@ -246,6 +246,7 @@ class EditCom extends React.Component {
                     <br />
                     <AdvanceRequestDetail
                         AdvanceRequestID={this.props.match.params.id}
+                        DataSource={this.state.DataSource}
                         AdvanceRequestDetailDataSource={this.state.DataSource.AdvanceRequestDetailList}
                     />
                 </React.Fragment >

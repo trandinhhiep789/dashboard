@@ -289,7 +289,6 @@ class SearchCom extends React.Component {
 
 
     render() {
-
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />

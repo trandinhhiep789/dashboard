@@ -325,7 +325,6 @@ class FormControlComboBoxCom extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-
         if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             let { filterobj, valuemember, nameMember, isMultiSelect } = this.props;
@@ -343,6 +342,11 @@ class FormControlComboBoxCom extends Component {
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
             const aa = this.bindcombox(nextProps.value, this.state.Listoption);
             this.setState({ SelectedOption: aa });
+        }
+
+        if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            this.setState({ Listoption: nextProps.listoption });
         }
     }
 

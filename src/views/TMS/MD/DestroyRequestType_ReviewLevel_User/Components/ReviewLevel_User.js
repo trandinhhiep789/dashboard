@@ -12,13 +12,14 @@ import {
     MLObjectDefinition,
     BackLink,
     EditPagePath,
-    GetParent
+    GetParent,
+    GetUserAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
-import FormControl from '../../../../../common/components/Form/AdvanceForm/FormControl';
+import FormContainer from "../../../../../common/components/FormContainer";
+import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import MultiSelectComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 import { ERPCOMMONCACHE_STORE } from "../../../../../constants/keyCache";
 class ReviewLevel_UserCom extends React.Component {
@@ -26,59 +27,45 @@ class ReviewLevel_UserCom extends React.Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.handleInputChangeList = this.handleInputChangeList.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             FormContent: "",
             IsLoadDataComplete: false,
-            IsCloseForm: false
+            IsCloseForm: false,
+            StoreID: 0,
+            ReviewUser: []
         };
     }
 
-
-
-
     componentDidMount() {
-        //this.props.updatePagePath(EditPagePath);
-        // const id = this.props.match.params.id;
-        // this.GetParentList(id);
-        // this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
-        //     if (apiResult.IsError) {
-        //         this.setState({
-        //             IsCallAPIError: apiResult.IsError
-        //         });
-        //         this.showMessage(apiResult.Message);
-        //     } else {
-        //         this.setState({
-        //             DataSource: apiResult.ResultObject,
-        //             AreaStore: apiResult.ResultObject.AreaStore ? apiResult.ResultObject.AreaStore : [],
-        //             //SkillSkillRank: apiResult.ResultObject.SkillSkillRank ? apiResult.ResultObject.SkillSkillRank : [],
-        //         });
-        //     }
-        //     this.setState({
-        //         IsLoadDataComplete: true
-        //     });
-        // });
-        window.addEventListener('keydown',function(e){if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){if(e.target.nodeName=='INPUT'&&e.target.type=='text'){e.preventDefault();return false;}}},true);
-
+        window.addEventListener('keydown', function (e) { if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) { if (e.target.nodeName == 'INPUT' && e.target.type == 'text') { e.preventDefault(); return false; } } }, true);
     }
 
+    handleChange(formData, MLObject) {
+        if (formData.StoreID.value != -1 && formData.StoreID.value != this.state.StoreID) {
+            this.setState({ StoreID: formData.StoreID.value });
+            this.props.callFetchAPI(APIHostName, GetUserAPIPath, formData.StoreID.value).then(apiResult => {
+                this.setState({ IsCallAPIError: apiResult.IsError });
+                if (!apiResult.IsError) {
+                    let listOption = [];
+                    apiResult.ResultObject.map((item, index) => {
+                        listOption.push({ value: item.UserName, label: item.FullName });
+                    });
+                    this.setState({ ReviewUser: listOption });
+                }
 
-    handleInputChangeList(formData, tabNameList, tabMLObjectDefinitionList, formValidation) {
-
+            });
+        }
     }
 
 
     handleSubmit(formData, MLObject) {
-
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.UserName = this.state.Username;
-        if (!MLObject.UserName || !MLObject.ReviewLevelID || MLObject.ReviewLevelID == -1 || !MLObject.StoreID || MLObject.StoreID == -1) {
-            this.showMessage("Vui lòng nhập đầy đủ thông tin.");
-            return;
-        }
+        MLObject.ReviewLevelID = this.props.ReviewLevelID;
+        MLObject.UserName = MLObject.UserName && Array.isArray(MLObject.UserName) ? MLObject.UserName[0] : MLObject.UserName;
+
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -87,7 +74,7 @@ class ReviewLevel_UserCom extends React.Component {
                     this.props.onComponentChange();
                     this.props.closePopup();
                 }
-                
+
             }
 
         });
@@ -154,51 +141,63 @@ class ReviewLevel_UserCom extends React.Component {
         }
         return (
             <React.Fragment>
-
                 <FormContainer
-                    // FormName="Người duyệt"
+                    //FormName="Người duyệt"
                     MLObjectDefinition={MLObjectDefinition}
                     IsAutoLayout={true}
                     listelement={[]}
-                    onInputChangeList={this.handleInputChangeList}
                     onSubmit={this.handleSubmit}
                     FormMessage={this.state.CallAPIMessage}
                     IsErrorMessage={this.state.IsCallAPIError}
-                    dataSource={this.state.DataSource}
+                    dataSource={null}
                     BackLink={BackLink}
+                    onchange={this.handleChange.bind(this)}
                 //RequirePermission={AREA_UPDATE}
                 >
 
-                    <FormControl.ComboBox
+                    {/* <FormControl.FormControlComboBox
                         name="ReviewLevelID"
-                        type="select"
-                        isautoloaditemfromcache={false}
                         label="Mức duyệt"
+                        isautoloaditemfromcache={false}
                         controltype="InputControl"
+                        value={-1}
                         listoption={this.props.ReviewLevelOptions}
                         datasourcemember="ReviewLevelID"
                         labelcolspan={4} colspan={8} rowspan={8}
-                        isRequired={true}
-                    />
+                        validatonList={["Comborequired"]}
+                    /> */}
 
-                    <FormControl.ComboBox
+
+                    <FormControl.FormControlComboBox
                         name="StoreID"
-                        type="select"
+                        label="Kho duyệt"
                         isautoloaditemfromcache={true}
                         loaditemcachekeyid={ERPCOMMONCACHE_STORE}
                         valuemember="StoreID"
                         nameMember="StoreName"
-                        label="Kho duyệt"
+                        filterobj={"CompanyID"}
+                        filterValue={"10"}
                         controltype="InputControl"
+                        value={-1}
                         listoption={[]}
                         datasourcemember="StoreID"
                         labelcolspan={4} colspan={8} rowspan={8}
-                        isRequired={true}
-                        KeyFilter="CompanyID"
-                        ValueFilter={10}
+                        validatonList={["Comborequired"]}
                     />
 
-                    <MultiSelectComboBox
+                    <FormControl.FormControlComboBox
+                        name="UserName"
+                        label="Người duyệt"
+                        isautoloaditemfromcache={false}
+                        controltype="InputControl"
+                        value={-1}
+                        listoption={this.state.ReviewUser}
+                        datasourcemember="UserName"
+                        labelcolspan={4} colspan={8} rowspan={8}
+                        validatonList={["Comborequired"]}
+                    />
+
+                    {/* <MultiSelectComboBox
                         name="User"
                         labelcolspan={4} colspan={8} rowspan={8}
                         label="Người duyệt"
@@ -207,14 +206,14 @@ class ReviewLevel_UserCom extends React.Component {
                         isautoloaditemfromcache={false}
                         onChange={this.onChangeUser.bind(this)}
                         controltype="InputControl"
-                        value={[]}
+                        value={this.state.Username}
                         listoption={[]}
                         isMultiSelect={false}
                         datasourcemember="User"
                         validationErrorMessage={''}
                         validatonList={["Comborequired"]}
                         isRequired={true}
-                    />
+                    /> */}
                 </FormContainer>
             </React.Fragment>
         );

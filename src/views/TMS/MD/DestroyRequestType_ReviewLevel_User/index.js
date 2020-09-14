@@ -141,14 +141,14 @@ class DestroyRequestType_ReviewLevel_UserCom extends React.Component {
     }
 
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
-        let reviewLevelOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+        // let reviewLevelOption = [{ value: -1, label: "--Vui lòng chọn--" }];
 
-        if (this.state.DestroyRequestType_ReviewLevel_DataSource.length > 0) {
-            let reviewLevel_DataSource = this.state.DestroyRequestType_ReviewLevel_DataSource;
-            reviewLevel_DataSource.forEach(element => {
-                reviewLevelOption.push({ value: element.ReviewLevelID, label: element.ReviewLevelName });
-            });
-        }
+        // if (this.state.DestroyRequestType_ReviewLevel_DataSource.length > 0) {
+        //     let reviewLevel_DataSource = this.state.DestroyRequestType_ReviewLevel_DataSource;
+        //     reviewLevel_DataSource.forEach(element => {
+        //         reviewLevelOption.push({ value: element.ReviewLevelID, label: element.ReviewLevelName });
+        //     });
+        // }
 
         if (!this.state.IsAllowedAdd) {
             this.showMessage("Bạn không có quyền");
@@ -159,7 +159,8 @@ class DestroyRequestType_ReviewLevel_UserCom extends React.Component {
             title: 'Người duyệt',
             content: {
                 text: <ReviewLevel_User
-                    ReviewLevelOptions={reviewLevelOption}
+                    //ReviewLevelOptions={reviewLevelOption}
+                    ReviewLevelID={this.props.ReviewLevelID}
                     onComponentChange={this.props.onComponentChange}
                     closePopup={this.onClose}
 

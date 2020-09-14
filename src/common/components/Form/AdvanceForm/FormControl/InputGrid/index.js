@@ -869,6 +869,7 @@ class InputGridCom extends Component {
 											max={columnItem.Max}
 											maxSize={columnItem.maxSize}
 											IsSystem={this.state.IsSystem}
+											isNoneZero={columnItem.IsNoneZero}
 										/>;
 										return (
 											<td key={columnItem.Name} style={cellStyle}  >{cellData}</td>

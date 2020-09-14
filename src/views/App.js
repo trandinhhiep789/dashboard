@@ -11,8 +11,16 @@ class AppCom extends React.Component {
     constructor(props) {
         super(props);
     }
+    
+    componentDidMount() {
+        // this.props.updatePagePath(PagePath);
+        var addScript = document.createElement('script');
+        addScript.setAttribute('src', '/src/js/core.min.js');
+        document.body.appendChild(addScript);
+    }
+
     render() {
-       
+
         return (
             <Router>
                 <div id="mainRouter">

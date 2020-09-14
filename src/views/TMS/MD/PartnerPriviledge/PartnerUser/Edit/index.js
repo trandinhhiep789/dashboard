@@ -410,6 +410,7 @@ class EditCom extends React.Component {
         MLObject.FirstName = firstName.trim();
         MLObject.LastName = lastName.trim();
         MLObject.ListPartnerUser_Role = this.state.DataSource.ListPartnerUser_Role;
+        MLObject.PartnerID = MLObject.PartnerID && Array.isArray(MLObject.PartnerID) ? MLObject.PartnerID[0] : MLObject.PartnerID;
 
         if (MLObject.Birthday) {
             let temp = MLObject.Birthday.trim().split('/');

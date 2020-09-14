@@ -7,7 +7,7 @@ export const ModalColumnList_Insert = [
     {
         type: "select",
         Name: "ShipmentOrderTypeID",
-        label: "Tạm ứng theo vận đơn",
+        label: "Loại yêu cầu vận chuyển",
         value: -1,
         placeholder: "",
         icon: "",

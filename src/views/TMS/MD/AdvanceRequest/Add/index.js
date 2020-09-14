@@ -6,6 +6,7 @@ import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../../common/components/Modal";
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import {
     APIHostName,
     AddAPIPath,
@@ -33,11 +34,13 @@ class AddCom extends React.Component {
             IsCallAPIError: false,
             IsLoadDataComplete: true,
             IsCloseForm: false,
-            gridDataSource: [],
-            AdvanceRequestDetailList: [],
+            gridDataSource: {},
             StoreID: -1,
             AdvanceRequestTypeID: -1,
-            errorAdvanceRequestDetail: ""
+            errorAdvanceRequestDetail: "",
+            MaterialList: [],
+            AdvanceCostLimit: 0,
+            MaterialAdvanceDebtList: [],
         };
     }
 
@@ -62,24 +65,27 @@ class AddCom extends React.Component {
         );
     }
     handleSubmit(formData, MLObject) {
-        MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList.filter(n => n.Quantity > 0);
+        MLObject.IsAdvanceByShipmentOrder=this.state.AdvanceRequestDetailList.IsAdvanceByShipmentOrder;
+        MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList.MaterialList
         var msgTotal = MLObject.AdvanceRequestDetailList.reduce(function (prev, cur) {
             return prev + cur.Quantity;
         }, 0);
 
-       
+
         if (msgTotal < 1) {
             this.setState({ errorAdvanceRequestDetail: "Vui lòng chọn vật tư tạm ứng" });
         }
         else {
             MLObject.AdvanceRequestDetailList.map((Item) => {
-                Item.ReceiverStoreID= this.state.StoreID
+                Item.ReceiverStoreID = this.state.StoreID
             });
-    
+
             this.setState({ errorAdvanceRequestDetail: "" });
+            console.log("MLObject",MLObject)
             this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: !apiResult.IsError });
-                this.showMessage(apiResult.Message);
+                let strMessage = ReactHtmlParser(apiResult.Message);
+                this.showMessage(strMessage);
             });
 
         }
@@ -87,30 +93,25 @@ class AddCom extends React.Component {
     }
     onValueChangeCustom(name, value) {
         if (value > -1 && this.state.StoreID > -1) {
-            const postData = [
-                {
-                    SearchKey: "@ADVANCEREQUESTTYPEID",
-                    SearchValue: value
-                },
-                {
-                    SearchKey: "@STOREID",
-                    SearchValue: this.state.StoreID
-                }
-            ];
-
+            let postData = { AdvanceRequestTypeID: value, ReceiverStoreID: this.state.StoreID };
             this.props.callFetchAPI(APIHostName, GetAdvanceRequestAPIPath, postData).then(apiResult => {
                 if (!apiResult.IsError) {
                     this.setState({
-                        AdvanceRequestDetailList: apiResult.ResultObject,
                         gridDataSource: apiResult.ResultObject,
-                        AdvanceRequestTypeID: value
+                        AdvanceRequestDetailList:apiResult.ResultObject,
+                        AdvanceRequestTypeID: value,
+                        IsLoadDataComplete: true
                     });
                 }
                 else {
+                  
                     this.setState({
+                        IsCallAPIError:!apiResult.IsError,
                         gridDataSource: [],
                         AdvanceRequestTypeID: value
                     });
+                    let strMessage = ReactHtmlParser(apiResult.Message);
+                    this.showMessage(strMessage);
 
                 }
             });
@@ -126,32 +127,26 @@ class AddCom extends React.Component {
 
     }
     onValueChangeSote(name, value) {
-
         if (value > -1 && this.state.AdvanceRequestTypeID > -1) {
-            const postData = [
-                {
-                    SearchKey: "@ADVANCEREQUESTTYPEID",
-                    SearchValue: this.state.AdvanceRequestTypeID
-                },
-                {
-                    SearchKey: "@STOREID",
-                    SearchValue: value
-                }
-            ];
-
+            let postData = { AdvanceRequestTypeID: this.state.AdvanceRequestTypeID, ReceiverStoreID: value }
             this.props.callFetchAPI(APIHostName, GetAdvanceRequestAPIPath, postData).then(apiResult => {
                 if (!apiResult.IsError) {
                     this.setState({
-                        AdvanceRequestDetailList: apiResult.ResultObject,
                         gridDataSource: apiResult.ResultObject,
-                        StoreID: value
+                        AdvanceRequestDetailList:apiResult.ResultObject,
+                        StoreID: value,
+                        IsLoadDataComplete: true
                     });
                 }
                 else {
+
                     this.setState({
+                        IsCallAPIError:!apiResult.IsError,
                         gridDataSource: [],
                         StoreID: value
                     });
+                    let strMessage = ReactHtmlParser(apiResult.Message);
+                    this.showMessage(strMessage);
 
                 }
             });
@@ -204,6 +199,15 @@ class AddCom extends React.Component {
             AdvanceRequestDetailList: obj,
         });
     }
+    groupBy(data, fields, sumBy = 'Quantity') {
+        let r = [], cmp = (x, y) => fields.reduce((a, b) => a && x[b] == y[b], true);
+        data.forEach(x => {
+            let y = r.find(z => cmp(x, z));
+            let w = [...fields, sumBy].reduce((a, b) => (a[b] = x[b], a), {})
+            y ? y[sumBy] = +y[sumBy] + (+x[sumBy]) : r.push(w);
+        });
+        return r;
+    }
 
     render() {
         if (this.state.IsCloseForm) {
@@ -211,7 +215,6 @@ class AddCom extends React.Component {
         }
         const { errorAdvanceRequestDetail } = this.state;
         if (this.state.IsLoadDataComplete) {
-
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
@@ -244,7 +247,6 @@ class AddCom extends React.Component {
                                     listoption={null}
                                     datasourcemember="ReceiverStoreID" />
                             </div>
-                            <div className="col-md-6"></div>
                             <div className="col-md-6">
                                 <FormControl.ComboBoxSelect
                                     name="txtAdvanceRequestTypeID"
@@ -265,22 +267,6 @@ class AddCom extends React.Component {
                                     listoption={null}
                                     datasourcemember="AdvanceRequestTypeID" />
                             </div>
-
-                            <div className="col-md-6">
-                                <FormControl.TextBox
-                                    name="txtShipmentOrderID"
-                                    colspan="8"
-                                    labelcolspan="4"
-                                    readOnly={false}
-                                    label="mã yêu cầu vận chuyển"
-                                    placeholder="mã yêu cầu vận chuyển"
-                                    controltype="InputControl"
-                                    value=""
-                                    maxSize={19}
-                                    datasourcemember="ShipmentOrderID"
-                                    disabled={false}
-                                />
-                            </div>
                             <div className="col-md-12">
                                 <FormControl.TextBox
                                     name="txtAdvanceRequestTitle"
@@ -296,7 +282,6 @@ class AddCom extends React.Component {
                                     validatonList={['required']}
                                 />
                             </div>
-
                             <div className="col-md-12">
                                 <FormControl.TextArea
                                     labelcolspan={2}
@@ -313,22 +298,6 @@ class AddCom extends React.Component {
                                     disabled={this.state.IsSystem}
                                 />
                             </div>
-
-                            {/* <div className="col-md-6">
-                                <FormControl.CheckBox
-                                    label="kích hoạt"
-                                    name="chkIsActived"
-                                    datasourcemember="IsActived"
-                                    controltype="InputControl"
-                                    colspan={10}
-                                    labelcolspan={2}
-                                    value={true}
-                                    classNameCustom="customCheckbox"
-                                    readOnly={this.state.IsSystem}
-                                    disabled={this.state.IsSystem}
-                                />
-                            </div> */}
-
                             <div className="col-md-6">
                                 <FormControl.CheckBox
                                     label="hệ thống"
@@ -341,22 +310,53 @@ class AddCom extends React.Component {
                                     classNameCustom="customCheckbox"
                                 />
                             </div>
+                            {(this.state.gridDataSource.ShipmentOrderNewList != undefined && this.state.gridDataSource.IsAdvanceByShipmentOrder ==true)?
+                                <React.Fragment>
+                                    <div className="col-lg-12 page-detail">
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <div className="row">
+                                                    <div className="col-md-12">
+                                                        <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                                            <thead className="thead-light">
+
+                                                                <tr>
+                                                                    <th className="jsgrid-header-cell" style={{ width: "100%" }}>Mã vận đơn cần tạm ứng</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {this.state.gridDataSource.ShipmentOrderNewList.map((item, index) => {
+                                                                    return (
+                                                                        <tr key={index}>
+                                                                            <td>{item.ShipmentOrderID}</td>
+                                                                        </tr>
+                                                                    )
+                                                                })
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </React.Fragment>
+                                : <div></div>}
                             {
                                 errorAdvanceRequestDetail != '' ?
                                     <div className="col-md-12 errorAdvanceRequestDetail">
                                         <p>{this.state.errorAdvanceRequestDetail}</p>
-                                    </div> 
-                                : <div></div>
+                                    </div>
+                                    : <div></div>
                             }
 
                             <AdvanceRequestDetailNew
                                 AdvanceRequestDetail={this.state.gridDataSource}
+                                ShipmentOrderCount={1}
                                 onValueChangeGrid={this.handleInputChangeGrid.bind(this)}
                             />
                         </div>
-
-
-
                     </FormContainer>
                 </React.Fragment>
             );

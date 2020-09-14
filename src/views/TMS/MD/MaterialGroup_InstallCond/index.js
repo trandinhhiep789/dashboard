@@ -517,7 +517,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
             // <Collapsible trigger="Điều kiện lắp đặt của nhóm vật tư" easing="ease-in" open={true}>
 
             // </Collapsible>
-            <div className="sub-grid">
+            <div className="sub-grid detail">
                 <DataGrid listColumn={DataGridColumnList}
                     dataSource={datasource}
                     modalElementList={this.state.ModalColumnList_Insert}
@@ -527,7 +527,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
                     onDeleteClick={this.handleDelete}
                     onInsertClick={this.handleInsert}
                     onInsertClickEdit={this.handleEdit}
-                    IsAutoPaging={true}
+                    IsAutoPaging={false}
                     RowsPerPage={10}
                     IsCustomAddLink={true}
                     headingTitle={"Điều kiện lắp đặt của nhóm vật tư"}

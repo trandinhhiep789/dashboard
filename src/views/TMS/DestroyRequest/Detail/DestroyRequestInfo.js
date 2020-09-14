@@ -81,7 +81,7 @@ class DestroyRequestInfoCom extends Component {
                         <label className="col-form-label bold">Người yêu cầu:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{DestroyRequest.RequestUser}</label>
+                        <label className="col-form-label">{DestroyRequest.RequestUser + " - " + DestroyRequest.FullName}</label>
                     </div>
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Mô tả:</label>
@@ -169,7 +169,7 @@ class DestroyRequestInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <div className="checkbox customCheckbox">
-                            <label><input type="checkbox" disabled={true} defaultChecked={DestroyRequest.IsOutput} />
+                            <label><input type="checkbox" disabled={true} defaultChecked={DestroyRequest.IsCreatedOrder} />
                                 <span className="cr"><i className="cr-icon fa fa-check"></i>
                                 </span>
                             </label>
@@ -183,14 +183,14 @@ class DestroyRequestInfoCom extends Component {
                         <label className="col-form-label bold">Người xuất hủy vật tư:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{DestroyRequest.OutputUser}</label>
+                        <label className="col-form-label">{DestroyRequest.CreatedOrderUser}</label>
                     </div>
 
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Ngày xuất:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(DestroyRequest.OutputDate, true)}</label>
+                        <label className="col-form-label">{formatDate(DestroyRequest.CreatedOrderDate, true)}</label>
                     </div>
                 </div>
 
