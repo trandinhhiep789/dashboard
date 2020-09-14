@@ -73,11 +73,15 @@ class AdvanceRequestDetailCom extends React.Component {
             <React.Fragment>
                 <div className="col-lg-12 page-detail">
                     <div className="card">
+                        <div className="card-title">
+                            <h4 class="title">
+                                <strong>Chi tiết yêu cầu tạm ứng</strong></h4>
+                            <button className="btn btnEditCard" type="button">
+                                <span>Tạo lại phiếu xuất</span>
+                            </button>
+                        </div>
                         <div className="card-body">
                             <div className="row">
-                                <div className="col-md-12">
-                                    <h3 className="title">Chi tiết yêu cầu tạm ứng</h3>
-                                </div>
                                 <div className="col-md-12">
                                     <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                         <thead className="thead-light">
