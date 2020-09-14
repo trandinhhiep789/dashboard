@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { formatDate } from "../../../../common/library/CommonLib.js";
+import { formatDate,formatDateNew } from "../../../../common/library/CommonLib.js";
 import { ModalManager } from 'react-dynamic-modal';
 import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -26,6 +26,7 @@ class ShipmentOrderDetailCom extends Component {
             IsPermision: false,
             IsUpdateDate: false,
             IsDisable: true,
+            dtExpectedDeliveryDate:this.props.ShipmentOrderDetail.ExpectedDeliveryDate
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -296,8 +297,14 @@ class ShipmentOrderDetailCom extends Component {
         });
     }
 
+
+    onValueChangeControlDatetime(name,mod)
+    {
+        this.setState({
+            dtExpectedDeliveryDate:mod
+        })
+    }
     handleUpdateExpectedDelivery(id) {
-        console.log("aa")
 
         if (id == 1) {
             this.setState({
@@ -312,7 +319,13 @@ class ShipmentOrderDetailCom extends Component {
             })
         }
         if (id == 3) {
-            console.log("bb")
+          let objShipmentOrder = {ShipmentOrderID:this.state.ShipmentOrder.ShipmentOrderID,ExpectedDeliveryDate:this.state.dtExpectedDeliveryDate};
+            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateExpectedDeliveryDate', objShipmentOrder).then((apiResult) => {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                if (!apiResult.IsError) {
+                    ModalManager.close();
+                }
+            });
         }
     }
 
@@ -410,11 +423,12 @@ class ShipmentOrderDetailCom extends Component {
                                 readOnly={true}
                                 disabled={IsDisable}
                                 timeFormat={false}
-                                dateFormat="DD-MM-YYYY HH:mm"
+                                dateFormat="YYYY-MM-DD HH:mm"
                                 label="Thời gian giao dự kiến:"
                                 placeholder="Thời gian giao dự kiến"
                                 controltype="InputControl"
-                                value={this.state.ShipmentOrder.ExpectedDeliveryDate}
+                                onValueChange={this.onValueChangeControlDatetime.bind(this)}
+                                value={this.state.dtExpectedDeliveryDate}
                                 validatonList={["required"]}
                                 datasourcemember="CreatedOrderTime"
 
