@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Datetime from 'react-datetime';
 import Select from 'react-select';
 import { DatePicker } from 'antd';
-import { callGetCache } from "../../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import vi_VN from 'antd/es/date-picker/locale/vi_VN';
 import moment from 'moment';
 import { ExportStringToMonth } from "../../../../common/library/ultils";
@@ -245,36 +245,63 @@ class ElementComboBoxCom extends Component {
         let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterName, filterValue, filterobj } = this.props;
         // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
         if (IsAutoLoadItemFromCache) {
+            // console.log("ValueMember ", ValueMember, NameMember, this.props);
 
-            this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
-
-                // console.log("this.props.isautoloaditemfromcach2: ", result);
-                listoption = [{ value: -1, label: this.props.placeholder }];
-                if (!result.IsError && result.ResultObject.CacheData != null) {
-                    if (typeof filterobj != undefined) {
-                        // console.log(filterobj,result.ResultObject.CacheData,result.ResultObject.CacheData.filter(n => n.filterobj == 1))
-                        result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
-                            listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+            if (this.props.isUsercache == true) {
+                this.props.callGetUserCache(LoadItemCacheKeyID).then((result) => {
+                    // console.log("this.props.isautoloaditemfromcach2: ", this.props.LoadItemCacheKeyID, this.state.Listoption, result);
+                    listoption = [{ value: -1, label: this.props.placeholder}];
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        result.ResultObject.CacheData.map((cacheItem) => {
+                            listoption.push({ value: cacheItem[ValueMember],  label: cacheItem[ValueMember] + " - " + cacheItem[NameMember]});
                         }
                         );
+                        
+                        this.setState({ ListOption: listoption });
+                        const aa = this.bindcombox(this.props.value, listoption);
+                        this.setState({ SelectedOption: aa });
 
                     }
                     else {
-                        result.ResultObject.CacheData.map((cacheItem) => {
-                            listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
-                        }
-                        );
-                    }
+                        this.setState({ ListOption: listoption });
 
-                    this.setState({ ListOption: listoption, Data: result.ResultObject.CacheData });
-                    const aa = this.bindcombox(this.props.value, listoption);
-                    this.setState({ SelectedOption: aa });
-                }
-                else {
-                    this.setState({ ListOption: listoption });
-                }
-                //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
-            });
+                    }
+                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                });
+
+            }
+            else {
+                this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
+
+                    // console.log("this.props.isautoloaditemfromcach2: ", result);
+                    listoption = [{ value: -1, label: this.props.placeholder }];
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        if (typeof filterobj != undefined) {
+                            // console.log(filterobj,result.ResultObject.CacheData,result.ResultObject.CacheData.filter(n => n.filterobj == 1))
+                            result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
+                                listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                            }
+                            );
+    
+                        }
+                        else {
+                            result.ResultObject.CacheData.map((cacheItem) => {
+                                listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                            }
+                            );
+                        }
+    
+                        this.setState({ ListOption: listoption, Data: result.ResultObject.CacheData });
+                        const aa = this.bindcombox(this.props.value, listoption);
+                        this.setState({ SelectedOption: aa });
+                    }
+                    else {
+                        this.setState({ ListOption: listoption });
+                    }
+                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                });
+            }
+           
         }
         else {
             //console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
@@ -349,6 +376,7 @@ class ElementComboBoxCom extends Component {
             className += " is-invalid";
         }
         const selectedOption = this.state.SelectedOption;
+        console.log("ListOption",this.state.ListOption, selectedOption)
         return (
             <div className={colspanClassName}  >
                 <div className="form-group form-group-input form-group-input-select">
@@ -375,7 +403,10 @@ const mapDispatchToProps = dispatch => {
     return {
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
-        }
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
+        },
     }
 }
 const ElementComboBox = connect(null, mapDispatchToProps)(ElementComboBoxCom);

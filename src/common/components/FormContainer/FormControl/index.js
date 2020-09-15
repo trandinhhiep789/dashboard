@@ -288,38 +288,63 @@ class FormControlComboBoxCom extends Component {
             const cacheKeyID = this.props.loaditemcachekeyid;
             const valueMember = this.props.valuemember;
             const nameMember = this.props.nameMember;
-            this.props.callGetCache(cacheKeyID).then((result) => {
-                if (!isMultiSelect) {
+            if (this.props.isusercache == true) {
+                this.props.callGetUserCache(cacheKeyID).then((result) => {
+                    //console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
                     listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
-                }
-                else {
-                    listOption = [];
-                }
-
-                if (!result.IsError && result.ResultObject.CacheData != null) {
-                    if (typeof filterobj != undefined && filterValue != "") {
-
-                        result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
-                            // console.log("valueMember", cacheItem[valueMember])
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember] });
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        result.ResultObject.CacheData.map((cacheItem) => {
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
                         }
                         );
+                        this.setState({ Listoption: listOption });
+                        const aa = this.bindcombox(this.props.value, listOption);
+                        this.setState({ SelectedOption: aa });
+
                     }
                     else {
-                        result.ResultObject.CacheData.map((cacheItem) => {
-                            // console.log("11", cacheItem[valueMember])
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember] });
-                        }
-                        );
+                        this.setState({ Listoption: listOption });
+
                     }
-                    this.setState({ Listoption: listOption, Data: result.ResultObject.CacheData });
-                    const strSelectedOption = this.bindcombox(this.props.value, listOption);
-                    this.setState({ SelectedOption: strSelectedOption });
-                }
-                else {
-                    this.setState({ Listoption: listOption });
-                }
-            });
+                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                });
+
+            }
+            else {
+                this.props.callGetCache(cacheKeyID).then((result) => {
+                    if (!isMultiSelect) {
+                        listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                    }
+                    else {
+                        listOption = [];
+                    }
+
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        if (typeof filterobj != undefined && filterValue != "") {
+
+                            result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
+                                // console.log("valueMember", cacheItem[valueMember])
+                                listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember] });
+                            }
+                            );
+                        }
+                        else {
+                            result.ResultObject.CacheData.map((cacheItem) => {
+                                // console.log("11", cacheItem[valueMember])
+                                listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember] });
+                            }
+                            );
+                        }
+                        this.setState({ Listoption: listOption, Data: result.ResultObject.CacheData });
+                        const strSelectedOption = this.bindcombox(this.props.value, listOption);
+                        this.setState({ SelectedOption: strSelectedOption });
+                    }
+                    else {
+                        this.setState({ Listoption: listOption });
+                    }
+                });
+            }
+
         }
         else {
             this.setState({ Listoption: listOption });

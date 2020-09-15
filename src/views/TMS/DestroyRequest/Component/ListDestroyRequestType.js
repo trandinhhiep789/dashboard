@@ -153,6 +153,7 @@ class ListDestroyRequestTypeCom extends Component {
                                 validatonList={["Comborequired"]}
                                 placeholder="-- Vui lòng chọn --"
                                 isautoloaditemfromcache={true}
+                                isusercache={true}
                                 onValueChange={this.handleOnValueChange}
                                 loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
                                 valuemember="StoreID"

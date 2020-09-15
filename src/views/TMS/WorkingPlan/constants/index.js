@@ -59,6 +59,7 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
+        isUsercache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.USER_COOSTORE_BYUSER",
         ValueMember: "StoreID",
         NameMember: "StoreName",
@@ -66,25 +67,25 @@ export const SearchElementList = [
         // filterobj:"CompanyID",
 
     },
- 
+
 ]
 
 
 export const InitSearchParamsNew = [
-        {
-            SearchKey: "@WORKINGDATE",
-            SearchValue: new Date()
-        },
-        {
-            SearchKey: "@STOREID",
-            SearchValue: -1
-        },
-        {
-            SearchKey: "@USERNAME",
-            SearchValue: ""
-        },
+    {
+        SearchKey: "@WORKINGDATE",
+        SearchValue: new Date()
+    },
+    {
+        SearchKey: "@STOREID",
+        SearchValue: -1
+    },
+    {
+        SearchKey: "@USERNAME",
+        SearchValue: ""
+    },
 
-]; 
+];
 
 export const InitSearchParams = [
     {
@@ -96,7 +97,7 @@ export const InitSearchParams = [
         SearchValue: -1
     },
 
-  
+
 ]
 
 export const SearchMLObjectDefinition = [
@@ -117,7 +118,7 @@ export const MLObjectDefinition = [
 ]
 
 export const DataGridColumnList = [
-  
+
     {
         Name: "UserName",
         Type: "text",
