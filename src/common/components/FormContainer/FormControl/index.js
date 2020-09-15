@@ -415,7 +415,10 @@ class FormControlDatetimeCom extends Component {
     componentDidMount() {
 
     }
-
+     disabledDate(current) {
+        // Can not select days before today and today
+        return current && current <= moment().startOf('day');
+      }
 
     render() {
         let { name, label, timeFormat, dateFormat, colspan, value, validationErrorMessage } = this.props;
@@ -461,6 +464,7 @@ class FormControlDatetimeCom extends Component {
 
                 <div className={formGroupClassName}>
                     <DatePicker
+                        disabledDate={this.props.ISdisabledDate==true?this.disabledDate:''}
                         showTime={isShowTime}
                         value={(value != '' && value != null) ? moment(value, dateFormat) : ''}
                         format={dateFormat}
@@ -1018,9 +1022,6 @@ class ComboBoxCom extends Component {
         }
     }
 }
-
-
-
 export const ComboBox = connect(null, mapDispatchToProps)(ComboBoxCom);
 
 class SubmitButton extends React.Component {
