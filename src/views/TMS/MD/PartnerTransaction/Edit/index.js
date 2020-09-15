@@ -156,30 +156,27 @@ class EditCom extends React.Component {
                                 </div>
 
                                 <div className="row">
-                                    <div className="col-md-12">
+                                    <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Mã trạng thái phản hồi: </span>
                                             <span>{this.state.DataSource.ResponseStatusID}</span>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Tên trạng thái phản hồi: </span>
                                             <span>{this.state.DataSource.ResponseStatusMessage}</span>
                                         </div>
                                     </div>
+                                </div>
+
+                                <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Thời gian phản hồi: </span>
                                             <span>{formatDate(this.state.DataSource.ResponseTime)}</span>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group checkbox customCheckbox">
                                             <span>Lỗi phản hồi: </span>
@@ -189,12 +186,7 @@ class EditCom extends React.Component {
                                             </label>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Nội dung lỗi: </span>
-                                            <span><code>{this.state.DataSource.ErrorContent}</code></span>
-                                        </div>
-                                    </div>
+
                                 </div>
 
                                 <div className="row">
@@ -224,6 +216,16 @@ class EditCom extends React.Component {
                                         </div>
                                     </div>
                                 </div>
+
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="form-group">
+                                            <span>Nội dung lỗi: </span>
+                                            <span className="xcontent"><code>{this.state.DataSource.ErrorContent}</code></span>
+                                        </div>
+                                    </div>
+                                </div>
+
 
                             </div>
                         </div>
