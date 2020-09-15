@@ -81,7 +81,6 @@ class AddCom extends React.Component {
             });
 
             this.setState({ errorAdvanceRequestDetail: "" });
-            console.log("MLObject",MLObject)
             this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: !apiResult.IsError });
                 let strMessage = ReactHtmlParser(apiResult.Message);
@@ -239,6 +238,7 @@ class AddCom extends React.Component {
                                     validatonList={["Comborequired"]}
                                     placeholder="-- Vui lòng chọn --"
                                     isautoloaditemfromcache={true}
+                                    isusercache={true}
                                     loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
                                     valuemember="StoreID"
                                     nameMember="StoreName"

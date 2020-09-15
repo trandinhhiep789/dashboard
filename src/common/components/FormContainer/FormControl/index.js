@@ -4,7 +4,7 @@ import MultiSelectComboBox from "./MultiSelectComboBox";
 import MultiUserComboBox from "./MultiSelectComboBox/MultiUserComboBox";
 
 import ComboboxQTQHPX from "./CommonControl/ComboboxQTQHPX.js";
-import { callGetCache } from "../../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { connect } from 'react-redux';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_SEARCH } from '../../../../constants/actionTypes';
@@ -32,6 +32,9 @@ const mapDispatchToProps = dispatch => {
     return {
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
@@ -415,10 +418,10 @@ class FormControlDatetimeCom extends Component {
     componentDidMount() {
 
     }
-     disabledDate(current) {
+    disabledDate(current) {
         // Can not select days before today and today
         return current && current <= moment().startOf('day');
-      }
+    }
 
     render() {
         let { name, label, timeFormat, dateFormat, colspan, value, validationErrorMessage } = this.props;
@@ -464,7 +467,7 @@ class FormControlDatetimeCom extends Component {
 
                 <div className={formGroupClassName}>
                     <DatePicker
-                        disabledDate={this.props.ISdisabledDate==true?this.disabledDate:''}
+                        disabledDate={this.props.ISdisabledDate == true ? this.disabledDate : ''}
                         showTime={isShowTime}
                         value={(value != '' && value != null) ? moment(value, dateFormat) : ''}
                         format={dateFormat}
@@ -1456,26 +1459,51 @@ class ComboBoxSelectCom extends Component {
             const cacheKeyID = this.props.loaditemcachekeyid;
             const valueMember = this.props.valuemember;
             const nameMember = this.props.nameMember;
-            //    console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
-            this.props.callGetCache(cacheKeyID).then((result) => {
-                //console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
-                listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
-                if (!result.IsError && result.ResultObject.CacheData != null) {
-                    result.ResultObject.CacheData.map((cacheItem) => {
-                        listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+            if (this.props.isusercache == true) {
+                this.props.callGetUserCache(cacheKeyID).then((result) => {
+                    //console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
+                    listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        result.ResultObject.CacheData.map((cacheItem) => {
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+                        }
+                        );
+                        this.setState({ Listoption: listOption });
+                        const aa = this.bindcombox(this.props.value, listOption);
+                        this.setState({ SelectedOption: aa });
+
                     }
-                    );
-                    this.setState({ Listoption: listOption });
-                    const aa = this.bindcombox(this.props.value, listOption);
-                    this.setState({ SelectedOption: aa });
+                    else {
+                        this.setState({ Listoption: listOption });
 
-                }
-                else {
-                    this.setState({ Listoption: listOption });
+                    }
+                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                });
 
-                }
-                //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
-            });
+            }
+            else {
+                this.props.callGetCache(cacheKeyID).then((result) => {
+                    //console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
+                    listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        result.ResultObject.CacheData.map((cacheItem) => {
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+                        }
+                        );
+                        this.setState({ Listoption: listOption });
+                        const aa = this.bindcombox(this.props.value, listOption);
+                        this.setState({ SelectedOption: aa });
+
+                    }
+                    else {
+                        this.setState({ Listoption: listOption });
+
+                    }
+                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                });
+            }
+            //    console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
+
         }
         else {
             //console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
