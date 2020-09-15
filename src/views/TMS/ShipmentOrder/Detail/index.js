@@ -98,6 +98,7 @@ class DetailCom extends React.Component {
                         ShipmentOrderID={this.props.match.params.id}
                         ShipmentOrderDetail={this.state.DataSource}
                         onhandleChange={this.ChangeLoadData}
+                        IsShipDetail={this.CheckPermissionUser(1)}
                     />
                      <InfoCoordinator
                         ShipmentOrderID={this.props.match.params.id}

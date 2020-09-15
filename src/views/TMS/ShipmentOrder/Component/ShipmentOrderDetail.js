@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { formatDate,formatDateNew } from "../../../../common/library/CommonLib.js";
+import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
 import { ModalManager } from 'react-dynamic-modal';
 import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
-import { callGetCache,callGetUserCache } from "../../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
@@ -26,7 +26,7 @@ class ShipmentOrderDetailCom extends Component {
             IsPermision: false,
             IsUpdateDate: false,
             IsDisable: true,
-            dtExpectedDeliveryDate:this.props.ShipmentOrderDetail.ExpectedDeliveryDate
+            dtExpectedDeliveryDate: this.props.ShipmentOrderDetail.ExpectedDeliveryDate
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -298,10 +298,9 @@ class ShipmentOrderDetailCom extends Component {
     }
 
 
-    onValueChangeControlDatetime(name,mod)
-    {
+    onValueChangeControlDatetime(name, mod) {
         this.setState({
-            dtExpectedDeliveryDate:mod
+            dtExpectedDeliveryDate: mod
         })
     }
     handleUpdateExpectedDelivery(id) {
@@ -319,10 +318,14 @@ class ShipmentOrderDetailCom extends Component {
             })
         }
         if (id == 3) {
-          let objShipmentOrder = {ShipmentOrderID:this.state.ShipmentOrder.ShipmentOrderID,ExpectedDeliveryDate:this.state.dtExpectedDeliveryDate};
+            let objShipmentOrder = { ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID, ExpectedDeliveryDate: this.state.dtExpectedDeliveryDate };
             this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateExpectedDeliveryDate', objShipmentOrder).then((apiResult) => {
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
+                    this.setState({
+                        IsUpdateDate: false,
+                        IsDisable: true
+                    })
                     ModalManager.close();
                 }
             });
@@ -420,9 +423,9 @@ class ShipmentOrderDetailCom extends Component {
                                 name="dtCreatedOrderTime"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={true}
                                 disabled={IsDisable}
                                 timeFormat={false}
+                                ISdisabledDate={true}
                                 dateFormat="YYYY-MM-DD HH:mm"
                                 label="Thời gian giao dự kiến:"
                                 placeholder="Thời gian giao dự kiến"

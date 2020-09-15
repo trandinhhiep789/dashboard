@@ -406,6 +406,7 @@ class EditCom extends React.Component {
                                     validatonList={["Comborequired"]}
                                     placeholder="-- Vui lòng chọn --"
                                     isautoloaditemfromcache={true}
+                                    isusercache={true}
                                     loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
                                     valuemember="StoreID"
                                     nameMember="StoreName"
