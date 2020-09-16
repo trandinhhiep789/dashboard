@@ -67,7 +67,10 @@ class ReviewLevel_UserCom extends React.Component {
         MLObject.ReviewLevelID = this.props.ReviewLevelID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.Message);
+            //this.showMessage(apiResult.Message);
+            if (this.props.onComplete) {
+                this.props.onComplete(apiResult.Message, apiResult.IsError);
+            }
             if (!apiResult.IsError) {
                 if (this.props.onComponentChange) {
                     this.props.onComponentChange();

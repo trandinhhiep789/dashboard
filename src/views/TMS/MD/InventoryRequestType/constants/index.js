@@ -32,7 +32,7 @@ export const AddPagePath = [
 export const DetailPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/InventoryRequestType", Title: "Loại yêu cầu kiểm kê" },
-    { Link: "", Title: "Chi tiết" }
+    { Link: "", Title: "Chi tiết yêu cầu kiểm kê" }
 ];
 
 export const SearchElementList = [

@@ -8,9 +8,7 @@ import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
     LoadAPIPath,
-    BackLink,
-    EditPagePath,
-    DetailPagePath
+    BackLink
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -36,7 +34,7 @@ class ReviewLevelDetailCom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updatePagePath(DetailPagePath);
+        //his.props.updatePagePath(DetailPagePath);
         this.callLoadData();
 
     }
@@ -51,7 +49,16 @@ class ReviewLevelDetailCom extends React.Component {
                 this.showMessage(apiResult.Message);
             } else {
                 this.setState({ DataSource: apiResult.ResultObject });
+                const detailID = apiResult.ResultObject.DestroyRequestTypeID;
+                const DetailPagePath = [
+                    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
+                    { Link: "/DestroyRequestType", Title: "Loại yêu cầu hủy vật tư" },
+                    { Link: "/DestroyRequestType/Detail/" + detailID, Title: "Chi tiết yêu cầu hủy vật tư" },
+                    { Link: "", Title: "Mức duyệt" }
+                ];
+                this.props.updatePagePath(DetailPagePath);
             }
+
             this.setState({
                 IsLoadDataComplete: true
             });

@@ -12,6 +12,8 @@ import {
     AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName,
     ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition
 } from "./constants";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
@@ -32,6 +34,8 @@ class MaterialGroup_ProductCom extends React.Component {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
+            cssNotification: "",
+            iconNotification: "",
             MaterialGroupProductDataSource: this.props.MaterialGroupProductDataSource ? this.props.MaterialGroupProductDataSource : [],
             MaterialGroup_InstallCondDataSource: this.props.MaterialGroup_InstallCondDataSource ? this.props.MaterialGroup_InstallCondDataSource : [],
             MaterialGroupID: this.props.MaterialGroupID,
@@ -39,6 +43,8 @@ class MaterialGroup_ProductCom extends React.Component {
             ModalColumnList_Insert: ModalColumnList_Insert,
             ModalColumnList_Edit: ModalColumnList_Edit
         };
+        this.notificationDOMRef = React.createRef();
+
     }
 
 
@@ -75,6 +81,40 @@ class MaterialGroup_ProductCom extends React.Component {
             />
         );
     }
+
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
 
     initCache() {
         //lấy cache cấp bậc kỹ năng
@@ -152,7 +192,8 @@ class MaterialGroup_ProductCom extends React.Component {
                                 }
                                 this.props.hideModal();
                             }
-                            this.showMessage(apiResult.Message);
+                            //this.showMessage(apiResult.Message);
+                            this.addNotification(apiResult.Message, apiResult.IsError);
                         });
                         //console.log("MLObject",MLObject);
                     }
@@ -202,7 +243,8 @@ class MaterialGroup_ProductCom extends React.Component {
                                 }
                                 this.props.hideModal();
                             }
-                            this.showMessage(apiResult.Message);
+                            //this.showMessage(apiResult.Message);
+                            this.addNotification(apiResult.Message, apiResult.IsError);
                         });
                         //this.resetCombobox();
                     }
@@ -265,7 +307,8 @@ class MaterialGroup_ProductCom extends React.Component {
                     }
                     this.props.hideModal();
                 }
-                this.showMessage(apiResult.Message);
+                //this.showMessage(apiResult.Message);
+                this.addNotification(apiResult.Message, apiResult.IsError);
             });
         }
 
@@ -312,6 +355,7 @@ class MaterialGroup_ProductCom extends React.Component {
 
             // </Collapsible>
             <div className="sub-grid detail">
+                <ReactNotification ref={this.notificationDOMRef} />
                 <DataGrid listColumn={DataGridColumnList}
                     dataSource={datasource}
                     modalElementList={ModalColumnList_Insert}

@@ -12,6 +12,8 @@ import {
     AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName,
     ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition
 } from "./constants";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache,callGetUserCache } from "../../../../actions/cacheAction";
@@ -28,12 +30,15 @@ class InventoryRequestType_ProductCom extends React.Component {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
+            cssNotification: "",
+            iconNotification: "",
             InventoryRequestType_Product_DataSource: this.props.InventoryRequestType_Product_DataSource ? this.props.InventoryRequestType_Product_DataSource : [],
             InventoryRequestTypeID: this.props.InventoryRequestTypeID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
             ModalColumnList_Edit: ModalColumnList_Edit
         };
+        this.notificationDOMRef = React.createRef();
     }
 
 
@@ -64,6 +69,39 @@ class InventoryRequestType_ProductCom extends React.Component {
                 onCloseModal={this.handleCloseMessage}
             />
         );
+    }
+
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
     }
 
     checkPermission() {
@@ -121,7 +159,8 @@ class InventoryRequestType_ProductCom extends React.Component {
                                 }
                                 this.props.hideModal();
                             }
-                            this.showMessage(apiResult.Message);
+                            //this.showMessage(apiResult.Message);
+                            this.addNotification(apiResult.Message, apiResult.IsError);
                         });
                     }
                 }
@@ -156,7 +195,8 @@ class InventoryRequestType_ProductCom extends React.Component {
                 }
                 this.props.hideModal();
             }
-            this.showMessage(apiResult.Message);
+            //this.showMessage(apiResult.Message);
+            this.addNotification(apiResult.Message, apiResult.IsError);
         });
 
     }
@@ -169,6 +209,7 @@ class InventoryRequestType_ProductCom extends React.Component {
 
         return (
             <div className="sub-grid detail">
+                <ReactNotification ref={this.notificationDOMRef} />
                 <DataGrid listColumn={DataGridColumnList}
                     dataSource={this.state.InventoryRequestType_Product_DataSource}
                     modalElementList={ModalColumnList_Insert}
