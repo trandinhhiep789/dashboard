@@ -9,7 +9,7 @@ import {
     APIHostName,
     LoadAPIPath,
     BackLink,
-    EditPagePath
+    DetailPagePath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -36,7 +36,7 @@ class DetailCom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updatePagePath(EditPagePath);
+        this.props.updatePagePath(DetailPagePath);
         this.callLoadData();
 
     }

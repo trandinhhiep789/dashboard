@@ -18,14 +18,14 @@ import {
 
 import { showModal, hideModal } from '../../../../actions/modal';
 
-class ListDestroyRequestTypeCom extends Component {
+class ListInventoryRequestTypeCom extends Component {
     constructor(props) {
         super(props);
         this.handleOnValueChange = this.handleOnValueChange.bind(this);
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
-            DestroyRequestType: '',
+            InventoryRequestTypeID: '',
             RequestStoreID: '',
             MessageError: '',
             MessageErrorRequestStore: ''
@@ -53,7 +53,6 @@ class ListDestroyRequestTypeCom extends Component {
     }
 
     handleOnValueChange(name, value) {
-        console.log("handleOnValueChange", name, value)
         if (name == 'cboRequestStore') {
             if (value > 0) {
                 this.setState({
@@ -68,17 +67,17 @@ class ListDestroyRequestTypeCom extends Component {
                 })
             }
         }
-        if (name == 'DestroyRequestTypeID') {
+        if (name == 'cboInventoryRequestTypeID') {
             if (value > 0) {
                 this.setState({
-                    DestroyRequestType: value,
+                    InventoryRequestTypeID: value,
                     MessageError: ''
                 })
             }
             else {
                 this.setState({
-                    DestroyRequestType: value,
-                    MessageError: 'Vui lòng chọn loại yêu cầu hủy vật tư',
+                    InventoryRequestTypeID: value,
+                    MessageError: 'Vui lòng chọn loại yêu cầu kiểm kê.',
                 })
             }
         }
@@ -91,20 +90,20 @@ class ListDestroyRequestTypeCom extends Component {
     }
 
     handleSubmit = () => {
-        const { DestroyRequestType, RequestStoreID } = this.state;
-        if (DestroyRequestType > 0 && RequestStoreID > 0) {
+        const { InventoryRequestTypeID, RequestStoreID } = this.state;
+        if (InventoryRequestTypeID > 0 && RequestStoreID > 0) {
             this.setState({
                 MessageError: ''
             })
             this.props.history.push(AddLink, {
-                DestroyRequestTypeID: DestroyRequestType,
+                InventoryRequestTypeID: InventoryRequestTypeID,
                 RequestStoreID: RequestStoreID
             })
         }
         else {
-            if (DestroyRequestType < 0 || DestroyRequestType == "") {
+            if (InventoryRequestTypeID < 0 || InventoryRequestTypeID == "") {
                 this.setState({
-                    MessageError: 'Vui lòng chọn loại yêu cầu hủy vật tư',
+                    MessageError: 'Vui lòng chọn loại yêu cầu kiểm kê',
                 })
             }
             if (RequestStoreID < 0 || RequestStoreID == "") {
@@ -123,19 +122,19 @@ class ListDestroyRequestTypeCom extends Component {
                     <div className="form-row">
                         <div className="col-md-12">
                             <FormControl.FormControlComboBox
-                                name="DestroyRequestTypeID"
+                                name="cboInventoryRequestTypeID"
                                 colspan="8"
                                 labelcolspan="4"
-                                label="Loại yêu cầu hủy vật tư"
+                                label="Loại yêu cầu kiểm kê"
                                 isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.DESTROYREQUESTTYPE"
-                                valuemember="DestroyRequestTypeID"
-                                nameMember="DestroyRequestTypeName"
+                                loaditemcachekeyid="ERPCOMMONCACHE.INVENTORYREQUESTTYPE"
+                                valuemember="InventoryRequestTypeID"
+                                nameMember="InventoryRequestTypeName"
                                 controltype="InputControl"
                                 onValueChange={this.handleOnValueChange}
-                                value={this.state.DestroyRequestType}
+                                value={this.state.InventoryRequestTypeID}
                                 listoption={null}
-                                datasourcemember="DestroyRequestTypeID"
+                                datasourcemember="InventoryRequestTypeID"
                                 placeholder="---Vui lòng chọn---"
                                 validationErrorMessage={this.state.MessageError}
                                 isMultiSelect={false}
@@ -154,6 +153,7 @@ class ListDestroyRequestTypeCom extends Component {
                                 placeholder="-- Vui lòng chọn --"
                                 isautoloaditemfromcache={true}
                                 onValueChange={this.handleOnValueChange}
+                                isusercache={true}
                                 loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
                                 valuemember="StoreID"
                                 nameMember="StoreName"
@@ -199,5 +199,5 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-const ListDestroyRequestType = connect(mapStateToProps, mapDispatchToProps)(withRouter(ListDestroyRequestTypeCom));
-export default ListDestroyRequestType;
+const ListInventoryRequestType = connect(mapStateToProps, mapDispatchToProps)(withRouter(ListInventoryRequestTypeCom));
+export default ListInventoryRequestType;
