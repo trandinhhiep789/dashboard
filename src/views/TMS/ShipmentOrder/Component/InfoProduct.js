@@ -208,23 +208,24 @@ class InfoProductCom extends Component {
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                 <thead className="thead-light">
                                     <tr>
-                                        <th className="jsgrid-header-cell"></th>
-                                        <th className="jsgrid-header-cell">Cần lắp đặt</th>
-                                        <th className="jsgrid-header-cell">Mã sản phẩm</th>
-                                        <th className="jsgrid-header-cell">Sản phẩm</th>
-                                        <th className="jsgrid-header-cell">Kiện</th>
-                                        <th className="jsgrid-header-cell">Giá</th>
-                                        <th className="jsgrid-header-cell">Số lượng</th>
-                                        <th className="jsgrid-header-cell">Đơn vị tính</th>
+                                        {/* <th className="jsgrid-header-cell"></th> */}
+                                        <th className="jsgrid-header-cell"style={{ width: "8%" }}>Cần lắp đặt</th>
+                                        <th className="jsgrid-header-cell"style={{ width: "12%" }}>Mã sản phẩm</th>
+                                        <th className="jsgrid-header-cell"style={{ width: "25%" }}>Sản phẩm</th>
+                                        <th className="jsgrid-header-cell"style={{ width: "12%" }}>Serial/IMEI</th>
+                                        <th className="jsgrid-header-cell"style={{ width: "8%" }}>Kiện</th>
+                                        <th className="jsgrid-header-cell"style={{ width: "8%" }}>Giá</th>
+                                        <th className="jsgrid-header-cell"style={{ width: "8%" }}>Số lượng</th>
+                                        <th className="jsgrid-header-cell"style={{ width: "15%" }}>Đơn vị tính</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).map((item, index) => {
+                                    {this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName','ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).map((item, index) => {
                                         return (
                                             <tr key={index}>
-                                                <td>
+                                                {/* <td>
                                                     <img src='/src/img/may-lanh-lg-v10enh-1-1-org.jpg' className="img-product" />
-                                                </td>
+                                                </td> */}
                                                 <td>
                                                     <div className="checkbox">
                                                         <label>
@@ -237,6 +238,7 @@ class InfoProductCom extends Component {
                                                 </td>
                                                 <td>{item.ProductID}</td>
                                                 <td>{item.ProductName}</td>
+                                                <td>{item.ProductSerial}</td>
                                                 <td>{item.PackingUnitName}</td>
                                                 <td>{formatMoney(item.Price, 0)}đ</td>
                                                 <td>{item.Quantity}</td>
