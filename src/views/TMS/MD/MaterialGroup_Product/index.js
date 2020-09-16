@@ -335,8 +335,8 @@ class MaterialGroup_ProductCom extends React.Component {
     }
 
     render() {
-        let datasource = this.state.MaterialGroupProductDataSource.filter(item => item.IsDeleted == undefined || item.IsDeleted == false);
-        datasource = this.initDatasource(datasource);
+        //let datasource = this.state.MaterialGroupProductDataSource.filter(item => item.IsDeleted == undefined || item.IsDeleted == false);
+        //datasource = this.initDatasource(datasource);
 
 
         if (this.state.IsCloseForm) {
@@ -357,7 +357,7 @@ class MaterialGroup_ProductCom extends React.Component {
             <div className="sub-grid detail">
                 <ReactNotification ref={this.notificationDOMRef} />
                 <DataGrid listColumn={DataGridColumnList}
-                    dataSource={datasource}
+                    dataSource={this.state.MaterialGroupProductDataSource}
                     modalElementList={ModalColumnList_Insert}
                     MLObjectDefinition={MLObjectDefinition}
                     IDSelectColumnName={"chkSelectMaterialGroupProductCSID"}
