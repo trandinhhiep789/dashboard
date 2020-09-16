@@ -51,6 +51,14 @@ class ReviewLevelDetailCom extends React.Component {
                 this.showMessage(apiResult.Message);
             } else {
                 this.setState({ DataSource: apiResult.ResultObject });
+                const detailID = apiResult.ResultObject.InventoryRequestTypeID;
+                const DetailPagePath = [
+                    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
+                    { Link: "/InventoryRequestType", Title: "Loại yêu cầu kiểm kê" },
+                    { Link: "/InventoryRequestType/Detail/" + detailID, Title: "Chi tiết yêu cầu kiểm kê" },
+                    { Link: "", Title: "Mức duyệt" }
+                ];
+                this.props.updatePagePath(DetailPagePath);
             }
             this.setState({
                 IsLoadDataComplete: true

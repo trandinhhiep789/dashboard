@@ -15,6 +15,8 @@ import {
     GetParent,
     GetUserAPIPath
 } from "../constants";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
@@ -30,17 +32,54 @@ class ReviewLevel_UserCom extends React.Component {
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
+            cssNotification: "",
+            iconNotification: "",
             FormContent: "",
             IsLoadDataComplete: false,
             IsCloseForm: false,
             StoreID: 0,
             ReviewUser: []
         };
+        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
         window.addEventListener('keydown', function (e) { if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) { if (e.target.nodeName == 'INPUT' && e.target.type == 'text') { e.preventDefault(); return false; } } }, true);
     }
+
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
 
     handleChange(formData, MLObject) {
         if (formData.StoreID.value != -1 && formData.StoreID.value != this.state.StoreID) {
@@ -68,7 +107,10 @@ class ReviewLevel_UserCom extends React.Component {
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.Message);
+            //this.showMessage(apiResult.Message);
+            if (this.props.onComplete) {
+                this.props.onComplete(apiResult.Message, apiResult.IsError);
+            }
             if (!apiResult.IsError) {
                 if (this.props.onComponentChange) {
                     this.props.onComponentChange();
@@ -141,6 +183,7 @@ class ReviewLevel_UserCom extends React.Component {
         }
         return (
             <React.Fragment>
+                <ReactNotification ref={this.notificationDOMRef} />
                 <FormContainer
                     //FormName="Người duyệt"
                     MLObjectDefinition={MLObjectDefinition}

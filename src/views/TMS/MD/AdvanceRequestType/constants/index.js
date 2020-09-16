@@ -29,6 +29,12 @@ export const AddPagePath = [
     { Link: "", Title: "Thêm" }
 ];
 
+export const DetailPagePath = [
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
+    { Link: "/AdvanceRequestType", Title: "Loại yêu cầu tạm ứng" },
+    { Link: "", Title: "Chi tiết loại yêu cầu tạm ứng" }
+];
+
 export const SearchElementList = [
     {
         type: "text",
