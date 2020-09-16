@@ -285,7 +285,7 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                     max={(item.AdvanceLimitType == 1 ? ((item.AdvanceLimitQuantity - item.TotalQuantity * item.AdvanceConvertRatio) > 0 ? item.AdvanceLimitQuantity / item.AdvanceConvertRatio : 0) : 1000)}
                                                                     value={item.AdvanceQuantity > 0 ? item.AdvanceQuantity : ''}
                                                                     indexRow={index}
-                                                                    disabled={item.CostPrice == 0 ? true : false}
+                                                                    disabled={(item.AdvanceLimitType != 1 &&item.CostPrice == 0 )? true : false}
                                                                     onValueChange={this.handleInputChange.bind(this)}
 
                                                                 /> : <ElementInputModal.ElementModalNumber
@@ -316,18 +316,18 @@ class AdvanceRequestDetailNewCom extends Component {
                                                 })
                                                 }
                                                 <tr className="totalCurrency">
-                                                    <td colSpan={3}>
+                                                    <td colSpan={2}>
                                                         <div className="groupTotalCurrency">
                                                             <span className="item txtTotal">Tổng tiền hạn mức nhân viên: {formatMoney(intSumTotalUserLimit, 0)}đ</span>
                                                         </div>
                                                     </td>
-                                                    <td colSpan={3}>
+                                                    <td colSpan={2}>
                                                         <div className="groupTotalCurrency">
                                                             <span className="item txtTotal">Tổng tiền đã tạm ứng: {formatMoney(intSumTotalMoney, 0)}đ</span>
                                                         </div>
                                                     </td>
 
-                                                    <td colSpan={3}>
+                                                    <td colSpan={4}>
                                                         <div className="groupTotalCurrency">
                                                             <span className="item txtTotal">Tổng tiền còn lại có thể tạm ứng: {formatMoney(intSumTotalUserLimit - intSumTotalMoney, 0)}đ</span>
                                                         </div>

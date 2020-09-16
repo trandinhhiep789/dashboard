@@ -37,7 +37,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
 import { callGetCache } from "../../../../actions/cacheAction";
-import ListDestroyRequestType from "../Component/ListDestroyRequestType";
+import ListInventoryRequestType from "../Component/ListInventoryRequestType";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -209,9 +209,9 @@ class SearchCom extends React.Component {
 
     handleInputGridInsert(MLObjectDefinition, modalElementList, dataSource) {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Loại yêu cầu hủy vật tư',
+            title: 'Loại yêu cầu kiểm kê',
             content: {
-                text: <ListDestroyRequestType />
+                text: <ListInventoryRequestType />
             },
             maxWidth: '800px'
         });
