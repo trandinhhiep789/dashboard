@@ -118,3 +118,16 @@
     }
 
 }
+
+.header-title-custom{
+    font-size: 15px;
+    margin-bottom: 0;
+    font-weight: 400;
+    padding: 0 10px;
+    display: inline-flex;
+    justify-content: space-between;
+    line-height: 40px;
+    height: 40px;
+    border-bottom: 1px solid #868e96;
+    width: 100%;
+}

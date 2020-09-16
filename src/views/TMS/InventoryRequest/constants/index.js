@@ -9,6 +9,7 @@ export const DeleteAPIPath = "api/InventoryRequest/Delete";
 export const BackLink = "/InventoryRequest";
 export const AddLink = "/InventoryRequest/Add";
 export const LoadAPIByRequestTypeIDPath = "api/CurrentAdvanceDebt/GetListByRequestTypeID";
+export const LoadAPIByDestroyRequestTypeIDPath = "api/InventoryRequestType_ReviewLevel/LoadByInventoryRequestTypeID";
 export const LoadUserNameAPIByStoreIDPath = "api/InventoryRequestType_ReviewLevel_User/LoadByStoreID";
 export const AddLogAPIPath = "api/InventoryRequest/Add";
 export const IDSelectColumnName = "chkSelect";
@@ -310,22 +311,28 @@ export const InputInventoryRequestDetailColumnList = [
         Width: 150
     },
     {
-        Name: "UsableQuantity",
+        Name: "RecordQuantity",
         Type: "textNew",
-        Caption: "Số dư tạm ứng",
-        DataSourceMember: "UsableQuantity",
+        Caption: "Số lượng sổ sách",
+        DataSourceMember: "RecordQuantity",
         Width: 150
     },
     {
-        Name: "Quantity",
+        Name: "ActualQuantity",
         Type: "textbox",
-        Caption: "Số lượng hủy",
+        Caption: "Số lượng thực tế",
         labelError: 'aaa',
-        DataSourceMember: "Quantity",
+        DataSourceMember: "ActualQuantity",
         Width: 200,
         validatonList: ["number"],
     },
-   
+    {
+        Name: "UneventQuantity",
+        Type: "text",
+        Caption: "Chênh lệch",
+        DataSourceMember: "UneventQuantity",
+        Width: 150
+    },
 ];
 
 export const GridMLObjectDefinition = [
@@ -348,42 +355,28 @@ export const GridMLObjectDefinition = [
         DataSourceMember: "ProductName"
     },
     {
-        Name: "UsableQuantity",
+        Name: "RecordQuantity",
         DefaultValue: "",
-        BindControlName: "UsableQuantity",
-        DataSourceMember: "UsableQuantity"
+        BindControlName: "RecordQuantity",
+        DataSourceMember: "RecordQuantity"
     },
     {
-        Name: "Quantity",
+        Name: "ActualQuantity",
         DefaultValue: "",
-        BindControlName: "Quantity",
-        DataSourceMember: "Quantity"
+        BindControlName: "ActualQuantity",
+        DataSourceMember: "ActualQuantity"
+    },
+    {
+        Name: "UneventQuantity",
+        DefaultValue: "",
+        BindControlName: "UneventQuantity",
+        DataSourceMember: "UneventQuantity"
     }
 ];
 
-export const AddElementList = [
-    {
-        type: "text",
-        name: "txtInventoryRequestID",
-        label: "mã yêu cầu",
-        value: "",
-        maxSize: "200",
-        placeholder: "Mã yêu cầu",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "InventoryRequestID",
-        readonly: false,
-        validatonList: ["required"]
-    },
-];
 
 export const MLObjectDefinition = [
-    {
-        Name: "InventoryRequestID",
-        DefaultValue: "",
-        BindControlName: "txtInventoryRequestID",
-        DataSourceMember: "InventoryRequestID"
-    },
+  
     {
         Name: "InventoryRequestTypeID",
         DefaultValue: "",

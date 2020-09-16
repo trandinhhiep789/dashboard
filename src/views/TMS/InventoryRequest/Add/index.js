@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
@@ -16,31 +16,32 @@ import {
     AddPagePath,
     TitleFormAdd,
     GridMLObjectDefinition,
-    InputDestroyRequestDetailColumnList,
+    InputInventoryRequestDetailColumnList,
     LoadAPIByRequestTypeIDPath,
     InputDestroyRequestRLColumnList,
     GridDestroyRequestRLMLObjectDefinition,
-    LoadUserNameAPIByStoreIDPath
+    LoadUserNameAPIByStoreIDPath,
+    LoadAPIByDestroyRequestTypeIDPath
 
 } from "../constants";
+
+import Select from 'react-select';
+
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
-import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
-import { ERPCOMMONCACHE_DES_RVLEVEL } from "../../../../constants/keyCache";
+import { INVENTORYREQUEST_ADD } from "../../../../constants/functionLists";
 
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.prevDataSubmit = this.prevDataSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.GetDataByRequestTypeID = this.GetDataByRequestTypeID.bind(this);
-        this.GetUserByStoreID = this.GetUserByStoreID.bind(this);
-        this.setValueCombobox = this.setValueCombobox.bind(this);
         this.valueChangeInputGrid = this.valueChangeInputGrid.bind(this);
-
+        this.getInventoryRequestRLByInventoryRequestType = this.getInventoryRequestRLByInventoryRequestType.bind(this);
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -49,54 +50,107 @@ class AddCom extends React.Component {
             IsLiquidated: false,
             IsDeposited: false,
             DestroyRequestDetail: [],
-            DestroyRequestTypeID: '',
+            InventoryRequestTypeID: '',
             RequestStoreID: '',
-            DestroyRequestRL: [],
+            InventoryRequestRL: [],
             ListOption: [],
             IsLoadDataComplete: false,
-            InputDestroyRequestRLColumnList: InputDestroyRequestRLColumnList,
-            isError: false
+            InputInventoryRequestDetailColumnList: InputInventoryRequestDetailColumnList,
+            isError: false,
+            gridInventoryRequestRL: {},
+            validationErrorMessageSelect: '',
+            isValidationSelect: false,
+            isAutoReview: false,
+            isAutoOutput: false,
         };
     }
 
     componentDidMount() {
-        console.log("add", this.props, this.props.location.state.DestroyRequestTypeID)
         this.setState({
-            DestroyRequestTypeID: this.props.location.state.DestroyRequestTypeID,
+            InventoryRequestTypeID: this.props.location.state.InventoryRequestTypeID,
             RequestStoreID: this.props.location.state.RequestStoreID,
         })
         this.props.hideModal()
         this.props.updatePagePath(AddPagePath);
-        this.GetDataByRequestTypeID(this.props.location.state.DestroyRequestTypeID);
-        this.GetUserByStoreID(this.props.location.state.RequestStoreID);
-        this.getCacheDesRVL();
+
+        const param = [
+            {
+                SearchKey: "@INVENTORYREQUESTTYPEID",
+                SearchValue: this.props.location.state.InventoryRequestTypeID
+            },
+            {
+                SearchKey: "@STOREID",
+                SearchValue: this.props.location.state.RequestStoreID
+            }
+        ];
+
+        this.getInventoryRequestRLByInventoryRequestType(param);
+
     }
 
-    getCacheDesRVL() {
-        this.props.callGetCache(ERPCOMMONCACHE_DES_RVLEVEL).then((result) => {
 
-            if (!result.IsError) {
+    getInventoryRequestRLByInventoryRequestType(param) {
+        this.props.callFetchAPI(APIHostName, LoadAPIByDestroyRequestTypeIDPath, param).then(apiResult => {
+            console.log("222", apiResult, param)
+            if (apiResult.IsError) {
                 this.setState({
-                    DestroyRequestRL: result.ResultObject.CacheData
-                })
+                    IsCallAPIError: !apiResult.IsError
+                });
+                //this.showMessage(apiResult.Message);
             }
             else {
-                this.showMessage(result.Message)
+                apiResult.ResultObject.map(e => {
+                    e.value = e.UserName
+                    e.label = e.UserName + "-" + e.FullName
+                    return e;
+                })
+
+                let lstoption = apiResult.ResultObject.reduce((r, a) => {
+                    if (!r[`${a.ReviewLevelID}`]) r[`${a.ReviewLevelID}`] = {};
+                    if (!r[`${a.ReviewLevelID}`]["ReviewLevelID"]) r[`${a.ReviewLevelID}`]["ReviewLevelID"] = "";
+                    if (!r[`${a.ReviewLevelID}`]["ReviewLevelName"]) r[`${a.ReviewLevelID}`]["ReviewLevelName"] = "";
+                    if (!r[`${a.ReviewLevelID}`]["UserName"]) r[`${a.ReviewLevelID}`]["UserName"] = "";
+                    if (!r[`${a.ReviewLevelID}`]["FullName"]) r[`${a.ReviewLevelID}`]["FullName"] = "";
+                    if (!r[`${a.ReviewLevelID}`]["Child"]) r[`${a.ReviewLevelID}`]["Child"] = [];
+                    a.value = a.UserName
+                    a.name = a.UserName + " - " + a.FullName
+                    a.label = a.UserName + " - " + a.FullName
+                    r[`${a.ReviewLevelID}`]["Child"].push(a);
+
+                    return r;
+                }, {});
+                // console.log("111", lstoption)
+                Object.keys(lstoption).map(function (key) {
+                    lstoption[key]["ReviewLevelID"] = lstoption[key]["Child"][0].ReviewLevelID;
+                    lstoption[key]["ReviewLevelName"] = lstoption[key]["Child"][0].ReviewLevelName;
+                    lstoption[key]["UserName"] = lstoption[key]["Child"][0].UserName
+                    lstoption[key]["FullName"] = lstoption[key]["Child"][0].FullName
+                    lstoption[key]["Child"].unshift({ value: "-1", name: "-- Vui lòng chọn --", UserName: "-1", FullName: "-- Vui lòng chọn --" })
+
+                })
+
+                // console.log("lstoption", lstoption)
+
+                const dataSource = apiResult.ResultObject.reduce((catsSoFar, item, index) => {
+                    if (!catsSoFar[item.ReviewLevelID]) catsSoFar[item.ReviewLevelID] = [];
+                    catsSoFar[item.ReviewLevelID].push(item);
+                    return catsSoFar;
+                }, {});
+
+                // console.log("lstoption", lstoption)
+                this.setState({
+                    InventoryRequestRL: apiResult.ResultObject,
+                    IsLoadDataComplete: true,
+                    gridInventoryRequestRL: lstoption
+                });
             }
         });
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //     if (JSON.stringify(this.props.location.state.DestroyRequestTypeID) !== JSON.stringify(nextProps.location.state.DestroyRequestTypeID)) {
-    //         this.setState({
-    //             DestroyRequestTypeID: nextProps.location.state.DestroyRequestTypeID
-    //         })
-    //     }
-    // }
 
     GetDataByRequestTypeID(DestroyRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByRequestTypeIDPath, DestroyRequestTypeID).then(apiResult => {
-            // console.log('byID', apiResult)
+            console.log("RequestTypeID", DestroyRequestTypeID, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -108,63 +162,92 @@ class AddCom extends React.Component {
                 this.setState({
                     DestroyRequestDetail: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
+                    isAutoReview: apiResult.ResultObject[0].IsAutoReview,
+                    isAutoOutput: apiResult.ResultObject[0].IsAutoOutput,
                 });
             }
         });
     }
 
-    GetUserByStoreID(StoreID) {
-        this.props.callFetchAPI(APIHostName, LoadUserNameAPIByStoreIDPath, StoreID).then(apiResult => {
-            let listOption = []
-            if (!apiResult.IsError) {
-                if (apiResult.ResultObject.length > 0) {
-                    apiResult.ResultObject.map((item) => {
-                        listOption.push({ value: item.UserName, label: item.FullName })
-                    })
+    prevDataSubmit(formData, MLObject) {
+        const { isError, gridInventoryRequestRL, isAutoReview, isAutoOutput } = this.state;
+
+        // console.log("gridDestroyRequestRL", gridDestroyRequestRL, MLObject);
+
+        let arrReviewLevel = [];
+        Object.keys(gridInventoryRequestRL).map(function (key) {
+            let objItem = {}
+            objItem.ReviewLevelID = key;
+            objItem.UserName = gridInventoryRequestRL[key].UserName;
+
+            arrReviewLevel.push(objItem)
+            return objItem;
+        })
+
+        MLObject.lstDestroyRequestReviewLevel = arrReviewLevel;
+
+        if (isError == false) {
+            const ReviewLevel = MLObject.lstDestroyRequestReviewLevel.reduce(function (prev, cur) {
+                return cur.UserName;
+            }, 0);
+
+            const DestroyRequestDetail = MLObject.lstDestroyRequestDetail.filter((item, index) => {
+                if (item.Quantity != undefined && item.Quantity > 0) {
+                    return item;
                 }
-
-                this.setState({
-                    ListOption: listOption,
-                })
-                this.setValueCombobox();
-            }
-
-        });
-    }
-
-    setValueCombobox() {
-        let _InputDestroyRequestRLColumnList = this.state.InputDestroyRequestRLColumnList;
-        _InputDestroyRequestRLColumnList.forEach(function (objElement) {
-            if (objElement.Name == "cboUserName") {
-                objElement.listoption = this.state.ListOption;
-                objElement.value = -1;
-            }
-        }.bind(this));
-        this.setState({
-            InputDestroyRequestRLColumnList: _InputDestroyRequestRLColumnList,
-            IsLoadDataComplete: true
-        });
-    }
-
-    handleSubmit(formData, MLObject) {
-        console.log("handleSubmit", formData, MLObject);
-        const { isError } = this.state;
-        if (!isError) {
-            this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                this.showMessage(apiResult.MessageDetail);
-
             });
+
+            if (isAutoReview) {
+                MLObject.IsreViewed = isAutoReview;
+                MLObject.CurrentReviewLevelID = 0;
+                MLObject.reViewedDate = new Date();
+            }
+            else {
+                MLObject.IsreViewed = isAutoReview;
+                MLObject.CurrentReviewLevelID = MLObject.lstDestroyRequestReviewLevel[0].ReviewLevelID;
+                if (ReviewLevel == undefined || ReviewLevel == 0) {
+                    this.showMessage('Danh sách duyệt người chưa được chọn. Vui lòng kiểm tra lại.');
+                    this.setState({
+                        IsCallAPIError: true,
+                    })
+                    return;
+                }
+            }
+            if (isAutoOutput) {
+                MLObject.IsCreatedOrder = isAutoOutput;
+                MLObject.CreatedOrderDate = new Date();
+            }
+
+            if (DestroyRequestDetail.length <= 0) {
+                this.showMessage('Danh sách vật tư chưa được chọn.');
+                this.setState({
+                    IsCallAPIError: true,
+                })
+                return;
+            }
+
+
+            MLObject.lstDestroyRequestDetail = DestroyRequestDetail;
+
+            console.log("MLObject", MLObject)
+            this.handleSubmit(MLObject)
+
         }
         else {
             this.showMessage('Thông tin nhập vào bị lỗi. Vui lòng kiểm tra lại.');
         }
+    }
+
+    handleSubmit(MLObject) {
+        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.MessageDetail);
+        });
 
     }
 
 
     handleCloseMessage() {
-        debugger
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
     }
 
@@ -180,11 +263,12 @@ class AddCom extends React.Component {
     }
 
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
+        // console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
         const { DestroyRequestDetail } = this.state;
-        let Quantity = DestroyRequestDetail[index].UsableQuantity;
-        let item = elementdata.Name + '_' + index;
-        if (!gridFormValidation[item].IsValidationError) {
-            if (elementdata.Name == 'Quantity') {
+        if (elementdata.Name == 'Quantity') {
+            let Quantity = DestroyRequestDetail[index].UsableQuantity;
+            let item = elementdata.Name + '_' + index;
+            if (!gridFormValidation[item].IsValidationError) {
                 if (elementdata.Value > Quantity) {
                     gridFormValidation[item].IsValidationError = true;
                     gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
@@ -193,29 +277,31 @@ class AddCom extends React.Component {
                         IsCallAPIError: true,
                     })
                 }
+                else {
+                    this.setState({
+                        isError: false,
+                        IsCallAPIError: false,
+                    })
+                }
             }
+        }
+        else {
             this.setState({
                 isError: false,
                 IsCallAPIError: false,
             })
         }
-        else {
-            this.setState({
-                isError: true,
-                IsCallAPIError: true,
-            })
-        }
-       
+
     }
 
     handleChange(formData, MLObject) {
-        console.log("handleChange", formData, MLObject)
-        if (formData.cboDestroyRequestType.Name == 'cboDestroyRequestType') {
-            this.GetDataByRequestTypeID(formData.cboDestroyRequestType.value)
-        }
-        if (formData.cboRequestStore.Name == 'cboRequestStore') {
-            this.GetUserByStoreID(formData.cboRequestStore.value)
-        }
+        // console.log("handleChange", formData, MLObject)
+        // if (formData.cboDestroyRequestType.Name == 'cboDestroyRequestType') {
+        //     this.GetDataByRequestTypeID(formData.cboDestroyRequestType.value)
+        // }
+        // if (formData.cboRequestStore.Name == 'cboRequestStore') {
+        //     this.GetUserByStoreID(formData.cboRequestStore.value)
+        // }
 
     }
 
@@ -225,7 +311,48 @@ class AddCom extends React.Component {
         }
         let currentDate = new Date();
 
-        const { DestroyRequestDetail, DestroyRequestRL, InputDestroyRequestRLColumnList, isError } = this.state;
+        const { DestroyRequestDetail,
+            InventoryRequestRL,
+            InputInventoryRequestDetailColumnList,
+            isError, gridInventoryRequestRL,
+            validationErrorMessageSelect, isValidationSelect,
+            isAutoReview, isAutoOutput, InventoryRequestTypeID } = this.state;
+
+        const onChange = (aaa, event) => {
+            const value = event.target.value;
+            const name = event.target.name;
+            const InventoryRequestRLID = aaa;
+
+            if (value <= 0) {
+
+                this.setState({
+                    IsCallAPIError: true,
+                    isError: true
+                })
+            }
+            else {
+                this.setState({
+                    IsCallAPIError: false,
+                    isError: false
+
+                })
+            }
+
+
+
+            const element = Object.assign({}, gridInventoryRequestRL[InventoryRequestRLID], {
+                "UserName": value,
+                "FullName": name,
+            })
+            // console.log("element", element);
+
+            const parent = Object.assign({}, gridInventoryRequestRL, { [InventoryRequestRLID]: element });
+
+
+            this.setState({ gridInventoryRequestRL: parent })
+        }
+
+        // console.log("gridDestroyRequestRL", gridDestroyRequestRL)
 
         if (this.state.IsLoadDataComplete) {
             return (
@@ -235,81 +362,33 @@ class AddCom extends React.Component {
                         MLObjectDefinition={MLObjectDefinition}
                         listelement={[]}
                         BackLink={BackLink}
-                        onSubmit={this.handleSubmit}
+                        // RequirePermission={INVENTORYREQUEST_ADD}
+                        onSubmit={this.prevDataSubmit}
                         onchange={this.handleChange.bind(this)}
                     >
 
                         <div className="row">
-                            <div className="col-md-6">
-                                <FormControl.TextBox
-                                    name="txtDestroyRequestID"
-                                    colspan="8"
-                                    labelcolspan="4"
-                                    readOnly={false}
-                                    label="mã yêu cầu"
-                                    placeholder="Mã yêu cầu"
-                                    controltype="InputControl"
-                                    value=""
-                                    datasourcemember="DestroyRequestID"
-                                    validatonList={['required']}
-                                />
-                            </div>
 
                             <div className="col-md-6">
                                 <FormControl.FormControlComboBox
-                                    name="cboDestroyRequestType"
+                                    name="cboInventoryRequestType"
                                     colspan="8"
                                     labelcolspan="4"
-                                    label="loại yêu cầu hủy vật tư"
+                                    label="loại yêu cầu kiểm kê"
                                     validatonList={["Comborequired"]}
                                     placeholder="-- Vui lòng chọn --"
                                     isautoloaditemfromcache={true}
                                     disabled={true}
-                                    loaditemcachekeyid="ERPCOMMONCACHE.DESTROYREQUESTTYPE"
-                                    valuemember="DestroyRequestTypeID"
-                                    nameMember="DestroyRequestTypeName"
+                                    loaditemcachekeyid="ERPCOMMONCACHE.INVENTORYREQUESTTYPE"
+                                    valuemember="InventoryRequestTypeID"
+                                    nameMember="InventoryRequestTypeName"
                                     controltype="InputControl"
-                                    value={this.props.location.state.DestroyRequestTypeID}
+                                    value={this.props.location.state.InventoryRequestTypeID}
                                     listoption={null}
-                                    datasourcemember="DestroyRequestTypeID" />
+                                    datasourcemember="InventoryRequestTypeID" />
 
                             </div>
 
-                            <div className="col-md-12">
-                                <FormControl.TextBox
-                                    name="txtDestroyRequestTitle"
-                                    labelcolspan={2}
-                                    colspan={10}
-                                    readOnly={false}
-                                    label="tiêu đề"
-                                    placeholder="Tiêu đề"
-                                    controltype="InputControl"
-                                    value=""
-                                    datasourcemember="DestroyRequestTitle"
-                                    validatonList={['required']}
-                                    classNameCustom="customcontrol"
-                                />
-                            </div>
-
-                            <div className="col-md-6">
-                                <FormControl.FormControlComboBox
-                                    name="cboRequestStore"
-                                    colspan="8"
-                                    labelcolspan="4"
-                                    label="kho yêu cầu"
-                                    disabled={true}
-                                    validatonList={["Comborequired"]}
-                                    placeholder="-- Vui lòng chọn --"
-                                    isautoloaditemfromcache={true}
-                                    loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
-                                    valuemember="StoreID"
-                                    nameMember="StoreName"
-                                    controltype="InputControl"
-                                    value={this.props.location.state.RequestStoreID}
-                                    listoption={null}
-                                    datasourcemember="RequestStoreID" />
-
-                            </div>
 
                             <div className="col-md-6">
 
@@ -331,6 +410,46 @@ class AddCom extends React.Component {
                             </div>
 
                             <div className="col-md-12">
+                                <FormControl.FormControlComboBox
+                                    name="cboRequestStore"
+                                    colspan="10"
+                                    labelcolspan="2"
+                                    label="kho yêu cầu"
+                                    disabled={true}
+                                    validatonList={["Comborequired"]}
+                                    placeholder="-- Vui lòng chọn --"
+                                    isautoloaditemfromcache={true}
+                                    isusercache={true}
+                                    loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
+                                    valuemember="StoreID"
+                                    nameMember="StoreName"
+                                    controltype="InputControl"
+                                    value={this.props.location.state.RequestStoreID}
+                                    listoption={null}
+                                    datasourcemember="RequestStoreID"
+                                    classNameCustom="customcontrol"
+                                />
+
+                            </div>
+
+
+                            <div className="col-md-12">
+                                <FormControl.TextBox
+                                    name="txtInventoryRequestTitle"
+                                    labelcolspan={2}
+                                    colspan={10}
+                                    readOnly={false}
+                                    label="tiêu đề"
+                                    placeholder="Tiêu đề"
+                                    controltype="InputControl"
+                                    value=""
+                                    datasourcemember="InventoryRequestTitle"
+                                    validatonList={['required']}
+                                    classNameCustom="customcontrol"
+                                />
+                            </div>
+
+                            <div className="col-md-12">
                                 <FormControl.TextArea
                                     labelcolspan={2}
                                     colspan={10}
@@ -346,44 +465,72 @@ class AddCom extends React.Component {
                             </div>
                         </div>
 
-
-
-                        <div className="card">
-                            <div className="card-title group-card-title">
-                                <h4 className="title">Danh sách vật tư</h4>
+                        <div className="row">
+                            <div className="col-12">
+                                <h4 className="header-title-custom">Danh sách sản phẩm</h4>
                             </div>
-                            <div className="card-body">
-                                <InputGrid
-                                    name="lstDestroyRequestDetail"
-                                    controltype="GridControl"
-                                    listColumn={InputDestroyRequestDetailColumnList}
-                                    dataSource={DestroyRequestDetail}
-                                    isHideHeaderToolbar={true}
-                                    MLObjectDefinition={GridMLObjectDefinition}
-                                    colspan="12"
-                                    onValueChangeInputGrid={this.valueChangeInputGrid}
-                                />
-                            </div>
+
+                        </div>
+                        <div className="row">
+                            <InputGrid
+                                name="lstDestroyRequestDetail"
+                                controltype="GridControl"
+                                listColumn={InputInventoryRequestDetailColumnList}
+                                dataSource={DestroyRequestDetail}
+                                isHideHeaderToolbar={true}
+                                MLObjectDefinition={GridMLObjectDefinition}
+                                colspan="12"
+                                onValueChangeInputGrid={this.valueChangeInputGrid}
+                            />
                         </div>
 
-                        <div className="card">
-                            <div className="card-title group-card-title">
-                                <h4 className="title">Danh sách duyệt</h4>
-                            </div>
-                            <div className="card-body">
-                                <InputGrid
-                                    name="lstDestroyRequestReviewLevel"
-                                    controltype="GridControl"
-                                    listColumn={InputDestroyRequestRLColumnList}
-                                    dataSource={DestroyRequestRL}
-                                    isHideHeaderToolbar={true}
-                                    MLObjectDefinition={GridDestroyRequestRLMLObjectDefinition}
-                                    colspan="12"
-                                    onValueChangeInputGrid={this.valueChangeInputGrid}
-                                />
-                            </div>
-                        </div>
+                        {isAutoReview == false ?
 
+                            <div className="card">
+                                <div className="card-title group-card-title">
+                                    <h4 className="title">Danh sách duyệt</h4>
+                                </div>
+                                <div className="card-body">
+
+                                    <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                        <thead className="thead-light">
+                                            <tr>
+                                                <th className="jsgrid-header-cell">Mức duyệt</th>
+                                                <th className="jsgrid-header-cell">Người duyệt</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {!!gridInventoryRequestRL && Object.keys(gridInventoryRequestRL).length > 0 &&
+                                                Object.keys(gridInventoryRequestRL).map(function (key) {
+                                                    return (
+
+                                                        <tr key={key}>
+                                                            <td>{gridInventoryRequestRL[key].ReviewLevelName}</td>
+                                                            <td>
+                                                                <select id={key} value={gridInventoryRequestRL[key].UserName}
+                                                                    className={`form-control form-control-sm ${gridInventoryRequestRL[key].UserName == "-1" ? "is-invalid" : ""}`}
+                                                                    onChange={selectOption => onChange(key, selectOption)}>
+                                                                    {gridInventoryRequestRL[key]["Child"].map(e => {
+                                                                        return <option value={e.value} name={e.name} key={e.value}>{e.name}</option>
+                                                                    })}
+                                                                </select>
+                                                                <div className="invalid-feedback">
+                                                                    <ul className="list-unstyled">
+                                                                        <li>Vui lòng chọn người duyệt cho mức duyệt.</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                            : <div></div>
+                        }
 
                     </FormContainer>
                 </React.Fragment>

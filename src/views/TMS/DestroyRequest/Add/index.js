@@ -42,7 +42,7 @@ class AddCom extends React.Component {
         this.prevDataSubmit = this.prevDataSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.GetDataByRequestTypeID = this.GetDataByRequestTypeID.bind(this);
-        this.GetUserByStoreID = this.GetUserByStoreID.bind(this);
+        // this.GetUserByStoreID = this.GetUserByStoreID.bind(this);
         this.setValueCombobox = this.setValueCombobox.bind(this);
         this.valueChangeInputGrid = this.valueChangeInputGrid.bind(this);
         this.getDataDestroyRequestRLByDestroyRequestType = this.getDataDestroyRequestRLByDestroyRequestType.bind(this);
@@ -77,7 +77,7 @@ class AddCom extends React.Component {
         this.props.hideModal()
         this.props.updatePagePath(AddPagePath);
         this.GetDataByRequestTypeID(this.props.location.state.DestroyRequestTypeID);
-        this.GetUserByStoreID(this.props.location.state.RequestStoreID);
+       // this.GetUserByStoreID(this.props.location.state.RequestStoreID);
 
         const param = [
             {
@@ -183,25 +183,25 @@ class AddCom extends React.Component {
         });
     }
 
-    GetUserByStoreID(StoreID) {
-        this.props.callFetchAPI(APIHostName, LoadUserNameAPIByStoreIDPath, StoreID).then(apiResult => {
-            // console.log('GetUserByStoreID', apiResult)
-            let listOption = []
-            if (!apiResult.IsError) {
-                if (apiResult.ResultObject.length > 0) {
-                    apiResult.ResultObject.map((item, index) => {
-                        listOption.push({ value: item.UserName, label: item.FullName })
-                    })
-                }
+    // GetUserByStoreID(StoreID) {
+    //     this.props.callFetchAPI(APIHostName, LoadUserNameAPIByStoreIDPath, StoreID).then(apiResult => {
+    //          console.log('GetUserByStoreID', apiResult)
+    //         let listOption = []
+    //         if (!apiResult.IsError) {
+    //             if (apiResult.ResultObject.length > 0) {
+    //                 apiResult.ResultObject.map((item, index) => {
+    //                     listOption.push({ value: item.UserName, label: item.FullName })
+    //                 })
+    //             }
 
-                this.setState({
-                    ListOption: listOption,
-                })
-                this.setValueCombobox();
-            }
+    //             this.setState({
+    //                 ListOption: listOption,
+    //             })
+    //             this.setValueCombobox();
+    //         }
 
-        });
-    }
+    //     });
+    // }
 
     setValueCombobox() {
         let _InputDestroyRequestRLColumnList = this.state.InputDestroyRequestRLColumnList;
