@@ -115,7 +115,7 @@ class AddCom extends React.Component {
                 text: <StoreWard
                     DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
                     onInputChangeObj={this.handleInputChangeObjItem}
-
+                    isMultiSelectWard={true}
                 />
             },
             maxWidth: '1000px'
@@ -137,7 +137,7 @@ class AddCom extends React.Component {
                     D DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
                     index={parseInt(index)}
                     onInputChangeObj={this.handleInputChangeObjItem}
-
+                    isMultiSelectWard={false}
                 />
             },
             maxWidth: '1000px'
