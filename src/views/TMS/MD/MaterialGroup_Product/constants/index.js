@@ -129,17 +129,34 @@ export const ModalColumnList_Edit = [
     //     ValueMember: "SkillRanKid",
     //     NameMember: "SkillRankName"
     // },
+    // {
+    //     Name: "ProductID",
+    //     type: "productbox",
+    //     label: "mã sản phẩm vật tư",
+    //     //maxSize: "20",
+    //     colspan: 12,
+    //     isMulti: false,
+    //     DataSourceMember: "ProductID",
+    //     readonly: true,
+    //     disabled: true,
+    //     validatonList: ["Comborequired"]
+    // },
+
     {
         Name: "ProductID",
-        type: "productbox",
+        type: "text",
         label: "mã sản phẩm vật tư",
-        //maxSize: "20",
-        colspan: 12,
-        isMulti: false,
         DataSourceMember: "ProductID",
         readonly: true,
-        disabled: true,
-        validatonList: ["Comborequired"]
+        validatonList: []
+    },
+    {
+        Name: "ProductName",
+        type: "text",
+        label: "tên sản phẩm vật tư",
+        DataSourceMember: "ProductName",
+        readonly: true,
+        validatonList: []
     },
     {
         Name: "ConvertRatio",
@@ -228,9 +245,16 @@ export const DataGridColumnList = [
         Width: 60
     },
     {
+        Name: "ProductID",
+        Type: "text",
+        Caption: "Mã sản phẩm vật tư",
+        DataSourceMember: "ProductID",
+        Width: 150
+    },
+    {
         Name: "ProductName",
         Type: "text",
-        Caption: "Sản phẩm vật tư",
+        Caption: "Tên sản phẩm vật tư",
         DataSourceMember: "ProductName",
         Width: 150
     },

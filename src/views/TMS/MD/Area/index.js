@@ -9,7 +9,9 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
-import NotFound from '../../../NotFound'
+import Detail from "./Detail";
+import NotFound from '../../../NotFound';
+
 class AreaCom extends React.Component {
     constructor(props) {
         super(props);
@@ -21,6 +23,7 @@ class AreaCom extends React.Component {
                 <Route exact path="/Area" component={Search} />
                 <Route exact path="/Area/Add" component={Add} />
                 <Route exact path="/Area/Edit/:id" component={Edit} />
+                <Route exact path="/Area/Detail/:id" component={Detail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
