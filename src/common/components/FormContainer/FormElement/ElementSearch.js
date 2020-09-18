@@ -376,7 +376,7 @@ class ElementComboBoxCom extends Component {
             className += " is-invalid";
         }
         const selectedOption = this.state.SelectedOption;
-        console.log("ListOption",this.state.ListOption, selectedOption)
+        // console.log("ListOption",this.state.ListOption, selectedOption)
         return (
             <div className={colspanClassName}  >
                 <div className="form-group form-group-input form-group-input-select">

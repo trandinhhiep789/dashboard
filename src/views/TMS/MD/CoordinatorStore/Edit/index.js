@@ -88,14 +88,14 @@ class EditCom extends React.Component {
                 let SenderStoreItem = {};
                 SenderStoreItem.value = apiResult.ResultObject.SenderStoreID;
                 SenderStoreItem.label = apiResult.ResultObject.SenderStoreID + " - " + apiResult.ResultObject.SenderStoreName;
-                SenderStoreItem.name= apiResult.ResultObject.SenderStoreName;
+                SenderStoreItem.name = apiResult.ResultObject.SenderStoreName;
                 SenderStoreSelect.push(SenderStoreItem);
 
                 if (apiResult.ResultObject.IsCheckCustomerAddress) {
-                    if(apiResult.ResultObject.IsSystem){
+                    if (apiResult.ResultObject.IsSystem) {
                         IsShowCustomerAddress = true
                     }
-                    else{
+                    else {
                         IsShowCustomerAddress = false
                     }
                 }
@@ -161,10 +161,11 @@ class EditCom extends React.Component {
                 text: <StoreWard
                     DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
                     onInputChangeObj={this.handleInputChangeObjItem}
+                    isMultiSelectWard={true}
 
                 />
             },
-            maxWidth: '1000px'
+            maxWidth: '800px'
         })
     }
 
@@ -182,10 +183,10 @@ class EditCom extends React.Component {
                     DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
                     index={index}
                     onInputChangeObj={this.handleInputChangeObjItem}
-
+                    isMultiSelectWard={false}
                 />
             },
-            maxWidth: '1000px'
+            maxWidth: '800px'
         })
     }
 
@@ -296,10 +297,10 @@ class EditCom extends React.Component {
                                 listoption={null}
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
-                                datasourcemember="PartnerID" 
+                                datasourcemember="PartnerID"
                                 filterValue={1}
                                 filterobj="PartnerTypeID"
-                                />
+                            />
 
                         </div>
 
@@ -360,7 +361,7 @@ class EditCom extends React.Component {
                                 value={true}
                                 datasourcemember="IsActived"
                                 classNameCustom="customCheckbox"
-                                 disabled={this.state.IsSystem}
+                                disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
                             />
                         </div>
