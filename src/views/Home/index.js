@@ -73,6 +73,7 @@ import AdvanceRequestType from "../TMS/MD/AdvanceRequestType";
 import DestroyRequestType from "../TMS/MD/DestroyRequestType";
 import LimitType from "../TMS/MD/Limit/LimitType";
 import UserLimit from "../TMS/MD/Limit/UserLimit";
+import UserLimitTest from "../TMS/MD/Limit/UserLimit/Search/indexNew.js";
 import DestroyRequest from "../TMS/DestroyRequest";
 import InventoryRequest from "../TMS/InventoryRequest";
 
@@ -211,6 +212,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/MaterialGroup" component={MaterialGroup} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/LimitType" component={LimitType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/UserLimit" component={UserLimit} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/UserLimitTest" component={UserLimitTest} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} />

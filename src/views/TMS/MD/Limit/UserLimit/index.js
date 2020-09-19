@@ -7,6 +7,7 @@ import {
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import Search from "./Search";
+import SearchNew from "./Search/indexNew.js";
 import NotFound from '../../../../NotFound'
 
 class UserLimitCom extends React.Component {
@@ -18,6 +19,7 @@ class UserLimitCom extends React.Component {
         return (
             <Switch>
                 <Route exact path="/UserLimit" component={Search} />
+                <Route exact path="/UserLimitTest" component={SearchNew} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );

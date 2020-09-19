@@ -6,17 +6,17 @@ import SearchForm from "../../../../../../common/components/FormContainer/Search
 import DataGrid from "../../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../../common/components/Modal";
 import {
+    SearchElementList,
+    SearchMLObjectDefinition,
     DataGridColumnList,
     AddLink,
     APIHostName,
-    SearchUserLimitAPIPath,
+    SearchAPIPath,
     DeleteNewAPIPath,
     IDSelectColumnName,
     PKColumnName,
-    InitSearchParamsNew,
+    InitSearchParams,
     PagePath,
-    SearchMLObjectDefinitionNew,
-    SearchElementListNew,
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
@@ -27,7 +27,7 @@ import { callGetCache, callClearLocalCache } from "../../../../../../actions/cac
 import { formatMoney } from '../../../../../../utils/function';
 import { ERPCOMMONCACHE_LIMITTYPE } from "../../../../../../constants/keyCache";
 
-class SearchCom extends React.Component {
+class SearchNewCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
@@ -41,7 +41,7 @@ class SearchCom extends React.Component {
             gridDataLimtType: [],
             dataLimitTyle: [],
             IsCallAPIError: false,
-            SearchData: InitSearchParamsNew,
+            SearchData: InitSearchParams,
             cssNotification: "",
             iconNotification: "",
             IsLoadDataComplete: false,
@@ -74,7 +74,6 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        // console.log('aaa',formData, MLObject)
         let result;
         
         if (MLObject.UserName != -1 && MLObject.UserName!=null) {
@@ -88,17 +87,8 @@ class SearchCom extends React.Component {
         }
         const postData = [
             {
-                SearchKey: "@AREAID",
-                SearchValue: MLObject.AreaID
-                
-            },
-            {
-                SearchKey: "@STOREID",
-                SearchValue: MLObject.StoreID
-            },
-            {
-                SearchKey: "@POSITIONID",
-                SearchValue: MLObject.PositionID
+                SearchKey: "@DEPARTMENTID",
+                SearchValue: MLObject.DepartmentID
             },
             {
                 SearchKey: "@USERNAMELIST",
@@ -110,19 +100,23 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-        this.props.callFetchAPI(APIHostName, SearchUserLimitAPIPath, searchData).then(apiResult => {
-            // console.log('SearchUserLimit', apiResult, searchData);
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const sortResult = apiResult.ResultObject.sort((a, b) => (a.UserName > b.UserName) ? 1
                         : (a.UserName === b.UserName)
                             ? (a.LimitTypeID > b.LimitTypeID) ? 1 : -1 : -1);
                    
+                            console.log("sortResult", sortResult)
+
                     const dataSource = sortResult.reduce((catsSoFar, item, index) => {
                         if (!catsSoFar[item.UserName]) catsSoFar[item.UserName] = [];
                             catsSoFar[item.UserName].push(item);
                         return catsSoFar;
                     }, {});
+
+                    console.log("dataSource", dataSource)
 
                     let init = []
                     let userName = '';
@@ -285,16 +279,17 @@ class SearchCom extends React.Component {
 
     }
 
+
     render() {
         let className = "form-control form-control-sm";
-
+        console.log('this.state.gridDataLimtType', this.state.gridDataLimtType)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
                     FormName="Tìm kiếm danh sách giới hạn theo người dùng"
-                    MLObjectDefinition={SearchMLObjectDefinitionNew}
-                    listelement={SearchElementListNew}
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                     className="multiple"
@@ -391,5 +386,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Search = connect(mapStateToProps, mapDispatchToProps)(SearchCom);
-export default Search;
+const SearchNew = connect(mapStateToProps, mapDispatchToProps)(SearchNewCom);
+export default SearchNew;

@@ -300,6 +300,15 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    // {
+                    //     MenuName: 'UserLimitTest',
+                    //     MenuTitle: 'Giới hạn theo người dùng test' ,
+                    //     LinkTo: '/UserLimitTest',
+                    //     MenuIcon: '',
+                    //     SubMenu: []
+                    // },
+
+                    
 
                 ]
             },
