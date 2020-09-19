@@ -29,6 +29,12 @@ export const AddPagePath = [
     { Link: "", Title: "Thêm" }
 ];
 
+export const DetailPagePath = [
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
+    { Link: "/Area", Title: "Danh sách khu vực" },
+    { Link: "", Title: "Chi tiết khu vực" }
+];
+
 export const InitSearchParams = [
     {
         SearchKey: "@Keyword", 
@@ -392,8 +398,9 @@ export const DataGridColumnList = [
     },
     {
         Name: "AreaName",
-        Type: "text",
+        Type: "texttolink",
         Caption: "Tên khu vực",
+        Link: "/Area/Detail/",
         DataSourceMember: "AreaName",
         Width: 120
     },
