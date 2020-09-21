@@ -113,14 +113,14 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Quyền thêm: </span>
-                                            <span>{this.state.DataSource.AddFunctionName}</span>
+                                            <span>Mã quyền: </span>
+                                            <span>{this.state.DataSource.AddFunctionID}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Gói lắp đặt cần tạm ứng: </span>
-                                            <span>{this.state.DataSource.InstallBundleName}</span>
+                                            <span>Tên quyền: </span>
+                                            <span>{this.state.DataSource.AddFunctionName}</span>
                                         </div>
                                     </div>
                                 </div>
