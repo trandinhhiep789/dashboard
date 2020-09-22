@@ -22,6 +22,7 @@ import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheA
 import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
 import { createListTree } from '../../../../../common/library/ultils';
 import Area_Store from "../../Area_Store";
+import { ERPCOMMONCACHE_AREATT } from "../../../../../constants/keyCache";
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
@@ -143,7 +144,8 @@ class EditCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
-                //this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNER);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_AREA);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_AREATT);
             }
         });
         //console.log("MLObject",MLObject);

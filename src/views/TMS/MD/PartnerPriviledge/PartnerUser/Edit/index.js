@@ -31,10 +31,11 @@ import DataGrid from "../../../../../../common/components/DataGrid";
 import { GetMLObjectData } from "../../../../../../common/library/form/FormLib";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { callGetCache } from "../../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import Collapsible from 'react-collapsible';
 import { Prompt } from 'react-router';
 import { PARTNERUSER_UPDATE } from "../../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_PARTNERUSER } from "../../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -429,6 +430,7 @@ class EditCom extends React.Component {
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
+            this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERUSER);
             this.showMessage(apiResult.Message);
         });
     }
@@ -527,8 +529,8 @@ const mapDispatchToProps = dispatch => {
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
         },
-        showModal: (type, props) => {
-            dispatch(showModal(type, props));
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
     };
 };
