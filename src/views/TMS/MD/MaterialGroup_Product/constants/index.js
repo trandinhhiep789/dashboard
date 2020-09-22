@@ -185,16 +185,32 @@ export const ModalColumnList_Edit = [
         ValueMember: "QuantityUnitID",
         NameMember: "QuantityUnit"
     },
+    // {
+    //     Name: "AdvanceProductID",
+    //     type: "productbox",
+    //     label: "mã sản phẩm tạm ứng",
+    //     //maxSize: "20",
+    //     colspan: 12,
+    //     isMulti: false,
+    //     DataSourceMember: "AdvanceProductID",
+    //     readonly: false,
+    //     validatonList: ["Comborequired"]
+    // },
     {
         Name: "AdvanceProductID",
-        type: "productbox",
+        type: "text",
         label: "mã sản phẩm tạm ứng",
-        //maxSize: "20",
-        colspan: 12,
-        isMulti: false,
         DataSourceMember: "AdvanceProductID",
-        readonly: false,
-        validatonList: ["Comborequired"]
+        readonly: true,
+        validatonList: []
+    },
+    {
+        Name: "AdvanceProductName",
+        type: "text",
+        label: "tên sản phẩm tạm ứng",
+        DataSourceMember: "AdvanceProductName",
+        readonly: true,
+        validatonList: []
     },
     {
         Name: "AdvanceConveratio",
