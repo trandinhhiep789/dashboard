@@ -12,6 +12,7 @@ import {
     AddAPIAbilitiPath,
     EditAPIAbilitiPath
 } from "../contants/index.js";
+import { ERPCOMMONCACHE_SERVICESEASONTYPE } from "../../../../../constants/keyCache";
 
 class AbilityElementCom extends Component {
     constructor(props) {
@@ -158,7 +159,7 @@ render() {
                         disabled={IsSystem}
                         validatonList={["Comborequired"]}
                         isautoloaditemfromcache={true}
-                        loaditemcachekeyid="ERPCOMMONCACHE.SERVICESEASONTYPE"
+                        loaditemcachekeyid= {ERPCOMMONCACHE_SERVICESEASONTYPE} //"ERPCOMMONCACHE.SERVICESEASONTYPE"
                         valuemember="ServiceSeasonTypeID"
                         nameMember="ServiceSeasonTypeName"
                         controltype="InputControl"

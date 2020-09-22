@@ -27,6 +27,7 @@ import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.
 import DeliverUserList from "../../ShipmentOrder/Component/DeliverUserList";
 import { ExportStringToDate } from "../../../../common/library/ultils";
 import moment from 'moment';
+import { ERPCOMMONCACHE_SERVICEAGREEMENTTYPE, ERPCOMMONCACHE_TMS_SERVICETYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_AREATT } from "../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -371,7 +372,7 @@ class EditCom extends React.Component {
                                 validatonList={["Comborequired"]}
                                 placeholder="-- Vui lòng chọn --"
                                 isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.SERVICEAGREEMENTTYPE"
+                                loaditemcachekeyid={ERPCOMMONCACHE_SERVICEAGREEMENTTYPE} //"ERPCOMMONCACHE.SERVICEAGREEMENTTYPE"
                                 valuemember="ServiceAgreementTypeID"
                                 nameMember="ServiceAgreementTypeName"
                                 controltype="InputControl"
@@ -392,7 +393,7 @@ class EditCom extends React.Component {
                                 placeholder="-- Vui lòng chọn --"
                                 validatonList={["Comborequired"]}
                                 isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.TMS_SERVICETYPE"
+                                loaditemcachekeyid={ERPCOMMONCACHE_TMS_SERVICETYPE} //"ERPCOMMONCACHE.TMS_SERVICETYPE"
                                 valuemember="ServiceTypeID"
                                 nameMember="ServiceTypeName"
                                 controltype="InputControl"
@@ -425,7 +426,7 @@ class EditCom extends React.Component {
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
                                 isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                                loaditemcachekeyid={ERPCOMMONCACHE_PARTNER}//"ERPCOMMONCACHE.PARTNER"
                                 valuemember="PartnerID"
                                 nameMember="PartnerName"
                                 controltype="InputControl"
@@ -449,7 +450,7 @@ class EditCom extends React.Component {
                                 readOnly={this.state.IsSystem}
                                 validatonList={["Comborequired"]}
                                 isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.AREATT"
+                                loaditemcachekeyid={ERPCOMMONCACHE_AREATT} //"ERPCOMMONCACHE.AREATT"
                                 valuemember="AreaID"
                                 nameMember="AreaName"
                                 controltype="InputControl"

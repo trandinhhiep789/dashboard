@@ -10,6 +10,7 @@ import {
     AddAPIFeeAppendixPath,
     EditAPIFeeAppendixPath
 } from "../contants/index.js";
+import { ERPCOMMONCACHE_SERVICESEASONTYPE } from "../../../../../constants/keyCache";
 
 
 class FeeAppendixDetailElementCom extends Component {
@@ -98,7 +99,7 @@ class FeeAppendixDetailElementCom extends Component {
                             label="loại thời vụ"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.SERVICESEASONTYPE"
+                            loaditemcachekeyid={ERPCOMMONCACHE_SERVICESEASONTYPE} //"ERPCOMMONCACHE.SERVICESEASONTYPE"
                             valuemember="ServiceSeasonTypeID"
                             nameMember="ServiceSeasonTypeName"
                             controltype="InputControl"
