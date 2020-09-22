@@ -80,6 +80,8 @@ class EditCom extends React.Component {
             }
         }
 
+        // console.log("MLObject", MLObject)
+
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -347,7 +349,7 @@ class EditCom extends React.Component {
 
                     <div className="row">
                         <div className="col-md-6">
-                            <FormControl.TextBox
+                            <FormControl.TextBoxNew
                                 name="txtServiceAgreementID"
                                 colspan="8"
                                 labelcolspan="4"

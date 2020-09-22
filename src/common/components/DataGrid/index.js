@@ -6,7 +6,7 @@ import { DEFAULT_ROW_PER_PAGE } from "../../../constants/systemVars.js";
 import GridCell from "./GridCell";
 import GridPage from "./GridPage";
 import { connect } from 'react-redux';
-import { callGetCache,callGetUserCache } from "../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../constants/functionLists";
 import { hideModal } from '../../../actions/modal';
 import Media from "react-media";
@@ -481,6 +481,7 @@ class DataGridCom extends Component {
                                                     onInsertClickEdit={this.handleInsertClickEdit}
                                                     pkColumnName={this.state.ListPKColumnName}
                                                     params={this.props.params}
+                                                    linkTo={this.state.ListPKColumnName + index}
                                                 />;
                                                 return (
                                                     <td key={columnItem.Name} style={cellStyle}  >{cellData}</td>
@@ -623,7 +624,7 @@ class DataGridCom extends Component {
         if (this.state.IsPermision === 'error') {
             return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
         }
-       // console.log("this.props", this.props)
+        // console.log("this.props", this.props)
         return (
 
             <div className="col-lg-12 SearchForm">
