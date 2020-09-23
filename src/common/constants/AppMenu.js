@@ -189,14 +189,14 @@ const AppMenu = [
                         LinkTo: '/UserCoordinator',
                         MenuIcon: '',
                         SubMenu: []
-                    },
-                    {
-                        MenuName: 'UserGroup',
-                        MenuTitle: 'Cấp quyền nhân viên theo kho',
-                        LinkTo: '/UserGroup',
-                        MenuIcon: '',
-                        SubMenu: []
-                    }
+                     }
+                    // ,{
+                    //     MenuName: 'UserGroup',
+                    //     MenuTitle: 'Cấp quyền nhân viên theo kho',
+                    //     LinkTo: '/UserGroup',
+                    //     MenuIcon: '',
+                    //     SubMenu: []
+                    // }
 
                 ]
             },
