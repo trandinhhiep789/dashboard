@@ -7,7 +7,7 @@ import { DEFAULT_ROW_PER_PAGE } from "../../../../constants/systemVars.js";
 import GridCell from "../../../../common/components/DataGrid/GridCell";
 import GridPage from "../../../../common/components/DataGrid/GridPage";
 import { connect } from 'react-redux';
-import { callGetCache,callGetUserCache} from "../../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
 import { formatDate } from "../../../../common/library/CommonLib.js";
 import { formatMoney } from '../../../../utils/function';
@@ -471,7 +471,7 @@ class DataGridShipmentOderCom extends Component {
         const strShipmentOrdervalue = e.target.value;
         const name = e.target.name;
         const objShipmentOrder = this.state.DataSource.find(n => n[name] == strShipmentOrdervalue)
-        let objShip = { ShipmentOrderID: objShipmentOrder.ShipmentOrderID, CarrierPartnerID: objShipmentOrder.CarrierPartnerID, CarrierTypeID: objShipmentOrder.CarrierTypeID,DeliverUserList:[] };
+        let objShip = { ShipmentOrderID: objShipmentOrder.ShipmentOrderID, CarrierPartnerID: objShipmentOrder.CarrierPartnerID, CarrierTypeID: objShipmentOrder.CarrierTypeID, DeliverUserList: [] };
         if (e.target.checked) {
             this.state.GridDataShip.push(objShip);
         }
@@ -534,12 +534,13 @@ class DataGridShipmentOderCom extends Component {
                 <table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0" >
                     <thead className="thead-light">
                         <tr>
-                            <th className="jsgrid-header-cell" style={{ width: 50 }} >Tác vụ</th>
-                            <th className="jsgrid-header-cell" style={{ width: 190, minWidth: 190 }} >Thời gian giao</th>
-                            <th className="jsgrid-header-cell" style={{ width: 300, minWidth: 350 }}>Địa chỉ</th>
+                            <th className="jsgrid-header-cell" style={{ width: 51 }} >Tác vụ</th>
+                            <th className="jsgrid-header-cell" style={{ width: 180, minWidth: 180 }} >Thời gian giao</th>
+                            <th className="jsgrid-header-cell" style={{ width: 300, minWidth: 300 }}>Địa chỉ</th>
                             <th className="jsgrid-header-cell" style={{ width: 200 }}>Mã/Loại yêu cầu vận chuyển</th>
-                            <th className="jsgrid-header-cell" style={{ width: 250, minWidth: 200 }} >Ghi chú</th>
-                            <th className="jsgrid-header-cell" style={{ width: 150, minWidth: 150 }} >COD/Vật tư/Tổng tiền</th>
+                            <th className="jsgrid-header-cell" style={{ width: 100, minWidth: 150 }} >Tên sản phẩm</th>
+                            <th className="jsgrid-header-cell" style={{ width: 100, minWidth: 150 }} >Ghi chú</th>
+                            <th className="jsgrid-header-cell" style={{ width: 131, minWidth: 131 }} >COD/Vật tư/Tổng tiền</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -549,7 +550,7 @@ class DataGridShipmentOderCom extends Component {
                                 if (index % 2 != 0) {
                                     rowClass = "jsgrid-alt-row";
                                 }
-                               // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
+                                // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
                                 return (<tr key={rowIndex}>
                                     <td className="btngroupleft">
                                         <div className="group-action">
@@ -600,7 +601,8 @@ class DataGridShipmentOderCom extends Component {
                                                         {rowItem.ReceiverFullName}
                                                     </span>
                                                     <span className="line">-</span>
-                                                    <span className="phone">({rowItem.ReceiverPhoneNumber.substr(0, 6)}****)</span>
+                                                    <span className="phone">({rowItem.ReceiverPhoneNumber.substr(0, 4)}****)</span>
+                                                    <span className="phone">{rowItem.PartnerRequestID}</span>
                                                 </span>
                                             </label>
                                             <label className="item address-receiver">
@@ -616,6 +618,7 @@ class DataGridShipmentOderCom extends Component {
                                                 <span className="times">
                                                     <span className="item pull-left">Tạo lúc: </span>
                                                     <span className="item pull-right"> {formatDate(rowItem.CreatedOrderTime)}</span>
+                                                    <span className="item pull-right"> Khoản cách: {rowItem.EstimateDeliveryDistance + "Km " + rowItem.EstimateDeliveryLong + "'"}</span>
                                                 </span>
                                             </label>
                                         </div>
@@ -630,8 +633,15 @@ class DataGridShipmentOderCom extends Component {
                                             <label className="item address-receiver">
                                                 <span>{rowItem.ShipmentOrderTypeName}</span>
                                             </label>
+                                            <label className="item address-receiver">
+                                                <span>ĐP:{rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span>
+                                            </label>
+                                            <label className="item address-receiver">
+                                                <span>NV:</span>
+                                            </label>
                                         </div>
                                     </td>
+                                    <td>{rowItem.PrimaryShipItemName}</td>
                                     <td>{rowItem.OrderNote.split("-")[0]}</td>
                                     <td className="group-price">
                                         <div className="group-row">
