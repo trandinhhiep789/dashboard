@@ -537,9 +537,8 @@ class DataGridShipmentOderCom extends Component {
                             <th className="jsgrid-header-cell" style={{ width: 51 }} >Tác vụ</th>
                             <th className="jsgrid-header-cell" style={{ width: 180, minWidth: 180 }} >Thời gian giao</th>
                             <th className="jsgrid-header-cell" style={{ width: 300, minWidth: 300 }}>Địa chỉ</th>
-                            <th className="jsgrid-header-cell" style={{ width: 200 }}>Mã/Loại yêu cầu vận chuyển</th>
-                            <th className="jsgrid-header-cell" style={{ width: 100, minWidth: 150 }} >Tên sản phẩm</th>
-                            <th className="jsgrid-header-cell" style={{ width: 100, minWidth: 150 }} >Ghi chú</th>
+                            <th className="jsgrid-header-cell" style={{ width: 180 }}>Mã/Loại yêu cầu vận chuyển</th>
+                            <th className="jsgrid-header-cell" style={{ width: 180, minWidth: 180 }} >Tên sản phẩm/Ghi chú</th>
                             <th className="jsgrid-header-cell" style={{ width: 131, minWidth: 131 }} >COD/Vật tư/Tổng tiền</th>
                         </tr>
                     </thead>
@@ -550,8 +549,12 @@ class DataGridShipmentOderCom extends Component {
                                 if (index % 2 != 0) {
                                     rowClass = "jsgrid-alt-row";
                                 }
+                                let rowtrClass = "";
+                                if (rowItem.IsView == true) {
+                                    rowtrClass = "jsgrid-alt-row";
+                                }
                                 // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
-                                return (<tr key={rowIndex}>
+                                return (<tr key={rowIndex} className ={rowtrClass}>
                                     <td className="btngroupleft">
                                         <div className="group-action">
                                             <div className="checkbox item-action">
@@ -641,8 +644,16 @@ class DataGridShipmentOderCom extends Component {
                                             </label>
                                         </div>
                                     </td>
-                                    <td>{rowItem.PrimaryShipItemName}</td>
-                                    <td>{rowItem.OrderNote.split("-")[0]}</td>
+                                    <td>
+                                        <div className="group-info-row">
+                                            <label className="item address-receiver">
+                                                <span>{rowItem.PrimaryShipItemName}</span>
+                                            </label>
+                                            <label className="item address-receiver">
+                                                <span>{rowItem.OrderNote.split("-")[0]}</span>
+                                            </label>
+                                        </div>
+                                    </td>
                                     <td className="group-price">
                                         <div className="group-row">
                                             <span className="item pricecod"> {formatMoney(rowItem.TotalCOD, 0)}</span>

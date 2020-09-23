@@ -171,7 +171,7 @@ export const SearchElementList = [
         name: "cbShipmentOrderStatusID",
         DataSourceMember: "ShipmentOrderStatusID",
         colspan: 2,
-        value: 20,
+        value: -1,
         isMultiSelect: false,
         placeholder: "---Trạng thái---",
         listoption: [],
@@ -244,7 +244,7 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@SHIPMENTORDERSTATUSID",
-        SearchValue: 20
+        SearchValue: -1
     },
     {
         SearchKey: "@IsCoordinator",
