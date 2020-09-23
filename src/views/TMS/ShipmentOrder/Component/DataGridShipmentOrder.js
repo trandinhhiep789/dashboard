@@ -531,7 +531,7 @@ class DataGridShipmentOderCom extends Component {
 
         return (
             <div className=" table-responsive">
-                <table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0" >
+                <table className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder" cellSpacing="0" >
                     <thead className="thead-light">
                         <tr>
                             <th className="jsgrid-header-cell" style={{ width: 51 }} >Tác vụ</th>
@@ -549,9 +549,9 @@ class DataGridShipmentOderCom extends Component {
                                 if (index % 2 != 0) {
                                     rowClass = "jsgrid-alt-row";
                                 }
-                                let rowtrClass = "";
+                                let rowtrClass = "unReadingItem";
                                 if (rowItem.IsView == true) {
-                                    rowtrClass = "jsgrid-alt-row";
+                                    rowtrClass = "noReadingItem readingItem";
                                 }
                                 // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
                                 return (<tr key={rowIndex} className ={rowtrClass}>
@@ -620,13 +620,13 @@ class DataGridShipmentOderCom extends Component {
                                                 <i className="ti ti-timer"></i>
                                                 <span className="times">
                                                     <span className="item pull-left">Tạo lúc: </span>
-                                                    <span className="item pull-right"> {formatDate(rowItem.CreatedOrderTime)}</span>
-                                                    <span className="item pull-right"> Khoản cách: {rowItem.EstimateDeliveryDistance + "Km " + rowItem.EstimateDeliveryLong + "'"}</span>
+                                                    <span className="item pull-right"><span className="txtCreatedOrderTime">{formatDate(rowItem.CreatedOrderTime)}</span></span>
+                                                    <span className="item pull-right intervale"> Khoảng cách: <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km " + rowItem.EstimateDeliveryLong + "'"}</span></span>
                                                 </span>
                                             </label>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td className="group-infoShipmentOrder">
                                         <div className="group-info-row">
                                             <label className="item person">
                                                 <span className="person-info" style={{ fontSize: 15 }}>
@@ -637,7 +637,7 @@ class DataGridShipmentOderCom extends Component {
                                                 <span>{rowItem.ShipmentOrderTypeName}</span>
                                             </label>
                                             <label className="item address-receiver">
-                                                <span>ĐP:{rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span>
+                                                <span>ĐP: <span className="coordinatorUser">{rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span></span>
                                             </label>
                                             <label className="item address-receiver">
                                                 <span>NV:</span>
