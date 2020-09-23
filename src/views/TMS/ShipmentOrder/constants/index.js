@@ -200,7 +200,7 @@ export const SearchElementList = [
         value: -1,
         isMultiSelect: false,
         placeholder: "--Trạng thái xem--",
-        listoption: [{ value: -1, label: "--Trạng thái xem--" },{ value: 1, label: "Đã xem" },{ value: 2, label: "Chưa xem" }],
+        listoption: [{ value: -1, label: "--Trạng thái xem--" },{ value: 1, label: "Đã xem" },{ value: 0, label: "Chưa xem" }],
         classNameCol:"col-custom"
     }
 ];
