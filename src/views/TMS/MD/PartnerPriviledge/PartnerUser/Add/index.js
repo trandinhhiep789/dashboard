@@ -29,9 +29,10 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { callGetCache } from "../../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import Collapsible from 'react-collapsible';
 import { PARTNERUSER_ADD } from "../../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_PARTNERUSER } from "../../../../../../constants/keyCache";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -216,6 +217,7 @@ class AddCom extends React.Component {
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
+            this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERUSER);
             this.showMessage(apiResult.Message);
         });
     }
@@ -273,6 +275,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));

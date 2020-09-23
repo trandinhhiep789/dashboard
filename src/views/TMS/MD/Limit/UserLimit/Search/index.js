@@ -111,7 +111,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchUserLimitAPIPath, searchData).then(apiResult => {
-            // console.log('SearchUserLimit', apiResult, searchData);
+            console.log('SearchUserLimit', apiResult, searchData);
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const sortResult = apiResult.ResultObject.sort((a, b) => (a.UserName > b.UserName) ? 1
@@ -170,9 +170,7 @@ class SearchCom extends React.Component {
     }
 
     handleCloseMessage() {
-        if (!this.state.IsCallAPIError) {
-            this.callSearchData(this.state.SearchData);
-        }
+        if (!this.state.IsCallAPIError);
     }
 
     showMessage(message) {

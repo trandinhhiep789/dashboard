@@ -10,6 +10,7 @@ import {
     AddAPIFeeAppendixPath,
     EditAPIFeeAppendixPath
 } from "../contants/index.js";
+import { ERPCOMMONCACHE_SERVICESEASONTYPE } from "../../../../../constants/keyCache";
 
 
 class FeeAppendixDetailElementCom extends Component {
@@ -32,6 +33,7 @@ class FeeAppendixDetailElementCom extends Component {
     handleSubmit(From, MLObject) {
         MLObject.SignedDate = this.props.dataSource.SignedDate;
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID;
+        // console.log("MLObject", MLObject)
         if (this.props.index != undefined) {
             MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
             this.props.callFetchAPI(APIHostName, EditAPIFeeAppendixPath, MLObject).then(apiResult => {
@@ -98,7 +100,7 @@ class FeeAppendixDetailElementCom extends Component {
                             label="loại thời vụ"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.SERVICESEASONTYPE"
+                            loaditemcachekeyid={ERPCOMMONCACHE_SERVICESEASONTYPE} //"ERPCOMMONCACHE.SERVICESEASONTYPE"
                             valuemember="ServiceSeasonTypeID"
                             nameMember="ServiceSeasonTypeName"
                             controltype="InputControl"

@@ -224,7 +224,7 @@ export const DataGridColumnList = [
     },
     {
         Name: "ServiceAgreementID",
-        Type: "texttolink",
+        Type: "texttolinkNew",
         Caption: "Mã hợp đồng",
         DataSourceMember: "ServiceAgreementID",
         Link: "/ServiceAgreement/Detail/",

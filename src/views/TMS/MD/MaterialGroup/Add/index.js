@@ -37,6 +37,7 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
+        MLObject.MaterialGroupID = MLObject.MaterialGroupID.replace(/\s+/g, '');
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {

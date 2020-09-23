@@ -312,9 +312,16 @@ export const DataGridColumnList = [
         Width: 60
     },
     {
+        Name: "MaterialProductID",
+        Type: "text",
+        Caption: "Mã sản phẩm vật tư",
+        DataSourceMember: "MaterialProductID",
+        Width: 200
+    },
+    {
         Name: "MaterialProductName",
         Type: "text",
-        Caption: "Sản phẩm vật tư",
+        Caption: "Tên sản phẩm vật tư",
         DataSourceMember: "MaterialProductName",
         Width: 200
     },

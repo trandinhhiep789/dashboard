@@ -18,7 +18,7 @@ import Select from 'react-select';
 import { formatMoney } from '../../../../utils/function';
 import { formatDateNew } from '../../../../common/library/CommonLib.js';
 import { ExportStringToDate } from "../../../../common/library/ultils";
-
+import { Base64 } from 'js-base64';
 import { el } from 'date-fns/locale';
 
 
@@ -45,6 +45,120 @@ const mapDispatchToProps = dispatch => {
     }
 }
 //#endregion connect
+
+
+
+class TextBoxNew extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.handKeyDown = this.handKeyDown.bind(this);
+    }
+    static defaultProps = {
+        controltype: 'InputControl'
+    }
+
+    handleValueChange(e) {
+        if (this.props.onValueChange != null) {
+            this.props.onValueChange(e.target.name, e.target.value, "", e, undefined);
+        }
+
+    }
+
+    handKeyDown(e) {
+        if (e.key == 'Enter') {
+            if (this.props.onhandKeyDown != null) {
+                this.props.onhandKeyDown(e.target.name, e.target.value, "", e, this.props.validatonList);
+            }
+        }
+    }
+
+    render() {
+        
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-4";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null) {
+            formRowClassName += this.props.classNameCustom;
+        }
+        // console.log('this.props.label', this.props.label)
+        console.log("222", Base64.decode(this.props.value), this.props.value)
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
+            className += " is-invalid";
+
+            return (
+                <div className={formRowClassName} >
+                    {this.props.label.length > 0 ?
+                        <div className={labelDivClassName}>
+                            <label className="col-form-label 2">
+                                {this.props.label}<span className="text-danger"> {star}</span>
+                            </label>
+                        </div>
+                        : ""
+                    }
+
+                    <div className={formGroupClassName}>
+                        <input type="text" name={this.props.name}
+                            onChange={this.handleValueChange}
+                            onBlur={this.handKeyDown}
+                            value={Base64.decode(this.props.value)}
+                            key={this.props.name}
+                            className={className}
+                            autoFocus={true}
+                            ref={this.props.inputRef}
+                            placeholder={this.props.placeholder}
+                            disabled={this.props.readOnly}
+                            maxLength={this.props.maxSize}
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    </div>
+                </div>
+            );
+        }
+        else {
+            return (
+                <div className={formRowClassName} >
+                    {this.props.label.length > 0 ?
+                        <div className={labelDivClassName}>
+                            <label className="col-form-label 2">
+                                {this.props.label}<span className="text-danger"> {star}</span>
+                            </label>
+                        </div>
+                        : ""
+                    }
+                    <div className={formGroupClassName}>
+                        <input type="text" name={this.props.name}
+                            onChange={this.handleValueChange}
+                            onKeyPress={(event) => this.handKeyDown(event)}
+                            value={Base64.decode(this.props.value)}
+                            key={this.props.name}
+                            className={className}
+                            autoFocus={false}
+                            ref={this.props.inputRef}
+                            placeholder={this.props.placeholder}
+                            disabled={this.props.readOnly}
+                            maxLength={this.props.maxSize}
+                        />
+                    </div>
+                </div>
+            );
+        }
+    }
+}
 
 
 class TextBox extends React.Component {
@@ -1629,7 +1743,7 @@ export const ComboBoxSelect = connect(mapStateToProps, mapDispatchToProps)(Combo
 
 
 export default {
-    FormControlTextBox, TextBox, TextArea, CheckBox, modal, TextBoxCurrency,
+    FormControlTextBox, TextBox, TextArea, CheckBox, modal, TextBoxCurrency,TextBoxNew,
     FormControlComboBox,
     FormControlDatetime,
     FormControlDatetimeNew,

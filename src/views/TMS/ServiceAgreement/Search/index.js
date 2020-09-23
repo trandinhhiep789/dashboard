@@ -34,7 +34,7 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-
+import { Base64 } from 'js-base64';
 import { callGetCache } from "../../../../actions/cacheAction";
 
 class SearchCom extends React.Component {
@@ -67,7 +67,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            
+
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -77,6 +77,9 @@ class SearchCom extends React.Component {
             else {
 
                 const result = apiResult.ResultObject.map((item) => {
+
+                    item.ServiceAgreementIDLable =  Base64.decode(item.ServiceAgreementID);//item.ServiceAgreementID ;
+
                     item.ExtendLable = item.ExtendedDate ? formatDate(item.ExtendedDate) : 'Chưa gia hạn';
                     let currentDate = new Date();
                     if (item.ExtendedDate != null) {
@@ -119,7 +122,7 @@ class SearchCom extends React.Component {
 
                 const tempData = apiResult.ResultObject.map((item, index) => {
                     item.ExtendAgreement = item.ExtendedDate ? formatDate(item.ExtendedDate) : 'Chưa gia hạn';
-                    
+
                     const ExpiredDate = new Date(item.ExpiredDate);
                     let currentDate = new Date();
 
@@ -166,7 +169,7 @@ class SearchCom extends React.Component {
                         "Đối tác": item.PartnerName,
                         "Loại dịch vụ": item.ServiceTypeName,
                         "Khu vực": item.AreaName,
-                        "Ngày ký hợp đồng":  item.SignedDate,
+                        "Ngày ký hợp đồng": item.SignedDate,
                         "Ngày hết hạn hợp đồng": item.ExpiredDate,
                         "Gia hạn đến": item.ExtendAgreement,
                         "Trạng thái": item.StatusAgreement
@@ -295,6 +298,7 @@ class SearchCom extends React.Component {
     }
 
     render() {
+        console.log("gridDataSource", this.state.gridDataSource)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />

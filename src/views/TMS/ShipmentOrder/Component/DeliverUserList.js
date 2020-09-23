@@ -5,6 +5,7 @@ import { callGetCache } from "../../../../actions/cacheAction";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
+import { ERPCOMMONCACHE_PARTNERUSER } from '../../../../constants/keyCache';
 
 class DeliverUserListCom extends React.Component {
     constructor(props) {
@@ -185,7 +186,7 @@ class DeliverUserListCom extends React.Component {
                         disabled={this.props.disabled}
                         readOnly={this.props.readOnly}
                         isautoloaditemfromcache={true}
-                        loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
+                        loaditemcachekeyid= {ERPCOMMONCACHE_PARTNERUSER} //"ERPCOMMONCACHE.PARTNERUSER"
                         valuemember="UserName"
                         nameMember="FullName"
                         controltype="InputControl"
