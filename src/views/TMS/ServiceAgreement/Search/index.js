@@ -67,7 +67,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-
+            console.log("SA:", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -77,8 +77,6 @@ class SearchCom extends React.Component {
             else {
 
                 const result = apiResult.ResultObject.map((item) => {
-
-                    item.ServiceAgreementIDLable =  Base64.decode(item.ServiceAgreementID);//item.ServiceAgreementID ;
 
                     item.ExtendLable = item.ExtendedDate ? formatDate(item.ExtendedDate) : 'Chưa gia hạn';
                     let currentDate = new Date();
@@ -165,7 +163,7 @@ class SearchCom extends React.Component {
                     }
 
                     let element = {
-                        "Mã hợp đồng": item.ServiceAgreementID,
+                        "Số hợp đồng": item.ServiceAgreementNumber,
                         "Đối tác": item.PartnerName,
                         "Loại dịch vụ": item.ServiceTypeName,
                         "Khu vực": item.AreaName,

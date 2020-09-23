@@ -224,10 +224,17 @@ export const DataGridColumnList = [
     },
     {
         Name: "ServiceAgreementID",
-        Type: "texttolinkNew",
+        Type: "texttolink",
         Caption: "Mã hợp đồng",
         DataSourceMember: "ServiceAgreementID",
         Link: "/ServiceAgreement/Detail/",
+        Width: 140
+    },
+    {
+        Name: "ServiceAgreementNumber",
+        Type: "text",
+        Caption: "Số hợp đồng",
+        DataSourceMember: "ServiceAgreementNumber",
         Width: 140
     },
     {
@@ -478,10 +485,10 @@ export const AddElementList = [
 
 export const MLObjectDefinition = [
     {
-        Name: "ServiceAgreementID",
+        Name: "ServiceAgreementNumber",
         DefaultValue: "",
-        BindControlName: "txtServiceAgreementID",
-        DataSourceMember: "ServiceAgreementID"
+        BindControlName: "txtServiceAgreementNumber",
+        DataSourceMember: "ServiceAgreementNumber"
     },
 
     {

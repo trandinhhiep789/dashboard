@@ -80,7 +80,7 @@ class AddCom extends React.Component {
         // MLObject.SignedDate = new Date(ExportStringToDate(MLObject.SignedDate));
         // MLObject.ExpiredDate = new Date(ExportStringToDate(MLObject.ExpiredDate));
 
-        MLObject.ServiceAgreementID = Base64.encode(MLObject.ServiceAgreementID)
+        MLObject.ServiceAgreementNumber = MLObject.ServiceAgreementNumber.replace(/\s/g, '')
         //  console.log("MLObject", MLObject)
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
@@ -307,15 +307,15 @@ class AddCom extends React.Component {
 
                     <div className="col-md-6">
                         <FormControl.TextBox
-                            name="txtServiceAgreementID"
+                            name="txtServiceAgreementNumber"
                             colspan="8"
                             labelcolspan="4"
                             readOnly={false}
-                            label="mã hợp đồng"
+                            label="số hợp đồng"
                             placeholder="Mã hợp đồng"
                             controltype="InputControl"
                             value=""
-                            datasourcemember="ServiceAgreementID"
+                            datasourcemember="ServiceAgreementNumber"
                             validatonList={['required']}
                         />
                     </div>

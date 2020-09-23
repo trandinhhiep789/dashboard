@@ -81,6 +81,7 @@ class EditCom extends React.Component {
         }
 
         // console.log("MLObject", MLObject)
+        MLObject.ServiceAgreementNumber = MLObject.ServiceAgreementNumber.replace(/\s/g, '')
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -349,7 +350,7 @@ class EditCom extends React.Component {
 
                     <div className="row">
                         <div className="col-md-6">
-                            <FormControl.TextBoxNew
+                            <FormControl.TextBox
                                 name="txtServiceAgreementID"
                                 colspan="8"
                                 labelcolspan="4"
@@ -359,6 +360,20 @@ class EditCom extends React.Component {
                                 controltype="InputControl"
                                 value=""
                                 datasourcemember="ServiceAgreementID"
+                                validatonList={['required']}
+                            />
+                        </div>
+                        <div className="col-md-6">
+                            <FormControl.TextBox
+                                name="txtServiceAgreementNumber"
+                                colspan="8"
+                                labelcolspan="4"
+                                readOnly={false}
+                                label="số hợp đồng"
+                                placeholder="Mã hợp đồng"
+                                controltype="InputControl"
+                                value=""
+                                datasourcemember="ServiceAgreementNumber"
                                 validatonList={['required']}
                             />
                         </div>
