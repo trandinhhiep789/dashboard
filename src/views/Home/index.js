@@ -76,6 +76,8 @@ import UserLimit from "../TMS/MD/Limit/UserLimit";
 import UserLimitTest from "../TMS/MD/Limit/UserLimit/Search/indexNew.js";
 import DestroyRequest from "../TMS/DestroyRequest";
 import InventoryRequest from "../TMS/InventoryRequest";
+import RewardPriceTable from "../TMS/MD/RewardPrice/RewardPriceTable";
+
 
 import NotFound from '../NotFound'
 import InventoryRequestType from "../TMS/MD/InventoryRequestType";
@@ -215,6 +217,9 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/UserLimitTest" component={UserLimitTest} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} />
+
+                                <PrivateRoute path="/RewardPriceTable" component={RewardPriceTable} isLoggedIn={isLoggedIn} />
+
                                 <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
