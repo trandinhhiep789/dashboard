@@ -60,7 +60,6 @@ export default class GridCell extends Component {
     }
 
     componentDidMount() {
-        console.log("type:", this.props);
     }
 
     render() {
