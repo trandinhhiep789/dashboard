@@ -49,7 +49,7 @@ class LogoutCom extends React.Component {
             }
         });
         deleteCookie(COOKIELOGIN);
-        // clearAllLocalCacheData();
+        clearAllLocalCacheData();
         localStorage.removeItem('LoginInfo')
     }
 
