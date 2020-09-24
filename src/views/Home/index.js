@@ -77,6 +77,8 @@ import UserLimitTest from "../TMS/MD/Limit/UserLimit/Search/indexNew.js";
 import DestroyRequest from "../TMS/DestroyRequest";
 import InventoryRequest from "../TMS/InventoryRequest";
 import RewardPriceTable from "../TMS/MD/RewardPrice/RewardPriceTable";
+import UseGuide from "../../views/UseGuide";
+
 
 
 import NotFound from '../NotFound'
@@ -241,6 +243,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/PartnerPayableDetail" component={PartnerPayableDetail} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/DestroyRequest" component={DestroyRequest} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/InventoryRequest" component={InventoryRequest} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/UseGuide" component={UseGuide} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
