@@ -79,6 +79,9 @@ import InventoryRequest from "../TMS/InventoryRequest";
 
 import NotFound from '../NotFound'
 import InventoryRequestType from "../TMS/MD/InventoryRequestType";
+import RewardType from "../TMS/MD/RewardType";
+import RewardPriceType from "../TMS/MD/RewardPriceType";
+import RewardPosition from "../TMS/MD/RewardPosition";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -236,6 +239,12 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/PartnerPayableDetail" component={PartnerPayableDetail} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/DestroyRequest" component={DestroyRequest} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/InventoryRequest" component={InventoryRequest} isLoggedIn={isLoggedIn} />
+
+                                <PrivateRoute path="/RewardType" component={RewardType} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/RewardPriceType" component={RewardPriceType} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/RewardPosition" component={RewardPosition} isLoggedIn={isLoggedIn} />
+                                
+
 
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 

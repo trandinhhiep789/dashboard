@@ -340,7 +340,37 @@ const AppMenu = [
                         SubMenu: []
                     }
                 ]
-            }
+            },
+            {
+                MenuName: 'Reward',
+                MenuTitle: 'Thưởng nhân viên',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'RewardType',
+                        MenuTitle: 'Loại thưởng',
+                        LinkTo: '/RewardType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'RewardPriceType',
+                        MenuTitle: 'Loại đơn giá thưởng',
+                        LinkTo: '/RewardPriceType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'RewardPosition',
+                        MenuTitle: 'Vị trí thưởng',
+                        LinkTo: '/RewardPosition',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                   
+                ]
+            },
         ]
     },
     {
