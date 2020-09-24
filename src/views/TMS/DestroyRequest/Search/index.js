@@ -66,6 +66,17 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         this.callSearchData(this.state.SearchData);
+       
+    }
+
+    callDataTest() {
+        const APIParams = {
+            "DestroyRequestTypeID": 9000,
+            "RequestStoreID": 4121,
+        };
+        this.props.callFetchAPI(APIHostName, 'api/DestroyRequest/LoadByDestroyRequestTypeIDAndRequestStoreID', APIParams).then(apiResult => {
+            console.log("callDataTest", apiResult)
+        })
     }
 
     callSearchData(searchData) {
@@ -120,6 +131,7 @@ class SearchCom extends React.Component {
                     dataExport: tempData,
                     IsCallAPIError: apiResult.IsError,
                 });
+                //this.callDataTest()
             }
         });
     }

@@ -340,6 +340,14 @@ const AppMenu = [
                         SubMenu: []
                     }
                 ]
+            },
+            {
+                
+                MenuName: 'RewardPriceTable',
+                MenuTitle: 'Đơn giá thưởng giao hàng và lắp đặt',
+                LinkTo: '/RewardPriceTable',
+                MenuIcon: '',
+                SubMenu: []
             }
         ]
     },

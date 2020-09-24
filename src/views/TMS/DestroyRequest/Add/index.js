@@ -95,7 +95,7 @@ class AddCom extends React.Component {
 
     getDataDestroyRequestRLByDestroyRequestType(param) {
         this.props.callFetchAPI(APIHostName, LoadAPIByDestroyRequestTypeIDPath, param).then(apiResult => {
-            // console.log("222", apiResult, param)
+             //console.log("getDataDestroyRequestRLByDestroyRequestType", apiResult, param)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -164,7 +164,7 @@ class AddCom extends React.Component {
 
     GetDataByRequestTypeID(DestroyRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByRequestTypeIDPath, DestroyRequestTypeID).then(apiResult => {
-            // console.log("RequestTypeID", DestroyRequestTypeID, apiResult)
+             //console.log("DestroyRequestTypeID", DestroyRequestTypeID, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
