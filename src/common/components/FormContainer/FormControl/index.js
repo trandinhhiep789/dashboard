@@ -74,7 +74,7 @@ class TextBoxNew extends React.Component {
     }
 
     render() {
-        
+
         let className = "form-control form-control-sm";
         if (this.props.CSSClassName != null)
             className = this.props.CSSClassName;
@@ -1604,7 +1604,7 @@ class ComboBoxSelectCom extends Component {
                     listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                     if (!result.IsError && result.ResultObject.CacheData != null) {
                         result.ResultObject.CacheData.map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
                         }
                         );
                         this.setState({ Listoption: listOption });
@@ -1626,7 +1626,7 @@ class ComboBoxSelectCom extends Component {
                     listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                     if (!result.IsError && result.ResultObject.CacheData != null) {
                         result.ResultObject.CacheData.map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
                         }
                         );
                         this.setState({ Listoption: listOption });
@@ -1743,7 +1743,7 @@ export const ComboBoxSelect = connect(mapStateToProps, mapDispatchToProps)(Combo
 
 
 export default {
-    FormControlTextBox, TextBox, TextArea, CheckBox, modal, TextBoxCurrency,TextBoxNew,
+    FormControlTextBox, TextBox, TextArea, CheckBox, modal, TextBoxCurrency, TextBoxNew,
     FormControlComboBox,
     FormControlDatetime,
     FormControlDatetimeNew,
