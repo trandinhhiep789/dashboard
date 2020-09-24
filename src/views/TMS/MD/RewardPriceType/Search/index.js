@@ -19,11 +19,11 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { MATERIALGROUP_VIEW, MATERIALGROUP_DELETE } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_REWARDPRICETYPE, ERPCOMMONCACHE_SERVICETYPE } from "../../../../../constants/keyCache";
+import { SERVICETYPE_VIEW, SERVICETYPE_DELETE, REWARDPRICETYPE_VIEW, REWARDPRICETYPE_DELETE } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -64,7 +64,8 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_REWARDPRICETYPE);
+                // this.handleSubmitInsertLog();
             }
         });
     }
@@ -91,11 +92,10 @@ class SearchCom extends React.Component {
                     IsShowForm: true
                 });
             } else {
-                this.setState({ IsShowForm: false,
-                    IsCallAPIError:!apiResult.IsError,
-                 });
-                 this.showMessage(apiResult.Message);
+                this.showMessage(apiResult.Message);
+                this.setState({ IsShowForm: false });
             }
+
         });
     }
 
@@ -155,7 +155,7 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm nhóm vật tư"
+                        FormName="Tìm kiếm danh sách loại đơn giá thưởng giao hàng và lắp đặt"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
@@ -169,15 +169,14 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={MATERIALGROUP_VIEW}
-                        DeletePermission={MATERIALGROUP_DELETE}
+                        RequirePermission={REWARDPRICETYPE_VIEW}
+                        DeletePermission={REWARDPRICETYPE_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />
                 </React.Fragment>
             );
-        }
-        else {
+        } else {
             return (
                 <div>
                     <label>Đang nạp dữ liệu ......</label>

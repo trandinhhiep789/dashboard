@@ -14,11 +14,9 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { AREATYPE_ADD, MATERIALGROUP_ADD } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
-
-
+import { ERPCOMMONCACHE_REWARDPRICETYPE, ERPCOMMONCACHE_SERVICETYPE } from "../../../../../constants/keyCache";
+import { REWARDPRICETYPE_ADD, SERVICETYPE_ADD } from "../../../../../constants/functionLists";
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -35,15 +33,14 @@ class AddCom extends React.Component {
         this.props.updatePagePath(AddPagePath);
     }
 
-
     handleSubmit(formData, MLObject) {
-        MLObject.MaterialGroupID = MLObject.MaterialGroupID.replace(/\s+/g, '');
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if(!apiResult.IsError){
-                this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_REWARDPRICETYPE);
+                //this.handleSubmitInsertLog(MLObject);
             }            
             this.showMessage(apiResult.Message);
         });
@@ -66,14 +63,14 @@ class AddCom extends React.Component {
 
     render() {
         const dataSource = {
-            IsActived: false
+            IsActived: true
         };
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
         return (
             <SimpleForm
-                FormName="Thêm nhóm vật tư"
+                FormName="Thêm loại đơn giá thưởng giao hàng và lắp đặt"
                 MLObjectDefinition={MLObjectDefinition} 
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
@@ -81,7 +78,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                RequirePermission={MATERIALGROUP_ADD}
+                RequirePermission={REWARDPRICETYPE_ADD}
                 ref={this.searchref}
             />
         );
