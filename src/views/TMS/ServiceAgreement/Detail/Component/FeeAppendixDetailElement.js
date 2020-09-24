@@ -83,7 +83,7 @@ class FeeAppendixDetailElementCom extends Component {
                             labelcolspan="3"
                             readOnly={true}
                             hidenControll={true}
-                            label="mã phụ lục sss"
+                            label="mã phụ lục"
                             placeholder="Mã phụ lục tự động nhập"
                             controltype="InputControl"
                             value=""
