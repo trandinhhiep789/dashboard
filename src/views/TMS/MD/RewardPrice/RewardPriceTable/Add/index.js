@@ -16,9 +16,10 @@ import {
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { WORKINGSHIFT_ADD } from "../../../../../../constants/functionLists";
+import { WORKINGSHIFT_ADD, REWARDPRICETABLE_ADD } from "../../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
-import { ERPCOMMONCACHE_WORKINGSHIFT } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_CARRIERTYPE, ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_REWARDPRICETYPE } from "../../../../../../constants/keyCache";
+
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -35,8 +36,6 @@ class AddCom extends React.Component {
             DataWard: [],
             cssNotification: "",
             iconNotification: "",
-            MainDriverUser: "",
-            MainCoordinatorStoreID: ""
         };
         this.searchref = React.createRef();
         this.gridref = React.createRef();
@@ -66,13 +65,13 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        
+
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+            console.log('apiResult', apiResult, MLObject);
+
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-            if (!apiResult.IsError) {
-                this.props.callClearLocalCache(ERPCOMMONCACHE_WORKINGSHIFT);
-            }
+
         });
     }
 
@@ -110,21 +109,6 @@ class AddCom extends React.Component {
         });
     }
 
-    onChangeUser(name, objUser) {
-
-        this.setState({
-            MainDriverUser: objUser.value
-        })
-    }
-
-    onChangeStore(name, objstore) {
-        this.setState({
-            MainCoordinatorStoreID: objstore.value
-        })
-
-    }
-
-
 
     render() {
         const { DataSource } = this.state;
@@ -141,95 +125,96 @@ class AddCom extends React.Component {
                     listelement={[]}
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
-                   // onchange={this.handleChange.bind(this)}
-                    RequirePermission={WORKINGSHIFT_ADD}
+                    // onchange={this.handleChange.bind(this)}
+                    // RequirePermission={REWARDPRICETABLE_ADD}
                 >
 
                     <div className="row">
+
                         <div className="col-md-6">
                             <FormControl.TextBox
-                                name="txtWorkingShiftID"
+                                name="txtRewardPriceTableName"
                                 colspan="8"
                                 labelcolspan="4"
                                 readOnly={false}
-                                label="mã ca làm việc"
-                                placeholder="Mã ca làm việc"
+                                label="tên đơn giá thưởng"
+                                placeholder="Tên đơn giá thưởng"
                                 controltype="InputControl"
                                 value=""
-                                maxSize={9}
-                                datasourcemember="WorkingShiftID"
-                                validatonList={['required', 'number']}
-                            />
-                        </div>
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                name="txtWorkingShiftName"
-                                colspan="8"
-                                labelcolspan="4"
-                                readOnly={false}
-                                label="tên ca làm việc"
-                                placeholder="Tên ca làm việc"
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="WorkingShiftName"
+                                datasourcemember="RewardPriceTableName"
                                 validatonList={['required']}
                             />
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.FormControlHour
-                                name="txtTimeStart"
+                            <FormControl.ComboBoxSelect
+                                name="cbRewardPriceTypeID"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
-                                label="thời gian bắt đầu"
-                                placeholder="Thời gian bắt đầu"
+                                label="loại đơn giá thưởng"
+                                validatonList={["Comborequired"]}
+                                isautoloaditemfromcache={true}
+                                placeholder="-- Vui lòng chọn --"
+                                loaditemcachekeyid={ERPCOMMONCACHE_REWARDPRICETYPE} //"ERPCOMMONCACHE.CARRIERTYPE"
+                                valuemember="RewardPriceTypeID"
+                                nameMember="RewardPriceTypeName"
                                 controltype="InputControl"
-                                formatHour="HH:mm"
-                                value=""
-                                datasourcemember="TimeStart"
-                                validatonList={['required']}
-                            />
+                                value={""}
+                                listoption={null}
+                                datasourcemember="CarrierTypeID" />
+                        </div>
+
+                        <div className="col-md-6">
+                            <FormControl.ComboBoxSelect
+                                name="cbCarrierTypeID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="loại phương tiện"
+                                validatonList={["Comborequired"]}
+                                isautoloaditemfromcache={true}
+                                placeholder="-- Vui lòng chọn --"
+                                loaditemcachekeyid={ERPCOMMONCACHE_CARRIERTYPE} //"ERPCOMMONCACHE.CARRIERTYPE"
+                                valuemember="CarrierTypeID"
+                                nameMember="CarrierTypeName"
+                                controltype="InputControl"
+                                value={""}
+                                listoption={null}
+                                datasourcemember="CarrierTypeID" />
                         </div>
 
 
                         <div className="col-md-6">
-
-                            <FormControl.FormControlHour
-                                name="txtTimeEnd"
+                            <FormControl.ComboBoxSelect
+                                name="cbAreaID"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
-                                formatHour="HH:mm"
-                                label="thời gian kết thúc làm việc"
-                                placeholder="Thời gian kết thúc làm việc"
+                                label="khu vực"
+                                validatonList={["Comborequired"]}
+                                isautoloaditemfromcache={true}
+                                placeholder="-- Vui lòng chọn --"
+                                loaditemcachekeyid={ERPCOMMONCACHE_AREATT} //"ERPCOMMONCACHE.AREATT"
+                                valuemember="AreaID"
+                                nameMember="AreaName"
                                 controltype="InputControl"
-                                value=""
-                                datasourcemember="TimeEnd"
-                                validatonList={['required']}
-                            />
+                                value={""}
+                                listoption={null}
+                                datasourcemember="AreaID" />
+
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.TextBox
-                                name="txtShiftNumber"
+                            <FormControl.CheckBox
+                                name="chkIsDefault"
                                 colspan="8"
                                 labelcolspan="4"
                                 readOnly={false}
-                                label="ca làm việc số"
-                                placeholder="Ca làm việc"
+                                label="Mặc định"
                                 controltype="InputControl"
                                 value=""
-                                maxSize={9}
-                                datasourcemember="ShiftNumber"
-                                validatonList={['required', 'number']}
+                                datasourcemember="IsDefault"
+                                classNameCustom="customCheckbox"
                             />
-
                         </div>
-
-                    </div>
-
-                    <div className="row">
 
                         <div className="col-md-12">
                             <FormControl.TextArea
@@ -275,6 +260,7 @@ class AddCom extends React.Component {
                         </div>
 
                     </div>
+
 
                 </FormContainer>
             </React.Fragment>
