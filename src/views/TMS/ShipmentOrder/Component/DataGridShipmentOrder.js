@@ -14,6 +14,7 @@ import { formatMoney } from '../../../../utils/function';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import ListShipCoordinator from '../Component/ListShipCoordinator.js';
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
 class DataGridShipmentOderCom extends Component {
     constructor(props) {
@@ -536,8 +537,8 @@ class DataGridShipmentOderCom extends Component {
                         <tr>
                             <th className="jsgrid-header-cell" style={{ width: 51 }} >Tác vụ</th>
                             <th className="jsgrid-header-cell" style={{ width: 180, minWidth: 180 }} >Thời gian giao</th>
-                            <th className="jsgrid-header-cell" style={{ width: 300, minWidth: 300 }}>Địa chỉ</th>
-                            <th className="jsgrid-header-cell" style={{ width: 180 }}>Mã/Loại yêu cầu vận chuyển</th>
+                            <th className="jsgrid-header-cell" style={{ width: 250, minWidth: 250 }}>Địa chỉ</th>
+                            <th className="jsgrid-header-cell" style={{ width: 250 , minWidth: 250 }}>Mã/Loại yêu cầu vận chuyển</th>
                             <th className="jsgrid-header-cell" style={{ width: 180, minWidth: 180 }} >Tên sản phẩm/Ghi chú</th>
                             <th className="jsgrid-header-cell" style={{ width: 131, minWidth: 131 }} >COD/Vật tư/Tổng tiền</th>
                         </tr>
@@ -574,6 +575,7 @@ class DataGridShipmentOderCom extends Component {
                                         </div>
 
                                     </td>
+                                    {/* <td>{rowItem.ExpectedDeliveryDate}</td> */}
                                     <td className="groupInfoAction">
                                         <div className="group-info-row">
                                             <label className="item time">
@@ -605,6 +607,7 @@ class DataGridShipmentOderCom extends Component {
                                                     </span>
                                                     <span className="line">-</span>
                                                     <span className="phone">({rowItem.ReceiverPhoneNumber.substr(0, 4)}****)</span>
+                                                    <span className="line">-</span>
                                                     <span className="phone">{rowItem.PartnerRequestID}</span>
                                                 </span>
                                             </label>
@@ -640,7 +643,7 @@ class DataGridShipmentOderCom extends Component {
                                                 <span>ĐP: <span className="coordinatorUser">{rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span></span>
                                             </label>
                                             <label className="item address-receiver">
-                                                <span>NV:</span>
+                                            <span>NV:{ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
                                             </label>
                                         </div>
                                     </td>
