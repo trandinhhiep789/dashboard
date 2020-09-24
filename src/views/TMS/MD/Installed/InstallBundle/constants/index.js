@@ -708,19 +708,19 @@ export const InstallBundle_MateriaColumnList = [
         min:0,
         max:9999
     },
-    {
-        name: "QuantityUnitID",
-        Type: "ComboBox",
-        Caption: "đơn vị tính",
-        label: "đơn vị tính",
-        datasourcemember: "QuantityUnitID",
-        isautoloaditemfromcache:true,
-        loaditemcachekeyid:"ERPCOMMONCACHE.QUANTITYUNIT",
-        valuemember:"QuantityUnitID",
-        nameMember:"QuantityUnit",
-        OrderIndex: 15,
-        hideInput: false
-    },
+    // {
+    //     name: "QuantityUnitID",
+    //     Type: "ComboBox",
+    //     Caption: "đơn vị tính",
+    //     label: "đơn vị tính",
+    //     datasourcemember: "QuantityUnitID",
+    //     isautoloaditemfromcache:true,
+    //     loaditemcachekeyid:"ERPCOMMONCACHE.QUANTITYUNIT",
+    //     valuemember:"QuantityUnitID",
+    //     nameMember:"QuantityUnit",
+    //     OrderIndex: 15,
+    //     hideInput: false
+    // },
     {
         name: "Note",
         Type: "TextArea",

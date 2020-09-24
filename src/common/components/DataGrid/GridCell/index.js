@@ -4,6 +4,7 @@ import { formatDate } from "../../../library/CommonLib.js";
 import { ModalManager } from 'react-dynamic-modal';
 import { MessageModal } from "../../../../common/components/Modal";
 import { formatMoney } from '../../../../utils/function';
+import { Base64 } from 'js-base64';
 export default class GridCell extends Component {
     constructor(props) {
         super(props);
@@ -58,6 +59,9 @@ export default class GridCell extends Component {
         />);
     }
 
+    componentDidMount() {
+    }
+
     render() {
         let link = this.props.link;
         const type = this.props.type;
@@ -74,7 +78,7 @@ export default class GridCell extends Component {
 
         }
 
-        //console.log("type:", type);
+
         // console.log("this.props.paramsn1111", this.props.params);
 
         let control = "";
@@ -94,8 +98,21 @@ export default class GridCell extends Component {
                         }
                     }}>{formatDate(text)}</Link>;
                 break;
+                
 
+            case "texttolinkNew":
+
+                control = <Link
+                    className="linktext texttolinkNew"
+                    to={{
+                        pathname: linkTo,
+                        state: {
+                            params: this.props.params
+                        }
+                    }}>{Base64.decode(text)}</Link>;
+                break;
             case "texttolink":
+
                 control = <Link
                     className="linktext"
                     to={{

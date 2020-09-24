@@ -45,6 +45,9 @@ class AbilityElementCom extends Component {
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
         MLObject.SignedDate = this.props.dataSource.SignedDate;
+
+        // console.log("MLObject", MLObject)
+
         if (this.props.index != undefined) {
             MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
             this.props.callFetchAPI(APIHostName, EditAPIAbilitiPath, MLObject).then(apiResult => {

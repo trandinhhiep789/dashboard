@@ -7,13 +7,14 @@ import { DEFAULT_ROW_PER_PAGE } from "../../../../constants/systemVars.js";
 import GridCell from "../../../../common/components/DataGrid/GridCell";
 import GridPage from "../../../../common/components/DataGrid/GridPage";
 import { connect } from 'react-redux';
-import { callGetCache,callGetUserCache} from "../../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
 import { formatDate } from "../../../../common/library/CommonLib.js";
 import { formatMoney } from '../../../../utils/function';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import ListShipCoordinator from '../Component/ListShipCoordinator.js';
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
 class DataGridShipmentOderCom extends Component {
     constructor(props) {
@@ -471,7 +472,7 @@ class DataGridShipmentOderCom extends Component {
         const strShipmentOrdervalue = e.target.value;
         const name = e.target.name;
         const objShipmentOrder = this.state.DataSource.find(n => n[name] == strShipmentOrdervalue)
-        let objShip = { ShipmentOrderID: objShipmentOrder.ShipmentOrderID, CarrierPartnerID: objShipmentOrder.CarrierPartnerID, CarrierTypeID: objShipmentOrder.CarrierTypeID,DeliverUserList:[] };
+        let objShip = { ShipmentOrderID: objShipmentOrder.ShipmentOrderID, CarrierPartnerID: objShipmentOrder.CarrierPartnerID, CarrierTypeID: objShipmentOrder.CarrierTypeID, DeliverUserList: [] };
         if (e.target.checked) {
             this.state.GridDataShip.push(objShip);
         }
@@ -531,15 +532,15 @@ class DataGridShipmentOderCom extends Component {
 
         return (
             <div className=" table-responsive">
-                <table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0" >
+                <table className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder" cellSpacing="0" >
                     <thead className="thead-light">
                         <tr>
-                            <th className="jsgrid-header-cell" style={{ width: 50 }} >Tác vụ</th>
-                            <th className="jsgrid-header-cell" style={{ width: 190, minWidth: 190 }} >Thời gian giao</th>
-                            <th className="jsgrid-header-cell" style={{ width: 300, minWidth: 350 }}>Địa chỉ</th>
-                            <th className="jsgrid-header-cell" style={{ width: 200 }}>Mã/Loại yêu cầu vận chuyển</th>
-                            <th className="jsgrid-header-cell" style={{ width: 250, minWidth: 200 }} >Ghi chú</th>
-                            <th className="jsgrid-header-cell" style={{ width: 150, minWidth: 150 }} >COD/Vật tư/Tổng tiền</th>
+                            <th className="jsgrid-header-cell" style={{ width: 51 }} >Tác vụ</th>
+                            <th className="jsgrid-header-cell" style={{ width: 180, minWidth: 180 }} >Thời gian giao</th>
+                            <th className="jsgrid-header-cell" style={{ width: 250, minWidth: 250 }}>Địa chỉ</th>
+                            <th className="jsgrid-header-cell" style={{ width: 250 , minWidth: 250 }}>Mã/Loại yêu cầu vận chuyển</th>
+                            <th className="jsgrid-header-cell" style={{ width: 180, minWidth: 180 }} >Tên sản phẩm/Ghi chú</th>
+                            <th className="jsgrid-header-cell" style={{ width: 131, minWidth: 131 }} >COD/Vật tư/Tổng tiền</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -549,8 +550,12 @@ class DataGridShipmentOderCom extends Component {
                                 if (index % 2 != 0) {
                                     rowClass = "jsgrid-alt-row";
                                 }
-                               // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
-                                return (<tr key={rowIndex}>
+                                let rowtrClass = "unReadingItem";
+                                if (rowItem.IsView == true) {
+                                    rowtrClass = "noReadingItem readingItem";
+                                }
+                                // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
+                                return (<tr key={rowIndex} className ={rowtrClass}>
                                     <td className="btngroupleft">
                                         <div className="group-action">
                                             <div className="checkbox item-action">
@@ -570,6 +575,7 @@ class DataGridShipmentOderCom extends Component {
                                         </div>
 
                                     </td>
+                                    {/* <td>{rowItem.ExpectedDeliveryDate}</td> */}
                                     <td className="groupInfoAction">
                                         <div className="group-info-row">
                                             <label className="item time">
@@ -600,7 +606,9 @@ class DataGridShipmentOderCom extends Component {
                                                         {rowItem.ReceiverFullName}
                                                     </span>
                                                     <span className="line">-</span>
-                                                    <span className="phone">({rowItem.ReceiverPhoneNumber.substr(0, 6)}****)</span>
+                                                    <span className="phone">({rowItem.ReceiverPhoneNumber.substr(0, 4)}****)</span>
+                                                    <span className="line">-</span>
+                                                    <span className="phone">{rowItem.PartnerRequestID}</span>
                                                 </span>
                                             </label>
                                             <label className="item address-receiver">
@@ -615,12 +623,13 @@ class DataGridShipmentOderCom extends Component {
                                                 <i className="ti ti-timer"></i>
                                                 <span className="times">
                                                     <span className="item pull-left">Tạo lúc: </span>
-                                                    <span className="item pull-right"> {formatDate(rowItem.CreatedOrderTime)}</span>
+                                                    <span className="item pull-right"><span className="txtCreatedOrderTime">{formatDate(rowItem.CreatedOrderTime)}</span></span>
+                                                    <span className="item pull-right intervale"> Khoảng cách: <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km " + rowItem.EstimateDeliveryLong + "'"}</span></span>
                                                 </span>
                                             </label>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td className="group-infoShipmentOrder">
                                         <div className="group-info-row">
                                             <label className="item person">
                                                 <span className="person-info" style={{ fontSize: 15 }}>
@@ -630,9 +639,24 @@ class DataGridShipmentOderCom extends Component {
                                             <label className="item address-receiver">
                                                 <span>{rowItem.ShipmentOrderTypeName}</span>
                                             </label>
+                                            <label className="item address-receiver">
+                                                <span>ĐP: <span className="coordinatorUser">{rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span></span>
+                                            </label>
+                                            <label className="item address-receiver">
+                                            <span>NV:{ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
+                                            </label>
                                         </div>
                                     </td>
-                                    <td>{rowItem.OrderNote.split("-")[0]}</td>
+                                    <td>
+                                        <div className="group-info-row">
+                                            <label className="item address-receiver">
+                                                <span>{rowItem.PrimaryShipItemName}</span>
+                                            </label>
+                                            <label className="item address-receiver">
+                                                <span>{rowItem.OrderNote.split("-")[0]}</span>
+                                            </label>
+                                        </div>
+                                    </td>
                                     <td className="group-price">
                                         <div className="group-row">
                                             <span className="item pricecod"> {formatMoney(rowItem.TotalCOD, 0)}</span>
@@ -709,9 +733,9 @@ class DataGridShipmentOderCom extends Component {
                                 {searchTextbox}
                                 <div className="btn-toolbar">
                                     <div className="btn-group btn-group-sm">
-                                        {/* <button type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                        <button type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
                                             <span className="fa fa-plus ff"> Gán nhân viên giao hàng </span>
-                                        </button> */}
+                                        </button>
                                         {(this.props.IsAdd == true || this.props.IsAdd == undefined) ?
                                             (!this.props.IsCustomAddLink == true ?
                                                 (<Link

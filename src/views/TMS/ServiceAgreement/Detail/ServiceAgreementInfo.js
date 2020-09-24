@@ -25,10 +25,10 @@ class ServiceAgreementInfoCom extends Component {
             <React.Fragment>
                 <div className="form-row">
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Mã hợp đồng:</label>
+                        <label className="col-form-label bold">Số hợp đồng:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{this.props.ServiceAgreementInfo.ServiceAgreementID}</label>
+                        <label className="col-form-label">{this.props.ServiceAgreementInfo.ServiceAgreementNumber}</label>
                     </div><div className="form-group col-md-2">
                         <label className="col-form-label bold">Loại hợp đồng:</label>
                     </div>

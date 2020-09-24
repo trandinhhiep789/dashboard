@@ -91,7 +91,7 @@ class AddCom extends React.Component {
 
     getInventoryRequestRLByInventoryRequestType(param) {
         this.props.callFetchAPI(APIHostName, LoadAPIByDestroyRequestTypeIDPath, param).then(apiResult => {
-            console.log("222", apiResult, param)
+           // console.log("222", apiResult, param)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError

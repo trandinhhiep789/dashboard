@@ -27,8 +27,8 @@ import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.
 import DeliverUserList from "../../ShipmentOrder/Component/DeliverUserList";
 import moment from 'moment';
 import { ExportStringToDate } from "../../../../common/library/ultils";
-import { ERPCOMMONCACHE_SERVICEAGREEMENTTYPE, ERPCOMMONCACHE_TMS_SERVICETYPE, ERPCOMMONCACHE_AREATT } from "../../../../constants/keyCache";
-
+import { ERPCOMMONCACHE_SERVICEAGREEMENTTYPE, ERPCOMMONCACHE_TMS_SERVICETYPE, ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_PARTNER } from "../../../../constants/keyCache";
+import  {Base64} from 'js-base64';
 
 
 class AddCom extends React.Component {
@@ -80,7 +80,8 @@ class AddCom extends React.Component {
         // MLObject.SignedDate = new Date(ExportStringToDate(MLObject.SignedDate));
         // MLObject.ExpiredDate = new Date(ExportStringToDate(MLObject.ExpiredDate));
 
-        // console.log("MLObject", MLObject)
+        MLObject.ServiceAgreementNumber = MLObject.ServiceAgreementNumber.replace(/\s/g, '')
+        //  console.log("MLObject", MLObject)
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -306,15 +307,15 @@ class AddCom extends React.Component {
 
                     <div className="col-md-6">
                         <FormControl.TextBox
-                            name="txtServiceAgreementID"
+                            name="txtServiceAgreementNumber"
                             colspan="8"
                             labelcolspan="4"
                             readOnly={false}
-                            label="mã hợp đồng"
+                            label="số hợp đồng"
                             placeholder="Mã hợp đồng"
                             controltype="InputControl"
                             value=""
-                            datasourcemember="ServiceAgreementID"
+                            datasourcemember="ServiceAgreementNumber"
                             validatonList={['required']}
                         />
                     </div>

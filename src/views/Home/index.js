@@ -76,6 +76,10 @@ import UserLimit from "../TMS/MD/Limit/UserLimit";
 import UserLimitTest from "../TMS/MD/Limit/UserLimit/Search/indexNew.js";
 import DestroyRequest from "../TMS/DestroyRequest";
 import InventoryRequest from "../TMS/InventoryRequest";
+import RewardPriceTable from "../TMS/MD/RewardPrice/RewardPriceTable";
+import UseGuide from "../../views/UseGuide";
+
+
 
 import NotFound from '../NotFound'
 import InventoryRequestType from "../TMS/MD/InventoryRequestType";
@@ -218,6 +222,9 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/UserLimitTest" component={UserLimitTest} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} />
+
+                                <PrivateRoute path="/RewardPriceTable" component={RewardPriceTable} isLoggedIn={isLoggedIn} />
+
                                 <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} />
@@ -239,6 +246,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/PartnerPayableDetail" component={PartnerPayableDetail} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/DestroyRequest" component={DestroyRequest} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/InventoryRequest" component={InventoryRequest} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/UseGuide" component={UseGuide} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/RewardType" component={RewardType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/RewardPriceType" component={RewardPriceType} isLoggedIn={isLoggedIn} />

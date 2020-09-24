@@ -189,14 +189,14 @@ const AppMenu = [
                         LinkTo: '/UserCoordinator',
                         MenuIcon: '',
                         SubMenu: []
-                    },
-                    {
-                        MenuName: 'UserGroup',
-                        MenuTitle: 'Cấp quyền nhân viên theo kho',
-                        LinkTo: '/UserGroup',
-                        MenuIcon: '',
-                        SubMenu: []
-                    }
+                     }
+                    // ,{
+                    //     MenuName: 'UserGroup',
+                    //     MenuTitle: 'Cấp quyền nhân viên theo kho',
+                    //     LinkTo: '/UserGroup',
+                    //     MenuIcon: '',
+                    //     SubMenu: []
+                    // }
 
                 ]
             },
@@ -340,6 +340,15 @@ const AppMenu = [
                         SubMenu: []
                     }
                 ]
+            },
+            {
+                
+                MenuName: 'RewardPriceTable',
+                MenuTitle: 'Đơn giá thưởng giao hàng và lắp đặt',
+                LinkTo: '/RewardPriceTable',
+                MenuIcon: '',
+                SubMenu: []
+            }
             },
             {
                 MenuName: 'Reward',
@@ -564,6 +573,13 @@ const AppMenu = [
             },
 
         ]
+    },
+    {
+        MenuName: 'UseGuide',
+        MenuTitle: 'Hướng dẫn sử dụng',
+        LinkTo: '/UseGuide',
+        MenuIcon: '',
+        SubMenu: []
     }
 
 ];
