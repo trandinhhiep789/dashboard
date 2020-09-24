@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 import { ModalManager } from 'react-dynamic-modal';
 import ModelContainer from "../../../../common/components/Modal/ModelContainer";
@@ -11,8 +12,10 @@ import Select from 'react-select';
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import InputGridChageControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridChageControl";
+import { showModal, hideModal } from '../../../../actions/modal';
 import {
     APIHostName,
+   BackLink
 } from "../constants";
 class ListShipCoordinatorCom extends Component {
     constructor(props) {
@@ -24,17 +27,20 @@ class ListShipCoordinatorCom extends Component {
         this.handleOnValueChangeDeliverUser = this.handleOnValueChangeDeliverUser.bind(this);
         this.handleCancelDelivery = this.handleCancelDelivery.bind(this);
         this.handleCancelDeliveryInsert = this.handleCancelDeliveryInsert.bind(this);
+        this.handleCloseMessage = this.handleCloseMessage.bind(this);
 
         this.state = {
             ShipmentOrder: this.props.InfoCoordinator,
             objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1 },
             selectedOption: [],
             objDeliverUser: [],
-            IsCallAPIError: false,
             IsCloseForm: false,
             DeliverUserList: {},
             DeliverUserServerList: [],
-            FormValidation: {}
+            FormValidation: {},
+            CallAPIMessage: "",
+            IsCallAPIError: false,
+            IsCloseForm: false
 
         }
         this.notificationDOMRef = React.createRef();
@@ -147,13 +153,13 @@ class ListShipCoordinatorCom extends Component {
         }
 
         this.state.ShipmentOrder.map((row, indexRow) => {
-                row[name] = value;
+            row[name] = value;
         });
         this.setState({ objCoordinator: objCoordinator, objDeliverUser: objDeliverUser })
     }
 
     handleValueChange1(e, selectedOption1) {
-        console.log("ShipmentOrder", this.state.ShipmentOrder ,selectedOption1)
+        console.log("ShipmentOrder", this.state.ShipmentOrder, selectedOption1)
         this.state.ShipmentOrder.map((row, indexRow) => {
             row["DeliverUserList"] = selectedOption1;
         });
@@ -168,7 +174,11 @@ class ListShipCoordinatorCom extends Component {
     }
 
     handleCloseMessage() {
-        if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
+        if (!this.state.IsCallAPIError)
+        {
+            this.setState({ IsCloseForm: true });
+            this.props.hideModal();
+        }
     }
 
     showMessage(message) {
@@ -219,7 +229,7 @@ class ListShipCoordinatorCom extends Component {
 
         let elementobject = {};
         this.state.ShipmentOrder.map((row, indexRow) => {
-            console.log("DeliverUserList",this.state.ShipmentOrder,row["DeliverUserList"].length)
+            console.log("DeliverUserList", this.state.ShipmentOrder, row["DeliverUserList"].length)
             if (row["DeliverUserList"].length <= 0) {
                 const validationObject = { IsValidatonError: true, ValidationErrorMessage: "vui lòng chọn nhân viên" };
                 elementobject = Object.assign({}, elementobject, { ["DeliverUserList-" + indexRow]: validationObject });
@@ -240,6 +250,14 @@ class ListShipCoordinatorCom extends Component {
 
         });
         this.setState({ FormValidation: elementobject });
+      
+        this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
+            console.log("AddInfoCoordinatorLst",apiResult.IsError);
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
+          
+        });
+
     }
 
     handleDeleteShip(e) {
@@ -256,10 +274,19 @@ class ListShipCoordinatorCom extends Component {
         if (rowname == "CarrierPartnerID") {
             this.state.ShipmentOrder[rowIndex]["DeliverUserList"] = [];
         }
-       
+
         this.setState({ ShipmentOrder: this.state.ShipmentOrder });
     }
+
+    handleCloseModal() {
+        this.props.hideModal();
+    }
+
     render() {
+        if (this.state.IsCloseForm) {
+            debugger;
+            return <Redirect to={BackLink} />;
+        }
 
         const DataGridColumnItemList = [
             {
@@ -341,7 +368,8 @@ class ListShipCoordinatorCom extends Component {
         ];
 
         return (
-            <div className="card">
+            <div className="card modalForm">
+         
                 <div className="card-body" style={{ minHeight: 500 }}>
                     <div className="form-row">
                         <div className="col-md-6">
@@ -436,14 +464,16 @@ class ListShipCoordinatorCom extends Component {
                         onDeleteClick={this.handleDeleteID.bind(this)}
                         onValueChange={this.handleonValueChange.bind(this)}
                     />
-                    <div className="form-row">
+                </div>
+                {/* <div className="form-row">
                         <div className="form-group col-md-12 form-group-btncustom">
                             <button className="btn btnEditCard" onClick={this.handleShipWorkFlowInsert.bind(this)} type="submit" > Cập nhật</button>
                         </div>
-                    </div>
-
+                    </div> */}
+                <div className="modal-footer">
+                    <button className="btn btnEditCard" onClick={this.handleShipWorkFlowInsert.bind(this)} type="submit" > Cập nhật</button>
+                    <button type="button" className="btn btn-export ml-10" title="" onClick={this.handleCloseModal.bind(this)}>Đóng</button>
                 </div>
-
             </div>
         );
     }
@@ -463,6 +493,9 @@ const mapDispatchToProps = dispatch => {
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));

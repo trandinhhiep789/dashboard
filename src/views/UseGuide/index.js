@@ -54,6 +54,17 @@ class UseGuideCom extends React.Component {
                         />
                     </div>
                 </div>
+                <div className="col-md-12">
+                    <div className="group-Guide">
+                        <h3 className="title">TMS - hướng dẫn cài đặt TMS MOBILE - danh cho nhân viên</h3>
+                        <YouTube
+                            videoId="sbSk9I8PbUg"
+                            opts={opts} 
+                            onReady={this._onReady}
+                            className="ifram-youtube" 
+                        />
+                    </div>
+                </div>
             </React.Fragment >
         );
     }

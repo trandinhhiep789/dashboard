@@ -392,11 +392,11 @@ class InfoCoordinatorCom extends Component {
             this.setState({ validationErroCarrierType: validationErroCarrierType });
             return;
         }
-        else if (ShipmentOrder.ShipmentOrder_DeliverUserList == undefined || ShipmentOrder.ShipmentOrder_DeliverUserList.length <= 0) {
-            validationErroDeliverUser = "Vui lòng chọn nhân viên giao"
-            this.setState({ validationErroDeliverUser: validationErroDeliverUser });
-            return;
-        }
+        // else if (ShipmentOrder.ShipmentOrder_DeliverUserList == undefined || ShipmentOrder.ShipmentOrder_DeliverUserList.length <= 0) {
+        //     validationErroDeliverUser = "Vui lòng chọn nhân viên giao"
+        //     this.setState({ validationErroDeliverUser: validationErroDeliverUser });
+        //     return;
+        // }
 
         else {
             this.state.ShipmentOrder.UpdatedUser = this.props.AppInfo.LoginInfo.Username,
@@ -632,15 +632,14 @@ class InfoCoordinatorCom extends Component {
                             listoption={[]}
                             isMultiSelect={true}
                             datasourcemember="ShipmentOrder_DeliverUserList"
-                            validatonList={["Comborequired"]}
-                            validationErrorMessage={this.state.validationErroDeliverUser}
+                          
+                            
                         /> :
                         <FormControl.FormControlComboBox
                             name="ShipmentOrder_DeliverUserList"
                             colspan="10"
                             labelcolspan="2"
                             label="Nhân viên giao"
-                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
                             valuemember="UserName"
@@ -655,7 +654,6 @@ class InfoCoordinatorCom extends Component {
                             filterValue={this.state.ShipmentOrder.CarrierPartnerID}
                             filterobj="PartnerID"
                             disabled={!this.props.IsCoordinator}
-                            validationErrorMessage={this.state.validationErroDeliverUser}
                         />
                     }
 
