@@ -348,7 +348,6 @@ const AppMenu = [
                 LinkTo: '/RewardPriceTable',
                 MenuIcon: '',
                 SubMenu: []
-            }
             },
             {
                 MenuName: 'Reward',
