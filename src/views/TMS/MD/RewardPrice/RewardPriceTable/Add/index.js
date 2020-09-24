@@ -67,8 +67,6 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-            console.log('apiResult', apiResult, MLObject);
-
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
 

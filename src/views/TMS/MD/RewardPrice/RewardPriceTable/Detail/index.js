@@ -16,7 +16,8 @@ import {
     LoadNewAPIPath,
     TitleFormDetail,
     DataGridColumnItemListRPTDetail,
-    TitleFromRPTDetail 
+    TitleFromRPTDetail,
+    DeleteAPIRPTDetailPath
 
 } from "../constants";
 import { MessageModal } from "../../../../../../common/components/Modal";
@@ -40,19 +41,22 @@ class DetailCom extends React.Component {
             Abiliti: {},
             IsLoadDataComplete: false,
             IsSystem: false,
+            RewardPriceTableID: ''
         }
         this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
         this.props.updatePagePath(DetailPagePath);
-        console.log('id', this.props.match.params.id)
         this.callLoadData(this.props.match.params.id);
+        this.setState({
+            RewardPriceTableID: this.props.match.params.id
+        })
     }
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            console.log('apiResult', apiResult)
+            // console.log('apiResult', apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -84,18 +88,18 @@ class DetailCom extends React.Component {
     }
 
     handleInputChangeObjItem(id, apiResult) {
-        if(apiResult.IsError){
+        if (apiResult.IsError) {
             this.showMessage(apiResult.Message);
         }
-        else{
+        else {
             this.addNotification(apiResult.Message, apiResult.IsError);
             this.callLoadData(id);
             this.props.hideModal();
         }
-        
+
     }
 
-    handleItemInsertRPTDetail(){
+    handleItemInsertRPTDetail() {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Thêm chi tiết đơn giá',
             content: {
@@ -109,12 +113,33 @@ class DetailCom extends React.Component {
         });
     }
 
-    handleItemEditRPTDetail(){
+    handleItemEditRPTDetail(index) {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Cập nhật chi tiết đơn giá',
+            content: {
+                text: <RewardPriceTableDetail
+                    dataSource={this.state.DataSource}
+                    index={index}
+                    onInputChangeObj={this.handleInputChangeObjItem}
 
+                />
+            },
+            maxWidth: '1000px'
+        });
     }
 
-    handleItemDeleteRPTDetail(){
-
+    handleItemDeleteRPTDetail(id) {
+        const { RewardPriceTableID } = this.state;
+        let MLObject = {};
+        MLObject.RewardPriceTableID = RewardPriceTableID;
+        MLObject.SubGroupID = id;
+        this.props.callFetchAPI(APIHostName, DeleteAPIRPTDetailPath, MLObject).then((apiResult) => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callLoadData(RewardPriceTableID);
+            }
+        });
     }
 
     addNotification(message1, IsError) {
@@ -175,8 +200,8 @@ class DetailCom extends React.Component {
                                 name="RewardPriceTableDetailList"
                                 controltype="InputGridControl"
                                 title={TitleFromRPTDetail}
-                                IDSelectColumnName={"AbilityID"}
-                                PKColumnName={""}
+                                IDSelectColumnName={"SubGroupID"}
+                                PKColumnName={"SubGroupID"}
                                 listColumn={DataGridColumnItemListRPTDetail}
                                 dataSource={this.state.DataSource.RewardPriceTableDetailList}
                                 onInsertClick={this.handleItemInsertRPTDetail.bind(this)}

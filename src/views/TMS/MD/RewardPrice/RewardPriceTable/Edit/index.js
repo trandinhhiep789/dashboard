@@ -55,7 +55,6 @@ class EditCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log('callLoadData', apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -92,8 +91,6 @@ class EditCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.RewardPriceTableID = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-            console.log('apiResult', apiResult, MLObject);
-
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
 

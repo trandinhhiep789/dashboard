@@ -13,6 +13,7 @@ export const PKColumnName = "RewardPriceTableID";
 
 export const EditAPIRPTDetailPath = "api/RewardPriceTableDetail/Update";
 export const AddAPIRPTDetailPath = "api/RewardPriceTableDetail/Add";
+export const DeleteAPIRPTDetailPath = "api/RewardPriceTableDetail/Delete";
 
 export const TitleFormDetail = "Thông tin đơn giá thưởng giao hàng và lắp đặt";
 export const TitleFromRPTDetail = "Chi tiết thông tin đơn giá thưởng giao hàng và lắp đặt";
@@ -187,24 +188,24 @@ export const MLObjectDefinition = [
 
 export const DataGridColumnItemListRPTDetail = [
     {
-        Name: "SubGroupID",
+        Name: "SubGroupName",
         Type: "text",
         Caption: "Nhóm hàng",
-        DataSourceMember: "SubGroupID",
+        DataSourceMember: "SubGroupName",
         Width: 250
     },
     {
         Name: "RewardPrice",
-        Type: "text",
+        Type: "textCurrency",
         Caption: "Giá",
         DataSourceMember: "RewardPrice",
         Width: 250
     },
     {
-        Name: "RewardPrice",
-        Type: "text",
+        Name: "RewardPriceWithoutInstall",
+        Type: "textCurrency",
         Caption: "Giá không cài đặt",
-        DataSourceMember: "RewardPrice",
+        DataSourceMember: "RewardPriceWithoutInstall",
         Width: 250
     },
 
