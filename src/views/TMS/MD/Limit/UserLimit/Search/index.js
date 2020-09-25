@@ -305,11 +305,11 @@ class SearchCom extends React.Component {
                                 <thead className="thead-light">
                                     <tr>
                                         <th className="jsgrid-header-cell" style={{ width: 100 }}>Mã nhân viên</th>
-                                        <th className="jsgrid-header-cell" style={{ width: 300 }}>Tên nhân viên</th>
+                                        <th className="jsgrid-header-cell" style={{ width: 100 }}>Tên nhân viên</th>
                                         {
                                             this.state.dataLimitTyle && this.state.dataLimitTyle.map((item, index) => {
                                                 return (
-                                                    <th key={index} className="jsgrid-header-cell" style={{ width: 100 }}>{item.LimitTypeName}</th>
+                                                    <th key={index} className="jsgrid-header-cell" style={{ width: 200 }}>{item.LimitTypeName}</th>
                                                 )
                                             })
                                         }
