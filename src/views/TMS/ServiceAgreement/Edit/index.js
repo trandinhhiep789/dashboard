@@ -81,7 +81,9 @@ class EditCom extends React.Component {
         }
 
         // console.log("MLObject", MLObject)
-        MLObject.ServiceAgreementNumber = MLObject.ServiceAgreementNumber.replace(/\s/g, '')
+        MLObject.ServiceAgreementNumber = MLObject.ServiceAgreementNumber.replace(/\s/g, '');
+        MLObject.ServiceAgreementID = this.props.match.params.id;
+        
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });

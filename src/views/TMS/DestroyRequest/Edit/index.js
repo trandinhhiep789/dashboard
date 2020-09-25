@@ -75,6 +75,7 @@ class EditCom extends React.Component {
                     return e;
                 })
 
+                // console.log("ResultObject", apiResult.ResultObject)
 
                 let lstoption = apiResult.ResultObject.reduce((r, a) => {
                     if (!r[`${a.ReviewLevelID}`]) r[`${a.ReviewLevelID}`] = {};
@@ -90,11 +91,15 @@ class EditCom extends React.Component {
 
                     return r;
                 }, {});
+               
 
                 Object.keys(lstoption).map(function (key) {
+                    // console.log("key", key)
                     const filterItem = DestroyRequestRL.filter(e => { return e.ReviewLevelID == key });
+                    // console.log("DestroyRequestRL", filterItem)
                     lstoption[key]["ReviewLevelID"] = lstoption[key]["Child"][0].ReviewLevelID;
                     lstoption[key]["ReviewLevelName"] = lstoption[key]["Child"][0].ReviewLevelName;
+                    lstoption[key]["IsreViewed"] = filterItem[0].IsreViewed
                     lstoption[key]["UserName"] = !!filterItem && filterItem.length > 0 ? filterItem[0].UserName : lstoption[key]["Child"][0].UserName
                     lstoption[key]["FullName"] = !!filterItem && filterItem.length > 0 ? filterItem[0].FullName : lstoption[key]["Child"][0].FullName
                     lstoption[key]["Child"].unshift({ value: "-1", name: "-- Vui lòng chọn --", UserName: "-1", FullName: "-- Vui lòng chọn --" })
@@ -107,7 +112,7 @@ class EditCom extends React.Component {
                     return catsSoFar;
                 }, {});
 
-                // console.log("lstoption", lstoption)
+                // console.log("1111", lstoption)
                 this.setState({
                     DestroyRequestRL: apiResult.ResultObject,
                     IsLoadDataComplete: true,
@@ -249,7 +254,6 @@ class EditCom extends React.Component {
     }
 
     handleChange(formData, MLObject) {
-        console.log('handleSubmit', formData, MLObject)
     }
 
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
@@ -318,11 +322,11 @@ class EditCom extends React.Component {
                 "UserName": value,
                 "FullName": name,
             })
-            // console.log("element", element);
+             console.log("element", element);
 
             const parent = Object.assign({}, gridDestroyRequestRL, { [DestroyRequestRLID]: element });
 
-            // console.log("parent", parent);
+            console.log("parent", parent);
 
             this.setState({ gridDestroyRequestRL: parent })
         }
@@ -499,6 +503,7 @@ class EditCom extends React.Component {
                                                             <td>
                                                                 <select id={key} value={gridDestroyRequestRL[key].UserName}
                                                                     className={`form-control form-control-sm ${gridDestroyRequestRL[key].UserName == "-1" ? "is-invalid" : ""}`}
+                                                                    disabled = {gridDestroyRequestRL[key].IsreViewed == true ? true : false}
                                                                     onChange={selectOption => onChange(key, selectOption)}>
                                                                     {gridDestroyRequestRL[key]["Child"].map(e => {
                                                                         return <option value={e.value} name={e.name} key={e.value}>{e.name}</option>
