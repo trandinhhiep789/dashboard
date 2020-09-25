@@ -162,13 +162,15 @@ class ListShipCoordinatorCom extends Component {
         console.log("ShipmentOrder", this.state.ShipmentOrder, selectedOption1)
         this.state.ShipmentOrder.map((row, indexRow) => {
             row["DeliverUserList"] = selectedOption1;
+            row["ShipDeliverUserList"] = selectedOption1;
         });
         this.setState({ selectedOption: selectedOption1, ShipmentOrder: this.state.ShipmentOrder });
     }
 
-    handleOnValueChangeDeliverUser(name, value) {
+    handleOnValueChangeDeliverUser(name, value,selectedOption) {
         this.state.ShipmentOrder.map((row, indexRow) => {
             row["DeliverUserList"] = value;
+            row["ShipDeliverUserList"] = selectedOption;
         });
         this.setState({ objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder });
     }
@@ -250,7 +252,7 @@ class ListShipCoordinatorCom extends Component {
 
         });
         this.setState({ FormValidation: elementobject });
-      
+       // console.log("ShipmentOrder",this.state.ShipmentOrder)
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
             console.log("AddInfoCoordinatorLst",apiResult.IsError);
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -432,7 +434,7 @@ class ListShipCoordinatorCom extends Component {
                             isMultiSelect={true}
                             datasourcemember="ShipmentOrder_DeliverUserList"
                         /> :
-                        <FormControl.FormControlComboBox
+                        <FormControl.FormControlComboBoxUser
                             name="ShipmentOrder_DeliverUserList"
                             colspan="10"
                             labelcolspan="2"
