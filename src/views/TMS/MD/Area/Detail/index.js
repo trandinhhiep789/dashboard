@@ -100,14 +100,8 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Mã khu vực: </span>
-                                            <span className="xcode">{this.state.DataSource.AreaID}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Tên khu vực: </span>
-                                            <span>{this.state.DataSource.AreaName}</span>
+                                            <span>Khu vực: </span>
+                                            <span className="xcode">{this.state.DataSource.AreaID} - {this.state.DataSource.AreaName}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -115,33 +109,17 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Mã loại khu vực: </span>
-                                            <span>{this.state.DataSource.AreaTypeID}</span>
+                                            <span>Loại khu vực: </span>
+                                            <span>{this.state.DataSource.AreaTypeName ? this.state.DataSource.AreaTypeID + " - " + this.state.DataSource.AreaTypeName : ""}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Tên loại khu vực: </span>
-                                            <span>{this.state.DataSource.AreaTypeName}</span>
+                                            <span>Khu vực cha: </span>
+                                            <span>{this.state.DataSource.ParentName ? this.state.DataSource.ParentID + " - " + this.state.DataSource.ParentName : ""}</span>
                                         </div>
                                     </div>
                                 </div>
-
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Mã khu vực cha: </span>
-                                            <span>{this.state.DataSource.ParentID}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Tên khu vực cha: </span>
-                                            <span>{this.state.DataSource.ParentName}</span>
-                                        </div>
-                                    </div>
-                                </div>     
 
                                 <div className="row">
                                     <div className="col-md-6">
