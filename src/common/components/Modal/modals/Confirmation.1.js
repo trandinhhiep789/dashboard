@@ -113,6 +113,7 @@ class Confirmation extends React.Component {
                     <button className="btn btn-w-md btn-round btn-secondary" type="button" onClick={this.handleClose}>
                         Bỏ qua
                     </button>
+                    &nbsp;&nbsp;
                 </div>
             </Modal>
         );

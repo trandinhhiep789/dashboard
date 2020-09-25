@@ -445,24 +445,27 @@ class DataGridShipmentOderCom extends Component {
         this.props.onSubmitItem(listMLObject);
     }
     handleUserCoordinator() {
-        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Điều phối nhân viên ',
-            content: {
-                text: <ListShipCoordinator
-                    ShipmentOrderID={0}
-                    InfoCoordinator={this.state.GridDataShip}
-                    IsUserCoordinator={true}
-                    IsCoordinator={true}
-                    IsCancelDelivery={true}
-                    onChangeValue={this.handleShipmentOrder.bind(this)}
-                />
-            },
-            maxWidth: '1000px'
-        });
-
+        if (this.state.GridDataShip.length > 0) {
+            this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                title: 'Điều phối nhân viên ',
+                content: {
+                    text: <ListShipCoordinator
+                        ShipmentOrderID={0}
+                        InfoCoordinator={this.state.GridDataShip}
+                        IsUserCoordinator={true}
+                        IsCoordinator={true}
+                        IsCancelDelivery={true}
+                        onChangeValue={this.handleShipmentOrder.bind(this)}
+                    />
+                },
+                maxWidth: '1000px'
+            });
+        }
+        else
+        {
+            this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
+        }
     }
-
-
 
     handleShipmentOrder(name, value) {
         this.state.GridDataShip.splice(this.state.GridDataShip.findIndex(n => n[name] == value), 1);
@@ -538,7 +541,7 @@ class DataGridShipmentOderCom extends Component {
                             <th className="jsgrid-header-cell" style={{ width: 51 }} >Tác vụ</th>
                             <th className="jsgrid-header-cell" style={{ width: 180, minWidth: 180 }} >Thời gian giao</th>
                             <th className="jsgrid-header-cell" style={{ width: 250, minWidth: 250 }}>Địa chỉ</th>
-                            <th className="jsgrid-header-cell" style={{ width: 250 , minWidth: 250 }}>Mã/Loại yêu cầu vận chuyển</th>
+                            <th className="jsgrid-header-cell" style={{ width: 250, minWidth: 250 }}>Mã/Loại yêu cầu vận chuyển</th>
                             <th className="jsgrid-header-cell" style={{ width: 180, minWidth: 180 }} >Tên sản phẩm/Ghi chú</th>
                             <th className="jsgrid-header-cell" style={{ width: 131, minWidth: 131 }} >COD/Vật tư/Tổng tiền</th>
                         </tr>
@@ -555,7 +558,7 @@ class DataGridShipmentOderCom extends Component {
                                     rowtrClass = "noReadingItem readingItem";
                                 }
                                 // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
-                                return (<tr key={rowIndex} className ={rowtrClass}>
+                                return (<tr key={rowIndex} className={rowtrClass}>
                                     <td className="btngroupleft">
                                         <div className="group-action">
                                             <div className="checkbox item-action">
@@ -643,7 +646,7 @@ class DataGridShipmentOderCom extends Component {
                                                 <span>ĐP: <span className="coordinatorUser">{rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span></span>
                                             </label>
                                             <label className="item address-receiver">
-                                            <span>NV:{ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
+                                                <span>NV:{ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
                                             </label>
                                         </div>
                                     </td>
@@ -653,7 +656,7 @@ class DataGridShipmentOderCom extends Component {
                                                 <span className="coordinatorUser">{rowItem.PrimaryShipItemName}</span>
                                             </label>
                                             <label className="item address-receiver">
-                                                <span>{rowItem.OrderNote!=""?"Ghi chú: "+rowItem.OrderNote.split("-")[0]:""}</span>
+                                                <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote.split("-")[0] : ""}</span>
                                             </label>
                                         </div>
                                     </td>
