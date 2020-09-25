@@ -622,15 +622,24 @@ class DataGridShipmentOderCom extends Component {
                                                 </span>
                                             </label>
                                             <label className="item creacte-time">
-                                                <i className="ti ti-timer"></i>
-                                                <span className="times">
-                                                    <span className="item pull-left">Tạo lúc: </span>
-                                                    <span className="item pull-right"><span className="txtCreatedOrderTime">{formatDate(rowItem.CreatedOrderTime)}</span></span>
-                                                    <span className="line">-</span>
-                                                    <span className="item pull-right intervale">
-                                                        Kc: <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km"}</span>
-                                                        Tg: <span className="txtintervale">{rowItem.EstimateDeliveryLong + "'"}</span>
+                                                <span className="times group-times">
+
+                                                    <span className="time-item">
+                                                        <span className="txtCreatedOrderTime"><i className="ti ti-dashboard"></i>: {formatDate(rowItem.CreatedOrderTime)}</span>
+
+
                                                     </span>
+                                                    <span className="time-item">
+                                                        <span className="intervale">
+                                                            <i className="fa fa-paper-plane-o"></i>
+                                                            <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km"}</span>
+                                                        </span>
+                                                        <span className="intervale">
+                                                            <i className="ti ti-timer"></i>
+                                                            <span className="txtintervale">{rowItem.EstimateDeliveryLong + "'"}</span>
+                                                        </span>
+                                                    </span>
+
                                                 </span>
                                             </label>
                                         </div>
