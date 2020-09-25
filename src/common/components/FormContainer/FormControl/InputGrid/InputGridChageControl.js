@@ -220,11 +220,9 @@ class InputGridChageControlCom extends Component {
                     <h4 className="title">{this.props.title}</h4>
                 </div>
                 <div className="card-body">
-                    <div className="table-responsive">
-                        {
-                            this.renderInputGrid()
-                        }
-                    </div>
+                    {
+                        this.renderInputGrid()
+                    }
                 </div>
 
             </div>

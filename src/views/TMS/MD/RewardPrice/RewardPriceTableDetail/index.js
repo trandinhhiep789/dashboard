@@ -19,24 +19,23 @@ class RewardPriceTableDetailCom extends Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
-            IsSystem: false
+            IsSystem: false, 
+            IsUpdate: false
         }
 
     }
 
     componentDidMount() {
-        console.log("this.props", this.props)
         if (this.props.index != undefined) {
             this.setState({
-                IsSystem: this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsSystem
+                IsSystem: this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsSystem,
+                IsUpdate:  true
             })
         }
     }
 
     handleSubmit(formData, MLObject) {
 
-        console.log("MLObject", MLObject);
-        
         MLObject.RewardPriceTableID = this.props.dataSource.RewardPriceTableID;
 
         if (this.props.index != undefined) {
@@ -56,13 +55,12 @@ class RewardPriceTableDetailCom extends Component {
 
 
     handleChange(formData, MLObject) {
-        console.log("handleChange", formData, MLObject)
     }
 
 
     render() {
 
-        const { IsSystem } = this.state;
+        const { IsSystem, IsUpdate } = this.state;
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectRPTDetailItem}
@@ -70,7 +68,7 @@ class RewardPriceTableDetailCom extends Component {
                 listelement={[]}
                 onSubmit={this.handleSubmit}
                 IsCloseModal={true}
-                onchange={this.handleChange.bind(this)}
+               // onchange={this.handleChange.bind(this)}
             >
 
                 <div className="row">
@@ -102,10 +100,10 @@ class RewardPriceTableDetailCom extends Component {
                             nameMember="SubGroupName"
                             controltype="InputControl"
                             value={-1}
-                            disabled={IsSystem}
+                            disabled={IsUpdate}
                             listoption={[]}
                             datasourcemember="SubGroupID"
-                          
+
                         />
 
                     </div>
@@ -113,24 +111,26 @@ class RewardPriceTableDetailCom extends Component {
                     <div className="col-md-6"></div>
 
                     <div className="col-md-6">
-                        <FormControl.TextBox
+
+                        <FormControl.TextBoxCurrency
                             name="txtRewardPrice"
                             colspan="9"
                             labelcolspan="3"
                             readOnly={IsSystem}
                             disabled={IsSystem}
                             label="giá"
-                            placeholder="giá"
+                            placeholder="Giá "
                             controltype="InputControl"
-                            value=""
+                            value="0"
+                            validatonList={['required']}
                             datasourcemember="RewardPrice"
-                            classNameCustom="customcontrol"
-                            maxSize={6}
-                            validatonList={['required', 'number']}
+                            disabled={IsSystem}
+                            maxSize={19}
                         />
                     </div>
+
                     <div className="col-md-6">
-                        <FormControl.TextBox
+                        <FormControl.TextBoxCurrency
                             name="txtRewardPriceWithoutInstall"
                             colspan="9"
                             labelcolspan="3"
@@ -139,12 +139,13 @@ class RewardPriceTableDetailCom extends Component {
                             label="giá không cài đặt"
                             placeholder="giá không cài đặt"
                             controltype="InputControl"
-                            value=""
-                            datasourcemember="RewardPriceWithoutInstall"
-                            classNameCustom="customcontrol"
-                            maxSize={6}
-                            validatonList={['required', 'number']}
+                            value="0"
+                            validatonList={['required']}
+                            datasourcemember="RewardPrice"
+                            disabled={IsSystem}
+                            maxSize={19}
                         />
+                        
                     </div>
 
                     <div className="col-md-6">
