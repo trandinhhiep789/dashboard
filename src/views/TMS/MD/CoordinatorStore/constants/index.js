@@ -270,31 +270,31 @@ export const DataGridCoordinatorStoreColumnList=[
         Width: 60
     },
     {
-        Name: "ShipmentOrderTypeName",
+        Name: "ShipmentOrderTypeLable",
         Type: "text",
         Caption: "Loại yêu cầu xuất",
-        DataSourceMember: "ShipmentOrderTypeName",
+        DataSourceMember: "ShipmentOrderTypeLable",
         Width: 250
     },
     {
-        Name: "PartnerName",
+        Name: "PartnerLable",
         Type: "text",
         Caption: "Đối tác",
-        DataSourceMember: "PartnerName",
+        DataSourceMember: "PartnerLable",
         Width: 250
     },
     {
-        Name: "StoreName",
+        Name: "StoreNameLable",
         Type: "text",
         Caption: "Kho điều phối",
-        DataSourceMember: "StoreName",
+        DataSourceMember: "StoreNameLable",
         Width: 250
     },
     {
-        Name: "SenderStoreName",
+        Name: "SenderStoreNameLable",
         Type: "text",
         Caption: "Kho gửi",
-        DataSourceMember: "SenderStoreName",
+        DataSourceMember: "SenderStoreNameLable",
         Width: 250
     },
     {
