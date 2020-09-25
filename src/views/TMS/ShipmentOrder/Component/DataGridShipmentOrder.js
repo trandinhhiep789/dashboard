@@ -461,8 +461,7 @@ class DataGridShipmentOderCom extends Component {
                 maxWidth: '1000px'
             });
         }
-        else
-        {
+        else {
             this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
         }
     }
@@ -627,7 +626,11 @@ class DataGridShipmentOderCom extends Component {
                                                 <span className="times">
                                                     <span className="item pull-left">Tạo lúc: </span>
                                                     <span className="item pull-right"><span className="txtCreatedOrderTime">{formatDate(rowItem.CreatedOrderTime)}</span></span>
-                                                    <span className="item pull-right intervale"> Khoảng cách: <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km " + rowItem.EstimateDeliveryLong + "'"}</span></span>
+                                                    <span className="line">-</span>
+                                                    <span className="item pull-right intervale">
+                                                        Kc: <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km"}</span>
+                                                        Tg: <span className="txtintervale">{rowItem.EstimateDeliveryLong + "'"}</span>
+                                                    </span>
                                                 </span>
                                             </label>
                                         </div>

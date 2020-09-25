@@ -154,12 +154,13 @@ class ListShipCoordinatorCom extends Component {
 
         this.state.ShipmentOrder.map((row, indexRow) => {
             row[name] = value;
+            row["DeliverUserList"] = [];
+            row["ShipDeliverUserList"] = [];
         });
         this.setState({ objCoordinator: objCoordinator, objDeliverUser: objDeliverUser })
     }
 
     handleValueChange1(e, selectedOption1) {
-        console.log("ShipmentOrder", this.state.ShipmentOrder, selectedOption1)
         this.state.ShipmentOrder.map((row, indexRow) => {
             row["DeliverUserList"] = selectedOption1;
             row["ShipDeliverUserList"] = selectedOption1;
@@ -310,6 +311,8 @@ class ListShipCoordinatorCom extends Component {
                 nameMember: "PartnerName",
                 value: -1,
                 listoption: null,
+                filterValue: "2",
+                filterobj: "PartnerTypeID",
                 placeholder: "---Vui lòng chọn---",
                 isMultiSelect: false,
                 disabled: false
