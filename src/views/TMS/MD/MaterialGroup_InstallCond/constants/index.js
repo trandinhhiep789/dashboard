@@ -234,7 +234,7 @@ export const ModalColumnList_Edit = [
         readonly: false,
         validatonList: [],
         isMulti: false,
-        IsAutoLoadItemFromCache: true,
+        IsAutoLoadItemFromCache: false,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECSVALUE",
         ValueMember: "TechSpecsValueID",
         NameMember: "Value"
