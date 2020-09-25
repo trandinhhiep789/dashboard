@@ -608,7 +608,7 @@ class DataGridShipmentOderCom extends Component {
                                                     <span className="line">-</span>
                                                     <span className="phone">({rowItem.ReceiverPhoneNumber.substr(0, 4)}****)</span>
                                                     <span className="line">-</span>
-                                                    <span className="phone">{rowItem.PartnerRequestID}</span>
+                                                    <span className="phone">{rowItem.PartnerSaleOrderID}</span>
                                                 </span>
                                             </label>
                                             <label className="item address-receiver">
@@ -647,10 +647,10 @@ class DataGridShipmentOderCom extends Component {
                                             </label>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td className="group-address">
                                         <div className="group-info-row">
-                                            <label className="item address-receiver">
-                                                <span>{rowItem.PrimaryShipItemName}</span>
+                                            <label className="item address-repository-created">
+                                                <span className="coordinatorUser">{rowItem.PrimaryShipItemName}</span>
                                             </label>
                                             <label className="item address-receiver">
                                                 <span>{rowItem.OrderNote!=""?"Ghi chú: "+rowItem.OrderNote.split("-")[0]:""}</span>
