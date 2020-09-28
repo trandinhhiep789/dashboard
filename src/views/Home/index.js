@@ -78,7 +78,7 @@ import DestroyRequest from "../TMS/DestroyRequest";
 import InventoryRequest from "../TMS/InventoryRequest";
 import RewardPriceTable from "../TMS/MD/RewardPrice/RewardPriceTable";
 import UseGuide from "../../views/UseGuide";
-
+import CurrentAdvanceDebt from "../TMS/CurrentAdvanceDebt";
 
 
 import NotFound from '../NotFound'
@@ -224,6 +224,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/RewardPriceTable" component={RewardPriceTable} isLoggedIn={isLoggedIn} />
+
+                                <PrivateRoute path="/CurrentAdvanceDebt" component={CurrentAdvanceDebt} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} />
