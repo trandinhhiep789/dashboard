@@ -39,6 +39,16 @@ class InfoProductCom extends Component {
         return r;
     }
 
+    groupByNew(data, fields, sumBy = 'Quantity') {
+        let r = [], cmp = (x, y) => fields.reduce((a, b) => a && x[b] == y[b], true);
+        data.forEach(x => {
+            let y = r.find(z => cmp(x, z));
+            let w = [...fields, sumBy].reduce((a, b) => (a[b] = x[b], a), {})
+            y ? y[sumBy] = +y[sumBy] + (+x[sumBy]) : r.push(w);
+        });
+        return r;
+    }
+
     handleShowTotalSaleMaterialMoney() {
         const postData = [
             {
@@ -100,6 +110,14 @@ class InfoProductCom extends Component {
     }
 
     render() {
+
+        let objgroupByInstallBundleID = [];
+
+        if (this.state.ShipmentOrder.ShipmentOrder_Material2List != undefined && this.state.ShipmentOrder.ShipmentOrder_Material2List.length > 0) {
+            objgroupByInstallBundleID = this.groupByNew(this.state.ShipmentOrder.ShipmentOrder_Material2List, ['InstallProductID', 'InstallProductName']);
+        }
+        console.log("objgroupByInstallBundleID", objgroupByInstallBundleID);
+        console.log("\ShipmentOrder_Material2List", this.state.ShipmentOrder.ShipmentOrder_Material2List);
 
         return (
             <div className="card">
@@ -208,24 +226,20 @@ class InfoProductCom extends Component {
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                 <thead className="thead-light">
                                     <tr>
-                                        {/* <th className="jsgrid-header-cell"></th> */}
-                                        <th className="jsgrid-header-cell"style={{ width: "8%" }}>Cần lắp đặt</th>
-                                        <th className="jsgrid-header-cell"style={{ width: "12%" }}>Mã sản phẩm</th>
-                                        <th className="jsgrid-header-cell"style={{ width: "25%" }}>Sản phẩm</th>
-                                        <th className="jsgrid-header-cell"style={{ width: "12%" }}>Serial/IMEI</th>
-                                        <th className="jsgrid-header-cell"style={{ width: "8%" }}>Kiện</th>
-                                        <th className="jsgrid-header-cell"style={{ width: "8%" }}>Giá</th>
-                                        <th className="jsgrid-header-cell"style={{ width: "8%" }}>Số lượng</th>
-                                        <th className="jsgrid-header-cell"style={{ width: "15%" }}>Đơn vị tính</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "8%" }}>Cần lắp đặt</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "12%" }}>Mã sản phẩm</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "25%" }}>Sản phẩm</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "12%" }}>Serial/IMEI</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "8%" }}>Kiện</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "8%" }}>Số lượng</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "15%" }}>Đơn vị tính</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName','ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).map((item, index) => {
+                                    {this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName', 'ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).map((item, index) => {
                                         return (
                                             <tr key={index}>
-                                                {/* <td>
-                                                    <img src='/src/img/may-lanh-lg-v10enh-1-1-org.jpg' className="img-product" />
-                                                </td> */}
                                                 <td>
                                                     <div className="checkbox">
                                                         <label>
@@ -260,7 +274,6 @@ class InfoProductCom extends Component {
                                 <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                     <thead className="thead-light">
                                         <tr>
-                                            <th className="jsgrid-header-cell">Sản phẩm lắp đặt</th>
                                             <th className="jsgrid-header-cell">Sản phẩm</th>
                                             <th className="jsgrid-header-cell">Số lượng tạm ứng</th>
                                             <th className="jsgrid-header-cell">Số lượng miễn phí</th>
@@ -270,24 +283,38 @@ class InfoProductCom extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.state.ShipmentOrder.ShipmentOrder_Material2List && this.state.ShipmentOrder.ShipmentOrder_Material2List.map((item, index) => {
-                                             if (item.ProductID != "" && item.ProductID != null) {
-                                                return (<tr key={index}>
-                                                    <td>{item.InstallProductID + '-' + item.InstallProductName}</td>
-                                                    <td>{item.ProductID + '-' + item.ProductName}</td>
-                                                    <td>{item.AdvanceQuantity}</td>
-                                                    <td>{item.FreeQuantity}</td>
-                                                    <td>{item.SaleQuantity}</td>
-                                                    <td>{formatMoney( item.SalePriceWithVAT, 0)}đ</td>
-                                                    <td>{formatMoney(this.Pricevat(item.SaleQuantity, item.SalePriceWithVAT), 0)}đ</td>
-                                                </tr>)
 
-                                            }
-                                        })
-                                        }
-
+                                        {objgroupByInstallBundleID != null &&
+                                            objgroupByInstallBundleID.map((rowItem, rowIndex) => {
+                                                let obj = this.state.ShipmentOrder.ShipmentOrder_Material2List.filter(n => n.InstallProductID == [rowItem.InstallProductID]);
+                                                return (
+                                                    <React.Fragment>
+                                                        <tr className="totalCurrency" key={"totalCurrency" + rowIndex}>
+                                                            <td colSpan={8}>
+                                                                <div className="groupTotalCurrency">
+                                                                    <span className="item txtTotal">{rowItem.InstallProductID + " - " + rowItem.InstallProductName}</span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        {obj.map((item, Index) => {
+                                                              if (item.ProductID != "" && item.ProductID != null) {
+                                                                return (<tr key={index}>
+                                                                    <td>{item.ProductID + '-' + item.ProductName}</td>
+                                                                    <td>{item.AdvanceQuantity}</td>
+                                                                    <td>{item.FreeQuantity}</td>
+                                                                    <td>{item.SaleQuantity}</td>
+                                                                    <td>{formatMoney(item.SalePriceWithVAT, 0)}đ</td>
+                                                                    <td>{formatMoney(this.Pricevat(item.SaleQuantity, item.SalePriceWithVAT), 0)}đ</td>
+                                                                </tr>)
+                
+                                                            }
+                                                        })
+                                                        }
+                                                    </React.Fragment>
+                                                );
+                                            })}
                                         <tr className="totalCurrency">
-                                            <td colSpan={7 - 1}>
+                                            <td colSpan={6 - 1}>
                                                 <div className="groupTotalCurrency">
                                                     <span className="item txtTotal">Tổng</span>
                                                 </div>

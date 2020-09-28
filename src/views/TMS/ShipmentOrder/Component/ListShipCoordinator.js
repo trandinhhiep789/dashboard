@@ -154,21 +154,24 @@ class ListShipCoordinatorCom extends Component {
 
         this.state.ShipmentOrder.map((row, indexRow) => {
             row[name] = value;
+            row["DeliverUserList"] = [];
+            row["ShipDeliverUserList"] = [];
         });
         this.setState({ objCoordinator: objCoordinator, objDeliverUser: objDeliverUser })
     }
 
     handleValueChange1(e, selectedOption1) {
-        console.log("ShipmentOrder", this.state.ShipmentOrder, selectedOption1)
         this.state.ShipmentOrder.map((row, indexRow) => {
             row["DeliverUserList"] = selectedOption1;
+            row["ShipDeliverUserList"] = selectedOption1;
         });
         this.setState({ selectedOption: selectedOption1, ShipmentOrder: this.state.ShipmentOrder });
     }
 
-    handleOnValueChangeDeliverUser(name, value) {
+    handleOnValueChangeDeliverUser(name, value,selectedOption) {
         this.state.ShipmentOrder.map((row, indexRow) => {
             row["DeliverUserList"] = value;
+            row["ShipDeliverUserList"] = selectedOption;
         });
         this.setState({ objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder });
     }
@@ -229,7 +232,7 @@ class ListShipCoordinatorCom extends Component {
 
         let elementobject = {};
         this.state.ShipmentOrder.map((row, indexRow) => {
-            console.log("DeliverUserList", this.state.ShipmentOrder, row["DeliverUserList"].length)
+            row["DeliverUserList"]=[];
             if (row["DeliverUserList"].length <= 0) {
                 const validationObject = { IsValidatonError: true, ValidationErrorMessage: "vui lòng chọn nhân viên" };
                 elementobject = Object.assign({}, elementobject, { ["DeliverUserList-" + indexRow]: validationObject });
@@ -250,9 +253,10 @@ class ListShipCoordinatorCom extends Component {
 
         });
         this.setState({ FormValidation: elementobject });
-      
+     
+        this.state.ShipmentOrder.DeliverUserList=[];
+     
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
-            console.log("AddInfoCoordinatorLst",apiResult.IsError);
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
           
@@ -273,6 +277,7 @@ class ListShipCoordinatorCom extends Component {
         this.state.ShipmentOrder[rowIndex][rowname] = rowvalue;
         if (rowname == "CarrierPartnerID") {
             this.state.ShipmentOrder[rowIndex]["DeliverUserList"] = [];
+            this.state.ShipmentOrder[rowIndex]["ShipDeliverUserList"] = [];
         }
 
         this.setState({ ShipmentOrder: this.state.ShipmentOrder });
@@ -308,6 +313,8 @@ class ListShipCoordinatorCom extends Component {
                 nameMember: "PartnerName",
                 value: -1,
                 listoption: null,
+                filterValue: "2",
+                filterobj: "PartnerTypeID",
                 placeholder: "---Vui lòng chọn---",
                 isMultiSelect: false,
                 disabled: false
@@ -432,7 +439,7 @@ class ListShipCoordinatorCom extends Component {
                             isMultiSelect={true}
                             datasourcemember="ShipmentOrder_DeliverUserList"
                         /> :
-                        <FormControl.FormControlComboBox
+                        <FormControl.FormControlComboBoxUser
                             name="ShipmentOrder_DeliverUserList"
                             colspan="10"
                             labelcolspan="2"

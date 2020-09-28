@@ -88,8 +88,15 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
+                const result = apiResult.ResultObject.map((item) => {
+                    item.SenderStoreNameLable = item.SenderStoreID + " - " + item.SenderStoreName;
+                    item.StoreNameLable = item.StoreID + " - " + item.StoreName
+                    item.PartnerLable = item.PartnerID + " - " + item.PartnerName
+                    item.ShipmentOrderTypeLable = item.ShipmentOrderTypeID + " - " + item.ShipmentOrderTypeName
+                    return item;
+                })
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource: result,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true
                 });
