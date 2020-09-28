@@ -368,7 +368,6 @@ class AddCom extends React.Component {
                     >
 
                         <div className="row">
-
                             <div className="col-md-6">
                                 <FormControl.FormControlComboBox
                                     name="cboInventoryRequestType"
@@ -386,12 +385,8 @@ class AddCom extends React.Component {
                                     value={this.props.location.state.InventoryRequestTypeID}
                                     listoption={null}
                                     datasourcemember="InventoryRequestTypeID" />
-
                             </div>
-
-
                             <div className="col-md-6">
-
                                 <FormControl.FormControlDatetimeNew
                                     name="dtRequestDate"
                                     colspan="8"
@@ -408,7 +403,6 @@ class AddCom extends React.Component {
                                     datasourcemember="RequestDate"
                                 />
                             </div>
-
                             <div className="col-md-12">
                                 <FormControl.FormControlComboBox
                                     name="cboRequestStore"
@@ -431,8 +425,6 @@ class AddCom extends React.Component {
                                 />
 
                             </div>
-
-
                             <div className="col-md-12">
                                 <FormControl.TextBox
                                     name="txtInventoryRequestTitle"
@@ -448,7 +440,6 @@ class AddCom extends React.Component {
                                     classNameCustom="customcontrol"
                                 />
                             </div>
-
                             <div className="col-md-12">
                                 <FormControl.TextArea
                                     labelcolspan={2}
@@ -464,7 +455,6 @@ class AddCom extends React.Component {
                                 />
                             </div>
                         </div>
-
                         <div className="row">
                             <div className="col-12">
                                 <h4 className="header-title-custom">Danh sách sản phẩm</h4>
@@ -483,9 +473,7 @@ class AddCom extends React.Component {
                                 onValueChangeInputGrid={this.valueChangeInputGrid}
                             />
                         </div>
-
                         {isAutoReview == false ?
-
                             <div className="card">
                                 <div className="card-title group-card-title">
                                     <h4 className="title">Danh sách duyệt</h4>
