@@ -289,8 +289,7 @@ class ListShipCoordinatorCom extends Component {
 
     render() {
         if (this.state.IsCloseForm) {
-            debugger;
-            return <Redirect to={BackLink} />;
+                return <Redirect to={BackLink} />;
         }
 
         const DataGridColumnItemList = [
