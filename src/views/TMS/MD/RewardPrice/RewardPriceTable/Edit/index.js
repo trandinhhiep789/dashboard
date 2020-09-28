@@ -149,7 +149,7 @@ class EditCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                     // onchange={this.handleChange.bind(this)}
-                    //RequirePermission={REWARDPRICETABLE_UPDATE}
+                    RequirePermission={REWARDPRICETABLE_UPDATE}
                 >
 
                     <div className="row">
