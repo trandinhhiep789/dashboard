@@ -66,7 +66,13 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         this.callSearchData(this.state.SearchData);
-       
+    }
+
+    testAPI() {
+   
+        this.props.callFetchAPI(APIHostName, 'api/CurrentAdvanceDebt/GetListByUser', "68913").then(apiResult => {
+            console.log("testAPI", apiResult)
+        })
     }
 
     callDataTest() {

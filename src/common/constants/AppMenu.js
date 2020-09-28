@@ -542,6 +542,14 @@ const AppMenu = [
                 SubMenu: []
             },
             {
+                MenuName: 'CurrentAdvanceDebt',
+                MenuTitle: 'Thông kê hạn mức tạm ứng',
+                LinkTo: '/CurrentAdvanceDebt',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            
+            {
                 MenuName: 'InventoryRequest',
                 MenuTitle: 'Danh sách yêu cầu kiểm kê',
                 LinkTo: '/InventoryRequest',

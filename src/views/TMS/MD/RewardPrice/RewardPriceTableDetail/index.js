@@ -12,14 +12,14 @@ import {
     AddAPIRPTDetailPath,
     MLObjectRPTDetailItem
 } from "../RewardPriceTable/constants";
-import { ERPCOMMONCACHE_SERVICESEASONTYPE, ERPCOMMONCACHE_SUBGROUP } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_SERVICESEASONTYPE, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE } from "../../../../../constants/keyCache";
 
 class RewardPriceTableDetailCom extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
-            IsSystem: false, 
+            IsSystem: false,
             IsUpdate: false
         }
 
@@ -29,7 +29,7 @@ class RewardPriceTableDetailCom extends Component {
         if (this.props.index != undefined) {
             this.setState({
                 IsSystem: this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsSystem,
-                IsUpdate:  true
+                IsUpdate: true
             })
         }
     }
@@ -54,10 +54,6 @@ class RewardPriceTableDetailCom extends Component {
     }
 
 
-    handleChange(formData, MLObject) {
-    }
-
-
     render() {
 
         const { IsSystem, IsUpdate } = this.state;
@@ -68,7 +64,7 @@ class RewardPriceTableDetailCom extends Component {
                 listelement={[]}
                 onSubmit={this.handleSubmit}
                 IsCloseModal={true}
-               // onchange={this.handleChange.bind(this)}
+            // onchange={this.handleChange.bind(this)}
             >
 
                 <div className="row">
@@ -103,9 +99,57 @@ class RewardPriceTableDetailCom extends Component {
                             disabled={IsUpdate}
                             listoption={[]}
                             datasourcemember="SubGroupID"
+                            filterrest="cbTechSpecsValue,cbTechSpecs"
 
                         />
 
+                    </div>
+
+                    <div className="col-md-6">
+                        <FormControl.FormControlComboBox
+                            name="cbTechSpecs"
+                            colspan="9"
+                            labelcolspan="3"
+                            label="thông số kỹ thuật"
+                            // validatonList={["Comborequired"]}
+                            isautoloaditemfromcache={true}
+                            loaditemcachekeyid={ERPCOMMONCACHE_SUBGROUPTECHSPECS} //"ERPCOMMONCACHE.SUBGROUPTECHSPECS"
+                            valuemember="TechspecsID"
+                            nameMember="TechspecsName"
+                            controltype="InputControl"
+                            value={-1}
+                            disabled={IsUpdate}
+                            listoption={[]}
+                            datasourcemember="TechspecsID"
+                            filterobj="SubGroupID"
+                            filterName="cbSubGroup"
+                            filterValue=''
+                            filterrest="cbTechSpecsValue"
+                        />
+                    </div>
+
+                    <div className="col-md-6">
+                        <FormControl.FormControlComboBox
+                            name="cbTechSpecsValue"
+                            colspan="9"
+                            labelcolspan="3"
+                            label="giá trị"
+                            // validatonList={["Comborequired"]}
+                            isautoloaditemfromcache={true}
+                            disabled={IsUpdate}
+                            loaditemcachekeyid={ERPCOMMONCACHE_TECHSPECSVALUE}//"ERPCOMMONCACHE.TECHSPECSVALUE"
+                            valuemember="TechSpecsValueID"
+                            nameMember="Value"
+                            controltype="InputControl"
+                            value=""
+                            placeholder="Chọn giá trị"
+                            listoption={[]}
+                            datasourcemember="TechspecsValueID"
+                            filterName="cbTechSpecs"
+                            filterValue=""
+                            filterobj="TechSpecsID"
+                            isMultiSelect={false}
+                        />
                     </div>
 
                     <div className="col-md-6"></div>
@@ -145,7 +189,7 @@ class RewardPriceTableDetailCom extends Component {
                             disabled={IsSystem}
                             maxSize={19}
                         />
-                        
+
                     </div>
 
                     <div className="col-md-6">
