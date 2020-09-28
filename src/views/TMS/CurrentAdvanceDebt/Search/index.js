@@ -95,6 +95,8 @@ class SearchCom extends React.Component {
                     PKColumnName={""}
                     IsDelete={false}
                     IsAutoPaging={true}
+                    IsShowButtonAdd={false}
+                    IsShowButtonDelete={false}
                     RowsPerPage={10}
                     IsExportFile={false}
                     // RequirePermission={SERVICEAGREEMENT_VIEW}
