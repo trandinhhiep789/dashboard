@@ -232,7 +232,7 @@ class ListShipCoordinatorCom extends Component {
 
         let elementobject = {};
         this.state.ShipmentOrder.map((row, indexRow) => {
-            console.log("DeliverUserList", this.state.ShipmentOrder, row["DeliverUserList"].length)
+            row["DeliverUserList"]=[];
             if (row["DeliverUserList"].length <= 0) {
                 const validationObject = { IsValidatonError: true, ValidationErrorMessage: "vui lòng chọn nhân viên" };
                 elementobject = Object.assign({}, elementobject, { ["DeliverUserList-" + indexRow]: validationObject });
@@ -253,9 +253,10 @@ class ListShipCoordinatorCom extends Component {
 
         });
         this.setState({ FormValidation: elementobject });
-       // console.log("ShipmentOrder",this.state.ShipmentOrder)
+     
+        this.state.ShipmentOrder.DeliverUserList=[];
+     
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
-            console.log("AddInfoCoordinatorLst",apiResult.IsError);
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
           
@@ -276,6 +277,7 @@ class ListShipCoordinatorCom extends Component {
         this.state.ShipmentOrder[rowIndex][rowname] = rowvalue;
         if (rowname == "CarrierPartnerID") {
             this.state.ShipmentOrder[rowIndex]["DeliverUserList"] = [];
+            this.state.ShipmentOrder[rowIndex]["ShipDeliverUserList"] = [];
         }
 
         this.setState({ ShipmentOrder: this.state.ShipmentOrder });
