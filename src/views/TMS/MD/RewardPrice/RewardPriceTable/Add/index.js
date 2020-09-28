@@ -124,7 +124,7 @@ class AddCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                     // onchange={this.handleChange.bind(this)}
-                    // RequirePermission={REWARDPRICETABLE_ADD}
+                    RequirePermission={REWARDPRICETABLE_ADD}
                 >
 
                     <div className="row">
