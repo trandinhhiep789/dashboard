@@ -51,7 +51,6 @@ class AddCom extends React.Component {
             InventoryRequestRL: [],
             ListOption: [],
             IsLoadDataComplete: false,
-
             isError: false,
             isValidationSelect: false,
             isAutoReview: false,
@@ -74,7 +73,6 @@ class AddCom extends React.Component {
         };
 
         this.LoadInventoryRequestAdd(InventoryRequest);
-
     }
 
 
@@ -97,15 +95,13 @@ class AddCom extends React.Component {
         });
     }
 
-
-
-
     prevDataSubmit(formData, MLObject) {
         const { InventoryRequestDetail,
             InventoryRequestRVLst, InventoryRequest } = this.state;
         MLObject.InventoryRequest_RVList = InventoryRequestRVLst;
         MLObject.InventoryRequestDetail = InventoryRequestDetail;
         MLObject.CurrentReviewLevelID = InventoryRequest.CurrentReviewLevelID
+       
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.MessageDetail);
@@ -127,8 +123,6 @@ class AddCom extends React.Component {
         );
     }
 
-
-
     handleInputChangeGrid(obj) {
         this.setState({ InventoryRequestDetail: obj });
 
@@ -145,45 +139,7 @@ class AddCom extends React.Component {
 
         const { InventoryRequestDetail,
             InventoryRequestRVLst,
-            isError, gridInventoryRequestRL,
-            isAutoReview } = this.state;
-
-        const onChange = (aaa, event) => {
-            const value = event.target.value;
-            const name = event.target.name;
-            const InventoryRequestRLID = aaa;
-
-            if (value <= 0) {
-
-                this.setState({
-                    IsCallAPIError: true,
-                    isError: true
-                })
-            }
-            else {
-                this.setState({
-                    IsCallAPIError: false,
-                    isError: false
-
-                })
-            }
-
-
-
-            const element = Object.assign({}, gridInventoryRequestRL[InventoryRequestRLID], {
-                "UserName": value,
-                "FullName": name,
-            })
-            // console.log("element", element);
-
-            const parent = Object.assign({}, gridInventoryRequestRL, { [InventoryRequestRLID]: element });
-
-
-            this.setState({ gridInventoryRequestRL: parent })
-        }
-
-        // console.log("gridDestroyRequestRL", gridDestroyRequestRL)
-
+            InventoryRequest } = this.state;
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
@@ -219,13 +175,14 @@ class AddCom extends React.Component {
                                     colspan="8"
                                     labelcolspan="4"
                                     readOnly={true}
+                                    disabled={true}
                                     showTime={false}
                                     timeFormat={false}
                                     dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
                                     label="Ngày yêu cầu"
                                     placeholder={formatDate(currentDate, true)}
                                     controltype="InputControl"
-                                    value=""
+                                    value={formatDate(currentDate, true)}
                                     validatonList={["required"]}
                                     datasourcemember="RequestDate"
                                 />
@@ -288,7 +245,7 @@ class AddCom extends React.Component {
                             onValueChangeGrid={this.handleInputChangeGrid.bind(this)}
                         />
 
-                        {isAutoReview == false ?
+                        {InventoryRequest.IsAutoReview == false ?
                             <InventoryRequestRVList
                                 dataSource={InventoryRequestRVLst}
                                 onValueChangeGridRV={this.handleInputChangeGridRV.bind(this)}
