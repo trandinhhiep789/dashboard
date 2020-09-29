@@ -326,17 +326,17 @@ export const DataGridColumnList = [
         Width: 200
     },
     {
-        Name: "ApplyBrandName",
-        Type: "text",
-        Caption: "Nhà sản xuất áp dụng",
-        DataSourceMember: "ApplyBrandName",
-        Width: 200
-    },
-    {
         Name: "ApplySubGroupName",
         Type: "text",
         Caption: "Nhóm sản phẩm áp dụng",
         DataSourceMember: "ApplySubGroupName",
+        Width: 200
+    },
+    {
+        Name: "ApplyBrandName",
+        Type: "text",
+        Caption: "Nhà sản xuất áp dụng",
+        DataSourceMember: "ApplyBrandName",
         Width: 200
     },
     {
