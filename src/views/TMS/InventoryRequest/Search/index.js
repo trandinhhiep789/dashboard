@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
-//import DataGrid from "../../../../common/components/DataGrid/getdataserver.js";
 import DataGrid from "../../../../common/components/DataGrid";
 import InputGridNew from "../../../../common/components/FormContainer/FormControl/InputGridNew";
 import { MessageModal } from "../../../../common/components/Modal";
@@ -70,8 +69,6 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log('callSearchData', searchData, apiResult)
-
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -81,20 +78,40 @@ class SearchCom extends React.Component {
             else {
                 const tempData = apiResult.ResultObject.map((item, index) => {
                     let element = {
-                        "Mã yêu cầu": item.DestroyRequestID,
-                        "Tiêu Đề yêu cầu": item.DestroyRequestTitle,
-                        "Loại yêu cầu hủy vật tư": item.DestroyRequestTypeID + "-" + item.DestroyRequestTypeName,
+                        "Mã yêu cầu": item.InventoryRequestID,
+                        "Tiêu Đề yêu cầu": item.InventoryRequestTitle,
+                        "Loại yêu cầu hủy vật tư": item.InventoryRequestTypeID + "-" + item.InventoryRequestTypeName,
                         "Kho yêu cầu": item.RequestStoreID + "-" + item.StoreName,
                         "Ngày yêu cầu": item.RequestDate,
-                        "Người yêu cầu": item.RequestUser,
-                        "Đã duyệt": item.IsreViewed,
-                        "Đã xuất": item.IsOutput,
+                        "Người yêu cầu": item.RequestUser + " - " + item.FullName,
+                        "Đã duyệt": item.IsreViewed= true ? 'Đã duyệt' : 'Chưa duyệt',
+                        "Đã xuất": item.IsCreatedOrder = true ? 'Đã xuất' : 'Chưa xuất'
                     };
 
                     return element;
                 })
+
+                const dataSource = apiResult.ResultObject.map((item, index) => {
+                    item.ApproverName = item.RequestUser + " - " + item.FullName;
+                    if (item.IsCreatedOrder) {
+                        item.OutputStatusLable = <span className='lblstatus text-success'>Đã xuất</span>;
+                    }
+                    else {
+                        item.OutputStatusLable = <span className='lblstatus text-warning'>Chưa xuất</span>;
+                    }
+                    if (item.IsreViewed) {
+                        item.ReviewStatusLable = <span className='lblstatus text-success'>Đã duyệt</span>;
+
+                    }
+                    else {
+                        item.ReviewStatusLable =<span className='lblstatus text-warning'>Chưa duyệt</span>;
+
+                    }
+                    return item;
+                })
+
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource: dataSource,
                     dataExport: tempData,
                     IsCallAPIError: apiResult.IsError,
                 });
@@ -123,6 +140,7 @@ class SearchCom extends React.Component {
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
+        console.log("listMLObject",deleteList, pkColumnName, listMLObject);
         this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
@@ -170,8 +188,8 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.Keyword
             },
             {
-                SearchKey: "@DESTROYREQUESTTYPEID",
-                SearchValue: MLObject.DestroyRequestTypeID
+                SearchKey: "@INVENTORYREQUESTTYPEID",
+                SearchValue: MLObject.InventoryRequestTypeID
             },
             {
                 SearchKey: "@REQUESTSTOREID",
@@ -190,8 +208,8 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.IsreViewed
             },
             {
-                SearchKey: "@ISOUTPUT",
-                SearchValue: MLObject.IsOutput
+                SearchKey: "@ISCREATEDORDER",
+                SearchValue: MLObject.IsCreatedOrder
             }
 
         ];
@@ -247,9 +265,9 @@ class SearchCom extends React.Component {
                     RowsPerPage={10}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
-                    // RequirePermission={DESTROYREQUEST_VIEW}
-                    // DeletePermission={DESTROYREQUEST_DELETE}
-                    fileName="Danh sách yêu cầu hủy vật tư"
+                    RequirePermission={DESTROYREQUEST_VIEW}
+                    DeletePermission={DESTROYREQUEST_DELETE}
+                    fileName="Danh sách yêu cầu kiểm kê"
                     onExportFile={this.handleExportFile.bind(this)}
                 />
             </React.Fragment>

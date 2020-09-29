@@ -17,6 +17,7 @@ import {
 } from "../constants";
 
 import { showModal, hideModal } from '../../../../actions/modal';
+import { ERPCOMMONCACHE_INVENTORYREQUESTTYPE, ERPCOMMONCACHE_USER_COOSTORE_BYUSER } from "../../../../constants/keyCache";
 
 class ListInventoryRequestTypeCom extends Component {
     constructor(props) {
@@ -127,7 +128,7 @@ class ListInventoryRequestTypeCom extends Component {
                                 labelcolspan="4"
                                 label="Loại yêu cầu kiểm kê"
                                 isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.INVENTORYREQUESTTYPE"
+                                loaditemcachekeyid={ERPCOMMONCACHE_INVENTORYREQUESTTYPE}
                                 valuemember="InventoryRequestTypeID"
                                 nameMember="InventoryRequestTypeName"
                                 controltype="InputControl"
@@ -154,7 +155,7 @@ class ListInventoryRequestTypeCom extends Component {
                                 isautoloaditemfromcache={true}
                                 onValueChange={this.handleOnValueChange}
                                 isusercache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
+                                loaditemcachekeyid={ERPCOMMONCACHE_USER_COOSTORE_BYUSER}//"ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
                                 valuemember="StoreID"
                                 nameMember="StoreName"
                                 controltype="InputControl"

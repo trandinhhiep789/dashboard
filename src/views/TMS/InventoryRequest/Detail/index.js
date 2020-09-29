@@ -12,12 +12,18 @@ import { updatePagePath } from "../../../../actions/pageAction";
 
 import {
     DetailAPIPath,
-
+    LoadAPIPath,
+    APIHostName,
+    TitleFormDetail,
+    GirdInventoryRequestDetailColumnList,
+    GirdInventoryRequestRVLColumnList
 
 } from "../constants";
-import { MessageModal } from "../../../../common/components/Modal";
 
+import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+import { MessageModal } from "../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../actions/modal';
+import InventoryRequestInfo from "./InventoryRequestInfo";
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -28,6 +34,9 @@ class DetailCom extends React.Component {
             IsCallAPIError: false,
             IsLoadDataComplete: false,
             IsSystem: false,
+            InventoryRequest: {},
+            InventoryRequestDetail:[],
+            InventoryRequestRVL: []
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -38,7 +47,23 @@ class DetailCom extends React.Component {
     }
 
     callLoadData(id) {
-      
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            console.log("apiResult", apiResult, id)
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+
+
+                this.setState({
+                    IsLoadDataComplete: true,
+                    InventoryRequest: apiResult.ResultObject
+                });
+            }
+        });
     }
 
     showMessage(message) {
@@ -57,11 +82,11 @@ class DetailCom extends React.Component {
         if (!IsError) {
             cssNotification = "notification-custom-success";
             iconNotification = "fa fa-check"
-           
+
         } else {
             cssNotification = "notification-danger";
             iconNotification = "fa fa-exclamation"
-           
+
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
@@ -85,10 +110,73 @@ class DetailCom extends React.Component {
     }
 
     render() {
-        const { IsSystem } = this.state;
+        const { IsSystem, InventoryRequest, InventoryRequestRVL, InventoryRequestDetail } = this.state;
+        if (this.state.IsLoadDataComplete) {
+            return (
+                <div className="col-lg-12">
+                    <div className="card">
+                        <h4 className="card-title">
+                            <strong>{TitleFormDetail}</strong>
+                        </h4>
+                        <div className="card-body">
+                            <InventoryRequestInfo
+                                InventoryRequest={InventoryRequest}
+                            />
+
+                            <div className="card">
+                                <div className="card-title group-card-title">
+                                    <h4 className="title">Danh sách vật tư kiểm kê</h4>
+                                </div>
+                                <div className="card-body">
+                                    <InputGrid
+                                        name="lstInventoryRequestDetail"
+                                        controltype="GridControl"
+                                        listColumn={GirdInventoryRequestDetailColumnList}
+                                        dataSource={InventoryRequestDetail}
+                                        isHideHeaderToolbar={true}
+                                        colspan="12"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="card">
+                                <div className="card-title group-card-title">
+                                    <h4 className="title">Danh sách duyệt</h4>
+                                </div>
+                                <div className="card-body">
+                                    <InputGrid
+                                        name="lstInventoryRequestRVL"
+                                        controltype="GridControl"
+                                        listColumn={GirdInventoryRequestRVLColumnList}
+                                        dataSource={InventoryRequestRVL}
+                                        isHideHeaderToolbar={true}
+                                        colspan="12"
+                                    />
+                                </div>
+                            </div>
+
+                        </div>
+                        <footer className="card-footer text-right ">
+                            <div className="btn-group btn-group-dropdown mr-3">
+                                <button className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">mức 1</button>
+                                <div className="dropdown-menu" x-placement="bottom-start" >
+                                    <button className="dropdown-item" type="button" >Đồng ý</button>
+                                    <button className="dropdown-item" type="button">Từ chối</button>
+                                </div>
+                            </div>
+                            <button className="btn btn-primary mr-3" type="button">Tạo phiếu xuất</button>
+                            <Link to="/DestroyRequest">
+                                <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
+                            </Link>
+                        </footer>
+                    </div>
+                </div>
+            );
+        }
         return (
-            <React.Fragment>detail</React.Fragment>
+            <label>Đang nạp dữ liệu...</label>
         );
+
 
 
     }

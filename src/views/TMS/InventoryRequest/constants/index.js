@@ -56,7 +56,7 @@ export const InitSearchParams = [
         SearchValue: ""
     },
     {
-        SearchKey: "@InventoryRequestTYPEID",
+        SearchKey: "@INVENTORYREQUESTTYPEID",
         SearchValue: "-1"
     },
     {
@@ -76,7 +76,7 @@ export const InitSearchParams = [
         SearchValue: "-1"
     },
     {
-        SearchKey: "@ISOUTPUT",
+        SearchKey: "@ISCREATEDORDER",
         SearchValue: "-1"
     }
 
@@ -114,9 +114,9 @@ export const SearchMLObjectDefinition = [
         BindControlName: "cbIsreViewed"
     },
     {
-        Name: "IsOutput",
+        Name: "IsCreatedOrder",
         DefaultValue: "",
-        BindControlName: "cbIsOutput"
+        BindControlName: "cbIsCreatedOrder"
     },
 ];
 
@@ -142,7 +142,7 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.InventoryRequestTYPE",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.INVENTORYREQUESTTYPE",
         ValueMember: "InventoryRequestTypeID",
         NameMember: "InventoryRequestTypeName",
 
@@ -194,16 +194,16 @@ export const SearchElementList = [
         placeholder: "--Tất cả--",
         listoption: [
             { value: -1, label: '--Tất cả--' },
-            { value: 1, label: 'Hết hạn' },
-            { value: 2, label: 'Còn hạn' },
+            { value: 1, label: 'Chưa duyệt' },
+            { value: 2, label: 'Đã duyệt' },
         ],
        
 
     },
     {
         type: "ComboBox",
-        name: "cbIsOutput",
-        DataSourceMember: "IsOutput",
+        name: "cbIsCreatedOrder",
+        DataSourceMember: "IsCreatedOrder",
         label: "Trạng thái xuất",
         colspan: 2,
         value: -1,
@@ -258,24 +258,24 @@ export const DataGridColumnList = [
     },
 
     {
-        Name: "RequestUser",
+        Name: "ApproverName",
         Type: "text",
         Caption: "Người yêu cầu",
-        DataSourceMember: "RequestUser",
+        DataSourceMember: "ApproverName",
         Width: 150
     },
     {
-        Name: "StatusLable1",
+        Name: "ReviewStatusLable",
         Type: "text",
         Caption: "Đã duyệt",
-        DataSourceMember: "StatusLable1",
+        DataSourceMember: "ReviewStatusLable",
         Width: 130
     },
     {
-        Name: "StatusLable2",
+        Name: "OutputStatusLable",
         Type: "text",
         Caption: " Đã xuất",
-        DataSourceMember: "StatusLable2",
+        DataSourceMember: "OutputStatusLable",
         Width: 130
     },
     {
@@ -470,3 +470,87 @@ export const InputInventoryRequestRLColumnList = [
     },
    
 ];
+
+export const GirdInventoryRequestDetailColumnList =[
+    {
+        Name: "MaterialGroupID",
+        Type: "text",
+        Caption: "Nhóm vật tư",
+        DataSourceMember: "MaterialGroupID",
+        Width: 150
+    },
+    {
+        Name: "ProductID",
+        Type: "text",
+        Caption: "Mã sản phẩm",
+        DataSourceMember: "ProductID",
+        Width: 150
+    },
+    {
+        Name: "ProductName",
+        Type: "text",
+        Caption: "Tên sản phẩm",
+        DataSourceMember: "ProductName",
+        Width: 150
+    },
+    {
+        Name: "RecordQuantity",
+        Type: "textNew",
+        Caption: " Số lượng sổ sách",
+        DataSourceMember: "RecordQuantity",
+        Width: 150
+    },
+    {
+        Name: "ActualQuantity",
+        Type: "text",
+        Caption: " Số lượng thực tế",
+        DataSourceMember: "ActualQuantity",
+        Width: 150,
+    },
+    {
+        Name: "UneventQuantity",
+        Type: "text",
+        Caption: "Chênh lệch",
+        DataSourceMember: "UneventQuantity",
+        Width: 150,
+    },
+]
+
+export const GirdInventoryRequestRVLColumnList =[
+    {
+        Name: "ReviewLevelName",
+        Type: "text",
+        Caption: "Mức duyệt",
+        DataSourceMember: "ReviewLevelName",
+        Width: 100
+    },
+    {
+        Name: "ApproverName",
+        Type: "text",
+        Caption: "Người duyệt",
+        DataSourceMember: "ApproverName",
+        Width: 100
+    },
+    {
+        Name: "ReviewStatusLable",
+        Type: "text",
+        Caption: "Trạng thái duyệt",
+        DataSourceMember: "ReviewStatusLable",
+        Width: 100
+    },
+    {
+        Name: "reViewedDate",
+        Type: "date",
+        Caption: "Ngày duyệt",
+        DataSourceMember: "reViewedDate",
+        Width: 100
+    },
+    {
+        Name: "reViewedNote",
+        Type: "text",
+        Caption: "Ghi chú duyệt",
+        DataSourceMember: "reViewedNote",
+        Width: 100
+    },
+]
+
