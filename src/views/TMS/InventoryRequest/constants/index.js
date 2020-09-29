@@ -2,6 +2,7 @@ export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/InventoryRequest/Search";
 export const LoadAPIPath = "api/InventoryRequest/Load";
 export const LoadNewAPIPath = "api/InventoryRequest/LoadInfoNew";
+export const LoadInventoryRequestAdd = "api/InventoryRequest/LoadInventoryRequestAdd";
 export const AddAPIPath = "api/InventoryRequest/Add";
 export const UpdateAPIPath = "api/InventoryRequest/Update";
 export const DeleteNewAPIPath = "api/InventoryRequest/DeleteNew";
