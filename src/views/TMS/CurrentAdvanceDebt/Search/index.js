@@ -58,7 +58,7 @@ class SearchCom extends React.Component {
 
 
     handleSearchSubmit(formData, MLObject) {
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, MLObject.UserName[0].value).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, MLObject.UserName.value).then(apiResult => {
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
