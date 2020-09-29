@@ -192,26 +192,40 @@ export const DataGridColumnItemListRPTDetail = [
         Type: "text",
         Caption: "Nhóm hàng",
         DataSourceMember: "SubGroupName",
-        Width: 250
+        Width: 100
+    },
+    {
+        Name: "TechspecsName",
+        Type: "text",
+        Caption: "Thông số kỹ thuật",
+        DataSourceMember: "TechspecsName",
+        Width: 100
+    },
+    {
+        Name: "TechspecsValue",
+        Type: "text",
+        Caption: "Giá trị thông số kỹ thuật",
+        DataSourceMember: "TechspecsValue",
+        Width: 100
     },
     {
         Name: "RewardPrice",
         Type: "textCurrency",
         Caption: "Giá",
         DataSourceMember: "RewardPrice",
-        Width: 250
+        Width: 100
     },
     {
         Name: "RewardPriceWithoutInstall",
         Type: "textCurrency",
         Caption: "Giá không cài đặt",
         DataSourceMember: "RewardPriceWithoutInstall",
-        Width: 250
+        Width: 100
     },
 
     {
         Name: "Action",
-        Type: "groupAction",
+        Type: "editnew",
         Caption: "Tác vụ",
         DataSourceMember: "",
         Width: 70,
@@ -226,6 +240,18 @@ export const MLObjectRPTDetailItem= [
         DefaultValue: {},
         BindControlName: "cbSubGroup",
         DataSourceMember: "SubGroupID"
+    },
+    {
+        Name: "TechspecsID",
+        DefaultValue: {},
+        BindControlName: "cbTechSpecs",
+        DataSourceMember: "TechspecsID"
+    },
+    {
+        Name: "TechSpecsValueID",
+        DefaultValue: {},
+        BindControlName: "cbTechSpecsValue",
+        DataSourceMember: "TechSpecsValueID"
     },
     {
         Name: "RewardPrice",
