@@ -67,7 +67,7 @@ class InventoryRequestDetailListCom extends Component {
                                                 Colmd='12'
                                                 colspan='12'
                                                 min={0}
-                                                max={1000}
+                                                max={rowItem.RecordQuantity}
                                                 value={rowItem.ActualQuantity > 0 ? rowItem.ActualQuantity : ''}
                                                 indexRow={rowIndex}
                                                 disabled={false}
