@@ -25,7 +25,7 @@ export const SearchElementList = [
         DataSourceMember: "UserName",
         label: "Nhân viên",
         colspan: 12,
-        rowspan: 2,
+        rowspan: 3,
         labelcolspan: 12,
         IsLabelDiv: true,
         value: -1,
