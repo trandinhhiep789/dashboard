@@ -431,6 +431,12 @@ export const GridInstallBundle_Materia = [
         DataSourceMember: "OutputUsAgeType"
     },
     {
+        Name: "OutputUsAgeTypeName",
+        DefaultValue: "",
+        BindControlName: "OutputUsAgeTypeName",
+        DataSourceMember: "OutputUsAgeTypeName"
+    },
+    {
         Name: "ConvertRatio",
         DefaultValue: '',
         BindControlName: "ConvertRatio",
@@ -616,12 +622,22 @@ export const InstallBundle_MateriaColumnList = [
         datasourcemember: "OutputUsAgeType",
         validatonList:["Comborequired"],
         isautoloaditemfromcache:false,
-        listoption:[{ value: -1, label: "--Vui lòng chọn--" },{ value: 1, label: "Xuất tiêu hao" },{ value: 2, label: "Xuất bán" }],
+        listoption:[{ value: -1, label: "--Vui lòng chọn--" },{ value: 1, label: "Xuất tiêu hao" },{ value: 2, label: "Xuất bán" },{ value: 3, label: "Xuất tiêu hao + bán" }],
         filterrestValue:[1],
+        namelabel:"OutputUsAgeTypeName",
         value:-1,
         filterrest:"IsHasPromotion,PromotionQuantity",
         OrderIndex: 7,
         hideInput: false
+    },
+    {
+        name: "OutputUsAgeTypeName",
+        Type: "text",
+        Caption: "hình thức xuất",
+        label: "hình thức xuất",
+        datasourcemember: "OutputUsAgeTypeName",
+        Width: 300,
+        OrderIndex: 7
     },
     {
         name: "IsHasPromotion",

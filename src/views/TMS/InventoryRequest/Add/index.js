@@ -14,18 +14,10 @@ import InventoryRequestRVList from "../Component/InventoryRequestRVList";
 import {
     APIHostName,
     AddAPIPath,
-    AddElementList,
     MLObjectDefinition,
     BackLink,
     AddPagePath,
     TitleFormAdd,
-    GridMLObjectDefinition,
-    InputInventoryRequestDetailColumnList,
-    LoadAPIByRequestTypeIDPath,
-    InputDestroyRequestRLColumnList,
-    GridDestroyRequestRLMLObjectDefinition,
-    LoadUserNameAPIByStoreIDPath,
-    LoadAPIByDestroyRequestTypeIDPath,
     LoadInventoryRequestAdd
 
 } from "../constants";
@@ -52,6 +44,7 @@ class AddCom extends React.Component {
             IsLiquidated: false,
             IsDeposited: false,
             InventoryRequestDetail: [],
+            InventoryRequest: {},
             InventoryRequestRVLst: [],
             InventoryRequestTypeID: '',
             RequestStoreID: '',
@@ -97,6 +90,7 @@ class AddCom extends React.Component {
                 this.setState({
                     InventoryRequestDetail: apiResult.ResultObject.InventoryRequestDetail,
                     InventoryRequestRVLst: apiResult.ResultObject.InventoryRequest_RVList,
+                    InventoryRequest: apiResult.ResultObject,
                     IsLoadDataComplete: true,
                 });
             }
@@ -108,20 +102,15 @@ class AddCom extends React.Component {
 
     prevDataSubmit(formData, MLObject) {
         const { InventoryRequestDetail,
-            InventoryRequestRVLst } = this.state;
+            InventoryRequestRVLst, InventoryRequest } = this.state;
         MLObject.InventoryRequest_RVList = InventoryRequestRVLst;
         MLObject.InventoryRequestDetail = InventoryRequestDetail;
-        console.log("MLObject", MLObject)
-    }
-
-    handleSubmit(MLObject) {
+        MLObject.CurrentReviewLevelID = InventoryRequest.CurrentReviewLevelID
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.MessageDetail);
         });
-
     }
-
 
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
