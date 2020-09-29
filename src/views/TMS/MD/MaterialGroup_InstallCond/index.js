@@ -285,19 +285,23 @@ class MaterialGroup_InstallCondCom extends React.Component {
                     listOption = this.getDataCombobox(this.state.SubGroup, "SubGroupID", "SubGroupName", "MainGroupID", elementValue);
                     objElement.listoption = listOption;
                     objElement.value = "-1";
+                    formData.ApplySubGroupID = ["-1"];
                 }
                 if (objElement.Name == "ApplyBrandID") {
                     listOption = this.getDataCombobox(this.state.Brand, "BrandID", "BrandName", "MainGroupID", elementValue);
                     objElement.listoption = listOption;
                     objElement.value = "-1";
+                    formData.ApplyBrandID = ["-1"];
                 }
                 if (objElement.Name == "ApplyTechspecsID") {
                     objElement.listoption = listOptionNull;
                     objElement.value = "-1";
+                    formData.ApplyTechspecsID = ["-1"];
                 }
                 if (objElement.Name == "ApplyTechspecsValueID") {
                     objElement.listoption = listOptionNull;
                     objElement.value = "-1";
+                    formData.ApplyTechspecsValueID = ["-1"];
                 }
             } else if (elementName == "ApplySubGroupID") {
                 if (objElement.Name == "ApplySubGroupID") {
@@ -308,10 +312,12 @@ class MaterialGroup_InstallCondCom extends React.Component {
                     listOption = this.getDataCombobox(this.state.Techspecs, "TechspecsID", "TechspecsName", "SubGroupID", elementValue);
                     objElement.listoption = listOption;
                     objElement.value = "-1";
+                    formData.ApplyTechspecsID = ["-1"];
                 }
                 if (objElement.Name == "ApplyTechspecsValueID") {
                     objElement.listoption = listOptionNull;
                     objElement.value = "-1";
+                    formData.ApplyTechspecsValueID = ["-1"];
                 }
             } else if (elementName == "ApplyTechspecsID") {
                 if (objElement.Name == "ApplyTechspecsID") {
@@ -321,6 +327,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
                     listOption = this.getDataCombobox(this.state.TechspecsValue, "TechSpecsValueID", "Value", "TechSpecsID", elementValue);
                     objElement.listoption = listOption;
                     objElement.value = "-1";
+                    formData.ApplyTechspecsValueID = ["-1"];
                 }
             } else if (elementName == "ApplyTechspecsValueID") {
                 if (objElement.Name == "ApplyTechspecsValueID") {
@@ -329,6 +336,8 @@ class MaterialGroup_InstallCondCom extends React.Component {
             }
 
         }.bind(this));
+
+        
 
         if (isInsert) {
             this.setState({
@@ -339,7 +348,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
                 ModalColumnList_Edit: _ModalColumnList
             });
         }
-        //console.log("formData", listOption);
+        //console.log("formData", formData);
     }
 
     onClose() {
