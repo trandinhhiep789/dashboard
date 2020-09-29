@@ -32,7 +32,7 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: false,
-        isMultiSelect: true
+        isMultiSelect: false
     },
    
 ];
