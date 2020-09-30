@@ -20,7 +20,9 @@ import {
     GirdDestroyRequestDetailColumnList,
     GirdDestroyRequestRLColumnList,
     UpdateCreateSaleOrderAPIPath,
-    UpdateCurrentReviewLevelAPIPath
+    UpdateCurrentReviewLevelAPIPath,
+    AddAPIAttachment,
+    DeleteAPIAttachment
 
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
@@ -28,6 +30,7 @@ import { MessageModal } from "../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../actions/modal';
 import ReactNotification from "react-notifications-component";
 import DestroyRequestInfo from './DestroyRequestInfo.js'
+import Attachment from "../../../../common/components/Attachment";
 class DetailCom extends React.Component {
     constructor(props) {
         super(props);
@@ -40,7 +43,9 @@ class DetailCom extends React.Component {
             DestroyRequest: {},
             DestroyRequestDetail: [],
             DestroyRequestRL: [],
+            DestroyRequest_AttachmentList: [],
             DestroyRequestID: '',
+            RequestDate: '',
             IsOutPut: false,
             CurrentReviewLevelID: '',
             CurrentReviewLevelName: '',
@@ -97,19 +102,20 @@ class DetailCom extends React.Component {
                     })
 
                     const Username = this.props.AppInfo.LoginInfo.Username;
-                    if(resultUserNameReviewLevel.length > 0){
+                    if (resultUserNameReviewLevel.length > 0) {
                         if (resultUserNameReviewLevel[0].UserName.trim() == Username.trim()) {
                             this.setState({
                                 isUserNameReviewLevel: true
                             })
                         }
                     }
-                   
+
 
                 }
 
                 // console.log("result", resultDestroyRequestReviewLevel)
                 this.setState({
+                    RequestDate: apiResult.ResultObject.RequestDate,
                     DestroyRequest: apiResult.ResultObject,
                     DestroyRequestDetail: lstDestroyRequestDetail,
                     DestroyRequestRL: resultDestroyRequestReviewLevel,
@@ -120,7 +126,8 @@ class DetailCom extends React.Component {
                     CurrentReviewLevelID: CurrentReviewLevelID,
                     CurrentReviewLevelName: ReviewLevelName,
                     isAutoReview: IsreViewed,
-                    lastReviewLevelID: lstDestroyRequestReviewLevel.length > 0 ? lstDestroyRequestReviewLevel[lstDestroyRequestReviewLevel.length - 1].ReviewLevelID : 0
+                    lastReviewLevelID: lstDestroyRequestReviewLevel.length > 0 ? lstDestroyRequestReviewLevel[lstDestroyRequestReviewLevel.length - 1].ReviewLevelID : 0,
+                    DestroyRequest_AttachmentList: apiResult.ResultObject.DestroyRequest_AttachmentList
 
                 });
             }
@@ -247,8 +254,57 @@ class DetailCom extends React.Component {
         })
     }
 
+    handleSelectFile(e) {
+        console.log('handleSelectFile', e, e.target.files[0]);
+        const { DestroyRequestID, RequestDate } = this.state;
+       
+        let MLObject={};
+        var data = new FormData();
+
+        MLObject.DestroyRequestID = DestroyRequestID;
+        MLObject.RequestDate = RequestDate;
+        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+
+        data.append('file', e.target.files[0])
+        data.append("ObjDestroyRequest_Attachment", JSON.stringify(MLObject));      
+
+        console.log("MLObject", MLObject)
+        this.props.callFetchAPI(APIHostName, AddAPIAttachment, data).then((apiResult) => {
+            console.log("apiResult", apiResult)
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.callLoadData(DestroyRequestID);
+                this.addNotification(apiResult.Message, apiResult.IsError)
+            }
+        })
+
+    }
+
+    handleDeletefile(id) {
+        console.log('id', id);
+        const { DestroyRequestID } = this.state;
+        this.props.callFetchAPI(APIHostName, DeleteAPIAttachment, id).then((apiResult) => {
+            console.log("handleDeletefile", apiResult)
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.callLoadData(DestroyRequestID);
+                this.addNotification(apiResult.Message, apiResult.IsError)
+            }
+        })
+    }
+
     render() {
-        const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL, CurrentReviewLevelName, isAutoReview, CurrentReviewLevelID, isUserNameReviewLevel } = this.state;
+        const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL, CurrentReviewLevelName, isAutoReview, CurrentReviewLevelID, isUserNameReviewLevel, DestroyRequest_AttachmentList } = this.state;
         let IsAutoReview;
 
         if (isAutoReview == true && CurrentReviewLevelID == 0) {
@@ -258,7 +314,6 @@ class DetailCom extends React.Component {
             IsAutoReview = false
         }
 
-        console.log("IsAutoReview", IsAutoReview)
         if (this.state.IsLoadDataComplete) {
             return (
                 <div className="col-lg-12">
@@ -309,6 +364,13 @@ class DetailCom extends React.Component {
                                 </div>
                                 : <div></div>
                             }
+
+                            <Attachment
+                                IsAttachment={true}
+                                onSelectFile={this.handleSelectFile.bind(this)}
+                                onDeletefile={this.handleDeletefile.bind(this)}
+                                DataAttachment={DestroyRequest_AttachmentList}
+                            />
 
                         </div>
 

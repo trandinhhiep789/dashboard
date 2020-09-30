@@ -18,6 +18,10 @@ export const AddLogAPIPath = "api/DestroyRequest/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "DestroyRequestID";
 
+export const AddAPIAttachment = "api/DestroyRequest_Attachment/UploadFile";
+export const DeleteAPIAttachment = "api/DestroyRequest_Attachment/DeleteNew";
+
+
 export const TitleFormSearch = "Tìm kiếm danh sách yêu cầu hủy vật tư";
 export const TitleFormAdd = "Thêm yêu cầu hủy vật tư";
 export const TitleFormEdit = "Cập nhật yêu cầu hủy vật tư";
