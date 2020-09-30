@@ -485,13 +485,14 @@ class DataGridShipmentOderCom extends Component {
 
     }
     _genCommentTime(dates) {
+        debugger;
         const date = new Date(Date.parse(dates));
         let currentDate = new Date();
         let hour = date.getHours();
         let minute = date.getMinutes();
         let timeDisplay = (hour < 10 ? '0' + hour : hour) + ':' + (minute < 10 ? '0' + minute : minute)
         var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
-        var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
+        var diffDays = Math.abs(currentDate.getDate() - date.getDate());
         var diffMinutes = parseInt((timeDiff / (3600 * 24)));
 
         if (diffDays < 1) {
@@ -531,7 +532,6 @@ class DataGridShipmentOderCom extends Component {
     }
     renderDataGrid() {
         const dataSource = this.state.DataSource;
-
         return (
             <div className=" table-responsive">
                 <table className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder" cellSpacing="0" >
@@ -609,7 +609,7 @@ class DataGridShipmentOderCom extends Component {
                                                     </span>
                                                     <span className="line">-</span>
                                                     <span className="phone">({rowItem.ReceiverPhoneNumber.substr(0, 4)}****)</span>
-                                                    <span className="line">-</span>
+                                                    {rowItem.PartnerSaleOrderID != "" ? <span className="line">-</span> : ""}
                                                     <span className="phone">{rowItem.PartnerSaleOrderID}</span>
                                                 </span>
                                             </label>
@@ -625,9 +625,7 @@ class DataGridShipmentOderCom extends Component {
                                                 <span className="times group-times">
 
                                                     <span className="time-item">
-                                                        <span className="txtCreatedOrderTime"><i className="ti ti-dashboard"></i>: {formatDate(rowItem.CreatedOrderTime)}</span>
-
-
+                                                        <span className="txtCreatedOrderTime"><i className="ti ti-dashboard"></i> {formatDate(rowItem.CreatedOrderTime)}</span>
                                                     </span>
                                                     <span className="time-item">
                                                         <span className="intervale">
@@ -655,7 +653,7 @@ class DataGridShipmentOderCom extends Component {
                                                 <span>{rowItem.ShipmentOrderTypeName}</span>
                                             </label>
                                             <label className="item address-receiver">
-                                                <span>ĐP: <span className="coordinatorUser">{rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span></span>
+                                                <span>ĐP: <span className="coordinatorUser">{rowItem.CoordinatorUser != "" ? rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName : ""}</span></span>
                                             </label>
                                             <label className="item address-receiver">
                                                 <span>NV:{ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
@@ -668,12 +666,15 @@ class DataGridShipmentOderCom extends Component {
                                                 <span className="coordinatorUser">{rowItem.PrimaryShipItemName}</span>
                                             </label>
                                             <label className="item address-receiver">
-                                                <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote.split("-")[0] : ""}</span>
+                                                <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
                                             </label>
                                         </div>
                                     </td>
                                     <td className="group-price">
                                         <div className="group-row">
+                                            <span className="item price3">
+                                                {rowItem.IsCancelDelivery == true ? <span className="price-title">Đã hủy </span> : ""}
+                                            </span>
                                             <span className="item pricecod"> {formatMoney(rowItem.TotalCOD, 0)}</span>
                                             <span className="item price-supplies">{formatMoney(rowItem.TotalSaleMaterialMoney, 0)}</span>
                                             {rowItem.IsCollectedMoney == true ?
