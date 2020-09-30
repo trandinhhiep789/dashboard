@@ -673,7 +673,7 @@ class DataGridShipmentOderCom extends Component {
                                     <td className="group-price">
                                         <div className="group-row">
                                             <span className="item price3">
-                                                {rowItem.IsCancelDelivery == true ? <span className="price-title">Đã hủy </span> : ""}
+                                                {rowItem.IsCancelDelivery == true ? <span className="badge badge-danger">Đã hủy</span> : ""}
                                             </span>
                                             <span className="item pricecod"> {formatMoney(rowItem.TotalCOD, 0)}</span>
                                             <span className="item price-supplies">{formatMoney(rowItem.TotalSaleMaterialMoney, 0)}</span>
