@@ -504,6 +504,12 @@ class ShipmentOrderDetailCom extends Component {
                                 <i className="fa fa-history"></i>
                             </Link>
                         </div>
+                        <div className="form-group col-md-2">
+                            <label className="col-form-label bold">Mã giao dịch với đối tác:</label>
+                        </div>
+                        <div className="form-group col-md-4">
+                            <label className="col-form-label">{this.state.ShipmentOrder.PartnerSaleOrderID}</label>
+                        </div>
                     </div>
                 </div>
             </div>
