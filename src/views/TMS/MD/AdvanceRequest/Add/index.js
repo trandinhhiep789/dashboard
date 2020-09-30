@@ -65,7 +65,7 @@ class AddCom extends React.Component {
         );
     }
     handleSubmit(formData, MLObject) {
-        MLObject.IsAdvanceByShipmentOrder=this.state.AdvanceRequestDetailList.IsAdvanceByShipmentOrder;
+        MLObject.IsAdvanceByShipmentOrder = this.state.AdvanceRequestDetailList.IsAdvanceByShipmentOrder;
         MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList.MaterialList
         var msgTotal = MLObject.AdvanceRequestDetailList.reduce(function (prev, cur) {
             return prev + cur.Quantity;
@@ -97,15 +97,15 @@ class AddCom extends React.Component {
                 if (!apiResult.IsError) {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
-                        AdvanceRequestDetailList:apiResult.ResultObject,
+                        AdvanceRequestDetailList: apiResult.ResultObject,
                         AdvanceRequestTypeID: value,
                         IsLoadDataComplete: true
                     });
                 }
                 else {
-                  
+
                     this.setState({
-                        IsCallAPIError:!apiResult.IsError,
+                        IsCallAPIError: !apiResult.IsError,
                         gridDataSource: [],
                         AdvanceRequestTypeID: value
                     });
@@ -132,7 +132,7 @@ class AddCom extends React.Component {
                 if (!apiResult.IsError) {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
-                        AdvanceRequestDetailList:apiResult.ResultObject,
+                        AdvanceRequestDetailList: apiResult.ResultObject,
                         StoreID: value,
                         IsLoadDataComplete: true
                     });
@@ -140,7 +140,7 @@ class AddCom extends React.Component {
                 else {
 
                     this.setState({
-                        IsCallAPIError:!apiResult.IsError,
+                        IsCallAPIError: !apiResult.IsError,
                         gridDataSource: [],
                         StoreID: value
                     });
@@ -310,7 +310,7 @@ class AddCom extends React.Component {
                                     classNameCustom="customCheckbox"
                                 />
                             </div>
-                            {(this.state.gridDataSource.ShipmentOrderNewList != undefined && this.state.gridDataSource.IsAdvanceByShipmentOrder ==true)?
+                            {(this.state.gridDataSource.ShipmentOrderNewList != undefined && this.state.gridDataSource.IsAdvanceByShipmentOrder == true) ?
                                 <React.Fragment>
                                     <div className="col-lg-12 page-detail">
                                         <div className="card">
@@ -321,13 +321,27 @@ class AddCom extends React.Component {
                                                             <thead className="thead-light">
 
                                                                 <tr>
-                                                                    <th className="jsgrid-header-cell" style={{ width: "100%" }}>Mã vận đơn cần tạm ứng</th>
+                                                                    <th className="jsgrid-header-cell" style={{ width: "10%" }}>Chọn</th>
+                                                                    <th className="jsgrid-header-cell" style={{ width: "80%" }}>Mã vận đơn cần tạm ứng</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 {this.state.gridDataSource.ShipmentOrderNewList.map((item, index) => {
+                                                                    debugger;
                                                                     return (
                                                                         <tr key={index}>
+                                                                            <td className="btngroupleft">
+                                                                                <div className="group-action">
+                                                                                    <div className="checkbox item-action">
+                                                                                        <label>
+                                                                                            <input type="checkbox"  className="form-control form-control-sm" name={"ShipmentOrderID"} value={item.ShipmentOrderID}  />
+                                                                                            <span className="cr">
+                                                                                                <i className="cr-icon fa fa-check"></i>
+                                                                                            </span>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
                                                                             <td>{item.ShipmentOrderID}</td>
                                                                         </tr>
                                                                     )
