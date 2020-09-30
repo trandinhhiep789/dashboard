@@ -22,6 +22,10 @@ export const AddAPIAttachment = "api/DestroyRequest_Attachment/UploadFile";
 export const DeleteAPIAttachment = "api/DestroyRequest_Attachment/DeleteNew";
 
 
+export const AddAPIComment = "api/DestroyRequest_Comment/Add";
+
+
+
 export const TitleFormSearch = "Tìm kiếm danh sách yêu cầu hủy vật tư";
 export const TitleFormAdd = "Thêm yêu cầu hủy vật tư";
 export const TitleFormEdit = "Cập nhật yêu cầu hủy vật tư";

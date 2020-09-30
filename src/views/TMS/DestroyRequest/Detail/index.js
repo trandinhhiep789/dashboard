@@ -22,7 +22,8 @@ import {
     UpdateCreateSaleOrderAPIPath,
     UpdateCurrentReviewLevelAPIPath,
     AddAPIAttachment,
-    DeleteAPIAttachment
+    DeleteAPIAttachment,
+    AddAPIComment
 
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
@@ -31,6 +32,7 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import ReactNotification from "react-notifications-component";
 import DestroyRequestInfo from './DestroyRequestInfo.js'
 import Attachment from "../../../../common/components/Attachment";
+import Comment from "../../../../common/components/Comment";
 class DetailCom extends React.Component {
     constructor(props) {
         super(props);
@@ -44,6 +46,7 @@ class DetailCom extends React.Component {
             DestroyRequestDetail: [],
             DestroyRequestRL: [],
             DestroyRequest_AttachmentList: [],
+            DestroyRequest_ComementList: [],
             DestroyRequestID: '',
             RequestDate: '',
             IsOutPut: false,
@@ -69,7 +72,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("apiResult", apiResult, id)
+            // console.log("apiResult", apiResult, id)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -127,7 +130,9 @@ class DetailCom extends React.Component {
                     CurrentReviewLevelName: ReviewLevelName,
                     isAutoReview: IsreViewed,
                     lastReviewLevelID: lstDestroyRequestReviewLevel.length > 0 ? lstDestroyRequestReviewLevel[lstDestroyRequestReviewLevel.length - 1].ReviewLevelID : 0,
-                    DestroyRequest_AttachmentList: apiResult.ResultObject.DestroyRequest_AttachmentList
+                    DestroyRequest_AttachmentList: apiResult.ResultObject.DestroyRequest_AttachmentList,
+                    DestroyRequest_ComementList: apiResult.ResultObject.DestroyRequest_CommentList,
+                    
 
                 });
             }
@@ -255,10 +260,9 @@ class DetailCom extends React.Component {
     }
 
     handleSelectFile(e) {
-        console.log('handleSelectFile', e, e.target.files[0]);
         const { DestroyRequestID, RequestDate } = this.state;
-       
-        let MLObject={};
+
+        let MLObject = {};
         var data = new FormData();
 
         MLObject.DestroyRequestID = DestroyRequestID;
@@ -266,11 +270,9 @@ class DetailCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
 
         data.append('file', e.target.files[0])
-        data.append("ObjDestroyRequest_Attachment", JSON.stringify(MLObject));      
+        data.append("ObjDestroyRequest_Attachment", JSON.stringify(MLObject));
 
-        console.log("MLObject", MLObject)
         this.props.callFetchAPI(APIHostName, AddAPIAttachment, data).then((apiResult) => {
-            console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -286,10 +288,8 @@ class DetailCom extends React.Component {
     }
 
     handleDeletefile(id) {
-        console.log('id', id);
         const { DestroyRequestID } = this.state;
         this.props.callFetchAPI(APIHostName, DeleteAPIAttachment, id).then((apiResult) => {
-            console.log("handleDeletefile", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -303,8 +303,42 @@ class DetailCom extends React.Component {
         })
     }
 
+    handleChangeValue(value){
+        // console.log('value', value)
+    }
+
+    handleKeyPressSumit(valueCommentContent){
+        const { DestroyRequestID, RequestDate } = this.state;
+
+        if(valueCommentContent.trim().length > 0){
+            let MLObject = {};
+            MLObject.DestroyRequestID = DestroyRequestID;
+            MLObject.RequestDate = RequestDate;
+            MLObject.CommentContent = valueCommentContent;
+            MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+            MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+    
+            this.props.callFetchAPI(APIHostName, AddAPIComment, MLObject).then((apiResult) => {
+                if (apiResult.IsError) {
+                    this.setState({
+                        IsCallAPIError: !apiResult.IsError
+                    });
+                    this.showMessage(apiResult.Message);
+                }
+                else {
+                    this.callLoadData(DestroyRequestID);
+                    this.addNotification(apiResult.Message, apiResult.IsError)
+                }
+            })
+        }
+        else{
+            this.showMessage('Vui lòng nhập nội dụng bình luận.')
+        }
+        
+    }
+
     render() {
-        const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL, CurrentReviewLevelName, isAutoReview, CurrentReviewLevelID, isUserNameReviewLevel, DestroyRequest_AttachmentList } = this.state;
+        const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL, CurrentReviewLevelName, isAutoReview, CurrentReviewLevelID, isUserNameReviewLevel, DestroyRequest_AttachmentList, DestroyRequest_ComementList } = this.state;
         let IsAutoReview;
 
         if (isAutoReview == true && CurrentReviewLevelID == 0) {
@@ -370,6 +404,13 @@ class DetailCom extends React.Component {
                                 onSelectFile={this.handleSelectFile.bind(this)}
                                 onDeletefile={this.handleDeletefile.bind(this)}
                                 DataAttachment={DestroyRequest_AttachmentList}
+                            />
+
+                            <Comment
+                                DataComments={DestroyRequest_ComementList}
+                                IsComment={true}
+                                onChangeValue={this.handleChangeValue.bind(this)}
+                                onKeyPressSumit={this.handleKeyPressSumit.bind(this)}
                             />
 
                         </div>
