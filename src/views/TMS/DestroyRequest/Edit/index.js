@@ -322,11 +322,11 @@ class EditCom extends React.Component {
                 "UserName": value,
                 "FullName": name,
             })
-             console.log("element", element);
+            //  console.log("element", element);
 
             const parent = Object.assign({}, gridDestroyRequestRL, { [DestroyRequestRLID]: element });
 
-            console.log("parent", parent);
+            // console.log("parent", parent);
 
             this.setState({ gridDestroyRequestRL: parent })
         }
