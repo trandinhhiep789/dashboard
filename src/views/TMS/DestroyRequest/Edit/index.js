@@ -427,8 +427,8 @@ class EditCom extends React.Component {
                                     name="dtRequestDate"
                                     colspan="8"
                                     labelcolspan="4"
-                                    disabled={this.state.IsSystem}
-                                    readOnly={this.state.IsSystem}
+                                    disabled={true}
+                                    readOnly={true}
                                     showTime={false}
                                     timeFormat={false}
                                     dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"

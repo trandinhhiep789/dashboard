@@ -77,7 +77,7 @@ class AddCom extends React.Component {
         this.props.hideModal()
         this.props.updatePagePath(AddPagePath);
         this.GetDataByRequestTypeID(this.props.location.state.DestroyRequestTypeID);
-       // this.GetUserByStoreID(this.props.location.state.RequestStoreID);
+        // this.GetUserByStoreID(this.props.location.state.RequestStoreID);
 
         const param = [
             {
@@ -95,7 +95,7 @@ class AddCom extends React.Component {
 
     getDataDestroyRequestRLByDestroyRequestType(param) {
         this.props.callFetchAPI(APIHostName, LoadAPIByDestroyRequestTypeIDPath, param).then(apiResult => {
-             //console.log("getDataDestroyRequestRLByDestroyRequestType", apiResult, param)
+            //console.log("getDataDestroyRequestRLByDestroyRequestType", apiResult, param)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -164,7 +164,7 @@ class AddCom extends React.Component {
 
     GetDataByRequestTypeID(DestroyRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByRequestTypeIDPath, DestroyRequestTypeID).then(apiResult => {
-             //console.log("DestroyRequestTypeID", DestroyRequestTypeID, apiResult)
+            //console.log("DestroyRequestTypeID", DestroyRequestTypeID, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -278,7 +278,7 @@ class AddCom extends React.Component {
 
             MLObject.lstDestroyRequestDetail = DestroyRequestDetail;
 
-            console.log("MLObject", MLObject)
+            // console.log("MLObject", MLObject)
             this.handleSubmit(MLObject)
 
         }
@@ -447,7 +447,6 @@ class AddCom extends React.Component {
 
                             </div>
 
-
                             <div className="col-md-6">
 
                                 <FormControl.FormControlDatetimeNew
@@ -455,14 +454,14 @@ class AddCom extends React.Component {
                                     colspan="8"
                                     labelcolspan="4"
                                     readOnly={true}
+                                    disabled={true}
                                     showTime={false}
                                     timeFormat={false}
                                     dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
                                     label="Ngày yêu cầu"
                                     placeholder={formatDate(currentDate, true)}
                                     controltype="InputControl"
-                                    value=""
-                                    validatonList={["required"]}
+                                    value={new Date()}
                                     datasourcemember="RequestDate"
                                 />
                             </div>
