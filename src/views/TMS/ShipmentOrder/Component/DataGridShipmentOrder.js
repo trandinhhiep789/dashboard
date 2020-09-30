@@ -485,13 +485,14 @@ class DataGridShipmentOderCom extends Component {
 
     }
     _genCommentTime(dates) {
+        debugger;
         const date = new Date(Date.parse(dates));
         let currentDate = new Date();
         let hour = date.getHours();
         let minute = date.getMinutes();
         let timeDisplay = (hour < 10 ? '0' + hour : hour) + ':' + (minute < 10 ? '0' + minute : minute)
         var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
-        var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
+        var diffDays = Math.abs(currentDate.getDate() - date.getDate());
         var diffMinutes = parseInt((timeDiff / (3600 * 24)));
 
         if (diffDays < 1) {
@@ -531,7 +532,6 @@ class DataGridShipmentOderCom extends Component {
     }
     renderDataGrid() {
         const dataSource = this.state.DataSource;
-
         return (
             <div className=" table-responsive">
                 <table className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder" cellSpacing="0" >
