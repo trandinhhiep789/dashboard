@@ -18,7 +18,7 @@ import {
     BackLink,
     EditPagePath,
     GridInstallBundle_Materia,
-    InstallBundle_MateriaColumnList,
+    InstallBundle_MateriaColumnListEdit,
 } from "../constants";
 
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
@@ -108,7 +108,7 @@ class EditCom extends React.Component {
                         IDSelectColumnName={"MaterialGroupID"}
                         PKColumnName={""}
                         MLObjectDefinition={GridInstallBundle_Materia}
-                        listColumn={InstallBundle_MateriaColumnList}
+                        listColumn={InstallBundle_MateriaColumnListEdit}
                         dataSource={this.state.DataSource.InstallBundle_MaterialList}
                         isSystem={this.state.DataSource.IsSystem}
                         colspan="12"

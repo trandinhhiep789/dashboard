@@ -668,7 +668,7 @@ class DataGridShipmentOderCom extends Component {
                                                 <span className="coordinatorUser">{rowItem.PrimaryShipItemName}</span>
                                             </label>
                                             <label className="item address-receiver">
-                                                <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote.split("-")[0] : ""}</span>
+                                                <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
                                             </label>
                                         </div>
                                     </td>
