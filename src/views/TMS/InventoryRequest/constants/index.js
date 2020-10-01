@@ -2,8 +2,11 @@ export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/InventoryRequest/Search";
 export const LoadAPIPath = "api/InventoryRequest/Load";
 export const LoadNewAPIPath = "api/InventoryRequest/LoadInfoNew";
+export const LoadInfoEditAPIPath = "api/InventoryRequest/LoadInfoEdit";
 export const LoadInventoryRequestAdd = "api/InventoryRequest/LoadInventoryRequestAdd";
 export const AddAPIPath = "api/InventoryRequest/Add";
+export const EditAPIPath = "api/InventoryRequest/UpdateNew";
+
 export const UpdateAPIPath = "api/InventoryRequest/Update";
 export const DeleteNewAPIPath = "api/InventoryRequest/DeleteNew";
 export const DeleteAPIPath = "api/InventoryRequest/Delete";
@@ -377,7 +380,12 @@ export const GridMLObjectDefinition = [
 
 
 export const MLObjectDefinition = [
-  
+    {
+        Name: "InventoryRequestID",
+        DefaultValue: "",
+        BindControlName: "txtInventoryRequestID",
+        DataSourceMember: "InventoryRequestID"
+    },
     {
         Name: "InventoryRequestTypeID",
         DefaultValue: "",
@@ -401,6 +409,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "dtRequestDate",
         DataSourceMember: "RequestDate"
+    },
+    {
+        Name: "RequestUser",
+        DefaultValue: "",
+        BindControlName: "RequestUser",
+        DataSourceMember: "RequestUser"
     },
     {
         Name: "Description",
@@ -525,17 +539,17 @@ export const GirdInventoryRequestRVLColumnList =[
         Width: 100
     },
     {
-        Name: "ApproverName",
+        Name: "FullName",
         Type: "text",
         Caption: "Người duyệt",
-        DataSourceMember: "ApproverName",
+        DataSourceMember: "FullName",
         Width: 100
     },
     {
-        Name: "ReviewStatusLable",
+        Name: "ReviewStatusName",
         Type: "text",
         Caption: "Trạng thái duyệt",
-        DataSourceMember: "ReviewStatusLable",
+        DataSourceMember: "ReviewStatusName",
         Width: 100
     },
     {
