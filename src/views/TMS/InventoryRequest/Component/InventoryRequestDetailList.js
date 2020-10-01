@@ -29,6 +29,7 @@ class InventoryRequestDetailListCom extends Component {
     }
     render() {
         const { InventoryRequestDetail } = this.state;
+        const { disabledActualQuantity } = this.props;
         return (
             <div className="card">
                 <div className="card-title group-card-title">
@@ -70,7 +71,7 @@ class InventoryRequestDetailListCom extends Component {
                                                 max={rowItem.RecordQuantity}
                                                 value={rowItem.ActualQuantity > 0 ? rowItem.ActualQuantity : ''}
                                                 indexRow={rowIndex}
-                                                disabled={false}
+                                                disabled={disabledActualQuantity}
                                                 onValueChange={this.handleInputChange.bind(this)}
                                             /></td>
                                             <td>{rowItem.UneventQuantity}</td>

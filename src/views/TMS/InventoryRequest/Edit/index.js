@@ -170,7 +170,7 @@ class EditCom extends React.Component {
                                     name="txtInventoryRequestTitle"
                                     labelcolspan={2}
                                     colspan={10}
-                                    readOnly={false}
+                                    readOnly={InventoryRequest.IsreViewed}
                                     label="tiêu đề"
                                     placeholder="Tiêu đề"
                                     controltype="InputControl"
@@ -231,6 +231,7 @@ class EditCom extends React.Component {
                                     controltype="InputControl"
                                     rows={6}
                                     maxSize={500}
+                                    disabled={InventoryRequest.IsreViewed}
                                     classNameCustom="customcontrol"
                                 />
                             </div>
@@ -239,12 +240,14 @@ class EditCom extends React.Component {
                         <InventoryRequestDetailList
                             dataSource={InventoryRequestDetail}
                             onValueChangeGrid={this.handleInputChangeGrid.bind(this)}
+                            disabledActualQuantity={InventoryRequest.SaleOrderID == ""?false:true}
                         />
 
                         {InventoryRequest.IsAutoReview == false ?
                             <InventoryRequestRVList
                                 dataSource={InventoryRequestRVLst}
                                 onValueChangeGridRV={this.handleInputChangeGridRV.bind(this)}
+                                IsreViewed={InventoryRequest.IsreViewed}
                             />
                             : <div></div>
                         }

@@ -28,6 +28,8 @@ class InventoryRequestRVListCom extends Component {
 
     render() {
         const { InventoryRequestRVList } = this.state;
+        const { IsreViewed } = this.props;
+        
         return (
             <div className="card">
                 <div className="card-title group-card-title">
@@ -64,6 +66,7 @@ class InventoryRequestRVListCom extends Component {
                                                     placeholder
                                                     listoption={listOption}
                                                     value={rowItem.UserName}
+                                                    disabled={IsreViewed}
                                                     onValueChange={this.handleInputChangeComboBox.bind(this)}
                                                 />
                                             </td>
