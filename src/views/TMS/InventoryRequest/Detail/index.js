@@ -132,7 +132,7 @@ class DetailCom extends React.Component {
                                         name="lstInventoryRequestDetail"
                                         controltype="GridControl"
                                         listColumn={GirdInventoryRequestDetailColumnList}
-                                        dataSource={InventoryRequestDetail}
+                                        dataSource={InventoryRequest.InventoryRequestDetail}
                                         isHideHeaderToolbar={true}
                                         colspan="12"
                                     />
@@ -148,7 +148,7 @@ class DetailCom extends React.Component {
                                         name="lstInventoryRequestRVL"
                                         controltype="GridControl"
                                         listColumn={GirdInventoryRequestRVLColumnList}
-                                        dataSource={InventoryRequestRVL}
+                                        dataSource={InventoryRequest.InventoryRequest_RVList}
                                         isHideHeaderToolbar={true}
                                         colspan="12"
                                     />
