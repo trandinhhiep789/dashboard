@@ -73,6 +73,65 @@ class ElementModalText extends React.Component {
     }
 }
 
+class ElementModalTextBox extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.state = {
+            validationErrorMessage: this.props.validationErrorMessage
+
+        }
+    }
+    handleValueChange(e) {
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(e.target.name, e.target.value, this.props.indexRow);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.validationErrorMessage) !== JSON.stringify(nextProps.validationErrorMessage)) {
+            this.setState({
+                validationErrorMessage: nextProps.validationErrorMessage
+            })
+        }
+    }
+
+    render() {
+        let classNamecolmd = "col-md-6";
+        if (this.props.Colmd != null)
+            classNamecolmd = "col-md-" + this.props.Colmd;
+
+        let className = "form-control form-control-sm";
+        let formGroupClassName = "form-group col-md-12";
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+
+        if (this.state.validationErrorMessage != "" && this.state.validationErrorMessage != undefined) {
+            className += " is-invalid";
+        }
+        return (
+            <div className={formGroupClassName}>
+                <input type={this.props.type}
+                    name={this.props.name}
+                    title={this.props.validationErrorMessage}
+                    onChange={this.handleValueChange}
+                    onBlur={this.handKeyDown}
+                    value={this.props.value}
+                    key={this.props.name}
+                    className={className}
+                    ref={this.props.inputRef}
+                    placeholder={this.props.placeholder}
+                    disabled={this.props.disabled == true ? true : this.props.readonly}
+                    maxLength={this.props.maxsize}
+                />
+                <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+            </div>
+
+        );
+    }
+}
+
 class ElementModalNumber extends React.Component {
     constructor(props) {
         super(props);
@@ -80,7 +139,7 @@ class ElementModalNumber extends React.Component {
     }
     handleValueChange(evalue) {
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, evalue,this.props.indexRow);
+            this.props.onValueChange(this.props.name, evalue, this.props.indexRow);
     }
 
     render() {
@@ -153,7 +212,7 @@ class ElementModalNumberParser extends React.Component {
     }
     handleValueChange(evalue) {
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, evalue,this.props.indexRow);
+            this.props.onValueChange(this.props.name, evalue, this.props.indexRow);
     }
 
     render() {
@@ -656,7 +715,7 @@ class MultiUserComboBoxCom extends React.Component {
     handleValueChange(selectedOption) {
         // const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange)
-            this.props.onValueChange(this.props.name, selectedOption,this.props.rowIndex);
+            this.props.onValueChange(this.props.name, selectedOption, this.props.rowIndex);
     }
 
     handleValueChange1(e) {
@@ -681,7 +740,7 @@ class MultiUserComboBoxCom extends React.Component {
             });
         }
         const selectedOption = this.state.SelectedOption;
-       
+
         let classNameselect = "react-select";
         if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
             classNameselect += " is-invalid";
@@ -706,5 +765,5 @@ class MultiUserComboBoxCom extends React.Component {
 
 const MultiUserComboBox = connect(mapStateToProps, mapDispatchToProps)(MultiUserComboBoxCom);
 
-export default { ElementModalText, ElementModalComboBox, CheckBox, ElementModalNumber,ElementModalNumberParser, ProductComboBox, MultiUserComboBox };
+export default { ElementModalText, ElementModalComboBox, CheckBox, ElementModalNumber, ElementModalNumberParser, ProductComboBox, MultiUserComboBox, ElementModalTextBox };
 

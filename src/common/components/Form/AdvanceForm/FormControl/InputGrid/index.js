@@ -795,6 +795,7 @@ class InputGridCom extends Component {
 							return (<tr key={rowIndex}>
 								{
 									listColumn.map((columnItem, index) => {
+										
 										const cellStyle = {
 											width: columnItem.Width,
 											verticalAlign: "middle"

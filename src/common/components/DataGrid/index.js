@@ -29,6 +29,7 @@ class DataGridCom extends Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.onChangePageHandle = this.onChangePageHandle.bind(this);
         this.handleInsertClickEdit = this.handleInsertClickEdit.bind(this);
+        this.handleDetailClick = this.handleDetailClick.bind(this);
         this.handleInsertClick = this.handleInsertClick.bind(this);
         this.handleCloseModel = this.handleCloseModel.bind(this);
         this.handleMultipleInsertClick = this.handleMultipleInsertClick.bind(this);
@@ -75,6 +76,11 @@ class DataGridCom extends Component {
     handleInsertClickEdit(id, pkColumnName) {
         if (this.props.onInsertClickEdit != null)
             this.props.onInsertClickEdit(id, pkColumnName);
+    }
+
+    handleDetailClick(id) {
+        if (this.props.onDetailClick != null)
+            this.props.onDetailClick(id);
     }
 
     handleInsertClick() {
@@ -479,6 +485,7 @@ class DataGridCom extends Component {
                                                     index={rowIndex}
                                                     isChecked={isChecked}
                                                     onInsertClickEdit={this.handleInsertClickEdit}
+                                                    onDetailtClick={this.handleDetailClick}
                                                     pkColumnName={this.state.ListPKColumnName}
                                                     params={this.props.params}
                                                     linkTo={this.state.ListPKColumnName + index}
