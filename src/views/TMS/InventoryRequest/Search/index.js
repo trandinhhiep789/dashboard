@@ -76,6 +76,8 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+                console.log("ResultObject",apiResult.ResultObject);
+                
                 const tempData = apiResult.ResultObject.map((item, index) => {
                     let element = {
                         "Mã yêu cầu": item.InventoryRequestID,
@@ -93,6 +95,7 @@ class SearchCom extends React.Component {
 
                 const dataSource = apiResult.ResultObject.map((item, index) => {
                     item.ApproverName = item.RequestUser + " - " + item.FullName;
+                    console.log("item",item);
                     if (item.IsCreatedOrder) {
                         item.OutputStatusLable = <span className='lblstatus text-success'>Đã xuất</span>;
                     }
