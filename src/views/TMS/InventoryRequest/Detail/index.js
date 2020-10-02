@@ -35,8 +35,10 @@ class DetailCom extends React.Component {
             IsLoadDataComplete: false,
             IsSystem: false,
             InventoryRequest: {},
-            InventoryRequestDetail:[],
-            InventoryRequestRVL: []
+            InventoryRequestDetail: [],
+            InventoryRequestRVL: [],
+            CurrentReviewLevelName: '',
+            isUserNameReviewLevel: false
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -48,7 +50,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("apiResult", apiResult, id)
+
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -57,9 +59,30 @@ class DetailCom extends React.Component {
             }
             else {
 
+                let isUserNameReview = false;
+                if (apiResult.ResultObject.InventoryRequest_RVList.length > 0) {
+                    const resultUserNameReviewLevel = apiResult.ResultObject.InventoryRequest_RVList.filter((item, index) => {
+                        if (item.ReviewLevelID == apiResult.ResultObject.CurrentReviewLevelID) {
+                            return item;
+                        }
+                    })
+
+                    const Username = this.props.AppInfo.LoginInfo.Username;
+                    if (resultUserNameReviewLevel.length > 0) {
+                        if (resultUserNameReviewLevel[0].UserName.trim() == Username.trim()) {
+                            isUserNameReview = true;
+                        }
+                    }
+                    const found = apiResult.ResultObject.InventoryRequest_RVList.find(n => n.ReviewStatus == 2);
+                    if (found != undefined) {
+                        isUserNameReview = false;
+                    }
+                }
 
                 this.setState({
                     IsLoadDataComplete: true,
+                    isUserNameReviewLevel: isUserNameReview,
+                    CurrentReviewLevelName: apiResult.ResultObject.InventoryRequest_RVList.filter(a => a.ReviewLevelID === apiResult.ResultObject.CurrentReviewLevelID)[0].ReviewLevelName,
                     InventoryRequest: apiResult.ResultObject
                 });
             }
@@ -109,8 +132,11 @@ class DetailCom extends React.Component {
         });
     }
 
+    handleRequestRL(id) {
+    }
+
     render() {
-        const { IsSystem, InventoryRequest, InventoryRequestRVL, InventoryRequestDetail } = this.state;
+        const { IsSystem, InventoryRequest, InventoryRequestRVL, InventoryRequestDetail, isUserNameReviewLevel, CurrentReviewLevelName } = this.state;
         if (this.state.IsLoadDataComplete) {
             return (
                 <div className="col-lg-12">
@@ -157,15 +183,28 @@ class DetailCom extends React.Component {
 
                         </div>
                         <footer className="card-footer text-right ">
-                            <div className="btn-group btn-group-dropdown mr-3">
-                                <button className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">mức 1</button>
-                                <div className="dropdown-menu" x-placement="bottom-start" >
-                                    <button className="dropdown-item" type="button" >Đồng ý</button>
-                                    <button className="dropdown-item" type="button">Từ chối</button>
-                                </div>
-                            </div>
-                            <button className="btn btn-primary mr-3" type="button">Tạo phiếu xuất</button>
-                            <Link to="/DestroyRequest">
+                            {InventoryRequest.IsAutoReview == false ?
+                                isUserNameReviewLevel == true ?
+                                    <div className="btn-group btn-group-dropdown mr-3">
+                                        <button className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                        <div className="dropdown-menu" x-placement="bottom-start" >
+                                            <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(1)}>Đồng ý</button>
+                                            <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(2)}>Từ chối</button>
+                                        </div>
+                                    </div>
+                                    :
+                                    <div className="btn-group btn-group-dropdown mr-3">
+                                        <button className="btn btn-light dropdown-toggle dropdown-toggle-disabled" disabled title="Bạn không có quyền duyệt" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                        <div className="dropdown-menu" x-placement="bottom-start" >
+                                            <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(1)}>Đồng ý</button>
+                                            <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(2)}>Từ chối</button>
+                                        </div>
+                                    </div>
+                                : <div></div>
+
+                            }
+                            {/* <button className="btn btn-primary mr-3" type="button">Tạo phiếu xuất</button> */}
+                            <Link to="/InventoryRequest">
                                 <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
                             </Link>
                         </footer>
