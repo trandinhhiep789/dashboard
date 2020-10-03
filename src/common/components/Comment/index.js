@@ -13,7 +13,6 @@ class CommentCom extends Component {
     }
 
     componentDidMount() {
-        console.log('this', this.props)
         this.setState({
             FullName: this.props.AppInfo.LoginInfo.LoginUserInfo.UserName + " - " + this.props.AppInfo.LoginInfo.LoginUserInfo.FullName
         })
@@ -72,7 +71,6 @@ class CommentCom extends Component {
 
     render() {
         const { Comments, FullName, CommentValue } = this.state;
-        console.log("Comments", Comments);
         return (
             <div className='card Comments'>
                 {Comments.length > 0 ? <div className="card-title group-card-title"><h4 className="title">Bình luận</h4></div> : ''}

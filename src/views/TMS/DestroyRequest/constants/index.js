@@ -58,6 +58,9 @@ export const DetailAPIPath = [
 const dtFromdate = new Date();
 dtFromdate.setDate(new Date().getDate() - 30);
 
+const dtTodate = new Date();
+dtTodate.setDate(new Date().getDate() +1);
+
 export const InitSearchParams = [
 
 
@@ -572,4 +575,14 @@ export const GirdDestroyRequestRLColumnList=[
         DataSourceMember: "reViewedNote",
         Width: 100
     },
+]
+
+export const MLObjectDRNoteRV = [
+    {
+        Name: "ReViewedNote",
+        DefaultValue: "",
+        BindControlName: "txtReViewedNote",
+        DataSourceMember: "ReViewedNote"
+    },
+
 ]

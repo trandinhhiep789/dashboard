@@ -825,7 +825,7 @@ class ElementDatetimeMonthYearCom extends Component {
 
     handleValueChange(name, moment) {
         //e.preventDefault();
-        console.log('moment', moment.format('LL'))
+        // console.log('moment', moment.format('LL'))
         const momentNew = ExportStringToMonth(moment)
         if (this.props.onValueChange != null)
             this.props.onValueChange(name, moment);

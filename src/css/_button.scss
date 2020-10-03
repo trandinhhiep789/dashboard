@@ -1,4 +1,12 @@
 button {
+    &.btn-light{
+        &:disabled{
+            color: #212529;
+            background-color: #9c9fa2d4;
+            border-color: #bdc0c2;
+            opacity: .5;
+        }
+    }
     &.btnEditCard {
         background-color: #48b0f7;
         border-color: #48b0f7;

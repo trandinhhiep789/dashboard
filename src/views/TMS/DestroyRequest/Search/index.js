@@ -96,26 +96,8 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-                const tempData = apiResult.ResultObject.map((item, index) => {
-                    let element = {
-                        "Mã yêu cầu": item.DestroyRequestID,
-                        "Tiêu Đề yêu cầu": item.DestroyRequestTitle,
-                        "Loại yêu cầu hủy vật tư": item.DestroyRequestTypeID + "-" + item.DestroyRequestTypeName,
-                        "Kho yêu cầu": item.RequestStoreID + "-" + item.StoreName,
-                        "Ngày yêu cầu": item.RequestDate,
-                        "Người yêu cầu": item.RequestUser,
-                        "Đã duyệt": item.IsreViewed,
-                        "Đã xuất": item.IsCreatedOrder,
-                    };
-
-                    return element;
-                })
-
-                
-
                 const dataSource = apiResult.ResultObject.map((item, index) => {
                     item.ApproverName = item.RequestUser + " - " + item.FullName;
-                    console.log("item",item);
                     if (item.IsCreatedOrder) {
                         item.OutputStatusLable = <span className='lblstatus text-success'>Đã xuất</span>;
                     }
@@ -132,6 +114,22 @@ class SearchCom extends React.Component {
                     }
                     return item;
                 })
+
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã yêu cầu": item.DestroyRequestID,
+                        "Tiêu Đề yêu cầu": item.DestroyRequestTitle,
+                        "Loại yêu cầu hủy vật tư": item.DestroyRequestTypeID + "-" + item.DestroyRequestTypeName,
+                        "Kho yêu cầu": item.RequestStoreID + "-" + item.StoreName,
+                        "Ngày yêu cầu": item.RequestDate,
+                        "Người yêu cầu": item.RequestUser,
+                        "Đã duyệt": item.IsreViewed,
+                        "Đã xuất": item.IsCreatedOrder,
+                    };
+
+                    return element;
+                })
+
                 // console.log('callSearchData', dataSource, apiResult)
                 this.setState({
                     gridDataSource: dataSource,

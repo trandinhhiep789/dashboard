@@ -100,7 +100,7 @@ class AddCom extends React.Component {
         MLObject.InventoryRequest_RVList = InventoryRequestRVLst;
         MLObject.InventoryRequestDetail = InventoryRequestDetail;
         MLObject.CurrentReviewLevelID = InventoryRequest.CurrentReviewLevelID
-       
+
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.MessageDetail);
@@ -127,6 +127,7 @@ class AddCom extends React.Component {
 
     }
     handleInputChangeGridRV(obj) {
+        console.log("obj", obj)
         this.setState({ InventoryRequestRVLst: obj });
     }
 

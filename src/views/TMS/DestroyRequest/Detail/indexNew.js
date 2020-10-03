@@ -79,6 +79,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            console.log("apiResult", apiResult, id)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -99,17 +100,16 @@ class DetailCom extends React.Component {
                         item.ReviewStatusLable = "Chưa duyệt";
                     }
                     else {
-                        if (item.ReviewStatus == 1) {
+                        if(item.ReviewStatus == 1){
                             item.ReviewStatusLable = "Đã duyệt";
                         }
-                        else {
+                        else{
                             item.ReviewStatusLable = "Từ chối duyệt";
                         }
-
+                        
                     }
                     return item;
                 })
-
 
                 if (lstDestroyRequestReviewLevel.length > 0) {
                     const resultUserNameReviewLevel = lstDestroyRequestReviewLevel.filter((item, index) => {
@@ -119,54 +119,39 @@ class DetailCom extends React.Component {
                     })
 
                     const Username = this.props.AppInfo.LoginInfo.Username;
-
                     if (resultUserNameReviewLevel.length > 0) {
-                        const userName = resultUserNameReviewLevel[0].UserName;
-                        if (userName.trim() === Username.trim()) {
+                        if (resultUserNameReviewLevel[0].UserName.trim() == Username.trim()) {
                             this.setState({
                                 isUserNameReviewLevel: true
-                            })
-                        }
-                        else {
-                            this.setState({
-                                isUserNameReviewLevel: false
                             })
                         }
                     }
 
                     const returnStatusDiffer = lstDestroyRequestReviewLevel.filter((item, index) => {
-                        if (item.ReviewStatus != 1) {
+                        if (item.ReviewStatus != 1 ) {
                             return item;
                         }
                     })
-                    // console.log("returnStatusDiffer", returnStatusDiffer)
+                    console.log("returnStatusDiffer", returnStatusDiffer)
                     const returnStatusReject = lstDestroyRequestReviewLevel.filter((item, index) => {
-                        if (item.ReviewStatus == 2) {
+                        if (item.ReviewStatus == 2 ) {
                             return item;
                         }
                     })
-                    // console.log("returnStatusReject", returnStatusReject)
-                    if (returnStatusReject.length > 0) {
+                    console.log("returnStatusReject", returnStatusReject)
+                    if(returnStatusReject.length > 0){
                         this.setState({
                             IsStatusReject: true
                         })
                     }
-                    else {
-                        this.setState({
-                            IsStatusReject: false
-                        })
-                    }
 
-                    if (returnStatusDiffer.length > 0) {
+                    if(returnStatusDiffer.length > 0){
                         this.setState({
                             IsStatus: true
                         })
                     }
-                    else {
-                        this.setState({
-                            IsStatus: false
-                        })
-                    }
+                   
+
                 }
 
 
@@ -281,6 +266,8 @@ class DetailCom extends React.Component {
     }
 
     handleInsertDRNoteRV(id) {
+        debugger
+        console.log(id)
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Thêm ghi chú cho mức duyệt',
             content: {
@@ -300,9 +287,9 @@ class DetailCom extends React.Component {
         const { DataSource, DestroyRequestRL, CurrentReviewLevelID, DestroyRequestID, lastReviewLevelID } = this.state;
         MLObject.DestroyRequestID = DataSource.DestroyRequestID;
 
+        
 
-
-
+       
         MLObject.IsreViewed = 1;
         MLObject.ReviewStatus = objData.ReviewStatus;
         MLObject.reViewedNote = objData.reViewedNote;//Trạng thái duyệt;(0: Chưa duyệt, 1: Đồng ý, 2: Từ chối)
@@ -311,7 +298,7 @@ class DetailCom extends React.Component {
 
         if (DestroyRequestRL.length > 1) {
             nextReviewLevelID = DestroyRequestRL.filter((item, index) => {
-                if (item.ReviewLevelID != CurrentReviewLevelID && item.IsreViewed == false) {
+                if (item.ReviewLevelID != CurrentReviewLevelID) {
                     return item;
                 }
             });
@@ -326,11 +313,11 @@ class DetailCom extends React.Component {
 
         const isLastList = CurrentReviewLevelID == lastReviewLevelID ? true : false
 
-        if (objData.ReviewStatus == 1) {
+        if(objData.ReviewStatus == 1 ){
             MLObject.IsreViewed = 1;
             MLObject.IsreViewedDestroyRequest = !!isLastList ? 1 : 0;
         }
-        else {
+        else{
             MLObject.IsreViewedDestroyRequest = 0;
         }
 
@@ -338,8 +325,8 @@ class DetailCom extends React.Component {
 
         MLObject.CurrentReviewLevelID = !!isLastList ? CurrentReviewLevelID : nextReviewLevelID[0].ReviewLevelID;
 
-        console.log("aa", MLObject);
-
+         console.log("aa", MLObject);
+         
         this.props.callFetchAPI(APIHostName, UpdateCurrentReviewLevelAPIPath, MLObject).then((apiResult) => {
             // console.log("id",  apiResult)
             if (apiResult.IsError) {
@@ -435,7 +422,6 @@ class DetailCom extends React.Component {
 
     render() {
         const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL, CurrentReviewLevelName, isAutoReview, CurrentReviewLevelID, isUserNameReviewLevel, DestroyRequest_AttachmentList, DestroyRequest_ComementList, isHiddenButtonRV, IsStatus, IsStatusReject } = this.state;
-
         let IsAutoReview;
 
         if (isAutoReview == true && CurrentReviewLevelID == 0) {
@@ -446,39 +432,45 @@ class DetailCom extends React.Component {
         }
 
         let IsDisableButtonOutPut = false;
-        if (IsOutPut == false) {
-            IsDisableButtonOutPut = false
+        if(IsOutPut == false ){
+            IsDisableButtonOutPut= false
         }
-        else {
-            if (IsStatus == true || IsStatusReject) {
-                IsDisableButtonOutPut = true
+        else{
+            if(IsStatus == true || IsStatusReject ){
+                IsDisableButtonOutPut= true
             }
-            else {
-                IsDisableButtonOutPut = false
+            else{
+                IsDisableButtonOutPut= false
             }
-
+            
         }
 
         // console.log('IsStatus', IsStatus, IsOutPut, IsDisableButtonOutPut)
 
+        
+        
+
         let IsExitBtnReview = false;
-        if (isUserNameReviewLevel == true) {
-            if (isHiddenButtonRV) {
+        if (isUserNameReviewLevel == true ) {
+            if(isHiddenButtonRV){
                 IsExitBtnReview = true;
             }
-            else {
-                if (IsStatusReject) {
+            else{
+                if(IsStatusReject){
                     IsExitBtnReview = true
                 }
-                else {
+                else{
                     IsExitBtnReview = false
                 }
             }
-
+            
         }
         else {
             IsExitBtnReview = true
         }
+
+
+        console.log('IsExitBtnReview',IsExitBtnReview, isHiddenButtonRV, isUserNameReviewLevel)
 
         if (this.state.IsLoadDataComplete) {
             return (
@@ -510,7 +502,7 @@ class DetailCom extends React.Component {
                                     />
                                 </div>
                             </div>
-
+                           
                             {IsAutoReview == false ?
                                 <div className="card">
                                     <div className="card-title group-card-title">
@@ -551,16 +543,16 @@ class DetailCom extends React.Component {
                         <footer className="card-footer text-right ">
                             {IsAutoReview == false ?
                                 IsExitBtnReview == false ?
-
-                                    < div className="btn-group btn-group-dropdown mr-3">
-                                        <button disabled={IsExitBtnReview} className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                    <div className="btn-group btn-group-dropdown mr-3">
+                                        <button className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
                                         <div className="dropdown-menu" x-placement="bottom-start" >
                                             <button className="dropdown-item" type="button" onClick={() => this.handleInsertDRNoteRV(1)}>Đồng ý</button>
                                             <button className="dropdown-item" type="button" onClick={() => this.handleInsertDRNoteRV(2)}>Từ chối</button>
                                         </div>
                                     </div>
-                                    : < div className="btn-group btn-group-dropdown mr-3">
-                                        <button disabled={IsExitBtnReview} className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                    :
+                                    <div className="btn-group btn-group-dropdown mr-3">
+                                        <button className="btn btn-light dropdown-toggle dropdown-toggle-disabled" disabled title="Bạn không có quyền duyệt" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
                                         <div className="dropdown-menu" x-placement="bottom-start" >
                                             <button className="dropdown-item" type="button">Đồng ý</button>
                                             <button className="dropdown-item" type="button">Từ chối</button>
@@ -569,17 +561,17 @@ class DetailCom extends React.Component {
                                 : <div></div>
 
                             }
-                            {IsOutPut == false ?
-                                <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitOutputDestroyRequest}>Tạo phiếu xuất</button>
+                            {IsDisableButtonOutPut == false ? 
+                                <button  className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitOutputDestroyRequest}>Tạo phiếu xuất</button>
                                 : <button disabled={true} className="btn btn-primary mr-3" type="button">Tạo phiếu xuất</button>
                             }
-
+                            
                             <Link to="/DestroyRequest">
                                 <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
                             </Link>
                         </footer>
                     </div>
-                </div >
+                </div>
             );
         }
         return (
