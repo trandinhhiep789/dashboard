@@ -6,6 +6,7 @@ export const LoadInfoEditAPIPath = "api/InventoryRequest/LoadInfoEdit";
 export const LoadInventoryRequestAdd = "api/InventoryRequest/LoadInventoryRequestAdd";
 export const AddAPIPath = "api/InventoryRequest/Add";
 export const EditAPIPath = "api/InventoryRequest/UpdateNew";
+export const UpdateCurrentReviewLevel = "api/InventoryRequest/UpdateCurrentReviewLevel";
 
 export const UpdateAPIPath = "api/InventoryRequest/Update";
 export const DeleteNewAPIPath = "api/InventoryRequest/DeleteNew";
@@ -52,8 +53,6 @@ const dtFromdate = new Date();
 dtFromdate.setDate(new Date().getDate() - 30);
 
 export const InitSearchParams = [
-
-
     {
         SearchKey: "@Keyword",
         SearchValue: ""

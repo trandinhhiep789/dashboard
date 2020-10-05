@@ -76,26 +76,7 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-                console.log("ResultObject",apiResult.ResultObject);
-                
-                const tempData = apiResult.ResultObject.map((item, index) => {
-                    let element = {
-                        "Mã yêu cầu": item.InventoryRequestID,
-                        "Tiêu Đề yêu cầu": item.InventoryRequestTitle,
-                        "Loại yêu cầu hủy vật tư": item.InventoryRequestTypeID + "-" + item.InventoryRequestTypeName,
-                        "Kho yêu cầu": item.RequestStoreID + "-" + item.StoreName,
-                        "Ngày yêu cầu": item.RequestDate,
-                        "Người yêu cầu": item.RequestUser + " - " + item.FullName,
-                        "Đã duyệt": item.IsreViewed= true ? 'Đã duyệt' : 'Chưa duyệt',
-                        "Đã xuất": item.IsCreatedOrder = true ? 'Đã xuất' : 'Chưa xuất'
-                    };
-
-                    return element;
-                })
-
                 const dataSource = apiResult.ResultObject.map((item, index) => {
-                    item.ApproverName = item.RequestUser + " - " + item.FullName;
-                    console.log("item",item);
                     if (item.IsCreatedOrder) {
                         item.OutputStatusLable = <span className='lblstatus text-success'>Đã xuất</span>;
                     }
@@ -111,6 +92,20 @@ class SearchCom extends React.Component {
 
                     }
                     return item;
+                })
+                  const tempData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã yêu cầu": item.InventoryRequestID,
+                        "Tiêu Đề yêu cầu": item.InventoryRequestTitle,
+                        "Loại yêu cầu hủy vật tư": item.InventoryRequestTypeID + "-" + item.InventoryRequestTypeName,
+                        "Kho yêu cầu": item.RequestStoreID + "-" + item.StoreName,
+                        "Ngày yêu cầu": item.RequestDate,
+                        "Người yêu cầu": item.RequestUser + " - " + item.FullName,
+                        "Đã duyệt": item.IsreViewed= true ? 'Đã duyệt' : 'Chưa duyệt',
+                        "Đã xuất": item.IsCreatedOrder = true ? 'Đã xuất' : 'Chưa xuất'
+                    };
+
+                    return element;
                 })
 
                 this.setState({
@@ -214,7 +209,6 @@ class SearchCom extends React.Component {
                 SearchKey: "@ISCREATEDORDER",
                 SearchValue: MLObject.IsCreatedOrder
             }
-
         ];
 
         this.setState({
@@ -236,8 +230,6 @@ class SearchCom extends React.Component {
             },
             maxWidth: '800px'
         });
-
-
     }
 
     render() {
@@ -252,7 +244,6 @@ class SearchCom extends React.Component {
                     ref={this.searchref}
                     className="multiple multiple-custom multiple-custom-display"
                     classNamebtnSearch="btn-custom-bottom"
-
                 />
                 <DataGrid
                     listColumn={DataGridColumnList}

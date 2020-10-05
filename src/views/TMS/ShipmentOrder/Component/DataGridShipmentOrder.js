@@ -485,7 +485,6 @@ class DataGridShipmentOderCom extends Component {
 
     }
     _genCommentTime(dates) {
-        debugger;
         const date = new Date(Date.parse(dates));
         let currentDate = new Date();
         let hour = date.getHours();
