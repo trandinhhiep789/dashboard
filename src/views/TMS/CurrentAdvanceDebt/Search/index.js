@@ -6,6 +6,7 @@ import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import DataGrid from "../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../common/components/Modal";
 import { formatDate } from "../../../../common/library/CommonLib.js";
+import { showModal, hideModal } from '../../../../actions/modal';
 
 import { SERVICEAGREEMENT_VIEW, SERVICEAGREEMENT_DELETE } from "../../../../constants/functionLists";
 
@@ -17,10 +18,14 @@ import {
     APIHostName,
     SearchAPIPath,
     PagePath,
-    TitleFormSearch
+    TitleFormSearch,
+    SearchHistoryAPIPath
+
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
+import { MODAL_TYPE_COMMONTMODALS } from "../../../../constants/actionTypes";
+import CurrentAdvanceDebtList from "../Component/CurrentAdvanceDebtList";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -40,7 +45,6 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-
     }
 
 
@@ -54,11 +58,11 @@ class SearchCom extends React.Component {
         );
     }
 
-   
+
 
 
     handleSearchSubmit(formData, MLObject) {
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, MLObject.UserName.value).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, MLObject.UserName.value).then(apiResult => {//MLObject.UserName.value
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -75,8 +79,49 @@ class SearchCom extends React.Component {
         });
     }
 
+    handleItemDetail(index) {
+        const { gridDataSource } = this.state;
+        let MLObject = {}
+        MLObject.MaterialGroupID = gridDataSource[index].MaterialGroupID;
+        MLObject.ProductID = gridDataSource[index].ProductID;
+        MLObject.UserName = gridDataSource[index].UserName;
+
+        this.getdataHistory(MLObject);
+
+    }
+
+    getdataHistory(obj) {
+
+        this.props.callFetchAPI(APIHostName, SearchHistoryAPIPath, obj).then(apiResult => {//
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+
+                this.handleShowModal(apiResult.ResultObject)
+            }
+        });
+
+    }
+
+    handleShowModal(data) {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Lịch sử thay đổi số dư tạm ứng',
+            content: {
+                text: <CurrentAdvanceDebtList
+                    dataSource={data}
+                />
+
+            },
+            maxWidth: '1000px'
+        });
+    }
+
     render() {
-        
+
         return (
             <React.Fragment>
                 <SearchForm
@@ -97,10 +142,11 @@ class SearchCom extends React.Component {
                     IsAutoPaging={true}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
+                    onDetailClick={this.handleItemDetail.bind(this)}
                     RowsPerPage={10}
                     IsExportFile={false}
-                    // RequirePermission={SERVICEAGREEMENT_VIEW}
-                    // DeletePermission={SERVICEAGREEMENT_DELETE}
+                // RequirePermission={SERVICEAGREEMENT_VIEW}
+                // DeletePermission={SERVICEAGREEMENT_DELETE}
                 />
             </React.Fragment>
         );
@@ -125,6 +171,12 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
         }
     };
 };

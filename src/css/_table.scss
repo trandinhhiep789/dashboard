@@ -29,6 +29,14 @@
 
     tbody {
         td {
+            a{
+                &.btn-Detailt{
+                    color: #33cabb;
+                    &:hover{
+                        color: #8b95a5 !important;
+                    }
+                }
+            }
             .checkbox {
                 width: 21px;
                 height: 18px;

@@ -2,35 +2,33 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import ElementInputModal from '../../../../common/components/FormContainer/FormElement/ElementInputModal';
 
-class InventoryRequestRVListCom extends Component {
+class DestroyRequestRVListCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            InventoryRequestRVList: this.props.dataSource
-
+            DestroyRequestRVList: this.props.dataSource,
         }
     }
 
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.dataSource) !== JSON.stringify(nextProps.dataSource)) {
             this.setState({
-                InventoryRequestRVList: nextProps.dataSource
+                DestroyRequestRVList: nextProps.dataSource
             })
         }
     }
     handleInputChangeComboBox(name, inputvalue, index) {
-        console.log("22",name, inputvalue, index)
-        let { InventoryRequestRVList } = this.state
-        InventoryRequestRVList[index].UserName = inputvalue
+        let { DestroyRequestRVList } = this.state
+        DestroyRequestRVList[index].UserName = inputvalue
 
         if (this.props.onValueChangeGridRV != null)
-            this.props.onValueChangeGridRV(InventoryRequestRVList);
+            this.props.onValueChangeGridRV(DestroyRequestRVList);
     }
 
     render() {
-        const { InventoryRequestRVList } = this.state;
-        const { IsreViewed } = this.props;
-        
+        const { DestroyRequestRVList } = this.state;
+        const { disabledControll } = this.props;
+
         return (
             <div className="card">
                 <div className="card-title group-card-title">
@@ -46,14 +44,15 @@ class InventoryRequestRVListCom extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {InventoryRequestRVList != null &&
-                                InventoryRequestRVList.map((rowItem, rowIndex) => {
+                            {DestroyRequestRVList != null &&
+                                DestroyRequestRVList.map((rowItem, rowIndex) => {
 
                                     let listOption = [];
                                     // rowItem.UserName=rowItem.InventoryRequestType_ReviewLevelList[0].UserName
-                                    {rowItem.InventoryRequestType_ReviewLevelList && rowItem.InventoryRequestType_ReviewLevelList.map((item, index) => {
-                                        listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName, FullName: item.FullName });
-                                    })
+                                    {
+                                        rowItem.DestroyRequest_ReviewLevelList && rowItem.DestroyRequest_ReviewLevelList.map((item, index) => {
+                                            listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName, FullName: item.FullName });
+                                        })
                                     }
 
                                     return (
@@ -62,12 +61,12 @@ class InventoryRequestRVListCom extends Component {
                                             <td>{rowItem.ReviewLevelName}</td>
 
                                             <td>
-                                            <ElementInputModal.ElementModalComboBox
+                                                <ElementInputModal.ElementModalComboBox
                                                     rowIndex={rowIndex}
                                                     placeholder
                                                     listoption={listOption}
                                                     value={rowItem.UserName}
-                                                    disabled={IsreViewed}
+                                                    disabled={disabledControll}
                                                     onValueChange={this.handleInputChangeComboBox.bind(this)}
                                                 />
                                             </td>
@@ -93,5 +92,5 @@ const mapDispatchToProps = dispatch => {
     return {
     }
 }
-const InventoryRequestRVList = connect(mapStateToProps, mapDispatchToProps)(InventoryRequestRVListCom);
-export default InventoryRequestRVList;
+const DestroyRequestRVList = connect(mapStateToProps, mapDispatchToProps)(DestroyRequestRVListCom);
+export default DestroyRequestRVList;

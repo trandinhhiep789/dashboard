@@ -1,5 +1,7 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/CurrentAdvanceDebt/GetListByUser";
+export const SearchHistoryAPIPath = "api/AdvanceDebtFlow/GetListHistory";
+
 
 
 export const TitleFormSearch =""
@@ -56,7 +58,7 @@ export const DataGridColumnList = [
     },
     {
         Name: "ProductID",
-        Type: "text",
+        Type: "Detailt",
         Caption: "Mã sản phậm",
         DataSourceMember: "ProductID",
         Width: 180
@@ -83,5 +85,54 @@ export const DataGridColumnList = [
         Width: 100
     },
    
+   
+];
+
+export const DataGridHistoryColumnList = [
+  
+    {
+        Name: "MaterialGroupID",
+        Type: "text",
+        Caption: "Mã nhóm vật tư",
+        DataSourceMember: "MaterialGroupID",
+        Width: 100
+    },
+
+    {
+        Name: "ProductID",
+        Type: "text",
+        Caption: "Mã sản phậm",
+        DataSourceMember: "ProductID",
+        Width: 180
+    },
+    
+    {
+        Name: "OldTotalQuantity",
+        Type: "text",
+        Caption: "Tổng cũ",
+        DataSourceMember: "OldTotalQuantity",
+        Width: 100
+    },
+    {
+        Name: "NewTotalQuantity",
+        Type: "text",
+        Caption: "Tổng mới",
+        DataSourceMember: "NewTotalQuantity",
+        Width: 100
+    },
+    {
+        Name: "OldUsAbleQuantity",
+        Type: "text",
+        Caption: "Sô lượng sử dụng cũ",
+        DataSourceMember: "OldUsAbleQuantity",
+        Width: 150
+    },
+    {
+        Name: "NewUsAbleQuantity",
+        Type: "text",
+        Caption: "Sô lượng sử dụng mới",
+        DataSourceMember: "NewUsAbleQuantity",
+        Width: 150
+    },
    
 ];
