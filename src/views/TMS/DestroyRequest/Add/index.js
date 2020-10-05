@@ -264,6 +264,7 @@ class AddCom extends React.Component {
 
             if (isAutoReview) {
                 MLObject.IsreViewed = isAutoReview;
+                MLObject.reViewedUser = this.props.AppInfo.LoginInfo.Username; 
                 MLObject.CurrentReviewLevelID = 0;
                 MLObject.reViewedDate = new Date();
             }
