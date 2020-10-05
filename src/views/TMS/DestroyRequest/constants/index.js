@@ -334,13 +334,14 @@ export const InputDestroyRequestDetailColumnList = [
     {
         Name: "Quantity",
         Type: "textbox",
+        // Type: "textboxNewGroup",
         Caption: "Số lượng hủy",
         Value: '',
         labelError: 'số lượng hủy',
         DataSourceMember: "Quantity",
         Width: 200,
-        validatonList: [ "number"],
-        IsNoneZero: true
+        // validatonList: [ "number"],
+        IsNoneZero: false
     },
    
 ];

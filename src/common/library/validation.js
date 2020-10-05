@@ -1,5 +1,5 @@
 export function ValidationField(typelist, fieldValue, fieldCaption, elementItem) {
-    //console.log("aa", typelist, fieldValue, fieldCaption, elementItem)
+    // console.log("ValidationField", typelist, fieldValue, fieldCaption, elementItem)
     let IsEr = 0;
     let result;
     if (typelist.includes("required") && IsEr == 0) {
@@ -130,6 +130,75 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
             }
         }
     }
+
+    if (typelist.includes("numberDecimal") && IsEr == 0) {
+        if (fieldValue) {
+            if (fieldValue.toString().length > 1) {
+                if (/^\d*\.?\d+$/.test(fieldValue)) {
+                    IsEr = 0;
+                    result = {
+                        IsError: false,
+                        fieldValue: fieldValue,
+                        Message: ""
+                    }
+                }
+                else {
+                    IsEr = 1;
+                    let messError = "Vui lòng nhập số";
+                    if (elementItem.labelError != undefined) {
+
+                        messError = elementItem.labelError
+                    }
+                    else {
+                        if (elementItem.type == 'select') {
+                            messError = "Vui lòng chọn " + fieldCaption
+                        }
+                    }
+                    result = {
+                        IsError: true,
+                        fieldValue: fieldValue,
+                        Message: messError,
+                    }
+                }
+            }
+            else {
+                if (/^\d*\.?\d+$/.test(fieldValue)) {
+                    IsEr = 0;
+                    result = {
+                        IsError: false,
+                        fieldValue: fieldValue,
+                        Message: ""
+                    }
+                }
+                else {
+                    IsEr = 1;
+                    let messError = "";
+                    if (elementItem.labelError != undefined) {
+
+                        messError = elementItem.labelError
+                    }
+                    else {
+
+                        messError = "Vui lòng nhập số "
+                    }
+                    result = {
+                        IsError: true,
+                        fieldValue: fieldValue,
+                        Message: messError
+                    }
+                }
+            }
+        }
+        else {
+            IsEr = 0;
+            result = {
+                IsError: false,
+                fieldValue: fieldValue,
+                Message: ""
+            }
+        }
+    }
+    
     if (typelist.includes("numbernew") && IsEr == 0) {
         if (fieldValue) {
             if (fieldValue.toString().length > 1) {
