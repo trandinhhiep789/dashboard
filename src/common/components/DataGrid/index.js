@@ -737,7 +737,7 @@ class DataGridCom extends Component {
                                         {
                                             isShowButtonImport == true &&
                                             <button type="button" className="btn btn-export  ml-10" onClick={this.handleImportFile} >
-                                                <span className="ti ti-printer"> Import File </span>
+                                                <span className="fa fa-exchange"> Import File </span>
                                             </button>
                                         }
 
