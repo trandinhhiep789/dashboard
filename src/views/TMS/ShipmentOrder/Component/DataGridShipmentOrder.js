@@ -491,10 +491,10 @@ class DataGridShipmentOderCom extends Component {
         let minute = date.getMinutes();
         let timeDisplay = (hour < 10 ? '0' + hour : hour) + ':' + (minute < 10 ? '0' + minute : minute)
         var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
-        var diffDays = Math.abs(currentDate.getDate() - date.getDate());
+        var diffDays = currentDate.getDate() - date.getDate();
         var diffMinutes = parseInt((timeDiff / (3600 * 24)));
 
-        if (diffDays < 1) {
+        if (diffDays < 1 && diffDays > -1) {
             if (diffMinutes < 120) {
                 return 'Cần giao gấp (' + timeDisplay + ')';
             }
