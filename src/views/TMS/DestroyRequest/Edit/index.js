@@ -289,34 +289,239 @@ class EditCom extends React.Component {
     handleChange(formData, MLObject) {
     }
 
+    // valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
+    //     // console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
+    //     const { DestroyRequestDetail } = this.state;
+    //     if (elementdata.Name == 'Quantity') {
+    //         let Quantity = DestroyRequestDetail[index].UsableQuantity;
+    //         let item = elementdata.Name + '_' + index;
+    //         if (!gridFormValidation[item].IsValidationError) {
+    //             if (elementdata.Value > Quantity) {
+    //                 gridFormValidation[item].IsValidationError = true;
+    //                 gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+    //                 this.setState({
+    //                     isError: true,
+    //                     IsCallAPIError: true,
+    //                 })
+    //             }
+    //             else {
+    //                 this.setState({
+    //                     isError: false,
+    //                     IsCallAPIError: false,
+    //                 })
+    //             }
+    //         }
+    //     }
+    //     else {
+    //         this.setState({
+    //             isError: false,
+    //             IsCallAPIError: false,
+    //         })
+    //     }
+
+    // }
+
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
         // console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
+
         const { DestroyRequestDetail } = this.state;
-        if (elementdata.Name == 'Quantity') {
-            let Quantity = DestroyRequestDetail[index].UsableQuantity;
-            let item = elementdata.Name + '_' + index;
-            if (!gridFormValidation[item].IsValidationError) {
-                if (elementdata.Value > Quantity) {
+        // console.log('111', DestroyRequestDetail[index])
+        const isAllowDecimal = DestroyRequestDetail[index].IsAllowDecimal;
+        let item = elementdata.Name + '_' + index;
+        if (!isAllowDecimal) {
+            if (elementdata.Value.toString().length > 1) {
+                if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
+                    if (elementdata.Name == 'Quantity') {
+                        let Quantity = DestroyRequestDetail[index].UsableQuantity;
+
+                        if (!gridFormValidation[item].IsValidationError) {
+                            if (elementdata.Value > Quantity) {
+                                gridFormValidation[item].IsValidationError = true;
+                                gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                this.setState({
+                                    isError: true,
+                                    IsCallAPIError: true,
+                                })
+                            }
+                            else {
+                                this.setState({
+                                    isError: false,
+                                    IsCallAPIError: false,
+                                })
+                            }
+                        }
+                    }
+                    else {
+                        this.setState({
+                            isError: false,
+                            IsCallAPIError: false,
+                        })
+                    }
+                }
+                else {
                     gridFormValidation[item].IsValidationError = true;
-                    gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                    gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
                     this.setState({
                         isError: true,
                         IsCallAPIError: true,
                     })
                 }
+            }
+            else {
+                if (elementdata.Value.length > 0) {
+                    if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
+                        if (parseInt(elementdata.Value) > 0) {
+                            if (elementdata.Name == 'Quantity') {
+                                let Quantity = DestroyRequestDetail[index].UsableQuantity;
+
+                                if (!gridFormValidation[item].IsValidationError) {
+                                    if (elementdata.Value > Quantity) {
+                                        gridFormValidation[item].IsValidationError = true;
+                                        gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                        this.setState({
+                                            isError: true,
+                                            IsCallAPIError: true,
+                                        })
+                                    }
+                                    else {
+                                        this.setState({
+                                            isError: false,
+                                            IsCallAPIError: false,
+                                        })
+                                    }
+                                }
+                            }
+                            else {
+                                this.setState({
+                                    isError: false,
+                                    IsCallAPIError: false,
+                                })
+                            }
+                        }
+                        else {
+                            gridFormValidation[item].IsValidationError = true;
+                            gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số lớn hơn 0";
+                            this.setState({
+                                isError: true,
+                                IsCallAPIError: true,
+                            })
+                        }
+                    }
+                    else {
+                        gridFormValidation[item].IsValidationError = true;
+                        gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
+                        this.setState({
+                            isError: true,
+                            IsCallAPIError: true,
+                        })
+                    }
+                }
                 else {
+                    gridFormValidation[item].IsValidationError = false;
+                    gridFormValidation[item].ValidationErrorMessage = "";
                     this.setState({
                         isError: false,
                         IsCallAPIError: false,
                     })
                 }
+
             }
+
         }
         else {
-            this.setState({
-                isError: false,
-                IsCallAPIError: false,
-            })
+            if (elementdata.Value.toString().length > 1) {
+
+                if (/^\d*\.?\d+$/.test(elementdata.Value)) {
+                    if (elementdata.Name == 'Quantity') {
+                        let Quantity = DestroyRequestDetail[index].UsableQuantity;
+
+                        if (!gridFormValidation[item].IsValidationError) {
+                            if (elementdata.Value > Quantity) {
+                                gridFormValidation[item].IsValidationError = true;
+                                gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                this.setState({
+                                    isError: true,
+                                    IsCallAPIError: true,
+                                })
+                            }
+                            else {
+                                this.setState({
+                                    isError: false,
+                                    IsCallAPIError: false,
+                                })
+                            }
+                        }
+                    }
+                    else {
+                        this.setState({
+                            isError: false,
+                            IsCallAPIError: false,
+                        })
+                    }
+                }
+                else {
+                    gridFormValidation[item].IsValidationError = true;
+                    gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
+                    this.setState({
+                        isError: true,
+                        IsCallAPIError: true,
+                    })
+                }
+            }
+            else {
+                if (elementdata.Value.length > 0) {
+                    if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
+                        if (parseInt(elementdata.Value) > 0) {
+                            if (elementdata.Name == 'Quantity') {
+                                let Quantity = DestroyRequestDetail[index].UsableQuantity;
+
+                                if (!gridFormValidation[item].IsValidationError) {
+                                    if (elementdata.Value > Quantity) {
+                                        gridFormValidation[item].IsValidationError = true;
+                                        gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                        this.setState({
+                                            isError: true,
+                                            IsCallAPIError: true,
+                                        })
+                                    }
+                                    else {
+                                        this.setState({
+                                            isError: false,
+                                            IsCallAPIError: false,
+                                        })
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            gridFormValidation[item].IsValidationError = true;
+                            gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số lớn hơn 0";
+                            this.setState({
+                                isError: true,
+                                IsCallAPIError: true,
+                            })
+                        }
+                    }
+                    else {
+                        gridFormValidation[item].IsValidationError = true;
+                        gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
+                        this.setState({
+                            isError: true,
+                            IsCallAPIError: true,
+                        })
+                    }
+                }
+                else {
+                    gridFormValidation[item].IsValidationError = false;
+                    gridFormValidation[item].ValidationErrorMessage = "";
+                    this.setState({
+                        isError: false,
+                        IsCallAPIError: false,
+                    })
+                }
+
+            }
+
         }
 
     }

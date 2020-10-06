@@ -100,7 +100,8 @@ class DestroyRequestInfoCom extends Component {
                     <div className="form-group col-md-4">
 
                         <div className="checkbox customCheckbox">
-                            <label><input type="checkbox" disabled={true} defaultChecked={DestroyRequest.IsreViewed} />
+                            <label>
+                                <input type="checkbox" disabled={true} defaultChecked={DestroyRequest.IsreViewed} />
                                 <span className="cr"><i className="cr-icon fa fa-check"></i>
                                 </span>
                             </label>
@@ -110,7 +111,7 @@ class DestroyRequestInfoCom extends Component {
                         <label className="col-form-label bold">Người duyệt:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{DestroyRequest.reViewedUser}</label>
+                        <label className="col-form-label">{DestroyRequest.reViewedUser + " - " + DestroyRequest.ReViewedUserName}</label>
                     </div>
 
                 </div>
@@ -124,27 +125,28 @@ class DestroyRequestInfoCom extends Component {
                         <label className="col-form-label">{formatDate(DestroyRequest.reViewedDate, true)}</label>
                     </div>
 
-                    <div className="form-group col-md-2">
+                  
+                </div>
+
+                <div className="form-row">
+                <div className="form-group col-md-2">
                         <label className="col-form-label bold">Đã tạo đơn hàng hủy vật tư:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <div className="checkbox customCheckbox">
-                            <label><input type="checkbox" disabled={true} defaultChecked={DestroyRequest.IsCreatedOrder} />
+                            <label>
+                                <input type="checkbox" disabled={true} defaultChecked={DestroyRequest.IsCreatedOrder} />
                                 <span className="cr"><i className="cr-icon fa fa-check"></i>
                                 </span>
                             </label>
                         </div>
                     </div>
 
-                </div>
-
-                <div className="form-row">
-
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Người tạo đơn hàng hủy vật tư:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{DestroyRequest.CreatedOrderUser}</label>
+                        <label className="col-form-label">{DestroyRequest.CreatedOrderUser + " - " + DestroyRequest.CreatedOrderUserName}</label>
                     </div>
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Ngày tạo đơn hàng hủy vật tư:</label>
@@ -162,38 +164,10 @@ class DestroyRequestInfoCom extends Component {
                         <label className="col-form-label bold">Mã đơn hàng hủy vật tư:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label"></label>
+                        <label className="col-form-label">{DestroyRequest.SaleOrderID}</label>
                     </div>
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Đã xuất hủy vật tư:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <div className="checkbox customCheckbox">
-                            <label><input type="checkbox" disabled={true} defaultChecked={DestroyRequest.IsCreatedOrder} />
-                                <span className="cr"><i className="cr-icon fa fa-check"></i>
-                                </span>
-                            </label>
-                        </div>
-                    </div>
+                    
                 </div>
-
-                <div className="form-row">
-
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Người xuất hủy vật tư:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">{DestroyRequest.CreatedOrderUser}</label>
-                    </div>
-
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Ngày xuất:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(DestroyRequest.CreatedOrderDate, true)}</label>
-                    </div>
-                </div>
-
 
                 <div className="form-row">
 
@@ -209,7 +183,8 @@ class DestroyRequestInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <div className="checkbox customCheckbox">
-                            <label><input type="checkbox" disabled={true} defaultChecked={DestroyRequest.IsSystem} />
+                            <label>
+                                <input type="checkbox" disabled={true} defaultChecked={DestroyRequest.IsSystem} />
                                 <span className="cr"><i className="cr-icon fa fa-check"></i>
                                 </span>
                             </label>

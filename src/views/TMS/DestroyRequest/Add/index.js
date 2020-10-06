@@ -67,7 +67,7 @@ class AddCom extends React.Component {
             isValidationSelect: false,
             isAutoReview: false,
             isAutoOutput: false,
-            gridDestroyRequestRLSort: []
+            gridDestroyRequestRLSort: [],
         };
     }
 
@@ -96,7 +96,7 @@ class AddCom extends React.Component {
 
     getDestroyRequestAdd(param) {
         this.props.callFetchAPI(APIHostName, getDestroyRequestAdd, param).then(apiResult => {
-            console.log("aaa", apiResult.ResultObject)
+            // console.log("aaa", apiResult.ResultObject)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -116,6 +116,7 @@ class AddCom extends React.Component {
 
     getDataDestroyRequestRLByDestroyRequestType(param) {
         this.props.callFetchAPI(APIHostName, LoadAPIByDestroyRequestTypeIDPath, param).then(apiResult => {
+            // console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -158,8 +159,8 @@ class AddCom extends React.Component {
                 let resultSort = Object.values(lstoption).sort((a, b) => a.ReviewOrderIndex - b.ReviewOrderIndex)
 
 
-                console.log("lstoption", lstoption)
-                console.log("resultSort", resultSort)
+                // console.log("lstoption", lstoption)
+                // console.log("resultSort", resultSort)
 
                 this.setState({
                     DestroyRequestRL: apiResult.ResultObject,
@@ -173,7 +174,7 @@ class AddCom extends React.Component {
 
     GetDataByRequestTypeID(DestroyRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByRequestTypeIDPath, DestroyRequestTypeID).then(apiResult => {
-            console.log('111',apiResult)
+            // console.log('111', apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -182,10 +183,11 @@ class AddCom extends React.Component {
             }
             else {
 
-                if(apiResult.ResultObject.length > 0){
-                    
+                if (apiResult.ResultObject.length > 0) {
+
                     this.setState({
                         isAutoReview: apiResult.ResultObject[0].IsAutoReview,
+                        isAutoOutput: apiResult.ResultObject[0].IsAutoOutput,
                     });
                 }
 
@@ -262,6 +264,7 @@ class AddCom extends React.Component {
 
             if (isAutoReview) {
                 MLObject.IsreViewed = isAutoReview;
+                MLObject.reViewedUser = this.props.AppInfo.LoginInfo.Username; 
                 MLObject.CurrentReviewLevelID = 0;
                 MLObject.reViewedDate = new Date();
             }
@@ -337,32 +340,205 @@ class AddCom extends React.Component {
 
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
         // console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
+
         const { DestroyRequestDetail } = this.state;
-        if (elementdata.Name == 'Quantity') {
-            let Quantity = DestroyRequestDetail[index].UsableQuantity;
-            let item = elementdata.Name + '_' + index;
-            if (!gridFormValidation[item].IsValidationError) {
-                if (elementdata.Value > Quantity) {
+        // console.log('111', DestroyRequestDetail[index])
+        const isAllowDecimal = DestroyRequestDetail[index].IsAllowDecimal;
+        let item = elementdata.Name + '_' + index;
+        if (!isAllowDecimal) {
+            if (elementdata.Value.toString().length > 1) {
+                if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
+                    if (elementdata.Name == 'Quantity') {
+                        let Quantity = DestroyRequestDetail[index].UsableQuantity;
+
+                        if (!gridFormValidation[item].IsValidationError) {
+                            if (elementdata.Value > Quantity) {
+                                gridFormValidation[item].IsValidationError = true;
+                                gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                this.setState({
+                                    isError: true,
+                                    IsCallAPIError: true,
+                                })
+                            }
+                            else {
+                                this.setState({
+                                    isError: false,
+                                    IsCallAPIError: false,
+                                })
+                            }
+                        }
+                    }
+                    else {
+                        this.setState({
+                            isError: false,
+                            IsCallAPIError: false,
+                        })
+                    }
+                }
+                else {
                     gridFormValidation[item].IsValidationError = true;
-                    gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                    gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
                     this.setState({
                         isError: true,
                         IsCallAPIError: true,
                     })
                 }
+            }
+            else {
+                if (elementdata.Value.length > 0) {
+                    if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
+                        if (parseInt(elementdata.Value) > 0) {
+                            if (elementdata.Name == 'Quantity') {
+                                let Quantity = DestroyRequestDetail[index].UsableQuantity;
+    
+                                if (!gridFormValidation[item].IsValidationError) {
+                                    if (elementdata.Value > Quantity) {
+                                        gridFormValidation[item].IsValidationError = true;
+                                        gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                        this.setState({
+                                            isError: true,
+                                            IsCallAPIError: true,
+                                        })
+                                    }
+                                    else {
+                                        this.setState({
+                                            isError: false,
+                                            IsCallAPIError: false,
+                                        })
+                                    }
+                                }
+                            }
+                            else {
+                                this.setState({
+                                    isError: false,
+                                    IsCallAPIError: false,
+                                })
+                            }
+                        }
+                        else {
+                            gridFormValidation[item].IsValidationError = true;
+                            gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số lớn hơn 0";
+                            this.setState({
+                                isError: true,
+                                IsCallAPIError: true,
+                            })
+                        }
+                    }
+                    else {
+                        gridFormValidation[item].IsValidationError = true;
+                        gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
+                        this.setState({
+                            isError: true,
+                            IsCallAPIError: true,
+                        })
+                    }
+                }
                 else {
+                    gridFormValidation[item].IsValidationError = false;
+                    gridFormValidation[item].ValidationErrorMessage = "";
                     this.setState({
                         isError: false,
                         IsCallAPIError: false,
                     })
                 }
+                
             }
+
         }
         else {
-            this.setState({
-                isError: false,
-                IsCallAPIError: false,
-            })
+            if (elementdata.Value.toString().length > 1) {
+
+                if (/^\d*\.?\d+$/.test(elementdata.Value)) {
+                    if (elementdata.Name == 'Quantity') {
+                        let Quantity = DestroyRequestDetail[index].UsableQuantity;
+
+                        if (!gridFormValidation[item].IsValidationError) {
+                            if (elementdata.Value > Quantity) {
+                                gridFormValidation[item].IsValidationError = true;
+                                gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                this.setState({
+                                    isError: true,
+                                    IsCallAPIError: true,
+                                })
+                            }
+                            else {
+                                this.setState({
+                                    isError: false,
+                                    IsCallAPIError: false,
+                                })
+                            }
+                        }
+                    }
+                    else {
+                        this.setState({
+                            isError: false,
+                            IsCallAPIError: false,
+                        })
+                    }
+                }
+                else {
+                    gridFormValidation[item].IsValidationError = true;
+                    gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
+                    this.setState({
+                        isError: true,
+                        IsCallAPIError: true,
+                    })
+                }
+            }
+            else {
+                if (elementdata.Value.length > 0) {
+                    if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
+                        if (parseInt(elementdata.Value) > 0) {
+                            if (elementdata.Name == 'Quantity') {
+                                let Quantity = DestroyRequestDetail[index].UsableQuantity;
+
+                                if (!gridFormValidation[item].IsValidationError) {
+                                    if (elementdata.Value > Quantity) {
+                                        gridFormValidation[item].IsValidationError = true;
+                                        gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                        this.setState({
+                                            isError: true,
+                                            IsCallAPIError: true,
+                                        })
+                                    }
+                                    else {
+                                        this.setState({
+                                            isError: false,
+                                            IsCallAPIError: false,
+                                        })
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            gridFormValidation[item].IsValidationError = true;
+                            gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số lớn hơn 0";
+                            this.setState({
+                                isError: true,
+                                IsCallAPIError: true,
+                            })
+                        }
+                    }
+                    else {
+                        gridFormValidation[item].IsValidationError = true;
+                        gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
+                        this.setState({
+                            isError: true,
+                            IsCallAPIError: true,
+                        })
+                    }
+                }
+                else {
+                    gridFormValidation[item].IsValidationError = false;
+                    gridFormValidation[item].ValidationErrorMessage = "";
+                    this.setState({
+                        isError: false,
+                        IsCallAPIError: false,
+                    })
+                }
+
+            }
+
         }
 
     }

@@ -454,34 +454,18 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'HD',
-                MenuTitle: 'Hợp đồng',
-                LinkTo: '',
+                MenuName: 'ServiceAgreement',
+                MenuTitle: 'Danh sách hợp đồng',
+                LinkTo: '/ServiceAgreement',
                 MenuIcon: '',
-                SubMenu: [
-                    {
-                        MenuName: 'ServiceAgreement',
-                        MenuTitle: 'Danh sách hợp đồng',
-                        LinkTo: '/ServiceAgreement',
-                        MenuIcon: '',
-                        SubMenu: []
-                    }
-                ]
+                SubMenu: []
             },
             {
-                MenuName: 'WP',
-                MenuTitle: 'Đăng ký ca làm việc',
-                LinkTo: '',
+                MenuName: 'WorkingPlan',
+                MenuTitle: 'Danh sách đăng ký ca làm việc',
+                LinkTo: '/WorkingPlan',
                 MenuIcon: '',
-                SubMenu: [
-                    {
-                        MenuName: 'WorkingPlan',
-                        MenuTitle: 'Danh sách nhân viên đăng ký ca làm việc',
-                        LinkTo: '/WorkingPlan',
-                        MenuIcon: '',
-                        SubMenu: []
-                    }
-                ]
+                SubMenu: []
             },
             {
                 MenuName: 'PP',

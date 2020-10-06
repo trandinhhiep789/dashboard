@@ -795,7 +795,6 @@ class InputGridCom extends Component {
 							return (<tr key={rowIndex}>
 								{
 									listColumn.map((columnItem, index) => {
-										
 										const cellStyle = {
 											width: columnItem.Width,
 											verticalAlign: "middle"
@@ -833,6 +832,7 @@ class InputGridCom extends Component {
 												isChecked = rowItem[columnItem.DataSourceMember];
 											}
 										}
+										
 										const cellData = <InputGridCell
 											type={columnItem.Type}
 											text={rowItem[columnItem.DataSourceMember]}
@@ -871,6 +871,7 @@ class InputGridCom extends Component {
 											maxSize={columnItem.maxSize}
 											IsSystem={this.state.IsSystem}
 											isNoneZero={columnItem.IsNoneZero}
+											// isAllowDecimal={columnItem.isAllowDecimal}
 										/>;
 										return (
 											<td key={columnItem.Name} style={cellStyle}  >{cellData}</td>
