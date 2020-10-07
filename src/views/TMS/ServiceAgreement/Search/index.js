@@ -28,7 +28,9 @@ import {
     InitSearchParams,
     PagePath,
     AddLogAPIPath,
-    TitleFormSearch
+    TitleFormSearch,
+    schema,
+    AddAutoAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -67,7 +69,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("SA:", apiResult)
+            // console.log("SA:", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -295,8 +297,14 @@ class SearchCom extends React.Component {
         this.addNotification(result.Message);
     }
 
+    handleImportFile(resultRows, errors) {
+        console.log('handleImportFile', resultRows, errors)
+        // this.props.callFetchAPI(APIHostName, AddAutoAPIPath, resultRows).then(apiResult => {
+        //     console.log('apiResult', apiResult)
+        // });
+    }
+
     render() {
-        console.log("gridDataSource", this.state.gridDataSource)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -325,6 +333,10 @@ class SearchCom extends React.Component {
                     DeletePermission={SERVICEAGREEMENT_DELETE}
                     fileName="Danh sách hợp đồng"
                     onExportFile={this.handleExportFile.bind(this)}
+                    IsImportFile={true}
+                    SchemaData={schema}
+                    onImportFile={this.handleImportFile.bind(this)}
+
                 />
             </React.Fragment>
         );

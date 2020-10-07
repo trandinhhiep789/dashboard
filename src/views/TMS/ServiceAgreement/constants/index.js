@@ -3,6 +3,7 @@ export const SearchAPIPath = "api/ServiceAgreement/Search";
 export const LoadAPIPath = "api/ServiceAgreement/Load";
 export const LoadNewAPIPath = "api/ServiceAgreement/LoadInfoNew";
 export const AddAPIPath = "api/ServiceAgreement/Add";
+export const AddAutoAPIPath = "api/ServiceAgreement/AddAuto";
 export const UpdateAPIPath = "api/ServiceAgreement/Update";
 export const DeleteNewAPIPath = "api/ServiceAgreement/DeleteNew";
 export const DeleteAPIPath = "api/ServiceAgreement_FeeAppendix/Delete";
@@ -623,3 +624,92 @@ export const MLObjectDefinition = [
     },
 
 ];
+
+export const schema = {
+    'ServiceAgreementNumber': {
+        prop: 'ServiceAgreementNumber',
+        type: String
+    },
+    'ServiceAgreementTypeID': {
+        prop: 'ServiceAgreementTypeID',
+        type: String
+        //type: Number,
+        //required: true
+    },
+    'ServiceAreaID': {
+        prop: 'ServiceAreaID',
+        type: String
+        // type: Number,
+        // required: true
+    },
+
+    'ServiceTypeID': {
+        prop: 'ServiceTypeID',
+        type: String,
+        // type: Number,
+        // required: true
+    },
+    'PartnerID': {
+        prop: 'PartnerID',
+        type: String,
+        // type: Number,
+        // required: true
+    },
+    'DeputyUserName': {
+        prop: 'DeputyUserName',
+        type: String
+    },
+    'SignedDate': {
+        prop: 'SignedDate',
+        type: Date
+    },
+    'ExpiredDate': {
+        prop: 'ExpiredDate',
+        type: Date
+    },
+    'IsExtended': {
+        prop: 'IsExtended',
+        type: Number
+    },
+    'ExtendedDate': {
+        prop: 'ExtendedDate',
+        type: Date
+    },
+
+    'IsLiquidated': {
+        prop: 'IsLiquidated',
+        type: Number
+    },
+    'Liquidateddate': {
+        prop: 'Liquidateddate',
+        type: Date
+    },
+    'IsDeposited': {
+        prop: 'IsDeposited',
+        type: Number
+    },
+    'DepositMoney': {
+        prop: 'DepositMoney',
+        type: Number
+    },
+    'DepositedDate': {
+        prop: 'DepositedDate',
+        type: Date
+    },
+    'DepositNote': {
+        prop: 'DepositNote',
+        type: String
+    },
+    'Description': {
+        prop: 'Description',
+        type: String
+    },
+    'IsActived': {
+        prop: 'IsActived',
+        type: Number
+    },
+    'IsSystem': {
+        prop: 'IsSystem',
+        type: Number
+    },
+}
