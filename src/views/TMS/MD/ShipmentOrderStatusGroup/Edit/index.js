@@ -12,13 +12,16 @@ import {
     EditElementList,
     MLObjectDefinition,
     BackLink,
-    EditPagePath
+    EditPagePath,
+    AddLogAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
+import { SHIPMENTORDERSTATUSGROUP_UPDATE } from "../../../../../constants/functionLists";
+import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
+import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
-import { SHIPMENTFEETYPE_UPDATE, DESTROYREQUESTTYPE_UPDATE } from "../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_SHIPMENTORDERSTATUSGR } from "../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -38,39 +41,32 @@ class EditCom extends React.Component {
         this.props.updatePagePath(EditPagePath);
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
-            if (apiResult.IsError) {
+                if (apiResult.IsError) {
+                    this.setState({
+                        IsCallAPIError: apiResult.IsError
+                    });
+                    this.showMessage(apiResult.Message);
+                } else {
+                    this.setState({ DataSource: apiResult.ResultObject });
+                }
                 this.setState({
-                    IsCallAPIError: apiResult.IsError
+                    IsLoadDataComplete: true
                 });
-                this.showMessage(apiResult.Message);
-            } else {
-                this.setState({ DataSource: apiResult.ResultObject });
-            }
-            this.setState({
-                IsLoadDataComplete: true
             });
-        });
     }
+
 
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.AddFunctionID = MLObject.AddFunctionID && Array.isArray(MLObject.AddFunctionID) ? MLObject.AddFunctionID[0] : MLObject.AddFunctionID;
-
-        if (!MLObject.IsAutoReview && MLObject.IsAutoOutput) {
-            this.setState({ IsCallAPIError: true });
-            this.showMessage("Phải có tự động duyệt thì mới có tự động xuất.");
-        } else {
-            this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
-                if (!apiResult.IsError) {
-                    //this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTFEETYPE);
+                if(!apiResult.IsError){
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERSTATUSGR);
                     // this.handleSubmitInsertLog(MLObject);
-                }
+                }      
                 this.showMessage(apiResult.Message);
             });
-        }
-
     }
 
     handleCloseMessage() {
@@ -95,7 +91,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <SimpleForm
-                    FormName="Cập nhật loại yêu cầu hủy vật tư"
+                    FormName="Cập nhật nhóm trạng thái yêu cầu vận chuyển"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
@@ -103,7 +99,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={DESTROYREQUESTTYPE_UPDATE}
+                    RequirePermission={SHIPMENTORDERSTATUSGROUP_UPDATE}
                     ref={this.searchref}
                 />
             );
@@ -137,6 +133,7 @@ const mapDispatchToProps = dispatch => {
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
         }
+
     };
 };
 

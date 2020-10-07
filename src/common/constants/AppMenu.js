@@ -85,6 +85,13 @@ const AppMenu = [
                         SubMenu: []
                     },
                     {
+                        MenuName: 'ShipmentOrderStatusGroup',
+                        MenuTitle: 'Danh sách nhóm trạng thái yêu cầu vận chuyển',
+                        LinkTo: '/ShipmentOrderStatusGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'ShipmentOrderStatus',
                         MenuTitle: 'Danh sách trạng thái yêu cầu vận chuyển',
                         LinkTo: '/ShipmentOrderStatus',
