@@ -37,14 +37,21 @@ class AddCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.AddFunctionID = MLObject.AddFunctionID && Array.isArray(MLObject.AddFunctionID) ? MLObject.AddFunctionID[0] : MLObject.AddFunctionID;
-        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            if(!apiResult.IsError){
-                //this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTFEETYPE);
-                //this.handleSubmitInsertLog(MLObject);
-            }            
-            this.showMessage(apiResult.Message);
-        });
+
+        if (!MLObject.IsAutoReview && MLObject.IsAutoOutput) {
+            this.setState({ IsCallAPIError: true });
+            this.showMessage("Phải có tự động duyệt thì mới có tự động xuất.");
+        } else {
+            this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+                this.setState({ IsCallAPIError: apiResult.IsError });
+                if (!apiResult.IsError) {
+                    //this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTFEETYPE);
+                    //this.handleSubmitInsertLog(MLObject);
+                }
+                this.showMessage(apiResult.Message);
+            });
+        }
+
     }
 
     handleCloseMessage() {
@@ -72,7 +79,7 @@ class AddCom extends React.Component {
         return (
             <SimpleForm
                 FormName="Thêm loại yêu cầu hủy vật tư"
-                MLObjectDefinition={MLObjectDefinition} 
+                MLObjectDefinition={MLObjectDefinition}
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
                 FormMessage={this.state.CallAPIMessage}

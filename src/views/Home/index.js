@@ -86,6 +86,7 @@ import InventoryRequestType from "../TMS/MD/InventoryRequestType";
 import RewardType from "../TMS/MD/RewardType";
 import RewardPriceType from "../TMS/MD/RewardPriceType";
 import RewardPosition from "../TMS/MD/RewardPosition";
+import ShipmentOrderStatusGroup from "../TMS/MD/ShipmentOrderStatusGroup";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -198,6 +199,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/ShipmentServiceType" component={ShipmentServiceType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentGoodsType" component={ShipmentGoodsType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentOrderStatus" component={ShipmentOrderStatus} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/ShipmentOrderStatusGroup" component={ShipmentOrderStatusGroup} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentOrderType" component={ShipmentOrderType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentOrderStep" component={ShipmentOrderStep} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerPriviledgeGroup" component={PartnerPriviledgeGroup} isLoggedIn={isLoggedIn} />

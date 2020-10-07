@@ -10,13 +10,17 @@ import {
     AddElementList,
     MLObjectDefinition,
     BackLink,
-    AddPagePath
+    AddPagePath,
+    AddLogAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
+import { SHIPMENTORDERSTATUSGROUP_ADD } from "../../../../../constants/functionLists";
+import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
+import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
-import { SHIPMENTFEETYPE_ADD, INVENTORYREQUESTTYPE_ADD } from "../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_SHIPMENTORDERSTATUSGR } from "../../../../../constants/keyCache";
+
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -33,26 +37,18 @@ class AddCom extends React.Component {
         this.props.updatePagePath(AddPagePath);
     }
 
+
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.AddFunctionID = MLObject.AddFunctionID && Array.isArray(MLObject.AddFunctionID) ? MLObject.AddFunctionID[0] : MLObject.AddFunctionID;
-        
-        if (!MLObject.IsAutoReview && MLObject.IsAutoOutput) {
-            this.setState({ IsCallAPIError: true });
-            this.showMessage("Phải có tự động duyệt thì mới có tự động xuất.");
-        }else{
-            this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                if(!apiResult.IsError){
-                    //this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTFEETYPE);
-                    //this.handleSubmitInsertLog(MLObject);
-                }            
-                this.showMessage(apiResult.Message);
-            });
-        }
-        
-        
+        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERSTATUSGR);
+                //this.handleSubmitInsertLog(MLObject);
+            }
+            this.showMessage(apiResult.Message);
+        });
     }
 
     handleCloseMessage() {
@@ -79,15 +75,15 @@ class AddCom extends React.Component {
         }
         return (
             <SimpleForm
-                FormName="Thêm loại yêu cầu kiểm kê"
-                MLObjectDefinition={MLObjectDefinition} 
+                FormName="Thêm nhóm trạng thái yêu cầu vận chuyển"
+                MLObjectDefinition={MLObjectDefinition} ƒ
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
                 FormMessage={this.state.CallAPIMessage}
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                RequirePermission={INVENTORYREQUESTTYPE_ADD}
+                RequirePermission={SHIPMENTORDERSTATUSGROUP_ADD}
                 ref={this.searchref}
             />
         );
@@ -115,6 +111,7 @@ const mapDispatchToProps = dispatch => {
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
         }
+
     };
 };
 

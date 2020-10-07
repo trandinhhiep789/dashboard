@@ -1,31 +1,31 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/ShipmentOrderStatus/Search";
-export const LoadAPIPath = "api/ShipmentOrderStatus/Load";
-export const AddAPIPath = "api/ShipmentOrderStatus/Add";
-export const UpdateAPIPath = "api/ShipmentOrderStatus/Update";
-export const DeleteAPIPath = "api/ShipmentOrderStatus/Delete";
-export const UpdateOrderAPIPath = "api/ShipmentOrderStatus/UpdateOrder";
-export const BackLink = "/ShipmentOrderStatus";
-export const AddLink = "/ShipmentOrderStatus/Add";
+export const SearchAPIPath = "api/ShipmentOrderStatusGroup/Search";
+export const LoadAPIPath = "api/ShipmentOrderStatusGroup/Load";
+export const AddAPIPath = "api/ShipmentOrderStatusGroup/Add";
+export const UpdateAPIPath = "api/ShipmentOrderStatusGroup/Update";
+export const DeleteAPIPath = "api/ShipmentOrderStatusGroup/Delete";
+export const UpdateOrderAPIPath = "api/ShipmentOrderStatusGroup/UpdateOrder";
+export const BackLink = "/ShipmentOrderStatusGroup";
+export const AddLink = "/ShipmentOrderStatusGroup/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "ShipmentOrderStatusID";
+export const PKColumnName = "ShipmentOrderStatusGroupID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách trạng thái yêu cầu vận chuyển" }
+    { Link: "", Title: "Danh sách nhóm trạng thái yêu cầu vận chuyển" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ShipmentOrderStatus", Title: "Danh sách trạng thái yêu cầu vận chuyển" },
+    { Link: "/ShipmentOrderStatusGroup", Title: "Danh sách nhóm trạng thái yêu cầu vận chuyển" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ShipmentOrderStatus", Title: "Danh sách trạng thái yêu cầu vận chuyển" },
+    { Link: "/ShipmentOrderStatusGroup", Title: "Danh sách nhóm trạng thái yêu cầu vận chuyển" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -44,52 +44,49 @@ export const SearchElementList = [
 export const AddElementList = [
     {
         type: "text",
-        name: "txtShipmentOrderStatusID",
-        label: "mã trạng thái yêu cầu",
+        name: "txtShipmentOrderStatusGroupID",
+        label: "mã nhóm trạng thái yêu cầu vận chuyển",
         value: "",
-        maxSize: "9",
+        maxSize: "10",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "ShipmentOrderStatusID",
+        DataSourceMember: "ShipmentOrderStatusGroupID",
         readonly: false,
         validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtShipmentOrderStatusName",
-        label: "tên trạng thái yêu cầu",
+        name: "txtShipmentOrderStatusGroupName",
+        label: "tên nhóm trạng thái yêu cầu vận chuyển",
         value: "",
-        maxSize: "180",
+        maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "ShipmentOrderStatusName",
+        DataSourceMember: "ShipmentOrderStatusGroupName",
         readonly: false,
         validatonList: ["required"],
     },
     {
-        type: "select",
-        name: "ShipmentOrderStatusGroupID",
-        label: "Mã nhóm trạng thái yêu cầu vận chuyển:",
-        value: -1,
+        type: "text",
+        name: "txtColorCode",
+        label: "Mã màu nhóm trạng thái yêu cầu vận chuyển",
+        value: "",
+        maxSize: "50",
         placeholder: "",
         icon: "",
-        listoption: [],
-        DataSourceMember: "ShipmentOrderStatusGroupID",
+        listoption: {},
+        DataSourceMember: "ColorCode",
         readonly: false,
-        validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUSGR",
-        ValueMember: "ShipmentOrderStatusGroupID",
-        NameMember: "ShipmentOrderStatusGroupName"
+        validatonList: [],
     },
     {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "1900",
+        maxSize: "2000",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -102,7 +99,7 @@ export const AddElementList = [
         type: "text",
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
-        value: "0",
+        value: 0,
         maxSize: "9",
         placeholder: "",
         icon: "",
@@ -138,52 +135,49 @@ export const AddElementList = [
 export const EditElementList = [
     {
         type: "text",
-        name: "txtShipmentOrderStatusID",
-        label: "mã trạng thái yêu cầu",
+        name: "txtShipmentOrderStatusGroupID",
+        label: "mã nhóm trạng thái yêu cầu vận chuyển",
         value: "",
-        maxSize: "9",
+        maxSize: "10",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "ShipmentOrderStatusID",
+        DataSourceMember: "ShipmentOrderStatusGroupID",
         readonly: true,
         validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtShipmentOrderStatusName",
-        label: "tên trạng thái yêu cầu",
+        name: "txtShipmentOrderStatusGroupName",
+        label: "tên nhóm trạng thái yêu cầu vận chuyển",
         value: "",
-        maxSize: "180",
+        maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "ShipmentOrderStatusName",
+        DataSourceMember: "ShipmentOrderStatusGroupName",
         readonly: false,
         validatonList: ["required"],
     },
     {
-        type: "select",
-        name: "ShipmentOrderStatusGroupID",
-        label: "Mã nhóm trạng thái yêu cầu vận chuyển:",
+        type: "text",
+        name: "txtColorCode",
+        label: "Mã màu nhóm trạng thái yêu cầu vận chuyển",
         value: "",
+        maxSize: "50",
         placeholder: "",
         icon: "",
-        listoption: [],
-        DataSourceMember: "ShipmentOrderStatusGroupID",
+        listoption: {},
+        DataSourceMember: "ColorCode",
         readonly: false,
-        validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUSGR",
-        ValueMember: "ShipmentOrderStatusGroupID",
-        NameMember: "ShipmentOrderStatusGroupName"
+        validatonList: [],
     },
     {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "1900",
+        maxSize: "2000",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -241,22 +235,22 @@ export const SearchMLObjectDefinition = [
 
 export const MLObjectDefinition = [
     {
-        Name: "ShipmentOrderStatusID",
-        DefaultValue: "",
-        BindControlName: "txtShipmentOrderStatusID",
-        DataSourceMember: "ShipmentOrderStatusID"
-    },
-    {
-        Name: "ShipmentOrderStatusName",
-        DefaultValue: "",
-        BindControlName: "txtShipmentOrderStatusName",
-        DataSourceMember: "ShipmentOrderStatusName"
-    },
-    {
         Name: "ShipmentOrderStatusGroupID",
         DefaultValue: "",
-        BindControlName: "ShipmentOrderStatusGroupID",
+        BindControlName: "txtShipmentOrderStatusGroupID",
         DataSourceMember: "ShipmentOrderStatusGroupID"
+    },
+    {
+        Name: "ShipmentOrderStatusGroupName",
+        DefaultValue: "",
+        BindControlName: "txtShipmentOrderStatusGroupName",
+        DataSourceMember: "ShipmentOrderStatusGroupName"
+    },
+    {
+        Name: "ColorCode",
+        DefaultValue: "",
+        BindControlName: "txtColorCode",
+        DataSourceMember: "ColorCode"
     },
     {
         Name: "Description",
@@ -307,22 +301,29 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "ShipmentOrderStatusID",
+        DataSourceMember: "ShipmentOrderStatusGroupID",
         Width: 60
     },
     {
-        Name: "ShipmentOrderStatusID",
+        Name: "ShipmentOrderStatusGroupID",
         Type: "text",
-        Caption: "Mã trạng thái yêu cầu",
-        DataSourceMember: "ShipmentOrderStatusID",
-        Width: 150
+        Caption: "Mã nhóm trạng thái yêu cầu vận chuyển",
+        DataSourceMember: "ShipmentOrderStatusGroupID",
+        Width: 300
     },
     {
-        Name: "ShipmentOrderStatusName",
+        Name: "ShipmentOrderStatusGroupName",
         Type: "text",
-        Caption: "Tên trạng thái yêu cầu",
-        DataSourceMember: "ShipmentOrderStatusName",
-        Width: 350
+        Caption: "Tên nhóm trạng thái yêu cầu vận chuyển",
+        DataSourceMember: "ShipmentOrderStatusGroupName",
+        Width: 300
+    },
+    {
+        Name: "Description",
+        Type: "text",
+        Caption: "Mô tả",
+        DataSourceMember: "Description",
+        //Width: 200
     },
     {
         Name: "IsActived",
@@ -331,28 +332,34 @@ export const DataGridColumnList = [
         DataSourceMember: "IsActived",
         Width: 80
     },
-
+    // {
+    //     Name: "IsSystem",
+    //     Type: "checkicon",
+    //     Caption: "Hệ thống",
+    //     DataSourceMember: "IsSystem",
+    //     Width: 200
+    // },
     {
         Name: "CreatedDate",
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 100
+        Width: 140
     },
     {
-        Name: "CreatedFullName",
+        Name: "CreatedUserFullName",
         Type: "text",
         Caption: "Người tạo",
-        DataSourceMember: "CreatedFullName",
-        Width: 150
+        DataSourceMember: "CreatedUserFullName",
+        Width: 140
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "ShipmentOrderStatusID",
-        Width: 70,
-        Link: "/ShipmentOrderStatus/Edit/",
+        DataSourceMember: "ShipmentOrderStatusGroupID",
+        Width: 80,
+        Link: "/ShipmentOrderStatusGroup/Edit/",
         LinkText: "Chỉnh sửa"
     }
 ];
