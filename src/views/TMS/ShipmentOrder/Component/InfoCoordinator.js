@@ -248,7 +248,6 @@ class InfoCoordinatorCom extends Component {
         this.setState({ ShipmentOrder: ShipmentOrder })
     }
     handleValueChange1(e, selectedOption) {
-        debugger;
         let listMLObject = [];
         if (selectedOption) {
             for (let i = 0; i < selectedOption.length; i++) {

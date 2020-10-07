@@ -50,11 +50,10 @@ class ListShipCoordinatorCom extends Component {
         }
 
         this.state.ShipmentOrder.map((row, indexRow) => {
-            if (!row.IsCoordinator) {
+            if (!row.IsCoordinator && row.IsPermission == true) {
                 row[name] = value;
                 row["ShipmentOrder_DeliverUserList"] = [];
             }
-
         });
         this.setState({
             objCoordinator: objCoordinator,
@@ -70,7 +69,7 @@ class ListShipCoordinatorCom extends Component {
             objDeliverUser.push(objShip_DeliverUser)
         })
         this.state.ShipmentOrder.map((row, indexRow) => {
-            if (!row.IsCoordinator)
+            if (!row.IsCoordinator && row.IsPermission == true)
                 row["ShipmentOrder_DeliverUserList"] = objDeliverUser;
         });
         this.setState({ selectedOption: selectedOption1, ShipmentOrder: this.state.ShipmentOrder });
@@ -83,7 +82,7 @@ class ListShipCoordinatorCom extends Component {
             objMultiDeliverUser.push(objMultiShip_DeliverUser)
         })
         this.state.ShipmentOrder.map((row, indexRow) => {
-            if (!row.IsCoordinator)
+            if (!row.IsCoordinator && row.IsPermission == true)
                 row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser;
         });
         this.setState({ objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder });
@@ -108,6 +107,7 @@ class ListShipCoordinatorCom extends Component {
     }
 
     handleShipWorkFlowInsert() {
+        console.log("ShipmentOrder",this.state.ShipmentOrder)
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
             if (!apiResult.IsError) {
                 this.props.hideModal();
@@ -217,6 +217,14 @@ class ListShipCoordinatorCom extends Component {
                 dataSourcemember: "ShipmentOrderID",
                 width: 50
 
+            },
+            {
+                name: "IsPermission",
+                type: "text",
+                caption: "Mã vận đơn",
+                dataSourcemember: "IsPermission",
+                width: 50,
+                hideInput: false
             }
             // },
             // {
