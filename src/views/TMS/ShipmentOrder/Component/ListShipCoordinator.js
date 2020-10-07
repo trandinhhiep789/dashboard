@@ -1,32 +1,24 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 import { ModalManager } from 'react-dynamic-modal';
-import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { callGetCache } from "../../../../actions/cacheAction";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../common/components/Modal";
-import Select from 'react-select';
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
 import InputGridChageControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridChageControl";
 import { showModal, hideModal } from '../../../../actions/modal';
 import {
-    APIHostName,
-    BackLink
+    APIHostName
 } from "../constants";
+
 class ListShipCoordinatorCom extends Component {
     constructor(props) {
         super(props);
         this.handleShipWorkFlowInsert = this.handleShipWorkFlowInsert.bind(this);
         this.handleValueChange1 = this.handleValueChange1.bind(this);
         this.handleOnValueChange = this.handleOnValueChange.bind(this);
-
         this.handleOnValueChangeDeliverUser = this.handleOnValueChangeDeliverUser.bind(this);
-        this.handleCancelDelivery = this.handleCancelDelivery.bind(this);
-        this.handleCancelDeliveryInsert = this.handleCancelDeliveryInsert.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
 
         this.state = {
@@ -34,20 +26,12 @@ class ListShipCoordinatorCom extends Component {
             objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1 },
             selectedOption: [],
             objDeliverUser: [],
-            IsCloseForm: false,
             DeliverUserList: {},
             DeliverUserServerList: [],
             FormValidation: {},
             CallAPIMessage: "",
-            IsCallAPIError: false,
-            IsCloseForm: false
-
+            IsCallAPIError: false
         }
-        this.notificationDOMRef = React.createRef();
-    }
-
-
-    componentDidMount() {
     }
 
     componentWillReceiveProps(nextProps) {
@@ -58,95 +42,7 @@ class ListShipCoordinatorCom extends Component {
         }
     }
 
-    handleValueCancelDeliveryReason(selectedOption) {
-        let validationErrorCancelDeliveryReason = null
-        if (selectedOption.value == undefined || selectedOption.value == -1) {
-            validationErrorCancelDeliveryReason = "Vui lòng chọn lý do hủy giào"
-        }
-
-        this.setState({ selectedOption: selectedOption, validationErrorCancelDeliveryReason: validationErrorCancelDeliveryReason }, () => {
-            this.openCancelDeliveryModal();
-        });
-
-    }
-    handleValueCancelDeliveryReasonNote(e) {
-        let value = e.target.value;
-        let { validationCancelDeliveryReasonNote } = this.state;
-        if (value == undefined || value.length == 0 || String(value).trim() == "") {
-            validationCancelDeliveryReasonNote = "Vui lòng nhập nội dung"
-        }
-        else {
-            validationCancelDeliveryReasonNote = null
-        }
-
-
-        this.setState({ CancelDeliveryReasonNote: value, validationCancelDeliveryReasonNote: validationCancelDeliveryReasonNote }, () => {
-            this.openCancelDeliveryModal();
-        });
-
-    }
-    handleCancelDelivery() {
-        this.openCancelDeliveryModal();
-    }
-
-    openCancelDeliveryModal() {
-        let formGroupclassName = "form-group col-md-9";
-        let selectclassName = "form-control form-control-sm";
-        if (this.state.validationCancelDeliveryReasonNote != null) {
-            if (this.state.validationCancelDeliveryReasonNote.length > 0) {
-                formGroupclassName += " has-error has-danger";
-                selectclassName += " is-invalid";
-            }
-        }
-        ModalManager.open(
-            <ModelContainer
-                title="Thông tin hủy giao hàng"
-                name=""
-                content={"Cập nhật loại đơn vị thành công!"} onRequestClose={() => false}
-                onChangeModal={this.handleCancelDeliveryInsert}  >
-                <div className="form-row">
-                    <div className="form-group col-md-3">
-                        <label className="col-form-label 6">Lý do hủy giao hàng<span className="text-danger">*</span></label>
-                    </div>
-                    <div className="form-group col-md-9">
-                        <div className="form-group-input-select">
-                            <Select
-                                value={this.state.selectedOption}
-                                name={"CancelDeliveryReasonID"}
-                                onChange={this.handleValueCancelDeliveryReason.bind(this)}
-                                options={this.state.CANCELDELIVERYREASON}
-                                isMulti={false}
-                                isSearchable={true}
-                                className={(this.state.validationErrorCancelDeliveryReason != null ? "react-select is-invalid" : "react-select")}
-                                placeholder="--Vui lòng chọn--"
-                            />
-                            <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.state.validationErrorCancelDeliveryReason}</li></ul></div>
-                        </div>
-                    </div>
-                </div>
-                <div className="form-row">
-                    <div className="form-group col-md-3">
-                        <label className="col-form-label bold">Nội dung hủy giao hàng <span className="text-danger"> *</span></label>
-                    </div>
-                    <div className={formGroupclassName}>
-                        <textarea className={selectclassName} maxLength={1950}
-                            rows="5" cols="50" name="Title"
-                            value={this.state.CancelDeliveryReasonNote}
-                            onChange={this.handleValueCancelDeliveryReasonNote.bind(this)}
-                            placeholder="Nội dung" />
-                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.state.validationCancelDeliveryReasonNote}</li></ul></div>
-                    </div>
-                </div>
-            </ModelContainer>
-        );
-    }
-
-    handleCancelDeliveryInsert() {
-
-    }
-
     handleOnValueChange(name, value) {
-        debugger;
         let { objCoordinator, objDeliverUser } = this.state;
         objCoordinator[name] = value;
         if (name == "CarrierPartnerID") {
@@ -195,8 +91,8 @@ class ListShipCoordinatorCom extends Component {
 
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) {
-            this.setState({ IsCloseForm: true });
-            this.props.hideModal();
+            if (this.props.onChangeValue != null)
+                this.props.onChangeValue();
         }
     }
 
@@ -211,73 +107,14 @@ class ListShipCoordinatorCom extends Component {
         );
     }
 
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
-        } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close">
-                            <span>×</span>
-                        </div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
     handleShipWorkFlowInsert() {
-
-        let elementobject = {};
-        this.state.ShipmentOrder.map((row, indexRow) => {
-            row["DeliverUserList"] = [];
-            if (row["DeliverUserList"].length <= 0) {
-                const validationObject = { IsValidatonError: true, ValidationErrorMessage: "vui lòng chọn nhân viên" };
-                elementobject = Object.assign({}, elementobject, { ["DeliverUserList-" + indexRow]: validationObject });
-            }
-            else {
-                const validationObject = { IsValidatonError: false, ValidationErrorMessage: "" };
-                elementobject = Object.assign({}, elementobject, { ["DeliverUserList-" + indexRow]: validationObject });
-            }
-
-            if (row["CarrierTypeID"] == -1 || row["CarrierTypeID"] == "-1") {
-                const validationObject = { IsValidatonError: true, ValidationErrorMessage: "vui lòng phương tiện" };
-                elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
-            }
-            else {
-                const validationObject = { IsValidatonError: false, ValidationErrorMessage: "" };
-                elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
-            }
-
-        });
-        this.setState({ FormValidation: elementobject });
-
-        this.state.ShipmentOrder.DeliverUserList = [];
-
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
+            if (!apiResult.IsError) {
+                this.props.hideModal();
+            }
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-
         });
-
     }
 
     handleDeleteShip(e) {
@@ -291,14 +128,15 @@ class ListShipCoordinatorCom extends Component {
     }
     handleonValueChange(rowname, rowvalue, rowIndex) {
         let objDeliverUser = [];
+        this.state.ShipmentOrder[rowIndex][rowname] = rowvalue;
         if (rowname == "ShipmentOrder_DeliverUserList") {
             rowvalue && rowvalue.map((item, index) => {
                 let objShipmentOrder_DeliverUser = { UserName: item.value, FullName: item.label }
                 objDeliverUser.push(objShipmentOrder_DeliverUser)
             })
-
+            this.state.ShipmentOrder[rowIndex][rowname] = objDeliverUser;
         }
-        this.state.ShipmentOrder[rowIndex][rowname] = objDeliverUser;
+
         if (rowname == "CarrierPartnerID") {
             this.state.ShipmentOrder[rowIndex]["ShipmentOrder_DeliverUserList"] = [];
         }
@@ -311,10 +149,6 @@ class ListShipCoordinatorCom extends Component {
     }
 
     render() {
-        if (this.state.IsCloseForm) {
-            return <Redirect to={BackLink} />;
-        }
-
         const DataGridColumnItemList = [
             {
                 name: "ShipmentOrderID",
@@ -398,7 +232,6 @@ class ListShipCoordinatorCom extends Component {
 
         return (
             <div className="card modalForm">
-
                 <div className="card-body" style={{ minHeight: 500 }}>
                     <div className="form-row">
                         <div className="col-md-6">

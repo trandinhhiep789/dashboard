@@ -248,13 +248,14 @@ class InfoCoordinatorCom extends Component {
         this.setState({ ShipmentOrder: ShipmentOrder })
     }
     handleValueChange1(e, selectedOption) {
+        debugger;
         let listMLObject = [];
         if (selectedOption) {
             for (let i = 0; i < selectedOption.length; i++) {
                 listMLObject.push({
                     ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
                     UserName: selectedOption[i].value,
-                    FullName: selectedOption[i].FullName,
+                    FullName: selectedOption[i].label,
                     CreatedUser: this.props.AppInfo.LoginInfo.Username,
                     CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
                 });
@@ -279,6 +280,7 @@ class InfoCoordinatorCom extends Component {
                 listMLObject.push({
                     ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
                     UserName: value[i],
+                    FullName: selectedOption[i].label,
                     CreatedUser: this.props.AppInfo.LoginInfo.Username,
                     CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
                 });
@@ -392,13 +394,9 @@ class InfoCoordinatorCom extends Component {
             this.setState({ validationErroCarrierType: validationErroCarrierType });
             return;
         }
-        // else if (ShipmentOrder.ShipmentOrder_DeliverUserList == undefined || ShipmentOrder.ShipmentOrder_DeliverUserList.length <= 0) {
-        //     validationErroDeliverUser = "Vui lòng chọn nhân viên giao"
-        //     this.setState({ validationErroDeliverUser: validationErroDeliverUser });
-        //     return;
-        // }
 
         else {
+            console.log("ShipmentOrder",this.state.ShipmentOrder)
             this.state.ShipmentOrder.UpdatedUser = this.props.AppInfo.LoginInfo.Username,
                 this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinator', this.state.ShipmentOrder).then((apiResult) => {
                     this.setState({ IsCallAPIError: apiResult.IsError });
@@ -556,7 +554,7 @@ class InfoCoordinatorCom extends Component {
         }
         else {
             this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
-                listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName, FullName: item.FullName });
+                listOption.push({ value: item.UserName, label: item.FullName, FullName: item.FullName });
             })
         }
         return (
