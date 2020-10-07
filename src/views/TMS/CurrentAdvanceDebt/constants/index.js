@@ -91,19 +91,19 @@ export const DataGridColumnList = [
 export const DataGridHistoryColumnList = [
   
     {
-        Name: "MaterialGroupID",
+        Name: "AdvanceDebtFlowTypeName",
         Type: "text",
-        Caption: "Mã nhóm vật tư",
-        DataSourceMember: "MaterialGroupID",
+        Caption: "Loại tạm ứng",
+        DataSourceMember: "AdvanceDebtFlowTypeName",
         Width: 100
     },
 
     {
-        Name: "ProductID",
+        Name: "FlowContent",
         Type: "text",
-        Caption: "Mã sản phậm",
-        DataSourceMember: "ProductID",
-        Width: 180
+        Caption: "Nội dung",
+        DataSourceMember: "FlowContent",
+        Width: 250
     },
     
     {
@@ -134,5 +134,12 @@ export const DataGridHistoryColumnList = [
         DataSourceMember: "NewUsAbleQuantity",
         Width: 150
     },
-   
+    {
+        Name: "CreatedDate",
+        Type: "date",
+        Caption: "Ngày thay đổi",
+        DataSourceMember: "CreatedDate",
+        Width: 150
+    },
+    
 ];

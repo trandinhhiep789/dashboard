@@ -63,6 +63,7 @@ class SearchCom extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, MLObject.UserName.value).then(apiResult => {//MLObject.UserName.value
+
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -93,6 +94,7 @@ class SearchCom extends React.Component {
     getdataHistory(obj) {
 
         this.props.callFetchAPI(APIHostName, SearchHistoryAPIPath, obj).then(apiResult => {//
+            
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -100,7 +102,20 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+                apiResult.ResultObject.map((item, index) => {
+                    
+                    //1: Tạm ứng, 2: sử dụng; 3: Hủy vật tư
+                    if (item.AdvanceDebtFlowTypeID == 1) {
+                        item.AdvanceDebtFlowTypeName = "Tạm ứng";
+                    }
+                    else if (item.AdvanceDebtFlowTypeID == 2) {
+                        item.AdvanceDebtFlowTypeName = "Sử dụng";
+                    }
+                    else if (item.AdvanceDebtFlowTypeID == 3) {
+                        item.AdvanceDebtFlowTypeName = "Hủy vật tư";
+                    }
 
+                })
                 this.handleShowModal(apiResult.ResultObject)
             }
         });
