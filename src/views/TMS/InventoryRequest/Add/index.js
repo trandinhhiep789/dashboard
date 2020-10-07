@@ -84,6 +84,14 @@ class AddCom extends React.Component {
             }
             else {
 
+                if(apiResult.ResultObject.InventoryRequestDetail != null) 
+                {
+                    apiResult.ResultObject.InventoryRequestDetail.map((rowItem, rowIndex) => {
+                        rowItem.ActualQuantity=rowItem.RecordQuantity;
+                    });
+                }
+                   
+
                 this.setState({
                     InventoryRequestDetail: apiResult.ResultObject.InventoryRequestDetail,
                     InventoryRequestRVLst: apiResult.ResultObject.InventoryRequest_RVList,
@@ -182,7 +190,7 @@ class AddCom extends React.Component {
                                     label="Ngày yêu cầu"
                                     placeholder={formatDate(currentDate, true)}
                                     controltype="InputControl"
-                                    value={formatDate(currentDate, true)}
+                                    value={new Date()}
                                     validatonList={["required"]}
                                     datasourcemember="RequestDate"
                                 />

@@ -83,7 +83,7 @@ class InputGridChageControlCom extends Component {
             this.props.onValueChange(rowname, rowvalue, rowIndex);
         }
     }
-    onValueChangeComboUser(rowname, rowvalue, rowIndex, a, ab, filterrest) {
+    onValueChangeComboUser(rowname, rowvalue, rowIndex) {
         if (this.props.onValueChange != null) {
             this.props.onValueChange(rowname, rowvalue == -1 ? [] : rowvalue, rowIndex);
         }
@@ -164,26 +164,36 @@ class InputGridChageControlCom extends Component {
                                                 />
                                                 break;
                                             case "ComboUserBox":
+                                                console.log("MultiUserComboBox", rowItem["ShipmentOrder_DeliverUserList"])
+                                                let listOption = [];
+                                                let objDeliverUser = [];
                                                 //   console.log("MultiUserComboBox",rowItem[columnItem.dataSourcemember])
                                                 if (rowItem[columnItem.filterrest] != -1 && rowItem[columnItem.filterrest] != 0) {
+                                                    rowItem["ShipmentOrder_DeliverUserList"] && rowItem["ShipmentOrder_DeliverUserList"].map((item, index) => {
+                                                        objDeliverUser.push(item.UserName)
+                                                    })
+
                                                     cellData = <ElementInputModal.ElementModalComboBox
                                                         validationErrorMessage={(this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex] != undefined ? this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex].ValidationErrorMessage : "")}
                                                         onValueChange={this.onValueChangeComboUser.bind(this)}
                                                         {...columnItem}
+                                                        isselectedOp={true}
                                                         rowIndex={rowIndex}
-                                                        value={rowItem[columnItem.dataSourcemember]}
+                                                        value={objDeliverUser}
                                                         filterValue={rowItem[columnItem.filterrest]}
                                                     />
                                                 }
                                                 else {
-                                                    // console.log("MultiUserComboBox",rowItem[columnItem.dataSourcemember])
+                                                    rowItem["ShipmentOrder_DeliverUserList"] && rowItem["ShipmentOrder_DeliverUserList"].map((item, index) => {
+                                                        listOption.push({ value: item.UserName, label: item.FullName, FullName: item.FullName });
+                                                    })
                                                     cellData = <ElementInputModal.MultiUserComboBox
                                                         validationErrorMessage={(this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex] != undefined ? this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex].ValidationErrorMessage : "")}
                                                         onValueChange={this.onValueChangeComboUser.bind(this)}
                                                         {...columnItem}
                                                         rowIndex={rowIndex}
-                                                        listoption={rowItem[columnItem.dataSourcemember]}
-                                                        value={rowItem[columnItem.dataSourcemember]}
+                                                        listoption={listOption}
+                                                        value={listOption}
                                                     />
                                                 }
 

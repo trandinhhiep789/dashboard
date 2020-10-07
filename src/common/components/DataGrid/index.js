@@ -16,7 +16,7 @@ import * as XLSX from 'xlsx';
 
 import { formatMoney } from '../../../utils/function';
 import PartnerPayaleTemplate from '../PrintTemplate/PartnerPayaleTemplate';
-
+import readXlsxFile from 'read-excel-file'
 
 class DataGridCom extends Component {
     constructor(props) {
@@ -34,6 +34,8 @@ class DataGridCom extends Component {
         this.handleCloseModel = this.handleCloseModel.bind(this);
         this.handleMultipleInsertClick = this.handleMultipleInsertClick.bind(this);
         this.handleOneInsertClick = this.handleOneInsertClick.bind(this);
+        this.handleImportFile = this.handleImportFile.bind(this);
+
         this.checkAll = this.checkAll.bind(this);
         this.getCheckList = this.getCheckList.bind(this);
         const pkColumnName = this.props.PKColumnName.split(',');
@@ -247,8 +249,6 @@ class DataGridCom extends Component {
         return true;
 
     }
-
-
 
     handleDeleteClick() {
         var doDelete = () => {
@@ -589,6 +589,24 @@ class DataGridCom extends Component {
         this.props.onSubmitItem(listMLObject);
     }
 
+    handleImportFile() {
+        const input = document.getElementById('buttonImportFile');
+        input.click();
+
+
+        const schema = this.props.SchemaData;
+
+        input.addEventListener('change', () => {
+            readXlsxFile(input.files[0], { schema }).then(({ rows, errors }) => {
+                // errors.length === 0
+                if (this.props.onImportFile != null)
+                    this.props.onImportFile(rows, errors);
+            }, function (error) {
+                alert("File vừa chọn lỗi. Vui lòng chọn file khác.")
+            })
+        })
+    }
+
     render() {
 
         let searchTextbox = <div></div>;
@@ -616,6 +634,11 @@ class DataGridCom extends Component {
         let isShowButtonPrint = false;
         if (this.props.IsShowButtonPrint != undefined && this.props.IsShowButtonPrint != false) {
             isShowButtonPrint = true;
+        }
+
+        let isShowButtonImport = false;
+        if (this.props.IsImportFile != undefined && this.props.IsImportFile != false) {
+            isShowButtonImport = true;
         }
 
         let isShowButtonDelete = true;
@@ -710,6 +733,13 @@ class DataGridCom extends Component {
                                                 )
                                                 : ""
                                         }
+                                        {/* nut import file  */}
+                                        {
+                                            isShowButtonImport == true &&
+                                            <button type="button" className="btn btn-export  ml-10" onClick={this.handleImportFile} >
+                                                <span className="fa fa-exchange"> Import File </span>
+                                            </button>
+                                        }
 
                                     </div>
                                 </div>
@@ -753,6 +783,10 @@ class DataGridCom extends Component {
                     <div style={{ display: 'none' }}>
                         <PartnerPayaleTemplate ref={el => (this.componentRef = el)} data={this.props.dataPrint} />
                     </div>
+                }
+                {
+                    isShowButtonImport == true &&
+                    < input type="file" id="buttonImportFile" style={{ display: "none" }} ref={input => this.inputElement = input} />
                 }
 
             </div>

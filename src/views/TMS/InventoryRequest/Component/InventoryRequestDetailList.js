@@ -52,7 +52,6 @@ class InventoryRequestDetailListCom extends Component {
                             {InventoryRequestDetail != null &&
                                 InventoryRequestDetail.map((rowItem, rowIndex) => {
                                     return (
-
                                         <tr key={rowIndex}>
                                             <td>{rowItem.MaterialGroupID}</td>
                                             <td>{rowItem.ProductID}</td>

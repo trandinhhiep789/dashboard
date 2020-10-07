@@ -101,7 +101,7 @@ class EditCom extends React.Component {
             InventoryRequestRVLst, InventoryRequest } = this.state;
         MLObject.InventoryRequest_RVList = InventoryRequestRVLst;
         MLObject.InventoryRequestDetail = InventoryRequestDetail;
-        MLObject.RequestUser =InventoryRequest.RequestUser;
+        MLObject.RequestUser = InventoryRequest.RequestUser;
         this.props.callFetchAPI(APIHostName, EditAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.MessageDetail);
@@ -240,7 +240,7 @@ class EditCom extends React.Component {
                         <InventoryRequestDetailList
                             dataSource={InventoryRequestDetail}
                             onValueChangeGrid={this.handleInputChangeGrid.bind(this)}
-                            disabledActualQuantity={InventoryRequest.SaleOrderID == ""?false:true}
+                            disabledActualQuantity={(InventoryRequest.SaleOrderID == "" && InventoryRequest.IsreViewed == false) ? false : true}
                         />
 
                         {InventoryRequest.IsAutoReview == false ?

@@ -65,6 +65,7 @@ class DetailCom extends React.Component {
             else {
 
                 let isUserNameReview = false;
+                let strCurrentReviewLevelName = '';
                 if (apiResult.ResultObject.InventoryRequest_RVList.length > 0) {
                     const resultUserNameReviewLevel = apiResult.ResultObject.InventoryRequest_RVList.filter((item, index) => {
                         if (item.ReviewLevelID == apiResult.ResultObject.CurrentReviewLevelID) {
@@ -82,12 +83,14 @@ class DetailCom extends React.Component {
                     if (found != undefined) {
                         isUserNameReview = false;
                     }
+
+                    strCurrentReviewLevelName = apiResult.ResultObject.InventoryRequest_RVList.filter(a => a.ReviewLevelID === apiResult.ResultObject.CurrentReviewLevelID)[0].ReviewLevelName;
                 }
 
                 this.setState({
                     IsLoadDataComplete: true,
                     isUserNameReviewLevel: isUserNameReview,
-                    CurrentReviewLevelName: apiResult.ResultObject.InventoryRequest_RVList.filter(a => a.ReviewLevelID === apiResult.ResultObject.CurrentReviewLevelID)[0].ReviewLevelName,
+                    CurrentReviewLevelName: strCurrentReviewLevelName,
                     InventoryRequest: apiResult.ResultObject
                 });
             }
@@ -203,6 +206,28 @@ class DetailCom extends React.Component {
 
     }
 
+    handleSubmitOutputINRequest() {
+        // const { DestroyRequestID, DestroyRequestDetail } = this.state;
+        // let MLObject = {};
+        // MLObject.DestroyRequestID = DestroyRequestID;
+        // MLObject.SaleOrderID = "";
+        // MLObject.IsCreatedOrder = true;
+
+        // this.props.callFetchAPI(APIHostName, UpdateCreateSaleOrderAPIPath, MLObject).then((apiResult) => {
+        //     console.log("MLObject", MLObject, apiResult)
+        //     if (apiResult.IsError) {
+        //         this.setState({
+        //             IsCallAPIError: !apiResult.IsError
+        //         });
+        //         this.showMessage(apiResult.Message);
+        //     }
+        //     else {
+        //         this.callLoadData(DestroyRequestID);
+        //         this.addNotification(apiResult.Message, apiResult.IsError)
+        //     }
+        // })
+    }
+
     render() {
         const { IsSystem, InventoryRequest, InventoryRequestRVL, InventoryRequestDetail, isUserNameReviewLevel, CurrentReviewLevelName } = this.state;
         if (this.state.IsLoadDataComplete) {
@@ -233,22 +258,22 @@ class DetailCom extends React.Component {
                                     />
                                 </div>
                             </div>
-
-                            <div className="card">
-                                <div className="card-title group-card-title">
-                                    <h4 className="title">Danh sách duyệt</h4>
-                                </div>
-                                <div className="card-body">
-                                    <InputGrid
-                                        name="lstInventoryRequestRVL"
-                                        controltype="GridControl"
-                                        listColumn={GirdInventoryRequestRVLColumnList}
-                                        dataSource={InventoryRequest.InventoryRequest_RVList}
-                                        isHideHeaderToolbar={true}
-                                        colspan="12"
-                                    />
-                                </div>
-                            </div>
+                            {InventoryRequest.IsAutoReview == false ?
+                                <div className="card">
+                                    <div className="card-title group-card-title">
+                                        <h4 className="title">Danh sách duyệt</h4>
+                                    </div>
+                                    <div className="card-body">
+                                        <InputGrid
+                                            name="lstInventoryRequestRVL"
+                                            controltype="GridControl"
+                                            listColumn={GirdInventoryRequestRVLColumnList}
+                                            dataSource={InventoryRequest.InventoryRequest_RVList}
+                                            isHideHeaderToolbar={true}
+                                            colspan="12"
+                                        />
+                                    </div>
+                                </div> : ""}
 
                         </div>
                         <footer className="card-footer text-right ">
@@ -270,7 +295,10 @@ class DetailCom extends React.Component {
                                 : <div></div>
 
                             }
-                            {/* <button className="btn btn-primary mr-3" type="button">Tạo phiếu xuất</button> */}
+                            {(InventoryRequest.IsCreatedOrder == false && InventoryRequest.IsreViewed == true) ?
+                                <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitOutputINRequest.bind(this)}>Tạo phiếu xuất</button>
+                                : <button disabled={true} className="btn btn-primary mr-3" type="button">Tạo phiếu xuất</button>
+                            }
                             <Link to="/InventoryRequest">
                                 <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
                             </Link>
