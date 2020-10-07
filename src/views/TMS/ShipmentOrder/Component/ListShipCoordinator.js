@@ -1,29 +1,23 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 import { ModalManager } from 'react-dynamic-modal';
-import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { callGetCache } from "../../../../actions/cacheAction";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../common/components/Modal";
-import Select from 'react-select';
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
 import InputGridChageControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridChageControl";
 import { showModal, hideModal } from '../../../../actions/modal';
 import {
-    APIHostName,
-    BackLink
+    APIHostName
 } from "../constants";
+
 class ListShipCoordinatorCom extends Component {
     constructor(props) {
         super(props);
         this.handleShipWorkFlowInsert = this.handleShipWorkFlowInsert.bind(this);
         this.handleValueChange1 = this.handleValueChange1.bind(this);
         this.handleOnValueChange = this.handleOnValueChange.bind(this);
-
         this.handleOnValueChangeDeliverUser = this.handleOnValueChangeDeliverUser.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
 
@@ -32,20 +26,12 @@ class ListShipCoordinatorCom extends Component {
             objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1 },
             selectedOption: [],
             objDeliverUser: [],
-            IsCloseForm: false,
             DeliverUserList: {},
             DeliverUserServerList: [],
             FormValidation: {},
             CallAPIMessage: "",
-            IsCallAPIError: false,
-            IsCloseForm: false
-
+            IsCallAPIError: false
         }
-        this.notificationDOMRef = React.createRef();
-    }
-
-
-    componentDidMount() {
     }
 
     componentWillReceiveProps(nextProps) {
@@ -55,13 +41,6 @@ class ListShipCoordinatorCom extends Component {
             })
         }
     }
-
-
-
-
-
-
-
 
     handleOnValueChange(name, value) {
         let { objCoordinator, objDeliverUser } = this.state;
@@ -112,8 +91,8 @@ class ListShipCoordinatorCom extends Component {
 
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) {
-            this.setState({ IsCloseForm: true });
-            this.props.hideModal();
+            if (this.props.onChangeValue != null)
+                this.props.onChangeValue();
         }
     }
 
@@ -128,51 +107,14 @@ class ListShipCoordinatorCom extends Component {
         );
     }
 
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
-        } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close">
-                            <span>×</span>
-                        </div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
     handleShipWorkFlowInsert() {
-
-
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
             if (!apiResult.IsError) {
                 this.props.hideModal();
             }
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-
         });
-
     }
 
     handleDeleteShip(e) {
@@ -207,10 +149,6 @@ class ListShipCoordinatorCom extends Component {
     }
 
     render() {
-        if (this.state.IsCloseForm) {
-            return <Redirect to={BackLink} />;
-        }
-
         const DataGridColumnItemList = [
             {
                 name: "ShipmentOrderID",
@@ -294,7 +232,6 @@ class ListShipCoordinatorCom extends Component {
 
         return (
             <div className="card modalForm">
-
                 <div className="card-body" style={{ minHeight: 500 }}>
                     <div className="form-row">
                         <div className="col-md-6">

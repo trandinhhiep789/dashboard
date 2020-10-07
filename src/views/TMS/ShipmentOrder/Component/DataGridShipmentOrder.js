@@ -453,9 +453,9 @@ class DataGridShipmentOderCom extends Component {
 
             //api/ShipmentOrder/GetShipmentOrderLst
             this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderLst", this.state.GridDataShip).then(apiResult => {
-        
+
                 if (!apiResult.IsError) {
-                    this.setState({ GridDataShip:apiResult.ResultObject });
+                    this.setState({ GridDataShip: apiResult.ResultObject });
                     this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
                         title: 'Điều phối nhân viên ',
                         content: {
@@ -471,23 +471,26 @@ class DataGridShipmentOderCom extends Component {
                         maxWidth: '1000px'
                     });
                 }
-                else{
+                else {
                     this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
                 }
             });
 
 
-          
+
         }
         else {
             this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
         }
     }
 
-    handleShipmentOrder(name, value) {
-        this.state.GridDataShip.splice(this.state.GridDataShip.findIndex(n => n[name] == value), 1);
-        this.setState({ GridDataShip: this.state.GridDataShip });
+    handleShipmentOrder() {
+        if (this.props.onChangePageLoad != null)
+            this.props.onChangePageLoad();
+
+        this.setState({ GridDataShip: [] });
     }
+
     handleCheckShip(e) {
         const strShipmentOrdervalue = e.target.value;
         const name = e.target.name;

@@ -67,6 +67,10 @@ class SearchCom extends React.Component {
         });
     }
 
+    onChangePageLoad()
+    {
+        this.callSearchData(this.state.SearchData);
+    }
     handleonChangePage(pageNum) {
         let listMLObject = [];
         const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
@@ -226,6 +230,7 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         onChangePage={this.handleonChangePage}
+                        onChangePageLoad={this.onChangePageLoad.bind(this)}
                         IsDelete={false}
                         IsAdd={false}
                         PageNumber={this.state.PageNumber}
