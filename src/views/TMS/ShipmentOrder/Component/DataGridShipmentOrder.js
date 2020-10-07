@@ -15,6 +15,10 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import ListShipCoordinator from '../Component/ListShipCoordinator.js';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import {
+    APIHostName
+} from "../constants";
 
 class DataGridShipmentOderCom extends Component {
     constructor(props) {
@@ -446,20 +450,36 @@ class DataGridShipmentOderCom extends Component {
     }
     handleUserCoordinator() {
         if (this.state.GridDataShip.length > 0) {
-            this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-                title: 'Điều phối nhân viên ',
-                content: {
-                    text: <ListShipCoordinator
-                        ShipmentOrderID={0}
-                        InfoCoordinator={this.state.GridDataShip}
-                        IsUserCoordinator={true}
-                        IsCoordinator={true}
-                        IsCancelDelivery={true}
-                        onChangeValue={this.handleShipmentOrder.bind(this)}
-                    />
-                },
-                maxWidth: '1000px'
+
+            //api/ShipmentOrder/GetShipmentOrderLst
+            this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderLst", this.state.GridDataShip).then(apiResult => {
+        
+                if (!apiResult.IsError) {
+
+                
+                    this.setState({ GridDataShip:apiResult.ResultObject });
+                    this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                        title: 'Điều phối nhân viên ',
+                        content: {
+                            text: <ListShipCoordinator
+                                ShipmentOrderID={0}
+                                InfoCoordinator={this.state.GridDataShip}
+                                IsUserCoordinator={true}
+                                IsCoordinator={true}
+                                IsCancelDelivery={true}
+                                onChangeValue={this.handleShipmentOrder.bind(this)}
+                            />
+                        },
+                        maxWidth: '1000px'
+                    });
+                }
+                else{
+                    this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
+                }
             });
+
+
+          
         }
         else {
             this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
@@ -474,7 +494,14 @@ class DataGridShipmentOderCom extends Component {
         const strShipmentOrdervalue = e.target.value;
         const name = e.target.name;
         const objShipmentOrder = this.state.DataSource.find(n => n[name] == strShipmentOrdervalue)
-        let objShip = { ShipmentOrderID: objShipmentOrder.ShipmentOrderID, CarrierPartnerID: objShipmentOrder.CarrierPartnerID, CarrierTypeID: objShipmentOrder.CarrierTypeID, DeliverUserList: [] };
+        let objShip = {
+            ShipmentOrderID: objShipmentOrder.ShipmentOrderID,
+            ShipmentOrderTypeID: objShipmentOrder.ShipmentOrderTypeID,
+            CarrierPartnerID: objShipmentOrder.CarrierPartnerID,
+            CarrierTypeID: objShipmentOrder.CarrierTypeID,
+            DeliverUserList: [],
+            CurrentShipmentOrderStepID: objShipmentOrder.CurrentShipmentOrderStepID
+        };
         if (e.target.checked) {
             this.state.GridDataShip.push(objShip);
         }
