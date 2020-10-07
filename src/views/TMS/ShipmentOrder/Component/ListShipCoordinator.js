@@ -25,8 +25,6 @@ class ListShipCoordinatorCom extends Component {
         this.handleOnValueChange = this.handleOnValueChange.bind(this);
 
         this.handleOnValueChangeDeliverUser = this.handleOnValueChangeDeliverUser.bind(this);
-        this.handleCancelDelivery = this.handleCancelDelivery.bind(this);
-        this.handleCancelDeliveryInsert = this.handleCancelDeliveryInsert.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
 
         this.state = {
@@ -58,95 +56,14 @@ class ListShipCoordinatorCom extends Component {
         }
     }
 
-    handleValueCancelDeliveryReason(selectedOption) {
-        let validationErrorCancelDeliveryReason = null
-        if (selectedOption.value == undefined || selectedOption.value == -1) {
-            validationErrorCancelDeliveryReason = "Vui lòng chọn lý do hủy giào"
-        }
-
-        this.setState({ selectedOption: selectedOption, validationErrorCancelDeliveryReason: validationErrorCancelDeliveryReason }, () => {
-            this.openCancelDeliveryModal();
-        });
-
-    }
-    handleValueCancelDeliveryReasonNote(e) {
-        let value = e.target.value;
-        let { validationCancelDeliveryReasonNote } = this.state;
-        if (value == undefined || value.length == 0 || String(value).trim() == "") {
-            validationCancelDeliveryReasonNote = "Vui lòng nhập nội dung"
-        }
-        else {
-            validationCancelDeliveryReasonNote = null
-        }
 
 
-        this.setState({ CancelDeliveryReasonNote: value, validationCancelDeliveryReasonNote: validationCancelDeliveryReasonNote }, () => {
-            this.openCancelDeliveryModal();
-        });
 
-    }
-    handleCancelDelivery() {
-        this.openCancelDeliveryModal();
-    }
 
-    openCancelDeliveryModal() {
-        let formGroupclassName = "form-group col-md-9";
-        let selectclassName = "form-control form-control-sm";
-        if (this.state.validationCancelDeliveryReasonNote != null) {
-            if (this.state.validationCancelDeliveryReasonNote.length > 0) {
-                formGroupclassName += " has-error has-danger";
-                selectclassName += " is-invalid";
-            }
-        }
-        ModalManager.open(
-            <ModelContainer
-                title="Thông tin hủy giao hàng"
-                name=""
-                content={"Cập nhật loại đơn vị thành công!"} onRequestClose={() => false}
-                onChangeModal={this.handleCancelDeliveryInsert}  >
-                <div className="form-row">
-                    <div className="form-group col-md-3">
-                        <label className="col-form-label 6">Lý do hủy giao hàng<span className="text-danger">*</span></label>
-                    </div>
-                    <div className="form-group col-md-9">
-                        <div className="form-group-input-select">
-                            <Select
-                                value={this.state.selectedOption}
-                                name={"CancelDeliveryReasonID"}
-                                onChange={this.handleValueCancelDeliveryReason.bind(this)}
-                                options={this.state.CANCELDELIVERYREASON}
-                                isMulti={false}
-                                isSearchable={true}
-                                className={(this.state.validationErrorCancelDeliveryReason != null ? "react-select is-invalid" : "react-select")}
-                                placeholder="--Vui lòng chọn--"
-                            />
-                            <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.state.validationErrorCancelDeliveryReason}</li></ul></div>
-                        </div>
-                    </div>
-                </div>
-                <div className="form-row">
-                    <div className="form-group col-md-3">
-                        <label className="col-form-label bold">Nội dung hủy giao hàng <span className="text-danger"> *</span></label>
-                    </div>
-                    <div className={formGroupclassName}>
-                        <textarea className={selectclassName} maxLength={1950}
-                            rows="5" cols="50" name="Title"
-                            value={this.state.CancelDeliveryReasonNote}
-                            onChange={this.handleValueCancelDeliveryReasonNote.bind(this)}
-                            placeholder="Nội dung" />
-                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.state.validationCancelDeliveryReasonNote}</li></ul></div>
-                    </div>
-                </div>
-            </ModelContainer>
-        );
-    }
 
-    handleCancelDeliveryInsert() {
 
-    }
 
     handleOnValueChange(name, value) {
-        debugger;
         let { objCoordinator, objDeliverUser } = this.state;
         objCoordinator[name] = value;
         if (name == "CarrierPartnerID") {
@@ -246,33 +163,11 @@ class ListShipCoordinatorCom extends Component {
 
     handleShipWorkFlowInsert() {
 
-        let elementobject = {};
-        this.state.ShipmentOrder.map((row, indexRow) => {
-            row["DeliverUserList"] = [];
-            if (row["DeliverUserList"].length <= 0) {
-                const validationObject = { IsValidatonError: true, ValidationErrorMessage: "vui lòng chọn nhân viên" };
-                elementobject = Object.assign({}, elementobject, { ["DeliverUserList-" + indexRow]: validationObject });
-            }
-            else {
-                const validationObject = { IsValidatonError: false, ValidationErrorMessage: "" };
-                elementobject = Object.assign({}, elementobject, { ["DeliverUserList-" + indexRow]: validationObject });
-            }
-
-            if (row["CarrierTypeID"] == -1 || row["CarrierTypeID"] == "-1") {
-                const validationObject = { IsValidatonError: true, ValidationErrorMessage: "vui lòng phương tiện" };
-                elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
-            }
-            else {
-                const validationObject = { IsValidatonError: false, ValidationErrorMessage: "" };
-                elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
-            }
-
-        });
-        this.setState({ FormValidation: elementobject });
-
-        this.state.ShipmentOrder.DeliverUserList = [];
 
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
+            if (!apiResult.IsError) {
+                this.props.hideModal();
+            }
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
 
@@ -291,14 +186,15 @@ class ListShipCoordinatorCom extends Component {
     }
     handleonValueChange(rowname, rowvalue, rowIndex) {
         let objDeliverUser = [];
+        this.state.ShipmentOrder[rowIndex][rowname] = rowvalue;
         if (rowname == "ShipmentOrder_DeliverUserList") {
             rowvalue && rowvalue.map((item, index) => {
                 let objShipmentOrder_DeliverUser = { UserName: item.value, FullName: item.label }
                 objDeliverUser.push(objShipmentOrder_DeliverUser)
             })
-
+            this.state.ShipmentOrder[rowIndex][rowname] = objDeliverUser;
         }
-        this.state.ShipmentOrder[rowIndex][rowname] = objDeliverUser;
+
         if (rowname == "CarrierPartnerID") {
             this.state.ShipmentOrder[rowIndex]["ShipmentOrder_DeliverUserList"] = [];
         }

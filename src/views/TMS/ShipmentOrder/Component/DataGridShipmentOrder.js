@@ -455,8 +455,6 @@ class DataGridShipmentOderCom extends Component {
             this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderLst", this.state.GridDataShip).then(apiResult => {
         
                 if (!apiResult.IsError) {
-
-                
                     this.setState({ GridDataShip:apiResult.ResultObject });
                     this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
                         title: 'Điều phối nhân viên ',
