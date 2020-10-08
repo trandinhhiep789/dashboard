@@ -418,15 +418,16 @@ class ShipmentOrderDetailCom extends Component {
                         <div className="form-group col-md-4">
                             <label className="col-form-label" >{formatDate(this.state.ShipmentOrder.CreatedOrderTime)}</label>
                         </div>
-                        <div className="form-group col-md-5">
+                        <div className="form-group col-md-5 dateTimeCus">
                             <FormControl.FormControlDatetime
                                 name="dtCreatedOrderTime"
-                                colspan="8"
-                                labelcolspan="4"
+                                colspan="7"
+                                labelcolspan="5"
                                 disabled={IsDisable}
                                 timeFormat={false}
                                 ISdisabledDate={true}
-                                dateFormat="YYYY-MM-DD HH:mm"
+                                dateFormat="DD-MM-YYYY HH:mm"//"YYYY-MM-DD HH:mm"
+                                IsGetTime={true}
                                 label="Thời gian giao dự kiến:"
                                 placeholder="Thời gian giao dự kiến"
                                 controltype="InputControl"
@@ -434,7 +435,7 @@ class ShipmentOrderDetailCom extends Component {
                                 value={this.state.dtExpectedDeliveryDate}
                                 validatonList={["required"]}
                                 datasourcemember="CreatedOrderTime"
-
+                                className="frmDateTime"
                             />
 
                         </div>

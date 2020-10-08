@@ -17,7 +17,7 @@ import "antd/dist/antd.css";
 import Select from 'react-select';
 import { formatMoney } from '../../../../utils/function';
 import { formatDateNew } from '../../../../common/library/CommonLib.js';
-import { ExportStringToDate } from "../../../../common/library/ultils";
+import { ExportStringToDate, ExportStringDate } from "../../../../common/library/ultils";
 import { Base64 } from 'js-base64';
 import { el } from 'date-fns/locale';
 
@@ -438,14 +438,14 @@ class FormControlComboBoxCom extends Component {
 
                             result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
                                 // console.log("valueMember", cacheItem[valueMember])
-                                listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember] ,name:cacheItem[nameMember]});
+                                listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
                             }
                             );
                         }
                         else {
                             result.ResultObject.CacheData.map((cacheItem) => {
                                 // console.log("11", cacheItem[valueMember])
-                                listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember],name:cacheItem[nameMember] });
+                                listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
                             }
                             );
                         }
@@ -475,7 +475,7 @@ class FormControlComboBoxCom extends Component {
                 if (!isMultiSelect)
                     listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
                 this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
-                    listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember],name:cacheItem[nameMember] });
+                    listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
                 }
                 );
                 this.setState({ Listoption: listoptionnew });
@@ -554,7 +554,7 @@ class FormControlComboBoxUserCom extends Component {
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, comboValues,selectedOption);
+            this.props.onValueChange(this.props.name, comboValues, selectedOption);
     }
 
     bindcombox(value, listOption) {
@@ -567,7 +567,7 @@ class FormControlComboBoxUserCom extends Component {
         for (let i = 0; i < values.length; i++) {
             for (let j = 0; j < listOption.length; j++) {
                 if (values[i] == listOption[j].value) {
-                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label,name:listOption[j].name });
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label, name: listOption[j].name });
                 }
             }
         }
@@ -632,14 +632,14 @@ class FormControlComboBoxUserCom extends Component {
 
                             result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
                                 // console.log("valueMember", cacheItem[valueMember])
-                                listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember] ,name:cacheItem[nameMember]});
+                                listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
                             }
                             );
                         }
                         else {
                             result.ResultObject.CacheData.map((cacheItem) => {
                                 // console.log("11", cacheItem[valueMember])
-                                listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember],name:cacheItem[nameMember] });
+                                listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
                             }
                             );
                         }
@@ -669,7 +669,7 @@ class FormControlComboBoxUserCom extends Component {
                 if (!isMultiSelect)
                     listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
                 this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
-                    listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember],name:cacheItem[nameMember] });
+                    listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
                 }
                 );
                 this.setState({ Listoption: listoptionnew });
@@ -744,9 +744,16 @@ class FormControlDatetimeCom extends Component {
         this.handleValueChange = this.handleValueChange.bind(this);
     }
     handleValueChange(name, moment) {
-
+        let noGetTime = false;
+        if(!this.props.IsGetTime){
+            noGetTime= false
+        }
+        else{
+            noGetTime= true
+        }
+        const momentNew = ExportStringDate(moment, noGetTime)
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, moment);
+            this.props.onValueChange(this.props.name, momentNew);
     }
     componentDidMount() {
 
@@ -768,7 +775,7 @@ class FormControlDatetimeCom extends Component {
             className = this.props.CSSClassName;
         let formGroupClassName = "form-group col-md-4";
         if (this.props.colspan != null) {
-            formGroupClassName = "form-group col-md-" + this.props.colspan;
+            formGroupClassName = "form-group col-md-" + this.props.colspan + " " + this.props.className;
         }
         let labelDivClassName = "form-group col-md-2";
         if (this.props.labelcolspan != null) {
@@ -802,7 +809,8 @@ class FormControlDatetimeCom extends Component {
                     <DatePicker
                         disabledDate={this.props.ISdisabledDate == true ? this.disabledDate : ''}
                         showTime={isShowTime}
-                        value={(value != '' && value != null) ? moment(value, dateFormat) : ''}
+                        // value={(value != '' && value != null) ? moment(value, dateFormat) : ''}
+                        defaultValue={(value != '' && value != null) ? moment(value, 'YYYY-MM-DD HH:mm') : ''}
                         format={dateFormat}
                         className={className}
                         dropdownClassName="tree-select-custom"
@@ -833,6 +841,7 @@ class FormControlDatetimeNewCom extends Component {
     handleValueChange(name, moment) {
 
         const momentNew = ExportStringToDate(moment)
+        console.log("moment", moment, momentNew)
         if (this.props.onValueChange != null)
             this.props.onValueChange(this.props.name, momentNew);
     }
