@@ -597,21 +597,23 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                 onValueChangeCus={this.changeSelectUser}
                             />
                             <br />
-                            <InputGrid
-                                name="ShipmentOrderType_WF_Permis"
-                                controltype="InputControl"
-                                colspan="12"
-                                IDSelectColumnName="chkSelectUserGroupID"
-                                PKColumnName={"UserGroupID"}
-                                isUseValueInputControl={true}
-                                MLObjectDefinition={GridMLObjectModelPermission}
-                                listColumn={this.state.InputPermissColumnList}
-                                dataSource={this.state.ShipmentOrderType_WF_PermisData}
-                                onValueChangeInputGrid={this.valueChangeInputGridPermisData}
-                                onInsertClick={this.addShipmentOrderTypeWFPermis}
-                                onDeleteClick_Customize={this.removeShipmentOrderTypeWFPermis}
-                                isUseConfirmMessage={false}
-                            />
+                            <div className="permissionGrid">
+                                <InputGrid
+                                    name="ShipmentOrderType_WF_Permis"
+                                    controltype="InputControl"
+                                    colspan="12"
+                                    IDSelectColumnName="chkSelectUserGroupID"
+                                    PKColumnName={"UserGroupID"}
+                                    isUseValueInputControl={true}
+                                    MLObjectDefinition={GridMLObjectModelPermission}
+                                    listColumn={this.state.InputPermissColumnList}
+                                    dataSource={this.state.ShipmentOrderType_WF_PermisData}
+                                    onValueChangeInputGrid={this.valueChangeInputGridPermisData}
+                                    onInsertClick={this.addShipmentOrderTypeWFPermis}
+                                    onDeleteClick_Customize={this.removeShipmentOrderTypeWFPermis}
+                                    isUseConfirmMessage={false}
+                                />
+                            </div>
                         </TabPage>
                         <TabPage title="Bước xử lý kế tiếp" name="ShipmentOrderType_WF_Next">
                             <div className="form-row">
