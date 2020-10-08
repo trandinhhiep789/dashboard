@@ -135,7 +135,6 @@ class AddCom extends React.Component {
 
     }
     handleInputChangeGridRV(obj) {
-        console.log("obj", obj)
         this.setState({ InventoryRequestRVLst: obj });
     }
 

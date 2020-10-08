@@ -19,7 +19,8 @@ import {
     TitleFormDetail,
     UpdateCurrentReviewLevel,
     GirdInventoryRequestDetailColumnList,
-    GirdInventoryRequestRVLColumnList
+    GirdInventoryRequestRVLColumnList,
+    UpdateCreateSaleOrderAPIPath
 
 } from "../constants";
 
@@ -207,25 +208,22 @@ class DetailCom extends React.Component {
     }
 
     handleSubmitOutputINRequest() {
-        // const { DestroyRequestID, DestroyRequestDetail } = this.state;
-        // let MLObject = {};
-        // MLObject.DestroyRequestID = DestroyRequestID;
-        // MLObject.SaleOrderID = "";
-        // MLObject.IsCreatedOrder = true;
+        const { InventoryRequest } = this.state;
+        let MLObject = { InventoryRequestID: InventoryRequest.InventoryRequestID };
 
-        // this.props.callFetchAPI(APIHostName, UpdateCreateSaleOrderAPIPath, MLObject).then((apiResult) => {
-        //     console.log("MLObject", MLObject, apiResult)
-        //     if (apiResult.IsError) {
-        //         this.setState({
-        //             IsCallAPIError: !apiResult.IsError
-        //         });
-        //         this.showMessage(apiResult.Message);
-        //     }
-        //     else {
-        //         this.callLoadData(DestroyRequestID);
-        //         this.addNotification(apiResult.Message, apiResult.IsError)
-        //     }
-        // })
+
+        this.props.callFetchAPI(APIHostName, UpdateCreateSaleOrderAPIPath, MLObject).then((apiResult) => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.callLoadData(InventoryRequest.InventoryRequestID);
+                this.addNotification(apiResult.Message, apiResult.IsError)
+            }
+        })
     }
 
     render() {
