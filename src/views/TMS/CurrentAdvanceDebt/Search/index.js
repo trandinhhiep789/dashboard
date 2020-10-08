@@ -31,11 +31,13 @@ class SearchCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
             IsCallAPIError: false,
             IsLoadDataComplete: false,
+            widthPercent: ""
 
         };
         this.gridref = React.createRef();
@@ -45,8 +47,20 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+
+        this.updateWindowDimensions();
+        window.addEventListener("resize", this.updateWindowDimensions);
     }
 
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions = () => {
+        this.setState({
+            widthPercent: (window.innerWidth * 90) / 100
+        })
+    };
 
     showMessage(message) {
         ModalManager.open(
@@ -57,9 +71,6 @@ class SearchCom extends React.Component {
             />
         );
     }
-
-
-
 
     handleSearchSubmit(formData, MLObject) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, MLObject.UserName.value).then(apiResult => {//MLObject.UserName.value
@@ -94,7 +105,7 @@ class SearchCom extends React.Component {
     getdataHistory(obj) {
 
         this.props.callFetchAPI(APIHostName, SearchHistoryAPIPath, obj).then(apiResult => {//
-            
+
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -103,7 +114,7 @@ class SearchCom extends React.Component {
             }
             else {
                 apiResult.ResultObject.map((item, index) => {
-                    
+
                     //1: Tạm ứng, 2: sử dụng; 3: Hủy vật tư
                     if (item.AdvanceDebtFlowTypeID == 1) {
                         item.AdvanceDebtFlowTypeName = "Tạm ứng";
@@ -123,6 +134,7 @@ class SearchCom extends React.Component {
     }
 
     handleShowModal(data) {
+        const { widthPercent } = this.state;
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Lịch sử thay đổi số dư tạm ứng',
             content: {
@@ -131,7 +143,7 @@ class SearchCom extends React.Component {
                 />
 
             },
-            maxWidth: '1000px'
+            maxWidth: widthPercent + 'px'
         });
     }
 
