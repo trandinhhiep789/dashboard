@@ -142,6 +142,11 @@ class InputGridChageControlCom extends Component {
                                         if (columnItem.type == "checkbox") {
                                             isChecked = rowItem[columnItem.dataSourcemember];
                                         }
+                                        let isPermission = false;
+                                        if(rowItem["IsPermission"]==false)
+                                        {
+                                            isPermission=true
+                                        }
 
                                         let cellData = "";
                                         switch (columnItem.type) {
@@ -155,19 +160,21 @@ class InputGridChageControlCom extends Component {
                                                 />
                                                 break;
                                             case "ComboBox":
+                                              
                                                 cellData = <ElementInputModal.ElementModalComboBox
                                                     validationErrorMessage={(this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex] != undefined ? this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex].ValidationErrorMessage : "")}
                                                     onValueChange={this.onValueChange}
                                                     {...columnItem}
                                                     rowIndex={rowIndex}
+                                                    disabled={isPermission}
                                                     value={rowItem[columnItem.dataSourcemember]}
                                                 />
                                                 break;
                                             case "ComboUserBox":
-                                                console.log("MultiUserComboBox", rowItem["ShipmentOrder_DeliverUserList"])
+                                                console.log("IsPermission", rowItem["IsPermission"])
                                                 let listOption = [];
                                                 let objDeliverUser = [];
-                                                //   console.log("MultiUserComboBox",rowItem[columnItem.dataSourcemember])
+                                                //  console.log("MultiUserComboBox",rowItem[columnItem.dataSourcemember])
                                                 if (rowItem[columnItem.filterrest] != -1 && rowItem[columnItem.filterrest] != 0) {
                                                     rowItem["ShipmentOrder_DeliverUserList"] && rowItem["ShipmentOrder_DeliverUserList"].map((item, index) => {
                                                         objDeliverUser.push(item.UserName)
@@ -180,6 +187,7 @@ class InputGridChageControlCom extends Component {
                                                         isselectedOp={true}
                                                         rowIndex={rowIndex}
                                                         value={objDeliverUser}
+                                                        disabled={isPermission}
                                                         filterValue={rowItem[columnItem.filterrest]}
                                                     />
                                                 }
@@ -194,6 +202,7 @@ class InputGridChageControlCom extends Component {
                                                         rowIndex={rowIndex}
                                                         listoption={listOption}
                                                         value={listOption}
+                                                        disabled={isPermission}
                                                     />
                                                 }
 
