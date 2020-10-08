@@ -9,8 +9,7 @@ class CurrentAdvanceDebtListCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            CurrentAdvanceDebtList: this.props.dataSource
-
+            CurrentAdvanceDebtList: this.props.dataSource,
         }
     }
 
@@ -20,11 +19,14 @@ class CurrentAdvanceDebtListCom extends Component {
                 CurrentAdvanceDebtList: nextProps.dataSource
             })
         }
+
     }
 
 
     render() {
         const { CurrentAdvanceDebtList } = this.state;
+        
+
         return (
             <React.Fragment>
                 <div className="col-lg-12">
