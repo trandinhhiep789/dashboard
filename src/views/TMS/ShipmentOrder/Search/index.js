@@ -121,8 +121,8 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.CoordinatorStoreID
             },
             {
-                SearchKey: "@SHIPMENTORDERSTATUSID",
-                SearchValue: MLObject.ShipmentOrderStatusID
+                SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+                SearchValue: MLObject.ShipmentOrderStatusGroupID
             },
             {
                 SearchKey: "@IsCoordinator",

@@ -196,7 +196,7 @@ const AppMenu = [
                         LinkTo: '/UserCoordinator',
                         MenuIcon: '',
                         SubMenu: []
-                     }
+                    }
                     // ,{
                     //     MenuName: 'UserGroup',
                     //     MenuTitle: 'Cấp quyền nhân viên theo kho',
@@ -315,7 +315,7 @@ const AppMenu = [
                     //     SubMenu: []
                     // },
 
-                    
+
 
                 ]
             },
@@ -349,7 +349,7 @@ const AppMenu = [
                 ]
             },
             {
-                
+
                 MenuName: 'RewardPriceTable',
                 MenuTitle: 'Đơn giá thưởng giao hàng và lắp đặt',
                 LinkTo: '/RewardPriceTable',
@@ -383,7 +383,7 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
-                   
+
                 ]
             },
         ]
@@ -539,7 +539,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            
+
             {
                 MenuName: 'InventoryRequest',
                 MenuTitle: 'Danh sách yêu cầu kiểm kê',
@@ -576,6 +576,13 @@ const AppMenu = [
         MenuName: 'UseGuide',
         MenuTitle: 'Hướng dẫn sử dụng',
         LinkTo: '/UseGuide',
+        MenuIcon: '',
+        SubMenu: []
+    },
+    {
+        MenuName: 'ShipmentOrderNew',
+        MenuTitle: 'Điều phối giao hàng',
+        LinkTo: '/ShipmentOrder',
         MenuIcon: '',
         SubMenu: []
     }

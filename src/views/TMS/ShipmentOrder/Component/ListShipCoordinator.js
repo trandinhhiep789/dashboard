@@ -47,14 +47,23 @@ class ListShipCoordinatorCom extends Component {
         objCoordinator[name] = value;
         if (name == "CarrierPartnerID") {
             objDeliverUser = [];
+            this.state.ShipmentOrder.map((row, indexRow) => {
+                if (!row.IsCoordinator && row.IsPermission == true) {
+                    row[name] = value;
+                    row["ShipmentOrder_DeliverUserList"] = [];
+                }
+            });
+        }
+        else
+        {
+            this.state.ShipmentOrder.map((row, indexRow) => {
+                if (!row.IsCoordinator && row.IsPermission == true) {
+                    row[name] = value;
+                }
+            });
         }
 
-        this.state.ShipmentOrder.map((row, indexRow) => {
-            if (!row.IsCoordinator && row.IsPermission == true) {
-                row[name] = value;
-                row["ShipmentOrder_DeliverUserList"] = [];
-            }
-        });
+     
         this.setState({
             objCoordinator: objCoordinator,
             objDeliverUser: objDeliverUser,

@@ -278,8 +278,8 @@ class InfoCoordinatorCom extends Component {
             for (let i = 0; i < value.length; i++) {
                 listMLObject.push({
                     ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
-                    UserName: value[i],
-                    FullName: selectedOption[i].label,
+                    UserName: value[i].value,
+                    FullName: value[i].label,
                     CreatedUser: this.props.AppInfo.LoginInfo.Username,
                     CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
                 });
@@ -651,6 +651,7 @@ class InfoCoordinatorCom extends Component {
                             filterValue={this.state.ShipmentOrder.CarrierPartnerID}
                             filterobj="PartnerID"
                             disabled={!this.props.IsCoordinator}
+                            isselectedOp={true}
                         />
                     }
 
