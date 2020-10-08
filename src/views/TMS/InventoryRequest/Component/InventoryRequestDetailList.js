@@ -57,22 +57,39 @@ class InventoryRequestDetailListCom extends Component {
                                             <td>{rowItem.ProductID}</td>
                                             <td>{rowItem.ProductName}</td>
                                             <td>{rowItem.RecordQuantity}</td>
-                                            <td> <ElementInputModal.ElementModalNumber
-                                                validationErrorMessage={""}
-                                                name="ActualQuantity"
-                                                type="text"
-                                                caption="số lượng"
-                                                label=''
-                                                dataSourcemember="ActualQuantity"
-                                                Colmd='12'
-                                                colspan='12'
-                                                min={0}
-                                                max={rowItem.RecordQuantity}
-                                                value={rowItem.ActualQuantity > 0 ? rowItem.ActualQuantity : ''}
-                                                indexRow={rowIndex}
-                                                disabled={disabledActualQuantity}
-                                                onValueChange={this.handleInputChange.bind(this)}
-                                            /></td>
+                                            <td>{rowItem.IsAllowDecimal == false ?
+                                                <ElementInputModal.ElementModalNumberParser
+                                                    validationErrorMessage={""}
+                                                    name="ActualQuantity"
+                                                    type="text"
+                                                    caption="số lượng"
+                                                    label=''
+                                                    dataSourcemember="ActualQuantity"
+                                                    Colmd='12'
+                                                    colspan='12'
+                                                    min={0}
+                                                    max={rowItem.RecordQuantity}
+                                                    value={rowItem.ActualQuantity > 0 ? rowItem.ActualQuantity : ''}
+                                                    indexRow={rowIndex}
+                                                    disabled={disabledActualQuantity}
+                                                    onValueChange={this.handleInputChange.bind(this)}
+                                                /> : <ElementInputModal.ElementModalNumber
+                                                    validationErrorMessage={""}
+                                                    name="ActualQuantity"
+                                                    type="text"
+                                                    caption="số lượng"
+                                                    label=''
+                                                    dataSourcemember="ActualQuantity"
+                                                    Colmd='12'
+                                                    colspan='12'
+                                                    min={0}
+                                                    max={rowItem.RecordQuantity}
+                                                    value={rowItem.ActualQuantity > 0 ? rowItem.ActualQuantity : ''}
+                                                    indexRow={rowIndex}
+                                                    disabled={disabledActualQuantity}
+                                                    onValueChange={this.handleInputChange.bind(this)}
+                                                />
+                                            }</td>
                                             <td>{rowItem.UneventQuantity}</td>
                                         </tr>
                                     )

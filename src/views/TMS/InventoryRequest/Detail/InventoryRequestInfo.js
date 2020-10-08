@@ -63,7 +63,7 @@ class InventoryRequestInfoCom extends Component {
                         <label className="col-form-label bold">Kho yêu cầu:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{InventoryRequest.RequestStoreID +" - "+ InventoryRequest.StoreName}</label>
+                        <label className="col-form-label">{InventoryRequest.RequestStoreID + " - " + InventoryRequest.StoreName}</label>
                     </div>
 
                     <div className="form-group col-md-2">
@@ -144,7 +144,7 @@ class InventoryRequestInfoCom extends Component {
                         <label className="col-form-label bold">Người tạo đơn hàng kiểm kê:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{InventoryRequest.CreatedOrderUser +" - "+InventoryRequest.CreatedOrderFullName}</label>
+                        <label className="col-form-label">{InventoryRequest.CreatedOrderUser + " - " + InventoryRequest.CreatedOrderFullName}</label>
                     </div>
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Ngày tạo đơn hàng kiểm kê:</label>
@@ -162,7 +162,7 @@ class InventoryRequestInfoCom extends Component {
                         <label className="col-form-label bold">Mã đơn hàng kiểm kê:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label"></label>
+                        <label className="col-form-label">{InventoryRequest.SaleOrderID}</label>
                     </div>
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Đã xuất kiểm kê:</label>
@@ -183,42 +183,16 @@ class InventoryRequestInfoCom extends Component {
                         <label className="col-form-label bold">Người xuất kiểm kê:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">111</label>
+                        <label className="col-form-label">{InventoryRequest.CreatedOrderUser}</label>
                     </div>
 
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Ngày xuất:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">111</label>
+                        <label className="col-form-label">{InventoryRequest.CreatedOrderDate}</label>
                     </div>
                 </div>
-
-
-                <div className="form-row">
-
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Mã phiếu xuất:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">111</label>
-                    </div>
-
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Hệ thống:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <div className="checkbox customCheckbox">
-                            <label><input type="checkbox" disabled={true} />
-                                <span className="cr"><i className="cr-icon fa fa-check"></i>
-                                </span>
-                            </label>
-                        </div>
-
-                    </div>
-
-                </div>
-
 
             </React.Fragment>
         );
