@@ -35,48 +35,52 @@ class DestroyRequestRVListCom extends Component {
                     <h4 className="title">Danh sách sản phẩm</h4>
                 </div>
                 <div className="card-body">
-
-                    <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                        <thead className="thead-light">
-                            <tr>
-                                <th className="jsgrid-header-cell">Mức duyệt</th>
-                                <th className="jsgrid-header-cell">Người duyệt</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {DestroyRequestRVList != null &&
-                                DestroyRequestRVList.map((rowItem, rowIndex) => {
-
-                                    let listOption = [];
-                                    // rowItem.UserName=rowItem.InventoryRequestType_ReviewLevelList[0].UserName
-                                    {
-                                        rowItem.DestroyRequest_ReviewLevelList && rowItem.DestroyRequest_ReviewLevelList.map((item, index) => {
-                                            listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName, FullName: item.FullName });
-                                        })
-                                    }
-
-                                    return (
-
-                                        <tr key={rowIndex}>
-                                            <td>{rowItem.ReviewLevelName}</td>
-
-                                            <td>
-                                                <ElementInputModal.ElementModalComboBox
-                                                    rowIndex={rowIndex}
-                                                    placeholder
-                                                    listoption={listOption}
-                                                    value={rowItem.UserName}
-                                                    disabled={disabledControll}
-                                                    onValueChange={this.handleInputChangeComboBox.bind(this)}
-                                                />
-                                            </td>
+                    <div class="col-lg-12 SearchForm">
+                        <div className="card">
+                            <div className="card-body">
+                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                    <thead className="thead-light">
+                                        <tr>
+                                            <th className="jsgrid-header-cell">Mức duyệt</th>
+                                            <th className="jsgrid-header-cell">Người duyệt</th>
                                         </tr>
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </table>
+                                    </thead>
+                                    <tbody>
+                                        {DestroyRequestRVList != null &&
+                                            DestroyRequestRVList.map((rowItem, rowIndex) => {
 
+                                                let listOption = [];
+                                                // rowItem.UserName=rowItem.InventoryRequestType_ReviewLevelList[0].UserName
+                                                {
+                                                    rowItem.DestroyRequest_ReviewLevelList && rowItem.DestroyRequest_ReviewLevelList.map((item, index) => {
+                                                        listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName, FullName: item.FullName });
+                                                    })
+                                                }
+
+                                                return (
+
+                                                    <tr key={rowIndex}>
+                                                        <td>{rowItem.ReviewLevelName}</td>
+
+                                                        <td>
+                                                            <ElementInputModal.ElementModalComboBox
+                                                                rowIndex={rowIndex}
+                                                                placeholder
+                                                                listoption={listOption}
+                                                                value={rowItem.UserName}
+                                                                disabled={disabledControll}
+                                                                onValueChange={this.handleInputChangeComboBox.bind(this)}
+                                                            />
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
