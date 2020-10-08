@@ -150,7 +150,7 @@ class DestroyRequestInfoCom extends Component {
                         </div>
 
                     </div>
-
+                    
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Mã đơn hàng hủy vật tư:</label>
                     </div>
