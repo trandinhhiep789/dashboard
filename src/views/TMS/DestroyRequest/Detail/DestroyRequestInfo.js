@@ -52,9 +52,17 @@ class DestroyRequestInfoCom extends Component {
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Tiêu đề:</label>
                     </div>
-                    <div className="form-group col-md-10">
+                    <div className="form-group col-md-4">
                         <label className="col-form-label">{DestroyRequest.DestroyRequestTitle}</label>
                     </div>
+
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Người yêu cầu:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">{DestroyRequest.RequestUser + " - " + DestroyRequest.FullName}</label>
+                    </div>
+
                 </div>
 
                 <div className="form-row">
@@ -75,22 +83,7 @@ class DestroyRequestInfoCom extends Component {
 
                 </div>
 
-                <div className="form-row">
 
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Người yêu cầu:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">{DestroyRequest.RequestUser + " - " + DestroyRequest.FullName}</label>
-                    </div>
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Mô tả:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">{DestroyRequest.Description}</label>
-                    </div>
-
-                </div>
 
                 <div className="form-row">
 
@@ -125,11 +118,11 @@ class DestroyRequestInfoCom extends Component {
                         <label className="col-form-label">{formatDate(DestroyRequest.reViewedDate, true)}</label>
                     </div>
 
-                  
+
                 </div>
 
                 <div className="form-row">
-                <div className="form-group col-md-2">
+                    <div className="form-group col-md-2">
                         <label className="col-form-label bold">Đã tạo đơn hàng hủy vật tư:</label>
                     </div>
                     <div className="form-group col-md-4">
@@ -157,25 +150,21 @@ class DestroyRequestInfoCom extends Component {
                         </div>
 
                     </div>
-                </div>
 
-                <div className="form-row">
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Mã đơn hàng hủy vật tư:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">{DestroyRequest.SaleOrderID}</label>
                     </div>
-                    
                 </div>
 
                 <div className="form-row">
-
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Mã phiếu xuất:</label>
+                        <label className="col-form-label bold">Mô tả:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{DestroyRequest.OutputVoucherID}</label>
+                        <label className="col-form-label">{DestroyRequest.Description}</label>
                     </div>
 
                     <div className="form-group col-md-2">
