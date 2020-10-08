@@ -52,8 +52,14 @@ class InventoryRequestInfoCom extends Component {
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Tiêu đề yêu cầu kiểm kê:</label>
                     </div>
-                    <div className="form-group col-md-10">
+                    <div className="form-group col-md-4">
                         <label className="col-form-label">{InventoryRequest.InventoryRequestTitle}</label>
+                    </div>
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Người yêu cầu:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">{InventoryRequest.RequestUser + " - " + InventoryRequest.RequestFullName}</label>
                     </div>
                 </div>
 
@@ -72,21 +78,13 @@ class InventoryRequestInfoCom extends Component {
                     <div className="form-group col-md-4">
                         <label className="col-form-label">{formatDate(InventoryRequest.RequestDate, true)}</label>
                     </div>
-
                 </div>
 
                 <div className="form-row">
-
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Người yêu cầu:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">{InventoryRequest.RequestUser + " - " + InventoryRequest.RequestFullName}</label>
-                    </div>
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Mô tả:</label>
                     </div>
-                    <div className="form-group col-md-4">
+                    <div className="form-group col-md-10">
                         <label className="col-form-label">{InventoryRequest.Description}</label>
                     </div>
 
