@@ -27,6 +27,7 @@ class DetailCom extends React.Component {
     constructor(props) {
         super(props);
         this.ChangeLoadData = this.ChangeLoadData.bind(this);
+        this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.state = {
             DataSource: {},
             ShipmentOrderType_WorkFlowList: null,
@@ -36,6 +37,23 @@ class DetailCom extends React.Component {
             IsCallAPIError: false,
             IsLoadDataComplete: false,
         }
+    }
+
+    handleCloseMessage() {
+        if (!this.state.IsCallAPIError) {
+            this.callSearchData(this.state.SearchData);
+        }
+    }
+
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+                onCloseModal={this.handleCloseMessage}
+            />
+        );
     }
 
     componentDidMount() {

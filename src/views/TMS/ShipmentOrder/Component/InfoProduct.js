@@ -86,18 +86,19 @@ class InfoProductCom extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.state.ShipmentOrder_FeeLst && this.state.ShipmentOrder_FeeLst.map((item, index) => {
-                                        return (
-                                            <tr key={index}>
-                                                <td>{item.ShipmentOrderID}</td>
-                                                <td>{item.ShipmentFeeTypeName}</td>
-                                                <td>{item.ProductID}</td>
-                                                <td>{item.ProductName}</td>
-                                                <td>{item.Fee}</td>
-                                                <td>{item.Note}</td>
-                                            </tr>
-                                        )
-                                    })
+                                    {
+                                        // this.state.ShipmentOrder_FeeLst && this.state.ShipmentOrder_FeeLst.map((item, index) => {
+                                        //     return (
+                                        //         <tr key={index}>
+                                        //             <td>{item.ShipmentOrderID}</td>
+                                        //             <td>{item.ShipmentFeeTypeName}</td>
+                                        //             <td>{item.ProductID}</td>
+                                        //             <td>{item.ProductName}</td>
+                                        //             <td>{item.Fee}</td>
+                                        //             <td>{item.Note}</td>
+                                        //         </tr>
+                                        //     )
+                                        // })
                                     }
                                 </tbody>
                             </table>
@@ -120,7 +121,6 @@ class InfoProductCom extends Component {
             <div className="card">
                 <h4 className="card-title"><strong>Thông tin hàng hóa</strong></h4>
                 <div className="card-body">
-
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Loại hàng hóa:</label>
@@ -135,6 +135,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label">{this.state.ShipmentOrder.NumberOfPackages}</label>
                         </div>
                     </div>
+
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Tổng khối lượng:</label>
@@ -149,6 +150,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label">{this.state.ShipmentOrder.Length}x{this.state.ShipmentOrder.Width}x{this.state.ShipmentOrder.Height}m</label>
                         </div>
                     </div>
+
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Xem thông tin phí dịch vụ:</label>
@@ -167,6 +169,7 @@ class InfoProductCom extends Component {
                             </label>
                         </div>
                     </div>
+
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Tổng tiền bán vật tư:</label>
@@ -182,6 +185,7 @@ class InfoProductCom extends Component {
                         </div>
 
                     </div>
+
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Thu tiền khách hàng:</label>
@@ -198,6 +202,7 @@ class InfoProductCom extends Component {
                             </label>
                         </div>
                     </div>
+
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Nộp tiền thu ngân:</label>
@@ -215,6 +220,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label" >{this.state.ShipmentOrder.OrderNote}</label>
                         </div>
                     </div>
+
                     <div className="form-row">
                         <div className="col-md-12">
                             <h3 className="title">Danh sách hàng hóa:</h3>
@@ -234,29 +240,30 @@ class InfoProductCom extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName', 'ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).map((item, index) => {
-                                        return (
-                                            <tr key={"Product" + index}>
-                                                <td>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsInstallItem} />
-                                                            <span className="cr">
-                                                                <i className="cr-icon fa fa-check"></i>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>{item.ProductID}</td>
-                                                <td>{item.ProductName}</td>
-                                                <td>{item.ProductSerial}</td>
-                                                <td>{item.PackingUnitName}</td>
-                                                <td>{formatMoney(item.Price, 0)}đ</td>
-                                                <td>{item.Quantity}</td>
-                                                <td>{item.QuantityUnitName}</td>
-                                            </tr>
-                                        )
-                                    })
+                                    {
+                                        this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName', 'ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).map((item, index) => {
+                                            return (
+                                                <tr key={"Product" + index}>
+                                                    <td>
+                                                        <div className="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsInstallItem} />
+                                                                <span className="cr">
+                                                                    <i className="cr-icon fa fa-check"></i>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                    <td>{item.ProductID}</td>
+                                                    <td>{item.ProductName}</td>
+                                                    <td>{item.ProductSerial}</td>
+                                                    <td>{item.PackingUnitName}</td>
+                                                    <td>{formatMoney(item.Price, 0)}đ</td>
+                                                    <td>{item.Quantity}</td>
+                                                    <td>{item.QuantityUnitName}</td>
+                                                </tr>
+                                            )
+                                        })
                                     }
                                 </tbody>
                             </table>
@@ -285,7 +292,7 @@ class InfoProductCom extends Component {
                                             objgroupByInstallBundleID.map((rowItem, rowIndex) => {
                                                 let obj = this.state.ShipmentOrder.ShipmentOrder_Material2List.filter(n => n.InstallProductID == [rowItem.InstallProductID]);
                                                 return (
-                                                    <React.Fragment>
+                                                    <React.Fragment key={rowIndex}>
                                                         <tr className="totalCurrency" key={"totalCurrency" + rowIndex}>
                                                             <td colSpan={8}>
                                                                 <div className="groupTotalCurrency">
@@ -293,19 +300,20 @@ class InfoProductCom extends Component {
                                                                 </div>
                                                             </td>
                                                         </tr>
-                                                        {obj.map((item, Index) => {
-                                                            if (item.ProductID != "" && item.ProductID != null) {
-                                                                return (<tr key={rowIndex + Index}>
-                                                                    <td>{item.ProductID + '-' + item.ProductName}</td>
-                                                                    <td>{item.AdvanceQuantity}</td>
-                                                                    <td>{item.FreeQuantity}</td>
-                                                                    <td>{item.SaleQuantity}</td>
-                                                                    <td>{formatMoney(item.SalePriceWithVAT, 0)}đ</td>
-                                                                    <td>{formatMoney(this.Pricevat(item.SaleQuantity, item.SalePriceWithVAT), 0)}đ</td>
-                                                                </tr>)
+                                                        {
+                                                            obj.map((item, Index) => {
+                                                                if (item.ProductID != "" && item.ProductID != null) {
+                                                                    return (<tr key={rowIndex + Index}>
+                                                                        <td>{item.ProductID + '-' + item.ProductName}</td>
+                                                                        <td>{item.AdvanceQuantity}</td>
+                                                                        <td>{item.FreeQuantity}</td>
+                                                                        <td>{item.SaleQuantity}</td>
+                                                                        <td>{formatMoney(item.SalePriceWithVAT, 0)}đ</td>
+                                                                        <td>{formatMoney(this.Pricevat(item.SaleQuantity, item.SalePriceWithVAT), 0)}đ</td>
+                                                                    </tr>)
 
-                                                            }
-                                                        })
+                                                                }
+                                                            })
                                                         }
                                                     </React.Fragment>
                                                 );
@@ -327,6 +335,7 @@ class InfoProductCom extends Component {
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
 
