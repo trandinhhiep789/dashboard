@@ -116,9 +116,6 @@ class InfoProductCom extends Component {
         if (this.state.ShipmentOrder.ShipmentOrder_Material2List != undefined && this.state.ShipmentOrder.ShipmentOrder_Material2List.length > 0) {
             objgroupByInstallBundleID = this.groupByNew(this.state.ShipmentOrder.ShipmentOrder_Material2List, ['InstallProductID', 'InstallProductName']);
         }
-        console.log("objgroupByInstallBundleID", objgroupByInstallBundleID);
-        console.log("\ShipmentOrder_Material2List", this.state.ShipmentOrder.ShipmentOrder_Material2List);
-
         return (
             <div className="card">
                 <h4 className="card-title"><strong>Thông tin hàng hóa</strong></h4>
@@ -226,8 +223,8 @@ class InfoProductCom extends Component {
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                 <thead className="thead-light">
                                     <tr>
-                                        <th className="jsgrid-header-cell" style={{ width: "8%" }}>Cần lắp đặt</th>
-                                        <th className="jsgrid-header-cell" style={{ width: "12%" }}>Mã sản phẩm</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "6%" }}>Cần lắp đặt</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
                                         <th className="jsgrid-header-cell" style={{ width: "25%" }}>Sản phẩm</th>
                                         <th className="jsgrid-header-cell" style={{ width: "12%" }}>Serial/IMEI</th>
                                         <th className="jsgrid-header-cell" style={{ width: "8%" }}>Kiện</th>
@@ -239,7 +236,7 @@ class InfoProductCom extends Component {
                                 <tbody>
                                     {this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName', 'ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).map((item, index) => {
                                         return (
-                                            <tr key={index}>
+                                            <tr key={"Product" + index}>
                                                 <td>
                                                     <div className="checkbox">
                                                         <label>
@@ -297,8 +294,8 @@ class InfoProductCom extends Component {
                                                             </td>
                                                         </tr>
                                                         {obj.map((item, Index) => {
-                                                              if (item.ProductID != "" && item.ProductID != null) {
-                                                                return (<tr key={index}>
+                                                            if (item.ProductID != "" && item.ProductID != null) {
+                                                                return (<tr key={rowIndex + Index}>
                                                                     <td>{item.ProductID + '-' + item.ProductName}</td>
                                                                     <td>{item.AdvanceQuantity}</td>
                                                                     <td>{item.FreeQuantity}</td>
@@ -306,7 +303,7 @@ class InfoProductCom extends Component {
                                                                     <td>{formatMoney(item.SalePriceWithVAT, 0)}đ</td>
                                                                     <td>{formatMoney(this.Pricevat(item.SaleQuantity, item.SalePriceWithVAT), 0)}đ</td>
                                                                 </tr>)
-                
+
                                                             }
                                                         })
                                                         }
