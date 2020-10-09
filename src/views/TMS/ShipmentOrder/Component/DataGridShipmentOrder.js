@@ -767,9 +767,9 @@ class DataGridShipmentOderCom extends Component {
         }
         return (
             <div className={classCustom}>
-                <div className="card">
+                <div className="card cardShipmentOrder">
                     <div className="card-title">
-                        {(this.props.title != undefined || this.props.title != '') ? <h4 className="title">{this.props.title}</h4> : ''}
+                        {(this.props.title != undefined || this.props.title != '') && <h4 className="title">{this.props.title}</h4>}
 
                         {hasHeaderToolbar &&
                             <div className="flexbox mb-10 ">
@@ -777,7 +777,7 @@ class DataGridShipmentOderCom extends Component {
                                 <div className="btn-toolbar">
                                     <div className="btn-group btn-group-sm">
                                         <button type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                            <span className="fa fa-plus ff"> Gán nhân viên giao hàng </span>
+                                            <i className="fa fa-plus ff"></i> Gán nhân viên giao hàng
                                         </button>
                                         {(this.props.IsAdd == true || this.props.IsAdd == undefined) ?
                                             (!this.props.IsCustomAddLink == true ?

@@ -1,4 +1,17 @@
 .card {
+    &.cardShipmentOrder{
+        clear: both;
+        .card-title {
+            padding-top: 0;
+            padding-bottom: 0;
+            .flexbox {
+                justify-content: flex-start;
+                .btn-toolbar {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
     &.modalForm {
         margin-bottom: 0;
 
