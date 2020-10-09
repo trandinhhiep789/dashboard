@@ -6,6 +6,7 @@ import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_IMAGE_SLIDE } from '../../../../co
 import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { ModalManager } from 'react-dynamic-modal';
 import MapContainer from './MapContainer ';
+import ReactTooltip from 'react-tooltip';
 
 const containerStyle = {
     position: 'absolute',
@@ -43,8 +44,7 @@ class InfoHistoryWFCom extends Component {
         });
     }
 
-    handleShowGeoLocation(e)
-    {
+    handleShowGeoLocation(e) {
         const objIme = e.currentTarget.dataset.id;
         ModalManager.open(
             <ModelContainer
@@ -64,7 +64,7 @@ class InfoHistoryWFCom extends Component {
             </ModelContainer>
         )
     }
-    
+
     render() {
         var a = this.state.ShipmentOrderType_WF.sort((a, b) => new Date(a.ProcessDate) - new Date(b.ProcessDate));
         return (
@@ -104,8 +104,18 @@ class InfoHistoryWFCom extends Component {
                                                 </ul>
                                             </td>
                                             <td>
-                                                {(item.ProcessGeoLocation != "" && item.ProcessGeoLocation != null) ?
-                                                (<button className="btn btn-icon-modal" data-id={item.ProcessGeoLocation} onClick={this.handleShowGeoLocation.bind(this)}><i className="fa fa-map-marker"></i></button>) : ""}
+                                                {
+                                                    (item.ProcessGeoLocation != "" && item.ProcessGeoLocation != null) ?
+                                                        (
+                                                            <React.Fragment>
+                                                                <button data-tip data-for={item.ProcessGeoLocation} className="btn btn-icon-modal" data-id={item.ProcessGeoLocation} onClick={this.handleShowGeoLocation.bind(this)}><i className="fa fa-map-marker"></i></button>
+                                                                <ReactTooltip id={item.ProcessGeoLocation} type='warning'>
+                                                                    <span>{item.ProcessGeoLocation}</span>
+                                                                </ReactTooltip>
+                                                            </React.Fragment>
+                                                        )
+                                                        : ""
+                                                }
                                             </td>
                                             <td>{item.Note}</td>
                                         </tr>)

@@ -112,6 +112,7 @@ class DetailCom extends React.Component {
                         TotalMoney={this.state.DataSource.CollectedTotalMoney + this.state.DataSource.TotalCOD}
                         IsCancelDelivery={this.state.IsCancelDelivery}
                     />
+                    
                     <ShipmentOrderDetail
                         ShipmentOrderID={this.props.match.params.id}
                         ShipmentOrderDetail={this.state.DataSource}
