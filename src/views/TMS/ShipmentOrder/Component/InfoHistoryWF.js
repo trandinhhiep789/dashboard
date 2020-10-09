@@ -79,7 +79,7 @@ class InfoHistoryWFCom extends Component {
                                     <th className="jsgrid-header-cell" style={{ width: 250 }} >Bước xử lý</th>
                                     <th className="jsgrid-header-cell" style={{ width: 150 }} >Nhân viên</th>
                                     <th className="jsgrid-header-cell" style={{ width: 150 }} >Hình ảnh</th>
-                                    <th className="jsgrid-header-cell" style={{ width: 50 }} >Tọa độ GPS</th>
+                                    <th className="jsgrid-header-cell" style={{ width: 70 }} >Tọa độ GPS</th>
                                     <th className="jsgrid-header-cell" style={{ width: 250 }} >Ghi chú</th>
                                 </tr>
                             </thead>

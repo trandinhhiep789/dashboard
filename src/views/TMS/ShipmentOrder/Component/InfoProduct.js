@@ -231,12 +231,12 @@ class InfoProductCom extends Component {
                                     <tr>
                                         <th className="jsgrid-header-cell" style={{ width: "6%" }}>Cần lắp đặt</th>
                                         <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
-                                        <th className="jsgrid-header-cell" style={{ width: "25%" }}>Sản phẩm</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "36%" }}>Sản phẩm</th>
                                         <th className="jsgrid-header-cell" style={{ width: "12%" }}>Serial/IMEI</th>
                                         <th className="jsgrid-header-cell" style={{ width: "8%" }}>Kiện</th>
                                         <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
                                         <th className="jsgrid-header-cell" style={{ width: "8%" }}>Số lượng</th>
-                                        <th className="jsgrid-header-cell" style={{ width: "15%" }}>Đơn vị tính</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "12%" }}>Đơn vị tính</th>
                                     </tr>
                                 </thead>
                                 <tbody>
