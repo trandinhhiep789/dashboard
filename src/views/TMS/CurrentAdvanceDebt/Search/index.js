@@ -74,7 +74,7 @@ class SearchCom extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, MLObject.UserName.value).then(apiResult => {//MLObject.UserName.value
-
+            // console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -82,7 +82,6 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
