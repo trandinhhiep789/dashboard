@@ -103,12 +103,12 @@ class InfoHistoryWFCom extends Component {
 
                                                 </ul>
                                             </td>
-                                            <td>
+                                            <td className="text-center">
                                                 {
                                                     (item.ProcessGeoLocation != "" && item.ProcessGeoLocation != null) ?
                                                         (
                                                             <React.Fragment>
-                                                                <button data-tip data-for={item.ProcessGeoLocation} className="btn btn-icon-modal" data-id={item.ProcessGeoLocation} onClick={this.handleShowGeoLocation.bind(this)}><i className="fa fa-map-marker"></i></button>
+                                                                <button data-tip data-for={item.ProcessGeoLocation} className="btn btn-icon-modal icon-maps" data-id={item.ProcessGeoLocation} onClick={this.handleShowGeoLocation.bind(this)}><i className="fa fa-map-marker"></i></button>
                                                                 <ReactTooltip id={item.ProcessGeoLocation} type='warning'>
                                                                     <span>{item.ProcessGeoLocation}</span>
                                                                 </ReactTooltip>

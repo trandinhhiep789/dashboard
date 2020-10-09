@@ -121,6 +121,12 @@ button {
         width: 25px;
         height: 25px;
         border: none;
+        &.icon-maps{
+            background: transparent;
+            &:hover {
+                color: #007bff;
+            }
+        }
     }
 }
 
