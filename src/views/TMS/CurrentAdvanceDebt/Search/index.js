@@ -32,12 +32,15 @@ class SearchCom extends React.Component {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+        this.handleGetDatat = this.handleGetDatat.bind(this);
+
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
             IsCallAPIError: false,
             IsLoadDataComplete: false,
-            widthPercent: ""
+            widthPercent: "",
+            userName: ''
 
         };
         this.gridref = React.createRef();
@@ -47,9 +50,14 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-
         this.updateWindowDimensions();
         window.addEventListener("resize", this.updateWindowDimensions);
+
+        this.setState({
+            userName: this.props.AppInfo.LoginInfo.Username
+        })
+        const LoginInfo = JSON.parse(localStorage.getItem('LoginInfo'));
+        this.handleGetDatat(LoginInfo.LoginUserInfo.UserName)
     }
 
     componentWillUnmount() {
@@ -70,6 +78,25 @@ class SearchCom extends React.Component {
                 onRequestClose={() => true}
             />
         );
+    }
+
+    handleGetDatat(id) {
+        console.log('id', id)
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, id).then(apiResult => {//MLObject.UserName.value
+            console.log("apiResult", apiResult)
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.setState({
+                    gridDataSource: apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError,
+                });
+            }
+        });
     }
 
     handleSearchSubmit(formData, MLObject) {
