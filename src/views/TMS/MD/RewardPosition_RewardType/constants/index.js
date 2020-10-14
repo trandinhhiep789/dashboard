@@ -40,7 +40,7 @@ export const ModalColumnList_Insert = [
         readonly: false,
         validatonList: ["Comborequired"],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREA",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREATT",
         ValueMember: "AreaID",
         NameMember: "AreaName"
     },
@@ -192,7 +192,7 @@ export const ModalColumnList_Edit = [
         disabled: true,
         validatonList: ["Comborequired"],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREA",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREATT",
         ValueMember: "AreaID",
         NameMember: "AreaName"
     },
