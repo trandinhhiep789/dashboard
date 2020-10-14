@@ -87,6 +87,7 @@ import RewardType from "../TMS/MD/RewardType";
 import RewardPriceType from "../TMS/MD/RewardPriceType";
 import RewardPosition from "../TMS/MD/RewardPosition";
 import ShipmentOrderStatusGroup from "../TMS/MD/ShipmentOrderStatusGroup";
+import RewardPosition_User from "../TMS/MD/RewardPosition_User";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -255,6 +256,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/RewardType" component={RewardType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/RewardPriceType" component={RewardPriceType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/RewardPosition" component={RewardPosition} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/RewardPosition_User" component={RewardPosition_User} isLoggedIn={isLoggedIn} />
                                 
 
 

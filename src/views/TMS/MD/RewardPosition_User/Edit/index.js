@@ -12,7 +12,7 @@ import {
     APIHostName,
     PagePath,
     AddAPIPath,
-    GetAllSkillByUserNameAPIPath
+    GetAllByUserNameAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -20,14 +20,14 @@ import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../..
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { ERPUSERCACHE_FUNCTION } from "../../../../../constants/keyCache";
-import { USERSKILL_VIEW, USERSKILL_UPDATE, GET_CACHE_USER_FUNCTION_LIST } from "../../../../../constants/functionLists";
+import { USERSKILL_VIEW, USERSKILL_UPDATE, GET_CACHE_USER_FUNCTION_LIST, USER_REWARDPOSITION_VIEW, USER_REWARDPOSITION_UPDATE } from "../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.getDataCombobox = this.getDataCombobox.bind(this);
-        this.onClickUserSkill = this.onClickUserSkill.bind(this);
+        this.onClickUser_RewardPosition = this.onClickUser_RewardPosition.bind(this);
         this.checkAddPermission = this.checkAddPermission.bind(this);
         this.state = {
             Username: "",
@@ -35,7 +35,7 @@ class EditCom extends React.Component {
             PositionName: "",
             Address: "",
             DataSource: [],
-            DataSourceUserSkill: [],
+            DataSourceUser_RewardPosition: [],
         };
 
         this.notificationDOMRef = React.createRef();
@@ -49,12 +49,12 @@ class EditCom extends React.Component {
     checkAddPermission() {
         this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (result && !result.IsError && result.ResultObject) {
-                let _view = result.ResultObject.CacheData.filter(x => x.FunctionID == USERSKILL_VIEW);
+                let _view = result.ResultObject.CacheData.filter(x => x.FunctionID == USER_REWARDPOSITION_VIEW);
                 if (_view && _view.length > 0) {
                     this.setState({ IsAllowView: true });
                 }
 
-                let _update = result.ResultObject.CacheData.filter(x => x.FunctionID == USERSKILL_UPDATE);
+                let _update = result.ResultObject.CacheData.filter(x => x.FunctionID == USER_REWARDPOSITION_UPDATE);
                 if (_update && _update.length > 0) {
                     this.setState({ IsAllowUpdate: true });
                 }
@@ -117,17 +117,18 @@ class EditCom extends React.Component {
 
 
     callLoadData(postData) {
-        this.props.callFetchAPI(APIHostName, GetAllSkillByUserNameAPIPath, postData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, GetAllByUserNameAPIPath, postData).then(apiResult => {
+            console.log("apiResult", apiResult);
             if (!apiResult.IsError) {
                 let id = "";
                 let uniqueArray = apiResult.ResultObject;
                 uniqueArray = uniqueArray.filter(function (item, index) {
                     if (index == 0) {
-                        id = item.SkillID;
+                        id = item.RewardPositionID;
                         return item;
                     }
-                    if (index > 0 && item.SkillID != id) {
-                        id = item.SkillID;
+                    if (index > 0 && item.RewardPositionID != id) {
+                        id = item.RewardPositionID;
                         return item;
 
                     }
@@ -135,7 +136,7 @@ class EditCom extends React.Component {
                 })
                 this.setState({
                     DataSource: apiResult.ResultObject,
-                    DataSourceUserSkill: uniqueArray
+                    DataSourceUser_RewardPosition: uniqueArray
                 });
                 //console.log("uniqueArray", apiResult.ResultObject);
             }
@@ -179,37 +180,37 @@ class EditCom extends React.Component {
         let inputvalue = e.target.value;
         let name = e.target.name.split("-")[0];
         let index = e.target.name.split("-")[1];
-        let { DataSourceUserSkill } = this.state;
+        let { DataSourceUser_RewardPosition } = this.state;
 
         if (e.target.type.toString().indexOf("select") !== -1) {
-            DataSourceUserSkill[index].UserSkillRankID = inputvalue;
+            DataSourceUser_RewardPosition[index].User_RewardPositionRankID = inputvalue;
         } else if (e.target.type == 'checkbox') {
             let ischecked = e.target.checked;
             if (name == "chkAdd") {
-                DataSourceUserSkill[index].IsSelected = ischecked;
+                DataSourceUser_RewardPosition[index].IsSelected = ischecked;
             } else if (name == "chkIsActived") {
-                DataSourceUserSkill[index].IsActived = ischecked;
+                DataSourceUser_RewardPosition[index].IsActived = ischecked;
             } else if (name == "chkIsSystem") {
-                DataSourceUserSkill[index].IsSystem = ischecked;
+                DataSourceUser_RewardPosition[index].IsSystem = ischecked;
             }
         } else if (e.target.type == 'text') {
-            DataSourceUserSkill[index].Note = inputvalue;
+            DataSourceUser_RewardPosition[index].Note = inputvalue;
         }
 
-        //console.log("DataSourceUserSkill", DataSourceUserSkill);
-        this.setState({ DataSourceUserSkill: DataSourceUserSkill });
+        console.log("DataSourceUser_RewardPosition", DataSourceUser_RewardPosition);
+        this.setState({ DataSourceUser_RewardPosition: DataSourceUser_RewardPosition });
     }
 
-    onClickUserSkill() {
+    onClickUser_RewardPosition() {
         if (this.state.IsAllowUpdate) {
-            let data = this.state.DataSourceUserSkill;
+            let data = this.state.DataSourceUser_RewardPosition;
             data[0].CreatedUser = this.props.AppInfo.LoginInfo.Username;
             data[0].LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
             this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
                 this.addNotification(apiResult.Message, apiResult.IsError);
             });
         } else {
-            this.showMessage("Bạn không có quyền cập nhật");
+            this.addNotification("Bạn không có quyền cập nhật", true);
         }
 
     }
@@ -233,7 +234,7 @@ class EditCom extends React.Component {
                     <div className="col-lg-12 page-detail">
                         <div className="card">
                             <div className="card-title">
-                                <h4 className="title">Kỹ năng của một nhân viên</h4>
+                                <h4 className="title">Vị trí thưởng của một nhân viên</h4>
                             </div>
                             <div className="card-body">
                                 <div className="row">
@@ -280,31 +281,32 @@ class EditCom extends React.Component {
 
                                 <div className="row">
                                     <div className="col-md-12">
-                                        <h3 className="title">Danh sách kỹ năng</h3>
+                                        <h3 className="title">Danh sách vị trí thưởng</h3>
                                     </div>
                                     <div className="col-md-12">
                                         <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                             <thead className="thead-light">
                                                 <tr>
                                                     <th className="jsgrid-header-cell" style={{ width: "10%" }}>Chọn</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "15%" }}>Mã kỹ năng</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "15%" }}>Tên kỹ năng</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "15%" }}>Cấp bậc kỹ năng</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "25%" }}>Ghi chú</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "10%" }}>Kích hoạt</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "15%" }}>Mã vị trí thưởng</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "15%" }}>Tên vị trí thưởng</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "15%" }}>Loại nhân viên</th>
+                                                    {/* <th className="jsgrid-header-cell" style={{ width: "15%" }}>Cấp bậc kỹ năng</th> */}
+                                                    {/* <th className="jsgrid-header-cell" style={{ width: "25%" }}>Mô tả</th> */}
+                                                    {/* <th className="jsgrid-header-cell" style={{ width: "10%" }}>Kích hoạt</th> */}
                                                     <th className="jsgrid-header-cell" style={{ width: "10%" }}>Hệ thống</th>
 
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {this.state.DataSourceUserSkill && this.state.DataSourceUserSkill.map((item, index) => {
+                                                {this.state.DataSourceUser_RewardPosition && this.state.DataSourceUser_RewardPosition.map((item, index) => {
                                                     return (
                                                         <tr key={index}>
                                                             <td>
                                                                 <div className="checkbox">
                                                                     <label>
                                                                         <input type="checkbox" className="form-control form-control-sm"
-                                                                            onChange={this.handleInputChange} value={item.SkillID}
+                                                                            onChange={this.handleInputChange} value={item.RewardPositionID}
                                                                             name={`chkAdd-${index}`}
                                                                             checked={item.IsSelected} />
                                                                         <span className="cr">
@@ -313,18 +315,19 @@ class EditCom extends React.Component {
                                                                     </label>
                                                                 </div>
                                                             </td>
-                                                            <td>{item.SkillID}</td>
-                                                            <td>{item.SkillName}</td>
-                                                            <td>
-                                                                <select className="form-control form-control-sm" name={`txtSkillRank-${index}`} onChange={this.handleInputChange} value={item.UserSkillRankID}>
+                                                            <td>{item.RewardPositionID}</td>
+                                                            <td>{item.RewardPositionName}</td>
+                                                            <td>{item.StaffTypeName}</td>
+                                                            {/* <td>
+                                                                <select className="form-control form-control-sm" name={`txtSkillRank-${index}`} onChange={this.handleInputChange} value={item.User_RewardPositionRankID}>
                                                                     <option value="-1" key={0}>--Vui lòng chọn--</option>
                                                                     {this.getDataCombobox(item.SkillID)}
                                                                 </select>
-                                                            </td>
-                                                            <td>
+                                                            </td> */}
+                                                            {/* <td>
                                                                 <input type="text" name={`txtNote-${index}`} className="form-control form-control-sm" placeholder="" onChange={this.handleInputChange} value={item.Note} />
-                                                            </td>
-                                                            <td>
+                                                            </td> */}
+                                                            {/* <td>
                                                                 <div className="checkbox">
                                                                     <label>
                                                                         <input type="checkbox" className="form-control form-control-sm"
@@ -338,7 +341,7 @@ class EditCom extends React.Component {
                                                                 </div>
 
 
-                                                            </td>
+                                                            </td> */}
                                                             <td>
                                                                 <div className="checkbox">
                                                                     <label>
@@ -362,7 +365,7 @@ class EditCom extends React.Component {
                                         </table>
                                         <div className="text-right">
                                             {
-                                                this.state.Username != "" ? <button type="button" className="btn btn-info" onClick={this.onClickUserSkill} data-provide="tooltip" data-original-title="Thêm">
+                                                this.state.Username != "" ? <button type="button" className="btn btn-info" onClick={this.onClickUser_RewardPosition} data-provide="tooltip" data-original-title="Thêm">
                                                     <span className="fa fa-plus ff">Cập nhật</span>
                                                 </button> : ""
                                             }
@@ -382,7 +385,7 @@ class EditCom extends React.Component {
 
         } else {
             return (
-                <div>
+                <div className="col-md-12 message-detail">
                     <label>Bạn không có quyền</label>
                 </div>
             );

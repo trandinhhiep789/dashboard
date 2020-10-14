@@ -230,14 +230,10 @@ class RewardPosition_RewardTypeCom extends React.Component {
 
 
     handleDelete(deleteList, pkColumnName) {
-        if(!this.state.IsAllowedDelete){
-            this.showMessage("Bạn không có quyền");
-            return;
-        }
-        if (!this.state.IsAllowedDelete) {
-            this.showMessage("Bạn không có quyền");
-            return;
-        }
+        // if(!this.state.IsAllowedDelete){
+        //     this.showMessage("Bạn không có quyền");
+        //     return;
+        // }
         let listMLObject = [];
         let _RewardPosition_RewardType_DataSource = this.state.RewardPosition_RewardType_DataSource;
         deleteList.map((row, index) => {

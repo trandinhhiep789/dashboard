@@ -75,6 +75,22 @@ export const AddElementList = [
         validatonList: ["required"],
     },
     {
+        type: "select",
+        name: "StaffType",
+        label: "loại nhân viên",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [{ value: -1, label: "------ Vui lòng chọn ------" }, { value: 1, label: "Nhân viên giao hàng" }, { value: 2, label: "Tài xế" }, { value: 3, label: "Nhân viên được cấp quyền điều phối" }, { value: 4, label: "Loại khác" }],
+        DataSourceMember: "StaffType",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: false,
+        // LoadItemCacheKeyID: "ERPCOMMONCACHE.INSTALLBUNDLE",
+        // ValueMember: "InstallBundleID",
+        // NameMember: "InstallBundleName"
+    },
+    {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả",
@@ -153,6 +169,22 @@ export const EditElementList = [
         validatonList: ["required"],
     },
     {
+        type: "select",
+        name: "StaffType",
+        label: "loại nhân viên",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [{ value: -1, label: "------ Vui lòng chọn ------" }, { value: 1, label: "Nhân viên giao hàng" }, { value: 2, label: "Tài xế" }, { value: 3, label: "Nhân viên được cấp quyền điều phối" }, { value: 4, label: "Loại khác" }],
+        DataSourceMember: "StaffType",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: false,
+        // LoadItemCacheKeyID: "ERPCOMMONCACHE.INSTALLBUNDLE",
+        // ValueMember: "InstallBundleID",
+        // NameMember: "InstallBundleName"
+    },
+    {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả:",
@@ -227,6 +259,18 @@ export const MLObjectDefinition = [
         DataSourceMember: "RewardPositionName"
     },
     {
+        Name: "StaffType",
+        DefaultValue: "",
+        BindControlName: "StaffType",
+        DataSourceMember: "StaffType"
+    },
+    {
+        Name: "StaffTypeName",
+        DefaultValue: "",
+        BindControlName: "",
+        DataSourceMember: "StaffTypeName"
+    },
+    {
         Name: "Description",
         DefaultValue: "",
         BindControlName: "txtDescription",
@@ -283,7 +327,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Mã Vị trí thưởng",
         DataSourceMember: "RewardPositionID",
-        Width: 200
+        Width: 160
     },
     {
         Name: "RewardPositionName",
@@ -291,6 +335,13 @@ export const DataGridColumnList = [
         Link: "/RewardPosition/Detail/",
         Caption: "Tên Vị trí thưởng",
         DataSourceMember: "RewardPositionName",
+        Width: 250
+    },
+    {
+        Name: "StaffTypeName",
+        Type: "text",
+        Caption: "Loại nhân viên",
+        DataSourceMember: "StaffTypeName",
         Width: 250
     },
     {

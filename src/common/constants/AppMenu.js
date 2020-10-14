@@ -383,6 +383,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'RewardPosition_User',
+                        MenuTitle: 'Vị trí thưởng của 1 nhân viên',
+                        LinkTo: '/RewardPosition_User',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
 
                 ]
             },
