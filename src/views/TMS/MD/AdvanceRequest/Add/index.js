@@ -65,7 +65,7 @@ class AddCom extends React.Component {
         );
     }
     handleSubmit(formData, MLObject) {
-        MLObject.IsAdvanceByShipmentOrder=this.state.AdvanceRequestDetailList.IsAdvanceByShipmentOrder;
+        MLObject.IsAdvanceByShipmentOrder = this.state.AdvanceRequestDetailList.IsAdvanceByShipmentOrder;
         MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList.MaterialList
         var msgTotal = MLObject.AdvanceRequestDetailList.reduce(function (prev, cur) {
             return prev + cur.Quantity;
@@ -199,6 +199,9 @@ class AddCom extends React.Component {
     }
 
     render() {
+
+        console.log("ShipmentOrderNewList", this.state.gridDataSource.ShipmentOrderNewList)
+        
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -299,7 +302,7 @@ class AddCom extends React.Component {
                                     classNameCustom="customCheckbox"
                                 />
                             </div>
-                            {(this.state.gridDataSource.ShipmentOrderNewList != undefined && this.state.gridDataSource.IsAdvanceByShipmentOrder ==true)?
+                            {(this.state.gridDataSource.ShipmentOrderNewList != undefined && this.state.gridDataSource.IsAdvanceByShipmentOrder == true) ?
                                 <React.Fragment>
                                     <div className="col-lg-12 page-detail">
                                         <div className="card">
