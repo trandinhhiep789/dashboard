@@ -319,7 +319,6 @@ class AddCom extends React.Component {
                                                     <div className="col-md-12">
                                                         <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                                             <thead className="thead-light">
-
                                                                 <tr>
                                                                     <th className="jsgrid-header-cell" style={{ width: "10%" }}>Chọn</th>
                                                                     <th className="jsgrid-header-cell" style={{ width: "80%" }}>Mã vận đơn cần tạm ứng</th>
@@ -354,7 +353,6 @@ class AddCom extends React.Component {
                                             </div>
                                         </div>
                                     </div>
-
                                 </React.Fragment>
                                 : <div></div>}
                             {
