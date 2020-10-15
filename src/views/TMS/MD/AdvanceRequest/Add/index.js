@@ -209,6 +209,9 @@ class AddCom extends React.Component {
     }
 
     render() {
+
+        console.log("ShipmentOrderNewList", this.state.gridDataSource.ShipmentOrderNewList)
+        
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -322,11 +325,11 @@ class AddCom extends React.Component {
                                                                 <tr>
                                                                     <th className="jsgrid-header-cell" style={{ width: "10%" }}>Chọn</th>
                                                                     <th className="jsgrid-header-cell" style={{ width: "80%" }}>Mã vận đơn cần tạm ứng</th>
+                                                                    <th className="jsgrid-header-cell" style={{ width: "80%" }}>Mã sp</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 {this.state.gridDataSource.ShipmentOrderNewList.map((item, index) => {
-                                                                    debugger;
                                                                     return (
                                                                         <tr key={index}>
                                                                             <td className="btngroupleft">
@@ -342,6 +345,7 @@ class AddCom extends React.Component {
                                                                                 </div>
                                                                             </td>
                                                                             <td>{item.ShipmentOrderID}</td>
+                                                                            <td>{item.InstallProductID}</td>
                                                                         </tr>
                                                                     )
                                                                 })

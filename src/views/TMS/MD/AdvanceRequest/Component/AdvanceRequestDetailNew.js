@@ -29,16 +29,16 @@ class AdvanceRequestDetailNewCom extends Component {
         e.preventDefault();
         let ProductID = e.target.value;
         let MaterialGroupID = e.target.id;
-        let ProductName = e.target[e.target.selectedIndex].getAttribute('data-ProductName');
-        let QuantityUnitID = e.target[e.target.selectedIndex].getAttribute('data-QuantityUnitID');
-        let QuantityUnit = e.target[e.target.selectedIndex].getAttribute('data-QuantityUnit');
-        let CostPrice = e.target[e.target.selectedIndex].getAttribute('data-CostPrice');
-        let AdvanceProductID = e.target[e.target.selectedIndex].getAttribute('data-AdvanceProductID');
+        let ProductName = e.target[e.target.selectedIndex].getAttribute('data-productname');
+        let QuantityUnitID = e.target[e.target.selectedIndex].getAttribute('data-quantityunitid');
+        let QuantityUnit = e.target[e.target.selectedIndex].getAttribute('data-quantityunit');
+        let CostPrice = e.target[e.target.selectedIndex].getAttribute('data-costprice');
+        let AdvanceProductID = e.target[e.target.selectedIndex].getAttribute('data-advanceproductid');
         let AdvanceProductName = e.target[e.target.selectedIndex].getAttribute('data-AdvanceProductName');
-        let AdvanceQuantityUnitID = e.target[e.target.selectedIndex].getAttribute('data-AdvanceQuantityUnitID');
-        let AdvanceQuantityUnitName = e.target[e.target.selectedIndex].getAttribute('data-AdvanceQuantityUnitName');
-        let AdvanceConvertRatio = e.target[e.target.selectedIndex].getAttribute('data-AdvanceConvertRatio');
-        let VAT = e.target[e.target.selectedIndex].getAttribute('data-VAT');
+        let AdvanceQuantityUnitID = e.target[e.target.selectedIndex].getAttribute('data-advancequantityunitid');
+        let AdvanceQuantityUnitName = e.target[e.target.selectedIndex].getAttribute('data-advancequantityunitname');
+        let AdvanceConvertRatio = e.target[e.target.selectedIndex].getAttribute('data-advanceconvertratio');
+        let VAT = e.target[e.target.selectedIndex].getAttribute('data-vat');
         console.log(MaterialGroupID, CostPrice)
         let { AdvanceRequestDetail } = this.state
         const objAdvanceRequestDetail = AdvanceRequestDetail.MaterialList.find(n => n['MaterialGroupID'] == MaterialGroupID)
@@ -68,17 +68,17 @@ class AdvanceRequestDetailNewCom extends Component {
         e.preventDefault();
         let ProductID = e.target.value;
         let MaterialGroupID = e.target.id;
-        let InstallProductID = e.target[e.target.selectedIndex].getAttribute('data-InstallProductID');
-        let ProductName = e.target[e.target.selectedIndex].getAttribute('data-ProductName');
-        let QuantityUnitID = e.target[e.target.selectedIndex].getAttribute('data-QuantityUnitID');
-        let QuantityUnit = e.target[e.target.selectedIndex].getAttribute('data-QuantityUnit');
-        let CostPrice = e.target[e.target.selectedIndex].getAttribute('data-CostPrice');
-        let AdvanceProductID = e.target[e.target.selectedIndex].getAttribute('data-AdvanceProductID');
+        let InstallProductID = e.target[e.target.selectedIndex].getAttribute('data-installproductid');
+        let ProductName = e.target[e.target.selectedIndex].getAttribute('data-productname');
+        let QuantityUnitID = e.target[e.target.selectedIndex].getAttribute('data-quantityunitid');
+        let QuantityUnit = e.target[e.target.selectedIndex].getAttribute('data-quantityunit');
+        let CostPrice = e.target[e.target.selectedIndex].getAttribute('data-costprice');
+        let AdvanceProductID = e.target[e.target.selectedIndex].getAttribute('data-advanceproductid');
         let AdvanceProductName = e.target[e.target.selectedIndex].getAttribute('data-AdvanceProductName');
-        let AdvanceQuantityUnitID = e.target[e.target.selectedIndex].getAttribute('data-AdvanceQuantityUnitID');
-        let AdvanceQuantityUnitName = e.target[e.target.selectedIndex].getAttribute('data-AdvanceQuantityUnitName');
-        let AdvanceConvertRatio = e.target[e.target.selectedIndex].getAttribute('data-AdvanceConvertRatio');
-        let VAT = e.target[e.target.selectedIndex].getAttribute('data-VAT');
+        let AdvanceQuantityUnitID = e.target[e.target.selectedIndex].getAttribute('data-advancequantityunitid');
+        let AdvanceQuantityUnitName = e.target[e.target.selectedIndex].getAttribute('data-advancequantityunitname');
+        let AdvanceConvertRatio = e.target[e.target.selectedIndex].getAttribute('data-advanceconvertratio');
+        let VAT = e.target[e.target.selectedIndex].getAttribute('data-vat');
         console.log(MaterialGroupID, CostPrice)
         let { AdvanceRequestDetail } = this.state
         const objAdvanceRequestDetail = AdvanceRequestDetail.MaterialList.find(n => n['MaterialGroupID'] == MaterialGroupID && n['InstallProductID'] == InstallProductID)
@@ -116,7 +116,7 @@ class AdvanceRequestDetailNewCom extends Component {
     handleInputChangeNew(e) {
         e.preventDefault();
         let value = e.target.value;
-        let MaterialGroupID = e.target.getAttribute('data-MaterialGroupID');
+        let MaterialGroupID = e.target.getAttribute('data-materialgroupid');
         let InstallBundleID = e.target.getAttribute('data-InstallBundleID');
         let { AdvanceRequestDetail } = this.state
         const objAdvanceRequestDetail = AdvanceRequestDetail.MaterialList.find(n => n['MaterialGroupID'] == MaterialGroupID && n['InstallBundleID'] == InstallBundleID)
@@ -140,8 +140,8 @@ class AdvanceRequestDetailNewCom extends Component {
     handleInputChangeNewProduct(e) {
         e.preventDefault();
         let value = e.target.value;
-        let MaterialGroupID = e.target.getAttribute('data-MaterialGroupID');
-        let InstallProductID = e.target.getAttribute('data-InstallProductID');
+        let MaterialGroupID = e.target.getAttribute('data-materialgroupid');
+        let InstallProductID = e.target.getAttribute('data-installproductid');
         let { AdvanceRequestDetail } = this.state
         const objAdvanceRequestDetail = AdvanceRequestDetail.MaterialList.find(n => n['MaterialGroupID'] == MaterialGroupID && n['InstallProductID'] == InstallProductID)
         if (value.length > 0) {
@@ -255,21 +255,21 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                         {item.MaterialProductList.map((optionItem) =>
                                                                             <option key={optionItem.MaterialProductID}
                                                                                 value={optionItem.MaterialProductID}
-                                                                                data-ProductName={optionItem.MaterialProductName}
-                                                                                data-QuantityUnitID={optionItem.QuantityUnitID}
-                                                                                data-QuantityUnit={optionItem.QuantityUnit}
-                                                                                data-AdvanceProductID={optionItem.AdvanceProductID}
-                                                                                data-AdvanceProductName={optionItem.AdvanceProductName}
-                                                                                data-AdvanceQuantityUnitName={optionItem.AdvanceQuantityUnitName}
-                                                                                data-AdvanceQuantityUnitID={optionItem.AdvanceQuantityUnitID}
-                                                                                data-AdvanceConvertRatio={optionItem.AdvanceConvertRatio}
-                                                                                data-CostPrice={optionItem.CostPrice}
-                                                                                data-VAT={optionItem.VAT}
+                                                                                data-productname={optionItem.MaterialProductName}
+                                                                                data-quantityunitid={optionItem.QuantityUnitID}
+                                                                                data-quantityunit={optionItem.QuantityUnit}
+                                                                                data-advanceproductid={optionItem.AdvanceProductID}
+                                                                                data-advanceproductname={optionItem.AdvanceProductName}
+                                                                                data-advancequantityunitname={optionItem.AdvanceQuantityUnitName}
+                                                                                data-advancequantityunitid={optionItem.AdvanceQuantityUnitID}
+                                                                                data-advanceconvertratio={optionItem.AdvanceConvertRatio}
+                                                                                data-costprice={optionItem.CostPrice}
+                                                                                data-vat={optionItem.VAT}
                                                                             >
-                                                                                {optionItem.AdvanceProductID+"-"+optionItem.AdvanceProductName}</option>
+                                                                                {optionItem.AdvanceProductID + "-" + optionItem.AdvanceProductName}</option>
                                                                         )}
                                                                     </select>
-                                                                </td> : <td>{item.AdvanceProductID+"-"+item.AdvanceProductName}</td>}
+                                                                </td> : <td>{item.AdvanceProductID + "-" + item.AdvanceProductName}</td>}
                                                             <td>{item.AdvanceQuantityUnitName}</td>
                                                             <td>{item.IsAllowDecimal == false ?
                                                                 <ElementInputModal.ElementModalNumberParser
@@ -285,7 +285,7 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                     max={(item.AdvanceLimitType == 1 ? ((item.AdvanceLimitQuantity - item.TotalQuantity * item.AdvanceConvertRatio) > 0 ? item.AdvanceLimitQuantity / item.AdvanceConvertRatio : 0) : 1000)}
                                                                     value={item.AdvanceQuantity > 0 ? item.AdvanceQuantity : ''}
                                                                     indexRow={index}
-                                                                    disabled={(item.AdvanceLimitType != 1 &&item.CostPrice == 0 )? true : false}
+                                                                    disabled={(item.AdvanceLimitType != 1 && item.CostPrice == 0) ? true : false}
                                                                     onValueChange={this.handleInputChange.bind(this)}
 
                                                                 /> : <ElementInputModal.ElementModalNumber
@@ -371,7 +371,7 @@ class AdvanceRequestDetailNewCom extends Component {
                                                     objgroupByInstallBundleID.map((rowItem, rowIndex) => {
                                                         let obj = materialListForAdvance[rowItem.InstallProductID];
                                                         return (
-                                                            <React.Fragment>
+                                                            <React.Fragment key={"tr" + rowIndex}>
                                                                 <tr className="totalCurrency" key={"totalCurrency" + rowIndex}>
                                                                     <td colSpan={9}>
                                                                         <div className="groupTotalCurrency">
@@ -387,8 +387,6 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                         TotalBundleQuantity = objMaterialAdvanceDebtList.TotalBundleQuantity;
                                                                         deTotalQuantity = objMaterialAdvanceDebtList.TotalQuantity;
                                                                     }
-
-
                                                                     if (rowItemobj.MaterialProductList.length > 0) {
                                                                         return (
                                                                             <tr key={"totalCurrency" + Index}>
@@ -405,22 +403,21 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                                             {rowItemobj.MaterialProductList.map((optionItem) =>
                                                                                                 <option key={optionItem.MaterialProductID}
                                                                                                     value={optionItem.MaterialProductID}
-                                                                                                    data-ProductName={optionItem.MaterialProductName}
-                                                                                                    data-QuantityUnitID={optionItem.QuantityUnitID}
-                                                                                                    data-QuantityUnit={optionItem.QuantityUnit}
-                                                                                                    data-AdvanceProductID={optionItem.AdvanceProductID}
-                                                                                                    data-AdvanceProductName={optionItem.AdvanceProductName}
-                                                                                                    data-AdvanceQuantityUnitName={optionItem.AdvanceQuantityUnitName}
-                                                                                                    data-AdvanceQuantityUnitID={optionItem.AdvanceQuantityUnitID}
-                                                                                                    data-AdvanceConvertRatio={optionItem.AdvanceConvertRatio}
-                                                                                                    data-CostPrice={optionItem.CostPrice}
-                                                                                                    data-InstallProductID={rowItemobj.InstallProductID}
-                                                                                                    data-VAT={optionItem.VAT}
+                                                                                                    data-productname={optionItem.MaterialProductName}
+                                                                                                    data-quantityunitid={optionItem.QuantityUnitID}
+                                                                                                    data-quantityunit={optionItem.QuantityUnit}
+                                                                                                    data-advanceproductid={optionItem.AdvanceProductID}
+                                                                                                    data-advanceproductname={optionItem.AdvanceProductName}
+                                                                                                    data-advancequantityunitname={optionItem.AdvanceQuantityUnitName}
+                                                                                                    data-advancequantityunitid={optionItem.AdvanceQuantityUnitID}
+                                                                                                    data-advanceconvertratio={optionItem.AdvanceConvertRatio}
+                                                                                                    data-costprice={optionItem.CostPrice}
+                                                                                                    data-vat={optionItem.VAT}
                                                                                                 >
-                                                                                                    {optionItem.AdvanceProductID+"-"+optionItem.AdvanceProductName}</option>
+                                                                                                    {optionItem.AdvanceProductID + "-" + optionItem.AdvanceProductName}</option>
                                                                                             )}
                                                                                         </select>
-                                                                                    </td> : <td>{rowItemobj.AdvanceProductID+""+rowItemobj.AdvanceProductName}</td>}
+                                                                                    </td> : <td>{rowItemobj.AdvanceProductID + "" + rowItemobj.AdvanceProductName}</td>}
                                                                                 <td>{rowItemobj.AdvanceQuantityUnitName}</td>
                                                                                 <td>
                                                                                     <input type="text" name={'Quantity'}
@@ -428,8 +425,8 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                                         value={rowItemobj.AdvanceQuantity > 0 ? rowItemobj.AdvanceQuantity : ''}
                                                                                         className={"form-control form-control-sm"}
                                                                                         disabled={rowItemobj.AdvanceProductID == "" ? true : false}
-                                                                                        data-MaterialGroupID={rowItemobj.MaterialGroupID}
-                                                                                        data-InstallProductID={rowItem.InstallProductID}
+                                                                                        data-materialgroupid={rowItemobj.MaterialGroupID}
+                                                                                        data-installproductid={rowItem.InstallProductID}
                                                                                         maxLength={5}
                                                                                     />
                                                                                 </td>
