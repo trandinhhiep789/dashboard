@@ -342,14 +342,14 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Loại đơn giá thưởng",
         DataSourceMember: "RewardPriceTypeName",
-        Width: 150
+        Width: 250
     },
     {
         Name: "RewardPrice",
         Type: "text",
         Caption: "Đơn giá thưởng",
         DataSourceMember: "RewardPrice",
-        Width: 150
+        Width: 100
     },
     {
         Name: "GetRewardPriceTypeName",
@@ -378,14 +378,14 @@ export const DataGridColumnList = [
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 150
+        Width: 90
     },
     {
         Name: "EditRewardPosition_RewardType",
         Type: "edit",
         Caption: "Sửa",
         DataSourceMember: "RewardPosition_RewardType",
-        Width: 100
+        Width: 60
     }
 
 ];
