@@ -90,6 +90,8 @@ class EditCom extends React.Component {
 
     handleSubmit(formData, MLObject) {
         MLObject.RewardPriceTableID = this.props.match.params.id;
+        MLObject.AreaID = MLObject.AreaID != "" ? MLObject.AreaID : -1
+        MLObject.CarrierTypeID = MLObject.CarrierTypeID != "" ? MLObject.CarrierTypeID : -1
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -196,7 +198,7 @@ class EditCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 label="loại phương tiện"
-                                validatonList={["Comborequired"]}
+                                // validatonList={["Comborequired"]}
                                 isautoloaditemfromcache={true}
                                 placeholder="-- Vui lòng chọn --"
                                 loaditemcachekeyid={ERPCOMMONCACHE_CARRIERTYPE} //"ERPCOMMONCACHE.CARRIERTYPE"
@@ -217,7 +219,7 @@ class EditCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 label="khu vực"
-                                validatonList={["Comborequired"]}
+                                // validatonList={["Comborequired"]}
                                 isautoloaditemfromcache={true}
                                 placeholder="-- Vui lòng chọn --"
                                 loaditemcachekeyid={ERPCOMMONCACHE_AREATT} //"ERPCOMMONCACHE.AREATT"

@@ -65,7 +65,8 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-
+        MLObject.AreaID = MLObject.AreaID != "" ? MLObject.AreaID : -1
+        MLObject.CarrierTypeID = MLObject.CarrierTypeID != "" ? MLObject.CarrierTypeID : -1
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -168,7 +169,7 @@ class AddCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 label="loại phương tiện"
-                                validatonList={["Comborequired"]}
+                                // validatonList={[""]}
                                 isautoloaditemfromcache={true}
                                 placeholder="-- Vui lòng chọn --"
                                 loaditemcachekeyid={ERPCOMMONCACHE_CARRIERTYPE} //"ERPCOMMONCACHE.CARRIERTYPE"
@@ -187,7 +188,7 @@ class AddCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 label="khu vực"
-                                validatonList={["Comborequired"]}
+                                // validatonList={[""]}
                                 isautoloaditemfromcache={true}
                                 placeholder="-- Vui lòng chọn --"
                                 loaditemcachekeyid={ERPCOMMONCACHE_AREATT} //"ERPCOMMONCACHE.AREATT"
