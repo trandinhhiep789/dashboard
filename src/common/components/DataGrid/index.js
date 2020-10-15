@@ -6,7 +6,7 @@ import { DEFAULT_ROW_PER_PAGE } from "../../../constants/systemVars.js";
 import GridCell from "./GridCell";
 import GridPage from "./GridPage";
 import { connect } from 'react-redux';
-import { callGetCache } from "../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../constants/functionLists";
 import { hideModal } from '../../../actions/modal';
 import Media from "react-media";
@@ -16,7 +16,7 @@ import * as XLSX from 'xlsx';
 
 import { formatMoney } from '../../../utils/function';
 import PartnerPayaleTemplate from '../PrintTemplate/PartnerPayaleTemplate';
-
+import readXlsxFile from 'read-excel-file'
 
 class DataGridCom extends Component {
     constructor(props) {
@@ -29,10 +29,13 @@ class DataGridCom extends Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.onChangePageHandle = this.onChangePageHandle.bind(this);
         this.handleInsertClickEdit = this.handleInsertClickEdit.bind(this);
+        this.handleDetailClick = this.handleDetailClick.bind(this);
         this.handleInsertClick = this.handleInsertClick.bind(this);
         this.handleCloseModel = this.handleCloseModel.bind(this);
         this.handleMultipleInsertClick = this.handleMultipleInsertClick.bind(this);
         this.handleOneInsertClick = this.handleOneInsertClick.bind(this);
+        this.handleImportFile = this.handleImportFile.bind(this);
+
         this.checkAll = this.checkAll.bind(this);
         this.getCheckList = this.getCheckList.bind(this);
         const pkColumnName = this.props.PKColumnName.split(',');
@@ -75,6 +78,11 @@ class DataGridCom extends Component {
     handleInsertClickEdit(id, pkColumnName) {
         if (this.props.onInsertClickEdit != null)
             this.props.onInsertClickEdit(id, pkColumnName);
+    }
+
+    handleDetailClick(id) {
+        if (this.props.onDetailClick != null)
+            this.props.onDetailClick(id);
     }
 
     handleInsertClick() {
@@ -241,8 +249,6 @@ class DataGridCom extends Component {
         return true;
 
     }
-
-
 
     handleDeleteClick() {
         var doDelete = () => {
@@ -479,8 +485,10 @@ class DataGridCom extends Component {
                                                     index={rowIndex}
                                                     isChecked={isChecked}
                                                     onInsertClickEdit={this.handleInsertClickEdit}
+                                                    onDetailtClick={this.handleDetailClick}
                                                     pkColumnName={this.state.ListPKColumnName}
                                                     params={this.props.params}
+                                                    linkTo={this.state.ListPKColumnName + index}
                                                 />;
                                                 return (
                                                     <td key={columnItem.Name} style={cellStyle}  >{cellData}</td>
@@ -518,7 +526,7 @@ class DataGridCom extends Component {
 
     checkPermission(permissionKey) {
         return new Promise((resolve, reject) => {
-            this.props.callGetCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+            this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
                         if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
@@ -581,6 +589,24 @@ class DataGridCom extends Component {
         this.props.onSubmitItem(listMLObject);
     }
 
+    handleImportFile() {
+        const input = document.getElementById('buttonImportFile');
+        input.click();
+
+
+        const schema = this.props.SchemaData;
+
+        input.addEventListener('change', () => {
+            readXlsxFile(input.files[0], { schema }).then(({ rows, errors }) => {
+                // errors.length === 0
+                if (this.props.onImportFile != null)
+                    this.props.onImportFile(rows, errors);
+            }, function (error) {
+                alert("File vừa chọn lỗi. Vui lòng chọn file khác.")
+            })
+        })
+    }
+
     render() {
 
         let searchTextbox = <div></div>;
@@ -610,6 +636,11 @@ class DataGridCom extends Component {
             isShowButtonPrint = true;
         }
 
+        let isShowButtonImport = false;
+        if (this.props.IsImportFile != undefined && this.props.IsImportFile != false) {
+            isShowButtonImport = true;
+        }
+
         let isShowButtonDelete = true;
         if (this.props.IsShowButtonDelete != undefined && this.props.IsShowButtonDelete == false) {
             isShowButtonDelete = false;
@@ -623,7 +654,7 @@ class DataGridCom extends Component {
         if (this.state.IsPermision === 'error') {
             return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
         }
-       // console.log("this.props", this.props)
+        // console.log("this.props", this.props)
         return (
 
             <div className="col-lg-12 SearchForm">
@@ -702,6 +733,13 @@ class DataGridCom extends Component {
                                                 )
                                                 : ""
                                         }
+                                        {/* nut import file  */}
+                                        {
+                                            isShowButtonImport == true &&
+                                            <button type="button" className="btn btn-export  ml-10" onClick={this.handleImportFile} >
+                                                <span className="fa fa-exchange"> Import File </span>
+                                            </button>
+                                        }
 
                                     </div>
                                 </div>
@@ -746,6 +784,10 @@ class DataGridCom extends Component {
                         <PartnerPayaleTemplate ref={el => (this.componentRef = el)} data={this.props.dataPrint} />
                     </div>
                 }
+                {
+                    isShowButtonImport == true &&
+                    < input type="file" id="buttonImportFile" style={{ display: "none" }} ref={input => this.inputElement = input} />
+                }
 
             </div>
         );
@@ -763,6 +805,9 @@ const mapDispatchToProps = dispatch => {
     return {
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
         },
         hideModal: () => {
             dispatch(hideModal());

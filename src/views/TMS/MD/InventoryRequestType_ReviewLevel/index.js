@@ -12,9 +12,10 @@ import {
     AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName,
     ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition
 } from "./constants";
+import ReactNotification from "react-notifications-component";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
-import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache,callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST, INVENTORYREQUESTTYPE_ADD, INVENTORYREQUESTTYPE_DELETE, INVENTORYREQUESTTYPE_UPDATE } from "../../../../constants/functionLists";
 
 class InventoryRequestType_ReviewLevelCom extends React.Component {
@@ -29,12 +30,15 @@ class InventoryRequestType_ReviewLevelCom extends React.Component {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
+            cssNotification: "",
+            iconNotification: "",
             InventoryRequestType_ReviewLevel_DataSource: this.props.InventoryRequestType_ReviewLevel_DataSource ? this.props.InventoryRequestType_ReviewLevel_DataSource : [],
             InventoryRequestTypeID: this.props.InventoryRequestTypeID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
             ModalColumnList_Edit: ModalColumnList_Edit
         };
+        this.notificationDOMRef = React.createRef();
     }
 
 
@@ -67,12 +71,46 @@ class InventoryRequestType_ReviewLevelCom extends React.Component {
         );
     }
 
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
+
     checkPermission() {
         let IsAllowedAdd = false;
         let IsAllowedUpdate = false;
         let IsAllowedDelete = false;
         
-        this.props.callGetCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == INVENTORYREQUESTTYPE_ADD);
                 if (isAllowAdd && isAllowAdd.length > 0) {
@@ -126,7 +164,8 @@ class InventoryRequestType_ReviewLevelCom extends React.Component {
                                 }
                                 this.props.hideModal();
                             }
-                            this.showMessage(apiResult.Message);
+                            //this.showMessage(apiResult.Message);
+                            this.addNotification(apiResult.Message, apiResult.IsError);
                         });
                     }
                 }
@@ -176,7 +215,8 @@ class InventoryRequestType_ReviewLevelCom extends React.Component {
                                 }
                                 this.props.hideModal();
                             }
-                            this.showMessage(apiResult.Message);
+                            //this.showMessage(apiResult.Message);
+                            this.addNotification(apiResult.Message, apiResult.IsError);
                         });
                         //this.resetCombobox();
                         //console.log("edit", MLObject);
@@ -213,7 +253,8 @@ class InventoryRequestType_ReviewLevelCom extends React.Component {
                 }
                 this.props.hideModal();
             }
-            this.showMessage(apiResult.Message);
+            //this.showMessage(apiResult.Message);
+            this.addNotification(apiResult.Message, apiResult.IsError);
         });
 
     }
@@ -226,6 +267,7 @@ class InventoryRequestType_ReviewLevelCom extends React.Component {
 
         return (
             <div className="sub-grid detail">
+                <ReactNotification ref={this.notificationDOMRef} />
                 <DataGrid listColumn={DataGridColumnList}
                     dataSource={this.state.InventoryRequestType_ReviewLevel_DataSource}
                     modalElementList={ModalColumnList_Insert}
@@ -274,6 +316,9 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
         }
 
     };

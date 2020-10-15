@@ -69,6 +69,22 @@ export const AddElementList = [
         validatonList: ["required"],
     },
     {
+        type: "select",
+        name: "ShipmentOrderStatusGroupID",
+        label: "Mã nhóm trạng thái yêu cầu vận chuyển:",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "ShipmentOrderStatusGroupID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUSGR",
+        ValueMember: "ShipmentOrderStatusGroupID",
+        NameMember: "ShipmentOrderStatusGroupName"
+    },
+    {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả:",
@@ -147,6 +163,22 @@ export const EditElementList = [
         validatonList: ["required"],
     },
     {
+        type: "select",
+        name: "ShipmentOrderStatusGroupID",
+        label: "Mã nhóm trạng thái yêu cầu vận chuyển:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "ShipmentOrderStatusGroupID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUSGR",
+        ValueMember: "ShipmentOrderStatusGroupID",
+        NameMember: "ShipmentOrderStatusGroupName"
+    },
+    {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả:",
@@ -219,6 +251,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtShipmentOrderStatusName",
         DataSourceMember: "ShipmentOrderStatusName"
+    },
+    {
+        Name: "ShipmentOrderStatusGroupID",
+        DefaultValue: "",
+        BindControlName: "ShipmentOrderStatusGroupID",
+        DataSourceMember: "ShipmentOrderStatusGroupID"
     },
     {
         Name: "Description",

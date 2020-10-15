@@ -18,7 +18,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { AREATYPE_UPDATE } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE } from "../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -61,6 +61,7 @@ class EditCom extends React.Component {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 if(!apiResult.IsError){
                     this.props.callClearLocalCache(ERPCOMMONCACHE_AREATYPE);
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_AREATT);
                 }      
                 this.showMessage(apiResult.Message);
             });

@@ -23,7 +23,7 @@ import { AREATYPE_VIEW, AREATYPE_DELETE } from "../../../../../constants/functio
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE } from "../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -65,6 +65,7 @@ class SearchCom extends React.Component {
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
                 this.props.callClearLocalCache(ERPCOMMONCACHE_AREATYPE);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_AREATT);
             }
         });
     }

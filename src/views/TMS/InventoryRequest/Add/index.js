@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
@@ -6,41 +6,35 @@ import FormContainer from "../../../../common/components/FormContainer";
 // import FormContainer from "../../../../common/components/Form/AdvanceForm/FormContainer";
 import { MessageModal } from "../../../../common/components/Modal";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
-import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+import InventoryRequestDetailList from "../Component/InventoryRequestDetailList";
+import InventoryRequestRVList from "../Component/InventoryRequestRVList";
+
+
 import {
     APIHostName,
     AddAPIPath,
-    AddElementList,
     MLObjectDefinition,
     BackLink,
     AddPagePath,
     TitleFormAdd,
-    GridMLObjectDefinition,
-    InputDestroyRequestDetailColumnList,
-    LoadAPIByRequestTypeIDPath,
-    InputDestroyRequestRLColumnList,
-    GridDestroyRequestRLMLObjectDefinition,
-    LoadUserNameAPIByStoreIDPath
+    LoadInventoryRequestAdd
 
 } from "../constants";
+
+import Select from 'react-select';
+
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
-import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
-import { ERPCOMMONCACHE_DES_RVLEVEL } from "../../../../constants/keyCache";
+import { INVENTORYREQUEST_ADD } from "../../../../constants/functionLists";
 
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.prevDataSubmit = this.prevDataSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.GetDataByRequestTypeID = this.GetDataByRequestTypeID.bind(this);
-        this.GetUserByStoreID = this.GetUserByStoreID.bind(this);
-        this.setValueCombobox = this.setValueCombobox.bind(this);
-        this.valueChangeInputGrid = this.valueChangeInputGrid.bind(this);
-
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -48,123 +42,80 @@ class AddCom extends React.Component {
             IsExtended: false,
             IsLiquidated: false,
             IsDeposited: false,
-            DestroyRequestDetail: [],
-            DestroyRequestTypeID: '',
+            InventoryRequestDetail: [],
+            InventoryRequest: {},
+            InventoryRequestRVLst: [],
+            InventoryRequestTypeID: '',
             RequestStoreID: '',
-            DestroyRequestRL: [],
+            InventoryRequestRL: [],
             ListOption: [],
             IsLoadDataComplete: false,
-            InputDestroyRequestRLColumnList: InputDestroyRequestRLColumnList,
-            isError: false
+            isError: false,
+            isValidationSelect: false,
+            isAutoReview: false,
+            isAutoOutput: false,
         };
     }
 
     componentDidMount() {
-        console.log("add", this.props, this.props.location.state.DestroyRequestTypeID)
         this.setState({
-            DestroyRequestTypeID: this.props.location.state.DestroyRequestTypeID,
+            InventoryRequestTypeID: this.props.location.state.InventoryRequestTypeID,
             RequestStoreID: this.props.location.state.RequestStoreID,
         })
         this.props.hideModal()
         this.props.updatePagePath(AddPagePath);
-        this.GetDataByRequestTypeID(this.props.location.state.DestroyRequestTypeID);
-        this.GetUserByStoreID(this.props.location.state.RequestStoreID);
-        this.getCacheDesRVL();
+
+        const InventoryRequest =
+        {
+            InventoryRequestTypeID: this.props.location.state.InventoryRequestTypeID,
+            RequestStoreID: this.props.location.state.RequestStoreID
+        };
+
+        this.LoadInventoryRequestAdd(InventoryRequest);
     }
 
-    getCacheDesRVL() {
-        this.props.callGetCache(ERPCOMMONCACHE_DES_RVLEVEL).then((result) => {
 
-            if (!result.IsError) {
-                this.setState({
-                    DestroyRequestRL: result.ResultObject.CacheData
-                })
-            }
-            else {
-                this.showMessage(result.Message)
-            }
-        });
-    }
-
-    // componentWillReceiveProps(nextProps) {
-    //     if (JSON.stringify(this.props.location.state.DestroyRequestTypeID) !== JSON.stringify(nextProps.location.state.DestroyRequestTypeID)) {
-    //         this.setState({
-    //             DestroyRequestTypeID: nextProps.location.state.DestroyRequestTypeID
-    //         })
-    //     }
-    // }
-
-    GetDataByRequestTypeID(DestroyRequestTypeID) {
-        this.props.callFetchAPI(APIHostName, LoadAPIByRequestTypeIDPath, DestroyRequestTypeID).then(apiResult => {
-            // console.log('byID', apiResult)
+    LoadInventoryRequestAdd(param) {
+        this.props.callFetchAPI(APIHostName, LoadInventoryRequestAdd, param).then(apiResult => {
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
                 });
-                this.showMessage(apiResult.Message);
             }
             else {
 
+                if(apiResult.ResultObject.InventoryRequestDetail != null) 
+                {
+                    apiResult.ResultObject.InventoryRequestDetail.map((rowItem, rowIndex) => {
+                        rowItem.ActualQuantity=rowItem.RecordQuantity;
+                    });
+                }
+                   
+
                 this.setState({
-                    DestroyRequestDetail: apiResult.ResultObject,
-                    IsCallAPIError: apiResult.IsError,
+                    InventoryRequestDetail: apiResult.ResultObject.InventoryRequestDetail,
+                    InventoryRequestRVLst: apiResult.ResultObject.InventoryRequest_RVList,
+                    InventoryRequest: apiResult.ResultObject,
+                    IsLoadDataComplete: true,
                 });
             }
         });
     }
 
-    GetUserByStoreID(StoreID) {
-        this.props.callFetchAPI(APIHostName, LoadUserNameAPIByStoreIDPath, StoreID).then(apiResult => {
-            let listOption = []
-            if (!apiResult.IsError) {
-                if (apiResult.ResultObject.length > 0) {
-                    apiResult.ResultObject.map((item) => {
-                        listOption.push({ value: item.UserName, label: item.FullName })
-                    })
-                }
+    prevDataSubmit(formData, MLObject) {
+        const { InventoryRequestDetail,
+            InventoryRequestRVLst, InventoryRequest } = this.state;
+        MLObject.InventoryRequest_RVList = InventoryRequestRVLst;
+        MLObject.InventoryRequestDetail = InventoryRequestDetail;
+        MLObject.CurrentReviewLevelID = InventoryRequest.CurrentReviewLevelID
 
-                this.setState({
-                    ListOption: listOption,
-                })
-                this.setValueCombobox();
-            }
-
+        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.MessageDetail);
         });
     }
-
-    setValueCombobox() {
-        let _InputDestroyRequestRLColumnList = this.state.InputDestroyRequestRLColumnList;
-        _InputDestroyRequestRLColumnList.forEach(function (objElement) {
-            if (objElement.Name == "cboUserName") {
-                objElement.listoption = this.state.ListOption;
-                objElement.value = -1;
-            }
-        }.bind(this));
-        this.setState({
-            InputDestroyRequestRLColumnList: _InputDestroyRequestRLColumnList,
-            IsLoadDataComplete: true
-        });
-    }
-
-    handleSubmit(formData, MLObject) {
-        console.log("handleSubmit", formData, MLObject);
-        const { isError } = this.state;
-        if (!isError) {
-            this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                this.showMessage(apiResult.MessageDetail);
-
-            });
-        }
-        else {
-            this.showMessage('Thông tin nhập vào bị lỗi. Vui lòng kiểm tra lại.');
-        }
-
-    }
-
 
     handleCloseMessage() {
-        debugger
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
     }
 
@@ -179,44 +130,12 @@ class AddCom extends React.Component {
         );
     }
 
-    valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
-        const { DestroyRequestDetail } = this.state;
-        let Quantity = DestroyRequestDetail[index].UsableQuantity;
-        let item = elementdata.Name + '_' + index;
-        if (!gridFormValidation[item].IsValidationError) {
-            if (elementdata.Name == 'Quantity') {
-                if (elementdata.Value > Quantity) {
-                    gridFormValidation[item].IsValidationError = true;
-                    gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
-                    this.setState({
-                        isError: true,
-                        IsCallAPIError: true,
-                    })
-                }
-            }
-            this.setState({
-                isError: false,
-                IsCallAPIError: false,
-            })
-        }
-        else {
-            this.setState({
-                isError: true,
-                IsCallAPIError: true,
-            })
-        }
-       
+    handleInputChangeGrid(obj) {
+        this.setState({ InventoryRequestDetail: obj });
+
     }
-
-    handleChange(formData, MLObject) {
-        console.log("handleChange", formData, MLObject)
-        if (formData.cboDestroyRequestType.Name == 'cboDestroyRequestType') {
-            this.GetDataByRequestTypeID(formData.cboDestroyRequestType.value)
-        }
-        if (formData.cboRequestStore.Name == 'cboRequestStore') {
-            this.GetUserByStoreID(formData.cboRequestStore.value)
-        }
-
+    handleInputChangeGridRV(obj) {
+        this.setState({ InventoryRequestRVLst: obj });
     }
 
     render() {
@@ -225,8 +144,9 @@ class AddCom extends React.Component {
         }
         let currentDate = new Date();
 
-        const { DestroyRequestDetail, DestroyRequestRL, InputDestroyRequestRLColumnList, isError } = this.state;
-
+        const { InventoryRequestDetail,
+            InventoryRequestRVLst,
+            InventoryRequest } = this.state;
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
@@ -235,49 +155,70 @@ class AddCom extends React.Component {
                         MLObjectDefinition={MLObjectDefinition}
                         listelement={[]}
                         BackLink={BackLink}
-                        onSubmit={this.handleSubmit}
-                        onchange={this.handleChange.bind(this)}
+                        onSubmit={this.prevDataSubmit}
                     >
-
                         <div className="row">
                             <div className="col-md-6">
-                                <FormControl.TextBox
-                                    name="txtDestroyRequestID"
-                                    colspan="8"
-                                    labelcolspan="4"
-                                    readOnly={false}
-                                    label="mã yêu cầu"
-                                    placeholder="Mã yêu cầu"
-                                    controltype="InputControl"
-                                    value=""
-                                    datasourcemember="DestroyRequestID"
-                                    validatonList={['required']}
-                                />
-                            </div>
-
-                            <div className="col-md-6">
                                 <FormControl.FormControlComboBox
-                                    name="cboDestroyRequestType"
+                                    name="cboInventoryRequestType"
                                     colspan="8"
                                     labelcolspan="4"
-                                    label="loại yêu cầu hủy vật tư"
+                                    label="loại yêu cầu kiểm kê"
                                     validatonList={["Comborequired"]}
                                     placeholder="-- Vui lòng chọn --"
                                     isautoloaditemfromcache={true}
                                     disabled={true}
-                                    loaditemcachekeyid="ERPCOMMONCACHE.DESTROYREQUESTTYPE"
-                                    valuemember="DestroyRequestTypeID"
-                                    nameMember="DestroyRequestTypeName"
+                                    loaditemcachekeyid="ERPCOMMONCACHE.INVENTORYREQUESTTYPE"
+                                    valuemember="InventoryRequestTypeID"
+                                    nameMember="InventoryRequestTypeName"
                                     controltype="InputControl"
-                                    value={this.props.location.state.DestroyRequestTypeID}
+                                    value={this.props.location.state.InventoryRequestTypeID}
                                     listoption={null}
-                                    datasourcemember="DestroyRequestTypeID" />
+                                    datasourcemember="InventoryRequestTypeID" />
+                            </div>
+                            <div className="col-md-6">
+                                <FormControl.FormControlDatetimeNew
+                                    name="dtRequestDate"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    readOnly={true}
+                                    disabled={true}
+                                    showTime={false}
+                                    timeFormat={false}
+                                    dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
+                                    label="Ngày yêu cầu"
+                                    placeholder={formatDate(currentDate, true)}
+                                    controltype="InputControl"
+                                    value={new Date()}
+                                    validatonList={["required"]}
+                                    datasourcemember="RequestDate"
+                                />
+                            </div>
+                            <div className="col-md-12">
+                                <FormControl.FormControlComboBox
+                                    name="cboRequestStore"
+                                    colspan="10"
+                                    labelcolspan="2"
+                                    label="kho yêu cầu"
+                                    disabled={true}
+                                    validatonList={["Comborequired"]}
+                                    placeholder="-- Vui lòng chọn --"
+                                    isautoloaditemfromcache={true}
+                                    isusercache={true}
+                                    loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
+                                    valuemember="StoreID"
+                                    nameMember="StoreName"
+                                    controltype="InputControl"
+                                    value={this.props.location.state.RequestStoreID}
+                                    listoption={null}
+                                    datasourcemember="RequestStoreID"
+                                    classNameCustom="customcontrol"
+                                />
 
                             </div>
-
                             <div className="col-md-12">
                                 <FormControl.TextBox
-                                    name="txtDestroyRequestTitle"
+                                    name="txtInventoryRequestTitle"
                                     labelcolspan={2}
                                     colspan={10}
                                     readOnly={false}
@@ -285,51 +226,11 @@ class AddCom extends React.Component {
                                     placeholder="Tiêu đề"
                                     controltype="InputControl"
                                     value=""
-                                    datasourcemember="DestroyRequestTitle"
+                                    datasourcemember="InventoryRequestTitle"
                                     validatonList={['required']}
                                     classNameCustom="customcontrol"
                                 />
                             </div>
-
-                            <div className="col-md-6">
-                                <FormControl.FormControlComboBox
-                                    name="cboRequestStore"
-                                    colspan="8"
-                                    labelcolspan="4"
-                                    label="kho yêu cầu"
-                                    disabled={true}
-                                    validatonList={["Comborequired"]}
-                                    placeholder="-- Vui lòng chọn --"
-                                    isautoloaditemfromcache={true}
-                                    loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
-                                    valuemember="StoreID"
-                                    nameMember="StoreName"
-                                    controltype="InputControl"
-                                    value={this.props.location.state.RequestStoreID}
-                                    listoption={null}
-                                    datasourcemember="RequestStoreID" />
-
-                            </div>
-
-                            <div className="col-md-6">
-
-                                <FormControl.FormControlDatetimeNew
-                                    name="dtRequestDate"
-                                    colspan="8"
-                                    labelcolspan="4"
-                                    readOnly={true}
-                                    showTime={false}
-                                    timeFormat={false}
-                                    dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
-                                    label="Ngày yêu cầu"
-                                    placeholder={formatDate(currentDate, true)}
-                                    controltype="InputControl"
-                                    value=""
-                                    validatonList={["required"]}
-                                    datasourcemember="RequestDate"
-                                />
-                            </div>
-
                             <div className="col-md-12">
                                 <FormControl.TextArea
                                     labelcolspan={2}
@@ -346,44 +247,18 @@ class AddCom extends React.Component {
                             </div>
                         </div>
 
+                        <InventoryRequestDetailList
+                            dataSource={InventoryRequestDetail}
+                            onValueChangeGrid={this.handleInputChangeGrid.bind(this)}
+                        />
 
-
-                        <div className="card">
-                            <div className="card-title group-card-title">
-                                <h4 className="title">Danh sách vật tư</h4>
-                            </div>
-                            <div className="card-body">
-                                <InputGrid
-                                    name="lstDestroyRequestDetail"
-                                    controltype="GridControl"
-                                    listColumn={InputDestroyRequestDetailColumnList}
-                                    dataSource={DestroyRequestDetail}
-                                    isHideHeaderToolbar={true}
-                                    MLObjectDefinition={GridMLObjectDefinition}
-                                    colspan="12"
-                                    onValueChangeInputGrid={this.valueChangeInputGrid}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="card">
-                            <div className="card-title group-card-title">
-                                <h4 className="title">Danh sách duyệt</h4>
-                            </div>
-                            <div className="card-body">
-                                <InputGrid
-                                    name="lstDestroyRequestReviewLevel"
-                                    controltype="GridControl"
-                                    listColumn={InputDestroyRequestRLColumnList}
-                                    dataSource={DestroyRequestRL}
-                                    isHideHeaderToolbar={true}
-                                    MLObjectDefinition={GridDestroyRequestRLMLObjectDefinition}
-                                    colspan="12"
-                                    onValueChangeInputGrid={this.valueChangeInputGrid}
-                                />
-                            </div>
-                        </div>
-
+                        {InventoryRequest.IsAutoReview == false ?
+                            <InventoryRequestRVList
+                                dataSource={InventoryRequestRVLst}
+                                onValueChangeGridRV={this.handleInputChangeGridRV.bind(this)}
+                            />
+                            : <div></div>
+                        }
 
                     </FormContainer>
                 </React.Fragment>

@@ -1,25 +1,26 @@
-export const AddAPIPath = "api/Skill_SkillRank/Add";
-export const UpdateAPIPath = "api/Skill_SkillRank/Update";
-export const DeleteAPIPath = "api/Skill_SkillRank/Delete";
+export const APIHostName = "TMSAPI";
+export const AddAPIPath = "api/Store_Area/Add";
+export const UpdateAPIPath = "api/Store_Area/Update";
+export const DeleteAPIPath = "api/Store_Area/Delete";
 
 export const ModalColumnList_Insert = [
-    {
-        type: "multiselect",
-        Name: "AreaID",
-        label: "khu vực",
-        value: -1,
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "AreaID",
-        readonly: false,
-        validatonList: [],
-        isMulti: false,
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREA",
-        ValueMember: "AreaID",
-        NameMember: "AreaName"
-    },
+    // {
+    //     type: "multiselect",
+    //     Name: "AreaID",
+    //     label: "khu vực",
+    //     value: -1,
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "AreaID",
+    //     readonly: false,
+    //     validatonList: [],
+    //     isMulti: false,
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.AREA",
+    //     ValueMember: "AreaID",
+    //     NameMember: "AreaName"
+    // },
     {
         type: "multiselect",
         Name: "StoreID",

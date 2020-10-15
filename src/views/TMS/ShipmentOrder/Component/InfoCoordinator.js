@@ -254,7 +254,7 @@ class InfoCoordinatorCom extends Component {
                 listMLObject.push({
                     ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
                     UserName: selectedOption[i].value,
-                    FullName: selectedOption[i].FullName,
+                    FullName: selectedOption[i].label,
                     CreatedUser: this.props.AppInfo.LoginInfo.Username,
                     CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
                 });
@@ -278,7 +278,8 @@ class InfoCoordinatorCom extends Component {
             for (let i = 0; i < value.length; i++) {
                 listMLObject.push({
                     ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
-                    UserName: value[i],
+                    UserName: value[i].value,
+                    FullName: value[i].label,
                     CreatedUser: this.props.AppInfo.LoginInfo.Username,
                     CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
                 });
@@ -392,13 +393,9 @@ class InfoCoordinatorCom extends Component {
             this.setState({ validationErroCarrierType: validationErroCarrierType });
             return;
         }
-        else if (ShipmentOrder.ShipmentOrder_DeliverUserList == undefined || ShipmentOrder.ShipmentOrder_DeliverUserList.length <= 0) {
-            validationErroDeliverUser = "Vui lòng chọn nhân viên giao"
-            this.setState({ validationErroDeliverUser: validationErroDeliverUser });
-            return;
-        }
 
         else {
+            console.log("ShipmentOrder",this.state.ShipmentOrder)
             this.state.ShipmentOrder.UpdatedUser = this.props.AppInfo.LoginInfo.Username,
                 this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinator', this.state.ShipmentOrder).then((apiResult) => {
                     this.setState({ IsCallAPIError: apiResult.IsError });
@@ -556,7 +553,7 @@ class InfoCoordinatorCom extends Component {
         }
         else {
             this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
-                listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName, FullName: item.FullName });
+                listOption.push({ value: item.UserName, label: item.FullName, FullName: item.FullName });
             })
         }
         return (
@@ -632,15 +629,14 @@ class InfoCoordinatorCom extends Component {
                             listoption={[]}
                             isMultiSelect={true}
                             datasourcemember="ShipmentOrder_DeliverUserList"
-                            validatonList={["Comborequired"]}
-                            validationErrorMessage={this.state.validationErroDeliverUser}
+                          
+                            
                         /> :
                         <FormControl.FormControlComboBox
                             name="ShipmentOrder_DeliverUserList"
                             colspan="10"
                             labelcolspan="2"
                             label="Nhân viên giao"
-                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
                             valuemember="UserName"
@@ -655,7 +651,7 @@ class InfoCoordinatorCom extends Component {
                             filterValue={this.state.ShipmentOrder.CarrierPartnerID}
                             filterobj="PartnerID"
                             disabled={!this.props.IsCoordinator}
-                            validationErrorMessage={this.state.validationErroDeliverUser}
+                            isselectedOp={true}
                         />
                     }
 

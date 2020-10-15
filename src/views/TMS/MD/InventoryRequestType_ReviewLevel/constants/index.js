@@ -2,6 +2,14 @@ export const APIHostName = "TMSAPI";
 export const AddAPIPath = "api/InventoryRequestType_ReviewLevel/Add";
 export const UpdateAPIPath = "api/InventoryRequestType_ReviewLevel/Update";
 export const DeleteAPIPath = "api/InventoryRequestType_ReviewLevel/Delete";
+export const LoadAPIPath = "api/InventoryRequestType_ReviewLevel/Load";
+
+export const DetailPagePath = [
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
+    { Link: "/InventoryRequestType", Title: "Loại yêu cầu kiểm kê" },
+    //{ Link: "/InventoryRequestType/ReviewLevelDetail", Title: "Mức duyệt" },
+    { Link: "", Title: "Mức duyệt" }
+];
 
 export const ModalColumnList_Insert = [
     {
@@ -138,7 +146,8 @@ export const DataGridColumnList = [
     },
     {
         Name: "ReviewLevelName",
-        Type: "text",
+        Type: "texttolink",
+        Link: "/InventoryRequestType/ReviewLevelDetail/",
         Caption: "Tên mức duyệt",
         DataSourceMember: "ReviewLevelName",
         Width: 300

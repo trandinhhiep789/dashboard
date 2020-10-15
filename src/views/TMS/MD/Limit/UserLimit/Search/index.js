@@ -6,17 +6,17 @@ import SearchForm from "../../../../../../common/components/FormContainer/Search
 import DataGrid from "../../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../../common/components/Modal";
 import {
-    SearchElementList,
-    SearchMLObjectDefinition,
     DataGridColumnList,
     AddLink,
     APIHostName,
-    SearchAPIPath,
+    SearchUserLimitAPIPath,
     DeleteNewAPIPath,
     IDSelectColumnName,
     PKColumnName,
-    InitSearchParams,
+    InitSearchParamsNew,
     PagePath,
+    SearchMLObjectDefinitionNew,
+    SearchElementListNew,
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
@@ -41,7 +41,7 @@ class SearchCom extends React.Component {
             gridDataLimtType: [],
             dataLimitTyle: [],
             IsCallAPIError: false,
-            SearchData: InitSearchParams,
+            SearchData: InitSearchParamsNew,
             cssNotification: "",
             iconNotification: "",
             IsLoadDataComplete: false,
@@ -74,6 +74,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        // console.log('aaa',formData, MLObject)
         let result;
         
         if (MLObject.UserName != -1 && MLObject.UserName!=null) {
@@ -87,8 +88,17 @@ class SearchCom extends React.Component {
         }
         const postData = [
             {
-                SearchKey: "@DEPARTMENTID",
-                SearchValue: MLObject.DepartmentID
+                SearchKey: "@AREAID",
+                SearchValue: MLObject.AreaID
+                
+            },
+            {
+                SearchKey: "@STOREID",
+                SearchValue: MLObject.StoreID
+            },
+            {
+                SearchKey: "@POSITIONID",
+                SearchValue: MLObject.PositionID
             },
             {
                 SearchKey: "@USERNAMELIST",
@@ -100,7 +110,8 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, SearchUserLimitAPIPath, searchData).then(apiResult => {
+            console.log('SearchUserLimit', apiResult, searchData);
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const sortResult = apiResult.ResultObject.sort((a, b) => (a.UserName > b.UserName) ? 1
@@ -159,9 +170,7 @@ class SearchCom extends React.Component {
     }
 
     handleCloseMessage() {
-        if (!this.state.IsCallAPIError) {
-            this.callSearchData(this.state.SearchData);
-        }
+        if (!this.state.IsCallAPIError);
     }
 
     showMessage(message) {
@@ -282,8 +291,8 @@ class SearchCom extends React.Component {
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
                     FormName="Tìm kiếm danh sách giới hạn theo người dùng"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
+                    MLObjectDefinition={SearchMLObjectDefinitionNew}
+                    listelement={SearchElementListNew}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                     className="multiple"
@@ -296,11 +305,11 @@ class SearchCom extends React.Component {
                                 <thead className="thead-light">
                                     <tr>
                                         <th className="jsgrid-header-cell" style={{ width: 100 }}>Mã nhân viên</th>
-                                        <th className="jsgrid-header-cell" style={{ width: 300 }}>Tên nhân viên</th>
+                                        <th className="jsgrid-header-cell" style={{ width: 100 }}>Tên nhân viên</th>
                                         {
                                             this.state.dataLimitTyle && this.state.dataLimitTyle.map((item, index) => {
                                                 return (
-                                                    <th key={index} className="jsgrid-header-cell" style={{ width: 100 }}>{item.LimitTypeName}</th>
+                                                    <th key={index} className="jsgrid-header-cell" style={{ width: 200 }}>{item.LimitTypeName}</th>
                                                 )
                                             })
                                         }

@@ -5,6 +5,7 @@ import { formatDate } from "../../../../../../library/CommonLib.js";
 import { callGetCache } from "../../../../../../../actions/cacheAction";
 import { ValidationField } from "../../../../../../library/validation.js";
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import { InputNumber } from "antd";
 class InputGridCellCom extends Component {
     constructor(props) {
         super(props);
@@ -13,11 +14,14 @@ class InputGridCellCom extends Component {
             IsDisabled: false
         };
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleInputChangeNew = this.handleInputChangeNew.bind(this);
         this.handleInputChangeALL = this.handleInputChangeALL.bind(this);
         this.handleonClickEdit = this.handleonClickEdit.bind(this);
         this.handleEditClick = this.handleEditClick.bind(this);
         this.previewMedia = this.previewMedia.bind(this);
         this.handleInputFocus = this.handleInputFocus.bind(this);
+        this.handleInputChangeDicimal = this.handleInputChangeDicimal.bind(this);
+
     }
 
 
@@ -163,6 +167,72 @@ class InputGridCellCom extends Component {
         // this.props.onValueChange(elementdata, this.props.index);
     }
 
+    handleInputChangeDicimal(e) {
+        const IsAllowDecimal =  e.target.dataset.isallowdecimal;
+        console.log('e', IsAllowDecimal)
+        let arrValidationList = [];
+        if (this.props.type == 'textboxNewGroup') {
+            if (!IsAllowDecimal) {
+                arrValidationList.push('number')
+            }
+            else {
+                arrValidationList.push('numberDecimal')
+            }
+        }
+        console.log('arrValidationList', arrValidationList)
+
+        this.validateInputNew(e, arrValidationList);
+
+
+    }
+
+    validateInputNew(e, arrValidationList) {
+        
+        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
+        let inputvalue = e.target.value;
+        // if (e.target.type == 'checkbox') {
+        //   inputvalue = ischecked;
+        // }
+        if (this.props.type == 'numeric') {
+            inputvalue = this.formatNumeric(inputvalue);
+        }
+        
+        const inputname = e.target.name;
+        let elementdata = { Name: inputname, Value: inputvalue, IsChecked: ischecked, HasChanged: true };
+        let isVavalidatonError = false;
+        let validationErrorMessage = "";
+        const objItemValidation = { labelError: undefined }
+        if (arrValidationList != null) {
+            if (arrValidationList.length > 0) {
+                const validation = ValidationField(arrValidationList, elementdata.Value, this.props.label, objItemValidation)
+                if (validation.IsError) {
+                    this.setState({ ValidationError: validation.Message });
+                    isVavalidatonError = true;
+                    validationErrorMessage = validation.Message;
+                    e.target.focus();
+                }
+                else {
+                    this.setState({ ValidationError: "" });
+                }
+                elementdata.Value = validation.fieldValue;
+            }
+        }
+        if (e.target.type == 'checkbox') {
+            elementdata = { Name: inputname, DataSourceMember: this.props.value, IsChecked: ischecked, Value: ischecked }
+        }
+        if (this.props.onValueChangeCustom) {
+            this.props.onValueChangeCustom(elementdata, this.props.index, this.state.OldCategoryID, isVavalidatonError, validationErrorMessage);
+        } else {
+            this.props.onValueChange(elementdata, this.props.index, isVavalidatonError, validationErrorMessage);
+        }
+    }
+
+
+
+    handleInputChangeNew(evalue) {
+        console.log("ee", evalue, this.props)
+    }
+
     handleInputFocus(e) {
         let OldCategoryID = "";
         this.setState({
@@ -179,6 +249,7 @@ class InputGridCellCom extends Component {
         if (this.props.type == 'numeric') {
             inputvalue = this.formatNumeric(inputvalue);
         }
+
         const inputname = e.target.name;
         let elementdata = { Name: inputname, Value: inputvalue, IsChecked: ischecked, HasChanged: true };
         let isVavalidatonError = false;
@@ -351,7 +422,7 @@ class InputGridCellCom extends Component {
                 }
             case "textbox":
                 {
-                    
+
                     let className = "form-control form-control-sm";
                     if (this.props.CSSClassName != null)
                         className = this.props.CSSClassName;
@@ -371,6 +442,43 @@ class InputGridCellCom extends Component {
                     const textNoneZero = !!this.props.isNoneZero && text == 0 ? "" : text;
                     let control = <input type="text" name={this.props.name} className={className} readOnly={isSystem}
                         onChange={this.handleInputChange} defaultValue={text} value={textNoneZero} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} />;
+
+                    return this.checkValidation(control, formGroupclassName);
+
+                }
+
+            case "textboxNewGroup":
+                {
+                    // console.log('aa', this.props);
+
+                    let className = "form-control form-control-sm";
+                    if (this.props.CSSClassName != null)
+                        className = this.props.CSSClassName;
+
+                    let disabled = false;
+                    if (this.props.disabled)
+                        disabled = this.props.disabled;
+
+                    //validation
+                    let formGroupclassName = "";
+                    if (this.props.validationErrorMessage != null) {
+                        if (this.props.validationErrorMessage.length > 0) {
+                            formGroupclassName += " has-error has-danger";
+                            className += " is-invalid";
+                        }
+                    }
+                    const textNoneZero = !!this.props.isNoneZero && text == 0 ? "" : text;
+                    let control;
+                    if (this.props.isAllowDecimal) {
+
+                        control = <input type="text" data-IsAllowDecimal = {this.props.isAllowDecimal} name={this.props.name} className={className} readOnly={isSystem}
+                            onChange={this.handleInputChangeDicimal} defaultValue={text} value={textNoneZero} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} />;
+                    }
+                    else {
+                        // control = <div>{this.props.isAllowDecimal == true ? 'true' : 'false'}</div>
+                        control = <input type="text" name={this.props.name} data-IsAllowDecimal = {this.props.isAllowDecimal} className={className} readOnly={isSystem}
+                            onChange={this.handleInputChangeDicimal} defaultValue={text} value={textNoneZero} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} />;
+                    }
 
                     return this.checkValidation(control, formGroupclassName);
 

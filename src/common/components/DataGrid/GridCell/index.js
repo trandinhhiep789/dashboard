@@ -4,6 +4,7 @@ import { formatDate } from "../../../library/CommonLib.js";
 import { ModalManager } from 'react-dynamic-modal';
 import { MessageModal } from "../../../../common/components/Modal";
 import { formatMoney } from '../../../../utils/function';
+import { Base64 } from 'js-base64';
 export default class GridCell extends Component {
     constructor(props) {
         super(props);
@@ -11,6 +12,8 @@ export default class GridCell extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleRadioChange = this.handleRadioChange.bind(this);
         this.handleonClickEdit = this.handleonClickEdit.bind(this);
+
+        this.handleonClickDetailt = this.handleonClickDetailt.bind(this);
         this.handleonClickDelete = this.handleonClickDelete.bind(this);
 
     }
@@ -43,6 +46,11 @@ export default class GridCell extends Component {
         this.props.onInsertClickEdit(elementdata, this.props.pkColumnName);
 
     }
+
+    handleonClickDetailt() {
+        this.props.onDetailtClick(this.props.index)
+    }
+
     handleonClickDelete(e) {
         const id = e.currentTarget.dataset.id;
         if (this.props.onhandleonClickDelete != null) {
@@ -56,6 +64,9 @@ export default class GridCell extends Component {
             message={content} onRequestClose={() => true}
             onCloseModal={this.handleCloseMessage}
         />);
+    }
+
+    componentDidMount() {
     }
 
     render() {
@@ -74,7 +85,7 @@ export default class GridCell extends Component {
 
         }
 
-        //console.log("type:", type);
+
         // console.log("this.props.paramsn1111", this.props.params);
 
         let control = "";
@@ -95,7 +106,26 @@ export default class GridCell extends Component {
                     }}>{formatDate(text)}</Link>;
                 break;
 
+
+            case "texttolinkNew":
+
+                control = <Link
+                    className="linktext texttolinkNew"
+                    to={{
+                        pathname: linkTo,
+                        state: {
+                            params: this.props.params
+                        }
+                    }}>{Base64.decode(text)}</Link>;
+                break;
+
+            case "Detailt":
+                return <a className="nav-link hover-primary btn-Detailt" onClick={this.handleonClickDetailt} title="Detailt">
+                    {text}
+                </a>;
+
             case "texttolink":
+
                 control = <Link
                     className="linktext"
                     to={{
@@ -181,6 +211,7 @@ export default class GridCell extends Component {
                     title="Edit">
                     <i className="ti-pencil"></i>
                 </a>;
+
 
             case "editnew":
                 return (

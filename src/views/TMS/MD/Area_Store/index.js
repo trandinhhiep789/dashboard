@@ -9,12 +9,16 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { GetMLObjectData } from "../../../../common/library/form/FormLib";
 import Collapsible from 'react-collapsible';
 import {
-    ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition
+    ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition,
+    AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName
 } from "./constants";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
-import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_STORE, ERPCOMMONCACHE_AREA } from "../../../../constants/keyCache";
+import { callGetCache, callGetUserCache, callClearLocalCache } from "../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_STORE, ERPCOMMONCACHE_AREA, ERPCOMMONCACHE_STORE_AREA } from "../../../../constants/keyCache";
+import { AREA_ADD, AREA_DELETE, AREA_UPDATE, GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
 
 class Area_StoreCom extends React.Component {
     constructor(props) {
@@ -32,12 +36,15 @@ class Area_StoreCom extends React.Component {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
+            cssNotification: "",
+            iconNotification: "",
             AreaStoreDataSource: this.props.AreaStoreDataSource ? this.props.AreaStoreDataSource : [],
             AreaID: this.props.AreaID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
             ModalColumnList_Edit: ModalColumnList_Edit
         };
+        this.notificationDOMRef = React.createRef();
     }
 
 
@@ -45,11 +52,45 @@ class Area_StoreCom extends React.Component {
         if (nextProps.AreaID !== this.state.AreaID) {
             this.setState({ AreaID: nextProps.AreaID });
         }
+
+        if (nextProps.AreaStoreDataSource !== this.state.AreaStoreDataSource) {
+            this.setState({ AreaStoreDataSource: nextProps.AreaStoreDataSource });
+        }
     }
 
     componentDidMount() {
         this.initCache();
+        this.checkPermission();
 
+    }
+
+    checkPermission() {
+        let IsAllowedAdd = false;
+        let IsAllowedDelete = false;
+        let IsAllowedUpdate = false;
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == AREA_ADD);
+                if (isAllowAdd && isAllowAdd.length > 0) {
+                    IsAllowedAdd = true;
+                }
+
+                let isAllowUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == AREA_UPDATE);
+                if (isAllowUpdate && isAllowUpdate.length > 0) {
+                    IsAllowedUpdate = true;
+                }
+
+                let isAllowDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == AREA_DELETE);
+                if (isAllowDelete && isAllowDelete.length > 0) {
+                    IsAllowedDelete = true;
+                }
+                this.setState({
+                    IsAllowedAdd: IsAllowedAdd,
+                    IsAllowedUpdate: IsAllowedUpdate,
+                    IsAllowedDelete: IsAllowedDelete     
+                });
+            }
+        });
     }
 
     handleCloseMessage() {
@@ -65,6 +106,39 @@ class Area_StoreCom extends React.Component {
                 onCloseModal={this.handleCloseMessage}
             />
         );
+    }
+
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
     }
 
     initCache() {
@@ -155,11 +229,15 @@ class Area_StoreCom extends React.Component {
     }
 
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
+        if (!this.state.IsAllowedAdd) {
+            this.showMessage("Bạn không có quyền");
+            return;
+        }
         this.setState({ IsInsert: true });
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Thêm mới kho điều phối của khu vực',
             autoCloseModal: false,
-            onValueChange: this.handleModalChange,
+            //onValueChange: this.handleModalChange,
             onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
@@ -170,20 +248,33 @@ class Area_StoreCom extends React.Component {
                         MLObject.StoreID = MLObject.StoreID && Array.isArray(MLObject.StoreID) ? MLObject.StoreID[0] : MLObject.StoreID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-                        let match = this.state.AreaStoreDataSource.filter(item =>
-                            item.AreaID == MLObject.AreaID
-                            && item.StoreID == MLObject.StoreID);
-                        if (match.length) {
-                            this.showMessage("Dữ liệu đã tồn tại.");
-                            return;
-                        }
-                        let _AreaStoreDataSource = this.state.AreaStoreDataSource;
-                        _AreaStoreDataSource.push(MLObject);
-                        _AreaStoreDataSource.sort((a, b) => (a.StoreID > b.StoreID) ? 1 : ((b.StoreID > a.StoreID) ? -1 : 0));
-                        this.setState({ AreaStoreDataSource: _AreaStoreDataSource });
-                        if (this.props.onAreaStoreChange) {
-                            this.props.onAreaStoreChange(_AreaStoreDataSource);
-                        }
+                        // let match = this.state.AreaStoreDataSource.filter(item =>
+                        //     item.AreaID == MLObject.AreaID
+                        //     && item.StoreID == MLObject.StoreID);
+                        // if (match.length) {
+                        //     this.showMessage("Dữ liệu đã tồn tại.");
+                        //     return;
+                        // }
+                        // let _AreaStoreDataSource = this.state.AreaStoreDataSource;
+                        // _AreaStoreDataSource.push(MLObject);
+                        // _AreaStoreDataSource.sort((a, b) => (a.StoreID > b.StoreID) ? 1 : ((b.StoreID > a.StoreID) ? -1 : 0));
+                        // this.setState({ AreaStoreDataSource: _AreaStoreDataSource });
+                        // if (this.props.onAreaStoreChange) {
+                        //     this.props.onAreaStoreChange(_AreaStoreDataSource);
+                        // }
+
+                        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+                            if (!apiResult.IsError) {
+                                if (this.props.onAreaStoreChange) {
+                                    this.props.onAreaStoreChange();
+                                }
+                                this.props.callClearLocalCache(ERPCOMMONCACHE_STORE_AREA);
+                                this.props.hideModal();
+                            }
+                            //this.showMessage(apiResult.Message);
+                            this.addNotification(apiResult.Message, apiResult.IsError);
+                        });
+
                         this.props.hideModal();
                         this.resetCombobox();
                     }
@@ -194,6 +285,11 @@ class Area_StoreCom extends React.Component {
     }
 
     handleEdit(value, pkColumnName) {
+        if (!this.state.IsAllowedUpdate) {
+            this.showMessage("Bạn không có quyền");
+            return;
+        }
+
         this.setState({ IsInsert: false });
         let _AreaStoreDataSource = {};
         this.state.AreaStoreDataSource.map((item, index) => {
@@ -224,15 +320,28 @@ class Area_StoreCom extends React.Component {
                         MLObject.AreaID = this.state.AreaID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-                        let _AreaStoreDataSource = this.state.AreaStoreDataSource
-                            .filter(item => item.AreaID != MLObject.AreaID
-                                || item.StoreID != MLObject.StoreID);
-                        _AreaStoreDataSource.push(MLObject);
-                        _AreaStoreDataSource.sort((a, b) => (a.StoreID > b.StoreID) ? 1 : ((b.StoreID > a.StoreID) ? -1 : 0));
-                        this.setState({ AreaStoreDataSource: _AreaStoreDataSource });
-                        if (this.props.onAreaStoreChange) {
-                            this.props.onAreaStoreChange(_AreaStoreDataSource);
-                        }
+                        // let _AreaStoreDataSource = this.state.AreaStoreDataSource
+                        //     .filter(item => item.AreaID != MLObject.AreaID
+                        //         || item.StoreID != MLObject.StoreID);
+                        // _AreaStoreDataSource.push(MLObject);
+                        // _AreaStoreDataSource.sort((a, b) => (a.StoreID > b.StoreID) ? 1 : ((b.StoreID > a.StoreID) ? -1 : 0));
+                        // this.setState({ AreaStoreDataSource: _AreaStoreDataSource });
+                        // if (this.props.onAreaStoreChange) {
+                        //     this.props.onAreaStoreChange(_AreaStoreDataSource);
+                        // }
+
+                        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+                            if (!apiResult.IsError) {
+                                if (this.props.onAreaStoreChange) {
+                                    this.props.onAreaStoreChange();
+                                }
+                                this.props.callClearLocalCache(ERPCOMMONCACHE_STORE_AREA);
+                                this.props.hideModal();
+                            }
+                            //this.showMessage(apiResult.Message);
+                            this.addNotification(apiResult.Message, apiResult.IsError);
+                        });
+
                         this.props.hideModal();
                         this.resetCombobox();
                     }
@@ -244,22 +353,83 @@ class Area_StoreCom extends React.Component {
     }
 
     handleDelete(deleteList, pkColumnName) {
+        // let _AreaStoreDataSource = this.state.AreaStoreDataSource;
+        // deleteList.map((row, index) => {
+        //     let MLObject = {};
+        //     pkColumnName.map((pkItem, pkIndex) => {
+        //         MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+        //     });
+        //     let _deleteList = _AreaStoreDataSource.filter(item => item.AreaStoreCSID == MLObject.AreaStoreCSID);
+        //     _deleteList[0].IsDeleted = true;
+        //     _AreaStoreDataSource = _AreaStoreDataSource.filter(item => item.AreaStoreCSID != MLObject.AreaStoreCSID);
+        //     _AreaStoreDataSource.push(_deleteList[0]);
+        //     _AreaStoreDataSource.sort((a, b) => (a.StoreID > b.StoreID) ? 1 : ((b.StoreID > a.StoreID) ? -1 : 0));
+        // });
+        // this.setState({ AreaStoreDataSource: _AreaStoreDataSource });
+        // if (this.props.onAreaStoreChange) {
+        //     this.props.onAreaStoreChange(_AreaStoreDataSource);
+        // }
+        // if (!this.state.IsAllowedDelete) {
+        //     this.showMessage("Bạn không có quyền");
+        //     return;
+        // }
+
+        // let listMLObject = [];
+        // deleteList.map((row, index) => {
+        //     let MLObject = {};
+        //     pkColumnName.map((pkItem, pkIndex) => {
+        //         MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+        //     });
+
+        //     MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+        //     MLObject.AreaID = this.state.AreaID;
+        //     listMLObject.push(MLObject);
+        // });
+
+
+        // this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
+        //     if (!apiResult.IsError) {
+        //         if (this.props.onAreaStoreChange) {
+        //             this.props.onAreaStoreChange();
+        //         }
+        //         this.props.hideModal();
+        //     }
+        //     //this.showMessage(apiResult.Message);
+        //     this.addNotification(apiResult.Message, apiResult.IsError);
+        // });
+        
+        if (!this.state.IsAllowedDelete) {
+            this.showMessage("Bạn không có quyền");
+            return;
+        }
+        let listMLObject = [];
         let _AreaStoreDataSource = this.state.AreaStoreDataSource;
         deleteList.map((row, index) => {
             let MLObject = {};
             pkColumnName.map((pkItem, pkIndex) => {
                 MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
             });
+            
             let _deleteList = _AreaStoreDataSource.filter(item => item.AreaStoreCSID == MLObject.AreaStoreCSID);
-            _deleteList[0].IsDeleted = true;
-            _AreaStoreDataSource = _AreaStoreDataSource.filter(item => item.AreaStoreCSID != MLObject.AreaStoreCSID);
-            _AreaStoreDataSource.push(_deleteList[0]);
-            _AreaStoreDataSource.sort((a, b) => (a.StoreID > b.StoreID) ? 1 : ((b.StoreID > a.StoreID) ? -1 : 0));
+            if (_deleteList && _deleteList.length > 0) {
+                _deleteList[0].DeletedUser = this.props.AppInfo.LoginInfo.Username;
+                listMLObject.push(_deleteList[0]);
+            }
+
         });
-        this.setState({ AreaStoreDataSource: _AreaStoreDataSource });
-        if (this.props.onAreaStoreChange) {
-            this.props.onAreaStoreChange(_AreaStoreDataSource);
-        }
+
+
+        this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
+            if (!apiResult.IsError) {
+                if (this.props.onAreaStoreChange) {
+                    this.props.onAreaStoreChange();
+                }
+                this.props.callClearLocalCache(ERPCOMMONCACHE_STORE_AREA);
+                this.props.hideModal();
+            }
+            //this.showMessage(apiResult.Message);
+            this.addNotification(apiResult.Message, apiResult.IsError);
+        });
     }
 
     isNumeric(value) {
@@ -301,7 +471,8 @@ class Area_StoreCom extends React.Component {
 
             // </Collapsible>
 
-            <div className="sub-grid">
+            <div className="sub-grid detail">
+                <ReactNotification ref={this.notificationDOMRef} />
                 <DataGrid listColumn={DataGridColumnList}
                     dataSource={datasource}
                     modalElementList={ModalColumnList_Insert}
@@ -350,7 +521,10 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
-        }
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
+        },
 
     };
 };

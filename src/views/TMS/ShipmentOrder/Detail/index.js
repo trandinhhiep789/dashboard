@@ -27,6 +27,7 @@ class DetailCom extends React.Component {
     constructor(props) {
         super(props);
         this.ChangeLoadData = this.ChangeLoadData.bind(this);
+        this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.state = {
             DataSource: {},
             ShipmentOrderType_WorkFlowList: null,
@@ -36,6 +37,23 @@ class DetailCom extends React.Component {
             IsCallAPIError: false,
             IsLoadDataComplete: false,
         }
+    }
+
+    handleCloseMessage() {
+        if (!this.state.IsCallAPIError) {
+            this.callSearchData(this.state.SearchData);
+        }
+    }
+
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+                onCloseModal={this.handleCloseMessage}
+            />
+        );
     }
 
     componentDidMount() {
@@ -94,10 +112,12 @@ class DetailCom extends React.Component {
                         TotalMoney={this.state.DataSource.CollectedTotalMoney + this.state.DataSource.TotalCOD}
                         IsCancelDelivery={this.state.IsCancelDelivery}
                     />
+                    
                     <ShipmentOrderDetail
                         ShipmentOrderID={this.props.match.params.id}
                         ShipmentOrderDetail={this.state.DataSource}
                         onhandleChange={this.ChangeLoadData}
+                        IsShipDetail={this.CheckPermissionUser(1)}
                     />
                      <InfoCoordinator
                         ShipmentOrderID={this.props.match.params.id}
@@ -120,7 +140,6 @@ class DetailCom extends React.Component {
                     <InfoHistoryWF
                         ShipmentOrderID={this.props.match.params.id}
                         InfoHistoryWF={this.state.ShipmentOrderType_WorkFlowList}
-                        
                     />
 
                     <ShipmentOrderAttachment

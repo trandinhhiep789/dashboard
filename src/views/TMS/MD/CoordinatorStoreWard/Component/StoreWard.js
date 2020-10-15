@@ -47,30 +47,48 @@ class StoreWardCom extends Component {
     }
 
     componentDidMount() {
-        
+        console.log("StoreWardCom", this.props)
         this.handleGetCacheDistrict()
 
     }
 
-    handleSubmit(From, MLObject) {
+    handleSubmit(formData, MLObject) {
         let CoordinatorStoreWard_ItemList = this.props.DataSource;
+        console.log("handleSubmit", formData, MLObject, CoordinatorStoreWard_ItemList);
         let formDatanew = [];
-        
-        let dataWardItem = this.state.DataWard.filter((item, index) => {
-            return item.WardID == MLObject.WardID
-        })
 
         let dataDistrictItem = this.state.DataDistrict.filter((item, index) => {
             return item.DistrictID == MLObject.DistrictID
         })
 
-        MLObject.ProvinceName = dataDistrictItem[0].ProvinceName
-        MLObject.DistrictName = dataDistrictItem[0].DistrictName
-        MLObject.WardName = dataWardItem[0].WardName
+
 
         if (this.props.index != undefined) {
 
-            formDatanew = Object.assign([], CoordinatorStoreWard_ItemList, { [this.props.index]: MLObject });
+
+            let dataWardItem = this.state.DataWard.filter((item, index) => {
+                return item.WardID == MLObject.WardID
+            })
+
+            MLObject.ProvinceName = dataDistrictItem[0].ProvinceName;
+            MLObject.DistrictName = dataDistrictItem[0].DistrictName;
+            MLObject.WardName = dataWardItem[0].WardName;
+
+
+            const isExitItem = CoordinatorStoreWard_ItemList.filter(x => x.WardID === MLObject.WardID).length;
+
+            if (isExitItem == 0) {
+                formDatanew = Object.assign([], CoordinatorStoreWard_ItemList, { [this.props.index]: MLObject });
+                
+            }
+            else{
+                formData.cbWardID.ErrorLst.IsValidatonError = true;
+                formData.cbWardID.ErrorLst.ValidatonErrorMessage = "Vui lòng chọn phường/xã khác.";
+                return
+            }
+
+
+
             const result = {
                 IsError: false,
                 Message: 'Thêm mới phường/xã địa bàn thành công'
@@ -79,8 +97,39 @@ class StoreWardCom extends Component {
                 this.props.onInputChangeObj(formDatanew, result);
             }
         }
-        else{
-            CoordinatorStoreWard_ItemList.push(MLObject)
+        else {
+
+            if (MLObject.WardID.length > 0) {
+
+                MLObject.WardID.map((item, index) => {
+                    let objItem = {};
+                    let dataWardItem = this.state.DataWard.filter((item1, index1) => {
+                        return item1.WardID == item
+                    })
+
+                    objItem.ProvinceID = MLObject.ProvinceID;
+                    objItem.ProvinceName = dataDistrictItem[0].ProvinceName;
+
+                    objItem.DistrictID = MLObject.DistrictID;
+                    objItem.DistrictName = dataDistrictItem[0].DistrictName;
+
+                    objItem.WardID = item;
+                    objItem.WardName = dataWardItem[0].WardName;
+
+                    if (CoordinatorStoreWard_ItemList.length > 0) {
+
+                        const isExitItem = CoordinatorStoreWard_ItemList.filter(x => x.WardID === objItem.WardID).length;
+                        if (isExitItem == 0) {
+                            CoordinatorStoreWard_ItemList.push(objItem)
+                        }
+                    }
+                    else {
+                        CoordinatorStoreWard_ItemList.push(objItem)
+                    }
+
+                    return objItem;
+                })
+            }
             const result = {
                 IsError: false,
                 Message: 'Thêm mới phường/xã địa bàn thành công'
@@ -90,8 +139,8 @@ class StoreWardCom extends Component {
             }
         }
 
-       
-        
+
+
     }
 
     handleChange(formData, MLObject) {
@@ -111,7 +160,7 @@ class StoreWardCom extends Component {
                 onchange={this.handleChange.bind(this)}
             >
                 <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                         <FormControl.FormControlComboBox
                             name="cbProvinceID"
                             colspan="9"
@@ -132,7 +181,7 @@ class StoreWardCom extends Component {
                             filterrest="cbDistrictID,cbWardID"
                         />
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                         <FormControl.FormControlComboBox
                             name="cbDistrictID"
                             colspan="9"
@@ -153,7 +202,7 @@ class StoreWardCom extends Component {
                             filterrest="cbWardID"
                         />
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                         <FormControl.FormControlComboBox
                             name="cbWardID"
                             colspan="9"
@@ -167,6 +216,7 @@ class StoreWardCom extends Component {
                             nameMember="WardName"
                             controltype="InputControl"
                             value={-1}
+                            isMultiSelect={this.props.isMultiSelectWard}
                             listoption={[]}
                             datasourcemember="WardID"
                             filterName="cbDistrictID"
@@ -175,7 +225,7 @@ class StoreWardCom extends Component {
                         />
                     </div>
 
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                         <FormControl.CheckBox
                             name="chkIsSystem"
                             colspan="9"

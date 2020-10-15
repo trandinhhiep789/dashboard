@@ -6,7 +6,7 @@ import { MessageModal } from "../../../../Modal";
 import InputGridCell from "./InputGridCell";
 import { GetMLObjectData, GetMLObjectDataList } from "../../../../../library/form/FormLib";
 import { showModal } from '../../../../../../actions/modal';
-import { callGetCache } from "../../../../../../actions/cacheAction";
+import { callGetCache,callGetUserCache } from "../../../../../../actions/cacheAction";
 import { MODAL_TYPE_NOTIFICATION, MODAL_TYPE_CONFIRMATION } from '../../../../../../constants/actionTypes';
 import { DEFAULT_ROW_PER_PAGE } from "../../../../../../constants/systemVars.js";
 import InputGridPage from "./InputGridPage";
@@ -125,7 +125,7 @@ class InputGridCom extends Component {
 
 	checkPermission(permissionKey) {
 		return new Promise((resolve, reject) => {
-			this.props.callGetCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+			this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
 				if (!result.IsError && result.ResultObject.CacheData != null) {
 					for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
 						if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
@@ -832,6 +832,7 @@ class InputGridCom extends Component {
 												isChecked = rowItem[columnItem.DataSourceMember];
 											}
 										}
+										
 										const cellData = <InputGridCell
 											type={columnItem.Type}
 											text={rowItem[columnItem.DataSourceMember]}
@@ -870,6 +871,7 @@ class InputGridCom extends Component {
 											maxSize={columnItem.maxSize}
 											IsSystem={this.state.IsSystem}
 											isNoneZero={columnItem.IsNoneZero}
+											// isAllowDecimal={columnItem.isAllowDecimal}
 										/>;
 										return (
 											<td key={columnItem.Name} style={cellStyle}  >{cellData}</td>
@@ -1004,7 +1006,10 @@ const mapDispatchToProps = dispatch => {
 		},
 		callGetCache: (cacheKeyID) => {
 			return dispatch(callGetCache(cacheKeyID));
-		}
+		},
+		callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
+        }
 	}
 }
 

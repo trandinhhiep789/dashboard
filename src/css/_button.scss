@@ -1,4 +1,12 @@
 button {
+    &.btn-light{
+        &:disabled{
+            color: #212529;
+            background-color: #9c9fa2d4;
+            border-color: #bdc0c2;
+            opacity: .5;
+        }
+    }
     &.btnEditCard {
         background-color: #48b0f7;
         border-color: #48b0f7;
@@ -113,5 +121,40 @@ button {
         width: 25px;
         height: 25px;
         border: none;
+        &.icon-maps{
+            background: transparent;
+            &:hover {
+                color: #007bff;
+            }
+        }
+    }
+}
+
+.btn-link {
+    font-size: 20px;
+    color: #48b0f7;
+    &:focus{
+        color: #48b0f7;
+    }
+}
+
+.group-btn-update{
+    button{
+        &.btn{
+            &.btn-update-submit{
+                padding: 0 10px;
+                height: 33px;
+                color: white;
+                background: #48b0f7;
+                border-radius: 5px;
+            }
+            &.btn-update-cancel{
+                padding: 0 10px;
+                height: 33px;
+                color: white;
+                background: #8e8e8e;
+                border-radius: 5px;
+            }
+        }
     }
 }

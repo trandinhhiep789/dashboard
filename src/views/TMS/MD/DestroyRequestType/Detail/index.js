@@ -9,7 +9,7 @@ import {
     APIHostName,
     LoadAPIPath,
     BackLink,
-    EditPagePath
+    DetailPagePath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -36,7 +36,7 @@ class DetailCom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updatePagePath(EditPagePath);
+        this.props.updatePagePath(DetailPagePath);
         this.callLoadData();
 
     }
@@ -175,7 +175,7 @@ class DetailCom extends React.Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Người tạo: </span>
-                                            <span>{this.state.DataSource.CreatedUser}</span>
+                                            <span>{this.state.DataSource.CreatedUserFullName}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
@@ -209,17 +209,22 @@ class DetailCom extends React.Component {
                         onComponentChange={this.onComponentChange}
                     />
                     <br />
-                    <DestroyRequestType_ReviewLevel
-                        DestroyRequestTypeID={this.props.match.params.id}
-                        DestroyRequestType_ReviewLevel_DataSource={this.state.DataSource.ListDestroyRequestType_ReviewLevel ? this.state.DataSource.ListDestroyRequestType_ReviewLevel : []}
-                        onComponentChange={this.onComponentChange}
-                    />
-                    <DestroyRequestType_ReviewLevel_User
+                    {
+                        !this.state.DataSource.IsAutoReview ?
+                            <DestroyRequestType_ReviewLevel
+                                DestroyRequestTypeID={this.props.match.params.id}
+                                DestroyRequestType_ReviewLevel_DataSource={this.state.DataSource.ListDestroyRequestType_ReviewLevel ? this.state.DataSource.ListDestroyRequestType_ReviewLevel : []}
+                                onComponentChange={this.onComponentChange}
+                            />
+                            : ""
+                    }
+
+                    {/* <DestroyRequestType_ReviewLevel_User
                         DestroyRequestTypeID={this.props.match.params.id}
                         DestroyRequestType_ReviewLevel_DataSource={this.state.DataSource.ListDestroyRequestType_ReviewLevel ? this.state.DataSource.ListDestroyRequestType_ReviewLevel : []}
                         DestroyRequestType_ReviewLevel_User_DataSource={this.state.DataSource.ListDestroyRequestType_ReviewLevel_User ? this.state.DataSource.ListDestroyRequestType_ReviewLevel_User : []}
                         onComponentChange={this.onComponentChange}
-                    />
+                    /> */}
                 </React.Fragment >
             );
         }

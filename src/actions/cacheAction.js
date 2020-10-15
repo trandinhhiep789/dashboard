@@ -95,6 +95,56 @@ export function callGetCache(cacheKeyID) {
     }
 }
 
+export function callGetUserCache(cacheKeyID) {
+    return (dispatch, getState) => {
+        const state = getState();
+        const LoginInfo = localStorage.getItem('LoginInfo');
+        let userName = ''
+        if (LoginInfo) {
+            const LoginInfo1 = JSON.parse(LoginInfo)
+            userName = LoginInfo1.LoginUserInfo.UserName;
+        }
+        // const userName = state.LoginInfo.LoginUserInfo.UserName;
+        if (state.GetCacheInfo.IsGetCacheRequest) {
+            return {
+                IsError: true,
+                StatusID: 100,
+                Message: "Đang gọi cache"
+            };
+        }
+        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
+        const fullCacheKey = cacheKeyID + "_" + userName;
+        return db.get(fullCacheKey).then((result) => {
+            if (result != null) {
+                dispatch(getCacheFromCache(result));
+                return {
+                    IsError: false,
+                    StatusID: 0,
+                    Message: "Load register client from DB OK!",
+                    ResultObject: result
+                };
+            }
+            else {
+                const apiPath = "api/Cache/Get";
+                const postData = {
+                    CacheKeyID: cacheKeyID,
+                    UserName: userName,
+                    AdditionParamList: []
+                };
+                return dispatch(callGetUserCacheFromServer(cacheKeyID));
+            }
+        }
+
+        ).
+            catch((error) => {
+                //console.log("callGetCache: ", error);
+                return dispatch(callGetUserCacheFromServer(cacheKeyID));
+                //return dispatch(callRegisterClientFromServer(hostname,username,password));
+            })
+
+    }
+}
+
 export function callGetCacheFromLocal(cacheKeyID) {
     return (dispatch, getState) => {
         const state = getState();
@@ -112,6 +162,25 @@ export function callGetCacheFromLocal(cacheKeyID) {
 
     }
 }
+
+export function callGetUserCacheFromLocal(cacheKeyID, username) {
+    return (dispatch, getState) => {
+        const state = getState();
+        const LoginInfo = localStorage.getItem('LoginInfo');
+        const fullCacheKey = cacheKeyID + "_" + username;
+        const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
+        return db.get(fullCacheKey).then((result) => {
+            return result;
+        }
+
+        ).
+            catch((error) => {
+                return null;
+            })
+
+    }
+}
+
 
 
 export function callGetCacheFromServer(cacheKeyID) {
@@ -181,6 +250,76 @@ export function callGetCacheFromServer(cacheKeyID) {
     }
 
 }
+
+export function callGetUserCacheFromServer(cacheKeyID) {
+    return (dispatch, getState) => {
+        const state = getState();
+        // const userName = state.LoginInfo.LoginUserInfo.UserName;
+        const LoginInfo = localStorage.getItem('LoginInfo');
+        let userName = ''
+        if (LoginInfo) {
+            const LoginInfo1 = JSON.parse(LoginInfo)
+            userName = LoginInfo1.LoginUserInfo.UserName;
+        }
+        if (state.GetCacheInfo.IsGetCacheRequest) {
+            return {
+                IsError: true,
+                StatusID: 100,
+                Message: "Đang gọi cache"
+            };
+        }
+
+        const apiPath = "api/Cache/Get";
+        const postData = {
+            CacheKeyID: cacheKeyID,
+            UserName: userName,
+            AdditionParamList: []
+        };
+        const toastId = toast.warn(`Loading cache in progress, please Wait...${cacheKeyID}`,
+            {
+                closeOnClick: false,
+                autoClose: false,
+                closeButton: false
+            });
+        return dispatch(callFetchAPI(CACHE_HOSTNAME, apiPath, postData)).then((apiResult) => {
+            toast.update(toastId, {
+                render: "Loading cache complete",
+                type: toast.TYPE.SUCCESS,
+                autoClose: 3000,
+                closeButton: true,
+                className: 'rotateY(360deg) transform 0.6s animated',
+
+                // className: css({
+                //     transform: "rotateY(360deg)",
+                //     transition: "transform 0.6s"
+                // })
+            });
+            if (!apiResult.IsError) {
+                const fullCacheKeyID = cacheKeyID + "_" + userName;
+                const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
+                db.set(fullCacheKeyID, apiResult.ResultObject).then((result) => {
+
+                }
+
+                ).catch((error) => {
+                    console.log("Lỗi lưu cache dưới local: ", error, CACHE_OBJECT_STORENAME);
+                }
+
+                );
+            }
+            return {
+                IsError: apiResult.IsError,
+                StatusID: apiResult.StatusID,
+                Message: apiResult.Message,
+                MessageDetail: apiResult.MessageDetail,
+                ResultObject: apiResult.ResultObject
+            };
+
+        });
+    }
+
+}
+
 
 export function callClearLocalCache(cacheKeyID) {
     return (dispatch, getState) => {

@@ -68,9 +68,26 @@ class SearchCom extends React.Component {
         this.callSearchData(this.state.SearchData);
     }
 
+    testAPI() {
+   
+        this.props.callFetchAPI(APIHostName, 'api/CurrentAdvanceDebt/GetListByUser', "68913").then(apiResult => {
+            console.log("testAPI", apiResult)
+        })
+    }
+
+    callDataTest() {
+        const APIParams = {
+            "DestroyRequestTypeID": 9000,
+            "RequestStoreID": 4121,
+        };
+        this.props.callFetchAPI(APIHostName, 'api/DestroyRequest/LoadByDestroyRequestTypeIDAndRequestStoreID', APIParams).then(apiResult => {
+            console.log("callDataTest", apiResult)
+        })
+    }
+
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            // console.log('callSearchData', searchData, apiResult)
+             console.log('callSearchData', searchData, apiResult)
 
             if (apiResult.IsError) {
                 this.setState({
@@ -79,26 +96,9 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-                const tempData = apiResult.ResultObject.map((item, index) => {
-                    let element = {
-                        "Mã yêu cầu": item.DestroyRequestID,
-                        "Tiêu Đề yêu cầu": item.DestroyRequestTitle,
-                        "Loại yêu cầu hủy vật tư": item.DestroyRequestTypeID + "-" + item.DestroyRequestTypeName,
-                        "Kho yêu cầu": item.RequestStoreID + "-" + item.StoreName,
-                        "Ngày yêu cầu": item.RequestDate,
-                        "Người yêu cầu": item.RequestUser,
-                        "Đã duyệt": item.IsreViewed,
-                        "Đã xuất": item.IsOutput,
-                    };
-
-                    return element;
-                })
-
-                
-
                 const dataSource = apiResult.ResultObject.map((item, index) => {
-                    item.ApproverName = item.UserName + " - " + item.FullName;
-                    if (item.IsOutput) {
+                    item.ApproverName = item.RequestUser + " - " + item.FullName;
+                    if (item.IsCreatedOrder) {
                         item.OutputStatusLable = <span className='lblstatus text-success'>Đã xuất</span>;
                     }
                     else {
@@ -114,12 +114,29 @@ class SearchCom extends React.Component {
                     }
                     return item;
                 })
+
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã yêu cầu": item.DestroyRequestID,
+                        "Tiêu Đề yêu cầu": item.DestroyRequestTitle,
+                        "Loại yêu cầu hủy vật tư": item.DestroyRequestTypeID + "-" + item.DestroyRequestTypeName,
+                        "Kho yêu cầu": item.RequestStoreID + "-" + item.StoreName,
+                        "Ngày yêu cầu": item.RequestDate,
+                        "Người yêu cầu": item.RequestUser,
+                        "Đã duyệt": item.IsreViewed,
+                        "Đã xuất": item.IsCreatedOrder,
+                    };
+
+                    return element;
+                })
+
                 // console.log('callSearchData', dataSource, apiResult)
                 this.setState({
                     gridDataSource: dataSource,
                     dataExport: tempData,
                     IsCallAPIError: apiResult.IsError,
                 });
+                //this.callDataTest()
             }
         });
     }

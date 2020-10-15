@@ -1,4 +1,5 @@
 .table {
+
     thead {
         th {
             //line-height: 20px;
@@ -21,13 +22,21 @@
         }
     }
 
-    .thead-light th{
+    .thead-light th {
         background-color: #d9d9d9 !important;
         color: #4d5259 !important;
     }
 
     tbody {
         td {
+            a{
+                &.btn-Detailt{
+                    color: #33cabb;
+                    &:hover{
+                        color: #8b95a5 !important;
+                    }
+                }
+            }
             .checkbox {
                 width: 21px;
                 height: 18px;
@@ -148,12 +157,12 @@
                         }
 
                         &.address-receiver {
-                            color: #989593;
+                            color: #505050;
                             text-transform: capitalize;
                         }
 
                         &.address-repository-created {
-                            color: #505050;
+                            color: #292929;
                             text-transform: capitalize;
                             font-weight: 500;
                             font-family: inherit;
@@ -161,11 +170,47 @@
                         }
 
                         &.creacte-time {
-                            color: #6c757d;
+                            color: #505050;
 
                             span {
                                 display: initial;
                                 width: 100%;
+
+                                &.group-times {
+                                    width: 100%;
+                                    display: inline-flex;
+                                    flex: auto;
+
+                                    .time-item {
+                                        display: flex;
+                                        justify-content: center;
+                                        width: 50%;
+                                        flex: auto;
+                                        .intervale {
+                                            display: inline-block;
+                                            text-align: right;
+                                            float: right;
+                                        }
+                                        .item {
+                                            width: auto;
+                                        }
+                                    }
+
+                                }
+
+                                &.txtCreatedOrderTime {
+                                    font-weight: 500;
+                                    color: #292929;
+                                    display: flex;
+                                }
+
+                                &.intervale {
+
+                                    .txtintervale {
+                                        font-weight: 500;
+                                        color: #292929;
+                                    }
+                                }
 
                                 &.times {
 
@@ -188,6 +233,7 @@
                     display: inline-block;
                     float: none;
                     width: 100%;
+
                     .item {
                         width: 100%;
                         display: flex;
@@ -197,31 +243,64 @@
                         align-content: center;
                         margin-bottom: 5px;
                         font-size: 14px;
-                        &.price-success{
-                            .price-debt{
+
+                        &.price-success {
+                            .price-debt {
                                 color: #15c377;
                             }
+
                             .price-title {
                                 color: #15c377;
                                 font-weight: 500;
                                 margin-right: 5px;
                             }
                         }
+
                         .price-title {
                             color: #e64343;
                             font-weight: 500;
                             margin-right: 5px;
                         }
-                        .price-debt{
+
+                        .price-debt {
                             color: #e64343;
                             font-weight: 500;
                         }
-                        &.pricecod{
+
+                        &.pricecod {
                             color: #4a4a4a;
                         }
-                        &.price-supplies{
+
+                        &.price-supplies {
                             color: #fbae00;
                         }
+                    }
+                }
+            }
+
+            &.group-infoShipmentOrder {
+                .group-info-row {
+                    color: #292828;
+
+                    .item {
+                        width: 100%;
+                        display: inherit;
+                        height: 20px;
+                        float: initial;
+                        justify-content: flex-start;
+                        align-content: center;
+                        margin-bottom: 5px;
+                        font-size: 14px;
+                        text-align: left;
+
+                        &.address-receiver {
+                            height: auto;
+                        }
+                    }
+
+                    .coordinatorUser {
+                        font-size: 13px;
+                        font-weight: 500;
                     }
                 }
             }
@@ -268,32 +347,37 @@
                 }
             }
         }
-        .totalCurrency{
-            td{
+
+        .totalCurrency {
+            td {
                 padding: 0;
             }
+
             .groupTotalCurrency {
                 display: table;
                 width: 100%;
-                .item{
+
+                .item {
                     font-weight: 600;
                     width: 50%;
                     padding: .5rem;
                     display: table-cell;
                     font-family: initial;
                     font-size: 16px;
+
                     &.txtTotal {
                         // border-right: 1px solid #3333;
                         padding-right: 0;
                         width: 49.8%;
                         color: #757575;
                     }
-                    &.txttotalCurrency{
+
+                    &.txttotalCurrency {
                         color: #757575;
                     }
                 }
             }
-            
+
         }
 
     }
@@ -336,6 +420,21 @@
                 &:hover {
                     background-color: aliceblue;
                     transition: 0ms;
+                }
+            }
+        }
+    }
+
+    &.datagirdshippingorder {
+        tbody {
+            tr {
+                &.unReadingItem {
+                    background-color: #c2d8de;
+
+                    &.readingItem {
+                        background-color: #fcfdfe;
+                    }
+
                 }
             }
         }

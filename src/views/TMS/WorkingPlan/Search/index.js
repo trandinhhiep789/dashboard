@@ -88,7 +88,7 @@ class SearchCom extends React.Component {
     callDataTestWeb(searchData) {
         // console.log('searchData', searchData)
         this.props.callFetchAPI(APIHostName, 'api/WorkingPlan/SearchWeb', searchData).then(apiResult => {
-             console.log("searchData apiResult",apiResult)
+            console.log("searchData apiResult", apiResult)
             if (!apiResult.IsError) {
                 const date = new Date();
                 const dataResult = apiResult.ResultObject.map((item, index) => {
@@ -163,12 +163,17 @@ class SearchCom extends React.Component {
 
     onClickWorkingPlan() {
         let lstWorkingPlan = [];
-        //    console.log("222",this.state.gridDataWorking)
-        this.state.gridDataWorking.map((item) => {
-            item.map((e) => {
+        const gridDataWorking = Object.assign({}, this.state.gridDataWorking)
+        Object.keys(gridDataWorking).map((key) => {
+            gridDataWorking[key].map((e) => {
                 lstWorkingPlan.push(e)
             })
         })
+        // this.state.gridDataWorking.map((item) => {
+        //     item.map((e) => {
+        //         lstWorkingPlan.push(e)
+        //     })
+        // })
 
         // UpdateWorkingPlanWebAPIPath
         this.props.callFetchAPI(APIHostName, 'api/WorkingPlan/UpdateWorkingPlanWebNew', lstWorkingPlan).then(apiResult => {
@@ -289,7 +294,6 @@ class SearchCom extends React.Component {
 
 
     render() {
-
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />

@@ -16,11 +16,11 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../../actions/cacheAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { ERPUSERCACHE_FUNCTION } from "../../../../../constants/keyCache";
-import { USERSKILL_VIEW, USERSKILL_UPDATE } from "../../../../../constants/functionLists";
+import { USERSKILL_VIEW, USERSKILL_UPDATE, GET_CACHE_USER_FUNCTION_LIST } from "../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -47,7 +47,7 @@ class EditCom extends React.Component {
     }
 
     checkAddPermission() {
-        this.props.callGetCache(ERPUSERCACHE_FUNCTION).then((result) => {
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (result && !result.IsError && result.ResultObject) {
                 let _view = result.ResultObject.CacheData.filter(x => x.FunctionID == USERSKILL_VIEW);
                 if (_view && _view.length > 0) {
@@ -266,7 +266,7 @@ class EditCom extends React.Component {
                                                 {this.state.FullName ?
                                                     <div>
                                                         <label className="col-form-label 6">Tên nhân viên:</label> &nbsp; &nbsp;
-                                                        <b style={{color: "blue"}}>{this.state.FullName}</b>
+                                                        <b style={{ color: "blue" }}>{this.state.FullName}</b>
                                                     </div>
                                                     : ""
                                                 }
@@ -411,6 +411,9 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
         }
 
     };

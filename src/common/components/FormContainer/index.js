@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ValidationField } from "../../library/validation.js";
 import { GetMLObjectData, GetMLObjectObjData } from "../../library/form/FormLib";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../constants/functionLists";
-import { callGetCache } from "../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../actions/cacheAction";
 import { Link } from "react-router-dom";
 import FormElement from '../FormContainer/FormElement';
 import ElementModal from '../FormContainer/FormElement/ElementModal';
@@ -55,7 +55,7 @@ class FormContainerCom extends Component {
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.dataSource) !== JSON.stringify(nextProps.dataSource)) {
             const FormDataContol = this.state.FormData;
-         
+
             for (const key in FormDataContol) {
                 FormDataContol[key].value = nextProps.dataSource[FormDataContol[key].datasourcemember];
             }
@@ -289,7 +289,7 @@ class FormContainerCom extends Component {
             this.setState({ IsPermision: true });
             return;
         }
-        this.props.callGetCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
                     if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
@@ -608,6 +608,11 @@ class FormContainerCom extends Component {
         }
 
         let cssSearchButton = "";
+       
+        let isDisabledButtonSubmit = false;
+        if( this.props.IsDisabledSubmitForm){
+            isDisabledButtonSubmit= true
+        }
         // console.log("this.props.isSubmitForm ", this.props.isSubmitFrom )
         return (
             <div className="col-lg-12">
@@ -621,7 +626,7 @@ class FormContainerCom extends Component {
                     </div>
                     <footer className="card-footer text-right" hidden={this.props.IsHideFooter}>
                         {(this.props.isSubmitForm == undefined || this.props.isSubmitForm == true) &&
-                            <button className="btn btn-primary mr-3" type="submit">{cssSearchButton} Cập nhật</button>
+                            <button className="btn btn-primary mr-3" disabled={isDisabledButtonSubmit} type="submit">{cssSearchButton} Cập nhật</button>
                         }
                         {backLinkButton}
                         {closeLinkButton}
@@ -642,6 +647,9 @@ const mapDispatchToProps = dispatch => {
     return {
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));

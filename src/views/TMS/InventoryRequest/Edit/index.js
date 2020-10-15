@@ -11,14 +11,16 @@ import {
     EditPagePath,
     BackLink,
     MLObjectDefinition,
-    LoadNewAPIPath,
+    LoadInfoEditAPIPath,
     APIHostName,
-    UpdateAPIPath
+    EditAPIPath
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
+import InventoryRequestDetailList from "../Component/InventoryRequestDetailList";
+import InventoryRequestRVList from "../Component/InventoryRequestRVList";
 
 
 class EditCom extends React.Component {
@@ -31,7 +33,9 @@ class EditCom extends React.Component {
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
-            DataSource: {},
+            InventoryRequestDetail: [],
+            InventoryRequest: {},
+            InventoryRequestRVLst: [],
             IsLoadDataComplete: false,
             IsSystem: false,
             IsExtended: false,
@@ -67,16 +71,47 @@ class EditCom extends React.Component {
     }
 
     callLoadData(id) {
-
+        this.props.callFetchAPI(APIHostName, LoadInfoEditAPIPath, id).then(apiResult => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+            }
+            else {
+                this.setState({
+                    InventoryRequestDetail: apiResult.ResultObject.InventoryRequestDetail,
+                    InventoryRequestRVLst: apiResult.ResultObject.InventoryRequest_RVList,
+                    InventoryRequest: apiResult.ResultObject,
+                    IsLoadDataComplete: true,
+                });
+            }
+        });
     }
 
-    handleChange(formData, MLObject) {
-        console.log('handleSubmit', formData, MLObject)
+    handleInputChangeGrid(obj) {
+        this.setState({ InventoryRequestDetail: obj });
     }
 
+    handleInputChangeGridRV(obj) {
+        this.setState({ InventoryRequestRVLst: obj });
+    }
 
+    handleSubmit(formData, MLObject) {
+        const { InventoryRequestDetail,
+            InventoryRequestRVLst, InventoryRequest } = this.state;
+        MLObject.InventoryRequest_RVList = InventoryRequestRVLst;
+        MLObject.InventoryRequestDetail = InventoryRequestDetail;
+        MLObject.RequestUser = InventoryRequest.RequestUser;
+        this.props.callFetchAPI(APIHostName, EditAPIPath, MLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.MessageDetail);
+        });
+    }
     render() {
 
+        const { InventoryRequestDetail,
+            InventoryRequestRVLst,
+            InventoryRequest } = this.state;
 
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
@@ -87,33 +122,32 @@ class EditCom extends React.Component {
                     <FormContainer
                         FormName={TitleFormEdit}
                         MLObjectDefinition={MLObjectDefinition}
-                        dataSource={this.state.DataSource}
+                        dataSource={this.state.InventoryRequest}
                         listelement={[]}
                         BackLink={BackLink}
                         onSubmit={this.handleSubmit}
-                        onchange={this.handleChange.bind(this)}
                     >
-                    </FormContainer>
 
-                    <div className="row">
+
+                        <div className="row">
                             <div className="col-md-6">
                                 <FormControl.TextBox
-                                    name="txtDestroyRequestID"
+                                    name="txtInventoryRequestID"
                                     colspan="8"
                                     labelcolspan="4"
-                                    readOnly={false}
+                                    readOnly={true}
                                     label="mã yêu cầu"
                                     placeholder="Mã yêu cầu"
                                     controltype="InputControl"
                                     value=""
-                                    datasourcemember="DestroyRequestID"
+                                    datasourcemember="InventoryRequestID"
                                     validatonList={['required']}
                                 />
                             </div>
 
                             <div className="col-md-6">
                                 <FormControl.FormControlComboBox
-                                    name="cboDestroyRequestType"
+                                    name="cboInventoryRequestType"
                                     colspan="8"
                                     labelcolspan="4"
                                     label="loại yêu cầu hủy vật tư"
@@ -121,27 +155,27 @@ class EditCom extends React.Component {
                                     placeholder="-- Vui lòng chọn --"
                                     isautoloaditemfromcache={true}
                                     disabled={true}
-                                    loaditemcachekeyid="ERPCOMMONCACHE.DESTROYREQUESTTYPE"
-                                    valuemember="DestroyRequestTypeID"
-                                    nameMember="DestroyRequestTypeName"
+                                    loaditemcachekeyid="ERPCOMMONCACHE.INVENTORYREQUESTTYPE"
+                                    valuemember="InventoryRequestTypeID"
+                                    nameMember="InventoryRequestTypeName"
                                     controltype="InputControl"
-                                    value={this.props.location.state.DestroyRequestTypeID}
+                                    value={""}
                                     listoption={null}
-                                    datasourcemember="DestroyRequestTypeID" />
+                                    datasourcemember="InventoryRequestTypeID" />
 
                             </div>
 
                             <div className="col-md-12">
                                 <FormControl.TextBox
-                                    name="txtDestroyRequestTitle"
+                                    name="txtInventoryRequestTitle"
                                     labelcolspan={2}
                                     colspan={10}
-                                    readOnly={false}
+                                    readOnly={InventoryRequest.IsreViewed}
                                     label="tiêu đề"
                                     placeholder="Tiêu đề"
                                     controltype="InputControl"
                                     value=""
-                                    datasourcemember="DestroyRequestTitle"
+                                    datasourcemember="InventoryRequestTitle"
                                     validatonList={['required']}
                                     classNameCustom="customcontrol"
                                 />
@@ -161,7 +195,7 @@ class EditCom extends React.Component {
                                     valuemember="StoreID"
                                     nameMember="StoreName"
                                     controltype="InputControl"
-                                    value={this.props.location.state.RequestStoreID}
+                                    value={""}
                                     listoption={null}
                                     datasourcemember="RequestStoreID" />
 
@@ -174,11 +208,11 @@ class EditCom extends React.Component {
                                     colspan="8"
                                     labelcolspan="4"
                                     readOnly={true}
+                                    disabled={true}
                                     showTime={false}
                                     timeFormat={false}
                                     dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
                                     label="Ngày yêu cầu"
-                                    placeholder={formatDate(currentDate, true)}
                                     controltype="InputControl"
                                     value=""
                                     validatonList={["required"]}
@@ -197,16 +231,33 @@ class EditCom extends React.Component {
                                     controltype="InputControl"
                                     rows={6}
                                     maxSize={500}
+                                    disabled={InventoryRequest.IsreViewed}
                                     classNameCustom="customcontrol"
                                 />
                             </div>
                         </div>
+
+                        <InventoryRequestDetailList
+                            dataSource={InventoryRequestDetail}
+                            onValueChangeGrid={this.handleInputChangeGrid.bind(this)}
+                            disabledActualQuantity={(InventoryRequest.SaleOrderID == "" && InventoryRequest.IsreViewed == false) ? false : true}
+                        />
+
+                        {InventoryRequest.IsAutoReview == false ?
+                            <InventoryRequestRVList
+                                dataSource={InventoryRequestRVLst}
+                                onValueChangeGridRV={this.handleInputChangeGridRV.bind(this)}
+                                IsreViewed={InventoryRequest.IsreViewed}
+                            />
+                            : <div></div>
+                        }
+                    </FormContainer>
                 </React.Fragment>
             )
-    
+
         }
         return <label>Đang nạp dữ liệu...</label>;
-        
+
     }
 }
 

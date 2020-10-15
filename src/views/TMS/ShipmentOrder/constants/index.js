@@ -49,16 +49,6 @@ export const SearchElementList = [
         classNameCol:"col-custom"
         
     },
-    // {
-    //     type: "text",
-    //     name: "txReceiverPhoneNumber",
-    //     DataSourceMember: "ReceiverPhoneNumber",
-    //     value: "",
-    //     colspan: 2,
-    //     placeholder: " Sđt người nhận hàng",
-    //     icon: "",
-    //     classNameCol:"col-custom"
-    // },
     {
         type: "ComboBox",
         name: "cbShipmentOrderTypeID",
@@ -168,17 +158,17 @@ export const SearchElementList = [
     },
     {
         type: "ComboBox",
-        name: "cbShipmentOrderStatusID",
-        DataSourceMember: "ShipmentOrderStatusID",
+        name: "cbShipmentOrderStatusGroupID",
+        DataSourceMember: "ShipmentOrderStatusGroupID",
         colspan: 2,
-        value: 20,
+        value: -1,
         isMultiSelect: false,
         placeholder: "---Trạng thái---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUS",
-        ValueMember: "ShipmentOrderStatusID",
-        NameMember: "ShipmentOrderStatusName",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUSGR",
+        ValueMember: "ShipmentOrderStatusGroupID",
+        NameMember: "ShipmentOrderStatusGroupName",
         classNameCol:"col-custom"
     },
     {
@@ -200,7 +190,7 @@ export const SearchElementList = [
         value: -1,
         isMultiSelect: false,
         placeholder: "--Trạng thái xem--",
-        listoption: [{ value: -1, label: "--Trạng thái xem--" },{ value: 1, label: "Đã xem" },{ value: 2, label: "Chưa xem" }],
+        listoption: [{ value: -1, label: "--Trạng thái xem--" },{ value: 1, label: "Đã xem" },{ value: 0, label: "Chưa xem" }],
         classNameCol:"col-custom"
     }
 ];
@@ -243,8 +233,8 @@ export const InitSearchParams = [
         SearchValue: -1
     },
     {
-        SearchKey: "@SHIPMENTORDERSTATUSID",
-        SearchValue: 20
+        SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+        SearchValue: -1
     },
     {
         SearchKey: "@IsCoordinator",
@@ -306,9 +296,9 @@ export const SearchMLObjectDefinition = [
         BindControlName: "cbCoordinatorStoreID"
     },
     {
-        Name: "ShipmentOrderStatusID",
+        Name: "ShipmentOrderStatusGroupID",
         DefaultValue: "",
-        BindControlName: "cbShipmentOrderStatusID"
+        BindControlName: "cbShipmentOrderStatusGroupID"
     },
     {
         Name: "IsCoordinator",

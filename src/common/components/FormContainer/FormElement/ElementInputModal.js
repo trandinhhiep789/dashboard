@@ -73,6 +73,65 @@ class ElementModalText extends React.Component {
     }
 }
 
+class ElementModalTextBox extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.state = {
+            validationErrorMessage: this.props.validationErrorMessage
+
+        }
+    }
+    handleValueChange(e) {
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(e.target.name, e.target.value, this.props.indexRow);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.validationErrorMessage) !== JSON.stringify(nextProps.validationErrorMessage)) {
+            this.setState({
+                validationErrorMessage: nextProps.validationErrorMessage
+            })
+        }
+    }
+
+    render() {
+        let classNamecolmd = "col-md-6";
+        if (this.props.Colmd != null)
+            classNamecolmd = "col-md-" + this.props.Colmd;
+
+        let className = "form-control form-control-sm";
+        let formGroupClassName = "form-group col-md-12";
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+
+        if (this.state.validationErrorMessage != "" && this.state.validationErrorMessage != undefined) {
+            className += " is-invalid";
+        }
+        return (
+            <div className={formGroupClassName}>
+                <input type={this.props.type}
+                    name={this.props.name}
+                    title={this.props.validationErrorMessage}
+                    onChange={this.handleValueChange}
+                    onBlur={this.handKeyDown}
+                    value={this.props.value}
+                    key={this.props.name}
+                    className={className}
+                    ref={this.props.inputRef}
+                    placeholder={this.props.placeholder}
+                    disabled={this.props.disabled == true ? true : this.props.readonly}
+                    maxLength={this.props.maxsize}
+                />
+                <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+            </div>
+
+        );
+    }
+}
+
 class ElementModalNumber extends React.Component {
     constructor(props) {
         super(props);
@@ -80,7 +139,7 @@ class ElementModalNumber extends React.Component {
     }
     handleValueChange(evalue) {
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, evalue,this.props.indexRow);
+            this.props.onValueChange(this.props.name, evalue, this.props.indexRow);
     }
 
     render() {
@@ -146,6 +205,81 @@ class ElementModalNumber extends React.Component {
     }
 }
 
+class ElementModalNumberParser extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+    }
+    handleValueChange(evalue) {
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(this.props.name, evalue, this.props.indexRow);
+    }
+
+    render() {
+        let classNamecolmd = "col-md-6";
+        if (this.props.Colmd != null)
+            classNamecolmd = "col-md-" + this.props.Colmd;
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        if (this.props.Colmd == 12) {
+            className = className + " customcontrol";
+        }
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-8";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-4";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null) {
+            formRowClassName += this.props.classNameCustom;
+        }
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
+            className += " is-invalid";
+        }
+        return (
+            <div className={classNamecolmd}>
+                <div className={formRowClassName} >
+                    {this.props.label.length > 0 ?
+                        <div className={labelDivClassName}>
+                            <label className="col-form-label 2">
+                                {this.props.label}<span className="text-danger"> {star}</span>
+                            </label>
+                        </div>
+                        : ""
+                    }
+
+                    <div className={formGroupClassName}>
+                        <InputNumber
+                            name={this.props.name}
+                            min={this.props.min}
+                            max={this.props.max}
+                            parser={value => value.replace('.', '')}
+                            value={this.props.value}
+                            onChange={this.handleValueChange}
+                            disabled={this.props.disabled == true ? true : this.props.readonly}
+                            ref={this.props.inputRef}
+                            className={className}
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+
 class ElementModalComboBoxCom extends Component {
     constructor(props) {
         super(props);
@@ -155,7 +289,13 @@ class ElementModalComboBoxCom extends Component {
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, comboValues, this.props.rowIndex, this.props.namelabel, selectedOption != null ? selectedOption.label : "", this.props.filterrest);
+            if (this.props.isselectedOp) {
+                this.props.onValueChange(this.props.name, selectedOption,this.props.rowIndex)
+            }
+            else {
+                this.props.onValueChange(this.props.name, comboValues, this.props.rowIndex, this.props.namelabel, selectedOption != null ? selectedOption.label : "", this.props.filterrest);
+            }
+
     }
 
     bindcombox(value, listOption) {
@@ -581,7 +721,7 @@ class MultiUserComboBoxCom extends React.Component {
     handleValueChange(selectedOption) {
         // const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange)
-            this.props.onValueChange(this.props.name, selectedOption,this.props.rowIndex);
+            this.props.onValueChange(this.props.name, selectedOption, this.props.rowIndex);
     }
 
     handleValueChange1(e) {
@@ -606,7 +746,7 @@ class MultiUserComboBoxCom extends React.Component {
             });
         }
         const selectedOption = this.state.SelectedOption;
-       
+
         let classNameselect = "react-select";
         if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
             classNameselect += " is-invalid";
@@ -631,5 +771,5 @@ class MultiUserComboBoxCom extends React.Component {
 
 const MultiUserComboBox = connect(mapStateToProps, mapDispatchToProps)(MultiUserComboBoxCom);
 
-export default { ElementModalText, ElementModalComboBox, CheckBox, ElementModalNumber, ProductComboBox, MultiUserComboBox };
+export default { ElementModalText, ElementModalComboBox, CheckBox, ElementModalNumber, ElementModalNumberParser, ProductComboBox, MultiUserComboBox, ElementModalTextBox };
 

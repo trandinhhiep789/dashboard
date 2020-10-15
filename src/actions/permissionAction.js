@@ -1,9 +1,9 @@
-import { callGetCache } from './cacheAction';
+import { callGetCache,callGetUserCache } from './cacheAction';
 import { GET_CACHE_USER_FUNCTION_LIST } from '../constants/functionLists';
 export function checkPermission(permissionKey) {
     //console.log("checkPermission function",permissionKey)
     return (dispatch, getState) => {
-        return dispatch(callGetCache(GET_CACHE_USER_FUNCTION_LIST)).then((result) => {
+        return dispatch(callGetUserCache(GET_CACHE_USER_FUNCTION_LIST)).then((result) => {
             let resultObject = {
                 IsPermission: false,
                 IsError: false,

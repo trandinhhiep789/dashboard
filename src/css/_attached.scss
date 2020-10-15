@@ -65,12 +65,16 @@
             color: #fff;
             border-radius: 50%;
             display: none;
-            z-index: 20;
+            z-index: 99;
+            cursor: pointer;
         }
 
         &:hover {
             .delIcon {
                 display: block;
+                &:hover {
+                    background-color: #1b1919;
+                }
             }
 
         }

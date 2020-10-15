@@ -16,7 +16,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { AREATYPE_ADD, MATERIALGROUP_ADD } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
 
 
 class AddCom extends React.Component {
@@ -37,12 +37,13 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
+        MLObject.MaterialGroupID = MLObject.MaterialGroupID.replace(/\s+/g, '');
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if(!apiResult.IsError){
-                //this.props.callClearLocalCache(ERPCOMMONCACHE_AREATYPE);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
             }            
             this.showMessage(apiResult.Message);
         });
@@ -65,7 +66,7 @@ class AddCom extends React.Component {
 
     render() {
         const dataSource = {
-            IsActived: true
+            IsActived: false
         };
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;

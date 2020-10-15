@@ -12,6 +12,8 @@ import {
     APIHostName, AddAPIPath, UpdateAPIPath, DeleteAPIPath,
     ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition
 } from "./constants";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
@@ -35,6 +37,8 @@ class MaterialGroup_InstallCondCom extends React.Component {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
+            cssNotification: "",
+            iconNotification: "",
             MaterialGroup_InstallCondDataSource: this.props.MaterialGroup_InstallCondDataSource ? this.props.MaterialGroup_InstallCondDataSource : [],
             MaterialGroup_ProductDataSource: this.props.MaterialGroup_ProductDataSource ? this.props.MaterialGroup_ProductDataSource : [],
             MaterialGroupID: this.props.MaterialGroupID,
@@ -42,6 +46,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
             ModalColumnList_Insert: ModalColumnList_Insert,
             ModalColumnList_Edit: ModalColumnList_Edit
         };
+        this.notificationDOMRef = React.createRef();
     }
 
 
@@ -81,6 +86,40 @@ class MaterialGroup_InstallCondCom extends React.Component {
             />
         );
     }
+
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
 
     initCache() {
         //lấy cache ngành hàng
@@ -246,19 +285,23 @@ class MaterialGroup_InstallCondCom extends React.Component {
                     listOption = this.getDataCombobox(this.state.SubGroup, "SubGroupID", "SubGroupName", "MainGroupID", elementValue);
                     objElement.listoption = listOption;
                     objElement.value = "-1";
+                    formData.ApplySubGroupID = ["-1"];
                 }
                 if (objElement.Name == "ApplyBrandID") {
                     listOption = this.getDataCombobox(this.state.Brand, "BrandID", "BrandName", "MainGroupID", elementValue);
                     objElement.listoption = listOption;
                     objElement.value = "-1";
+                    formData.ApplyBrandID = ["-1"];
                 }
                 if (objElement.Name == "ApplyTechspecsID") {
                     objElement.listoption = listOptionNull;
                     objElement.value = "-1";
+                    formData.ApplyTechspecsID = ["-1"];
                 }
                 if (objElement.Name == "ApplyTechspecsValueID") {
                     objElement.listoption = listOptionNull;
                     objElement.value = "-1";
+                    formData.ApplyTechspecsValueID = ["-1"];
                 }
             } else if (elementName == "ApplySubGroupID") {
                 if (objElement.Name == "ApplySubGroupID") {
@@ -269,10 +312,12 @@ class MaterialGroup_InstallCondCom extends React.Component {
                     listOption = this.getDataCombobox(this.state.Techspecs, "TechspecsID", "TechspecsName", "SubGroupID", elementValue);
                     objElement.listoption = listOption;
                     objElement.value = "-1";
+                    formData.ApplyTechspecsID = ["-1"];
                 }
                 if (objElement.Name == "ApplyTechspecsValueID") {
                     objElement.listoption = listOptionNull;
                     objElement.value = "-1";
+                    formData.ApplyTechspecsValueID = ["-1"];
                 }
             } else if (elementName == "ApplyTechspecsID") {
                 if (objElement.Name == "ApplyTechspecsID") {
@@ -282,6 +327,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
                     listOption = this.getDataCombobox(this.state.TechspecsValue, "TechSpecsValueID", "Value", "TechSpecsID", elementValue);
                     objElement.listoption = listOption;
                     objElement.value = "-1";
+                    formData.ApplyTechspecsValueID = ["-1"];
                 }
             } else if (elementName == "ApplyTechspecsValueID") {
                 if (objElement.Name == "ApplyTechspecsValueID") {
@@ -290,6 +336,8 @@ class MaterialGroup_InstallCondCom extends React.Component {
             }
 
         }.bind(this));
+
+        
 
         if (isInsert) {
             this.setState({
@@ -300,7 +348,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
                 ModalColumnList_Edit: _ModalColumnList
             });
         }
-        //console.log("formData", listOption);
+        //console.log("formData", formData);
     }
 
     onClose() {
@@ -338,7 +386,8 @@ class MaterialGroup_InstallCondCom extends React.Component {
                                 this.props.hideModal();
                                 this.resetCombobox();
                             }
-                            this.showMessage(apiResult.Message);
+                            //this.showMessage(apiResult.Message);
+                            this.addNotification(apiResult.Message, apiResult.IsError);
                         });
 
 
@@ -406,7 +455,8 @@ class MaterialGroup_InstallCondCom extends React.Component {
                                 this.props.hideModal();
                                 this.resetCombobox();
                             }
-                            this.showMessage(apiResult.Message);
+                            //this.showMessage(apiResult.Message);
+                            this.addNotification(apiResult.Message, apiResult.IsError);
                         });
 
 
@@ -438,7 +488,8 @@ class MaterialGroup_InstallCondCom extends React.Component {
                 }
                 this.props.hideModal();
             }
-            this.showMessage(apiResult.Message);
+            //this.showMessage(apiResult.Message);
+            this.addNotification(apiResult.Message, apiResult.IsError);
         });
     }
 
@@ -517,7 +568,8 @@ class MaterialGroup_InstallCondCom extends React.Component {
             // <Collapsible trigger="Điều kiện lắp đặt của nhóm vật tư" easing="ease-in" open={true}>
 
             // </Collapsible>
-            <div className="sub-grid">
+            <div className="sub-grid detail">
+                <ReactNotification ref={this.notificationDOMRef} />
                 <DataGrid listColumn={DataGridColumnList}
                     dataSource={datasource}
                     modalElementList={this.state.ModalColumnList_Insert}
@@ -527,7 +579,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
                     onDeleteClick={this.handleDelete}
                     onInsertClick={this.handleInsert}
                     onInsertClickEdit={this.handleEdit}
-                    IsAutoPaging={true}
+                    IsAutoPaging={false}
                     RowsPerPage={10}
                     IsCustomAddLink={true}
                     headingTitle={"Điều kiện lắp đặt của nhóm vật tư"}

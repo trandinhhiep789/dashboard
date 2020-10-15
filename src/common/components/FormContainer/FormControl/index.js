@@ -4,7 +4,7 @@ import MultiSelectComboBox from "./MultiSelectComboBox";
 import MultiUserComboBox from "./MultiSelectComboBox/MultiUserComboBox";
 
 import ComboboxQTQHPX from "./CommonControl/ComboboxQTQHPX.js";
-import { callGetCache } from "../../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { connect } from 'react-redux';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_SEARCH } from '../../../../constants/actionTypes';
@@ -17,8 +17,8 @@ import "antd/dist/antd.css";
 import Select from 'react-select';
 import { formatMoney } from '../../../../utils/function';
 import { formatDateNew } from '../../../../common/library/CommonLib.js';
-import { ExportStringToDate } from "../../../../common/library/ultils";
-
+import { ExportStringToDate, ExportStringDate } from "../../../../common/library/ultils";
+import { Base64 } from 'js-base64';
 import { el } from 'date-fns/locale';
 
 
@@ -33,6 +33,9 @@ const mapDispatchToProps = dispatch => {
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
         },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
+        },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
         },
@@ -42,6 +45,120 @@ const mapDispatchToProps = dispatch => {
     }
 }
 //#endregion connect
+
+
+
+class TextBoxNew extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.handKeyDown = this.handKeyDown.bind(this);
+    }
+    static defaultProps = {
+        controltype: 'InputControl'
+    }
+
+    handleValueChange(e) {
+        if (this.props.onValueChange != null) {
+            this.props.onValueChange(e.target.name, e.target.value, "", e, undefined);
+        }
+
+    }
+
+    handKeyDown(e) {
+        if (e.key == 'Enter') {
+            if (this.props.onhandKeyDown != null) {
+                this.props.onhandKeyDown(e.target.name, e.target.value, "", e, this.props.validatonList);
+            }
+        }
+    }
+
+    render() {
+
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-4";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null) {
+            formRowClassName += this.props.classNameCustom;
+        }
+        // console.log('this.props.label', this.props.label)
+        console.log("222", Base64.decode(this.props.value), this.props.value)
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
+            className += " is-invalid";
+
+            return (
+                <div className={formRowClassName} >
+                    {this.props.label.length > 0 ?
+                        <div className={labelDivClassName}>
+                            <label className="col-form-label 2">
+                                {this.props.label}<span className="text-danger"> {star}</span>
+                            </label>
+                        </div>
+                        : ""
+                    }
+
+                    <div className={formGroupClassName}>
+                        <input type="text" name={this.props.name}
+                            onChange={this.handleValueChange}
+                            onBlur={this.handKeyDown}
+                            value={Base64.decode(this.props.value)}
+                            key={this.props.name}
+                            className={className}
+                            autoFocus={true}
+                            ref={this.props.inputRef}
+                            placeholder={this.props.placeholder}
+                            disabled={this.props.readOnly}
+                            maxLength={this.props.maxSize}
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    </div>
+                </div>
+            );
+        }
+        else {
+            return (
+                <div className={formRowClassName} >
+                    {this.props.label.length > 0 ?
+                        <div className={labelDivClassName}>
+                            <label className="col-form-label 2">
+                                {this.props.label}<span className="text-danger"> {star}</span>
+                            </label>
+                        </div>
+                        : ""
+                    }
+                    <div className={formGroupClassName}>
+                        <input type="text" name={this.props.name}
+                            onChange={this.handleValueChange}
+                            onKeyPress={(event) => this.handKeyDown(event)}
+                            value={Base64.decode(this.props.value)}
+                            key={this.props.name}
+                            className={className}
+                            autoFocus={false}
+                            ref={this.props.inputRef}
+                            placeholder={this.props.placeholder}
+                            disabled={this.props.readOnly}
+                            maxLength={this.props.maxSize}
+                        />
+                    </div>
+                </div>
+            );
+        }
+    }
+}
 
 
 class TextBox extends React.Component {
@@ -241,16 +358,22 @@ class FormControlComboBoxCom extends Component {
         this.state = { Listoption: [], SelectedOption: [] }
     }
     handleValueChange(selectedOption) {
-    debugger
         const comboValues = this.getComboValue(selectedOption);
-        if (this.props.onValueChange != null)
+        if (this.props.isselectedOp) {
+            if (this.props.onValueChange != null)
+            this.props.onValueChange(this.props.name, selectedOption, this.props.namelabel, selectedOption != null ? selectedOption.name : "", this.props.filterrest);
+        }
+        else {
+            if (this.props.onValueChange != null)
             this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.name : "", this.props.filterrest);
+        }
+       
     }
 
     bindcombox(value, listOption) {
         let values = value;
         let selectedOption = [];
-        if (values == null || values === -1)
+        if ((values == null || values === -1) && !this.props.isMultiSelect)
             return { value: -1, label: "--Vui lòng chọn--" };
         if (typeof values.toString() == "string")
             values = values.toString().split(",");
@@ -286,38 +409,63 @@ class FormControlComboBoxCom extends Component {
             const cacheKeyID = this.props.loaditemcachekeyid;
             const valueMember = this.props.valuemember;
             const nameMember = this.props.nameMember;
-            this.props.callGetCache(cacheKeyID).then((result) => {
-                if (!isMultiSelect) {
+            if (this.props.isusercache == true) {
+                this.props.callGetUserCache(cacheKeyID).then((result) => {
+                    //console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
                     listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
-                }
-                else {
-                    listOption = [];
-                }
-
-                if (!result.IsError && result.ResultObject.CacheData != null) {
-                    if (typeof filterobj != undefined && filterValue != "") {
-
-                        result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
-                            // console.log("valueMember", cacheItem[valueMember])
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember] });
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        result.ResultObject.CacheData.map((cacheItem) => {
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
                         }
                         );
+                        this.setState({ Listoption: listOption });
+                        const aa = this.bindcombox(this.props.value, listOption);
+                        this.setState({ SelectedOption: aa });
+
                     }
                     else {
-                        result.ResultObject.CacheData.map((cacheItem) => {
-                            // console.log("11", cacheItem[valueMember])
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember] });
-                        }
-                        );
+                        this.setState({ Listoption: listOption });
+
                     }
-                    this.setState({ Listoption: listOption, Data: result.ResultObject.CacheData });
-                    const strSelectedOption = this.bindcombox(this.props.value, listOption);
-                    this.setState({ SelectedOption: strSelectedOption });
-                }
-                else {
-                    this.setState({ Listoption: listOption });
-                }
-            });
+                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                });
+
+            }
+            else {
+                this.props.callGetCache(cacheKeyID).then((result) => {
+                    if (!isMultiSelect) {
+                        listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                    }
+                    else {
+                        listOption = [];
+                    }
+
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        if (typeof filterobj != undefined && filterValue != "") {
+
+                            result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
+                                // console.log("valueMember", cacheItem[valueMember])
+                                listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
+                            }
+                            );
+                        }
+                        else {
+                            result.ResultObject.CacheData.map((cacheItem) => {
+                                // console.log("11", cacheItem[valueMember])
+                                listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
+                            }
+                            );
+                        }
+                        this.setState({ Listoption: listOption, Data: result.ResultObject.CacheData });
+                        const strSelectedOption = this.bindcombox(this.props.value, listOption);
+                        this.setState({ SelectedOption: strSelectedOption });
+                    }
+                    else {
+                        this.setState({ Listoption: listOption });
+                    }
+                });
+            }
+
         }
         else {
             this.setState({ Listoption: listOption });
@@ -326,7 +474,6 @@ class FormControlComboBoxCom extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-
         if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             let { filterobj, valuemember, nameMember, isMultiSelect } = this.props;
@@ -335,7 +482,7 @@ class FormControlComboBoxCom extends Component {
                 if (!isMultiSelect)
                     listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
                 this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
-                    listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember] });
+                    listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
                 }
                 );
                 this.setState({ Listoption: listoptionnew });
@@ -344,6 +491,11 @@ class FormControlComboBoxCom extends Component {
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
             const aa = this.bindcombox(nextProps.value, this.state.Listoption);
             this.setState({ SelectedOption: aa });
+        }
+
+        if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            this.setState({ Listoption: nextProps.listoption });
         }
     }
 
@@ -399,20 +551,224 @@ class FormControlComboBoxCom extends Component {
     }
 }
 export const FormControlComboBox = connect(mapStateToProps, mapDispatchToProps)(FormControlComboBoxCom);
+
+class FormControlComboBoxUserCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.state = { Listoption: [], SelectedOption: [] }
+    }
+    handleValueChange(selectedOption) {
+        const comboValues = this.getComboValue(selectedOption);
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(this.props.name, comboValues, selectedOption);
+    }
+
+    bindcombox(value, listOption) {
+        let values = value;
+        let selectedOption = [];
+        if ((values == null || values === -1) && !this.props.isMultiSelect)
+            return { value: -1, label: "--Vui lòng chọn--" };
+        if (typeof values.toString() == "string")
+            values = values.toString().split(",");
+        for (let i = 0; i < values.length; i++) {
+            for (let j = 0; j < listOption.length; j++) {
+                if (values[i] == listOption[j].value) {
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label, name: listOption[j].name });
+                }
+            }
+        }
+        return selectedOption;
+    }
+    getComboValue(selectedOption) {
+        let values = [];
+        if (selectedOption == null)
+            return -1;
+        if (this.props.isMultiSelect) {
+            for (let i = 0; i < selectedOption.length; i++) {
+                values.push(selectedOption[i].value);
+            }
+        } else {
+            return selectedOption.value;
+        }
+
+        return values;
+    }
+    //#endregion tree category
+
+    componentDidMount() {
+        let listOption = this.props.listoption;
+        let { filterValue, filterobj, isMultiSelect } = this.props;
+        if (this.props.isautoloaditemfromcache) {
+            const cacheKeyID = this.props.loaditemcachekeyid;
+            const valueMember = this.props.valuemember;
+            const nameMember = this.props.nameMember;
+            if (this.props.isusercache == true) {
+                this.props.callGetUserCache(cacheKeyID).then((result) => {
+                    //console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
+                    listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        result.ResultObject.CacheData.map((cacheItem) => {
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+                        }
+                        );
+                        this.setState({ Listoption: listOption });
+                        const aa = this.bindcombox(this.props.value, listOption);
+                        this.setState({ SelectedOption: aa });
+
+                    }
+                    else {
+                        this.setState({ Listoption: listOption });
+
+                    }
+                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                });
+
+            }
+            else {
+                this.props.callGetCache(cacheKeyID).then((result) => {
+                    if (!isMultiSelect) {
+                        listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                    }
+                    else {
+                        listOption = [];
+                    }
+
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        if (typeof filterobj != undefined && filterValue != "") {
+
+                            result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
+                                // console.log("valueMember", cacheItem[valueMember])
+                                listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
+                            }
+                            );
+                        }
+                        else {
+                            result.ResultObject.CacheData.map((cacheItem) => {
+                                // console.log("11", cacheItem[valueMember])
+                                listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
+                            }
+                            );
+                        }
+                        this.setState({ Listoption: listOption, Data: result.ResultObject.CacheData });
+                        const strSelectedOption = this.bindcombox(this.props.value, listOption);
+                        this.setState({ SelectedOption: strSelectedOption });
+                    }
+                    else {
+                        this.setState({ Listoption: listOption });
+                    }
+                });
+            }
+
+        }
+        else {
+            this.setState({ Listoption: listOption });
+            const strSelectedOption = this.bindcombox(this.props.value, listOption);
+            this.setState({ SelectedOption: strSelectedOption });
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            let { filterobj, valuemember, nameMember, isMultiSelect } = this.props;
+            if (typeof filterobj != undefined && nextProps.filterValue != "") {
+                let listoptionnew = []
+                if (!isMultiSelect)
+                    listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
+                this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
+                    listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
+                }
+                );
+                this.setState({ Listoption: listoptionnew });
+            }
+        }
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
+            const aa = this.bindcombox(nextProps.value, this.state.Listoption);
+            this.setState({ SelectedOption: aa });
+        }
+
+        if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            this.setState({ Listoption: nextProps.listoption });
+        }
+    }
+
+    render() {
+        let { name, label, rowspan, colspan, labelcolspan, validatonList, isMultiSelect, disabled, validationErrorMessage, placeholder, listoption } = this.props;
+        let formRowClassName = "form-row";
+        if (rowspan != null) {
+            formRowClassName = "form-row col-md-" + rowspan;
+        }
+
+        let formGroupClassName = "form-group col-md-4";
+        if (colspan != null) {
+            formGroupClassName = "form-group col-md-" + colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + labelcolspan;
+        }
+        let star;
+        if (validatonList != undefined && validatonList.includes("Comborequired") == true) {
+            star = '*'
+        }
+        let className = "react-select";
+        if (validationErrorMessage != undefined && validationErrorMessage != "") {
+            className += " is-invalid";
+        }
+        const selectedOption = this.state.SelectedOption;
+        const listOption = this.state.Listoption;
+        return (
+            <div className={formRowClassName} >
+                <div className={labelDivClassName}>
+                    <label className="col-form-label 6">
+                        {label}<span className="text-danger"> {star}</span>
+                    </label>
+                </div>
+                <div className={formGroupClassName}>
+                    <Select
+                        value={selectedOption}
+                        name={name}
+                        ref={this.props.inputRef}
+                        onChange={this.handleValueChange}
+                        options={listOption}
+                        isDisabled={disabled}
+                        isMulti={isMultiSelect}
+                        isSearchable={true}
+                        placeholder={placeholder}
+                        className={className}
+                    />
+                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{validationErrorMessage}</li></ul></div>
+                </div>
+            </div>
+        );
+    }
+}
+export const FormControlComboBoxUser = connect(mapStateToProps, mapDispatchToProps)(FormControlComboBoxUserCom);
 class FormControlDatetimeCom extends Component {
     constructor(props) {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
     }
     handleValueChange(name, moment) {
-
+        let noGetTime = false;
+        if(!this.props.IsGetTime){
+            noGetTime= false
+        }
+        else{
+            noGetTime= true
+        }
+        const momentNew = ExportStringDate(moment, noGetTime)
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, moment);
+            this.props.onValueChange(this.props.name, momentNew);
     }
     componentDidMount() {
 
     }
-
+    disabledDate(current) {
+        // Can not select days before today and today
+        return current && current <= moment().startOf('day');
+    }
 
     render() {
         let { name, label, timeFormat, dateFormat, colspan, value, validationErrorMessage } = this.props;
@@ -426,7 +782,7 @@ class FormControlDatetimeCom extends Component {
             className = this.props.CSSClassName;
         let formGroupClassName = "form-group col-md-4";
         if (this.props.colspan != null) {
-            formGroupClassName = "form-group col-md-" + this.props.colspan;
+            formGroupClassName = "form-group col-md-" + this.props.colspan + " " + this.props.className;
         }
         let labelDivClassName = "form-group col-md-2";
         if (this.props.labelcolspan != null) {
@@ -458,8 +814,10 @@ class FormControlDatetimeCom extends Component {
 
                 <div className={formGroupClassName}>
                     <DatePicker
+                        disabledDate={this.props.ISdisabledDate == true ? this.disabledDate : ''}
                         showTime={isShowTime}
-                        value={(value != '' && value != null) ? moment(value, dateFormat) : ''}
+                        // value={(value != '' && value != null) ? moment(value, dateFormat) : ''}
+                        defaultValue={(value != '' && value != null) ? moment(value, 'YYYY-MM-DD HH:mm') : ''}
                         format={dateFormat}
                         className={className}
                         dropdownClassName="tree-select-custom"
@@ -490,6 +848,7 @@ class FormControlDatetimeNewCom extends Component {
     handleValueChange(name, moment) {
 
         const momentNew = ExportStringToDate(moment)
+        console.log("moment", moment, momentNew)
         if (this.props.onValueChange != null)
             this.props.onValueChange(this.props.name, momentNew);
     }
@@ -1015,9 +1374,6 @@ class ComboBoxCom extends Component {
         }
     }
 }
-
-
-
 export const ComboBox = connect(null, mapDispatchToProps)(ComboBoxCom);
 
 class SubmitButton extends React.Component {
@@ -1452,26 +1808,51 @@ class ComboBoxSelectCom extends Component {
             const cacheKeyID = this.props.loaditemcachekeyid;
             const valueMember = this.props.valuemember;
             const nameMember = this.props.nameMember;
-            //    console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
-            this.props.callGetCache(cacheKeyID).then((result) => {
-                //console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
-                listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
-                if (!result.IsError && result.ResultObject.CacheData != null) {
-                    result.ResultObject.CacheData.map((cacheItem) => {
-                        listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+            if (this.props.isusercache == true) {
+                this.props.callGetUserCache(cacheKeyID).then((result) => {
+                    //console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
+                    listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        result.ResultObject.CacheData.map((cacheItem) => {
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
+                        }
+                        );
+                        this.setState({ Listoption: listOption });
+                        const aa = this.bindcombox(this.props.value, listOption);
+                        this.setState({ SelectedOption: aa });
+
                     }
-                    );
-                    this.setState({ Listoption: listOption });
-                    const aa = this.bindcombox(this.props.value, listOption);
-                    this.setState({ SelectedOption: aa });
+                    else {
+                        this.setState({ Listoption: listOption });
 
-                }
-                else {
-                    this.setState({ Listoption: listOption });
+                    }
+                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                });
 
-                }
-                //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
-            });
+            }
+            else {
+                this.props.callGetCache(cacheKeyID).then((result) => {
+                    //console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
+                    listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        result.ResultObject.CacheData.map((cacheItem) => {
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
+                        }
+                        );
+                        this.setState({ Listoption: listOption });
+                        const aa = this.bindcombox(this.props.value, listOption);
+                        this.setState({ SelectedOption: aa });
+
+                    }
+                    else {
+                        this.setState({ Listoption: listOption });
+
+                    }
+                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                });
+            }
+            //    console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
+
         }
         else {
             //console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
@@ -1572,8 +1953,9 @@ export const ComboBoxSelect = connect(mapStateToProps, mapDispatchToProps)(Combo
 
 
 export default {
-    FormControlTextBox, TextBox, TextArea, CheckBox, modal, TextBoxCurrency,
+    FormControlTextBox, TextBox, TextArea, CheckBox, modal, TextBoxCurrency, TextBoxNew,
     FormControlComboBox,
+    FormControlComboBoxUser,
     FormControlDatetime,
     FormControlDatetimeNew,
     ComboBox,

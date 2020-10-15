@@ -39,6 +39,16 @@ class InfoProductCom extends Component {
         return r;
     }
 
+    groupByNew(data, fields, sumBy = 'Quantity') {
+        let r = [], cmp = (x, y) => fields.reduce((a, b) => a && x[b] == y[b], true);
+        data.forEach(x => {
+            let y = r.find(z => cmp(x, z));
+            let w = [...fields, sumBy].reduce((a, b) => (a[b] = x[b], a), {})
+            y ? y[sumBy] = +y[sumBy] + (+x[sumBy]) : r.push(w);
+        });
+        return r;
+    }
+
     handleShowTotalSaleMaterialMoney() {
         const postData = [
             {
@@ -76,18 +86,19 @@ class InfoProductCom extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.state.ShipmentOrder_FeeLst && this.state.ShipmentOrder_FeeLst.map((item, index) => {
-                                        return (
-                                            <tr key={index}>
-                                                <td>{item.ShipmentOrderID}</td>
-                                                <td>{item.ShipmentFeeTypeName}</td>
-                                                <td>{item.ProductID}</td>
-                                                <td>{item.ProductName}</td>
-                                                <td>{item.Fee}</td>
-                                                <td>{item.Note}</td>
-                                            </tr>
-                                        )
-                                    })
+                                    {
+                                        // this.state.ShipmentOrder_FeeLst && this.state.ShipmentOrder_FeeLst.map((item, index) => {
+                                        //     return (
+                                        //         <tr key={index}>
+                                        //             <td>{item.ShipmentOrderID}</td>
+                                        //             <td>{item.ShipmentFeeTypeName}</td>
+                                        //             <td>{item.ProductID}</td>
+                                        //             <td>{item.ProductName}</td>
+                                        //             <td>{item.Fee}</td>
+                                        //             <td>{item.Note}</td>
+                                        //         </tr>
+                                        //     )
+                                        // })
                                     }
                                 </tbody>
                             </table>
@@ -101,11 +112,15 @@ class InfoProductCom extends Component {
 
     render() {
 
+        let objgroupByInstallBundleID = [];
+
+        if (this.state.ShipmentOrder.ShipmentOrder_Material2List != undefined && this.state.ShipmentOrder.ShipmentOrder_Material2List.length > 0) {
+            objgroupByInstallBundleID = this.groupByNew(this.state.ShipmentOrder.ShipmentOrder_Material2List, ['InstallProductID', 'InstallProductName']);
+        }
         return (
             <div className="card">
                 <h4 className="card-title"><strong>Thông tin hàng hóa</strong></h4>
                 <div className="card-body">
-
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Loại hàng hóa:</label>
@@ -120,6 +135,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label">{this.state.ShipmentOrder.NumberOfPackages}</label>
                         </div>
                     </div>
+
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Tổng khối lượng:</label>
@@ -134,6 +150,7 @@ class InfoProductCom extends Component {
                             <label className="col-form-label">{this.state.ShipmentOrder.Length}x{this.state.ShipmentOrder.Width}x{this.state.ShipmentOrder.Height}m</label>
                         </div>
                     </div>
+
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Xem thông tin phí dịch vụ:</label>
@@ -152,6 +169,7 @@ class InfoProductCom extends Component {
                             </label>
                         </div>
                     </div>
+
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Tổng tiền bán vật tư:</label>
@@ -167,6 +185,7 @@ class InfoProductCom extends Component {
                         </div>
 
                     </div>
+
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Thu tiền khách hàng:</label>
@@ -183,6 +202,7 @@ class InfoProductCom extends Component {
                             </label>
                         </div>
                     </div>
+
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Nộp tiền thu ngân:</label>
@@ -197,9 +217,10 @@ class InfoProductCom extends Component {
                             <label className="col-form-label bold">Ghi chú:</label>
                         </div>
                         <div className="form-group col-md-10">
-                            <label className="col-form-label" >{this.state.ShipmentOrder.OrderNote.split("-")[0]}</label>
+                            <label className="col-form-label" >{this.state.ShipmentOrder.OrderNote}</label>
                         </div>
                     </div>
+
                     <div className="form-row">
                         <div className="col-md-12">
                             <h3 className="title">Danh sách hàng hóa:</h3>
@@ -208,42 +229,41 @@ class InfoProductCom extends Component {
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                 <thead className="thead-light">
                                     <tr>
-                                        <th className="jsgrid-header-cell"></th>
-                                        <th className="jsgrid-header-cell">Cần lắp đặt</th>
-                                        <th className="jsgrid-header-cell">Mã sản phẩm</th>
-                                        <th className="jsgrid-header-cell">Sản phẩm</th>
-                                        <th className="jsgrid-header-cell">Kiện</th>
-                                        <th className="jsgrid-header-cell">Giá</th>
-                                        <th className="jsgrid-header-cell">Số lượng</th>
-                                        <th className="jsgrid-header-cell">Đơn vị tính</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "6%" }}>Cần lắp đặt</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "36%" }}>Sản phẩm</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "12%" }}>Serial/IMEI</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "8%" }}>Kiện</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "8%" }}>Số lượng</th>
+                                        <th className="jsgrid-header-cell" style={{ width: "12%" }}>Đơn vị tính</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).map((item, index) => {
-                                        return (
-                                            <tr key={index}>
-                                                <td>
-                                                    <img src='/src/img/may-lanh-lg-v10enh-1-1-org.jpg' className="img-product" />
-                                                </td>
-                                                <td>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsInstallItem} />
-                                                            <span className="cr">
-                                                                <i className="cr-icon fa fa-check"></i>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>{item.ProductID}</td>
-                                                <td>{item.ProductName}</td>
-                                                <td>{item.PackingUnitName}</td>
-                                                <td>{formatMoney(item.Price, 0)}đ</td>
-                                                <td>{item.Quantity}</td>
-                                                <td>{item.QuantityUnitName}</td>
-                                            </tr>
-                                        )
-                                    })
+                                    {
+                                        this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName', 'ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).map((item, index) => {
+                                            return (
+                                                <tr key={"Product" + index}>
+                                                    <td>
+                                                        <div className="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsInstallItem} />
+                                                                <span className="cr">
+                                                                    <i className="cr-icon fa fa-check"></i>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                    <td>{item.ProductID}</td>
+                                                    <td>{item.ProductName}</td>
+                                                    <td>{item.ProductSerial}</td>
+                                                    <td>{item.PackingUnitName}</td>
+                                                    <td>{formatMoney(item.Price, 0)}đ</td>
+                                                    <td>{item.Quantity}</td>
+                                                    <td>{item.QuantityUnitName}</td>
+                                                </tr>
+                                            )
+                                        })
                                     }
                                 </tbody>
                             </table>
@@ -258,7 +278,6 @@ class InfoProductCom extends Component {
                                 <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                     <thead className="thead-light">
                                         <tr>
-                                            <th className="jsgrid-header-cell">Sản phẩm lắp đặt</th>
                                             <th className="jsgrid-header-cell">Sản phẩm</th>
                                             <th className="jsgrid-header-cell">Số lượng tạm ứng</th>
                                             <th className="jsgrid-header-cell">Số lượng miễn phí</th>
@@ -268,24 +287,39 @@ class InfoProductCom extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.state.ShipmentOrder.ShipmentOrder_Material2List && this.state.ShipmentOrder.ShipmentOrder_Material2List.map((item, index) => {
-                                             if (item.ProductID != "" && item.ProductID != null) {
-                                                return (<tr key={index}>
-                                                    <td>{item.InstallProductID + '-' + item.InstallProductName}</td>
-                                                    <td>{item.ProductID + '-' + item.ProductName}</td>
-                                                    <td>{item.AdvanceQuantity}</td>
-                                                    <td>{item.FreeQuantity}</td>
-                                                    <td>{item.SaleQuantity}</td>
-                                                    <td>{formatMoney( item.SalePriceWithVAT, 0)}đ</td>
-                                                    <td>{formatMoney(this.Pricevat(item.SaleQuantity, item.SalePriceWithVAT), 0)}đ</td>
-                                                </tr>)
 
-                                            }
-                                        })
-                                        }
+                                        {objgroupByInstallBundleID != null &&
+                                            objgroupByInstallBundleID.map((rowItem, rowIndex) => {
+                                                let obj = this.state.ShipmentOrder.ShipmentOrder_Material2List.filter(n => n.InstallProductID == [rowItem.InstallProductID]);
+                                                return (
+                                                    <React.Fragment key={rowIndex}>
+                                                        <tr className="totalCurrency" key={"totalCurrency" + rowIndex}>
+                                                            <td colSpan={8}>
+                                                                <div className="groupTotalCurrency">
+                                                                    <span className="item txtTotal">{rowItem.InstallProductID + " - " + rowItem.InstallProductName}</span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        {
+                                                            obj.map((item, Index) => {
+                                                                if (item.ProductID != "" && item.ProductID != null) {
+                                                                    return (<tr key={rowIndex + Index}>
+                                                                        <td>{item.ProductID + '-' + item.ProductName}</td>
+                                                                        <td>{item.AdvanceQuantity}</td>
+                                                                        <td>{item.FreeQuantity}</td>
+                                                                        <td>{item.SaleQuantity}</td>
+                                                                        <td>{formatMoney(item.SalePriceWithVAT, 0)}đ</td>
+                                                                        <td>{formatMoney(this.Pricevat(item.SaleQuantity, item.SalePriceWithVAT), 0)}đ</td>
+                                                                    </tr>)
 
+                                                                }
+                                                            })
+                                                        }
+                                                    </React.Fragment>
+                                                );
+                                            })}
                                         <tr className="totalCurrency">
-                                            <td colSpan={7 - 1}>
+                                            <td colSpan={6 - 1}>
                                                 <div className="groupTotalCurrency">
                                                     <span className="item txtTotal">Tổng</span>
                                                 </div>
@@ -301,6 +335,7 @@ class InfoProductCom extends Component {
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
 

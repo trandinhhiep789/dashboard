@@ -97,15 +97,20 @@ class AddCom extends React.Component {
                 if (!apiResult.IsError) {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
+                        AdvanceRequestDetailList: apiResult.ResultObject,
                         AdvanceRequestTypeID: value,
                         IsLoadDataComplete: true
                     });
                 }
                 else {
+
                     this.setState({
+                        IsCallAPIError: !apiResult.IsError,
                         gridDataSource: [],
                         AdvanceRequestTypeID: value
                     });
+                    let strMessage = ReactHtmlParser(apiResult.Message);
+                    this.showMessage(strMessage);
 
                 }
             });
@@ -127,15 +132,20 @@ class AddCom extends React.Component {
                 if (!apiResult.IsError) {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
+                        AdvanceRequestDetailList: apiResult.ResultObject,
                         StoreID: value,
                         IsLoadDataComplete: true
                     });
                 }
                 else {
+
                     this.setState({
+                        IsCallAPIError: !apiResult.IsError,
                         gridDataSource: [],
                         StoreID: value
                     });
+                    let strMessage = ReactHtmlParser(apiResult.Message);
+                    this.showMessage(strMessage);
 
                 }
             });
@@ -231,6 +241,7 @@ class AddCom extends React.Component {
                                     validatonList={["Comborequired"]}
                                     placeholder="-- Vui lòng chọn --"
                                     isautoloaditemfromcache={true}
+                                    isusercache={true}
                                     loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
                                     valuemember="StoreID"
                                     nameMember="StoreName"
@@ -312,13 +323,27 @@ class AddCom extends React.Component {
                                                         <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                                             <thead className="thead-light">
                                                                 <tr>
-                                                                    <th className="jsgrid-header-cell" style={{ width: "100%" }}>Mã vận đơn cần tạm ứng</th>
+                                                                    <th className="jsgrid-header-cell" style={{ width: "10%" }}>Chọn</th>
+                                                                    <th className="jsgrid-header-cell" style={{ width: "80%" }}>Mã vận đơn cần tạm ứng</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 {this.state.gridDataSource.ShipmentOrderNewList.map((item, index) => {
+                                                                    debugger;
                                                                     return (
                                                                         <tr key={index}>
+                                                                            <td className="btngroupleft">
+                                                                                <div className="group-action">
+                                                                                    <div className="checkbox item-action">
+                                                                                        <label>
+                                                                                            <input type="checkbox"  className="form-control form-control-sm" name={"ShipmentOrderID"} value={item.ShipmentOrderID}  />
+                                                                                            <span className="cr">
+                                                                                                <i className="cr-icon fa fa-check"></i>
+                                                                                            </span>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
                                                                             <td>{item.ShipmentOrderID}</td>
                                                                         </tr>
                                                                     )

@@ -4,7 +4,7 @@ export const LoadAPIPath = "api/DestroyRequest/Load";
 export const LoadNewAPIPath = "api/DestroyRequest/LoadInfoNew";
 export const AddAPIPath = "api/DestroyRequest/Add";
 export const UpdateAPIPath = "api/DestroyRequest/UpdateNew";
-export const UpdateOutputAPIPath = "api/DestroyRequest/UpdateOutput";
+export const UpdateCreateSaleOrderAPIPath = "api/DestroyRequest/UpdateCreateSaleOrder";
 
 export const UpdateCurrentReviewLevelAPIPath = "api/DestroyRequest/UpdateCurrentReviewLevel";
 export const DeleteNewAPIPath = "api/DestroyRequest/DeleteNew";
@@ -17,6 +17,14 @@ export const LoadUserNameAPIByStoreIDPath = "api/DestroyRequestType_ReviewLevel_
 export const AddLogAPIPath = "api/DestroyRequest/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "DestroyRequestID";
+
+export const AddAPIAttachment = "api/DestroyRequest_Attachment/UploadFile";
+export const DeleteAPIAttachment = "api/DestroyRequest_Attachment/DeleteNew";
+
+
+export const AddAPIComment = "api/DestroyRequest_Comment/Add";
+
+
 
 export const TitleFormSearch = "Tìm kiếm danh sách yêu cầu hủy vật tư";
 export const TitleFormAdd = "Thêm yêu cầu hủy vật tư";
@@ -49,6 +57,9 @@ export const DetailAPIPath = [
 
 const dtFromdate = new Date();
 dtFromdate.setDate(new Date().getDate() - 30);
+
+const dtTodate = new Date();
+dtTodate.setDate(new Date().getDate() +1);
 
 export const InitSearchParams = [
 
@@ -249,7 +260,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Kho yêu cầu",
         DataSourceMember: "StoreName",
-        Width: 180
+        Width: 250
     },
     {
         Name: "RequestDate",
@@ -260,10 +271,10 @@ export const DataGridColumnList = [
     },
 
     {
-        Name: "RequestUser",
+        Name: "ApproverName",
         Type: "text",
         Caption: "Người yêu cầu",
-        DataSourceMember: "RequestUser",
+        DataSourceMember: "ApproverName",
         Width: 150
     },
     {
@@ -323,13 +334,14 @@ export const InputDestroyRequestDetailColumnList = [
     {
         Name: "Quantity",
         Type: "textbox",
+        // Type: "textboxNewGroup",
         Caption: "Số lượng hủy",
         Value: '',
         labelError: 'số lượng hủy',
         DataSourceMember: "Quantity",
         Width: 200,
-        validatonList: [ "number"],
-        IsNoneZero: true
+        // validatonList: [ "number"],
+        IsNoneZero: false
     },
    
 ];
@@ -552,7 +564,7 @@ export const GirdDestroyRequestRLColumnList=[
     },
     {
         Name: "reViewedDate",
-        Type: "text",
+        Type: "date",
         Caption: "Ngày duyệt",
         DataSourceMember: "reViewedDate",
         Width: 100
@@ -564,4 +576,14 @@ export const GirdDestroyRequestRLColumnList=[
         DataSourceMember: "reViewedNote",
         Width: 100
     },
+]
+
+export const MLObjectDRNoteRV = [
+    {
+        Name: "ReViewedNote",
+        DefaultValue: "",
+        BindControlName: "txtReViewedNote",
+        DataSourceMember: "ReViewedNote"
+    },
+
 ]

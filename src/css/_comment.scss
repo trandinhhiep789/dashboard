@@ -1,3 +1,5 @@
+
+
 .lstcomment {
 	.comment_account {
 		display: block;
@@ -52,6 +54,62 @@
 		.comment_account_img {
 			width: 40px;
 			height: 40px;
+		}
+	}
+	&.frmcomment{
+		padding-left: 0;
+		position: relative;
+		margin-top: 50px;
+		.comment_account {
+			position: absolute;
+			z-index: 9;
+			top: -20px;
+			left: 15px;
+			display: inline-flex;
+			line-height: 40px;
+			.comment_account_img {
+				width: 40px;
+				height: 40px;
+				margin-top: -10px;
+			}
+			.txtFullName {
+				padding-left: 10px;
+				background: white;
+				font-size: 14px;
+				font-weight: 400;
+			}
+		}
+		.txtcomment{
+			
+			textarea{
+				padding-top: 20px;
+			}
+		}
+	}
+}
+
+.Comments{
+	.lstcomment {
+		.item {
+			margin-left: 0;
+			.comment_info{
+				.comment_info_account{
+					clear: both;
+					.comment_account_name {
+						font-size: 12px;
+						font-weight: 500;
+						color: #6d6b6b;
+						padding-right: 5px;
+					}
+				}
+				.comment_info_conent{
+					clear: both;
+					margin-top: 5px;
+					.comment_account_time{
+						color: #6d6b6b;
+					}
+				}
+			}
 		}
 	}
 }

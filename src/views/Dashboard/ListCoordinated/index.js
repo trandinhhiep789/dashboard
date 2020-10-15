@@ -15,7 +15,6 @@ class ListCoordinatedCom extends Component {
 
     componentDidMount() {
     }
-
     _genCommentTime(dates) {
         const date = new Date(Date.parse(dates));
         let currentDate = new Date();
@@ -23,10 +22,10 @@ class ListCoordinatedCom extends Component {
         let minute = date.getMinutes();
         let timeDisplay = (hour < 10 ? '0' + hour : hour) + ':' + (minute < 10 ? '0' + minute : minute)
         var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
-        var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
+        var diffDays = currentDate.getDate() - date.getDate();
         var diffMinutes = parseInt((timeDiff / (3600 * 24)));
 
-        if (diffDays < 1) {
+        if (diffDays < 1 && diffDays > -1) {
             if (diffMinutes < 120) {
                 return 'Cần giao gấp (' + timeDisplay + ')';
             }
@@ -40,6 +39,7 @@ class ListCoordinatedCom extends Component {
             return date.getDate() + '/' + (month < 10 ? '0' + month : month) + '/' + date.getFullYear() + " " + timeDisplay;
         }
     }
+    
     _genCommentCarrierPartner(CarrierTypeID, CarrierTypeName) {
         if (CarrierTypeID < 1) {
 
@@ -68,7 +68,7 @@ class ListCoordinatedCom extends Component {
             <div className="col-lg-12">
                 <div className="card shadow-1">
                     <div className="card-header">
-                        <h5 className="card-title">Danh sách vẫn đơn chưa điều phối</h5>
+                        <h5 className="card-title">Danh sách vận đơn chưa điều phối</h5>
                     </div>
                     <div className="card-body">
                         <div className=" table-responsive">

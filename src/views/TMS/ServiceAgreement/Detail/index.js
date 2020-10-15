@@ -38,6 +38,7 @@ import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import AbilityElement from "./Component/AbilityElement.js";
 import FeeAppendixDetailElement from "./Component/FeeAppendixDetailElement.js";
 import ReactNotification from "react-notifications-component";
+import  {Base64} from 'js-base64';
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -61,6 +62,7 @@ class DetailCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(DetailAPIPath);
+        console.log('id', this.props.match.params.id)
         this.callLoadData(this.props.match.params.id);
     }
 

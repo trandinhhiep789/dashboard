@@ -1,6 +1,9 @@
+export const APIHostName = "TMSAPI";
 export const AddAPIPath = "api/Partner_CoordinatorStore/Add";
 export const UpdateAPIPath = "api/Partner_CoordinatorStore/Update";
 export const DeleteAPIPath = "api/Partner_CoordinatorStore/Delete";
+export const GetCreateAdSaleOrderAPIPath = "api/AdvanceRequest/CreateAdvanceRequestSaleOrder";
+export const BackLink = "/AdvanceRequest";
 
 export const ModalColumnList_Insert = [
     // {

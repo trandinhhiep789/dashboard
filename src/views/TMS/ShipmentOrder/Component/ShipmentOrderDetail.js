@@ -1,25 +1,32 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { formatDate } from "../../../../common/library/CommonLib.js";
+import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
 import { ModalManager } from 'react-dynamic-modal';
 import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
-import { callGetCache } from "../../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
+import FormControl from "../../../../common/components/FormContainer/FormControl";
 import {
     APIHostName,
 } from "../constants";
+import { Link } from "react-router-dom";
 class ShipmentOrderDetailCom extends Component {
     constructor(props) {
         super(props);
         this.handleShipWorkFlowInsert = this.handleShipWorkFlowInsert.bind(this);
+        this.handleUpdateExpectedDelivery = this.handleUpdateExpectedDelivery.bind(this);
+
         this.state = {
             ShipmentOrder: this.props.ShipmentOrderDetail,
             validationErrorMessage: null,
             ShipmentOrder_WorkFlow: {},
-            IsPermision: false
+            IsPermision: false,
+            IsUpdateDate: false,
+            IsDisable: true,
+            dtExpectedDeliveryDate: this.props.ShipmentOrderDetail.ExpectedDeliveryDate
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -40,7 +47,7 @@ class ShipmentOrderDetailCom extends Component {
                 return
             }
             else {
-                this.props.callGetCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+                this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
                     if (!result.IsError && result.ResultObject.CacheData != null) {
                         for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
                             if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
@@ -105,12 +112,12 @@ class ShipmentOrderDetailCom extends Component {
                             this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
                                 this.openViewStepModalFunction();
                             });
-    
+
                         } else {
                             this.setState({ ShipmentOrder_WorkFlow: ShipmentOrder_WorkFlow, validationErrorMessage: null }, () => {
                                 this.openViewStepModalFunction();
                             });
-    
+
                         }
                     })
                 }
@@ -119,7 +126,7 @@ class ShipmentOrderDetailCom extends Component {
                         this.openViewIsCollectedMoney();
                     });
                 }
-              
+
             }
         }
         else {
@@ -231,29 +238,29 @@ class ShipmentOrderDetailCom extends Component {
         //     });
         // }
         // else {
-            ShipmentOrder_WorkFlow.IsProcess = true;
-            ShipmentOrder_WorkFlow.ProcessUser = this.props.AppInfo.LoginInfo.Username;
-            ShipmentOrder_WorkFlow.CreatedOrderTime = this.state.ShipmentOrder.CreatedOrderTime;
-            ShipmentOrder_WorkFlow.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-            let objWorkFlowProcessingRequest = {
-                ShipmentOrderID: ShipmentOrder_WorkFlow.ShipmentOrderID,
-                ShipmentOrderStepID: ShipmentOrder_WorkFlow.ShipmentOrderStepID,
-                CurrentShipmentOrderStepID: this.state.ShipmentOrder.CurrentShipmentOrderStepID,
-                ProcessUser: ShipmentOrder_WorkFlow.ProcessUser,
-                ProcessGeoLocation: "",
-                Note: ShipmentOrder_WorkFlow.Note
+        ShipmentOrder_WorkFlow.IsProcess = true;
+        ShipmentOrder_WorkFlow.ProcessUser = this.props.AppInfo.LoginInfo.Username;
+        ShipmentOrder_WorkFlow.CreatedOrderTime = this.state.ShipmentOrder.CreatedOrderTime;
+        ShipmentOrder_WorkFlow.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        let objWorkFlowProcessingRequest = {
+            ShipmentOrderID: ShipmentOrder_WorkFlow.ShipmentOrderID,
+            ShipmentOrderStepID: ShipmentOrder_WorkFlow.ShipmentOrderStepID,
+            CurrentShipmentOrderStepID: this.state.ShipmentOrder.CurrentShipmentOrderStepID,
+            ProcessUser: ShipmentOrder_WorkFlow.ProcessUser,
+            ProcessGeoLocation: "",
+            Note: ShipmentOrder_WorkFlow.Note
+        }
+        this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/ProcessWorkFlow', objWorkFlowProcessingRequest).then((apiResult) => {
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.setState({
+                    ShipmentOrder: apiResult.ResultObject
+                });
+                if (this.props.onhandleChange != null)
+                    this.props.onhandleChange(apiResult.ResultObject)
+                ModalManager.close();
             }
-            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/ProcessWorkFlow', objWorkFlowProcessingRequest).then((apiResult) => {
-                this.addNotification(apiResult.Message, apiResult.IsError);
-                if (!apiResult.IsError) {
-                    this.setState({
-                        ShipmentOrder: apiResult.ResultObject
-                    });
-                    if (this.props.onhandleChange != null)
-                        this.props.onhandleChange(apiResult.ResultObject)
-                    ModalManager.close();
-                }
-            });
+        });
         //}
     }
 
@@ -290,6 +297,42 @@ class ShipmentOrderDetailCom extends Component {
         });
     }
 
+
+    onValueChangeControlDatetime(name, mod) {
+        this.setState({
+            dtExpectedDeliveryDate: mod
+        })
+    }
+    handleUpdateExpectedDelivery(id) {
+
+        if (id == 1) {
+            this.setState({
+                IsUpdateDate: true,
+                IsDisable: false
+            })
+        }
+        if (id == 2) {
+            this.setState({
+                IsUpdateDate: false,
+                IsDisable: true
+            })
+        }
+        if (id == 3) {
+            let objShipmentOrder = { ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID, ExpectedDeliveryDate: this.state.dtExpectedDeliveryDate };
+            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateExpectedDeliveryDate', objShipmentOrder).then((apiResult) => {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                if (!apiResult.IsError) {
+                    this.setState({
+                        IsUpdateDate: false,
+                        IsDisable: true
+                    })
+                    ModalManager.close();
+                }
+            });
+        }
+    }
+
+
     render() {
         let strShipmentOrderStepName = "";
         let IsMustCompleteCollection = false;
@@ -297,7 +340,8 @@ class ShipmentOrderDetailCom extends Component {
             strShipmentOrderStepName = this.state.ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === this.state.ShipmentOrder.CurrentShipmentOrderStepID)[0].ShipmentOrderStepName
             IsMustCompleteCollection = this.state.ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === this.state.ShipmentOrder.CurrentShipmentOrderStepID)[0].IsMustCompleteCollection
         }
-
+        const { ShipmentOrder, IsUpdateDate, IsDisable } = this.state;
+        const linkHistoryTransaction = "/PartnerTransaction/Edit/" + ShipmentOrder.PartnerTransactionID;
         return (
             <div className="card">
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -374,12 +418,54 @@ class ShipmentOrderDetailCom extends Component {
                         <div className="form-group col-md-4">
                             <label className="col-form-label" >{formatDate(this.state.ShipmentOrder.CreatedOrderTime)}</label>
                         </div>
-                        <div className="form-group col-md-2">
+                        <div className="form-group col-md-5 dateTimeCus">
+                            <FormControl.FormControlDatetime
+                                name="dtCreatedOrderTime"
+                                colspan="7"
+                                labelcolspan="5"
+                                disabled={IsDisable}
+                                timeFormat={false}
+                                ISdisabledDate={true}
+                                dateFormat="DD-MM-YYYY HH:mm"//"YYYY-MM-DD HH:mm"
+                                IsGetTime={true}
+                                label="Thời gian giao dự kiến:"
+                                placeholder="Thời gian giao dự kiến"
+                                controltype="InputControl"
+                                onValueChange={this.onValueChangeControlDatetime.bind(this)}
+                                value={this.state.dtExpectedDeliveryDate}
+                                validatonList={["required"]}
+                                datasourcemember="CreatedOrderTime"
+                                className="frmDateTime"
+                            />
+
+                        </div>
+                        <div className="form-group col-md-1">
+                            <div className="group-btn-update">
+                                {
+                                    IsUpdateDate == false ?
+                                        <button className="btn btn-update-submit" type="button" onClick={() => this.handleUpdateExpectedDelivery(1)}>
+                                            <i className="ti ti-pencil-alt"></i>
+                                        </button>
+                                        :
+                                        <React.Fragment>
+                                            <button className="btn btn-update-submit" type="button" onClick={() => this.handleUpdateExpectedDelivery(3)}>
+                                                <i className="ti-check"></i>
+                                            </button>
+                                            <button className="btn btn-update-cancel" type="button" onClick={() => this.handleUpdateExpectedDelivery(2)}>
+                                                <i className="ti-close"></i>
+                                            </button>
+                                        </React.Fragment>
+                                }
+
+                            </div>
+                        </div>
+                        {/* <div className="form-group col-md-2">
                             <label className="col-form-label bold">Thời gian giao dự kiến:</label>
                         </div>
                         <div className="form-group col-md-4">
-                            <label className="col-form-label">{formatDate(this.state.ShipmentOrder.ExpectedDeliveryDate)}</label>
-                        </div>
+                             <label className="col-form-label">{formatDate(this.state.ShipmentOrder.ExpectedDeliveryDate)}</label> 
+                            
+                        </div> */}
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-2">
@@ -410,6 +496,22 @@ class ShipmentOrderDetailCom extends Component {
                             </div>
                             : ""
                     }
+                    <div className="form-row">
+                        <div className="form-group col-md-2">
+                            <label className="col-form-label bold">Lịch sử giao dịch:</label>
+                        </div>
+                        <div className="form-group col-md-4">
+                            <Link to={linkHistoryTransaction} target="_blank" className="btn-link">
+                                <i className="fa fa-history"></i>
+                            </Link>
+                        </div>
+                        <div className="form-group col-md-2">
+                            <label className="col-form-label bold">Mã giao dịch với đối tác:</label>
+                        </div>
+                        <div className="form-group col-md-4">
+                            <label className="col-form-label">{this.state.ShipmentOrder.PartnerSaleOrderID}</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
@@ -433,6 +535,9 @@ const mapDispatchToProps = dispatch => {
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
         }
     }
 }

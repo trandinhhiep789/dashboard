@@ -12,6 +12,8 @@ import {
     AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName,
     ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition
 } from "./constants";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
@@ -32,6 +34,8 @@ class MaterialGroup_ProductCom extends React.Component {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
+            cssNotification: "",
+            iconNotification: "",
             MaterialGroupProductDataSource: this.props.MaterialGroupProductDataSource ? this.props.MaterialGroupProductDataSource : [],
             MaterialGroup_InstallCondDataSource: this.props.MaterialGroup_InstallCondDataSource ? this.props.MaterialGroup_InstallCondDataSource : [],
             MaterialGroupID: this.props.MaterialGroupID,
@@ -39,6 +43,8 @@ class MaterialGroup_ProductCom extends React.Component {
             ModalColumnList_Insert: ModalColumnList_Insert,
             ModalColumnList_Edit: ModalColumnList_Edit
         };
+        this.notificationDOMRef = React.createRef();
+
     }
 
 
@@ -75,6 +81,40 @@ class MaterialGroup_ProductCom extends React.Component {
             />
         );
     }
+
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
 
     initCache() {
         //lấy cache cấp bậc kỹ năng
@@ -131,6 +171,10 @@ class MaterialGroup_ProductCom extends React.Component {
                         MLObject.MaterialGroupID = this.state.MaterialGroupID;
                         MLObject.ProductName = MLObject.ProductID[0].ProductName;
                         MLObject.ProductID = MLObject.ProductID[0].ProductID;
+
+                        MLObject.AdvanceQuantityUnitID = MLObject.AdvanceQuantityUnitID && Array.isArray(MLObject.AdvanceQuantityUnitID) ? MLObject.AdvanceQuantityUnitID[0] : MLObject.AdvanceQuantityUnitID;
+                        MLObject.AdvanceProductID = MLObject.AdvanceProductID && Array.isArray(MLObject.AdvanceProductID) ? MLObject.AdvanceProductID[0].ProductID : MLObject.AdvanceProductID;
+                        
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         let match = this.state.MaterialGroupProductDataSource.filter(item =>
@@ -148,9 +192,10 @@ class MaterialGroup_ProductCom extends React.Component {
                                 }
                                 this.props.hideModal();
                             }
-                            this.showMessage(apiResult.Message);
+                            //this.showMessage(apiResult.Message);
+                            this.addNotification(apiResult.Message, apiResult.IsError);
                         });
-                        //this.resetCombobox();
+                        //console.log("MLObject",MLObject);
                     }
                 }
             },
@@ -187,6 +232,10 @@ class MaterialGroup_ProductCom extends React.Component {
                     if (MLObject) {
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+
+                        MLObject.AdvanceQuantityUnitID = MLObject.AdvanceQuantityUnitID && Array.isArray(MLObject.AdvanceQuantityUnitID) ? MLObject.AdvanceQuantityUnitID[0] : MLObject.AdvanceQuantityUnitID;
+                        MLObject.AdvanceProductID = MLObject.AdvanceProductID && Array.isArray(MLObject.AdvanceProductID) ? MLObject.AdvanceProductID[0].ProductID : MLObject.AdvanceProductID;
+                        
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
                                 if (this.props.onMaterialGroupProductChange) {
@@ -194,7 +243,8 @@ class MaterialGroup_ProductCom extends React.Component {
                                 }
                                 this.props.hideModal();
                             }
-                            this.showMessage(apiResult.Message);
+                            //this.showMessage(apiResult.Message);
+                            this.addNotification(apiResult.Message, apiResult.IsError);
                         });
                         //this.resetCombobox();
                     }
@@ -257,7 +307,8 @@ class MaterialGroup_ProductCom extends React.Component {
                     }
                     this.props.hideModal();
                 }
-                this.showMessage(apiResult.Message);
+                //this.showMessage(apiResult.Message);
+                this.addNotification(apiResult.Message, apiResult.IsError);
             });
         }
 
@@ -284,8 +335,8 @@ class MaterialGroup_ProductCom extends React.Component {
     }
 
     render() {
-        let datasource = this.state.MaterialGroupProductDataSource.filter(item => item.IsDeleted == undefined || item.IsDeleted == false);
-        datasource = this.initDatasource(datasource);
+        //let datasource = this.state.MaterialGroupProductDataSource.filter(item => item.IsDeleted == undefined || item.IsDeleted == false);
+        //datasource = this.initDatasource(datasource);
 
 
         if (this.state.IsCloseForm) {
@@ -303,9 +354,10 @@ class MaterialGroup_ProductCom extends React.Component {
             // <Collapsible trigger="Sản phẩm của nhóm vật tư" easing="ease-in" open={true}>
 
             // </Collapsible>
-            <div className="sub-grid">
+            <div className="sub-grid detail">
+                <ReactNotification ref={this.notificationDOMRef} />
                 <DataGrid listColumn={DataGridColumnList}
-                    dataSource={datasource}
+                    dataSource={this.state.MaterialGroupProductDataSource}
                     modalElementList={ModalColumnList_Insert}
                     MLObjectDefinition={MLObjectDefinition}
                     IDSelectColumnName={"chkSelectMaterialGroupProductCSID"}
@@ -313,13 +365,12 @@ class MaterialGroup_ProductCom extends React.Component {
                     onDeleteClick={this.handleDelete}
                     onInsertClick={this.handleInsert}
                     onInsertClickEdit={this.handleEdit}
-                    IsAutoPaging={true}
+                    IsAutoPaging={false}
                     RowsPerPage={10}
                     IsCustomAddLink={true}
                     headingTitle={"Sản phẩm của nhóm vật tư"}
                 />
             </div>
-
         );
 
 

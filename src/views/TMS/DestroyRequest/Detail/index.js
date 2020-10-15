@@ -19,8 +19,11 @@ import {
     TitleFormDetail,
     GirdDestroyRequestDetailColumnList,
     GirdDestroyRequestRLColumnList,
-    UpdateOutputAPIPath,
-    UpdateCurrentReviewLevelAPIPath
+    UpdateCreateSaleOrderAPIPath,
+    UpdateCurrentReviewLevelAPIPath,
+    AddAPIAttachment,
+    DeleteAPIAttachment,
+    AddAPIComment
 
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
@@ -28,6 +31,11 @@ import { MessageModal } from "../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../actions/modal';
 import ReactNotification from "react-notifications-component";
 import DestroyRequestInfo from './DestroyRequestInfo.js'
+import Attachment from "../../../../common/components/Attachment";
+import Comment from "../../../../common/components/Comment";
+import { MODAL_TYPE_COMMONTMODALS } from "../../../../constants/actionTypes";
+import DestroyRequsestNoteRV from "../Component/DestroyRequsestNoteRV";
+import { el } from "date-fns/locale";
 class DetailCom extends React.Component {
     constructor(props) {
         super(props);
@@ -40,13 +48,23 @@ class DetailCom extends React.Component {
             DestroyRequest: {},
             DestroyRequestDetail: [],
             DestroyRequestRL: [],
+            DestroyRequest_AttachmentList: [],
+            DestroyRequest_ComementList: [],
             DestroyRequestID: '',
+            RequestDate: '',
             IsOutPut: false,
             CurrentReviewLevelID: '',
             CurrentReviewLevelName: '',
+            isAutoReview: false,
+            lastReviewLevelID: '',
+            isUserNameReviewLevel: false,
+            isHiddenButtonRV: false,
+            IsStatus: false,
+            IsStatusReject: false
         }
         this.callLoadData = this.callLoadData.bind(this);
         this.handleSubmitOutputDestroyRequest = this.handleSubmitOutputDestroyRequest.bind(this);
+        this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
 
         this.notificationDOMRef = React.createRef();
     }
@@ -61,7 +79,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("apiResult", apiResult, id)
+            // console.log('apiResult', apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -69,28 +87,121 @@ class DetailCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+                const {
+                    lstDestroyRequestReviewLevel, lstDestroyRequestDetail,
+                    IsSystem, IsCreatedOrder, CurrentReviewLevelID, ReviewLevelName,
+                    IsreViewed
+                } = apiResult.ResultObject;
 
-                const resultDestroyRequestReviewLevel = apiResult.ResultObject.lstDestroyRequestReviewLevel.map((item, index) => {
+                const resultDestroyRequestReviewLevel = lstDestroyRequestReviewLevel.map((item, index) => {
                     item.ApproverName = item.UserName + " - " + item.FullName;
+
                     if (item.ReviewStatus == 0) {
                         item.ReviewStatusLable = "Chưa duyệt";
                     }
                     else {
-                        item.ReviewStatusLable = "Đã duyệt";
+                        if (item.ReviewStatus == 1) {
+                            item.ReviewStatusLable = "Đã duyệt";
+                        }
+                        else {
+                            item.ReviewStatusLable = "Từ chối duyệt";
+                        }
+
                     }
                     return item;
                 })
-                console.log("result", resultDestroyRequestReviewLevel)
+
+
+                if (lstDestroyRequestReviewLevel.length > 0) {
+                    const resultUserNameReviewLevel = lstDestroyRequestReviewLevel.filter((item, index) => {
+                        if (item.ReviewLevelID == CurrentReviewLevelID) {
+                            return item;
+                        }
+                    })
+
+                    const Username = this.props.AppInfo.LoginInfo.Username;
+
+                    if (resultUserNameReviewLevel.length > 0) {
+                        const userName = resultUserNameReviewLevel[0].UserName;
+                        if (userName.trim() === Username.trim()) {
+                            this.setState({
+                                isUserNameReviewLevel: true
+                            })
+                        }
+                        else {
+                            this.setState({
+                                isUserNameReviewLevel: false
+                            })
+                        }
+                    }
+
+                    const returnStatusDiffer = lstDestroyRequestReviewLevel.filter((item, index) => {
+                        if (item.ReviewStatus != 1) {
+                            return item;
+                        }
+                    })
+                    // console.log("returnStatusDiffer", returnStatusDiffer)
+                    const returnStatusReject = lstDestroyRequestReviewLevel.filter((item, index) => {
+                        if (item.ReviewStatus == 2) {
+                            return item;
+                        }
+                    })
+                    // console.log("returnStatusReject", returnStatusReject)
+                    if (returnStatusReject.length > 0) {
+                        this.setState({
+                            IsStatusReject: true
+                        })
+                    }
+                    else {
+                        this.setState({
+                            IsStatusReject: false
+                        })
+                    }
+
+                    if (returnStatusDiffer.length > 0) {
+                        this.setState({
+                            IsStatus: true
+                        })
+                    }
+                    else {
+                        this.setState({
+                            IsStatus: false
+                        })
+                    }
+                }
+
+
+                let disabledIsOutPut = false;
+                if (apiResult.ResultObject.IsSystem) {
+                    disabledIsOutPut = true
+                }
+                else {
+                    if (apiResult.ResultObject.IsreViewed == true && apiResult.ResultObject.IsCreatedOrder == false) {
+                        disabledIsOutPut = false
+                    }
+                    else {
+                        disabledIsOutPut = true
+                    }
+                }
+
+                // console.log("result", resultDestroyRequestReviewLevel)
                 this.setState({
+                    RequestDate: apiResult.ResultObject.RequestDate,
                     DestroyRequest: apiResult.ResultObject,
-                    DestroyRequestDetail: apiResult.ResultObject.lstDestroyRequestDetail,
+                    DestroyRequestDetail: lstDestroyRequestDetail,
                     DestroyRequestRL: resultDestroyRequestReviewLevel,
                     DataSource: apiResult.ResultObject,
                     IsLoadDataComplete: true,
-                    IsSystem: apiResult.ResultObject.IsSystem,
-                    IsOutPut: apiResult.ResultObject.IsOutput,
-                    CurrentReviewLevelID: apiResult.ResultObject.CurrentReviewLevelID,
-                    CurrentReviewLevelName: apiResult.ResultObject.ReviewLevelName,
+                    isHiddenButtonRV: apiResult.ResultObject.IsreViewed,
+                    IsSystem: IsSystem,
+                    IsOutPut: disabledIsOutPut,
+                    CurrentReviewLevelID: CurrentReviewLevelID,
+                    CurrentReviewLevelName: ReviewLevelName,
+                    isAutoReview: IsreViewed,
+                    lastReviewLevelID: lstDestroyRequestReviewLevel.length > 0 ? lstDestroyRequestReviewLevel[lstDestroyRequestReviewLevel.length - 1].ReviewLevelID : 0,
+                    DestroyRequest_AttachmentList: apiResult.ResultObject.DestroyRequest_AttachmentList,
+                    DestroyRequest_ComementList: apiResult.ResultObject.DestroyRequest_CommentList,
+
 
                 });
             }
@@ -141,8 +252,14 @@ class DetailCom extends React.Component {
     }
 
     handleSubmitOutputDestroyRequest() {
-        const { DestroyRequestID } = this.state;
-        this.props.callFetchAPI(APIHostName, UpdateOutputAPIPath, DestroyRequestID).then((apiResult) => {
+        const { DestroyRequestID, DestroyRequestDetail } = this.state;
+        let MLObject = {};
+        MLObject.DestroyRequestID = DestroyRequestID;
+        MLObject.SaleOrderID = "";
+        MLObject.IsCreatedOrder = true;
+
+        this.props.callFetchAPI(APIHostName, UpdateCreateSaleOrderAPIPath, MLObject).then((apiResult) => {
+            console.log("MLObject", MLObject, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -156,31 +273,76 @@ class DetailCom extends React.Component {
         })
     }
 
-    handleRequestRL(id) {
+    handleInputChangeObjItem(noteContent, statusId) {
         let MLObject = {};
-        const { DataSource, DestroyRequestRL, CurrentReviewLevelID , DestroyRequestID} = this.state;
-        MLObject.DestroyRequestID = DataSource.DestroyRequestID;
-        const aa = DestroyRequestRL.filter((item, index) => {
-            if (item.ReviewLevelID != CurrentReviewLevelID) {
-                return item;
-            }
+        MLObject.ReviewStatus = statusId;
+        MLObject.reViewedNote = noteContent;
+        this.props.hideModal();
+        this.handleRequestRL(MLObject)
+    }
+
+    handleInsertDRNoteRV(id) {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Thêm ghi chú cho mức duyệt',
+            content: {
+                text: <DestroyRequsestNoteRV
+                    StatusID={id}
+                    onInputChangeObj={this.handleInputChangeObjItem}
+
+                />
+            },
+            maxWidth: '1000px'
         });
+    }
 
-        MLObject.CurrentReviewLevelID = aa[0].ReviewLevelID;
-        MLObject.ReviewLevelID = CurrentReviewLevelID;
+    handleRequestRL(objData) {
+
+        let MLObject = {};
+        const { DataSource, DestroyRequestRL, CurrentReviewLevelID, DestroyRequestID, lastReviewLevelID } = this.state;
+        MLObject.DestroyRequestID = DataSource.DestroyRequestID;
+
+
+
+
         MLObject.IsreViewed = 1;
+        MLObject.ReviewStatus = objData.ReviewStatus;
+        MLObject.reViewedNote = objData.reViewedNote;//Trạng thái duyệt;(0: Chưa duyệt, 1: Đồng ý, 2: Từ chối)
 
-        if (id == 1) {
-            MLObject.ReviewStatus = 1;
-            MLObject.reViewedNote = "Đồng ý"; //Trạng thái duyệt;(0: Chưa duyệt, 1: Đồng ý, 2: Từ chối)
+        let nextReviewLevelID;
+
+        if (DestroyRequestRL.length > 1) {
+            nextReviewLevelID = DestroyRequestRL.filter((item, index) => {
+                if (item.ReviewLevelID != CurrentReviewLevelID && item.IsreViewed == false) {
+                    return item;
+                }
+            });
         }
         else {
-
-            MLObject.ReviewStatus = 2;
-            MLObject.reViewedNote = "Từ chối";
+            nextReviewLevelID = DestroyRequestRL.filter((item, index) => {
+                if (item.ReviewLevelID == CurrentReviewLevelID) {
+                    return item;
+                }
+            });
         }
+
+        const isLastList = CurrentReviewLevelID == lastReviewLevelID ? true : false
+
+        if (objData.ReviewStatus == 1) {
+            MLObject.IsreViewed = 1;
+            MLObject.IsreViewedDestroyRequest = !!isLastList ? 1 : 0;
+        }
+        else {
+            MLObject.IsreViewedDestroyRequest = 0;
+        }
+
+        MLObject.ReviewLevelID = CurrentReviewLevelID;
+
+        MLObject.CurrentReviewLevelID = !!isLastList ? CurrentReviewLevelID : nextReviewLevelID[0].ReviewLevelID;
+
+        console.log("aa", MLObject);
+
         this.props.callFetchAPI(APIHostName, UpdateCurrentReviewLevelAPIPath, MLObject).then((apiResult) => {
-            console.log("id", id, MLObject, apiResult)
+            // console.log("id",  apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -192,11 +354,133 @@ class DetailCom extends React.Component {
                 this.addNotification(apiResult.Message, apiResult.IsError)
             }
         })
+    }
+
+    handleSelectFile(e) {
+        const { DestroyRequestID, RequestDate } = this.state;
+
+        let MLObject = {};
+        var data = new FormData();
+
+        MLObject.DestroyRequestID = DestroyRequestID;
+        MLObject.RequestDate = RequestDate;
+        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+
+        data.append('file', e.target.files[0])
+        data.append("ObjDestroyRequest_Attachment", JSON.stringify(MLObject));
+
+        this.props.callFetchAPI(APIHostName, AddAPIAttachment, data).then((apiResult) => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.callLoadData(DestroyRequestID);
+                this.addNotification(apiResult.Message, apiResult.IsError)
+            }
+        })
+
+    }
+
+    handleDeletefile(id) {
+        const { DestroyRequestID } = this.state;
+        this.props.callFetchAPI(APIHostName, DeleteAPIAttachment, id).then((apiResult) => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.callLoadData(DestroyRequestID);
+                this.addNotification(apiResult.Message, apiResult.IsError)
+            }
+        })
+    }
+
+    handleChangeValue(value) {
+        // console.log('value', value)
+    }
+
+    handleKeyPressSumit(valueCommentContent) {
+        const { DestroyRequestID, RequestDate } = this.state;
+
+        if (valueCommentContent.trim().length > 0) {
+            let MLObject = {};
+            MLObject.DestroyRequestID = DestroyRequestID;
+            MLObject.RequestDate = RequestDate;
+            MLObject.CommentContent = valueCommentContent;
+            MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+            MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+
+            this.props.callFetchAPI(APIHostName, AddAPIComment, MLObject).then((apiResult) => {
+                if (apiResult.IsError) {
+                    this.setState({
+                        IsCallAPIError: !apiResult.IsError
+                    });
+                    this.showMessage(apiResult.Message);
+                }
+                else {
+                    this.callLoadData(DestroyRequestID);
+                    this.addNotification(apiResult.Message, apiResult.IsError)
+                }
+            })
+        }
+        else {
+            this.showMessage('Vui lòng nhập nội dụng bình luận.')
+        }
+
     }
 
     render() {
-        const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL, CurrentReviewLevelName } = this.state;
-        //console.log("CurrentReviewLevelName", CurrentReviewLevelName)
+        const { IsSystem, IsOutPut, DestroyRequest, DestroyRequestDetail, DestroyRequestRL, CurrentReviewLevelName, isAutoReview, CurrentReviewLevelID, isUserNameReviewLevel, DestroyRequest_AttachmentList, DestroyRequest_ComementList, isHiddenButtonRV, IsStatus, IsStatusReject } = this.state;
+
+        let IsAutoReview;
+
+        if (isAutoReview == true && CurrentReviewLevelID == 0) {
+            IsAutoReview = true
+        }
+        else {
+            IsAutoReview = false
+        }
+
+        let IsDisableButtonOutPut = false;
+        if (IsOutPut == false) {
+            IsDisableButtonOutPut = false
+        }
+        else {
+            if (IsStatus == true || IsStatusReject) {
+                IsDisableButtonOutPut = true
+            }
+            else {
+                IsDisableButtonOutPut = false
+            }
+
+        }
+
+        // console.log('IsStatus', IsStatus, IsOutPut, IsDisableButtonOutPut)
+
+        let IsExitBtnReview = false;
+        if (isUserNameReviewLevel == true) {
+            if (isHiddenButtonRV) {
+                IsExitBtnReview = true;
+            }
+            else {
+                if (IsStatusReject) {
+                    IsExitBtnReview = true
+                }
+                else {
+                    IsExitBtnReview = false
+                }
+            }
+
+        }
+        else {
+            IsExitBtnReview = true
+        }
+
         if (this.state.IsLoadDataComplete) {
             return (
                 <div className="col-lg-12">
@@ -228,42 +512,75 @@ class DetailCom extends React.Component {
                                 </div>
                             </div>
 
-                            <div className="card">
-                                <div className="card-title group-card-title">
-                                    <h4 className="title">Danh sách duyệt</h4>
+                            {IsAutoReview == false ?
+                                <div className="card">
+                                    <div className="card-title group-card-title">
+                                        <h4 className="title">Danh sách duyệt</h4>
+                                    </div>
+                                    <div className="card-body">
+                                        <InputGrid
+                                            name="lstDestroyRequestReviewLevel"
+                                            controltype="GridControl"
+                                            listColumn={GirdDestroyRequestRLColumnList}
+                                            dataSource={DestroyRequestRL}
+                                            isHideHeaderToolbar={true}
+                                            //MLObjectDefinition={GridDestroyRequestRLMLObjectDefinition}
+                                            colspan="12"
+                                            onValueChangeInputGrid={this.valueChangeInputGrid}
+                                        />
+                                    </div>
                                 </div>
-                                <div className="card-body">
-                                    <InputGrid
-                                        name="lstDestroyRequestReviewLevel"
-                                        controltype="GridControl"
-                                        listColumn={GirdDestroyRequestRLColumnList}
-                                        dataSource={DestroyRequestRL}
-                                        isHideHeaderToolbar={true}
-                                        //MLObjectDefinition={GridDestroyRequestRLMLObjectDefinition}
-                                        colspan="12"
-                                        onValueChangeInputGrid={this.valueChangeInputGrid}
-                                    />
-                                </div>
-                            </div>
+                                : <div></div>
+                            }
 
+                            <Attachment
+                                IsAttachment={true}
+                                onSelectFile={this.handleSelectFile.bind(this)}
+                                onDeletefile={this.handleDeletefile.bind(this)}
+                                DataAttachment={DestroyRequest_AttachmentList}
+                            />
+
+                            <Comment
+                                DataComments={DestroyRequest_ComementList}
+                                IsComment={true}
+                                onChangeValue={this.handleChangeValue.bind(this)}
+                                onKeyPressSumit={this.handleKeyPressSumit.bind(this)}
+                            />
 
                         </div>
 
                         <footer className="card-footer text-right ">
-                            <div className="btn-group btn-group-dropdown mr-3">
-                                <button className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
-                                <div class="dropdown-menu" x-placement="bottom-start" >
-                                    <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(1)}>Đồng ý</button>
-                                    <button className="dropdown-item" type="button" onClick={() => this.handleRequestRL(2)}>Từ chối</button>
-                                </div>
-                            </div>
-                            <button disabled={IsOutPut} className="btn btn-primary mr-3" type="submit" onClick={this.handleSubmitOutputDestroyRequest}>Tạo phiếu xuất</button>
+                            {IsAutoReview == false ?
+                                IsExitBtnReview == false ?
+
+                                    < div className="btn-group btn-group-dropdown mr-3">
+                                        <button disabled={IsExitBtnReview} className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                        <div className="dropdown-menu" x-placement="bottom-start" >
+                                            <button className="dropdown-item" type="button" onClick={() => this.handleInsertDRNoteRV(1)}>Đồng ý</button>
+                                            <button className="dropdown-item" type="button" onClick={() => this.handleInsertDRNoteRV(2)}>Từ chối</button>
+                                        </div>
+                                    </div>
+                                    : < div className="btn-group btn-group-dropdown mr-3">
+                                        <button disabled={IsExitBtnReview} className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                        <div className="dropdown-menu" x-placement="bottom-start" >
+                                            <button className="dropdown-item" type="button">Đồng ý</button>
+                                            <button className="dropdown-item" type="button">Từ chối</button>
+                                        </div>
+                                    </div>
+                                : <div></div>
+
+                            }
+                            {IsOutPut == false ?
+                                <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitOutputDestroyRequest}>Tạo phiếu xuất</button>
+                                : <button disabled={true} className="btn btn-primary mr-3" type="button">Tạo phiếu xuất</button>
+                            }
+
                             <Link to="/DestroyRequest">
                                 <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
                             </Link>
                         </footer>
                     </div>
-                </div>
+                </div >
             );
         }
         return (

@@ -27,7 +27,8 @@ import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.
 import DeliverUserList from "../../ShipmentOrder/Component/DeliverUserList";
 import moment from 'moment';
 import { ExportStringToDate } from "../../../../common/library/ultils";
-
+import { ERPCOMMONCACHE_SERVICEAGREEMENTTYPE, ERPCOMMONCACHE_TMS_SERVICETYPE, ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_PARTNER } from "../../../../constants/keyCache";
+import  {Base64} from 'js-base64';
 
 
 class AddCom extends React.Component {
@@ -79,7 +80,8 @@ class AddCom extends React.Component {
         // MLObject.SignedDate = new Date(ExportStringToDate(MLObject.SignedDate));
         // MLObject.ExpiredDate = new Date(ExportStringToDate(MLObject.ExpiredDate));
 
-        // console.log("MLObject", MLObject)
+        MLObject.ServiceAgreementNumber = MLObject.ServiceAgreementNumber.replace(/\s/g, '')
+        //  console.log("MLObject", MLObject)
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -135,7 +137,7 @@ class AddCom extends React.Component {
             IsLiquidated,
             IsDeposited
         })
-     
+
         if (formData.dtExpiredDate.value.length > 0) {
             let SignedDate = new Date(formData.dtSignedDate.value);
             let ExpiredDate = new Date(formData.dtExpiredDate.value);
@@ -305,15 +307,15 @@ class AddCom extends React.Component {
 
                     <div className="col-md-6">
                         <FormControl.TextBox
-                            name="txtServiceAgreementID"
+                            name="txtServiceAgreementNumber"
                             colspan="8"
                             labelcolspan="4"
                             readOnly={false}
-                            label="mã hợp đồng"
+                            label="số hợp đồng"
                             placeholder="Mã hợp đồng"
                             controltype="InputControl"
                             value=""
-                            datasourcemember="ServiceAgreementID"
+                            datasourcemember="ServiceAgreementNumber"
                             validatonList={['required']}
                         />
                     </div>
@@ -327,7 +329,7 @@ class AddCom extends React.Component {
                             validatonList={["Comborequired"]}
                             placeholder="-- Vui lòng chọn --"
                             isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.SERVICEAGREEMENTTYPE"
+                            loaditemcachekeyid={ERPCOMMONCACHE_SERVICEAGREEMENTTYPE}
                             valuemember="ServiceAgreementTypeID"
                             nameMember="ServiceAgreementTypeName"
                             controltype="InputControl"
@@ -346,7 +348,7 @@ class AddCom extends React.Component {
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid="ERPCOMMONCACHE.TMS_SERVICETYPE"
+                            loaditemcachekeyid={ERPCOMMONCACHE_TMS_SERVICETYPE}//"ERPCOMMONCACHE.TMS_SERVICETYPE"
                             valuemember="ServiceTypeID"
                             nameMember="ServiceTypeName"
                             controltype="InputControl"
@@ -376,7 +378,7 @@ class AddCom extends React.Component {
                             labelcolspan="4"
                             label="đơn vị vận chuyển"
                             isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                            loaditemcachekeyid={ERPCOMMONCACHE_PARTNER} //"ERPCOMMONCACHE.PARTNER"
                             valuemember="PartnerID"
                             nameMember="PartnerName"
                             controltype="InputControl"
@@ -398,7 +400,7 @@ class AddCom extends React.Component {
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid="ERPCOMMONCACHE.AREATT"
+                            loaditemcachekeyid={ERPCOMMONCACHE_AREATT} //"ERPCOMMONCACHE.AREATT"
                             valuemember="AreaID"
                             nameMember="AreaName"
                             controltype="InputControl"

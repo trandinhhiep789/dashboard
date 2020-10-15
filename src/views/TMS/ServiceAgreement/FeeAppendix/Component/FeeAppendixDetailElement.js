@@ -11,6 +11,7 @@ import {
     AddFeeAppendixDetailPath
 } from "../contants/index.js";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
+import { ERPCOMMONCACHE_MAINGROUP, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE } from "../../../../../constants/keyCache";
 
 class FeeAppendixDetailElementCom extends Component {
     constructor(props) {
@@ -158,7 +159,7 @@ class FeeAppendixDetailElementCom extends Component {
                             label="nghành hàng"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.MAINGROUP"
+                            loaditemcachekeyid={ERPCOMMONCACHE_MAINGROUP} //"ERPCOMMONCACHE.MAINGROUP"
                             valuemember="MainGroupID"
                             nameMember="MainGroupName"
                             controltype="InputControl"
@@ -178,7 +179,7 @@ class FeeAppendixDetailElementCom extends Component {
                             label="nhóm hàng"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.SUBGROUP"
+                            loaditemcachekeyid={ERPCOMMONCACHE_SUBGROUP} //"ERPCOMMONCACHE.SUBGROUP"
                             valuemember="SubGroupID"
                             nameMember="SubGroupName"
                             controltype="InputControl"
@@ -202,7 +203,7 @@ class FeeAppendixDetailElementCom extends Component {
                             label="thông số kỹ thuật"
                             // validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.SUBGROUPTECHSPECS"
+                            loaditemcachekeyid={ERPCOMMONCACHE_SUBGROUPTECHSPECS} //"ERPCOMMONCACHE.SUBGROUPTECHSPECS"
                             valuemember="TechspecsID"
                             nameMember="TechspecsName"
                             controltype="InputControl"
@@ -226,7 +227,7 @@ class FeeAppendixDetailElementCom extends Component {
                             // validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             disabled={IsSystem}
-                            loaditemcachekeyid="ERPCOMMONCACHE.TECHSPECSVALUE"
+                            loaditemcachekeyid={ERPCOMMONCACHE_TECHSPECSVALUE}//"ERPCOMMONCACHE.TECHSPECSVALUE"
                             valuemember="TechSpecsValueID"
                             nameMember="Value"
                             controltype="InputControl"

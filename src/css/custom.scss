@@ -24,6 +24,7 @@
 @import "./labelStatus";
 @import "./print";
 @import "./dropdown";
+@import "./guide";
 
 
 
@@ -461,5 +462,9 @@ select.form-control:-webkit-autofill:focus {
     
 }
 
+.permissionGrid {
+    display: grid;
+    margin-left: -44px;
+}
 
 

@@ -9,7 +9,7 @@ import {
     APIHostName,
     LoadAPIPath,
     BackLink,
-    EditPagePath
+    DetailPagePath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -35,7 +35,7 @@ class DetailCom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updatePagePath(EditPagePath);
+        this.props.updatePagePath(DetailPagePath);
         this.callLoadData();
 
     }
@@ -113,14 +113,14 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Quyền thêm: </span>
-                                            <span>{this.state.DataSource.AddFunctionName}</span>
+                                            <span>Mã quyền: </span>
+                                            <span>{this.state.DataSource.AddFunctionID}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Gói lắp đặt cần tạm ứng: </span>
-                                            <span>{this.state.DataSource.InstallBundleName}</span>
+                                            <span>Tên quyền: </span>
+                                            <span>{this.state.DataSource.AddFunctionName}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -162,6 +162,24 @@ class DetailCom extends React.Component {
                                     </div>
                                 </div>
 
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span> Gói lắp đặt cần tạm ứng: </span>
+                                            <span>{this.state.DataSource.InstallBundleName}</span>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group checkbox customCheckbox">
+                                            <span>Tạm ứng theo vận đơn: </span>
+                                            <label>
+                                                <input name="IsAutoOutput" type="checkbox" id="IsAutoOutput" checked={this.state.DataSource.IsAdvanceByShipmentOrder} />
+                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
 
                                 <div className="row">
                                     <div className="col-md-6">
@@ -188,7 +206,7 @@ class DetailCom extends React.Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Người tạo: </span>
-                                            <span>{this.state.DataSource.CreatedUser}</span>
+                                            <span>{this.state.DataSource.CreatedUserFullName}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">

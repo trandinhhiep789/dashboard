@@ -176,7 +176,7 @@ class EditCom extends React.Component {
                                             <span>Đã tạo đơn hàng tạm ứng: </span>
                                             <label>
                                                 <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.IsCreatedOrder} />
-                                                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
                                     </div>
@@ -209,7 +209,7 @@ class EditCom extends React.Component {
                                             <span>Đã xuất tạm ứng: </span>
                                             <label>
                                                 <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.IsOutput} />
-                                                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
                                     </div>
@@ -246,6 +246,7 @@ class EditCom extends React.Component {
                     <br />
                     <AdvanceRequestDetail
                         AdvanceRequestID={this.props.match.params.id}
+                        DataSource={this.state.DataSource}
                         AdvanceRequestDetailDataSource={this.state.DataSource.AdvanceRequestDetailList}
                     />
                 </React.Fragment >

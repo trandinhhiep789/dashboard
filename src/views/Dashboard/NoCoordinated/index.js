@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
+import { Link,  withRouter } from "react-router-dom";
 
 class NoCoordinatedCom extends Component {
     constructor(props) {
@@ -14,7 +14,12 @@ class NoCoordinatedCom extends Component {
     componentDidMount() {
 
     }
-
+    handleSubmit()
+    {
+        this.props.history.push("/ShipmentOrder", {
+            ShipmentOrderStatusGroupID: 1
+        })
+    }
 
     render() {
         return (
@@ -32,12 +37,12 @@ class NoCoordinatedCom extends Component {
                         </div>
                     </div>
                     <div className="card-footer">
-                        <Link to="/ShipmentOrder" className="view-detail">
+                        <a onClick={this.handleSubmit.bind(this)} className="view-detail">
                             <span className="pull-left">Chi tiết</span>
                             <span className="btn-pull-right">
                                 <i className="fa fa-arrow-circle-right"></i>
                             </span>
-                        </Link>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -60,5 +65,5 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-const NoCoordinated = connect(mapStateToProps, mapDispatchToProps)(NoCoordinatedCom);
+const NoCoordinated = connect(mapStateToProps, mapDispatchToProps)(withRouter(NoCoordinatedCom));
 export default NoCoordinated;

@@ -153,6 +153,7 @@ class ListDestroyRequestTypeCom extends Component {
                                 validatonList={["Comborequired"]}
                                 placeholder="-- Vui lòng chọn --"
                                 isautoloaditemfromcache={true}
+                                isusercache={true}
                                 onValueChange={this.handleOnValueChange}
                                 loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
                                 valuemember="StoreID"
@@ -166,7 +167,7 @@ class ListDestroyRequestTypeCom extends Component {
                     </div>
                 </div>
                 <div className="modal-footer">
-                    <button className="btn btn-primary" type="button" onClick={this.handleSubmit.bind(this)}> Cập nhật</button>
+                    <button className="btn btn-primary" type="button" onClick={this.handleSubmit.bind(this)}> Tạo yêu cầu</button>
                     <button type="button" className="btn btn-export ml-10" title="" onClick={this.handleCloseModal.bind(this)}>Đóng</button>
                 </div>
             </div>

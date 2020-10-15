@@ -18,10 +18,9 @@ class MultiSelectComboBoxCom extends React.Component {
 
 
     componentDidMount() {
-       
         this.setState({
             ListOption: this.props.listoption,
-            SelectedOption:  this.props.value == undefined ? this.props.listoption : this.props.value
+            SelectedOption: this.props.value == undefined ? this.props.listoption : this.props.value
         });
     }
 
@@ -66,14 +65,15 @@ class MultiSelectComboBoxCom extends React.Component {
         this.props.callFetchAPI("ERPAPI", 'api/UserSearch/Search', listMLObject).then(apiResult => {
             let listOptionNew1 = [];
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
-                listOptionNew1.push({ value: apiResult.ResultObject[i].UserName, 
-                                     name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
-                                     FullName:apiResult.ResultObject[i].FullName,
-                                     DepartmentName:apiResult.ResultObject[i].DepartmentName,
-                                     PositionName:apiResult.ResultObject[i].PositionName,
-                                     Address:apiResult.ResultObject[i].Address
+                listOptionNew1.push({
+                    value: apiResult.ResultObject[i].UserName,
+                    name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
+                    FullName: apiResult.ResultObject[i].FullName,
+                    DepartmentName: apiResult.ResultObject[i].DepartmentName,
+                    PositionName: apiResult.ResultObject[i].PositionName,
+                    Address: apiResult.ResultObject[i].Address
 
-                                    });
+                });
             }
             this.setState({
                 ListOption: listOptionNew1
@@ -97,14 +97,18 @@ class MultiSelectComboBoxCom extends React.Component {
     render() {
         const listOption = this.state.ListOption;
         let listOptionNew = [];
-        for (let i = 0; i < listOption.length; i++) {
-            listOptionNew.push({ value: listOption[i].value,
-                                label: listOption[i].name,
-                                FullName:listOption[i].FullName,
-                                DepartmentName: listOption[i].DepartmentName,
-                                PositionName:listOption[i].PositionName,
-                                Address:listOption[i].Address,
-                                style: { color: 'red' } });
+        if (listOption != []) {
+            for (let i = 0; i < listOption.length; i++) {
+                listOptionNew.push({
+                    value: listOption[i].value,
+                    label: listOption[i].name,
+                    FullName: listOption[i].FullName,
+                    DepartmentName: listOption[i].DepartmentName,
+                    PositionName: listOption[i].PositionName,
+                    Address: listOption[i].Address,
+                    style: { color: 'red' }
+                });
+            }
         }
         const selectedOption = this.state.SelectedOption;
         let formRowClassName = "form-row";

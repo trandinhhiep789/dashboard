@@ -12,6 +12,7 @@ import {
     AddAPIAbilitiPath,
     EditAPIAbilitiPath
 } from "../contants/index.js";
+import { ERPCOMMONCACHE_SERVICESEASONTYPE } from "../../../../../constants/keyCache";
 
 class AbilityElementCom extends Component {
     constructor(props) {
@@ -44,6 +45,9 @@ class AbilityElementCom extends Component {
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
         MLObject.SignedDate = this.props.dataSource.SignedDate;
+
+        // console.log("MLObject", MLObject)
+
         if (this.props.index != undefined) {
             MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
             this.props.callFetchAPI(APIHostName, EditAPIAbilitiPath, MLObject).then(apiResult => {
@@ -158,7 +162,7 @@ render() {
                         disabled={IsSystem}
                         validatonList={["Comborequired"]}
                         isautoloaditemfromcache={true}
-                        loaditemcachekeyid="ERPCOMMONCACHE.SERVICESEASONTYPE"
+                        loaditemcachekeyid= {ERPCOMMONCACHE_SERVICESEASONTYPE} //"ERPCOMMONCACHE.SERVICESEASONTYPE"
                         valuemember="ServiceSeasonTypeID"
                         nameMember="ServiceSeasonTypeName"
                         controltype="InputControl"

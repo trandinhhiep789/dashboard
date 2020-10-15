@@ -29,6 +29,12 @@ export const AddPagePath = [
     { Link: "", Title: "Thêm" }
 ];
 
+export const DetailPagePath = [
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
+    { Link: "/Area", Title: "Danh sách khu vực" },
+    { Link: "", Title: "Chi tiết khu vực" }
+];
+
 export const InitSearchParams = [
     {
         SearchKey: "@Keyword", 
@@ -381,28 +387,29 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Mã khu vực",
         DataSourceMember: "AreaID",
-        Width: 150
+        Width: 80
     },
     {
         Name: "AreaTypeName",
         Type: "text",
         Caption: "Loại khu vực",
         DataSourceMember: "AreaTypeName",
-        Width: 150
+        Width: 160
     },
     {
         Name: "AreaName",
-        Type: "text",
+        Type: "texttolink",
         Caption: "Tên khu vực",
+        Link: "/Area/Detail/",
         DataSourceMember: "AreaName",
-        Width: 150
+        Width: 120
     },
     {
         Name: "ParentName",
         Type: "text",
         Caption: "Khu vực cha",
         DataSourceMember: "ParentName",
-        Width: 150
+        Width: 120
     },
     // {
     //     Name: "Description",
@@ -416,7 +423,7 @@ export const DataGridColumnList = [
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 100
+        Width: 80
     },
     // {
     //     Name: "IsSystem",
@@ -430,21 +437,21 @@ export const DataGridColumnList = [
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 150
+        Width: 120
     },
     {
         Name: "CreatedUserFullName",
         Type: "text",
         Caption: "Người tạo",
         DataSourceMember: "CreatedUserFullName",
-        Width: 150
+        Width: 120
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "AreaID",
-        Width: 100,
+        Width: 80,
         Link: "/Area/Edit/",
         LinkText: "Chỉnh sửa"
     }

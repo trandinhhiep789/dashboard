@@ -18,7 +18,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { MATERIALGROUP_UPDATE } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
 import MaterialGroup_Product from "../../MaterialGroup_Product";
 import MaterialGroup_InstallCond from "../../MaterialGroup_InstallCond";
 
@@ -80,7 +80,7 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
-                //this.props.callClearLocalCache(ERPCOMMONCACHE_AREATYPE);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
             }
             this.showMessage(apiResult.Message);
         });
@@ -134,7 +134,7 @@ class EditCom extends React.Component {
                     RequirePermission={MATERIALGROUP_UPDATE}
                     ref={this.searchref}
                 >
-                    <br />
+                    {/* <br />
                     <MaterialGroup_Product
                         MaterialGroupID={this.props.match.params.id}
                         MaterialGroupProductDataSource={this.state.MaterialGroup_Product}
@@ -147,7 +147,7 @@ class EditCom extends React.Component {
                         MaterialGroup_InstallCondDataSource={this.state.MaterialGroup_InstallCond}
                         MaterialGroup_ProductDataSource={this.state.MaterialGroup_Product}
                         onMaterialGroup_InstallCondChange={this.onMaterialGroup_InstallCondChange}
-                    />
+                    /> */}
                 </SimpleForm>
             );
         }

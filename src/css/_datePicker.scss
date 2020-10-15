@@ -53,3 +53,18 @@
 .ant-picker-dropdown{
     z-index: 99991 !important;
 }
+.dateTimeCus{
+    .ant-picker{
+        &.ant-picker-custom{
+            clear: both;
+        }
+    }
+    .form-row {
+        .form-group{
+            &.frmDateTime{
+                padding: 0;
+            }
+        }
+    }
+    
+}

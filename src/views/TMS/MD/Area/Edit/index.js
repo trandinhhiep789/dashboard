@@ -22,12 +22,14 @@ import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheA
 import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
 import { createListTree } from '../../../../../common/library/ultils';
 import Area_Store from "../../Area_Store";
+import { ERPCOMMONCACHE_AREATT } from "../../../../../constants/keyCache";
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.onAreaStoreChange = this.onAreaStoreChange.bind(this);
+        this.callLoadData = this.callLoadData.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -103,13 +105,36 @@ class EditCom extends React.Component {
 
     }
 
-    onAreaStoreChange(list) {
-        this.setState({ AreaStore: list });
+    callLoadData() {
+        const id = this.props.match.params.id;
+        this.GetParentList(id);
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            } else {
+                this.setState({
+                    DataSource: apiResult.ResultObject,
+                    AreaStore: apiResult.ResultObject.AreaStore ? apiResult.ResultObject.AreaStore : [],
+                    //SkillSkillRank: apiResult.ResultObject.SkillSkillRank ? apiResult.ResultObject.SkillSkillRank : [],
+                });
+            }
+            this.setState({
+                IsLoadDataComplete: true
+            });
+        });
+    }
+
+    onAreaStoreChange() {
+        //this.setState({ AreaStore: list });
+        this.callLoadData();
         //console.log("onAreaStoreChange", list);
     }
 
 
-    
+
 
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
@@ -119,7 +144,8 @@ class EditCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
-                //this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNER);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_AREA);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_AREATT);
             }
         });
         //console.log("MLObject",MLObject);
@@ -161,12 +187,12 @@ class EditCom extends React.Component {
                         RequirePermission={AREA_UPDATE}
                     >
 
-                        <br />
+                        {/* <br />
                         <Area_Store
                             AreaID={this.props.match.params.id}
                             AreaStoreDataSource={this.state.AreaStore}
                             onAreaStoreChange={this.onAreaStoreChange}
-                        />
+                        /> */}
                     </FormContainer>
                 </React.Fragment>
             );

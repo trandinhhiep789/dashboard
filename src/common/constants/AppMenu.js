@@ -85,6 +85,13 @@ const AppMenu = [
                         SubMenu: []
                     },
                     {
+                        MenuName: 'ShipmentOrderStatusGroup',
+                        MenuTitle: 'Danh sách nhóm trạng thái yêu cầu vận chuyển',
+                        LinkTo: '/ShipmentOrderStatusGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'ShipmentOrderStatus',
                         MenuTitle: 'Danh sách trạng thái yêu cầu vận chuyển',
                         LinkTo: '/ShipmentOrderStatus',
@@ -189,14 +196,14 @@ const AppMenu = [
                         LinkTo: '/UserCoordinator',
                         MenuIcon: '',
                         SubMenu: []
-                    },
-                    {
-                        MenuName: 'UserGroup',
-                        MenuTitle: 'Cấp quyền nhân viên theo kho',
-                        LinkTo: '/UserGroup',
-                        MenuIcon: '',
-                        SubMenu: []
                     }
+                    // ,{
+                    //     MenuName: 'UserGroup',
+                    //     MenuTitle: 'Cấp quyền nhân viên theo kho',
+                    //     LinkTo: '/UserGroup',
+                    //     MenuIcon: '',
+                    //     SubMenu: []
+                    // }
 
                 ]
             },
@@ -300,6 +307,15 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    // {
+                    //     MenuName: 'UserLimitTest',
+                    //     MenuTitle: 'Giới hạn theo người dùng test' ,
+                    //     LinkTo: '/UserLimitTest',
+                    //     MenuIcon: '',
+                    //     SubMenu: []
+                    // },
+
+
 
                 ]
             },
@@ -331,7 +347,45 @@ const AppMenu = [
                         SubMenu: []
                     }
                 ]
-            }
+            },
+          
+            {
+                MenuName: 'Reward',
+                MenuTitle: 'Thưởng nhân viên',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'RewardType',
+                        MenuTitle: 'Loại thưởng',
+                        LinkTo: '/RewardType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'RewardPriceType',
+                        MenuTitle: 'Loại đơn giá thưởng',
+                        LinkTo: '/RewardPriceType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'RewardPosition',
+                        MenuTitle: 'Vị trí thưởng',
+                        LinkTo: '/RewardPosition',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'RewardPosition_User',
+                        MenuTitle: 'Vị trí thưởng của 1 nhân viên',
+                        LinkTo: '/RewardPosition_User',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+
+                ]
+            },
         ]
     },
     {
@@ -407,34 +461,18 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'HD',
-                MenuTitle: 'Hợp đồng',
-                LinkTo: '',
+                MenuName: 'ServiceAgreement',
+                MenuTitle: 'Danh sách hợp đồng',
+                LinkTo: '/ServiceAgreement',
                 MenuIcon: '',
-                SubMenu: [
-                    {
-                        MenuName: 'ServiceAgreement',
-                        MenuTitle: 'Danh sách hợp đồng',
-                        LinkTo: '/ServiceAgreement',
-                        MenuIcon: '',
-                        SubMenu: []
-                    }
-                ]
+                SubMenu: []
             },
             {
-                MenuName: 'WP',
-                MenuTitle: 'Đăng ký ca làm việc',
-                LinkTo: '',
+                MenuName: 'WorkingPlan',
+                MenuTitle: 'Danh sách đăng ký ca làm việc',
+                LinkTo: '/WorkingPlan',
                 MenuIcon: '',
-                SubMenu: [
-                    {
-                        MenuName: 'WorkingPlan',
-                        MenuTitle: 'Danh sách nhân viên đăng ký ca làm việc',
-                        LinkTo: '/WorkingPlan',
-                        MenuIcon: '',
-                        SubMenu: []
-                    }
-                ]
+                SubMenu: []
             },
             {
                 MenuName: 'PP',
@@ -495,6 +533,14 @@ const AppMenu = [
                 SubMenu: []
             },
             {
+                MenuName: 'CurrentAdvanceDebt',
+                MenuTitle: 'Thông kê hạn mức tạm ứng',
+                LinkTo: '/CurrentAdvanceDebt',
+                MenuIcon: '',
+                SubMenu: []
+            },
+
+            {
                 MenuName: 'InventoryRequest',
                 MenuTitle: 'Danh sách yêu cầu kiểm kê',
                 LinkTo: '/InventoryRequest',
@@ -525,6 +571,20 @@ const AppMenu = [
             },
 
         ]
+    },
+    {
+        MenuName: 'UseGuide',
+        MenuTitle: 'Hướng dẫn sử dụng',
+        LinkTo: '/UseGuide',
+        MenuIcon: '',
+        SubMenu: []
+    },
+    {
+        MenuName: 'ShipmentOrderNew',
+        MenuTitle: 'Điều phối giao hàng',
+        LinkTo: '/ShipmentOrder',
+        MenuIcon: '',
+        SubMenu: []
     }
 
 ];

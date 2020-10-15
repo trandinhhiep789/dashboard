@@ -10,6 +10,7 @@ import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
 import NotFound from '../../../NotFound'
+import Detail from "./Detail";
 class MaterialGroupCom extends React.Component {
     constructor(props) {
         super(props);
@@ -21,6 +22,7 @@ class MaterialGroupCom extends React.Component {
                 <Route exact path="/MaterialGroup" component={Search} />
                 <Route exact path="/MaterialGroup/Add" component={Add} />
                 <Route exact path="/MaterialGroup/Edit/:id" component={Edit} />
+                <Route exact path="/MaterialGroup/Detail/:id" component={Detail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );

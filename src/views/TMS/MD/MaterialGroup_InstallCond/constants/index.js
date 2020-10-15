@@ -234,7 +234,7 @@ export const ModalColumnList_Edit = [
         readonly: false,
         validatonList: [],
         isMulti: false,
-        IsAutoLoadItemFromCache: true,
+        IsAutoLoadItemFromCache: false,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.TECHSPECSVALUE",
         ValueMember: "TechSpecsValueID",
         NameMember: "Value"
@@ -312,17 +312,17 @@ export const DataGridColumnList = [
         Width: 60
     },
     {
-        Name: "MaterialProductName",
+        Name: "MaterialProductID",
         Type: "text",
-        Caption: "Sản phẩm vật tư",
-        DataSourceMember: "MaterialProductName",
+        Caption: "Mã sản phẩm vật tư",
+        DataSourceMember: "MaterialProductID",
         Width: 200
     },
     {
-        Name: "ApplyBrandName",
+        Name: "MaterialProductName",
         Type: "text",
-        Caption: "Nhà sản xuất áp dụng",
-        DataSourceMember: "ApplyBrandName",
+        Caption: "Tên sản phẩm vật tư",
+        DataSourceMember: "MaterialProductName",
         Width: 200
     },
     {
@@ -330,6 +330,13 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Nhóm sản phẩm áp dụng",
         DataSourceMember: "ApplySubGroupName",
+        Width: 200
+    },
+    {
+        Name: "ApplyBrandName",
+        Type: "text",
+        Caption: "Nhà sản xuất áp dụng",
+        DataSourceMember: "ApplyBrandName",
         Width: 200
     },
     {

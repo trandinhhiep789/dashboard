@@ -38,32 +38,39 @@ class EditCom extends React.Component {
         this.props.updatePagePath(EditPagePath);
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
-                if (apiResult.IsError) {
-                    this.setState({
-                        IsCallAPIError: apiResult.IsError
-                    });
-                    this.showMessage(apiResult.Message);
-                } else {
-                    this.setState({ DataSource: apiResult.ResultObject });
-                }
+            if (apiResult.IsError) {
                 this.setState({
-                    IsLoadDataComplete: true
+                    IsCallAPIError: apiResult.IsError
                 });
+                this.showMessage(apiResult.Message);
+            } else {
+                this.setState({ DataSource: apiResult.ResultObject });
+            }
+            this.setState({
+                IsLoadDataComplete: true
             });
+        });
     }
 
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.AddFunctionID = MLObject.AddFunctionID && Array.isArray(MLObject.AddFunctionID) ? MLObject.AddFunctionID[0] : MLObject.AddFunctionID;
-        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+
+        if (!MLObject.IsAutoReview && MLObject.IsAutoOutput) {
+            this.setState({ IsCallAPIError: true });
+            this.showMessage("Phải có tự động duyệt thì mới có tự động xuất.");
+        } else {
+            this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
-                if(!apiResult.IsError){
+                if (!apiResult.IsError) {
                     //this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTFEETYPE);
                     // this.handleSubmitInsertLog(MLObject);
-                }      
+                }
                 this.showMessage(apiResult.Message);
             });
+        }
+
     }
 
     handleCloseMessage() {

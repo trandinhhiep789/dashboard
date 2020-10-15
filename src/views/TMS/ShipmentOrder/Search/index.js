@@ -41,6 +41,7 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
+            SearchElementList: SearchElementList,
             cssNotification: "",
             iconNotification: "",
             PageNumber: 1,
@@ -52,7 +53,14 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
-        this.callSearchData(this.state.SearchData);
+        // this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = 1
+        // console.log(this.state.SearchElementList)
+        // this.setState({
+        //     SearchElementList: this.state.SearchElementList
+        // });
+        const ShipOrdStatusGroupID = { SearchKey: "@SHIPMENTORDERSTATUSGROUPID", SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : -1 };
+        let listSearchDataObject = Object.assign([], this.state.SearchData, { [9]: ShipOrdStatusGroupID });
+        this.callSearchData(listSearchDataObject);
         this.props.updatePagePath(PagePath);
     }
 
@@ -67,11 +75,14 @@ class SearchCom extends React.Component {
         });
     }
 
+    onChangePageLoad() {
+        this.callSearchData(this.state.SearchData);
+    }
     handleonChangePage(pageNum) {
         let listMLObject = [];
         const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
         listMLObject = Object.assign([], this.state.SearchData, { [13]: aa });
-        console.log(this.state.SearchData,listMLObject)
+        // console.log(this.state.SearchData,listMLObject)
         this.callSearchData(listMLObject)
         this.setState({
             PageNumber: pageNum
@@ -117,8 +128,8 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.CoordinatorStoreID
             },
             {
-                SearchKey: "@SHIPMENTORDERSTATUSID",
-                SearchValue: MLObject.ShipmentOrderStatusID
+                SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+                SearchValue: MLObject.ShipmentOrderStatusGroupID
             },
             {
                 SearchKey: "@IsCoordinator",
@@ -204,6 +215,7 @@ class SearchCom extends React.Component {
     }
 
     render() {
+        this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : -1 
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
@@ -211,11 +223,11 @@ class SearchCom extends React.Component {
                     <SearchForm
                         FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
                         MLObjectDefinition={SearchMLObjectDefinition}
-                        listelement={SearchElementList}
+                        listelement={this.state.SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
                         className="multiple multiple-custom multiple-custom-display"
-                     
+
 
                     />
                     <DataGridShipmentOder
@@ -226,6 +238,7 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         onChangePage={this.handleonChangePage}
+                        onChangePageLoad={this.onChangePageLoad.bind(this)}
                         IsDelete={false}
                         IsAdd={false}
                         PageNumber={this.state.PageNumber}
@@ -237,8 +250,7 @@ class SearchCom extends React.Component {
                 </React.Fragment>
             );
         }
-        else
-        {
+        else {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
@@ -248,11 +260,11 @@ class SearchCom extends React.Component {
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
-                        className="multiple multiple-custom multiple-custom-display" 
-                        classNamebtnSearch="btn-custom-right" 
+                        className="multiple multiple-custom multiple-custom-display"
+                        classNamebtnSearch="btn-custom-right"
 
                     />
-                  <label>Đang nạp dữ liệu...</label>
+                    <label>Đang nạp dữ liệu...</label>
                 </React.Fragment>
             );
         }

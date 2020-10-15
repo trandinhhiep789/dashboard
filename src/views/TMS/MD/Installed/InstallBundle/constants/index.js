@@ -431,6 +431,12 @@ export const GridInstallBundle_Materia = [
         DataSourceMember: "OutputUsAgeType"
     },
     {
+        Name: "OutputUsAgeTypeName",
+        DefaultValue: "",
+        BindControlName: "OutputUsAgeTypeName",
+        DataSourceMember: "OutputUsAgeTypeName"
+    },
+    {
         Name: "ConvertRatio",
         DefaultValue: '',
         BindControlName: "ConvertRatio",
@@ -471,6 +477,12 @@ export const GridInstallBundle_Materia = [
         DefaultValue: '',
         BindControlName: "RoundingMultiple",
         DataSourceMember: "RoundingMultiple"
+    },
+    {
+        Name: "QuantityUnitID",
+        DefaultValue: 0,
+        BindControlName: "QuantityUnitID",
+        DataSourceMember: "QuantityUnitID"
     },
     
     {
@@ -610,12 +622,22 @@ export const InstallBundle_MateriaColumnList = [
         datasourcemember: "OutputUsAgeType",
         validatonList:["Comborequired"],
         isautoloaditemfromcache:false,
-        listoption:[{ value: -1, label: "--Vui lòng chọn--" },{ value: 1, label: "Xuất tiêu hao" },{ value: 2, label: "Xuất bán" }],
+        listoption:[{ value: -1, label: "--Vui lòng chọn--" },{ value: 1, label: "Xuất tiêu hao" },{ value: 2, label: "Xuất bán" },{ value: 3, label: "Xuất tiêu hao + bán" }],
         filterrestValue:[1],
+        namelabel:"OutputUsAgeTypeName",
         value:-1,
         filterrest:"IsHasPromotion,PromotionQuantity",
         OrderIndex: 7,
         hideInput: false
+    },
+    {
+        name: "OutputUsAgeTypeName",
+        Type: "text",
+        Caption: "hình thức xuất",
+        label: "hình thức xuất",
+        datasourcemember: "OutputUsAgeTypeName",
+        Width: 300,
+        OrderIndex: 7
     },
     {
         name: "IsHasPromotion",
@@ -702,13 +724,257 @@ export const InstallBundle_MateriaColumnList = [
         min:0,
         max:9999
     },
+    // {
+    //     name: "QuantityUnitID",
+    //     Type: "ComboBox",
+    //     Caption: "đơn vị tính",
+    //     label: "đơn vị tính",
+    //     datasourcemember: "QuantityUnitID",
+    //     isautoloaditemfromcache:true,
+    //     loaditemcachekeyid:"ERPCOMMONCACHE.QUANTITYUNIT",
+    //     valuemember:"QuantityUnitID",
+    //     nameMember:"QuantityUnit",
+    //     OrderIndex: 15,
+    //     hideInput: false
+    // },
     {
         name: "Note",
         Type: "TextArea",
         label:"Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex:15,
+        OrderIndex:16,
+        Colmd:12,
+        hideInput: false,
+        labelcolspan:2,
+        colspan:10
+    },
+    {
+        name: "Action",
+        Type: "editnew",
+        Caption: "Tác vụ",
+        datasourcemember: "ArticleID",
+        Width: 40,
+        iputpop: false
+    }
+];
+
+export const InstallBundle_MateriaColumnListEdit = [
+    {
+        name: "MaterialGroupID",
+        Type: "ComboBox",
+        Caption: "nhóm vật tư",
+        label: "nhóm vật tư",
+        value:-1,
+        Disabled:true,
+        datasourcemember: "MaterialGroupID",
+        validatonList:["Comborequired"],
+        isautoloaditemfromcache:true,
+        loaditemcachekeyid:"ERPCOMMONCACHE.MATERIALGROUP",
+        valuemember:"MaterialGroupID",
+        nameMember:"MaterialGroupName",
+        namelabel:"MaterialGroupName",
+        OrderIndex: 1,
+        hideInput: false,
+        Colmd:12,
+        labelcolspan:2,
+        colspan:10
+    },
+    {
+        name: "MaterialGroupName",
+        Type: "text",
+        Caption: "Nhóm vật tư",
+        label: "nhóm vật tư",
+        datasourcemember: "MaterialGroupName",
+        Width: 300,
+        OrderIndex: 1
+    },
+    {
+        name: "StandardUsAgeQuantity",
+        Type: "TextNumber",
+        label:"Số lượng chuẩn",
+        Caption: "Số lượng chuẩn",
+        datasourcemember: "StandardUsAgeQuantity",
+        Width: 100,
+        validatonList: ["required"],
+        OrderIndex:2,
+        min:0,
+        max:9999
+    },
+    {
+        name: "MaxUsAgeQuantity",
+        Type: "TextNumber",
+        label:"Số lượng tối đa",
+        Caption: "Số lượng tối đa",
+        datasourcemember: "MaxUsAgeQuantity",
+        Width: 100,
+        validatonList: ["required"],
+        OrderIndex:3,
+        min:0,
+        max:9999
+    },
+    {
+        name: "UsAgeRecordType",
+        Type: "ComboBox",
+        Caption: "Hình thức ghi nhận",
+        label: "Hình thức ghi nhận",
+        datasourcemember: "UsAgeRecordType",
+        isautoloaditemfromcache:false,
+        listoption:[{ value: -1, label: "--Vui lòng chọn--" },{ value: 1, label: "Nhập tay" },{ value: 2, label: "Quy đổi" }],
+        filterrestValue:[1],
+        filterrest:"ConvertToMaterialGroupID,ConvertRatio",
+        OrderIndex: 4,
+        value:-1,
+        hideInput: false
+    },
+    {
+        name: "ConvertToMaterialGroupID",
+        Type: "ComboBox",
+        Caption: "nhóm vật tư quy đổi",
+        label: "nhóm vật tư quy đổi",
+        datasourcemember: "ConvertToMaterialGroupID",
+        isautoloaditemfromcache:true,
+        loaditemcachekeyid:"ERPCOMMONCACHE.MATERIALGROUP",
+        valuemember:"MaterialGroupID",
+        nameMember:"MaterialGroupName",
+        filterrestValue:[1,-1],
+        objrestValue:"UsAgeRecordType",
+        Disabled:true,
+        OrderIndex: 5,
+        hideInput: false
+    },
+    {
+        name: "ConvertRatio",
+        Type: "TextNumber",
+        Caption: "Tỷ lệ quy đổi",
+        label:"Tỷ lệ quy đổi",
+        datasourcemember: "ConvertRatio",
+        OrderIndex:6,
+        hideInput: false,
+        filterrestValue:[1],
+        objrestValue:"UsAgeRecordType",
+        Disabled:true,
+        min:0,
+        max:9999
+    },
+    {
+        name: "OutputUsAgeType",
+        Type: "ComboBox",
+        Caption: "Hình thức xuất",
+        label: "Hình thức xuất",
+        datasourcemember: "OutputUsAgeType",
+        validatonList:["Comborequired"],
+        isautoloaditemfromcache:false,
+        listoption:[{ value: -1, label: "--Vui lòng chọn--" },{ value: 1, label: "Xuất tiêu hao" },{ value: 2, label: "Xuất bán" },{ value: 3, label: "Xuất tiêu hao + bán" }],
+        filterrestValue:[1],
+        namelabel:"OutputUsAgeTypeName",
+        value:-1,
+        filterrest:"IsHasPromotion,PromotionQuantity",
+        OrderIndex: 7,
+        hideInput: false
+    },
+    {
+        name: "OutputUsAgeTypeName",
+        Type: "text",
+        Caption: "hình thức xuất",
+        label: "hình thức xuất",
+        datasourcemember: "OutputUsAgeTypeName",
+        Width: 300,
+        OrderIndex: 7
+    },
+    {
+        name: "IsHasPromotion",
+        Type: "checkbox",
+        label:"Có khuyến mãi",
+        Caption: "Có khuyến mãi",
+        datasourcemember: "IsHasPromotion",
+        filterrestValue:[1],
+        objrestValue:"OutputUsAgeType",
+        Disabled:true,
+        OrderIndex:8,
+        hideInput: false
+    },
+    {
+        name: "PromotionQuantity",
+        Type: "TextNumber",
+        label:"Số lượng khuyến mãi",
+        Caption: "Số lượng khuyến mãi",
+        datasourcemember: "PromotionQuantity",
+      
+        filterrestValue:[1],
+        objrestValue:"OutputUsAgeType",
+        Disabled:true,
+        OrderIndex:9,
+        min:0,
+        max:9999,
+        hideInput: false
+    },
+    {
+        name: "AdvanceLimitType",
+        Type: "ComboBox",
+        Caption: "Loại giới hạn tạm ứng",
+        label: "Loại giới hạn tạm ứng",
+        datasourcemember: "AdvanceLimitType",
+        validatonList:["Comborequired"],
+        isautoloaditemfromcache:false,
+        listoption:[{ value: -1, label: "--Vui lòng chọn--" },{ value: 1, label: "Giới hạn theo số lượng" },{ value: 2, label: "Giới hạn theo tổng tiền"},{ value: 3, label: "Không giới hạn"}],
+        filterrestValue:[2,3],
+        value:-1,
+        filterrest:"AdvanceLimitQuantity",
+        OrderIndex: 10,
+        hideInput: false
+    },
+    {
+        name: "AdvanceLimitQuantity",
+        Type: "TextNumber",
+        label:"Số lượng tạm ứng tối đa",
+        Caption: "Số lượng tạm ứng tối đa",
+        datasourcemember: "AdvanceLimitQuantity",
+      
+        filterrestValue:[2,3],
+        objrestValue:"AdvanceLimitType",
+        Disabled:true,
+        OrderIndex:11,
+        min:0,
+        max:9999,
+        hideInput: false
+    },
+    {
+        name: "IsRoundIngQuantity",
+        Type: "checkbox",
+        label:"Có làm tròn số lượng",
+        datasourcemember: "IsRoundIngQuantity",
+        OrderIndex:12,
+        hideInput: false
+    },
+    {
+        name: "IsActived",
+        Type: "checkbox",
+        label:"kích hoạt",
+        Caption: "Kích hoạt",
+        datasourcemember: "IsActived",
+        Width: 70,
+        OrderIndex:13
+    },
+    {
+        name: "RoundingMultiple",
+        Type: "TextNumber",
+        Caption: "Bội số làm tròn",
+        label:"Bội số làm tròn",
+        datasourcemember: "RoundingMultiple",
+        OrderIndex:14,
+        hideInput: false,
+        min:0,
+        max:9999
+    },
+
+    {
+        name: "Note",
+        Type: "TextArea",
+        label:"Ghi chú",
+        Caption: "Ghi chú",
+        datasourcemember: "Note",
+        OrderIndex:16,
         Colmd:12,
         hideInput: false,
         labelcolspan:2,

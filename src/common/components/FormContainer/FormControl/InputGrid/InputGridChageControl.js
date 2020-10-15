@@ -83,7 +83,7 @@ class InputGridChageControlCom extends Component {
             this.props.onValueChange(rowname, rowvalue, rowIndex);
         }
     }
-    onValueChangeComboUser(rowname, rowvalue, rowIndex, a, ab, filterrest) {
+    onValueChangeComboUser(rowname, rowvalue, rowIndex) {
         if (this.props.onValueChange != null) {
             this.props.onValueChange(rowname, rowvalue == -1 ? [] : rowvalue, rowIndex);
         }
@@ -142,6 +142,11 @@ class InputGridChageControlCom extends Component {
                                         if (columnItem.type == "checkbox") {
                                             isChecked = rowItem[columnItem.dataSourcemember];
                                         }
+                                        let isPermission = false;
+                                        if(rowItem["IsPermission"]==false)
+                                        {
+                                            isPermission=true
+                                        }
 
                                         let cellData = "";
                                         switch (columnItem.type) {
@@ -155,35 +160,49 @@ class InputGridChageControlCom extends Component {
                                                 />
                                                 break;
                                             case "ComboBox":
+                                              
                                                 cellData = <ElementInputModal.ElementModalComboBox
                                                     validationErrorMessage={(this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex] != undefined ? this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex].ValidationErrorMessage : "")}
                                                     onValueChange={this.onValueChange}
                                                     {...columnItem}
                                                     rowIndex={rowIndex}
+                                                    disabled={isPermission}
                                                     value={rowItem[columnItem.dataSourcemember]}
                                                 />
                                                 break;
                                             case "ComboUserBox":
-                                                //   console.log("MultiUserComboBox",rowItem[columnItem.dataSourcemember])
+                                                console.log("IsPermission", rowItem["IsPermission"])
+                                                let listOption = [];
+                                                let objDeliverUser = [];
+                                                //  console.log("MultiUserComboBox",rowItem[columnItem.dataSourcemember])
                                                 if (rowItem[columnItem.filterrest] != -1 && rowItem[columnItem.filterrest] != 0) {
+                                                    rowItem["ShipmentOrder_DeliverUserList"] && rowItem["ShipmentOrder_DeliverUserList"].map((item, index) => {
+                                                        objDeliverUser.push(item.UserName)
+                                                    })
+
                                                     cellData = <ElementInputModal.ElementModalComboBox
                                                         validationErrorMessage={(this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex] != undefined ? this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex].ValidationErrorMessage : "")}
                                                         onValueChange={this.onValueChangeComboUser.bind(this)}
                                                         {...columnItem}
+                                                        isselectedOp={true}
                                                         rowIndex={rowIndex}
-                                                        value={rowItem[columnItem.dataSourcemember]}
+                                                        value={objDeliverUser}
+                                                        disabled={isPermission}
                                                         filterValue={rowItem[columnItem.filterrest]}
                                                     />
                                                 }
                                                 else {
-                                                    // console.log("MultiUserComboBox",rowItem[columnItem.dataSourcemember])
+                                                    rowItem["ShipmentOrder_DeliverUserList"] && rowItem["ShipmentOrder_DeliverUserList"].map((item, index) => {
+                                                        listOption.push({ value: item.UserName, label: item.FullName, FullName: item.FullName });
+                                                    })
                                                     cellData = <ElementInputModal.MultiUserComboBox
                                                         validationErrorMessage={(this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex] != undefined ? this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex].ValidationErrorMessage : "")}
                                                         onValueChange={this.onValueChangeComboUser.bind(this)}
                                                         {...columnItem}
                                                         rowIndex={rowIndex}
-                                                        listoption={rowItem[columnItem.dataSourcemember]}
-                                                        value={rowItem[columnItem.dataSourcemember]}
+                                                        listoption={listOption}
+                                                        value={listOption}
+                                                        disabled={isPermission}
                                                     />
                                                 }
 
@@ -220,11 +239,9 @@ class InputGridChageControlCom extends Component {
                     <h4 className="title">{this.props.title}</h4>
                 </div>
                 <div className="card-body">
-                    <div className="table-responsive">
-                        {
-                            this.renderInputGrid()
-                        }
-                    </div>
+                    {
+                        this.renderInputGrid()
+                    }
                 </div>
 
             </div>

@@ -71,12 +71,33 @@ export const ExportStringToDate = (dateString) => {
     return dateString;
 }
 
+export const ExportStringDate = (dateString, notGetTime) => {
+    if (dateString) {
+        try {
+            const dataMoment = dateString.split(' ');
+
+
+            const dataMoment1 = dataMoment[0].split('-');
+
+            let dateConvertMoment = dataMoment1[2] + "-" + dataMoment1[1] + "-" + dataMoment1[0]
+
+            if (notGetTime) {
+                dateConvertMoment = dateConvertMoment + " " + dataMoment[1];
+            }
+            return dateConvertMoment;
+        } catch (error) {
+            return dateString;
+        }
+    }
+    return dateString;
+}
+
 export const ExportStringToMonth = (dateString) => {
 
     if (dateString) {
         try {
             const dataMoment = dateString.split('-');
-            let dateConvertMoment =  dataMoment[1] + "-" + dataMoment[0]
+            let dateConvertMoment = dataMoment[1] + "-" + dataMoment[0]
             return dateConvertMoment;
         } catch (error) {
             return dateString;
