@@ -762,11 +762,10 @@ export const InstallBundle_MateriaColumnList = [
 export const InstallBundle_MateriaColumnListEdit = [
     {
         name: "MaterialGroupID",
-        Type: "ComboBox",
+        Type: "ComboBoxEdit",
         Caption: "nhóm vật tư",
         label: "nhóm vật tư",
         value:-1,
-        Disabled:true,
         datasourcemember: "MaterialGroupID",
         validatonList:["Comborequired"],
         isautoloaditemfromcache:true,

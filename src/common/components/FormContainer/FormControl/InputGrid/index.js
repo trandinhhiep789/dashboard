@@ -221,7 +221,8 @@ class InputGridCom extends Component {
 						}
 					},
 					modalElementList: this.props.listColumn,
-					modalElementOl: this.props.MLObjectDefinition
+					modalElementOl: this.props.MLObjectDefinition,
+					isaddComboBox:true
 				});
 
 			}

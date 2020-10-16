@@ -506,7 +506,7 @@ class ShipmentOrderDetailCom extends Component {
                             </Link>
                         </div>
                         <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Mã giao dịch với đối tác:</label>
+                            <label className="col-form-label bold">Mã đơn hàng của đối tác:</label>
                         </div>
                         <div className="form-group col-md-4">
                             <label className="col-form-label">{this.state.ShipmentOrder.PartnerSaleOrderID}</label>

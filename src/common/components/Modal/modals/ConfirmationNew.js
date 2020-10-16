@@ -101,7 +101,6 @@ class ConfirmationNew extends React.Component {
     }
 
     bindDataToControl(listElement, dataSource) {
-        console.log("bindDataToControl", listElement, dataSource);
         let listElement1 = listElement;
         if (typeof dataSource != "undefined") {
             listElement1 = listElement.map((elementItem) => {
@@ -296,7 +295,20 @@ class ConfirmationNew extends React.Component {
                                         {...elementItem}
                                         value={this.state.FormData[elementItem.name].value}
                                         validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
-                                        Disabled={typeof elementItem.objrestValue != "undefined"? blDisabled : elementItem.Disabled}
+                                        Disabled={typeof elementItem.objrestValue != "undefined" ? blDisabled : elementItem.Disabled}
+                                        key={index}
+                                    />
+                                );
+
+                            case "ComboBoxEdit":
+                                return (
+                                    <ElementModal.ElementModalComboBox
+                                        onValueChange={this.handleInputChange}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                        {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        Disabled={this.props.isaddComboBox == true ? false : true}
                                         key={index}
                                     />
                                 );
