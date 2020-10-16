@@ -21,7 +21,7 @@ class ShipmentOrderTypeWFCom extends Component {
             <div className="card">
                 <div className="card-body">
                     <div className="stepper">
-                        {this.state.ShipmentOrderType_WF && this.state.ShipmentOrderType_WF.sort((a, b) => (a.ShipmentOrderStepID > b.ShipmentOrderStepID) ? 1 : -1).map((item, index) => {
+                        {this.state.ShipmentOrderType_WF && this.state.ShipmentOrderType_WF.sort((a, b) => (a.OrderIndex > b.OrderIndex) ? 1 : -1).map((item, index) => {
                             if (index == 0 && item.CountStep == 1 && (item.IsOnlyShowOnHasCollection == false || (item.IsOnlyShowOnHasCollection == true && this.props.TotalMoney > 0))) {
                                 return (<div className={(item.IsProcess == true ? "stepper-item step-completed" : "stepper-item")} key={index}>
                                     <span className="stepLabel">

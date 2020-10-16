@@ -50,7 +50,9 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
-        this.callSearchData(this.state.SearchData);
+        const ShipOrdStatusGroupID = { SearchKey: "@SHIPMENTORDERSTATUSGROUPID", SearchValue: -1 };
+        let listSearchDataObject = Object.assign([], this.state.SearchData, { [9]: ShipOrdStatusGroupID });
+        this.callSearchData(listSearchDataObject);
         this.props.updatePagePath(PagePath);
     }
 
@@ -114,8 +116,8 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.CoordinatorStoreID
             },
             {
-                SearchKey: "@SHIPMENTORDERSTATUSID",
-                SearchValue: MLObject.ShipmentOrderStatusID
+                SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+                SearchValue: MLObject.ShipmentOrderStatusGroupID
             },
             {
                 SearchKey: "@IsCoordinator",
