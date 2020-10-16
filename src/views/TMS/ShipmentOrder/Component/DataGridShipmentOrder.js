@@ -692,7 +692,7 @@ class DataGridShipmentOderCom extends Component {
                                     <td className="group-address">
                                         <div className="group-info-row">
                                             <label className="item address-repository-created">
-                                                <span className="coordinatorUser">{rowItem.PrimaryShipItemName}</span>
+                                                <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(';','<br/>'))}</span>
                                             </label>
                                             <label className="item address-receiver">
                                                 <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
