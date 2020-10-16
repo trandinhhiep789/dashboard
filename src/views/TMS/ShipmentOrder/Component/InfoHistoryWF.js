@@ -11,7 +11,7 @@ import ReactTooltip from 'react-tooltip';
 const containerStyle = {
     position: 'absolute',
     width: '98%',
-    height: '550px'
+    height: '500px'
 }
 class InfoHistoryWFCom extends Component {
     constructor(props) {

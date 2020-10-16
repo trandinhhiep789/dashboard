@@ -60,7 +60,7 @@ export default class ModelContainerMap extends React.Component {
                 onRequestClose={onRequestClose}
                 effect={Effect.ScaleUp}
             >
-                <div className="modal-content modal-custom">
+                <div className="modal-content modal-custom  modal-custom-maps">
                     <div className="modal-header">
                         <h4 className="modal-title" id="myModalLabel">{title}</h4>
                         <button type="button" className="close" onClick={this.handleCLoseButton}>

@@ -20,5 +20,11 @@
 .modal-content{
     &.modal-custom{
         min-height: 450px;
+        &.modal-custom-maps{
+            min-height: calc(100vh - 100px);
+            .modal-body{
+                overflow-y: auto;
+            }
+        }
     }
 }
