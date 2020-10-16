@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { formatDate } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_IMAGE_SLIDE } from '../../../../constants/actionTypes';
-import ModelContainer from "../../../../common/components/Modal/ModelContainer";
+import ModelContainerMap from "../../../../common/components/Modal/ModelContainerMap";
 import { ModalManager } from 'react-dynamic-modal';
 import MapContainer from './MapContainer ';
 import ReactTooltip from 'react-tooltip';
@@ -11,7 +11,7 @@ import ReactTooltip from 'react-tooltip';
 const containerStyle = {
     position: 'absolute',
     width: '98%',
-    height: '250px'
+    height: '550px'
 }
 class InfoHistoryWFCom extends Component {
     constructor(props) {
@@ -47,7 +47,7 @@ class InfoHistoryWFCom extends Component {
     handleShowGeoLocation(e) {
         const objIme = e.currentTarget.dataset.id;
         ModalManager.open(
-            <ModelContainer
+            <ModelContainerMap
                 title="Tọa độ GPS"
                 name=""
                 content={""}
@@ -61,7 +61,7 @@ class InfoHistoryWFCom extends Component {
                         classContainerStyle={containerStyle}
                     />
                 </div>
-            </ModelContainer>
+            </ModelContainerMap>
         )
     }
 
