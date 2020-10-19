@@ -1,3 +1,5 @@
+import { CACHE_OBJECT_STORENAME } from "../../constants/systemVars";
+
 export function getAPIMessageFromReduxState(reduxState, isClickSubmit) {
     const isFetchAPICompleted = reduxState.FetchAPIInfo.IsFetchAPICompleted;
     const isFetchAPIError = reduxState.FetchAPIInfo.IsFetchAPIError;
@@ -103,5 +105,5 @@ export function deleteCookie(name) {
 }
 
 export function clearAllLocalCacheData() {
-    window.indexedDB.deleteDatabase("TTERP_LocalCacheData");
+    window.indexedDB.deleteDatabase(CACHE_OBJECT_STORENAME);
 };
