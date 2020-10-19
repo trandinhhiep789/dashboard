@@ -814,6 +814,11 @@ class ShipmentOrderAddressCom extends Component {
                     this.ShowModalSender();
                 });
             }
+            else
+            {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+            }
+
         });
     }
 
@@ -1040,6 +1045,10 @@ class ShipmentOrderAddressCom extends Component {
                 this.setState({ ShipmentOrderEdit: ShipmentOrderEdit,ReceiverGeoLocation:ShipmentOrderEdit.ReceiverGeoLocation }, () => {
                     this.ShowModalReceiver();
                 });
+            }
+            else
+            {
+                this.addNotification(apiResult.Message, apiResult.IsError);
             }
         });
     }
