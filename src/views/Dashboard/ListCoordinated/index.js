@@ -81,7 +81,6 @@ class ListCoordinatedCom extends Component {
 
     render() {
         const dataSource = this.props.DataSource.filter(n => n.CoordinatorUser == "");
-       // const dataSource = this.getDisplayData(this.props.DataSource);
         return (
             <div className="col-lg-12">
                 <div className="card shadow-1">
