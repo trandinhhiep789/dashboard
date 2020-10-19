@@ -62,9 +62,26 @@ class ListCoordinatedCom extends Component {
         }
 
     }
+    getDisplayData(dataSource) {
+        let resultData = [];
+        if (dataSource.length < 1 || dataSource == null) {
+            return resultData;
+        }
+        else {
+            dataSource.sort((a, b) => (a.ExpectedDeliveryDate < b.ExpectedDeliveryDate) ? 1 : -1)
+            let rowindex = 10
+            if (dataSource.length < 10)
+                rowindex = dataSource.length
+            for (let i = 0; i < rowindex; i++) {
+                resultData.push(dataSource[i]);
+            }
+            return resultData;
+        }
+    }
 
     render() {
         const dataSource = this.props.DataSource.filter(n => n.CoordinatorUser == "");
+       // const dataSource = this.getDisplayData(this.props.DataSource);
         return (
             <div className="col-lg-12">
                 <div className="card shadow-1">
@@ -84,7 +101,7 @@ class ListCoordinatedCom extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {dataSource != null &&
+                                    {dataSource.length > 0 &&
                                         dataSource.map((rowItem, rowIndex) => {
                                             let rowClass = "jsgrid-row";
                                             if (index % 2 != 0) {
@@ -92,7 +109,7 @@ class ListCoordinatedCom extends Component {
                                             }
                                             // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
                                             return (<tr key={rowIndex}>
-                                               
+
                                                 <td className="groupInfoAction">
                                                     <div className="group-info-row">
                                                         <label className="item time">
