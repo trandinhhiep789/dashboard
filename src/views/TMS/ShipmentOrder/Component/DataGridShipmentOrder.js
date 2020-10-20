@@ -692,7 +692,7 @@ class DataGridShipmentOderCom extends Component {
                                     <td className="group-address">
                                         <div className="group-info-row">
                                             <label className="item address-repository-created">
-                                                <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(';','<br/>'))}</span>
+                                                <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(';', '<br/>'))}</span>
                                             </label>
                                             <label className="item address-receiver">
                                                 <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
@@ -767,6 +767,13 @@ class DataGridShipmentOderCom extends Component {
         else {
             classCustom = ""
         }
+
+        let IsCompleteDeliverIed = []
+        console.log(this.props.dataSource)
+        if (this.props.dataSource) {
+            IsCompleteDeliverIed = this.props.dataSource.filter(n => n.IsCompleteDeliverIed == true);
+        }
+
         return (
             <div className={classCustom}>
                 <div className="card cardShipmentOrder">
@@ -781,6 +788,9 @@ class DataGridShipmentOderCom extends Component {
                                         <button type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
                                             <i className="fa fa-plus ff"></i> Gán nhân viên giao hàng
                                         </button>
+
+                                        <label>Tổng đơn:{this.state.DataSource[0].TotaLRows}</label>
+                                     
                                         {(this.props.IsAdd == true || this.props.IsAdd == undefined) ?
                                             (!this.props.IsCustomAddLink == true ?
                                                 (<Link
