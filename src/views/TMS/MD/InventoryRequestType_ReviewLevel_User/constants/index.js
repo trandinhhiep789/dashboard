@@ -3,6 +3,7 @@ export const AddAPIPath = "api/InventoryRequestType_ReviewLevel_User/Add";
 export const UpdateAPIPath = "api/InventoryRequestType_ReviewLevel_User/Update";
 export const DeleteAPIPath = "api/InventoryRequestType_ReviewLevel_User/Delete";
 export const GetUserAPIPath = "api/InventoryRequestType_ReviewLevel_User/GetUserByStoreID";
+export const BackLink = "/InventoryRequestType";
 
 export const ModalColumnList_Insert = [
     {

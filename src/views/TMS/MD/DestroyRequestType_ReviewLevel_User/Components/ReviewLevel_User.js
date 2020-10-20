@@ -11,8 +11,6 @@ import {
     UpdateAPIPath,
     MLObjectDefinition,
     BackLink,
-    EditPagePath,
-    GetParent,
     GetUserAPIPath
 } from "../constants";
 import ReactNotification from "react-notifications-component";
