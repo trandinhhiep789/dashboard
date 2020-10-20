@@ -23,7 +23,6 @@ import {
     DataGridColumnItemList,
     DataGridColumnMaterialList,
     GridMLMaterialDefinition,
-    GridMLDeliverUserDefinition
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -798,7 +797,7 @@ class EditCom extends React.Component {
                                 IsLabelDiv={true}
                                 validatonList={["Comborequired"]}
                                 controltype="InputMultiControl"
-                                MLObjectDefinition={GridMLDeliverUserDefinition}
+                                MLObjectDefinition={[]}
                                 datasourcemember="ShipmentOrder_DeliverUserList"
                                 filterName="txtCarrierPartnerID"
                                 isMultiSelect={true}

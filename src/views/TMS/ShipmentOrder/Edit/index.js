@@ -799,7 +799,7 @@ class EditCom extends React.Component {
                                 IsLabelDiv={true}
                                 validatonList={["Comborequired"]}
                                 controltype="InputMultiControl"
-                                MLObjectDefinition={GridMLDeliverUserDefinition}
+                                MLObjectDefinition={[]}
                                 datasourcemember="ShipmentOrder_DeliverUserList"
                                 filterName="txtCarrierPartnerID"
                                 isMultiSelect={true}

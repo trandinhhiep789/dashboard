@@ -15,7 +15,6 @@ import {
     IDSelectColumnName,
     PKColumnName,
     InitSearchParams,
-    TitleFormSearch,
     SearchPath
 } from "../../../ServiceAgreement/FeeAppendixDetail/constants/index.js";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
@@ -144,7 +143,7 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    FormName={TitleFormSearch}
+                    FormName={""}
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}

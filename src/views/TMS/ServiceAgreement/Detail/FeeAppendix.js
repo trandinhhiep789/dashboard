@@ -5,7 +5,6 @@ import {
     PKColumnNameFeeAppendix,
     TitleFromFeeAppendix,
     DataGridColumnItemListFeeAppendix,
-    IDSelectColumnName,
     AddLinkFeeAppendix
 } from "../Detail/contants";
 import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
@@ -62,7 +61,7 @@ class FeeAppendixCom extends Component {
                     title={TitleFromFeeAppendix}
                     AddLink={AddLinkFeeAppendix}
                     params={ServiceAgreementID}
-                    IDSelectColumnName={IDSelectColumnName}
+                    IDSelectColumnName={""}
                     PKColumnName={PKColumnNameFeeAppendix}
                     onDeleteClick={this.handleItemDelete}
                     onChangePage={this.handleonChangePage}

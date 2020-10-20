@@ -52,6 +52,9 @@ class SearchCom extends React.Component {
         this.callSearchData(InitSearchParams);
     }
 
+    componentWillUnmount (){
+        
+    }
 
 
     handleDelete(deleteList, pkColumnName) {

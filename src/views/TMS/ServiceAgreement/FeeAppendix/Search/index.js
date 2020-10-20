@@ -7,7 +7,6 @@ import {
     APIHostName,
     AddAPIPath,
     BackLink,
-    PagePath,
     IDSelectColumnName,
     TitleFormSearch,
     SearchMLObjectDefinition,
@@ -47,7 +46,7 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.callSearchData(this.state.SearchData);
 
-        this.props.updatePagePath(PagePath);
+        // this.props.updatePagePath(PagePath);
     }
 
     callSearchData(searchData) {
