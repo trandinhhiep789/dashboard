@@ -154,7 +154,7 @@ class SearchCom extends React.Component {
                 <DataGrid
                     listColumn={DataGridColumnList}
                     dataSource={this.state.gridDataSource}
-                    AddLink={AddLink}
+                    AddLink={""}
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
                     onDeleteClick={this.handleDelete}
