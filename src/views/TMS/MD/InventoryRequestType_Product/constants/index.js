@@ -2,6 +2,7 @@ export const APIHostName = "TMSAPI";
 export const AddAPIPath = "api/InventoryRequestType_Product/Add";
 export const UpdateAPIPath = "api/InventoryRequestType_Product/Update";
 export const DeleteAPIPath = "api/InventoryRequestType_Product/Delete";
+export const BackLink = "/InventoryRequestType";
 
 export const ModalColumnList_Insert = [
     {

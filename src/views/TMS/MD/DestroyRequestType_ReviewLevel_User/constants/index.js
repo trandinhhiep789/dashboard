@@ -3,6 +3,7 @@ export const AddAPIPath = "api/DestroyRequestType_ReviewLevel_User/Add";
 export const UpdateAPIPath = "api/DestroyRequestType_ReviewLevel_User/Update";
 export const DeleteAPIPath = "api/DestroyRequestType_ReviewLevel_User/Delete";
 export const GetUserAPIPath = "api/DestroyRequestType_ReviewLevel_User/GetUserByStoreID";
+export const BackLink = "/DestroyRequestType";
 
 export const ModalColumnList_Insert = [
     {

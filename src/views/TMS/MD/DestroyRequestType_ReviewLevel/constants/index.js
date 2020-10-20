@@ -3,6 +3,8 @@ export const AddAPIPath = "api/DestroyRequestType_ReviewLevel/Add";
 export const UpdateAPIPath = "api/DestroyRequestType_ReviewLevel/Update";
 export const DeleteAPIPath = "api/DestroyRequestType_ReviewLevel/Delete";
 export const LoadAPIPath = "api/DestroyRequestType_ReviewLevel/Load";
+export const BackLink = "/DestroyRequestType";
+
 
 export const DetailPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },

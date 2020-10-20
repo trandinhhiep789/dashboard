@@ -2,6 +2,8 @@ export const APIHostName = "TMSAPI";
 export const AddAPIPath = "api/DestroyRequestType_Product/Add";
 export const UpdateAPIPath = "api/DestroyRequestType_Product/Update";
 export const DeleteAPIPath = "api/DestroyRequestType_Product/Delete";
+export const BackLink = "/DestroyRequestType";
+
 
 export const ModalColumnList_Insert = [
     {

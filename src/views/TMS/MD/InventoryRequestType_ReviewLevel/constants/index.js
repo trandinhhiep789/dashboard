@@ -3,6 +3,8 @@ export const AddAPIPath = "api/InventoryRequestType_ReviewLevel/Add";
 export const UpdateAPIPath = "api/InventoryRequestType_ReviewLevel/Update";
 export const DeleteAPIPath = "api/InventoryRequestType_ReviewLevel/Delete";
 export const LoadAPIPath = "api/InventoryRequestType_ReviewLevel/Load";
+export const BackLink = "/InventoryRequestType";
+
 
 export const DetailPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
