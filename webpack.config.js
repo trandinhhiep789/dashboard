@@ -33,8 +33,10 @@ module.exports = {
                 use: {
                     loader: "babel-loader",
                     options: {
-                        presets: ['babel-preset-env', 'babel-preset-react', 'babel-preset-stage-3'],
-                        plugins: [["transform-class-properties", { spec: true }]]
+                        presets: ["@babel/preset-env", "@babel/preset-react"],//'babel-preset-env', 'babel-preset-react', 'babel-preset-stage-3',
+                        plugins: ['@babel/proposal-class-properties','@babel/proposal-object-rest-spread', '@babel/syntax-dynamic-import']
+                       // plugins: [["transform-class-properties","syntax-dynamic-import", { spec: true }]] //{ spec: true }
+                       
                     }
                 }
             },
