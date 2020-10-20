@@ -1,5 +1,6 @@
 
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+const { SourceMapDevToolPlugin } = require("webpack");
 
 module.exports = {
     entry: ['./src/app.js'],
@@ -7,14 +8,17 @@ module.exports = {
     output: {
         path: __dirname + '/build',
         filename: 'bundle.js',
-        publicPath: '/'
+        publicPath: '/',
     },
+    devtool: "source-map",
     devServer: {
         historyApiFallback: true,
         host: "dev.tms.tterpbeta.vn",
         port: 8089,
         https: false
     },
+ 
+
     // plugins: [
     //     new HtmlWebpackPlugin({
     //         template: 'app/index.html'
