@@ -34,12 +34,10 @@ class AppCom extends React.Component {
                     <div id="mainRouter">
                         <ModalRoot />
                         <Switch>
-                            <React.Fragment>
-                                <Route exact path="/" component={Home} />
-                                <Route path="/login" component={Login} />
-                                <Route path="/logout" component={Logout} />
-                                <Route path="*" component={Home} />
-                            </React.Fragment>
+                            <Route exact path="/" component={Home} />
+                            <Route path="/login" component={Login} />
+                            <Route path="/logout" component={Logout} />
+                            <Route path="*" component={Home} />
 
                         </Switch>
                     </div>
