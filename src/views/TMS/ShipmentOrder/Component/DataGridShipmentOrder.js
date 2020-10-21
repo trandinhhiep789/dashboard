@@ -520,23 +520,6 @@ class DataGridShipmentOderCom extends Component {
         let timeDisplay = (hour < 10 ? '0' + hour : hour) + ':' + (minute < 10 ? '0' + minute : minute)
         let month = date.getMonth() + 1;
         return date.getDate() + '/' + (month < 10 ? '0' + month : month) + '/' + date.getFullYear() + " " + timeDisplay;
-        // var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
-        // var diffDays = currentDate.getDate() - date.getDate();
-        // var diffMinutes = parseInt((timeDiff / (3600 * 24)));
-
-        // if (diffDays < 1 && diffDays > -1) {
-        //     if (diffMinutes < 120) {
-        //         return 'Cần giao gấp (' + timeDisplay + ')';
-        //     }
-        //     else {
-        //         return 'Hôm nay ' + timeDisplay;
-        //     }
-        // } else if (diffDays == 1) {
-        //     return 'Hôm qua ' + timeDisplay;
-        // } else {
-        //     let month = date.getMonth() + 1;
-        //     return date.getDate() + '/' + (month < 10 ? '0' + month : month) + '/' + date.getFullYear() + " " + timeDisplay;
-        // }
     }
     _genCommentCarrierPartner(CarrierTypeID, CarrierTypeName) {
         if (CarrierTypeID < 1) {
@@ -789,7 +772,9 @@ class DataGridShipmentOderCom extends Component {
                                             <i className="fa fa-plus ff"></i> Gán nhân viên giao hàng
                                         </button>
 
-                                        <label>Tổng đơn:{this.state.DataSource[0].TotaLRows}</label>
+                                        <label>Tổng đơn:{this.state.DataSource.length}</label>
+                                        <label>Đã hoàn thành:3</label>
+                                        <label>Chưa hoàn thành:8</label>
                                      
                                         {(this.props.IsAdd == true || this.props.IsAdd == undefined) ?
                                             (!this.props.IsCustomAddLink == true ?
