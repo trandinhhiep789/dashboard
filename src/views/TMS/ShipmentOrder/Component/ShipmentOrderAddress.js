@@ -197,14 +197,14 @@ class ShipmentOrderAddressCom extends Component {
                 "VehicleType": 2
             };
             this.props.callFetchAPI(APIHostName, 'api/Maps/FindPathViaRoute', paramsRequest).then((apiResult) => {
-               // console.log('FindPathViaRoute', apiResult)
+                // console.log('FindPathViaRoute', apiResult)
                 if (!apiResult.IsError) {
 
                     let { ShipmentOrderEdit } = this.state;
                     const Durations = Math.floor(JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Durations[1] / 60);
                     ShipmentOrderEdit["EstimateDeliveryDistance"] = JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Distances[1] / 1000;
                     ShipmentOrderEdit["EstimateDeliveryLong"] = Durations;
-               
+
                     this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, SenderGeoLocation: lat + "," + lng }, () => {
                         this.ShowModalSender();
                     });
@@ -406,7 +406,7 @@ class ShipmentOrderAddressCom extends Component {
             ShipmentOrderEdit.SenderGeoLocation = this.state.SenderGeoLocation;
             ShipmentOrderEdit.SenderFullAddress = this.getfulladress(ShipmentOrderEdit.SenderAddress, ShipmentOrderEdit.SenderWardID, ShipmentOrderEdit.SenderDistrictID, ShipmentOrderEdit.SenderProvinceID);
             this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateShipmentOrderAddress', ShipmentOrderEdit).then((apiResult) => {
-               // console.log('apiResult', )
+                // console.log('apiResult', )
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
                     ModalManager.close();
@@ -800,8 +800,7 @@ class ShipmentOrderAddressCom extends Component {
     }
 
 
-    handleSenderGeoLocation()
-    {
+    handleSenderGeoLocation() {
         let { ShipmentOrderEdit } = this.state;
         let paramsRequest = {
             "Keyword": ShipmentOrderEdit.SenderFullAddress,
@@ -810,14 +809,13 @@ class ShipmentOrderAddressCom extends Component {
         }
         this.props.callFetchAPI(APIHostName, 'api/Maps/SearchAll', paramsRequest).then((apiResult) => {
             if (!apiResult.IsError) {
-               
+
                 ShipmentOrderEdit.SenderGeoLocation = JSON.parse(apiResult.ResultObject).List[0].Latitude + "," + JSON.parse(apiResult.ResultObject).List[0].Longitude;
-                this.setState({ ShipmentOrderEdit: ShipmentOrderEdit,SenderGeoLocation:ShipmentOrderEdit.SenderGeoLocation }, () => {
+                this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, SenderGeoLocation: ShipmentOrderEdit.SenderGeoLocation }, () => {
                     this.ShowModalSender();
                 });
             }
-            else
-            {
+            else {
                 this.addNotification(apiResult.Message, apiResult.IsError);
             }
 
@@ -993,7 +991,7 @@ class ShipmentOrderAddressCom extends Component {
                                 <label className="col-form-label">{this.state.ReceiverGeoLocation}</label>
                             </div>
                             <div className="form-group col-md-3">
-                              <button className="btn btnCoordinates" onClick={this.handleReceiverGeoLocation.bind(this)} type="submit">Lấy tọa độ</button>
+                                <button className="btn btnCoordinates" onClick={this.handleReceiverGeoLocation.bind(this)} type="submit">Lấy tọa độ</button>
                             </div>
                         </div>
                     </div>
@@ -1032,10 +1030,9 @@ class ShipmentOrderAddressCom extends Component {
             </ModelContainer>
         )
     }
-    handleReceiverGeoLocation()
-    {
+    handleReceiverGeoLocation() {
         let { ShipmentOrderEdit } = this.state;
-       
+
         let paramsRequest = {
             "Keyword": ShipmentOrderEdit.ReceiverFullAddress,
             "Page": 1,
@@ -1044,12 +1041,11 @@ class ShipmentOrderAddressCom extends Component {
         this.props.callFetchAPI(APIHostName, 'api/Maps/SearchAll', paramsRequest).then((apiResult) => {
             if (!apiResult.IsError) {
                 ShipmentOrderEdit.ReceiverGeoLocation = JSON.parse(apiResult.ResultObject).List[0].Latitude + "," + JSON.parse(apiResult.ResultObject).List[0].Longitude;
-                this.setState({ ShipmentOrderEdit: ShipmentOrderEdit,ReceiverGeoLocation:ShipmentOrderEdit.ReceiverGeoLocation }, () => {
+                this.setState({ ShipmentOrderEdit: ShipmentOrderEdit, ReceiverGeoLocation: ShipmentOrderEdit.ReceiverGeoLocation }, () => {
                     this.ShowModalReceiver();
                 });
             }
-            else
-            {
+            else {
                 this.addNotification(apiResult.Message, apiResult.IsError);
             }
         });
@@ -1182,6 +1178,23 @@ class ShipmentOrderAddressCom extends Component {
                     <div className="card-body">
                         <div className="card">
                             <div className="card-title">
+                                <h4 className="title">Nhân viên tạo</h4>
+                            </div>
+                            <div className="card-body">
+                                <div className="form-row">
+                                    <div className="form-group col-md-1">
+                                        <label className="col-form-label icon">
+                                            <i className="fa fa-user" aria-hidden="true"></i>
+                                        </label>
+                                    </div>
+                                    <div className="form-group col-md-5">
+                                        <label className="col-form-label" >{this.state.ShipmentOrder.CreatedUser + "-" + this.state.ShipmentOrder.CreatedUserFullName}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="card">
+                            <div className="card-title">
                                 <h4 className="title">Người gửi</h4>
                                 <button className="btn btnEditCard" onClick={this.handleShowModalSender.bind(this)}>chỉnh sửa</button>
                             </div>
@@ -1257,7 +1270,6 @@ class ShipmentOrderAddressCom extends Component {
                     </div>
                 </div>
             </React.Fragment>
-
         );
     }
 }
