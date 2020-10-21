@@ -7,7 +7,7 @@ import MD5Digest from "../../common/library/cryptography/MD5Digest.js";
 import { AUTHEN_HOSTNAME, COOKIELOGIN, SESSION_EXPIRE_MINUTE } from "../../constants/systemVars.js";
 import { callRegisterClient } from "../../actions/registerClient";
 import { loginSuccess, callLogin, logout } from "../../actions/loginAction";
-import "../../css/login3.css";
+
 
 class LoginCom extends React.Component {
     constructor(props) {

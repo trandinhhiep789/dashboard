@@ -2,15 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, HashRouter, Route, Switch, Router } from 'react-router-dom';
 import { connect } from 'react-redux';
-// import Home from "./Home";
-// import Login from "./Login";
-// import Logout from "./Logout";
-// import ModalRoot from '../common/components/Modal/ModalRoot';
+import Home from "./Home";
+import Login from "./Login";
+import Logout from "./Logout";
+import ModalRoot from '../common/components/Modal/ModalRoot';
 
-const Home = React.lazy(() => import('./Home'));
-const Login = React.lazy(() => import('./Login'));
-const Logout = React.lazy(() => import('./Logout'));
-const ModalRoot = React.lazy(() => import('../common/components/Modal/ModalRoot'));
+// const Home = React.lazy(() => import('./Home'));
+// const Login = React.lazy(() => import('./Login'));
+// const Logout = React.lazy(() => import('./Logout'));
+// const ModalRoot = React.lazy(() => import('../common/components/Modal/ModalRoot'));
 
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
@@ -30,7 +30,7 @@ class AppCom extends React.Component {
 
         return (
             <BrowserRouter>
-                <React.Suspense fallback={loading()}>
+                {/* <React.Suspense fallback={loading()}> */}
                     <div id="mainRouter">
                         <ModalRoot />
                         <Switch>
@@ -41,7 +41,7 @@ class AppCom extends React.Component {
 
                         </Switch>
                     </div>
-                </React.Suspense>
+                {/* </React.Suspense> */}
             </BrowserRouter>
         );
     }

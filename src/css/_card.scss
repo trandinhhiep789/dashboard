@@ -6,8 +6,15 @@
             padding-bottom: 0;
             .flexbox {
                 justify-content: flex-start;
+                
                 .btn-toolbar {
+                    width: 100%;
                     margin-left: 0;
+                    .btn-group {
+                        width: 100%;
+                        display: flex;
+                        justify-content: space-between;
+                    }
                 }
             }
         }
