@@ -771,11 +771,23 @@ class DataGridShipmentOderCom extends Component {
                                         <button type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
                                             <i className="fa fa-plus ff"></i> Gán nhân viên giao hàng
                                         </button>
+                                        <div className="group-count">
+                                            <ul>
+                                                <li>
+                                                    <span className="count-name">Tổng đơn:</span>
+                                                    <span className="count-number">{this.state.DataSource.length}</span>
+                                                </li>
+                                                <li>
+                                                    <span className="count-name">Đã hoàn thành:</span>
+                                                    <span className="count-number">{this.state.DataSource.length}</span>
+                                                </li>
+                                                <li>
+                                                    <span className="count-name">Chưa hoàn thành:</span>
+                                                    <span className="count-number">{this.state.DataSource.length}</span>
+                                                </li>
+                                            </ul>
+                                        </div>
 
-                                        <label>Tổng đơn:{this.state.DataSource.length}</label>
-                                        <label>Đã hoàn thành:3</label>
-                                        <label>Chưa hoàn thành:8</label>
-                                     
                                         {(this.props.IsAdd == true || this.props.IsAdd == undefined) ?
                                             (!this.props.IsCustomAddLink == true ?
                                                 (<Link
