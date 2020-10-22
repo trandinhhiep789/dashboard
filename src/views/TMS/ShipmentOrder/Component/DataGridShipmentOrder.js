@@ -615,7 +615,7 @@ class DataGridShipmentOderCom extends Component {
                                         <div className="group-info-row">
                                             <label className="item person">
                                                 <i className="fa fa-user"></i>
-                                                <span className="person-info">
+                                                <div className="person-info">
                                                     <span className="name">
                                                         {rowItem.ReceiverFullName}
                                                     </span>
@@ -623,7 +623,7 @@ class DataGridShipmentOderCom extends Component {
                                                     <span className="phone">({rowItem.ReceiverPhoneNumber.substr(0, 4)}****)</span>
                                                     {rowItem.PartnerSaleOrderID != "" ? <span className="line">-</span> : ""}
                                                     <span className="phone">{rowItem.PartnerSaleOrderID}</span>
-                                                </span>
+                                                </div>
                                             </label>
                                             <label className="item address-receiver">
                                                 <span>{rowItem.ReceiverFullAddress}</span>

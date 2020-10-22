@@ -39,9 +39,9 @@ class AdvanceRequestDetailNewCom extends Component {
         let AdvanceQuantityUnitName = e.target[e.target.selectedIndex].getAttribute('data-advancequantityunitname');
         let AdvanceConvertRatio = e.target[e.target.selectedIndex].getAttribute('data-advanceconvertratio');
         let VAT = e.target[e.target.selectedIndex].getAttribute('data-vat');
-        console.log(MaterialGroupID, CostPrice)
         let { AdvanceRequestDetail } = this.state
         const objAdvanceRequestDetail = AdvanceRequestDetail.MaterialList.find(n => n['MaterialGroupID'] == MaterialGroupID)
+
         objAdvanceRequestDetail.ProductID = ProductID;
         objAdvanceRequestDetail.ProductName = ProductName;
         objAdvanceRequestDetail.QuantityUnitID = QuantityUnitID;
@@ -403,6 +403,7 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                                             {rowItemobj.MaterialProductList.map((optionItem) =>
                                                                                                 <option key={optionItem.MaterialProductID}
                                                                                                     value={optionItem.MaterialProductID}
+                                                                                                    data-installproductid={optionItem.InstallProductID}
                                                                                                     data-productname={optionItem.MaterialProductName}
                                                                                                     data-quantityunitid={optionItem.QuantityUnitID}
                                                                                                     data-quantityunit={optionItem.QuantityUnit}
