@@ -1190,6 +1190,14 @@ class ShipmentOrderAddressCom extends Component {
                                     <div className="form-group col-md-5">
                                         <label className="col-form-label" >{this.state.ShipmentOrder.CreatedUser + "-" + this.state.ShipmentOrder.CreatedUserFullName}</label>
                                     </div>
+                                    <div className="form-group col-md-1">
+                                        <label className="col-form-label icon">
+                                            <i className="fa fa-mobile " aria-hidden="true"></i>
+                                        </label>
+                                    </div>
+                                    <div className="form-group col-md-5">
+                                        <label className="col-form-label">{this.state.ShipmentOrder.CreatedUserPhoneNumber}</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
