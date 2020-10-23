@@ -520,23 +520,6 @@ class DataGridShipmentOderCom extends Component {
         let timeDisplay = (hour < 10 ? '0' + hour : hour) + ':' + (minute < 10 ? '0' + minute : minute)
         let month = date.getMonth() + 1;
         return date.getDate() + '/' + (month < 10 ? '0' + month : month) + '/' + date.getFullYear() + " " + timeDisplay;
-        // var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
-        // var diffDays = currentDate.getDate() - date.getDate();
-        // var diffMinutes = parseInt((timeDiff / (3600 * 24)));
-
-        // if (diffDays < 1 && diffDays > -1) {
-        //     if (diffMinutes < 120) {
-        //         return 'Cần giao gấp (' + timeDisplay + ')';
-        //     }
-        //     else {
-        //         return 'Hôm nay ' + timeDisplay;
-        //     }
-        // } else if (diffDays == 1) {
-        //     return 'Hôm qua ' + timeDisplay;
-        // } else {
-        //     let month = date.getMonth() + 1;
-        //     return date.getDate() + '/' + (month < 10 ? '0' + month : month) + '/' + date.getFullYear() + " " + timeDisplay;
-        // }
     }
     _genCommentCarrierPartner(CarrierTypeID, CarrierTypeName) {
         if (CarrierTypeID < 1) {
@@ -632,7 +615,7 @@ class DataGridShipmentOderCom extends Component {
                                         <div className="group-info-row">
                                             <label className="item person">
                                                 <i className="fa fa-user"></i>
-                                                <span className="person-info">
+                                                <div className="person-info">
                                                     <span className="name">
                                                         {rowItem.ReceiverFullName}
                                                     </span>
@@ -640,7 +623,7 @@ class DataGridShipmentOderCom extends Component {
                                                     <span className="phone">({rowItem.ReceiverPhoneNumber.substr(0, 4)}****)</span>
                                                     {rowItem.PartnerSaleOrderID != "" ? <span className="line">-</span> : ""}
                                                     <span className="phone">{rowItem.PartnerSaleOrderID}</span>
-                                                </span>
+                                                </div>
                                             </label>
                                             <label className="item address-receiver">
                                                 <span>{rowItem.ReceiverFullAddress}</span>
@@ -692,7 +675,7 @@ class DataGridShipmentOderCom extends Component {
                                     <td className="group-address">
                                         <div className="group-info-row">
                                             <label className="item address-repository-created">
-                                                <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(';','<br/>'))}</span>
+                                                <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(';', '<br/>'))}</span>
                                             </label>
                                             <label className="item address-receiver">
                                                 <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
@@ -767,6 +750,13 @@ class DataGridShipmentOderCom extends Component {
         else {
             classCustom = ""
         }
+
+        let IsCompleteDeliverIed = []
+        console.log(this.props.dataSource)
+        if (this.props.dataSource) {
+            IsCompleteDeliverIed = this.props.dataSource.filter(n => n.IsCompleteDeliverIed == true);
+        }
+
         return (
             <div className={classCustom}>
                 <div className="card cardShipmentOrder">
@@ -781,6 +771,23 @@ class DataGridShipmentOderCom extends Component {
                                         <button type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
                                             <i className="fa fa-plus ff"></i> Gán nhân viên giao hàng
                                         </button>
+                                        <div className="group-count">
+                                            <ul>
+                                                <li>
+                                                    <span className="count-name">Tổng đơn:</span>
+                                                    <span className="count-number">{this.state.DataSource.length}</span>
+                                                </li>
+                                                <li>
+                                                    <span className="count-name">Đã hoàn thành:</span>
+                                                    <span className="count-number">{this.state.DataSource.length}</span>
+                                                </li>
+                                                <li>
+                                                    <span className="count-name">Chưa hoàn thành:</span>
+                                                    <span className="count-number">{this.state.DataSource.length}</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+
                                         {(this.props.IsAdd == true || this.props.IsAdd == undefined) ?
                                             (!this.props.IsCustomAddLink == true ?
                                                 (<Link

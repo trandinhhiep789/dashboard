@@ -11,7 +11,7 @@ import { loginRequest, loginSuccess, loginFailure, callLogin } from "../../actio
 import { callFetchAPI } from "../../actions/fetchAPIAction";
 import { callGetCacheFromLocal, callClearLocalCache } from "../../actions/cacheAction";
 import { getCookie } from "../../common/library/CommonLib.js";
-import "../../css/custom.scss";
+
 import PrivateRoute from '../../Route/PrivateRoute'
 
 
