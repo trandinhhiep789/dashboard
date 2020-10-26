@@ -775,16 +775,16 @@ class DataGridShipmentOderCom extends Component {
                                             <ul>
                                                 <li>
                                                     <span className="count-name">Tổng đơn:</span>
-                                                    <span className="count-number">{this.state.DataSource.length}</span>
+                                                    <span className="count-number">{this.state.DataSource.length > 0 ? this.state.DataSource[0].TotaLRows : ''}</span>
                                                 </li>
-                                                <li>
+                                                {/* <li>
                                                     <span className="count-name">Đã hoàn thành:</span>
                                                     <span className="count-number">{this.state.DataSource.length}</span>
                                                 </li>
                                                 <li>
                                                     <span className="count-name">Chưa hoàn thành:</span>
                                                     <span className="count-number">{this.state.DataSource.length}</span>
-                                                </li>
+                                                </li> */}
                                             </ul>
                                         </div>
 
