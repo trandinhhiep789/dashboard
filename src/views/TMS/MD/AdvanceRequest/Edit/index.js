@@ -13,6 +13,7 @@ import {
     MLObjectDefinition,
     BackLink,
     EditPagePath,
+    LoadLoadWebAPIPath,
     AddLogAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
@@ -41,7 +42,7 @@ class EditCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
         const id = this.props.match.params.id;
-        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, LoadLoadWebAPIPath, id).then(apiResult => {
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: apiResult.IsError
@@ -53,12 +54,8 @@ class EditCom extends React.Component {
             this.setState({
                 IsLoadDataComplete: true
             });
-            //console.log("apiResult", apiResult);
         });
     }
-
-
-
 
     handleCloseMessage() {
         if (this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
@@ -76,10 +73,12 @@ class EditCom extends React.Component {
     }
 
     render() {
+
+        console.log("this.state.DataSource.AdvanceRequest_ShipOrderList.lenght", this.state.DataSource);
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-
+        
         if (this.state.IsLoadDataComplete && !this.state.IsCallAPIError) {
             return (
                 <React.Fragment>
@@ -235,14 +234,41 @@ class EditCom extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-
-
-
-
                             </div>
                         </div>
                     </div>
 
+                    {this.state.DataSource != undefined ?
+                        <React.Fragment>
+                            <div className="col-lg-12 page-detail">
+                                <div className="card">
+                                    <div className="card-body">
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                                    <thead className="thead-light">
+                                                        <tr>
+                                                            <th className="jsgrid-header-cell" style={{ width: "80%" }}>Mã vận đơn cần tạm ứng</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {this.state.DataSource.AdvanceRequest_ShipOrderList.map((item, index) => {
+                                                            return (
+                                                                <tr key={index}>
+                                                                    <td>{item.ShipmentOrderID}</td>
+                                                                </tr>
+                                                            )
+                                                        })
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </React.Fragment>
+                        : <div></div>}
                     <br />
                     <AdvanceRequestDetail
                         AdvanceRequestID={this.props.match.params.id}
