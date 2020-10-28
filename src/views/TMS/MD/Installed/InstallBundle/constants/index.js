@@ -582,7 +582,6 @@ export const InstallBundle_MateriaColumnList = [
         Caption: "SL tồn được phép tạm ứng",
         datasourcemember: "AllowAdvanceMaxStockQuantity",
         Width: 100,
-        validatonList: ["required"],
         OrderIndex:16,
         min:0,
         max:9999
@@ -823,7 +822,6 @@ export const InstallBundle_MateriaColumnListEdit = [
         Caption: "SL tồn được phép tạm ứng",
         datasourcemember: "AllowAdvanceMaxStockQuantity",
         Width: 100,
-        validatonList: ["required"],
         OrderIndex:16,
         min:0,
         max:9999
