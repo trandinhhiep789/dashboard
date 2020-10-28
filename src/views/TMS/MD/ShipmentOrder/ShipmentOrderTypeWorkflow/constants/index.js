@@ -238,6 +238,20 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsCanAdvanceMaterialStep"
     },
     {
+        Name: "IsSetupStep",
+        DefaultValue: "",
+        BindControlName: "IsSetupStep",
+        DataSourceMember: "IsSetupStep"
+    },
+    {
+        Name: "ShipmentSetupTypeID",
+        DefaultValue: "",
+        BindControlName: "ShipmentSetupTypeID",
+        DataSourceMember: "ShipmentSetupTypeID",
+        // Label: "loại lắp đặt",
+        // ValidationList: ["Comborequired"]
+    },
+    {
         Name: "OrderIndex",
         DefaultValue: "",
         BindControlName: "OrderIndex",

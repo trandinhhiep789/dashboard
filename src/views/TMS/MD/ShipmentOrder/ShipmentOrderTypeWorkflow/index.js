@@ -15,7 +15,7 @@ import { APIHostName, AddAPIPath, UpdateAPIPath } from './constants';
 import { ModalManager } from 'react-dynamic-modal/lib';
 import { MessageModal } from "../../../../../common/components/Modal";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_USERGROUP, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_SHIPMENTORDERSTEP } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_USERGROUP, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_SHIPMENTORDERSTEP, ERPCOMMONCACHE_SHIPMENTSETUPTYPE } from "../../../../../constants/keyCache";
 import { intervalToDuration } from "date-fns";
 
 class ShipmentOrderTypeWorkflowCom extends React.Component {
@@ -32,6 +32,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         this.createInputPermissColumnList = this.createInputPermissColumnList.bind(this);
         this.getFunctionCache = this.getFunctionCache.bind(this);
         this.handleClosePopup = this.handleClosePopup.bind(this);
+        this.initShipmentSetupType = this.initShipmentSetupType.bind(this);
         this.state = {
             FormData: {
                 ShipmentOrderTypeWorkflow: [],
@@ -92,6 +93,28 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     componentDidMount() {
         this.createInputPermissColumnList();
         this.getFunctionCache();
+        //this.initShipmentSetupType();
+        
+    }
+
+    initShipmentSetupType(){
+        debugger;
+        //this.setState({ MLObjectDefinition: MLObjectDefinition });
+        let _MLObjectDefinition = MLObjectDefinition;
+        let validationListIsSetupStep = [];
+        if (!this.state.FormData.ShipmentOrderTypeWorkflow.IsSetupStep) {
+            this.state.FormData.ShipmentOrderTypeWorkflow.ShipmentSetupTypeID = "-1";
+        } else {
+            validationListIsSetupStep = ["Comborequired"];
+        }
+
+        _MLObjectDefinition.forEach(function (item, index) {
+            if (item.Name == "ShipmentSetupTypeID") {
+                item.ValidationList = validationListIsSetupStep;
+            }
+        });
+
+        this.setState({MLObjectDefinition: _MLObjectDefinition});
     }
 
     getFunctionCache() {
@@ -209,6 +232,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
 
     handleInputChangeList(formData, tabNameList, tabMLObjectDefinitionList) {
         // console.log("handleInputChangeList_wf_formData", formData);
+        // console.log("MLObjectDefinition", this.state.MLObjectDefinition);
         // console.log("ShipmentOrderTypeWorkflow", this.props.ShipmentOrderTypeWorkflow);
         // console.log("datasource", this.props.dataSource);
 
@@ -238,7 +262,24 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
 
         });
 
-        let keys = []
+        //loại lắp đặt
+        let validationListIsSetupStep = [];
+        if (!formData.ShipmentOrderTypeWorkflow.IsSetupStep) {
+            formData.ShipmentOrderTypeWorkflow.ShipmentSetupTypeID = "-1";
+        } else {
+            //validationListIsSetupStep = ["Comborequired"];
+        }
+
+        // if(this.state.MLObjectDefinition){
+        //     this.state.MLObjectDefinition.forEach(function (item, index) {
+        //         if (item.Name == "ShipmentSetupTypeID") {
+        //             item.ValidationList = validationListIsSetupStep;
+        //         }
+        //     });
+        // }
+
+
+        let keys = [];
         //formData.ShipmentOrderType_WF_Next = this.state.FormData.ShipmentOrderType_WF_Next;
         //formData.ShipmentOrderType_WF_Permis = this.state.ShipmentOrderType_WF_PermisData;
         if (this.state.FormData.ShipmentOrderTypeWorkflow) keys = Object.keys(this.state.FormData.ShipmentOrderTypeWorkflow);
@@ -501,6 +542,22 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     <FormControl.Numeric labelcolspan={4} colspan={8} name="OrderIndex" label="Thứ tự hiển thị"
                                         datasourcemember="OrderIndex" controltype="InputControl" maxValue={999999999}
                                     />
+
+                                    <FormControl.ComboBox
+                                        name="ShipmentSetupTypeID"
+                                        type="select"
+                                        isautoloaditemfromcache={true}
+                                        loaditemcachekeyid={ERPCOMMONCACHE_SHIPMENTSETUPTYPE}
+                                        valuemember="ShipmentSetupTypeID"
+                                        nameMember="ShipmentSetupTypeName"
+                                        label="Loại lắp đặt"
+                                        controltype="InputControl"
+                                        datasourcemember="ShipmentSetupTypeID"
+                                        listoption={[]}
+                                        isRequired={false}
+                                        hide={!this.state.FormData.ShipmentOrderTypeWorkflow.IsSetupStep}
+                                        labelcolspan={4} colspan={8}
+                                    />
                                 </div>
                                 <div className="col-sm-1"></div>
                                 <div className="col-sm-3">
@@ -580,6 +637,11 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     />
                                     <FormControl.CheckBox labelcolspan={1} colspan={11} label="Hiển thị danh sách vật tư để chỉnh sửa" name="IsShowMaterialList"
                                         controltype="InputControl" datasourcemember="IsShowMaterialList"
+                                        swaplabelModal={true}
+                                    />
+
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước lắp đặt" name="IsSetupStep"
+                                        controltype="InputControl" datasourcemember="IsSetupStep"
                                         swaplabelModal={true}
                                     />
                                 </div>

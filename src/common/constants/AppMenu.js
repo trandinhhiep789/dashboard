@@ -104,7 +104,14 @@ const AppMenu = [
                         LinkTo: '/ShipmentFeeType',
                         MenuIcon: '',
                         SubMenu: []
-                    }
+                    },
+                    {
+                        MenuName: 'ShipmentSetupType',
+                        MenuTitle: 'Loại lắp đặt',
+                        LinkTo: '/ShipmentSetupType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
 
                 ]
             },
@@ -127,7 +134,8 @@ const AppMenu = [
                         LinkTo: '/ShipmentOrderStep',
                         MenuIcon: '',
                         SubMenu: []
-                    }
+                    },
+                    
 
                 ]
             },
