@@ -378,7 +378,6 @@ export const DataGridColumnList = [
         LinkText: "Chỉnh sửa"
     }
 ]
-    
 
 export const GridInstallBundle_Materia = [
 
@@ -405,6 +404,12 @@ export const GridInstallBundle_Materia = [
         DefaultValue: "",
         BindControlName: "StandardUsAgeQuantity",
         DataSourceMember: "StandardUsAgeQuantity"
+    },
+    {
+        Name: "AllowAdvanceMaxStockQuantity",
+        DefaultValue: "",
+        BindControlName: "AllowAdvanceMaxStockQuantity",
+        DataSourceMember: "AllowAdvanceMaxStockQuantity"
     },
     {
         Name: "MaxUsAgeQuantity",
@@ -571,6 +576,18 @@ export const InstallBundle_MateriaColumnList = [
         max:9999
     },
     {
+        name: "AllowAdvanceMaxStockQuantity",
+        Type: "TextNumber",
+        label:"SL tồn được phép tạm ứng",
+        Caption: "SL tồn được phép tạm ứng",
+        datasourcemember: "AllowAdvanceMaxStockQuantity",
+        Width: 100,
+        validatonList: ["required"],
+        OrderIndex:16,
+        min:0,
+        max:9999
+    },
+    {
         name: "UsAgeRecordType",
         Type: "ComboBox",
         Caption: "Hình thức ghi nhận",
@@ -724,26 +741,14 @@ export const InstallBundle_MateriaColumnList = [
         min:0,
         max:9999
     },
-    // {
-    //     name: "QuantityUnitID",
-    //     Type: "ComboBox",
-    //     Caption: "đơn vị tính",
-    //     label: "đơn vị tính",
-    //     datasourcemember: "QuantityUnitID",
-    //     isautoloaditemfromcache:true,
-    //     loaditemcachekeyid:"ERPCOMMONCACHE.QUANTITYUNIT",
-    //     valuemember:"QuantityUnitID",
-    //     nameMember:"QuantityUnit",
-    //     OrderIndex: 15,
-    //     hideInput: false
-    // },
+    
     {
         name: "Note",
         Type: "TextArea",
         label:"Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex:16,
+        OrderIndex:17,
         Colmd:12,
         hideInput: false,
         labelcolspan:2,
@@ -758,7 +763,6 @@ export const InstallBundle_MateriaColumnList = [
         iputpop: false
     }
 ];
-
 export const InstallBundle_MateriaColumnListEdit = [
     {
         name: "MaterialGroupID",
@@ -813,6 +817,18 @@ export const InstallBundle_MateriaColumnListEdit = [
         max:9999
     },
     {
+        name: "AllowAdvanceMaxStockQuantity",
+        Type: "TextNumber",
+        label:"SL tồn được phép tạm ứng",
+        Caption: "SL tồn được phép tạm ứng",
+        datasourcemember: "AllowAdvanceMaxStockQuantity",
+        Width: 100,
+        validatonList: ["required"],
+        OrderIndex:16,
+        min:0,
+        max:9999
+    },
+    {
         name: "UsAgeRecordType",
         Type: "ComboBox",
         Caption: "Hình thức ghi nhận",
@@ -946,6 +962,7 @@ export const InstallBundle_MateriaColumnListEdit = [
         OrderIndex:12,
         hideInput: false
     },
+    
     {
         name: "IsActived",
         Type: "checkbox",
@@ -966,14 +983,14 @@ export const InstallBundle_MateriaColumnListEdit = [
         min:0,
         max:9999
     },
-
+    
     {
         name: "Note",
         Type: "TextArea",
         label:"Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex:16,
+        OrderIndex:17,
         Colmd:12,
         hideInput: false,
         labelcolspan:2,

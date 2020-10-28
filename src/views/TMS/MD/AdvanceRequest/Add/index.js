@@ -67,13 +67,29 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.IsAdvanceByShipmentOrder = this.state.AdvanceRequestDetailList.IsAdvanceByShipmentOrder;
         MLObject.AdvanceRequestDetailList = this.state.AdvanceRequestDetailList.MaterialList
+        MLObject.ShipmentOrderNewList = this.state.gridDataSource.ShipmentOrderNewList;
+
         var msgTotal = MLObject.AdvanceRequestDetailList.reduce(function (prev, cur) {
             return prev + cur.Quantity;
         }, 0);
 
-
+        let listAdvanceRequestDetail = [];
+        MLObject.AdvanceRequestDetailList.map((item, index) => {
+            if (item.AdvanceProductID == "") {
+                listAdvanceRequestDetail.push(item);
+            }
+        });
         if (msgTotal < 1) {
-            this.setState({ errorAdvanceRequestDetail: "Vui lòng chọn vật tư tạm ứng" });
+            this.setState({ IsCallAPIError: false });
+            this.showMessage("Vui lòng chọn vật tư tạm ứng");
+        }
+        else if (listAdvanceRequestDetail.length > 0) {
+            let htmlerror = "";
+            listAdvanceRequestDetail.map((item, index) => {
+                htmlerror = htmlerror + item.MaterialGroupName + " vui lòng chọn vật tư <br/>"
+            });
+            this.setState({ IsCallAPIError: false });
+            this.showMessage(ReactHtmlParser(htmlerror));
         }
         else {
             MLObject.AdvanceRequestDetailList.map((Item) => {
@@ -81,14 +97,13 @@ class AddCom extends React.Component {
             });
 
             this.setState({ errorAdvanceRequestDetail: "" });
+
             this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: !apiResult.IsError });
                 let strMessage = ReactHtmlParser(apiResult.Message);
                 this.showMessage(strMessage);
             });
-
         }
-
     }
     onValueChangeCustom(name, value) {
         if (value > -1 && this.state.StoreID > -1) {
@@ -209,9 +224,9 @@ class AddCom extends React.Component {
     }
 
     render() {
-
+        console.log("gridDataSource", this.state.gridDataSource)
         console.log("ShipmentOrderNewList", this.state.gridDataSource.ShipmentOrderNewList)
-        
+
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -336,7 +351,7 @@ class AddCom extends React.Component {
                                                                                 <div className="group-action">
                                                                                     <div className="checkbox item-action">
                                                                                         <label>
-                                                                                            <input type="checkbox"  className="form-control form-control-sm" name={"ShipmentOrderID"} value={item.ShipmentOrderID}  />
+                                                                                            <input type="checkbox" className="form-control form-control-sm" name={"ShipmentOrderID"} value={item.ShipmentOrderID} />
                                                                                             <span className="cr">
                                                                                                 <i className="cr-icon fa fa-check"></i>
                                                                                             </span>
@@ -359,14 +374,6 @@ class AddCom extends React.Component {
                                     </div>
                                 </React.Fragment>
                                 : <div></div>}
-                            {
-                                errorAdvanceRequestDetail != '' ?
-                                    <div className="col-md-12 errorAdvanceRequestDetail">
-                                        <p>{this.state.errorAdvanceRequestDetail}</p>
-                                    </div>
-                                    : <div></div>
-                            }
-
                             <AdvanceRequestDetailNew
                                 AdvanceRequestDetail={this.state.gridDataSource}
                                 ShipmentOrderCount={1}
