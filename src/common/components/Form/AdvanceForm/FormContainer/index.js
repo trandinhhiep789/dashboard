@@ -5,7 +5,7 @@ import { ValidationField } from "../../../../library/validation.js";
 import { bindDataToControl, GetMLObjectData, transform1To2Column, transform1To3Column } from "../../../../library/form/FormLib";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../../constants/functionLists";
 import { connect } from 'react-redux';
-import { callGetCache ,callGetUserCache} from "../../../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../../../actions/cacheAction";
 import { debug } from 'util';
 
 function isEmpty(obj) {
@@ -91,7 +91,8 @@ class FormContainerCom extends Component {
     handleInputChangeList(formDataList, tabNameList, tabMLObjectDefinitionList, IsSystem, isFirstTimeLoad, elementItemRefs) {
         //"FormContainer handleInputChangeList: ", formDataList, tabNameList, tabMLObjectDefinitionList, IsSystem);
         let formDataTemp = this.state.FormData;
-        let formValidationTemp = this.state.FormValidation;
+        //let formValidationTemp = this.state.FormValidation;
+        let formValidationTemp={};
         let isSystem = typeof (IsSystem) != "undefined" ? IsSystem : this.state.IsSystem;
         let _isFirstTimeLoad = isFirstTimeLoad != undefined ? isFirstTimeLoad : false;
         for (let i = 0; i < tabNameList.length; i++) {
@@ -168,13 +169,15 @@ class FormContainerCom extends Component {
 
     //check validation for tabpage
     tabValidationForm(tabMLObjectDefinition, tabMLData, tabIndex) {
+        debugger;
         const tabMLDataLength = (Object.keys(tabMLData)).length;
         // if (!tabMLDataLength) {
         //     return null;
         // }
         //const listElement = tabMLObjectDefinition;
         //console.log("this.state:",this.state);
-        let formValidation = this.state.FormValidation[tabIndex];
+        //let formValidation = this.state.FormValidation[tabIndex];
+        let formValidation = {};
         //let formdata = this.state.FormData;
         //  console.log("listElement/formValidation:", listElement, formValidation);
         //check validation input form
@@ -484,6 +487,7 @@ class FormContainerCom extends Component {
     }
 
     handleSubmit(e) {
+        debugger;
         e.preventDefault();
         const mLObjectDefinition = this.props.MLObjectDefinition;
         //console.log("Submit Click formdata!", this.state.FormData,  this.props.listelement);

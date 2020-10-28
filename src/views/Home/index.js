@@ -88,6 +88,7 @@ import RewardPriceType from "../TMS/MD/RewardPriceType";
 import RewardPosition from "../TMS/MD/RewardPosition";
 import ShipmentOrderStatusGroup from "../TMS/MD/ShipmentOrderStatusGroup";
 import RewardPosition_User from "../TMS/MD/RewardPosition_User";
+import ShipmentSetupType from "../TMS/MD/ShipmentSetupType";
 
 import ReportByDate from "../TMS/ReportShipmentOrder/ReportByDate";
 import ReportByStore from "../TMS/ReportShipmentOrder/ReportByStore";
@@ -207,6 +208,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/ShipmentOrderStatusGroup" component={ShipmentOrderStatusGroup} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentOrderType" component={ShipmentOrderType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ShipmentOrderStep" component={ShipmentOrderStep} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/ShipmentSetupType" component={ShipmentSetupType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerPriviledgeGroup" component={PartnerPriviledgeGroup} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerPriviledge" component={McPriviledge} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/PartnerRole" component={PartnerRole} isLoggedIn={isLoggedIn} />

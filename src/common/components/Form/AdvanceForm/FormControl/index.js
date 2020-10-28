@@ -460,6 +460,10 @@ class ComboBoxCom extends Component {
     }
 
     render() {
+        if(this.props.hide){
+            return null;
+        }
+
         let formRowClassName = "form-row";
         if (this.props.rowspan != null) {
             formRowClassName = "form-row col-md-" + this.props.rowspan;
