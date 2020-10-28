@@ -1,4 +1,5 @@
-
+export const APIHostName = "TMSAPI";
+export const SearchAPIPath = "api/ShipmentOrder/SearchReportDate";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -16,7 +17,7 @@ export const SearchElementList = [
         type: "Datetime",
         name: "dtFromDate",
         DataSourceMember: "FromDate",
-       label: "Từ ngày",
+        label: "Từ Ngày",
         value: dtFromdate,
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
@@ -26,7 +27,7 @@ export const SearchElementList = [
         type: "Datetime",
         name: "dtToDate",
         DataSourceMember: "ToDate",
-        label: "Đến ngày",
+        label: "Đến Ngày",
         value: new Date(),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
@@ -36,8 +37,8 @@ export const SearchElementList = [
         type: "ComboBox",
         name: "cbShipmentOrderTypeID",
         DataSourceMember: "ShipmentOrderTypeID",
-        label: "Đến ngày",
-        colspan: 2,
+        label: "loại yêu cầu vận chuyển",
+        colspan: 3,
         value: -1,
         isMultiSelect: false,
         placeholder: "---Loại yêu cầu vận chuyển---",
@@ -52,8 +53,8 @@ export const SearchElementList = [
         type: "ComboBox",
         name: "cbCoordinatorStoreID",
         DataSourceMember: "CoordinatorStoreID",
-        label: "Đến ngày",
-        colspan: 2,
+        label: "kho điều phối",
+        colspan: 3,
         value: -1,
         isMultiSelect: false,
         placeholder: "---Kho điều phối---",
@@ -76,17 +77,17 @@ export const  SearchMLObjectDefinition = [
         BindControlName: "dtFromDate"
     },
     {
-        Name: "FromDate",
+        Name: "ToDate",
         DefaultValue: "",
-        BindControlName: "dtFromDate"
+        BindControlName: "dtToDate"
     },
     {
-        Name: "ShipmentOrderTypeID",
+        Name: "ShipmentOrderType",
         DefaultValue: "",
         BindControlName: "cbShipmentOrderTypeID"
     },
     {
-        Name: "CoordinatorStoreID",
+        Name: "CoordinatorStore",
         DefaultValue: "",
         BindControlName: "cbCoordinatorStoreID"
     },
@@ -94,52 +95,59 @@ export const  SearchMLObjectDefinition = [
 
 export const GridColumnList = [
     {
-        Name: "ShipmentOrderID",
-        Type: "text",
+        Name: "CreatedOrderTime",
+        Type: "date",
         Caption: "Ngày",
-        DataSourceMember: "ShipmentOrderID",
+        DataSourceMember: "CreatedOrderTime",
         Width: 100
     },
     {
-        Name: "TotalShipmentOrder",
+        Name: "TotalOrder",
         Type: "text",
         Caption: "Tổng đơn",
-        DataSourceMember: "TotalShipmentOrder",
+        DataSourceMember: "TotalOrder",
         Width: 100
     },
     {
-        Name: "TotalShipmentOrder",
+        Name: "TotalUndelivery",
         Type: "text",
         Caption: "Chưa giao",
-        DataSourceMember: "TotalShipmentOrder",
+        DataSourceMember: "TotalUndelivery",
         Width: 100
     },
     {
-        Name: "TotalShipmentOrder",
+        Name: "TotalDelivering",
         Type: "text",
         Caption: "Đang giao",
-        DataSourceMember: "TotalShipmentOrder",
+        DataSourceMember: "TotalDelivering",
         Width: 100
     },
     {
-        Name: "TotalShipmentOrder",
+        Name: "TotalDelivered",
         Type: "text",
         Caption: "Giao xong",
-        DataSourceMember: "TotalShipmentOrder",
+        DataSourceMember: "TotalDelivered",
         Width: 100
     },
     {
-        Name: "TotalShipmentOrder",
+        Name: "TotalCompletedOrder",
         Type: "text",
-        Caption: "Đã nộp tiền",
-        DataSourceMember: "TotalShipmentOrder",
+        Caption: "Đã hoàn thành",
+        DataSourceMember: "TotalCompletedOrder",
         Width: 100
     },
     {
-        Name: "TotalShipmentOrder",
+        Name: "TotalCancelDelivery",
         Type: "text",
         Caption: "Huỷ giao",
-        DataSourceMember: "TotalShipmentOrder",
+        DataSourceMember: "TotalCancelDelivery",
+        Width: 100
+    },
+    {
+        Name: "TotalPaidIn",
+        Type: "text",
+        Caption: "Đã nộp tiền",
+        DataSourceMember: "TotalPaidIn",
         Width: 100
     },
 ]
