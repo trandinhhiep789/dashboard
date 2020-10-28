@@ -381,11 +381,11 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                 </tr>
                                                                 {obj.map((rowItemobj, Index) => {
                                                                     let TotalBundleQuantity = 1;
-                                                                    let deTotalQuantity = 0;
+                                                                    let deTotalUsableQuantity = 0;
                                                                     let objMaterialAdvanceDebtList = this.state.AdvanceRequestDetail.MaterialAdvanceDebtList.find(n => n.MaterialGroupID == rowItemobj.MaterialGroupID && n.ProductID == rowItemobj.ProductID);
                                                                     if (objMaterialAdvanceDebtList) {
                                                                         TotalBundleQuantity = objMaterialAdvanceDebtList.TotalBundleQuantity;
-                                                                        deTotalQuantity = objMaterialAdvanceDebtList.TotalQuantity;
+                                                                        deTotalUsableQuantity = objMaterialAdvanceDebtList.TotalUsableQuantity;
                                                                     }
                                                                     if (rowItemobj.MaterialProductList.length > 0) {
                                                                         return (
@@ -434,8 +434,9 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                                 <td>{rowItemobj.AdvanceConvertRatio}</td>
                                                                                 <td>{rowItemobj.Quantity}</td>
                                                                                 <td>{(rowItemobj.AdvanceLimitType == 1 ? rowItemobj.AdvanceLimitQuantity * TotalBundleQuantity : "")}</td>
-                                                                                {/* <td>{item.AdvanceLimitQuantity + "-" + item.TotalQuantity}</td> */}
-                                                                                <td>{(rowItemobj.AdvanceLimitType == 1 ? ((rowItemobj.AdvanceLimitQuantity - deTotalQuantity * rowItemobj.AdvanceConvertRatio) > 0 ? (rowItemobj.AdvanceLimitQuantity - deTotalQuantity * rowItemobj.AdvanceConvertRatio).toFixed(1) : 0) : "")}</td>
+                                                                                <td>{(rowItemobj.AdvanceLimitType == 1 ? ((rowItemobj.AdvanceLimitQuantity - deTotalUsableQuantity * rowItemobj.AdvanceConvertRatio) > 0 ? (rowItemobj.AdvanceLimitQuantity - deTotalUsableQuantity * rowItemobj.AdvanceConvertRatio).toFixed(1) : 0) : "")}</td>
+                                                                                {/* <td>{(rowItemobj.AdvanceLimitType == 1 ? ((rowItemobj.AdvanceLimitQuantity - deTotalUsableQuantity * rowItemobj.AdvanceConvertRatio) > 0 ? (rowItemobj.AdvanceLimitQuantity - deTotalUsableQuantity * rowItemobj.AdvanceConvertRatio).toFixed(1) : 0) : "")}</td>
+                                                                                    <td>{rowItemobj.AdvanceLimitQuantity + "-" +deTotalUsableQuantity + "-" +rowItemobj.StandardUsageQuantity}</td> */}
                                                                             </tr>
                                                                         );
                                                                     }

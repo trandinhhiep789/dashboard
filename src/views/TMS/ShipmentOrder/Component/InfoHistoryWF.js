@@ -17,7 +17,8 @@ class InfoHistoryWFCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ShipmentOrderType_WF: this.props.InfoHistoryWF
+            ShipmentOrderType_WF: this.props.InfoHistoryWF,
+            InfoActionLogList: this.props.InfoActionLogList
         }
     }
 
@@ -25,6 +26,12 @@ class InfoHistoryWFCom extends Component {
         if (JSON.stringify(this.props.InfoHistoryWF) !== JSON.stringify(nextProps.InfoHistoryWF)) {
             this.setState({
                 ShipmentOrderType_WF: nextProps.InfoHistoryWF
+            })
+        }
+
+        if (JSON.stringify(this.props.InfoActionLogList) !== JSON.stringify(nextProps.InfoActionLogList)) {
+            this.setState({
+                InfoActionLogList: nextProps.InfoActionLogList
             })
         }
     }
@@ -67,6 +74,8 @@ class InfoHistoryWFCom extends Component {
 
     render() {
         var a = this.state.ShipmentOrderType_WF.sort((a, b) => new Date(a.ProcessDate) - new Date(b.ProcessDate));
+        let InfoActionLogLst = this.state.InfoActionLogList.sort((a, b) => new Date(a.CreatedDate) - new Date(b.CreatedDate));
+        
         return (
             <div className="card">
                 <h4 className="card-title"><strong>Lịch sử xử lý</strong></h4>
@@ -125,6 +134,30 @@ class InfoHistoryWFCom extends Component {
                         </table>
                     </div>
                 </div>
+
+                <div className="card-body">
+                    <div className="table-responsive">
+                        <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                            <thead className="thead-light">
+                                <tr>
+                                    <th className="jsgrid-header-cell" style={{ width: 100 }} >Thời gian</th>
+                                    <th className="jsgrid-header-cell" style={{ width: 150 }} >Nhân viên</th>
+                                    <th className="jsgrid-header-cell" style={{ width: 250 }} >Nội dung</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.state.InfoActionLogList && InfoActionLogLst.map((item, index) => {
+                                        return (<tr key={index}>
+                                            <td>{formatDate(item.CreatedDate)}</td>
+                                            <td>{item.ActionUser+"-"+item.ActionUserFullName}</td>
+                                            <td>{item.ActionContent}</td>
+                                        </tr>)
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
         );
     }

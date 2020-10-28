@@ -42,7 +42,7 @@ class EditCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
         const id = this.props.match.params.id;
-        this.props.callFetchAPI(APIHostName, LoadLoadWebAPIPath, id).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: apiResult.IsError

@@ -140,6 +140,7 @@ class DetailCom extends React.Component {
                     <InfoHistoryWF
                         ShipmentOrderID={this.props.match.params.id}
                         InfoHistoryWF={this.state.ShipmentOrderType_WorkFlowList}
+                        InfoActionLogList={this.state.DataSource.ShipmentOrder_ActionLogList}
                     />
 
                     <ShipmentOrderAttachment

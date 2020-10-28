@@ -601,6 +601,35 @@ const AppMenu = [
         LinkTo: '/ShipmentOrder',
         MenuIcon: '',
         SubMenu: []
+    },
+    {
+        MenuName: 'Reports',
+        MenuTitle: 'Báo cáo Vận đơn',
+        LinkTo: '/',
+        MenuIcon: '',
+        SubMenu: [
+            {
+                MenuName: 'ReportByDate',
+                MenuTitle: 'Thống kê vận đơn theo ngày',
+                LinkTo: '/ReportByDate',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'ReportByStore',
+                MenuTitle: 'Thống kê vận đơn theo kho',
+                LinkTo: '/ReportByStore',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'ReportByUser',
+                MenuTitle: 'Thống kê vận đơn theo nhân viên',
+                LinkTo: '/ReportByUser',
+                MenuIcon: '',
+                SubMenu: []
+            },
+        ]
     }
 
 ];

@@ -90,6 +90,10 @@ import ShipmentOrderStatusGroup from "../TMS/MD/ShipmentOrderStatusGroup";
 import RewardPosition_User from "../TMS/MD/RewardPosition_User";
 import ShipmentSetupType from "../TMS/MD/ShipmentSetupType";
 
+import ReportByDate from "../TMS/ReportShipmentOrder/ReportByDate";
+import ReportByStore from "../TMS/ReportShipmentOrder/ReportByStore";
+import ReportByUser from "../TMS/ReportShipmentOrder/ReportByUser";
+
 class HomeCom extends React.Component {
     constructor(props) {
         super(props);
@@ -231,6 +235,10 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/RewardPriceTable" component={RewardPriceTable} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/CurrentAdvanceDebt" component={CurrentAdvanceDebt} isLoggedIn={isLoggedIn} />
+
+                                <PrivateRoute path="/ReportByDate" component={ReportByDate} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/ReportByStore" component={ReportByStore} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/ReportByUser" component={ReportByUser} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} />
