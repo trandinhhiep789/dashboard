@@ -38,7 +38,7 @@ class SearchCom extends React.Component {
     handleSearchSubmit(formData, MLObject) {
         let result, result2;
 
-        if (MLObject.ShipmentOrderType != -1 && MLObject.ShipmentOrderType != null) {
+        if (MLObject.ShipmentOrderType != -1 && MLObject.ShipmentOrderType != null && MLObject.ShipmentOrderType != "") {
             result = MLObject.ShipmentOrderType.reduce((data, item, index) => {
                 const comma = data.length ? "," : "";
                 return data + comma + item;
@@ -48,7 +48,7 @@ class SearchCom extends React.Component {
             result = ""
         }
 
-        if (MLObject.CoordinatorStore != -1 && MLObject.CoordinatorStore != null) {
+        if (MLObject.CoordinatorStore != -1 && MLObject.CoordinatorStore != null && MLObject.CoordinatorStore != "") {
             result2 = MLObject.CoordinatorStore.reduce((data, item, index) => {
                 const comma = data.length ? "," : "";
                 return data + comma + item;
