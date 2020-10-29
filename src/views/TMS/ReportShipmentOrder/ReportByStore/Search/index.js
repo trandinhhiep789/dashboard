@@ -17,8 +17,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { WORKINGPLAN_VIEW, WORKINGPLAN_DELETE } from "../../../../../constants/functionLists";
-import { ERPCOMMONCACHE_WORKINGSHIFT } from "../../../../../constants/keyCache";
+import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 
 class SearchCom extends React.Component {
@@ -98,14 +97,12 @@ class SearchCom extends React.Component {
                     IsLoadDataComplete: true
                 });
             }
+            else{
+                this.showMessage(apiResult.MessageDetail)
+            }
         });
     }
 
-    handleCloseMessage() {
-        if (!this.state.IsCallAPIError) {
-
-        }
-    }
 
     showMessage(message) {
         ModalManager.open(
@@ -181,6 +178,7 @@ class SearchCom extends React.Component {
                     IsAutoPaging={true}
                     RowsPerPage={10}
                     ref={this.gridref}
+                    RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                 />
             </React.Fragment>
         );

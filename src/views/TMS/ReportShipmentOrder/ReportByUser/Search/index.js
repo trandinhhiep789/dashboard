@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 // import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
+import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import { MessageModal } from "../../../../../common/components/Modal";
 import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import DataGrid from "../../../../../common/components/DataGrid";
 import {
@@ -14,8 +16,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import "react-notifications-component/dist/theme.css";
-import { WORKINGPLAN_VIEW, WORKINGPLAN_DELETE } from "../../../../../constants/functionLists";
-import { ERPCOMMONCACHE_WORKINGSHIFT } from "../../../../../constants/keyCache";
+import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 
 class SearchCom extends React.Component {
@@ -95,7 +96,21 @@ class SearchCom extends React.Component {
                     IsLoadDataComplete: true
                 });
             }
+            else{
+                this.showMessage(apiResult.MessageDetail)
+            }
         });
+    }
+
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+                onCloseModal={this.handleCloseMessage}
+            />
+        );
     }
 
 
@@ -126,6 +141,7 @@ class SearchCom extends React.Component {
                     IsAutoPaging={true}
                     RowsPerPage={10}
                     ref={this.gridref}
+                    RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                 />
             </React.Fragment>
         );

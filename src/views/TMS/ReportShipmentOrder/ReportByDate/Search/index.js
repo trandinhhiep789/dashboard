@@ -17,14 +17,15 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { WORKINGPLAN_VIEW, WORKINGPLAN_DELETE } from "../../../../../constants/functionLists";
-import { ERPCOMMONCACHE_WORKINGSHIFT } from "../../../../../constants/keyCache";
+import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.callSearchData = this.callSearchData.bind(this);
+        
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
@@ -85,6 +86,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource:  apiResult.ResultObject,
@@ -92,14 +94,12 @@ class SearchCom extends React.Component {
                     IsLoadDataComplete: true
                 });
             }
+            else{
+                this.showMessage(apiResult.MessageDetail)
+            }
         });
     }
 
-    handleCloseMessage() {
-        if (!this.state.IsCallAPIError) {
-
-        }
-    }
 
     showMessage(message) {
         ModalManager.open(
@@ -174,6 +174,7 @@ class SearchCom extends React.Component {
                     IsExportFile={false}
                     IsAutoPaging={true}
                     RowsPerPage={10}
+                    RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                     ref={this.gridref}
                 />
             </React.Fragment>
