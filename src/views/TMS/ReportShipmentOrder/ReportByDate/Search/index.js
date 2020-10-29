@@ -9,7 +9,9 @@ import {
     PagePath,
     SearchMLObjectDefinition,
     SearchElementList,
-    GridColumnList
+    GridColumnList,
+    APIHostName,
+    SearchAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -25,7 +27,8 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.state = {
             IsCallAPIError: false,
-            gridDataSource: []
+            gridDataSource: [],
+            IsLoadDataComplete: false
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -37,21 +40,59 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        let result, result2;
+        if (MLObject.ShipmentOrderType != -1 && MLObject.ShipmentOrderType != null && MLObject.ShipmentOrderType != "") {
+            result = MLObject.ShipmentOrderType.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item;
+            }, '');
+        }
+        else {
+            result = ""
+        }
+
+        if (MLObject.CoordinatorStore != -1 && MLObject.CoordinatorStore != null&& MLObject.CoordinatorStore != "") {
+            result2 = MLObject.CoordinatorStore.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item;
+            }, '');
+        }
+        else {
+            result2 = ""
+        }
+
         const postData = [
             {
-                SearchKey: "@WORKINGDATE",
-                SearchValue: MLObject.WorkingDate
+                SearchKey: "@FROMDATE",
+                SearchValue: MLObject.FromDate
             },
             {
-                SearchKey: "@STOREID",
-                SearchValue: MLObject.StoreID
+                SearchKey: "@TODATE",
+                SearchValue: MLObject.ToDate
             },
             {
-                SearchKey: "@USERNAME",
-                SearchValue: ""
+                SearchKey: "@SHIPMENTORDERTYPEIDLIST",
+                SearchValue: result  //MLObject.ShipmentOrderType
+            },
+            {
+                SearchKey: "@COORDINATORSTOREIDLIST",
+                SearchValue: result2  //MLObject.CoordinatorStoreID
             },
 
         ];
+       this.callSearchData(postData);
+    }
+
+    callSearchData(searchData) {
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.setState({
+                    gridDataSource:  apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError,
+                    IsLoadDataComplete: true
+                });
+            }
+        });
     }
 
     handleCloseMessage() {
@@ -131,7 +172,7 @@ class SearchCom extends React.Component {
                     IsShowButtonPrint={false}
                     IsPrint={false}
                     IsExportFile={false}
-                    IsAutoPaging={false}
+                    IsAutoPaging={true}
                     RowsPerPage={10}
                     ref={this.gridref}
                 />
