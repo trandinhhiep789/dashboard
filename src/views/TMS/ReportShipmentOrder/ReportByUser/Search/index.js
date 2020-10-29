@@ -141,7 +141,7 @@ class SearchCom extends React.Component {
                     IsAutoPaging={true}
                     RowsPerPage={10}
                     ref={this.gridref}
-                    //RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                 />
             </React.Fragment>
         );
