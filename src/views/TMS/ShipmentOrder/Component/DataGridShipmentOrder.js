@@ -768,9 +768,30 @@ class DataGridShipmentOderCom extends Component {
                                 {searchTextbox}
                                 <div className="btn-toolbar">
                                     <div className="btn-group btn-group-sm">
-                                        <button type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                            <i className="fa fa-plus ff"></i> Gán nhân viên giao hàng
-                                        </button>
+                                        <div className="group-left">
+                                            <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                <i className="fa fa-plus">Gán nhân viên giao hàng</i> 
+                                            </button>
+                                            <div className="input-group input-group-select">
+                                                <input type="text" className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
+                                                <div className="input-group-append">
+                                                    <button className="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">Dropdown</button>
+                                                    <div className="dropdown-menu">
+                                                        <ul>
+                                                            <li className="dropdown-item" >Action</li>
+                                                            <li className="dropdown-item" >Action</li>
+                                                            <li className="dropdown-item" >Action</li>
+                                                        </ul>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="button"  className="btn btn-search-custom" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                <i className="fa fa-search">Tìm kiếm</i> 
+                                            </button>
+                                        </div>
+
                                         <div className="group-count">
                                             <ul>
                                                 <li>

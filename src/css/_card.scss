@@ -10,6 +10,51 @@
                 .btn-toolbar {
                     width: 100%;
                     margin-left: 0;
+                    .group-left{
+                        clear: both;
+                        width: 70%;
+                        display: inline-flex;
+                        justify-content: flex-start;
+
+                        .input-group-select {
+                            margin-left: 10px;
+                            margin-right: 10px;
+                            input {
+                                height: 30px;
+                                line-height: 30px;
+                                border-radius: 4px 0px 0px 4px !important;
+                                border-color: #a9a9a9;
+
+                            }
+                            .input-group-append {
+                                button {
+                                    height: 30px;
+                                    font-size: 12px;
+                                    border-color: #a9a9a9;
+                                    &:hover{
+                                        background: transparent;
+                                        color: #6c757d;
+
+                                    }
+                                    &:focus{
+                                        box-shadow: none;
+                                    }
+                                }
+                                &.show{
+                                    button {
+                                        background: transparent;
+                                        color: #6c757d;
+                                    }
+                                    
+                                }
+                            }
+                            .dropdown-menu{
+                                ul{
+                                    padding-left: 0;
+                                }
+                            }
+                        }
+                    }
                     .btn-group {
                         width: 100%;
                         display: flex;

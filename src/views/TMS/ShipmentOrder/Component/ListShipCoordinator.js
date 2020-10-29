@@ -249,7 +249,7 @@ class ListShipCoordinatorCom extends Component {
 
         return (
             <div className="card modalForm">
-                <div className="card-body" style={{ minHeight: 500 }}>
+                <div className="card-body" style={{ minHeight: 430 }}>
                     <div className="form-row">
                         <div className="col-md-6">
                             <FormControl.ComboBoxPartner

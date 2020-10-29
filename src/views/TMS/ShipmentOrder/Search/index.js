@@ -62,6 +62,16 @@ class SearchCom extends React.Component {
         let listSearchDataObject = Object.assign([], this.state.SearchData, { [9]: ShipOrdStatusGroupID });
         this.callSearchData(listSearchDataObject);
         this.props.updatePagePath(PagePath);
+
+
+        jQuery(window).scroll(function() {
+            if (jQuery(this).scrollTop() > 300) {
+                $("#btnUserCoordinator").addClass("tofixedButton")
+            } else {
+                $("#btnUserCoordinator").removeClass("tofixedButton")
+            }
+        });
+
     }
 
     handleDelete(id) {
