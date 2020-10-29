@@ -3,7 +3,7 @@ export const SearchAPIPath = "api/ShipmentOrder/SearchReportUserName";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách thống kê vận đơn theo ngày" }
+    { Link: "", Title: "Danh sách thống kê vận đơn theo nhân viên" }
 ];
 
 
