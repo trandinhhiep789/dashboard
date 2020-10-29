@@ -32,7 +32,6 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         this.createInputPermissColumnList = this.createInputPermissColumnList.bind(this);
         this.getFunctionCache = this.getFunctionCache.bind(this);
         this.handleClosePopup = this.handleClosePopup.bind(this);
-        this.initShipmentSetupType = this.initShipmentSetupType.bind(this);
         this.state = {
             FormData: {
                 ShipmentOrderTypeWorkflow: [],
@@ -97,25 +96,25 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         
     }
 
-    initShipmentSetupType(){
-        debugger;
-        //this.setState({ MLObjectDefinition: MLObjectDefinition });
-        let _MLObjectDefinition = MLObjectDefinition;
-        let validationListIsSetupStep = [];
-        if (!this.state.FormData.ShipmentOrderTypeWorkflow.IsSetupStep) {
-            this.state.FormData.ShipmentOrderTypeWorkflow.ShipmentSetupTypeID = "-1";
-        } else {
-            validationListIsSetupStep = ["Comborequired"];
-        }
+    // initShipmentSetupType(){
+    //     debugger;
+    //     //this.setState({ MLObjectDefinition: MLObjectDefinition });
+    //     let _MLObjectDefinition = MLObjectDefinition;
+    //     let validationListIsSetupStep = [];
+    //     if (!this.state.FormData.ShipmentOrderTypeWorkflow.IsSetupStep) {
+    //         this.state.FormData.ShipmentOrderTypeWorkflow.ShipmentSetupTypeID = "-1";
+    //     } else {
+    //         validationListIsSetupStep = ["Comborequired"];
+    //     }
 
-        _MLObjectDefinition.forEach(function (item, index) {
-            if (item.Name == "ShipmentSetupTypeID") {
-                item.ValidationList = validationListIsSetupStep;
-            }
-        });
+    //     _MLObjectDefinition.forEach(function (item, index) {
+    //         if (item.Name == "ShipmentSetupTypeID") {
+    //             item.ValidationList = validationListIsSetupStep;
+    //         }
+    //     });
 
-        this.setState({MLObjectDefinition: _MLObjectDefinition});
-    }
+    //     this.setState({MLObjectDefinition: _MLObjectDefinition});
+    // }
 
     getFunctionCache() {
         this.props.callGetCache(ERPCOMMONCACHE_FUNCTION).then((result) => {
@@ -263,12 +262,9 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         });
 
         //loại lắp đặt
-        let validationListIsSetupStep = [];
         if (!formData.ShipmentOrderTypeWorkflow.IsSetupStep) {
             formData.ShipmentOrderTypeWorkflow.ShipmentSetupTypeID = "-1";
-        } else {
-            //validationListIsSetupStep = ["Comborequired"];
-        }
+        } 
 
         // if(this.state.MLObjectDefinition){
         //     this.state.MLObjectDefinition.forEach(function (item, index) {
@@ -305,6 +301,14 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
+
+        //loại lắp đặt
+        let validationListIsSetupStep = [];
+        if (this.state.FormData.ShipmentOrderTypeWorkflow.IsSetupStep && parseInt(this.state.FormData.ShipmentOrderTypeWorkflow.ShipmentSetupTypeID) == -1) {
+            this.showMessage("Vui lòng chọn loại lắp đặt trước khi cập nhật.");
+            return;
+        }
+
         let newShipmentOrderType_WF_PermisData = this.state.ShipmentOrderType_WF_PermisData;
         let newShipmentOrderType_WF_NextData = this.state.FormData.ShipmentOrderType_WF_Next;
         const newFormData = Object.assign({}, this.state.FormData.ShipmentOrderTypeWorkflow, {

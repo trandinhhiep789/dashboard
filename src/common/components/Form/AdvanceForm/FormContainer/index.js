@@ -169,7 +169,6 @@ class FormContainerCom extends Component {
 
     //check validation for tabpage
     tabValidationForm(tabMLObjectDefinition, tabMLData, tabIndex) {
-        debugger;
         const tabMLDataLength = (Object.keys(tabMLData)).length;
         // if (!tabMLDataLength) {
         //     return null;
