@@ -41,28 +41,25 @@ class SearchCom extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         let result, result2;
+        if (MLObject.ShipmentOrderType != -1 && MLObject.ShipmentOrderType != null) {
+            result = MLObject.ShipmentOrderType.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item;
+            }, '');
+        }
+        else {
+            result = ""
+        }
 
-        // if (MLObject.ShipmentOrderType != -1 && MLObject.ShipmentOrderType != null) {
-        //     result = MLObject.ShipmentOrderType.reduce((data, item, index) => {
-        //         const comma = data.length ? "," : "";
-        //         return data + comma + item;
-        //     }, '');
-        // }
-        // else {
-        //     result = ""
-        // }
-
-        // if (MLObject.CoordinatorStore != -1 && MLObject.CoordinatorStore != null) {
-        //     result2 = MLObject.CoordinatorStore.reduce((data, item, index) => {
-        //         const comma = data.length ? "," : "";
-        //         return data + comma + item;
-        //     }, '');
-        // }
-        // else {
-        //     result2 = ""
-        // }
-
-
+        if (MLObject.CoordinatorStore != -1 && MLObject.CoordinatorStore != null) {
+            result2 = MLObject.CoordinatorStore.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item;
+            }, '');
+        }
+        else {
+            result2 = ""
+        }
 
         const postData = [
             {
@@ -75,17 +72,16 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@SHIPMENTORDERTYPEIDLIST",
-                SearchValue:  MLObject.ShipmentOrderType //result
+                SearchValue: result  //MLObject.ShipmentOrderType
             },
             {
                 SearchKey: "@COORDINATORSTOREIDLIST",
-                SearchValue: MLObject.CoordinatorStoreID //result2
+                SearchValue: result2  //MLObject.CoordinatorStoreID
             },
 
         ];
 
-
-        this.callSearchData(postData);
+       this.callSearchData(postData);
     }
 
     callSearchData(searchData) {
