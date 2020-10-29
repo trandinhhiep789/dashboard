@@ -604,31 +604,40 @@ const AppMenu = [
     },
     {
         MenuName: 'Reports',
-        MenuTitle: 'Báo cáo Vận đơn',
+        MenuTitle: 'Báo cáo',
         LinkTo: '/',
         MenuIcon: '',
         SubMenu: [
             {
-                MenuName: 'ReportByDate',
-                MenuTitle: 'Thống kê vận đơn theo ngày',
-                LinkTo: '/ReportByDate',
+                MenuName: 'ReportShipmentOrder',
+                MenuTitle: 'Thống kê vận đơn',
+                LinkTo: '',
                 MenuIcon: '',
-                SubMenu: []
+                SubMenu: [
+                    {
+                        MenuName: 'ReportByDate',
+                        MenuTitle: 'Theo ngày',
+                        LinkTo: '/ReportByDate',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'ReportByStore',
+                        MenuTitle: 'Theo kho',
+                        LinkTo: '/ReportByStore',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'ReportByUser',
+                        MenuTitle: 'Nhân viên',
+                        LinkTo: '/ReportByUser',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
             },
-            {
-                MenuName: 'ReportByStore',
-                MenuTitle: 'Thống kê vận đơn theo kho',
-                LinkTo: '/ReportByStore',
-                MenuIcon: '',
-                SubMenu: []
-            },
-            {
-                MenuName: 'ReportByUser',
-                MenuTitle: 'Thống kê vận đơn theo nhân viên',
-                LinkTo: '/ReportByUser',
-                MenuIcon: '',
-                SubMenu: []
-            },
+           
         ]
     }
 

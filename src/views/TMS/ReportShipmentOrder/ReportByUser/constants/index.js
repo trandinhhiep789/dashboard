@@ -49,23 +49,39 @@ export const SearchElementList = [
         NameMember: "ShipmentOrderTypeName",
         classNameCol:"col-custom"
     },
+    // {
+    //     type: "ComboBoxNewChange",
+    //     name: "cbCoordinatorStoreID",
+    //     DataSourceMember: "CoordinatorStoreID",
+    //     label: "kho điều phối",
+    //     colspan: 4,
+    //     value: "",
+    //     isMultiSelect: true,
+    //     placeholder: "---Kho điều phối---",
+    //     listoption: [],
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
+    //     ValueMember: "StoreID",
+    //     NameMember: "StoreName",
+    //     filterValue: 10,
+    //     filterobj:"CompanyID",
+    //     classNameCol:"col-custom"
+    // },
     {
-        type: "ComboBoxNewChange",
-        name: "cbCoordinatorStoreID",
-        DataSourceMember: "CoordinatorStoreID",
-        label: "kho điều phối",
-        colspan: 3,
-        value: "",
-        isMultiSelect: true,
-        placeholder: "---Kho điều phối---",
+        type: "MultiSelectUser",
+        name: "cbUserName",
+        DataSourceMember: "UserName",
+        label: "Nhân viên",
+        colspan: 12,
+        rowspan: 3,
+        labelcolspan: 12,
+        IsLabelDiv: true,
+        value: -1,
+        placeholder: "---Vui lòng chọn---",
         listoption: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
-        ValueMember: "StoreID",
-        NameMember: "StoreName",
-        filterValue: 10,
-        filterobj:"CompanyID",
-        classNameCol:"col-custom"
+        IsAutoLoadItemFromCache: false,
+        isMultiSelect: true
+
     },
 
 ]
@@ -86,10 +102,15 @@ export const  SearchMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "cbShipmentOrderTypeID"
     },
+    // {
+    //     Name: "CoordinatorStore",
+    //     DefaultValue: "",
+    //     BindControlName: "cbCoordinatorStoreID"
+    // },
     {
-        Name: "CoordinatorStore",
+        Name: "UserName",
         DefaultValue: "",
-        BindControlName: "cbCoordinatorStoreID"
+        BindControlName: "cbUserName"
     },
 ]
 

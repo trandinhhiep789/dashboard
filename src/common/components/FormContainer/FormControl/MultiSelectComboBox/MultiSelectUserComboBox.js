@@ -133,8 +133,8 @@ class MultiSelectUserComboBoxCom extends React.Component {
         if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
             classNameselect += " is-invalid";
         }
-        console.log("ListOption", this.state.SelectedOption, this.props.isMultiSelect)
-        console.log("props", this.props)
+        // console.log("ListOption", this.state.SelectedOption, this.props.isMultiSelect)
+        // console.log("props", this.props)
         return (
             <div className={formRowClassName} >
                 {isLabelDiv &&

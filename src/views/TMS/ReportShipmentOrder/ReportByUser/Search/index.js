@@ -49,10 +49,10 @@ class SearchCom extends React.Component {
             result = ""
         }
 
-        if (MLObject.CoordinatorStore != -1 && MLObject.CoordinatorStore != null && MLObject.CoordinatorStore != "") {
-            result2 = MLObject.CoordinatorStore.reduce((data, item, index) => {
+        if (MLObject.UserName != -1 && MLObject.UserName != null && MLObject.UserName != "") {
+            result2 = MLObject.UserName.reduce((data, item, index) => {
                 const comma = data.length ? "," : "";
-                return data + comma + item;
+                return data + comma + item.value;
             }, '');
         }
         else {
@@ -76,7 +76,7 @@ class SearchCom extends React.Component {
                 SearchValue: result  //MLObject.ShipmentOrderType
             },
             {
-                SearchKey: "@COORDINATORSTOREIDLIST",
+                SearchKey: "@USERNAMELIST",
                 SearchValue: result2  //MLObject.CoordinatorStoreID
             }, 
 
@@ -141,7 +141,7 @@ class SearchCom extends React.Component {
                     IsAutoPaging={true}
                     RowsPerPage={10}
                     ref={this.gridref}
-                    RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    //RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                 />
             </React.Fragment>
         );
