@@ -94,6 +94,10 @@ import ReportByDate from "../TMS/ReportShipmentOrder/ReportByDate";
 import ReportByStore from "../TMS/ReportShipmentOrder/ReportByStore";
 import ReportByUser from "../TMS/ReportShipmentOrder/ReportByUser";
 
+import RewardShipmentOrder from "../TMS/Reward/RewardShipmentOrder";
+import RewardShipmentOrderByUser from "../TMS/Reward/RewardShipmentOrderByUser";
+
+
 class HomeCom extends React.Component {
     constructor(props) {
         super(props);
@@ -239,6 +243,10 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/ReportByDate" component={ReportByDate} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ReportByStore" component={ReportByStore} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ReportByUser" component={ReportByUser} isLoggedIn={isLoggedIn} />
+
+                                <PrivateRoute path="/RewardShipmentOrder" component={RewardShipmentOrder} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/RewardShipmentOrderByUser" component={RewardShipmentOrderByUser} isLoggedIn={isLoggedIn} />
+                                
 
                                 <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} />

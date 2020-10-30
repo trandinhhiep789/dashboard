@@ -542,6 +542,28 @@ const AppMenu = [
                 ]
             },
             {
+                MenuName: 'Reward',
+                MenuTitle: 'Thưởng',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'RewardShipmentOrder',
+                        MenuTitle: 'Tổng thưởng giao hàng',
+                        LinkTo: '/RewardShipmentOrder',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'RewardShipmentOrderByUser',
+                        MenuTitle: 'Thưởng giao hàng theo NV',
+                        LinkTo: '/RewardShipmentOrderByUser',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+                ]
+            },
+            {
                 MenuName: 'DestroyRequest',
                 MenuTitle: 'Danh sách yêu cầu hủy vật tư',
                 LinkTo: '/DestroyRequest',
@@ -555,14 +577,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-
             {
                 MenuName: 'InventoryRequest',
                 MenuTitle: 'Danh sách yêu cầu kiểm kê',
                 LinkTo: '/InventoryRequest',
                 MenuIcon: '',
                 SubMenu: []
-            }
+            },
         ]
     },
     {

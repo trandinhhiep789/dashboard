@@ -41,25 +41,16 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        let result, result2;
-        if (MLObject.ShipmentOrderType != -1 && MLObject.ShipmentOrderType != null && MLObject.ShipmentOrderType != "") {
-            result = MLObject.ShipmentOrderType.reduce((data, item, index) => {
+        let  result;
+
+        if (MLObject.UserName != -1 && MLObject.UserName != null && MLObject.UserName != "") {
+            result = MLObject.UserName.reduce((data, item, index) => {
                 const comma = data.length ? "," : "";
-                return data + comma + item;
+                return data + comma + item.value;
             }, '');
         }
         else {
             result = ""
-        }
-
-        if (MLObject.CoordinatorStore != -1 && MLObject.CoordinatorStore != null&& MLObject.CoordinatorStore != "") {
-            result2 = MLObject.CoordinatorStore.reduce((data, item, index) => {
-                const comma = data.length ? "," : "";
-                return data + comma + item;
-            }, '');
-        }
-        else {
-            result2 = ""
         }
 
         const postData = [
@@ -72,16 +63,13 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.ToDate
             },
             {
-                SearchKey: "@SHIPMENTORDERTYPEIDLIST",
-                SearchValue: result  //MLObject.ShipmentOrderType
-            },
-            {
-                SearchKey: "@COORDINATORSTOREIDLIST",
-                SearchValue: result2  //MLObject.CoordinatorStoreID
-            },
+                SearchKey: "@USERNAMELIST",
+                SearchValue: result  //MLObject.CoordinatorStoreID
+            }, 
 
         ];
-       this.callSearchData(postData);
+        console.log("MLObject", postData, MLObject)
+       //this.callSearchData(postData);
     }
 
     callSearchData(searchData) {

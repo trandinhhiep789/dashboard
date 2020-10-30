@@ -41,26 +41,8 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        let result, result2;
-        if (MLObject.ShipmentOrderType != -1 && MLObject.ShipmentOrderType != null && MLObject.ShipmentOrderType != "") {
-            result = MLObject.ShipmentOrderType.reduce((data, item, index) => {
-                const comma = data.length ? "," : "";
-                return data + comma + item;
-            }, '');
-        }
-        else {
-            result = ""
-        }
 
-        if (MLObject.CoordinatorStore != -1 && MLObject.CoordinatorStore != null&& MLObject.CoordinatorStore != "") {
-            result2 = MLObject.CoordinatorStore.reduce((data, item, index) => {
-                const comma = data.length ? "," : "";
-                return data + comma + item;
-            }, '');
-        }
-        else {
-            result2 = ""
-        }
+        
 
         const postData = [
             {
@@ -72,19 +54,18 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.ToDate
             },
             {
-                SearchKey: "@SHIPMENTORDERTYPEIDLIST",
-                SearchValue: result  //MLObject.ShipmentOrderType
-            },
-            {
-                SearchKey: "@COORDINATORSTOREIDLIST",
-                SearchValue: result2  //MLObject.CoordinatorStoreID
+                SearchKey: "@COORDINATORSTOREID",
+                SearchValue: MLObject.CoordinatorStore
             },
 
         ];
-       this.callSearchData(postData);
+
+        console.log("MLObject", MLObject, postData)
+       //this.callSearchData(postData);
     }
 
     callSearchData(searchData) {
+        console.log("searchData", searchData)
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
                 this.setState({
@@ -151,7 +132,7 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    FormName="Tìm kiếm danh sách thống kê vận đơn theo ngày"
+                    FormName="Tìm kiếm danh sách tổng thương giao hàng"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
@@ -173,7 +154,7 @@ class SearchCom extends React.Component {
                     IsExportFile={false}
                     IsAutoPaging={true}
                     RowsPerPage={10}
-                    RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    //RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                     ref={this.gridref}
                 />
             </React.Fragment>
