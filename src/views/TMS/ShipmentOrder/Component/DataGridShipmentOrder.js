@@ -664,12 +664,22 @@ class DataGridShipmentOderCom extends Component {
                                             <label className="item address-receiver">
                                                 <span>{rowItem.ShipmentOrderTypeName}</span>
                                             </label>
-                                            <label className="item address-receiver">
-                                                <span>ĐP: <span className="coordinatorUser">{rowItem.CoordinatorUser != "" ? rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName : ""}</span></span>
-                                            </label>
-                                            <label className="item address-receiver">
-                                                <span>NV:{ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
-                                            </label>
+                                            {rowItem.CoordinatorUser != "" ?
+                                                (
+                                                    <React.Fragment>
+                                                        <label className="item address-receiver">
+                                                            <span>ĐP: <span className="coordinatorUser">{rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName }</span></span>
+                                                        </label>
+                                                        <label className="item address-receiver">
+                                                            <span>NV:{ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
+                                                        </label>
+                                                        <label className="item address-receiver">
+                                                            <span>{rowItem.CoordinatorNote!= ""?"Ghi chú: "+rowItem.CoordinatorNote:""}</span>
+                                                        </label>
+                                                        </React.Fragment>
+                                                ) : ""
+                                            }
+
                                         </div>
                                     </td>
                                     <td className="group-address">
@@ -769,7 +779,7 @@ class DataGridShipmentOderCom extends Component {
                                     <div className="btn-group btn-group-sm">
                                         <div className="group-left">
                                             <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                <i className="fa fa-plus"> Gán nhân viên giao hàng</i> 
+                                                <i className="fa fa-plus"> Gán nhân viên giao hàng</i>
                                             </button>
                                             {/* <div className="input-group input-group-select">
                                                 <input type="text" className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
