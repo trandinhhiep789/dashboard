@@ -629,8 +629,8 @@ class DataGridShipmentOderCom extends Component {
                                     <td className="groupInfoAction">
                                         <div className="group-info-row">
                                             <label className="item time">
-                                                <i className="ti ti-timer"></i>
-                                                <span>{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
+                                                <i className="ti ti-timer "></i>
+                                                <span className="fw-600">{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
                                             </label>
                                             <label className="item status">
                                                 <i className="fa fa-location-arrow"></i>
@@ -658,7 +658,7 @@ class DataGridShipmentOderCom extends Component {
                                                     <span className="line">-</span>
                                                     <span className="phone">({rowItem.ReceiverPhoneNumber.substr(0, 4)}****)</span>
                                                     {rowItem.PartnerSaleOrderID != "" ? <span className="line">-</span> : ""}
-                                                    <span className="phone">{rowItem.PartnerSaleOrderID}</span>
+                                                    <span className="phone partner-sale-Order fw-600">{rowItem.PartnerSaleOrderID}</span>
                                                 </div>
                                             </label>
                                             <label className="item address-receiver">
@@ -693,7 +693,7 @@ class DataGridShipmentOderCom extends Component {
                                     <td className="group-infoShipmentOrder">
                                         <div className="group-info-row">
                                             <label className="item person">
-                                                <span className="person-info" style={{ fontSize: 15 }}>
+                                                <span className="person-info fw-600" style={{ fontSize: 15 }}>
                                                     <Link target="_blank" to={"/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID}>{rowItem.ShipmentOrderID}</Link>
                                                 </span>
                                             </label>

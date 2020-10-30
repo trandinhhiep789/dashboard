@@ -88,6 +88,20 @@
             border-color: #808080;
             height: 35px;
             color: #333333;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            padding: 0px 0px 0px 5px;
+            line-height: 35px;
+            overflow: hidden;
+            &::after{
+                position: absolute;
+                right: 3px;
+                top: 0;
+                bottom: 0;
+                margin-bottom: auto;
+                margin-top: auto;
+            }
         }
     }
 }
