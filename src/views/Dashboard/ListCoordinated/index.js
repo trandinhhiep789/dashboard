@@ -167,7 +167,16 @@ class ListCoordinatedCom extends Component {
                                                         </label>
                                                     </div>
                                                 </td>
-                                                <td>{rowItem.OrderNote.split("-")[0]}</td>
+                                                <td className="group-address">
+                                                    <div className="group-info-row">
+                                                        <label className="item address-repository-created">
+                                                            <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(';', '<br/>'))}</span>
+                                                        </label>
+                                                        <label className="item address-receiver">
+                                                            <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
                                                 <td className="group-price">
                                                     <div className="group-row">
                                                         <span className="item pricecod"> {formatMoney(rowItem.TotalCOD, 0)}</span>

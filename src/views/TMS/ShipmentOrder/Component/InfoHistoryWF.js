@@ -39,12 +39,12 @@ class InfoHistoryWFCom extends Component {
     handleShowImage(e) {
         let images = [];
         const objIme = e.currentTarget.dataset.id;
-        const objlst = objIme.split(",");
+        const objlst = objIme.split(";");
         for (let i = 0; i < objlst.length; i++) {
-            images.push({ original: objlst[i], thumbnail: objlst[i] });
+            images.push({ original: JSON.parse(objlst[i]).ImageFileURL, thumbnail: JSON.parse(objlst[i]).ImageFileURL,ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation});
         }
         this.props.showModal(MODAL_TYPE_IMAGE_SLIDE, {
-            title: 'Danh sách hình ảnh',
+            title: 'Danh sách hình ảnh                             Tạo độ:'+ JSON.parse(objlst[0]).ImageCaptureGeoLocation,
             content: {
                 lstImage: images
             },
@@ -75,7 +75,7 @@ class InfoHistoryWFCom extends Component {
     render() {
         var a = this.state.ShipmentOrderType_WF.sort((a, b) => new Date(a.ProcessDate) - new Date(b.ProcessDate));
         let InfoActionLogLst = this.state.InfoActionLogList.sort((a, b) => new Date(a.CreatedDate) - new Date(b.CreatedDate));
-        
+
         return (
             <div className="card">
                 <h4 className="card-title"><strong>Lịch sử xử lý</strong></h4>
@@ -94,7 +94,10 @@ class InfoHistoryWFCom extends Component {
                             </thead>
                             <tbody>
                                 {this.state.ShipmentOrderType_WF && a.map((item, index) => {
-                                    const objlst = item.ImageFileURL.split(",");
+                                    const objlst = item.ImageFileURL.split(";");
+                                    if (objlst[0] != "") {
+                                        console.log(JSON.parse(objlst[0]));
+                                    }
                                     if (item.ProcessDate != null) {
                                         return (<tr key={index}>
                                             <td>{formatDate(item.ProcessDate)}</td>
@@ -105,7 +108,7 @@ class InfoHistoryWFCom extends Component {
                                                     {objlst[0] != "" && objlst.map((item, index) =>
                                                         <li key={index}>
                                                             <div className="img-item">
-                                                                <img src={item} />
+                                                                <img src={JSON.parse(item).ImageFileURL} />
                                                             </div>
                                                         </li>
                                                     )}
@@ -147,11 +150,11 @@ class InfoHistoryWFCom extends Component {
                             </thead>
                             <tbody>
                                 {this.state.InfoActionLogList && InfoActionLogLst.map((item, index) => {
-                                        return (<tr key={index}>
-                                            <td>{formatDate(item.CreatedDate)}</td>
-                                            <td>{item.ActionUser+"-"+item.ActionUserFullName}</td>
-                                            <td>{item.ActionContent}</td>
-                                        </tr>)
+                                    return (<tr key={index}>
+                                        <td>{formatDate(item.CreatedDate)}</td>
+                                        <td>{item.ActionUser + "-" + item.ActionUserFullName}</td>
+                                        <td>{item.ActionContent}</td>
+                                    </tr>)
                                 })}
                             </tbody>
                         </table>
