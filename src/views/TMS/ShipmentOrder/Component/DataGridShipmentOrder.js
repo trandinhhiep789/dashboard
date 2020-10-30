@@ -450,10 +450,7 @@ class DataGridShipmentOderCom extends Component {
     }
     handleUserCoordinator() {
         if (this.state.GridDataShip.length > 0) {
-
-            //api/ShipmentOrder/GetShipmentOrderLst
             this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderLst", this.state.GridDataShip).then(apiResult => {
-
                 if (!apiResult.IsError) {
                     this.setState({ GridDataShip: apiResult.ResultObject });
                     this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
