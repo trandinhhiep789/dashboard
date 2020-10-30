@@ -224,8 +224,6 @@ class AddCom extends React.Component {
     }
 
     render() {
-        console.log("gridDataSource", this.state.gridDataSource)
-        console.log("ShipmentOrderNewList", this.state.gridDataSource.ShipmentOrderNewList)
 
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;

@@ -38,16 +38,34 @@ const dtFromdate = new Date()
 dtFromdate.setDate(new Date().getDate() - 30);
 
 export const SearchElementList = [
+    // {
+    //     type: "text",
+    //     name: "txtKeyword",
+    //     DataSourceMember: "Keyword",
+    //     value: "",
+    //     colspan: 2,
+    //     placeholder: "Từ khóa",
+    //     icon: "",
+    //     classNameCol:"col-custom"
+        
+    // },
     {
-        type: "text",
+        type: "textdropdown",
+        dropdownName: "txtTypename",
         name: "txtKeyword",
-        DataSourceMember: "Keyword",
+        label: "",
         value: "",
-        colspan: 2,
         placeholder: "Từ khóa",
         icon: "",
-        classNameCol:"col-custom"
-        
+        nameOption: "txtTypename",
+        labelOption: "--Tất cả--",
+        valueOption: -1,
+        listoption: [
+            { value: -1, label: '--Tất cả--' },
+            { value: 1, label: 'Mã nhân viên' },
+            { value: 2, label: 'Tên nhân viên' },
+            { value: 3, label: 'SDT nhân viên' }
+        ]
     },
     {
         type: "ComboBox",
