@@ -59,14 +59,14 @@ export const DataGridColumnList = [
     {
         Name: "ProductID",
         Type: "Detailt",
-        Caption: "Mã sản phậm",
+        Caption: "Mã sản phẩm",
         DataSourceMember: "ProductID",
         Width: 180
     },
     {
         Name: "ProductName",
         Type: "text",
-        Caption: "Tên sản phậm",
+        Caption: "Tên sản phẩm",
         DataSourceMember: "ProductName",
         Width: 180
     },
