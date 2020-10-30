@@ -55,11 +55,13 @@ export const SearchElementList = [
         name: "txtKeyword",
         label: "",
         value: "",
+        colspan: 4,
         placeholder: "Từ khóa",
         icon: "",
         nameOption: "txtTypename",
         labelOption: "--Tất cả--",
         valueOption: -1,
+        classNameCol:"col-custom",
         listoption: [
             { value: -1, label: '--Tất cả--' },
             { value: 1, label: 'Mã nhân viên' },

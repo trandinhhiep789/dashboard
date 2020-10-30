@@ -56,21 +56,39 @@
     -ms-flex-align: stretch;
     align-items: stretch;
     width: 100%;
-    border: 1px solid #ebebeb;
-    .txtKeyword {
-        width: 60%;
-        float: left;
-        border-radius: 4px 0 0 4px;
-        height: 35px;
-        border: 0;
-        border-right: 1px solid #ebebeb;
+    input{
+        &.form-control{
+            &.txtKeyword {
+                width: 65%;
+                float: left;
+                border-radius: 4px 0 0 4px !important;
+                height: 35px;
+                border: 0;
+                border: 1px solid #808080;
+
+            }
+        }
     }
+    
     .cboption {
-        width: 40%;
+        width: 35%;
         float: right;
         border-radius: 0 4px 4px 0;
         height: 35px !important;
         border: 0;
+    }
+    .input-group-append{
+        width: 35%;
+        float: right;
+        border-radius: 0 4px 4px 0;
+        height: 35px !important;
+        border: 0;
+        .dropdown-toggle{
+            width: 100%;
+            border-color: #808080;
+            height: 35px;
+            color: #333333;
+        }
     }
 }
 
