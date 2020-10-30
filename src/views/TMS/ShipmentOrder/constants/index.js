@@ -38,21 +38,11 @@ const dtFromdate = new Date()
 dtFromdate.setDate(new Date().getDate() - 30);
 
 export const SearchElementList = [
-    // {
-    //     type: "text",
-    //     name: "txtKeyword",
-    //     DataSourceMember: "Keyword",
-    //     value: "",
-    //     colspan: 2,
-    //     placeholder: "Từ khóa",
-    //     icon: "",
-    //     classNameCol:"col-custom"
-        
-    // },
     {
         type: "textdropdown",
         dropdownName: "txtTypename",
         name: "txtKeyword",
+        colspan: 2,
         label: "",
         value: "",
         colspan: 4,
@@ -64,9 +54,10 @@ export const SearchElementList = [
         classNameCol:"col-custom",
         listoption: [
             { value: -1, label: '--Tất cả--' },
-            { value: 1, label: 'Mã nhân viên' },
-            { value: 2, label: 'Tên nhân viên' },
-            { value: 3, label: 'SDT nhân viên' }
+            { value: 1, label: 'SĐT khách hàng' },
+            { value: 2, label: 'Mã NV giao hàng' },
+            { value: 3, label: 'Mã đơn hàng ' },
+            { value: 4, label: 'Mã NV điều phối' },
         ]
     },
     {
@@ -201,17 +192,6 @@ export const SearchElementList = [
         placeholder: "--Trạng thái điều phối--",
         listoption: [{ value: -1, label: "--Điều phối--" },{ value: 1, label: "Đã điều phối" },{ value: 2, label: "Chưa điều phối" }],
         classNameCol:"col-custom"
-    },
-    {
-        type: "ComboBox",
-        name: "cbIsView",
-        DataSourceMember: "IsView",
-        colspan: 2,
-        value: -1,
-        isMultiSelect: false,
-        placeholder: "--Trạng thái xem--",
-        listoption: [{ value: -1, label: "--Trạng thái xem--" },{ value: 1, label: "Đã xem" },{ value: 0, label: "Chưa xem" }],
-        classNameCol:"col-custom"
     }
 ];
 export const InitSearchParams = [
@@ -261,12 +241,12 @@ export const InitSearchParams = [
         SearchValue: -1
     },
     {
-        SearchKey: "@IsView",
+        SearchKey: "@Typename",
         SearchValue: -1
     },
     {
         SearchKey: "@PAGESIZE",
-        SearchValue: 10
+        SearchValue: 100
     },
     {
         SearchKey: "@PAGEINDEX",
@@ -326,11 +306,10 @@ export const SearchMLObjectDefinition = [
         BindControlName: "cbIsCoordinator"
     },
     {
-        Name: "IsView",
+        Name: "Typename",
         DefaultValue: "",
-        BindControlName: "cbIsView"
-    },
-    
+        BindControlName: "txtTypename"
+    }
 ];
 
 export const AddElementList = [

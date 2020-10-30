@@ -54,8 +54,7 @@ class ListShipCoordinatorCom extends Component {
                 }
             });
         }
-        else
-        {
+        else {
             this.state.ShipmentOrder.map((row, indexRow) => {
                 if (!row.IsCoordinator && row.IsPermission == true) {
                     row[name] = value;
@@ -63,7 +62,7 @@ class ListShipCoordinatorCom extends Component {
             });
         }
 
-     
+
         this.setState({
             objCoordinator: objCoordinator,
             objDeliverUser: objDeliverUser,
@@ -116,13 +115,16 @@ class ListShipCoordinatorCom extends Component {
     }
 
     handleShipWorkFlowInsert() {
-        console.log("ShipmentOrder",this.state.ShipmentOrder)
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
-            if (!apiResult.IsError) {
-                this.props.hideModal();
-            }
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.Message);
+            if (this.props.onChangeValue != null)
+                    this.props.onChangeValue(apiResult);
+            // if (!apiResult.IsError) {
+            //     this.props.hideModal();
+            //     if (this.props.onChangePageLoad != null)
+            //         this.props.onChangePageLoad();
+            // }
+            // this.setState({ IsCallAPIError: apiResult.IsError });
+            // this.showMessage(apiResult.Message);
         });
     }
 
@@ -246,7 +248,6 @@ class ListShipCoordinatorCom extends Component {
             //     iputpop: false
             // }
         ];
-
         return (
             <div className="card modalForm">
                 <div className="card-body" style={{ minHeight: 430 }}>

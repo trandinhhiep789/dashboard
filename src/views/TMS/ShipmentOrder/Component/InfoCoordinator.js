@@ -83,7 +83,6 @@ class InfoCoordinatorCom extends Component {
                 });
             }
         });
-
         this.props.callGetCache("ERPCOMMONCACHE.STORE").then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 let listOptionStore = [{ value: -1, label: "--Vui lòng chọn--" }];
@@ -395,12 +394,11 @@ class InfoCoordinatorCom extends Component {
         }
 
         else {
-            console.log("ShipmentOrder",this.state.ShipmentOrder)
             this.state.ShipmentOrder.UpdatedUser = this.props.AppInfo.LoginInfo.Username,
                 this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinator', this.state.ShipmentOrder).then((apiResult) => {
-                    this.setState({ IsCallAPIError: apiResult.IsError });
-                    this.showMessage(apiResult.Message);
+                    this.addNotification(apiResult.Message, apiResult.IsError);
                     if (!apiResult.IsError) {
+                        setTimeout(() => { this.setState({ IsCloseForm: true }) }, 2000);
                     }
                 });
         }
@@ -529,8 +527,7 @@ class InfoCoordinatorCom extends Component {
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
                     ModalManager.close();
-                    this.setState({ IsCloseForm: true })
-
+                    setTimeout(() => { this.setState({ IsCloseForm: true }) }, 2000);
                 }
             });
         }
@@ -629,8 +626,8 @@ class InfoCoordinatorCom extends Component {
                             listoption={[]}
                             isMultiSelect={true}
                             datasourcemember="ShipmentOrder_DeliverUserList"
-                          
-                            
+
+
                         /> :
                         <FormControl.FormControlComboBox
                             name="ShipmentOrder_DeliverUserList"

@@ -16,6 +16,8 @@ import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import ListShipCoordinator from '../Component/ListShipCoordinator.js';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 import {
     APIHostName
 } from "../constants";
@@ -46,6 +48,8 @@ class DataGridShipmentOderCom extends Component {
             IsCheckAll: false, PageNumber: this.props.PageNumber, ListPKColumnName: listPKColumnName,
             GridDataShip: []
         };
+        this.notificationDOMRef = React.createRef();
+        
     }
 
     componentDidMount() {
@@ -450,10 +454,7 @@ class DataGridShipmentOderCom extends Component {
     }
     handleUserCoordinator() {
         if (this.state.GridDataShip.length > 0) {
-
-            //api/ShipmentOrder/GetShipmentOrderLst
             this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderLst", this.state.GridDataShip).then(apiResult => {
-
                 if (!apiResult.IsError) {
                     this.setState({ GridDataShip: apiResult.ResultObject });
                     this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
@@ -484,11 +485,14 @@ class DataGridShipmentOderCom extends Component {
         }
     }
 
-    handleShipmentOrder() {
-        if (this.props.onChangePageLoad != null)
-            this.props.onChangePageLoad();
-
-        this.setState({ GridDataShip: [] });
+    handleShipmentOrder(apiResult) {
+        this.addNotification(apiResult.Message, apiResult.IsError);
+        if (!apiResult.IsError) {
+            this.props.hideModal();
+            this.setState({ GridDataShip: [] });
+            if (this.props.onChangePageLoad != null)
+                this.props.onChangePageLoad();
+        }
     }
 
     handleCheckShip(e) {
@@ -541,6 +545,38 @@ class DataGridShipmentOderCom extends Component {
             );
         }
 
+    }
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
     }
     renderDataGrid() {
         const dataSource = this.state.DataSource;
@@ -664,12 +700,22 @@ class DataGridShipmentOderCom extends Component {
                                             <label className="item address-receiver">
                                                 <span>{rowItem.ShipmentOrderTypeName}</span>
                                             </label>
-                                            <label className="item address-receiver">
-                                                <span>ĐP: <span className="coordinatorUser">{rowItem.CoordinatorUser != "" ? rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName : ""}</span></span>
-                                            </label>
-                                            <label className="item address-receiver">
-                                                <span>NV:{ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
-                                            </label>
+                                            {rowItem.CoordinatorUser != "" ?
+                                                (
+                                                    <React.Fragment>
+                                                        <label className="item address-receiver">
+                                                            <span>ĐP: <span className="coordinatorUser">{rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span></span>
+                                                        </label>
+                                                        <label className="item address-receiver">
+                                                            <span>NV:{ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
+                                                        </label>
+                                                        <label className="item address-receiver">
+                                                            <span>{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
+                                                        </label>
+                                                    </React.Fragment>
+                                                ) : ""
+                                            }
+
                                         </div>
                                     </td>
                                     <td className="group-address">
@@ -752,7 +798,6 @@ class DataGridShipmentOderCom extends Component {
         }
 
         let IsCompleteDeliverIed = []
-        console.log(this.props.dataSource)
         if (this.props.dataSource) {
             IsCompleteDeliverIed = this.props.dataSource.filter(n => n.IsCompleteDeliverIed == true);
         }
@@ -760,6 +805,7 @@ class DataGridShipmentOderCom extends Component {
         return (
             <div className={classCustom}>
                 <div className="card cardShipmentOrder">
+                <ReactNotification ref={this.notificationDOMRef} />
                     <div className="card-title">
                         {(this.props.title != undefined || this.props.title != '') && <h4 className="title">{this.props.title}</h4>}
 
@@ -770,7 +816,7 @@ class DataGridShipmentOderCom extends Component {
                                     <div className="btn-group btn-group-sm">
                                         <div className="group-left">
                                             <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                <i className="fa fa-plus"> Gán nhân viên giao hàng</i> 
+                                                <i className="fa fa-plus"> Gán nhân viên giao hàng</i>
                                             </button>
                                             {/* <div className="input-group input-group-select">
                                                 <input type="text" className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
