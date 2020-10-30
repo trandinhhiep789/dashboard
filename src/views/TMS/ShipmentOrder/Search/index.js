@@ -146,7 +146,7 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@PAGESIZE",
-                SearchValue: 10
+                SearchValue: 100
             },
             {
                 SearchKey: "@PAGEINDEX",
@@ -251,7 +251,7 @@ class SearchCom extends React.Component {
                         DeletePermission={"SHIPMENTORDER_DELETE"}
                         EditPermission={"SHIPMENTORDER_UPDATE"}
                         IsAutoPaging={true}
-                        RowsPerPage={10}
+                        RowsPerPage={100}
                     />
                 </React.Fragment>
             );

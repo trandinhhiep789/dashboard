@@ -38,22 +38,11 @@ const dtFromdate = new Date()
 dtFromdate.setDate(new Date().getDate() - 30);
 
 export const SearchElementList = [
-    // {
-    //     type: "text",
-    //     name: "txtKeyword",
-    //     DataSourceMember: "Keyword",
-    //     value: "",
-    //     colspan: 2,
-    //     placeholder: "Từ khóa",
-    //     icon: "",
-    //     classNameCol:"col-custom"
-        
-    // },
     {
         type: "textdropdown",
         dropdownName: "txtTypename",
         name: "txtKeyword",
-        colspan: 3,
+        colspan: 2,
         label: "",
         value: "",
         colspan: 4,
@@ -65,9 +54,10 @@ export const SearchElementList = [
         classNameCol:"col-custom",
         listoption: [
             { value: -1, label: '--Tất cả--' },
-            { value: 1, label: 'Mã nhân viên' },
-            { value: 2, label: 'Tên nhân viên' },
-            { value: 3, label: 'SDT nhân viên' }
+            { value: 1, label: 'SĐT khách hàng' },
+            { value: 2, label: 'Mã NV giao hàng' },
+            { value: 3, label: 'Mã đơn hàng ' },
+            { value: 4, label: 'Mã NV điều phối' },
         ]
     },
     {
@@ -256,7 +246,7 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@PAGESIZE",
-        SearchValue: 10
+        SearchValue: 100
     },
     {
         SearchKey: "@PAGEINDEX",
