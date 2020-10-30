@@ -752,7 +752,6 @@ class DataGridShipmentOderCom extends Component {
         }
 
         let IsCompleteDeliverIed = []
-        console.log(this.props.dataSource)
         if (this.props.dataSource) {
             IsCompleteDeliverIed = this.props.dataSource.filter(n => n.IsCompleteDeliverIed == true);
         }

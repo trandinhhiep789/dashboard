@@ -53,6 +53,7 @@ export const SearchElementList = [
         type: "textdropdown",
         dropdownName: "txtTypename",
         name: "txtKeyword",
+        colspan: 3,
         label: "",
         value: "",
         placeholder: "Từ khóa",
@@ -199,17 +200,6 @@ export const SearchElementList = [
         placeholder: "--Trạng thái điều phối--",
         listoption: [{ value: -1, label: "--Điều phối--" },{ value: 1, label: "Đã điều phối" },{ value: 2, label: "Chưa điều phối" }],
         classNameCol:"col-custom"
-    },
-    {
-        type: "ComboBox",
-        name: "cbIsView",
-        DataSourceMember: "IsView",
-        colspan: 2,
-        value: -1,
-        isMultiSelect: false,
-        placeholder: "--Trạng thái xem--",
-        listoption: [{ value: -1, label: "--Trạng thái xem--" },{ value: 1, label: "Đã xem" },{ value: 0, label: "Chưa xem" }],
-        classNameCol:"col-custom"
     }
 ];
 export const InitSearchParams = [
@@ -259,7 +249,7 @@ export const InitSearchParams = [
         SearchValue: -1
     },
     {
-        SearchKey: "@IsView",
+        SearchKey: "@Typename",
         SearchValue: -1
     },
     {
@@ -324,11 +314,10 @@ export const SearchMLObjectDefinition = [
         BindControlName: "cbIsCoordinator"
     },
     {
-        Name: "IsView",
+        Name: "Typename",
         DefaultValue: "",
-        BindControlName: "cbIsView"
-    },
-    
+        BindControlName: "txtTypename"
+    }
 ];
 
 export const AddElementList = [

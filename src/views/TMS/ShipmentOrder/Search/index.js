@@ -53,11 +53,6 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
-        // this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = 1
-        // console.log(this.state.SearchElementList)
-        // this.setState({
-        //     SearchElementList: this.state.SearchElementList
-        // });
         const ShipOrdStatusGroupID = { SearchKey: "@SHIPMENTORDERSTATUSGROUPID", SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : -1 };
         let listSearchDataObject = Object.assign([], this.state.SearchData, { [9]: ShipOrdStatusGroupID });
         this.callSearchData(listSearchDataObject);
@@ -146,8 +141,8 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.IsCoordinator
             },
             {
-                SearchKey: "@IsView",
-                SearchValue: MLObject.IsView
+                SearchKey: "@Typename",
+                SearchValue:MLObject.Typename
             },
             {
                 SearchKey: "@PAGESIZE",
@@ -163,6 +158,7 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
+        console.log("searchData",searchData)
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
                 this.setState({
