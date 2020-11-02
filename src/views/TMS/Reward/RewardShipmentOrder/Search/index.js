@@ -11,7 +11,8 @@ import {
     SearchElementList,
     GridColumnList,
     APIHostName,
-    SearchAPIPath
+    SearchAPIPath,
+    InitSearchParams
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -25,11 +26,13 @@ class SearchCom extends React.Component {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
-        
+        this.handleCallData = this.handleCallData.bind(this);
+
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
-            IsLoadDataComplete: false
+            IsLoadDataComplete: false,
+            SearchData: InitSearchParams,
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -38,11 +41,15 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+        this.handleCallData();
+    }
+
+    handleCallData() {
+        const { SearchData } = this.state;
+        this.callSearchData(SearchData);
     }
 
     handleSearchSubmit(formData, MLObject) {
-
-        
 
         const postData = [
             {
@@ -59,22 +66,27 @@ class SearchCom extends React.Component {
             },
 
         ];
-
-        console.log("MLObject", MLObject, postData)
-       //this.callSearchData(postData);
+        this.callSearchData(postData);
     }
 
     callSearchData(searchData) {
-        console.log("searchData", searchData)
+
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
+                let data = [];
+                if (apiResult.ResultObject.length > 0) {
+                    apiResult.ResultObject.map((item, index) => {
+                        data.push(item[0])
+                    })
+                }
+
                 this.setState({
-                    gridDataSource:  apiResult.ResultObject,
+                    gridDataSource: data,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true
                 });
             }
-            else{
+            else {
                 this.showMessage(apiResult.MessageDetail)
             }
         });
@@ -145,7 +157,7 @@ class SearchCom extends React.Component {
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
                     IDSelectColumnName={''}
-                    PKColumnName={''}
+                    PKColumnName={'RewardUser'}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}

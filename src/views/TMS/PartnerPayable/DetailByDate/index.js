@@ -36,6 +36,7 @@ class DetailByDateCom extends React.Component {
     }
 
     componentDidMount() {
+        console.log("1111",this.props)
         const postData = [
             {
                 SearchKey: "@PAYABLEDATE",

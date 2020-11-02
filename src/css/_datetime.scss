@@ -1,5 +1,6 @@
 .datetime {
     .form-group-input-date {
+     
         .rdt {
             width: 100%;
 
@@ -152,6 +153,14 @@
                     display: block;
                 }
             }
+        }
+    }
+}
+.form-group-input{
+    &.form-group-input-date {
+        .input-group{
+            height: 27px;
+            clear: both;
         }
     }
 }

@@ -548,6 +548,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: [
                     {
+                        MenuName: 'RewardCompute',
+                        MenuTitle: 'Tính thưởng',
+                        LinkTo: '/RewardCompute',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'RewardShipmentOrder',
                         MenuTitle: 'Tổng thưởng giao hàng',
                         LinkTo: '/RewardShipmentOrder',
