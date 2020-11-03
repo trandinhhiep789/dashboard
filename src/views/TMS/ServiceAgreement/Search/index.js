@@ -194,7 +194,6 @@ class SearchCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
-                onCloseModal={true}
             />
         );
     }
