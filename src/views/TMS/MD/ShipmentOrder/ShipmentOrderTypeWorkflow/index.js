@@ -93,7 +93,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         this.createInputPermissColumnList();
         this.getFunctionCache();
         //this.initShipmentSetupType();
-        
+
     }
 
     // initShipmentSetupType(){
@@ -264,7 +264,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         //loại lắp đặt
         if (!formData.ShipmentOrderTypeWorkflow.IsSetupStep) {
             formData.ShipmentOrderTypeWorkflow.ShipmentSetupTypeID = "-1";
-        } 
+        }
 
         // if(this.state.MLObjectDefinition){
         //     this.state.MLObjectDefinition.forEach(function (item, index) {
@@ -646,6 +646,10 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
 
                                     <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước lắp đặt" name="IsSetupStep"
                                         controltype="InputControl" datasourcemember="IsSetupStep"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước có thể cập nhật hàng trả lại" name="IsCanUpdateReturnItemStep"
+                                        controltype="InputControl" datasourcemember="IsCanUpdateReturnItemStep"
                                         swaplabelModal={true}
                                     />
                                 </div>

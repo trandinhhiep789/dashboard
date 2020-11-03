@@ -107,10 +107,10 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             //this.searchref.current.changeLoadComplete();
             //console.log("callSearchData",apiResult)
+            this.setState({ IsCallAPIError: apiResult.IsError });
             if (apiResult && !apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
-                    IsCallAPIError: apiResult.IsError,
                     IsShowForm: true
                 });
             } else {

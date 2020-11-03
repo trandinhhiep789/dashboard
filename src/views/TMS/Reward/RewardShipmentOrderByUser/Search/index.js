@@ -11,13 +11,14 @@ import {
     SearchElementList,
     GridColumnList,
     APIHostName,
-    SearchAPIPath
+    SearchAPIPath,
+    InitSearchParams
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
+import { TMS_TMSREWARD_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 
 class SearchCom extends React.Component {
@@ -29,7 +30,8 @@ class SearchCom extends React.Component {
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
-            IsLoadDataComplete: false
+            IsLoadDataComplete: false,
+            SearchData: InitSearchParams,
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -38,6 +40,7 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+        this.callSearchData(this.state.SearchData)
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -68,15 +71,21 @@ class SearchCom extends React.Component {
             }, 
 
         ];
-        console.log("MLObject", postData, MLObject)
-       //this.callSearchData(postData);
+       
+       this.callSearchData(postData);
     }
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
+                let data=[]
+                if(apiResult.ResultObject.length > 0){
+                    apiResult.ResultObject.map((item, index) => {
+                        data.push(item[0])
+                    })
+                }
                 this.setState({
-                    gridDataSource:  apiResult.ResultObject,
+                    gridDataSource:  data,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true
                 });
@@ -94,7 +103,6 @@ class SearchCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
-                onCloseModal={this.handleCloseMessage}
             />
         );
     }
@@ -152,7 +160,7 @@ class SearchCom extends React.Component {
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
                     IDSelectColumnName={''}
-                    PKColumnName={''}
+                    PKColumnName={'RewardDate'}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
@@ -161,7 +169,7 @@ class SearchCom extends React.Component {
                     IsExportFile={false}
                     IsAutoPaging={true}
                     RowsPerPage={10}
-                    RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    RequirePermission={TMS_TMSREWARD_VIEW}
                     ref={this.gridref}
                 />
             </React.Fragment>

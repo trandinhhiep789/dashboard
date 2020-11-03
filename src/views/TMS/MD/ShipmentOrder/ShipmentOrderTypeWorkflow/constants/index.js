@@ -252,6 +252,12 @@ export const MLObjectDefinition = [
         // ValidationList: ["Comborequired"]
     },
     {
+        Name: "IsCanUpdateReturnItemStep",
+        DefaultValue: "",
+        BindControlName: "IsCanUpdateReturnItemStep",
+        DataSourceMember: "IsCanUpdateReturnItemStep"
+    },
+    {
         Name: "OrderIndex",
         DefaultValue: "",
         BindControlName: "OrderIndex",

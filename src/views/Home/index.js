@@ -96,6 +96,7 @@ import ReportByUser from "../TMS/ReportShipmentOrder/ReportByUser";
 
 import RewardShipmentOrder from "../TMS/Reward/RewardShipmentOrder";
 import RewardShipmentOrderByUser from "../TMS/Reward/RewardShipmentOrderByUser";
+import RewardCompute from "../TMS/Reward/RewardCompute";
 
 
 class HomeCom extends React.Component {
@@ -246,6 +247,7 @@ class HomeCom extends React.Component {
 
                                 <PrivateRoute path="/RewardShipmentOrder" component={RewardShipmentOrder} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/RewardShipmentOrderByUser" component={RewardShipmentOrderByUser} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/RewardCompute" component={RewardCompute} isLoggedIn={isLoggedIn} />
                                 
 
                                 <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} />
