@@ -241,7 +241,7 @@ class InfoProductCom extends Component {
                                 </thead>
                                 <tbody>
                                     {
-                                        this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName', 'ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).map((item, index) => {
+                                        this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName', 'ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).sort((a, b) => (b.Price > a.Price) ? 1 : -1).map((item, index) => {
                                             return (
                                                 <tr key={"Product" + index}>
                                                     <td>
@@ -305,7 +305,7 @@ class InfoProductCom extends Component {
                                                                 if (item.ProductID != "" && item.ProductID != null) {
                                                                     return (<tr key={rowIndex + Index}>
                                                                         <td>{item.ProductID + '-' + item.ProductName}</td>
-                                                                        <td>{item.AdvanceQuantity}</td>
+                                                                        <td>{item.AdvanceQuantity*item.AdvanceConvertRatio}</td>
                                                                         <td>{item.FreeQuantity}</td>
                                                                         <td>{item.SaleQuantity}</td>
                                                                         <td>{formatMoney(item.SalePriceWithVAT, 0)}đ</td>
