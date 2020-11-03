@@ -27,7 +27,6 @@ export const DetailAPIPath = [
     { Link: "", Title: "Chi tiết" }
 ];
 
-
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/ShipmentOrder", Title: "Danh sách yêu cầu vận chuyển" },
@@ -49,11 +48,11 @@ export const SearchElementList = [
         placeholder: "Từ khóa",
         icon: "",
         nameOption: "txtTypename",
-        labelOption: "--Tất cả--",
+        labelOption: "--Vui lòng chọn--",
         valueOption: -1,
         classNameCol:"col-custom",
         listoption: [
-            { value: -1, label: '--Tất cả--' },
+            { value: -1, label: '--Vui lòng chọn--' },
             { value: 1, label: 'SĐT khách hàng' },
             { value: 2, label: 'Mã NV giao hàng' },
             { value: 3, label: 'Mã đơn hàng ' },
