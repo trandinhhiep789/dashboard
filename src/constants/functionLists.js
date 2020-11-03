@@ -381,4 +381,4 @@ export const REWARDDETAIL_VIEW = 'REWARDDETAIL_VIEW';
 
 
 //Xem danh sách thưởng
-export const TMS_TMSREWARD = 'TMS_TMSREWARD';
+export const TMS_TMSREWARD_VIEW = 'TMS_TMSREWARD_VIEW';
