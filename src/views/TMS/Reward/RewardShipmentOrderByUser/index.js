@@ -7,6 +7,7 @@ import {
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
+import SearchUserByDate from "./SearchUserByDate";
 
 import NotFound from '../../../NotFound';
 
@@ -19,6 +20,7 @@ class RewardShipmentOrderByUserCom extends React.Component {
         return (
             <Switch>
                 <Route exact path="/RewardShipmentOrderByUser" component={Search} />
+                <Route exact path="/RewardShipmentOrderByUser/RewardByDate/:id" component={SearchUserByDate} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );

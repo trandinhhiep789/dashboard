@@ -4,10 +4,10 @@ import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import { MessageModal } from "../../../../../common/components/Modal";
 import DataGrid from "../../../../../common/components/DataGrid";
 import {
-    PagePathByUserName,
-    GridColumnListByUserName,
+    PageByDatePath,
+    GridColumnListByDate,
     APIHostName,
-    LoadByUserNameAPIPath,
+    LoadByDateAPIPath,
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -15,7 +15,7 @@ import "react-notifications-component/dist/theme.css";
 import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 
-class SearchByUserNameCom extends React.Component {
+class SearchUserByDateCom extends React.Component {
     constructor(props) {
         super(props);
         this.callLoadData = this.callLoadData.bind(this);
@@ -28,26 +28,23 @@ class SearchByUserNameCom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updatePagePath(PagePathByUserName);
-        
-        this.callLoadData(this.props.match.params.id);
+        this.props.updatePagePath(PageByDatePath);
+       
+       this.callLoadData(this.props.match.params.id);
     }
 
   
-    callLoadData(username) {
-
-        this.props.callFetchAPI(APIHostName, LoadByUserNameAPIPath, username).then(apiResult => {
-            
+    callLoadData(id) {
+        this.props.callFetchAPI(APIHostName, LoadByDateAPIPath, id).then(apiResult => {
             if (!apiResult.IsError) {
-                let data = [];
-                if (apiResult.ResultObject.length > 0) {
-                    apiResult.ResultObject.map((item, index) => {
-                        data.push(item[0])
-                    })
-                }
-
+                // let data = [];
+                // if (apiResult.ResultObject.length > 0) {
+                //     apiResult.ResultObject.map((item, index) => {
+                //         data.push(item[0])
+                //     })
+                // }
                 this.setState({
-                    gridDataSource: data,
+                    gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
                 });
             }
@@ -75,11 +72,11 @@ class SearchByUserNameCom extends React.Component {
             <React.Fragment>
                 
                 <DataGrid
-                    listColumn={GridColumnListByUserName}
+                    listColumn={GridColumnListByDate}
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
                     IDSelectColumnName={''}
-                    PKColumnName={'RewardDate'}
+                    PKColumnName={''}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
@@ -90,7 +87,6 @@ class SearchByUserNameCom extends React.Component {
                     RowsPerPage={10}
                     //RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                     ref={this.gridref}
-                    params= {this.props.match.params.id}
                 />
             </React.Fragment>
         );
@@ -119,5 +115,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const SearchByUserName = connect(mapStateToProps, mapDispatchToProps)(SearchByUserNameCom);
-export default SearchByUserName;
+const SearchUserByDate = connect(mapStateToProps, mapDispatchToProps)(SearchUserByDateCom);
+export default SearchUserByDate;
