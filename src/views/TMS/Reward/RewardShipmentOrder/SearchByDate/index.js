@@ -65,7 +65,7 @@ class SearchByDateCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
-                onCloseModal={this.handleCloseMessage}
+                onCloseModal={true}
             />
         );
     }

@@ -378,3 +378,7 @@ export const SHIPMENTORDER_REPORT_VIEW = 'SHIPMENTORDER_REPORT_VIEW';
 //Thưởng nhân viên
 export const REWARD_VIEW = 'REWARD_VIEW';
 export const REWARDDETAIL_VIEW = 'REWARDDETAIL_VIEW';
+
+
+//Xem danh sách thưởng
+export const TMS_TMSREWARD = 'TMS_TMSREWARD';
