@@ -18,7 +18,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { TMS_TMSREWARD } from "../../../../../constants/functionLists";
+import { TMS_TMSREWARD_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 
 class SearchCom extends React.Component {
@@ -167,7 +167,7 @@ class SearchCom extends React.Component {
                     IsExportFile={false}
                     IsAutoPaging={true}
                     RowsPerPage={10}
-                    RequirePermission={TMS_TMSREWARD}
+                    RequirePermission={TMS_TMSREWARD_VIEW}
                     ref={this.gridref}
                 />
             </React.Fragment>
