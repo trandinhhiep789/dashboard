@@ -85,6 +85,31 @@ export const AddElementList = [
         NameMember: "ShipmentOrderStatusGroupName"
     },
     {
+        type: "text",
+        name: "txtColorCode",
+        label: "mã màu trạng thái yêu cầu vận chuyển",
+        value: "",
+        maxSize: "50",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "ColorCode",
+        readonly: false,
+        validatonList: [],
+    },
+    {
+        type: "checkbox",
+        name: "chkIsCancelDeliveryStatus",
+        label: "là trạng thái hủy giao hàng:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "IsCancelDeliveryStatus",
+        readonly: false,
+        validatonList: []
+    },  
+    {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả:",
@@ -194,6 +219,31 @@ export const EditElementList = [
     },
     {
         type: "text",
+        name: "txtColorCode",
+        label: "mã màu trạng thái yêu cầu vận chuyển",
+        value: "",
+        maxSize: "50",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "ColorCode",
+        readonly: false,
+        validatonList: [],
+    },
+    {
+        type: "checkbox",
+        name: "chkIsCancelDeliveryStatus",
+        label: "là trạng thái hủy giao hàng:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "IsCancelDeliveryStatus",
+        readonly: false,
+        validatonList: []
+    },  
+    {
+        type: "text",
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị:",
         value: "",
@@ -257,6 +307,18 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "ShipmentOrderStatusGroupID",
         DataSourceMember: "ShipmentOrderStatusGroupID"
+    },
+    {
+        Name: "ColorCode",
+        DefaultValue: "",
+        BindControlName: "txtColorCode",
+        DataSourceMember: "ColorCode"
+    },
+    {
+        Name: "IsCancelDeliveryStatus",
+        DefaultValue: "",
+        BindControlName: "chkIsCancelDeliveryStatus",
+        DataSourceMember: "IsCancelDeliveryStatus"
     },
     {
         Name: "Description",
