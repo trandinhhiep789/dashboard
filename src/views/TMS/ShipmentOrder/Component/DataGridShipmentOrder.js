@@ -582,15 +582,15 @@ class DataGridShipmentOderCom extends Component {
         const dataSource = this.state.DataSource;
         return (
             <div className=" table-responsive">
-                <table className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder" cellSpacing="0" >
+                <table id="fixtable" className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder" cellSpacing="0" >
                     <thead className="thead-light">
                         <tr>
-                            <th className="jsgrid-header-cell" style={{ width: 51 }} >Tác vụ</th>
-                            <th className="jsgrid-header-cell" style={{ width: 180, minWidth: 180 }} >Thời gian giao</th>
-                            <th className="jsgrid-header-cell" style={{ width: 250, minWidth: 250 }}>Địa chỉ</th>
-                            <th className="jsgrid-header-cell" style={{ width: 250, minWidth: 250 }}>Mã/Loại yêu cầu vận chuyển</th>
-                            <th className="jsgrid-header-cell" style={{ width: 180, minWidth: 180 }} >Tên sản phẩm/Ghi chú</th>
-                            <th className="jsgrid-header-cell" style={{ width: 131, minWidth: 131 }} >COD/Vật tư/Tổng tiền</th>
+                            <th className="jsgrid-header-cell" style={{ width: '5%' }}>Tác vụ</th>
+                            <th className="jsgrid-header-cell" style={{ width: '20%' }}>Thời gian giao</th>
+                            <th className="jsgrid-header-cell" style={{ width: '30%' }}>Địa chỉ</th>
+                            <th className="jsgrid-header-cell" style={{ width: '15%' }}>Mã/Loại yêu cầu vận chuyển</th>
+                            <th className="jsgrid-header-cell" style={{ width: '15%' }}>Tên sản phẩm/Ghi chú</th>
+                            <th className="jsgrid-header-cell" style={{ width: '15%' }}>COD/Vật tư/Tổng tiền</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -606,7 +606,7 @@ class DataGridShipmentOderCom extends Component {
                                 }
                                 // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
                                 return (<tr key={rowIndex} className={rowtrClass}>
-                                    <td className="btngroupleft">
+                                    <td className="btngroupleft" style={{ width: '5%' }}>
                                         <div className="group-action">
                                             <div className="checkbox item-action">
                                                 <label>
@@ -626,7 +626,7 @@ class DataGridShipmentOderCom extends Component {
 
                                     </td>
                                     {/* <td>{rowItem.ExpectedDeliveryDate}</td> */}
-                                    <td className="groupInfoAction">
+                                    <td className="groupInfoAction" style={{ width: '20%' }}>
                                         <div className="group-info-row">
                                             <label className="item time">
                                                 <i className="ti ti-timer "></i>
@@ -647,7 +647,7 @@ class DataGridShipmentOderCom extends Component {
                                             </label>
                                         </div>
                                     </td>
-                                    <td className="group-address">
+                                    <td className="group-address" style={{ width: '30%' }}>
                                         <div className="group-info-row">
                                             <label className="item person">
                                                 <i className="fa fa-user"></i>
@@ -690,7 +690,7 @@ class DataGridShipmentOderCom extends Component {
                                             </label>
                                         </div>
                                     </td>
-                                    <td className="group-infoShipmentOrder">
+                                    <td className="group-infoShipmentOrder" style={{ width: '15%' }}>
                                         <div className="group-info-row">
                                             <label className="item person">
                                                 <span className="person-info fw-600" style={{ fontSize: 15 }}>
@@ -718,7 +718,7 @@ class DataGridShipmentOderCom extends Component {
 
                                         </div>
                                     </td>
-                                    <td className="group-address">
+                                    <td className="group-address" style={{ width: '15%' }}>
                                         <div className="group-info-row">
                                             <label className="item address-repository-created">
                                                 <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(';', '<br/>'))}</span>
@@ -728,7 +728,7 @@ class DataGridShipmentOderCom extends Component {
                                             </label>
                                         </div>
                                     </td>
-                                    <td className="group-price">
+                                    <td className="group-price" style={{ width: '15%' }}>
                                         <div className="group-row">
                                             <span className="item price3">
                                                 {rowItem.IsCancelDelivery == true ? <span className="badge badge-danger">Đã hủy</span> : ""}

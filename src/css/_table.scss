@@ -247,6 +247,7 @@
                         align-content: center;
                         margin-bottom: 5px;
                         font-size: 14px;
+                        white-space: nowrap;
 
                         &.price-success {
                             .price-debt {
@@ -439,6 +440,22 @@
                         background-color: #fcfdfe;
                     }
 
+                }
+            }
+        }
+        &.tofixtable{
+            width: 100%;
+            display: flex;
+            thead{
+                &.thead-light{
+                    position: fixed;
+                    top: 65px;
+                    z-index: 99;
+                    width: 94.3%;
+                    tr {
+                        width: 100%;
+                        display: flex;
+                    }
                 }
             }
         }

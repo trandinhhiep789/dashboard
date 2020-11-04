@@ -175,13 +175,13 @@
         }
         .card{
             box-shadow: none;
-            border: 1px solid #d6d6d6;
             .card-title{
                 background-color: #d6d6d6;
                 padding: 0 10px;
             }
             .card-body{
-                clear: both; 
+                border: 1px solid #d6d6d6;
+                border-top: 0;
             }
         }
     }
