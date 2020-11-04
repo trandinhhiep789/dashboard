@@ -6,8 +6,10 @@
                 .image-gallery-swipe {
                     .image-gallery-image {
                         img {
-                            max-width: 100%;
-                            width: auto;
+                            max-height: calc(100vh - 250px);
+                            object-fit: contain;
+                            white-space: nowrap;
+                            text-align: center;
                         }
                     }
                 }
