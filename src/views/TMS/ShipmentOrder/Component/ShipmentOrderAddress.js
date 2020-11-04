@@ -14,7 +14,7 @@ import FormControl from "../../../../common/components/FormContainer/FormControl
 import { ValidationField } from "../../../../common/library/validation.js";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import vbd from '../../../../scripts/vietbandomapsapi.js';
+import Collapsible from 'react-collapsible';
 import {
     APIHostName,
 } from "../constants";
@@ -1173,8 +1173,11 @@ class ShipmentOrderAddressCom extends Component {
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
-                <div className="card">
-                    <h4 className="card-title"><strong>Địa chỉ</strong></h4>
+
+                <Collapsible trigger="Địa chỉ" 
+                
+                easing="ease-in" open={false}>
+               
                     <div className="card-body">
                         <div className="card">
                             <div className="card-title">
@@ -1276,7 +1279,8 @@ class ShipmentOrderAddressCom extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
+               
+                </Collapsible>
             </React.Fragment>
         );
     }
