@@ -8,7 +8,8 @@ import ImageGallery from 'react-image-gallery';
 
 
 
-const ModalSlideImage = ({ ImageCaptureGeoLocation,title, afterClose, hideModal, content, id, maxWidth }) => {
+
+const ModalSlideImage = ({ ImageCaptureGeoLocation, afterClose, hideModal, content, id, maxWidth }) => {
     const onClose = () => {
         hideModal(id);
         if (afterClose) {
@@ -17,7 +18,7 @@ const ModalSlideImage = ({ ImageCaptureGeoLocation,title, afterClose, hideModal,
     };
 const herfurl ="https://www.google.com/maps/search/" + ImageCaptureGeoLocation+"?sa=X&ved=2ahUKEwidyvfo7tvsAhUlwosBHXBpAngQ8gEwAHoECAEQAQ";
     return (
-        <Modal title={ <a target="_blank" href={herfurl}>Danh sách hình ảnh  | Tạo độ: {ImageCaptureGeoLocation}</a>} onClose={onClose} id={"modalid-" + id} maxWidth={maxWidth}>
+        <Modal title={ <a target="_blank" href={herfurl}>Danh sách hình ảnh  | Tọa độ: {ImageCaptureGeoLocation}</a>} onClose={onClose} id={"modalid-" + id} maxWidth={maxWidth}>
             {content.lstImage != undefined && content.lstImage.length > 1 ? <ImageGallery
                 items={content.lstImage}
                 originalClass="img-original"

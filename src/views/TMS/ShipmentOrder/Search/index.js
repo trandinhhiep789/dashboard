@@ -62,8 +62,10 @@ class SearchCom extends React.Component {
         jQuery(window).scroll(function() {
             if (jQuery(this).scrollTop() > 300) {
                 $("#btnUserCoordinator").addClass("tofixedButton")
+                $("#fixtable").addClass("tofixtable")
             } else {
                 $("#btnUserCoordinator").removeClass("tofixedButton")
+                $("#fixtable").removeClass("tofixtable")
             }
         });
 

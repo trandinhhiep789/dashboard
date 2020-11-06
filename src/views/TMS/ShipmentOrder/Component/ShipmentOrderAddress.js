@@ -14,7 +14,7 @@ import FormControl from "../../../../common/components/FormContainer/FormControl
 import { ValidationField } from "../../../../common/library/validation.js";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import vbd from '../../../../scripts/vietbandomapsapi.js';
+import Collapsible from 'react-collapsible';
 import {
     APIHostName,
 } from "../constants";
@@ -1173,110 +1173,108 @@ class ShipmentOrderAddressCom extends Component {
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
-                <div className="card">
-                    <h4 className="card-title"><strong>Địa chỉ</strong></h4>
-                    <div className="card-body">
-                        <div className="card">
-                            <div className="card-title">
-                                <h4 className="title">Nhân viên tạo</h4>
-                            </div>
-                            <div className="card-body">
-                                <div className="form-row">
-                                    <div className="form-group col-md-1">
-                                        <label className="col-form-label icon">
-                                            <i className="fa fa-user" aria-hidden="true"></i>
-                                        </label>
-                                    </div>
-                                    <div className="form-group col-md-5">
-                                        <label className="col-form-label" >{this.state.ShipmentOrder.CreatedUser + "-" + this.state.ShipmentOrder.CreatedUserFullName}</label>
-                                    </div>
-                                    <div className="form-group col-md-1">
-                                        <label className="col-form-label icon">
-                                            <i className="fa fa-mobile " aria-hidden="true"></i>
-                                        </label>
-                                    </div>
-                                    <div className="form-group col-md-5">
-                                        <label className="col-form-label">{this.state.ShipmentOrder.CreatedUserPhoneNumber}</label>
-                                    </div>
-                                </div>
-                            </div>
+
+                <Collapsible trigger="Địa chỉ" easing="ease-in" open={true}>
+                    <div className="card">
+                        <div className="card-title">
+                            <h4 className="title">Nhân viên tạo</h4>
                         </div>
-                        <div className="card">
-                            <div className="card-title">
-                                <h4 className="title">Người gửi</h4>
-                                <button className="btn btnEditCard" onClick={this.handleShowModalSender.bind(this)}>chỉnh sửa</button>
-                            </div>
-                            <div className="card-body">
-                                <div className="form-row">
-                                    <div className="form-group col-md-1">
-                                        <label className="col-form-label icon">
-                                            <i className="fa fa-user" aria-hidden="true"></i>
-                                        </label>
-                                    </div>
-                                    <div className="form-group col-md-5">
-                                        <label className="col-form-label" >{this.state.ShipmentOrder.SenderFullName}</label>
-                                    </div>
-                                    <div className="form-group col-md-1">
-                                        <label className="col-form-label icon">
-                                            <i className="fa fa-mobile " aria-hidden="true"></i>
-                                        </label>
-                                    </div>
-                                    <div className="form-group col-md-5">
-                                        <label className="col-form-label">{this.props.ShipmentOrderAddress.SenderPhoneNumber}</label>
-                                    </div>
+                        <div className="card-body">
+                            <div className="form-row">
+                                <div className="form-group col-md-1">
+                                    <label className="col-form-label icon">
+                                        <i className="fa fa-user" aria-hidden="true"></i>
+                                    </label>
                                 </div>
-                                <div className="form-row">
-                                    <div className="form-group col-md-1">
-                                        <label className="col-form-label icon">
-                                            <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                        </label>
-                                    </div>
-                                    <div className="form-group col-md-8">
-                                        <label className="col-form-label" >{this.state.ShipmentOrder.SenderFullAddress}</label>
-                                        <a className="mapslink" onClick={this.handleShowModalSenderReceiver.bind(this)}>Xem bản đồ</a>
-                                    </div>
+                                <div className="form-group col-md-5">
+                                    <label className="col-form-label" >{this.state.ShipmentOrder.CreatedUser + "-" + this.state.ShipmentOrder.CreatedUserFullName}</label>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="card">
-                            <div className="card-title">
-                                <h4 className="title">Người nhận</h4>
-                                <button className="btn btnEditCard" onClick={this.handleShowModalReceiver.bind(this)}>chỉnh sửa</button>
-                            </div>
-                            <div className="card-body">
-                                <div className="form-row">
-                                    <div className="form-group col-md-1">
-                                        <label className="col-form-label icon">
-                                            <i className="fa fa-user" aria-hidden="true"></i>
-                                        </label>
-                                    </div>
-                                    <div className="form-group col-md-5">
-                                        <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullName}</label>
-                                    </div>
-                                    <div className="form-group col-md-1">
-                                        <label className="col-form-label icon">
-                                            <i className="fa fa-mobile " aria-hidden="true"></i>
-                                        </label>
-                                    </div>
-                                    <div className="form-group col-md-5">
-                                        <label className="col-form-label">{this.state.ShipmentOrder.ReceiverPhoneNumber}</label>
-                                    </div>
+                                <div className="form-group col-md-1">
+                                    <label className="col-form-label icon">
+                                        <i className="fa fa-mobile " aria-hidden="true"></i>
+                                    </label>
                                 </div>
-                                <div className="form-row">
-                                    <div className="form-group col-md-1">
-                                        <label className="col-form-label icon">
-                                            <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                        </label>
-                                    </div>
-                                    <div className="form-group col-md-8">
-                                        <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullAddress}</label>
-                                        <a className="mapslink" onClick={this.handleShowModalSenderReceiver.bind(this)}>Xem bản đồ</a>
-                                    </div>
+                                <div className="form-group col-md-5">
+                                    <label className="col-form-label">{this.state.ShipmentOrder.CreatedUserPhoneNumber}</label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div className="card">
+                        <div className="card-title">
+                            <h4 className="title">Người gửi</h4>
+                            <button className="btn btnEditCard" onClick={this.handleShowModalSender.bind(this)}>chỉnh sửa</button>
+                        </div>
+                        <div className="card-body">
+                            <div className="form-row">
+                                <div className="form-group col-md-1">
+                                    <label className="col-form-label icon">
+                                        <i className="fa fa-user" aria-hidden="true"></i>
+                                    </label>
+                                </div>
+                                <div className="form-group col-md-5">
+                                    <label className="col-form-label" >{this.state.ShipmentOrder.SenderFullName}</label>
+                                </div>
+                                <div className="form-group col-md-1">
+                                    <label className="col-form-label icon">
+                                        <i className="fa fa-mobile " aria-hidden="true"></i>
+                                    </label>
+                                </div>
+                                <div className="form-group col-md-5">
+                                    <label className="col-form-label">{this.props.ShipmentOrderAddress.SenderPhoneNumber}</label>
+                                </div>
+                            </div>
+                            <div className="form-row">
+                                <div className="form-group col-md-1">
+                                    <label className="col-form-label icon">
+                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                    </label>
+                                </div>
+                                <div className="form-group col-md-8">
+                                    <label className="col-form-label" >{this.state.ShipmentOrder.SenderFullAddress}</label>
+                                    <a className="mapslink" onClick={this.handleShowModalSenderReceiver.bind(this)}>Xem bản đồ</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="card">
+                        <div className="card-title">
+                            <h4 className="title">Người nhận</h4>
+                            <button className="btn btnEditCard" onClick={this.handleShowModalReceiver.bind(this)}>chỉnh sửa</button>
+                        </div>
+                        <div className="card-body">
+                            <div className="form-row">
+                                <div className="form-group col-md-1">
+                                    <label className="col-form-label icon">
+                                        <i className="fa fa-user" aria-hidden="true"></i>
+                                    </label>
+                                </div>
+                                <div className="form-group col-md-5">
+                                    <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullName}</label>
+                                </div>
+                                <div className="form-group col-md-1">
+                                    <label className="col-form-label icon">
+                                        <i className="fa fa-mobile " aria-hidden="true"></i>
+                                    </label>
+                                </div>
+                                <div className="form-group col-md-5">
+                                    <label className="col-form-label">{this.state.ShipmentOrder.ReceiverPhoneNumber}</label>
+                                </div>
+                            </div>
+                            <div className="form-row">
+                                <div className="form-group col-md-1">
+                                    <label className="col-form-label icon">
+                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                    </label>
+                                </div>
+                                <div className="form-group col-md-8">
+                                    <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullAddress}</label>
+                                    <a className="mapslink" onClick={this.handleShowModalSenderReceiver.bind(this)}>Xem bản đồ</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Collapsible>
             </React.Fragment>
         );
     }
