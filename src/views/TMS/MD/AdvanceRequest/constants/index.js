@@ -156,7 +156,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Tiêu đề yêu cầu tạm ứng",
         DataSourceMember: "AdvanceRequestTitle",
-        Width: 400
+        Width: 300
     },
     {
         Name: "AdvanceRequestTypeName",
@@ -170,6 +170,13 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Mã yêu cầu vận chuyển",
         DataSourceMember: "ShipmentOrderID",
+        Width: 100
+    },
+    {
+        Name: "SaleOrderID",
+        Type: "text",
+        Caption: "Mã đơn hàng tạm ứng",
+        DataSourceMember: "SaleOrderID",
         Width: 100
     },
     {
