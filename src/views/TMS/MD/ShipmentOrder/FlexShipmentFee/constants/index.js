@@ -24,7 +24,7 @@ export const FlexShipmentFeeColumnList = [
         Type: "text",
         Caption: "Mã sản phẩm dịch vụ cần xuất",
         DataSourceMember: "OutputServiceProductID",
-        Width: 120
+        Width: 160
     },
     {
         Name: "TechspecsName",
@@ -38,7 +38,7 @@ export const FlexShipmentFeeColumnList = [
         Type: "text",
         Caption: "Giá trị tham số KT",
         DataSourceMember: "TechspecsValueName",
-        Width: 140
+        Width: 100
     },
     {
         Name: "ShipmentFeeTypeName",
@@ -59,7 +59,7 @@ export const FlexShipmentFeeColumnList = [
         Type: "text",
         Caption: "Chi phí vận chuyển",
         DataSourceMember: "FeeValue",
-        Width: 140
+        Width: 120
     },
     {
         Name: "IsActived",
