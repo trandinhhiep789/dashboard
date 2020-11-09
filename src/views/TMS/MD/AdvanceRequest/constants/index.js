@@ -149,42 +149,42 @@ export const DataGridColumnList = [
         Caption: "Mã yêu cầu tạm ứng",
         Link: "/AdvanceRequest/Edit/",
         DataSourceMember: "AdvanceRequestID",
-        Width: 150
+        Width: 100
     },
     {
         Name: "AdvanceRequestTitle",
         Type: "text",
         Caption: "Tiêu đề yêu cầu tạm ứng",
         DataSourceMember: "AdvanceRequestTitle",
-        Width: 300
+        Width: 230
     },
     {
         Name: "AdvanceRequestTypeName",
         Type: "text",
         Caption: "Loại yêu cầu tạm ứng",
         DataSourceMember: "AdvanceRequestTypeName",
-        Width: 200
+        Width: 230
     },
     {
         Name: "ShipmentOrderID",
         Type: "text",
         Caption: "Mã yêu cầu vận chuyển",
         DataSourceMember: "ShipmentOrderID",
-        Width: 150
+        Width: 120
     },
     {
         Name: "SaleOrderID",
         Type: "text",
         Caption: "Mã đơn hàng tạm ứng",
         DataSourceMember: "SaleOrderID",
-        Width: 150
+        Width: 120
     },
     {
         Name: "RequestUserName",
         Type: "text",
         Caption: "Người yêu cầu",
         DataSourceMember: "RequestUserName",
-        Width: 150
+        Width: 120
     },
     {
         Name: "RequestDate",
