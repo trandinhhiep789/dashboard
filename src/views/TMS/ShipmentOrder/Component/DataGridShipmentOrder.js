@@ -49,7 +49,7 @@ class DataGridShipmentOderCom extends Component {
             GridDataShip: []
         };
         this.notificationDOMRef = React.createRef();
-        
+
     }
 
     componentDidMount() {
@@ -525,6 +525,21 @@ class DataGridShipmentOderCom extends Component {
         let month = date.getMonth() + 1;
         return date.getDate() + '/' + (month < 10 ? '0' + month : month) + '/' + date.getFullYear() + " " + timeDisplay;
     }
+
+    _CheckTime(dates) {
+        const date = new Date(Date.parse(dates));
+        let currentDate = new Date();
+        var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
+        var diffMinutes = parseInt((timeDiff / (3600 * 24)));
+        if (diffMinutes < 30) {
+            return true;
+        }
+        else {
+            return false
+        }
+    }
+
+
     _genCommentCarrierPartner(CarrierTypeID, CarrierTypeName) {
         if (CarrierTypeID < 1) {
 
@@ -605,9 +620,24 @@ class DataGridShipmentOderCom extends Component {
                                 if (rowItem.IsView == true) {
                                     rowtrClass = "noReadingItem readingItem";
                                 }
+
+                                let rowUndelivery = "btngroupleft";
+                               
+                                if (this._CheckTime(rowItem.ExpectedDeliveryDate) == true && rowItem.CurrentShipmentOrderStepID < 105) {
+                                    rowUndelivery = "btngroupleft Undelivery";
+                                }
+                                else {
+                                    if (rowItem.CoordinatorUser == "") {
+                                        rowUndelivery = "btngroupleft Uncoordinated";
+                                    }
+                                    else
+                                    {
+                                        rowUndelivery = "btngroupleft WaitingDelivery";
+                                    }
+                                }
                                 // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
                                 return (<tr key={rowIndex} className={rowtrClass}>
-                                    <td className="btngroupleft Undelivery" style={{ width: '5%' }}>
+                                    <td className={rowUndelivery} style={{ width: '5%' }}>
                                         <div className="group-action">
                                             <div className="checkbox item-action">
                                                 <label>
@@ -806,7 +836,7 @@ class DataGridShipmentOderCom extends Component {
         return (
             <div className={classCustom}>
                 <div className="card cardShipmentOrder">
-                <ReactNotification ref={this.notificationDOMRef} />
+                    <ReactNotification ref={this.notificationDOMRef} />
                     <div className="card-title">
                         {(this.props.title != undefined || this.props.title != '') && <h4 className="title">{this.props.title}</h4>}
 
