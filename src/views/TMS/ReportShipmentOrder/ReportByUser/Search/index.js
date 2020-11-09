@@ -139,7 +139,7 @@ class SearchCom extends React.Component {
                     IsPrint={false}
                     IsExportFile={false}
                     IsAutoPaging={true}
-                    RowsPerPage={10}
+                    RowsPerPage={30}
                     ref={this.gridref}
                     RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                 />
