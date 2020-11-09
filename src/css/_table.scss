@@ -441,6 +441,22 @@
                     }
 
                 }
+                td{
+                    &.btngroupleft{
+                        .group-action{
+                            display: flex;
+                        }
+                        &.Undelivery{
+                            background-color: #fb5353;
+                        }
+                        &.Uncoordinated{
+                            background-color: #f3a31e;
+                        }
+                        &.WaitingDelivery{
+                            background-color: #e0e02c;
+                        }
+                    }
+                }
             }
         }
         &.tofixtable{
@@ -452,6 +468,9 @@
                     top: 65px;
                     z-index: 99;
                     width: 94.3%;
+                    @media (max-width: 1222) {
+                        width: 93.3%;
+                    }
                     tr {
                         width: 100%;
                         display: flex;

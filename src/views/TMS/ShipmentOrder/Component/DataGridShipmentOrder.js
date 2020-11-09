@@ -580,6 +580,7 @@ class DataGridShipmentOderCom extends Component {
     }
     renderDataGrid() {
         const dataSource = this.state.DataSource;
+
         return (
             <div className=" table-responsive">
                 <table id="fixtable" className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder" cellSpacing="0" >
@@ -606,7 +607,7 @@ class DataGridShipmentOderCom extends Component {
                                 }
                                 // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
                                 return (<tr key={rowIndex} className={rowtrClass}>
-                                    <td className="btngroupleft" style={{ width: '5%' }}>
+                                    <td className="btngroupleft Undelivery" style={{ width: '5%' }}>
                                         <div className="group-action">
                                             <div className="checkbox item-action">
                                                 <label>
