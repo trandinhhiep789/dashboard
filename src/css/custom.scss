@@ -469,4 +469,16 @@ select.form-control:-webkit-autofill:focus {
     //margin-left: -65px;
 }
 
+.inputgrid1 {
+    // td {
+    //     padding: .5rem !important;
+    // }
+    a{
+        &.nav-link{
+            padding: 0px;
+            line-height: 0px;
+        }
+    }
+}
+
 

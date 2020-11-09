@@ -698,7 +698,7 @@ class InputGridCom extends Component {
 			checkList = this.state.GridData[this.props.IDSelectColumnName];
 		//console.log("checkList", checkList, this.state.GridData[this.props.IDSelectColumnName], this.state.GridData)
 		return (
-			<table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0" data-provide="datatables">
+			<table className="table table-sm table-striped table-bordered table-hover table-condensed inputgrid1" cellSpacing="0" data-provide="datatables">
 				<thead className={"thead-light"}>
 					<tr>
 						{
