@@ -392,7 +392,7 @@ export default class TabContainer extends Component {
 
     render() {
         return (
-            <div className="card-body" style={{ backgroundColor: 'white' }}>
+            <div className="card-body1" style={{ backgroundColor: 'white' }}>
                 <ul className="nav nav-tabs">
                     {this.renderChildrenWithTabsApiAsProps()}
                 </ul>
