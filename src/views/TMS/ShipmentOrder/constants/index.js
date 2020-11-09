@@ -82,7 +82,7 @@ export const SearchElementList = [
         value: new Date(),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
-        colspan: 2,
+        colspan: 1,
         classNameCol:"col-custom"
     },
     {
@@ -93,7 +93,7 @@ export const SearchElementList = [
         value: new Date(),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
-        colspan: 2,
+        colspan: 1,
         classNameCol:"col-custom"
     },
     {
@@ -191,6 +191,17 @@ export const SearchElementList = [
         placeholder: "--Trạng thái điều phối--",
         listoption: [{ value: -1, label: "--Điều phối--" },{ value: 1, label: "Đã điều phối" },{ value: 2, label: "Chưa điều phối" }],
         classNameCol:"col-custom"
+    },
+    {
+        type: "ComboBox",
+        name: "cbIsOrderBy",
+        DataSourceMember: "IsOrderBy",
+        colspan: 2,
+        value: 1,
+        isMultiSelect: false,
+        placeholder: "",
+        listoption: [{ value: 1, label: "Sắp xếp theo thời gian giao" },{ value: 2, label: "Sắp xếp theo thời gian tạo" }],
+        classNameCol:"col-custom"
     }
 ];
 export const InitSearchParams = [
@@ -242,6 +253,10 @@ export const InitSearchParams = [
     {
         SearchKey: "@Typename",
         SearchValue: -1
+    },
+    {
+        SearchKey: "@IsOrderBy",
+        SearchValue: 1
     },
     {
         SearchKey: "@PAGESIZE",
@@ -308,7 +323,13 @@ export const SearchMLObjectDefinition = [
         Name: "Typename",
         DefaultValue: "",
         BindControlName: "txtTypename"
+    },
+    {
+        Name: "IsOrderBy",
+        DefaultValue: "",
+        BindControlName: "cbIsOrderBy"
     }
+    
 ];
 
 export const AddElementList = [

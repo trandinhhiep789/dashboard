@@ -88,7 +88,7 @@ class SearchCom extends React.Component {
     handleonChangePage(pageNum) {
         let listMLObject = [];
         const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
-        listMLObject = Object.assign([], this.state.SearchData, { [13]: aa });
+        listMLObject = Object.assign([], this.state.SearchData, { [14]: aa });
         // console.log(this.state.SearchData,listMLObject)
         this.callSearchData(listMLObject)
         this.setState({
@@ -145,6 +145,10 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@Typename",
                 SearchValue:MLObject.Typename
+            },
+            {
+                SearchKey: "@IsOrderBy",
+                SearchValue:MLObject.IsOrderBy
             },
             {
                 SearchKey: "@PAGESIZE",
