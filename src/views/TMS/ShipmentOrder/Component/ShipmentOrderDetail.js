@@ -347,7 +347,7 @@ class ShipmentOrderDetailCom extends Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <Collapsible trigger=
-                    {<div>
+                    {<div className="collapsibleCustom">
                         <div className="card-title">
                             <h4 className="title">
                                 <strong>Thông tin yêu cầu vận chuyển</strong>
@@ -372,7 +372,7 @@ class ShipmentOrderDetailCom extends Component {
                         </div>
                     </div>}
                     easing="ease-in" open={true}>
-                    <div className="card">
+                    <div className="card cardCollapsible">
                         {/* <div>
                     <div className="card-title">
                         <h4 className="title">
