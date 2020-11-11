@@ -4,6 +4,7 @@ import { formatMoney } from '../../../../utils/function';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import Collapsible from 'react-collapsible';
 import {
     APIHostName,
 } from "../constants";
@@ -118,227 +119,228 @@ class InfoProductCom extends Component {
             objgroupByInstallBundleID = this.groupByNew(this.state.ShipmentOrder.ShipmentOrder_Material2List, ['InstallProductID', 'InstallProductName']);
         }
         return (
-            <div className="card">
-                <h4 className="card-title"><strong>Thông tin hàng hóa</strong></h4>
-                <div className="card-body">
-                    <div className="form-row">
-                        <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Loại hàng hóa:</label>
+            <React.Fragment>
+                <Collapsible trigger="Thông tin hàng hóa" easing="ease-in" open={false}>
+                    <div className="card-body">
+                        <div className="form-row">
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Loại hàng hóa:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentGoodsDescription}</label>
+                            </div>
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Tổng số kiện:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">{this.state.ShipmentOrder.NumberOfPackages}</label>
+                            </div>
                         </div>
-                        <div className="form-group col-md-4">
-                            <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentGoodsDescription}</label>
-                        </div>
-                        <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Tổng số kiện:</label>
-                        </div>
-                        <div className="form-group col-md-4">
-                            <label className="col-form-label">{this.state.ShipmentOrder.NumberOfPackages}</label>
-                        </div>
-                    </div>
 
-                    <div className="form-row">
-                        <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Tổng khối lượng:</label>
+                        <div className="form-row">
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Tổng khối lượng:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label" >{this.state.ShipmentOrder.Weight}kg</label>
+                            </div>
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Tổng kích thước(DxRxC):</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">{this.state.ShipmentOrder.Length}x{this.state.ShipmentOrder.Width}x{this.state.ShipmentOrder.Height}m</label>
+                            </div>
                         </div>
-                        <div className="form-group col-md-4">
-                            <label className="col-form-label" >{this.state.ShipmentOrder.Weight}kg</label>
-                        </div>
-                        <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Tổng kích thước(DxRxC):</label>
-                        </div>
-                        <div className="form-group col-md-4">
-                            <label className="col-form-label">{this.state.ShipmentOrder.Length}x{this.state.ShipmentOrder.Width}x{this.state.ShipmentOrder.Height}m</label>
-                        </div>
-                    </div>
 
-                    <div className="form-row">
-                        <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Xem thông tin phí dịch vụ:</label>
-                        </div>
-                        <div className="form-group col-md-4">
-                            <button className="btn btn-icon-modal" onClick={this.handleShowTotalSaleMaterialMoney.bind(this)}>
-                                <i className="fa fa-pencil"></i>
-                            </button>
-                        </div>
-                        <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Tổng tiền COD:</label>
-                        </div>
-                        <div className="form-group col-md-4">
-                            <label className="col-form-label lbl-currency">
-                                {formatMoney(this.state.ShipmentOrder.TotalCOD, 0)}đ
+                        <div className="form-row">
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Xem thông tin phí dịch vụ:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <button className="btn btn-icon-modal" onClick={this.handleShowTotalSaleMaterialMoney.bind(this)}>
+                                    <i className="fa fa-pencil"></i>
+                                </button>
+                            </div>
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Tổng tiền COD:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label lbl-currency">
+                                    {formatMoney(this.state.ShipmentOrder.TotalCOD, 0)}đ
                             </label>
+                            </div>
+                        </div>
+
+                        <div className="form-row">
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Tổng tiền bán vật tư:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label lbl-currency">{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney, 0)}đ</label>
+                            </div>
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Tổng tiền phải thu:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label lbl-currency-total" >{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD, 0)}đ</label>
+                            </div>
+
+                        </div>
+
+                        <div className="form-row">
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Thu tiền khách hàng:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                {this.state.ShipmentOrder.IsCollectedMoney == true ? <span className="badge badge-success">Đã thu tiền</span> : <span className="badge badge-danger">Chưa thu tiền</span>}
+                            </div>
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Tổng tiền thu:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label">
+                                    {this.state.ShipmentOrder.IsCollectedMoney == true ? <span className="badge badge-success">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney, 0)}đ</span> : <span className="badge badge-danger">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney, 0)}đ</span>}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div className="form-row">
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Nộp tiền thu ngân:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                {this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : <span className="badge badge-danger">Chưa nộp tiền</span>}
+                            </div>
+                        </div>
+
+                        <div className="form-row">
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Ghi chú:</label>
+                            </div>
+                            <div className="form-group col-md-10">
+                                <label className="col-form-label" >{this.state.ShipmentOrder.OrderNote}</label>
+                            </div>
                         </div>
                     </div>
+                </Collapsible>
 
-                    <div className="form-row">
-                        <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Tổng tiền bán vật tư:</label>
-                        </div>
-                        <div className="form-group col-md-4">
-                            <label className="col-form-label lbl-currency">{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney, 0)}đ</label>
-                        </div>
-                        <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Tổng tiền phải thu:</label>
-                        </div>
-                        <div className="form-group col-md-4">
-                            <label className="col-form-label lbl-currency-total" >{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD, 0)}đ</label>
-                        </div>
-
-                    </div>
-
-                    <div className="form-row">
-                        <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Thu tiền khách hàng:</label>
-                        </div>
-                        <div className="form-group col-md-4">
-                            {this.state.ShipmentOrder.IsCollectedMoney == true ? <span className="badge badge-success">Đã thu tiền</span> : <span className="badge badge-danger">Chưa thu tiền</span>}
-                        </div>
-                        <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Tổng tiền thu:</label>
-                        </div>
-                        <div className="form-group col-md-4">
-                            <label className="col-form-label">
-                                {this.state.ShipmentOrder.IsCollectedMoney == true ? <span className="badge badge-success">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney, 0)}đ</span> : <span className="badge badge-danger">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney, 0)}đ</span>}
-                            </label>
-                        </div>
-                    </div>
-
-                    <div className="form-row">
-                        <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Nộp tiền thu ngân:</label>
-                        </div>
-                        <div className="form-group col-md-4">
-                            {this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : <span className="badge badge-danger">Chưa nộp tiền</span>}
-                        </div>
-                    </div>
-
-                    <div className="form-row">
-                        <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Ghi chú:</label>
-                        </div>
-                        <div className="form-group col-md-10">
-                            <label className="col-form-label" >{this.state.ShipmentOrder.OrderNote}</label>
-                        </div>
-                    </div>
-
-                    <div className="form-row">
-                        <div className="col-md-12">
-                            <h3 className="title">Danh sách hàng hóa:</h3>
-                        </div>
-                        <div className="table-responsive">
-                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                <thead className="thead-light">
-                                    <tr>
-                                        <th className="jsgrid-header-cell" style={{ width: "6%" }}>Cần lắp đặt</th>
-                                        <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
-                                        <th className="jsgrid-header-cell" style={{ width: "36%" }}>Sản phẩm</th>
-                                        <th className="jsgrid-header-cell" style={{ width: "12%" }}>Serial/IMEI</th>
-                                        <th className="jsgrid-header-cell" style={{ width: "8%" }}>Kiện</th>
-                                        <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
-                                        <th className="jsgrid-header-cell" style={{ width: "8%" }}>Số lượng</th>
-                                        <th className="jsgrid-header-cell" style={{ width: "12%" }}>Đơn vị tính</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName', 'ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).sort((a, b) => (b.Price > a.Price) ? 1 : -1).map((item, index) => {
-                                            return (
-                                                <tr key={"Product" + index}>
-                                                    <td>
-                                                        <div className="checkbox">
-                                                            <label>
-                                                                <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsInstallItem} />
-                                                                <span className="cr">
-                                                                    <i className="cr-icon fa fa-check"></i>
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>{item.ProductID}</td>
-                                                    <td>{item.ProductName}</td>
-                                                    <td>{item.ProductSerial}</td>
-                                                    <td>{item.PackingUnitName}</td>
-                                                    <td>{formatMoney(item.Price, 0)}đ</td>
-                                                    <td>{item.Quantity}</td>
-                                                    <td>{item.QuantityUnitName}</td>
-                                                </tr>
-                                            )
-                                        })
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-
-                    <div className="form-row">
-                        <div className="col-md-12">
-                            <h3 className="title">Vật tư lắp đặt:</h3>
+                <Collapsible trigger="Danh sách hàng hóa" easing="ease-in" open={true}>
+                    <div className="card-body">
+                        <div className="form-row">
                             <div className="table-responsive">
                                 <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                     <thead className="thead-light">
                                         <tr>
-                                            <th className="jsgrid-header-cell">Sản phẩm</th>
-                                            <th className="jsgrid-header-cell">Số lượng tạm ứng</th>
-                                            <th className="jsgrid-header-cell">Số lượng miễn phí</th>
-                                            <th className="jsgrid-header-cell">Số lượng bán</th>
-                                            <th className="jsgrid-header-cell">Giá bán</th>
-                                            <th className="jsgrid-header-cell">Thành tiền</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "6%" }}>Cần lắp đặt</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "36%" }}>Sản phẩm</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "12%" }}>Serial/IMEI</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "8%" }}>Kiện</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "8%" }}>Số lượng</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "12%" }}>Đơn vị tính</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
-                                        {objgroupByInstallBundleID != null &&
-                                            objgroupByInstallBundleID.map((rowItem, rowIndex) => {
-                                                let obj = this.state.ShipmentOrder.ShipmentOrder_Material2List.filter(n => n.InstallProductID == [rowItem.InstallProductID]);
+                                        {
+                                            this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName', 'ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).sort((a, b) => (b.Price > a.Price) ? 1 : -1).map((item, index) => {
                                                 return (
-                                                    <React.Fragment key={rowIndex}>
-                                                        <tr className="totalCurrency" key={"totalCurrency" + rowIndex}>
-                                                            <td colSpan={8}>
-                                                                <div className="groupTotalCurrency">
-                                                                    <span className="item txtTotal">{rowItem.InstallProductID + " - " + rowItem.InstallProductName}</span>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        {
-                                                            obj.map((item, Index) => {
-                                                                if (item.ProductID != "" && item.ProductID != null) {
-                                                                    return (<tr key={rowIndex + Index}>
-                                                                        <td>{item.ProductID + '-' + item.ProductName}</td>
-                                                                        <td>{item.AdvanceQuantity*item.AdvanceConvertRatio}</td>
-                                                                        <td>{item.FreeQuantity}</td>
-                                                                        <td>{item.SaleQuantity}</td>
-                                                                        <td>{formatMoney(item.SalePriceWithVAT, 0)}đ</td>
-                                                                        <td>{formatMoney(this.Pricevat(item.SaleQuantity, item.SalePriceWithVAT), 0)}đ</td>
-                                                                    </tr>)
-
-                                                                }
-                                                            })
-                                                        }
-                                                    </React.Fragment>
-                                                );
-                                            })}
-                                        <tr className="totalCurrency">
-                                            <td colSpan={6 - 1}>
-                                                <div className="groupTotalCurrency">
-                                                    <span className="item txtTotal">Tổng</span>
-                                                </div>
-                                            </td>
-                                            <td colSpan="1">
-                                                <div className="groupTotalCurrency">
-                                                    <span className="item txttotalCurrency">{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney, 0)}đ</span>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                    <tr key={"Product" + index}>
+                                                        <td>
+                                                            <div className="checkbox">
+                                                                <label>
+                                                                    <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsInstallItem} />
+                                                                    <span className="cr">
+                                                                        <i className="cr-icon fa fa-check"></i>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                        <td>{item.ProductID}</td>
+                                                        <td>{item.ProductName}</td>
+                                                        <td>{item.ProductSerial}</td>
+                                                        <td>{item.PackingUnitName}</td>
+                                                        <td>{formatMoney(item.Price, 0)}đ</td>
+                                                        <td>{item.Quantity}</td>
+                                                        <td>{item.QuantityUnitName}</td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
+                </Collapsible>
+                <Collapsible trigger="Vật tư lắp đặt" easing="ease-in" open={true}>
+                    <div className="card-body">
+                        <div className="form-row">
+                            <div className="col-md-12">
+                                <div className="table-responsive">
+                                    <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                        <thead className="thead-light">
+                                            <tr>
+                                                <th className="jsgrid-header-cell">Sản phẩm</th>
+                                                <th className="jsgrid-header-cell">Số lượng tạm ứng</th>
+                                                <th className="jsgrid-header-cell">Số lượng miễn phí</th>
+                                                <th className="jsgrid-header-cell">Số lượng bán</th>
+                                                <th className="jsgrid-header-cell">Giá bán</th>
+                                                <th className="jsgrid-header-cell">Thành tiền</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                </div>
-            </div>
+                                            {objgroupByInstallBundleID != null &&
+                                                objgroupByInstallBundleID.map((rowItem, rowIndex) => {
+                                                    let obj = this.state.ShipmentOrder.ShipmentOrder_Material2List.filter(n => n.InstallProductID == [rowItem.InstallProductID]);
+                                                    return (
+                                                        <React.Fragment key={rowIndex}>
+                                                            <tr className="totalCurrency" key={"totalCurrency" + rowIndex}>
+                                                                <td colSpan={8}>
+                                                                    <div className="groupTotalCurrency">
+                                                                        <span className="item txtTotal">{rowItem.InstallProductID + " - " + rowItem.InstallProductName}</span>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            {
+                                                                obj.map((item, Index) => {
+                                                                    if (item.ProductID != "" && item.ProductID != null) {
+                                                                        return (<tr key={rowIndex + Index}>
+                                                                            <td>{item.ProductID + '-' + item.ProductName}</td>
+                                                                            <td>{item.AdvanceQuantity * item.AdvanceConvertRatio}</td>
+                                                                            <td>{item.FreeQuantity}</td>
+                                                                            <td>{item.SaleQuantity}</td>
+                                                                            <td>{formatMoney(item.SalePriceWithVAT, 0)}đ</td>
+                                                                            <td>{formatMoney(this.Pricevat(item.SaleQuantity, item.SalePriceWithVAT), 0)}đ</td>
+                                                                        </tr>)
 
+                                                                    }
+                                                                })
+                                                            }
+                                                        </React.Fragment>
+                                                    );
+                                                })}
+                                            <tr className="totalCurrency">
+                                                <td colSpan={6 - 1}>
+                                                    <div className="groupTotalCurrency">
+                                                        <span className="item txtTotal">Tổng</span>
+                                                    </div>
+                                                </td>
+                                                <td colSpan="1">
+                                                    <div className="groupTotalCurrency">
+                                                        <span className="item txttotalCurrency">{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney, 0)}đ</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Collapsible>
+            </React.Fragment>
         );
     }
 }
