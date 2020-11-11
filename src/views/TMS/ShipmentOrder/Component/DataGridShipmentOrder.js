@@ -540,14 +540,13 @@ class DataGridShipmentOderCom extends Component {
         let currentDate = new Date();
         var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
         var diffMinutes = parseInt((timeDiff / (3600 * 24)));
-        if (diffMinutes < 30) {
+        if (diffMinutes < 60) {
             return true;
         }
         else {
             return false
         }
     }
-
 
     _genCommentCarrierPartner(CarrierTypeID, CarrierTypeName) {
         if (CarrierTypeID < 1) {
@@ -631,7 +630,7 @@ class DataGridShipmentOderCom extends Component {
                                 }
 
                                 let rowUndelivery = "btngroupleft";
-                               
+
                                 if (this._CheckTime(rowItem.ExpectedDeliveryDate) == true && rowItem.CurrentShipmentOrderStepID < 105) {
                                     rowUndelivery = "btngroupleft Undelivery";
                                 }
@@ -639,8 +638,7 @@ class DataGridShipmentOderCom extends Component {
                                     if (rowItem.CoordinatorUser == "") {
                                         rowUndelivery = "btngroupleft Uncoordinated";
                                     }
-                                    else
-                                    {
+                                    else {
                                         rowUndelivery = "btngroupleft WaitingDelivery";
                                     }
                                 }
