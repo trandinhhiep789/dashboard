@@ -428,6 +428,7 @@ select.form-control:-webkit-autofill:focus {
 
 .sub-grid{
     width: 100%;
+    margin-bottom: 10px;
     // td,th{
     //      padding-top: .5rem;
     //      padding-bottom: .5rem;
@@ -448,7 +449,7 @@ select.form-control:-webkit-autofill:focus {
     }
     &.detail{
         .card-title{
-            margin-bottom: -65px;
+            margin-bottom: -50px;
         }
         
     }
