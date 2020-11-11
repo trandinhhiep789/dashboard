@@ -344,7 +344,7 @@ class ShipmentOrderDetailCom extends Component {
         const { ShipmentOrder, IsUpdateDate, IsDisable } = this.state;
         const linkHistoryTransaction = "/PartnerTransaction/Edit/" + ShipmentOrder.PartnerTransactionID;
         return (
-            <React.Fragment>
+            <div className="ShipmentOrderDetail">
                 <ReactNotification ref={this.notificationDOMRef} />
                 <Collapsible trigger=
                     {<div className="collapsibleCustom">
@@ -543,7 +543,7 @@ class ShipmentOrderDetailCom extends Component {
                         </div>
                     </div>
                 </Collapsible>
-            </React.Fragment>
+            </div>
         );
     }
 }
