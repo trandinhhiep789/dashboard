@@ -220,3 +220,30 @@
     border-bottom: 1px solid #868e96;
     width: 100%;
 }
+
+.collapsibleCustom {
+    display: inline-flex;
+    width: 100%;
+    .card-title {
+        width: 100%;
+        display: inline-flex;
+        padding: 0;
+        line-height: initial;
+        border-bottom: 0;
+        justify-content: space-between;
+        .title{
+            margin-bottom: 0;
+            display: block;
+            font-weight: 400;
+            text-decoration: none;
+            color: white;
+            position: relative;
+            line-height: 35px;
+        }
+        .form-group-dropdown-custom{
+            margin-bottom: 0 !important;
+            width: 250px;
+            margin-right: 20px;
+        }
+    }
+}
