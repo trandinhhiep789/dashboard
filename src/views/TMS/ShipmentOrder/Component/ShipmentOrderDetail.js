@@ -371,7 +371,7 @@ class ShipmentOrderDetailCom extends Component {
                             </div>
                         </div>
                     </div>}
-                    easing="ease-in" open={true}>
+                    easing="ease-in" open={false}>
                     <div className="card cardCollapsible">
                         {/* <div>
                     <div className="card-title">

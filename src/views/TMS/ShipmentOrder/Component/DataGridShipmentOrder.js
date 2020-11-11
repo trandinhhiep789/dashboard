@@ -602,11 +602,11 @@ class DataGridShipmentOderCom extends Component {
                     <thead className="thead-light">
                         <tr>
                             <th className="jsgrid-header-cell" style={{ width: '5%' }}>Tác vụ</th>
-                            <th className="jsgrid-header-cell" style={{ width: '20%' }}>Thời gian giao</th>
-                            <th className="jsgrid-header-cell" style={{ width: '28%' }}>Địa chỉ</th>
-                            <th className="jsgrid-header-cell" style={{ width: '17%' }}>Mã/Loại yêu cầu vận chuyển</th>
-                            <th className="jsgrid-header-cell" style={{ width: '17%' }}>Tên sản phẩm/Ghi chú</th>
-                            <th className="jsgrid-header-cell" style={{ width: '13%' }}>COD/Vật tư/Tổng tiền</th>
+                            <th className="jsgrid-header-cell" style={{ width: '10%' }}>Thời gian giao</th>
+                            <th className="jsgrid-header-cell" style={{ width: '33%' }}>Địa chỉ</th>
+                            <th className="jsgrid-header-cell" style={{ width: '20%' }}>Mã/Loại yêu cầu vận chuyển</th>
+                            <th className="jsgrid-header-cell" style={{ width: '22%' }}>Tên sản phẩm/Ghi chú</th>
+                            <th className="jsgrid-header-cell" style={{ width: '10%' }}>Thanh toán</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -657,7 +657,7 @@ class DataGridShipmentOderCom extends Component {
 
                                     </td>
                                     {/* <td>{rowItem.ExpectedDeliveryDate}</td> */}
-                                    <td className="groupInfoAction" style={{ width: '20%' }}>
+                                    <td className="groupInfoAction" style={{ width: '15%' }}>
                                         <div className="group-info-row">
                                             <label className="item time">
                                                 <i className="ti ti-timer "></i>
@@ -678,7 +678,7 @@ class DataGridShipmentOderCom extends Component {
                                             </label>
                                         </div>
                                     </td>
-                                    <td className="group-address" style={{ width: '28%' }}>
+                                    <td className="group-address" style={{ width: '33%' }}>
                                         <div className="group-info-row">
                                             <label className="item person">
                                                 <i className="fa fa-user"></i>
@@ -721,7 +721,7 @@ class DataGridShipmentOderCom extends Component {
                                             </label>
                                         </div>
                                     </td>
-                                    <td className="group-infoShipmentOrder" style={{ width: '17%' }}>
+                                    <td className="group-infoShipmentOrder" style={{ width: '20%' }}>
                                         <div className="group-info-row">
                                             <label className="item person">
                                                 <span className="person-info fw-600" style={{ fontSize: 15 }}>
@@ -749,7 +749,7 @@ class DataGridShipmentOderCom extends Component {
 
                                         </div>
                                     </td>
-                                    <td className="group-address" style={{ width: '17%' }}>
+                                    <td className="group-address" style={{ width: '22%' }}>
                                         <div className="group-info-row">
                                             <label className="item address-repository-created">
                                                 <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(';', '<br/>'))}</span>
@@ -759,7 +759,7 @@ class DataGridShipmentOderCom extends Component {
                                             </label>
                                         </div>
                                     </td>
-                                    <td className="group-price" style={{ width: '13%' }}>
+                                    <td className="group-price" style={{ width: '10%' }}>
                                         <div className="group-row">
                                             <span className="item price3">
                                                 {rowItem.IsCancelDelivery == true ? <span className="badge badge-danger">Đã hủy</span> : ""}
