@@ -46,6 +46,7 @@ class SearchCom extends React.Component {
             iconNotification: "",
             PageNumber: 1,
             IsLoadDataComplete: false,
+            IsLoadData: false,
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -164,13 +165,17 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-        console.log("searchData",searchData)
+        
+        this.setState({
+            IsLoadData: false
+        });
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
-                    IsLoadDataComplete: true
+                    IsLoadDataComplete: true,
+                    IsLoadData: true
                 });
             }
         });
@@ -245,6 +250,7 @@ class SearchCom extends React.Component {
                     <DataGridShipmentOder
                         listColumn={DataGridColumnList}
                         dataSource={this.state.gridDataSource}
+                        IsLoadData={this.state.IsLoadData}
                         AddLink={AddLink}
                         IDSelectColumnName={IDSelectColumnName}
                         PKColumnName={PKColumnName}

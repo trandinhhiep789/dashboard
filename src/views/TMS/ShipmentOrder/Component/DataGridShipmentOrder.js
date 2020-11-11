@@ -72,10 +72,19 @@ class DataGridShipmentOderCom extends Component {
             const gridData = this.getCheckList(nextProps.dataSource);
             this.setState({
                 GridData: gridData,
+                GridDataShip: [],
                 DataSource: nextProps.dataSource,
                 PageNumber: nextProps.PageNumber
             });
         }
+
+        if (JSON.stringify(this.props.IsLoadData) !== JSON.stringify(nextProps.IsLoadData)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            this.setState({
+                GridDataShip: []
+            });
+        }
+
     }
 
     handleCloseMessage() {
