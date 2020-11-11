@@ -1175,7 +1175,6 @@ class ShipmentOrderAddressCom extends Component {
                 <ReactNotification ref={this.notificationDOMRef} />
 
                 <Collapsible trigger="Địa chỉ" easing="ease-in" open={true}>
-
                     <div className="row">
                         <div className="col-sm-12 col-lg-4">
                             <div className="card">
@@ -1293,9 +1292,6 @@ class ShipmentOrderAddressCom extends Component {
                             </div>
                         </div>
                     </div>
-
-
-
                 </Collapsible>
             </React.Fragment>
         );
