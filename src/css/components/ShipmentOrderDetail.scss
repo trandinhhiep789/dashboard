@@ -167,9 +167,18 @@
 
         }
     }
+    .ShipmentOrderDetail {
+        .Collapsible {
+            .Collapsible__trigger {
+                padding: 5px 10px;
+            }
+        }
+    }
     .Collapsible{
         background-color: #fff;
+        margin-bottom: 15px;
         .Collapsible__contentInner {
+            clear: both;
         }
         .Collapsible__trigger{
             background: #909ba7;
@@ -177,8 +186,9 @@
         .card{
             box-shadow: none;
             .card-title{
-                background-color: #d6d6d6;
+                background-color: #ffffff;
                 padding: 0 10px;
+                border: 1px solid #4d525947;
             }
             .card-body{
                 border: 1px solid #d6d6d6;
