@@ -33,7 +33,6 @@ class ShipmentOrderAttachmentCom extends Component {
                     this.setState({
                         ShipmentOrderAttachment: apiResult.ResultObject
                     });
-
                 }
                 else {
                     let message = '';
@@ -54,7 +53,6 @@ class ShipmentOrderAttachmentCom extends Component {
             ShipmentOrderID: this.props.ShipmentOrderAttachment.ShipmentOrderID,
             AttachmentID: e.target.dataset.id,
             DeletedUser: this.props.AppInfo.LoginInfo.Username
-
         }
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_Attachment/Delete', postData).then((apiResult) => {
             if (apiResult && !apiResult.IsError && apiResult.ResultObject) {
@@ -64,7 +62,6 @@ class ShipmentOrderAttachmentCom extends Component {
             }
         });
     }
-
 
     render() {
         return (
@@ -170,7 +167,6 @@ class ShipmentOrderAttachmentCom extends Component {
                                     </li>
                                 )
                             }
-
                         })}
                     </ul>
                 </div>

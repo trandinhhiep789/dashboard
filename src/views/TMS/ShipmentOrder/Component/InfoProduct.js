@@ -271,6 +271,41 @@ class InfoProductCom extends Component {
                                 </table>
                             </div>
                         </div>
+                        {this.state.ShipmentOrder.ReturnItemList.length > 0 ?
+                            (<div className="form-row">
+                                <div className="col-md-12">
+                                    <h3 className="title">Danh sách sản phảm trả lại</h3>
+                                </div>
+                                <div className="table-responsive">
+                                    <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                        <thead className="thead-light">
+                                            <tr>
+                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "30%" }}>Sản phẩm</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "12%" }}>Serial/IMEI</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "30%" }}>Ghi chú</th>
+                                            
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                this.state.ShipmentOrder.ReturnItemList && this.state.ShipmentOrder.ReturnItemList.map((item, index) => {
+                                                    return (
+                                                        <tr key={"ReturnItem" + index}>
+                                                            <td>{item.ProductID}</td>
+                                                            <td>{item.ProductName}</td>
+                                                            <td>{item.ProductSerial}</td>
+                                                            <td>{formatMoney(item.ReturnPrice, 0)}đ</td>
+                                                            <td>{item.Note}</td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>) : ""}
                     </div>
                 </Collapsible>
                 <Collapsible trigger="Vật tư lắp đặt" easing="ease-in" open={true}>

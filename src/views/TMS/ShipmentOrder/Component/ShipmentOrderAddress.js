@@ -1173,7 +1173,6 @@ class ShipmentOrderAddressCom extends Component {
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
-
                 <Collapsible trigger="Địa chỉ" easing="ease-in" open={true}>
                     <div className="row">
                         <div className="col-sm-12 col-lg-4">
@@ -1191,7 +1190,6 @@ class ShipmentOrderAddressCom extends Component {
                                         <div className="form-group col-md-11">
                                             <label className="col-form-label" >{this.state.ShipmentOrder.CreatedUser + "-" + this.state.ShipmentOrder.CreatedUserFullName}</label>
                                         </div>
-                                        
                                     </div>
                                     <div className="form-row">
                                     <div className="form-group col-md-1">
@@ -1222,7 +1220,6 @@ class ShipmentOrderAddressCom extends Component {
                                         <div className="form-group col-md-11">
                                             <label className="col-form-label" >{this.state.ShipmentOrder.SenderFullName}</label>
                                         </div>
-                                      
                                     </div>
                                     <div className="form-row">
                                     <div className="form-group col-md-1">
@@ -1234,7 +1231,6 @@ class ShipmentOrderAddressCom extends Component {
                                             <label className="col-form-label">{this.props.ShipmentOrderAddress.SenderPhoneNumber}</label>
                                         </div>
                                     </div>
-
                                     <div className="form-row">
                                         <div className="form-group col-md-1">
                                             <label className="col-form-label icon">
@@ -1265,7 +1261,6 @@ class ShipmentOrderAddressCom extends Component {
                                         <div className="form-group col-md-11">
                                             <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullName}</label>
                                         </div>
-                                       
                                     </div>
                                     <div className="form-row">
                                     <div className="form-group col-md-1">

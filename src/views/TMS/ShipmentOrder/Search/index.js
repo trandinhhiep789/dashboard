@@ -244,8 +244,6 @@ class SearchCom extends React.Component {
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
                         className="multiple multiple-custom multiple-custom-display"
-
-
                     />
                     <DataGridShipmentOder
                         listColumn={DataGridColumnList}
@@ -280,7 +278,6 @@ class SearchCom extends React.Component {
                         ref={this.searchref}
                         className="multiple multiple-custom multiple-custom-display"
                         classNamebtnSearch="btn-custom-right"
-
                     />
                     <label>Đang nạp dữ liệu...</label>
                 </React.Fragment>
