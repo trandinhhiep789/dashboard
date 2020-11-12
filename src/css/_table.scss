@@ -1,5 +1,30 @@
 .table {
-
+    &.tofixtable{
+        width: 100%;
+        display: flex;
+        thead{
+            &.thead-light{
+                position: fixed;
+                top: 65px;
+                z-index: 99;
+                width: 94.3%;
+                @media (max-width: 1222) {
+                    width: 93.3%;
+                }
+                tr {
+                    width: 100%;
+                    display: flex;
+                }
+            }
+        }
+        tbody{
+            width: 100%;
+            tr {
+                width: 100%;
+                display: flex;
+            }
+        }
+    }
     thead {
         th {
             //line-height: 20px;

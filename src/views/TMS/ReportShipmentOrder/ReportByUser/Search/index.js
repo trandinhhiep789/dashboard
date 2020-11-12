@@ -130,6 +130,7 @@ class SearchCom extends React.Component {
                     listColumn={GridColumnList}
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
+                    IsFixheaderTable={true}
                     IDSelectColumnName={''}
                     PKColumnName={''}
                     isHideHeaderToolbar={false}

@@ -89,10 +89,13 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            // console.log('aa', apiResult, searchData)
             if (!apiResult.IsError) {
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                    item.fulNameStore= item.CoordinatorStoreID +  "- " + item.StoreName;
+                    return item;
+                })
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource: tempData,//apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true
                 });
@@ -167,6 +170,7 @@ class SearchCom extends React.Component {
                     listColumn={GridColumnList}
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
+                    IsFixheaderTable={true}
                     IDSelectColumnName={''}
                     PKColumnName={''}
                     isHideHeaderToolbar={false}

@@ -55,6 +55,16 @@ class DataGridCom extends Component {
         this.checkPermission(permissionKey).then((result) => {
             this.setState({ IsPermision: result });
         })
+        if (this.props.IsFixheaderTable) {
+            jQuery(window).scroll(function () {
+                if (jQuery(this).scrollTop() > 300) {
+                    $("#fixtable").addClass("tofixtable")
+                } else {
+                    $("#fixtable").removeClass("tofixtable")
+                }
+            });
+        }
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -410,7 +420,7 @@ class DataGridCom extends Component {
         // console.log("this.props", this.props);
         return (
             <div className=" table-responsive">
-                <table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0">
+                <table id={this.props.IsFixheaderTable == true ? "fixtable" : ""} className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0">
                     <thead className="thead-light">
                         <tr>
                             {
