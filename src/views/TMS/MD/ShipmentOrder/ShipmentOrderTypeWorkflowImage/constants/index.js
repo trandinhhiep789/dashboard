@@ -17,6 +17,88 @@ export const DetailPagePath = [
 
 export const ModalColumnList_Insert = [
     {
+        Name: "SampleImageName",
+        type: "text",
+        label: "Tên hình mẫu",
+        maxSize: "200",
+        DataSourceMember: "SampleImageName",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "multiselect",
+        Name: "SubGroupID",
+        label: "Nhóm hàng áp dụng",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "SubGroupID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SUBGROUP",
+        ValueMember: "SubGroupID",
+        NameMember: "SubGroupName"
+    },
+    {
+        type: "singleFileUpload",
+        Name: "SampleImageFileURL",
+        NameMember: "SampleImageFileURL",
+        label: "Đường dẫn hình mẫu",
+        value: "",
+        placeholder: "",
+        icon: "",
+        cdn: CDN_LOGO_IMAGE,
+        listoption: {},
+        DataSourceMember: "SampleImageFileURL",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        Name: "OrderIndex",
+        type: "text",
+        label: "thứ tự hiển thị",
+        maxSize: "9",
+        value: 0,
+        DataSourceMember: "OrderIndex",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
+        Name: "InstructionNote",
+        type: "textarea",
+        label: "Hướng dẫn chụp hình",
+        maxSize: "3000",
+        DataSourceMember: "InstructionNote",
+        rows: "6",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        Name: "Description",
+        type: "textarea",
+        label: "Mô tả",
+        maxSize: "2000",
+        DataSourceMember: "Description",
+        rows: "6",
+        readonly: false,
+        validatonList: []
+    }
+];
+
+export const ModalColumnList_Edit = [
+    {
+        Name: "SampleImageName",
+        type: "text",
+        label: "Tên hình mẫu",
+        maxSize: "200",
+        DataSourceMember: "SampleImageName",
+        readonly: false,
+        validatonList: []
+    },
+    {
         type: "multiselect",
         Name: "SubGroupID",
         label: "Nhóm hàng áp dụng",
@@ -66,57 +148,13 @@ export const ModalColumnList_Insert = [
         rows: "6",
         readonly: false,
         validatonList: []
-    }
-];
-
-export const ModalColumnList_Edit = [
-    {
-        type: "multiselect",
-        Name: "SubGroupID",
-        label: "Nhóm hàng áp dụng",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "SubGroupID",
-        readonly: false,
-        validatonList: ["Comborequired"],
-        isMulti: false,
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SUBGROUP",
-        ValueMember: "SubGroupID",
-        NameMember: "SubGroupName"
     },
     {
-        type: "singleFileUpload",
-        Name: "SampleImageFileURL",
-        NameMember: "SampleImageFileURL",
-        label: "Đường dẫn hình mẫu",
-        value: "",
-        placeholder: "",
-        icon: "",
-        cdn: CDN_LOGO_IMAGE,
-        listoption: {},
-        DataSourceMember: "SampleImageFileURL",
-        readonly: false,
-        validatonList: []
-    },
-    {
-        Name: "OrderIndex",
-        type: "text",
-        label: "thứ tự hiển thị",
-        maxSize: "9",
-        value: 0,
-        DataSourceMember: "OrderIndex",
-        readonly: false,
-        validatonList: ["number"]
-    },
-    {
-        Name: "InstructionNote",
+        Name: "Description",
         type: "textarea",
-        label: "Hướng dẫn chụp hình",
+        label: "Mô tả",
         maxSize: "2000",
-        DataSourceMember: "InstructionNote",
+        DataSourceMember: "Description",
         rows: "6",
         readonly: false,
         validatonList: []
@@ -130,6 +168,13 @@ export const DataGridColumnList = [
         Caption: "Chọn",
         DataSourceMember: "SampleImageID",
         Width: 60
+    },
+    {
+        Name: "SampleImageName",
+        Type: "text",
+        Caption: "Tên hình mẫu",
+        DataSourceMember: "SampleImageName",
+        Width: 200
     },
     {
         Name: "SubGroupName",
@@ -185,6 +230,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "SampleImageID"
     },
     {
+        Name: "SampleImageName",
+        DefaultValue: "",
+        BindControlName: "SampleImageName",
+        DataSourceMember: "SampleImageName"
+    },
+    {
         Name: "ShipmentOrderTypeID",
         DefaultValue: "",
         BindControlName: "ShipmentOrderTypeID",
@@ -219,6 +270,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "InstructionNote",
         DataSourceMember: "InstructionNote"
+    },
+    {
+        Name: "Description",
+        DefaultValue: "",
+        BindControlName: "Description",
+        DataSourceMember: "Description"
     },
     {
         Name: "OrderIndex",
