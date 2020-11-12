@@ -274,7 +274,7 @@ class InfoProductCom extends Component {
                         {this.state.ShipmentOrder.ReturnItemList.length > 0 ?
                             (<div className="form-row">
                                 <div className="col-md-12">
-                                    <h3 className="title">Danh sách sản phảm trả lại</h3>
+                                    <h3 className="title">Danh sách sản phẩm trả lại</h3>
                                 </div>
                                 <div className="table-responsive">
                                     <table className="table table-sm table-striped table-bordered table-hover table-condensed">
