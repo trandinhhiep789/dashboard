@@ -11,7 +11,8 @@ import {
     SearchElementList,
     GridColumnList,
     APIHostName,
-    SearchAPIPath
+    SearchAPIPath,
+    LoadReportByDate
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -19,17 +20,21 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
+import { showModal, hideModal } from '../../../../../actions/modal';
+import DataGirdReportShipmentOrder from '../../components/DataGirdReportShipmentOrder'
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
-        
+
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
-            IsLoadDataComplete: false
+            IsLoadDataComplete: false,
+            widthPercent: "",
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -38,7 +43,19 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+        this.updateWindowDimensions();
+        window.addEventListener("resize", this.updateWindowDimensions);
     }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions = () => {
+        this.setState({
+            widthPercent: (window.innerWidth * 90) / 100
+        })
+    };
 
     handleSearchSubmit(formData, MLObject) {
         let result, result2;
@@ -52,7 +69,7 @@ class SearchCom extends React.Component {
             result = ""
         }
 
-        if (MLObject.CoordinatorStore != -1 && MLObject.CoordinatorStore != null&& MLObject.CoordinatorStore != "") {
+        if (MLObject.CoordinatorStore != -1 && MLObject.CoordinatorStore != null && MLObject.CoordinatorStore != "") {
             result2 = MLObject.CoordinatorStore.reduce((data, item, index) => {
                 const comma = data.length ? "," : "";
                 return data + comma + item;
@@ -81,19 +98,20 @@ class SearchCom extends React.Component {
             },
 
         ];
-       this.callSearchData(postData);
+        this.callSearchData(postData);
     }
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("aaa", apiResult)
             if (!apiResult.IsError) {
                 this.setState({
-                    gridDataSource:  apiResult.ResultObject,
+                    gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true
                 });
             }
-            else{
+            else {
                 this.showMessage(apiResult.MessageDetail)
             }
         });
@@ -144,6 +162,35 @@ class SearchCom extends React.Component {
         });
     }
 
+    onShowModalDetail(objValue) {
+        
+        const dtmCreatedOrderTime = objValue[0].value
+        this.props.callFetchAPI(APIHostName, LoadReportByDate, dtmCreatedOrderTime).then(apiResult => {
+            if (!apiResult.IsError) {
+                console.log("apiResult", apiResult.ResultObject)
+                this.handleShowModal(apiResult.ResultObject)
+            }
+            else {
+                this.showMessage(apiResult.MessageDetail)
+            }
+        });
+    }
+
+    handleShowModal(data) {
+        const { widthPercent } = this.state;
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Danh sách vận đơn chưa giao',
+            content: {
+                text: <DataGirdReportShipmentOrder
+                    dataSource={data}
+                />
+
+            },
+            maxWidth: widthPercent + 'px'
+        });
+    }
+
+
 
 
     render() {
@@ -163,8 +210,10 @@ class SearchCom extends React.Component {
                     listColumn={GridColumnList}
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
-                    IDSelectColumnName={''}
-                    PKColumnName={''}
+                    IsFixheaderTable={true}
+                    IDSelectColumnName={'CreatedOrderTime'}
+                    PKColumnName={'CreatedOrderTime'}
+                    onShowModal={this.onShowModalDetail.bind(this)}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
@@ -199,6 +248,12 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
         }
     };
 };

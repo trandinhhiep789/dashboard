@@ -17,6 +17,7 @@ import { MessageModal } from "../../../../../common/components/Modal";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_USERGROUP, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_SHIPMENTORDERSTEP, ERPCOMMONCACHE_SHIPMENTSETUPTYPE } from "../../../../../constants/keyCache";
 import { intervalToDuration } from "date-fns";
+import ShipmentOrderTypeWorkflowImage from "../ShipmentOrderTypeWorkflowImage";
 
 class ShipmentOrderTypeWorkflowCom extends React.Component {
     constructor(props) {
@@ -756,6 +757,21 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                 isUseConfirmMessage={false}
                             />
                         </TabPage>
+
+                        {
+                            this.props.IsUpdateData ?
+                                <TabPage title="Danh sách hình mẫu tại một bước xử lý" name="ShipmentOrderType_WF_Img">
+                                    <ShipmentOrderTypeWorkflowImage
+                                        ShipmentOrderTypeID={this.props.ShipmentOrderTypeID}
+                                        ShipmentOrderStepID={this.state.FormData.ShipmentOrderTypeWorkflow.ShipmentOrderStepID}
+                                    />
+
+                                </TabPage>
+                                :
+                                <TabPage></TabPage>
+                        }
+
+
                     </TabContainer>
                 </FormContainer >
             </div>

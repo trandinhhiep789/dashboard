@@ -664,7 +664,7 @@ class DataGridShipmentOderCom extends Component {
 
                                     </td>
                                     {/* <td>{rowItem.ExpectedDeliveryDate}</td> */}
-                                    <td className="groupInfoAction" style={{ width: '15%' }}>
+                                    <td className="groupInfoAction" style={{ width: '10%' }}>
                                         <div className="group-info-row">
                                             <label className="item time">
                                                 <i className="ti ti-timer "></i>

@@ -95,59 +95,59 @@ export const  SearchMLObjectDefinition = [
 
 export const GridColumnList = [
     {
-        Name: "CoordinatorStoreID",
+        Name: "fulNameStore",
         Type: "text",
         Caption: "Kho điều phối",
-        DataSourceMember: "CoordinatorStoreID",
-        Width: 100
+        DataSourceMember: "fulNameStore",
+        Width: "20%"
     },
     {
         Name: "TotalOrder",
         Type: "text",
         Caption: "Tổng đơn",
         DataSourceMember: "TotalOrder",
-        Width: 100
+        Width: "12%"
     },
     {
         Name: "TotalUndelivery",
         Type: "text",
         Caption: "Chưa giao",
         DataSourceMember: "TotalUndelivery",
-        Width: 100
+        Width: "12%"
     },
     {
         Name: "TotalDelivering",
         Type: "text",
         Caption: "Đang giao",
         DataSourceMember: "TotalDelivering",
-        Width: 100
+        Width: "12%"
     },
     {
         Name: "TotalDelivered",
         Type: "text",
         Caption: "Giao xong",
         DataSourceMember: "TotalDelivered",
-        Width: 100
+        Width: "12%"
     },
     {
         Name: "TotalCompletedOrder",
         Type: "text",
         Caption: "Đã hoàn thành",
         DataSourceMember: "TotalCompletedOrder",
-        Width: 100
+        Width: "12%"
     },
     {
         Name: "TotalCancelDelivery",
         Type: "text",
         Caption: "Huỷ giao",
         DataSourceMember: "TotalCancelDelivery",
-        Width: 100
+        Width: "10%"
     },
     {
         Name: "TotalPaidIn",
         Type: "text",
         Caption: "Đã nộp tiền",
         DataSourceMember: "TotalPaidIn",
-        Width: 100
+        Width: "10%"
     },
 ]

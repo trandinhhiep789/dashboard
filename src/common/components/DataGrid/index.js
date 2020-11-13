@@ -55,6 +55,16 @@ class DataGridCom extends Component {
         this.checkPermission(permissionKey).then((result) => {
             this.setState({ IsPermision: result });
         })
+        if (this.props.IsFixheaderTable) {
+            jQuery(window).scroll(function () {
+                if (jQuery(this).scrollTop() > 300) {
+                    $("#fixtable").addClass("tofixtable")
+                } else {
+                    $("#fixtable").removeClass("tofixtable")
+                }
+            });
+        }
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -83,6 +93,11 @@ class DataGridCom extends Component {
     handleDetailClick(id) {
         if (this.props.onDetailClick != null)
             this.props.onDetailClick(id);
+    }
+
+    handleShowModalClick(objdata) {
+        if (this.props.onShowModal != null)
+            this.props.onShowModal(objdata);
     }
 
     handleInsertClick() {
@@ -410,7 +425,7 @@ class DataGridCom extends Component {
         // console.log("this.props", this.props);
         return (
             <div className=" table-responsive">
-                <table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0">
+                <table id={this.props.IsFixheaderTable == true ? "fixtable" : ""} className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0">
                     <thead className="thead-light">
                         <tr>
                             {
@@ -486,6 +501,7 @@ class DataGridCom extends Component {
                                                     isChecked={isChecked}
                                                     onInsertClickEdit={this.handleInsertClickEdit}
                                                     onDetailtClick={this.handleDetailClick}
+                                                    onModalClick={this.handleShowModalClick.bind(this)}
                                                     pkColumnName={this.state.ListPKColumnName}
                                                     params={this.props.params}
                                                     linkTo={this.state.ListPKColumnName + index}
@@ -666,7 +682,7 @@ class DataGridCom extends Component {
                         : ""
                     }
 
-                    <div className="card-body">
+                    <div className="card-body inputgrid1">
                         {hasHeaderToolbar &&
                             <div className="flexbox mb-10 ">
                                 {searchTextbox}

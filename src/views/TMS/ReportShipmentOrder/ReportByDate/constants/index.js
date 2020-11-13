@@ -1,5 +1,6 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/ShipmentOrder/SearchReportDate";
+export const LoadReportByDate = "api/ShipmentOrder/LoadReportByDate";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -99,55 +100,55 @@ export const GridColumnList = [
         Type: "date",
         Caption: "Ngày",
         DataSourceMember: "CreatedOrderTime",
-        Width: 100
+        Width: '14%'
     },
     {
         Name: "TotalOrder",
         Type: "text",
         Caption: "Tổng đơn",
         DataSourceMember: "TotalOrder",
-        Width: 100
+        Width: '12%'
     },
     {
         Name: "TotalUndelivery",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Chưa giao",
         DataSourceMember: "TotalUndelivery",
-        Width: 100
+        Width: '12%',
     },
     {
         Name: "TotalDelivering",
         Type: "text",
         Caption: "Đang giao",
         DataSourceMember: "TotalDelivering",
-        Width: 100
+        Width: '12%'
     },
     {
         Name: "TotalDelivered",
         Type: "text",
         Caption: "Giao xong",
         DataSourceMember: "TotalDelivered",
-        Width: 100
+        Width: '12%'
     },
     {
         Name: "TotalCompletedOrder",
         Type: "text",
         Caption: "Đã hoàn thành",
         DataSourceMember: "TotalCompletedOrder",
-        Width: 100
+        Width: '12%'
     },
     {
         Name: "TotalCancelDelivery",
         Type: "text",
         Caption: "Huỷ giao",
         DataSourceMember: "TotalCancelDelivery",
-        Width: 100
+        Width: '12%'
     },
     {
         Name: "TotalPaidIn",
         Type: "text",
         Caption: "Đã nộp tiền",
         DataSourceMember: "TotalPaidIn",
-        Width: 100
+        Width: '14%'
     },
 ]
