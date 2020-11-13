@@ -103,7 +103,7 @@ export const GridColumnList = [
     },
     {
         Name: "TotalReward",
-        Type: "text",
+        Type: "textCurrency",
         Caption: "Tổng thưởng",
         DataSourceMember: "TotalReward",
         Width: 100
@@ -150,14 +150,14 @@ export const GridColumnListByDate = [
     },
     {
         Name: "RewardPrice",
-        Type: "text",
+        Type: "textCurrency",
         Caption: "Đơn giá thưởng",
         DataSourceMember: "RewardPrice",
         Width: 100
     },
     {
         Name: "TotalReward",
-        Type: "text",
+        Type: "textCurrency",
         Caption: "Số tiền thưởng",
         DataSourceMember: "TotalReward",
         Width: 100
