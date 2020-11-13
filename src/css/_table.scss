@@ -504,4 +504,41 @@
             }
         }
     }
+    &.dataGirdReportShipment{
+        clear: both;
+        thead{
+            tr{
+                th{
+                    text-align: left;
+                }
+            }
+        }
+        tbody {
+            tr {
+             
+                td{
+                    text-align: left;
+                    &.group-address {
+                        clear: both;
+                        
+                    }
+                    .group-info-row {
+                        display: inline-block;
+                        float: none;
+                        .item {
+                            width: 100%;
+                            display: inherit;
+                            height: 20px;
+                            float: initial;
+                            justify-content: flex-start;
+                            align-content: center;
+                            margin-bottom: 5px;
+                            font-size: 14px;
+                            text-align: left;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
