@@ -95,6 +95,11 @@ class DataGridCom extends Component {
             this.props.onDetailClick(id);
     }
 
+    handleShowModalClick(objdata) {
+        if (this.props.onShowModal != null)
+            this.props.onShowModal(objdata);
+    }
+
     handleInsertClick() {
         if (this.props.onInsertClick != null)
             this.props.onInsertClick(this.props.MLObjectDefinition, this.props.modalElementList, this.props.dataSource);
@@ -496,6 +501,7 @@ class DataGridCom extends Component {
                                                     isChecked={isChecked}
                                                     onInsertClickEdit={this.handleInsertClickEdit}
                                                     onDetailtClick={this.handleDetailClick}
+                                                    onModalClick={this.handleShowModalClick.bind(this)}
                                                     pkColumnName={this.state.ListPKColumnName}
                                                     params={this.props.params}
                                                     linkTo={this.state.ListPKColumnName + index}

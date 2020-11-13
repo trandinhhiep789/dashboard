@@ -60,10 +60,16 @@ export default class GridCell extends Component {
     }
 
     onShowPopup(title, content) {
-        ModalManager.open(<MessageModal title={title}
-            message={content} onRequestClose={() => true}
+        ModalManager.open(<MessageModal
+            title={title}
+            message={content}
+            onRequestClose={() => true}
             onCloseModal={this.handleCloseMessage}
         />);
+    }
+
+    onShowPopupNew(objValue) {
+        this.props.onModalClick(objValue)
     }
 
     componentDidMount() {
@@ -138,6 +144,11 @@ export default class GridCell extends Component {
             case "popuplink":
                 control = <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => { this.onShowPopup(name, popupContent) }}>{text}</a>
                 break;
+
+            case "popupNew":
+                control = <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => { this.onShowPopupNew(listValue) }}>{text}</a>
+                break;
+
 
             case "date":
                 {
