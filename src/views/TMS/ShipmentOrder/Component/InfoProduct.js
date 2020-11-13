@@ -120,7 +120,7 @@ class InfoProductCom extends Component {
         }
         return (
             <React.Fragment>
-                <Collapsible trigger="Thông tin hàng hóa" easing="ease-in" open={false}>
+                <Collapsible trigger="Thông tin vận đơn" easing="ease-in" open={false}>
                     <div className="card-body">
                         <div className="form-row">
                             <div className="form-group col-md-2">
@@ -283,6 +283,7 @@ class InfoProductCom extends Component {
                                                 <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "30%" }}>Sản phẩm</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "12%" }}>Serial/IMEI</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "7%" }}>Số lượng trả</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "30%" }}>Ghi chú</th>
                                             
@@ -296,6 +297,7 @@ class InfoProductCom extends Component {
                                                             <td>{item.ProductID}</td>
                                                             <td>{item.ProductName}</td>
                                                             <td>{item.ProductSerial}</td>
+                                                            <td>{item.Quantity}</td>
                                                             <td>{formatMoney(item.ReturnPrice, 0)}đ</td>
                                                             <td>{item.Note}</td>
                                                         </tr>
