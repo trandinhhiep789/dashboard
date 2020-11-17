@@ -1,5 +1,6 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/TMSReward/Search";
+export const SearchNewAPIPath = "api/TMSReward/SearchNew";
 export const LoadByUserNameAPIPath = "api/TMSReward/LoadByUserName";
 export const SearchDetailAPIPath = "api/TMSRewardDetail/Search";
 

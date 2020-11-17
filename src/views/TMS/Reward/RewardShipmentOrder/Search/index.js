@@ -12,6 +12,7 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
+    SearchNewAPIPath,
     InitSearchParams
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
@@ -71,18 +72,17 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
 
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult)
+        this.props.callFetchAPI(APIHostName, SearchNewAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
-                let data = [];
-                if (apiResult.ResultObject.length > 0) {
-                    apiResult.ResultObject.map((item, index) => {
-                        data.push(item[0])
-                    })
-                }
+                // let data = [];
+                // if (apiResult.ResultObject.length > 0) {
+                //     apiResult.ResultObject.map((item, index) => {
+                //         data.push(item[0])
+                //     })
+                // }
 
                 this.setState({
-                    gridDataSource: data,
+                    gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true
                 });
