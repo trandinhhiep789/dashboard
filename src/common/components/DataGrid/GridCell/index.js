@@ -109,7 +109,18 @@ export default class GridCell extends Component {
                         state: {
                             params: this.props.params
                         }
-                    }}>{formatDate(text)}</Link>;
+                    }}>{formatDate(text, true)}</Link>;
+                break;
+
+            case "texttolinkdateNew":
+                control = <Link
+                    className="linktext "
+                    to={{
+                        pathname: linkTo,
+                        state: {
+                            params: this.props.params
+                        }
+                    }}>{formatDate(text, true)}</Link>;
                 break;
 
 

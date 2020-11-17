@@ -56,6 +56,10 @@ class SearchCom extends React.Component {
             result = ""
         }
 
+        this.setState({
+            UserName: result
+        })
+
         const postData = [
             {
                 SearchKey: "@FROMDATE",
@@ -168,6 +172,7 @@ class SearchCom extends React.Component {
                     IsPrint={false}
                     IsExportFile={false}
                     IsAutoPaging={true}
+                    params={this.state.UserName}
                     RowsPerPage={10}
                     RequirePermission={TMS_TMSREWARD_VIEW}
                     ref={this.gridref}
