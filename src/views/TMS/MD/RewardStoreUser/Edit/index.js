@@ -67,9 +67,13 @@ class EditCom extends React.Component {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 if (!apiResult.IsError) {
                     let listOption = [];
-                    apiResult.ResultObject.map((item, index) => {
-                        listOption.push({ value: item.UserName, name: item.FullName });
-                    });
+                    if (apiResult.ResultObject && apiResult.ResultObject.length > 0) {
+                        apiResult.ResultObject.map((item, index) => {
+                            listOption.push({ value: item.UserName, name: item.FullName });
+                        });
+                    }else{
+                        listOption.push({});
+                    }
 
                     let _EditElementList = this.state.EditElementList;
                     _EditElementList.forEach(function (objElement) {
@@ -82,11 +86,6 @@ class EditCom extends React.Component {
                     this.setState({
                         EditElementList: _EditElementList
                     });
-
-
-
-                    // this.setState({ ReviewUser: listOption });
-                    // console.log("dsad",listOption);
                 }
 
             });
@@ -102,9 +101,13 @@ class EditCom extends React.Component {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 if (!apiResult.IsError) {
                     let listOption = [];
-                    apiResult.ResultObject.map((item, index) => {
-                        listOption.push({ value: item.UserName, name: item.FullName });
-                    });
+                    if (apiResult.ResultObject && apiResult.ResultObject.length > 0) {
+                        apiResult.ResultObject.map((item, index) => {
+                            listOption.push({ value: item.UserName, name: item.FullName });
+                        });
+                    }else{
+                        listOption.push({});
+                    }
 
                     let _EditElementList = EditElementList;
                     _EditElementList.forEach(function (objElement) {
