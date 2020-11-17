@@ -34,10 +34,10 @@ export const InitSearchParams = [
         SearchKey: "@Keyword",
         SearchValue: ""
     },
-    // {
-    //     SearchKey: "@APICategoryID",
-    //     SearchValue: ""
-    // },
+    {
+        SearchKey: "@IsResponseError",
+        SearchValue: "-1"
+    },
     {
         SearchKey: "@FromDate",
         SearchValue: dtFromdate
@@ -57,6 +57,19 @@ export const SearchElementList = [
         placeholder: "",
         icon: "",
         listoption: {}
+    },
+    {
+        type: "select",
+        name: "IsResponseError",
+        label: "Lỗi phản hồi",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [{value: -1, label: "Tất cả"}, {value: 0, label: "Không lỗi"}, {value: 1, label: "Có lỗi"}],
+        DataSourceMember: "IsResponseError",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: false
     },
     {
         type: "date",
@@ -94,6 +107,11 @@ export const SearchMLObjectDefinition = [
     //     DefaultValue: -1,
     //     BindControlName: "APICategoryID"
     // },
+    {
+        Name: "IsResponseError",
+        DefaultValue: "",
+        BindControlName: "IsResponseError"
+    },
     {
         Name: "FromDate",
         DefaultValue: "",
