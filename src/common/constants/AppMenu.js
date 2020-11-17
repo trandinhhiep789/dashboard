@@ -328,36 +328,6 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'Advance',
-                MenuTitle: 'Tạm ứng',
-                LinkTo: '',
-                MenuIcon: '',
-                SubMenu: [
-                    {
-                        MenuName: 'AdvanceRequestType',
-                        MenuTitle: 'Loại yêu cầu tạm ứng',
-                        LinkTo: '/AdvanceRequestType',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'DestroyRequestType',
-                        MenuTitle: 'Loại yêu cầu hủy vật tư',
-                        LinkTo: '/DestroyRequestType',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'InventoryRequestType',
-                        MenuTitle: 'Loại yêu cầu kiểm kê',
-                        LinkTo: '/InventoryRequestType',
-                        MenuIcon: '',
-                        SubMenu: []
-                    }
-                ]
-            },
-          
-            {
                 MenuName: 'Reward',
                 MenuTitle: 'Thưởng nhân viên',
                 LinkTo: '',
@@ -392,7 +362,13 @@ const AppMenu = [
                         SubMenu: []
                     },
                     {
-
+                        MenuName: 'UserRewardStore',
+                        MenuTitle: 'Kho thưởng của nhân viên quản lý',
+                        LinkTo: '/UserRewardStore',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'RewardPriceTable',
                         MenuTitle: 'Đơn giá thưởng giao hàng và lắp đặt',
                         LinkTo: '/RewardPriceTable',
@@ -402,6 +378,37 @@ const AppMenu = [
 
                 ]
             },
+            {
+                MenuName: 'Advance',
+                MenuTitle: 'Tạm ứng',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'AdvanceRequestType',
+                        MenuTitle: 'Loại yêu cầu tạm ứng',
+                        LinkTo: '/AdvanceRequestType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'DestroyRequestType',
+                        MenuTitle: 'Loại yêu cầu hủy vật tư',
+                        LinkTo: '/DestroyRequestType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'InventoryRequestType',
+                        MenuTitle: 'Loại yêu cầu kiểm kê',
+                        LinkTo: '/InventoryRequestType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+                ]
+            },
+          
+            
         ]
     },
     {

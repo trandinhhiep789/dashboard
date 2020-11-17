@@ -11,14 +11,17 @@ import {
     SearchElementList,
     GridColumnList,
     APIHostName,
-    SearchAPIPath
+    SearchAPIPath,
+    LoadReportUserNameByDate
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import "react-notifications-component/dist/theme.css";
 import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
-
+import { showModal, hideModal } from '../../../../../actions/modal';
+import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
+import DataGirdReportShipmentOrder from '../../components/DataGirdReportShipmentOrder';
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -26,7 +29,10 @@ class SearchCom extends React.Component {
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
-            IsLoadDataComplete: false
+            IsLoadDataComplete: false,
+            widthPercent: "",
+            FromDate: '',
+            ToDate: '',
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -34,7 +40,19 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+        this.updateWindowDimensions();
+        window.addEventListener("resize", this.updateWindowDimensions);
     }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions = () => {
+        this.setState({
+            widthPercent: (window.innerWidth * 90) / 100
+        })
+    };
 
     handleSearchSubmit(formData, MLObject) {
         let result, result2;
@@ -61,6 +79,10 @@ class SearchCom extends React.Component {
 
         // console.log("MLObject", MLObject, result, result2)
 
+        this.setState({
+            FromDate: MLObject.FromDate,
+            ToDate: MLObject.ToDate
+        })
 
         const postData = [
             {
@@ -88,7 +110,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            // console.log('aa', apiResult, searchData)
+            console.log('aa', apiResult, searchData)
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource:  apiResult.ResultObject,
@@ -113,6 +135,39 @@ class SearchCom extends React.Component {
         );
     }
 
+    onShowModalDetail(objValue) {
+        
+        const objData = {
+            FromDate: this.state.FromDate,
+            ToDate: this.state.ToDate,
+            UserName: objValue[0].value
+        }
+
+        this.props.callFetchAPI(APIHostName, LoadReportUserNameByDate, objData).then(apiResult => {
+            if (!apiResult.IsError) {
+                console.log("apiResult", apiResult.ResultObject)
+                this.handleShowModal(apiResult.ResultObject)
+            }
+            else {
+                this.showMessage(apiResult.MessageDetail)
+            }
+        });
+    }
+
+    handleShowModal(data) {
+        const { widthPercent } = this.state;
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Danh sách vận đơn chưa giao',
+            content: {
+                text: <DataGirdReportShipmentOrder
+                    dataSource={data}
+                />
+
+            },
+            maxWidth: widthPercent + 'px'
+        });
+    }
+
 
     render() {
         return (
@@ -131,8 +186,9 @@ class SearchCom extends React.Component {
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
                     IsFixheaderTable={true}
-                    IDSelectColumnName={''}
-                    PKColumnName={''}
+                    IDSelectColumnName={'DeliverUserLst'}
+                    PKColumnName={'DeliverUserLst'}
+                    onShowModal={this.onShowModalDetail.bind(this)}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
@@ -167,6 +223,12 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
         }
     };
 };

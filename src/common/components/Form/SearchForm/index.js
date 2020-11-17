@@ -20,14 +20,14 @@ export default class SearchForm extends Component {
         const listElement = this.props.listelement;
         listElement.map((elementItem) => {
             const elementname = elementItem.name;
-            if(elementItem.nameOption !=null && elementItem.nameOption!== undefined){
+            if (elementItem.nameOption != null && elementItem.nameOption !== undefined) {
                 const elementnameOption = elementItem.nameOption;
                 formData = Object.assign({}, formData, { [elementname]: elementItem.value, [elementnameOption]: elementItem.valueOption });
             }
-            else{
-                formData = Object.assign({}, formData, { [elementname]: elementItem.value});
+            else {
+                formData = Object.assign({}, formData, { [elementname]: elementItem.value });
             }
-           
+
         });
         this.state = { FormData: formData };
     }
@@ -69,43 +69,64 @@ export default class SearchForm extends Component {
         const listElement = this.props.listelement;
         let cssSearchButton = "";
         return (
-            <div className="row">
-                {
-                    listElement.map((elementItem, index) => {
-                        return (
-                            <div className="col-md-2 item" key={"div" + elementItem.name}>
-                                <FormElement type={elementItem.type} name={elementItem.name}
-                                    CSSClassName="form-control form-control-sm"
-                                    value={this.state.FormData[elementItem.name]}
-                                    label={elementItem.label} placeholder={elementItem.placeholder}
-                                    icon={elementItem.icon}
-                                    onValueChange={this.onValueChange}
-                                    listoption={elementItem.listoption}
-                                    key={elementItem.name}
-                                    IsSearchForm="true"
-                                    IsAutoLoadItemFromCache={elementItem.IsAutoLoadItemFromCache}
-                                    LoadItemCacheKeyID={elementItem.LoadItemCacheKeyID}
-                                    ValueMember={elementItem.ValueMember}
-                                    NameMember={elementItem.NameMember}
-                                    nameOption={elementItem.nameOption}
-                                    labelOption={elementItem.labelOption}
-                                    iconOption={elementItem.iconOption}
-                                    labelOption={elementItem.labelOption}
-                                    valueOption={this.state.FormData[elementItem.valueOption]}
-                                />
-                            </div>);
+            <div>
+                <div className="row">
+                    {
+                        listElement.map((elementItem, index) => {
+                            return (
+                                <div className="col-md-2 item" key={"div" + elementItem.name}>
+                                    <FormElement type={elementItem.type} name={elementItem.name}
+                                        CSSClassName="form-control form-control-sm"
+                                        value={this.state.FormData[elementItem.name]}
+                                        label={elementItem.label} placeholder={elementItem.placeholder}
+                                        icon={elementItem.icon}
+                                        onValueChange={this.onValueChange}
+                                        listoption={elementItem.listoption}
+                                        key={elementItem.name}
+                                        IsSearchForm="true"
+                                        IsAutoLoadItemFromCache={elementItem.IsAutoLoadItemFromCache}
+                                        LoadItemCacheKeyID={elementItem.LoadItemCacheKeyID}
+                                        ValueMember={elementItem.ValueMember}
+                                        NameMember={elementItem.NameMember}
+                                        nameOption={elementItem.nameOption}
+                                        labelOption={elementItem.labelOption}
+                                        iconOption={elementItem.iconOption}
+                                        labelOption={elementItem.labelOption}
+                                        valueOption={this.state.FormData[elementItem.valueOption]}
+                                    />
+                                </div>);
+                        }
+
+
+                        )
                     }
 
-
-                    )
-                }
-                <div className="col-md-2 item">
-                    <div className="btnSearch">
-                        <button className="btn btn-primary" type="submit">{cssSearchButton}
-                            <span className="fa fa-search"> Tìm Kiếm</span>
-                        </button>
-                    </div>
+                    {listElement.length <= 5 ?
+                        <div className="col-md-2 item">
+                            <div className="btnSearch">
+                                <button className="btn btn-primary" type="submit">{cssSearchButton}
+                                    <span className="fa fa-search"> Tìm Kiếm</span>
+                                </button>
+                            </div>
+                        </div>
+                        : ""}
                 </div>
+                {listElement.length > 5 ?
+                   
+                    <div className="row">
+                        <div className="col-md-12 item" style={{ marginTop: '50px', display: 'block' }}>
+                            <div className="btnSearch">
+                                <button className="btn btn-primary" type="submit">{cssSearchButton}
+                                    <span className="fa fa-search"> Tìm Kiếm</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    : ""}
+
             </div>
         );
     }

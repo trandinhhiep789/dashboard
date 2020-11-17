@@ -97,6 +97,7 @@ import ReportByUser from "../TMS/ReportShipmentOrder/ReportByUser";
 import RewardShipmentOrder from "../TMS/Reward/RewardShipmentOrder";
 import RewardShipmentOrderByUser from "../TMS/Reward/RewardShipmentOrderByUser";
 import RewardCompute from "../TMS/Reward/RewardCompute";
+import UserRewardStore from "../TMS/MD/RewardStoreUser";
 
 
 class HomeCom extends React.Component {
@@ -277,6 +278,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/RewardPriceType" component={RewardPriceType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/RewardPosition" component={RewardPosition} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/RewardPosition_User" component={RewardPosition_User} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/UserRewardStore" component={UserRewardStore} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 

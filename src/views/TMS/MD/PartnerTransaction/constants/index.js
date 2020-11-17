@@ -35,6 +35,10 @@ export const InitSearchParams = [
         SearchValue: ""
     },
     {
+        SearchKey: "@IsResponseError",
+        SearchValue: "-1"
+    },
+    {
         SearchKey: "@PartnerTransactionTypeID",
         SearchValue: ""
     },
@@ -61,6 +65,19 @@ export const SearchElementList = [
         placeholder: "",
         icon: "",
         listoption: {}
+    },
+    {
+        type: "select",
+        name: "IsResponseError",
+        label: "Lỗi phản hồi",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [{value: -1, label: "Tất cả"}, {value: 0, label: "Không lỗi"}, {value: 1, label: "Có lỗi"}],
+        DataSourceMember: "IsResponseError",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: false
     },
     {
         type: "select",
@@ -124,6 +141,11 @@ export const SearchMLObjectDefinition = [
         Name: "Keyword",
         DefaultValue: "",
         BindControlName: "txtKeyword"
+    },
+    {
+        Name: "IsResponseError",
+        DefaultValue: "",
+        BindControlName: "IsResponseError"
     },
     {
         Name: "PartnerTransactionTypeID",

@@ -81,6 +81,10 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.Keyword
             },
             {
+                SearchKey: "@IsResponseError",
+                SearchValue: MLObject.IsResponseError
+            },
+            {
                 SearchKey: "@PartnerTransactionTypeID",
                 SearchValue: MLObject.PartnerTransactionTypeID
             },
