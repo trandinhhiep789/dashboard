@@ -682,7 +682,7 @@ class DataGridCom extends Component {
                         : ""
                     }
 
-                    <div className="card-body inputgrid1">
+                    <div className="card-body">
                         {hasHeaderToolbar &&
                             <div className="flexbox mb-10 ">
                                 {searchTextbox}
