@@ -8,6 +8,7 @@ import {
     GridColumnListByDate,
     APIHostName,
     LoadByDateAPIPath,
+    LoadUserNameByDateAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -23,26 +24,28 @@ class SearchUserByDateCom extends React.Component {
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
+         
         };
         this.gridref = React.createRef();
     }
 
     componentDidMount() {
+        console.log("SearchUserByDateCom", this.props.location.state.params)
         this.props.updatePagePath(PageByDatePath);
+
        
-       this.callLoadData(this.props.match.params.id);
+       this.callLoadData(this.props.match.params.id, this.props.location.state.params);
     }
 
   
-    callLoadData(id) {
-        this.props.callFetchAPI(APIHostName, LoadByDateAPIPath, id).then(apiResult => {
+    callLoadData(date, lstUserName) {
+        const objData= {
+            Date: date,
+            UserName: lstUserName
+        }
+        this.props.callFetchAPI(APIHostName, LoadUserNameByDateAPIPath, objData).then(apiResult => {
+            console.log("aa", apiResult);
             if (!apiResult.IsError) {
-                // let data = [];
-                // if (apiResult.ResultObject.length > 0) {
-                //     apiResult.ResultObject.map((item, index) => {
-                //         data.push(item[0])
-                //     })
-                // }
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
@@ -61,7 +64,7 @@ class SearchUserByDateCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
-                onCloseModal={true}
+                onCloseModal={this.handleCLoseButton}
             />
         );
     }

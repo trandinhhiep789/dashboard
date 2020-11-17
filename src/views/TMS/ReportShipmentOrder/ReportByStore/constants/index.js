@@ -1,5 +1,7 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/ShipmentOrder/SearchReportStore";
+export const LoadReportStoreByDate = "api/ShipmentOrder/LoadReportStoreByDate";
+
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -110,7 +112,7 @@ export const GridColumnList = [
     },
     {
         Name: "TotalUndelivery",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Chưa giao",
         DataSourceMember: "TotalUndelivery",
         Width: "12%"

@@ -166,10 +166,10 @@
 
                             .person-info {
                                 .name {
-                                    font-weight: 500;
+                                    font-weight: 600;
+                                    color: #4e4848;
                                     font-size: 15px;
                                     text-transform: uppercase;
-                                    color: #444242;
                                 }
 
                                 .line {
@@ -191,9 +191,9 @@
                         }
 
                         &.address-repository-created {
-                            color: #292929;
+                            font-weight: 600;
+                            color: #4e4848;
                             text-transform: capitalize;
-                            font-weight: 500;
                             font-family: inherit;
 
                         }
@@ -228,16 +228,16 @@
                                 }
 
                                 &.txtCreatedOrderTime {
-                                    font-weight: 500;
-                                    color: #292929;
+                                    font-weight: 600;
+                                    color: #4e4848;
                                     display: flex;
                                 }
 
                                 &.intervale {
 
                                     .txtintervale {
-                                        font-weight: 500;
-                                        color: #292929;
+                                        font-weight: 600;
+                                        color: #4e4848;
                                     }
                                 }
 
@@ -281,20 +281,20 @@
 
                             .price-title {
                                 color: #15c377;
-                                font-weight: 500;
+                                font-weight: 600;
                                 margin-right: 5px;
                             }
                         }
 
                         .price-title {
                             color: #e64343;
-                            font-weight: 500;
+                            font-weight: 600;
                             margin-right: 5px;
                         }
 
                         .price-debt {
                             color: #e64343;
-                            font-weight: 500;
+                            font-weight: 600;
                         }
 
                         &.pricecod {
@@ -330,7 +330,7 @@
 
                     .coordinatorUser {
                         font-size: 13px;
-                        font-weight: 500;
+                        font-weight: 600;
                     }
                 }
             }
