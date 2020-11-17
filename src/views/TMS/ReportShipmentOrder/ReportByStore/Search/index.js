@@ -186,7 +186,6 @@ class SearchCom extends React.Component {
 
         this.props.callFetchAPI(APIHostName, LoadReportStoreByDate, objData).then(apiResult => {
             if (!apiResult.IsError) {
-                console.log("apiResult", apiResult.ResultObject)
                 this.handleShowModal(apiResult.ResultObject)
             }
             else {

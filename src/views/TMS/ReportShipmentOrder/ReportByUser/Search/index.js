@@ -110,7 +110,6 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log('aa', apiResult, searchData)
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource:  apiResult.ResultObject,
@@ -145,7 +144,6 @@ class SearchCom extends React.Component {
 
         this.props.callFetchAPI(APIHostName, LoadReportUserNameByDate, objData).then(apiResult => {
             if (!apiResult.IsError) {
-                console.log("apiResult", apiResult.ResultObject)
                 this.handleShowModal(apiResult.ResultObject)
             }
             else {

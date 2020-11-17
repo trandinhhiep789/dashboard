@@ -167,7 +167,6 @@ class SearchCom extends React.Component {
         const dtmCreatedOrderTime = objValue[0].value
         this.props.callFetchAPI(APIHostName, LoadReportByDate, dtmCreatedOrderTime).then(apiResult => {
             if (!apiResult.IsError) {
-                console.log("apiResult", apiResult.ResultObject)
                 this.handleShowModal(apiResult.ResultObject)
             }
             else {
