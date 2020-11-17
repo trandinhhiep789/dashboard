@@ -48,8 +48,17 @@ class AdvanceRequestDetailCom extends React.Component {
             this.setState({ IsCallAPIError: !apiResult.IsError });
             this.showMessage(apiResult.Message);
         });
+    }
+
+    handleCancelAdvanceRequest()
+    {
+        this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/CancelAdvanceRequest", this.state.AdvanceRequestID).then(apiResult => {
+            this.setState({ IsCallAPIError: !apiResult.IsError });
+            this.showMessage(apiResult.Message);
+        });
 
     }
+
     handleCloseMessage() {
         if (this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
     }
@@ -80,6 +89,12 @@ class AdvanceRequestDetailCom extends React.Component {
                             {!this.state.AdvanceRequest.IsCreatedOrder ?
                                 <button className="btn btnEditCard" onClick={this.handleAdvanceRequest.bind(this)} type="button">
                                     <span>Tạo lại phiếu xuất</span>
+                                </button> :
+                                ""
+                            }
+                          {this.state.AdvanceRequest.IsCreatedOrder ?
+                                <button className="btn btnEditCard" onClick={this.handleCancelAdvanceRequest.bind(this)} type="button">
+                                    <span>Hủy phiếu xuất</span>
                                 </button> :
                                 ""
                             }
