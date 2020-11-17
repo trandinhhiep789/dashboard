@@ -11,6 +11,7 @@ import {
     SearchElementList,
     GridColumnList,
     APIHostName,
+    SearchNewAPIPath,
     SearchAPIPath,
     InitSearchParams
 } from "../constants";
@@ -26,11 +27,12 @@ class SearchCom extends React.Component {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
-        
+
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
             IsLoadDataComplete: false,
+            UserName: '',
             SearchData: InitSearchParams,
         };
         this.gridref = React.createRef();
@@ -44,7 +46,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        let  result;
+        let result;
 
         if (MLObject.UserName != -1 && MLObject.UserName != null && MLObject.UserName != "") {
             result = MLObject.UserName.reduce((data, item, index) => {
@@ -72,29 +74,30 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@USERNAMELIST",
                 SearchValue: result  //MLObject.CoordinatorStoreID
-            }, 
+            },
 
         ];
-       
-       this.callSearchData(postData);
+
+        this.callSearchData(postData);
     }
 
     callSearchData(searchData) {
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, SearchNewAPIPath, searchData).then(apiResult => {
+            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
-                let data=[]
-                if(apiResult.ResultObject.length > 0){
-                    apiResult.ResultObject.map((item, index) => {
-                        data.push(item[0])
-                    })
-                }
+                // let data = []
+                // if (apiResult.ResultObject.length > 0) {
+                //     apiResult.ResultObject.map((item, index) => {
+                //         data.push(item[0])
+                //     })
+                // }
                 this.setState({
-                    gridDataSource:  data,
+                    gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true
                 });
             }
-            else{
+            else {
                 this.showMessage(apiResult.MessageDetail)
             }
         });
@@ -147,38 +150,47 @@ class SearchCom extends React.Component {
 
 
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
-                <SearchForm
-                    FormName="Tìm kiếm danh sách thống kê vận đơn theo ngày"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
-                    onSubmit={this.handleSearchSubmit}
-                    ref={this.searchref}
-                    className="multiple"
-                />
+        if (this.state.IsLoadDataComplete) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm
+                        FormName="Tìm kiếm danh sách thống kê vận đơn theo ngày"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                        className="multiple"
+                    />
 
-                <DataGrid
-                    listColumn={GridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    // AddLink=""
-                    IDSelectColumnName={''}
-                    PKColumnName={'RewardDate'}
-                    isHideHeaderToolbar={false}
-                    IsShowButtonAdd={false}
-                    IsShowButtonDelete={false}
-                    IsShowButtonPrint={false}
-                    IsPrint={false}
-                    IsExportFile={false}
-                    IsAutoPaging={true}
-                    params={this.state.UserName}
-                    RowsPerPage={10}
-                    RequirePermission={TMS_TMSREWARD_VIEW}
-                    ref={this.gridref}
-                />
-            </React.Fragment>
+                    <DataGrid
+                        listColumn={GridColumnList}
+                        dataSource={this.state.gridDataSource}
+                        // AddLink=""
+                        // IDSelectColumnName={"TotalReward"}
+                        PKColumnName={"RewardDate"}
+                        isHideHeaderToolbar={false}
+                        IsShowButtonAdd={false}
+                        IsShowButtonDelete={false}
+                        IsShowButtonPrint={false}
+                        IsPrint={false}
+                        IsExportFile={false}
+                        IsAutoPaging={true}
+                        params={this.state.UserName}
+                        RowsPerPage={31}
+                        RequirePermission={TMS_TMSREWARD_VIEW}
+                        ref={this.gridref}
+                    />
+                </React.Fragment>
+            );
+        }
+        return (
+            <div>
+                <label>Đang nạp dữ liệu...</label>
+            </div>
         );
+
+
 
     }
 }
