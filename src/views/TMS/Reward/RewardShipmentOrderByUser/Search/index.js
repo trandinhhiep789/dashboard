@@ -34,6 +34,8 @@ class SearchCom extends React.Component {
             IsLoadDataComplete: false,
             UserName: '',
             SearchData: InitSearchParams,
+            params: {},
+            totalAmount: '',
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -41,6 +43,15 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
+
+        const param = {
+            UserName: ""
+        }
+        
+        this.setState({
+            params: param
+        })
+
         this.props.updatePagePath(PagePath);
         this.callSearchData(this.state.SearchData)
     }
@@ -58,9 +69,15 @@ class SearchCom extends React.Component {
             result = ""
         }
 
-        this.setState({
+        const param = {
             UserName: result
+        }
+
+        this.setState({
+            UserName: result,
+            params: param
         })
+
 
         const postData = [
             {
@@ -85,16 +102,17 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI(APIHostName, SearchNewAPIPath, searchData).then(apiResult => {
             console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
-                // let data = []
-                // if (apiResult.ResultObject.length > 0) {
-                //     apiResult.ResultObject.map((item, index) => {
-                //         data.push(item[0])
-                //     })
-                // }
+
+                const totalAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
+                    sum += curValue.TotalReward
+                    return sum
+                }, 0);
+                
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
-                    IsLoadDataComplete: true
+                    IsLoadDataComplete: true,
+                    totalAmount: totalAmount
                 });
             }
             else {
@@ -176,9 +194,12 @@ class SearchCom extends React.Component {
                         IsPrint={false}
                         IsExportFile={false}
                         IsAutoPaging={true}
-                        params={this.state.UserName}
+                        params={this.state.params}
                         RowsPerPage={31}
                         RequirePermission={TMS_TMSREWARD_VIEW}
+                        totalCurrency={true}
+                        totalCurrencyColSpan={2}
+                        totalCurrencyNumber={this.state.totalAmount}
                         ref={this.gridref}
                     />
                 </React.Fragment>
