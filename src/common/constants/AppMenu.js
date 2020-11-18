@@ -623,13 +623,13 @@ const AppMenu = [
 
         ]
     },
-    {
-        MenuName: 'UseGuide',
-        MenuTitle: 'Hướng dẫn sử dụng',
-        LinkTo: '/UseGuide',
-        MenuIcon: '',
-        SubMenu: []
-    },
+    // {
+    //     MenuName: 'UseGuide',
+    //     MenuTitle: 'Hướng dẫn sử dụng',
+    //     LinkTo: '/UseGuide',
+    //     MenuIcon: '',
+    //     SubMenu: []
+    // },
     {
         MenuName: 'ShipmentOrderNew',
         MenuTitle: 'Điều phối giao hàng',
