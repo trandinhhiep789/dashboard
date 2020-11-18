@@ -8,12 +8,15 @@ import {
     GridColumnListByUserName,
     APIHostName,
     LoadByUserNameAPIPath,
+    LoadByUserNameNewAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import "react-notifications-component/dist/theme.css";
 import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { formatDate } from "../../../../../common/library/CommonLib.js";
+import { Base64 } from 'js-base64';
 
 class SearchByUserNameCom extends React.Component {
     constructor(props) {
@@ -23,32 +26,50 @@ class SearchByUserNameCom extends React.Component {
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
+            totalAmount: '',
+            fullName: '',
+            FromDate: '',
+            ToDate: '',
+            userName: ''
         };
         this.gridref = React.createRef();
     }
 
     componentDidMount() {
-        this.props.updatePagePath(PagePathByUserName);
         
-        this.callLoadData(this.props.match.params.id);
+        const param = Base64.decode(this.props.match.params.id);
+        const myParam = JSON.parse(param);
+
+        const params = {
+            FromDate: myParam.FromDate,
+            ToDate: myParam.ToDate,
+            UserName: myParam.value
+        }
+        this.setState({
+            FromDate: myParam.FromDate,
+            ToDate: myParam.ToDate,
+            userName: myParam.value
+        })
+        
+        this.props.updatePagePath(PagePathByUserName);
+        this.callLoadData(params);
     }
 
-  
-    callLoadData(username) {
 
-        this.props.callFetchAPI(APIHostName, LoadByUserNameAPIPath, username).then(apiResult => {
-            
+    callLoadData(params) {
+
+        this.props.callFetchAPI(APIHostName, LoadByUserNameNewAPIPath, params).then(apiResult => {
             if (!apiResult.IsError) {
-                let data = [];
-                if (apiResult.ResultObject.length > 0) {
-                    apiResult.ResultObject.map((item, index) => {
-                        data.push(item[0])
-                    })
-                }
+                const totalAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
+                    sum += curValue.TotalReward
+                    return sum
+                }, 0);
 
                 this.setState({
-                    gridDataSource: data,
+                    gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
+                    totalAmount: totalAmount,
+                    fullName: apiResult.ResultObject[0].RewardUser + " - " + apiResult.ResultObject[0].FullName
                 });
             }
             else {
@@ -71,14 +92,46 @@ class SearchByUserNameCom extends React.Component {
 
 
     render() {
+        const { FromDate, ToDate } = this.state;
         return (
             <React.Fragment>
-                
+                <div className="col-md-12 ">
+                    <div className="card mb-10">
+                        <div className="card-body">
+                            <div className="form-row frmInfo">
+                                <div className="form-group col-md-2">
+                                    <label className="col-form-label bold">Từ ngày:</label>
+                                </div>
+                                <div className="form-group col-md-4">
+
+                                    <label className="col-form-label">
+                                        {formatDate(FromDate, true)}
+                                    </label>
+                                </div>
+                                <div className="form-group col-md-2">
+                                    <label className="col-form-label bold">Đến ngày:</label>
+                                </div>
+                                <div className="form-group col-md-4">
+                                    <label className="col-form-label">
+                                        {formatDate(ToDate, true)}
+                                    </label>
+                                </div>
+                                <div className="form-group col-md-2">
+                                    <label className="col-form-label bold">Nhân viên:</label>
+                                </div>
+                                <div className="form-group col-md-4">
+                                    <label className="col-form-label">{this.state.fullName}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <DataGrid
                     listColumn={GridColumnListByUserName}
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
-                    IDSelectColumnName={''}
+                    IDSelectColumnName={'RewardDate'}
                     PKColumnName={'RewardDate'}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
@@ -88,9 +141,12 @@ class SearchByUserNameCom extends React.Component {
                     IsExportFile={false}
                     IsAutoPaging={true}
                     RowsPerPage={10}
+                    totalCurrency={true}
+                    totalCurrencyColSpan={1}
+                    totalCurrencyNumber={this.state.totalAmount}
                     //RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                     ref={this.gridref}
-                    params= {this.props.match.params.id}
+                    params={this.state.userName}
                 />
             </React.Fragment>
         );

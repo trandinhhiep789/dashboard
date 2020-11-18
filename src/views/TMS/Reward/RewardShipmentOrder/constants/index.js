@@ -2,18 +2,19 @@ export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/TMSReward/Search";
 export const SearchNewAPIPath = "api/TMSReward/SearchNew";
 export const LoadByUserNameAPIPath = "api/TMSReward/LoadByUserName";
+export const LoadByUserNameNewAPIPath = "api/TMSReward/LoadByUserNameNew";
 export const SearchDetailAPIPath = "api/TMSRewardDetail/Search";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách thống kê vận đơn giao hàng" }
+    { Link: "", Title: "Thưởng giao hàng" }
 ];
 
 
 export const PagePathByUserName = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/RewardShipmentOrder", Title: "Danh sách thống kê vận đơn giao hàng" },
-    { Link: "", Title: "Danh sách thống kê vận đơn theo nhân viên" }
+    { Link: "/RewardShipmentOrder", Title: "Thưởng giao hàng" },
+    { Link: "", Title: "Thưởng giao hàng theo nhân viên" }
 ];
 
 
@@ -60,6 +61,23 @@ export const SearchElementList = [
         filterobj:"CompanyID",
         classNameCol:"col-custom"
     },
+    {
+        type: "MultiSelectUser",
+        name: "cbUserName",
+        DataSourceMember: "UserName",
+        label: "Nhân viên",
+        colspan: 12,
+        rowspan: 3,
+        labelcolspan: 12,
+        IsLabelDiv: true,
+        value: -1,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: false,
+        isMultiSelect: false
+
+    },
+
 
 ]
 
@@ -79,6 +97,11 @@ export const  SearchMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "cbCoordinatorStoreID"
     },
+    {
+        Name: "UserName",
+        DefaultValue: "",
+        BindControlName: "cbUserName"
+    },
 ]
 
 export const InitSearchParams = [
@@ -94,12 +117,16 @@ export const InitSearchParams = [
         SearchKey: "@COORDINATORSTOREID",
         SearchValue: -1
     },
+    {
+        SearchKey: "@USERNAME",
+        SearchValue: -1
+    },
 ];
 
 export const GridColumnList = [
     {
         Name: "RewardUser",
-        Type: "texttolink",
+        Type: "texttolinkblank",
         Caption: "Mã nhân viên",
         DataSourceMember: "RewardUser",
         Link: "/RewardShipmentOrder/UserName/",
@@ -166,10 +193,12 @@ export const GridColumnListByDate = [
         Width: 200
     },
     {
+       
         Name: "ShipmentOrderID",
-        Type: "text",
+        Type: "texttolink",
         Caption: "Mã vận đợn",
         DataSourceMember: "ShipmentOrderID",
+        Link: "/ShipmentOrder/Detail/",
         Width: 100
     },
     {

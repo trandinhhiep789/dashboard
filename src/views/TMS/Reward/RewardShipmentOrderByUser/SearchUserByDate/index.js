@@ -15,6 +15,8 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import "react-notifications-component/dist/theme.css";
 import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { formatDate } from "../../../../../common/library/CommonLib.js";
+import { Base64 } from 'js-base64';
 
 class SearchUserByDateCom extends React.Component {
     constructor(props) {
@@ -24,31 +26,37 @@ class SearchUserByDateCom extends React.Component {
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
+            fullName: '',
+            FromDate: ""
          
         };
         this.gridref = React.createRef();
     }
 
     componentDidMount() {
-        console.log("SearchUserByDateCom", this.props.location.state.params)
-        this.props.updatePagePath(PageByDatePath);
 
-       
-       this.callLoadData(this.props.match.params.id, this.props.location.state.params);
+        const param = Base64.decode(this.props.match.params.id);
+        const myParam = JSON.parse(param);
+
+        this.setState({
+            FromDate: myParam.value,
+        })
+        this.props.updatePagePath(PageByDatePath);
+       this.callLoadData(myParam);
     }
 
   
-    callLoadData(date, lstUserName) {
+    callLoadData(myParam) {
         const objData= {
-            Date: date,
-            UserName: lstUserName
+            Date: myParam.value,
+            UserName: myParam.UserName
         }
         this.props.callFetchAPI(APIHostName, LoadUserNameByDateAPIPath, objData).then(apiResult => {
-            console.log("aa", apiResult);
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
+                    fullName: apiResult.ResultObject[0].RewardUser + " - " + apiResult.ResultObject[0].FullName
                 });
             }
             else {
@@ -73,13 +81,35 @@ class SearchUserByDateCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                
+                <div className="col-md-12 ">
+                    <div className="card mb-10">
+                        <div className="card-body">
+                            <div className="form-row frmInfo">
+                                <div className="form-group col-md-2">
+                                    <label className="col-form-label bold">Nhân viên:</label>
+                                </div>
+                                <div className="form-group col-md-4">
+                                    <label className="col-form-label">{this.state.fullName}</label>
+                                </div>
+                                <div className="form-group col-md-2">
+                                    <label className="col-form-label bold">Từ ngày:</label>
+                                </div>
+                                <div className="form-group col-md-4">
+
+                                    <label className="col-form-label">
+                                        {formatDate(this.state.FromDate, true)}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <DataGrid
                     listColumn={GridColumnListByDate}
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
-                    IDSelectColumnName={''}
-                    PKColumnName={''}
+                    IDSelectColumnName={'ShipmentOrderID'}
+                    PKColumnName={'ShipmentOrderID'}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}

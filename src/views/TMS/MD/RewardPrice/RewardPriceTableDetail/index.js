@@ -180,8 +180,8 @@ class RewardPriceTableDetailCom extends Component {
                             labelcolspan="3"
                             readOnly={IsSystem}
                             disabled={IsSystem}
-                            label="giá không cài đặt"
-                            placeholder="giá không cài đặt"
+                            label="giá không lắp đặt"
+                            placeholder="giá không lắp đặt"
                             controltype="InputControl"
                             value="0"
                             validatonList={['required']}

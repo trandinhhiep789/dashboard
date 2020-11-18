@@ -326,10 +326,10 @@ class SearchCom extends React.Component {
                     IsDelete={true}
                     IsAutoPaging={true}
                     RowsPerPage={10}
-                    IsExportFile={true}
-                    DataExport={this.state.dataExport}
                     RequirePermission={SERVICEAGREEMENT_VIEW}
                     DeletePermission={SERVICEAGREEMENT_DELETE}
+                    IsExportFile={true}
+                    DataExport={this.state.dataExport}
                     fileName="Danh sách hợp đồng"
                     onExportFile={this.handleExportFile.bind(this)}
                     IsImportFile={true}
