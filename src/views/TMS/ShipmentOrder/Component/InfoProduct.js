@@ -281,12 +281,14 @@ class InfoProductCom extends Component {
                                         <thead className="thead-light">
                                             <tr>
                                                 <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "30%" }}>Sản phẩm</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "12%" }}>Serial/IMEI</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "25%" }}>Sản phẩm</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Serial/IMEI</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "7%" }}>Số lượng trả</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "30%" }}>Ghi chú</th>
-                                            
+                                                <th className="jsgrid-header-cell" style={{ width: "8%" }}>Đã trả hàng</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "8%" }}>Mã trả hàng</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "8%" }}>Ngày trả hàng</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "15%" }}>Ghi chú</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -299,6 +301,9 @@ class InfoProductCom extends Component {
                                                             <td>{item.ProductSerial}</td>
                                                             <td>{item.Quantity}</td>
                                                             <td>{formatMoney(item.ReturnPrice, 0)}đ</td>
+                                                            <td>{item.IsCreatedInputVoucherReturn}</td>
+                                                            <td>{item.InputVoucherID }</td>
+                                                            <td>{item.ReturnInputDate}</td>
                                                             <td>{item.Note}</td>
                                                         </tr>
                                                     )
