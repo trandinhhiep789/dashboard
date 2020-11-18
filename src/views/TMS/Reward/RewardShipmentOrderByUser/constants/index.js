@@ -139,9 +139,10 @@ export const GridColumnListByDate = [
     },
     {
         Name: "ShipmentOrderID",
-        Type: "text",
+        Type: "texttolink",
         Caption: "Mã vận đợn",
         DataSourceMember: "ShipmentOrderID",
+        Link: "/ShipmentOrder/Detail/",
         Width: 100
     },
     {

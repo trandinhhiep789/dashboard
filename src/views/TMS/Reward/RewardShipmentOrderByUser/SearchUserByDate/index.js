@@ -78,8 +78,8 @@ class SearchUserByDateCom extends React.Component {
                     listColumn={GridColumnListByDate}
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
-                    IDSelectColumnName={''}
-                    PKColumnName={''}
+                    IDSelectColumnName={'ShipmentOrderID'}
+                    PKColumnName={'ShipmentOrderID'}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
