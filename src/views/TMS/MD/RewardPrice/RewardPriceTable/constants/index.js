@@ -218,7 +218,7 @@ export const DataGridColumnItemListRPTDetail = [
     {
         Name: "RewardPriceWithoutInstall",
         Type: "textCurrency",
-        Caption: "Giá không cài đặt",
+        Caption: "Giá không lắp đặt",
         DataSourceMember: "RewardPriceWithoutInstall",
         Width: 100
     },
