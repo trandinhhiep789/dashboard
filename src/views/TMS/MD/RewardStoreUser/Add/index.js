@@ -45,15 +45,19 @@ class AddCom extends React.Component {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 if (!apiResult.IsError) {
                     let listOption = [];
-                    apiResult.ResultObject.map((item, index) => {
-                        listOption.push({ value: item.UserName, name: item.FullName });
-                    });
+                    if(apiResult.ResultObject){
+                        apiResult.ResultObject.map((item, index) => {
+                            listOption.push({ value: item.UserName, name: item.FullName });
+                        });
+                    }else{
+                        listOption.push({});
+                    }
 
                     let _AddElementList = this.state.AddElementList;
                     _AddElementList.forEach(function (objElement) {
                         if (objElement.name == 'UserName') {
                             objElement.listoption = listOption;
-                            objElement.value = -1;
+                            objElement.value = null;
                         }
                     });
                     this.setState({
