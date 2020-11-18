@@ -5,7 +5,9 @@ import { ModalManager } from 'react-dynamic-modal';
 import { MessageModal } from "../../../../common/components/Modal";
 import { formatMoney } from '../../../../utils/function';
 import { Base64 } from 'js-base64';
-export default class GridCell extends Component {
+import { withRouter } from 'react-router-dom';
+
+class GridCell extends Component {
     constructor(props) {
         super(props);
         //this.state = {value:this.props.value};
@@ -152,6 +154,37 @@ export default class GridCell extends Component {
                         }
                     }}>{text}</Link>;
                 break;
+
+            case "texttolinkblank":
+                const param = this.props.params;
+                param.value = listValue[0].value;
+                const myJSON = JSON.stringify(param);
+                control = <Link
+                    className="linktext blank"
+                    target="_blank"
+                    to={{
+                        pathname: link + Base64.encode(myJSON) + "/",
+                        state: {
+                            params: this.props.params
+                        }
+                    }}>{text}</Link>;
+                break;
+
+            case "texttolinkdateblank":
+                const param1 = this.props.params;
+                param1.value = listValue[0].value;
+                const myJSON1 = JSON.stringify(param1);
+                control = <Link
+                    className="linktext blank"
+                    target="_blank"
+                    to={{
+                        pathname: link + Base64.encode(myJSON1) + "/",
+                        state: {
+                            params: this.props.params
+                        }
+                    }}>{formatDate(text, true)}</Link>
+
+                break;
             case "popuplink":
                 control = <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => { this.onShowPopup(name, popupContent) }}>{text}</a>
                 break;
@@ -267,3 +300,6 @@ export default class GridCell extends Component {
         return control;
     }
 }
+
+
+export default withRouter(GridCell)

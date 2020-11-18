@@ -34,6 +34,9 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsLoadDataComplete: false,
             SearchData: InitSearchParams,
+            params: {},
+            totalAmount: '',
+            dataExport: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -41,6 +44,17 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
+
+        const param = {
+            FromDate: InitSearchParams[0].SearchValue,
+            ToDate: InitSearchParams[1].SearchValue,
+            CoordinatorStore: InitSearchParams[2].SearchValue,
+        }
+
+        this.setState({
+            params: param
+        })
+
         this.props.updatePagePath(PagePath);
         this.handleCallData();
     }
@@ -51,6 +65,15 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        const param = {
+            FromDate: MLObject.FromDate,
+            ToDate: MLObject.ToDate,
+            CoordinatorStore: MLObject.CoordinatorStore
+        }
+
+        this.setState({
+            params: param
+        })
 
         const postData = [
             {
@@ -65,6 +88,10 @@ class SearchCom extends React.Component {
                 SearchKey: "@COORDINATORSTOREID",
                 SearchValue: MLObject.CoordinatorStore
             },
+            {
+                SearchKey: "@UserName",
+                SearchValue: MLObject.UserName.value
+            },
 
         ];
         this.callSearchData(postData);
@@ -74,17 +101,29 @@ class SearchCom extends React.Component {
 
         this.props.callFetchAPI(APIHostName, SearchNewAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
-                // let data = [];
-                // if (apiResult.ResultObject.length > 0) {
-                //     apiResult.ResultObject.map((item, index) => {
-                //         data.push(item[0])
-                //     })
-                // }
+                const totalAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
+                    sum += curValue.TotalReward
+                    return sum
+                }, 0);
+
+                const tempDataExport = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã nhân viên": item.RewardUser,
+                        "Tên nhân viên": item.FullName,
+                        "Tổng thưởng": item.TotalReward,
+                      
+                    };
+
+                    return element;
+
+                })
 
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
-                    IsLoadDataComplete: true
+                    totalAmount: totalAmount,
+                    IsLoadDataComplete: true,
+                    dataExport: tempDataExport
                 });
             }
             else {
@@ -137,6 +176,9 @@ class SearchCom extends React.Component {
         });
     }
 
+    handleExportFile(result) {
+        this.addNotification(result.Message);
+    }
 
 
     render() {
@@ -166,7 +208,15 @@ class SearchCom extends React.Component {
                     IsExportFile={false}
                     IsAutoPaging={true}
                     RowsPerPage={10}
+                    params={this.state.params}
+                    totalCurrency={true}
+                    totalCurrencyColSpan={3}
+                    totalCurrencyNumber={this.state.totalAmount}
                     RequirePermission={TMS_TMSREWARD_VIEW}
+                    IsExportFile={true}
+                    DataExport={this.state.dataExport}
+                    fileName="Danh sách thưởng giao hàng"
+                    onExportFile={this.handleExportFile.bind(this)}
                     ref={this.gridref}
                 />
             </React.Fragment>

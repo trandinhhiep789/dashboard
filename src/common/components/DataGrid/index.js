@@ -17,6 +17,7 @@ import * as XLSX from 'xlsx';
 import { formatMoney } from '../../../utils/function';
 import PartnerPayaleTemplate from '../PrintTemplate/PartnerPayaleTemplate';
 import readXlsxFile from 'read-excel-file'
+import { withRouter } from 'react-router-dom';
 
 class DataGridCom extends Component {
     constructor(props) {
@@ -832,4 +833,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 const DataGrid = connect(mapStateToProps, mapDispatchToProps)(DataGridCom);
-export default DataGrid;
+export default withRouter(DataGrid);

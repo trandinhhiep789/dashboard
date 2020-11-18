@@ -7,12 +7,12 @@ export const LoadUserNameByDateAPIPath = "api/TMSRewardDetail/LoadUserNameByDate
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách thống kê vận đơn theo nhân viên" }
+    { Link: "", Title: "Danh sách thưởng giao hàng theo nhân viên" }
 ];
 
 export const PageByDatePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/RewardShipmentOrderByUser", Title: "Danh sách thống kê vận đơn theo nhân viên" },
+    { Link: "/RewardShipmentOrderByUser", Title: "Danh sách thưởng giao hàng theo nhân viên" },
     { Link: "/RewardShipmentOrderByUser", Title: "Danh sách thống kê vận đơn theo ngày" }
 ];
 
@@ -98,7 +98,7 @@ export const  SearchMLObjectDefinition = [
 export const GridColumnList = [
     {
         Name: "RewardDate",
-        Type: "texttolinkdateNew",
+        Type: "texttolinkdateblank",
         Caption: "Ngày",
         DataSourceMember: "RewardDate",
         Link: "/RewardShipmentOrderByUser/RewardByDate/",
