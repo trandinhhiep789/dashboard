@@ -70,11 +70,11 @@ export default class SearchForm extends Component {
         let cssSearchButton = "";
         return (
             <div>
-                <div className="row">
+                <div className="row search-forms">
                     {
                         listElement.map((elementItem, index) => {
                             return (
-                                <div className="col-md-2 item" key={"div" + elementItem.name}>
+                                <div className="search-forms-item item" key={"div" + elementItem.name}>
                                     <FormElement type={elementItem.type} name={elementItem.name}
                                         CSSClassName="form-control form-control-sm"
                                         value={this.state.FormData[elementItem.name]}
@@ -101,7 +101,16 @@ export default class SearchForm extends Component {
                         )
                     }
 
-                    {listElement.length <= 5 ?
+                    <div className="search-forms-item item">
+                        <div className="btnSearch">
+                            <button className="btn btn-primary" type="submit">{cssSearchButton}
+                                <span className="fa fa-search"> Tìm Kiếm</span>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    {/* {listElement.length <= 5 ?
                         <div className="col-md-2 item">
                             <div className="btnSearch">
                                 <button className="btn btn-primary" type="submit">{cssSearchButton}
@@ -109,9 +118,9 @@ export default class SearchForm extends Component {
                                 </button>
                             </div>
                         </div>
-                        : ""}
+                        : ""} */}
                 </div>
-                {listElement.length > 5 ?
+                {/* {listElement.length > 5 ?
                    
                     <div className="row">
                         <div className="col-md-12 item" style={{ marginTop: '50px', display: 'block' }}>
@@ -125,7 +134,7 @@ export default class SearchForm extends Component {
 
 
 
-                    : ""}
+                    : ""} */}
 
             </div>
         );
