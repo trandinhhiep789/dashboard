@@ -92,7 +92,7 @@ class AdvanceRequestDetailCom extends React.Component {
                                 </button> :
                                 ""
                             }
-                          {this.state.AdvanceRequest.IsCreatedOrder ?
+                          {!this.state.AdvanceRequest.IsCreatedOrder ?
                                 <button className="btn btnEditCard" onClick={this.handleCancelAdvanceRequest.bind(this)} type="button">
                                     <span>Hủy phiếu xuất</span>
                                 </button> :
