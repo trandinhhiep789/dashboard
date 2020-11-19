@@ -731,7 +731,7 @@ class DataGridShipmentOderCom extends Component {
                                     <td className="group-infoShipmentOrder" style={{ width: '15%' }}>
                                         <div className="group-info-row">
                                             <label className="item person">
-                                                <span className="person-info fw-600" style={{ fontSize: 15 }}>
+                                                <span className="person-info fw-600" style={{ fontSize: 12 }}>
                                                     <Link target="_blank" to={"/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID}>{rowItem.ShipmentOrderID}</Link>
                                                 </span>
                                             </label>

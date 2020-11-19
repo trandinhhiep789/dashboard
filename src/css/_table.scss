@@ -148,7 +148,7 @@
                         justify-content: flex-start;
                         align-content: center;
                         margin-bottom: 5px;
-                        font-size: 14px;
+                        font-size: 12px;
                         text-align: left;
 
                         i {
@@ -167,8 +167,8 @@
                             .person-info {
                                 .name {
                                     font-weight: 600;
-                                    color: #4e4848;
-                                    font-size: 15px;
+                                    color: #615d5d;
+                                    font-size: 12px;
                                     text-transform: uppercase;
                                 }
 
@@ -192,7 +192,7 @@
 
                         &.address-repository-created {
                             font-weight: 600;
-                            color: #4e4848;
+                            color: #615d5d;
                             text-transform: capitalize;
                             font-family: inherit;
 
@@ -229,7 +229,7 @@
 
                                 &.txtCreatedOrderTime {
                                     font-weight: 600;
-                                    color: #4e4848;
+                                    color: #615d5d;
                                     display: flex;
                                 }
 
@@ -237,7 +237,7 @@
 
                                     .txtintervale {
                                         font-weight: 600;
-                                        color: #4e4848;
+                                        color: #615d5d;
                                     }
                                 }
 
@@ -271,7 +271,7 @@
                         justify-content: flex-end;
                         align-content: center;
                         margin-bottom: 5px;
-                        font-size: 14px;
+                        font-size: 12px;
                         white-space: nowrap;
 
                         &.price-success {
@@ -320,7 +320,7 @@
                         justify-content: flex-start;
                         align-content: center;
                         margin-bottom: 5px;
-                        font-size: 14px;
+                        font-size: 12px;
                         text-align: left;
 
                         &.address-receiver {
@@ -329,7 +329,7 @@
                     }
 
                     .coordinatorUser {
-                        font-size: 13px;
+                        font-size: 12px;
                         font-weight: 600;
                     }
                 }
@@ -351,7 +351,7 @@
                         justify-content: flex-start;
                         align-content: center;
                         margin-bottom: 5px;
-                        font-size: 14px;
+                        font-size: 12px;
 
                         i {
                             margin-right: 10px;
@@ -456,6 +456,12 @@
     }
 
     &.datagirdshippingorder {
+        .thead-light{
+            th{
+                font-size: 12px;
+                font-weight: 600;
+            }
+        }
         tbody {
             tr {
                 &.unReadingItem {
