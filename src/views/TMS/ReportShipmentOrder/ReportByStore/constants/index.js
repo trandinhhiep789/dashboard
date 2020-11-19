@@ -2,13 +2,10 @@ export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/ShipmentOrder/SearchReportStore";
 export const LoadReportStoreByDate = "api/ShipmentOrder/LoadReportStoreByDate";
 
-
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Danh sách thống kê vận đơn theo kho" }
 ];
-
-
 
 const dtFromdate = new Date();
 dtFromdate.setDate(new Date().getDate() - 30);
@@ -105,7 +102,7 @@ export const GridColumnList = [
     },
     {
         Name: "TotalOrder",
-        Type: "text",
+        Type: "textBoldRed",
         Caption: "Tổng đơn",
         DataSourceMember: "TotalOrder",
         Width: "12%"
@@ -119,35 +116,35 @@ export const GridColumnList = [
     },
     {
         Name: "TotalDelivering",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Đang giao",
         DataSourceMember: "TotalDelivering",
         Width: "12%"
     },
     {
         Name: "TotalDelivered",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Giao xong",
         DataSourceMember: "TotalDelivered",
         Width: "12%"
     },
     {
         Name: "TotalCompletedOrder",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Đã hoàn thành",
         DataSourceMember: "TotalCompletedOrder",
         Width: "12%"
     },
     {
         Name: "TotalCancelDelivery",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Huỷ giao",
         DataSourceMember: "TotalCancelDelivery",
         Width: "10%"
     },
     {
         Name: "TotalPaidIn",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Đã nộp tiền",
         DataSourceMember: "TotalPaidIn",
         Width: "10%"

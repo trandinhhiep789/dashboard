@@ -3,12 +3,15 @@ import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import { formatMoney } from '../../../../utils/function';
+import GridPage from "../../../../common/components/DataGrid/GridPage";
+import { DEFAULT_ROW_PER_PAGE } from "../../../../constants/systemVars.js";
 
 class DataGirdReportShipmentOrderCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
             dataSource: this.props.dataSource,
+            PageNumber: 1
         }
     }
 
@@ -31,9 +34,68 @@ class DataGirdReportShipmentOrderCom extends Component {
         return date.getDate() + '/' + (month < 10 ? '0' + month : month) + '/' + date.getFullYear() + " " + timeDisplay;
     }
 
+    getPageCount(dataSource) {
+        if (dataSource == null)
+            return 1;
+        let rowsPerPage = DEFAULT_ROW_PER_PAGE;
+        if (this.props.RowsPerPage != null)
+            rowsPerPage = this.props.RowsPerPage;
+        let pageCount = parseInt(Math.ceil(dataSource.length / rowsPerPage));
+        if (pageCount < 1)
+            pageCount = 1;
+        return pageCount;
+    }
+
+    onChangePageHandle(pageNum) {
+        this.setState({ PageNumber: pageNum });
+        const temp = this.checkInputisAll(this.getDisplayDataPageNumber(this.props.dataSource, pageNum), this.state.GridData[this.props.IDSelectColumnName]);
+        this.setState({ IsCheckAll: temp });
+    }
+
+    getDisplayDataPageNumber(dataSource, intPageNumber) {
+        if (!this.props.IsAutoPaging)
+            return dataSource;
+        let resultData = [];
+        if (dataSource == null)
+            return resultData;
+        let rowsPerPage = DEFAULT_ROW_PER_PAGE;
+        if (this.props.RowsPerPage != null)
+            rowsPerPage = this.props.RowsPerPage;
+        let startRowIndex = (intPageNumber - 1) * rowsPerPage;
+        let endRowIndex = startRowIndex + rowsPerPage;
+        if (endRowIndex > dataSource.length)
+            endRowIndex = dataSource.length;
+        for (let i = startRowIndex; i < endRowIndex; i++) {
+            resultData.push(dataSource[i]);
+        }
+        return resultData;
+    }
+
+    getDisplayData(dataSource) {
+        if (!this.props.IsAutoPaging)
+            return dataSource;
+        let resultData = [];
+        if (dataSource == null)
+            return resultData;
+        let rowsPerPage = DEFAULT_ROW_PER_PAGE;
+        if (this.props.RowsPerPage != null)
+            rowsPerPage = this.props.RowsPerPage;
+        let startRowIndex = (this.state.PageNumber - 1) * rowsPerPage;
+        let endRowIndex = startRowIndex + rowsPerPage;
+        if (endRowIndex > dataSource.length)
+            endRowIndex = dataSource.length;
+        for (let i = startRowIndex; i < endRowIndex; i++) {
+            resultData.push(dataSource[i]);
+        }
+        return resultData;
+    }
+
 
     render() {
-        const { dataSource } = this.state;
+        const { PageNumber } = this.state;
+        const pageCount = this.getPageCount(this.props.dataSource);
+        const dataSource = this.getDisplayData(this.props.dataSource);
+        console.log("dataSource", dataSource)
         return (
             <div className="col-12 mt-30">
                 <div className="table-responsive">
@@ -49,55 +111,63 @@ class DataGirdReportShipmentOrderCom extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {dataSource != null &&
-                                dataSource.map((rowItem, rowIndex) => {
-                                    return (<tr key={rowIndex}>
-                                        <td style={{ width: '20%' }}>
+                            {
+                                dataSource.length > 0 ?
 
-                                            <div className="group-info-row">
-                                                <label className="item fullName-receiver">
-                                                    <Link target="_blank" className="txtlink" to={"/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID}>{rowItem.ShipmentOrderID}</Link>
-                                                </label>
-                                                <label className="item address-receiver">
-                                                    <span>{rowItem.ShipmentOrderTypeName}</span>
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td className="group-address" style={{ width: '25%' }}>
-                                            <div className="group-info-row">
-                                                <label className="item fullName-receiver">
-                                                    <span>{rowItem.ReceiverFullName}</span>
-                                                </label>
-                                                <label className="item address-receiver">
-                                                    <span>{rowItem.ReceiverFullAddress}</span>
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td className="group-productlist" style={{ width: '20%' }}>
-                                            <div className="group-info-row">
-                                                <label className="item product">
-                                                    <span >{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(';', '<br/>'))}</span>
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td className="group-address" style={{ width: '15%' }}>
-                                            <div className="group-info-row">
-                                                <label className="item fullName-receiver">
-                                                    <span>{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
-                                                </label>
-                                                <label className="item address-receiver">
-                                                    <span>{rowItem.CarrierTypeName}</span>
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td style={{ width: '10%' }}>{formatMoney(rowItem.TotalCOD, 0)}</td>
-                                        <td style={{ width: '10%' }}>{rowItem.ShipmentOrderStatusName}</td>
-                                    </tr>)
-                                })
+
+                                    dataSource.map((rowItem, rowIndex) => {
+                                        return (<tr key={rowIndex}>
+                                            <td style={{ width: '20%' }}>
+
+                                                <div className="group-info-row">
+                                                    <label className="item fullName-receiver">
+                                                        <Link target="_blank" className="txtlink" to={"/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID}>{rowItem.ShipmentOrderID}</Link>
+                                                    </label>
+                                                    <label className="item address-receiver">
+                                                        <span>{rowItem.ShipmentOrderTypeName}</span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td className="group-address" style={{ width: '25%' }}>
+                                                <div className="group-info-row">
+                                                    <label className="item fullName-receiver">
+                                                        <span>{rowItem.ReceiverFullName}</span>
+                                                    </label>
+                                                    <label className="item address-receiver">
+                                                        <span>{rowItem.ReceiverFullAddress}</span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td className="group-productlist" style={{ width: '20%' }}>
+                                                <div className="group-info-row">
+                                                    <label className="item product">
+                                                        <span >{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(';', '<br/>'))}</span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td className="group-address" style={{ width: '15%' }}>
+                                                <div className="group-info-row">
+                                                    <label className="item fullName-receiver">
+                                                        <span>{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
+                                                    </label>
+                                                    <label className="item address-receiver">
+                                                        <span>{rowItem.CarrierTypeName}</span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td style={{ width: '10%' }}>{formatMoney(rowItem.TotalCOD, 0)}</td>
+                                            <td style={{ width: '10%' }}>{rowItem.ShipmentOrderStatusName}</td>
+                                        </tr>)
+                                    })
+                                    :
+                                    <tr>
+                                        <td colSpan="6" align="center" className="text-center">Không tồn tại dữ liệu.</td>
+                                    </tr>
                             }
                         </tbody>
                     </table>
                 </div>
+                <GridPage numPage={pageCount} currentPage={PageNumber} maxPageShow={10} onChangePage={this.onChangePageHandle.bind(this)} />
             </div>
 
         );

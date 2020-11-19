@@ -1,6 +1,11 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/ShipmentOrder/SearchReportDate";
-export const LoadReportByDate = "api/ShipmentOrder/LoadReportByDate";
+export const LoadReportUndeliveryByDate = "api/ShipmentOrder/LoadReportByDate";
+export const LoadReportDeliveringByDate = "api/ShipmentOrder/LoadReportDeliveringByDate";
+export const LoadReportDeliveredByDate = "api/ShipmentOrder/LoadReportDeliveredByDate";
+export const LoadReportCompletedOrderByDate = "api/ShipmentOrder/LoadReportCompletedOrderByDate";
+export const LoadReportCancelDeliveryByDate = "api/ShipmentOrder/LoadReportCancelDeliveryByDate";
+export const LoadReportPaidInByDate = "api/ShipmentOrder/LoadReportPaidInByDate";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -104,7 +109,7 @@ export const GridColumnList = [
     },
     {
         Name: "TotalOrder",
-        Type: "text",
+        Type: "textBoldRed",
         Caption: "Tổng đơn",
         DataSourceMember: "TotalOrder",
         Width: '12%'
@@ -118,35 +123,35 @@ export const GridColumnList = [
     },
     {
         Name: "TotalDelivering",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Đang giao",
         DataSourceMember: "TotalDelivering",
         Width: '12%'
     },
     {
         Name: "TotalDelivered",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Giao xong",
         DataSourceMember: "TotalDelivered",
         Width: '12%'
     },
     {
         Name: "TotalCompletedOrder",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Đã hoàn thành",
         DataSourceMember: "TotalCompletedOrder",
         Width: '12%'
     },
     {
         Name: "TotalCancelDelivery",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Huỷ giao",
         DataSourceMember: "TotalCancelDelivery",
         Width: '12%'
     },
     {
         Name: "TotalPaidIn",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Đã nộp tiền",
         DataSourceMember: "TotalPaidIn",
         Width: '14%'

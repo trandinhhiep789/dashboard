@@ -12,7 +12,12 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
-    LoadReportByDate
+    LoadReportUndeliveryByDate,
+    LoadReportDeliveringByDate,
+    LoadReportDeliveredByDate,
+    LoadReportCompletedOrderByDate,
+    LoadReportCancelDeliveryByDate,
+    LoadReportPaidInByDate
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -103,7 +108,6 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("aaa", apiResult)
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
@@ -162,17 +166,95 @@ class SearchCom extends React.Component {
         });
     }
 
-    onShowModalDetail(objValue) {
-        
+    getStatusDelivery(status) {
+        switch (status) {
+            case 'TotalUndelivery':
+                return 1;
+            case 'TotalDelivering':
+                return 2;
+            case 'TotalDelivered':
+                return 3;
+            case 'TotalCompletedOrder':
+                return 4;
+            case 'TotalCancelDelivery':
+                return 5
+            case 'TotalPaidIn':
+                return 6
+            default:
+                return 0;
+        }
+    }
+
+    onShowModalDetail(objValue, name) {
+
+        const status = this.getStatusDelivery(name);
         const dtmCreatedOrderTime = objValue[0].value
-        this.props.callFetchAPI(APIHostName, LoadReportByDate, dtmCreatedOrderTime).then(apiResult => {
-            if (!apiResult.IsError) {
-                this.handleShowModal(apiResult.ResultObject)
-            }
-            else {
-                this.showMessage(apiResult.MessageDetail)
-            }
-        });
+        if (status == 1) {
+            this.props.callFetchAPI(APIHostName, LoadReportUndeliveryByDate, dtmCreatedOrderTime).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.handleShowModal(apiResult.ResultObject)
+                }
+                else {
+                    this.showMessage(apiResult.MessageDetail)
+                }
+            });
+        }
+        if (status == 2) {
+
+            this.props.callFetchAPI(APIHostName, LoadReportDeliveringByDate, dtmCreatedOrderTime).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.handleShowModal(apiResult.ResultObject)
+                }
+                else {
+                    this.showMessage(apiResult.MessageDetail)
+                }
+            });
+        }
+        if (status == 3) {
+
+            this.props.callFetchAPI(APIHostName, LoadReportDeliveredByDate, dtmCreatedOrderTime).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.handleShowModal(apiResult.ResultObject)
+                }
+                else {
+                    this.showMessage(apiResult.MessageDetail)
+                }
+            });
+        }
+        if (status == 4) {
+            this.props.callFetchAPI(APIHostName, LoadReportCompletedOrderByDate, dtmCreatedOrderTime).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.handleShowModal(apiResult.ResultObject)
+                }
+                else {
+                    this.showMessage(apiResult.MessageDetail)
+                }
+            });
+        }
+
+        if (status == 5) {
+            this.props.callFetchAPI(APIHostName, LoadReportCancelDeliveryByDate, dtmCreatedOrderTime).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.handleShowModal(apiResult.ResultObject)
+                }
+                else {
+                    this.showMessage(apiResult.MessageDetail)
+                }
+            });
+        }
+
+        if (status == 6) {
+            this.props.callFetchAPI(APIHostName, LoadReportPaidInByDate, dtmCreatedOrderTime).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.handleShowModal(apiResult.ResultObject)
+                }
+                else {
+                    this.showMessage(apiResult.MessageDetail)
+                }
+            });
+        }
+
+
     }
 
     handleShowModal(data) {
@@ -182,6 +264,8 @@ class SearchCom extends React.Component {
             content: {
                 text: <DataGirdReportShipmentOrder
                     dataSource={data}
+                    RowsPerPage={20}
+                    IsAutoPaging={true}
                 />
 
             },

@@ -53,8 +53,21 @@ class SearchByUserNameCom extends React.Component {
         
         this.props.updatePagePath(PagePathByUserName);
         this.callLoadData(params);
+        this.callSearchDataMobi(params)
     }
 
+    
+    callSearchDataMobi(params) {
+        const {FromDate,ToDate , userName}= this.state;
+        // const params = {
+        //     FromDate: FromDate,
+        //     ToDate: ToDate,
+        //     userName: userName
+        // }
+        this.props.callFetchAPI(APIHostName, "api/TMSReward/LoadByUserNameMobi", params).then(apiResult => {
+            console.log("callSearchDataMobi", apiResult)
+        });
+    }
 
     callLoadData(params) {
 

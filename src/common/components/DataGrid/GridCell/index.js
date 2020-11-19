@@ -71,7 +71,7 @@ class GridCell extends Component {
     }
 
     onShowPopupNew(objValue) {
-        this.props.onModalClick(objValue)
+        this.props.onModalClick(objValue, this.props.name)
     }
 
     componentDidMount() {
@@ -101,6 +101,10 @@ class GridCell extends Component {
             case "text":
                 control = <label>{text}</label>;
                 break;
+            case "textBoldRed":
+                control = <label className="txt-boold-red">{text}</label>;
+                break;
+
             case "textCurrency":
                 return <label>{formatMoney(text, 0)}</label>;
             case "texttolinkdate":
