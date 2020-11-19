@@ -96,9 +96,9 @@ class DataGridCom extends Component {
             this.props.onDetailClick(id);
     }
 
-    handleShowModalClick(objdata) {
+    handleShowModalClick(objdata, name) {
         if (this.props.onShowModal != null)
-            this.props.onShowModal(objdata);
+            this.props.onShowModal(objdata, name);
     }
 
     handleInsertClick() {

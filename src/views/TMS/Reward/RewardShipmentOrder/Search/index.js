@@ -59,6 +59,8 @@ class SearchCom extends React.Component {
         this.handleCallData();
     }
 
+   
+
     handleCallData() {
         const { SearchData } = this.state;
         this.callSearchData(SearchData);

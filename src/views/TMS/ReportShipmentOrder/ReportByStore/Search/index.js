@@ -12,7 +12,12 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
-    LoadReportStoreByDate
+    LoadReportStoreByDate,
+    LoadReportStorePaidInByDate,
+    LoadReportStoreCancelDeliveryByDate,
+    LoadReportStoreCompletedOrderByDate,
+    LoadReportStoreDeliveredByDate,
+    LoadReportStoreDeliveringByDate
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -175,13 +180,32 @@ class SearchCom extends React.Component {
         });
     }
 
+    getStatusDelivery(status) {
+        switch (status) {
+            case 'TotalUndelivery':
+                return 1;
+            case 'TotalDelivering':
+                return 2;
+            case 'TotalDelivered':
+                return 3;
+            case 'TotalCompletedOrder':
+                return 4;
+            case 'TotalCancelDelivery':
+                return 5
+            case 'TotalPaidIn':
+                return 6
+            default:
+                return 0;
+        }
+    }
 
-    onShowModalDetail(objValue) {
-        
+    onShowModalDetail(objValue, name) {
+        const status = this.getStatusDelivery(name);
         const objData = {
             FromDate: this.state.FromDate,
             ToDate: this.state.ToDate,
-            CoordinatorStoreID: objValue[0].value
+            CoordinatorStoreID: objValue[0].value,
+            StatusDelivery: status
         }
 
         this.props.callFetchAPI(APIHostName, LoadReportStoreByDate, objData).then(apiResult => {
@@ -192,7 +216,9 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.MessageDetail)
             }
         });
+        
     }
+
 
     handleShowModal(data) {
         const { widthPercent } = this.state;
@@ -201,6 +227,8 @@ class SearchCom extends React.Component {
             content: {
                 text: <DataGirdReportShipmentOrder
                     dataSource={data}
+                    RowsPerPage={20}
+                    IsAutoPaging={true}
                 />
 
             },
