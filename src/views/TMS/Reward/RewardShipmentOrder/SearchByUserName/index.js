@@ -140,7 +140,7 @@ class SearchByUserNameCom extends React.Component {
                     IsPrint={false}
                     IsExportFile={false}
                     IsAutoPaging={true}
-                    RowsPerPage={10}
+                    RowsPerPage={31}
                     totalCurrency={true}
                     totalCurrencyColSpan={1}
                     totalCurrencyNumber={this.state.totalAmount}
