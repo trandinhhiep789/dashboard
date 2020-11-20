@@ -134,12 +134,33 @@ class SearchCom extends React.Component {
         );
     }
 
-    onShowModalDetail(objValue) {
+    getStatusDelivery(status) {
+        switch (status) {
+            case 'TotalUndelivery':
+                return 1;
+            case 'TotalDelivering':
+                return 2;
+            case 'TotalDelivered':
+                return 3;
+            case 'TotalCompletedOrder':
+                return 4;
+            case 'TotalCancelDelivery':
+                return 5
+            case 'TotalPaidIn':
+                return 6
+            default:
+                return 0;
+        }
+    }
+
+    onShowModalDetail(objValue, name) {
+        const status = this.getStatusDelivery(name);
         
         const objData = {
             FromDate: this.state.FromDate,
             ToDate: this.state.ToDate,
-            UserName: objValue[0].value
+            UserName: objValue[0].value,
+            StatusDelivery: status
         }
 
         this.props.callFetchAPI(APIHostName, LoadReportUserNameByDate, objData).then(apiResult => {
@@ -159,6 +180,8 @@ class SearchCom extends React.Component {
             content: {
                 text: <DataGirdReportShipmentOrder
                     dataSource={data}
+                    RowsPerPage={20}
+                    IsAutoPaging={true}
                 />
 
             },
