@@ -759,7 +759,7 @@ class DataGridShipmentOderCom extends Component {
                                     <td className="group-address" style={{ width: '22%' }}>
                                         <div className="group-info-row">
                                             <label className="item address-repository-created">
-                                                <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replaceAll(';', '<br/>'))}</span>
+                                                <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, '<br/>'))}</span>
                                             </label>
                                             <label className="item address-receiver">
                                                 <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
