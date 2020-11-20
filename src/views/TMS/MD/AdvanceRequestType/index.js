@@ -11,6 +11,7 @@ import Add from "./Add";
 import Edit from "./Edit";
 import Detail from "./Detail";
 import NotFound from '../../../NotFound'
+import ReviewLevelDetail from "../AdvanceRequestType_ReviewLevel/Detail";
 class AdvanceRequestTypeCom extends React.Component {
     constructor(props) {
         super(props);
@@ -23,6 +24,7 @@ class AdvanceRequestTypeCom extends React.Component {
                 <Route exact path="/AdvanceRequestType/Add" component={Add} />
                 <Route exact path="/AdvanceRequestType/Edit/:id" component={Edit} />
                 <Route exact path="/AdvanceRequestType/Detail/:id" component={Detail} />
+                <Route exact path="/AdvanceRequestType/ReviewLevelDetail/:id" component={ReviewLevelDetail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
