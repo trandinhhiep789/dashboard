@@ -95,6 +95,10 @@ class DataGridCom extends Component {
         if (this.props.onDetailClick != null)
             this.props.onDetailClick(id);
     }
+    handleDetailModalClick(item) {
+        if (this.props.onDetailModalClick != null)
+            this.props.onDetailModalClick(item);
+    }
 
     handleShowModalClick(objdata, name) {
         if (this.props.onShowModal != null)
@@ -502,10 +506,12 @@ class DataGridCom extends Component {
                                                     isChecked={isChecked}
                                                     onInsertClickEdit={this.handleInsertClickEdit}
                                                     onDetailtClick={this.handleDetailClick}
+                                                    onDetailtModalClick={this.handleDetailModalClick.bind(this)}
                                                     onModalClick={this.handleShowModalClick.bind(this)}
                                                     pkColumnName={this.state.ListPKColumnName}
                                                     params={this.props.params}
                                                     linkTo={this.state.ListPKColumnName + index}
+                                                    rowItem={rowItem}
                                                 />;
                                                 return (
                                                     <td key={columnItem.Name} style={cellStyle}  >{cellData}</td>

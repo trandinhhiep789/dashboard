@@ -117,12 +117,13 @@ class SearchCom extends React.Component {
         });
     }
 
-    handleItemDetail(index) {
+    handleItemDetail(item) {
+        
         const { gridDataSource } = this.state;
         let MLObject = {}
-        MLObject.MaterialGroupID = gridDataSource[index].MaterialGroupID;
-        MLObject.ProductID = gridDataSource[index].ProductID;
-        MLObject.UserName = gridDataSource[index].UserName;
+        MLObject.MaterialGroupID = item.MaterialGroupID;
+        MLObject.ProductID = item.ProductID;
+        MLObject.UserName = item.UserName;
 
         this.getdataHistory(MLObject);
 
@@ -189,13 +190,14 @@ class SearchCom extends React.Component {
                 <DataGrid
                     listColumn={DataGridColumnList}
                     dataSource={this.state.gridDataSource}
-                    IDSelectColumnName={""}
-                    PKColumnName={""}
+                    IDSelectColumnName={"ProductID"}
+                    PKColumnName={"ProductID"}
                     IsDelete={false}
                     IsAutoPaging={true}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
-                    onDetailClick={this.handleItemDetail.bind(this)}
+                    // onDetailClick={this.handleItemDetail.bind(this)}
+                    onDetailModalClick={this.handleItemDetail.bind(this)}
                     RowsPerPage={10}
                     IsExportFile={false}
                 // RequirePermission={SERVICEAGREEMENT_VIEW}

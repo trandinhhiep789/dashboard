@@ -25,7 +25,6 @@ class CurrentAdvanceDebtListCom extends Component {
 
     render() {
         const { CurrentAdvanceDebtList } = this.state;
-        
 
         return (
             <React.Fragment>
@@ -50,13 +49,13 @@ class CurrentAdvanceDebtListCom extends Component {
                 <DataGrid
                     listColumn={DataGridHistoryColumnList}
                     dataSource={CurrentAdvanceDebtList}
-                    IDSelectColumnName={""}
-                    PKColumnName={""}
+                    IDSelectColumnName={"ProductID"}
+                    PKColumnName={"ProductID"}
                     IsDelete={false}
                     IsAutoPaging={true}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
-                    RowsPerPage={10}
+                    RowsPerPage={3}
                     IsExportFile={false}
                 />
             </React.Fragment>

@@ -58,7 +58,7 @@ export const DataGridColumnList = [
     },
     {
         Name: "ProductID",
-        Type: "Detailt",
+        Type: "DetailtNew",
         Caption: "Mã sản phẩm",
         DataSourceMember: "ProductID",
         Width: 180

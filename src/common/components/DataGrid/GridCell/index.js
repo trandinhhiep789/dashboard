@@ -14,10 +14,14 @@ class GridCell extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleRadioChange = this.handleRadioChange.bind(this);
         this.handleonClickEdit = this.handleonClickEdit.bind(this);
-
+        this.handleOnClickDetailtNew = this.handleOnClickDetailtNew.bind(this);
         this.handleonClickDetailt = this.handleonClickDetailt.bind(this);
         this.handleonClickDelete = this.handleonClickDelete.bind(this);
 
+    }
+
+    componentDidMount() {
+        console.log("this.props", this.props)
     }
 
     handleInputChange(e) {
@@ -51,6 +55,10 @@ class GridCell extends Component {
 
     handleonClickDetailt() {
         this.props.onDetailtClick(this.props.index)
+    }
+
+    handleOnClickDetailtNew() {
+        this.props.onDetailtModalClick(this.props.rowItem)
     }
 
     handleonClickDelete(e) {
@@ -144,6 +152,11 @@ class GridCell extends Component {
 
             case "Detailt":
                 return <a className="nav-link hover-primary btn-Detailt" onClick={this.handleonClickDetailt} title="Detailt">
+                    {text}
+                </a>;
+
+            case "DetailtNew":
+                return <a className="nav-link hover-primary btn-Detailt" onClick={this.handleOnClickDetailtNew} title="Detailt">
                     {text}
                 </a>;
 
