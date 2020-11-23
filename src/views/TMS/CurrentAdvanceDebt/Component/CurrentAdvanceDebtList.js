@@ -55,7 +55,7 @@ class CurrentAdvanceDebtListCom extends Component {
                     IsAutoPaging={true}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
-                    RowsPerPage={3}
+                    RowsPerPage={10}
                     IsExportFile={false}
                 />
             </React.Fragment>
