@@ -12,6 +12,7 @@ export function checkPermission(permissionKey) {
             if (!result.IsError) {
                 if (result.ResultObject.CacheData) {
                     for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
+                        // resultObject.IsPermission = result.ResultObject.CacheData.find(n => n.FunctionID ==permissionKey)
                         if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
                             resultObject.IsPermission = true;
                         }

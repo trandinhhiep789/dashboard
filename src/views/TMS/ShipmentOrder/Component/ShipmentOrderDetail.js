@@ -4,7 +4,7 @@ import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.
 import { ModalManager } from 'react-dynamic-modal';
 import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
+import { GET_CACHE_USER_FUNCTION_LIST,SHIPMENTORDER_EXPECTEDDELIVERYDATE } from "../../../../constants/functionLists";
 import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
@@ -27,6 +27,7 @@ class ShipmentOrderDetailCom extends Component {
             IsPermision: false,
             IsUpdateDate: false,
             IsDisable: true,
+            IsExpectedDeliveryDate: false,
             dtExpectedDeliveryDate: this.props.ShipmentOrderDetail.ExpectedDeliveryDate
         }
         this.notificationDOMRef = React.createRef();
@@ -40,6 +41,23 @@ class ShipmentOrderDetailCom extends Component {
         }
     }
 
+    componentDidMount() {
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                const found = result.ResultObject.CacheData.find(x => x.FunctionID == SHIPMENTORDER_EXPECTEDDELIVERYDATE);
+                if (found!=undefined) {
+                    this.setState({
+                        IsExpectedDeliveryDate: true
+                    });
+                }
+                else {
+                    this.setState({
+                        IsExpectedDeliveryDate: false
+                    });
+                }
+            }
+        });
+    }
 
     checkPermission(permissionKey) {
         return new Promise((resolve, reject) => {
@@ -298,7 +316,6 @@ class ShipmentOrderDetailCom extends Component {
         });
     }
 
-
     onValueChangeControlDatetime(name, mod) {
         this.setState({
             dtExpectedDeliveryDate: mod
@@ -332,6 +349,18 @@ class ShipmentOrderDetailCom extends Component {
             });
         }
     }
+    _CheckTime(dates) {
+        const date = new Date(Date.parse(dates));
+        let currentDate = new Date();
+        var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
+        var diffMinutes = parseInt((timeDiff / (3600 * 24)));
+        if (diffMinutes < 1440) {
+            return true;
+        }
+        else {
+            return false
+        }
+    }
 
 
     render() {
@@ -341,7 +370,8 @@ class ShipmentOrderDetailCom extends Component {
             strShipmentOrderStepName = this.state.ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === this.state.ShipmentOrder.CurrentShipmentOrderStepID)[0].ShipmentOrderStepName
             IsMustCompleteCollection = this.state.ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === this.state.ShipmentOrder.CurrentShipmentOrderStepID)[0].IsMustCompleteCollection
         }
-        const { ShipmentOrder, IsUpdateDate, IsDisable } = this.state;
+        const { ShipmentOrder, IsUpdateDate, IsDisable, IsExpectedDeliveryDate } = this.state;
+        let onclin = this._CheckTime(this.state.ShipmentOrder.CreatedOrderTime)
         const linkHistoryTransaction = "/PartnerTransaction/Edit/" + ShipmentOrder.PartnerTransactionID;
         return (
             <div className="ShipmentOrderDetail">
@@ -373,30 +403,6 @@ class ShipmentOrderDetailCom extends Component {
                     </div>}
                     easing="ease-in" open={false}>
                     <div className="card cardCollapsible">
-                        {/* <div>
-                    <div className="card-title">
-                        <h4 className="title">
-                            <strong>Thông tin yêu cầu vận chuyển</strong>
-                        </h4>
-                        <div className="form-group form-group-dropdown form-group-dropdown-custom">
-                            <div className="input-group input-group-dropdown-custom">
-                                <div className="input-group-append">
-
-                                    <button className="btn dropdown-toggle" type="button" data-toggle="dropdown">{strShipmentOrderStepName}</button>
-                                    <div className="dropdown dropdown-menu">
-                                        {this.state.ShipmentOrder.ShipmentOrderType_WF_NextList && this.state.ShipmentOrder.ShipmentOrderType_WF_NextList.map(item =>
-                                            <a className={item.NextShipmentOrderStep === this.state.ShipmentOrder.CurrentShipmentOrderStepID ? "dropdown-item active" : "dropdown-item"}
-                                                key={item.NextShipmentOrderStep} name={item.NextShipmentOrderStep} data-option={item.NextShipmentOrderStep}
-                                                data-functionid={item.ChooseFunctionID}
-                                                data-lable={item.NextShipmentOrderStepName} onClick={this.onChangeInput.bind(this)}>
-                                                {item.NextShipmentOrderStepName}</a>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
                         <div className="card-body">
                             <div className="form-row">
                                 <div className="form-group col-md-2">
@@ -468,24 +474,26 @@ class ShipmentOrderDetailCom extends Component {
 
                                 </div>
                                 <div className="form-group col-md-1">
-                                    <div className="group-btn-update">
-                                        {
-                                            IsUpdateDate == false ?
-                                                <button className="btn btn-update-submit" type="button" onClick={() => this.handleUpdateExpectedDelivery(1)}>
-                                                    <i className="ti ti-pencil-alt"></i>
-                                                </button>
-                                                :
-                                                <React.Fragment>
-                                                    <button className="btn btn-update-submit" type="button" onClick={() => this.handleUpdateExpectedDelivery(3)}>
-                                                        <i className="ti-check"></i>
+                                    {(onclin == true || IsExpectedDeliveryDate==true) ?
+                                        <div className="group-btn-update">
+                                            {
+                                                IsUpdateDate == false ?
+                                                    <button className="btn btn-update-submit" type="button" onClick={() => this.handleUpdateExpectedDelivery(1)}>
+                                                        <i className="ti ti-pencil-alt"></i>
                                                     </button>
-                                                    <button className="btn btn-update-cancel" type="button" onClick={() => this.handleUpdateExpectedDelivery(2)}>
-                                                        <i className="ti-close"></i>
-                                                    </button>
-                                                </React.Fragment>
-                                        }
-
-                                    </div>
+                                                    :
+                                                    <React.Fragment>
+                                                        <button className="btn btn-update-submit" type="button" onClick={() => this.handleUpdateExpectedDelivery(3)}>
+                                                            <i className="ti-check"></i>
+                                                        </button>
+                                                        <button className="btn btn-update-cancel" type="button" onClick={() => this.handleUpdateExpectedDelivery(2)}>
+                                                            <i className="ti-close"></i>
+                                                        </button>
+                                                    </React.Fragment>
+                                            }
+                                        </div>
+                                        : ""
+                                    }
                                 </div>
                                 {/* <div className="form-group col-md-2">
                             <label className="col-form-label bold">Thời gian giao dự kiến:</label>
