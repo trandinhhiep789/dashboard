@@ -574,6 +574,13 @@ const AppMenu = [
                         LinkTo: '/RewardShipmentOrderByUser',
                         MenuIcon: '',
                         SubMenu: []
+                    },
+                    {
+                        MenuName: 'RewardShipmentOrderByType',
+                        MenuTitle: 'Thưởng giao hàng theo loại',
+                        LinkTo: '/RewardShipmentOrderByType',
+                        MenuIcon: '',
+                        SubMenu: []
                     }
                 ]
             },
