@@ -42,7 +42,12 @@ class InfoHistoryWFCom extends Component {
         const objIme = e.currentTarget.dataset.id;
         const objlst = objIme.split(";");
         for (let i = 0; i < objlst.length; i++) {
-            images.push({ original: JSON.parse(objlst[i]).ImageFileURL, thumbnail: JSON.parse(objlst[i]).ImageFileURL, ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation });
+            images.push({ 
+                original: JSON.parse(objlst[i]).ImageFileURL, 
+                thumbnail: JSON.parse(objlst[i]).ImageFileURL, 
+                ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
+                description: "15:20"
+             });
         }
         this.props.showModal(MODAL_TYPE_IMAGE_SLIDE, {
             title: 'Danh sách hình ảnh ',
