@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import { MessageModal } from "../../../../common/components/Modal";
 import {
-    APIHostName, GetCreateAdSaleOrderAPIPath,BackLink
+    APIHostName, GetCreateAdSaleOrderAPIPath, BackLink
 } from "./constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -50,8 +50,7 @@ class AdvanceRequestDetailCom extends React.Component {
         });
     }
 
-    handleCancelAdvanceRequest()
-    {
+    handleCancelAdvanceRequest() {
         this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/CancelAdvanceRequest", this.state.AdvanceRequestID).then(apiResult => {
             this.setState({ IsCallAPIError: !apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -78,7 +77,7 @@ class AdvanceRequestDetailCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-       
+
         return (
             <React.Fragment>
                 <div className="col-lg-12 page-detail">
@@ -92,13 +91,9 @@ class AdvanceRequestDetailCom extends React.Component {
                                 </button> :
                                 ""
                             }
-                          {!this.state.AdvanceRequest.IsCreatedOrder ?
-                                <button className="btn btnEditCard" onClick={this.handleCancelAdvanceRequest.bind(this)} type="button">
-                                    <span>Hủy phiếu xuất</span>
-                                </button> :
-                                ""
-                            }
-
+                            <button className="btn btnEditCard" onClick={this.handleCancelAdvanceRequest.bind(this)} type="button">
+                                <span>Hủy phiếu xuất</span>
+                            </button>
                         </div>
                         <div className="card-body">
                             <div className="row">
