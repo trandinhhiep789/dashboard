@@ -332,7 +332,7 @@ class EditCom extends React.Component {
                                 name="cbSenderStoreID"
                                 colspan="8"
                                 labelcolspan="4"
-                                label="kho gửi"
+                                label="kho xuất"
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
                                 IsLabelDiv={false}
@@ -345,7 +345,7 @@ class EditCom extends React.Component {
                                 isMultiSelect={false}
                                 datasourcemember="SenderStoreID"
                                 validationErrorMessage={''}
-                                IsLabelDiv="kho gửi"
+                                IsLabelDiv="kho xuất"
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
                             />
