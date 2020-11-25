@@ -64,6 +64,8 @@ class DataGridShipmentOderCom extends Component {
         this.checkPermission(permissionKey).then((result) => {
             this.setState({ IsPermision: result });
         })
+
+        
     }
 
     componentWillReceiveProps(nextProps) {
@@ -603,11 +605,11 @@ class DataGridShipmentOderCom extends Component {
     }
     renderDataGrid() {
         const dataSource = this.state.DataSource;
-
+        const widthTable = $('#fixtable tbody').width();
         return (
             <div className=" table-responsive">
                 <table id="fixtable" className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder" cellSpacing="0" >
-                    <thead className="thead-light">
+                    <thead className="thead-light" style={{maxWidth: widthTable}}>
                         <tr>
                             <th className="jsgrid-header-cell" style={{ width: '5%' }}>Tác vụ</th>
                             <th className="jsgrid-header-cell" style={{ width: '15%' }}>Thời gian giao</th>
