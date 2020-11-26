@@ -49,7 +49,6 @@ class SearchByDateCom extends React.Component {
     callLoadData(postData) {
 
         this.props.callFetchAPI(APIHostName, SearchDetailAPIPath, postData).then(apiResult => {
-            console.log("postData", postData, apiResult.ResultObject)
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,

@@ -281,7 +281,7 @@ class AddCom extends React.Component {
                                 name="cbSenderStoreID"
                                 colspan="8"
                                 labelcolspan="4"
-                                label="kho gửi"
+                                label="kho xuất"
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
                                 validatonList={["Comborequired"]}
@@ -294,7 +294,7 @@ class AddCom extends React.Component {
                                 isMultiSelect={false}
                                 datasourcemember="SenderStoreID"
                                 validationErrorMessage={''}
-                                IsLabelDiv="kho gửi"
+                                IsLabelDiv="kho xuất"
                             />
                         </div>
                     </div>
