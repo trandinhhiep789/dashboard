@@ -437,7 +437,6 @@ class MaterialGroup_InstallCondCom extends React.Component {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, _MaterialGroup_InstallCondDataSource);
                     if (MLObject) {
-                        console.log("MLObject", MLObject);
                         MLObject.MaterialGroup = this.state.MaterialGroupID;
                         MLObject.MainGroupID = MLObject.MainGroupID && Array.isArray(MLObject.MainGroupID) ? MLObject.MainGroupID[0] : MLObject.MainGroupID;
                         MLObject.ApplySubGroupID = MLObject.ApplySubGroupID && Array.isArray(MLObject.ApplySubGroupID) ? MLObject.ApplySubGroupID[0] : MLObject.ApplySubGroupID;
