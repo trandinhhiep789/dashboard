@@ -37,10 +37,12 @@ class FeeAppendixDetailElementCom extends Component {
         MLObject.FeeAppendixID = this.props.dataSource.FeeAppendixID.trim();
         MLObject.SignedDate = this.props.dataSource.SignedDate;
         MLObject.ApplyFromDate = this.props.dataSource.ApplyFromDate;
-        if(MLObject.ProductID !=undefined && MLObject.ProductID !="" ){
-            MLObject.ProductID = MLObject.ProductID[0].ProductID;
-        }
+        // if(MLObject.ProductID !=undefined && MLObject.ProductID !="" ){
+        //     MLObject.ProductID = MLObject.ProductID[0].ProductID;
+        // }
         
+        MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
+
         if (this.props.index != undefined) {
             MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
             MLObject.FeeAppendixDetailID =

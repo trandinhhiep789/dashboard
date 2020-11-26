@@ -170,7 +170,7 @@ class MaterialGroup_ProductCom extends React.Component {
                         MLObject.MaterialGroupProductCSID = this.state.MaterialGroupID + "," + MLObject.ProductID[0].ProductID;
                         MLObject.MaterialGroupID = this.state.MaterialGroupID;
                         MLObject.ProductName = MLObject.ProductID[0].ProductName;
-                        MLObject.ProductID = MLObject.ProductID[0].ProductID;
+                        MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
 
                         MLObject.AdvanceQuantityUnitID = MLObject.AdvanceQuantityUnitID && Array.isArray(MLObject.AdvanceQuantityUnitID) ? MLObject.AdvanceQuantityUnitID[0] : MLObject.AdvanceQuantityUnitID;
                         MLObject.AdvanceProductID = MLObject.AdvanceProductID && Array.isArray(MLObject.AdvanceProductID) ? MLObject.AdvanceProductID[0].ProductID : MLObject.AdvanceProductID;
