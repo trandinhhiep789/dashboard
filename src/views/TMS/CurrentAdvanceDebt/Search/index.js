@@ -81,9 +81,7 @@ class SearchCom extends React.Component {
     }
 
     handleGetDatat(id) {
-        console.log('id', id)
         this.props.callFetchAPI(APIHostName, SearchAPIPath, id).then(apiResult => {//MLObject.UserName.value
-            console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError

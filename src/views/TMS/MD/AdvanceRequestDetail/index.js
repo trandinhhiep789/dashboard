@@ -77,7 +77,6 @@ class AdvanceRequestDetailCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-
         return (
             <React.Fragment>
                 <div className="col-lg-12 page-detail">
@@ -113,7 +112,7 @@ class AdvanceRequestDetailCom extends React.Component {
                                             {this.state.AdvanceRequestDetailDataSource && this.state.AdvanceRequestDetailDataSource.map((item, index) => {
                                                 return (
                                                     <tr key={index}>
-                                                        <td>{item.MaterialGroupName}</td>
+                                                        <td>{item.MaterialGroupID + " - " + item.MaterialGroupName}</td>
                                                         <td>{item.ProductID}</td>
                                                         <td>{item.ProductName}</td>
                                                         <td>{item.Quantity}</td>
