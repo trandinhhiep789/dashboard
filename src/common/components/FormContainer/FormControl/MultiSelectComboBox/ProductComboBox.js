@@ -72,18 +72,20 @@ class ProductComboBoxCom extends React.Component {
             "IsCompressResultData": false
         }
         this.props.callFetchAPI("ERPAPI", 'api/ProductSearch/Search', listMLObject).then(apiResult => {
-            let listOptionNew = [];
+            let listOptionNew = [{ value: null, label: "------ Chọn ------" }];
+            let selectedOption = [];
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
                 listOptionNew.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
+                selectedOption.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
             }
 
-            if (!isFirstLoad) {
-                listOptionNew.unshift({ value: null, label: "------ Chọn ------" });
-            }
+            // if (!isFirstLoad) {
+            //     listOptionNew.unshift({ value: null, label: "------ Chọn ------" });
+            // }
 
             this.setState({
                 ListOption: listOptionNew,
-                SelectedOption: isFirstLoad ? listOptionNew : []
+                SelectedOption: isFirstLoad ? selectedOption : []
             });
             return listOptionNew;
         });

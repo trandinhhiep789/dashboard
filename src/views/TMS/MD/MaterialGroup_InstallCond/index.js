@@ -188,7 +188,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
             }
 
         });
-        
+
         this.state.ModalColumnList_Edit.forEach(function (objElement) {
             if (objElement.Name == "MaterialProductID") {
                 objElement.listoption = _listoption;
@@ -337,7 +337,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
 
         }.bind(this));
 
-        
+
 
         if (isInsert) {
             this.setState({
@@ -373,7 +373,8 @@ class MaterialGroup_InstallCondCom extends React.Component {
                         MLObject.ApplyTechspecsID = MLObject.ApplyTechspecsID && Array.isArray(MLObject.ApplyTechspecsID) ? MLObject.ApplyTechspecsID[0] : MLObject.ApplyTechspecsID;
                         MLObject.ApplyTechspecsValueID = MLObject.ApplyTechspecsValueID && Array.isArray(MLObject.ApplyTechspecsValueID) ? MLObject.ApplyTechspecsValueID[0] : MLObject.ApplyTechspecsValueID;
                         MLObject.ApplyBrandID = MLObject.ApplyBrandID && Array.isArray(MLObject.ApplyBrandID) ? MLObject.ApplyBrandID[0] : MLObject.ApplyBrandID;
-                        MLObject.ApplyProductID = MLObject.ApplyProductID && MLObject.ApplyProductID[0].ProductID ? MLObject.ApplyProductID[0].ProductID : MLObject.ApplyProductID;
+                        MLObject.ApplyProductID = MLObject.ApplyProductID && Array.isArray(MLObject.ApplyProductID) ? MLObject.ApplyProductID[0].ProductID : MLObject.ApplyProductID;
+                        //MLObject.ApplyProductID = MLObject.ApplyProductID && MLObject.ApplyProductID[0].ProductID ? MLObject.ApplyProductID[0].ProductID : MLObject.ApplyProductID;
                         //MLObject.MaterialProductID = MLObject.MaterialProductID && MLObject.MaterialProductID[0].ProductID ? MLObject.MaterialProductID[0].ProductID : MLObject.MaterialProductID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
@@ -436,13 +437,15 @@ class MaterialGroup_InstallCondCom extends React.Component {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, _MaterialGroup_InstallCondDataSource);
                     if (MLObject) {
+                        console.log("MLObject", MLObject);
                         MLObject.MaterialGroup = this.state.MaterialGroupID;
                         MLObject.MainGroupID = MLObject.MainGroupID && Array.isArray(MLObject.MainGroupID) ? MLObject.MainGroupID[0] : MLObject.MainGroupID;
                         MLObject.ApplySubGroupID = MLObject.ApplySubGroupID && Array.isArray(MLObject.ApplySubGroupID) ? MLObject.ApplySubGroupID[0] : MLObject.ApplySubGroupID;
                         MLObject.ApplyTechspecsID = MLObject.ApplyTechspecsID && Array.isArray(MLObject.ApplyTechspecsID) ? MLObject.ApplyTechspecsID[0] : MLObject.ApplyTechspecsID;
                         MLObject.ApplyTechspecsValueID = MLObject.ApplyTechspecsValueID && Array.isArray(MLObject.ApplyTechspecsValueID) ? MLObject.ApplyTechspecsValueID[0] : MLObject.ApplyTechspecsValueID;
                         MLObject.ApplyBrandID = MLObject.ApplyBrandID && Array.isArray(MLObject.ApplyBrandID) ? MLObject.ApplyBrandID[0] : MLObject.ApplyBrandID;
-                        MLObject.ApplyProductID = MLObject.ApplyProductID && MLObject.ApplyProductID[0].ProductID ? MLObject.ApplyProductID[0].ProductID : MLObject.ApplyProductID;
+                        MLObject.ApplyProductID = MLObject.ApplyProductID && Array.isArray(MLObject.ApplyProductID) ? MLObject.ApplyProductID[0].ProductID : MLObject.ApplyProductID;
+                        // MLObject.ApplyProductID = MLObject.ApplyProductID && MLObject.ApplyProductID[0].ProductID ? MLObject.ApplyProductID[0].ProductID : MLObject.ApplyProductID;
                         //MLObject.MaterialProductID = MLObject.MaterialProductID && MLObject.MaterialProductID[0].ProductID ? MLObject.MaterialProductID[0].ProductID : MLObject.MaterialProductID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
