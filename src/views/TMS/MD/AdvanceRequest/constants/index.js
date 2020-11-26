@@ -149,42 +149,42 @@ export const DataGridColumnList = [
         Caption: "Mã yêu cầu tạm ứng",
         Link: "/AdvanceRequest/Edit/",
         DataSourceMember: "AdvanceRequestID",
-        Width: 100
+        Width: 50
     },
     {
         Name: "AdvanceRequestTitle",
         Type: "text",
         Caption: "Tiêu đề yêu cầu tạm ứng",
         DataSourceMember: "AdvanceRequestTitle",
-        Width: 230
+        Width: 250
     },
     {
         Name: "AdvanceRequestTypeName",
         Type: "text",
         Caption: "Loại yêu cầu tạm ứng",
         DataSourceMember: "AdvanceRequestTypeName",
-        Width: 230
+        Width: 210
     },
     {
         Name: "ShipmentOrderID",
         Type: "text",
         Caption: "Mã yêu cầu vận chuyển",
         DataSourceMember: "ShipmentOrderID",
-        Width: 120
+        Width: 80
     },
     {
         Name: "SaleOrderID",
         Type: "text",
         Caption: "Mã đơn hàng tạm ứng",
         DataSourceMember: "SaleOrderID",
-        Width: 120
+        Width: 80
     },
     {
         Name: "RequestUserName",
         Type: "text",
         Caption: "Người yêu cầu",
         DataSourceMember: "RequestUserName",
-        Width: 120
+        Width: 160
     },
     {
         Name: "RequestDate",
@@ -192,7 +192,14 @@ export const DataGridColumnList = [
         Caption: "Ngày yêu cầu",
         DataSourceMember: "RequestDate",
         Width: 70
-    }
+    },
+    {
+        Name: "IsDeleted",
+        Type: "checkicon",
+        Caption: "Đã hủy",
+        DataSourceMember: "IsDeleted",
+        Width: 50
+    },
 ];
 
 
