@@ -347,6 +347,12 @@ export const USER_REWARD_STORE_ADD = 'USER_REWARD_STORE_ADD';
 export const USER_REWARD_STORE_UPDATE = 'USER_REWARD_STORE_UPDATE';
 export const USER_REWARD_STORE_DELETE = 'USER_REWARD_STORE_DELETE';
 
+// bảng giá nhiên liệu
+export const FUELPRICE_VIEW = 'FUELPRICE_VIEW';
+export const FUELPRICE_ADD = 'FUELPRICE_ADD';
+export const FUELPRICE_UPDATE = 'FUELPRICE_UPDATE';
+export const FUELPRICE_DELETE = 'FUELPRICE_DELETE';
+
 //Bảng đơn giá thưởng giao hàng và lắp đặt
 
 export const REWARDPRICETABLE_VIEW = 'REWARDPRICETABLE_VIEW';

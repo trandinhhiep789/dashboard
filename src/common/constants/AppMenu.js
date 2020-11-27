@@ -296,38 +296,6 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'Limit',
-                MenuTitle: 'Giới hạn',
-                LinkTo: '',
-                MenuIcon: '',
-                SubMenu: [
-                    {
-                        MenuName: 'LimitType',
-                        MenuTitle: 'Loại giới hạn',
-                        LinkTo: '/LimitType',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'UserLimit',
-                        MenuTitle: 'Giới hạn theo người dùng',
-                        LinkTo: '/UserLimit',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    // {
-                    //     MenuName: 'UserLimitTest',
-                    //     MenuTitle: 'Giới hạn theo người dùng test' ,
-                    //     LinkTo: '/UserLimitTest',
-                    //     MenuIcon: '',
-                    //     SubMenu: []
-                    // },
-
-
-
-                ]
-            },
-            {
                 MenuName: 'Reward',
                 MenuTitle: 'Thưởng nhân viên',
                 LinkTo: '',
@@ -369,6 +337,13 @@ const AppMenu = [
                         SubMenu: []
                     },
                     {
+                        MenuName: 'FuelPrice',
+                        MenuTitle: 'Bảng giá nhiêu liệu',
+                        LinkTo: '/FuelPrice',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'RewardPriceTable',
                         MenuTitle: 'Đơn giá thưởng giao hàng và lắp đặt',
                         LinkTo: '/RewardPriceTable',
@@ -378,6 +353,39 @@ const AppMenu = [
 
                 ]
             },
+            {
+                MenuName: 'Limit',
+                MenuTitle: 'Giới hạn',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'LimitType',
+                        MenuTitle: 'Loại giới hạn',
+                        LinkTo: '/LimitType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'UserLimit',
+                        MenuTitle: 'Giới hạn theo người dùng',
+                        LinkTo: '/UserLimit',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    // {
+                    //     MenuName: 'UserLimitTest',
+                    //     MenuTitle: 'Giới hạn theo người dùng test' ,
+                    //     LinkTo: '/UserLimitTest',
+                    //     MenuIcon: '',
+                    //     SubMenu: []
+                    // },
+
+
+
+                ]
+            },
+            
             {
                 MenuName: 'Advance',
                 MenuTitle: 'Tạm ứng',
