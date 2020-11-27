@@ -96,9 +96,9 @@ class DataGirdReportShipmentOrderCom extends Component {
         const dataSource = this.getDisplayData(this.props.dataSource);
         const countTotalMoney = this.props.dataSource.reduce((a, v) => a = a + v.CollectedTotalMoney, 0);
         return (
-            <div className="col-12 mt-30">
+            <div className="col-12">
                 {this.props.Status != undefined && this.props.Status == 7 &&
-                    <div class="row">
+                    <div class="row mt-20">
                         <div class="col-md-11 text-right">
                             <label class="col-form-label bold txtTotal">Tổng công nợ:</label>
                         </div>
@@ -109,7 +109,7 @@ class DataGirdReportShipmentOrderCom extends Component {
                     </div>
                 }
 
-                <div className="table-responsive">
+                <div className="table-responsive  mt-20">
                     <table className="table table-sm table-striped table-bordered table-hover table-condensed dataGirdReportShipment" cellSpacing="0">
                         <thead className="thead-light">
                             <tr>
