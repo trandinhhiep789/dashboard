@@ -180,6 +180,8 @@ class SearchCom extends React.Component {
                 return 5
             case 'TotalPaidIn':
                 return 6
+            case 'UnTotalPaidIn':
+                return 7
             default:
                 return 0;
         }
@@ -189,75 +191,24 @@ class SearchCom extends React.Component {
 
         const status = this.getStatusDelivery(name);
         const dtmCreatedOrderTime = objValue[0].value
-        if (status == 1) {
-            this.props.callFetchAPI(APIHostName, LoadReportUndeliveryByDate, dtmCreatedOrderTime).then(apiResult => {
-                if (!apiResult.IsError) {
-                    this.handleShowModal(apiResult.ResultObject)
-                }
-                else {
-                    this.showMessage(apiResult.MessageDetail)
-                }
-            });
-        }
-        if (status == 2) {
 
-            this.props.callFetchAPI(APIHostName, LoadReportDeliveringByDate, dtmCreatedOrderTime).then(apiResult => {
-                if (!apiResult.IsError) {
-                    this.handleShowModal(apiResult.ResultObject)
-                }
-                else {
-                    this.showMessage(apiResult.MessageDetail)
-                }
-            });
+        const objData = {
+            CreatedOrderTime:dtmCreatedOrderTime,
+            StatusDelivery: status
         }
-        if (status == 3) {
-
-            this.props.callFetchAPI(APIHostName, LoadReportDeliveredByDate, dtmCreatedOrderTime).then(apiResult => {
-                if (!apiResult.IsError) {
-                    this.handleShowModal(apiResult.ResultObject)
-                }
-                else {
-                    this.showMessage(apiResult.MessageDetail)
-                }
-            });
-        }
-        if (status == 4) {
-            this.props.callFetchAPI(APIHostName, LoadReportCompletedOrderByDate, dtmCreatedOrderTime).then(apiResult => {
-                if (!apiResult.IsError) {
-                    this.handleShowModal(apiResult.ResultObject)
-                }
-                else {
-                    this.showMessage(apiResult.MessageDetail)
-                }
-            });
-        }
-
-        if (status == 5) {
-            this.props.callFetchAPI(APIHostName, LoadReportCancelDeliveryByDate, dtmCreatedOrderTime).then(apiResult => {
-                if (!apiResult.IsError) {
-                    this.handleShowModal(apiResult.ResultObject)
-                }
-                else {
-                    this.showMessage(apiResult.MessageDetail)
-                }
-            });
-        }
-
-        if (status == 6) {
-            this.props.callFetchAPI(APIHostName, LoadReportPaidInByDate, dtmCreatedOrderTime).then(apiResult => {
-                if (!apiResult.IsError) {
-                    this.handleShowModal(apiResult.ResultObject)
-                }
-                else {
-                    this.showMessage(apiResult.MessageDetail)
-                }
-            });
-        }
+        this.props.callFetchAPI(APIHostName, LoadReportUndeliveryByDate, objData).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.handleShowModal(apiResult.ResultObject, status)
+            }
+            else {
+                this.showMessage(apiResult.MessageDetail)
+            }
+        });
 
 
     }
 
-    handleShowModal(data) {
+    handleShowModal(data, status) {
         const { widthPercent } = this.state;
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Danh sách vận đơn chưa giao',
@@ -266,6 +217,7 @@ class SearchCom extends React.Component {
                     dataSource={data}
                     RowsPerPage={20}
                     IsAutoPaging={true}
+                    Status={status}
                 />
 
             },

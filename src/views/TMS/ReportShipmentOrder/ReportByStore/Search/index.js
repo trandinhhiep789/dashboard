@@ -194,6 +194,8 @@ class SearchCom extends React.Component {
                 return 5
             case 'TotalPaidIn':
                 return 6
+            case 'UnTotalPaidIn':
+                return 7
             default:
                 return 0;
         }
@@ -210,7 +212,7 @@ class SearchCom extends React.Component {
 
         this.props.callFetchAPI(APIHostName, LoadReportStoreByDate, objData).then(apiResult => {
             if (!apiResult.IsError) {
-                this.handleShowModal(apiResult.ResultObject)
+                this.handleShowModal(apiResult.ResultObject, status)
             }
             else {
                 this.showMessage(apiResult.MessageDetail)
@@ -220,7 +222,7 @@ class SearchCom extends React.Component {
     }
 
 
-    handleShowModal(data) {
+    handleShowModal(data, status) {
         const { widthPercent } = this.state;
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Danh sách vận đơn chưa giao',
@@ -229,6 +231,7 @@ class SearchCom extends React.Component {
                     dataSource={data}
                     RowsPerPage={20}
                     IsAutoPaging={true}
+                    Status={status}
                 />
 
             },

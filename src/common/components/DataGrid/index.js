@@ -427,11 +427,20 @@ class DataGridCom extends Component {
         const pkColumnName = this.state.ListPKColumnName;
         const idSelectColumnName = this.props.IDSelectColumnName;
         const checkList = this.state.GridData[idSelectColumnName];
+        let isFixed;
+        let widthTable;
+        if (this.props.IsFixheaderTable == false || this.props.IsFixheaderTable == undefined) {
+            isFixed = false
+        }
+        else {
+            isFixed = true
+            widthTable = $('#fixtable tbody').width();
+        }
         // console.log("this.props", this.props);
         return (
             <div className=" table-responsive">
-                <table id={this.props.IsFixheaderTable == true ? "fixtable" : ""} className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0">
-                    <thead className="thead-light">
+                <table id={isFixed == true ? "fixtable" : ""} className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0">
+                    <thead className="thead-light" style={isFixed == true ? {maxWidth: widthTable} : {}}>
                         <tr>
                             {
                                 listColumn.map((elementItem, index) => {
