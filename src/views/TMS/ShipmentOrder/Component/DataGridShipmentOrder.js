@@ -540,8 +540,9 @@ class DataGridShipmentOderCom extends Component {
     _CheckTime(dates) {
         const date = new Date(Date.parse(dates));
         let currentDate = new Date();
-        var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
-        var diffMinutes = parseInt((timeDiff / (3600 * 24)));
+       // var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
+        var timeDiff = date.getTime() - currentDate.getTime();
+        var diffMinutes = parseInt(timeDiff / (3600 * 24));
         if (diffMinutes < 60) {
             return true;
         }
@@ -632,7 +633,6 @@ class DataGridShipmentOderCom extends Component {
                                 }
 
                                 let rowUndelivery = "btngroupleft";
-
                                 if (this._CheckTime(rowItem.ExpectedDeliveryDate) == true && rowItem.CurrentShipmentOrderStepID < 105) {
                                     rowUndelivery = "btngroupleft Undelivery";
                                 }
