@@ -323,6 +323,17 @@
         color: #ffffff;
         font-weight: 500;
     }
+    &.countTotal{
+        color: #f96868;
+        font-size: 13px;
+        font-weight: 600;
+    }
+    &.txtTotal{
+        text-transform: initial;
+        color: #4e4e4e;
+        font-size: 13px;
+        font-weight: 600;
+    }
 }
 .checkbox{
     &.customCheckbox{

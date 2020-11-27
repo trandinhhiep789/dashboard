@@ -90,21 +90,32 @@ class DataGirdReportShipmentOrderCom extends Component {
         return resultData;
     }
 
-
     render() {
         const { PageNumber } = this.state;
         const pageCount = this.getPageCount(this.props.dataSource);
         const dataSource = this.getDisplayData(this.props.dataSource);
-        console.log("dataSource", dataSource)
+        const countTotalMoney = this.props.dataSource.reduce((a, v) => a = a + v.CollectedTotalMoney, 0);
         return (
             <div className="col-12 mt-30">
+                {this.props.Status != undefined && this.props.Status == 7 &&
+                    <div class="row">
+                        <div class="col-md-11 text-right">
+                            <label class="col-form-label bold txtTotal">Tổng công nợ:</label>
+                        </div>
+                        <div class="col-md-1 text-right">
+                            <label class="col-form-label countTotal">{formatMoney(countTotalMoney, 0)}</label>
+                        </div>
+
+                    </div>
+                }
+
                 <div className="table-responsive">
                     <table className="table table-sm table-striped table-bordered table-hover table-condensed dataGirdReportShipment" cellSpacing="0">
                         <thead className="thead-light">
                             <tr>
                                 <th className="jsgrid-header-cell " style={{ width: '20%' }}>Mã vận đơn</th>
                                 <th className="jsgrid-header-cell " style={{ width: '25%' }}>Khách hàng/địa chỉ</th>
-                                <th className="jsgrid-header-cell " style={{ width: '20%' }}>Sản Phẩm</th>
+                                <th className="jsgrid-header-cell " style={{ width: '20%' }}>Sản phẩm</th>
                                 <th className="jsgrid-header-cell " style={{ width: '15%' }}>Thời gian giao</th>
                                 <th className="jsgrid-header-cell " style={{ width: '10%' }}>Tiền COD</th>
                                 <th className="jsgrid-header-cell " style={{ width: '10%' }}>Trạng thái</th>
