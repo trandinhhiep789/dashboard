@@ -117,7 +117,7 @@ class DataGirdReportShipmentOrderCom extends Component {
                                 <th className="jsgrid-header-cell " style={{ width: '25%' }}>Khách hàng/địa chỉ</th>
                                 <th className="jsgrid-header-cell " style={{ width: '20%' }}>Sản phẩm</th>
                                 <th className="jsgrid-header-cell " style={{ width: '15%' }}>Thời gian giao</th>
-                                <th className="jsgrid-header-cell " style={{ width: '10%' }}>Tiền COD</th>
+                                <th className="jsgrid-header-cell " style={{ width: '10%' }}>Tổng tiền thu</th>
                                 <th className="jsgrid-header-cell " style={{ width: '10%' }}>Trạng thái</th>
                             </tr>
                         </thead>
@@ -166,7 +166,7 @@ class DataGirdReportShipmentOrderCom extends Component {
                                                     </label>
                                                 </div>
                                             </td>
-                                            <td style={{ width: '10%' }}>{formatMoney(rowItem.TotalCOD, 0)}</td>
+                                            <td style={{ width: '10%' }}>{formatMoney(rowItem.CollectedTotalMoney, 0)}</td>
                                             <td style={{ width: '10%' }}>{rowItem.ShipmentOrderStatusName}</td>
                                         </tr>)
                                     })

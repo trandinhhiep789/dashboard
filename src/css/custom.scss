@@ -29,6 +29,11 @@
 @import "./datetime";
 
 
+body{
+    &.showModal{
+        overflow: hidden;
+    }
+}
 
 .errorAdvanceRequestDetail{
     color: #f93030;
