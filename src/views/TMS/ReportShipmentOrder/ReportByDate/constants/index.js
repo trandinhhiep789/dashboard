@@ -124,7 +124,7 @@ export const GridColumnList = [
     {
         Name: "TotalDelivering",
         Type: "popupNew",
-        Caption: "Đã giao",
+        Caption: "Đang giao",
         DataSourceMember: "TotalDelivering",
         Width: '10%'
     },
