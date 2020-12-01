@@ -69,6 +69,19 @@ export const AddElementList = [
         validatonList: ["required"],
     },
     {
+        type: "text",
+        name: "txtIconUrl",
+        label: "đường dẫn hình Icon",
+        value: "",
+        maxSize: "200",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "IconUrl",
+        readonly: false,
+        validatonList: [],
+    },
+    {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả:",
@@ -147,6 +160,19 @@ export const EditElementList = [
         validatonList: ["required"],
     },
     {
+        type: "text",
+        name: "txtIconUrl",
+        label: "đường dẫn hình Icon",
+        value: "",
+        maxSize: "200",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "IconUrl",
+        readonly: false,
+        validatonList: [],
+    },
+    {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả:",
@@ -221,6 +247,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "ShipmentOrderStepName"
     },
     {
+        Name: "IconUrl",
+        DefaultValue: "",
+        BindControlName: "txtIconUrl",
+        DataSourceMember: "IconUrl"
+    },
+    {
         Name: "Description",
         DefaultValue: "",
         BindControlName: "txtDescription",
@@ -285,6 +317,13 @@ export const DataGridColumnList = [
         Caption: "Tên bước xử lý yêu cầu",
         DataSourceMember: "ShipmentOrderStepName",
         //Width: 350
+    },
+    {
+        Name: "IconUrl",
+        Type: "text",
+        Caption: "Đường dẫn hình Icon",
+        DataSourceMember: "IconUrl",
+        Width: 150
     },
     {
         Name: "IsActived",

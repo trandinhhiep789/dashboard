@@ -93,6 +93,7 @@ import ShipmentSetupType from "../TMS/MD/ShipmentSetupType";
 import ReportByDate from "../TMS/ReportShipmentOrder/ReportByDate";
 import ReportByStore from "../TMS/ReportShipmentOrder/ReportByStore";
 import ReportByUser from "../TMS/ReportShipmentOrder/ReportByUser";
+import DebtByUser from "../TMS/ReportShipmentOrder/DebtByUser";
 
 import RewardShipmentOrderByType from "../TMS/Reward/RewardShipmentOrderByType";
 import RewardShipmentOrder from "../TMS/Reward/RewardShipmentOrder";
@@ -247,6 +248,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/ReportByDate" component={ReportByDate} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ReportByStore" component={ReportByStore} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/ReportByUser" component={ReportByUser} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/DebtByUser" component={DebtByUser} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/RewardShipmentOrderByType" component={RewardShipmentOrderByType} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/RewardShipmentOrder" component={RewardShipmentOrder} isLoggedIn={isLoggedIn} />

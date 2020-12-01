@@ -1,21 +1,16 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/ShipmentOrder/SearchReportDate";
-export const LoadReportUndeliveryByDate = "api/ShipmentOrder/LoadReportByDate";
-export const LoadReportDeliveringByDate = "api/ShipmentOrder/LoadReportDeliveringByDate";
-export const LoadReportDeliveredByDate = "api/ShipmentOrder/LoadReportDeliveredByDate";
-export const LoadReportCompletedOrderByDate = "api/ShipmentOrder/LoadReportCompletedOrderByDate";
-export const LoadReportCancelDeliveryByDate = "api/ShipmentOrder/LoadReportCancelDeliveryByDate";
-export const LoadReportPaidInByDate = "api/ShipmentOrder/LoadReportPaidInByDate";
+export const SearchAPIPath = "api/ShipmentOrder/SearchReportDebtByUser";
+
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách thống kê vận đơn theo ngày" }
+    { Link: "", Title: "Danh sách báo cáo công nợ theo nhân viên" }
 ];
-
 
 
 const dtFromdate = new Date();
 dtFromdate.setDate(new Date().getDate() - 30);
+
 
 export const SearchElementList = [
     
@@ -56,22 +51,20 @@ export const SearchElementList = [
         classNameCol:"col-custom"
     },
     {
-        type: "ComboBoxNewChange",
-        name: "cbCoordinatorStoreID",
-        DataSourceMember: "CoordinatorStoreID",
-        label: "kho điều phối",
-        colspan: 3,
-        value: "",
-        isMultiSelect: true,
-        placeholder: "---Kho điều phối---",
+        type: "MultiSelectUser",
+        name: "cbUserName",
+        DataSourceMember: "UserName",
+        label: "Nhân viên",
+        colspan: 12,
+        rowspan: 3,
+        labelcolspan: 12,
+        IsLabelDiv: true,
+        value: -1,
+        placeholder: "---Vui lòng chọn---",
         listoption: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
-        ValueMember: "StoreID",
-        NameMember: "StoreName",
-        filterValue: 10,
-        filterobj:"CompanyID",
-        classNameCol:"col-custom"
+        IsAutoLoadItemFromCache: false,
+        isMultiSelect: true
+
     },
 
 ]
@@ -93,74 +86,74 @@ export const  SearchMLObjectDefinition = [
         BindControlName: "cbShipmentOrderTypeID"
     },
     {
-        Name: "CoordinatorStore",
+        Name: "UserName",
         DefaultValue: "",
-        BindControlName: "cbCoordinatorStoreID"
+        BindControlName: "cbUserName"
     },
 ]
 
 export const GridColumnList = [
     {
-        Name: "CreatedOrderTime",
-        Type: "date",
-        Caption: "Ngày",
-        DataSourceMember: "CreatedOrderTime",
-        Width: '14%'
+        Name: "DeliverUserFullNameList",
+        Type: "text",
+        Caption: "Ngày giao dịch",
+        DataSourceMember: "DeliverUserFullNameList",
+        Width: "14%"
     },
     {
         Name: "TotalOrder",
-        Type: "textBoldRed",
-        Caption: "Tổng đơn",
+        Type: "text",
+        Caption: "Loại giao dịch",
         DataSourceMember: "TotalOrder",
-        Width: '10%'
+        Width: "10%"
     },
     {
         Name: "TotalUndelivery",
-        Type: "popupNew",
-        Caption: "Chưa giao",
+        Type: "text",
+        Caption: "Số lượng",
         DataSourceMember: "TotalUndelivery",
-        Width: '10%',
+        Width: "10%"
     },
     {
         Name: "TotalDelivering",
-        Type: "popupNew",
-        Caption: "Đang giao",
+        Type: "text",
+        Caption: "Kho xuất",
         DataSourceMember: "TotalDelivering",
-        Width: '10%'
+        Width: "10%"
     },
     {
         Name: "TotalDelivered",
-        Type: "popupNew",
-        Caption: "Giao xong",
+        Type: "text",
+        Caption: "Mã phiếu xuất",
         DataSourceMember: "TotalDelivered",
-        Width: '10%'
+        Width: "10%"
     },
     {
         Name: "TotalCompletedOrder",
-        Type: "popupNew",
-        Caption: "Hoàn tất",
+        Type: "text",
+        Caption: "Hình thức xuất",
         DataSourceMember: "TotalCompletedOrder",
-        Width: '12%'
+        Width: "12%"
     },
     {
         Name: "TotalCancelDelivery",
-        Type: "popupNew",
-        Caption: "Huỷ giao",
+        Type: "text",
+        Caption: "NV xuất",
         DataSourceMember: "TotalCancelDelivery",
-        Width: '12%'
+        Width: "12%"
     },
     {
         Name: "TotalPaidIn",
-        Type: "popupNew",
-        Caption: "Đã nộp tiền",
+        Type: "text",
+        Caption: "Đơn giá",
         DataSourceMember: "TotalPaidIn",
-        Width: '12%'
+        Width: "12%"
     },
     {
         Name: "UnTotalPaidIn",
-        Type: "popupNew",
-        Caption: "Chưa nộp tiền",
+        Type: "text",
+        Caption: "Thành tiền",
         DataSourceMember: "UnTotalPaidIn",
-        Width: '10%'
+        Width: "10%"
     },
 ]

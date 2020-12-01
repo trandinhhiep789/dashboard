@@ -37,9 +37,9 @@ class SearchUserByDateCom extends React.Component {
 
         const param = Base64.decode(this.props.match.params.id);
         const myParam = JSON.parse(param);
-
         this.setState({
             FromDate: myParam.value,
+            fullName: myParam.UserName,
         })
         this.props.updatePagePath(PageByDatePath);
        this.callLoadData(myParam);
@@ -56,7 +56,7 @@ class SearchUserByDateCom extends React.Component {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
-                    fullName: apiResult.ResultObject[0].RewardUser + " - " + apiResult.ResultObject[0].FullName
+                   // fullName: apiResult.ResultObject[0].RewardUser + " - " + apiResult.ResultObject[0].FullName
                 });
             }
             else {
