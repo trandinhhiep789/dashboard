@@ -687,7 +687,13 @@ const AppMenu = [
                     },
                 ]
             },
-           
+           {
+            MenuName: 'DebtByUser',
+            MenuTitle: 'Thống kê công nợ theo NV',
+            LinkTo: '/DebtByUser',
+            MenuIcon: '',
+            SubMenu: []
+           }
         ]
     }
 
