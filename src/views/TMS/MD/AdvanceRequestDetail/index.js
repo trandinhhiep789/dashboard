@@ -82,7 +82,7 @@ class AdvanceRequestDetailCom extends React.Component {
                 <div className="col-lg-12 page-detail">
                     <div className="card">
                         <div className="card-title">
-                            <h4 class="title">
+                            <h4 className="title">
                                 <strong>Chi tiết yêu cầu tạm ứng</strong></h4>
                             {!this.state.AdvanceRequest.IsCreatedOrder ?
                                 <button className="btn btnEditCard" onClick={this.handleAdvanceRequest.bind(this)} type="button">

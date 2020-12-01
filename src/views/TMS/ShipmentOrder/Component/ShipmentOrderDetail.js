@@ -372,7 +372,7 @@ class ShipmentOrderDetailCom extends Component {
         }
         const { ShipmentOrder, IsUpdateDate, IsDisable, IsExpectedDeliveryDate } = this.state;
         let onclin = this._CheckTime(this.state.ShipmentOrder.CreatedOrderTime)
-        console.log("s",onclin,IsExpectedDeliveryDate)
+      
         const linkHistoryTransaction = "/PartnerTransaction/Edit/" + ShipmentOrder.PartnerTransactionID;
         return (
             <div className="ShipmentOrderDetail">
