@@ -224,8 +224,31 @@ class SearchCom extends React.Component {
 
     handleShowModal(data, status) {
         const { widthPercent } = this.state;
+        let titleModal;
+
+        if(status == 1){
+            titleModal = "Danh sách vận đơn chưa giao"
+        }
+        if(status == 2){
+            titleModal = "Danh sách vận đơn đang  giao"
+        }
+        if(status == 3){
+            titleModal = "Danh sách vận đơn giao xong"
+        }
+        if(status == 4){
+            titleModal = "Danh sách vận đơn hoàn tất"
+        }
+        if(status == 5){
+            titleModal = "Danh sách vận đơn huỷ giao"
+        }
+        if(status == 6){
+            titleModal = "Danh sách vận đơn đã nộp tiền"
+        }
+        if(status == 7){
+            titleModal = "Danh sách vận đơn chưa nộp tiền"
+        }
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Danh sách vận đơn chưa giao',
+            title: titleModal,
             content: {
                 text: <DataGirdReportShipmentOrder
                     dataSource={data}
