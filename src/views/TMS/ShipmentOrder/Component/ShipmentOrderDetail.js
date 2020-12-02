@@ -4,7 +4,7 @@ import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.
 import { ModalManager } from 'react-dynamic-modal';
 import ModelContainer from "../../../../common/components/Modal/ModelContainer";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { GET_CACHE_USER_FUNCTION_LIST,SHIPMENTORDER_EXPECTEDDELIVERYDATE } from "../../../../constants/functionLists";
+import { GET_CACHE_USER_FUNCTION_LIST, SHIPMENTORDER_EXPECTEDDELIVERYDATE } from "../../../../constants/functionLists";
 import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
@@ -19,7 +19,7 @@ class ShipmentOrderDetailCom extends Component {
         super(props);
         this.handleShipWorkFlowInsert = this.handleShipWorkFlowInsert.bind(this);
         this.handleUpdateExpectedDelivery = this.handleUpdateExpectedDelivery.bind(this);
-
+        
         this.state = {
             ShipmentOrder: this.props.ShipmentOrderDetail,
             validationErrorMessage: null,
@@ -45,7 +45,7 @@ class ShipmentOrderDetailCom extends Component {
         this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 const found = result.ResultObject.CacheData.find(x => x.FunctionID == SHIPMENTORDER_EXPECTEDDELIVERYDATE);
-                if (found!=undefined) {
+                if (found != undefined) {
                     this.setState({
                         IsExpectedDeliveryDate: true
                     });
@@ -284,23 +284,24 @@ class ShipmentOrderDetailCom extends Component {
     }
 
     addNotification(message1, IsError) {
+      let cssNotification="";
+      let iconNotification="";
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+         
+                cssNotification= "notification-custom-success"
+                iconNotification= "fa fa-check"
+           
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+           
+                cssNotification="notification-danger",
+                iconNotification= "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -336,17 +337,21 @@ class ShipmentOrderDetailCom extends Component {
             })
         }
         if (id == 3) {
-            let objShipmentOrder = { ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID, ExpectedDeliveryDate: this.state.dtExpectedDeliveryDate };
-            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateExpectedDeliveryDate', objShipmentOrder).then((apiResult) => {
-                this.addNotification(apiResult.Message, apiResult.IsError);
-                if (!apiResult.IsError) {
-                    this.setState({
-                        IsUpdateDate: false,
-                        IsDisable: true
-                    })
-                    ModalManager.close();
-                }
-            });
+            if (this.state.dtExpectedDeliveryDate != null&this.state.dtExpectedDeliveryDate != "") {
+                let objShipmentOrder = { ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID, ExpectedDeliveryDate: this.state.dtExpectedDeliveryDate };
+                this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateExpectedDeliveryDate', objShipmentOrder).then((apiResult) => {
+                    this.addNotification(apiResult.Message, apiResult.IsError);
+                    if (!apiResult.IsError) {
+                        this.setState({
+                            IsUpdateDate: false,
+                            IsDisable: true
+                        })
+                    }
+                });
+            }
+            else {
+                this.addNotification("Vui lòng chọn thời gian giao", true);
+            }
         }
     }
     _CheckTime(dates) {
@@ -372,7 +377,7 @@ class ShipmentOrderDetailCom extends Component {
         }
         const { ShipmentOrder, IsUpdateDate, IsDisable, IsExpectedDeliveryDate } = this.state;
         let onclin = this._CheckTime(this.state.ShipmentOrder.CreatedOrderTime)
-      
+
         const linkHistoryTransaction = "/PartnerTransaction/Edit/" + ShipmentOrder.PartnerTransactionID;
         return (
             <div className="ShipmentOrderDetail">
@@ -475,7 +480,7 @@ class ShipmentOrderDetailCom extends Component {
 
                                 </div>
                                 <div className="form-group col-md-1">
-                                    {(onclin == true || IsExpectedDeliveryDate==true) ?
+                                    {(onclin == true || IsExpectedDeliveryDate == true) ?
                                         <div className="group-btn-update">
                                             {
                                                 IsUpdateDate == false ?
