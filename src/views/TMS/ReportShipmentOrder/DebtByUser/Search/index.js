@@ -52,11 +52,30 @@ class SearchCom extends React.Component {
 
 
     handleSearchSubmit(formData, MLObject) {
-        
+        const objData = {
+            UserName:MLObject.UserName.value,
+            FromDate:MLObject.FromDate,
+            ToDate:  MLObject.ToDate
+        }
+        this.callSearchData(objData)
     }
 
     callSearchData(searchData) {
-       
+        
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            if (!apiResult.IsError) {
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                    item.TotalAmount = item.Price * item.EndTermAdvanceDebt;
+                    return item;
+                })
+                this.setState({
+                    gridDataSource: tempData
+                })
+            }
+            else {
+                this.showMessage(apiResult.MessageDetail)
+            }
+        });
     }
 
 
