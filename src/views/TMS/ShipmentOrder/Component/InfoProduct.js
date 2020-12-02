@@ -5,6 +5,7 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Collapsible from 'react-collapsible';
+import { Link } from "react-router-dom";
 import {
     APIHostName,
 } from "../constants";
@@ -13,7 +14,8 @@ class InfoProductCom extends Component {
         super(props);
         this.state = {
             ShipmentOrder: this.props.InfoProduct,
-            ShipmentOrder_FeeLst: []
+            ShipmentOrder_FeeLst: [],
+            ShipmentOrder_CodUpdLogLst: []
         }
     }
 
@@ -88,18 +90,18 @@ class InfoProductCom extends Component {
                                 </thead>
                                 <tbody>
                                     {
-                                        // this.state.ShipmentOrder_FeeLst && this.state.ShipmentOrder_FeeLst.map((item, index) => {
-                                        //     return (
-                                        //         <tr key={index}>
-                                        //             <td>{item.ShipmentOrderID}</td>
-                                        //             <td>{item.ShipmentFeeTypeName}</td>
-                                        //             <td>{item.ProductID}</td>
-                                        //             <td>{item.ProductName}</td>
-                                        //             <td>{item.Fee}</td>
-                                        //             <td>{item.Note}</td>
-                                        //         </tr>
-                                        //     )
-                                        // })
+                                        this.state.ShipmentOrder_FeeLst && this.state.ShipmentOrder_FeeLst.map((item, index) => {
+                                            return (
+                                                <tr key={index}>
+                                                    <td>{item.ShipmentOrderID}</td>
+                                                    <td>{item.ShipmentFeeTypeName}</td>
+                                                    <td>{item.ProductID}</td>
+                                                    <td>{item.ProductName}</td>
+                                                    <td>{item.Fee}</td>
+                                                    <td>{item.Note}</td>
+                                                </tr>
+                                            )
+                                        })
                                     }
                                 </tbody>
                             </table>
@@ -111,6 +113,63 @@ class InfoProductCom extends Component {
 
     }
 
+
+    handleShowCodUpdLog() {
+        const postData = [
+            {
+                SearchKey: "@SHIPMENTORDERID",
+                SearchValue: this.props.ShipmentOrderID
+            }
+        ];
+
+        this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_CodUpdLog/SearchBYSHIPID', postData).then((apiResult) => {
+            if (!apiResult.IsError) {
+                this.setState({ ShipmentOrder_CodUpdLogLst: apiResult.ResultObject }, () => {
+                    this.showModalCodUpdLogLst();
+                });
+            }
+        });
+    }
+
+    showModalCodUpdLogLst() {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Lịch sử cập nhật tiền thu hộ',
+            content: {
+                text:
+                    <div className="col-lg-12">
+                        <div className="table-responsive mt-3">
+                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                <thead className="thead-light">
+                                    <tr>
+                                        <th className="jsgrid-header-cell">Người tạo</th>
+                                        <th className="jsgrid-header-cell">Tổng tiền thu hộ cũ</th>
+                                        <th className="jsgrid-header-cell">Tổng tiền thu hộ mới</th>
+                                        <th className="jsgrid-header-cell">Mã giao dịch với đối tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        this.state.ShipmentOrder_CodUpdLogLst && this.state.ShipmentOrder_CodUpdLogLst.map((item, index) => {
+                                            return (
+                                                <tr key={index}>
+                                                    <td>{item.CreatedUser+"-"+item.CreatedUserFullName}</td>
+                                                    <td>{item.OldTotalcod}</td>
+                                                    <td>{item.NewTotalcod}</td>
+                                                    <td><Link target="_blank" to={"/PartnerTransaction/Edit/" + item.PartnerTransactionID}>{item.PartnerTransactionID}</Link></td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            },
+            maxWidth: '1000px'
+        });
+    }
+
+   
     render() {
 
         let objgroupByInstallBundleID = [];
@@ -167,7 +226,11 @@ class InfoProductCom extends Component {
                             <div className="form-group col-md-4">
                                 <label className="col-form-label lbl-currency">
                                     {formatMoney(this.state.ShipmentOrder.TotalCOD, 0)}đ
-                            </label>
+                                   
+                                </label>
+                                <button className="btn btn-icon-modal" onClick={this.handleShowCodUpdLog.bind(this)}>
+                                        <i className="fa fa-pencil"></i>
+                                    </button>
                             </div>
                         </div>
 
@@ -182,7 +245,7 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label bold">Tổng tiền phải thu:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                <label className="col-form-label lbl-currency-total" >{formatMoney((this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD)-this.state.ShipmentOrder.TotalReturnPrice, 0)}đ</label>
+                                <label className="col-form-label lbl-currency-total" >{formatMoney((this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD) - this.state.ShipmentOrder.TotalReturnPrice, 0)}đ</label>
                             </div>
 
                         </div>
@@ -302,7 +365,7 @@ class InfoProductCom extends Component {
                                                             <td>{item.Quantity}</td>
                                                             <td>{formatMoney(item.ReturnPrice, 0)}đ</td>
                                                             <td>{item.IsCreatedInputVoucherReturn}</td>
-                                                            <td>{item.InputVoucherID }</td>
+                                                            <td>{item.InputVoucherID}</td>
                                                             <td>{item.ReturnInputDate}</td>
                                                             <td>{item.Note}</td>
                                                         </tr>
