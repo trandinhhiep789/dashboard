@@ -93,6 +93,8 @@ export default class SearchForm extends Component {
                                         iconOption={elementItem.iconOption}
                                         labelOption={elementItem.labelOption}
                                         valueOption={this.state.FormData[elementItem.valueOption]}
+                                        KeyFilter={elementItem.KeyFilter}
+                                        ValueFilter={elementItem.ValueFilter}
                                     />
                                 </div>);
                         }

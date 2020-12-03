@@ -139,6 +139,21 @@ const AppMenu = [
 
                 ]
             },
+            // {
+            //     MenuName: 'AppFeedBack',
+            //     MenuTitle: 'Phản hồi ứng dụng',
+            //     LinkTo: '',
+            //     MenuIcon: '',
+            //     SubMenu: [
+            //         {
+            //             MenuName: 'AppFeedBackPriority',
+            //             MenuTitle: 'Độ ưu tiên phản hồi',
+            //             LinkTo: '/AppFeedBackPriority',
+            //             MenuIcon: '',
+            //             SubMenu: []
+            //         },
+            //     ]
+            // },
             {
                 MenuName: 'INSTALL',
                 MenuTitle: 'Vật tư lắp đặt',
@@ -273,29 +288,6 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'Area',
-                MenuTitle: 'Khu vực',
-                LinkTo: '',
-                MenuIcon: '',
-                SubMenu: [
-                    {
-                        MenuName: 'AreaList',
-                        MenuTitle: 'Danh sách khu vực',
-                        LinkTo: '/Area',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'AreaType',
-                        MenuTitle: 'Loại khu vực',
-                        LinkTo: '/AreaType',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-
-                ]
-            },
-            {
                 MenuName: 'Reward',
                 MenuTitle: 'Thưởng nhân viên',
                 LinkTo: '',
@@ -353,6 +345,30 @@ const AppMenu = [
 
                 ]
             },
+            {
+                MenuName: 'Area',
+                MenuTitle: 'Khu vực',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'AreaList',
+                        MenuTitle: 'Danh sách khu vực',
+                        LinkTo: '/Area',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'AreaType',
+                        MenuTitle: 'Loại khu vực',
+                        LinkTo: '/AreaType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+
+                ]
+            },
+            
             {
                 MenuName: 'Limit',
                 MenuTitle: 'Giới hạn',
