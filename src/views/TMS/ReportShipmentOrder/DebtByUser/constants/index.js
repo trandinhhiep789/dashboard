@@ -1,5 +1,6 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/BeginTermAdvanceDebt/LoadBADByUserName";
+export const LoadByProductIDAPIPath = "api/AdvanceDebtFlow/LoadBADByProductID";
 
 
 export const PagePath = [
@@ -81,8 +82,9 @@ export const GridColumnList = [
     },
     {
         Name: "ProductName",
-        Type: "text",
+        Type: "texttolink",
         Caption: "Tên vật tư",
+        Link: "/DebtByUser/Detail/",
         DataSourceMember: "ProductName",
         Width: "17%"
     },
@@ -123,16 +125,82 @@ export const GridColumnList = [
     },
     {
         Name: "Price",
-        Type: "text",
+        Type: "textCurrency",
         Caption: "Đơn giá",
         DataSourceMember: "Price",
         Width: "10%"
     },
     {
         Name: "TotalAmount",
-        Type: "text",
+        Type: "textCurrency",
         Caption: "Thành tiền",
         DataSourceMember: "TotalAmount",
         Width: "10%"
     },
+]
+
+export const GridColumnListDetail=[
+    {
+        Name: "DebtFlowDate",
+        Type: "date",
+        Caption: "Ngày giao dịch",
+        DataSourceMember: "DebtFlowDate",
+        Width: "10%"
+    },
+    {
+        Name: "ProductName",
+        Type: "text",
+        Caption: "Loại giao dịch",
+        DataSourceMember: "ProductName",
+        Width: "17%"
+    },
+    {
+        Name: "Quantity",
+        Type: "text",
+        Caption: "Số lượng",
+        DataSourceMember: "Quantity",
+        Width: "13%"
+    },
+    {
+        Name: "StoreID",
+        Type: "text",
+        Caption: "Kho xuất",
+        DataSourceMember: "StoreID",
+        Width: "10%"
+    },
+    {
+        Name: "OutputVoucherID",
+        Type: "text",
+        Caption: "Mã phiếu xuất",
+        DataSourceMember: "OutputVoucherID",
+        Width: "10%"
+    },
+    {
+        Name: "OutputVoucherType",
+        Type: "text",
+        Caption: "Hình thức xuất",
+        DataSourceMember: "OutputVoucherType",
+        Width: "10%"
+    },
+    {
+        Name: "OutputUser",
+        Type: "text",
+        Caption: "NV xuất",
+        DataSourceMember: "OutputUser",
+        Width: "10%"
+    },
+    {
+        Name: "Price",
+        Type: "textCurrency",
+        Caption: "Đơn giá",
+        DataSourceMember: "Price",
+        Width: "10%"
+    },
+    {
+        Name: "TotalAmount",
+        Type: "textCurrency",
+        Caption: "Thành tiền",
+        DataSourceMember: "TotalAmount",
+        Width: "10%"
+    }, 
 ]
