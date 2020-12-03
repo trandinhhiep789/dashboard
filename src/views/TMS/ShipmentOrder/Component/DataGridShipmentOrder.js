@@ -65,7 +65,7 @@ class DataGridShipmentOderCom extends Component {
             this.setState({ IsPermision: result });
         })
 
-        
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -540,7 +540,7 @@ class DataGridShipmentOderCom extends Component {
     _CheckTime(dates) {
         const date = new Date(Date.parse(dates));
         let currentDate = new Date();
-       // var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
+        // var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
         var timeDiff = date.getTime() - currentDate.getTime();
         var diffMinutes = parseInt(timeDiff / (3600 * 24));
         if (diffMinutes < 60) {
@@ -610,7 +610,7 @@ class DataGridShipmentOderCom extends Component {
         return (
             <div className=" table-responsive">
                 <table id="fixtable" className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder" cellSpacing="0" >
-                    <thead className="thead-light" style={{maxWidth: widthTable}}>
+                    <thead className="thead-light" style={{ maxWidth: widthTable }}>
                         <tr>
                             <th className="jsgrid-header-cell" style={{ width: '5%' }}>Tác vụ</th>
                             <th className="jsgrid-header-cell" style={{ width: '15%' }}>Thời gian giao</th>
@@ -753,9 +753,10 @@ class DataGridShipmentOderCom extends Component {
                                                             <span>{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
                                                         </label>
                                                     </React.Fragment>
-                                                ) : ""
+                                                ) : (<label className="item address-receiver">
+                                                    <span>{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
+                                                </label>)
                                             }
-
                                         </div>
                                     </td>
                                     <td className="group-address" style={{ width: '22%' }}>
