@@ -159,7 +159,7 @@ export const GridColumnList = [
     {
         Name: "UnTotalPaidIn",
         Type: "popupNew",
-        Caption: "chưa nộp tiền",
+        Caption: "Chưa nộp tiền",
         DataSourceMember: "UnTotalPaidIn",
         Width: '10%'
     },

@@ -89,16 +89,12 @@ class DetailCom extends React.Component {
         return false;
     }
     ChangeLoadData(ShipmentOrderData) {
-
-
         this.setState({
             ShipmentOrderType_WorkFlowList: ShipmentOrderData.ShipmentOrderType_WorkFlowList,
             CurrentShipmentOrderStepID: ShipmentOrderData.CurrentShipmentOrderStepID,
             IsCancelDelivery:ShipmentOrderData.IsCancelDelivery
         });
     }
-
-
 
     render() {
         if (this.state.IsLoadDataComplete) {

@@ -46,7 +46,7 @@ class InfoHistoryWFCom extends Component {
                 original: JSON.parse(objlst[i]).ImageFileURL, 
                 thumbnail: JSON.parse(objlst[i]).ImageFileURL, 
                 ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
-                description: "Anh học chưa móc 73309"
+                description: ""
              });
         }
         this.props.showModal(MODAL_TYPE_IMAGE_SLIDE, {
@@ -164,7 +164,6 @@ class InfoHistoryWFCom extends Component {
                         </table>
                     </div>
                 </div>
-
             </div>
         );
     }
