@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SearchForm from "../../../../../common/components/Form/SearchForm";
-import DataGrid from "../../../../../common/components/DataGrid";
-import { MessageModal } from "../../../../../common/components/Modal";
+import SearchForm from "../../../../../../common/components/Form/SearchForm";
+import DataGrid from "../../../../../../common/components/DataGrid";
+import { MessageModal } from "../../../../../../common/components/Modal";
 import {
     SearchElementList,
     SearchMLObjectDefinition,
@@ -15,15 +15,15 @@ import {
     IDSelectColumnName,
     PKColumnName,
     InitSearchParams,
-    PagePath,
-    AddLogAPIPath
+    PagePath
 } from "../constants";
-import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../actions/pageAction";
-import { ADVANCEREQUEST_VIEW } from "../../../../../constants/functionLists";
+import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
+import { updatePagePath } from "../../../../../../actions/pageAction";
+import { AREATYPE_VIEW, AREATYPE_DELETE } from "../../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE } from "../../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -49,7 +49,6 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
     }
 
-
     handleDelete(deleteList, pkColumnName) {
         let listMLObject = [];
         deleteList.map((row, index) => {
@@ -65,8 +64,8 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                // this.handleClearLocalCache();
-                // this.handleSubmitInsertLog();
+                this.props.callClearLocalCache(ERPCOMMONCACHE_AREATYPE);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_AREATT);
             }
         });
     }
@@ -76,28 +75,11 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
-            },
-            {
-                SearchKey: "@AdvanceRequestTypeID",
-                SearchValue: MLObject.AdvanceRequestTypeID
-            },
-            {
-                SearchKey: "@ReceiverStoreID",
-                SearchValue: MLObject.ReceiverStoreID
-            },
-            {
-                SearchKey: "@FromDate",
-                SearchValue: MLObject.FromDate
-            },
-            {
-                SearchKey: "@ToDate",
-                SearchValue: MLObject.ToDate
             }
         ];
         this.setState({ SearchData: postData });
         this.callSearchData(postData);
         //this.gridref.current.clearData();
-        //console.log("handleSearchSubmit",MLObject);
     }
 
     callSearchData(searchData) {
@@ -110,9 +92,9 @@ class SearchCom extends React.Component {
                     IsShowForm: true
                 });
             } else {
-                this.setState({ IsShowForm: false, MessageDetail: apiResult.Message });
+                this.showMessage(apiResult.Message);
+                this.setState({ IsShowForm: false });
             }
-
         });
     }
 
@@ -172,7 +154,7 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm thông tin yêu cầu tạm ứng"
+                        FormName="Tìm kiếm độ ưu tiên phản hồi"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
@@ -181,15 +163,13 @@ class SearchCom extends React.Component {
                     <DataGrid
                         listColumn={DataGridColumnList}
                         dataSource={this.state.gridDataSource}
-                        //AddLink={AddLink}
-                        IsShowButtonAdd={false}
-                        IsShowButtonDelete={false}
+                        AddLink={AddLink}
                         IDSelectColumnName={IDSelectColumnName}
                         PKColumnName={PKColumnName}
-                        //onDeleteClick={this.handleDelete}
+                        onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={ADVANCEREQUEST_VIEW}
-                        //DeletePermission={CANCELDELIVERYREASON_DELETE}
+                        RequirePermission={AREATYPE_VIEW}
+                        DeletePermission={AREATYPE_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />
@@ -198,8 +178,8 @@ class SearchCom extends React.Component {
         }
         else {
             return (
-                <div className="col-md-12 message-detail">
-                    <label>{this.state.MessageDetail}</label>
+                <div>
+                    <label>Đang nạp dữ liệu ......</label>
                 </div>
             )
         }
@@ -224,6 +204,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
     };
 };

@@ -41,6 +41,10 @@ export const InitSearchParams = [
         SearchValue: ""
     },
     {
+        SearchKey: "@ReceiverStoreID",
+        SearchValue: ""
+    },
+    {
         SearchKey: "@FromDate",
         SearchValue: dtFromdate
     },
@@ -75,6 +79,24 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.ADVANCEREQUESTTYPE",
         ValueMember: "AdvanceRequestTypeID",
         NameMember: "AdvanceRequestTypeName"
+    },
+    {
+        type: "select",
+        name: "slReceiverStoreID",
+        label: "Kho",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "ReceiverStoreID",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
+        ValueMember: "StoreID",
+        NameMember: "StoreName",
+        KeyFilter: "CompanyID",
+        ValueFilter: 10
     },
     // {
     //     type: "select",
@@ -129,6 +151,11 @@ export const SearchMLObjectDefinition = [
         BindControlName: "slAdvanceRequestTypeID"
     },
     {
+        Name: "ReceiverStoreID",
+        DefaultValue: -1,
+        BindControlName: "slReceiverStoreID"
+    },
+    {
         Name: "FromDate",
         DefaultValue: "",
         BindControlName: "dtFromDate"
@@ -149,7 +176,7 @@ export const DataGridColumnList = [
         Caption: "Mã yêu cầu tạm ứng",
         Link: "/AdvanceRequest/Edit/",
         DataSourceMember: "AdvanceRequestID",
-        Width: 50
+        Width: 120
     },
     {
         Name: "AdvanceRequestTitle",
@@ -170,14 +197,14 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Mã yêu cầu vận chuyển",
         DataSourceMember: "ShipmentOrderID",
-        Width: 80
+        Width: 120
     },
     {
         Name: "SaleOrderID",
         Type: "text",
         Caption: "Mã đơn hàng tạm ứng",
         DataSourceMember: "SaleOrderID",
-        Width: 80
+        Width: 120
     },
     {
         Name: "RequestUserName",
@@ -191,7 +218,7 @@ export const DataGridColumnList = [
         Type: "date",
         Caption: "Ngày yêu cầu",
         DataSourceMember: "RequestDate",
-        Width: 70
+        Width: 100
     },
     {
         Name: "IsDeleted",

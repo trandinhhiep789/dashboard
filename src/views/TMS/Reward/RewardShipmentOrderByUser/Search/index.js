@@ -47,13 +47,28 @@ class SearchCom extends React.Component {
         const param = {
             UserName: ""
         }
-        
+
         this.setState({
             params: param
         })
 
         this.props.updatePagePath(PagePath);
         this.callSearchData(this.state.SearchData)
+        this.callDataMobi();
+    }
+
+    callDataMobi() {
+        const dtFromdate = new Date();
+        dtFromdate.setDate(new Date().getDate() - 60);
+        const searchData = {
+            FromDate: dtFromdate,
+            ToDate: new Date(),
+            UserName: "0041017"
+        }
+        this.props.callFetchAPI(APIHostName, 'api/TMSRewardDetail/LoadByUserNameMobi', searchData).then(apiResult => {
+            console.log("callDataMobi", apiResult)
+            
+        });
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -107,7 +122,7 @@ class SearchCom extends React.Component {
                     sum += curValue.TotalReward
                     return sum
                 }, 0);
-                
+
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,

@@ -1,5 +1,5 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/ShipmentOrder/SearchReportDebtByUser";
+export const SearchAPIPath = "api/BeginTermAdvanceDebt/LoadBADByUserName";
 
 
 export const PagePath = [
@@ -35,22 +35,6 @@ export const SearchElementList = [
         colspan: 2,
     },
     {
-        type: "ComboBoxNewChange",
-        name: "cbShipmentOrderTypeID",
-        DataSourceMember: "ShipmentOrderTypeID",
-        label: "loại yêu cầu vận chuyển",
-        colspan: 3,
-        value: "",
-        isMultiSelect: true,
-        placeholder: "---Loại yêu cầu vận chuyển---",
-        listoption: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
-        ValueMember: "ShipmentOrderTypeID",
-        NameMember: "ShipmentOrderTypeName",
-        classNameCol:"col-custom"
-    },
-    {
         type: "MultiSelectUser",
         name: "cbUserName",
         DataSourceMember: "UserName",
@@ -63,7 +47,7 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: false,
-        isMultiSelect: true
+        isMultiSelect: false
 
     },
 
@@ -81,11 +65,6 @@ export const  SearchMLObjectDefinition = [
         BindControlName: "dtToDate"
     },
     {
-        Name: "ShipmentOrderType",
-        DefaultValue: "",
-        BindControlName: "cbShipmentOrderTypeID"
-    },
-    {
         Name: "UserName",
         DefaultValue: "",
         BindControlName: "cbUserName"
@@ -94,66 +73,66 @@ export const  SearchMLObjectDefinition = [
 
 export const GridColumnList = [
     {
-        Name: "DeliverUserFullNameList",
+        Name: "ProductID",
         Type: "text",
-        Caption: "Ngày giao dịch",
-        DataSourceMember: "DeliverUserFullNameList",
-        Width: "14%"
-    },
-    {
-        Name: "TotalOrder",
-        Type: "text",
-        Caption: "Loại giao dịch",
-        DataSourceMember: "TotalOrder",
+        Caption: "Mã vật tư",
+        DataSourceMember: "ProductID",
         Width: "10%"
     },
     {
-        Name: "TotalUndelivery",
+        Name: "ProductName",
         Type: "text",
-        Caption: "Số lượng",
-        DataSourceMember: "TotalUndelivery",
+        Caption: "Tên vật tư",
+        DataSourceMember: "ProductName",
+        Width: "17%"
+    },
+    {
+        Name: "QuantityUnitName",
+        Type: "text",
+        Caption: "Đơn vị tính",
+        DataSourceMember: "QuantityUnitName",
+        Width: "13%"
+    },
+    {
+        Name: "BeginTermAdvanceDebt",
+        Type: "text",
+        Caption: "Tồn đầu kỳ",
+        DataSourceMember: "BeginTermAdvanceDebt",
         Width: "10%"
     },
     {
-        Name: "TotalDelivering",
+        Name: "IncreaseAdvanceDebt",
         Type: "text",
-        Caption: "Kho xuất",
-        DataSourceMember: "TotalDelivering",
+        Caption: "Tăng trong kỳ",
+        DataSourceMember: "IncreaseAdvanceDebt",
         Width: "10%"
     },
     {
-        Name: "TotalDelivered",
+        Name: "DecreaseAdvanceDebt",
         Type: "text",
-        Caption: "Mã phiếu xuất",
-        DataSourceMember: "TotalDelivered",
+        Caption: "Giảm trong kỳ",
+        DataSourceMember: "DecreaseAdvanceDebt",
         Width: "10%"
     },
     {
-        Name: "TotalCompletedOrder",
+        Name: "EndTermAdvanceDebt",
         Type: "text",
-        Caption: "Hình thức xuất",
-        DataSourceMember: "TotalCompletedOrder",
-        Width: "12%"
+        Caption: "Tồn cuối kỳ",
+        DataSourceMember: "EndTermAdvanceDebt",
+        Width: "10%"
     },
     {
-        Name: "TotalCancelDelivery",
-        Type: "text",
-        Caption: "NV xuất",
-        DataSourceMember: "TotalCancelDelivery",
-        Width: "12%"
-    },
-    {
-        Name: "TotalPaidIn",
+        Name: "Price",
         Type: "text",
         Caption: "Đơn giá",
-        DataSourceMember: "TotalPaidIn",
-        Width: "12%"
+        DataSourceMember: "Price",
+        Width: "10%"
     },
     {
-        Name: "UnTotalPaidIn",
+        Name: "TotalAmount",
         Type: "text",
         Caption: "Thành tiền",
-        DataSourceMember: "UnTotalPaidIn",
+        DataSourceMember: "TotalAmount",
         Width: "10%"
     },
 ]
