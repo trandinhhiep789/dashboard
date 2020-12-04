@@ -120,7 +120,7 @@ class DetailCom extends React.Component {
                 <DataGrid
                     listColumn={GridColumnListDetail}
                     dataSource={this.state.gridDataSource}
-                    // AddLink=""
+                    IsFixheaderTable={true}
                     IDSelectColumnName={''}
                     PKColumnName={''}
                     isHideHeaderToolbar={false}
@@ -130,8 +130,7 @@ class DetailCom extends React.Component {
                     IsPrint={false}
                     IsExportFile={false}
                     IsAutoPaging={true}
-                    RowsPerPage={20}
-                    //RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    RowsPerPage={30}
                     ref={this.gridref}
                 />
             </React.Fragment>
