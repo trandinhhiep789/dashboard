@@ -102,6 +102,13 @@ import RewardCompute from "../TMS/Reward/RewardCompute";
 import UserRewardStore from "../TMS/MD/RewardStoreUser";
 import FuelPrice from "../TMS/MD/FuelPrice";
 import AppFeedBackPriority from "../TMS/MD/AppFeedBack/AppFeedBackPriority";
+import AppFeedBackStatus from "../TMS/MD/AppFeedBack/AppFeedBackStatus";
+import AppFeedBackQuality from "../TMS/MD/AppFeedBack/AppFeedBackQuality";
+import AppFeedBackPermission from "../TMS/MD/AppFeedBack/AppFeedBackPermission";
+import AppFeedBackStep from "../TMS/MD/AppFeedBack/AppFeedBackStep";
+import AppFeedBackGroup from "../TMS/MD/AppFeedBack/AppFeedBackGroup";
+import AppFeedBackCategory from "../TMS/MD/AppFeedBack/AppFeedBackCategory";
+import AppFeedBackType from "../TMS/MD/AppFeedBack/AppFeedBackType";
 
 
 class HomeCom extends React.Component {
@@ -287,7 +294,14 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/FuelPrice" component={FuelPrice} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/AppFeedBackPriority" component={AppFeedBackPriority} isLoggedIn={isLoggedIn} />
-
+                                <PrivateRoute path="/AppFeedBackStatus" component={AppFeedBackStatus} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/AppFeedBackQuality" component={AppFeedBackQuality} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/AppFeedBackPermission" component={AppFeedBackPermission} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/AppFeedBackStep" component={AppFeedBackStep} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/AppFeedBackGroup" component={AppFeedBackGroup} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/AppFeedBackCategory" component={AppFeedBackCategory} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/AppFeedBackType" component={AppFeedBackType} isLoggedIn={isLoggedIn} />
+                                
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                             </Switch>

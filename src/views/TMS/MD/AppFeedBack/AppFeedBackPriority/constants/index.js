@@ -84,14 +84,14 @@ export const AddElementList = [
     },
     {
         type: "text",
-        name: "txtIConURL",
+        name: "txtIconURL",
         label: "đường dẫn hình Icon",
         value: "",
         maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "IConURL",
+        DataSourceMember: "IconURL",
         readonly: false,
         validatonList: [],
     },
@@ -188,14 +188,14 @@ export const EditElementList = [
     },
     {
         type: "text",
-        name: "txtIConURL",
+        name: "txtIconURL",
         label: "đường dẫn hình Icon",
         value: "",
         maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "IConURL",
+        DataSourceMember: "IconURL",
         readonly: false,
         validatonList: [],
     },
@@ -273,10 +273,10 @@ export const MLObjectDefinition = [
         DataSourceMember: "AppFeedBackPriorityName"
     },
     {
-        Name: "IConURL",
+        Name: "IconURL",
         DefaultValue: "",
-        BindControlName: "txtIConURL",
-        DataSourceMember: "IConURL"
+        BindControlName: "txtIconURL",
+        DataSourceMember: "IconURL"
     },
     {
         Name: "ColorCode",
@@ -351,10 +351,10 @@ export const DataGridColumnList = [
         Width: 200
     },
     {
-        Name: "IConURL",
+        Name: "IconURL",
         Type: "text",
         Caption: "Đường dẫn hình Icon",
-        DataSourceMember: "IConURL",
+        DataSourceMember: "IconURL",
         Width: 120
     },
     {

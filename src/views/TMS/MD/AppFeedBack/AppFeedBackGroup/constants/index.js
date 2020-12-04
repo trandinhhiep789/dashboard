@@ -1,31 +1,31 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/AppFeedBackStatus/Search";
-export const LoadAPIPath = "api/AppFeedBackStatus/Load";
-export const AddAPIPath = "api/AppFeedBackStatus/Add";
-export const UpdateAPIPath = "api/AppFeedBackStatus/Update";
-export const DeleteAPIPath = "api/AppFeedBackStatus/Delete";
-export const UpdateOrderAPIPath = "api/AppFeedBackStatus/UpdateOrder";
-export const BackLink = "/AppFeedBackStatus";
-export const AddLink = "/AppFeedBackStatus/Add";
+export const SearchAPIPath = "api/AppFeedBackGroup/Search";
+export const LoadAPIPath = "api/AppFeedBackGroup/Load";
+export const AddAPIPath = "api/AppFeedBackGroup/Add";
+export const UpdateAPIPath = "api/AppFeedBackGroup/Update";
+export const DeleteAPIPath = "api/AppFeedBackGroup/Delete";
+export const UpdateOrderAPIPath = "api/AppFeedBackGroup/UpdateOrder";
+export const BackLink = "/AppFeedBackGroup";
+export const AddLink = "/AppFeedBackGroup/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "AppFeedBackStatusID";
+export const PKColumnName = "AppFeedBackGroupID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách trạng thái phản hồi" }
+    { Link: "", Title: "Danh sách phân loại phản hồi" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/AppFeedBackStatus", Title: "Danh sách trạng thái phản hồi" },
+    { Link: "/AppFeedBackGroup", Title: "Danh sách phân loại phản hồi" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/AppFeedBackStatus", Title: "Danh sách trạng thái phản hồi" },
+    { Link: "/AppFeedBackGroup", Title: "Danh sách phân loại phản hồi" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -44,42 +44,29 @@ export const SearchElementList = [
 export const AddElementList = [
     {
         type: "text",
-        name: "txtAppFeedBackStatusID",
-        label: "mã trạng thái phản hồi",
+        name: "txtAppFeedBackGroupID",
+        label: "mã phân loại phản hồi",
         value: "",
         maxSize: "10",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "AppFeedBackStatusID",
+        DataSourceMember: "AppFeedBackGroupID",
         readonly: false,
         validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtAppFeedBackStatusName",
-        label: "tên trạng thái phản hồi",
+        name: "txtAppFeedBackGroupName",
+        label: "tên phân loại phản hồi",
         value: "",
         maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "AppFeedBackStatusName",
+        DataSourceMember: "AppFeedBackGroupName",
         readonly: false,
         validatonList: ["required"],
-    },
-    {
-        type: "text",
-        name: "txtColorCode",
-        label: "mã màu trạng thái phản hồi",
-        value: "",
-        maxSize: "50",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "ColorCode",
-        readonly: false,
-        validatonList: [],
     },
     {
         type: "textarea",
@@ -94,6 +81,32 @@ export const AddElementList = [
         DataSourceMember: "Description",
         readonly: false,
         validatonList: []
+    },
+    {
+        type: "text",
+        name: "txtIconURL",
+        label: "đường dẫn hình Icon",
+        value: "",
+        maxSize: "200",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "IconURL",
+        readonly: false,
+        validatonList: [],
+    },
+    {
+        type: "text",
+        name: "txtColorCode",
+        label: "mã màu",
+        value: "",
+        maxSize: "20",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "ColorCode",
+        readonly: false,
+        validatonList: [],
     },
     {
         type: "text",
@@ -135,42 +148,29 @@ export const AddElementList = [
 export const EditElementList = [
     {
         type: "text",
-        name: "txtAppFeedBackStatusID",
-        label: "mã trạng thái phản hồi",
+        name: "txtAppFeedBackGroupID",
+        label: "mã phân loại phản hồi",
         value: "",
         maxSize: "5",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "AppFeedBackStatusID",
+        DataSourceMember: "AppFeedBackGroupID",
         readonly: true,
         validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtAppFeedBackStatusName",
-        label: "tên trạng thái phản hồi",
+        name: "txtAppFeedBackGroupName",
+        label: "tên phân loại phản hồi",
         value: "",
         maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "AppFeedBackStatusName",
+        DataSourceMember: "AppFeedBackGroupName",
         readonly: false,
         validatonList: ["required"],
-    },
-    {
-        type: "text",
-        name: "txtColorCode",
-        label: "mã màu trạng thái phản hồi",
-        value: "",
-        maxSize: "50",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "ColorCode",
-        readonly: false,
-        validatonList: [],
     },
     {
         type: "textarea",
@@ -185,6 +185,32 @@ export const EditElementList = [
         DataSourceMember: "Description",
         readonly: false,
         validatonList: []
+    },
+    {
+        type: "text",
+        name: "txtIconURL",
+        label: "đường dẫn hình Icon",
+        value: "",
+        maxSize: "200",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "IconURL",
+        readonly: false,
+        validatonList: [],
+    },
+    {
+        type: "text",
+        name: "txtColorCode",
+        label: "mã màu",
+        value: "",
+        maxSize: "20",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "ColorCode",
+        readonly: false,
+        validatonList: [],
     },
     {
         type: "text",
@@ -235,16 +261,22 @@ export const SearchMLObjectDefinition = [
 
 export const MLObjectDefinition = [
     {
-        Name: "AppFeedBackStatusID",
+        Name: "AppFeedBackGroupID",
         DefaultValue: "",
-        BindControlName: "txtAppFeedBackStatusID",
-        DataSourceMember: "AppFeedBackStatusID"
+        BindControlName: "txtAppFeedBackGroupID",
+        DataSourceMember: "AppFeedBackGroupID"
     },
     {
-        Name: "AppFeedBackStatusName",
+        Name: "AppFeedBackGroupName",
         DefaultValue: "",
-        BindControlName: "txtAppFeedBackStatusName",
-        DataSourceMember: "AppFeedBackStatusName"
+        BindControlName: "txtAppFeedBackGroupName",
+        DataSourceMember: "AppFeedBackGroupName"
+    },
+    {
+        Name: "IconURL",
+        DefaultValue: "",
+        BindControlName: "txtIconURL",
+        DataSourceMember: "IconURL"
     },
     {
         Name: "ColorCode",
@@ -301,29 +333,36 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "AppFeedBackStatusID",
+        DataSourceMember: "AppFeedBackGroupID",
         Width: 60
     },
     {
-        Name: "AppFeedBackStatusID",
+        Name: "AppFeedBackGroupID",
         Type: "text",
-        Caption: "Mã trạng thái phản hồi",
-        DataSourceMember: "AppFeedBackStatusID",
+        Caption: "Mã phân loại phản hồi",
+        DataSourceMember: "AppFeedBackGroupID",
         Width: 160
     },
     {
-        Name: "AppFeedBackStatusName",
+        Name: "AppFeedBackGroupName",
         Type: "text",
-        Caption: "Tên trạng thái phản hồi",
-        DataSourceMember: "AppFeedBackStatusName",
+        Caption: "Tên phân loại phản hồi",
+        DataSourceMember: "AppFeedBackGroupName",
         Width: 200
+    },
+    {
+        Name: "IconURL",
+        Type: "text",
+        Caption: "Đường dẫn hình Icon",
+        DataSourceMember: "IconURL",
+        Width: 120
     },
     {
         Name: "ColorCode",
         Type: "text",
-        Caption: "Mã màu trạng thái phải hồi",
+        Caption: "Mã màu",
         DataSourceMember: "ColorCode",
-        Width: 150
+        Width: 100
     },
     // {
     //     Name: "Description",
@@ -364,9 +403,9 @@ export const DataGridColumnList = [
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "AppFeedBackStatusID",
+        DataSourceMember: "AppFeedBackGroupID",
         Width: 80,
-        Link: "/AppFeedBackStatus/Edit/",
+        Link: "/AppFeedBackGroup/Edit/",
         LinkText: "Chỉnh sửa"
     }
 ];

@@ -1,31 +1,31 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/AppFeedBackStatus/Search";
-export const LoadAPIPath = "api/AppFeedBackStatus/Load";
-export const AddAPIPath = "api/AppFeedBackStatus/Add";
-export const UpdateAPIPath = "api/AppFeedBackStatus/Update";
-export const DeleteAPIPath = "api/AppFeedBackStatus/Delete";
-export const UpdateOrderAPIPath = "api/AppFeedBackStatus/UpdateOrder";
-export const BackLink = "/AppFeedBackStatus";
-export const AddLink = "/AppFeedBackStatus/Add";
+export const SearchAPIPath = "api/AppFeedBackPermission/Search";
+export const LoadAPIPath = "api/AppFeedBackPermission/Load";
+export const AddAPIPath = "api/AppFeedBackPermission/Add";
+export const UpdateAPIPath = "api/AppFeedBackPermission/Update";
+export const DeleteAPIPath = "api/AppFeedBackPermission/Delete";
+export const UpdateOrderAPIPath = "api/AppFeedBackPermission/UpdateOrder";
+export const BackLink = "/AppFeedBackPermission";
+export const AddLink = "/AppFeedBackPermission/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "AppFeedBackStatusID";
+export const PKColumnName = "AppFeedBackPermissionID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách trạng thái phản hồi" }
+    { Link: "", Title: "Danh sách quyền trên phản hồi" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/AppFeedBackStatus", Title: "Danh sách trạng thái phản hồi" },
+    { Link: "/AppFeedBackPermission", Title: "Danh sách quyền trên phản hồi" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/AppFeedBackStatus", Title: "Danh sách trạng thái phản hồi" },
+    { Link: "/AppFeedBackPermission", Title: "Danh sách quyền trên phản hồi" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -44,42 +44,42 @@ export const SearchElementList = [
 export const AddElementList = [
     {
         type: "text",
-        name: "txtAppFeedBackStatusID",
-        label: "mã trạng thái phản hồi",
+        name: "txtAppFeedBackPermissionID",
+        label: "mã quyền trên phản hồi",
         value: "",
-        maxSize: "10",
+        maxSize: "5",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "AppFeedBackStatusID",
+        DataSourceMember: "AppFeedBackPermissionID",
         readonly: false,
         validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtAppFeedBackStatusName",
-        label: "tên trạng thái phản hồi",
+        name: "txtAppFeedBackPermissionName",
+        label: "tên quyền trên phản hồi",
         value: "",
         maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "AppFeedBackStatusName",
+        DataSourceMember: "AppFeedBackPermissionName",
         readonly: false,
         validatonList: ["required"],
     },
     {
         type: "text",
-        name: "txtColorCode",
-        label: "mã màu trạng thái phản hồi",
+        name: "txtPermissionShortName",
+        label: "tên rút gọn",
         value: "",
-        maxSize: "50",
+        maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "ColorCode",
+        DataSourceMember: "PermissionShortName",
         readonly: false,
-        validatonList: [],
+        validatonList: ["required"],
     },
     {
         type: "textarea",
@@ -135,42 +135,42 @@ export const AddElementList = [
 export const EditElementList = [
     {
         type: "text",
-        name: "txtAppFeedBackStatusID",
-        label: "mã trạng thái phản hồi",
+        name: "txtAppFeedBackPermissionID",
+        label: "mã quyền trên phản hồi",
         value: "",
         maxSize: "5",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "AppFeedBackStatusID",
+        DataSourceMember: "AppFeedBackPermissionID",
         readonly: true,
         validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtAppFeedBackStatusName",
-        label: "tên trạng thái phản hồi",
+        name: "txtAppFeedBackPermissionName",
+        label: "tên quyền trên phản hồi",
         value: "",
         maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "AppFeedBackStatusName",
+        DataSourceMember: "AppFeedBackPermissionName",
         readonly: false,
         validatonList: ["required"],
     },
     {
         type: "text",
-        name: "txtColorCode",
-        label: "mã màu trạng thái phản hồi",
+        name: "txtPermissionShortName",
+        label: "tên rút gọn",
         value: "",
-        maxSize: "50",
+        maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "ColorCode",
+        DataSourceMember: "PermissionShortName",
         readonly: false,
-        validatonList: [],
+        validatonList: ["required"],
     },
     {
         type: "textarea",
@@ -235,22 +235,22 @@ export const SearchMLObjectDefinition = [
 
 export const MLObjectDefinition = [
     {
-        Name: "AppFeedBackStatusID",
+        Name: "AppFeedBackPermissionID",
         DefaultValue: "",
-        BindControlName: "txtAppFeedBackStatusID",
-        DataSourceMember: "AppFeedBackStatusID"
+        BindControlName: "txtAppFeedBackPermissionID",
+        DataSourceMember: "AppFeedBackPermissionID"
     },
     {
-        Name: "AppFeedBackStatusName",
+        Name: "AppFeedBackPermissionName",
         DefaultValue: "",
-        BindControlName: "txtAppFeedBackStatusName",
-        DataSourceMember: "AppFeedBackStatusName"
+        BindControlName: "txtAppFeedBackPermissionName",
+        DataSourceMember: "AppFeedBackPermissionName"
     },
     {
-        Name: "ColorCode",
+        Name: "PermissionShortName",
         DefaultValue: "",
-        BindControlName: "txtColorCode",
-        DataSourceMember: "ColorCode"
+        BindControlName: "txtPermissionShortName",
+        DataSourceMember: "PermissionShortName"
     },
     {
         Name: "Description",
@@ -301,29 +301,29 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "AppFeedBackStatusID",
+        DataSourceMember: "AppFeedBackPermissionID",
         Width: 60
     },
     {
-        Name: "AppFeedBackStatusID",
+        Name: "AppFeedBackPermissionID",
         Type: "text",
-        Caption: "Mã trạng thái phản hồi",
-        DataSourceMember: "AppFeedBackStatusID",
+        Caption: "Mã quyền trên phản hồi",
+        DataSourceMember: "AppFeedBackPermissionID",
         Width: 160
     },
     {
-        Name: "AppFeedBackStatusName",
+        Name: "AppFeedBackPermissionName",
         Type: "text",
-        Caption: "Tên trạng thái phản hồi",
-        DataSourceMember: "AppFeedBackStatusName",
+        Caption: "Tên quyền trên phản hồi",
+        DataSourceMember: "AppFeedBackPermissionName",
         Width: 200
     },
     {
-        Name: "ColorCode",
+        Name: "PermissionShortName",
         Type: "text",
-        Caption: "Mã màu trạng thái phải hồi",
-        DataSourceMember: "ColorCode",
-        Width: 150
+        Caption: "Tên rút gọn",
+        DataSourceMember: "PermissionShortName",
+        Width: 120
     },
     // {
     //     Name: "Description",
@@ -364,9 +364,9 @@ export const DataGridColumnList = [
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "AppFeedBackStatusID",
+        DataSourceMember: "AppFeedBackPermissionID",
         Width: 80,
-        Link: "/AppFeedBackStatus/Edit/",
+        Link: "/AppFeedBackPermission/Edit/",
         LinkText: "Chỉnh sửa"
     }
 ];
