@@ -14,7 +14,7 @@ import { getCookie } from "../../common/library/CommonLib.js";
 
 import PrivateRoute from '../../Route/PrivateRoute'
 
-
+import PageUI from '../../views/Test/PageUI';
 import TestModal from '../../views/Test/TestModal';
 import TestCache from '../../views/Test/TestCache';
 import TestFormContainer from '../../views/Test/TestFormContainer';
@@ -196,6 +196,7 @@ class HomeCom extends React.Component {
                             <Switch>
                                 <PrivateRoute exact path="/" component={Dashboard} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/accountinfo" component={AccountInfo} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/PageUI" component={PageUI} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/TestModal" component={TestModal} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/TestCache" component={TestCache} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/TestFormContainer" component={TestFormContainer} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
