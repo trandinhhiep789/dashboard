@@ -12,22 +12,14 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
-    LoadReportUndeliveryByDate,
-    LoadReportDeliveringByDate,
-    LoadReportDeliveredByDate,
-    LoadReportCompletedOrderByDate,
-    LoadReportCancelDeliveryByDate,
-    LoadReportPaidInByDate
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
+import { TMS_BEGINTERMADVANCEDEBT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 import { showModal, hideModal } from '../../../../../actions/modal';
-import DataGirdReportShipmentOrder from '../../components/DataGirdReportShipmentOrder'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -170,7 +162,7 @@ class SearchCom extends React.Component {
                     IsAutoPaging={true}
                     params={this.state.params}
                     RowsPerPage={20}
-                    RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    RequirePermission={TMS_BEGINTERMADVANCEDEBT_VIEW}
                     ref={this.gridref}
                 />
             </React.Fragment>
