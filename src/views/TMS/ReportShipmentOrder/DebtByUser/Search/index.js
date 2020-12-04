@@ -12,22 +12,14 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
-    LoadReportUndeliveryByDate,
-    LoadReportDeliveringByDate,
-    LoadReportDeliveredByDate,
-    LoadReportCompletedOrderByDate,
-    LoadReportCancelDeliveryByDate,
-    LoadReportPaidInByDate
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
+import { TMS_BEGINTERMADVANCEDEBT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 import { showModal, hideModal } from '../../../../../actions/modal';
-import DataGirdReportShipmentOrder from '../../components/DataGirdReportShipmentOrder'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -40,6 +32,7 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsLoadDataComplete: false,
             widthPercent: "",
+            params: {}
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -56,13 +49,26 @@ class SearchCom extends React.Component {
             UserName:MLObject.UserName.value,
             FromDate:MLObject.FromDate,
             ToDate:  MLObject.ToDate
+
         }
+
+        const objParams = {
+            UserName:MLObject.UserName.value,
+            FromDate:MLObject.FromDate,
+            ToDate:  MLObject.ToDate,
+            FullName: MLObject.UserName.label
+        }
+
+        this.setState({
+            params: objParams
+        })
         this.callSearchData(objData)
     }
 
     callSearchData(searchData) {
         
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
                 const tempData = apiResult.ResultObject.map((item, index) => {
                     item.TotalAmount = item.Price * item.EndTermAdvanceDebt;
@@ -73,6 +79,9 @@ class SearchCom extends React.Component {
                 })
             }
             else {
+                this.setState({
+                    gridDataSource: []
+                })
                 this.showMessage(apiResult.MessageDetail)
             }
         });
@@ -142,8 +151,8 @@ class SearchCom extends React.Component {
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
                     IsFixheaderTable={true}
-                    IDSelectColumnName={'CreatedOrderTime'}
-                    PKColumnName={'CreatedOrderTime'}
+                    IDSelectColumnName={'ProductID'}
+                    PKColumnName={'ProductID'}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
@@ -151,8 +160,9 @@ class SearchCom extends React.Component {
                     IsPrint={false}
                     IsExportFile={false}
                     IsAutoPaging={true}
-                    RowsPerPage={30}
-                    RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    params={this.state.params}
+                    RowsPerPage={20}
+                    RequirePermission={TMS_BEGINTERMADVANCEDEBT_VIEW}
                     ref={this.gridref}
                 />
             </React.Fragment>

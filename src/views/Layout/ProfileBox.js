@@ -35,7 +35,8 @@ class ProfileBoxCom extends React.Component {
                     <Link className="dropdown-item" to="/CacheManager"><i className="ti-lock"></i>Quản lý cache</Link>
                     <Link className="dropdown-item" to="/changepassword"><i className="ti-lock"></i>Đổi mật khẩu</Link>
                     <Link className="dropdown-item" to="/UseGuide"><i className="ti-lock"></i>Hướng dẫn sử dụng</Link>
-
+                    <div className="dropdown-divider"></div>
+                    <Link className="dropdown-item" to="/PageUI"><i className="ti-lock"></i>Page UI</Link>
                     <div className="dropdown-divider"></div>
                     <Link className="dropdown-item" to="/logout"><i className="ti-power-off"></i>Đăng xuất</Link>
                 </div>
