@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { formatDate } from "../../../library/CommonLib.js";
 import { ModalManager } from 'react-dynamic-modal';
 import { MessageModal } from "../../../../common/components/Modal";
-import { formatMoney } from '../../../../utils/function';
+import { formatMoney, formatNumber } from '../../../../utils/function';
 import { Base64 } from 'js-base64';
 import { withRouter } from 'react-router-dom';
 
@@ -208,6 +208,10 @@ class GridCell extends Component {
 
             case "popupNew":
                 control = <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => { this.onShowPopupNew(listValue) }}>{text}</a>
+                break;
+
+            case "popupTextNumber":
+                control = <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => { this.onShowPopupNew(listValue) }}>{formatNumber(text)}</a>
                 break;
 
 

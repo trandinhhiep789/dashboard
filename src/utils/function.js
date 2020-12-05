@@ -13,3 +13,7 @@ export const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands =
         console.log(e)
     }
 };
+
+export const formatNumber = (num) => {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
