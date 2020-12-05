@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
+import { formatMoney, formatNumber } from '../../../utils/function';
 import { Link,  withRouter } from "react-router-dom";
 
 class NoCoordinatedCom extends Component {
@@ -31,7 +32,7 @@ class NoCoordinatedCom extends Component {
                                 <i className="fa fa-calendar fa-4x"></i>
                             </div>
                             <div className="col-9 text-right content">
-                                <span className="Count">{this.props.NoCoordinated}</span>
+                                <span className="Count">{formatNumber(this.props.NoCoordinated)}</span>
                                 <h3 className="title">Chưa điều phối</h3>
                             </div>
                         </div>
