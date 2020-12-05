@@ -11,6 +11,7 @@ class PageUICom extends React.Component {
     }
 
     componentDidMount(){
+        
     }
 
 
