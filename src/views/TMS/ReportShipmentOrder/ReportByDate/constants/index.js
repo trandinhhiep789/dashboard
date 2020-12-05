@@ -116,49 +116,49 @@ export const GridColumnList = [
     },
     {
         Name: "TotalUndelivery",
-        Type: "popupNew",
+        Type: "popupTextNumber",
         Caption: "Chưa giao",
         DataSourceMember: "TotalUndelivery",
         Width: '10%',
     },
     {
         Name: "TotalDelivering",
-        Type: "popupNew",
+        Type: "popupTextNumber",
         Caption: "Đang giao",
         DataSourceMember: "TotalDelivering",
         Width: '10%'
     },
     {
         Name: "TotalDelivered",
-        Type: "popupNew",
+        Type: "popupTextNumber",
         Caption: "Giao xong",
         DataSourceMember: "TotalDelivered",
         Width: '10%'
     },
     {
         Name: "TotalCompletedOrder",
-        Type: "popupNew",
+        Type: "popupTextNumber",
         Caption: "Hoàn tất",
         DataSourceMember: "TotalCompletedOrder",
         Width: '12%'
     },
     {
         Name: "TotalCancelDelivery",
-        Type: "popupNew",
+        Type: "popupTextNumber",
         Caption: "Huỷ giao",
         DataSourceMember: "TotalCancelDelivery",
         Width: '12%'
     },
     {
         Name: "TotalPaidIn",
-        Type: "popupNew",
+        Type: "popupTextNumber",
         Caption: "Đã nộp tiền",
         DataSourceMember: "TotalPaidIn",
         Width: '12%'
     },
     {
         Name: "UnTotalPaidIn",
-        Type: "popupNew",
+        Type: "popupTextNumber",
         Caption: "Chưa nộp tiền",
         DataSourceMember: "UnTotalPaidIn",
         Width: '10%'
