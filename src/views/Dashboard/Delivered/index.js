@@ -32,7 +32,7 @@ class DeliveredCom extends Component {
                                 <i className="ti ti-check"></i>
                             </div>
                             <div className="col-9 text-right content">
-                                <span className="Count">{this.props.DataSource.filter(n => n.IsCompleteDeliverIed == true).length}</span>
+                                <span className="Count">{this.props.Delivered}</span>
                                 <h3 className="title">Đã giao</h3>
                             </div>
                         </div>

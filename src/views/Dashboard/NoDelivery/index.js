@@ -32,7 +32,7 @@ class NoDeliveryCom extends Component {
                                 <i className="fa fa-spinner fa-4x"></i>
                             </div>
                             <div className="col-9 text-right content">
-                                <span className="Count">{this.props.DataSource.filter(n => n.ActualBeginDeliveryTime == null).length}</span>
+                                <span className="Count">{this.props.NoDelivery}</span>
                                 <h3 className="title">Chờ giao</h3>
                             </div>
                         </div>

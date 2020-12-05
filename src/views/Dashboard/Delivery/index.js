@@ -31,7 +31,7 @@ class DeliveryCom extends Component {
                                 <i className="fa fa-truck fa-4x"></i>
                             </div>
                             <div className="col-9 text-right content">
-                                <span className="Count">{this.props.DataSource.filter(n => n.ActualBeginDeliveryTime != null && n.IsCompleteDeliverIed == false).length}</span>
+                                <span className="Count">{this.props.Delivery}</span>
                                 <h3 className="title">Đang giao</h3>
                             </div>
                         </div>
