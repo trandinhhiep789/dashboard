@@ -135,7 +135,7 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
-                    
+
 
                 ]
             },
@@ -417,7 +417,7 @@ const AppMenu = [
 
                 ]
             },
-            
+
             {
                 MenuName: 'Limit',
                 MenuTitle: 'Giới hạn',
@@ -450,7 +450,7 @@ const AppMenu = [
 
                 ]
             },
-            
+
             {
                 MenuName: 'Advance',
                 MenuTitle: 'Tạm ứng',
@@ -480,8 +480,8 @@ const AppMenu = [
                     }
                 ]
             },
-          
-            
+
+
         ]
     },
     {
@@ -752,7 +752,13 @@ const AppMenu = [
                     },
                 ]
             },
-           
+            {
+                MenuName: 'DebtByUser',
+                MenuTitle: 'Thống kê công nợ theo NV',
+                LinkTo: '/DebtByUser',
+                MenuIcon: '',
+                SubMenu: []
+            }
         ]
     }
 
