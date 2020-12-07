@@ -16,14 +16,13 @@ class ProductComboBoxCom extends React.Component {
         let selectedOption = [];
         let values = this.props.value;
         if (values && !Array.isArray(values)) {
-            selectedOption = this.callSearchData(values, true);
+            selectedOption = this.callSearchData(values.trim(), true);
         }
     }
 
     bindData() {
         let values = this.props.value;
         let selectedOption = [];
-
         if (values && !Array.isArray(values)) {
             selectedOption = this.state.SelectedOption;
         }

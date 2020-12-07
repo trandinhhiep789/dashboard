@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link,  withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
+import { formatMoney, formatNumber } from '../../../utils/function';
 
 class NoDeliveryCom extends Component {
     constructor(props) {
@@ -32,7 +33,7 @@ class NoDeliveryCom extends Component {
                                 <i className="fa fa-spinner fa-4x"></i>
                             </div>
                             <div className="col-9 text-right content">
-                                <span className="Count">{this.props.DataSource.filter(n => n.ActualBeginDeliveryTime == null).length}</span>
+                                <span className="Count">{formatNumber(this.props.NoDelivery)}</span>
                                 <h3 className="title">Chờ giao</h3>
                             </div>
                         </div>

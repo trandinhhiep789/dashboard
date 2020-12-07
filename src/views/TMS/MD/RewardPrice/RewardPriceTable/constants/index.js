@@ -204,8 +204,37 @@ export const DataGridColumnItemListRPTDetail = [
     {
         Name: "TechspecsValue",
         Type: "text",
-        Caption: "Giá trị thông số kỹ thuật",
+        Caption: "Giá trị TSKT",
         DataSourceMember: "TechspecsValue",
+        Width: 100
+    },
+
+    {
+        Name: "IsPriceByTechspecsValueRange",
+        Type: "checkicon",
+        Caption: "Tính theo giá trị TSKT",
+        DataSourceMember: "IsPriceByTechspecsValueRange",
+        Width: 150
+    },
+    {
+        Name: "FromTechspecsValue",
+        Type: "textCurrency",
+        Caption: "Giá trị TSKT từ",
+        DataSourceMember: "FromTechspecsValue",
+        Width: 100
+    },
+    {
+        Name: "ToTechspecsValue",
+        Type: "textCurrency",
+        Caption: "Giá trị TSKT đến",
+        DataSourceMember: "ToTechspecsValue",
+        Width: 100
+    },
+    {
+        Name: "ProductName",
+        Type: "text",
+        Caption: "Sản phẩm",
+        DataSourceMember: "ProductName",
         Width: 100
     },
     {
@@ -253,6 +282,36 @@ export const MLObjectRPTDetailItem= [
         BindControlName: "cbTechSpecsValue",
         DataSourceMember: "TechSpecsValueID"
     },
+
+    {
+        Name: "IsPriceByTechspecsValueRange",
+        DefaultValue: false,
+        BindControlName: "ckIsPriceByTechspecsValueRange",
+        DataSourceMember: "IsPriceByTechspecsValueRange"
+    },
+    
+    {
+        Name: "FromTechspecsValue",
+        DefaultValue: {},
+        BindControlName: "txtFromTechspecsValue",
+        DataSourceMember: "FromTechspecsValue"
+    },
+    
+    {
+        Name: "ToTechspecsValue",
+        DefaultValue: {},
+        BindControlName: "txtToTechspecsValue",
+        DataSourceMember: "ToTechspecsValue"
+    },
+    
+    {
+        
+        Name: "ProductID",
+        DefaultValue: "",
+        BindControlName: "cbProductID",
+        DataSourceMember: "ProductID"
+    },
+
     {
         Name: "RewardPrice",
         DefaultValue: {},

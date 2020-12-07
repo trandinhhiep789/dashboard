@@ -23,6 +23,10 @@ class DashboardCom extends Component {
             WeekShipmentOrderCoord:[],
             ShipmentOrderActionLogList:[],
             IsLoadDataComplete: false,
+            NoCoordinated:0,
+            NoDelivery:0,
+            Delivery:0,
+            Delivered:0
 
         };
     }
@@ -36,13 +40,18 @@ class DashboardCom extends Component {
     callSearchDataReport() {
         const postData = [];
         this.props.callFetchAPI(APIHostName, SearchAPIPath, postData).then(apiResult => {
-
+            debugger;
             if (!apiResult.IsError) {
                 this.setState({
                     LstDataSource: apiResult.ResultObject == null ? [] : apiResult.ResultObject.ShipmentOrderItemList,
                     WeekShipmentOrderCoord: apiResult.ResultObject == null ? [] : apiResult.ResultObject.WeekShipmentOrderCoordList,
                     ShipmentOrderActionLogList: apiResult.ResultObject == null ? [] : apiResult.ResultObject.ShipmentOrder_ActionLogList,
-                    IsLoadDataComplete: true
+                    NoCoordinated:apiResult.ResultObject.NoCoordinated,
+                    NoDelivery:apiResult.ResultObject.NoDelivery,
+                    Delivery:apiResult.ResultObject.Delivery,
+                    Delivered:apiResult.ResultObject.Delivered,
+                    IsLoadDataComplete: true,
+
                 });
             }
         });
@@ -54,10 +63,10 @@ class DashboardCom extends Component {
             return (
                 <div className="col-lg-12 dashboard">
                     <div className="row">
-                        <NoCoordinated DataSource={this.state.LstDataSource} />
-                        <NoDelivery DataSource={this.state.LstDataSource} />
-                        <Delivery DataSource={this.state.LstDataSource} />
-                        <Delivered DataSource={this.state.LstDataSource} />
+                        <NoCoordinated NoCoordinated={this.state.NoCoordinated} />
+                        <NoDelivery NoDelivery={this.state.NoDelivery} />
+                        <Delivery Delivery={this.state.Delivery} />
+                        <Delivered Delivered={this.state.Delivered} />
                     </div>
                     <div className="row">
                         <WeeklyReport DataSource={this.state.WeekShipmentOrderCoord} />
