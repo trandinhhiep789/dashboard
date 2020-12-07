@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
-import { updatePagePath, updatePageBreadcrumb } from "../../../actions/pageAction";
+import { updatePagePath } from "../../../actions/pageAction";
 import SearchForm from "../../../common/components/FormContainer/SearchForm";
 import Select from 'react-select';
 import Datetime from 'react-datetime';
@@ -25,7 +25,6 @@ class PageUICom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updatePageBreadcrumb(false);
     }
 
     handleSearchSubmit() {
@@ -301,9 +300,7 @@ const mapDispatchToProps = dispatch => {
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID))
         },
-        updatePageBreadcrumb: (status) => {
-            dispatch(updatePageBreadcrumb(status));
-        },
+   
     }
 }
 
