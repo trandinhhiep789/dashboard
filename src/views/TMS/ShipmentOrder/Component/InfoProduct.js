@@ -388,15 +388,14 @@ class InfoProductCom extends Component {
                                             <tr>
                                                 <th className="jsgrid-header-cell">Sản phẩm</th>
                                                 <th className="jsgrid-header-cell">Số lượng tạm ứng</th>
-                                                <th className="jsgrid-header-cell">Số lượng miễn phí</th>
                                                 <th className="jsgrid-header-cell">Số lượng sử dụng</th>
+                                                <th className="jsgrid-header-cell">Số lượng miễn phí</th>
                                                 <th className="jsgrid-header-cell">Số lượng bán</th>
                                                 <th className="jsgrid-header-cell">Giá bán</th>
                                                 <th className="jsgrid-header-cell">Thành tiền</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-
                                             {objgroupByInstallBundleID != null &&
                                                 objgroupByInstallBundleID.map((rowItem, rowIndex) => {
                                                     let obj = this.state.ShipmentOrder.ShipmentOrder_Material2List.filter(n => n.InstallProductID == [rowItem.InstallProductID]);
@@ -415,13 +414,12 @@ class InfoProductCom extends Component {
                                                                         return (<tr key={rowIndex + Index}>
                                                                             <td>{item.ProductID + '-' + item.ProductName}</td>
                                                                             <td>{item.AdvanceQuantity * item.AdvanceConvertRatio}</td>
-                                                                            <td>{item.FreeQuantity}</td>
                                                                             <td>{item.UsageQuantity}</td>
+                                                                            <td>{item.FreeQuantity}</td>
                                                                             <td>{item.SaleQuantity}</td>
                                                                             <td>{formatMoney(item.SalePriceWithVAT, 0)}đ</td>
                                                                             <td>{formatMoney(this.Pricevat(item.SaleQuantity, item.SalePriceWithVAT), 0)}đ</td>
                                                                         </tr>)
-
                                                                     }
                                                                 })
                                                             }
