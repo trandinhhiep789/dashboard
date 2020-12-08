@@ -378,6 +378,13 @@ const AppMenu = [
                         SubMenu: []
                     },
                     {
+                        MenuName: 'RewardComputeSchedule',
+                        MenuTitle: 'Lịch tính thưởng',
+                        LinkTo: '/RewardComputeSchedule',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'FuelPrice',
                         MenuTitle: 'Bảng giá nhiêu liệu',
                         LinkTo: '/FuelPrice',
