@@ -27,11 +27,15 @@
 @import "./guide";
 
 @import "./datetime";
+@import "./pageshipmentorder";
 
 
 body{
     &.showModal{
         overflow: hidden;
+    }
+    .main-container{
+        
     }
 }
 
