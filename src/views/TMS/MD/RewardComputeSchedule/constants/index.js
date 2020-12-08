@@ -55,6 +55,7 @@ export const AddElementList = [
         value: "",
         placeholder: "",
         icon: "",
+        readonly: true,
         DataSourceMember: "RewardDateFrom",
         validatonList: ["required"]
     },
@@ -287,27 +288,29 @@ export const DataGridColumnList = [
         DataSourceMember: "RewardComputeScheduleID",
         Width: 60
     },
-    {
-        Name: "RewardComputeScheduleID",
-        Type: "texttolink",
-        Link: "/RewardComputeSchedule/Detail/",
-        Caption: "Mã lịch tính thưởng",
-        DataSourceMember: "RewardComputeScheduleID",
-        Width: 150
-    },
+    // {
+    //     Name: "RewardComputeScheduleID",
+    //     Type: "texttolink",
+    //     Link: "/RewardComputeSchedule/Detail/",
+    //     Caption: "Mã lịch tính thưởng",
+    //     DataSourceMember: "RewardComputeScheduleID",
+    //     Width: 150
+    // },
     {
         Name: "RewardDate",
-        Type: "date",
+        //Type: "date",
+        Type: "texttolink",
+        Link: "/RewardComputeSchedule/Detail/",
         Caption: "Ngày tính thưởng",
-        DataSourceMember: "RewardDate",
-        Width: 120
+        DataSourceMember: "RewardDateString",
+        Width: 110
     },
     {
         Name: "Description",
         Type: "text",
         Caption: "Mô tả",
         DataSourceMember: "Description",
-        Width: 200
+        Width: 160
     },
     {
         Name: "IsAutoAdd",
@@ -315,6 +318,27 @@ export const DataGridColumnList = [
         Caption: "Lịch tự động thêm",
         DataSourceMember: "IsAutoAdd",
         Width: 120
+    },
+    {
+        Name: "IsCompletedCompute",
+        Type: "checkicon",
+        Caption: "Kết thúc tính thưởng",
+        DataSourceMember: "IsCompletedCompute",
+        Width: 120
+    },
+    {
+        Name: "ComputeInterval",
+        Type: "text",
+        Caption: "Thời gian tính(mili giây)",
+        DataSourceMember: "ComputeInterval",
+        Width: 150
+    },
+    {
+        Name: "IsComputeError",
+        Type: "checkicon",
+        Caption: "Lỗi tính thưởng",
+        DataSourceMember: "IsComputeError",
+        Width: 100
     },
     {
         Name: "IsActived",
@@ -336,7 +360,7 @@ export const DataGridColumnList = [
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 140
+        Width: 100
     },
     {
         Name: "CreatedUserFullName",

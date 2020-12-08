@@ -127,7 +127,7 @@ class MultiSelectComboBoxCom extends React.Component {
         let comboValues = [];
         if (Array.isArray(selectedOption)) {
             comboValues = this.getComboValue(selectedOption);
-        } else {
+        } else if (selectedOption && selectedOption.value) {
             comboValues.push(selectedOption.value);
         }
 

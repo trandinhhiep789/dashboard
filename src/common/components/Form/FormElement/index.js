@@ -593,7 +593,12 @@ class FormElementCom extends Component {
                 control = <Datetime dateFormat="DD/MM/YYYY" timeFormat={false} defaultValue={defaultDate} value={this.props.value ? valueDate : defaultDate} readOnly={this.props.readonly} name={this.props.name} type={this.props.type} className={this.state.IsSystem ? "de-active" : ""} onChange={(moment) => this.handleDateTimeChange(this.props.name, moment)}></Datetime>
                 break;
             case 'date':
-                control = <Datetime timeFormat={false} dateFormat="DD/MM/YYYY" value={this.props.value} readOnly={this.props.readonly} name={this.props.name} type={this.props.type} className={CSSClassName} onChange={(moment) => this.handleDateTimeChange(this.props.name, moment)}></Datetime>
+                let dateclassName = "";
+                if (this.props.validationErrorMessage != "") {
+                    dateclassName += " is-invalid";
+                }
+
+                control = <Datetime timeFormat={false} dateFormat="DD/MM/YYYY" value={this.props.value} readOnly={this.props.readonly} name={this.props.name} type={this.props.type} className={CSSClassName} onChange={(moment) => this.handleDateTimeChange(this.props.name, moment)} className={dateclassName}></Datetime>
                 break;
             case "treeSelect":
                 let disabledd = this.state.IsSystem;

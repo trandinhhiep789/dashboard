@@ -172,7 +172,7 @@ class SearchCom extends React.Component {
                         RequirePermission={REWARDCOMPUTESCHEDULE_VIEW}
                         DeletePermission={REWARDCOMPUTESCHEDULE_DELETE}
                         IsAutoPaging={true}
-                        RowsPerPage={10}
+                        RowsPerPage={30}
                     />
                 </React.Fragment>
             );
