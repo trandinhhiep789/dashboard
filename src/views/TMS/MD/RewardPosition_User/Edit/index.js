@@ -36,6 +36,8 @@ class EditCom extends React.Component {
             Address: "",
             DataSource: [],
             DataSourceUser_RewardPosition: [],
+            cssNotification: "notification-danger",
+            iconNotification: "fa fa-exclamation"
         };
 
         this.notificationDOMRef = React.createRef();
@@ -118,7 +120,7 @@ class EditCom extends React.Component {
 
     callLoadData(postData) {
         this.props.callFetchAPI(APIHostName, GetAllByUserNameAPIPath, postData).then(apiResult => {
-            console.log("apiResult", apiResult);
+            //console.log("apiResult", apiResult);
             if (!apiResult.IsError) {
                 let id = "";
                 let uniqueArray = apiResult.ResultObject;
@@ -138,6 +140,13 @@ class EditCom extends React.Component {
                     DataSource: apiResult.ResultObject,
                     DataSourceUser_RewardPosition: uniqueArray
                 });
+
+
+                let countSelected = 0;
+                countSelected = apiResult.ResultObject.filter(item => item.IsSelected == true).length;
+                if (countSelected > 1) {
+                    this.showMessage("Chỉ được phép chọn 1 vị trí thưởng");
+                }
                 //console.log("uniqueArray", apiResult.ResultObject);
             }
         });
@@ -187,6 +196,7 @@ class EditCom extends React.Component {
         } else if (e.target.type == 'checkbox') {
             let ischecked = e.target.checked;
             if (name == "chkAdd") {
+                DataSourceUser_RewardPosition.filter(item => item.IsSelected = false);
                 DataSourceUser_RewardPosition[index].IsSelected = ischecked;
             } else if (name == "chkIsActived") {
                 DataSourceUser_RewardPosition[index].IsActived = ischecked;
@@ -197,7 +207,7 @@ class EditCom extends React.Component {
             DataSourceUser_RewardPosition[index].Note = inputvalue;
         }
 
-        console.log("DataSourceUser_RewardPosition", DataSourceUser_RewardPosition);
+        //console.log("DataSourceUser_RewardPosition", DataSourceUser_RewardPosition);
         this.setState({ DataSourceUser_RewardPosition: DataSourceUser_RewardPosition });
     }
 
@@ -206,9 +216,19 @@ class EditCom extends React.Component {
             let data = this.state.DataSourceUser_RewardPosition;
             data[0].CreatedUser = this.props.AppInfo.LoginInfo.Username;
             data[0].LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-            this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
-                this.addNotification(apiResult.Message, apiResult.IsError);
-            });
+
+            //console.log("this.state.DataSourceUser_RewardPosition", this.state.DataSourceUser_RewardPosition);
+
+            let countSelected = 0;
+            countSelected = data.filter(item => item.IsSelected == true).length;
+            if (countSelected > 1) {
+                this.addNotification("Chỉ được phép chọn 1 vị trí thưởng", true);
+            } else {
+                this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
+                    this.addNotification(apiResult.Message, apiResult.IsError);
+                });
+            }
+
         } else {
             this.addNotification("Bạn không có quyền cập nhật", true);
         }

@@ -28,7 +28,7 @@ import { convertNodeToElement } from "react-html-parser";
 import Collapsible from 'react-collapsible';
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import {
-    ERPCOMMONCACHE_AppFeedBackType, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE
+    ERPCOMMONCACHE_AppFeedBackType, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_APPFEEDBACKPRIORITY, ERPCOMMONCACHE_APPFEEDBACKSTATUS, ERPCOMMONCACHE_APPFEEDBACKQUALITY
 } from "../../../../../../constants/keyCache";
 import { AppFeedBackType_UPDATE } from "../../../../../../constants/functionLists";
 
@@ -43,10 +43,11 @@ class EditCom extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.getCachePiePermission = this.getCachePiePermission.bind(this);
         this.getCacheSysUser = this.getCacheSysUser.bind(this);
-        this.getCachePartner = this.getCachePartner.bind(this);
-        this.getCacheShipmentStatus = this.getCacheShipmentStatus.bind(this);
-        this.changeSelecPartner = this.changeSelecPartner.bind(this);
-        this.changeSelectShipmentStatus = this.changeSelectShipmentStatus.bind(this);
+        //this.getCachePartner = this.getCachePartner.bind(this);
+        this.getDataCache = this.getDataCache.bind(this);
+        //this.getCacheShipmentStatus = this.getCacheShipmentStatus.bind(this);
+        //this.changeSelecPartner = this.changeSelecPartner.bind(this);
+        //this.changeSelectShipmentStatus = this.changeSelectShipmentStatus.bind(this);
         this.callLoadData = this.callLoadData.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.checkValidStep = this.checkValidStep.bind(this);
@@ -71,8 +72,9 @@ class EditCom extends React.Component {
         this.callLoadData();
         this.getCachePiePermission();
         this.getCacheSysUser();
-        this.getCachePartner();
-        this.getCacheShipmentStatus();
+        this.getDataCache();
+        //this.getCachePartner();
+        //this.getCacheShipmentStatus();
         this.checkValidStep();
         //console.log("formdata", this.state.FormData);
     }
@@ -241,21 +243,16 @@ class EditCom extends React.Component {
         //console.log("this.state.FormData", this.state.FormData);
     }
 
-    handleSubmitInsertLog(MLObject) {
-        MLObject.ActivityTitle = "Cập nhật loại yêu cầu chỉnh sửa thông tin";
-        MLObject.ActivityDetail = "Cập nhật loại yêu cầu chỉnh sửa thông tin";
-        MLObject.ObjectID = "PIM_PIEREQUESTTYPE";
-        MLObject.ActivityUser = MLObject.UpdatedUser;
-        this.props.callFetchAPI(APIHostName, AddLogAPIPath, MLObject);
-    }
+
 
     handleSubmit(formData, MLObject) {
 
         let param = Object.assign({}, this.state.FormData.AppFeedBackType,
             {
-                AppFeedBackTypeWorkFlow: this.state.FormData.AppFeedBackTypeWorkFlow,
-                ListPartner: this.state.PartnerList,
-                ListStatus: this.state.ShipmentStatusList
+                //AppFeedBackTypeWorkFlow: this.state.FormData.AppFeedBackTypeWorkFlow,
+                ListAppFeedBackType_Priority: this.state.AppFeedBackPriorityList,
+                ListAppFeedBackType_Status: this.state.AppFeedBackStatusList,
+                ListAppFeedBackType_Quality: this.state.AppFeedBackQualityList
             });
         param.AddFunctionID = param.AddFunctionID && Array.isArray(param.AddFunctionID) ? param.AddFunctionID[0] : param.AddFunctionID;
         param.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
@@ -321,6 +318,45 @@ class EditCom extends React.Component {
             }
             this.setState({
                 SysUserCache: SysUserList
+            });
+            //console.log("SysUserList", SysUserList);
+        });
+    }
+
+
+    getDataCache() {
+        //lấy cache danh sách độ ưu tiên phản hồi
+        let AppFeedBackPriorityList = [];
+        this.props.callGetCache(ERPCOMMONCACHE_APPFEEDBACKPRIORITY).then((apiResult) => {
+            if (!apiResult.IsError && apiResult.ResultObject.CacheData != null) {
+                AppFeedBackPriorityList = apiResult.ResultObject.CacheData;
+            }
+            this.setState({
+                AppFeedBackPriorityCache: AppFeedBackPriorityList
+            });
+            //console.log("SysUserList", SysUserList);
+        });
+
+        //lấy cache danh sách trạng thái phản hồi
+        let AppFeedBackStatusList = [];
+        this.props.callGetCache(ERPCOMMONCACHE_APPFEEDBACKSTATUS).then((apiResult) => {
+            if (!apiResult.IsError && apiResult.ResultObject.CacheData != null) {
+                AppFeedBackStatusList = apiResult.ResultObject.CacheData;
+            }
+            this.setState({
+                AppFeedBackStatusCache: AppFeedBackStatusList
+            });
+            //console.log("SysUserList", SysUserList);
+        });
+
+        //lấy cache danh sách chất lượng xử lý phản hồi
+        let AppFeedBackQualityList = [];
+        this.props.callGetCache(ERPCOMMONCACHE_APPFEEDBACKQUALITY).then((apiResult) => {
+            if (!apiResult.IsError && apiResult.ResultObject.CacheData != null) {
+                AppFeedBackQualityList = apiResult.ResultObject.CacheData;
+            }
+            this.setState({
+                AppFeedBackQualityCache: AppFeedBackQualityList
             });
             //console.log("SysUserList", SysUserList);
         });
@@ -509,23 +545,54 @@ class EditCom extends React.Component {
         />);
     }
 
-    changeSelecPartner(name, listSelect) {
-        let PartnerList = [];
-        listSelect.map(partner => {
-            const partnerMatch = this.state.PartnerCache.filter(x => { return x.PartnerID == partner });
-            PartnerList.push(partnerMatch[0]);
+    changeSelectAppFeedBackPriority(name, listSelect) {
+        let AppFeedBackPriorityList = [];
+        listSelect.map(item => {
+            const match = this.state.AppFeedBackPriorityCache.filter(x => { return x.AppFeedBackPriorityID == item });
+            AppFeedBackPriorityList.push(match[0]);
         })
-        this.setState({ PartnerList });
+        this.setState({ AppFeedBackPriorityList });
+        //console.log("dsadsa", listSelect, AppFeedBackPriorityList);
     }
 
-    changeSelectShipmentStatus(name, listSelect) {
-        let ShipmentStatusList = [];
-        listSelect.map(shipmentStatus => {
-            const shipmentStatusMatch = this.state.ShipmentStatusCache.filter(x => { return x.ShipmentOrderStatusID == shipmentStatus });
-            ShipmentStatusList.push(shipmentStatusMatch[0]);
+    changeSelectAppFeedBackStatus(name, listSelect) {
+        let AppFeedBackStatusList = [];
+        listSelect.map(item => {
+            const match = this.state.AppFeedBackStatusCache.filter(x => { return x.AppFeedBackStatusID == item });
+            AppFeedBackStatusList.push(match[0]);
         })
-        this.setState({ ShipmentStatusList });
+        this.setState({ AppFeedBackStatusList });
+        //console.log("dsadsa", listSelect, AppFeedBackStatusList);
     }
+
+    changeSelectAppFeedBackQuality(name, listSelect) {
+        let AppFeedBackQualityList = [];
+        listSelect.map(item => {
+            const match = this.state.AppFeedBackQualityCache.filter(x => { return x.AppFeedBackQualityID == item });
+            AppFeedBackQualityList.push(match[0]);
+        })
+        this.setState({ AppFeedBackQualityList });
+        console.log("dsadsa", listSelect, AppFeedBackQualityList);
+    }
+
+
+    // changeSelecPartner(name, listSelect) {
+    //     let PartnerList = [];
+    //     listSelect.map(partner => {
+    //         const partnerMatch = this.state.PartnerCache.filter(x => { return x.PartnerID == partner });
+    //         PartnerList.push(partnerMatch[0]);
+    //     })
+    //     this.setState({ PartnerList });
+    // }
+
+    // changeSelectShipmentStatus(name, listSelect) {
+    //     let ShipmentStatusList = [];
+    //     listSelect.map(shipmentStatus => {
+    //         const shipmentStatusMatch = this.state.ShipmentStatusCache.filter(x => { return x.ShipmentOrderStatusID == shipmentStatus });
+    //         ShipmentStatusList.push(shipmentStatusMatch[0]);
+    //     })
+    //     this.setState({ ShipmentStatusList });
+    // }
 
     addNotification(message1, IsError) {
         if (!IsError) {
@@ -648,7 +715,34 @@ class EditCom extends React.Component {
 
                             {/* ------------------------------------------------------------------ */}
 
-                            <FormControl.MultiSelectComboBox name="PartnerID" label="Danh sách đối tác"
+                            <FormControl.MultiSelectComboBox name="AppFeedBackPriorityID" label="Độ ưu tiên phản hồi"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                                IsLabelDiv={true} controltype="InputControl"
+                                isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_APPFEEDBACKPRIORITY} valuemember="AppFeedBackPriorityID" nameMember="AppFeedBackPriorityName"
+                                listoption={[]} datasourcemember="AppFeedBackPriorityID"
+                                SelectedOption={this.state.SelectedAppFeedBackPriorityList ? this.state.SelectedAppFeedBackPriorityList : []}
+                                onValueChangeCus={this.changeSelectAppFeedBackPriority.bind(this)}
+                            />
+
+                            <FormControl.MultiSelectComboBox name="AppFeedBackStatusID" label="Trạng thái phản hồi"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                                IsLabelDiv={true} controltype="InputControl"
+                                isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_APPFEEDBACKSTATUS} valuemember="AppFeedBackStatusID" nameMember="AppFeedBackStatusName"
+                                listoption={[]} datasourcemember="AppFeedBackStatusID"
+                                SelectedOption={this.state.SelectedAppFeedBackStatusList ? this.state.SelectedAppFeedBackStatusList : []}
+                                onValueChangeCus={this.changeSelectAppFeedBackStatus.bind(this)}
+                            />
+
+                            <FormControl.MultiSelectComboBox name="AppFeedBackQualityID" label="Chất lượng xử lý phản hồi"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                                IsLabelDiv={true} controltype="InputControl"
+                                isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_APPFEEDBACKQUALITY} valuemember="AppFeedBackQualityID" nameMember="AppFeedBackQualityName"
+                                listoption={[]} datasourcemember="AppFeedBackQualityID"
+                                SelectedOption={this.state.SelectedAppFeedBackQualityList ? this.state.SelectedAppFeedBackQualityList : []}
+                                onValueChangeCus={this.changeSelectAppFeedBackQuality.bind(this)}
+                            />
+
+                            {/* <FormControl.MultiSelectComboBox name="PartnerID" label="Danh sách đối tác"
                                 labelcolspan={4} colspan={8} rowspan={8}
                                 IsLabelDiv={true} controltype="InputControl"
                                 isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_PARTNER} valuemember="PartnerID" nameMember="PartnerName"
@@ -664,7 +758,7 @@ class EditCom extends React.Component {
                                 listoption={[]} datasourcemember="ShipmentOrderStatusID"
                                 SelectedOption={this.state.SelectedShipmentStatusList ? this.state.SelectedShipmentStatusList : []}
                                 onValueChangeCus={this.changeSelectShipmentStatus}
-                            />
+                            /> */}
 
                             {/* ------------------------------------------------------------------ */}
 

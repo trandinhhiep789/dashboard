@@ -15,8 +15,14 @@ class ShipmentOrderTypeWFCom extends Component {
                 ShipmentOrderType_WF: nextProps.ShipmentOrderTypeWF
             })
         }
+
+
     }
     render() {
+        let intOrderIndex = 0;
+        if (this.state.ShipmentOrderType_WF.filter(a => a.ShipmentOrderStepID === this.props.CurrentShipmentOrderStepID).length > 0) {
+            intOrderIndex = this.state.ShipmentOrderType_WF.filter(a => a.ShipmentOrderStepID === this.props.CurrentShipmentOrderStepID)[0].OrderIndex
+        }
         return (
             <div className="card">
                 <div className="card-body">
@@ -39,7 +45,7 @@ class ShipmentOrderTypeWFCom extends Component {
                             else if (item.CountStep == 1 && (item.IsOnlyShowOnHasCollection == false || (item.IsOnlyShowOnHasCollection == true && this.props.TotalMoney > 0))) {
                                 if (item.IsCancelDeliveryStep == false) {
 
-                                    return (<div className={((item.IsProcess == true && item.ShipmentOrderStepID <= this.props.CurrentShipmentOrderStepID) ? "stepper-item step-completed" : "stepper-item")} key={index}>
+                                    return (<div className={((item.IsProcess == true && item.OrderIndex <= intOrderIndex) ? "stepper-item step-completed" : "stepper-item")} key={index}>
                                         <div className="step-line">
                                             <span className="stepConnector-line"></span>
                                         </div>
@@ -50,13 +56,13 @@ class ShipmentOrderTypeWFCom extends Component {
                                                 </div>
                                             </span>
                                             <span className="step-label">{item.ShipmentOrderStepName}</span>
-                                            <span className={((item.IsProcess == true && item.ShipmentOrderStepID <= this.props.CurrentShipmentOrderStepID) ? "step-time" : "")}>{((item.IsProcess == true && item.ShipmentOrderStepID <= this.props.CurrentShipmentOrderStepID) ? formatDate(item.ProcessDate) : "")}</span>
+                                            <span className={((item.IsProcess == true && item.OrderIndex <= intOrderIndex) ? "step-time" : "")}>{((item.IsProcess == true && item.OrderIndex <= intOrderIndex) ? formatDate(item.ProcessDate) : "")}</span>
                                         </span>
                                     </div>)
                                 }
                                 else if (item.IsCancelDeliveryStep == true && this.props.IsCancelDelivery == true) {
 
-                                    return (<div className={((item.IsProcess == true && item.ShipmentOrderStepID <= this.props.CurrentShipmentOrderStepID) ? "stepper-item step-completed" : "stepper-item")} key={index}>
+                                    return (<div className={((item.IsProcess == true && item.OrderIndex <= intOrderIndex) ? "stepper-item step-completed" : "stepper-item")} key={index}>
                                         <div className="step-line">
                                             <span className="stepConnector-line"></span>
                                         </div>
@@ -67,7 +73,7 @@ class ShipmentOrderTypeWFCom extends Component {
                                                 </div>
                                             </span>
                                             <span className="step-label">{item.ShipmentOrderStepName}</span>
-                                            <span className={((item.IsProcess == true && item.ShipmentOrderStepID <= this.props.CurrentShipmentOrderStepID) ? "step-time" : "")}>{((item.IsProcess == true && item.ShipmentOrderStepID <= this.props.CurrentShipmentOrderStepID) ? formatDate(item.ProcessDate) : "")}</span>
+                                            <span className={((item.IsProcess == true && item.OrderIndex <= intOrderIndex) ? "step-time" : "")}>{((item.IsProcess == true && item.OrderIndex <= intOrderIndex) ? formatDate(item.ProcessDate) : "")}</span>
                                         </span>
                                     </div>)
                                 }
