@@ -594,7 +594,7 @@ class FormElementCom extends Component {
                 break;
             case 'date':
                 let dateclassName = "";
-                if (this.props.validationErrorMessage != "") {
+                if (this.props.validationErrorMessage) {
                     dateclassName += " is-invalid";
                 }
 

@@ -110,6 +110,7 @@ import AppFeedBackGroup from "../TMS/MD/AppFeedBack/AppFeedBackGroup";
 import AppFeedBackCategory from "../TMS/MD/AppFeedBack/AppFeedBackCategory";
 import AppFeedBackType from "../TMS/MD/AppFeedBack/AppFeedBackType";
 import RewardComputeSchedule from "../TMS/MD/RewardComputeSchedule";
+import RewardComputeLog from "../TMS/MD/RewardComputeLog";
 
 
 class HomeCom extends React.Component {
@@ -295,6 +296,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/UserRewardStore" component={UserRewardStore} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/FuelPrice" component={FuelPrice} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/RewardComputeSchedule" component={RewardComputeSchedule} isLoggedIn={isLoggedIn} />
+                                <PrivateRoute path="/RewardComputeLog" component={RewardComputeLog} isLoggedIn={isLoggedIn} />
 
                                 <PrivateRoute path="/AppFeedBackPriority" component={AppFeedBackPriority} isLoggedIn={isLoggedIn} />
                                 <PrivateRoute path="/AppFeedBackStatus" component={AppFeedBackStatus} isLoggedIn={isLoggedIn} />

@@ -188,8 +188,12 @@ export const PARTNERTRANSACTION_VIEW = 'PARTNERTRANSACTION_VIEW';
 // nhật ký gọi api
 export const APICALLLOG_VIEW = 'APICALLLOG_VIEW';
 
+//Nhật ký tính thưởng
+export const REWARDCOMPUTELOG_VIEW = 'REWARDCOMPUTELOG_VIEW';
+
 // yêu cầu tạm ứng
 export const ADVANCEREQUEST_VIEW = 'ADVANCEREQUEST_VIEW';
+
 
 
 // kỹ năng
