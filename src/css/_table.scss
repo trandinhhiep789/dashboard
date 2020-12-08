@@ -183,7 +183,10 @@
                                 .phone {
                                     color: #1890ff;
                                     &.partner-sale-Order{
-                                        
+                                        clear: both;
+                                    }
+                                    &.phonered{
+                                        color: red;
                                     }
                                 }
                             }
