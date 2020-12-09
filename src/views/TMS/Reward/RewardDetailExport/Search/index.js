@@ -104,7 +104,7 @@ class SearchCom extends React.Component {
                 this.handleExportCSV(tempDataExport)
             }
             else {
-                this.showMessage(apiResult.MessageDetail)
+                this.showMessage(apiResult.Message)
             }
         });
     }
