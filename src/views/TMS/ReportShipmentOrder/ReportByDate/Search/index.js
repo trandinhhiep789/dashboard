@@ -208,8 +208,6 @@ class SearchCom extends React.Component {
 
     }
 
-    
-
     handleShowModal(data, status) {
         const { widthPercent } = this.state;
         console.log('status',status)
@@ -251,9 +249,6 @@ class SearchCom extends React.Component {
             maxWidth: widthPercent + 'px'
         });
     }
-
-
-
 
     render() {
         return (

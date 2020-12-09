@@ -104,12 +104,22 @@ class RewardPriceTableDetailCom extends Component {
 
         const { IsSystem, IsUpdate, IsDisableTechspecsValue, IsDisableCbTechspecsValue } = this.state;
         let isDisableCB = false;
+        let isDisableCBTechspecsValue = false;
         if(IsUpdate == false && IsDisableCbTechspecsValue == false){
             isDisableCB= false
         }
         else{
             isDisableCB= true
         }
+
+        if(IsUpdate == false && IsDisableCbTechspecsValue == false && IsDisableTechspecsValue== false){
+            isDisableCBTechspecsValue= false
+        }
+        else{
+            isDisableCBTechspecsValue= true
+        }
+
+
 
         return (
             <FormContainer
@@ -191,7 +201,7 @@ class RewardPriceTableDetailCom extends Component {
                             label="giá trị"
                             // validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
-                            disabled={isDisableCB}
+                            disabled={isDisableCBTechspecsValue}
                             loaditemcachekeyid={ERPCOMMONCACHE_TECHSPECSVALUE}//"ERPCOMMONCACHE.TECHSPECSVALUE"
                             valuemember="TechSpecsValueID"
                             nameMember="Value"
