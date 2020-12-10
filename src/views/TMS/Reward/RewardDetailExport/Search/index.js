@@ -77,7 +77,6 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
 
                 const tempDataExport = apiResult.ResultObject.map((item, index) => {
