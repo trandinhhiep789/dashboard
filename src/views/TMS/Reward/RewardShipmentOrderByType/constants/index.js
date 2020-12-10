@@ -163,7 +163,7 @@ export const GridColumnListByDate = [
        
         Name: "ShipmentOrderID",
         Type: "texttolink",
-        Caption: "Mã vận đợn",
+        Caption: "Mã vận đơn",
         DataSourceMember: "ShipmentOrderID",
         Link: "/ShipmentOrder/Detail/",
         Width: 100
