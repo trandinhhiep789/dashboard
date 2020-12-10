@@ -218,14 +218,14 @@ export const DataGridColumnItemListRPTDetail = [
     },
     {
         Name: "FromTechspecsValue",
-        Type: "textCurrency",
+        Type: "text",
         Caption: "Giá trị TSKT từ",
         DataSourceMember: "FromTechspecsValue",
         Width: 100
     },
     {
         Name: "ToTechspecsValue",
-        Type: "textCurrency",
+        Type: "text",
         Caption: "Giá trị TSKT đến",
         DataSourceMember: "ToTechspecsValue",
         Width: 100
