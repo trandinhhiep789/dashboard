@@ -69,6 +69,7 @@ class RewardPriceTableDetailCom extends Component {
     }
 
     handleChange(formData, MLObject) {
+        console.log("formData, MLObject", formData, MLObject)
         if (formData.ckIsPriceByTechspecsValueRange.value) {
             this.setState({
                 IsDisableTechspecsValue: false,
@@ -97,6 +98,25 @@ class RewardPriceTableDetailCom extends Component {
                 IsDisableCbTechspecsValue: false
             })
         }
+
+        if(formData.txtFromTechspecsValue.value.toString().length > 0){
+           
+            if(!/^\d*\.?\d+$/.test(formData.txtFromTechspecsValue.value)){
+                formData.txtFromTechspecsValue.ErrorLst.IsValidatonError = true;
+                formData.txtFromTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
+            }
+           
+         
+        }
+        if(formData.txtToTechspecsValue.value.toString().length > 0){
+           
+            if(!/^\d*\.?\d+$/.test(formData.txtToTechspecsValue.value)){
+                formData.txtToTechspecsValue.ErrorLst.IsValidatonError = true;
+                formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
+            }
+           
+         
+        }
     }
 
 
@@ -104,7 +124,7 @@ class RewardPriceTableDetailCom extends Component {
 
         const { IsSystem, IsUpdate, IsDisableTechspecsValue, IsDisableCbTechspecsValue } = this.state;
         let isDisableCB = false;
-        let isDisableCBTechspecsValue = false;
+        
         if(IsUpdate == false && IsDisableCbTechspecsValue == false){
             isDisableCB= false
         }
@@ -112,8 +132,15 @@ class RewardPriceTableDetailCom extends Component {
             isDisableCB= true
         }
 
-        if(IsUpdate == false && IsDisableCbTechspecsValue == false && IsDisableTechspecsValue== false){
-            isDisableCBTechspecsValue= false
+        let isDisableCBTechspecsValue = false;
+        if(IsUpdate == false && IsDisableCbTechspecsValue == false){
+            if(IsDisableTechspecsValue== false){
+                isDisableCBTechspecsValue= true
+            }
+            else{
+                isDisableCBTechspecsValue= false
+            }
+            
         }
         else{
             isDisableCBTechspecsValue= true
@@ -233,7 +260,7 @@ class RewardPriceTableDetailCom extends Component {
 
                     <div className="col-md-6">
 
-                        <FormControl.TextBoxCurrency
+                        <FormControl.TextBox
                             name="txtFromTechspecsValue"
                             colspan="6"
                             labelcolspan="6"
@@ -242,7 +269,7 @@ class RewardPriceTableDetailCom extends Component {
                             label="Giá trị thông số kỹ thuật từ"
                             placeholder="Giá trị thông số kỹ thuật từ"
                             controltype="InputControl"
-                            value="0"
+                            value=""
                             validatonList={["required"]}
                             datasourcemember="FromTechspecsValue"
                             maxSize={19}
@@ -250,7 +277,7 @@ class RewardPriceTableDetailCom extends Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.TextBoxCurrency
+                        <FormControl.TextBox
                             name="txtToTechspecsValue"
                             colspan="6"
                             labelcolspan="6"
