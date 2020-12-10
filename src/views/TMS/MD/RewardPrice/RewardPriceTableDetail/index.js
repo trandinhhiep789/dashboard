@@ -50,7 +50,6 @@ class RewardPriceTableDetailCom extends Component {
     }
 
     handleSubmit(formData, MLObject) {
-        console.log("From, MLObject",formData, MLObject)
         MLObject.RewardPriceTableID = this.props.dataSource.RewardPriceTableID;
         MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
         if (this.props.index != undefined) {
@@ -69,7 +68,6 @@ class RewardPriceTableDetailCom extends Component {
     }
 
     handleChange(formData, MLObject) {
-        console.log("formData, MLObject", formData, MLObject)
         if (formData.ckIsPriceByTechspecsValueRange.value) {
             this.setState({
                 IsDisableTechspecsValue: false,
@@ -269,7 +267,7 @@ class RewardPriceTableDetailCom extends Component {
                             label="Giá trị thông số kỹ thuật từ"
                             placeholder="Giá trị thông số kỹ thuật từ"
                             controltype="InputControl"
-                            value=""
+                            value="0"
                             validatonList={["required"]}
                             datasourcemember="FromTechspecsValue"
                             maxSize={19}

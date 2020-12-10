@@ -56,7 +56,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-              console.log('apiResult', apiResult)
+            //   console.log('apiResult', apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -129,15 +129,13 @@ class DetailCom extends React.Component {
     }
 
     handleItemDeleteRPTDetail(index) {
-      
+
         const { RewardPriceTableID, DataSource } = this.state;
        
         const resultItem =  DataSource.RewardPriceTableDetailList[index];
         let MLObject = {};
-        MLObject.RewardPriceTableID = RewardPriceTableID;
-        MLObject.SubGroupID = resultItem.SubGroupID;
-        MLObject.TechspecsID = resultItem.TechspecsID;
-        MLObject.TechspecsValueID = resultItem.TechspecsValueID;
+        MLObject.RewardPriceTableDetailID = resultItem.RewardPriceTableDetailID.trim();
+
         this.props.callFetchAPI(APIHostName, DeleteAPIRPTDetailPath, MLObject).then((apiResult) => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
@@ -205,8 +203,8 @@ class DetailCom extends React.Component {
                                 name="RewardPriceTableDetailList"
                                 controltype="InputGridControl"
                                 title={TitleFromRPTDetail}
-                                IDSelectColumnName={"SubGroupID"}
-                                PKColumnName={"SubGroupID"}
+                                IDSelectColumnName={"RewardPriceTableDetailID"}
+                                PKColumnName={"RewardPriceTableDetailID"}
                                 listColumn={DataGridColumnItemListRPTDetail}
                                 dataSource={this.state.DataSource.RewardPriceTableDetailList}
                                 onInsertClick={this.handleItemInsertRPTDetail.bind(this)}
