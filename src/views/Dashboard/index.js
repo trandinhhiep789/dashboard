@@ -26,7 +26,8 @@ class DashboardCom extends Component {
             NoCoordinated:0,
             NoDelivery:0,
             Delivery:0,
-            Delivered:0
+            Delivered:0,
+            ShipmentOrderStatusGroup7:0
 
         };
     }
@@ -50,6 +51,7 @@ class DashboardCom extends Component {
                     NoDelivery:apiResult.ResultObject.NoDelivery,
                     Delivery:apiResult.ResultObject.Delivery,
                     Delivered:apiResult.ResultObject.Delivered,
+                    ShipmentOrderStatusGroup7:apiResult.ResultObject.ShipmentOrderStatusGroup7,
                     IsLoadDataComplete: true,
 
                 });
@@ -66,7 +68,7 @@ class DashboardCom extends Component {
                         <NoCoordinated NoCoordinated={this.state.NoCoordinated} />
                         <NoDelivery NoDelivery={this.state.NoDelivery} />
                         <Delivery Delivery={this.state.Delivery} />
-                        <Delivered Delivered={this.state.Delivered} />
+                        <Delivered ShipmentOrderStatusGroup7={this.state.ShipmentOrderStatusGroup7} />
                     </div>
                     <div className="row">
                         <WeeklyReport DataSource={this.state.WeekShipmentOrderCoord} />
