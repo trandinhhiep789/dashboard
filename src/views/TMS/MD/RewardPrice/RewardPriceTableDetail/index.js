@@ -343,7 +343,7 @@ class RewardPriceTableDetailCom extends Component {
                             //validatonList={[]}
                             IsLabelDiv={true}
                             isMulti={false}
-                            disabled={IsSystem}
+                            disabled={IsUpdate}
                         />
                     </div>
 
@@ -363,7 +363,6 @@ class RewardPriceTableDetailCom extends Component {
                             value="0"
                             validatonList={['required']}
                             datasourcemember="RewardPrice"
-                            disabled={IsSystem}
                             maxSize={19}
                         />
                     </div>
@@ -381,7 +380,6 @@ class RewardPriceTableDetailCom extends Component {
                             value="0"
                             validatonList={['required']}
                             datasourcemember="RewardPriceWithoutInstall"
-                            disabled={IsSystem}
                             maxSize={19}
                         />
 
