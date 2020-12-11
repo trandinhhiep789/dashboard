@@ -53,25 +53,28 @@ class RewardPriceTableDetailCom extends Component {
         MLObject.RewardPriceTableID = this.props.dataSource.RewardPriceTableID;
         MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
 
-        if (MLObject.IsPriceByTechspecsValueRange || MLObject.IsPriceByTechspecsValueRange == "") {
+        if (MLObject.IsPriceByTechspecsValueRange || MLObject.IsPriceByTechspecsValueRange != "") {
             MLObject.TechSpecsValueID = -1;
         }
         else {
             MLObject.TechSpecsValueID = MLObject.TechSpecsValueID;
         }
-        console.log("MLObject",formData, MLObject)
-        if (MLObject.ProductID.length > 0) {
-            MLObject.SubGroupID = -1;
-            MLObject.TechspecsID = -1;
-            MLObject.FromTechspecsValue = 0
-            MLObject.ToTechspecsValue = 0
+        // console.log("MLObject",formData, MLObject)
+        if(MLObject.ProductID != undefined){
+            if (MLObject.ProductID.length > 0) {
+                MLObject.SubGroupID = -1;
+                MLObject.TechspecsID = -1;
+                MLObject.FromTechspecsValue = 0
+                MLObject.ToTechspecsValue = 0
+            }
+            else {
+                MLObject.SubGroupID = MLObject.SubGroupID;
+                MLObject.TechspecsID = MLObject.TechspecsID;
+                MLObject.FromTechspecsValue = MLObject.FromTechspecsValue;
+                MLObject.ToTechspecsValue = MLObject.ToTechspecsValue;
+            }
         }
-        else {
-            MLObject.SubGroupID = MLObject.SubGroupID;
-            MLObject.TechspecsID = MLObject.TechspecsID;
-            MLObject.FromTechspecsValue = MLObject.FromTechspecsValue;
-            MLObject.ToTechspecsValue = MLObject.ToTechspecsValue;
-        }
+       
         if (this.props.index != undefined) {
             this.props.callFetchAPI(APIHostName, EditAPIRPTDetailPath, MLObject).then(apiResult => {
                 this.props.onInputChangeObj(this.props.dataSource.RewardPriceTableID, apiResult);
@@ -88,7 +91,6 @@ class RewardPriceTableDetailCom extends Component {
     }
 
     handleChange(formData, MLObject) {
-        console.log("MLObject",formData, MLObject)
         if (formData.ckIsPriceByTechspecsValueRange.value) {
             if(formData.cbProductID.value != undefined ){
                 if(formData.cbProductID.value[0].ProductID !=  null){
