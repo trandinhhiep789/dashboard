@@ -32,12 +32,12 @@ class RewardPriceTableDetailCom extends Component {
     componentDidMount() {
         console.log(this.props.dataSource.RewardPriceTableDetailList[this.props.index])
         if (this.props.index != undefined) {
-            if(this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsPriceByTechspecsValueRange){
+            if (this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsPriceByTechspecsValueRange) {
                 this.setState({
                     IsDisableTechspecsValue: false
                 })
             }
-            else{
+            else {
                 this.setState({
                     IsDisableTechspecsValue: true
                 })
@@ -52,6 +52,26 @@ class RewardPriceTableDetailCom extends Component {
     handleSubmit(formData, MLObject) {
         MLObject.RewardPriceTableID = this.props.dataSource.RewardPriceTableID;
         MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
+
+        if (MLObject.IsPriceByTechspecsValueRange || MLObject.IsPriceByTechspecsValueRange == "") {
+            MLObject.TechSpecsValueID = -1;
+        }
+        else {
+            MLObject.TechSpecsValueID = MLObject.TechSpecsValueID;
+        }
+        console.log("MLObject",formData, MLObject)
+        if (MLObject.ProductID.length > 0) {
+            MLObject.SubGroupID = -1;
+            MLObject.TechspecsID = -1;
+            MLObject.FromTechspecsValue = 0
+            MLObject.ToTechspecsValue = 0
+        }
+        else {
+            MLObject.SubGroupID = MLObject.SubGroupID;
+            MLObject.TechspecsID = MLObject.TechspecsID;
+            MLObject.FromTechspecsValue = MLObject.FromTechspecsValue;
+            MLObject.ToTechspecsValue = MLObject.ToTechspecsValue;
+        }
         if (this.props.index != undefined) {
             this.props.callFetchAPI(APIHostName, EditAPIRPTDetailPath, MLObject).then(apiResult => {
                 this.props.onInputChangeObj(this.props.dataSource.RewardPriceTableID, apiResult);
@@ -68,52 +88,69 @@ class RewardPriceTableDetailCom extends Component {
     }
 
     handleChange(formData, MLObject) {
+        console.log("MLObject",formData, MLObject)
         if (formData.ckIsPriceByTechspecsValueRange.value) {
-            this.setState({
-                IsDisableTechspecsValue: false,
-            })
+            if(formData.cbProductID.value != undefined ){
+                if(formData.cbProductID.value[0].ProductID !=  null){
+                    this.setState({
+                        IsDisableTechspecsValue: true,
+                    })
+                }
+                else{
+                    this.setState({
+                        IsDisableTechspecsValue: false,
+                    })
+                }
+               
+            }
+            else{
+                this.setState({
+                    IsDisableTechspecsValue: false,
+                })
+            }
+            
         }
         else {
-            
+           
             this.setState({
                 IsDisableTechspecsValue: true,
             })
         }
-        if(formData.cbProductID.value != undefined ){
-            if(formData.cbProductID.value[0].ProductID != null){
+        if (formData.cbProductID.value != undefined) {
+            if (formData.cbProductID.value[0].ProductID != null) {
                 this.setState({
                     IsDisableCbTechspecsValue: true
                 })
             }
-            else{
+            else {
                 this.setState({
                     IsDisableCbTechspecsValue: false
                 })
             }
         }
-        else{
+        else {
             this.setState({
                 IsDisableCbTechspecsValue: false
             })
         }
 
-        if(formData.txtFromTechspecsValue.value.toString().length > 0){
-           
-            if(!/^\d*\.?\d+$/.test(formData.txtFromTechspecsValue.value)){
+        if (formData.txtFromTechspecsValue.value.toString().length > 0) {
+
+            if (!/^\d*\.?\d+$/.test(formData.txtFromTechspecsValue.value)) {
                 formData.txtFromTechspecsValue.ErrorLst.IsValidatonError = true;
                 formData.txtFromTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
             }
-           
-         
+
+
         }
-        if(formData.txtToTechspecsValue.value.toString().length > 0){
-           
-            if(!/^\d*\.?\d+$/.test(formData.txtToTechspecsValue.value)){
+        if (formData.txtToTechspecsValue.value.toString().length > 0) {
+
+            if (!/^\d*\.?\d+$/.test(formData.txtToTechspecsValue.value)) {
                 formData.txtToTechspecsValue.ErrorLst.IsValidatonError = true;
                 formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
             }
-           
-         
+
+
         }
     }
 
@@ -122,26 +159,27 @@ class RewardPriceTableDetailCom extends Component {
 
         const { IsSystem, IsUpdate, IsDisableTechspecsValue, IsDisableCbTechspecsValue } = this.state;
         let isDisableCB = false;
-        
-        if(IsUpdate == false && IsDisableCbTechspecsValue == false){
-            isDisableCB= false
+
+        if (IsUpdate == false && IsDisableCbTechspecsValue == false) {
+            isDisableCB = false
         }
-        else{
-            isDisableCB= true
+        else {
+            isDisableCB = true
         }
 
         let isDisableCBTechspecsValue = false;
-        if(IsUpdate == false && IsDisableCbTechspecsValue == false){
-            if(IsDisableTechspecsValue== false){
-                isDisableCBTechspecsValue= true
+        if (IsUpdate == false && IsDisableCbTechspecsValue == false) {
+            if (IsDisableTechspecsValue == false) {
+                isDisableCBTechspecsValue = true
             }
-            else{
-                isDisableCBTechspecsValue= false
+            else {
+                isDisableCBTechspecsValue = false
             }
-            
+
         }
-        else{
-            isDisableCBTechspecsValue= true
+        else {
+           
+            isDisableCBTechspecsValue = true
         }
 
 
@@ -179,14 +217,14 @@ class RewardPriceTableDetailCom extends Component {
                             colspan="6"
                             labelcolspan="6"
                             label="nhóm hàng"
-                            validatonList={["Comborequired"]}
+                            // validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid={ERPCOMMONCACHE_SUBGROUP} //"ERPCOMMONCACHE.SUBGROUP"
                             valuemember="SubGroupID"
                             nameMember="SubGroupName"
                             controltype="InputControl"
                             value={-1}
-                            disabled={IsUpdate}
+                            disabled={isDisableCB}
                             listoption={[]}
                             datasourcemember="SubGroupID"
                             filterrest="cbTechSpecsValue,cbTechSpecs"
@@ -247,7 +285,8 @@ class RewardPriceTableDetailCom extends Component {
                             name="ckIsPriceByTechspecsValueRange"
                             colspan="3"
                             labelcolspan="9"
-                            readOnly={false}
+                            readOnly={isDisableCB}
+                            disabled={isDisableCB}
                             label="Giá theo khoảng giá trị thông số kỹ thuật"
                             controltype="InputControl"
                             value=""
@@ -294,8 +333,8 @@ class RewardPriceTableDetailCom extends Component {
 
                     <div className="col-md-6">
                         <ProductComboBox
-                           colspan="6"
-                           labelcolspan="6"
+                            colspan="6"
+                            labelcolspan="6"
                             label="sản phẩm"
                             placeholder="Tên sản phẩm"
                             controltype="InputControl"
