@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { formatDate } from "../../../../../library/CommonLib.js";
 import { callGetCache } from "../../../../../../actions/cacheAction";
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
-import { formatMoney } from '../../../../../../utils/function';
+import { formatMoney, formatNumber } from '../../../../../../utils/function';
 class InputGridCellCom extends Component {
     constructor(props) {
         super(props);
@@ -71,6 +71,7 @@ class InputGridCellCom extends Component {
     }
 
     render() {
+        
         const type = this.props.type;
         let text = ReactHtmlParser(this.props.text);
         const to = this.props.to + text;
@@ -98,6 +99,8 @@ class InputGridCellCom extends Component {
         switch (type) {
             case "text":
                 return <label>{text}</label>;
+            case "textNumber":
+                return <label>{this.props.text}</label>;
             case "textCurrency":
                 return <label>{formatMoney(text, 0)}</label>;
             case "date":
