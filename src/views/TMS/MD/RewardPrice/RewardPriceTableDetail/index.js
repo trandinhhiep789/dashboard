@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-
+import { MessageModal } from "../../../../../common/components/Modal";
 import {
     LoadAPIPath,
     MLObjectAbilitiItem,
@@ -14,6 +14,8 @@ import {
 } from "../RewardPriceTable/constants";
 import { ERPCOMMONCACHE_SERVICESEASONTYPE, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE } from "../../../../../constants/keyCache";
 import ProductComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/ProductComboBox.js";
+import { ModalManager } from "react-dynamic-modal";
+import { showModal, hideModal } from '../../../../../actions/modal';
 
 class RewardPriceTableDetailCom extends Component {
     constructor(props) {
@@ -24,21 +26,22 @@ class RewardPriceTableDetailCom extends Component {
             IsUpdate: false,
             IsDisableTechspecsValue: true,
             IsDisableCbTechspecsValue: false,
-            IsRequiredTechspecsValue: ''
+            IsRequiredTechspecsValue: '',
+            isDisableValue: false,
         }
 
     }
 
     componentDidMount() {
         if (this.props.index != undefined) {
-            if (this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsPriceByTechspecsValueRange) {
+            if (this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsSystem.ProductID != undefined && this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsSystem.ProductID.length > 0) {
                 this.setState({
-                    IsDisableTechspecsValue: false
+                    isDisableValue: true
                 })
             }
             else {
                 this.setState({
-                    IsDisableTechspecsValue: true
+                    isDisableValue: false
                 })
             }
             this.setState({
@@ -58,8 +61,9 @@ class RewardPriceTableDetailCom extends Component {
         else {
             MLObject.TechSpecsValueID = MLObject.TechSpecsValueID;
         }
-         console.log("MLObject",formData, MLObject)
-        if(MLObject.ProductID != undefined){
+
+
+        if (MLObject.ProductID != undefined) {
             if (MLObject.ProductID.length > 0) {
                 MLObject.SubGroupID = -1;
                 MLObject.TechspecsID = -1;
@@ -74,46 +78,60 @@ class RewardPriceTableDetailCom extends Component {
                 MLObject.ToTechspecsValue = MLObject.ToTechspecsValue;
             }
         }
-       
-        if (this.props.index != undefined) {
-            this.props.callFetchAPI(APIHostName, EditAPIRPTDetailPath, MLObject).then(apiResult => {
-                this.props.onInputChangeObj(this.props.dataSource.RewardPriceTableID, apiResult);
-            });
+
+        if ((MLObject.ProductID == undefined || MLObject.ProductID.length == 0) && MLObject.SubGroupID < 0) {
+            this.showMessage("Dữ liệu bạn nhập vào không đúng. Vui lòng nhập lại!")
         }
         else {
-            this.props.callFetchAPI(APIHostName, AddAPIRPTDetailPath, MLObject).then(apiResult => {
-                this.props.onInputChangeObj(this.props.dataSource.RewardPriceTableID, apiResult);
-            });
+            if (this.props.index != undefined) {
+                this.props.callFetchAPI(APIHostName, EditAPIRPTDetailPath, MLObject).then(apiResult => {
+                    this.props.onInputChangeObj(this.props.dataSource.RewardPriceTableID, apiResult);
+                });
+            }
+            else {
+                this.props.callFetchAPI(APIHostName, AddAPIRPTDetailPath, MLObject).then(apiResult => {
+                    this.props.onInputChangeObj(this.props.dataSource.RewardPriceTableID, apiResult);
+                });
+            }
         }
-        // }
-
 
     }
 
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+            />
+        );
+    }
+
     handleChange(formData, MLObject) {
+
         if (formData.ckIsPriceByTechspecsValueRange.value) {
-            if(formData.cbProductID.value != undefined ){
-                if(formData.cbProductID.value[0].ProductID !=  null){
+            if (formData.cbProductID.value != undefined) {
+                if (formData.cbProductID.value[0].ProductID != null) {
                     this.setState({
                         IsDisableTechspecsValue: true,
                     })
                 }
-                else{
+                else {
                     this.setState({
                         IsDisableTechspecsValue: false,
                     })
                 }
-               
+
             }
-            else{
+            else {
                 this.setState({
                     IsDisableTechspecsValue: false,
                 })
             }
-            
+
         }
         else {
-           
+
             this.setState({
                 IsDisableTechspecsValue: true,
             })
@@ -142,8 +160,6 @@ class RewardPriceTableDetailCom extends Component {
                 formData.txtFromTechspecsValue.ErrorLst.IsValidatonError = true;
                 formData.txtFromTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
             }
-
-
         }
         if (formData.txtToTechspecsValue.value.toString().length > 0) {
 
@@ -151,16 +167,15 @@ class RewardPriceTableDetailCom extends Component {
                 formData.txtToTechspecsValue.ErrorLst.IsValidatonError = true;
                 formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
             }
-
-
         }
     }
 
 
     render() {
 
-        const { IsSystem, IsUpdate, IsDisableTechspecsValue, IsDisableCbTechspecsValue } = this.state;
+        const { IsSystem, IsUpdate, IsDisableCbTechspecsValue, isDisableValue, IsDisableTechspecsValue } = this.state;
         let isDisableCB = false;
+
 
         if (IsUpdate == false && IsDisableCbTechspecsValue == false) {
             isDisableCB = false
@@ -173,17 +188,21 @@ class RewardPriceTableDetailCom extends Component {
         if (IsUpdate == false && IsDisableCbTechspecsValue == false) {
             if (IsDisableTechspecsValue == false) {
                 isDisableCBTechspecsValue = true
+                // if (isDisableValue == false) {
+                //     isDisableCBTechspecsValue = false
+                // }
+                // else {
+                //     isDisableCBTechspecsValue = true
+                // }
             }
             else {
                 isDisableCBTechspecsValue = false
             }
-
         }
         else {
-           
+
             isDisableCBTechspecsValue = true
         }
-
 
 
         return (
@@ -309,7 +328,7 @@ class RewardPriceTableDetailCom extends Component {
                             placeholder="Giá trị thông số kỹ thuật từ"
                             controltype="InputControl"
                             value="0"
-                            validatonList={["required"]}
+                            // validatonList={["required"]}
                             datasourcemember="FromTechspecsValue"
                             maxSize={19}
                         />
@@ -326,7 +345,7 @@ class RewardPriceTableDetailCom extends Component {
                             placeholder="Giá trị thông số kỹ thuật đến"
                             controltype="InputControl"
                             value="0"
-                            validatonList={["required"]}
+                            // validatonList={[]}
                             datasourcemember="ToTechspecsValue"
                             maxSize={19}
                         />
@@ -420,7 +439,12 @@ const mapDispatchToProps = dispatch => {
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         },
-
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: () => {
+            dispatch(hideModal());
+        }
     }
 }
 

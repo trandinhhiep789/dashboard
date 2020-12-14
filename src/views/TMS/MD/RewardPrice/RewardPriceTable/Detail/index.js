@@ -119,7 +119,7 @@ class DetailCom extends React.Component {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Cập nhật chi tiết đơn giá',
             content: {
-                text: <UpdateRewardPriceTableDetail
+                text: <RewardPriceTableDetail
                     dataSource={this.state.DataSource}
                     index={index}
                     onInputChangeObj={this.handleInputChangeObjItem}

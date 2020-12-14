@@ -183,7 +183,6 @@ class UpdateRewardPriceTableDetailCom extends Component {
         let isDisableCBTechspecsValue = false;
         if (IsUpdate == false && IsDisableCbTechspecsValue == false ) {
             if (IsDisableTechspecsValue == false ) {
-                isDisableCBTechspecsValue = true
                 if(isDisableValue == false){
                     isDisableCBTechspecsValue = false
                 }
@@ -326,7 +325,7 @@ class UpdateRewardPriceTableDetailCom extends Component {
                             placeholder="Giá trị thông số kỹ thuật từ"
                             controltype="InputControl"
                             value="0"
-                            validatonList={["required"]}
+                            // validatonList={["required"]}
                             datasourcemember="FromTechspecsValue"
                             maxSize={19}
                         />
@@ -343,7 +342,7 @@ class UpdateRewardPriceTableDetailCom extends Component {
                             placeholder="Giá trị thông số kỹ thuật đến"
                             controltype="InputControl"
                             value="0"
-                            validatonList={["required"]}
+                            // validatonList={["required"]}
                             datasourcemember="ToTechspecsValue"
                             maxSize={19}
                         />
