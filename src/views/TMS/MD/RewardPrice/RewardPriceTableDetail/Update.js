@@ -15,7 +15,7 @@ import {
 import { ERPCOMMONCACHE_SERVICESEASONTYPE, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE } from "../../../../../constants/keyCache";
 import ProductComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/ProductComboBox.js";
 
-class RewardPriceTableDetailCom extends Component {
+class UpdateRewardPriceTableDetailCom extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -24,7 +24,8 @@ class RewardPriceTableDetailCom extends Component {
             IsUpdate: false,
             IsDisableTechspecsValue: true,
             IsDisableCbTechspecsValue: false,
-            IsRequiredTechspecsValue: ''
+            IsRequiredTechspecsValue: '',
+            isDisableValue: false
         }
 
     }
@@ -39,6 +40,16 @@ class RewardPriceTableDetailCom extends Component {
             else {
                 this.setState({
                     IsDisableTechspecsValue: true
+                })
+            }
+            if(this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsSystem.ProductID != undefined && this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsSystem.ProductID.length > 0){
+                this.setState({
+                    isDisableValue: true
+                })
+            }
+            else{
+                this.setState({
+                    isDisableValue: false
                 })
             }
             this.setState({
@@ -159,7 +170,7 @@ class RewardPriceTableDetailCom extends Component {
 
     render() {
 
-        const { IsSystem, IsUpdate, IsDisableTechspecsValue, IsDisableCbTechspecsValue } = this.state;
+        const { IsSystem, IsUpdate, IsDisableTechspecsValue, IsDisableCbTechspecsValue, isDisableValue } = this.state;
         let isDisableCB = false;
 
         if (IsUpdate == false && IsDisableCbTechspecsValue == false) {
@@ -170,9 +181,15 @@ class RewardPriceTableDetailCom extends Component {
         }
 
         let isDisableCBTechspecsValue = false;
-        if (IsUpdate == false && IsDisableCbTechspecsValue == false) {
-            if (IsDisableTechspecsValue == false) {
+        if (IsUpdate == false && IsDisableCbTechspecsValue == false ) {
+            if (IsDisableTechspecsValue == false ) {
                 isDisableCBTechspecsValue = true
+                if(isDisableValue == false){
+                    isDisableCBTechspecsValue = false
+                }
+                else {
+                    isDisableCBTechspecsValue = true
+                }
             }
             else {
                 isDisableCBTechspecsValue = false
@@ -425,5 +442,5 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-const RewardPriceTableDetail = connect(mapStateToProps, mapDispatchToProps)(RewardPriceTableDetailCom);
-export default RewardPriceTableDetail;
+const UpdateRewardPriceTableDetail = connect(mapStateToProps, mapDispatchToProps)(UpdateRewardPriceTableDetailCom);
+export default UpdateRewardPriceTableDetail;

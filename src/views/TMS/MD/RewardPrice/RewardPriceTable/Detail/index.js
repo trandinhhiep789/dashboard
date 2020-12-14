@@ -27,6 +27,8 @@ import { showModal, hideModal } from '../../../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../../../constants/actionTypes';
 import ReactNotification from "react-notifications-component";
 import RewardPriceTableDetail from "../../RewardPriceTableDetail";
+import UpdateRewardPriceTableDetail from "../../RewardPriceTableDetail/Update.js";
+
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -56,7 +58,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            //   console.log('apiResult', apiResult)
+            console.log('apiResult', apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -117,7 +119,7 @@ class DetailCom extends React.Component {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Cập nhật chi tiết đơn giá',
             content: {
-                text: <RewardPriceTableDetail
+                text: <UpdateRewardPriceTableDetail
                     dataSource={this.state.DataSource}
                     index={index}
                     onInputChangeObj={this.handleInputChangeObjItem}
