@@ -22,7 +22,7 @@ dtFromdate.setDate(new Date().getDate() - 30);
 export const InitSearchParams = [
     {
         SearchKey: "@FROMDATE",
-        SearchValue: dtFromdate
+        SearchValue: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear())
     },
     {
         SearchKey: "@TODATE",
@@ -43,7 +43,7 @@ export const SearchElementList = [
         name: "dtFromDate",
         DataSourceMember: "FromDate",
         label: "Từ Ngày",
-        value: dtFromdate,
+        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,

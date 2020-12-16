@@ -52,7 +52,30 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("MLObject", formData, MLObject)
+        // console.log("MLObject", formData, MLObject)
+
+        let result, result2;
+
+        if (MLObject.RewardTypeID != -1 && MLObject.RewardTypeID != null && MLObject.RewardTypeID != "") {
+            result = MLObject.RewardTypeID.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item;
+            }, '');
+        }
+        else {
+            result = ""
+        }
+
+        if (MLObject.RewardPositionID != -1 && MLObject.RewardPositionID != null && MLObject.RewardPositionID != "") {
+            result2 = MLObject.RewardPositionID.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item;
+            }, '');
+        }
+        else {
+            result2 = ""
+        }
+
         const postData = [
             {
                 SearchKey: "@FROMDATE",
@@ -64,11 +87,11 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@REWARDTYPEID",
-                SearchValue: MLObject.RewardTypeID
+                SearchValue: result //MLObject.RewardTypeID
             },
             {
                 SearchKey: "@REWARDPOSITIONID",
-                SearchValue: MLObject.RewardPositionID
+                SearchValue: result2 //MLObject.RewardPositionID
             }
         ];
         this.callSearchData(postData);
@@ -77,7 +100,6 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("aa", apiResult)
             if (!apiResult.IsError) {
 
                 const tempDataExport = apiResult.ResultObject.map((item, index) => {
