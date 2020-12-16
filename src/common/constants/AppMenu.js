@@ -766,19 +766,28 @@ const AppMenu = [
                 SubMenu: []
             },
             {
-                MenuName: 'TotalRewardExport',
-                MenuTitle: 'Xuất tổng thưởng',
-                LinkTo: '/TotalRewardExport',
+                MenuName: 'personnel',
+                MenuTitle: 'Nhân sự',
+                LinkTo: '',
                 MenuIcon: '',
-                SubMenu: []
+                SubMenu: [
+                    {
+                        MenuName: 'TotalRewardExport',
+                        MenuTitle: 'Xuất tổng thưởng',
+                        LinkTo: '/TotalRewardExport',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'RewardDetailExport',
+                        MenuTitle: 'Xuất chi tiết thưởng',
+                        LinkTo: '/RewardDetailExport',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+                ]
             },
-            {
-                MenuName: 'RewardDetailExport',
-                MenuTitle: 'Xuất chi tiết thưởng',
-                LinkTo: '/RewardDetailExport',
-                MenuIcon: '',
-                SubMenu: []
-            }
+
         ]
     },
     {
