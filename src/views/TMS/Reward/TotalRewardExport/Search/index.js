@@ -17,7 +17,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { TMS_TMSREWARD_VIEW } from "../../../../../constants/functionLists";
+import { TMS_TMSREWARD_EXPORT } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 
 class SearchCom extends React.Component {
@@ -51,7 +51,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-
+        // console.log("MLObject", formData,MLObject)
         const postData = [
             {
                 SearchKey: "@FROMDATE",
@@ -68,7 +68,7 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult",apiResult)
+            // console.log("apiResult",apiResult, searchData)
             if (!apiResult.IsError) {
 
                 const tempDataExport = apiResult.ResultObject.map((item, index) => {
@@ -173,8 +173,8 @@ class SearchCom extends React.Component {
                     IsPrint={false}
                     IsExportFile={false}
                     IsAutoPaging={true}
-                    RowsPerPage={10}
-                    RequirePermission={TMS_TMSREWARD_VIEW}
+                    RowsPerPage={50}
+                    RequirePermission={TMS_TMSREWARD_EXPORT}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
                     fileName="Danh sách thưởng"

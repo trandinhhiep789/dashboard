@@ -7,16 +7,18 @@ export const PagePath = [
 ];
 
 const dtFromdate = new Date();
-dtFromdate.setDate(new Date().getDate() - 30);
+//dtFromdate.setDate(new Date().getDate());
+
+// dtFromdate.setDate(new Date('11/01/2020'));
 
 export const SearchElementList = [
-    
+
     {
         type: "Datetime",
         name: "dtFromDate",
         DataSourceMember: "FromDate",
         label: "Từ Ngày",
-        value: dtFromdate,
+        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
@@ -34,7 +36,7 @@ export const SearchElementList = [
 
 ]
 
-export const  SearchMLObjectDefinition = [
+export const SearchMLObjectDefinition = [
     {
         Name: "FromDate",
         DefaultValue: "",
@@ -56,7 +58,7 @@ export const InitSearchParams = [
         SearchKey: "@TODATE",
         SearchValue: new Date()
     },
-   
+
 ];
 
 export const GridColumnList = [
@@ -102,5 +104,5 @@ export const GridColumnList = [
         DataSourceMember: "TotalReward",
         Width: 100
     },
-    
+
 ]

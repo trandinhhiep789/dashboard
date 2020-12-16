@@ -405,8 +405,12 @@ export const SHIPMENTORDER_REPORT_VIEW = 'SHIPMENTORDER_REPORT_VIEW';
 export const REWARD_VIEW = 'REWARD_VIEW';
 export const REWARDDETAIL_VIEW = 'REWARDDETAIL_VIEW';
 
+
 //Xem danh sách thưởng
 export const TMS_TMSREWARD_VIEW = 'TMS_TMSREWARD_VIEW';
+
+//Xem danh sách Tổng xuất thưởng
+export const TMS_TMSREWARD_EXPORT = 'TMS_TMSREWARD_EXPORT';
 
 //Xem danh sách báo cao công nợ
 export const TMS_BEGINTERMADVANCEDEBT_VIEW = 'TMS_BEGINTERMADVANCEDEBT_VIEW';
