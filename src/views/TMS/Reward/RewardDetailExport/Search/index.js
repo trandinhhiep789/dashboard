@@ -100,6 +100,7 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("apiResult", apiResult, searchData)
             if (!apiResult.IsError) {
 
                 const tempDataExport = apiResult.ResultObject.map((item, index) => {
@@ -114,7 +115,7 @@ class SearchCom extends React.Component {
                         "Số lượng": item.Quantity,
                         "Đơn giá thưởng": item.RewardPrice,
                         "Tỷ lệ thưởng": item.RewardRatio,
-                        "Vị trí thưởng": item.RewardPositionID,
+                        "Vị trí thưởng": item.RewardPositionID + "-" + item.RewardPositionName,
                         "Loại thưởng": item.RewardTypeID + "-" + item.RewardTypeName,
                         "Tổng thưởng": item.TotalReward,
 
