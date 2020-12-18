@@ -16,6 +16,8 @@ import "react-notifications-component/dist/theme.css";
 import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { formatDate } from "../../../../../common/library/CommonLib.js";
+import { formatMoney } from "../../../../../utils/function";
+
 import { Base64 } from 'js-base64';
 
 class SearchUserByDateCom extends React.Component {
@@ -27,8 +29,9 @@ class SearchUserByDateCom extends React.Component {
             IsCallAPIError: false,
             gridDataSource: [],
             fullName: '',
-            FromDate: ""
-         
+            FromDate: "",
+            TotalReward: 0
+
         };
         this.gridref = React.createRef();
     }
@@ -42,21 +45,27 @@ class SearchUserByDateCom extends React.Component {
             fullName: myParam.UserName,
         })
         this.props.updatePagePath(PageByDatePath);
-       this.callLoadData(myParam);
+        this.callLoadData(myParam);
     }
 
-  
+
     callLoadData(myParam) {
-        const objData= {
+        const objData = {
             Date: myParam.value,
             UserName: myParam.UserName
         }
         this.props.callFetchAPI(APIHostName, LoadUserNameByDateAPIPath, objData).then(apiResult => {
             if (!apiResult.IsError) {
+                const totalAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
+                    sum += curValue.TotalReward
+                    return sum
+                }, 0);
+
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
-                   // fullName: apiResult.ResultObject[0].RewardUser + " - " + apiResult.ResultObject[0].FullName
+                    TotalReward: totalAmount
+                    // fullName: apiResult.ResultObject[0].RewardUser + " - " + apiResult.ResultObject[0].FullName
                 });
             }
             else {
@@ -85,25 +94,56 @@ class SearchUserByDateCom extends React.Component {
                     <div className="card mb-10">
                         <div className="card-body">
                             <div className="form-row frmInfo">
-                                <div className="form-group col-md-2">
+                                <div className="form-group col-md-4">
+                                    <div className="group-text">
+                                        <label className="col-form-label bold">Nhân viên:</label>
+                                        <label className="col-form-label ml-10">{this.state.fullName}</label>
+                                    </div>
+                                </div>
+                                <div className="form-group col-md-4">
+                                    <div className="group-text">
+                                        <label className="col-form-label bold">Ngày:</label>
+                                        <label className="col-form-label ml-10">
+                                        {formatDate(this.state.FromDate, true)}
+                                    </label>
+                                    </div>
+                                </div>
+                                <div className="form-group col-md-4">
+                                    <div className="group-text">
+                                        <label className="col-form-label bold">Tổng:</label>
+                                        <label className="col-form-label ml-10">
+                                        {formatMoney(this.state.TotalReward, 0)}
+                                    </label>
+                                    </div>
+                                </div>
+                                {/* <div className="form-group col-md-1">
                                     <label className="col-form-label bold">Nhân viên:</label>
                                 </div>
-                                <div className="form-group col-md-4">
-                                    <label className="col-form-label">{this.state.fullName}</label>
+                                <div className="form-group col-md-3">
+                                    
                                 </div>
-                                <div className="form-group col-md-2">
-                                    <label className="col-form-label bold">Từ ngày:</label>
+                                <div className="form-group col-md-1">
+                                    <label className="col-form-label bold">Ngày:</label>
                                 </div>
-                                <div className="form-group col-md-4">
+                                <div className="form-group col-md-3">
 
                                     <label className="col-form-label">
                                         {formatDate(this.state.FromDate, true)}
                                     </label>
                                 </div>
+                                <div className="form-group col-md-1">
+                                    <label className="col-form-label bold">Tổng:</label>
+                                </div>
+                                <div className="form-group col-md-3">
+                                    <label className="col-form-label">
+                                        {formatMoney(this.state.TotalReward, 0)}
+                                    </label>
+                                </div> */}
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <DataGrid
                     listColumn={GridColumnListByDate}
                     dataSource={this.state.gridDataSource}
