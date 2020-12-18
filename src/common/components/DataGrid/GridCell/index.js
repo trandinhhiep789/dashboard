@@ -112,6 +112,9 @@ class GridCell extends Component {
             case "textBoldRed":
                 control = <label className="txt-boold-red">{text}</label>;
                 break;
+            case "textNumberBoldRed":
+                    control = <label className="txt-boold-red">{formatNumber(text)}</label>;
+                    break;
 
             case "textCurrency":
                 return <label>{formatMoney(text, 0)}</label>;

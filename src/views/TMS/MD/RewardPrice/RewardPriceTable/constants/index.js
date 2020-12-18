@@ -211,21 +211,21 @@ export const DataGridColumnItemListRPTDetail = [
 
     {
         Name: "IsPriceByTechspecsValueRange",
-        Type: "checkicon",
+        Type: "checkbox",
         Caption: "Tính theo giá trị TSKT",
         DataSourceMember: "IsPriceByTechspecsValueRange",
         Width: 150
     },
     {
         Name: "FromTechspecsValue",
-        Type: "textCurrency",
+        Type: "textNumber",
         Caption: "Giá trị TSKT từ",
         DataSourceMember: "FromTechspecsValue",
         Width: 100
     },
     {
         Name: "ToTechspecsValue",
-        Type: "textCurrency",
+        Type: "textNumber",
         Caption: "Giá trị TSKT đến",
         DataSourceMember: "ToTechspecsValue",
         Width: 100

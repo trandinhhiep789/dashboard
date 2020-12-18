@@ -15,5 +15,11 @@ export const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands =
 };
 
 export const formatNumber = (num) => {
-    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    if(num != undefined && num != ''){
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+    }
+    else{
+        return num
+    }
+    
 }

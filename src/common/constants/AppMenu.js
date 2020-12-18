@@ -739,6 +739,65 @@ const AppMenu = [
         SubMenu: []
     },
     {
+        MenuName: 'Reward',
+        MenuTitle: 'Thưởng',
+        LinkTo: '',
+        MenuIcon: '',
+        SubMenu: [
+            {
+                MenuName: 'RewardCompute',
+                MenuTitle: 'Tính thưởng',
+                LinkTo: '/RewardCompute',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'RewardShipmentOrder',
+                MenuTitle: 'Tổng thưởng giao hàng',
+                LinkTo: '/RewardShipmentOrder',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'RewardShipmentOrderByUser',
+                MenuTitle: 'Thưởng giao hàng theo NV',
+                LinkTo: '/RewardShipmentOrderByUser',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'RewardShipmentOrderByType',
+                MenuTitle: 'Thưởng giao hàng theo loại',
+                LinkTo: '/RewardShipmentOrderByType',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'personnel',
+                MenuTitle: 'Nhân sự',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'TotalRewardExport',
+                        MenuTitle: 'Xuất tổng thưởng',
+                        LinkTo: '/TotalRewardExport',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'RewardDetailExport',
+                        MenuTitle: 'Xuất chi tiết thưởng',
+                        LinkTo: '/RewardDetailExport',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+                ]
+            },
+
+        ]
+    },
+    {
         MenuName: 'Reports',
         MenuTitle: 'Báo cáo',
         LinkTo: '/',

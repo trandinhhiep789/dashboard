@@ -12,34 +12,26 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
-    LoadReportUndeliveryByDate,
-    LoadReportDeliveringByDate,
-    LoadReportDeliveredByDate,
-    LoadReportCompletedOrderByDate,
-    LoadReportCancelDeliveryByDate,
-    LoadReportPaidInByDate
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
+import { TMS_TMSREWARD_EXPORT } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
-import { showModal, hideModal } from '../../../../../actions/modal';
-import DataGirdReportShipmentOrder from '../../components/DataGirdReportShipmentOrder'
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
+        this.handleCallData = this.handleCallData.bind(this);
 
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
             IsLoadDataComplete: false,
-            widthPercent: "",
+            dataExport: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -48,42 +40,18 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        this.updateWindowDimensions();
-        window.addEventListener("resize", this.updateWindowDimensions);
+        // this.handleCallData();
     }
 
-    componentWillUnmount() {
-        window.removeEventListener("resize", this.updateWindowDimensions);
-    }
 
-    updateWindowDimensions = () => {
-        this.setState({
-            widthPercent: (window.innerWidth * 90) / 100
-        })
-    };
+
+    handleCallData() {
+        const { SearchData } = this.state;
+        this.callSearchData(SearchData);
+    }
 
     handleSearchSubmit(formData, MLObject) {
-        let result, result2;
-        if (MLObject.ShipmentOrderType != -1 && MLObject.ShipmentOrderType != null && MLObject.ShipmentOrderType != "") {
-            result = MLObject.ShipmentOrderType.reduce((data, item, index) => {
-                const comma = data.length ? "," : "";
-                return data + comma + item;
-            }, '');
-        }
-        else {
-            result = ""
-        }
-
-        if (MLObject.CoordinatorStore != -1 && MLObject.CoordinatorStore != null && MLObject.CoordinatorStore != "") {
-            result2 = MLObject.CoordinatorStore.reduce((data, item, index) => {
-                const comma = data.length ? "," : "";
-                return data + comma + item;
-            }, '');
-        }
-        else {
-            result2 = ""
-        }
-
+        // console.log("MLObject", formData,MLObject)
         const postData = [
             {
                 SearchKey: "@FROMDATE",
@@ -92,27 +60,37 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@TODATE",
                 SearchValue: MLObject.ToDate
-            },
-            {
-                SearchKey: "@SHIPMENTORDERTYPEIDLIST",
-                SearchValue: result  //MLObject.ShipmentOrderType
-            },
-            {
-                SearchKey: "@COORDINATORSTOREIDLIST",
-                SearchValue: result2  //MLObject.CoordinatorStoreID
-            },
-
+            }
         ];
         this.callSearchData(postData);
     }
 
     callSearchData(searchData) {
+
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            // console.log("apiResult",apiResult, searchData)
             if (!apiResult.IsError) {
+
+                const tempDataExport = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã nhân viên": item.RewardUser,
+                        "Tên nhân viên": item.FullName,
+                        "Thưởng giao hàng": item.TotalReward1,
+                        "Phụ cấp ống đồng": item.TotalReward2,
+                        "Tiền xăng": item.TotalReward3,
+                        "Thực lãnh": item.TotalReward,
+
+                    };
+
+                    return element;
+
+                })
+
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
-                    IsLoadDataComplete: true
+                    IsLoadDataComplete: true,
+                    dataExport: tempDataExport
                 });
             }
             else {
@@ -128,7 +106,6 @@ class SearchCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
-                onCloseModal={this.handleCloseMessage}
             />
         );
     }
@@ -166,88 +143,8 @@ class SearchCom extends React.Component {
         });
     }
 
-    getStatusDelivery(status) {
-        switch (status) {
-            case 'TotalUndelivery':
-                return 1;
-            case 'TotalDelivering':
-                return 2;
-            case 'TotalDelivered':
-                return 3;
-            case 'TotalCompletedOrder':
-                return 4;
-            case 'TotalCancelDelivery':
-                return 5
-            case 'TotalPaidIn':
-                return 6
-            case 'UnTotalPaidIn':
-                return 7
-            default:
-                return 0;
-        }
-    }
-
-    onShowModalDetail(objValue, name) {
-
-        const status = this.getStatusDelivery(name);
-        const dtmCreatedOrderTime = objValue[0].value
-
-        const objData = {
-            CreatedOrderTime:dtmCreatedOrderTime,
-            StatusDelivery: status
-        }
-        this.props.callFetchAPI(APIHostName, LoadReportUndeliveryByDate, objData).then(apiResult => {
-            if (!apiResult.IsError) {
-                this.handleShowModal(apiResult.ResultObject, status)
-            }
-            else {
-                this.showMessage(apiResult.MessageDetail)
-            }
-        });
-
-
-    }
-
-    handleShowModal(data, status) {
-        const { widthPercent } = this.state;
-        console.log('status',status)
-        let titleModal;
-
-        if(status == 1){
-            titleModal = "Danh sách vận đơn chưa giao"
-        }
-        if(status == 2){
-            titleModal = "Danh sách vận đơn đang  giao"
-        }
-        if(status == 3){
-            titleModal = "Danh sách vận đơn giao xong"
-        }
-        if(status == 4){
-            titleModal = "Danh sách vận đơn hoàn tất"
-        }
-        if(status == 5){
-            titleModal = "Danh sách vận đơn huỷ giao"
-        }
-        if(status == 6){
-            titleModal = "Danh sách vận đơn đã nộp tiền"
-        }
-        if(status == 7){
-            titleModal = "Danh sách vận đơn chưa nộp tiền"
-        }
-
-        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: titleModal,
-            content: {
-                text: <DataGirdReportShipmentOrder
-                    dataSource={data}
-                    RowsPerPage={20}
-                    IsAutoPaging={true}
-                    Status={status}
-                />
-
-            },
-            maxWidth: widthPercent + 'px'
-        });
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
     }
 
     render() {
@@ -255,7 +152,7 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    FormName="Tìm kiếm danh sách thống kê vận đơn theo ngày"
+                    FormName="Tìm kiếm danh sách tổng thương giao hàng"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
@@ -267,10 +164,8 @@ class SearchCom extends React.Component {
                     listColumn={GridColumnList}
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
-                    IsFixheaderTable={true}
-                    IDSelectColumnName={'CreatedOrderTime'}
-                    PKColumnName={'CreatedOrderTime'}
-                    onShowModal={this.onShowModalDetail.bind(this)}
+                    IDSelectColumnName={'RewardUser'}
+                    PKColumnName={'RewardUser'}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
@@ -278,8 +173,12 @@ class SearchCom extends React.Component {
                     IsPrint={false}
                     IsExportFile={false}
                     IsAutoPaging={true}
-                    RowsPerPage={30}
-                    RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    RowsPerPage={50}
+                    RequirePermission={TMS_TMSREWARD_EXPORT}
+                    IsExportFile={true}
+                    DataExport={this.state.dataExport}
+                    fileName="Danh sách thưởng"
+                    onExportFile={this.handleExportFile.bind(this)}
                     ref={this.gridref}
                 />
             </React.Fragment>
@@ -305,12 +204,6 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
-        },
-        showModal: (type, props) => {
-            dispatch(showModal(type, props));
-        },
-        hideModal: (type, props) => {
-            dispatch(hideModal(type, props));
         }
     };
 };

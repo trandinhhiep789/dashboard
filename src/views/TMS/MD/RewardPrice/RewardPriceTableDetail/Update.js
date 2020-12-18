@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { MessageModal } from "../../../../../common/components/Modal";
+
 import {
     LoadAPIPath,
     MLObjectAbilitiItem,
@@ -14,10 +14,8 @@ import {
 } from "../RewardPriceTable/constants";
 import { ERPCOMMONCACHE_SERVICESEASONTYPE, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE } from "../../../../../constants/keyCache";
 import ProductComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/ProductComboBox.js";
-import { ModalManager } from "react-dynamic-modal";
-import { showModal, hideModal } from '../../../../../actions/modal';
 
-class RewardPriceTableDetailCom extends Component {
+class UpdateRewardPriceTableDetailCom extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,19 +25,29 @@ class RewardPriceTableDetailCom extends Component {
             IsDisableTechspecsValue: true,
             IsDisableCbTechspecsValue: false,
             IsRequiredTechspecsValue: '',
-            isDisableValue: false,
+            isDisableValue: false
         }
 
     }
 
     componentDidMount() {
         if (this.props.index != undefined) {
-            if (this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsSystem.ProductID != undefined && this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsSystem.ProductID.length > 0) {
+            if (this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsPriceByTechspecsValueRange) {
+                this.setState({
+                    IsDisableTechspecsValue: false
+                })
+            }
+            else {
+                this.setState({
+                    IsDisableTechspecsValue: true
+                })
+            }
+            if(this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsSystem.ProductID != undefined && this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsSystem.ProductID.length > 0){
                 this.setState({
                     isDisableValue: true
                 })
             }
-            else {
+            else{
                 this.setState({
                     isDisableValue: false
                 })
@@ -61,9 +69,8 @@ class RewardPriceTableDetailCom extends Component {
         else {
             MLObject.TechSpecsValueID = MLObject.TechSpecsValueID;
         }
-
-
-        if (MLObject.ProductID != undefined) {
+         console.log("MLObject",formData, MLObject)
+        if(MLObject.ProductID != undefined){
             if (MLObject.ProductID.length > 0) {
                 MLObject.SubGroupID = -1;
                 MLObject.TechspecsID = -1;
@@ -78,60 +85,46 @@ class RewardPriceTableDetailCom extends Component {
                 MLObject.ToTechspecsValue = MLObject.ToTechspecsValue;
             }
         }
-
-        if ((MLObject.ProductID == undefined || MLObject.ProductID.length == 0) && MLObject.SubGroupID < 0) {
-            this.showMessage("Dữ liệu bạn nhập vào không đúng. Vui lòng nhập lại!")
+       
+        if (this.props.index != undefined) {
+            this.props.callFetchAPI(APIHostName, EditAPIRPTDetailPath, MLObject).then(apiResult => {
+                this.props.onInputChangeObj(this.props.dataSource.RewardPriceTableID, apiResult);
+            });
         }
         else {
-            if (this.props.index != undefined) {
-                this.props.callFetchAPI(APIHostName, EditAPIRPTDetailPath, MLObject).then(apiResult => {
-                    this.props.onInputChangeObj(this.props.dataSource.RewardPriceTableID, apiResult);
-                });
-            }
-            else {
-                this.props.callFetchAPI(APIHostName, AddAPIRPTDetailPath, MLObject).then(apiResult => {
-                    this.props.onInputChangeObj(this.props.dataSource.RewardPriceTableID, apiResult);
-                });
-            }
+            this.props.callFetchAPI(APIHostName, AddAPIRPTDetailPath, MLObject).then(apiResult => {
+                this.props.onInputChangeObj(this.props.dataSource.RewardPriceTableID, apiResult);
+            });
         }
+        // }
 
-    }
 
-    showMessage(message) {
-        ModalManager.open(
-            <MessageModal
-                title="Thông báo"
-                message={message}
-                onRequestClose={() => true}
-            />
-        );
     }
 
     handleChange(formData, MLObject) {
-
         if (formData.ckIsPriceByTechspecsValueRange.value) {
-            if (formData.cbProductID.value != undefined) {
-                if (formData.cbProductID.value[0].ProductID != null) {
+            if(formData.cbProductID.value != undefined ){
+                if(formData.cbProductID.value[0].ProductID !=  null){
                     this.setState({
                         IsDisableTechspecsValue: true,
                     })
                 }
-                else {
+                else{
                     this.setState({
                         IsDisableTechspecsValue: false,
                     })
                 }
-
+               
             }
-            else {
+            else{
                 this.setState({
                     IsDisableTechspecsValue: false,
                 })
             }
-
+            
         }
         else {
-
+           
             this.setState({
                 IsDisableTechspecsValue: true,
             })
@@ -160,29 +153,25 @@ class RewardPriceTableDetailCom extends Component {
                 formData.txtFromTechspecsValue.ErrorLst.IsValidatonError = true;
                 formData.txtFromTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
             }
-            else{
-                formData.txtToTechspecsValue.ErrorLst.IsValidatonError = false;
-                formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = '';
-            }
+
+
         }
         if (formData.txtToTechspecsValue.value.toString().length > 0) {
+
             if (!/^\d*\.?\d+$/.test(formData.txtToTechspecsValue.value)) {
                 formData.txtToTechspecsValue.ErrorLst.IsValidatonError = true;
                 formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
             }
-            else{
-                formData.txtToTechspecsValue.ErrorLst.IsValidatonError = false;
-                formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = '';
-            }
+
+
         }
     }
 
 
     render() {
 
-        const { IsSystem, IsUpdate, IsDisableCbTechspecsValue, isDisableValue, IsDisableTechspecsValue } = this.state;
+        const { IsSystem, IsUpdate, IsDisableTechspecsValue, IsDisableCbTechspecsValue, isDisableValue } = this.state;
         let isDisableCB = false;
-
 
         if (IsUpdate == false && IsDisableCbTechspecsValue == false) {
             isDisableCB = false
@@ -192,24 +181,25 @@ class RewardPriceTableDetailCom extends Component {
         }
 
         let isDisableCBTechspecsValue = false;
-        if (IsUpdate == false && IsDisableCbTechspecsValue == false) {
-            if (IsDisableTechspecsValue == false) {
-                isDisableCBTechspecsValue = true
-                // if (isDisableValue == false) {
-                //     isDisableCBTechspecsValue = false
-                // }
-                // else {
-                //     isDisableCBTechspecsValue = true
-                // }
+        if (IsUpdate == false && IsDisableCbTechspecsValue == false ) {
+            if (IsDisableTechspecsValue == false ) {
+                if(isDisableValue == false){
+                    isDisableCBTechspecsValue = false
+                }
+                else {
+                    isDisableCBTechspecsValue = true
+                }
             }
             else {
                 isDisableCBTechspecsValue = false
             }
+
         }
         else {
-
+           
             isDisableCBTechspecsValue = true
         }
+
 
 
         return (
@@ -446,15 +436,10 @@ const mapDispatchToProps = dispatch => {
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         },
-        showModal: (type, props) => {
-            dispatch(showModal(type, props));
-        },
-        hideModal: () => {
-            dispatch(hideModal());
-        }
+
     }
 }
 
 
-const RewardPriceTableDetail = connect(mapStateToProps, mapDispatchToProps)(RewardPriceTableDetailCom);
-export default RewardPriceTableDetail;
+const UpdateRewardPriceTableDetail = connect(mapStateToProps, mapDispatchToProps)(UpdateRewardPriceTableDetailCom);
+export default UpdateRewardPriceTableDetail;

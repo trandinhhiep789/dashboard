@@ -126,7 +126,7 @@ export const GridColumnList = [
     },
     {
         Name: "TotalOrder",
-        Type: "textBoldRed",
+        Type: "textNumberBoldRed",
         Caption: "Tổng đơn",
         DataSourceMember: "TotalOrder",
         Width: "10%"

@@ -18,7 +18,7 @@ class DeliveredCom extends Component {
     handleSubmit()
     {
         this.props.history.push("/ShipmentOrder", {
-            ShipmentOrderStatusGroupID: 4
+            ShipmentOrderStatusGroupID: 7
         })
     }
 
@@ -33,8 +33,8 @@ class DeliveredCom extends Component {
                                 <i className="ti ti-check"></i>
                             </div>
                             <div className="col-9 text-right content">
-                                <span className="Count">{formatNumber(this.props.Delivered)}</span>
-                                <h3 className="title">Đã giao</h3>
+                                <span className="Count">{formatNumber(this.props.ShipmentOrderStatusGroup7)}</span>
+                                <h3 className="title">Hoàn tất</h3>
                             </div>
                         </div>
                     </div>

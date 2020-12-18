@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
 import { formatDate } from "../../../../common/library/CommonLib.js";
-import { formatMoney } from '../../../../utils/function';
+import { formatMoney,formatNumber } from '../../../../utils/function';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import ListShipCoordinator from '../Component/ListShipCoordinator.js';
@@ -883,7 +883,7 @@ class DataGridShipmentOderCom extends Component {
                                             <ul>
                                                 <li>
                                                     <span className="count-name">Tổng đơn:</span>
-                                                    <span className="count-number">{this.state.DataSource.length > 0 ? this.state.DataSource[0].TotaLRows : ''}</span>
+                                                    <span className="count-number">{this.state.DataSource.length > 0 ? formatNumber(this.state.DataSource[0].TotaLRows) : ''}</span>
                                                 </li>
                                                 {/* <li>
                                                     <span className="count-name">Đã hoàn thành:</span>

@@ -28,7 +28,8 @@ export const SearchElementList = [
         name: "dtFromDate",
         DataSourceMember: "FromDate",
         label: "Từ Ngày",
-        value: dtFromdate,
+        // value: dtFromdate,
+        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
@@ -107,7 +108,7 @@ export const  SearchMLObjectDefinition = [
 export const InitSearchParams = [
     {
         SearchKey: "@FROMDATE",
-        SearchValue: dtFromdate
+        SearchValue: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear())
     },
     {
         SearchKey: "@TODATE",
@@ -196,7 +197,7 @@ export const GridColumnListByDate = [
        
         Name: "ShipmentOrderID",
         Type: "texttolink",
-        Caption: "Mã vận đợn",
+        Caption: "Mã vận đơn",
         DataSourceMember: "ShipmentOrderID",
         Link: "/ShipmentOrder/Detail/",
         Width: 100

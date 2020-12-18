@@ -6,6 +6,7 @@ import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Collapsible from 'react-collapsible';
 import { Link } from "react-router-dom";
+import ReactTooltip from 'react-tooltip';
 import {
     APIHostName,
 } from "../constants";
@@ -152,7 +153,7 @@ class InfoProductCom extends Component {
                                         this.state.ShipmentOrder_CodUpdLogLst && this.state.ShipmentOrder_CodUpdLogLst.map((item, index) => {
                                             return (
                                                 <tr key={index}>
-                                                    <td>{item.CreatedUser+"-"+item.CreatedUserFullName}</td>
+                                                    <td>{item.CreatedUser + "-" + item.CreatedUserFullName}</td>
                                                     <td>{item.OldTotalcod}</td>
                                                     <td>{item.NewTotalcod}</td>
                                                     <td><Link target="_blank" to={"/PartnerTransaction/Edit/" + item.PartnerTransactionID}>{item.PartnerTransactionID}</Link></td>
@@ -169,7 +170,7 @@ class InfoProductCom extends Component {
         });
     }
 
-   
+
     render() {
 
         let objgroupByInstallBundleID = [];
@@ -226,11 +227,11 @@ class InfoProductCom extends Component {
                             <div className="form-group col-md-4">
                                 <label className="col-form-label lbl-currency">
                                     {formatMoney(this.state.ShipmentOrder.TotalCOD, 0)}đ
-                                   
+
                                 </label>
                                 <button className="btn btn-icon-modal" onClick={this.handleShowCodUpdLog.bind(this)}>
-                                        <i className="fa fa-pencil"></i>
-                                    </button>
+                                    <i className="fa fa-pencil"></i>
+                                </button>
                             </div>
                         </div>
 
@@ -411,15 +412,38 @@ class InfoProductCom extends Component {
                                                             {
                                                                 obj.map((item, Index) => {
                                                                     if (item.ProductID != "" && item.ProductID != null) {
-                                                                        return (<tr key={rowIndex + Index}>
-                                                                            <td>{item.ProductID + '-' + item.ProductName}</td>
-                                                                            <td>{item.AdvanceQuantity * item.AdvanceConvertRatio}</td>
-                                                                            <td>{item.UsageQuantity}</td>
-                                                                            <td>{item.FreeQuantity}</td>
-                                                                            <td>{item.SaleQuantity}</td>
-                                                                            <td>{formatMoney(item.SalePriceWithVAT, 0)}đ</td>
-                                                                            <td>{formatMoney(this.Pricevat(item.SaleQuantity, item.SalePriceWithVAT), 0)}đ</td>
-                                                                        </tr>)
+                                                                        if (item.ProductID != item.ConvertAdvanceProductID) {
+                                                                            return (
+                                                                                <tr key={rowIndex + Index}>
+                                                                                    <td>{item.ProductID + '-' + item.ProductName}</td>
+                                                                                    <td>
+                                                                                        <span className="text-danger" data-tip data-for={item.AdvanceQuantity + "-" + Index} data-id={item.AdvanceQuantity + "-" + Index} >{item.AdvanceQuantity * item.AdvanceConvertRatio}*</span>
+                                                                                        <ReactTooltip id={item.AdvanceQuantity + "-" + Index} type='dark'>
+                                                                                            {item.ConvertAdvanceProductID + '-' + item.ConvertAdvanceProductName + " đã tạm ứng " + item.AdvanceQuantity * item.AdvanceConvertRatio +"m"}
+                                                                                        </ReactTooltip>
+                                                                                    </td>
+                                                                                    <td>{item.UsageQuantity}</td>
+                                                                                    <td>{item.FreeQuantity}</td>
+                                                                                    <td>{item.SaleQuantity}</td>
+                                                                                    <td>{formatMoney(item.SalePriceWithVAT, 0)}đ</td>
+                                                                                    <td>{formatMoney(this.Pricevat(item.SaleQuantity, item.SalePriceWithVAT), 0)}đ</td>
+                                                                                </tr>
+
+                                                                            )
+                                                                        }
+                                                                        else {
+                                                                            return (<tr key={rowIndex + Index}>
+                                                                                <td>{item.ProductID + '-' + item.ProductName}</td>
+                                                                                <td>{item.AdvanceQuantity * item.AdvanceConvertRatio}</td>
+                                                                                <td>{item.UsageQuantity}</td>
+                                                                                <td>{item.FreeQuantity}</td>
+                                                                                <td>{item.SaleQuantity}</td>
+                                                                                <td>{formatMoney(item.SalePriceWithVAT, 0)}đ</td>
+                                                                                <td>{formatMoney(this.Pricevat(item.SaleQuantity, item.SalePriceWithVAT), 0)}đ</td>
+                                                                            </tr>)
+                                                                        }
+
+
                                                                     }
                                                                 })
                                                             }

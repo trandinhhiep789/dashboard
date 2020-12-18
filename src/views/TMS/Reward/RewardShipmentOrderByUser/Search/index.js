@@ -115,7 +115,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchNewAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult)
+            // console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
 
                 const totalAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
