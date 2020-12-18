@@ -101,7 +101,7 @@ class SearchUserByDateCom extends React.Component {
                                     </div>
                                 </div>
                                 <div className="form-group col-md-4">
-                                    <div className="group-text">
+                                    <div className="group-text text-center">
                                         <label className="col-form-label bold">Ngày:</label>
                                         <label className="col-form-label ml-10">
                                         {formatDate(this.state.FromDate, true)}
@@ -109,9 +109,9 @@ class SearchUserByDateCom extends React.Component {
                                     </div>
                                 </div>
                                 <div className="form-group col-md-4">
-                                    <div className="group-text">
+                                    <div className="group-text text-right">
                                         <label className="col-form-label bold">Tổng:</label>
-                                        <label className="col-form-label ml-10">
+                                        <label className="col-form-label ml-10 text-danger">
                                         {formatMoney(this.state.TotalReward, 0)}
                                     </label>
                                     </div>
