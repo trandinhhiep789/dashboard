@@ -16,9 +16,9 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { AREATYPE_UPDATE } from "../../../../../../constants/functionLists";
+import { APPFEEDBACKSTATUS_UPDATE } from "../../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_APPFEEDBACKSTATUS } from "../../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -38,33 +38,32 @@ class EditCom extends React.Component {
         this.props.updatePagePath(EditPagePath);
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
-                if (apiResult.IsError) {
-                    this.setState({
-                        IsCallAPIError: apiResult.IsError
-                    });
-                    this.showMessage(apiResult.Message);
-                } else {
-                    this.setState({ DataSource: apiResult.ResultObject });
-                }
+            if (apiResult.IsError) {
                 this.setState({
-                    IsLoadDataComplete: true
+                    IsCallAPIError: apiResult.IsError
                 });
+                this.showMessage(apiResult.Message);
+            } else {
+                this.setState({ DataSource: apiResult.ResultObject });
+            }
+            this.setState({
+                IsLoadDataComplete: true
             });
+        });
     }
 
-    
+
 
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                if(!apiResult.IsError){
-                    this.props.callClearLocalCache(ERPCOMMONCACHE_AREATYPE);
-                    this.props.callClearLocalCache(ERPCOMMONCACHE_AREATT);
-                }      
-                this.showMessage(apiResult.Message);
-            });
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(ERPCOMMONCACHE_APPFEEDBACKSTATUS);
+            }
+            this.showMessage(apiResult.Message);
+        });
     }
 
     handleCloseMessage() {
@@ -97,7 +96,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={AREATYPE_UPDATE}
+                    RequirePermission={APPFEEDBACKSTATUS_UPDATE}
                     ref={this.searchref}
                 />
             );

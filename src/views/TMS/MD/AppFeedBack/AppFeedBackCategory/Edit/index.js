@@ -21,7 +21,7 @@ import { AREA_UPDATE } from "../../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
 import { createListTree } from '../../../../../../common/library/ultils';
-import { ERPCOMMONCACHE_AREATT } from "../../../../../../constants/keyCache";
+
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
@@ -183,7 +183,7 @@ class EditCom extends React.Component {
                         IsErrorMessage={this.state.IsCallAPIError}
                         dataSource={this.state.DataSource}
                         BackLink={BackLink}
-                        RequirePermission={AREA_UPDATE}
+                        RequirePermission={APPFEEDBACKCATEGORY_UPDATE}
                     >
 
                         {/* <br />

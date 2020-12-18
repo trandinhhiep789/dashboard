@@ -3,8 +3,8 @@ import ReactDOM from "react-dom";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SimpleForm from "../../../../../../common/components/Form/SimpleForm";
-import { MessageModal } from "../../../../../../common/components/Modal";
+import SimpleForm from "../../../../../common/components/Form/SimpleForm";
+import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
     LoadAPIPath,
@@ -13,12 +13,15 @@ import {
     MLObjectDefinition,
     BackLink,
     EditPagePath,
+    AddLogAPIPath
 } from "../constants";
-import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../../actions/pageAction";
-import { APPFEEDBACKPRIORITY_UPDATE } from "../../../../../../constants/functionLists";
-import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_APPFEEDBACKPRIORITY } from "../../../../../../constants/keyCache";
+import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
+import { updatePagePath } from "../../../../../actions/pageAction";
+import { SHIPMENTORDERSTEP_UPDATE } from "../../../../../constants/functionLists";
+import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
+import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_SHIPMENTORDERSTEP, ERPCOMMONCACHE_SHIPMENTORDERSTEPGR } from "../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -38,32 +41,32 @@ class EditCom extends React.Component {
         this.props.updatePagePath(EditPagePath);
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
-            if (apiResult.IsError) {
+                if (apiResult.IsError) {
+                    this.setState({
+                        IsCallAPIError: apiResult.IsError
+                    });
+                    this.showMessage(apiResult.Message);
+                } else {
+                    this.setState({ DataSource: apiResult.ResultObject });
+                }
                 this.setState({
-                    IsCallAPIError: apiResult.IsError
+                    IsLoadDataComplete: true
                 });
-                this.showMessage(apiResult.Message);
-            } else {
-                this.setState({ DataSource: apiResult.ResultObject });
-            }
-            this.setState({
-                IsLoadDataComplete: true
             });
-        });
     }
 
-
+   
 
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            if (!apiResult.IsError) {
-                this.props.callClearLocalCache(ERPCOMMONCACHE_APPFEEDBACKPRIORITY);
-            }
-            this.showMessage(apiResult.Message);
-        });
+                this.setState({ IsCallAPIError: apiResult.IsError });
+                if(!apiResult.IsError){
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERSTEPGR);
+                }      
+                this.showMessage(apiResult.Message);
+            });
     }
 
     handleCloseMessage() {
@@ -88,7 +91,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <SimpleForm
-                    FormName="Cập nhật độ ưu tiên phản hồi"
+                    FormName="Cập nhật nhóm bước xử lý yêu cầu vận chuyển"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
@@ -96,7 +99,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={APPFEEDBACKPRIORITY_UPDATE}
+                    RequirePermission={SHIPMENTORDERSTEP_UPDATE}
                     ref={this.searchref}
                 />
             );

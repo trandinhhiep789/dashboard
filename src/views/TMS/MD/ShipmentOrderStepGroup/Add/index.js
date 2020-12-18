@@ -2,21 +2,24 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SimpleForm from "../../../../../../common/components/Form/SimpleForm";
-import { MessageModal } from "../../../../../../common/components/Modal";
+import SimpleForm from "../../../../../common/components/Form/SimpleForm";
+import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
     AddAPIPath,
     AddElementList,
     MLObjectDefinition,
     BackLink,
-    AddPagePath
+    AddPagePath,
+    AddLogAPIPath
 } from "../constants";
-import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../../actions/pageAction";
-import { APPFEEDBACKSTATUS_ADD } from "../../../../../../constants/functionLists";
-import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_APPFEEDBACKSTATUS } from "../../../../../../constants/keyCache";
+import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
+import { updatePagePath } from "../../../../../actions/pageAction";
+import { ATTRIBUTE_CATEGORY_TYPE_ADD, SHIPMENTORDERSTEP_ADD } from "../../../../../constants/functionLists";
+import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
+import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_SHIPMENTORDERSTEPGR } from "../../../../../constants/keyCache";
 
 
 class AddCom extends React.Component {
@@ -35,6 +38,8 @@ class AddCom extends React.Component {
         this.props.updatePagePath(AddPagePath);
     }
 
+    
+
 
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
@@ -42,7 +47,7 @@ class AddCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
-                this.props.callClearLocalCache(ERPCOMMONCACHE_APPFEEDBACKSTATUS);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERSTEPGR)
             }
             this.showMessage(apiResult.Message);
         });
@@ -72,15 +77,15 @@ class AddCom extends React.Component {
         }
         return (
             <SimpleForm
-                FormName="Thêm trạng thái phản hồi"
-                MLObjectDefinition={MLObjectDefinition}
+                FormName="Thêm nhóm bước xử lý yêu cầu vận chuyển"
+                MLObjectDefinition={MLObjectDefinition} ƒ
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
                 FormMessage={this.state.CallAPIMessage}
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                RequirePermission={APPFEEDBACKSTATUS_ADD}
+                RequirePermission={SHIPMENTORDERSTEP_ADD}
                 ref={this.searchref}
             />
         );

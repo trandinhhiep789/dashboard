@@ -27,11 +27,11 @@ import {
     callFetchAPI
 } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { SHIPMENTORDERTYPE_VIEW, SHIPMENTORDERTYPE_DELETE, SHIPMENTORDERTYPE_ADD } from "../../../../../../constants/functionLists";
+import { APPFEEDBACKTYPE_ADD, APPFEEDBACKTYPE_DELETE, APPFEEDBACKTYPE_VIEW } from "../../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPUSERCACHE_FUNCTION } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_APPFEEDBACKTYPE, ERPUSERCACHE_FUNCTION } from "../../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -47,7 +47,10 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
-            IsAllowAdd: false
+            IsAllowAdd: false,
+            MessageDetail: "Đang nạp dữ liệu ......",
+            cssNotification: "notification-danger",
+            iconNotification: "fa fa-exclamation"
         };
         this.notificationDOMRef = React.createRef();
     }
@@ -62,7 +65,7 @@ class SearchCom extends React.Component {
     checkAddPermission() {
         this.props.callGetCache(ERPUSERCACHE_FUNCTION).then((result) => {
             if (result && !result.IsError && result.ResultObject) {
-                let match = result.ResultObject.CacheData.filter(x => x.FunctionID == SHIPMENTORDERTYPE_ADD);
+                let match = result.ResultObject.CacheData.filter(x => x.FunctionID == APPFEEDBACKTYPE_ADD);
                 if (match && match.length > 0) {
                     this.setState({ IsAllowAdd: true });
                 }
@@ -86,7 +89,7 @@ class SearchCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                //this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERTYPE);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_APPFEEDBACKTYPE);
                 //this.handleDeleteInsertLog();
             }
             this.addNotification(apiResult.Message, apiResult.IsError);
@@ -100,16 +103,6 @@ class SearchCom extends React.Component {
         this.setState({ SearchData: postData });
         this.callSearchData(postData);
     }
-
-
-    handleSubmitInsertLog(MLObject) {
-        MLObject.ActivityTitle = "Thêm mới loại yêu cầu chỉnh sửa thông tin";
-        MLObject.ActivityDetail = "Thêm mới loại yêu cầu chỉnh sửa thông tin";
-        MLObject.ObjectID = "PIM_PIEREQUESTTYPE";
-        MLObject.ActivityUser = MLObject.CreatedUser;
-        this.props.callFetchAPI(APIHostName, AddLogAPIPath, MLObject);
-    }
-
 
     handleInputGridInsert(MLObjectDefinition, modalElementList, dataSource) {
         //kiểm tra quyền thêm mới loại phản hồi ứng dụng
@@ -129,7 +122,7 @@ class SearchCom extends React.Component {
                             this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then((apiResult) => {
                                 if (!apiResult.IsError) {
                                     this.callSearchData(this.state.SearchData);
-                                    //this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERTYPE);
+                                    this.props.callClearLocalCache(ERPCOMMONCACHE_APPFEEDBACKTYPE);
                                     this.props.hideModal();
                                     this.addNotification(apiResult.Message, apiResult.IsError);
                                 } else {
@@ -157,9 +150,11 @@ class SearchCom extends React.Component {
                 //console.log("gridDataSource",apiResult.ResultObject);
             }
             else {
-                this.setState({ IsCallAPIError: apiResult.IsError, IsShowForm: false })
-                this.addNotification(apiResult.Message, apiResult.IsError);
+                this.setState({ IsCallAPIError: apiResult.IsError, IsShowForm: false, MessageDetail: apiResult.Message})
+                //this.addNotification(apiResult.Message, apiResult.IsError);
+                
             }
+            //console.log("gridDataSource",apiResult.ResultObject);
         });
     }
 
@@ -233,15 +228,15 @@ class SearchCom extends React.Component {
                         IsAutoPaging={true}
                         RowsPerPage={10}
                         IsCustomAddLink={true}
-                        RequirePermission={SHIPMENTORDERTYPE_VIEW}
-                        DeletePermission={SHIPMENTORDERTYPE_DELETE}
+                        RequirePermission={APPFEEDBACKTYPE_VIEW}
+                        DeletePermission={APPFEEDBACKTYPE_DELETE}
                     />
                 </ React.Fragment >
             );
         } else {
             return (
-                <div>
-                    <label>Đang nạp dữ liệu ......</label>
+                <div className="col-md-12 message-detail">
+                    <label>{this.state.MessageDetail}</label>
                 </div>
             )
         }

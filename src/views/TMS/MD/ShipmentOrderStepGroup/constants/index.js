@@ -1,31 +1,31 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/ShipmentOrderStep/Search";
-export const LoadAPIPath = "api/ShipmentOrderStep/Load";
-export const AddAPIPath = "api/ShipmentOrderStep/Add";
-export const UpdateAPIPath = "api/ShipmentOrderStep/Update";
-export const DeleteAPIPath = "api/ShipmentOrderStep/Delete";
-export const UpdateOrderAPIPath = "api/ShipmentOrderStep/UpdateOrder";
-export const BackLink = "/ShipmentOrderStep";
-export const AddLink = "/ShipmentOrderStep/Add";
+export const SearchAPIPath = "api/ShipmentOrderStepGroup/Search";
+export const LoadAPIPath = "api/ShipmentOrderStepGroup/Load";
+export const AddAPIPath = "api/ShipmentOrderStepGroup/Add";
+export const UpdateAPIPath = "api/ShipmentOrderStepGroup/Update";
+export const DeleteAPIPath = "api/ShipmentOrderStepGroup/Delete";
+export const UpdateOrderAPIPath = "api/ShipmentOrderStepGroup/UpdateOrder";
+export const BackLink = "/ShipmentOrderStepGroup";
+export const AddLink = "/ShipmentOrderStepGroup/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "ShipmentOrderStepID";
+export const PKColumnName = "ShipmentOrderStepGroupID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách bước xử lý yêu cầu vận chuyển" }
+    { Link: "", Title: "Danh sách nhóm nhóm bước xử lý yêu cầu vận chuyển" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ShipmentOrderStep", Title: "Danh sách bước xử lý yêu cầu vận chuyển" },
+    { Link: "/ShipmentOrderStepGroup", Title: "Danh sách nhóm nhóm bước xử lý yêu cầu vận chuyển" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ShipmentOrderStep", Title: "Danh sách bước xử lý yêu cầu vận chuyển" },
+    { Link: "/ShipmentOrderStepGroup", Title: "Danh sách nhóm nhóm bước xử lý yêu cầu vận chuyển" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -44,45 +44,29 @@ export const SearchElementList = [
 export const AddElementList = [
     {
         type: "text",
-        name: "txtShipmentOrderStepID",
-        label: "mã bước xử lý yêu cầu",
+        name: "txtShipmentOrderStepGroupID",
+        label: "mã nhóm bước xử lý",
         value: "",
         maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "ShipmentOrderStepID",
+        DataSourceMember: "ShipmentOrderStepGroupID",
         readonly: false,
         validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtShipmentOrderStepName",
-        label: "tên bước xử lý yêu cầu",
+        name: "txtShipmentOrderStepGroupName",
+        label: "tên nhóm bước xử lý",
         value: "",
         maxSize: "180",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "ShipmentOrderStepName",
+        DataSourceMember: "ShipmentOrderStepGroupName",
         readonly: false,
         validatonList: ["required"],
-    },
-    {
-        type: "select",
-        name: "txtShipmentOrderStepGroupID",
-        label: "nhóm bước xử lý",
-        value: -1,
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "ShipmentOrderStepGroupID",
-        readonly: false,
-        validatonList: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTEPGR",
-        ValueMember: "ShipmentOrderStepGroupID",
-        NameMember: "ShipmentOrderStepGroupName"
     },
     {
         type: "text",
@@ -151,45 +135,29 @@ export const AddElementList = [
 export const EditElementList = [
     {
         type: "text",
-        name: "txtShipmentOrderStepID",
-        label: "mã bước xử lý yêu cầu",
+        name: "txtShipmentOrderStepGroupID",
+        label: "mã nhóm bước xử lý",
         value: "",
         maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "ShipmentOrderStepID",
+        DataSourceMember: "ShipmentOrderStepGroupID",
         readonly: true,
         validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtShipmentOrderStepName",
-        label: "tên bước xử lý yêu cầu",
+        name: "txtShipmentOrderStepGroupName",
+        label: "tên nhóm bước xử lý",
         value: "",
         maxSize: "180",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "ShipmentOrderStepName",
+        DataSourceMember: "ShipmentOrderStepGroupName",
         readonly: false,
         validatonList: ["required"],
-    },
-    {
-        type: "select",
-        name: "txtShipmentOrderStepGroupID",
-        label: "nhóm bước xử lý",
-        value: -1,
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "ShipmentOrderStepGroupID",
-        readonly: false,
-        validatonList: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTEPGR",
-        ValueMember: "ShipmentOrderStepGroupID",
-        NameMember: "ShipmentOrderStepGroupName"
     },
     {
         type: "text",
@@ -267,22 +235,16 @@ export const SearchMLObjectDefinition = [
 
 export const MLObjectDefinition = [
     {
-        Name: "ShipmentOrderStepID",
-        DefaultValue: "",
-        BindControlName: "txtShipmentOrderStepID",
-        DataSourceMember: "ShipmentOrderStepID"
-    },
-    {
-        Name: "ShipmentOrderStepName",
-        DefaultValue: "",
-        BindControlName: "txtShipmentOrderStepName",
-        DataSourceMember: "ShipmentOrderStepName"
-    },
-    {
         Name: "ShipmentOrderStepGroupID",
         DefaultValue: "",
         BindControlName: "txtShipmentOrderStepGroupID",
         DataSourceMember: "ShipmentOrderStepGroupID"
+    },
+    {
+        Name: "ShipmentOrderStepGroupName",
+        DefaultValue: "",
+        BindControlName: "txtShipmentOrderStepGroupName",
+        DataSourceMember: "ShipmentOrderStepGroupName"
     },
     {
         Name: "IconUrl",
@@ -339,29 +301,22 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "ShipmentOrderStepID",
+        DataSourceMember: "ShipmentOrderStepGroupID",
         Width: 60
     },
     {
-        Name: "ShipmentOrderStepID",
+        Name: "ShipmentOrderStepGroupID",
         Type: "text",
-        Caption: "Mã bước xử lý yêu cầu",
-        DataSourceMember: "ShipmentOrderStepID",
+        Caption: "Mã nhóm bước xử lý",
+        DataSourceMember: "ShipmentOrderStepGroupID",
         Width: 150
-    },
-    {
-        Name: "ShipmentOrderStepName",
-        Type: "text",
-        Caption: "Tên bước xử lý yêu cầu",
-        DataSourceMember: "ShipmentOrderStepName",
-        //Width: 350
     },
     {
         Name: "ShipmentOrderStepGroupName",
         Type: "text",
-        Caption: "Nhóm bước xử lý yêu cầu",
+        Caption: "Tên nhóm bước xử lý",
         DataSourceMember: "ShipmentOrderStepGroupName",
-        Width: 180
+        //Width: 350
     },
     {
         Name: "IconUrl",
@@ -385,19 +340,19 @@ export const DataGridColumnList = [
         Width: 150
     },
     {
-        Name: "CreatedFullName",
+        Name: "CreatedUserFullName",
         Type: "text",
         Caption: "Người tạo",
-        DataSourceMember: "CreatedFullName",
+        DataSourceMember: "CreatedUserFullName",
         Width: 150
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "ShipmentOrderStepID",
+        DataSourceMember: "ShipmentOrderStepGroupID",
         Width: 100,
-        Link: "/ShipmentOrderStep/Edit/",
+        Link: "/ShipmentOrderStepGroup/Edit/",
         LinkText: "Chỉnh sửa"
     }
 ];

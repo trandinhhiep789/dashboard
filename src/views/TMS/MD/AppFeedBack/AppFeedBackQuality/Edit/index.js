@@ -16,9 +16,9 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { AREATYPE_UPDATE } from "../../../../../../constants/functionLists";
+import { APPFEEDBACKQUALITY_UPDATE } from "../../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_APPFEEDBACKQUALITY } from "../../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -60,8 +60,7 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 if(!apiResult.IsError){
-                    this.props.callClearLocalCache(ERPCOMMONCACHE_AREATYPE);
-                    this.props.callClearLocalCache(ERPCOMMONCACHE_AREATT);
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_APPFEEDBACKQUALITY);
                 }      
                 this.showMessage(apiResult.Message);
             });
@@ -97,7 +96,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={AREATYPE_UPDATE}
+                    RequirePermission={APPFEEDBACKQUALITY_UPDATE}
                     ref={this.searchref}
                 />
             );

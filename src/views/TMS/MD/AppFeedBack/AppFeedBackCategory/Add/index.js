@@ -15,11 +15,10 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { AREA_ADD } from "../../../../../../constants/functionLists";
+import { APPFEEDBACKCATEGORY_ADD, AREA_ADD } from "../../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import { createListTree } from '../../../../../../common/library/ultils';
 import FormContainer from "../../../../../../common/components/Form/AdvanceForm/FormContainer";
-import { ERPCOMMONCACHE_AREA, ERPCOMMONCACHE_AREATT } from "../../../../../../constants/keyCache";
 
 
 class AddCom extends React.Component {
@@ -130,7 +129,7 @@ class AddCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={[]}
                     BackLink={BackLink}
-                    RequirePermission={AREA_ADD}
+                    RequirePermission={APPFEEDBACKCATEGORY_ADD}
                 >
                 </FormContainer>
             );
