@@ -68,7 +68,7 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
         
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult)
+            // console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
                 const tempData = apiResult.ResultObject.map((item, index) => {
                     item.TotalAmount = item.Price * item.EndTermAdvanceDebt;
