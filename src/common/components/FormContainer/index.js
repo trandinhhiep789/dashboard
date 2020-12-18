@@ -187,10 +187,6 @@ class FormContainerCom extends Component {
                 FormDataContolLstd[objrest[i]].value = -1;
             }
         }
-        if (typeof FormDataContolLstd[elementname].validatonList == "undefined") {
-            const validationObject = { IsValidatonError: false, ValidatonErrorMessage: "" };
-            FormDataContolLstd[elementname].ErrorLst = validationObject;
-        }
         if (typeof FormDataContolLstd[elementname].validatonList != "undefined") {
             const validation = ValidationField(FormDataContolLstd[elementname].validatonList, elementvalue, FormDataContolLstd[elementname].label, FormDataContolLstd[elementname]);
             const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };

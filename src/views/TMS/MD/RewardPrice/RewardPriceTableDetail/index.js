@@ -160,12 +160,19 @@ class RewardPriceTableDetailCom extends Component {
                 formData.txtFromTechspecsValue.ErrorLst.IsValidatonError = true;
                 formData.txtFromTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
             }
+            else{
+                formData.txtToTechspecsValue.ErrorLst.IsValidatonError = false;
+                formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = '';
+            }
         }
         if (formData.txtToTechspecsValue.value.toString().length > 0) {
-
             if (!/^\d*\.?\d+$/.test(formData.txtToTechspecsValue.value)) {
                 formData.txtToTechspecsValue.ErrorLst.IsValidatonError = true;
                 formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
+            }
+            else{
+                formData.txtToTechspecsValue.ErrorLst.IsValidatonError = false;
+                formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = '';
             }
         }
     }
