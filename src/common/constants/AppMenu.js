@@ -129,8 +129,15 @@ const AppMenu = [
                         SubMenu: []
                     },
                     {
+                        MenuName: 'ShipmentOrderStepGroup',
+                        MenuTitle: 'Nhóm bước xử lý yêu cầu vận chuyển',
+                        LinkTo: '/ShipmentOrderStepGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'ShipmentOrderStep',
-                        MenuTitle: 'Danh sách bước xử lý yêu cầu vận chuyển',
+                        MenuTitle: 'Bước xử lý yêu cầu vận chuyển',
                         LinkTo: '/ShipmentOrderStep',
                         MenuIcon: '',
                         SubMenu: []
@@ -139,70 +146,70 @@ const AppMenu = [
 
                 ]
             },
-            // {
-            //     MenuName: 'AppFeedBack',
-            //     MenuTitle: 'Phản hồi ứng dụng',
-            //     LinkTo: '',
-            //     MenuIcon: '',
-            //     SubMenu: [
-            //         {
-            //             MenuName: 'AppFeedBackType',
-            //             MenuTitle: 'Loại phản hồi ứng dụng',
-            //             LinkTo: '/AppFeedBackType',
-            //             MenuIcon: '',
-            //             SubMenu: []
-            //         },
-            //         {
-            //             MenuName: 'AppFeedBackPriority',
-            //             MenuTitle: 'Độ ưu tiên phản hồi',
-            //             LinkTo: '/AppFeedBackPriority',
-            //             MenuIcon: '',
-            //             SubMenu: []
-            //         },
-            //         {
-            //             MenuName: 'AppFeedBackStatus',
-            //             MenuTitle: 'Trạng thái phản hồi',
-            //             LinkTo: '/AppFeedBackStatus',
-            //             MenuIcon: '',
-            //             SubMenu: []
-            //         },
-            //         {
-            //             MenuName: 'AppFeedBackQuality',
-            //             MenuTitle: 'Chất lượng xử lý phản hồi',
-            //             LinkTo: '/AppFeedBackQuality',
-            //             MenuIcon: '',
-            //             SubMenu: []
-            //         },
-            //         {
-            //             MenuName: 'AppFeedBackPermission',
-            //             MenuTitle: 'Quyền trên phản hồi',
-            //             LinkTo: '/AppFeedBackPermission',
-            //             MenuIcon: '',
-            //             SubMenu: []
-            //         },
-            //         {
-            //             MenuName: 'AppFeedBackStep',
-            //             MenuTitle: 'Bước xử lý phản hồi',
-            //             LinkTo: '/AppFeedBackStep',
-            //             MenuIcon: '',
-            //             SubMenu: []
-            //         },
-            //         {
-            //             MenuName: 'AppFeedBackGroup',
-            //             MenuTitle: 'Phân loại phản hồi',
-            //             LinkTo: '/AppFeedBackGroup',
-            //             MenuIcon: '',
-            //             SubMenu: []
-            //         },
-            //         {
-            //             MenuName: 'AppFeedBackCategory',
-            //             MenuTitle: 'Danh mục phản hồi',
-            //             LinkTo: '/AppFeedBackCategory',
-            //             MenuIcon: '',
-            //             SubMenu: []
-            //         },
-            //     ]
-            // },
+            {
+                MenuName: 'AppFeedBack',
+                MenuTitle: 'Phản hồi ứng dụng',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'AppFeedBackType',
+                        MenuTitle: 'Loại phản hồi ứng dụng',
+                        LinkTo: '/AppFeedBackType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'AppFeedBackPriority',
+                        MenuTitle: 'Độ ưu tiên phản hồi',
+                        LinkTo: '/AppFeedBackPriority',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'AppFeedBackStatus',
+                        MenuTitle: 'Trạng thái phản hồi',
+                        LinkTo: '/AppFeedBackStatus',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'AppFeedBackQuality',
+                        MenuTitle: 'Chất lượng xử lý phản hồi',
+                        LinkTo: '/AppFeedBackQuality',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'AppFeedBackPermission',
+                        MenuTitle: 'Quyền trên phản hồi',
+                        LinkTo: '/AppFeedBackPermission',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'AppFeedBackStep',
+                        MenuTitle: 'Bước xử lý phản hồi',
+                        LinkTo: '/AppFeedBackStep',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'AppFeedBackGroup',
+                        MenuTitle: 'Phân loại phản hồi',
+                        LinkTo: '/AppFeedBackGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'AppFeedBackCategory',
+                        MenuTitle: 'Danh mục phản hồi',
+                        LinkTo: '/AppFeedBackCategory',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
+            },
             {
                 MenuName: 'INSTALL',
                 MenuTitle: 'Vật tư lắp đặt',

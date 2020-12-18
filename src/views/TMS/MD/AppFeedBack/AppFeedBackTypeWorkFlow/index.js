@@ -15,9 +15,7 @@ import { APIHostName, AddAPIPath, UpdateAPIPath } from './constants';
 import { ModalManager } from 'react-dynamic-modal/lib';
 import { MessageModal } from "../../../../../common/components/Modal";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_USERGROUP, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_AppFeedBackStep, ERPCOMMONCACHE_SHIPMENTSETUPTYPE } from "../../../../../constants/keyCache";
-import { intervalToDuration } from "date-fns";
-
+import { ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_USERGROUP, ERPCOMMONCACHE_SHIPMENTSETUPTYPE, ERPCOMMONCACHE_APPFEEDBACKSTATUS, ERPCOMMONCACHE_APPFEEDBACKSTEP } from "../../../../../constants/keyCache";
 
 class AppFeedBackTypeWorkFlowCom extends React.Component {
     constructor(props) {
@@ -77,45 +75,24 @@ class AppFeedBackTypeWorkFlowCom extends React.Component {
                 FormData: {
                     AppFeedBackTypeWorkFlow: dataSource,
                     AppFeedBackType_WF_Permis: dataSource.AppFeedBackType_WF_Permis ? dataSource.AppFeedBackType_WF_Permis : [],
-                    AppFeedBackType_WF_Next: dataSource.AppFeedBackType_WF_Next ? dataSource.AppFeedBackType_WF_Next : [],
+                    AppFeedBackType_WF_Next: dataSource.ListAppFeedBackType_WF_Next ? dataSource.ListAppFeedBackType_WF_Next : [],
                     NextAppFeedBackStep: "",
                     ChooseFunctionID: ""
                 },
                 AppFeedBackType_WF_PermisData: dataSource.AppFeedBackType_WF_Permis ? dataSource.AppFeedBackType_WF_Permis : [],
-                AppFeedBackType_WF_NextData: dataSource.AppFeedBackType_WF_Next ? dataSource.AppFeedBackType_WF_Next : [],
+                AppFeedBackType_WF_NextData: dataSource.ListAppFeedBackType_WF_Next ? dataSource.ListAppFeedBackType_WF_Next : [],
                 InputPermissColumnList: [],
                 SelectedOption: SelectedOption,
                 NextAppFeedBackStepListOption: NextAppFeedBackStepListOption
             }
+            //console.log("ListAppFeedBackType_WF_Next", dataSource.ListAppFeedBackType_WF_Next);
         }
     }
 
     componentDidMount() {
         this.createInputPermissColumnList();
         this.getFunctionCache();
-        //this.initShipmentSetupType();
-
     }
-
-    // initShipmentSetupType(){
-    //     debugger;
-    //     //this.setState({ MLObjectDefinition: MLObjectDefinition });
-    //     let _MLObjectDefinition = MLObjectDefinition;
-    //     let validationListIsSetupStep = [];
-    //     if (!this.state.FormData.AppFeedBackTypeWorkFlow.IsSetupStep) {
-    //         this.state.FormData.AppFeedBackTypeWorkFlow.ShipmentSetupTypeID = "-1";
-    //     } else {
-    //         validationListIsSetupStep = ["Comborequired"];
-    //     }
-
-    //     _MLObjectDefinition.forEach(function (item, index) {
-    //         if (item.Name == "ShipmentSetupTypeID") {
-    //             item.ValidationList = validationListIsSetupStep;
-    //         }
-    //     });
-
-    //     this.setState({MLObjectDefinition: _MLObjectDefinition});
-    // }
 
     getFunctionCache() {
         this.props.callGetCache(ERPCOMMONCACHE_FUNCTION).then((result) => {
@@ -124,8 +101,8 @@ class AppFeedBackTypeWorkFlowCom extends React.Component {
                 let wf_Next = [];
                 let match = [];
 
-                if (this.props.dataSource && this.props.dataSource.AppFeedBackType_WF_Next) {
-                    wf_Next = this.props.dataSource.AppFeedBackType_WF_Next.map(function (item, index) {
+                if (this.props.dataSource && this.props.dataSource.ListAppFeedBackType_WF_Next) {
+                    wf_Next = this.props.dataSource.ListAppFeedBackType_WF_Next.map(function (item, index) {
                         match = [];
                         match = result.ResultObject.CacheData.filter(x => x.FunctionID == item.ChooseFunctionID);
                         if (match && match.length > 0) {
@@ -136,7 +113,7 @@ class AppFeedBackTypeWorkFlowCom extends React.Component {
                 }
                 this.setState({
                     ChooseFunctionCache: result.ResultObject.CacheData,
-                    AppFeedBackType_WF_Next: wf_Next
+                    ListAppFeedBackType_WF_Next: wf_Next
                 });
             }
         });
@@ -197,6 +174,7 @@ class AppFeedBackTypeWorkFlowCom extends React.Component {
                     AppFeedBackType_WF_Next.push({ AppFeedBackStepID: AppFeedBackStepID, NextAppFeedBackStep: NextAppFeedBackStep, NextAppFeedBackStepName: NextAppFeedBackStepName, ChooseFunctionID: ChooseFunctionID, ChooseFunctionName: ChooseFunctionName })
                     const FormData = Object.assign({}, this.state.FormData, { AppFeedBackType_WF_Next });
                     this.setState({ FormData });
+                    //console.log("AppFeedBackType_WF_Next",FormData);
                 }
             }
             else {
@@ -262,19 +240,6 @@ class AppFeedBackTypeWorkFlowCom extends React.Component {
 
         });
 
-        //loại lắp đặt
-        if (!formData.AppFeedBackTypeWorkFlow.IsSetupStep) {
-            formData.AppFeedBackTypeWorkFlow.ShipmentSetupTypeID = "-1";
-        }
-
-        // if(this.state.MLObjectDefinition){
-        //     this.state.MLObjectDefinition.forEach(function (item, index) {
-        //         if (item.Name == "ShipmentSetupTypeID") {
-        //             item.ValidationList = validationListIsSetupStep;
-        //         }
-        //     });
-        // }
-
 
         let keys = [];
         //formData.AppFeedBackType_WF_Next = this.state.FormData.AppFeedBackType_WF_Next;
@@ -302,19 +267,11 @@ class AppFeedBackTypeWorkFlowCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-
-        //loại lắp đặt
-        let validationListIsSetupStep = [];
-        if (this.state.FormData.AppFeedBackTypeWorkFlow.IsSetupStep && parseInt(this.state.FormData.AppFeedBackTypeWorkFlow.ShipmentSetupTypeID) == -1) {
-            this.showMessage("Vui lòng chọn loại lắp đặt trước khi cập nhật.");
-            return;
-        }
-
         let newAppFeedBackType_WF_PermisData = this.state.AppFeedBackType_WF_PermisData;
         let newAppFeedBackType_WF_NextData = this.state.FormData.AppFeedBackType_WF_Next;
         const newFormData = Object.assign({}, this.state.FormData.AppFeedBackTypeWorkFlow, {
-            AppFeedBackType_WF_Permis: newAppFeedBackType_WF_PermisData,
-            AppFeedBackType_WF_Next: newAppFeedBackType_WF_NextData
+            ListAppFeedBackType_WF_Permis: newAppFeedBackType_WF_PermisData,
+            ListAppFeedBackType_WF_Next: newAppFeedBackType_WF_NextData
         });
         newFormData.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID
         newFormData.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
@@ -334,21 +291,21 @@ class AppFeedBackTypeWorkFlowCom extends React.Component {
             newFormData.MaxProcessTime += parseInt(newFormData.MaxProcessTimeMinute);
             newFormData.DisplayProcessTime += newFormData.MaxProcessTimeMinute + ' Phút ';
         }
-        if (newFormData.AppFeedBackType_WF_Permis) {
-            let AppFeedBackType_WF_PermisData = [];
-            newFormData.AppFeedBackType_WF_Permis.map((row, index) => {
+        if (newFormData.ListAppFeedBackType_WF_Permis) {
+            let _AppFeedBackType_WF_PermisData = [];
+            newFormData.ListAppFeedBackType_WF_Permis.map((row, index) => {
                 const UserGroupID = row.UserGroupID;
                 Object.keys(row).forEach(key => {
                     if (Number.isInteger(parseInt(key)) && row[key] == true) {
-                        AppFeedBackType_WF_PermisData.push({
+                        _AppFeedBackType_WF_PermisData.push({
                             AppFeedBackStepID: newFormData.AppFeedBackStepID,
                             UserGroupID: UserGroupID,
-                            ShipmentOrderPermissionID: key
+                            AppFeedBackPermissionID: key
                         })
                     }
                 });
             })
-            newFormData.AppFeedBackType_WF_Permis = AppFeedBackType_WF_PermisData;
+            newFormData.ListAppFeedBackType_WF_Permis = _AppFeedBackType_WF_PermisData;
         }
         if (!this.props.IsUpdateData)
             newFormData.AppFeedBackTypeID = this.props.AppFeedBackTypeID;
@@ -379,11 +336,15 @@ class AppFeedBackTypeWorkFlowCom extends React.Component {
 
     changeSelectUser(name, listSelect) {
         let UserNameList = [];
+        let SelectedOption = [];
         listSelect.map(user => {
             const usermatch = this.props.SysUserCache.filter(x => { return x.UserGroupID == user });
-            UserNameList.push(usermatch[0]);
+            if (usermatch[0]) {
+                UserNameList.push(usermatch[0]);
+                SelectedOption.push({ value: usermatch[0].UserGroupID, label: usermatch[0].UserGroupName })
+            }
         })
-        this.setState({ UserNameList });
+        this.setState({ UserNameList, SelectedOption });
     }
 
     createInputPermissColumnList() {
@@ -414,10 +375,10 @@ class AppFeedBackTypeWorkFlowCom extends React.Component {
         if (PiePermissionCache) {
             PiePermissionCache.map((item, index) => {
                 InputPermissColumnList.push({
-                    Name: item.ShipmentOrderPermissionID,
+                    Name: item.AppFeedBackPermissionID,
                     Type: "checkbox",
-                    Caption: item.ShipmentOrderPermissionName,
-                    DataSourceMember: item.ShipmentOrderPermissionID,
+                    Caption: item.AppFeedBackPermissionName,
+                    DataSourceMember: item.AppFeedBackPermissionID,
                     Width: 150
                 })
             });
@@ -457,15 +418,11 @@ class AppFeedBackTypeWorkFlowCom extends React.Component {
                             title="Thông tin chung" name="AppFeedBackTypeWorkFlow" >
                             <div className="form-row">
                                 <div className="col-sm-8">
-                                    {/* <FormControl.TextBox labelcolspan={4} colspan={8} placeholder="ID tự tăng"
-                                        name="ShipmentOrder" label="Mã bước xử lý"
-                                        controltype="InputControl" datasourcemember="AppFeedBackStepID"
-                                    /> */}
                                     <FormControl.ComboBox
                                         name="AppFeedBackStepID"
                                         type="select"
                                         isautoloaditemfromcache={true}
-                                        loaditemcachekeyid={ERPCOMMONCACHE_AppFeedBackStep}
+                                        loaditemcachekeyid={ERPCOMMONCACHE_APPFEEDBACKSTEP}
                                         valuemember="AppFeedBackStepID"
                                         nameMember="AppFeedBackStepName"
                                         label="Tên bước xử lý"
@@ -478,32 +435,16 @@ class AppFeedBackTypeWorkFlowCom extends React.Component {
                                     />
 
                                     <FormControl.ComboBox
-                                        name="AutoChangeToShipmentOrderStatusID"
+                                        name="AutoChangetoStatusID"
                                         type="select" isautoloaditemfromcache={true}
-                                        loaditemcachekeyid={ERPCOMMONCACHE_SHIPMENTORDERSTATUS}
-                                        valuemember="ShipmentOrderStatusID"
-                                        nameMember="ShipmentOrderStatusName"
-                                        label="Tự động chuyển sang trạng thái yêu cầu vận chuyển"
+                                        loaditemcachekeyid={ERPCOMMONCACHE_APPFEEDBACKSTATUS}
+                                        valuemember="AppFeedBackStatusID"
+                                        nameMember="AppFeedBackStatusName"
+                                        label="Tự động chuyển sang trạng thái phản hồi"
                                         controltype="InputControl"
-                                        datasourcemember="AutoChangeToShipmentOrderStatusID"
-                                        listoption={[]} isRequired={true}
+                                        datasourcemember="AutoChangetoStatusID"
+                                        listoption={[]} isRequired={false}
                                         labelcolspan={4} colspan={8}
-                                    />
-
-                                    <FormControl.ComboBox
-                                        name="AutoChangeStepType" type="select" isautoloaditemfromcache={false} isRequired={false}
-                                        label="Loại tự động chuyển bước" controltype="InputControl" datasourcemember="AutoChangeStepType"
-                                        listoption={[{ value: "0", label: "Không tự động" },
-                                        { value: "1", label: "Tự động chuyển bước khi không có thu tiền" }, { value: "2", label: "Tự động chuyển bước không điều kiện" }]}
-                                        labelcolspan={4} colspan={8}
-                                    />
-
-                                    <FormControl.ComboBox
-                                        name="AutoChangeToAppFeedBackStepID" type="select" isautoloaditemfromcache={false}
-                                        isRequired={false}
-                                        value={this.state.AutoChangeToAppFeedBackStepID}
-                                        label="Mã bước tự động chuyển" controltype="InputControl" datasourcemember="AutoChangeToAppFeedBackStepID"
-                                        listoption={this.state.ListAutoChangeToAppFeedBackStepID ? this.state.ListAutoChangeToAppFeedBackStepID : []} labelcolspan={4} colspan={8}
                                     />
 
                                     <FormControl.TextBox labelcolspan={4} colspan={8} readonly={false} name="StepColorCode" label="Màu sắc của bước"
@@ -596,63 +537,7 @@ class AppFeedBackTypeWorkFlowCom extends React.Component {
                                         controltype="InputControl" datasourcemember="IsSystem"
                                         swaplabelModal={true}
                                     />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước bắt đầu đi giao hàng" name="IsBeginDeliveryStep"
-                                        controltype="InputControl" datasourcemember="IsBeginDeliveryStep"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước hoàn thành giao hàng" name="IsCompletedDeliveryStep"
-                                        controltype="InputControl" datasourcemember="IsCompletedDeliveryStep"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Có thông báo đến hệ thống của đối tác" name="IsNotifyToPartnerSystem"
-                                        controltype="InputControl" datasourcemember="IsNotifyToPartnerSystem"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Chỉ hiển thị khi có phải thu tiền của khách hàng(có tiền COD hoặc tiền vật tư)" name="IsOnlyShowOnHasCollection"
-                                        controltype="InputControl" datasourcemember="IsOnlyShowOnHasCollection"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước nộp tiền cho thu ngân" name="IsPaidInStep"
-                                        controltype="InputControl" datasourcemember="IsPaidInStep"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước đến nhà khách" name="IsArrivalReceiverLocationStep"
-                                        controltype="InputControl" datasourcemember="IsArrivalReceiverLocationStep"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Phải thu tiền mới được chuyển bước kế tiếp" name="IsMustCompleteCollection"
-                                        controltype="InputControl" datasourcemember="IsMustCompleteCollection"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước xuất vật tư bán cho khách" name="IsOutputSaleMaterialStep"
-                                        controltype="InputControl" datasourcemember="IsOutputSaleMaterialStep"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Hiển thị nút nhấn thu tiền" name="IsShowCollectionButton"
-                                        controltype="InputControl" datasourcemember="IsShowCollectionButton"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước hủy giao hàng" name="IsCancelDeliveryStep"
-                                        controltype="InputControl" datasourcemember="IsCancelDeliveryStep"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước có thể tạm ứng vật tư" name="IsCanAdvanceMaterialStep"
-                                        controltype="InputControl" datasourcemember="IsCanAdvanceMaterialStep"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Hiển thị danh sách vật tư để chỉnh sửa" name="IsShowMaterialList"
-                                        controltype="InputControl" datasourcemember="IsShowMaterialList"
-                                        swaplabelModal={true}
-                                    />
 
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước lắp đặt" name="IsSetupStep"
-                                        controltype="InputControl" datasourcemember="IsSetupStep"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước có thể cập nhật hàng trả lại" name="IsCanUpdateReturnItemStep"
-                                        controltype="InputControl" datasourcemember="IsCanUpdateReturnItemStep"
-                                        swaplabelModal={true}
-                                    />
                                 </div>
                             </div>
                         </TabPage>
@@ -716,30 +601,6 @@ class AppFeedBackTypeWorkFlowCom extends React.Component {
                                     value={this.state.FormData.AppFeedBackType_WF_Next && this.state.FormData.AppFeedBackType_WF_Next.ChooseFunctionID ? this.state.FormData.AppFeedBackType_WF_Next.ChooseFunctionID : null}
                                 //onValueChangeCus={this.changeSelecPartner}
                                 />
-
-                                {/* <FormControl.ComboBox
-                                    name="ChooseFunctionID"
-                                    type="select"
-                                    isautoloaditemfromcache={true}
-                                    loaditemcachekeyid={ERPCOMMONCACHE_FUNCTION}
-                                    valuemember="FunctionID"
-                                    nameMember="FunctionName"
-                                    label="Quyền chuyển bước"
-                                    controltype="InputControl"
-                                    listoption={[]}
-                                    datasourcemember="ChooseFunctionID"
-                                    labelcolspan={3} colspan={9} rowspan={6}
-                                /> */}
-                                {/* <FormControl.TextBox
-                                    name="ChooseFunctionID"
-                                    label="Quyền chuyển bước"
-                                    controltype="InputControl"
-                                    datasourcemember="ChooseFunctionID"
-                                    readonly={false}
-                                    labelcolspan={3}
-                                    rowspan={6}
-                                    colspan={9}
-                                /> */}
                             </div>
                             <br />
                             <InputGrid name="AppFeedBackType_WF_Next"
@@ -758,18 +619,6 @@ class AppFeedBackTypeWorkFlowCom extends React.Component {
                             />
                         </TabPage>
 
-                        {
-                            this.props.IsUpdateData ?
-                                <TabPage title="Danh sách hình mẫu tại một bước xử lý" name="AppFeedBackType_WF_Img">
-                                    <AppFeedBackTypeWorkFlowImage
-                                        AppFeedBackTypeID={this.props.AppFeedBackTypeID}
-                                        AppFeedBackStepID={this.state.FormData.AppFeedBackTypeWorkFlow.AppFeedBackStepID}
-                                    />
-
-                                </TabPage>
-                                :
-                                <TabPage></TabPage>
-                        }
 
 
                     </TabContainer>

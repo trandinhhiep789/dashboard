@@ -28,9 +28,9 @@ import { convertNodeToElement } from "react-html-parser";
 import Collapsible from 'react-collapsible';
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import {
-    ERPCOMMONCACHE_AppFeedBackType, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_APPFEEDBACKPRIORITY, ERPCOMMONCACHE_APPFEEDBACKSTATUS, ERPCOMMONCACHE_APPFEEDBACKQUALITY
+    ERPCOMMONCACHE_APPFEEDBACKTYPE, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_APPFEEDBACKPRIORITY, ERPCOMMONCACHE_APPFEEDBACKSTATUS, ERPCOMMONCACHE_APPFEEDBACKQUALITY, ERPCOMMONCACHE_APPFEEDBACKPERMISSION, ERPCOMMONCACHE_USERGROUP
 } from "../../../../../../constants/keyCache";
-import { AppFeedBackType_UPDATE } from "../../../../../../constants/functionLists";
+import { APPFEEDBACKTYPE_UPDATE, AppFeedBackType_UPDATE } from "../../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -43,15 +43,10 @@ class EditCom extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.getCachePiePermission = this.getCachePiePermission.bind(this);
         this.getCacheSysUser = this.getCacheSysUser.bind(this);
-        //this.getCachePartner = this.getCachePartner.bind(this);
         this.getDataCache = this.getDataCache.bind(this);
-        //this.getCacheShipmentStatus = this.getCacheShipmentStatus.bind(this);
-        //this.changeSelecPartner = this.changeSelecPartner.bind(this);
-        //this.changeSelectShipmentStatus = this.changeSelectShipmentStatus.bind(this);
         this.callLoadData = this.callLoadData.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.checkValidStep = this.checkValidStep.bind(this);
-        this.initFlexShipmentFeeDatasource = this.initFlexShipmentFeeDatasource.bind(this);
         this.notificationDOMRef = React.createRef();
         this.state = {
             IsCallAPIError: false,
@@ -115,28 +110,28 @@ class EditCom extends React.Component {
         let objAppFeedBackTypeWorkFlow = this.state.FormData.AppFeedBackTypeWorkFlow[index];
         let AppFeedBackTypeWorkFlowNext = this.state.FormData.AppFeedBackTypeWorkFlow.filter((x, i) => i != index);
         let dataSource = [];
-        let ListAppFeedBackType_WF_Permis = [];
-        if (objAppFeedBackTypeWorkFlow.AppFeedBackType_WF_Permis) {
+        let _ListAppFeedBackType_WF_Permis = [];
+        if (objAppFeedBackTypeWorkFlow.ListAppFeedBackType_WF_Permis) {
             let _AppFeedBackType_WF_Permis = {};
             const piePermissionCache = this.state.PiePermissionCache;
-            objAppFeedBackTypeWorkFlow.AppFeedBackType_WF_Permis.map((row, index) => {
+            objAppFeedBackTypeWorkFlow.ListAppFeedBackType_WF_Permis.map((row, index) => {
                 if (_AppFeedBackType_WF_Permis.UserGroupID != row.UserGroupID) {
                     const tempt = Object.assign({}, _AppFeedBackType_WF_Permis);
-                    ListAppFeedBackType_WF_Permis.push(tempt);
+                    _ListAppFeedBackType_WF_Permis.push(tempt);
                     _AppFeedBackType_WF_Permis.UserGroupID = row.UserGroupID
                     _AppFeedBackType_WF_Permis.UserGroupName = row.UserGroupName
                     piePermissionCache.map(item => {
-                        _AppFeedBackType_WF_Permis[item.ShipmentOrderPermissionID] = false;
+                        _AppFeedBackType_WF_Permis[item.AppFeedBackPermissionID] = false;
                     })
                 }
-                _AppFeedBackType_WF_Permis[row.ShipmentOrderPermissionID] = true;
+                _AppFeedBackType_WF_Permis[row.AppFeedBackPermissionID] = true;
             });
             if (_AppFeedBackType_WF_Permis.UserGroupID && _AppFeedBackType_WF_Permis.UserGroupName.length > 0) {
-                ListAppFeedBackType_WF_Permis.push(_AppFeedBackType_WF_Permis);
-                ListAppFeedBackType_WF_Permis.shift();
+                _ListAppFeedBackType_WF_Permis.push(_AppFeedBackType_WF_Permis);
+                _ListAppFeedBackType_WF_Permis.shift();
             }
         }
-        dataSource = Object.assign({}, objAppFeedBackTypeWorkFlow, { AppFeedBackType_WF_Permis: ListAppFeedBackType_WF_Permis })
+        dataSource = Object.assign({}, objAppFeedBackTypeWorkFlow, { AppFeedBackType_WF_Permis: _ListAppFeedBackType_WF_Permis })
         //dataSource = objAppFeedBackTypeWorkFlow;
         let totalStepCompletePercent = AppFeedBackTypeWorkFlowNext.reduce((StepCompletePercent, rowItem) => {
             return StepCompletePercent += rowItem.StepCompletePercent
@@ -189,39 +184,7 @@ class EditCom extends React.Component {
         });
     }
 
-    handleModalFixShipmentChange(formData, formValidation, elementName, elementValue) {
-        let shipmentFeeType = this.state.FormData.ShipmentFeeType ? this.state.FormData.ShipmentFeeType : [];
-        let getFeeType = "";
-        let isInsert = this.state.IsInsert;
-        let _ModalFixShipmentFeeColumnList = isInsert ? this.state.ModalFixShipmentFeeColumnList : this.state.ModalFixShipmentFeeColumnList_Edit;
-        if (elementName == "ShipmentFeeTypeID") {
-            let match = shipmentFeeType.filter(x => x.ShipmentFeeTypeID == elementValue);
-            if (match && match.length > 0) {
-                getFeeType = match[0].GetFeeType;
-            }
-        }
-
-        _ModalFixShipmentFeeColumnList.forEach(function (objElement) {
-            if (objElement.Name == "GetFeeType") {
-                objElement.selectedValue = getFeeType;
-            } else if (getFeeType && objElement.Name == "FeeValue") {
-                if (parseInt(getFeeType) == 2) {//lấy từ bảng làm giá
-                    objElement.readonly = true;
-                } else {
-                    objElement.readonly = false;
-                }
-
-            }
-        }.bind(this));
-
-        if (isInsert) {
-            this.setState({ ModalFixShipmentFeeColumnList: _ModalFixShipmentFeeColumnList });
-        } else {
-            this.setState({ ModalFixShipmentFeeColumnList_Edit: _ModalFixShipmentFeeColumnList });
-        }
-
-
-    }
+    
 
     //Sự kiện khi bấm cập nhật popup thêm bước xử lý
     onWorkflowPopupSubmit(formData) {
@@ -271,7 +234,7 @@ class EditCom extends React.Component {
                     this.setState({ IsCallAPIError: apiResult.IsError });
                     if (!apiResult.IsError) {
                         this.showMessage1(apiResult.Message);
-                        this.props.callClearLocalCache(ERPCOMMONCACHE_AppFeedBackType);
+                        this.props.callClearLocalCache(ERPCOMMONCACHE_APPFEEDBACKTYPE);
                         //this.handleSubmitInsertLog(param);
                     } else {
                         this.showMessage(apiResult.Message);
@@ -285,7 +248,7 @@ class EditCom extends React.Component {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 if (!apiResult.IsError) {
                     this.showMessage1(apiResult.Message);
-                    this.props.callClearLocalCache(ERPCOMMONCACHE_AppFeedBackType);
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_APPFEEDBACKTYPE);
                     //this.handleSubmitInsertLog(param);
                 } else {
                     this.showMessage(apiResult.Message);
@@ -300,7 +263,7 @@ class EditCom extends React.Component {
 
     getCachePiePermission() {
         let PiePermissionList = [];
-        this.props.callGetCache("ERPCOMMONCACHE.SHIPMENTORDERPERMISSION").then((apiResult) => {
+        this.props.callGetCache(ERPCOMMONCACHE_APPFEEDBACKPERMISSION).then((apiResult) => {
             if (!apiResult.IsError && apiResult.ResultObject.CacheData != null) {
                 PiePermissionList = apiResult.ResultObject.CacheData;
             }
@@ -312,7 +275,7 @@ class EditCom extends React.Component {
 
     getCacheSysUser() {
         let SysUserList = [];
-        this.props.callGetCache("ERPCOMMONCACHE.USERGROUP").then((apiResult) => {
+        this.props.callGetCache(ERPCOMMONCACHE_USERGROUP).then((apiResult) => {
             if (!apiResult.IsError && apiResult.ResultObject.CacheData != null) {
                 SysUserList = apiResult.ResultObject.CacheData;
             }
@@ -362,77 +325,9 @@ class EditCom extends React.Component {
         });
     }
 
-    getCachePartner() {
-        let PartnerList = [];
-        this.props.callGetCache("ERPCOMMONCACHE.PARTNER").then((apiResult) => {
-            if (!apiResult.IsError && apiResult.ResultObject.CacheData != null) {
-                PartnerList = apiResult.ResultObject.CacheData;
-            }
-            this.setState({
-                PartnerCache: PartnerList
-            });
-            //console.log("SysUserList", SysUserList);
-        });
-
-        //lấy cache thông số kỹ thuật 
-        this.props.callGetCache(ERPCOMMONCACHE_SUBGROUPTECHSPECS).then((result) => {
-            if (!result.IsError && result.ResultObject.CacheData != null) {
-                this.setState({
-                    Techspecs: result.ResultObject.CacheData
-                });
-            }
-        });
-
-        //lấy cache giá trị tham số kỹ thuật áp dụng
-        this.props.callGetCache(ERPCOMMONCACHE_TECHSPECSVALUE).then((result) => {
-            if (!result.IsError && result.ResultObject.CacheData != null) {
-                this.setState({
-                    TechspecsValue: result.ResultObject.CacheData
-                });
-            }
-        });
-    }
-
-    getCacheShipmentStatus() {
-        let ShipmentStatusList = [];
-        this.props.callGetCache("ERPCOMMONCACHE.SHIPMENTORDERSTATUS").then((apiResult) => {
-            if (!apiResult.IsError && apiResult.ResultObject.CacheData != null) {
-                ShipmentStatusList = apiResult.ResultObject.CacheData;
-            }
-            this.setState({
-                ShipmentStatusCache: ShipmentStatusList
-            });
-            //console.log("SysUserList", SysUserList);
-        });
-    }
-
-
-
-    initFlexShipmentFeeDatasource(dataSource) {
-        let techspecs = this.state.Techspecs ? this.state.Techspecs : [];
-        let techspecsValue = this.state.TechspecsValue ? this.state.TechspecsValue : [];
-        let match = [];
-        let match2 = [];
-        dataSource = dataSource.map(function (item, index) {
-            match = techspecs.filter(x => x.TechspecsID == item.TechspecsID);
-            match2 = techspecsValue.filter(x => x.TechSpecsValueID == item.TechspecsValueID);
-            if (match && match.length > 0) {
-                item.TechspecsName = match[0].TechspecsName;
-            }
-            if (match2 && match2.length > 0) {
-                item.TechspecsValueName = match2[0].Value;
-            }
-            return item;
-        }.bind(this));
-        return dataSource;
-
-    }
-
-
     callLoadData() {
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-
             if (apiResult) {
                 if (apiResult.IsError) {
                     this.setState({ IsCallAPIError: apiResult.IsError });
@@ -440,46 +335,36 @@ class EditCom extends React.Component {
                     return;
                 }
 
-
-                let selectedOptionPartner = [];
-                let listPartner = [];
-                if (apiResult.ResultObject.ListPartner) {
-                    listPartner = apiResult.ResultObject.ListPartner;
-                    apiResult.ResultObject.ListPartner.map(row => {
-                        selectedOptionPartner.push({ value: row.PartnerID, label: row.PartnerName });
+                let SelectedOptionPriority = [];
+                let AppFeedBackPriorityList = [];
+                if (apiResult.ResultObject.ListAppFeedBackType_Priority) {
+                    AppFeedBackPriorityList = apiResult.ResultObject.ListAppFeedBackType_Priority;
+                    apiResult.ResultObject.ListAppFeedBackType_Priority.map(row => {
+                        SelectedOptionPriority.push({ value: row.AppFeedBackPriorityID, label: row.AppFeedBackPriorityName });
                     })
                 }
 
-                let listStatus = [];
-                let selectedOptionStatus = [];
-                if (apiResult.ResultObject.ListStatus) {
-                    listStatus = apiResult.ResultObject.ListStatus;
-                    apiResult.ResultObject.ListStatus.map(row => {
-                        selectedOptionStatus.push({ value: row.ShipmentOrderStatusID, label: row.ShipmentOrderStatusName });
+                let SelectedOptionStatus = [];
+                let AppFeedBackStatusList = [];
+                if (apiResult.ResultObject.ListAppFeedBackType_Status) {
+                    AppFeedBackStatusList = apiResult.ResultObject.ListAppFeedBackType_Status;
+                    apiResult.ResultObject.ListAppFeedBackType_Status.map(row => {
+                        SelectedOptionStatus.push({ value: row.AppFeedBackStatusID, label: row.AppFeedBackStatusName });
                     })
                 }
 
-                // //loại chi phí vận chuyển
-                // let _shipmentFeeType = [];
-                // if (apiResult.ResultObject.ShipmentFeeType) {
-                //     _shipmentFeeType = apiResult.ResultObject.ShipmentFeeType;
-                // }
-
-                // //chi phí vận chuyển cố định
-                // let _AppFeedBackTypeFixShipmentFee = [];
-                // if (apiResult.ResultObject.AppFeedBackTypeFixShipmentFee) {
-                //     _AppFeedBackTypeFixShipmentFee = apiResult.ResultObject.AppFeedBackTypeFixShipmentFee;
-                // }
-
-                // //chi phí vận chuyển thay đổi
-                // let _AppFeedBackTypeFlexShipmentFee = [];
-                // if (apiResult.ResultObject.AppFeedBackTypeFlexShipmentFee) {
-                //     _AppFeedBackTypeFlexShipmentFee = this.initFlexShipmentFeeDatasource(apiResult.ResultObject.AppFeedBackTypeFlexShipmentFee);
-                // }
+                let SelectedOptionQuality = [];
+                let AppFeedBackQualityList = [];
+                if (apiResult.ResultObject.ListAppFeedBackType_Quality) {
+                    AppFeedBackQualityList = apiResult.ResultObject.ListAppFeedBackType_Quality;
+                    apiResult.ResultObject.ListAppFeedBackType_Quality.map(row => {
+                        SelectedOptionQuality.push({ value: row.AppFeedBackQualityID, label: row.AppFeedBackQualityName });
+                    })
+                }  
 
                 let TotalStepCompletePercent = 0;
-                if (apiResult.ResultObject.AppFeedBackTypeWorkFlow) {
-                    apiResult.ResultObject.AppFeedBackTypeWorkFlow.map((item) => {
+                if (apiResult.ResultObject.ListAppFeedBackType_WorkFlow) {
+                    apiResult.ResultObject.ListAppFeedBackType_WorkFlow.map((item) => {
                         if (item.MaxProcessTime) {
                             item.DisplayProcessTime = '';
                             let day = parseInt(item.MaxProcessTime / 60 / 24);
@@ -497,13 +382,16 @@ class EditCom extends React.Component {
                     this.setState({
                         FormData: {
                             AppFeedBackType: apiResult.ResultObject,
-                            AppFeedBackTypeWorkFlow: apiResult.ResultObject.AppFeedBackTypeWorkFlow,
+                            AppFeedBackTypeWorkFlow: apiResult.ResultObject.ListAppFeedBackType_WorkFlow,
                             TotalStepCompletePercent: TotalStepCompletePercent
                         },
-                        SelectedPartnerList: selectedOptionPartner,
-                        SelectedShipmentStatusList: selectedOptionStatus,
-                        PartnerList: listPartner,
-                        ShipmentStatusList: listStatus
+                        SelectedOptionPriority,
+                        AppFeedBackPriorityList,
+                        SelectedOptionStatus,
+                        AppFeedBackStatusList,
+                        SelectedOptionQuality,
+                        AppFeedBackQualityList,
+
                     });
                 }
                 else {
@@ -512,10 +400,12 @@ class EditCom extends React.Component {
                             AppFeedBackType: apiResult.ResultObject,
                             AppFeedBackTypeWorkFlow: []
                         },
-                        SelectedPartnerList: selectedOptionPartner,
-                        SelectedShipmentStatusList: selectedOptionStatus,
-                        PartnerList: listPartner,
-                        ShipmentStatusList: listStatus
+                        SelectedOptionPriority,
+                        AppFeedBackPriorityList,
+                        SelectedOptionStatus,
+                        AppFeedBackStatusList,
+                        SelectedOptionQuality,
+                        AppFeedBackQualityList,
                     });
                 }
 
@@ -572,27 +462,9 @@ class EditCom extends React.Component {
             AppFeedBackQualityList.push(match[0]);
         })
         this.setState({ AppFeedBackQualityList });
-        console.log("dsadsa", listSelect, AppFeedBackQualityList);
+        //console.log("dsadsa", listSelect, AppFeedBackQualityList);
     }
 
-
-    // changeSelecPartner(name, listSelect) {
-    //     let PartnerList = [];
-    //     listSelect.map(partner => {
-    //         const partnerMatch = this.state.PartnerCache.filter(x => { return x.PartnerID == partner });
-    //         PartnerList.push(partnerMatch[0]);
-    //     })
-    //     this.setState({ PartnerList });
-    // }
-
-    // changeSelectShipmentStatus(name, listSelect) {
-    //     let ShipmentStatusList = [];
-    //     listSelect.map(shipmentStatus => {
-    //         const shipmentStatusMatch = this.state.ShipmentStatusCache.filter(x => { return x.ShipmentOrderStatusID == shipmentStatus });
-    //         ShipmentStatusList.push(shipmentStatusMatch[0]);
-    //     })
-    //     this.setState({ ShipmentStatusList });
-    // }
 
     addNotification(message1, IsError) {
         if (!IsError) {
@@ -645,7 +517,7 @@ class EditCom extends React.Component {
                     IsAutoLayout={true}
                     listelement={[]}
                     dataSource={this.state.FormData}
-                    RequirePermission={AppFeedBackType_UPDATE}
+                    RequirePermission={APPFEEDBACKTYPE_UPDATE}
                     onInputChangeList={this.handleInputChangeList}
                     onSubmit={(formData, MLObject) => this.handleSubmit(formData, MLObject)}
                     BackLink={BackLink}>
@@ -655,7 +527,7 @@ class EditCom extends React.Component {
                             <FormControl.TextBox readonly={true} name="AppFeedBackTypeID" label="Mã loại phản hồi ứng dụng:"
                                 controltype="InputControl" datasourcemember="AppFeedBackTypeID"
                                 labelcolspan={4} colspan={8} rowspan={8}
-                                maxSize={10}
+                                maxSize={10} isRequired={true}
                             />
                             <FormControl.TextBox name="AppFeedBackTypeName" label="Tên loại phản hồi ứng dụng:"
                                 controltype="InputControl" datasourcemember="AppFeedBackTypeName"
@@ -720,7 +592,7 @@ class EditCom extends React.Component {
                                 IsLabelDiv={true} controltype="InputControl"
                                 isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_APPFEEDBACKPRIORITY} valuemember="AppFeedBackPriorityID" nameMember="AppFeedBackPriorityName"
                                 listoption={[]} datasourcemember="AppFeedBackPriorityID"
-                                SelectedOption={this.state.SelectedAppFeedBackPriorityList ? this.state.SelectedAppFeedBackPriorityList : []}
+                                SelectedOption={this.state.SelectedOptionPriority ? this.state.SelectedOptionPriority : []}
                                 onValueChangeCus={this.changeSelectAppFeedBackPriority.bind(this)}
                             />
 
@@ -729,7 +601,7 @@ class EditCom extends React.Component {
                                 IsLabelDiv={true} controltype="InputControl"
                                 isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_APPFEEDBACKSTATUS} valuemember="AppFeedBackStatusID" nameMember="AppFeedBackStatusName"
                                 listoption={[]} datasourcemember="AppFeedBackStatusID"
-                                SelectedOption={this.state.SelectedAppFeedBackStatusList ? this.state.SelectedAppFeedBackStatusList : []}
+                                SelectedOption={this.state.SelectedOptionStatus ? this.state.SelectedOptionStatus : []}
                                 onValueChangeCus={this.changeSelectAppFeedBackStatus.bind(this)}
                             />
 
@@ -738,27 +610,9 @@ class EditCom extends React.Component {
                                 IsLabelDiv={true} controltype="InputControl"
                                 isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_APPFEEDBACKQUALITY} valuemember="AppFeedBackQualityID" nameMember="AppFeedBackQualityName"
                                 listoption={[]} datasourcemember="AppFeedBackQualityID"
-                                SelectedOption={this.state.SelectedAppFeedBackQualityList ? this.state.SelectedAppFeedBackQualityList : []}
+                                SelectedOption={this.state.SelectedOptionQuality ? this.state.SelectedOptionQuality : []}
                                 onValueChangeCus={this.changeSelectAppFeedBackQuality.bind(this)}
                             />
-
-                            {/* <FormControl.MultiSelectComboBox name="PartnerID" label="Danh sách đối tác"
-                                labelcolspan={4} colspan={8} rowspan={8}
-                                IsLabelDiv={true} controltype="InputControl"
-                                isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_PARTNER} valuemember="PartnerID" nameMember="PartnerName"
-                                listoption={[]} datasourcemember="PartnerID"
-                                SelectedOption={this.state.SelectedPartnerList ? this.state.SelectedPartnerList : []}
-                                onValueChangeCus={this.changeSelecPartner}
-                            />
-
-                            <FormControl.MultiSelectComboBox name="ShipmentOrderStatusID" label="Trạng thái vận chuyển"
-                                labelcolspan={4} colspan={8} rowspan={8}
-                                IsLabelDiv={true} controltype="InputControl"
-                                isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_SHIPMENTORDERSTATUS} valuemember="ShipmentOrderStatusID" nameMember="ShipmentOrderStatusName"
-                                listoption={[]} datasourcemember="ShipmentOrderStatusID"
-                                SelectedOption={this.state.SelectedShipmentStatusList ? this.state.SelectedShipmentStatusList : []}
-                                onValueChangeCus={this.changeSelectShipmentStatus}
-                            /> */}
 
                             {/* ------------------------------------------------------------------ */}
 

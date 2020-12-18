@@ -370,24 +370,24 @@ export const DataGridColumnList = [
 
 export const WFColumnList = [
     {
-        Name: "chkSelectShipmentOrderStepID",
+        Name: "chkSelectAppFeedBackStepID",
         Type: "checkbox",
         Caption: "",
-        DataSourceMember: "ShipmentOrderStepID",
+        DataSourceMember: "AppFeedBackStepID",
         Width: 60
     },
     {
-        Name: "ShipmentOrderStepID",
+        Name: "AppFeedBackStepID",
         Type: "text",
         Caption: "Mã bước xử lý",
-        DataSourceMember: "ShipmentOrderStepID",
+        DataSourceMember: "AppFeedBackStepID",
         Width: 120
     },
     {
-        Name: "ShipmentOrderStepName",
+        Name: "AppFeedBackStepName",
         Type: "text",
         Caption: "Tên bước xử lý",
-        DataSourceMember: "ShipmentOrderStepName",
+        DataSourceMember: "AppFeedBackStepName",
         Width: 160
     },
     {
@@ -417,18 +417,6 @@ export const WFColumnList = [
         DataSourceMember: "IsFinishStep",
     },
     {
-        Name: "IsBeginDeliveryStep",
-        Type: "checkicon",
-        Caption: "Là bước bắt đầu đi giao hàng",
-        DataSourceMember: "IsBeginDeliveryStep",
-    },
-    {
-        Name: "IsCompletedDeliveryStep",
-        Type: "checkicon",
-        Caption: "Là bước hoàn thành giao hàng",
-        DataSourceMember: "IsCompletedDeliveryStep",
-    },
-    {
         Name: "IsActived",
         Type: "checkicon",
         Caption: "Kích hoạt",
@@ -436,10 +424,10 @@ export const WFColumnList = [
         Width: 80
     },
     {
-        Name: "EditShipmentOrderStepID",
+        Name: "EditAppFeedBackStepID",
         Type: "edit",
         Caption: "Sửa",
-        DataSourceMember: "ShipmentOrderStepID",
+        DataSourceMember: "AppFeedBackStepID",
     }
 ];
 
@@ -451,10 +439,10 @@ export const MLObjectAppFeedBackTypeWorkFlow = [
         DataSourceMember: "AppFeedBackTypeID"
     },
     {
-        Name: "ShipmentOrderStepID",
+        Name: "AppFeedBackStepID",
         DefaultValue: "",
-        BindControlName: "ShipmentOrderStepID",
-        DataSourceMember: "ShipmentOrderStepID"
+        BindControlName: "AppFeedBackStepID",
+        DataSourceMember: "AppFeedBackStepID"
     },
     {
         Name: "ShipmentOrderStepName",

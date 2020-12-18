@@ -19,11 +19,11 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { AREATYPE_VIEW, AREATYPE_DELETE } from "../../../../../../constants/functionLists";
+import { APPFEEDBACKSTEP_VIEW, APPFEEDBACKSTEP_DELETE } from "../../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_APPFEEDBACKSTEP } from "../../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -37,7 +37,8 @@ class SearchCom extends React.Component {
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
-            iconNotification: ""
+            iconNotification: "",
+            MessageDetail: "Đang nạp dữ liệu ......",
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -64,8 +65,7 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                this.props.callClearLocalCache(ERPCOMMONCACHE_AREATYPE);
-                this.props.callClearLocalCache(ERPCOMMONCACHE_AREATT);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_APPFEEDBACKSTEP);
             }
         });
     }
@@ -92,8 +92,8 @@ class SearchCom extends React.Component {
                     IsShowForm: true
                 });
             } else {
-                this.showMessage(apiResult.Message);
-                this.setState({ IsShowForm: false });
+                //this.showMessage(apiResult.Message);
+                this.setState({ IsShowForm: false, MessageDetail: apiResult.Message });
             }
         });
     }
@@ -168,8 +168,8 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={AREATYPE_VIEW}
-                        DeletePermission={AREATYPE_DELETE}
+                        RequirePermission={APPFEEDBACKSTEP_VIEW}
+                        DeletePermission={APPFEEDBACKSTEP_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />
@@ -178,8 +178,8 @@ class SearchCom extends React.Component {
         }
         else {
             return (
-                <div>
-                    <label>Đang nạp dữ liệu ......</label>
+                <div className="col-md-12 message-detail">
+                    <label>{this.state.MessageDetail}</label>
                 </div>
             )
         }

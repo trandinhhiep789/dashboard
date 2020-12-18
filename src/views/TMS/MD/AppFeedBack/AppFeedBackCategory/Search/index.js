@@ -22,8 +22,7 @@ import { updatePagePath } from "../../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_PARTNER } from "../../../../../../constants/keyCache";
-import { AREA_VIEW, AREA_DELETE } from "../../../../../../constants/functionLists";
+import { APPFEEDBACKCATEGORY_DELETE, APPFEEDBACKCATEGORY_VIEW } from "../../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -37,7 +36,8 @@ class SearchCom extends React.Component {
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
-            iconNotification: ""
+            iconNotification: "",
+            MessageDetail: "Đang nạp dữ liệu ......",
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -98,8 +98,8 @@ class SearchCom extends React.Component {
                     IsShowForm: true
                 });
             } else {
-                this.showMessage(apiResult.Message);
-                this.setState({ IsShowForm: false });
+                //this.showMessage(apiResult.Message);
+                this.setState({ IsShowForm: false, MessageDetail: apiResult.Message });
             }
         });
     }
@@ -174,8 +174,8 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={AREA_VIEW}
-                        DeletePermission={AREA_DELETE}
+                        RequirePermission={APPFEEDBACKCATEGORY_VIEW}
+                        DeletePermission={APPFEEDBACKCATEGORY_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />
@@ -183,8 +183,8 @@ class SearchCom extends React.Component {
             );
         } else {
             return (
-                <div>
-                    <label>Đang nạp dữ liệu ......</label>
+                <div className="col-md-12 message-detail">
+                    <label>{this.state.MessageDetail}</label>
                 </div>
             )
         }

@@ -1,28 +1,28 @@
 export const APIHostName = "TMSAPI";
-export const AddAPIPath = "api/AppFeedBackTypeWorkFlow/Add";
-export const UpdateAPIPath = "api/AppFeedBackTypeWorkFlow/Update";
-export const DeleteAPIPath = "api/AppFeedBackTypeWorkFlow/Delete";
-// export const MTabList = [
-//     {
-//         Name: "PieRequestTypeWorkflow",
-//         DefaultValue: "",
-//         BindControlName: "PieRequestTypeWorkflow",
-//         DataSourceMember: "PieRequestTypeWorkflow"
-//     },
-//     {
-//         Name: "PieRequestType_WF_Permis",
-//         DefaultValue: "",
-//         BindControlName: "PieRequestType_WF_Permis",
-//         DataSourceMember: "PieRequestType_WF_Permis"
-//     }
-//     ,
-//     {
-//         Name: "PieRequestType_WF_Next",
-//         DefaultValue: "",
-//         BindControlName: "PieRequestType_WF_Next",
-//         DataSourceMember: "PieRequestType_WF_Next"
-//     }
-// ]
+export const AddAPIPath = "api/AppFeedBackType_WorkFlow/Add";
+export const UpdateAPIPath = "api/AppFeedBackType_WorkFlow/Update";
+export const DeleteAPIPath = "api/AppFeedBackType_WorkFlow/Delete";
+export const MTabList = [
+    {
+        Name: "AppFeedBackTypeWorkFlow",
+        DefaultValue: "",
+        BindControlName: "AppFeedBackTypeWorkFlow",
+        DataSourceMember: "AppFeedBackTypeWorkFlow"
+    },
+    {
+        Name: "PieRequestType_WF_Permis",
+        DefaultValue: "",
+        BindControlName: "PieRequestType_WF_Permis",
+        DataSourceMember: "PieRequestType_WF_Permis"
+    }
+    ,
+    {
+        Name: "PieRequestType_WF_Next",
+        DefaultValue: "",
+        BindControlName: "PieRequestType_WF_Next",
+        DataSourceMember: "PieRequestType_WF_Next"
+    }
+]
 
 export const MLObjectDefinition = [
     // {
@@ -50,12 +50,12 @@ export const MLObjectDefinition = [
     //     ValidationList: ["required"],
     // },
     {
-        Name: "AutoChangeToShipmentOrderStatusID",
+        Name: "AutoChangetoStatusID",
         DefaultValue: "",
-        BindControlName: "AutoChangeToShipmentOrderStatusID",
-        DataSourceMember: "AutoChangeToShipmentOrderStatusID",
-        Label: "tự động chuyển sang trạng thái yêu cầu vận chuyển",
-        ValidationList: ["Comborequired"]
+        BindControlName: "AutoChangetoStatusID",
+        DataSourceMember: "AutoChangetoStatusID",
+        Label: "tự động chuyển sang trạng thái phản hồi",
+        ValidationList: []
     },
     {
         Name: "StepColorCode",
@@ -129,30 +129,30 @@ export const MLObjectDefinition = [
         BindControlName: "IsSentSMS",
         DataSourceMember: "IsSentSMS"
     },
-    {
-        Name: "IsBeginDeliveryStep",
-        DefaultValue: "",
-        BindControlName: "IsBeginDeliveryStep",
-        DataSourceMember: "IsBeginDeliveryStep"
-    },
-    {
-        Name: "IsCompletedDeliveryStep",
-        DefaultValue: "",
-        BindControlName: "IsCompletedDeliveryStep",
-        DataSourceMember: "IsCompletedDeliveryStep"
-    },
-    {
-        Name: "IsNotifyToPartnerSystem",
-        DefaultValue: "",
-        BindControlName: "IsNotifyToPartnerSystem",
-        DataSourceMember: "IsNotifyToPartnerSystem"
-    },
-    {
-        Name: "IsCancelDeliveryStep",
-        DefaultValue: "",
-        BindControlName: "IsCancelDeliveryStep",
-        DataSourceMember: "IsCancelDeliveryStep"
-    },
+    // {
+    //     Name: "IsBeginDeliveryStep",
+    //     DefaultValue: "",
+    //     BindControlName: "IsBeginDeliveryStep",
+    //     DataSourceMember: "IsBeginDeliveryStep"
+    // },
+    // {
+    //     Name: "IsCompletedDeliveryStep",
+    //     DefaultValue: "",
+    //     BindControlName: "IsCompletedDeliveryStep",
+    //     DataSourceMember: "IsCompletedDeliveryStep"
+    // },
+    // {
+    //     Name: "IsNotifyToPartnerSystem",
+    //     DefaultValue: "",
+    //     BindControlName: "IsNotifyToPartnerSystem",
+    //     DataSourceMember: "IsNotifyToPartnerSystem"
+    // },
+    // {
+    //     Name: "IsCancelDeliveryStep",
+    //     DefaultValue: "",
+    //     BindControlName: "IsCancelDeliveryStep",
+    //     DataSourceMember: "IsCancelDeliveryStep"
+    // },
     {
         Name: "SMSTemplate",
         DefaultValue: "",
@@ -177,66 +177,66 @@ export const MLObjectDefinition = [
         BindControlName: "Description",
         DataSourceMember: "Description"
     },
-    {
-        Name: "IsOnlyShowOnHasCollection",
-        DefaultValue: "",
-        BindControlName: "IsOnlyShowOnHasCollection",
-        DataSourceMember: "IsOnlyShowOnHasCollection"
-    },
-    {
-        Name: "IsPaidInStep",
-        DefaultValue: "",
-        BindControlName: "IsPaidInStep",
-        DataSourceMember: "IsPaidInStep"
-    },
-    {
-        Name: "IsArrivalReceiverLocationStep",
-        DefaultValue: "",
-        BindControlName: "IsArrivalReceiverLocationStep",
-        DataSourceMember: "IsArrivalReceiverLocationStep"
-    },
-    {
-        Name: "IsMustCompleteCollection",
-        DefaultValue: "",
-        BindControlName: "IsMustCompleteCollection",
-        DataSourceMember: "IsMustCompleteCollection"
-    },
-    {
-        Name: "IsOutputSaleMaterialStep",
-        DefaultValue: "",
-        BindControlName: "IsOutputSaleMaterialStep",
-        DataSourceMember: "IsOutputSaleMaterialStep"
-    },
-    {
-        Name: "IsShowMaterialList",
-        DefaultValue: "",
-        BindControlName: "IsShowMaterialList",
-        DataSourceMember: "IsShowMaterialList"
-    },
-    {
-        Name: "IsShowCollectionButton",
-        DefaultValue: "",
-        BindControlName: "IsShowCollectionButton",
-        DataSourceMember: "IsShowCollectionButton"
-    },
-    {
-        Name: "AutoChangeStepType",
-        DefaultValue: "0",
-        BindControlName: "AutoChangeStepType",
-        DataSourceMember: "AutoChangeStepType"
-    },
-    {
-        Name: "AutoChangeToAppFeedBackStepID",
-        DefaultValue: "",
-        BindControlName: "AutoChangeToAppFeedBackStepID",
-        DataSourceMember: "AutoChangeToAppFeedBackStepID"
-    },
-    {
-        Name: "IsCanAdvanceMaterialStep",
-        DefaultValue: "",
-        BindControlName: "IsCanAdvanceMaterialStep",
-        DataSourceMember: "IsCanAdvanceMaterialStep"
-    },
+    // {
+    //     Name: "IsOnlyShowOnHasCollection",
+    //     DefaultValue: "",
+    //     BindControlName: "IsOnlyShowOnHasCollection",
+    //     DataSourceMember: "IsOnlyShowOnHasCollection"
+    // },
+    // {
+    //     Name: "IsPaidInStep",
+    //     DefaultValue: "",
+    //     BindControlName: "IsPaidInStep",
+    //     DataSourceMember: "IsPaidInStep"
+    // },
+    // {
+    //     Name: "IsArrivalReceiverLocationStep",
+    //     DefaultValue: "",
+    //     BindControlName: "IsArrivalReceiverLocationStep",
+    //     DataSourceMember: "IsArrivalReceiverLocationStep"
+    // },
+    // {
+    //     Name: "IsMustCompleteCollection",
+    //     DefaultValue: "",
+    //     BindControlName: "IsMustCompleteCollection",
+    //     DataSourceMember: "IsMustCompleteCollection"
+    // },
+    // {
+    //     Name: "IsOutputSaleMaterialStep",
+    //     DefaultValue: "",
+    //     BindControlName: "IsOutputSaleMaterialStep",
+    //     DataSourceMember: "IsOutputSaleMaterialStep"
+    // },
+    // {
+    //     Name: "IsShowMaterialList",
+    //     DefaultValue: "",
+    //     BindControlName: "IsShowMaterialList",
+    //     DataSourceMember: "IsShowMaterialList"
+    // },
+    // {
+    //     Name: "IsShowCollectionButton",
+    //     DefaultValue: "",
+    //     BindControlName: "IsShowCollectionButton",
+    //     DataSourceMember: "IsShowCollectionButton"
+    // },
+    // {
+    //     Name: "AutoChangeStepType",
+    //     DefaultValue: "0",
+    //     BindControlName: "AutoChangeStepType",
+    //     DataSourceMember: "AutoChangeStepType"
+    // },
+    // {
+    //     Name: "AutoChangeToAppFeedBackStepID",
+    //     DefaultValue: "",
+    //     BindControlName: "AutoChangeToAppFeedBackStepID",
+    //     DataSourceMember: "AutoChangeToAppFeedBackStepID"
+    // },
+    // {
+    //     Name: "IsCanAdvanceMaterialStep",
+    //     DefaultValue: "",
+    //     BindControlName: "IsCanAdvanceMaterialStep",
+    //     DataSourceMember: "IsCanAdvanceMaterialStep"
+    // },
     {
         Name: "IsSetupStep",
         DefaultValue: "",

@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SearchForm from "../../../../../../common/components/Form/SearchForm";
-import DataGrid from "../../../../../../common/components/DataGrid";
-import { MessageModal } from "../../../../../../common/components/Modal";
+import SearchForm from "../../../../../common/components/Form/SearchForm";
+import DataGrid from "../../../../../common/components/DataGrid";
+import { MessageModal } from "../../../../../common/components/Modal";
 import {
     SearchElementList,
     SearchMLObjectDefinition,
@@ -15,15 +15,19 @@ import {
     IDSelectColumnName,
     PKColumnName,
     InitSearchParams,
-    PagePath
+    PagePath,
+    AddLogAPIPath
 } from "../constants";
-import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../../actions/pageAction";
-import { APPFEEDBACKPRIORITY_VIEW, APPFEEDBACKPRIORITY_DELETE } from "../../../../../../constants/functionLists";
+import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
+import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_APPFEEDBACKPRIORITY } from "../../../../../../constants/keyCache";
+
+import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
+import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_SHIPMENTORDERSTEP, ERPCOMMONCACHE_SHIPMENTORDERSTEPGR } from "../../../../../constants/keyCache";
+import { SHIPMENTORDERSTEP_VIEW, SHIPMENTORDERSTEP_DELETE } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -37,8 +41,7 @@ class SearchCom extends React.Component {
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
-            iconNotification: "",
-            MessageDetail: "Đang nạp dữ liệu ......",
+            iconNotification: ""
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -49,6 +52,8 @@ class SearchCom extends React.Component {
         this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
     }
+
+    
 
     handleDelete(deleteList, pkColumnName) {
         let listMLObject = [];
@@ -65,7 +70,7 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                this.props.callClearLocalCache(ERPCOMMONCACHE_APPFEEDBACKPRIORITY);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERSTEPGR);
             }
         });
     }
@@ -91,10 +96,12 @@ class SearchCom extends React.Component {
                     gridDataSource: apiResult.ResultObject,
                     IsShowForm: true
                 });
-            } else {
-                //this.showMessage(apiResult.Message);
-                this.setState({ IsShowForm: false, MessageDetail: apiResult.Message });
             }
+            else {
+                this.showMessage(apiResult.Message);
+                this.setState({ IsShowForm: false });
+            }
+
         });
     }
 
@@ -154,7 +161,7 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm độ ưu tiên phản hồi"
+                        FormName="Tìm kiếm danh sách nhóm bước xử lý yêu cầu vận chuyển"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
@@ -168,18 +175,17 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={APPFEEDBACKPRIORITY_VIEW}
-                        DeletePermission={APPFEEDBACKPRIORITY_DELETE}
+                        RequirePermission={SHIPMENTORDERSTEP_VIEW}
+                        DeletePermission={SHIPMENTORDERSTEP_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />
                 </React.Fragment>
             );
-        }
-        else {
+        } else {
             return (
-                <div className="col-md-12 message-detail">
-                    <label>{this.state.MessageDetail}</label>
+                <div>
+                    <label>Đang nạp dữ liệu ......</label>
                 </div>
             )
         }

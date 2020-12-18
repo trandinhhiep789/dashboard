@@ -14,9 +14,9 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { AREATYPE_ADD } from "../../../../../../constants/functionLists";
+import { APPFEEDBACKSTEP_ADD } from "../../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_APPFEEDBACKSTEP } from "../../../../../../constants/keyCache";
 
 
 class AddCom extends React.Component {
@@ -42,8 +42,7 @@ class AddCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if(!apiResult.IsError){
-                this.props.callClearLocalCache(ERPCOMMONCACHE_AREATYPE);
-                this.props.callClearLocalCache(ERPCOMMONCACHE_AREATT);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_APPFEEDBACKSTEP);
             }            
             this.showMessage(apiResult.Message);
         });
@@ -81,7 +80,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                RequirePermission={AREATYPE_ADD}
+                RequirePermission={APPFEEDBACKSTEP_ADD}
                 ref={this.searchref}
             />
         );
