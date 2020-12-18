@@ -345,7 +345,7 @@ class RewardPriceTableDetailCom extends Component {
                             placeholder="Giá trị thông số kỹ thuật đến"
                             controltype="InputControl"
                             value="0"
-                            // validatonList={[]}
+                            // validatonList={["required"]}
                             datasourcemember="ToTechspecsValue"
                             maxSize={19}
                         />

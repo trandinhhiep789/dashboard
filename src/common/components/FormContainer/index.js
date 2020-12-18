@@ -179,7 +179,6 @@ class FormContainerCom extends Component {
 
     //#region InputChange && InputChangeList
     handleInputChange(elementname, elementvalue, namelabel, valuelabel, filterrest) {
-
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
         if (typeof filterrest != "undefined" && filterrest != "") {
@@ -188,11 +187,17 @@ class FormContainerCom extends Component {
                 FormDataContolLstd[objrest[i]].value = -1;
             }
         }
+        if (typeof FormDataContolLstd[elementname].validatonList == "undefined") {
+            const validationObject = { IsValidatonError: false, ValidatonErrorMessage: "" };
+            FormDataContolLstd[elementname].ErrorLst = validationObject;
+        }
         if (typeof FormDataContolLstd[elementname].validatonList != "undefined") {
             const validation = ValidationField(FormDataContolLstd[elementname].validatonList, elementvalue, FormDataContolLstd[elementname].label, FormDataContolLstd[elementname]);
             const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
             FormDataContolLstd[elementname].ErrorLst = validationObject;
         }
+       
+
         if (typeof namelabel != "undefined" && namelabel != "") {
             FormDataContolLstd[namelabel].value = valuelabel;
         }
