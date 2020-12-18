@@ -269,7 +269,7 @@ class ShipmentOrderDetailCom extends Component {
             ProcessGeoLocation: "",
             Note: ShipmentOrder_WorkFlow.Note
         }
-        this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/ProcessWorkFlow', objWorkFlowProcessingRequest).then((apiResult) => {
+        this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/ProcessWorkFlowWeb', objWorkFlowProcessingRequest).then((apiResult) => {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.setState({
