@@ -41,7 +41,6 @@ class SearchCom extends React.Component {
             IsLoadDataComplete: false,
             widthPercent: "",
         };
-        this.gridref = React.createRef();
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
     }
