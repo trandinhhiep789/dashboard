@@ -24,7 +24,7 @@ export const SearchElementList = [
         name: "dtFromDate",
         DataSourceMember: "FromDate",
         label: "Từ Ngày",
-        value: dtFromdate,
+        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
