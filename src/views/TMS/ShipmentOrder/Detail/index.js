@@ -15,6 +15,8 @@ import InfoCoordinator from '../Component/InfoCoordinator.js';
 import InfoHistoryWF from '../Component/InfoHistoryWF.js';
 import ShipmentOrderAttachment from '../Component/ShipmentOrderAttachment.js';
 import ShipmentOrderComment from '../Component/ShipmentOrderComment.js';
+import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
+import { MessageModal } from "../../../../common/components/Modal";
 import {
     APIHostName,
     LoadAPIPath,
