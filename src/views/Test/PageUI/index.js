@@ -10,7 +10,8 @@ import {
     SearchElementList,
     SearchMLObjectDefinition,
 } from "./constants";
-
+import { MODAL_TYPE_VIEW } from "../../../constants/actionTypes";
+import { showModal, hideModal } from '../../../actions/modal';
 const options = [
     { value: 'chocolate', label: 'Chocolate' },
     { value: 'strawberry', label: 'Strawberry' },
@@ -19,20 +20,47 @@ const options = [
 class PageUICom extends React.Component {
     constructor(props) {
         super(props);
+        this.handleShowModal = this.handleShowModal.bind(this)
         this.state = {
+            widthPercent: "",
         };
         this.searchref = React.createRef();
     }
 
     componentDidMount() {
+        this.updateWindowDimensions();
+        window.addEventListener("resize", this.updateWindowDimensions);
     }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions = () => {
+        this.setState({
+            widthPercent: (window.innerWidth * 35) / 100
+        })
+    };
 
     handleSearchSubmit() {
 
     }
 
     handleUserCoordinator() {
+        this.handleShowModal()
+    }
 
+    handleShowModal() {
+        const { widthPercent } = this.state;
+        console.log("widthPercent", widthPercent)
+        this.props.showModal(MODAL_TYPE_VIEW, {
+            title: "aaa",
+            content: {
+                text: <div>aaa aaa aaa</div>
+ 
+            },
+            maxWidth:  '500px'
+        });
     }
 
 
@@ -40,15 +68,6 @@ class PageUICom extends React.Component {
 
         return (
             <React.Fragment>
-                {/* <SearchForm
-                    FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
-                    onSubmit={this.handleSearchSubmit.bind(this)}
-                    ref={this.searchref}
-                    className="multiple multiple-custom multiple-custom-display multiple-custom-display-custom"
-                /> */}
-
                 <div className="col-lg-12 SearchFormCustom">
                     <form className="frm" action="">
                         <div className="lstFormControl">
@@ -60,12 +79,12 @@ class PageUICom extends React.Component {
                                         placeholder="Từ khóa" />
                                     <div className="input-group-append">
                                         <button className="btn dropdown-toggle" type="button" data-toggle="dropdown">--Vui lòng chọn--</button>
-                                        <div class="dropdown dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item active" data-option="-1">--Vui lòng chọn--</a>
-                                            <a class="dropdown-item" data-option="1">SĐT khách hàng</a>
-                                            <a class="dropdown-item" data-option="2">Mã NV giao hàng</a>
-                                            <a class="dropdown-item" data-option="3">Mã đơn hàng </a>
-                                            <a class="dropdown-item" data-option="4">Mã NV điều phối</a></div>
+                                        <div className="dropdown dropdown-menu dropdown-menu-right">
+                                            <a className="dropdown-item active" data-option="-1">--Vui lòng chọn--</a>
+                                            <a className="dropdown-item" data-option="1">SĐT khách hàng</a>
+                                            <a className="dropdown-item" data-option="2">Mã NV giao hàng</a>
+                                            <a className="dropdown-item" data-option="3">Mã đơn hàng </a>
+                                            <a className="dropdown-item" data-option="4">Mã NV điều phối</a></div>
                                     </div>
                                 </div>
 
@@ -214,10 +233,18 @@ class PageUICom extends React.Component {
                                 <div className="btn-toolbar">
                                     <div className="btn-group btn-group-sm">
                                         <div className="group-left">
-                                            <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                <i className="fa fa-plus"></i> Gán NV giao hàng
+                                            <div className="input-group">
+                                                <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info mr-10" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                    <i className="fa fa-plus"></i> Gán NV giao hàng
                                             </button>
+                                                <input type="text" className="form-control" placeholder="" />
+                                                <div className="input-group-append">
+                                                    <span className="input-group-text"><i className="ti-search"></i></span>
+                                                </div>
+
+                                            </div>
                                         </div>
+
                                         <div className="group-count">
                                             <ul>
                                                 <li>
@@ -237,12 +264,12 @@ class PageUICom extends React.Component {
                                     <table className="jsgrid-table">
                                         <thead className="jsgrid-header-row">
                                             <tr>
-                                                <th className="jsgrid-header-cell" style={{ width: '5%' }}>Tác vụ</th>
+                                                <th className="jsgrid-header-cell" style={{ width: '2%' }}></th>
                                                 <th className="jsgrid-header-cell" style={{ width: '15%' }}>Thời gian giao</th>
                                                 <th className="jsgrid-header-cell" style={{ width: '25%' }}>Địa chỉ</th>
-                                                <th className="jsgrid-header-cell" style={{ width: '20%' }}>Mã/Loại yêu cầu vận chuyển</th>
+                                                <th className="jsgrid-header-cell" style={{ width: '25%' }}>Mã/Loại yêu cầu vận chuyển</th>
                                                 <th className="jsgrid-header-cell" style={{ width: '25%' }}>Tên sản phẩm/Ghi chú</th>
-                                                <th className="jsgrid-header-cell" style={{ width: '10%' }}>Thanh toán</th>
+                                                <th className="jsgrid-header-cell" style={{ width: '8%' }}>Thanh toán</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -251,7 +278,7 @@ class PageUICom extends React.Component {
                                     <table className="jsgrid-table">
                                         <tbody>
                                             <tr className="jsgrid-row unread">
-                                                <td className="jsgrid-cell action undelivery" style={{ width: '5%' }}>
+                                                <td className="jsgrid-cell action undelivery" style={{ width: '2%' }}>
                                                     <div className="group-action">
                                                         <div className="checkbox item-action">
                                                             <label>
@@ -264,22 +291,22 @@ class PageUICom extends React.Component {
                                                     </div>
                                                 </td>
                                                 <td className="jsgrid-cell groupTimeDelivery" style={{ width: '15%' }}>
-                                                    <div class="group-info">
+                                                    <div className="group-info">
                                                         <ul>
                                                             <li className="item times">
-                                                                <i class="ti ti-timer"></i>
+                                                                <i className="ti ti-timer"></i>
                                                                 <span>8/12/2020 08:00</span>
                                                             </li>
                                                             <li className="item status">
-                                                                <i class="fa fa-location-arrow"></i>
+                                                                <i className="fa fa-location-arrow"></i>
                                                                 <span>Đã xuất kho &amp; chờ điều phối</span>
                                                             </li>
                                                             <li className="item vehicle">
-                                                                <i class="fa fa-motorcycle"></i>
+                                                                <i className="fa fa-motorcycle"></i>
                                                                 <span>Xe gắn máy</span>
                                                             </li>
                                                             <li className="item printing">
-                                                                <i class="ti ti-printer"></i>
+                                                                <i className="ti ti-printer"></i>
                                                                 <span>In</span>
                                                             </li>
                                                         </ul>
@@ -288,13 +315,13 @@ class PageUICom extends React.Component {
                                                 <td className="jsgrid-cell group-address" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item info-customer">
-                                                            <i class="fa fa-user"></i>
-                                                            <div class="person-info">
-                                                                <span class="name">Ngô Thị Yến</span>
-                                                                <span class="line">-</span>
-                                                                <span class="phone">(0889****)</span>
-                                                                <span class="line">-</span>
-                                                                <span class="partner-sale-Order">00001SO2012444635</span>
+                                                            <i className="fa fa-user"></i>
+                                                            <div className="person-info">
+                                                                <span className="name">Ngô Thị Yến</span>
+                                                                <span className="line">-</span>
+                                                                <span className="phone">(0889****)</span>
+                                                                <span className="line">-</span>
+                                                                <span className="partner-sale-Order">00001SO2012444635</span>
                                                             </div>
                                                         </li>
                                                         <li className="item address-customer">
@@ -304,26 +331,26 @@ class PageUICom extends React.Component {
                                                             <span>MĐ_BDU - Kho CN ĐMX Thủ Đức</span>
                                                         </li>
                                                         <li className="item times">
-                                                            <span class="group-times">
-                                                                <span class="time-item">
-                                                                    <span class="txtCreatedOrderTime">
-                                                                        <i class="ti ti-dashboard"></i> 07/12/2020 13:20</span>
+                                                            <span className="group-times">
+                                                                <span className="time-item">
+                                                                    <span className="txtCreatedOrderTime">
+                                                                        <i className="ti ti-dashboard"></i> 07/12/2020 13:20</span>
                                                                 </span>
-                                                                <span class="time-item">
-                                                                    <span class="intervale">
-                                                                        <i class="fa fa-paper-plane-o"></i>
-                                                                        <span class="txtintervale">0Km</span>
+                                                                <span className="time-item">
+                                                                    <span className="intervale">
+                                                                        <i className="fa fa-paper-plane-o"></i>
+                                                                        <span className="txtintervale">0Km</span>
                                                                     </span>
-                                                                    <span class="intervale">
-                                                                        <i class="ti ti-timer"></i>
-                                                                        <span class="txtintervale">0'</span>
+                                                                    <span className="intervale">
+                                                                        <i className="ti ti-timer"></i>
+                                                                        <span className="txtintervale">0'</span>
                                                                     </span>
                                                                 </span>
                                                             </span>
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '20%' }}>
+                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item">
                                                             <a target="_blank" href="#">201207000069785</a>
@@ -353,22 +380,22 @@ class PageUICom extends React.Component {
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-price" style={{ width: '10%' }}>
+                                                <td className="jsgrid-cell group-price" style={{ width: '8%' }}>
 
                                                     <ul>
                                                         <li className="item">
                                                             <span className="badge badge-danger">Đã hủy</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="pricecod"> 0</span>
+                                                            <span className="pricecod"> 0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="price-supplies">0</span>
+                                                            <span className="price-supplies">0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="total">
-                                                                <span class="price-title">Nợ: </span>
-                                                                <span class="price-debt">0</span>
+                                                            <span className="total">
+                                                                <span className="price-title">Nợ: </span>
+                                                                <span className="price-debt">-129.000.000</span>
                                                             </span>
                                                         </li>
                                                     </ul>
@@ -376,7 +403,7 @@ class PageUICom extends React.Component {
                                                 </td>
                                             </tr>
                                             <tr className="jsgrid-row">
-                                                <td className="jsgrid-cell action waitingDelivery" style={{ width: '5%' }}>
+                                                <td className="jsgrid-cell action waitingDelivery" style={{ width: '2%' }}>
                                                     <div className="group-action">
                                                         <div className="checkbox item-action">
                                                             <label>
@@ -389,22 +416,22 @@ class PageUICom extends React.Component {
                                                     </div>
                                                 </td>
                                                 <td className="jsgrid-cell groupTimeDelivery" style={{ width: '15%' }}>
-                                                    <div class="group-info">
+                                                    <div className="group-info">
                                                         <ul>
                                                             <li className="item times">
-                                                                <i class="ti ti-timer"></i>
+                                                                <i className="ti ti-timer"></i>
                                                                 <span>8/12/2020 08:00</span>
                                                             </li>
                                                             <li className="item status">
-                                                                <i class="fa fa-location-arrow"></i>
+                                                                <i className="fa fa-location-arrow"></i>
                                                                 <span>Đã xuất kho &amp; chờ điều phối</span>
                                                             </li>
                                                             <li className="item vehicle">
-                                                                <i class="fa fa-motorcycle"></i>
+                                                                <i className="fa fa-motorcycle"></i>
                                                                 <span>Xe gắn máy</span>
                                                             </li>
                                                             <li className="item printing">
-                                                                <i class="ti ti-printer"></i>
+                                                                <i className="ti ti-printer"></i>
                                                                 <span>In</span>
                                                             </li>
                                                         </ul>
@@ -413,13 +440,13 @@ class PageUICom extends React.Component {
                                                 <td className="jsgrid-cell group-address" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item info-customer">
-                                                            <i class="fa fa-user"></i>
-                                                            <div class="person-info">
-                                                                <span class="name">Ngô Thị Yến</span>
-                                                                <span class="line">-</span>
-                                                                <span class="phone">(0889****)</span>
-                                                                <span class="line">-</span>
-                                                                <span class="partner-sale-Order">00001SO2012444635</span>
+                                                            <i className="fa fa-user"></i>
+                                                            <div className="person-info">
+                                                                <span className="name">Ngô Thị Yến</span>
+                                                                <span className="line">-</span>
+                                                                <span className="phone">(0889****)</span>
+                                                                <span className="line">-</span>
+                                                                <span className="partner-sale-Order">00001SO2012444635</span>
                                                             </div>
                                                         </li>
                                                         <li className="item address-customer">
@@ -429,26 +456,26 @@ class PageUICom extends React.Component {
                                                             <span>MĐ_BDU - Kho CN ĐMX Thủ Đức</span>
                                                         </li>
                                                         <li className="item times">
-                                                            <span class="group-times">
-                                                                <span class="time-item">
-                                                                    <span class="txtCreatedOrderTime">
-                                                                        <i class="ti ti-dashboard"></i> 07/12/2020 13:20</span>
+                                                            <span className="group-times">
+                                                                <span className="time-item">
+                                                                    <span className="txtCreatedOrderTime">
+                                                                        <i className="ti ti-dashboard"></i> 07/12/2020 13:20</span>
                                                                 </span>
-                                                                <span class="time-item">
-                                                                    <span class="intervale">
-                                                                        <i class="fa fa-paper-plane-o"></i>
-                                                                        <span class="txtintervale">0Km</span>
+                                                                <span className="time-item">
+                                                                    <span className="intervale">
+                                                                        <i className="fa fa-paper-plane-o"></i>
+                                                                        <span className="txtintervale">0Km</span>
                                                                     </span>
-                                                                    <span class="intervale">
-                                                                        <i class="ti ti-timer"></i>
-                                                                        <span class="txtintervale">0'</span>
+                                                                    <span className="intervale">
+                                                                        <i className="ti ti-timer"></i>
+                                                                        <span className="txtintervale">0'</span>
                                                                     </span>
                                                                 </span>
                                                             </span>
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '20%' }}>
+                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item">
                                                             <a target="_blank" href="#">201207000069785</a>
@@ -478,22 +505,22 @@ class PageUICom extends React.Component {
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-price" style={{ width: '10%' }}>
+                                                <td className="jsgrid-cell group-price" style={{ width: '8%' }}>
 
                                                     <ul>
                                                         <li className="item">
                                                             <span className="badge badge-danger">Đã hủy</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="pricecod"> 0</span>
+                                                            <span className="pricecod"> 0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="price-supplies">0</span>
+                                                            <span className="price-supplies">0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="total">
-                                                                <span class="price-title">Nợ: </span>
-                                                                <span class="price-debt">0</span>
+                                                            <span className="total">
+                                                                <span className="price-title">Nợ: </span>
+                                                                <span className="price-debt">0</span>
                                                             </span>
                                                         </li>
                                                     </ul>
@@ -501,7 +528,7 @@ class PageUICom extends React.Component {
                                                 </td>
                                             </tr>
                                             <tr className="jsgrid-row unread">
-                                                <td className="jsgrid-cell action Uncoordinated" style={{ width: '5%' }}>
+                                                <td className="jsgrid-cell action Uncoordinated" style={{ width: '2%' }}>
                                                     <div className="group-action">
                                                         <div className="checkbox item-action">
                                                             <label>
@@ -514,22 +541,22 @@ class PageUICom extends React.Component {
                                                     </div>
                                                 </td>
                                                 <td className="jsgrid-cell groupTimeDelivery" style={{ width: '15%' }}>
-                                                    <div class="group-info">
+                                                    <div className="group-info">
                                                         <ul>
                                                             <li className="item times">
-                                                                <i class="ti ti-timer"></i>
+                                                                <i className="ti ti-timer"></i>
                                                                 <span>8/12/2020 08:00</span>
                                                             </li>
                                                             <li className="item status">
-                                                                <i class="fa fa-location-arrow"></i>
+                                                                <i className="fa fa-location-arrow"></i>
                                                                 <span>Đã xuất kho &amp; chờ điều phối</span>
                                                             </li>
                                                             <li className="item vehicle">
-                                                                <i class="fa fa-motorcycle"></i>
+                                                                <i className="fa fa-motorcycle"></i>
                                                                 <span>Xe gắn máy</span>
                                                             </li>
                                                             <li className="item printing">
-                                                                <i class="ti ti-printer"></i>
+                                                                <i className="ti ti-printer"></i>
                                                                 <span>In</span>
                                                             </li>
                                                         </ul>
@@ -538,13 +565,13 @@ class PageUICom extends React.Component {
                                                 <td className="jsgrid-cell group-address" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item info-customer">
-                                                            <i class="fa fa-user"></i>
-                                                            <div class="person-info">
-                                                                <span class="name">Ngô Thị Yến</span>
-                                                                <span class="line">-</span>
-                                                                <span class="phone">(0889****)</span>
-                                                                <span class="line">-</span>
-                                                                <span class="partner-sale-Order">00001SO2012444635</span>
+                                                            <i className="fa fa-user"></i>
+                                                            <div className="person-info">
+                                                                <span className="name">Ngô Thị Yến</span>
+                                                                <span className="line">-</span>
+                                                                <span className="phone">(0889****)</span>
+                                                                <span className="line">-</span>
+                                                                <span className="partner-sale-Order">00001SO2012444635</span>
                                                             </div>
                                                         </li>
                                                         <li className="item address-customer">
@@ -554,26 +581,26 @@ class PageUICom extends React.Component {
                                                             <span>MĐ_BDU - Kho CN ĐMX Thủ Đức</span>
                                                         </li>
                                                         <li className="item times">
-                                                            <span class="group-times">
-                                                                <span class="time-item">
-                                                                    <span class="txtCreatedOrderTime">
-                                                                        <i class="ti ti-dashboard"></i> 07/12/2020 13:20</span>
+                                                            <span className="group-times">
+                                                                <span className="time-item">
+                                                                    <span className="txtCreatedOrderTime">
+                                                                        <i className="ti ti-dashboard"></i> 07/12/2020 13:20</span>
                                                                 </span>
-                                                                <span class="time-item">
-                                                                    <span class="intervale">
-                                                                        <i class="fa fa-paper-plane-o"></i>
-                                                                        <span class="txtintervale">0Km</span>
+                                                                <span className="time-item">
+                                                                    <span className="intervale">
+                                                                        <i className="fa fa-paper-plane-o"></i>
+                                                                        <span className="txtintervale">0Km</span>
                                                                     </span>
-                                                                    <span class="intervale">
-                                                                        <i class="ti ti-timer"></i>
-                                                                        <span class="txtintervale">0'</span>
+                                                                    <span className="intervale">
+                                                                        <i className="ti ti-timer"></i>
+                                                                        <span className="txtintervale">0'</span>
                                                                     </span>
                                                                 </span>
                                                             </span>
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '20%' }}>
+                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item">
                                                             <a target="_blank" href="#">201207000069785</a>
@@ -603,22 +630,22 @@ class PageUICom extends React.Component {
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-price" style={{ width: '10%' }}>
+                                                <td className="jsgrid-cell group-price" style={{ width: '8%' }}>
 
                                                     <ul>
                                                         <li className="item">
                                                             <span className="badge badge-danger">Đã hủy</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="pricecod"> 0</span>
+                                                            <span className="pricecod"> 0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="price-supplies">0</span>
+                                                            <span className="price-supplies">0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="total">
-                                                                <span class="price-title">Nợ: </span>
-                                                                <span class="price-debt">0</span>
+                                                            <span className="total">
+                                                                <span className="price-title">Nợ: </span>
+                                                                <span className="price-debt">0</span>
                                                             </span>
                                                         </li>
                                                     </ul>
@@ -626,7 +653,7 @@ class PageUICom extends React.Component {
                                                 </td>
                                             </tr>
                                             <tr className="jsgrid-row unread">
-                                                <td className="jsgrid-cell action" style={{ width: '5%' }}>
+                                                <td className="jsgrid-cell action" style={{ width: '2%' }}>
                                                     <div className="group-action">
                                                         <div className="checkbox item-action">
                                                             <label>
@@ -639,22 +666,22 @@ class PageUICom extends React.Component {
                                                     </div>
                                                 </td>
                                                 <td className="jsgrid-cell groupTimeDelivery" style={{ width: '15%' }}>
-                                                    <div class="group-info">
+                                                    <div className="group-info">
                                                         <ul>
                                                             <li className="item times">
-                                                                <i class="ti ti-timer"></i>
+                                                                <i className="ti ti-timer"></i>
                                                                 <span>8/12/2020 08:00</span>
                                                             </li>
                                                             <li className="item status">
-                                                                <i class="fa fa-location-arrow"></i>
+                                                                <i className="fa fa-location-arrow"></i>
                                                                 <span>Đã xuất kho &amp; chờ điều phối</span>
                                                             </li>
                                                             <li className="item vehicle">
-                                                                <i class="fa fa-motorcycle"></i>
+                                                                <i className="fa fa-motorcycle"></i>
                                                                 <span>Xe gắn máy</span>
                                                             </li>
                                                             <li className="item printing">
-                                                                <i class="ti ti-printer"></i>
+                                                                <i className="ti ti-printer"></i>
                                                                 <span>In</span>
                                                             </li>
                                                         </ul>
@@ -663,13 +690,13 @@ class PageUICom extends React.Component {
                                                 <td className="jsgrid-cell group-address" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item info-customer">
-                                                            <i class="fa fa-user"></i>
-                                                            <div class="person-info">
-                                                                <span class="name">Ngô Thị Yến</span>
-                                                                <span class="line">-</span>
-                                                                <span class="phone">(0889****)</span>
-                                                                <span class="line">-</span>
-                                                                <span class="partner-sale-Order">00001SO2012444635</span>
+                                                            <i className="fa fa-user"></i>
+                                                            <div className="person-info">
+                                                                <span className="name">Ngô Thị Yến</span>
+                                                                <span className="line">-</span>
+                                                                <span className="phone">(0889****)</span>
+                                                                <span className="line">-</span>
+                                                                <span className="partner-sale-Order">00001SO2012444635</span>
                                                             </div>
                                                         </li>
                                                         <li className="item address-customer">
@@ -679,26 +706,26 @@ class PageUICom extends React.Component {
                                                             <span>MĐ_BDU - Kho CN ĐMX Thủ Đức</span>
                                                         </li>
                                                         <li className="item times">
-                                                            <span class="group-times">
-                                                                <span class="time-item">
-                                                                    <span class="txtCreatedOrderTime">
-                                                                        <i class="ti ti-dashboard"></i> 07/12/2020 13:20</span>
+                                                            <span className="group-times">
+                                                                <span className="time-item">
+                                                                    <span className="txtCreatedOrderTime">
+                                                                        <i className="ti ti-dashboard"></i> 07/12/2020 13:20</span>
                                                                 </span>
-                                                                <span class="time-item">
-                                                                    <span class="intervale">
-                                                                        <i class="fa fa-paper-plane-o"></i>
-                                                                        <span class="txtintervale">0Km</span>
+                                                                <span className="time-item">
+                                                                    <span className="intervale">
+                                                                        <i className="fa fa-paper-plane-o"></i>
+                                                                        <span className="txtintervale">0Km</span>
                                                                     </span>
-                                                                    <span class="intervale">
-                                                                        <i class="ti ti-timer"></i>
-                                                                        <span class="txtintervale">0'</span>
+                                                                    <span className="intervale">
+                                                                        <i className="ti ti-timer"></i>
+                                                                        <span className="txtintervale">0'</span>
                                                                     </span>
                                                                 </span>
                                                             </span>
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '20%' }}>
+                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item">
                                                             <a target="_blank" href="#">201207000069785</a>
@@ -728,22 +755,22 @@ class PageUICom extends React.Component {
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-price" style={{ width: '10%' }}>
+                                                <td className="jsgrid-cell group-price" style={{ width: '8%' }}>
 
                                                     <ul>
                                                         <li className="item">
                                                             <span className="badge badge-danger">Đã hủy</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="pricecod"> 0</span>
+                                                            <span className="pricecod"> 0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="price-supplies">0</span>
+                                                            <span className="price-supplies">0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="total">
-                                                                <span class="price-title">Nợ: </span>
-                                                                <span class="price-debt">0</span>
+                                                            <span className="total">
+                                                                <span className="price-title">Nợ: </span>
+                                                                <span className="price-debt">0</span>
                                                             </span>
                                                         </li>
                                                     </ul>
@@ -751,7 +778,7 @@ class PageUICom extends React.Component {
                                                 </td>
                                             </tr>
                                             <tr className="jsgrid-row">
-                                                <td className="jsgrid-cell action" style={{ width: '5%' }}>
+                                                <td className="jsgrid-cell action" style={{ width: '2%' }}>
                                                     <div className="group-action">
                                                         <div className="checkbox item-action">
                                                             <label>
@@ -764,22 +791,22 @@ class PageUICom extends React.Component {
                                                     </div>
                                                 </td>
                                                 <td className="jsgrid-cell groupTimeDelivery" style={{ width: '15%' }}>
-                                                    <div class="group-info">
+                                                    <div className="group-info">
                                                         <ul>
                                                             <li className="item times">
-                                                                <i class="ti ti-timer"></i>
+                                                                <i className="ti ti-timer"></i>
                                                                 <span>8/12/2020 08:00</span>
                                                             </li>
                                                             <li className="item status">
-                                                                <i class="fa fa-location-arrow"></i>
+                                                                <i className="fa fa-location-arrow"></i>
                                                                 <span>Đã xuất kho &amp; chờ điều phối</span>
                                                             </li>
                                                             <li className="item vehicle">
-                                                                <i class="fa fa-motorcycle"></i>
+                                                                <i className="fa fa-motorcycle"></i>
                                                                 <span>Xe gắn máy</span>
                                                             </li>
                                                             <li className="item printing">
-                                                                <i class="ti ti-printer"></i>
+                                                                <i className="ti ti-printer"></i>
                                                                 <span>In</span>
                                                             </li>
                                                         </ul>
@@ -788,13 +815,13 @@ class PageUICom extends React.Component {
                                                 <td className="jsgrid-cell group-address" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item info-customer">
-                                                            <i class="fa fa-user"></i>
-                                                            <div class="person-info">
-                                                                <span class="name">Ngô Thị Yến</span>
-                                                                <span class="line">-</span>
-                                                                <span class="phone">(0889****)</span>
-                                                                <span class="line">-</span>
-                                                                <span class="partner-sale-Order">00001SO2012444635</span>
+                                                            <i className="fa fa-user"></i>
+                                                            <div className="person-info">
+                                                                <span className="name">Ngô Thị Yến</span>
+                                                                <span className="line">-</span>
+                                                                <span className="phone">(0889****)</span>
+                                                                <span className="line">-</span>
+                                                                <span className="partner-sale-Order">00001SO2012444635</span>
                                                             </div>
                                                         </li>
                                                         <li className="item address-customer">
@@ -804,26 +831,26 @@ class PageUICom extends React.Component {
                                                             <span>MĐ_BDU - Kho CN ĐMX Thủ Đức</span>
                                                         </li>
                                                         <li className="item times">
-                                                            <span class="group-times">
-                                                                <span class="time-item">
-                                                                    <span class="txtCreatedOrderTime">
-                                                                        <i class="ti ti-dashboard"></i> 07/12/2020 13:20</span>
+                                                            <span className="group-times">
+                                                                <span className="time-item">
+                                                                    <span className="txtCreatedOrderTime">
+                                                                        <i className="ti ti-dashboard"></i> 07/12/2020 13:20</span>
                                                                 </span>
-                                                                <span class="time-item">
-                                                                    <span class="intervale">
-                                                                        <i class="fa fa-paper-plane-o"></i>
-                                                                        <span class="txtintervale">0Km</span>
+                                                                <span className="time-item">
+                                                                    <span className="intervale">
+                                                                        <i className="fa fa-paper-plane-o"></i>
+                                                                        <span className="txtintervale">0Km</span>
                                                                     </span>
-                                                                    <span class="intervale">
-                                                                        <i class="ti ti-timer"></i>
-                                                                        <span class="txtintervale">0'</span>
+                                                                    <span className="intervale">
+                                                                        <i className="ti ti-timer"></i>
+                                                                        <span className="txtintervale">0'</span>
                                                                     </span>
                                                                 </span>
                                                             </span>
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '20%' }}>
+                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item">
                                                             <a target="_blank" href="#">201207000069785</a>
@@ -853,22 +880,22 @@ class PageUICom extends React.Component {
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-price" style={{ width: '10%' }}>
+                                                <td className="jsgrid-cell group-price" style={{ width: '8%' }}>
 
                                                     <ul>
                                                         <li className="item">
                                                             <span className="badge badge-danger">Đã hủy</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="pricecod"> 0</span>
+                                                            <span className="pricecod"> 0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="price-supplies">0</span>
+                                                            <span className="price-supplies">0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="total">
-                                                                <span class="price-title">Nợ: </span>
-                                                                <span class="price-debt">0</span>
+                                                            <span className="total">
+                                                                <span className="price-title">Nợ: </span>
+                                                                <span className="price-debt">0</span>
                                                             </span>
                                                         </li>
                                                     </ul>
@@ -876,7 +903,7 @@ class PageUICom extends React.Component {
                                                 </td>
                                             </tr>
                                             <tr className="jsgrid-row unread">
-                                                <td className="jsgrid-cell action" style={{ width: '5%' }}>
+                                                <td className="jsgrid-cell action" style={{ width: '2%' }}>
                                                     <div className="group-action">
                                                         <div className="checkbox item-action">
                                                             <label>
@@ -889,22 +916,22 @@ class PageUICom extends React.Component {
                                                     </div>
                                                 </td>
                                                 <td className="jsgrid-cell groupTimeDelivery" style={{ width: '15%' }}>
-                                                    <div class="group-info">
+                                                    <div className="group-info">
                                                         <ul>
                                                             <li className="item times">
-                                                                <i class="ti ti-timer"></i>
+                                                                <i className="ti ti-timer"></i>
                                                                 <span>8/12/2020 08:00</span>
                                                             </li>
                                                             <li className="item status">
-                                                                <i class="fa fa-location-arrow"></i>
+                                                                <i className="fa fa-location-arrow"></i>
                                                                 <span>Đã xuất kho &amp; chờ điều phối</span>
                                                             </li>
                                                             <li className="item vehicle">
-                                                                <i class="fa fa-motorcycle"></i>
+                                                                <i className="fa fa-motorcycle"></i>
                                                                 <span>Xe gắn máy</span>
                                                             </li>
                                                             <li className="item printing">
-                                                                <i class="ti ti-printer"></i>
+                                                                <i className="ti ti-printer"></i>
                                                                 <span>In</span>
                                                             </li>
                                                         </ul>
@@ -913,13 +940,13 @@ class PageUICom extends React.Component {
                                                 <td className="jsgrid-cell group-address" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item info-customer">
-                                                            <i class="fa fa-user"></i>
-                                                            <div class="person-info">
-                                                                <span class="name">Ngô Thị Yến</span>
-                                                                <span class="line">-</span>
-                                                                <span class="phone">(0889****)</span>
-                                                                <span class="line">-</span>
-                                                                <span class="partner-sale-Order">00001SO2012444635</span>
+                                                            <i className="fa fa-user"></i>
+                                                            <div className="person-info">
+                                                                <span className="name">Ngô Thị Yến</span>
+                                                                <span className="line">-</span>
+                                                                <span className="phone">(0889****)</span>
+                                                                <span className="line">-</span>
+                                                                <span className="partner-sale-Order">00001SO2012444635</span>
                                                             </div>
                                                         </li>
                                                         <li className="item address-customer">
@@ -929,26 +956,26 @@ class PageUICom extends React.Component {
                                                             <span>MĐ_BDU - Kho CN ĐMX Thủ Đức</span>
                                                         </li>
                                                         <li className="item times">
-                                                            <span class="group-times">
-                                                                <span class="time-item">
-                                                                    <span class="txtCreatedOrderTime">
-                                                                        <i class="ti ti-dashboard"></i> 07/12/2020 13:20</span>
+                                                            <span className="group-times">
+                                                                <span className="time-item">
+                                                                    <span className="txtCreatedOrderTime">
+                                                                        <i className="ti ti-dashboard"></i> 07/12/2020 13:20</span>
                                                                 </span>
-                                                                <span class="time-item">
-                                                                    <span class="intervale">
-                                                                        <i class="fa fa-paper-plane-o"></i>
-                                                                        <span class="txtintervale">0Km</span>
+                                                                <span className="time-item">
+                                                                    <span className="intervale">
+                                                                        <i className="fa fa-paper-plane-o"></i>
+                                                                        <span className="txtintervale">0Km</span>
                                                                     </span>
-                                                                    <span class="intervale">
-                                                                        <i class="ti ti-timer"></i>
-                                                                        <span class="txtintervale">0'</span>
+                                                                    <span className="intervale">
+                                                                        <i className="ti ti-timer"></i>
+                                                                        <span className="txtintervale">0'</span>
                                                                     </span>
                                                                 </span>
                                                             </span>
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '20%' }}>
+                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item">
                                                             <a target="_blank" href="#">201207000069785</a>
@@ -978,22 +1005,22 @@ class PageUICom extends React.Component {
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-price" style={{ width: '10%' }}>
+                                                <td className="jsgrid-cell group-price" style={{ width: '8%' }}>
 
                                                     <ul>
                                                         <li className="item">
                                                             <span className="badge badge-danger">Đã hủy</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="pricecod"> 0</span>
+                                                            <span className="pricecod"> 0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="price-supplies">0</span>
+                                                            <span className="price-supplies">0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="total">
-                                                                <span class="price-title">Nợ: </span>
-                                                                <span class="price-debt">0</span>
+                                                            <span className="total">
+                                                                <span className="price-title">Nợ: </span>
+                                                                <span className="price-debt">0</span>
                                                             </span>
                                                         </li>
                                                     </ul>
@@ -1001,7 +1028,7 @@ class PageUICom extends React.Component {
                                                 </td>
                                             </tr>
                                             <tr className="jsgrid-row">
-                                                <td className="jsgrid-cell action" style={{ width: '5%' }}>
+                                                <td className="jsgrid-cell action" style={{ width: '2%' }}>
                                                     <div className="group-action">
                                                         <div className="checkbox item-action">
                                                             <label>
@@ -1014,22 +1041,22 @@ class PageUICom extends React.Component {
                                                     </div>
                                                 </td>
                                                 <td className="jsgrid-cell groupTimeDelivery" style={{ width: '15%' }}>
-                                                    <div class="group-info">
+                                                    <div className="group-info">
                                                         <ul>
                                                             <li className="item times">
-                                                                <i class="ti ti-timer"></i>
+                                                                <i className="ti ti-timer"></i>
                                                                 <span>8/12/2020 08:00</span>
                                                             </li>
                                                             <li className="item status">
-                                                                <i class="fa fa-location-arrow"></i>
+                                                                <i className="fa fa-location-arrow"></i>
                                                                 <span>Đã xuất kho &amp; chờ điều phối</span>
                                                             </li>
                                                             <li className="item vehicle">
-                                                                <i class="fa fa-motorcycle"></i>
+                                                                <i className="fa fa-motorcycle"></i>
                                                                 <span>Xe gắn máy</span>
                                                             </li>
                                                             <li className="item printing">
-                                                                <i class="ti ti-printer"></i>
+                                                                <i className="ti ti-printer"></i>
                                                                 <span>In</span>
                                                             </li>
                                                         </ul>
@@ -1038,13 +1065,13 @@ class PageUICom extends React.Component {
                                                 <td className="jsgrid-cell group-address" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item info-customer">
-                                                            <i class="fa fa-user"></i>
-                                                            <div class="person-info">
-                                                                <span class="name">Ngô Thị Yến</span>
-                                                                <span class="line">-</span>
-                                                                <span class="phone">(0889****)</span>
-                                                                <span class="line">-</span>
-                                                                <span class="partner-sale-Order">00001SO2012444635</span>
+                                                            <i className="fa fa-user"></i>
+                                                            <div className="person-info">
+                                                                <span className="name">Ngô Thị Yến</span>
+                                                                <span className="line">-</span>
+                                                                <span className="phone">(0889****)</span>
+                                                                <span className="line">-</span>
+                                                                <span className="partner-sale-Order">00001SO2012444635</span>
                                                             </div>
                                                         </li>
                                                         <li className="item address-customer">
@@ -1054,26 +1081,26 @@ class PageUICom extends React.Component {
                                                             <span>MĐ_BDU - Kho CN ĐMX Thủ Đức</span>
                                                         </li>
                                                         <li className="item times">
-                                                            <span class="group-times">
-                                                                <span class="time-item">
-                                                                    <span class="txtCreatedOrderTime">
-                                                                        <i class="ti ti-dashboard"></i> 07/12/2020 13:20</span>
+                                                            <span className="group-times">
+                                                                <span className="time-item">
+                                                                    <span className="txtCreatedOrderTime">
+                                                                        <i className="ti ti-dashboard"></i> 07/12/2020 13:20</span>
                                                                 </span>
-                                                                <span class="time-item">
-                                                                    <span class="intervale">
-                                                                        <i class="fa fa-paper-plane-o"></i>
-                                                                        <span class="txtintervale">0Km</span>
+                                                                <span className="time-item">
+                                                                    <span className="intervale">
+                                                                        <i className="fa fa-paper-plane-o"></i>
+                                                                        <span className="txtintervale">0Km</span>
                                                                     </span>
-                                                                    <span class="intervale">
-                                                                        <i class="ti ti-timer"></i>
-                                                                        <span class="txtintervale">0'</span>
+                                                                    <span className="intervale">
+                                                                        <i className="ti ti-timer"></i>
+                                                                        <span className="txtintervale">0'</span>
                                                                     </span>
                                                                 </span>
                                                             </span>
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '20%' }}>
+                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item">
                                                             <a target="_blank" href="#">201207000069785</a>
@@ -1103,22 +1130,22 @@ class PageUICom extends React.Component {
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-price" style={{ width: '10%' }}>
+                                                <td className="jsgrid-cell group-price" style={{ width: '8%' }}>
 
                                                     <ul>
                                                         <li className="item">
                                                             <span className="badge badge-danger">Đã hủy</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="pricecod"> 0</span>
+                                                            <span className="pricecod"> 0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="price-supplies">0</span>
+                                                            <span className="price-supplies">0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="total">
-                                                                <span class="price-title">Nợ: </span>
-                                                                <span class="price-debt">0</span>
+                                                            <span className="total">
+                                                                <span className="price-title">Nợ: </span>
+                                                                <span className="price-debt">0</span>
                                                             </span>
                                                         </li>
                                                     </ul>
@@ -1126,7 +1153,7 @@ class PageUICom extends React.Component {
                                                 </td>
                                             </tr>
                                             <tr className="jsgrid-row unread">
-                                                <td className="jsgrid-cell action" style={{ width: '5%' }}>
+                                                <td className="jsgrid-cell action" style={{ width: '2%' }}>
                                                     <div className="group-action">
                                                         <div className="checkbox item-action">
                                                             <label>
@@ -1139,22 +1166,22 @@ class PageUICom extends React.Component {
                                                     </div>
                                                 </td>
                                                 <td className="jsgrid-cell groupTimeDelivery" style={{ width: '15%' }}>
-                                                    <div class="group-info">
+                                                    <div className="group-info">
                                                         <ul>
                                                             <li className="item times">
-                                                                <i class="ti ti-timer"></i>
+                                                                <i className="ti ti-timer"></i>
                                                                 <span>8/12/2020 08:00</span>
                                                             </li>
                                                             <li className="item status">
-                                                                <i class="fa fa-location-arrow"></i>
+                                                                <i className="fa fa-location-arrow"></i>
                                                                 <span>Đã xuất kho &amp; chờ điều phối</span>
                                                             </li>
                                                             <li className="item vehicle">
-                                                                <i class="fa fa-motorcycle"></i>
+                                                                <i className="fa fa-motorcycle"></i>
                                                                 <span>Xe gắn máy</span>
                                                             </li>
                                                             <li className="item printing">
-                                                                <i class="ti ti-printer"></i>
+                                                                <i className="ti ti-printer"></i>
                                                                 <span>In</span>
                                                             </li>
                                                         </ul>
@@ -1163,13 +1190,13 @@ class PageUICom extends React.Component {
                                                 <td className="jsgrid-cell group-address" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item info-customer">
-                                                            <i class="fa fa-user"></i>
-                                                            <div class="person-info">
-                                                                <span class="name">Ngô Thị Yến</span>
-                                                                <span class="line">-</span>
-                                                                <span class="phone">(0889****)</span>
-                                                                <span class="line">-</span>
-                                                                <span class="partner-sale-Order">00001SO2012444635</span>
+                                                            <i className="fa fa-user"></i>
+                                                            <div className="person-info">
+                                                                <span className="name">Ngô Thị Yến</span>
+                                                                <span className="line">-</span>
+                                                                <span className="phone">(0889****)</span>
+                                                                <span className="line">-</span>
+                                                                <span className="partner-sale-Order">00001SO2012444635</span>
                                                             </div>
                                                         </li>
                                                         <li className="item address-customer">
@@ -1179,26 +1206,26 @@ class PageUICom extends React.Component {
                                                             <span>MĐ_BDU - Kho CN ĐMX Thủ Đức</span>
                                                         </li>
                                                         <li className="item times">
-                                                            <span class="group-times">
-                                                                <span class="time-item">
-                                                                    <span class="txtCreatedOrderTime">
-                                                                        <i class="ti ti-dashboard"></i> 07/12/2020 13:20</span>
+                                                            <span className="group-times">
+                                                                <span className="time-item">
+                                                                    <span className="txtCreatedOrderTime">
+                                                                        <i className="ti ti-dashboard"></i> 07/12/2020 13:20</span>
                                                                 </span>
-                                                                <span class="time-item">
-                                                                    <span class="intervale">
-                                                                        <i class="fa fa-paper-plane-o"></i>
-                                                                        <span class="txtintervale">0Km</span>
+                                                                <span className="time-item">
+                                                                    <span className="intervale">
+                                                                        <i className="fa fa-paper-plane-o"></i>
+                                                                        <span className="txtintervale">0Km</span>
                                                                     </span>
-                                                                    <span class="intervale">
-                                                                        <i class="ti ti-timer"></i>
-                                                                        <span class="txtintervale">0'</span>
+                                                                    <span className="intervale">
+                                                                        <i className="ti ti-timer"></i>
+                                                                        <span className="txtintervale">0'</span>
                                                                     </span>
                                                                 </span>
                                                             </span>
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '20%' }}>
+                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item">
                                                             <a target="_blank" href="#">201207000069785</a>
@@ -1228,22 +1255,22 @@ class PageUICom extends React.Component {
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-price" style={{ width: '10%' }}>
+                                                <td className="jsgrid-cell group-price" style={{ width: '8%' }}>
 
                                                     <ul>
                                                         <li className="item">
                                                             <span className="badge badge-danger">Đã hủy</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="pricecod"> 0</span>
+                                                            <span className="pricecod"> 0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="price-supplies">0</span>
+                                                            <span className="price-supplies">0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="total">
-                                                                <span class="price-title">Nợ: </span>
-                                                                <span class="price-debt">0</span>
+                                                            <span className="total">
+                                                                <span className="price-title">Nợ: </span>
+                                                                <span className="price-debt">0</span>
                                                             </span>
                                                         </li>
                                                     </ul>
@@ -1251,7 +1278,7 @@ class PageUICom extends React.Component {
                                                 </td>
                                             </tr>
                                             <tr className="jsgrid-row unread">
-                                                <td className="jsgrid-cell action" style={{ width: '5%' }}>
+                                                <td className="jsgrid-cell action" style={{ width: '2%' }}>
                                                     <div className="group-action">
                                                         <div className="checkbox item-action">
                                                             <label>
@@ -1264,22 +1291,22 @@ class PageUICom extends React.Component {
                                                     </div>
                                                 </td>
                                                 <td className="jsgrid-cell groupTimeDelivery" style={{ width: '15%' }}>
-                                                    <div class="group-info">
+                                                    <div className="group-info">
                                                         <ul>
                                                             <li className="item times">
-                                                                <i class="ti ti-timer"></i>
+                                                                <i className="ti ti-timer"></i>
                                                                 <span>8/12/2020 08:00</span>
                                                             </li>
                                                             <li className="item status">
-                                                                <i class="fa fa-location-arrow"></i>
+                                                                <i className="fa fa-location-arrow"></i>
                                                                 <span>Đã xuất kho &amp; chờ điều phối</span>
                                                             </li>
                                                             <li className="item vehicle">
-                                                                <i class="fa fa-motorcycle"></i>
+                                                                <i className="fa fa-motorcycle"></i>
                                                                 <span>Xe gắn máy</span>
                                                             </li>
                                                             <li className="item printing">
-                                                                <i class="ti ti-printer"></i>
+                                                                <i className="ti ti-printer"></i>
                                                                 <span>In</span>
                                                             </li>
                                                         </ul>
@@ -1288,13 +1315,13 @@ class PageUICom extends React.Component {
                                                 <td className="jsgrid-cell group-address" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item info-customer">
-                                                            <i class="fa fa-user"></i>
-                                                            <div class="person-info">
-                                                                <span class="name">Ngô Thị Yến</span>
-                                                                <span class="line">-</span>
-                                                                <span class="phone">(0889****)</span>
-                                                                <span class="line">-</span>
-                                                                <span class="partner-sale-Order">00001SO2012444635</span>
+                                                            <i className="fa fa-user"></i>
+                                                            <div className="person-info">
+                                                                <span className="name">Ngô Thị Yến</span>
+                                                                <span className="line">-</span>
+                                                                <span className="phone">(0889****)</span>
+                                                                <span className="line">-</span>
+                                                                <span className="partner-sale-Order">00001SO2012444635</span>
                                                             </div>
                                                         </li>
                                                         <li className="item address-customer">
@@ -1304,26 +1331,26 @@ class PageUICom extends React.Component {
                                                             <span>MĐ_BDU - Kho CN ĐMX Thủ Đức</span>
                                                         </li>
                                                         <li className="item times">
-                                                            <span class="group-times">
-                                                                <span class="time-item">
-                                                                    <span class="txtCreatedOrderTime">
-                                                                        <i class="ti ti-dashboard"></i> 07/12/2020 13:20</span>
+                                                            <span className="group-times">
+                                                                <span className="time-item">
+                                                                    <span className="txtCreatedOrderTime">
+                                                                        <i className="ti ti-dashboard"></i> 07/12/2020 13:20</span>
                                                                 </span>
-                                                                <span class="time-item">
-                                                                    <span class="intervale">
-                                                                        <i class="fa fa-paper-plane-o"></i>
-                                                                        <span class="txtintervale">0Km</span>
+                                                                <span className="time-item">
+                                                                    <span className="intervale">
+                                                                        <i className="fa fa-paper-plane-o"></i>
+                                                                        <span className="txtintervale">0Km</span>
                                                                     </span>
-                                                                    <span class="intervale">
-                                                                        <i class="ti ti-timer"></i>
-                                                                        <span class="txtintervale">0'</span>
+                                                                    <span className="intervale">
+                                                                        <i className="ti ti-timer"></i>
+                                                                        <span className="txtintervale">0'</span>
                                                                     </span>
                                                                 </span>
                                                             </span>
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '20%' }}>
+                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item">
                                                             <a target="_blank" href="#">201207000069785</a>
@@ -1353,22 +1380,22 @@ class PageUICom extends React.Component {
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-price" style={{ width: '10%' }}>
+                                                <td className="jsgrid-cell group-price" style={{ width: '8%' }}>
 
                                                     <ul>
                                                         <li className="item">
                                                             <span className="badge badge-danger">Đã hủy</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="pricecod"> 0</span>
+                                                            <span className="pricecod"> 0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="price-supplies">0</span>
+                                                            <span className="price-supplies">0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="total">
-                                                                <span class="price-title">Nợ: </span>
-                                                                <span class="price-debt">0</span>
+                                                            <span className="total">
+                                                                <span className="price-title">Nợ: </span>
+                                                                <span className="price-debt">0</span>
                                                             </span>
                                                         </li>
                                                     </ul>
@@ -1376,7 +1403,7 @@ class PageUICom extends React.Component {
                                                 </td>
                                             </tr>
                                             <tr className="jsgrid-row unread">
-                                                <td className="jsgrid-cell action" style={{ width: '5%' }}>
+                                                <td className="jsgrid-cell action" style={{ width: '2%' }}>
                                                     <div className="group-action">
                                                         <div className="checkbox item-action">
                                                             <label>
@@ -1389,22 +1416,22 @@ class PageUICom extends React.Component {
                                                     </div>
                                                 </td>
                                                 <td className="jsgrid-cell groupTimeDelivery" style={{ width: '15%' }}>
-                                                    <div class="group-info">
+                                                    <div className="group-info">
                                                         <ul>
                                                             <li className="item times">
-                                                                <i class="ti ti-timer"></i>
+                                                                <i className="ti ti-timer"></i>
                                                                 <span>8/12/2020 08:00</span>
                                                             </li>
                                                             <li className="item status">
-                                                                <i class="fa fa-location-arrow"></i>
+                                                                <i className="fa fa-location-arrow"></i>
                                                                 <span>Đã xuất kho &amp; chờ điều phối</span>
                                                             </li>
                                                             <li className="item vehicle">
-                                                                <i class="fa fa-motorcycle"></i>
+                                                                <i className="fa fa-motorcycle"></i>
                                                                 <span>Xe gắn máy</span>
                                                             </li>
                                                             <li className="item printing">
-                                                                <i class="ti ti-printer"></i>
+                                                                <i className="ti ti-printer"></i>
                                                                 <span>In</span>
                                                             </li>
                                                         </ul>
@@ -1413,13 +1440,13 @@ class PageUICom extends React.Component {
                                                 <td className="jsgrid-cell group-address" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item info-customer">
-                                                            <i class="fa fa-user"></i>
-                                                            <div class="person-info">
-                                                                <span class="name">Ngô Thị Yến</span>
-                                                                <span class="line">-</span>
-                                                                <span class="phone">(0889****)</span>
-                                                                <span class="line">-</span>
-                                                                <span class="partner-sale-Order">00001SO2012444635</span>
+                                                            <i className="fa fa-user"></i>
+                                                            <div className="person-info">
+                                                                <span className="name">Ngô Thị Yến</span>
+                                                                <span className="line">-</span>
+                                                                <span className="phone">(0889****)</span>
+                                                                <span className="line">-</span>
+                                                                <span className="partner-sale-Order">00001SO2012444635</span>
                                                             </div>
                                                         </li>
                                                         <li className="item address-customer">
@@ -1429,26 +1456,26 @@ class PageUICom extends React.Component {
                                                             <span>MĐ_BDU - Kho CN ĐMX Thủ Đức</span>
                                                         </li>
                                                         <li className="item times">
-                                                            <span class="group-times">
-                                                                <span class="time-item">
-                                                                    <span class="txtCreatedOrderTime">
-                                                                        <i class="ti ti-dashboard"></i> 07/12/2020 13:20</span>
+                                                            <span className="group-times">
+                                                                <span className="time-item">
+                                                                    <span className="txtCreatedOrderTime">
+                                                                        <i className="ti ti-dashboard"></i> 07/12/2020 13:20</span>
                                                                 </span>
-                                                                <span class="time-item">
-                                                                    <span class="intervale">
-                                                                        <i class="fa fa-paper-plane-o"></i>
-                                                                        <span class="txtintervale">0Km</span>
+                                                                <span className="time-item">
+                                                                    <span className="intervale">
+                                                                        <i className="fa fa-paper-plane-o"></i>
+                                                                        <span className="txtintervale">0Km</span>
                                                                     </span>
-                                                                    <span class="intervale">
-                                                                        <i class="ti ti-timer"></i>
-                                                                        <span class="txtintervale">0'</span>
+                                                                    <span className="intervale">
+                                                                        <i className="ti ti-timer"></i>
+                                                                        <span className="txtintervale">0'</span>
                                                                     </span>
                                                                 </span>
                                                             </span>
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '20%' }}>
+                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '25%' }}>
                                                     <ul>
                                                         <li className="item">
                                                             <a target="_blank" href="#">201207000069785</a>
@@ -1478,22 +1505,22 @@ class PageUICom extends React.Component {
                                                         </li>
                                                     </ul>
                                                 </td>
-                                                <td className="jsgrid-cell group-price" style={{ width: '10%' }}>
+                                                <td className="jsgrid-cell group-price" style={{ width: '8%' }}>
 
                                                     <ul>
                                                         <li className="item">
                                                             <span className="badge badge-danger">Đã hủy</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="pricecod"> 0</span>
+                                                            <span className="pricecod"> 0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="price-supplies">0</span>
+                                                            <span className="price-supplies">0</span>
                                                         </li>
                                                         <li className="item">
-                                                            <span class="total">
-                                                                <span class="price-title">Nợ: </span>
-                                                                <span class="price-debt">0</span>
+                                                            <span className="total">
+                                                                <span className="price-title">Nợ: </span>
+                                                                <span className="price-debt">0</span>
                                                             </span>
                                                         </li>
                                                     </ul>
@@ -1502,6 +1529,39 @@ class PageUICom extends React.Component {
                                             </tr>
                                         </tbody>
                                     </table>
+
+                                </div>
+                                <div className="jsgrid-grid-footer">
+                                    <nav>
+                                        <ul className="pagination justify-content-center">
+                                            <li className="page-item disabled">
+                                                <a className="page-link" data-pagenum="1" data-linktext="previous">
+                                                    <span className="fa fa-step-backward" data-pagenum="1"></span>
+                                                </a>
+                                            </li>
+                                            <li className="page-item disabled">
+                                                <a className="page-link" data-pagenum="1" data-linktext="previous">
+                                                    <span className="ti-arrow-left" data-pagenum="1"></span>
+                                                </a>
+                                            </li>
+                                            <li className="page-item active">
+                                                <a className="page-link" data-pagenum="1">1</a>
+                                            </li>
+                                            <li className="page-item">
+                                                <a className="page-link" data-pagenum="2">2</a>
+                                            </li>
+                                            <li className="page-item disabled">
+                                                <a className="page-link" data-pagenum="1" data-linktext="next">
+                                                    <span className="ti-arrow-right" data-pagenum="1"></span>
+                                                </a>
+                                            </li>
+                                            <li className="page-item disabled">
+                                                <a className="page-link" data-pagenum="1" data-linktext="next">
+                                                    <span className="fa fa-step-forward" data-pagenum="1"></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
 
                             </div>
@@ -1531,6 +1591,12 @@ const mapDispatchToProps = dispatch => {
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID))
         },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
+        }
 
     }
 }

@@ -172,7 +172,7 @@ export function callAPI(hostname, apiPath, postData) {
         }
 
         ).catch((err) => {
-            console.error(err);
+            console.log("err",err);
             dispatch(fetchAPIFailure(1000, err));
             return {
                 IsError: true,

@@ -110,11 +110,43 @@ class RewardPriceTableDetailCom extends Component {
     handleChange(formData, MLObject) {
 
         if (formData.ckIsPriceByTechspecsValueRange.value) {
+
+            if (formData.txtFromTechspecsValue.value.toString().length > 0) {
+
+                if (!/^\d*\.?\d+$/.test(formData.txtFromTechspecsValue.value)) {
+                    formData.txtFromTechspecsValue.ErrorLst.IsValidatonError = true;
+                    formData.txtFromTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
+                }
+                else {
+                    formData.txtFromTechspecsValue.ErrorLst.IsValidatonError = false;
+                    formData.txtFromTechspecsValue.ErrorLst.ValidatonErrorMessage = '';
+                }
+            }
+            if (formData.txtToTechspecsValue.value.toString().length > 0) {
+                if (!/^\d*\.?\d+$/.test(formData.txtToTechspecsValue.value)) {
+                    formData.txtToTechspecsValue.ErrorLst.IsValidatonError = true;
+                    formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
+                }
+                else {
+                    if(formData.txtToTechspecsValue.value <= formData.txtFromTechspecsValue.value){
+                        formData.txtToTechspecsValue.ErrorLst.IsValidatonError = true;
+                        formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập giá trị từ bé hơn giá trị đến';
+                    }
+                    else{
+                        formData.txtToTechspecsValue.ErrorLst.IsValidatonError = false;
+                        formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = '';
+                    }
+                }
+    
+            }
+           
             if (formData.cbProductID.value != undefined) {
                 if (formData.cbProductID.value[0].ProductID != null) {
                     this.setState({
                         IsDisableTechspecsValue: true,
                     })
+                    formData.txtToTechspecsValue.ErrorLst.IsValidatonError = false;
+                    formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = '';
                 }
                 else {
                     this.setState({
@@ -128,10 +160,12 @@ class RewardPriceTableDetailCom extends Component {
                     IsDisableTechspecsValue: false,
                 })
             }
+           
 
         }
         else {
-
+            formData.txtToTechspecsValue.ErrorLst.IsValidatonError = false;
+            formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = '';
             this.setState({
                 IsDisableTechspecsValue: true,
             })
@@ -154,27 +188,7 @@ class RewardPriceTableDetailCom extends Component {
             })
         }
 
-        if (formData.txtFromTechspecsValue.value.toString().length > 0) {
-
-            if (!/^\d*\.?\d+$/.test(formData.txtFromTechspecsValue.value)) {
-                formData.txtFromTechspecsValue.ErrorLst.IsValidatonError = true;
-                formData.txtFromTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
-            }
-            else{
-                formData.txtToTechspecsValue.ErrorLst.IsValidatonError = false;
-                formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = '';
-            }
-        }
-        if (formData.txtToTechspecsValue.value.toString().length > 0) {
-            if (!/^\d*\.?\d+$/.test(formData.txtToTechspecsValue.value)) {
-                formData.txtToTechspecsValue.ErrorLst.IsValidatonError = true;
-                formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
-            }
-            else{
-                formData.txtToTechspecsValue.ErrorLst.IsValidatonError = false;
-                formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = '';
-            }
-        }
+       
     }
 
 

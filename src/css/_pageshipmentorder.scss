@@ -34,6 +34,24 @@
                                 font-size: 12px;
                             }
                         }
+                        .input-group{
+                            clear: both;
+                            input{
+                                line-height: initial;
+                                &.form-control{
+                                    padding: 0px;
+                                    border-radius: 4px 0px 0px 4px !important;
+                                    border-color: #ebebeb;
+                                }
+                            }
+                            .input-group-append{
+                                .input-group-text{
+                                    clear: both;
+                                    border-top-right-radius: 4px;
+                                    border-bottom-right-radius: 4px;
+                                }
+                            }
+                        }
                     }
                     .group-count {
                         clear: both;
@@ -102,7 +120,7 @@
             background: #fff;
             border: 1px solid #f1f2f3;
             height: 410px;
-            max-height: 410px;
+            max-height: 350px;
             overflow-x: auto;
             overflow-y: scroll;
             -webkit-overflow-scrolling: touch;
@@ -183,13 +201,14 @@
                                         }
                                         .partner-sale-Order{
                                             color: #2b8eea;
+                                            font-size: 13px;
                                         }
                                         .line{
                                             margin: 0 5px;
                                         }
                                     }
                                     &.address-customer{
-                                        font-size: 10px;
+                                        font-size: 12px;
                                     }
                                     &.info-customer{
                                         display: inline-flex;
@@ -240,14 +259,17 @@
                                         font-weight: 600;
                                         letter-spacing: 1px;
                                         font-size: 12px;
+                                        font-size: 13px;
                                     }
                                     &.user-coordinator{
-                                        font-weight: 600;
-                                        font-size: 10px;
+                                        font-size: 12px;
                                     }
                                     &.user-delivery{
+                                        font-size: 12px;
+                                    }
+                                    &.note{
                                         font-weight: 600;
-                                        font-size: 10px;
+                                        font-size: 11px;
                                     }
                                 }
                             }
@@ -287,7 +309,7 @@
                                         span{
                                             width: 100%;
                                             display: block;
-                                            font-size: 10px;
+                                            font-size: 12px;
                                             margin-bottom: 5px;
                                             font-weight: 600;
                                             &:last-child{
@@ -340,6 +362,23 @@
                     }
                 }
                
+            }
+        }
+        .jsgrid-grid-footer{
+            clear: both;
+            padding-top: 5px;
+            nav{
+                ul{
+                    margin-bottom: 0;
+                    li{
+                        a{
+                            &.page-link{
+                                min-width: 25px;
+                                line-height: 25px;
+                            }
+                        }
+                    }
+                }
             }
         }
     }

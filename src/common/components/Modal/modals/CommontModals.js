@@ -13,7 +13,7 @@ const CommontModals = ({ title, afterClose, hideModal, content, id, maxWidth }) 
     if (afterClose) {
       afterClose();
     }
-  }; 
+  };
   return (
     <Modal title={title} onClose={onClose} id={"modalid-" + id} maxWidth={maxWidth}>
       {content.isUploadFile ?

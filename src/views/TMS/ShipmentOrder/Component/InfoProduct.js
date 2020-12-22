@@ -7,6 +7,7 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Collapsible from 'react-collapsible';
 import { Link } from "react-router-dom";
 import ReactTooltip from 'react-tooltip';
+import { formatDate } from "../../../../common/library/CommonLib.js";
 import {
     APIHostName,
 } from "../constants";
@@ -349,10 +350,10 @@ class InfoProductCom extends Component {
                                                 <th className="jsgrid-header-cell" style={{ width: "10%" }}>Serial/IMEI</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "7%" }}>Số lượng trả</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "8%" }}>Đã trả hàng</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "6%" }}>Đã trả hàng</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "8%" }}>Mã trả hàng</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "8%" }}>Ngày trả hàng</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "15%" }}>Ghi chú</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Ngày trả hàng</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "13%" }}>Ghi chú</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -365,9 +366,9 @@ class InfoProductCom extends Component {
                                                             <td>{item.ProductSerial}</td>
                                                             <td>{item.Quantity}</td>
                                                             <td>{formatMoney(item.ReturnPrice, 0)}đ</td>
-                                                            <td>{item.IsCreatedInputVoucherReturn}</td>
+                                                            <td>{item.IsCreatedInputVoucherReturn==true?<span className="fa fa-check"></span>:""}</td>
                                                             <td>{item.InputVoucherID}</td>
-                                                            <td>{item.ReturnInputDate}</td>
+                                                            <td>{formatDate(item.ReturnInputDate)}</td>
                                                             <td>{item.Note}</td>
                                                         </tr>
                                                     )

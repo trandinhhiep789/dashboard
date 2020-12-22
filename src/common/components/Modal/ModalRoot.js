@@ -10,6 +10,7 @@ import CommontModals from './modals/CommontModals';
 import ModalSearch from './modals/ModalSearch';
 import ConfiComponet from './modals/ConfiComponet.js';
 import ModalSlideImage from './modals/ModalSlideImage.js';
+import CommonModalView from './modals/CommonModalView';
 
 import {
     MODAL_TYPE_NOTIFICATION,
@@ -19,7 +20,8 @@ import {
     MODAL_TYPE_SEARCH,
     MODAL_TYPE_CONFIRMATIONNEW,
     MODAL_TYPE_CONFICOMPONET,
-    MODAL_TYPE_IMAGE_SLIDE
+    MODAL_TYPE_IMAGE_SLIDE,
+    MODAL_TYPE_VIEW
 } from '../../../constants/actionTypes';
 
 const MODAL_COMPONENTS = {
@@ -31,6 +33,7 @@ const MODAL_COMPONENTS = {
     [MODAL_TYPE_CONFIRMATIONNEW]: ConfirmationNew,
     [MODAL_TYPE_CONFICOMPONET]: ConfiComponet,
     [MODAL_TYPE_IMAGE_SLIDE]: ModalSlideImage,
+    [MODAL_TYPE_VIEW]: CommonModalView
 };
 const lstModals = [];
 const ModalRoot = ({ type, props }) => {
