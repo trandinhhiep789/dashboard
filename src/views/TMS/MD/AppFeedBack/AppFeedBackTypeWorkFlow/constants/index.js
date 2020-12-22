@@ -177,18 +177,18 @@ export const MLObjectDefinition = [
         BindControlName: "Description",
         DataSourceMember: "Description"
     },
-    // {
-    //     Name: "IsOnlyShowOnHasCollection",
-    //     DefaultValue: "",
-    //     BindControlName: "IsOnlyShowOnHasCollection",
-    //     DataSourceMember: "IsOnlyShowOnHasCollection"
-    // },
-    // {
-    //     Name: "IsPaidInStep",
-    //     DefaultValue: "",
-    //     BindControlName: "IsPaidInStep",
-    //     DataSourceMember: "IsPaidInStep"
-    // },
+    {
+        Name: "IsCanUpdateSolution",
+        DefaultValue: "",
+        BindControlName: "IsCanUpdateSolution",
+        DataSourceMember: "IsCanUpdateSolution"
+    },
+    {
+        Name: "IsCanUpdateProcessQuality",
+        DefaultValue: "",
+        BindControlName: "IsCanUpdateProcessQuality",
+        DataSourceMember: "IsCanUpdateProcessQuality"
+    },
     // {
     //     Name: "IsArrivalReceiverLocationStep",
     //     DefaultValue: "",
