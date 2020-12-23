@@ -529,6 +529,16 @@ class AppFeedBackTypeWorkFlowCom extends React.Component {
                                         swaplabelModal={true}
                                     />
 
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Có thể cập nhật giải pháp" name="IsCanUpdateSolution"
+                                        controltype="InputControl" datasourcemember="IsCanUpdateSolution"
+                                        swaplabelModal={true}
+                                    />
+
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Có thể cập nhật chất lượng xử lý phản hồi" name="IsCanUpdateProcessQuality"
+                                        controltype="InputControl" datasourcemember="IsCanUpdateProcessQuality"
+                                        swaplabelModal={true}
+                                    />
+
                                     <FormControl.CheckBox labelcolspan={1} colspan={11} label="Kích hoạt" name="IsActived"
                                         controltype="InputControl" datasourcemember="IsActived"
                                         swaplabelModal={true}
