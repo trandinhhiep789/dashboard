@@ -127,7 +127,6 @@ class HomeCom extends React.Component {
 
     componentDidMount() {
         // this.props.updatePagePath(PagePath);
-
         const LoginInfo = localStorage.getItem('LoginInfo');
         //console.log("componentDidMount this.props.AuthenticationInfo", this.props.AuthenticationInfo);
         if (!this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess) {
@@ -150,7 +149,6 @@ class HomeCom extends React.Component {
     callLoadCacheList(userName) {
         const APIHostName = "CacheAPI";
         this.props.callFetchAPI(APIHostName, 'api/Cache/GetCacheList', userName).then(apiResult => {
-
             //console.log("callLoadCacheList", apiResult);
             if (!apiResult.IsError) {
                 const listCacheItem = apiResult.ResultObject.ListCacheItem;
@@ -174,7 +172,6 @@ class HomeCom extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.AuthenticationInfo) !== JSON.stringify(nextProps.AuthenticationInfo)) {
             const LoginInfo = localStorage.getItem('LoginInfo');
-
             if (!this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess) {
                 if (LoginInfo) {
                     const LoginInfo1 = JSON.parse(LoginInfo)
@@ -193,9 +190,6 @@ class HomeCom extends React.Component {
         const { isLoggedIn } = this.state;
         const isRelogin = this.props.AuthenticationInfo.LoginInfo.IsRelogin;
         // console.log("Home this.props.AuthenticationInfo.LoginInfo: ", this.props.AuthenticationInfo.LoginInfo);
-
-           
-
         return (
             <React.Fragment>
                 <Header />

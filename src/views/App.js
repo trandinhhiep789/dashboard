@@ -7,12 +7,6 @@ import Login from "./Login";
 import Logout from "./Logout";
 import ModalRoot from '../common/components/Modal/ModalRoot';
 
-// const Home = React.lazy(() => import('./Home'));
-// const Login = React.lazy(() => import('./Login'));
-// const Logout = React.lazy(() => import('./Logout'));
-// const ModalRoot = React.lazy(() => import('../common/components/Modal/ModalRoot'));
-
-const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
 class AppCom extends React.Component {
     constructor(props) {
@@ -27,7 +21,6 @@ class AppCom extends React.Component {
     }
 
     render() {
-
         return (
             <BrowserRouter>
                 {/* <React.Suspense fallback={loading()}> */}

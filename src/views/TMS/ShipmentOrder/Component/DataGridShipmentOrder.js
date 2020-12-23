@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
 import { formatDate } from "../../../../common/library/CommonLib.js";
-import { formatMoney,formatNumber } from '../../../../utils/function';
+import { formatMoney, formatNumber } from '../../../../utils/function';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import ListShipCoordinator from '../Component/ListShipCoordinator.js';
@@ -734,7 +734,11 @@ class DataGridShipmentOderCom extends Component {
                                         <div className="group-info-row">
                                             <label className="item person">
                                                 <span className="person-info fw-600" style={{ fontSize: 12 }}>
-                                                    <Link target="_blank" to={"/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID}>{rowItem.ShipmentOrderID}</Link>
+                                                    <Link
+                                                        className="linktext blank"
+                                                        target="_blank"
+                                                        to={{ pathname: "/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID }}>
+                                                        {rowItem.ShipmentOrderID}</Link>
                                                 </span>
                                             </label>
                                             <label className="item address-receiver">
