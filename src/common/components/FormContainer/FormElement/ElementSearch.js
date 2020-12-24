@@ -868,10 +868,12 @@ class ElementDatetimeCom extends Component {
         this.handleValueChange = this.handleValueChange.bind(this);
     }
     handleValueChange(name, moment) {
+        
         //e.preventDefault();
         if (this.props.onValueChange != null)
             this.props.onValueChange(name, moment);
     }
+    
     render() {
         let { name, label, timeFormat, dateFormat, colspan, value, ValidatonErrorMessage, classNameCol } = this.props;
         let className = "";
@@ -899,7 +901,7 @@ class ElementDatetimeCom extends Component {
                         <Datetime
                             className={className}
                             name={name}
-                            onChange={this.handleValueChange}
+                            // onChange={this.handleValueChange}
                             onChange={(moment) => this.handleValueChange(name, moment)}
                             defaultValue={value}
                             timeFormat={timeFormat}
@@ -983,7 +985,7 @@ class ElementDatetimeFromToCom extends Component {
                             <Datetime
                                 className={className}
                                 name={name}
-                                onChange={this.handleValueChange}
+                                // onChange={this.handleValueChange}
                                 onChange={(moment) => this.handleValueChange(name, moment)}
                                 defaultValue={value}
                                 timeFormat={timeFormat}
@@ -996,7 +998,7 @@ class ElementDatetimeFromToCom extends Component {
                             <Datetime
                                 className={className}
                                 name={nameOption}
-                                onChange={this.handleValueChange}
+                                // onChange={this.handleValueChange}
                                 onChange={(moment) => this.handleValueChange(name, moment)}
                                 defaultValue={valueOption}
                                 timeFormat={timeFormat}
