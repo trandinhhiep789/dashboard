@@ -177,6 +177,9 @@ class SearchCom extends React.Component {
                     IsLoadData: true
                 });
             }
+            else{
+                this.addNotification(apiResult.Message, apiResult.IsError);
+            }
         });
     }
 
@@ -225,7 +228,7 @@ class SearchCom extends React.Component {
                     </div>
                 </div>
             ),
-            dismiss: { duration: 6000 },
+            dismiss: { duration: 3000 },
             dismissable: { click: true }
         });
     }
