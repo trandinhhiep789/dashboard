@@ -29,6 +29,9 @@ import { showModal, hideModal } from '../../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 import DataGirdReportShipmentOrder from '../../components/DataGirdReportShipmentOrder'
 
+import { toIsoStringCus } from '../../../../../utils/function'
+
+
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -62,6 +65,7 @@ class SearchCom extends React.Component {
         })
     };
 
+
     handleSearchSubmit(formData, MLObject) {
         let result, result2;
 
@@ -91,15 +95,14 @@ class SearchCom extends React.Component {
             ToDate: MLObject.ToDate
         })
 
-
         const postData = [
             {
                 SearchKey: "@FROMDATE",
-                SearchValue: MLObject.FromDate
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
             },
             {
                 SearchKey: "@TODATE",
-                SearchValue: MLObject.ToDate
+                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())//MLObject.ToDate
             },
             {
                 SearchKey: "@SHIPMENTORDERTYPEIDLIST",
@@ -117,10 +120,12 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
+        console.log("searchData", searchData)
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
                 const tempData = apiResult.ResultObject.map((item, index) => {
-                    item.fulNameStore= item.CoordinatorStoreID +  "- " + item.StoreName;
+                    item.fulNameStore = item.CoordinatorStoreID + "- " + item.StoreName;
                     return item;
                 })
                 this.setState({
@@ -129,7 +134,7 @@ class SearchCom extends React.Component {
                     IsLoadDataComplete: true
                 });
             }
-            else{
+            else {
                 this.showMessage(apiResult.MessageDetail)
             }
         });
@@ -218,7 +223,7 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.MessageDetail)
             }
         });
-        
+
     }
 
 
@@ -226,25 +231,25 @@ class SearchCom extends React.Component {
         const { widthPercent } = this.state;
         let titleModal;
 
-        if(status == 1){
+        if (status == 1) {
             titleModal = "Danh sách vận đơn chưa giao"
         }
-        if(status == 2){
+        if (status == 2) {
             titleModal = "Danh sách vận đơn đang  giao"
         }
-        if(status == 3){
+        if (status == 3) {
             titleModal = "Danh sách vận đơn giao xong"
         }
-        if(status == 4){
+        if (status == 4) {
             titleModal = "Danh sách vận đơn hoàn tất"
         }
-        if(status == 5){
+        if (status == 5) {
             titleModal = "Danh sách vận đơn huỷ giao"
         }
-        if(status == 6){
+        if (status == 6) {
             titleModal = "Danh sách vận đơn đã nộp tiền"
         }
-        if(status == 7){
+        if (status == 7) {
             titleModal = "Danh sách vận đơn chưa nộp tiền"
         }
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {

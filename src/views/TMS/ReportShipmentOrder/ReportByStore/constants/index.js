@@ -2,6 +2,9 @@ export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/ShipmentOrder/SearchReportStore";
 export const LoadReportStoreByDate = "api/ShipmentOrder/LoadReportStoreByDate";
 
+import { dateToLocalISO, toIsoStringCus } from '../../../../../utils/function'
+import { formatDate } from "../../../../../common/library/CommonLib.js";
+
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Danh sách thống kê vận đơn theo kho" }
@@ -17,7 +20,7 @@ export const SearchElementList = [
         name: "dtFromDate",
         DataSourceMember: "FromDate",
         label: "Từ Ngày",
-        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
+        value: new Date((new Date().getMonth() + 1) + "-" + '01' + "-" + new Date().getFullYear()),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,

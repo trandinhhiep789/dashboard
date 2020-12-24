@@ -15,11 +15,37 @@ export const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands =
 };
 
 export const formatNumber = (num) => {
-    if(num != undefined && num != ''){
+    if (num != undefined && num != '') {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
     }
-    else{
+    else {
         return num
     }
-    
+
+}
+
+export const toIsoStringCus = (dateTime) => {
+    const dateTime1 = new Date(dateTime);
+    const a= new Date();
+    const tzo = a.getTimezoneOffset();
+    const dif = tzo >= 0 ? '+' : '-';
+    const pad = function (num) {
+        var norm = Math.floor(Math.abs(num));
+        return (norm < 10 ? '0' : '') + norm;
+    };
+    return dateTime1.getFullYear() +
+        '-' + pad(dateTime1.getMonth() + 1) +
+        '-' + pad(dateTime1.getDate()) +
+        'T' + pad(a.getHours()) +
+        ':' + pad(a.getMinutes()) +
+        ':' + pad(a.getSeconds()) 
+}
+
+export const dateToLocalISO = (date) => {
+    const off = date.getTimezoneOffset()
+    const absoff = Math.abs(off)
+    return (new Date(date.getTime() - off * 60 * 1000).toISOString().substr(0, 23) +
+        (off > 0 ? '-' : '+') +
+        (absoff / 60).toFixed(0).padStart(2, '0') + ':' +
+        (absoff % 60).toString().padStart(2, '0'))
 }
