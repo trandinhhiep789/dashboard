@@ -84,19 +84,19 @@ class AdvanceRequestDetailCom extends React.Component {
                         <div className="card-title">
                             <h4 className="title">
                                 <strong>Chi tiết yêu cầu tạm ứng</strong></h4>
-                            {!this.state.AdvanceRequest.IsCreatedOrder&&!this.state.AdvanceRequest.IsDeleted ?
+                            {(!this.state.AdvanceRequest.IsCreatedOrder && !this.state.AdvanceRequest.IsDeleted) ?
                                 <button className="btn btnEditCard" onClick={this.handleAdvanceRequest.bind(this)} type="button">
                                     <span>Tạo lại phiếu xuất</span>
                                 </button> :
                                 ""
                             }
-                             {!this.state.AdvanceRequest.IsDeleted ?
+                            {(!this.state.AdvanceRequest.IsOutput && !this.state.AdvanceRequest.IsDeleted) ?
                                 <button className="btn btnEditCard" onClick={this.handleCancelAdvanceRequest.bind(this)} type="button">
-                                <span>Hủy phiếu xuất</span>
+                                    <span>Hủy phiếu xuất</span>
                                 </button> :
                                 ""
                             }
-                           
+
                         </div>
                         <div className="card-body">
                             <div className="row">
