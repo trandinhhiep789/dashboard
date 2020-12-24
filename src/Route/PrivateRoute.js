@@ -2,9 +2,11 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
-const PrivateRoute = ({ component: Component, isLoggedIn, isRelogin, ...rest }) => (
+const PrivateRoute = ({ component: Component, isLoggedIn, isRelogin, ...rest }) => 
+    {
     // <React.Suspense fallback={loading()}>
-    <Route {...rest} render={(props) => (
+  //  console.log( "PrivateRoute:isLoggedIn",isLoggedIn, isRelogin);
+    return <Route {...rest} render={(props) => (
         isLoggedIn === true && !isRelogin
             ? <Component {...props} />
             : <Redirect to={{
@@ -13,5 +15,7 @@ const PrivateRoute = ({ component: Component, isLoggedIn, isRelogin, ...rest }) 
             }} />
     )} />
     // </React.Suspense>
-)
+        };
+    
+
 export default PrivateRoute

@@ -10,7 +10,7 @@ import { deleteCookie } from "../common/library/CommonLib.js";
 
 export function loginRequest(username,password)
 {
-  //  console.log(LOGIN_REQUEST);
+   // console.log(LOGIN_REQUEST);
     return {
         type: LOGIN_REQUEST,
         Username: username,
@@ -20,7 +20,7 @@ export function loginRequest(username,password)
 
 export function loginSuccess(loginUserInfo,tokenString,password)
 {
-  //  console.log(LOGIN_SUCCESS,loginUserInfo);
+    //console.log(LOGIN_SUCCESS,loginUserInfo);
     return {
         type: LOGIN_SUCCESS,
         IsLoginSuccess: true,
@@ -33,7 +33,7 @@ export function loginSuccess(loginUserInfo,tokenString,password)
 
 export function loginFailure(errorMessage)
 {
-  //  console.log(LOGIN_FAILURE);
+   // console.log(LOGIN_FAILURE);
     return {
         type: LOGIN_FAILURE,
         ErrorMessage: errorMessage
@@ -42,7 +42,7 @@ export function loginFailure(errorMessage)
 
 export function logout()
 {
-  //  console.log(LOGOUT);
+   // console.log(LOGOUT);
     return {
         type: LOGOUT
     };
@@ -50,7 +50,7 @@ export function logout()
 
 export function relogin()
 {
-  //  console.log(LOGOUT);
+   //console.log("LOGIN_RELOGIN",LOGIN_RELOGIN);
     return {
         type: LOGIN_RELOGIN
     };
