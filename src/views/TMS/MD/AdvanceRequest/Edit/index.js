@@ -74,12 +74,17 @@ class EditCom extends React.Component {
 
     render() {
 
-        console.log("this.state.DataSource.AdvanceRequest_ShipOrderList.lenght", this.state.DataSource);
+
+
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-        
+
         if (this.state.IsLoadDataComplete && !this.state.IsCallAPIError) {
+            let IsShow = false;
+            if (this.state.DataSource.AdvanceRequest_ShipOrderList.length > 0) {
+                IsShow = true;
+            }
             return (
                 <React.Fragment>
                     <div className="col-md-12 col-sm-12 col-xs-12">
@@ -131,7 +136,7 @@ class EditCom extends React.Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Người yêu cầu: </span>
-                                            <span>{this.state.DataSource.RequestUserName}</span>
+                                            <span>{this.state.DataSource.RequestUserFull}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -158,7 +163,7 @@ class EditCom extends React.Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Người duyệt: </span>
-                                            <span>{this.state.DataSource.ReviewedUser}</span>
+                                            <span>{this.state.DataSource.ReviewedUser != "" ? this.state.DataSource.ReviewedUserFull : ""}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
@@ -182,7 +187,7 @@ class EditCom extends React.Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span> Người tạo đơn hàng tạm ứng: </span>
-                                            <span>{this.state.DataSource.CreatedOrderUser}</span>
+                                            <span>{this.state.DataSource.CreatedOrderUserFull}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -207,7 +212,7 @@ class EditCom extends React.Component {
                                         <div className="form-group checkbox customCheckbox">
                                             <span>Đã xuất tạm ứng: </span>
                                             <label>
-                                                <input name="IsResponse" type="checkbox" id="IsResponse" checked={this.state.DataSource.IsOutput} />
+                                                <input name="IsOutput" type="checkbox" id="IsOutput" checked={this.state.DataSource.IsOutput} />
                                                 <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
@@ -215,11 +220,10 @@ class EditCom extends React.Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span> Người xuất tạm ứng: </span>
-                                            <span>{this.state.DataSource.OutputUser}</span>
+                                            <span>{this.state.DataSource.OutputUser != "" ? this.state.DataSource.OutputUserFull : ""}</span>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
@@ -234,11 +238,46 @@ class EditCom extends React.Component {
                                         </div>
                                     </div>
                                 </div>
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group checkbox customCheckbox">
+                                            <span>Đã bàn giao: </span>
+                                            <label>
+                                                <input name="IsHandoverMaterial" type="checkbox" id="IsHandoverMaterial" checked={this.state.DataSource.IsHandoverMaterial} />
+                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span> Người bàn giao: </span>
+                                            <span>{this.state.DataSource.HandoverUser != "" ? this.state.DataSource.HandoverUserFull : ""}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span> Ngày bàn giao: </span>
+                                            <span>{formatDate(this.state.DataSource.HandoverDate)}</span>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group checkbox customCheckbox">
+                                            <span>Đã hủy: </span>
+                                            <label>
+                                                <input name="IsDeleted" type="checkbox" id="IsDeleted" checked={this.state.DataSource.IsDeleted} />
+                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
 
-                    {this.state.DataSource != undefined ?
+                    {IsShow == true ?
                         <React.Fragment>
                             <div className="col-lg-12 page-detail">
                                 <div className="card">
