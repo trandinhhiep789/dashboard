@@ -15,8 +15,13 @@ export const EditAPIRPTDetailPath = "api/RewardPriceTableDetail/Update";
 export const AddAPIRPTDetailPath = "api/RewardPriceTableDetail/Add";
 export const DeleteAPIRPTDetailPath = "api/RewardPriceTableDetail/Delete";
 
+export const EditAPIRPTExceptionPath = "api/RewardPriceTable_Exception/Update";
+export const AddAPIRPTExceptionPath = "api/RewardPriceTable_Exception/Add";
+export const DeleteAPIRPTExceptionPath = "api/RewardPriceTable_Exception/Delete";
+
 export const TitleFormDetail = "Thông tin đơn giá thưởng giao hàng và lắp đặt";
 export const TitleFromRPTDetail = "Chi tiết thông tin đơn giá thưởng giao hàng và lắp đặt";
+export const TitleFromRPTException = "Chi tiết thông tin đơn giá thưởng ngoại lệ";
 
 
 export const PagePath = [
@@ -310,6 +315,117 @@ export const MLObjectRPTDetailItem= [
         DefaultValue: "",
         BindControlName: "cbProductID",
         DataSourceMember: "ProductID"
+    },
+
+    {
+        Name: "RewardPrice",
+        DefaultValue: {},
+        BindControlName: "txtRewardPrice",
+        DataSourceMember: "RewardPrice"
+    },
+    {
+        Name: "RewardPriceWithoutInstall",
+        DefaultValue: {},
+        BindControlName: "txtRewardPriceWithoutInstall",
+        DataSourceMember: "RewardPriceWithoutInstall"
+    },
+    {
+        Name: "IsSystem",
+        DefaultValue: false,
+        BindControlName: "ckIsSystem",
+        DataSourceMember: "IsSystem"
+    },
+]
+
+
+export const DataGridColumnItemListRPTException = [
+    {
+        Name: "MainGroupName",
+        Type: "text",
+        Caption: "Ngành hàng",
+        DataSourceMember: "MainGroupName",
+        Width: 100
+    },
+    {
+        Name: "SubGroupName",
+        Type: "text",
+        Caption: "Nhóm hàng",
+        DataSourceMember: "SubGroupName",
+        Width: 100
+    },
+   
+    {
+        Name: "FromQuantity",
+        Type: "textNumber",
+        Caption: "Số lượng từ",
+        DataSourceMember: "FromQuantity",
+        Width: 100
+    },
+    {
+        Name: "ToQuantity",
+        Type: "textNumber",
+        Caption: "Số lượng đến",
+        DataSourceMember: "ToQuantity",
+        Width: 100
+    },
+    {
+        Name: "RewardPrice",
+        Type: "textCurrency",
+        Caption: "Giá",
+        DataSourceMember: "RewardPrice",
+        Width: 100
+    },
+    {
+        Name: "RewardPriceWithoutInstall",
+        Type: "textCurrency",
+        Caption: "Giá không lắp đặt",
+        DataSourceMember: "RewardPriceWithoutInstall",
+        Width: 100
+    },
+
+    {
+        Name: "Action",
+        Type: "editnew",
+        Caption: "Tác vụ",
+        DataSourceMember: "",
+        Width: 70,
+    }
+    
+]
+
+export const MLObjectRPTExceptionItem= [
+    {
+        Name: "RewardPriceTableExceptionID",
+        DefaultValue: {},
+        BindControlName: "txtRewardPriceTableExceptionID",
+        DataSourceMember: "RewardPriceTableExceptionID"
+    },
+    
+    {
+        Name: "MainGroupID",
+        DefaultValue: {},
+        BindControlName: "cbMainGroupID",
+        DataSourceMember: "MainGroupID"
+    },
+    {
+        Name: "SubGroupID",
+        DefaultValue: {},
+        BindControlName: "cbSubGroup",
+        DataSourceMember: "SubGroupID"
+    },
+   
+    {
+        Name: "FromQuantity",
+        DefaultValue: {},
+        BindControlName: "txtFromQuantity",
+        DataSourceMember: "FromQuantity"
+    },
+    
+    {
+        Name: "ToQuantity",
+        DefaultValue: {},
+        BindControlName: "txtToQuantity",
+        DataSourceMember: "ToQuantity"
     },
 
     {

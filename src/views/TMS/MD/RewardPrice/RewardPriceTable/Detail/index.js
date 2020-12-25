@@ -17,7 +17,9 @@ import {
     TitleFormDetail,
     DataGridColumnItemListRPTDetail,
     TitleFromRPTDetail,
-    DeleteAPIRPTDetailPath
+    DeleteAPIRPTDetailPath,
+    TitleFromRPTException,
+    DataGridColumnItemListRPTException
 
 } from "../constants";
 import { MessageModal } from "../../../../../../common/components/Modal";
@@ -28,12 +30,14 @@ import { MODAL_TYPE_COMMONTMODALS } from '../../../../../../constants/actionType
 import ReactNotification from "react-notifications-component";
 import RewardPriceTableDetail from "../../RewardPriceTableDetail";
 import UpdateRewardPriceTableDetail from "../../RewardPriceTableDetail/Update.js";
+import RewardPriceTableException from "../../RewardPriceTableException";
 
 
 class DetailCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
+        this.handleInputChangeObjExceptionItem = this.handleInputChangeObjExceptionItem.bind(this);
         this.state = {
             DataSource: {},
             CallAPIMessage: "",
@@ -58,7 +62,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            console.log('apiResult', apiResult)
+            // console.log('apiResult', apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -133,8 +137,67 @@ class DetailCom extends React.Component {
     handleItemDeleteRPTDetail(index) {
 
         const { RewardPriceTableID, DataSource } = this.state;
-       
-        const resultItem =  DataSource.RewardPriceTableDetailList[index];
+
+        const resultItem = DataSource.RewardPriceTableDetailList[index];
+        let MLObject = {};
+        MLObject.RewardPriceTableDetailID = resultItem.RewardPriceTableDetailID.trim();
+
+        this.props.callFetchAPI(APIHostName, DeleteAPIRPTDetailPath, MLObject).then((apiResult) => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callLoadData(RewardPriceTableID);
+            }
+        });
+    }
+
+    handleInputChangeObjExceptionItem(id, apiResult) {
+        // console.log("â", id, apiResult)
+        if (apiResult.IsError) {
+            this.showMessage(apiResult.Message);
+        }
+        else {
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            this.callLoadData(id);
+            this.props.hideModal();
+        }
+
+    }
+
+    handleItemInsertRPTException() {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Thêm chi tiết đơn giá ngoại lệ',
+            content: {
+                text: <RewardPriceTableException
+                    dataSource={this.state.DataSource}
+                    onInputChangeObj={this.handleInputChangeObjExceptionItem}
+
+                />
+            },
+            maxWidth: '1000px'
+        });
+    }
+
+    handleItemEditRPTException(index) {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Cập nhật chi tiết đơn giá ngoại lệ',
+            content: {
+                text: <RewardPriceTableException
+                    dataSource={this.state.DataSource}
+                    index={index}
+                    onInputChangeObj={this.handleInputChangeObjExceptionItem}
+
+                />
+            },
+            maxWidth: '1000px'
+        });
+    }
+
+    handleItemDeleteRPTException(index) {
+
+        const { RewardPriceTableID, DataSource } = this.state;
+
+        const resultItem = DataSource.RewardPriceTableDetailList[index];
         let MLObject = {};
         MLObject.RewardPriceTableDetailID = resultItem.RewardPriceTableDetailID.trim();
 
@@ -212,6 +275,21 @@ class DetailCom extends React.Component {
                                 onInsertClick={this.handleItemInsertRPTDetail.bind(this)}
                                 onEditClick={this.handleItemEditRPTDetail.bind(this)}
                                 onDeleteClick={this.handleItemDeleteRPTDetail.bind(this)}
+                                ref={this.gridref}
+                                isSystem={IsSystem}
+                            />
+
+                            <InputGridControl
+                                name="RewardPriceTableExceptionList"
+                                controltype="InputGridControl"
+                                title={TitleFromRPTException}
+                                IDSelectColumnName={"RewardPriceTableExceptionID"}
+                                PKColumnName={"RewardPriceTableExceptionID"}
+                                listColumn={DataGridColumnItemListRPTException}
+                                dataSource={this.state.DataSource.RewardPriceTable_ExceptionList}
+                                onInsertClick={this.handleItemInsertRPTException.bind(this)}
+                                onEditClick={this.handleItemEditRPTException.bind(this)}
+                                onDeleteClick={this.handleItemDeleteRPTException.bind(this)}
                                 ref={this.gridref}
                                 isSystem={IsSystem}
                             />
