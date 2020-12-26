@@ -838,7 +838,15 @@ const AppMenu = [
                 LinkTo: '/DebtByUser',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'StaffDebt',
+                MenuTitle: 'Quản lý công nợ',
+                LinkTo: '/StaffDebt',
+                MenuIcon: '',
+                SubMenu: []
             }
+            
         ]
     }
 
