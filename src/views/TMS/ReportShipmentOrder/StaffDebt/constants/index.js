@@ -1,6 +1,5 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/BeginTermAdvanceDebt/LoadBADByUserName";
-export const LoadByProductIDAPIPath = "api/AdvanceDebtFlow/LoadBADByProductID";
+export const SearchAPIPath = "api/StaffDebt/Search";
 
 
 export const PagePath = [
@@ -8,6 +7,26 @@ export const PagePath = [
     { Link: "", Title: "Danh sách quản lý công nợ" }
 ];
 
+
+export const InitSearchParams = [
+    {
+        SearchKey: "@FROMDATE",
+        SearchValue: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear())
+    },
+    {
+        SearchKey: "@TODATE",
+        SearchValue: new Date()
+    },
+    {
+        SearchKey: "@USERNAME",
+        SearchValue:-1
+    },
+    {
+        SearchKey: "@STOREID",
+        SearchValue: -1
+    },
+  
+];
 
 export const SearchElementList = [
     
@@ -80,6 +99,11 @@ export const  SearchMLObjectDefinition = [
         BindControlName: "dtToDate"
     },
     {
+        Name: "CoordinatorStoreID",
+        DefaultValue: "-1",
+        BindControlName: "cbCoordinatorStoreID"
+    },
+    {
         Name: "UserName",
         DefaultValue: "",
         BindControlName: "cbUserName"
@@ -88,10 +112,10 @@ export const  SearchMLObjectDefinition = [
 
 export const GridColumnList = [
     {
-        Name: "UserName",
+        Name: "FullNameMember",
         Type: "text",
         Caption: "Mã NV nợ",
-        DataSourceMember: "UserName",
+        DataSourceMember: "FullNameMember",
         Width: "12%"
     },
     {
@@ -145,7 +169,7 @@ export const GridColumnList = [
     },
     {
         Name: "DeliveryStatus",
-        Type: "textCurrency",
+        Type: "text",
         Caption: "Tình trạng",
         DataSourceMember: "DeliveryStatus",
         Width: "7%"

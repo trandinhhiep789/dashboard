@@ -465,3 +465,7 @@ export const TMS_TMSREWARD_EXPORT = 'TMS_TMSREWARD_EXPORT';
 
 //Xem danh sách báo cao công nợ
 export const TMS_BEGINTERMADVANCEDEBT_VIEW = 'TMS_BEGINTERMADVANCEDEBT_VIEW';
+
+//Bảng lưu nợ tiền thu hộ của nhân viên
+export const TMS_STAFFDEBT_VIEW = 'TMS_STAFFDEBT_VIEW';
+export const TMS_STAFFDEBT_UNLOCKDELIVERY = 'TMS_STAFFDEBT_UNLOCKDELIVERY';

@@ -12,14 +12,16 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
+    InitSearchParams
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { TMS_BEGINTERMADVANCEDEBT_VIEW } from "../../../../../constants/functionLists";
+import { TMS_STAFFDEBT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
+import { toIsoStringCus } from '../../../../../utils/function'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -31,8 +33,8 @@ class SearchCom extends React.Component {
             IsCallAPIError: false,
             gridDataSource: [],
             IsLoadDataComplete: false,
-            widthPercent: "",
-            params: {}
+            SearchData: InitSearchParams,
+
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -41,37 +43,48 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+        this.callSearchData(this.state.SearchData)
     }
 
 
     handleSearchSubmit(formData, MLObject) {
-        const objData = {
-            UserName:MLObject.UserName.value,
-            FromDate:MLObject.FromDate,
-            ToDate:  MLObject.ToDate
 
-        }
+        const postData = [
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
+            },
+            {
+                SearchKey: "@USERNAME",
+                SearchValue: MLObject.UserName
+            },
+            {
+                SearchKey: "@STOREID",
+                SearchValue: MLObject.CoordinatorStoreID != "" ? MLObject.CoordinatorStoreID : -1
+            },
 
-        const objParams = {
-            UserName:MLObject.UserName.value,
-            FromDate:MLObject.FromDate,
-            ToDate:  MLObject.ToDate,
-            FullName: MLObject.UserName.label
-        }
+        ];
 
-        this.setState({
-            params: objParams
-        })
-        //this.callSearchData(objData)
+        this.callSearchData(postData)
     }
 
     callSearchData(searchData) {
-        
+
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            // console.log("apiResult", apiResult)
+            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
                 const tempData = apiResult.ResultObject.map((item, index) => {
-                    item.TotalAmount = item.Price * item.EndTermAdvanceDebt;
+                    item.FullNameMember = item.UserName + " - " + item.FullName
+                    if (item.TotALoverDueDebtOrders > 0) {
+                        item.DeliveryStatus = <span className='lblstatus text-danger'>Đã khóa</span>;
+                    }
+                    else {
+                        item.DeliveryStatus = <span className='lblstatus text-success'>Hoạt động</span>;
+                    }
                     return item;
                 })
                 this.setState({
@@ -149,10 +162,9 @@ class SearchCom extends React.Component {
                 <DataGrid
                     listColumn={GridColumnList}
                     dataSource={this.state.gridDataSource}
-                    // AddLink=""
                     IsFixheaderTable={true}
-                    IDSelectColumnName={'ProductID'}
-                    PKColumnName={'ProductID'}
+                    IDSelectColumnName={''}
+                    PKColumnName={''}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
@@ -160,9 +172,8 @@ class SearchCom extends React.Component {
                     IsPrint={false}
                     IsExportFile={false}
                     IsAutoPaging={true}
-                    params={this.state.params}
                     RowsPerPage={20}
-                    RequirePermission={TMS_BEGINTERMADVANCEDEBT_VIEW}
+                    // RequirePermission={TMS_STAFFDEBT_VIEW}
                     ref={this.gridref}
                 />
             </React.Fragment>
