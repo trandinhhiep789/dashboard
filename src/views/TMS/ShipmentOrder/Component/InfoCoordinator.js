@@ -230,7 +230,6 @@ class InfoCoordinatorCom extends Component {
         this.setState({ ShipmentOrder: ShipmentOrder })
     }
     handleOnValueChange(name, value) {
-        debugger;
         let { ShipmentOrder } = this.state;
         ShipmentOrder[name] = value;
 
@@ -258,7 +257,9 @@ class InfoCoordinatorCom extends Component {
         this.setState({ ShipmentOrder: ShipmentOrder })
     }
     handleValueChange1(e, selectedOption) {
+
         let listMLObject = [];
+        let listStaffDebtObject = [];
         if (selectedOption) {
             for (let i = 0; i < selectedOption.length; i++) {
                 listMLObject.push({
@@ -268,17 +269,34 @@ class InfoCoordinatorCom extends Component {
                     CreatedUser: this.props.AppInfo.LoginInfo.Username,
                     CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
                 });
+                listStaffDebtObject.push({
+                    UserName: selectedOption[i].value,
+                    StoreID: this.state.ShipmentOrder.CoordinatorStoreID
+                });
             }
         }
-
+        
         let { ShipmentOrder } = this.state;
-        ShipmentOrder.ShipmentOrder_DeliverUserList = listMLObject;
-        if (ShipmentOrder.ShipmentOrder_DeliverUserList.length <= 0) {
-            this.setState({ validationErroDeliverUser: "Vui lòng chọn nhân viên giao" });
+        if (selectedOption) {
+            this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
+                if(!apiResult.IsError)
+                {
+                    ShipmentOrder.ShipmentOrder_DeliverUserList = listMLObject;
+                }
+                else
+                {
+                    this.addNotification(apiResult.Message, apiResult.IsError);
+                }
+            });
         }
-        else {
-            this.setState({ validationErroDeliverUser: null });
-        }
+
+  
+        // if (ShipmentOrder.ShipmentOrder_DeliverUserList.length <= 0) {
+        //     this.setState({ validationErroDeliverUser: "Vui lòng chọn nhân viên giao" });
+        // }
+        // else {
+        //     this.setState({ validationErroDeliverUser: null });
+        // }
         this.setState({ ShipmentOrder: ShipmentOrder })
         //this.setState({ ShipmentOrder_WorkFlow: listMLObject })
     }
@@ -704,9 +722,9 @@ class InfoCoordinatorCom extends Component {
                                 placeholder="---Vui lòng chọn---"
                                 isMultiSelect={false}
                                 isselectedOp={true}
-                                filterValue ={this.state.ShipmentOrder.CoordinatorStoreID}
-                                filterobj= "MaincoordinAtorStoreID"
-                                disabled={this.state.ShipmentOrder.CarrierTypeID != 1  ? false : true}
+                                filterValue={this.state.ShipmentOrder.CoordinatorStoreID}
+                                filterobj="MaincoordinAtorStoreID"
+                                disabled={this.state.ShipmentOrder.CarrierTypeID != 1 ? false : true}
                             />
                         </div>
                     </div>
@@ -717,7 +735,7 @@ class InfoCoordinatorCom extends Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 label="Tài xế"
-                                disabled={this.state.ShipmentOrder.CarrierTypeID != 1  ? false : true}
+                                disabled={this.state.ShipmentOrder.CarrierTypeID != 1 ? false : true}
                                 IsLabelDiv={true}
                                 isautoloaditemfromcache={false}
                                 controltype="InputControl"
