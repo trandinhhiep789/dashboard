@@ -43,6 +43,7 @@ class InfoCoordinatorCom extends Component {
             CANCELDELIVERYREASON: [],
             validationErrorCancelDeliveryReason: null,
             validationCancelDeliveryReasonNote: null,
+            validationErroDriverUser:null,
             CancelDeliveryReasonID: null,
             CancelDeliveryReasonNote: "",
             validationErrorCancelStore: null,
@@ -231,6 +232,7 @@ class InfoCoordinatorCom extends Component {
     handleOnValueChange(name, value) {
         let { ShipmentOrder } = this.state;
         ShipmentOrder[name] = value;
+       
         if (name == "CarrierPartnerID") {
             let { ShipmentOrder } = this.state;
             ShipmentOrder.ShipmentOrder_DeliverUserList = [];
@@ -241,6 +243,8 @@ class InfoCoordinatorCom extends Component {
             }
             else {
                 this.setState({ validationErroCarrierType: null });
+                ShipmentOrder.DriverUser = "";
+                ShipmentOrder.DriverUserFull = "";
             }
         }
 
@@ -271,6 +275,20 @@ class InfoCoordinatorCom extends Component {
         this.setState({ ShipmentOrder: ShipmentOrder })
         //this.setState({ ShipmentOrder_WorkFlow: listMLObject })
     }
+    handleValueChangeDriverUser(e, selectedOption)
+    {
+        let { ShipmentOrder } = this.state;
+        ShipmentOrder.DriverUser=selectedOption.value;
+        ShipmentOrder.DriverUserFull=selectedOption.FullName;
+        if (ShipmentOrder.DriverUser == "") {
+            this.setState({ validationErroDriverUser: "Vui lòng chọn nhân tài xế" });
+        }
+        else {
+            this.setState({ validationErroDriverUser: null });
+        }
+        this.setState({ ShipmentOrder: ShipmentOrder })
+    }
+
     handleOnValueChangeDeliverUser(name, value) {
         let listMLObject = [];
         if (value) {
@@ -386,10 +404,16 @@ class InfoCoordinatorCom extends Component {
     }
 
     handleShipWorkFlowInsert() {
-        let { ShipmentOrder, validationErroDeliverUser, validationErroCarrierPartner } = this.state;
+        let { ShipmentOrder, validationErroDeliverUser, validationErroCarrierPartner,validationErroDriverUser } = this.state;
+        debugger;
         if (ShipmentOrder.CarrierTypeID == undefined || parseInt(ShipmentOrder.CarrierTypeID) <= 0) {
             validationErroCarrierType = "Vui lòng chọn phương tiện vận chuyển"
             this.setState({ validationErroCarrierType: validationErroCarrierType });
+            return;
+        }
+        else if (ShipmentOrder.DriverUser == undefined || ShipmentOrder.DriverUser == "") {
+            validationErroDriverUser = "Vui lòng chọn nhân viên tài xế"
+            this.setState({ validationErroDriverUser: validationErroDriverUser });
             return;
         }
 
@@ -543,6 +567,7 @@ class InfoCoordinatorCom extends Component {
 
         let listOption = [];
         let objDeliverUser = [];
+        let listOptionDriverUser = [];
         if (this.state.ShipmentOrder.CarrierPartnerID != -1 && this.state.ShipmentOrder.CarrierPartnerID != 0) {
             this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
                 objDeliverUser.push(item.UserName)
@@ -553,6 +578,12 @@ class InfoCoordinatorCom extends Component {
                 listOption.push({ value: item.UserName, label: item.FullName, FullName: item.FullName });
             })
         }
+        if(this.state.ShipmentOrder.DriverUser !="")
+        {
+            listOptionDriverUser.push({ value: this.state.ShipmentOrder.DriverUser, label: this.state.ShipmentOrder.DriverUser+"-"+this.state.ShipmentOrder.DriverUserFull, FullName: this.state.ShipmentOrder.DriverUserFull });
+        }
+
+
         return (
 
             <div className="card">
@@ -584,6 +615,55 @@ class InfoCoordinatorCom extends Component {
                             />
                         </div>
                         <div className="col-md-6">
+                            {(this.state.ShipmentOrder.CarrierPartnerID == -1 || this.state.ShipmentOrder.CarrierPartnerID == 0) ?
+                                <MultiSelectComboBox
+                                    name="ShipmentOrder_DeliverUserList"
+                                    colspan="9"
+                                    labelcolspan="3"
+                                    label="Nhân viên giao"
+                                    disabled={!this.props.IsUserCoordinator}
+                                    IsLabelDiv={true}
+                                    isautoloaditemfromcache={false}
+                                    loaditemcachekeyid={"PIMCACHE_PIM_SHIPPINGMETHOD"}
+                                    valuemember="ShippingMethodID"
+                                    nameMember="ShippingMethodName"
+                                    controltype="InputControl"
+                                    value={listOption}
+                                    ShipmentOrder={this.state.ShipmentOrder}
+                                    onChange={this.handleValueChange1}
+                                    listoption={[]}
+                                    isMultiSelect={true}
+                                    datasourcemember="ShipmentOrder_DeliverUserList"
+
+                                /> :
+                                <FormControl.FormControlComboBox
+                                    name="ShipmentOrder_DeliverUserList"
+                                    colspan="9"
+                                    labelcolspan="3"
+                                    label="Nhân viên giao"
+                                    isautoloaditemfromcache={true}
+                                    loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
+                                    valuemember="UserName"
+                                    nameMember="FullName"
+                                    controltype="InputControl"
+                                    value={objDeliverUser}
+                                    onValueChange={this.handleOnValueChangeDeliverUser}
+                                    listoption={null}
+                                    datasourcemember="PartnerID"
+                                    placeholder="---Vui lòng chọn---"
+                                    isMultiSelect={true}
+                                    filterValue={this.state.ShipmentOrder.CarrierPartnerID}
+                                    filterobj="PartnerID"
+                                    disabled={!this.props.IsCoordinator}
+                                    isselectedOp={true}
+                                />
+                            }
+                        </div>
+                    </div>
+
+                    <div className="form-row">
+
+                        <div className="col-md-6">
                             <FormControl.FormControlComboBox
                                 name="CarrierTypeID"
                                 colspan="8"
@@ -605,53 +685,26 @@ class InfoCoordinatorCom extends Component {
                                 validationErrorMessage={this.state.validationErroCarrierType}
                             />
                         </div>
+                        <div className="col-md-6">
+                            <MultiSelectComboBox
+                                name="DriverUser"
+                                colspan="9"
+                                labelcolspan="3"
+                                label="Tài xế"
+                                disabled={this.state.ShipmentOrder.CarrierTypeID != 1 ? false : true}
+                                IsLabelDiv={true}
+                                isautoloaditemfromcache={false}
+                                controltype="InputControl"
+                                value={listOptionDriverUser}
+                                ShipmentOrder={this.state.ShipmentOrder.DriverUser}
+                                onChange={this.handleValueChangeDriverUser.bind(this)}
+                                listoption={[]}
+                                isMultiSelect={false}
+                                datasourcemember="DriverUser"
+                                validationErrorMessage={this.state.validationErroDriverUser}
+                            />
+                        </div>
                     </div>
-
-                    {(this.state.ShipmentOrder.CarrierPartnerID == -1 || this.state.ShipmentOrder.CarrierPartnerID == 0) ?
-                        <MultiSelectComboBox
-                            name="ShipmentOrder_DeliverUserList"
-                            colspan="10"
-                            labelcolspan="2"
-                            label="Nhân viên giao"
-                            disabled={!this.props.IsUserCoordinator}
-                            IsLabelDiv={true}
-                            isautoloaditemfromcache={false}
-                            loaditemcachekeyid={"PIMCACHE_PIM_SHIPPINGMETHOD"}
-                            valuemember="ShippingMethodID"
-                            nameMember="ShippingMethodName"
-                            controltype="InputControl"
-                            value={listOption}
-                            ShipmentOrder={this.state.ShipmentOrder}
-                            onChange={this.handleValueChange1}
-                            listoption={[]}
-                            isMultiSelect={true}
-                            datasourcemember="ShipmentOrder_DeliverUserList"
-
-
-                        /> :
-                        <FormControl.FormControlComboBox
-                            name="ShipmentOrder_DeliverUserList"
-                            colspan="10"
-                            labelcolspan="2"
-                            label="Nhân viên giao"
-                            isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
-                            valuemember="UserName"
-                            nameMember="FullName"
-                            controltype="InputControl"
-                            value={objDeliverUser}
-                            onValueChange={this.handleOnValueChangeDeliverUser}
-                            listoption={null}
-                            datasourcemember="PartnerID"
-                            placeholder="---Vui lòng chọn---"
-                            isMultiSelect={true}
-                            filterValue={this.state.ShipmentOrder.CarrierPartnerID}
-                            filterobj="PartnerID"
-                            disabled={!this.props.IsCoordinator}
-                            isselectedOp={true}
-                        />
-                    }
-
                     <div className="form-row">
                         <div className="form-group col-md-2">
                             <label className="col-form-label bold">Ghi chú:</label>
