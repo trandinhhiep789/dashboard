@@ -85,6 +85,10 @@ class GridCell extends Component {
     componentDidMount() {
     }
 
+    onClickAction(objValue) {
+        this.props.onUpdateClick(objValue)
+    }
+
     render() {
         let link = this.props.link;
         const type = this.props.type;
@@ -106,6 +110,9 @@ class GridCell extends Component {
 
         let control = "";
         switch (type) {
+            case "textCustom":
+                control = <div className="textCustom" onClick={() => { this.onClickAction(listValue) }} >{text}</div>;
+                break;
             case "text":
                 control = <label>{text}</label>;
                 break;
@@ -113,8 +120,8 @@ class GridCell extends Component {
                 control = <label className="txt-boold-red">{text}</label>;
                 break;
             case "textNumberBoldRed":
-                    control = <label className="txt-boold-red">{formatNumber(text)}</label>;
-                    break;
+                control = <label className="txt-boold-red">{formatNumber(text)}</label>;
+                break;
 
             case "textCurrency":
                 return <label>{formatMoney(text, 0)}</label>;

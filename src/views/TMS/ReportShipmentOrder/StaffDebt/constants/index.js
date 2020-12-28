@@ -1,5 +1,6 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/StaffDebt/Search";
+export const UpdateUnlockAPIPath = "api/StaffDebt/UpdateUnlock";
 
 
 export const PagePath = [
@@ -169,7 +170,7 @@ export const GridColumnList = [
     },
     {
         Name: "DeliveryStatus",
-        Type: "text",
+        Type: "textCustom",
         Caption: "Tình trạng",
         DataSourceMember: "DeliveryStatus",
         Width: "7%"

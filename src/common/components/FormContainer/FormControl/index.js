@@ -361,13 +361,13 @@ class FormControlComboBoxCom extends Component {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.isselectedOp) {
             if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, selectedOption, this.props.namelabel, selectedOption != null ? selectedOption.name : "", this.props.filterrest);
+                this.props.onValueChange(this.props.name, selectedOption, this.props.namelabel, selectedOption != null ? selectedOption.name : "", this.props.filterrest);
         }
         else {
             if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.name : "", this.props.filterrest);
+                this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.name : "", this.props.filterrest);
         }
-       
+
     }
 
     bindcombox(value, listOption) {
@@ -754,11 +754,11 @@ class FormControlDatetimeCom extends Component {
     }
     handleValueChange(name, moment) {
         let noGetTime = false;
-        if(!this.props.IsGetTime){
-            noGetTime= false
+        if (!this.props.IsGetTime) {
+            noGetTime = false
         }
-        else{
-            noGetTime= true
+        else {
+            noGetTime = true
         }
         const momentNew = ExportStringDate(moment, noGetTime)
         if (this.props.onValueChange != null)
@@ -1199,6 +1199,7 @@ class CheckBox extends React.Component {
         // console.log("Checkbox:", e.target.checked);
     }
     render() {
+        console.log('â', this.props)
         let formRowClassName = "form-row";
         if (this.props.rowspan != null) {
             formRowClassName = "form-row col-md-" + this.props.rowspan;
@@ -1228,6 +1229,8 @@ class CheckBox extends React.Component {
                 <div className={labelDivClassName}>
                     <label className="col-form-label 5">
                         {this.props.label}<span className="text-danger"> {star}</span>
+                        
+
                     </label>
                 </div>
                 <div className={formGroupClassName}>
@@ -1245,7 +1248,9 @@ class CheckBox extends React.Component {
                                 disabled={this.props.disabled}
                             />
                             <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                            
                         </label>
+                        {this.props.titleSmall != null ? <span className="txtSmall">{this.props.titleSmall}</span> : ""}
                     </div>
                 </div>
             </div>

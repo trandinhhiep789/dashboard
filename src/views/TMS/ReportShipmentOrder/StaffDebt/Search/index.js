@@ -12,7 +12,8 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
-    InitSearchParams
+    InitSearchParams,
+    UpdateUnlockAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -21,7 +22,8 @@ import "react-notifications-component/dist/theme.css";
 import { TMS_STAFFDEBT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
-import { toIsoStringCus } from '../../../../../utils/function'
+import { toIsoStringCus } from '../../../../../utils/function';
+import { Base64 } from 'js-base64';
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -75,18 +77,26 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult)
+
             if (!apiResult.IsError) {
+                let objStaffDebtID = {}
                 const tempData = apiResult.ResultObject.map((item, index) => {
+                    objStaffDebtID = {
+                        UserName: item.UserName,
+                        StoreID: item.StoreID
+                    }
+                    item.StaffDebtID = Base64.encode(JSON.stringify(objStaffDebtID));
                     item.FullNameMember = item.UserName + " - " + item.FullName
-                    if (item.TotALoverDueDebtOrders > 0) {
-                        item.DeliveryStatus = <span className='lblstatus text-danger'>Đã khóa</span>;
+                    item.Note = "Xem"
+                    if (item.IsLockDelivery) {
+                        item.DeliveryStatus = <span className='lblstatusLock'>Đã khóa</span>;
                     }
                     else {
-                        item.DeliveryStatus = <span className='lblstatus text-success'>Hoạt động</span>;
+                        item.DeliveryStatus = <span className='lblstatusUnlock'>Hoạt động</span>;
                     }
                     return item;
                 })
+                console.log("tempData", tempData)
                 this.setState({
                     gridDataSource: tempData
                 })
@@ -145,6 +155,23 @@ class SearchCom extends React.Component {
         });
     }
 
+    onhandleUpdateItem(objId) {
+        const { gridDataSource } = this.state;
+        const searchData = JSON.parse(Base64.decode(objId[0].value));
+        const dataFind = gridDataSource.find(n => {
+            return n.StaffDebtID == objId[0].value
+        });
+        if(dataFind.iSunLockDelivery){
+            this.showMessage("Tình trạng này đã được mở khóa");
+        }
+        else{
+            this.props.callFetchAPI(APIHostName, UpdateUnlockAPIPath, searchData).then(apiResult => {
+                this.addNotification(apiResult.Message, apiResult.IsError)
+                this.callSearchData(this.state.SearchData)
+            });
+        }
+       
+    }
 
     render() {
         return (
@@ -161,10 +188,11 @@ class SearchCom extends React.Component {
 
                 <DataGrid
                     listColumn={GridColumnList}
+                    onUpdateItem={this.onhandleUpdateItem.bind(this)}
                     dataSource={this.state.gridDataSource}
                     IsFixheaderTable={true}
-                    IDSelectColumnName={''}
-                    PKColumnName={''}
+                    IDSelectColumnName={'StaffDebtID'}
+                    PKColumnName={'StaffDebtID'}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
