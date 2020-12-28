@@ -79,6 +79,7 @@ class DataGridCom extends Component {
     handleCloseMessage() {
 
     }
+
     showMessage(message) {
         ModalManager.open(<MessageModal title="Thông báo"
             message={message} onRequestClose={() => true}
@@ -89,6 +90,11 @@ class DataGridCom extends Component {
     handleInsertClickEdit(id, pkColumnName) {
         if (this.props.onInsertClickEdit != null)
             this.props.onInsertClickEdit(id, pkColumnName);
+    }
+
+    handleUpdateItemClick(id) {
+        if (this.props.onUpdateItem != null)
+            this.props.onUpdateItem(id)
     }
 
     handleDetailClick(id) {
@@ -325,7 +331,7 @@ class DataGridCom extends Component {
             const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
             const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
             const data = new Blob([excelBuffer], { type: fileType });
-            
+
 
             FileSaver.saveAs(data, this.props.fileName + fileExtension);
 
@@ -441,7 +447,7 @@ class DataGridCom extends Component {
         return (
             <div className=" table-responsive">
                 <table id={isFixed == true ? "fixtable" : ""} className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0">
-                    <thead className="thead-light" style={isFixed == true ? {maxWidth: widthTable} : {}}>
+                    <thead className="thead-light" style={isFixed == true ? { maxWidth: widthTable } : {}}>
                         <tr>
                             {
                                 listColumn.map((elementItem, index) => {
@@ -518,6 +524,7 @@ class DataGridCom extends Component {
                                                     onDetailtClick={this.handleDetailClick}
                                                     onDetailtModalClick={this.handleDetailModalClick.bind(this)}
                                                     onModalClick={this.handleShowModalClick.bind(this)}
+                                                    onUpdateClick={this.handleUpdateItemClick.bind(this)}
                                                     pkColumnName={this.state.ListPKColumnName}
                                                     params={this.props.params}
                                                     linkTo={this.state.ListPKColumnName + index}

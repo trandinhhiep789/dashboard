@@ -46,7 +46,7 @@ class AddCom extends React.Component {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
-            IsShowCustomerAddress: false,
+            IsShowCustomerAddress: true,
             DataSource: {},
             DataWard: [],
             cssNotification: "",
@@ -376,9 +376,10 @@ class AddCom extends React.Component {
                                 datasourcemember="IsCheckCustomerAddress"
                                 controltype="InputControl"
                                 colspan="8"
-                                value={true}
+                                value={false}
                                 labelcolspan="4"
                                 classNameCustom="customCheckbox"
+                                titleSmall="Chọn vào đây để khai báo danh sách phường/xã"
                             />
                         </div>
                         <div className="col-md-6"></div>

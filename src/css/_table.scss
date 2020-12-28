@@ -54,6 +54,28 @@
 
     tbody {
         td {
+            .textCustom {
+                display: flex;
+                justify-content: center;
+            }
+            .lblstatusLock {
+                background: red;
+                color: #fff;
+                padding: 0px 5px;
+                font-size: 11px;
+                border-radius: 4px;
+                font-weight: 500;
+                cursor: pointer;
+            }
+            .lblstatusUnlock{
+                background: #44acf3;
+                color: #fff;
+                padding: 0px 5px;
+                font-size: 11px;
+                border-radius: 4px;
+                font-weight: 500;
+                cursor: pointer;
+            }
             a{
                 &.btn-Detailt{
                     color: #33cabb;
