@@ -257,7 +257,6 @@ class InfoCoordinatorCom extends Component {
         this.setState({ ShipmentOrder: ShipmentOrder })
     }
     handleValueChange1(e, selectedOption) {
-
         let listMLObject = [];
         let listStaffDebtObject = [];
         if (selectedOption) {
@@ -282,6 +281,7 @@ class InfoCoordinatorCom extends Component {
                 if(!apiResult.IsError)
                 {
                     ShipmentOrder.ShipmentOrder_DeliverUserList = listMLObject;
+                    this.setState({ ShipmentOrder: ShipmentOrder })
                 }
                 else
                 {
@@ -289,16 +289,12 @@ class InfoCoordinatorCom extends Component {
                 }
             });
         }
-
-  
-        // if (ShipmentOrder.ShipmentOrder_DeliverUserList.length <= 0) {
-        //     this.setState({ validationErroDeliverUser: "Vui lòng chọn nhân viên giao" });
-        // }
-        // else {
-        //     this.setState({ validationErroDeliverUser: null });
-        // }
-        this.setState({ ShipmentOrder: ShipmentOrder })
-        //this.setState({ ShipmentOrder_WorkFlow: listMLObject })
+        else
+        {
+            ShipmentOrder.ShipmentOrder_DeliverUserList =[];
+            this.setState({ ShipmentOrder: ShipmentOrder })
+        }
+      
     }
     handleValueChangeDriverUser(e, selectedOption) {
         let { ShipmentOrder } = this.state;
