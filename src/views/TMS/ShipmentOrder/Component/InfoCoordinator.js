@@ -309,29 +309,44 @@ class InfoCoordinatorCom extends Component {
         this.setState({ ShipmentOrder: ShipmentOrder })
     }
 
-    handleOnValueChangeDeliverUser(name, value) {
+    handleOnValueChangeDeliverUser(name, selectedOption) {
         let listMLObject = [];
-        if (value) {
-            for (let i = 0; i < value.length; i++) {
+        let listStaffDebtObject = [];
+        if (selectedOption) {
+            for (let i = 0; i < selectedOption.length; i++) {
                 listMLObject.push({
                     ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
-                    UserName: value[i].value,
-                    FullName: value[i].label,
+                    UserName: selectedOption[i].value,
+                    FullName: selectedOption[i].label,
                     CreatedUser: this.props.AppInfo.LoginInfo.Username,
                     CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
+                });
+                listStaffDebtObject.push({
+                    UserName: selectedOption[i].value,
+                    StoreID: this.state.ShipmentOrder.CoordinatorStoreID
                 });
             }
         }
 
         let { ShipmentOrder } = this.state;
-        ShipmentOrder.ShipmentOrder_DeliverUserList = listMLObject;
-        if (ShipmentOrder.ShipmentOrder_DeliverUserList.length <= 0) {
-            this.setState({ validationErroDeliverUser: "Vui lòng chọn nhân viên giao" });
+        if (selectedOption) {
+            this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
+                if(!apiResult.IsError)
+                {
+                    ShipmentOrder.ShipmentOrder_DeliverUserList = listMLObject;
+                    this.setState({ ShipmentOrder: ShipmentOrder })
+                }
+                else
+                {
+                    this.addNotification(apiResult.Message, apiResult.IsError);
+                }
+            });
         }
-        else {
-            this.setState({ validationErroDeliverUser: null });
+        else
+        {
+            ShipmentOrder.ShipmentOrder_DeliverUserList =[];
+            this.setState({ ShipmentOrder: ShipmentOrder })
         }
-        this.setState({ ShipmentOrder: ShipmentOrder })
     }
 
     handleCloseMessage() {
