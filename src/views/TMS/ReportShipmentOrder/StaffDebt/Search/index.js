@@ -13,17 +13,20 @@ import {
     APIHostName,
     SearchAPIPath,
     InitSearchParams,
-    UpdateUnlockAPIPath
+    UpdateUnlockAPIPath,
+    SearchDetailAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { TMS_STAFFDEBT_VIEW } from "../../../../../constants/functionLists";
+import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { toIsoStringCus } from '../../../../../utils/function';
 import { Base64 } from 'js-base64';
+import DataGirdStaffDebt from "../DataGirdStaffDebt";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -36,6 +39,7 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsLoadDataComplete: false,
             SearchData: InitSearchParams,
+            widthPercent: "",
 
         };
         this.gridref = React.createRef();
@@ -45,12 +49,23 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        this.callSearchData(this.state.SearchData)
+        this.callSearchData(this.state.SearchData);
+        window.addEventListener("resize", this.updateWindowDimensions);
     }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions = () => {
+        this.setState({
+            widthPercent: (window.innerWidth * 90) / 100
+        })
+    };
 
 
     handleSearchSubmit(formData, MLObject) {
-
+        console.log("MLObject", MLObject)
         const postData = [
             {
                 SearchKey: "@FROMDATE",
@@ -68,6 +83,14 @@ class SearchCom extends React.Component {
                 SearchKey: "@STOREID",
                 SearchValue: MLObject.CoordinatorStoreID != "" ? MLObject.CoordinatorStoreID : -1
             },
+            // {
+            //     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+            //     SearchValue: MLObject.ShipmentOrderStatusGroupID
+            // },
+            // {
+            //     SearchKey: "@RECEIVERDISTRICTID",
+            //     SearchValue: MLObject.ReceiverProvinceID
+            // },
 
         ];
 
@@ -77,7 +100,7 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-
+            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
                 let objStaffDebtID = {}
                 const tempData = apiResult.ResultObject.map((item, index) => {
@@ -96,7 +119,6 @@ class SearchCom extends React.Component {
                     }
                     return item;
                 })
-                console.log("tempData", tempData)
                 this.setState({
                     gridDataSource: tempData
                 })
@@ -109,7 +131,6 @@ class SearchCom extends React.Component {
             }
         });
     }
-
 
     showMessage(message) {
         ModalManager.open(
@@ -161,16 +182,69 @@ class SearchCom extends React.Component {
         const dataFind = gridDataSource.find(n => {
             return n.StaffDebtID == objId[0].value
         });
-        if(dataFind.iSunLockDelivery){
+        if (dataFind.iSunLockDelivery) {
             this.showMessage("Tình trạng này đã được mở khóa");
         }
-        else{
+        else {
             this.props.callFetchAPI(APIHostName, UpdateUnlockAPIPath, searchData).then(apiResult => {
                 this.addNotification(apiResult.Message, apiResult.IsError)
                 this.callSearchData(this.state.SearchData)
             });
         }
-       
+
+    }
+
+    onShowModal(dataSource, dataItem) {
+        const { widthPercent } = this.state;
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: "Chi tiết danh sách nợ tiền thu hộ theo nhân viên",
+            content: {
+                text: <DataGirdStaffDebt
+                    dataSource={dataSource}
+                    dataItem={dataItem}
+                />
+
+            },
+            maxWidth: widthPercent + 'px'
+        });
+    }
+
+    onShowModalDetail(objValue, name) {
+        const { gridDataSource } = this.state;
+        const tempItme = gridDataSource.find(n => {
+            return n.StaffDebtID == objValue[0].value
+        });
+        const obj = JSON.parse(Base64.decode(objValue[0].value));
+        const param =[
+           
+            {
+                SearchKey: "@USERNAME",
+                SearchValue: obj.UserName
+            },
+            {
+                SearchKey: "@STOREID",
+                SearchValue:  obj.StoreID
+            },
+
+        ]
+
+        this.props.callFetchAPI(APIHostName, SearchDetailAPIPath, param).then(apiResult => {
+            if(!apiResult.IsError){
+                const dataTemp=  apiResult.ResultObject.map((item, index) => {
+                    item.FullNameMember = item.UserName + " - " + item.FullName
+                    return item;
+                })
+                this.onShowModal(dataTemp, tempItme)
+            }
+            else{
+                this.showMessage(apiResult.Message)
+            }
+        })
+
+        
+
+        
+
     }
 
     render() {
@@ -193,6 +267,7 @@ class SearchCom extends React.Component {
                     IsFixheaderTable={true}
                     IDSelectColumnName={'StaffDebtID'}
                     PKColumnName={'StaffDebtID'}
+                    onShowModal={this.onShowModalDetail.bind(this)}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
@@ -201,7 +276,7 @@ class SearchCom extends React.Component {
                     IsExportFile={false}
                     IsAutoPaging={true}
                     RowsPerPage={20}
-                    // RequirePermission={TMS_STAFFDEBT_VIEW}
+                    RequirePermission={TMS_STAFFDEBT_VIEW}
                     ref={this.gridref}
                 />
             </React.Fragment>

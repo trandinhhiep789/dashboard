@@ -188,12 +188,12 @@ class SearchCom extends React.Component {
     }
 
     onShowModalDetail(objValue, name) {
-
+        
         const status = this.getStatusDelivery(name);
         const dtmCreatedOrderTime = objValue[0].value
 
         const objData = {
-            CreatedOrderTime:dtmCreatedOrderTime,
+            CreatedOrderTime: dtmCreatedOrderTime,
             StatusDelivery: status
         }
         this.props.callFetchAPI(APIHostName, LoadReportUndeliveryByDate, objData).then(apiResult => {
@@ -210,28 +210,28 @@ class SearchCom extends React.Component {
 
     handleShowModal(data, status) {
         const { widthPercent } = this.state;
-        console.log('status',status)
+        console.log('status', status)
         let titleModal;
 
-        if(status == 1){
+        if (status == 1) {
             titleModal = "Danh sách vận đơn chưa giao"
         }
-        if(status == 2){
+        if (status == 2) {
             titleModal = "Danh sách vận đơn đang  giao"
         }
-        if(status == 3){
+        if (status == 3) {
             titleModal = "Danh sách vận đơn giao xong"
         }
-        if(status == 4){
+        if (status == 4) {
             titleModal = "Danh sách vận đơn hoàn tất"
         }
-        if(status == 5){
+        if (status == 5) {
             titleModal = "Danh sách vận đơn huỷ giao"
         }
-        if(status == 6){
+        if (status == 6) {
             titleModal = "Danh sách vận đơn đã nộp tiền"
         }
-        if(status == 7){
+        if (status == 7) {
             titleModal = "Danh sách vận đơn chưa nộp tiền"
         }
 
