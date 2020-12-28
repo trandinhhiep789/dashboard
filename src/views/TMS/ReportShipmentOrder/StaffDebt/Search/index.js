@@ -65,7 +65,7 @@ class SearchCom extends React.Component {
 
 
     handleSearchSubmit(formData, MLObject) {
-
+        console.log("MLObject", MLObject)
         const postData = [
             {
                 SearchKey: "@FROMDATE",
@@ -83,6 +83,14 @@ class SearchCom extends React.Component {
                 SearchKey: "@STOREID",
                 SearchValue: MLObject.CoordinatorStoreID != "" ? MLObject.CoordinatorStoreID : -1
             },
+            // {
+            //     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+            //     SearchValue: MLObject.ShipmentOrderStatusGroupID
+            // },
+            // {
+            //     SearchKey: "@RECEIVERDISTRICTID",
+            //     SearchValue: MLObject.ReceiverProvinceID
+            // },
 
         ];
 

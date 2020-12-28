@@ -27,6 +27,14 @@ export const InitSearchParams = [
         SearchKey: "@STOREID",
         SearchValue: -1
     },
+    // {
+    //     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+    //     SearchValue: -1
+    // },
+    // {
+    //     SearchKey: "@RECEIVERDISTRICTID",
+    //     SearchValue: -1
+    // },
   
 ];
 
@@ -52,12 +60,28 @@ export const SearchElementList = [
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
     },
+    // {
+    //     type: "ComboBox",
+    //     name: "cbReceiverProvinceID",
+    //     DataSourceMember: "ReceiverProvinceID",
+    //     label: "Tỉnh/thành phố",
+    //     colspan: 2,
+    //     value: -1,
+    //     isMultiSelect: false,
+    //     placeholder: "---Tỉnh /thành phố---",
+    //     listoption: [],
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
+    //     ValueMember: "ProvinceID",
+    //     NameMember: "ProvinceName",
+    //     classNameCol:"col-custom"
+    // },
     {
         type: "ComboBoxNewChange",
         name: "cbCoordinatorStoreID",
         DataSourceMember: "CoordinatorStoreID",
         label: "kho điều phối",
-        colspan: 3,
+        colspan: 2,
         value: "",
         isMultiSelect: true,
         placeholder: "---Kho điều phối---",
@@ -70,13 +94,29 @@ export const SearchElementList = [
         // filterobj:"CompanyID",
         classNameCol:"col-custom"
     },
+    // {
+    //     type: "ComboBox",
+    //     name: "cbShipmentOrderStatusGroupID",
+    //     DataSourceMember: "ShipmentOrderStatusGroupID",
+    //     label: "Trạng thái",
+    //     colspan: 2,
+    //     value: -1,
+    //     isMultiSelect: false,
+    //     placeholder: "---Trạng thái---",
+    //     listoption: [],
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUSGR",
+    //     ValueMember: "ShipmentOrderStatusGroupID",
+    //     NameMember: "ShipmentOrderStatusGroupName",
+    //     classNameCol:"col-custom"
+    // },
     {
         type: "MultiSelectUser",
         name: "cbUserName",
         DataSourceMember: "UserName",
         label: "Nhân viên",
         colspan: 12,
-        rowspan: 3,
+        rowspan: 2,
         labelcolspan: 12,
         IsLabelDiv: true,
         value: -1,
@@ -100,11 +140,21 @@ export const  SearchMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "dtToDate"
     },
+    // {
+    //     Name: "ReceiverProvinceID",
+    //     DefaultValue: "",
+    //     BindControlName: "cbReceiverProvinceID"
+    // },
     {
         Name: "CoordinatorStoreID",
         DefaultValue: "-1",
         BindControlName: "cbCoordinatorStoreID"
     },
+    // {
+    //     Name: "ShipmentOrderStatusGroupID",
+    //     DefaultValue: "",
+    //     BindControlName: "cbShipmentOrderStatusGroupID"
+    // },
     {
         Name: "UserName",
         DefaultValue: "",

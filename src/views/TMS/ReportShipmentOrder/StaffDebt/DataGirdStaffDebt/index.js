@@ -31,12 +31,9 @@ class DataGirdStaffDebtCom extends Component {
 
 
     render() {
-        console.log("sss", this.props);
         const { dataItem, dataSource } = this.state;
         return (
             <React.Fragment>
-
-
                 <div className="col-12" style={{ textAlign: 'initial' }}>
                     <div className="row">
                         <div className="col-md-2">
