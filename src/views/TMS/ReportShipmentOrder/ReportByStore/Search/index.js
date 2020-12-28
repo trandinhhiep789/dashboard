@@ -120,7 +120,6 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-        console.log("searchData", searchData)
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
@@ -209,8 +208,8 @@ class SearchCom extends React.Component {
     onShowModalDetail(objValue, name) {
         const status = this.getStatusDelivery(name);
         const objData = {
-            FromDate: this.state.FromDate,
-            ToDate: this.state.ToDate,
+            FromDate: toIsoStringCus(new Date(this.state.FromDate).toISOString()),
+            ToDate: toIsoStringCus(new Date(this.state.ToDate).toISOString()),
             CoordinatorStoreID: objValue[0].value,
             StatusDelivery: status
         }

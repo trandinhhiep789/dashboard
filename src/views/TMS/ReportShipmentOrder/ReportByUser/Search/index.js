@@ -160,8 +160,8 @@ class SearchCom extends React.Component {
         const status = this.getStatusDelivery(name);
 
         const objData = {
-            FromDate: this.state.FromDate,
-            ToDate: this.state.ToDate,
+            FromDate: toIsoStringCus(new Date(this.state.FromDate).toISOString()),
+            ToDate: toIsoStringCus(new Date(this.state.ToDate).toISOString()),
             UserName: objValue[0].value,
             StatusDelivery: status
         }
