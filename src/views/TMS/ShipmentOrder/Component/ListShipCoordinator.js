@@ -8,6 +8,8 @@ import FormControl from "../../../../common/components/FormContainer/FormControl
 import { MessageModal } from "../../../../common/components/Modal";
 import InputGridChageControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridChageControl";
 import { showModal, hideModal } from '../../../../actions/modal';
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 import {
     APIHostName
 } from "../constants";
@@ -32,6 +34,7 @@ class ListShipCoordinatorCom extends Component {
             CallAPIMessage: "",
             IsCallAPIError: false
         }
+        this.notificationDOMRef = React.createRef();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -72,28 +75,63 @@ class ListShipCoordinatorCom extends Component {
 
     handleValueChange1(e, selectedOption1) {
         let objDeliverUser = [];
+        let listStaffDebtObject = [];
         selectedOption1 && selectedOption1.map((item, index) => {
             let objShip_DeliverUser = { UserName: item.value, FullName: item.label }
             objDeliverUser.push(objShip_DeliverUser)
+            listStaffDebtObject.push({
+                UserName: item.value,
+                StoreID: this.state.ShipmentOrder[0].CoordinatorStoreID
+            });
         })
-        this.state.ShipmentOrder.map((row, indexRow) => {
-            if (!row.IsCoordinator && row.IsPermission == true)
-                row["ShipmentOrder_DeliverUserList"] = objDeliverUser;
-        });
-        this.setState({ selectedOption: selectedOption1, ShipmentOrder: this.state.ShipmentOrder });
+
+        if (selectedOption1) {
+            this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
+                if (!apiResult.IsError) {
+                    this.state.ShipmentOrder.map((row, indexRow) => {
+                        if (!row.IsCoordinator && row.IsPermission == true)
+                            row["ShipmentOrder_DeliverUserList"] = objDeliverUser;
+                    });
+                    this.setState({ selectedOption: selectedOption1, ShipmentOrder: this.state.ShipmentOrder });
+                }
+                else {
+                    this.addNotification(apiResult.Message, apiResult.IsError);
+                }
+            });
+        }
+        else {
+            this.setState({ selectedOption: selectedOption1 });
+        }
     }
 
     handleOnValueChangeDeliverUser(name, value, selectedOption) {
         let objMultiDeliverUser = [];
+        let listStaffDebtObject = [];
         selectedOption && selectedOption.map((item, index) => {
             let objMultiShip_DeliverUser = { UserName: item.value, FullName: item.label }
             objMultiDeliverUser.push(objMultiShip_DeliverUser)
+            listStaffDebtObject.push({
+                UserName: item.value,
+                StoreID: this.state.ShipmentOrder[0].CoordinatorStoreID
+            });
         })
-        this.state.ShipmentOrder.map((row, indexRow) => {
-            if (!row.IsCoordinator && row.IsPermission == true)
-                row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser;
-        });
-        this.setState({ objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder });
+        if (selectedOption) {
+            this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
+                if (!apiResult.IsError) {
+                    this.state.ShipmentOrder.map((row, indexRow) => {
+                        if (!row.IsCoordinator && row.IsPermission == true)
+                            row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser;
+                    });
+                    this.setState({ objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder });
+                }
+                else {
+                    this.addNotification(apiResult.Message, apiResult.IsError);
+                }
+            });
+        }
+        else {
+            this.setState({ objDeliverUser: value });
+        }
     }
 
     handleCloseMessage() {
@@ -115,10 +153,9 @@ class ListShipCoordinatorCom extends Component {
     }
 
     handleShipWorkFlowInsert() {
-        debugger;
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
             if (this.props.onChangeValue != null)
-                    this.props.onChangeValue(apiResult);
+                this.props.onChangeValue(apiResult);
             // if (!apiResult.IsError) {
             //     this.props.hideModal();
             //     if (this.props.onChangePageLoad != null)
@@ -140,38 +177,95 @@ class ListShipCoordinatorCom extends Component {
     }
     handleonValueChange(rowname, rowvalue, rowIndex) {
         let objDeliverUser = [];
-        this.state.ShipmentOrder[rowIndex][rowname] = rowvalue;
+      
         if (rowname == "ShipmentOrder_DeliverUserList") {
+            let listStaffDebtObject = [];
             rowvalue && rowvalue.map((item, index) => {
                 let objShipmentOrder_DeliverUser = { UserName: item.value, FullName: item.label }
                 objDeliverUser.push(objShipmentOrder_DeliverUser)
+                listStaffDebtObject.push({
+                    UserName: item.value,
+                    StoreID: this.state.ShipmentOrder[rowIndex]["CoordinatorStoreID"]
+                });
             })
-            this.state.ShipmentOrder[rowIndex][rowname] = objDeliverUser;
+            let { ShipmentOrder } = this.state;
+            if (rowvalue) {
+                this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
+                    if (!apiResult.IsError) {
+                        ShipmentOrder[rowIndex][rowname] = objDeliverUser;
+                        this.setState({ ShipmentOrder: ShipmentOrder });
+                    }
+                    else {
+                        this.addNotification(apiResult.Message, apiResult.IsError);
+                    }
+                });
+            }
+            else {
+                ShipmentOrder[rowIndex][rowname] = [];
+                this.setState({ ShipmentOrder: ShipmentOrder });
+            }
         }
 
         if (rowname == "CarrierPartnerID") {
             this.state.ShipmentOrder[rowIndex]["ShipmentOrder_DeliverUserList"] = [];
+            this.state.ShipmentOrder[rowIndex][rowname] = rowvalue;
+            this.setState({ ShipmentOrder: this.state.ShipmentOrder });
         }
 
         if (rowname == "CarrierTypeID") {
             this.state.ShipmentOrder[rowIndex]["DriverUser"] = "";
             this.state.ShipmentOrder[rowIndex]["DriverUserFull"] = "";
             this.state.ShipmentOrder[rowIndex].VehicleID = -1;
+            this.state.ShipmentOrder[rowIndex][rowname] = rowvalue;
+            this.setState({ ShipmentOrder: this.state.ShipmentOrder });
         }
 
         if (rowname == "DriverUser") {
             this.state.ShipmentOrder[rowIndex][rowname] = rowvalue.value;
             this.state.ShipmentOrder[rowIndex]["DriverUserFull"] = rowvalue.FullName;
-            
+            this.state.ShipmentOrder[rowIndex][rowname] = rowvalue;
+            this.setState({ ShipmentOrder: this.state.ShipmentOrder });
         }
-
-
-        this.setState({ ShipmentOrder: this.state.ShipmentOrder });
     }
 
     handleCloseModal() {
         this.props.hideModal();
     }
+
+
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
 
     render() {
         const DataGridColumnItemList = [
@@ -206,10 +300,7 @@ class ListShipCoordinatorCom extends Component {
                 caption: "Nhân viên giao nhận",
                 dataSourcemember: "ShipmentOrder_DeliverUserList",
                 width: 250,
-                isautoloaditemfromcache: true,
-                loaditemcachekeyid: "ERPCOMMONCACHE.PARTNERUSER",
-                valuemember: "UserName",
-                nameMember: "FullName",
+                isautoloaditemfromcache: false,
                 value: -1,
                 listoption: null,
                 placeholder: "---Nhân viên giao nhận---",
@@ -295,6 +386,7 @@ class ListShipCoordinatorCom extends Component {
         ];
         return (
             <div className="card modalForm">
+                <ReactNotification ref={this.notificationDOMRef} />
                 <div className="card-body" style={{ minHeight: 430 }}>
                     <div className="form-row">
                         <div className="col-md-6">
@@ -347,9 +439,6 @@ class ListShipCoordinatorCom extends Component {
                             disabled={!this.props.IsUserCoordinator}
                             IsLabelDiv={true}
                             isautoloaditemfromcache={false}
-                            loaditemcachekeyid={"PIMCACHE_PIM_SHIPPINGMETHOD"}
-                            valuemember="ShippingMethodID"
-                            nameMember="ShippingMethodName"
                             controltype="InputControl"
                             onChange={this.handleValueChange1}
                             value={this.state.selectedOption}

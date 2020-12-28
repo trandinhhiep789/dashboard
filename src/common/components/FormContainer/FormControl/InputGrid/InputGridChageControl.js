@@ -174,6 +174,7 @@ class InputGridChageControlCom extends Component {
                                             case "ComboUserBox":
                                                 let listOption = [];
                                                 let objDeliverUser = [];
+                                                debugger
                                                 //  console.log("MultiUserComboBox",rowItem[columnItem.dataSourcemember])
                                                 if (rowItem[columnItem.filterrest] != -1 && rowItem[columnItem.filterrest] != 0) {
                                                     rowItem["ShipmentOrder_DeliverUserList"] && rowItem["ShipmentOrder_DeliverUserList"].map((item, index) => {
