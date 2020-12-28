@@ -159,7 +159,9 @@ class InputGridChageControlCom extends Component {
                                                 />
                                                 break;
                                             case "ComboBox":
-
+                                                if ((rowItem["CarrierTypeID"] == 1 || rowItem["CarrierTypeID"] == -1 || rowItem["CarrierTypeID"] == undefined) && columnItem.dataSourcemember == "VehicleID") {
+                                                    isPermission = true
+                                                }
                                                 cellData = <ElementInputModal.ElementModalComboBox
                                                     validationErrorMessage={(this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex] != undefined ? this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex].ValidationErrorMessage : "")}
                                                     onValueChange={this.onValueChange}

@@ -115,6 +115,7 @@ class ListShipCoordinatorCom extends Component {
     }
 
     handleShipWorkFlowInsert() {
+        debugger;
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
             if (this.props.onChangeValue != null)
                     this.props.onChangeValue(apiResult);
@@ -153,11 +154,15 @@ class ListShipCoordinatorCom extends Component {
         }
 
         if (rowname == "CarrierTypeID") {
-            this.state.ShipmentOrder[rowIndex]["DriverUser"] = [];
+            this.state.ShipmentOrder[rowIndex]["DriverUser"] = "";
+            this.state.ShipmentOrder[rowIndex]["DriverUserFull"] = "";
+            this.state.ShipmentOrder[rowIndex].VehicleID = -1;
         }
 
         if (rowname == "DriverUser") {
             this.state.ShipmentOrder[rowIndex][rowname] = rowvalue.value;
+            this.state.ShipmentOrder[rowIndex]["DriverUserFull"] = rowvalue.FullName;
+            
         }
 
 
@@ -227,6 +232,24 @@ class ListShipCoordinatorCom extends Component {
                 value: -1,
                 listoption: null,
                 placeholder: "---Phương tiện---",
+                isMultiSelect: false,
+                disabled: false
+            },
+            {
+                name: "VehicleID",
+                type: "ComboBox",
+                caption: "Xe tải",
+                dataSourcemember: "VehicleID",
+                width: 150,
+                isautoloaditemfromcache: true,
+                loaditemcachekeyid: "ERPCOMMONCACHE.VEHICLE",
+                valuemember: "VehicleID",
+                nameMember: "LicensePlateNumber",
+                value: -1,
+                listoption: null,
+                filterValue: "4121",
+                filterobj: "MaincoordinAtorStoreID",
+                placeholder: "---Chọn---",
                 isMultiSelect: false,
                 disabled: false
             },
