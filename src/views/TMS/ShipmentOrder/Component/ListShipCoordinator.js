@@ -152,6 +152,15 @@ class ListShipCoordinatorCom extends Component {
             this.state.ShipmentOrder[rowIndex]["ShipmentOrder_DeliverUserList"] = [];
         }
 
+        if (rowname == "CarrierTypeID") {
+            this.state.ShipmentOrder[rowIndex]["DriverUser"] = [];
+        }
+
+        if (rowname == "DriverUser") {
+            this.state.ShipmentOrder[rowIndex][rowname] = rowvalue.value;
+        }
+
+
         this.setState({ ShipmentOrder: this.state.ShipmentOrder });
     }
 
@@ -220,6 +229,19 @@ class ListShipCoordinatorCom extends Component {
                 placeholder: "---Phương tiện---",
                 isMultiSelect: false,
                 disabled: false
+            },
+            {
+                name: "DriverUser",
+                type: "ComboUserDriverUserBox",
+                caption: "Tài xế",
+                dataSourcemember: "DriverUser",
+                width: 150,
+                isautoloaditemfromcache: false,
+                value: -1,
+                listoption: null,
+                placeholder: "---Nhân viên tài xế---",
+                isMultiSelect: false,
+                disabled: false,
             },
             {
                 name: "ShipmentOrderID",
@@ -337,7 +359,7 @@ class ListShipCoordinatorCom extends Component {
                     <InputGridChageControl
                         name="ShipmentOrder_ItemList"
                         controltype="InputGridControl"
-                        title="Danh sách hàng hóa"
+                        title="Danh sách vận đơn"
                         listColumn={DataGridColumnItemList}
                         dataSource={this.state.ShipmentOrder}
                         FormValidation={this.state.FormValidation}

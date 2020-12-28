@@ -480,16 +480,13 @@ class DataGridShipmentOderCom extends Component {
                                 onChangeValue={this.handleShipmentOrder.bind(this)}
                             />
                         },
-                        maxWidth: '1000px'
+                        maxWidth: '1300px'
                     });
                 }
                 else {
                     this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
                 }
             });
-
-
-
         }
         else {
             this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")

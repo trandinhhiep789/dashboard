@@ -143,9 +143,8 @@ class InputGridChageControlCom extends Component {
                                             isChecked = rowItem[columnItem.dataSourcemember];
                                         }
                                         let isPermission = false;
-                                        if(rowItem["IsPermission"]==false)
-                                        {
-                                            isPermission=true
+                                        if (rowItem["IsPermission"] == false) {
+                                            isPermission = true
                                         }
 
                                         let cellData = "";
@@ -160,7 +159,7 @@ class InputGridChageControlCom extends Component {
                                                 />
                                                 break;
                                             case "ComboBox":
-                                              
+
                                                 cellData = <ElementInputModal.ElementModalComboBox
                                                     validationErrorMessage={(this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex] != undefined ? this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex].ValidationErrorMessage : "")}
                                                     onValueChange={this.onValueChange}
@@ -171,7 +170,6 @@ class InputGridChageControlCom extends Component {
                                                 />
                                                 break;
                                             case "ComboUserBox":
-                                                console.log("IsPermission", rowItem["IsPermission"])
                                                 let listOption = [];
                                                 let objDeliverUser = [];
                                                 //  console.log("MultiUserComboBox",rowItem[columnItem.dataSourcemember])
@@ -206,6 +204,24 @@ class InputGridChageControlCom extends Component {
                                                     />
                                                 }
 
+                                                break;
+                                            case "ComboUserDriverUserBox":
+                                                let listOptionDriverUser = [];
+                                                if (rowItem["DriverUser"] != "") {
+                                                    listOptionDriverUser.push({ value: rowItem["DriverUser"], label: rowItem["DriverUser"] + "-" + rowItem["DriverUserFull"], FullName: rowItem["DriverUserFull"] });
+                                                }
+                                                if (rowItem["CarrierTypeID"] == 1 || rowItem["CarrierTypeID"] == -1 || rowItem["CarrierTypeID"] == undefined) {
+                                                    isPermission = true
+                                                }
+
+                                                cellData = <ElementInputModal.MultiUserComboBox
+                                                    onValueChange={this.onValueChangeComboUser.bind(this)}
+                                                    {...columnItem}
+                                                    rowIndex={rowIndex}
+                                                    listoption={listOptionDriverUser}
+                                                    value={listOptionDriverUser}
+                                                    disabled={isPermission}
+                                                />
                                                 break;
                                             case "edit":
                                                 //console.log("GridData",this.state.GridData[rowIndex][columnItem.name + "-" + rowIndex].Value,columnItem.name + "-" + rowIndex );
