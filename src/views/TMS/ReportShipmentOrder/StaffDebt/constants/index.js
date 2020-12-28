@@ -187,10 +187,10 @@ export const GridColumnList = [
 
 export const  DataGirdStaffDebtColumnList=[
     {
-        Name: "FullNameMember",
+        Name: "ShipmentOrderID",
         Type: "text",
         Caption: "Mã vận đơn",
-        DataSourceMember: "FullNameMember",
+        DataSourceMember: "ShipmentOrderID",
         Width: "10%"
     },
 
