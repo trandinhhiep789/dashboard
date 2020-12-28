@@ -43,7 +43,7 @@ class InfoCoordinatorCom extends Component {
             CANCELDELIVERYREASON: [],
             validationErrorCancelDeliveryReason: null,
             validationCancelDeliveryReasonNote: null,
-            validationErroDriverUser:null,
+            validationErroDriverUser: null,
             CancelDeliveryReasonID: null,
             CancelDeliveryReasonNote: "",
             validationErrorCancelStore: null,
@@ -230,9 +230,10 @@ class InfoCoordinatorCom extends Component {
         this.setState({ ShipmentOrder: ShipmentOrder })
     }
     handleOnValueChange(name, value) {
+        debugger;
         let { ShipmentOrder } = this.state;
         ShipmentOrder[name] = value;
-       
+
         if (name == "CarrierPartnerID") {
             let { ShipmentOrder } = this.state;
             ShipmentOrder.ShipmentOrder_DeliverUserList = [];
@@ -245,7 +246,13 @@ class InfoCoordinatorCom extends Component {
                 this.setState({ validationErroCarrierType: null });
                 ShipmentOrder.DriverUser = "";
                 ShipmentOrder.DriverUserFull = "";
+                ShipmentOrder.VehicleID = "";
             }
+        }
+
+        if (name == "VehicleID") {
+            let { ShipmentOrder } = this.state;
+            ShipmentOrder.VehicleID = value.value;
         }
 
         this.setState({ ShipmentOrder: ShipmentOrder })
@@ -275,11 +282,10 @@ class InfoCoordinatorCom extends Component {
         this.setState({ ShipmentOrder: ShipmentOrder })
         //this.setState({ ShipmentOrder_WorkFlow: listMLObject })
     }
-    handleValueChangeDriverUser(e, selectedOption)
-    {
+    handleValueChangeDriverUser(e, selectedOption) {
         let { ShipmentOrder } = this.state;
-        ShipmentOrder.DriverUser=selectedOption.value;
-        ShipmentOrder.DriverUserFull=selectedOption.FullName;
+        ShipmentOrder.DriverUser = selectedOption.value;
+        ShipmentOrder.DriverUserFull = selectedOption.FullName;
         if (ShipmentOrder.DriverUser == "") {
             this.setState({ validationErroDriverUser: "Vui lòng chọn nhân tài xế" });
         }
@@ -404,18 +410,17 @@ class InfoCoordinatorCom extends Component {
     }
 
     handleShipWorkFlowInsert() {
-        let { ShipmentOrder, validationErroDeliverUser, validationErroCarrierPartner,validationErroDriverUser } = this.state;
-        debugger;
+        let { ShipmentOrder, validationErroDeliverUser, validationErroCarrierPartner, validationErroDriverUser } = this.state;
         if (ShipmentOrder.CarrierTypeID == undefined || parseInt(ShipmentOrder.CarrierTypeID) <= 0) {
             validationErroCarrierType = "Vui lòng chọn phương tiện vận chuyển"
             this.setState({ validationErroCarrierType: validationErroCarrierType });
             return;
         }
-        else if (ShipmentOrder.DriverUser == undefined || ShipmentOrder.DriverUser == "") {
-            validationErroDriverUser = "Vui lòng chọn nhân viên tài xế"
-            this.setState({ validationErroDriverUser: validationErroDriverUser });
-            return;
-        }
+        // else if (ShipmentOrder.DriverUser == undefined || ShipmentOrder.DriverUser == "") {
+        //     validationErroDriverUser = "Vui lòng chọn nhân viên tài xế"
+        //     this.setState({ validationErroDriverUser: validationErroDriverUser });
+        //     return;
+        // }
 
         else {
             this.state.ShipmentOrder.UpdatedUser = this.props.AppInfo.LoginInfo.Username,
@@ -578,14 +583,11 @@ class InfoCoordinatorCom extends Component {
                 listOption.push({ value: item.UserName, label: item.FullName, FullName: item.FullName });
             })
         }
-        if(this.state.ShipmentOrder.DriverUser !="")
-        {
-            listOptionDriverUser.push({ value: this.state.ShipmentOrder.DriverUser, label: this.state.ShipmentOrder.DriverUser+"-"+this.state.ShipmentOrder.DriverUserFull, FullName: this.state.ShipmentOrder.DriverUserFull });
+        if (this.state.ShipmentOrder.DriverUser != "") {
+            listOptionDriverUser.push({ value: this.state.ShipmentOrder.DriverUser, label: this.state.ShipmentOrder.DriverUser + "-" + this.state.ShipmentOrder.DriverUserFull, FullName: this.state.ShipmentOrder.DriverUserFull });
         }
 
-
         return (
-
             <div className="card">
                 <ReactNotification ref={this.notificationDOMRef} />
                 <div className="card-title group-card-title">
@@ -662,7 +664,6 @@ class InfoCoordinatorCom extends Component {
                     </div>
 
                     <div className="form-row">
-
                         <div className="col-md-6">
                             <FormControl.FormControlComboBox
                                 name="CarrierTypeID"
@@ -686,12 +687,37 @@ class InfoCoordinatorCom extends Component {
                             />
                         </div>
                         <div className="col-md-6">
-                            <MultiSelectComboBox
-                                name="DriverUser"
+                            <FormControl.FormControlComboBox
+                                name="VehicleID"
                                 colspan="9"
                                 labelcolspan="3"
+                                label="Xe tải"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.VEHICLE"
+                                valuemember="VehicleID"
+                                nameMember="LicensePlateNumber"
+                                controltype="InputControl"
+                                onValueChange={this.handleOnValueChange}
+                                value={this.state.ShipmentOrder.VehicleID}
+                                listoption={null}
+                                datasourcemember="VehicleID"
+                                placeholder="---Vui lòng chọn---"
+                                isMultiSelect={false}
+                                isselectedOp={true}
+                                filterValue ={this.state.ShipmentOrder.CoordinatorStoreID}
+                                filterobj= "MaincoordinAtorStoreID"
+                                disabled={this.state.ShipmentOrder.CarrierTypeID != 1  ? false : true}
+                            />
+                        </div>
+                    </div>
+                    <div className="form-row">
+                        <div className="col-md-6">
+                            <MultiSelectComboBox
+                                name="DriverUser"
+                                colspan="8"
+                                labelcolspan="4"
                                 label="Tài xế"
-                                disabled={this.state.ShipmentOrder.CarrierTypeID != 1 ? false : true}
+                                disabled={this.state.ShipmentOrder.CarrierTypeID != 1  ? false : true}
                                 IsLabelDiv={true}
                                 isautoloaditemfromcache={false}
                                 controltype="InputControl"
@@ -701,7 +727,6 @@ class InfoCoordinatorCom extends Component {
                                 listoption={[]}
                                 isMultiSelect={false}
                                 datasourcemember="DriverUser"
-                                validationErrorMessage={this.state.validationErroDriverUser}
                             />
                         </div>
                     </div>
