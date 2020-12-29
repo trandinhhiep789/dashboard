@@ -41,6 +41,8 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsLoadDataComplete: false,
             widthPercent: "",
+            shipmentOrderTypeID: "",
+            coordinatorStoreID: ""
         };
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
@@ -83,6 +85,11 @@ class SearchCom extends React.Component {
         else {
             result2 = ""
         }
+
+        this.setState({
+            shipmentOrderTypeID: result,
+            coordinatorStoreID: result2
+        })
 
         const postData = [
             {
@@ -188,13 +195,15 @@ class SearchCom extends React.Component {
     }
 
     onShowModalDetail(objValue, name) {
-        
+        const { shipmentOrderTypeID, coordinatorStoreID } = this.state;
         const status = this.getStatusDelivery(name);
         const dtmCreatedOrderTime = objValue[0].value
 
         const objData = {
             CreatedOrderTime: dtmCreatedOrderTime,
-            StatusDelivery: status
+            StatusDelivery: status,
+            ShipmentOrderTypeID: shipmentOrderTypeID,
+            CoordinatorStoreID: coordinatorStoreID
         }
         this.props.callFetchAPI(APIHostName, LoadReportUndeliveryByDate, objData).then(apiResult => {
             if (!apiResult.IsError) {

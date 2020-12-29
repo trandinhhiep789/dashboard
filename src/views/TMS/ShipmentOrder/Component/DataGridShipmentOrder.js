@@ -883,12 +883,16 @@ class DataGridShipmentOderCom extends Component {
                                             <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
                                                 <i className="fa fa-plus"> Gán nhân viên giao hàng</i>
                                             </button>
-                                            <button type="button" onClick={this.handleSelected.bind(this)} className="btn btn-search-custom" title="" data-provide="tooltip" data-original-title="Ghi nhớ">
-                                                Ghi nhớ
-                                            </button>
-                                            <button type="button" onClick={this.handleSelectedView.bind(this)} className="btn btn-search-custom" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                <i className="fa fa-search">Hiển thị </i>
-                                            </button>
+                                            <div className="groupActionRemember ml-10">
+                                                <button type="button" onClick={this.handleSelected.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
+                                                    <i className="fa fa-save"></i>
+                                                </button>
+
+                                                <button type="button" onClick={this.handleSelectedView.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Thêm">
+                                                    <i className="fa fa-repeat"></i>
+                                                </button>
+                                            </div>
+
 
                                             <div className="input-group input-group-select">
                                                 <input type="text" onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
