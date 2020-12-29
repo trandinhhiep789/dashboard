@@ -46,7 +46,9 @@ class DataGridShipmentOderCom extends Component {
             GridData: {},
             DataSource: this.props.dataSource,
             IsCheckAll: false, PageNumber: this.props.PageNumber, ListPKColumnName: listPKColumnName,
-            GridDataShip: []
+            GridDataShip: [],
+            KeywordId:''
+
         };
         this.notificationDOMRef = React.createRef();
 
@@ -246,11 +248,23 @@ class DataGridShipmentOderCom extends Component {
     }
 
     handleKeyPress(e) {
+        this.setState({ KeywordId: e.target.value });
         if (e.key == "Enter") {
             const searchText = e.target.value;
             if (this.props.onSearchEvent != null) {
                 this.props.onSearchEvent(searchText)
             }
+        }
+    }
+
+    handleonChange(e)
+    {
+        this.setState({ KeywordId: e.target.value });
+    }
+    handleSearchShip()
+    {
+        if (this.props.onSearchEvent != null) {
+            this.props.onSearchEvent(this.state.KeywordId)
         }
     }
 
@@ -895,8 +909,8 @@ class DataGridShipmentOderCom extends Component {
 
 
                                             <div className="input-group input-group-select">
-                                                <input type="text" onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
-                                                <div className="input-group-append">
+                                                <input type="text" onChange={this.handleonChange.bind(this)} onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
+                                                <div className="input-group-append" onClick={this.handleSearchShip.bind(this)}>
                                                     <span className="input-group-text"><i className="ti-search"></i></span>
                                                 </div>
                                             </div>
