@@ -17,7 +17,7 @@ import {
     TitleFormDetail,
     DataGridColumnItemListRPTDetail,
     TitleFromRPTDetail,
-    DeleteAPIRPTDetailPath,
+    DeleteAPIRPTExceptionPath,
     TitleFromRPTException,
     DataGridColumnItemListRPTException
 
@@ -62,7 +62,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            // console.log('apiResult', apiResult)
+             console.log('apiResult', apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -194,14 +194,13 @@ class DetailCom extends React.Component {
     }
 
     handleItemDeleteRPTException(index) {
-
         const { RewardPriceTableID, DataSource } = this.state;
 
-        const resultItem = DataSource.RewardPriceTableDetailList[index];
+        const resultItem = DataSource.RewardPriceTable_ExceptionList[index];
         let MLObject = {};
-        MLObject.RewardPriceTableDetailID = resultItem.RewardPriceTableDetailID.trim();
+        MLObject.RewardPriceTableExceptionID = resultItem.RewardPriceTableExceptionID.trim();
 
-        this.props.callFetchAPI(APIHostName, DeleteAPIRPTDetailPath, MLObject).then((apiResult) => {
+        this.props.callFetchAPI(APIHostName, DeleteAPIRPTExceptionPath, MLObject).then((apiResult) => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {

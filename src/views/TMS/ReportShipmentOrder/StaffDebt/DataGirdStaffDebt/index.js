@@ -109,8 +109,8 @@ class DataGirdStaffDebtCom extends Component {
                 <DataGrid
                     listColumn={DataGirdStaffDebtColumnList}
                     dataSource={dataSource}
-                    IDSelectColumnName={"StaffDebtDetailID"}
-                    PKColumnName={"StaffDebtDetailID"}
+                    IDSelectColumnName={"ShipmentOrderID"}
+                    PKColumnName={"ShipmentOrderID"}
                     IsDelete={false}
                     IsAutoPaging={true}
                     IsShowButtonAdd={false}

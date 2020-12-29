@@ -224,6 +224,9 @@
                             color: #615d5d;
                             text-transform: capitalize;
                             font-family: inherit;
+                            &.lblReturns{
+                                color: #d07300;
+                            }
 
                         }
 
@@ -515,6 +518,12 @@
                         }
                         &.WaitingDelivery{
                             background-color: #e0e02c;
+                        }
+                    }
+                    .checkbox {
+                        .cr{
+                            color: #000000;
+                            border-color: #a5a3a3;
                         }
                     }
                 }

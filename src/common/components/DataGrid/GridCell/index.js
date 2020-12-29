@@ -181,6 +181,18 @@ class GridCell extends Component {
                         }
                     }}>{text}</Link>;
                 break;
+            case "texttolinkNewBlank":
+
+                control = <Link
+                    className="linktext"
+                    target="_blank"
+                    to={{
+                        pathname: linkTo,
+                        state: {
+                            params: this.props.params
+                        }
+                    }}>{text}</Link>;
+                break;
 
             case "texttolinkblank":
                 const param = this.props.params;

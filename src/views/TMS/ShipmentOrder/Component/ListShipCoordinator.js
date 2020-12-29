@@ -177,19 +177,21 @@ class ListShipCoordinatorCom extends Component {
     }
     handleonValueChange(rowname, rowvalue, rowIndex) {
         let objDeliverUser = [];
-      
+        let { ShipmentOrder } = this.state;
         if (rowname == "ShipmentOrder_DeliverUserList") {
             let listStaffDebtObject = [];
             rowvalue && rowvalue.map((item, index) => {
-                let objShipmentOrder_DeliverUser = { UserName: item.value, FullName: item.label }
-                objDeliverUser.push(objShipmentOrder_DeliverUser)
-                listStaffDebtObject.push({
-                    UserName: item.value,
-                    StoreID: this.state.ShipmentOrder[rowIndex]["CoordinatorStoreID"]
-                });
+                if (item.value != -1 && item.value != 0) {
+                    let objShipmentOrder_DeliverUser = { UserName: item.value, FullName: item.label }
+                    objDeliverUser.push(objShipmentOrder_DeliverUser)
+                    listStaffDebtObject.push({
+                        UserName: item.value,
+                        StoreID: this.state.ShipmentOrder[rowIndex]["CoordinatorStoreID"]
+                    });
+                }
             })
-            let { ShipmentOrder } = this.state;
-            if (rowvalue) {
+
+            if (listStaffDebtObject) {
                 this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
                     if (!apiResult.IsError) {
                         ShipmentOrder[rowIndex][rowname] = objDeliverUser;
@@ -207,24 +209,27 @@ class ListShipCoordinatorCom extends Component {
         }
 
         if (rowname == "CarrierPartnerID") {
-            this.state.ShipmentOrder[rowIndex]["ShipmentOrder_DeliverUserList"] = [];
-            this.state.ShipmentOrder[rowIndex][rowname] = rowvalue;
-            this.setState({ ShipmentOrder: this.state.ShipmentOrder });
+            ShipmentOrder[rowIndex]["ShipmentOrder_DeliverUserList"] = [];
+            ShipmentOrder[rowIndex][rowname] = rowvalue
+            this.setState({ ShipmentOrder: ShipmentOrder });
         }
 
         if (rowname == "CarrierTypeID") {
-            this.state.ShipmentOrder[rowIndex]["DriverUser"] = "";
-            this.state.ShipmentOrder[rowIndex]["DriverUserFull"] = "";
-            this.state.ShipmentOrder[rowIndex].VehicleID = -1;
-            this.state.ShipmentOrder[rowIndex][rowname] = rowvalue;
-            this.setState({ ShipmentOrder: this.state.ShipmentOrder });
+            ShipmentOrder[rowIndex]["DriverUser"] = "";
+            ShipmentOrder[rowIndex]["DriverUserFull"] = "";
+            ShipmentOrder[rowIndex].VehicleID = -1;
+            ShipmentOrder[rowIndex][rowname] = rowvalue;
+            this.setState({ ShipmentOrder: ShipmentOrder });
         }
 
         if (rowname == "DriverUser") {
-            this.state.ShipmentOrder[rowIndex][rowname] = rowvalue.value;
-            this.state.ShipmentOrder[rowIndex]["DriverUserFull"] = rowvalue.FullName;
-            this.state.ShipmentOrder[rowIndex][rowname] = rowvalue;
-            this.setState({ ShipmentOrder: this.state.ShipmentOrder });
+            ShipmentOrder[rowIndex][rowname] = rowvalue.value;
+            ShipmentOrder[rowIndex]["DriverUserFull"] = rowvalue.FullName;
+            this.setState({ ShipmentOrder: ShipmentOrder });
+        }
+        if (rowname == "VehicleID") {
+            ShipmentOrder[rowIndex][rowname] = rowvalue
+            this.setState({ ShipmentOrder: ShipmentOrder });
         }
     }
 
@@ -300,7 +305,10 @@ class ListShipCoordinatorCom extends Component {
                 caption: "Nhân viên giao nhận",
                 dataSourcemember: "ShipmentOrder_DeliverUserList",
                 width: 250,
-                isautoloaditemfromcache: false,
+                isautoloaditemfromcache: true,
+                loaditemcachekeyid: "ERPCOMMONCACHE.PARTNERUSER",
+                valuemember: "UserName",
+                nameMember: "FullName",
                 value: -1,
                 listoption: null,
                 placeholder: "---Nhân viên giao nhận---",
