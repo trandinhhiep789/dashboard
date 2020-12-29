@@ -238,8 +238,9 @@ export const GridColumnList = [
 export const  DataGirdStaffDebtColumnList=[
     {
         Name: "ShipmentOrderID",
-        Type: "text",
+        Type: "texttolinkNewBlank",
         Caption: "Mã vận đơn",
+        Link: "/ShipmentOrder/Detail/",
         DataSourceMember: "ShipmentOrderID",
         Width: "10%"
     },
