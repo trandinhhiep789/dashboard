@@ -81,6 +81,16 @@ class SearchCom extends React.Component {
             }
         });
     }
+    handleonChangeView()
+    {
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchSelected",[]).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.setState({
+                    gridDataSource: apiResult.ResultObject
+                });
+            }
+        });
+    }
 
     onChangePageLoad() {
         this.callSearchData(this.state.SearchData);
@@ -256,6 +266,7 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         onChangePage={this.handleonChangePage}
+                        onChangeView={this.handleonChangeView.bind(this)}
                         onChangePageLoad={this.onChangePageLoad.bind(this)}
                         IsDelete={false}
                         IsAdd={false}
