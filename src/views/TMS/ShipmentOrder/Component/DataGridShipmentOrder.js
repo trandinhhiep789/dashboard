@@ -762,7 +762,7 @@ class DataGridShipmentOderCom extends Component {
                                     </td>
                                     <td className="group-address" style={{ width: '22%' }}>
                                         <div className="group-info-row">
-                                            <label className="item address-repository-created lblReturns">
+                                            <label className={rowItem.IsInputReturn==true?"item address-repository-created lblReturns":"item address-repository-created"}>
                                                 <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, '<br/>'))}</span>
                                             </label>
                                             <label className="item address-receiver">
