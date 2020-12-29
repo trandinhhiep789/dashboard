@@ -46,7 +46,7 @@ export const SearchElementList = [
         label: "loại yêu cầu vận chuyển",
         colspan: 3,
         value: "",
-        isMultiSelect: true,
+        isMultiSelect: false,
         placeholder: "---Loại yêu cầu vận chuyển---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
@@ -56,22 +56,20 @@ export const SearchElementList = [
         classNameCol:"col-custom"
     },
     {
-        type: "ComboBoxNewChange",
-        name: "cbCoordinatorStoreID",
-        DataSourceMember: "CoordinatorStoreID",
-        label: "kho điều phối",
-        colspan: 3,
-        value: "",
-        isMultiSelect: true,
-        placeholder: "---Kho điều phối---",
+        type: "MultiSelectUser",
+        name: "cbUserName",
+        DataSourceMember: "UserName",
+        label: "Nhân viên điều phối",
+        colspan: 12,
+        rowspan: 3,
+        labelcolspan: 12,
+        IsLabelDiv: true,
+        value: -1,
+        placeholder: "---Vui lòng chọn---",
         listoption: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.USER_COOSTORE_BYUSER",
-        ValueMember: "StoreID",
-        NameMember: "StoreName",
-        // filterValue: 10,
-        // filterobj:"CompanyID",
-        classNameCol:"col-custom"
+        IsAutoLoadItemFromCache: false,
+        isMultiSelect: false
+
     },
 
 ]
@@ -93,9 +91,9 @@ export const  SearchMLObjectDefinition = [
         BindControlName: "cbShipmentOrderTypeID"
     },
     {
-        Name: "CoordinatorStore",
+        Name: "UserName",
         DefaultValue: "",
-        BindControlName: "cbCoordinatorStoreID"
+        BindControlName: "cbUserName"
     },
 ]
 
