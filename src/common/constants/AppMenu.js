@@ -494,6 +494,13 @@ const AppMenu = [
                     }
                 ]
             },
+            {
+                MenuName: 'TMSConfig',
+                MenuTitle: 'Cấu hình hệ thống TMS',
+                LinkTo: '/TMSConfig',
+                MenuIcon: '',
+                SubMenu: []
+            }
 
 
         ]
