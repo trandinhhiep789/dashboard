@@ -258,6 +258,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsCanUpdateReturnItemStep"
     },
     {
+        Name: "IsPhotoTakenStep",
+        DefaultValue: "",
+        BindControlName: "IsPhotoTakenStep",
+        DataSourceMember: "IsPhotoTakenStep"
+    },
+    {
         Name: "OrderIndex",
         DefaultValue: "",
         BindControlName: "OrderIndex",
