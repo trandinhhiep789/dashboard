@@ -155,7 +155,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                         objPermisData[item.Name] = userItem[item.Name];
                     }
                     else if (item.Name == "chkSelectUserGroupID") {
-                        objPermisData[item.Name] = false;
+                        objPermisData[item.Name] = true;
                     }
                     else {
                         objPermisData[item.Name] = true;
@@ -175,9 +175,26 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     }
 
     valueChangeInputGridPermisData(elementdata, index) {
+        // debugger;
+        // if(elementdata.Name == "chkSelectUserGroupID"){
+        //     let object = this.state.ShipmentOrderType_WF_PermisData[index];
+        //     let rowGridData1 = {};
+        //     for (const property in object) {
+        //         //object[property] =  false;
+        //         rowGridData1 = Object.assign({}, this.state.ShipmentOrderType_WF_PermisData[index], { [property]: elementdata.IsChecked }, { HasChanged: true });
+        //         console.log(`${property}: ${object[property]}`);
+        //       }    
+        // let ShipmentOrderType_WF_PermisData1 = Object.assign([], this.state.ShipmentOrderType_WF_PermisData, { [index]: rowGridData1 });
+        // this.setState({ ShipmentOrderType_WF_PermisData:  ShipmentOrderType_WF_PermisData1});
+        // }else{
+        //     const rowGridData = Object.assign({}, this.state.ShipmentOrderType_WF_PermisData[index], { [elementdata.Name]: elementdata.IsChecked }, { HasChanged: true });
+        //     const ShipmentOrderType_WF_PermisData = Object.assign([], this.state.ShipmentOrderType_WF_PermisData, { [index]: rowGridData });
+        //     this.setState({ ShipmentOrderType_WF_PermisData });
+        // }
         const rowGridData = Object.assign({}, this.state.ShipmentOrderType_WF_PermisData[index], { [elementdata.Name]: elementdata.IsChecked }, { HasChanged: true });
         const ShipmentOrderType_WF_PermisData = Object.assign([], this.state.ShipmentOrderType_WF_PermisData, { [index]: rowGridData });
         this.setState({ ShipmentOrderType_WF_PermisData });
+
     }
 
     addShipmentOrderTypeWFNext() {

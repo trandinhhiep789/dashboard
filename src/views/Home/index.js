@@ -116,6 +116,7 @@ import AppFeedBackType from "../TMS/MD/AppFeedBack/AppFeedBackType";
 import RewardComputeSchedule from "../TMS/MD/RewardComputeSchedule";
 import RewardComputeLog from "../TMS/MD/RewardComputeLog";
 import ShipmentOrderStepGroup from "../TMS/MD/ShipmentOrderStepGroup";
+import TMSConfig from "../TMS/MD/TMSConfig";
 
 
 class HomeCom extends React.Component {
@@ -311,6 +312,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/AppFeedBackGroup" component={AppFeedBackGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin}/>
                                 <PrivateRoute path="/AppFeedBackCategory" component={AppFeedBackCategory} isLoggedIn={isLoggedIn} isRelogin={isRelogin}/>
                                 <PrivateRoute path="/AppFeedBackType" component={AppFeedBackType} isLoggedIn={isLoggedIn} isRelogin={isRelogin}/>
+                                <PrivateRoute path="/TMSConfig" component={TMSConfig} isLoggedIn={isLoggedIn} isRelogin={isRelogin}/>
                                 
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
