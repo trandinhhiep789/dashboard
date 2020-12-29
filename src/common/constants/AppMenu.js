@@ -494,6 +494,13 @@ const AppMenu = [
                     }
                 ]
             },
+            {
+                MenuName: 'TMSConfig',
+                MenuTitle: 'Cấu hình hệ thống TMS',
+                LinkTo: '/TMSConfig',
+                MenuIcon: '',
+                SubMenu: []
+            }
 
 
         ]
@@ -833,12 +840,35 @@ const AppMenu = [
                 ]
             },
             {
+                MenuName: 'ReportCoordinatorUser',
+                MenuTitle: 'Thống kê vận đơn theo TN',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'ReportCoordinatorByDate',
+                        MenuTitle: 'Theo ngày',
+                        LinkTo: '/ReportCoordinatorByDate',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'ReportCoordinatorByUser',
+                        MenuTitle: 'Nhân viên',
+                        LinkTo: '/ReportCoordinatorByUser',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
+            },
+            {
                 MenuName: 'DebtByUser',
                 MenuTitle: 'Thống kê công nợ theo NV',
                 LinkTo: '/DebtByUser',
                 MenuIcon: '',
                 SubMenu: []
             },
+            
             {
                 MenuName: 'StaffDebt',
                 MenuTitle: 'Quản lý công nợ',
