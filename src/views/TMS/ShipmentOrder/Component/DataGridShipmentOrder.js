@@ -751,11 +751,11 @@ class DataGridShipmentOderCom extends Component {
                                                             <span>NV:{ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
                                                         </label>
                                                         <label className="item address-receiver">
-                                                            <span>{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
+                                                            <span className="receiverred">{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
                                                         </label>
                                                     </React.Fragment>
                                                 ) : (<label className="item address-receiver">
-                                                    <span>{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
+                                                    <span className="receiverred">{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
                                                 </label>)
                                             }
                                         </div>
@@ -766,7 +766,7 @@ class DataGridShipmentOderCom extends Component {
                                                 <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, '<br/>'))}</span>
                                             </label>
                                             <label className="item address-receiver">
-                                                <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
+                                                <span className="price-debt">{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
                                             </label>
                                         </div>
                                     </td>
