@@ -217,8 +217,10 @@
                         &.address-receiver {
                             color: #505050;
                             text-transform: capitalize;
+                            
                         }
 
+                       
                         &.address-repository-created {
                             font-weight: 600;
                             color: #615d5d;
@@ -358,6 +360,10 @@
                         &.address-receiver {
                             height: auto;
                         }
+                        .receiverred{
+                            color: red;
+                        }
+
                     }
 
                     .coordinatorUser {
