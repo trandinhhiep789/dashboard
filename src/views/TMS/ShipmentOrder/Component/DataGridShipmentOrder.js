@@ -891,7 +891,7 @@ class DataGridShipmentOderCom extends Component {
                                             </button>
 
                                             <div className="input-group input-group-select">
-                                                <input type="text" className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
+                                                <input type="text" onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
                                                 <div className="input-group-append">
                                                     <span className="input-group-text"><i className="ti-search"></i></span>
                                                 </div>
