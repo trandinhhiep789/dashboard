@@ -165,9 +165,9 @@ class RewardPriceTableExceptionCom extends Component {
                             placeholder="Số lượng từ"
                             controltype="InputControl"
                             value="0"
-                            validatonList={["required"]}
+                            validatonList={["required", "number"]}
                             datasourcemember="FromQuantity"
-                            maxSize={19}
+                            maxSize={10}
                         />
                     </div>
 
@@ -182,9 +182,9 @@ class RewardPriceTableExceptionCom extends Component {
                             placeholder="Số lượng đến"
                             controltype="InputControl"
                             value="0"
-                            validatonList={["required"]}
+                            validatonList={["required","number"]}
                             datasourcemember="ToQuantity"
-                            maxSize={19}
+                            maxSize={10}
                         />
 
                     </div>
