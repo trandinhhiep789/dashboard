@@ -138,6 +138,24 @@ export const AddModalColumnList = [
         validatonList: [],
         value: false
     },
+    {
+        Name: "IsRequireSaleOrderID",
+        type: "checkbox",
+        label: "Có bắt buộc nhập mã đơn hàng",
+        DataSourceMember: "IsRequireSaleOrderID",
+        readonly: false,
+        validatonList: [],
+        value: false
+    },
+    {
+        Name: "IsCheckDuplicateSaleOrderID",
+        type: "checkbox",
+        label: "Có check trùng mã đơn hàng",
+        DataSourceMember: "IsCheckDuplicateSaleOrderID",
+        readonly: false,
+        validatonList: [],
+        value: false
+    },
     //  {
     //     Name: "PartnerID",
     //     type: "select",
@@ -274,6 +292,18 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "IsIncludeInstall",
         DataSourceMember: "IsIncludeInstall"
+    },
+    {
+        Name: "IsRequireSaleOrderID",
+        DefaultValue: "",
+        BindControlName: "IsRequireSaleOrderID",
+        DataSourceMember: "IsRequireSaleOrderID"
+    },
+    {
+        Name: "IsCheckDuplicateSaleOrderID",
+        DefaultValue: "",
+        BindControlName: "IsCheckDuplicateSaleOrderID",
+        DataSourceMember: "IsCheckDuplicateSaleOrderID"
     },
     {
         Name: "Description",

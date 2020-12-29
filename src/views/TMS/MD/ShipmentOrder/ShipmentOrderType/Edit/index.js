@@ -656,6 +656,16 @@ class EditCom extends React.Component {
                                 labelcolspan={4} colspan={8} rowspan={8}
                             />
 
+                            <FormControl.CheckBox label="Có bắt buộc nhập mã đơn hàng đối tác" name="IsRequireSaleOrderID"
+                                datasourcemember="IsRequireSaleOrderID" controltype="InputControl"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                            />
+
+                            <FormControl.CheckBox label="Có check trùng mã đơn hàng đối tác" name="IsCheckDuplicateSaleOrderID"
+                                datasourcemember="IsCheckDuplicateSaleOrderID" controltype="InputControl"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                            />
+
                             {/* ------------------------------------------------------------------ */}
 
                             <FormControl.MultiSelectComboBox name="PartnerID" label="Danh sách đối tác"
