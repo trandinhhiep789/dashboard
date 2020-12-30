@@ -65,7 +65,7 @@ class SearchCom extends React.Component {
 
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("MLObject", MLObject)
+        // console.log("MLObject", MLObject)
         const postData = [
             {
                 SearchKey: "@FROMDATE",
@@ -100,7 +100,7 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult)
+            // console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
                 let objStaffDebtID = {}
                 const tempData = apiResult.ResultObject.map((item, index) => {
@@ -178,19 +178,24 @@ class SearchCom extends React.Component {
 
     onhandleUpdateItem(objId) {
         const { gridDataSource } = this.state;
-        const searchData = JSON.parse(Base64.decode(objId[0].value));
+        const objDataRequest = JSON.parse(Base64.decode(objId[0].value));
         const dataFind = gridDataSource.find(n => {
             return n.StaffDebtID == objId[0].value
         });
+
         if (dataFind.iSunLockDelivery) {
-            this.showMessage("Tình trạng này đã được mở khóa");
+            objDataRequest.IsLockDelivery = 1
+            objDataRequest.IsUnLockDelivery= 0
         }
         else {
-            this.props.callFetchAPI(APIHostName, UpdateUnlockAPIPath, searchData).then(apiResult => {
-                this.addNotification(apiResult.Message, apiResult.IsError)
-                this.callSearchData(this.state.SearchData)
-            });
+            objDataRequest.IsLockDelivery = 0
+            objDataRequest.IsUnLockDelivery= 1
         }
+
+        this.props.callFetchAPI(APIHostName, UpdateUnlockAPIPath, objDataRequest).then(apiResult => {
+            this.addNotification(apiResult.Message, apiResult.IsError)
+            this.callSearchData(this.state.SearchData)
+        });
 
     }
 

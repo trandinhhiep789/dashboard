@@ -46,11 +46,15 @@ class DataGridShipmentOderCom extends Component {
             GridData: {},
             DataSource: this.props.dataSource,
             IsCheckAll: false, PageNumber: this.props.PageNumber, ListPKColumnName: listPKColumnName,
-            GridDataShip: []
+            GridDataShip: [],
+            KeywordId:''
+
         };
         this.notificationDOMRef = React.createRef();
 
     }
+
+
 
     componentDidMount() {
         if (this.props.dataSource) {
@@ -244,11 +248,23 @@ class DataGridShipmentOderCom extends Component {
     }
 
     handleKeyPress(e) {
+        this.setState({ KeywordId: e.target.value });
         if (e.key == "Enter") {
             const searchText = e.target.value;
             if (this.props.onSearchEvent != null) {
                 this.props.onSearchEvent(searchText)
             }
+        }
+    }
+
+    handleonChange(e)
+    {
+        this.setState({ KeywordId: e.target.value });
+    }
+    handleSearchShip()
+    {
+        if (this.props.onSearchEvent != null) {
+            this.props.onSearchEvent(this.state.KeywordId)
         }
     }
 
@@ -491,6 +507,27 @@ class DataGridShipmentOderCom extends Component {
         else {
             this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
         }
+    }
+
+    handleSelected() {
+        if (this.state.GridDataShip.length > 0) {
+            this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/UpdateSelected", this.state.GridDataShip).then(apiResult => {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                if (!apiResult.IsError) {
+                    this.setState({ GridDataShip: [] });
+                }
+
+            });
+        }
+        else {
+            this.showMessage("Vui lòng chọn vận đơn để ghi nhớ!")
+        }
+    }
+
+    handleSelectedView() {
+
+        if (this.props.onChangeView != null)
+            this.props.onChangeView();
     }
 
     handleShipmentOrder(apiResult) {
@@ -762,7 +799,7 @@ class DataGridShipmentOderCom extends Component {
                                     </td>
                                     <td className="group-address" style={{ width: '22%' }}>
                                         <div className="group-info-row">
-                                            <label className={rowItem.IsInputReturn==true?"item address-repository-created lblReturns":"item address-repository-created"}>
+                                            <label className={rowItem.IsInputReturn == true ? "item address-repository-created lblReturns" : "item address-repository-created"}>
                                                 <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, '<br/>'))}</span>
                                             </label>
                                             <label className="item address-receiver">
@@ -860,24 +897,24 @@ class DataGridShipmentOderCom extends Component {
                                             <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
                                                 <i className="fa fa-plus"> Gán nhân viên giao hàng</i>
                                             </button>
-                                            {/* <div className="input-group input-group-select">
-                                                <input type="text" className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
-                                                <div className="input-group-append">
-                                                    <button className="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false">Dropdown</button>
-                                                    <div className="dropdown-menu">
-                                                        <ul>
-                                                            <li className="dropdown-item" >Action</li>
-                                                            <li className="dropdown-item" >Action</li>
-                                                            <li className="dropdown-item" >Action</li>
-                                                        </ul>
+                                            <div className="groupActionRemember ml-10">
+                                                <button type="button" onClick={this.handleSelected.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
+                                                    <i className="fa fa-save"></i>
+                                                </button>
 
-                                                    </div>
+                                                <button type="button" onClick={this.handleSelectedView.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Thêm">
+                                                    <i className="fa fa-repeat"></i>
+                                                </button>
+                                            </div>
+
+
+                                            <div className="input-group input-group-select">
+                                                <input type="text" onChange={this.handleonChange.bind(this)} onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
+                                                <div className="input-group-append" onClick={this.handleSearchShip.bind(this)}>
+                                                    <span className="input-group-text"><i className="ti-search"></i></span>
                                                 </div>
                                             </div>
-                                            <button type="button"  className="btn btn-search-custom" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                <i className="fa fa-search"> Tìm kiếm</i> 
-                                            </button> */}
+
                                         </div>
 
                                         <div className="group-count">

@@ -59,7 +59,7 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
 
 
-        jQuery(window).scroll(function() {
+        jQuery(window).scroll(function () {
             if (jQuery(this).scrollTop() > 300) {
                 $("#btnUserCoordinator").addClass("tofixedButton")
                 $("#fixtable").addClass("tofixtable")
@@ -80,6 +80,27 @@ class SearchCom extends React.Component {
                 this.callSearchData(this.state.SearchData);
             }
         });
+    }
+    handleonChangeView() {
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchSelected", []).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.setState({
+                    gridDataSource: apiResult.ResultObject
+                });
+            }
+        });
+    }
+
+    handleonSearchEvent(Keywordid) {
+        if (Keywordid != "") {
+            this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByKeyword", Keywordid).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.setState({
+                        gridDataSource: apiResult.ResultObject
+                    });
+                }
+            });
+        }
     }
 
     onChangePageLoad() {
@@ -144,11 +165,11 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@Typename",
-                SearchValue:MLObject.Typename
+                SearchValue: MLObject.Typename
             },
             {
                 SearchKey: "@IsOrderBy",
-                SearchValue:MLObject.IsOrderBy
+                SearchValue: MLObject.IsOrderBy
             },
             {
                 SearchKey: "@PAGESIZE",
@@ -164,7 +185,7 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-        
+
         this.setState({
             IsLoadData: false
         });
@@ -177,7 +198,7 @@ class SearchCom extends React.Component {
                     IsLoadData: true
                 });
             }
-            else{
+            else {
                 this.addNotification(apiResult.Message, apiResult.IsError);
             }
         });
@@ -234,7 +255,7 @@ class SearchCom extends React.Component {
     }
 
     render() {
-        this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : -1 
+        this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : -1
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
@@ -256,6 +277,8 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         onChangePage={this.handleonChangePage}
+                        onChangeView={this.handleonChangeView.bind(this)}
+                        onSearchEvent={this.handleonSearchEvent.bind(this)}
                         onChangePageLoad={this.onChangePageLoad.bind(this)}
                         IsDelete={false}
                         IsAdd={false}

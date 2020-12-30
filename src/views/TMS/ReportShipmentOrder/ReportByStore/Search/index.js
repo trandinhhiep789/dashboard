@@ -43,6 +43,7 @@ class SearchCom extends React.Component {
             FromDate: '',
             ToDate: '',
             widthPercent: "",
+            shipmentOrderTypeID: ""
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -92,8 +93,10 @@ class SearchCom extends React.Component {
 
         this.setState({
             FromDate: MLObject.FromDate,
-            ToDate: MLObject.ToDate
+            ToDate: MLObject.ToDate,
+            shipmentOrderTypeID: result,
         })
+
 
         const postData = [
             {
@@ -206,11 +209,14 @@ class SearchCom extends React.Component {
     }
 
     onShowModalDetail(objValue, name) {
+        const { shipmentOrderTypeID } = this.state;
         const status = this.getStatusDelivery(name);
+
         const objData = {
             FromDate: toIsoStringCus(new Date(this.state.FromDate).toISOString()),
             ToDate: toIsoStringCus(new Date(this.state.ToDate).toISOString()),
             CoordinatorStoreID: objValue[0].value,
+            ShipmentOrderTypeID: shipmentOrderTypeID,
             StatusDelivery: status
         }
 
