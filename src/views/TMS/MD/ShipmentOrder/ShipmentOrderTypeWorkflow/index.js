@@ -73,15 +73,26 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                     NextShipmentOrderStepListOption.push({ value: row.ShipmentOrderStepID, label: row.ShipmentOrderStepName });
                 })
             }
+
+
+            //permission
+            let permisionData = [];
+            if (dataSource.ShipmentOrderType_WF_Permis) {
+                permisionData = dataSource.ShipmentOrderType_WF_Permis.map((item, index) => {
+                        return Object.assign({}, item, { ["chkSelectUserGroupID"]: true });
+                });
+            }
+
+
             this.state = {
                 FormData: {
                     ShipmentOrderTypeWorkflow: dataSource,
-                    ShipmentOrderType_WF_Permis: dataSource.ShipmentOrderType_WF_Permis ? dataSource.ShipmentOrderType_WF_Permis : [],
+                    ShipmentOrderType_WF_Permis: permisionData,
                     ShipmentOrderType_WF_Next: dataSource.ShipmentOrderType_WF_Next ? dataSource.ShipmentOrderType_WF_Next : [],
                     NextShipmentOrderStep: "",
                     ChooseFunctionID: ""
                 },
-                ShipmentOrderType_WF_PermisData: dataSource.ShipmentOrderType_WF_Permis ? dataSource.ShipmentOrderType_WF_Permis : [],
+                ShipmentOrderType_WF_PermisData: permisionData,
                 ShipmentOrderType_WF_NextData: dataSource.ShipmentOrderType_WF_Next ? dataSource.ShipmentOrderType_WF_Next : [],
                 InputPermissColumnList: [],
                 SelectedOption: SelectedOption,
@@ -175,25 +186,27 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     }
 
     valueChangeInputGridPermisData(elementdata, index) {
-        // debugger;
-        // if(elementdata.Name == "chkSelectUserGroupID"){
-        //     let object = this.state.ShipmentOrderType_WF_PermisData[index];
-        //     let rowGridData1 = {};
-        //     for (const property in object) {
-        //         //object[property] =  false;
-        //         rowGridData1 = Object.assign({}, this.state.ShipmentOrderType_WF_PermisData[index], { [property]: elementdata.IsChecked }, { HasChanged: true });
-        //         console.log(`${property}: ${object[property]}`);
-        //       }    
-        // let ShipmentOrderType_WF_PermisData1 = Object.assign([], this.state.ShipmentOrderType_WF_PermisData, { [index]: rowGridData1 });
-        // this.setState({ ShipmentOrderType_WF_PermisData:  ShipmentOrderType_WF_PermisData1});
-        // }else{
-        //     const rowGridData = Object.assign({}, this.state.ShipmentOrderType_WF_PermisData[index], { [elementdata.Name]: elementdata.IsChecked }, { HasChanged: true });
-        //     const ShipmentOrderType_WF_PermisData = Object.assign([], this.state.ShipmentOrderType_WF_PermisData, { [index]: rowGridData });
-        //     this.setState({ ShipmentOrderType_WF_PermisData });
-        // }
-        const rowGridData = Object.assign({}, this.state.ShipmentOrderType_WF_PermisData[index], { [elementdata.Name]: elementdata.IsChecked }, { HasChanged: true });
-        const ShipmentOrderType_WF_PermisData = Object.assign([], this.state.ShipmentOrderType_WF_PermisData, { [index]: rowGridData });
-        this.setState({ ShipmentOrderType_WF_PermisData });
+        if (elementdata.Name == "chkSelectUserGroupID") {
+            let object = this.state.ShipmentOrderType_WF_PermisData[index];
+            let rowGridData1 = this.state.ShipmentOrderType_WF_PermisData[index];
+            rowGridData1 = Object.assign({}, rowGridData1, { ["chkSelectUserGroupID"]: elementdata.IsChecked }, { HasChanged: true });
+            for (const property in object) {
+                if (Number.isInteger(parseInt(property))) {
+                    rowGridData1 = Object.assign({}, rowGridData1, { [property]: elementdata.IsChecked }, { HasChanged: true });
+                }
+                //console.log(`${property}: ${object[property]}`);
+            }
+            let ShipmentOrderType_WF_PermisData1 = Object.assign([], this.state.ShipmentOrderType_WF_PermisData, { [index]: rowGridData1 });
+            this.setState({ ShipmentOrderType_WF_PermisData: ShipmentOrderType_WF_PermisData1 });
+        } else {
+            const rowGridData = Object.assign({}, this.state.ShipmentOrderType_WF_PermisData[index], { [elementdata.Name]: elementdata.IsChecked }, { HasChanged: true });
+            const ShipmentOrderType_WF_PermisData = Object.assign([], this.state.ShipmentOrderType_WF_PermisData, { [index]: rowGridData });
+            this.setState({ ShipmentOrderType_WF_PermisData });
+        }
+
+        // const rowGridData = Object.assign({}, this.state.ShipmentOrderType_WF_PermisData[index], { [elementdata.Name]: elementdata.IsChecked }, { HasChanged: true });
+        // const ShipmentOrderType_WF_PermisData = Object.assign([], this.state.ShipmentOrderType_WF_PermisData, { [index]: rowGridData });
+        // this.setState({ ShipmentOrderType_WF_PermisData });
 
     }
 

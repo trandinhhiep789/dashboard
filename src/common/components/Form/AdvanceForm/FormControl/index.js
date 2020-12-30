@@ -234,6 +234,11 @@ class CheckBox extends React.Component {
         if (this.props.onValueChange != null)
             this.props.onValueChange(e.target.name, e.target.checked);
     }
+
+    handleClick = (e) => {
+        this.inputElement.click();
+      }
+
     renderlayout() {
         let formRowClassName = "form-row custom-controls-stacked";
         if (this.props.rowspan != null) {
@@ -277,14 +282,14 @@ class CheckBox extends React.Component {
                             <label>
                                 <input name={this.props.name} type="checkbox"
                                     onChange={this.handleValueChange} disabled={this.state.IsSystem ? "disabled" : ""} defaultChecked={this.props.value}
-                                    id={this.props.name}
+                                    id={this.props.name} ref={input => this.inputElement = input}
                                 />
                                 <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                             </label>
                         </div>
 
                         <div className={formGroupClassName} >
-                            <label className="col-form-label">{this.props.label}</label>
+                            <label className="col-form-label" onClick={this.handleClick}>{this.props.label}</label>
                         </div>
                     </div>
                 )

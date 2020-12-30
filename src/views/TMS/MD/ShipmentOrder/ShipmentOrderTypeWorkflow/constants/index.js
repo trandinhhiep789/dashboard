@@ -350,10 +350,10 @@ export const InputNextColumnList = [
 
 export const GridMLObjectModelPermission = [
     {
-        Name: "ID",
+        Name: "chkSelectUserGroupID",
         DefaultValue: "",
-        BindControlName: "ID",
-        DataSourceMember: "ID"
+        BindControlName: "chkSelectUserGroupID",
+        DataSourceMember: "UserGroupID"
     },
     {
         Name: "UserGroupID",
