@@ -165,7 +165,8 @@ class FormElementCom extends Component {
                         }
                         cacheData.map((cacheItem) => {
                             // console.log("FormElement listOption: ", cacheItem)
-                            listOption.push({ value: cacheItem[valueMember], label: this.props.type == "multiselect" ? cacheItem[nameMember] : cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
+                            //listOption.push({ value: cacheItem[valueMember], label: this.props.type == "multiselect" ? cacheItem[nameMember] : cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
                         });
                     }
                     else {
