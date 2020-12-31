@@ -1199,7 +1199,6 @@ class CheckBox extends React.Component {
         // console.log("Checkbox:", e.target.checked);
     }
     render() {
-        console.log('â', this.props)
         let formRowClassName = "form-row";
         if (this.props.rowspan != null) {
             formRowClassName = "form-row col-md-" + this.props.rowspan;
