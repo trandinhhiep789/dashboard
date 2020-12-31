@@ -88,7 +88,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtBusinessRegistrationNumber",
-        label: "Số giấy đăng ký kinh doanh",
+        label: "Số giấy đăng ký KD / CMND",
         value: "",
         maxSize: "20",
         placeholder: "",
@@ -440,7 +440,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtBusinessRegistrationNumber",
-        label: "Số giấy đăng ký kinh doanh",
+        label: "Số giấy đăng ký KD / CMND",
         value: "",
         maxSize: "20",
         placeholder: "",
