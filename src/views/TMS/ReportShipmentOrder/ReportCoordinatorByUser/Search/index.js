@@ -96,10 +96,15 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult, searchData)
+            // console.log("postData", searchData, apiResult)
             if (!apiResult.IsError) {
+                const tempData = apiResult.ResultObject.map((item, index)=>{
+                    item.DeliverUserFullName = item.DeliverUserLst +"-"+item.DeliverUserFullNameList
+                    return item;
+                })
+                // console.log("apiResult", apiResult, tempData)
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource: tempData,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true
                 });
@@ -178,15 +183,17 @@ class SearchCom extends React.Component {
 
     onShowModalDetail(objValue, name) {
         console.log("objValue", objValue, name)
-        const {shipmentOrderTypeID, coordinatorUser}= this.state;
+        const {shipmentOrderTypeID, coordinatorUser, FromDate, ToDate}= this.state;
         const status = this.getStatusDelivery(name);
-        const dtmCreatedOrderTime = objValue[0].value
+        const UserName = objValue[0].value
       
         const objData = {
-            CreatedOrderTime: dtmCreatedOrderTime,
+            FromDate: FromDate,
+            ToDate: ToDate,
             ShipmentOrderTypeID: shipmentOrderTypeID,
             CoordinatorUser: coordinatorUser,
-            StatusDelivery: status
+            StatusDelivery: status,
+            UserName: UserName
 
         }
         this.props.callFetchAPI(APIHostName, LoadReportUndeliveryByUserName, objData).then(apiResult => {
@@ -262,8 +269,8 @@ class SearchCom extends React.Component {
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
                     IsFixheaderTable={true}
-                    IDSelectColumnName={'CreatedOrderTime'}
-                    PKColumnName={'CreatedOrderTime'}
+                    IDSelectColumnName={'DeliverUserLst'}
+                    PKColumnName={'DeliverUserLst'}
                     onShowModal={this.onShowModalDetail.bind(this)}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}

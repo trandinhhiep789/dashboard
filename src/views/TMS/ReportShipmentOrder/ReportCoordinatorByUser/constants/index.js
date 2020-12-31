@@ -95,10 +95,10 @@ export const  SearchMLObjectDefinition = [
 
 export const GridColumnList = [
     {
-        Name: "DeliverUserFullNameList",
-        Type: "textList",
+        Name: "DeliverUserFullName",
+        Type: "text",
         Caption: "Nhân viên",
-        DataSourceMember: "DeliverUserFullNameList",
+        DataSourceMember: "DeliverUserFullName",
         Width: "14%"
     },
     {
