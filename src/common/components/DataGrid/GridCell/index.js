@@ -6,6 +6,7 @@ import { MessageModal } from "../../../../common/components/Modal";
 import { formatMoney, formatNumber } from '../../../../utils/function';
 import { Base64 } from 'js-base64';
 import { withRouter } from 'react-router-dom';
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
 class GridCell extends Component {
     constructor(props) {
@@ -113,6 +114,9 @@ class GridCell extends Component {
             case "textCustom":
                 control = <div className="textCustom" onClick={() => { this.onClickAction(listValue) }} >{text}</div>;
                 break;
+            case "textList":
+                    control = <label>{text == "" ? text : ReactHtmlParser(text.replace(/;/g, '<br/>'))}</label>;
+                    break;
             case "text":
                 control = <label>{text}</label>;
                 break;
