@@ -903,7 +903,7 @@ class DataGridShipmentOderCom extends Component {
                                                 </button>
 
                                                 <button type="button" onClick={this.handleSelectedView.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Thêm">
-                                                    <i className="fa fa-repeat"></i>
+                                                    <i className="fa fa-history"></i>
                                                 </button>
                                             </div>
 

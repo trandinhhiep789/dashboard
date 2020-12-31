@@ -1,11 +1,7 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/ShipmentOrder/SearchReportDate";
-export const LoadReportUndeliveryByDate = "api/ShipmentOrder/LoadReportByDate";
-export const LoadReportDeliveringByDate = "api/ShipmentOrder/LoadReportDeliveringByDate";
-export const LoadReportDeliveredByDate = "api/ShipmentOrder/LoadReportDeliveredByDate";
-export const LoadReportCompletedOrderByDate = "api/ShipmentOrder/LoadReportCompletedOrderByDate";
-export const LoadReportCancelDeliveryByDate = "api/ShipmentOrder/LoadReportCancelDeliveryByDate";
-export const LoadReportPaidInByDate = "api/ShipmentOrder/LoadReportPaidInByDate";
+export const SearchAPIPath = "api/ShipmentOrder/SearchReportCoordinatorUserName";
+export const LoadReportUndeliveryByUserName = "api/ShipmentOrder/LoadReportCoordinatorByUserName";
+
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -46,7 +42,7 @@ export const SearchElementList = [
         label: "loại yêu cầu vận chuyển",
         colspan: 3,
         value: "",
-        isMultiSelect: true,
+        isMultiSelect: false,
         placeholder: "---Loại yêu cầu vận chuyển---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
@@ -56,22 +52,20 @@ export const SearchElementList = [
         classNameCol:"col-custom"
     },
     {
-        type: "ComboBoxNewChange",
-        name: "cbCoordinatorStoreID",
-        DataSourceMember: "CoordinatorStoreID",
-        label: "kho điều phối",
-        colspan: 3,
-        value: "",
-        isMultiSelect: true,
-        placeholder: "---Kho điều phối---",
+        type: "MultiSelectUser",
+        name: "cbUserName",
+        DataSourceMember: "UserName",
+        label: "Nhân viên điều phối",
+        colspan: 12,
+        rowspan: 3,
+        labelcolspan: 12,
+        IsLabelDiv: true,
+        value: -1,
+        placeholder: "---Vui lòng chọn---",
         listoption: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.USER_COOSTORE_BYUSER",
-        ValueMember: "StoreID",
-        NameMember: "StoreName",
-        // filterValue: 10,
-        // filterobj:"CompanyID",
-        classNameCol:"col-custom"
+        IsAutoLoadItemFromCache: false,
+        isMultiSelect: false
+
     },
 
 ]
@@ -93,19 +87,19 @@ export const  SearchMLObjectDefinition = [
         BindControlName: "cbShipmentOrderTypeID"
     },
     {
-        Name: "CoordinatorStore",
+        Name: "UserName",
         DefaultValue: "",
-        BindControlName: "cbCoordinatorStoreID"
+        BindControlName: "cbUserName"
     },
 ]
 
 export const GridColumnList = [
     {
-        Name: "CreatedOrderTime",
-        Type: "date",
-        Caption: "Ngày",
-        DataSourceMember: "CreatedOrderTime",
-        Width: '14%'
+        Name: "DeliverUserFullNameList",
+        Type: "textList",
+        Caption: "Nhân viên",
+        DataSourceMember: "DeliverUserFullNameList",
+        Width: "14%"
     },
     {
         Name: "TotalOrder",
