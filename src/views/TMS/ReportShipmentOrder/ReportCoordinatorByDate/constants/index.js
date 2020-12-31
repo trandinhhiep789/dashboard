@@ -1,11 +1,7 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/ShipmentOrder/SearchReportDate";
-export const LoadReportUndeliveryByDate = "api/ShipmentOrder/LoadReportByDate";
-export const LoadReportDeliveringByDate = "api/ShipmentOrder/LoadReportDeliveringByDate";
-export const LoadReportDeliveredByDate = "api/ShipmentOrder/LoadReportDeliveredByDate";
-export const LoadReportCompletedOrderByDate = "api/ShipmentOrder/LoadReportCompletedOrderByDate";
-export const LoadReportCancelDeliveryByDate = "api/ShipmentOrder/LoadReportCancelDeliveryByDate";
-export const LoadReportPaidInByDate = "api/ShipmentOrder/LoadReportPaidInByDate";
+export const SearchAPIPath = "api/ShipmentOrder/SearchReportCoordinatorByDate";
+export const LoadReportUndeliveryByDate = "api/ShipmentOrder/LoadReportCoordinatorByDate";
+
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
