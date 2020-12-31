@@ -257,7 +257,7 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label bold">Thu tiền khách hàng:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                {this.state.ShipmentOrder.IsCollectedMoney == true ? <span className="badge badge-success">Đã thu tiền</span> : <span className="badge badge-danger">Chưa thu tiền</span>}
+                                {this.state.ShipmentOrder.IsCollectedMoney == true ? <span className="badge badge-success">Đã thu tiền</span> :""}
                             </div>
                             <div className="form-group col-md-2">
                                 <label className="col-form-label bold">Tổng tiền thu:</label>
@@ -274,7 +274,7 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label bold">Nộp tiền thu ngân:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                {this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : <span className="badge badge-danger">Chưa nộp tiền</span>}
+                                {this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> :""}
                             </div>
                         </div>
 
