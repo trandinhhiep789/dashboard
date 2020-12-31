@@ -126,12 +126,14 @@ class DeliverUserListCom extends React.Component {
                     listMLObject.push({
                         UserName: selectedOption[i].value,
                         CreatedUser: this.props.AppInfo.LoginInfo.Username,
+                        FullName: selectedOption[i].value
                     });
                 }
             } else {
                 listMLObject.push({
                     UserName: selectedOption.value,
                     CreatedUser: this.props.AppInfo.LoginInfo.Username,
+                    FullName: selectedOption.FullName
                 });
             }
         }
@@ -144,20 +146,23 @@ class DeliverUserListCom extends React.Component {
         let listOption = [];
         let objDeliverUser = [];
         if (this.props.value != -1) {
-            if (this.props.filterValue != -1) {
-                this.props.value && this.props.value.map((item, index) => {
-                    objDeliverUser.push(item.UserName)
-                })
-            }
-            else {
+            if (this.props.filterValue == -1 || this.props.filterValue == "" || this.props.filterValue == 0 ) {
+                
+
                 this.props.value && this.props.value.map((item, index) => {
                     listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName });
                 })
             }
+            else {
+                this.props.value && this.props.value.map((item, index) => {
+                    objDeliverUser.push(item.UserName)
+                })
+            }
         }
         return (
+           
             <div>
-                {this.props.filterValue == -1 ?
+                {(this.props.filterValue == -1 || this.props.filterValue == 0 || this.props.filterValue == undefined)?
                     <MultiSelectComboBox
                         name="ShipmentOrder_DeliverUserList"
                         colspan={this.props.colspan}
@@ -171,7 +176,7 @@ class DeliverUserListCom extends React.Component {
                         controltype="InputControl"
                         value={listOption}
                         onChange={this.handleValueChange1}
-                        listoption={[]}
+                        listoption={listOption}
                         isMultiSelect={this.props.isMultiSelect}
                         datasourcemember="ShipmentOrder_DeliverUserList"
                         validationErrorMessage={this.props.validationErrorMessage}
