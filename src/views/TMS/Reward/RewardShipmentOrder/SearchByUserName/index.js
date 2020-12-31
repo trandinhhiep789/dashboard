@@ -53,7 +53,13 @@ class SearchByUserNameCom extends React.Component {
         
         this.props.updatePagePath(PagePathByUserName);
         this.callLoadData(params);
-        // this.callSearchDataMobi(params)
+
+        const paramsMobi = {
+            FromDate: myParam.FromDate,
+            ToDate: myParam.ToDate,
+            UserName: '0041018'
+        }
+         this.callSearchDataMobi(paramsMobi)
     }
 
     
