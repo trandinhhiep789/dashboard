@@ -516,7 +516,9 @@ class EditCom extends React.Component {
                                 isMultiSelect={false}
                             />
                         </div>
-
+                        <div className="col-md-6">
+                           
+                        </div>
                         <div className="col-md-6">
                             {/* <FormControl.ElementDatetime
                                 name="dtSignedDate"
