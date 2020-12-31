@@ -12,12 +12,7 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
-    LoadReportUndeliveryByDate,
-    LoadReportDeliveringByDate,
-    LoadReportDeliveredByDate,
-    LoadReportCompletedOrderByDate,
-    LoadReportCancelDeliveryByDate,
-    LoadReportPaidInByDate
+    LoadReportUndeliveryByUserName,
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -27,7 +22,7 @@ import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionList
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 import { showModal, hideModal } from '../../../../../actions/modal';
-import DataGirdReportShipmentOrder from '../../components/DataGirdReportShipmentOrder'
+import DataGirdReportCoordinator from '../../components/DataGirdReportCoordinator'
 import { toIsoStringCus } from '../../../../../utils/function'
 
 class SearchCom extends React.Component {
@@ -41,6 +36,10 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsLoadDataComplete: false,
             widthPercent: "",
+            FromDate: '',
+            ToDate: '',
+            shipmentOrderTypeID: '',
+            coordinatorUser: ''
         };
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
@@ -63,27 +62,15 @@ class SearchCom extends React.Component {
     };
 
     handleSearchSubmit(formData, MLObject) {
-        let result, result2;
-        if (MLObject.ShipmentOrderType != -1 && MLObject.ShipmentOrderType != null && MLObject.ShipmentOrderType != "") {
-            result = MLObject.ShipmentOrderType.reduce((data, item, index) => {
-                const comma = data.length ? "," : "";
-                return data + comma + item;
-            }, '');
-        }
-        else {
-            result = ""
-        }
+       
 
-        if (MLObject.CoordinatorStore != -1 && MLObject.CoordinatorStore != null && MLObject.CoordinatorStore != "") {
-            result2 = MLObject.CoordinatorStore.reduce((data, item, index) => {
-                const comma = data.length ? "," : "";
-                return data + comma + item;
-            }, '');
-        }
-        else {
-            result2 = ""
-        }
-
+        this.setState({
+            FromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()),
+            ToDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString()),
+            shipmentOrderTypeID: MLObject.ShipmentOrderType,
+            coordinatorUser: MLObject.UserName.value
+        })
+        
         const postData = [
             {
                 SearchKey: "@FROMDATE",
@@ -94,20 +81,22 @@ class SearchCom extends React.Component {
                 SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) //MLObject.ToDate
             },
             {
-                SearchKey: "@SHIPMENTORDERTYPEIDLIST",
-                SearchValue: result  //MLObject.ShipmentOrderType
+                SearchKey: "@SHIPMENTORDERTYPEID",
+                SearchValue: MLObject.ShipmentOrderType
             },
             {
-                SearchKey: "@COORDINATORSTOREIDLIST",
-                SearchValue: result2  //MLObject.CoordinatorStoreID
+                SearchKey: "@COORDINATORUSER",
+                SearchValue: MLObject.UserName.value
             },
 
-        ];
+        ]; 
+        // console.log("postData", postData, MLObject)
         this.callSearchData(postData);
     }
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("apiResult", apiResult, searchData)
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
@@ -188,15 +177,20 @@ class SearchCom extends React.Component {
     }
 
     onShowModalDetail(objValue, name) {
-        
+        console.log("objValue", objValue, name)
+        const {shipmentOrderTypeID, coordinatorUser}= this.state;
         const status = this.getStatusDelivery(name);
         const dtmCreatedOrderTime = objValue[0].value
-
+      
         const objData = {
             CreatedOrderTime: dtmCreatedOrderTime,
+            ShipmentOrderTypeID: shipmentOrderTypeID,
+            CoordinatorUser: coordinatorUser,
             StatusDelivery: status
+
         }
-        this.props.callFetchAPI(APIHostName, LoadReportUndeliveryByDate, objData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, LoadReportUndeliveryByUserName, objData).then(apiResult => {
+            console.log("objData", objData, apiResult)
             if (!apiResult.IsError) {
                 this.handleShowModal(apiResult.ResultObject, status)
             }
@@ -238,7 +232,7 @@ class SearchCom extends React.Component {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: titleModal,
             content: {
-                text: <DataGirdReportShipmentOrder
+                text: <DataGirdReportCoordinator
                     dataSource={data}
                     RowsPerPage={20}
                     IsAutoPaging={true}

@@ -82,8 +82,8 @@ class SearchCom extends React.Component {
         // console.log("MLObject", MLObject, result, result2)
 
         this.setState({
-            FromDate: MLObject.FromDate,
-            ToDate: MLObject.ToDate,
+            FromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()),
+            ToDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString()),
             shipmentOrderTypeID: result,
         })
 

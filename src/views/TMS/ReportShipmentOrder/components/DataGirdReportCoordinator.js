@@ -137,12 +137,20 @@ class DataGirdReportCoordinatorCom extends Component {
                                                     <label className="item address-receiver">
                                                         <span>{rowItem.ShipmentOrderTypeName}</span>
                                                     </label>
-                                                    <label className="item address-receiver">
-                                                        <span>ĐP: 73309-Lê Nho Học</span>
-                                                    </label>
-                                                    <label className="item address-receiver">
-                                                        <span>NV: 68913-Lê Hoàng Vũ</span>
-                                                    </label>
+                                                    {
+                                                        rowItem.CoordinatorUser != "" ? (
+                                                            <React.Fragment>
+                                                                <label className="item address-receiver">
+                                                                    <span>ĐP: {rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span>
+                                                                </label>
+                                                                <label className="item address-receiver">
+                                                                    <span>NV: {ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
+                                                                </label>
+                                                            </React.Fragment>
+                                                        )
+                                                            : ""
+                                                    }
+
                                                 </div>
                                             </td>
                                             <td className="group-address" style={{ width: '25%' }}>

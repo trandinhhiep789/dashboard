@@ -221,7 +221,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
             data.map((cacheItem) => {
                 if (conditionName && conditionValue != -1) {
                     if (cacheItem[conditionName] == conditionValue) {
-                        listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+                        listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
                     }
                 }
             });
