@@ -20,6 +20,7 @@ import "react-notifications-component/dist/theme.css";
 import { TMS_BEGINTERMADVANCEDEBT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
+import { toIsoStringCus } from '../../../../../utils/function'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -47,15 +48,17 @@ class SearchCom extends React.Component {
     handleSearchSubmit(formData, MLObject) {
         const objData = {
             UserName:MLObject.UserName.value,
-            FromDate:MLObject.FromDate,
-            ToDate:  MLObject.ToDate
+            FromDate:toIsoStringCus(new Date(MLObject.FromDate).toISOString()), //MLObject.FromDate,
+            ToDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) // MLObject.ToDate
 
         }
 
         const objParams = {
             UserName:MLObject.UserName.value,
-            FromDate:MLObject.FromDate,
-            ToDate:  MLObject.ToDate,
+            // FromDate:MLObject.FromDate,
+            // ToDate:  MLObject.ToDate,
+            FromDate:toIsoStringCus(new Date(MLObject.FromDate).toISOString()), //MLObject.FromDate,
+            ToDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString()), // MLObject.ToDate
             FullName: MLObject.UserName.label
         }
 

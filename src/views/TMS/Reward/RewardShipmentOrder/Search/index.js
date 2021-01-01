@@ -21,7 +21,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { TMS_TMSREWARD_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
-
+import { toIsoStringCus } from '../../../../../utils/function'
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -59,7 +59,7 @@ class SearchCom extends React.Component {
         this.handleCallData();
     }
 
-   
+
 
     handleCallData() {
         const { SearchData } = this.state;
@@ -68,8 +68,10 @@ class SearchCom extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         const param = {
-            FromDate: MLObject.FromDate,
-            ToDate: MLObject.ToDate,
+            // FromDate: MLObject.FromDate,
+            // ToDate: MLObject.ToDate,
+            FromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()), //MLObject.FromDate,
+            ToDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString()), // MLObject.ToDate
             CoordinatorStore: MLObject.CoordinatorStore
         }
 
@@ -113,7 +115,7 @@ class SearchCom extends React.Component {
                         "Mã nhân viên": item.RewardUser,
                         "Tên nhân viên": item.FullName,
                         "Tổng thưởng": item.TotalReward,
-                      
+
                     };
 
                     return element;

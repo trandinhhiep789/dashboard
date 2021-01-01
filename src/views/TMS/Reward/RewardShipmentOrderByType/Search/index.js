@@ -20,6 +20,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { TMS_TMSREWARD_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { toIsoStringCus } from '../../../../../utils/function'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -71,11 +72,11 @@ class SearchCom extends React.Component {
         const postData = [
             {
                 SearchKey: "@FROMDATE",
-                SearchValue: MLObject.FromDate
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString()) //MLObject.FromDate
             },
             {
                 SearchKey: "@TODATE",
-                SearchValue: MLObject.ToDate
+                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) //MLObject.ToDate
             },
             {
                 SearchKey: "@REWARDTYPEID",
