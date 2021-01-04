@@ -40,7 +40,8 @@ class SearchCom extends React.Component {
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
-            iconNotification: ""
+            iconNotification: "",
+            IsShowForm: true,
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -48,7 +49,7 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
-        this.callSearchData(this.state.SearchData);
+        //this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
     }
 
