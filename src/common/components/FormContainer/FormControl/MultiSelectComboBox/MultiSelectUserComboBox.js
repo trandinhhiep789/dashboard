@@ -129,7 +129,7 @@ class MultiSelectUserComboBoxCom extends React.Component {
         if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
             star = '*'
         }
-        let classNameselect = "react-select";
+        let classNameselect = "select react-select";
         if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
             classNameselect += " is-invalid";
         }
