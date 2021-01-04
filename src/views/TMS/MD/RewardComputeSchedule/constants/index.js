@@ -35,6 +35,9 @@ export const DetailPagePath = [
     { Link: "", Title: "Chi tiết" }
 ];
 
+const dtdateto = new Date()
+dtdateto.setDate(new Date().getDate() + 1);
+
 export const SearchElementList = [
     {
         type: "text",
@@ -52,7 +55,7 @@ export const AddElementList = [
         type: "date",
         name: "RewardDateFrom",
         label: "ngày tính thưởng (từ ngày)",
-        value: "",
+        value: new Date(),
         placeholder: "",
         icon: "",
         readonly: true,
@@ -63,7 +66,7 @@ export const AddElementList = [
         type: "date",
         name: "RewardDateTo",
         label: "ngày tính thưởng (đến ngày)",
-        value: "",
+        value: new Date(),
         placeholder: "",
         icon: "",
         DataSourceMember: "RewardDateFrom",

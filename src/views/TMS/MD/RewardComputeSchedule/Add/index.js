@@ -134,13 +134,13 @@ class AddCom extends React.Component {
             this.addNotification("Ngày tính thưởng không hợp lệ. Vui lòng kiểm tra lại.", true);
         } else {
 
-            if (MLObject.RewardDateFrom.getMonth) {
-                MLObject.RewardDateFrom.setDate(MLObject.RewardDateFrom.getDate() + 1);
-            }
+            // if (MLObject.RewardDateFrom.getMonth) {
+            //     MLObject.RewardDateFrom.setDate(MLObject.RewardDateFrom.getDate() + 1);
+            // }
 
-            if (MLObject.RewardDateTo.getMonth) {
-                MLObject.RewardDateTo.setDate(MLObject.RewardDateTo.getDate() + 1);
-            }
+            // if (MLObject.RewardDateTo.getMonth) {
+            //     MLObject.RewardDateTo.setDate(MLObject.RewardDateTo.getDate() + 1);
+            // }
 
             this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
