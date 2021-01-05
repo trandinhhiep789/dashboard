@@ -85,7 +85,16 @@ export const ModalColumnList_Insert = [
         rows: "6",
         readonly: false,
         validatonList: []
-    }
+    },
+    {
+        Name: "IsCaptureByEachProduct",
+        type: "checkbox",
+        label: "Chụp hình theo từng sản phẩm",
+        DataSourceMember: "IsCaptureByEachProduct",
+        readonly: false,
+        validatonList: [],
+        value: false
+    },
 ];
 
 export const ModalColumnList_Edit = [
@@ -158,7 +167,16 @@ export const ModalColumnList_Edit = [
         rows: "6",
         readonly: false,
         validatonList: []
-    }
+    },
+    {
+        Name: "IsCaptureByEachProduct",
+        type: "checkbox",
+        label: "Chụp hình theo từng sản phẩm",
+        DataSourceMember: "IsCaptureByEachProduct",
+        readonly: false,
+        validatonList: [],
+        //value: false
+    },
 ];
 
 export const DataGridColumnList = [
@@ -276,6 +294,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "Description",
         DataSourceMember: "Description"
+    },
+    {
+        Name: "IsCaptureByEachProduct",
+        DefaultValue: "",
+        BindControlName: "IsCaptureByEachProduct",
+        DataSourceMember: "IsCaptureByEachProduct"
     },
     {
         Name: "OrderIndex",
