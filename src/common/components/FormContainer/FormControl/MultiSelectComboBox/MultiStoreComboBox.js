@@ -12,9 +12,6 @@ class MultiStoreComboBoxCom extends React.Component {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
         this.handleValueChange1 = this.handleValueChange1.bind(this);
-
-        let SelectedOption = [];
-
         this.state = { ListOption: [], SelectedOption: [] }
     }
 
@@ -25,6 +22,14 @@ class MultiStoreComboBoxCom extends React.Component {
             ListOption: this.props.listoption,
             SelectedOption:  this.props.value == undefined ? this.props.listoption : this.props.value
         });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
+            this.setState({
+                SelectedOption: nextProps.value
+            })
+        }
     }
 
     callSearchData(KeyWord) {
@@ -107,7 +112,6 @@ class MultiStoreComboBoxCom extends React.Component {
 
     }
     render() {
-
         const listOption = this.state.ListOption;
         let listOptionNew = [];
         for (let i = 0; i < listOption.length; i++) {

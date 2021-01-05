@@ -101,14 +101,14 @@ class SearchNewCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult)
+            // console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const sortResult = apiResult.ResultObject.sort((a, b) => (a.UserName > b.UserName) ? 1
                         : (a.UserName === b.UserName)
                             ? (a.LimitTypeID > b.LimitTypeID) ? 1 : -1 : -1);
                    
-                            console.log("sortResult", sortResult)
+                            // console.log("sortResult", sortResult)
 
                     const dataSource = sortResult.reduce((catsSoFar, item, index) => {
                         if (!catsSoFar[item.UserName]) catsSoFar[item.UserName] = [];
@@ -116,7 +116,7 @@ class SearchNewCom extends React.Component {
                         return catsSoFar;
                     }, {});
 
-                    console.log("dataSource", dataSource)
+                    // console.log("dataSource", dataSource)
 
                     let init = []
                     let userName = '';

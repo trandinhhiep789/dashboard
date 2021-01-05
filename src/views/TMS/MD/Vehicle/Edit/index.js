@@ -69,7 +69,6 @@ class EditCom extends React.Component {
     callLoadData(id) {
         const { UserValue, StoreSelect } = this.state;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -79,6 +78,7 @@ class EditCom extends React.Component {
             else {
                 let UserValueItem = {};
                 let StoreItem = {};
+
                 UserValueItem.value = apiResult.ResultObject.MainDriverUser;
                 UserValueItem.label = apiResult.ResultObject.MainDriverUser + " - " + apiResult.ResultObject.FullName;
 
@@ -94,6 +94,8 @@ class EditCom extends React.Component {
                     DataSource: apiResult.ResultObject,
                     IsSystem: apiResult.ResultObject.IsSystem,
                     IsLoadDataComplete: true,
+                    MainDriverUser: apiResult.ResultObject.MainDriverUser,
+                    MainCoordinatorStoreID: apiResult.ResultObject.MainCoordinatorStoreID,
                 });
             }
         });
@@ -116,9 +118,11 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
+        const { MainDriverUser, MainCoordinatorStoreID } = this.state;
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        console.log("handleSubmit", MLObject)
+        MLObject.MainDriverUser = MainDriverUser;
+        MLObject.MainCoordinatorStoreID = MainCoordinatorStoreID;
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -163,7 +167,7 @@ class EditCom extends React.Component {
     onChangeUser(name, objUser) {
 
         this.setState({
-            MainDriverUser: objUser.value
+            MainDriverUser: objUser.value,
         })
     }
 
@@ -179,7 +183,6 @@ class EditCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-        console.log("DataSource", this.state)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -255,7 +258,7 @@ class EditCom extends React.Component {
                                 IsLabelDiv={true}
                                 isautoloaditemfromcache={false}
                                 onChange={this.onChangeUser.bind(this)}
-                                controltype="InputControl"
+                                // controltype="InputControl"
                                 value={this.state.UserValue}
                                 listoption={this.state.UserValue}
                                 isMultiSelect={false}
@@ -275,7 +278,7 @@ class EditCom extends React.Component {
                                 IsLabelDiv={false}
                                 isautoloaditemfromcache={false}
                                 onChange={this.onChangeStore.bind(this)}
-                                controltype="InputControl"
+                                // controltype="InputControl"
                                 value={this.state.StoreSelect}
                                 listoption={this.state.StoreSelect}
                                 isMultiSelect={false}

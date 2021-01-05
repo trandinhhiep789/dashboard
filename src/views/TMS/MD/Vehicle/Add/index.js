@@ -46,7 +46,8 @@ class AddCom extends React.Component {
             cssNotification: "",
             iconNotification: "",
             MainDriverUser: "",
-            MainCoordinatorStoreID: ""
+            MainCoordinatorStoreID: "",
+            Listoption: []
         };
         this.searchref = React.createRef();
         this.gridref = React.createRef();
@@ -123,9 +124,9 @@ class AddCom extends React.Component {
     }
 
     onChangeUser(name, objUser) {
-
         this.setState({
-            MainDriverUser: objUser.value
+            MainDriverUser: objUser.value,
+            Listoption: objUser
         })
     }
 
@@ -142,7 +143,6 @@ class AddCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -156,7 +156,7 @@ class AddCom extends React.Component {
                 >
 
                     <div className="row">
-                        <div className="col-md-6">
+                        {/* <div className="col-md-6">
                             <FormControl.TextBox
                                 name="txtVehicleID"
                                 colspan="8"
@@ -170,7 +170,7 @@ class AddCom extends React.Component {
                                 datasourcemember="VehicleID"
                                 validatonList={['required', 'number']}
                             />
-                        </div>
+                        </div> */}
                         <div className="col-md-6">
                             <FormControl.TextBox
                                 name="txtVehicleName"
@@ -214,8 +214,8 @@ class AddCom extends React.Component {
                                 isautoloaditemfromcache={false}
                                 onChange={this.onChangeUser.bind(this)}
                                 controltype="InputControl"
-                                value={[]}
-                                listoption={[]}
+                                value={this.state.MainDriverUser}
+                                listoption={this.state.Listoption}
                                 isMultiSelect={false}
                                 datasourcemember="MainDriverUser"
                                 validationErrorMessage={''}
