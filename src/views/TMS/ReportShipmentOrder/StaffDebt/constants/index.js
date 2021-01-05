@@ -83,7 +83,7 @@ export const SearchElementList = [
         label: "kho điều phối",
         colspan: 2,
         value: "",
-        isMultiSelect: true,
+        isMultiSelect: false,
         placeholder: "---Kho điều phối---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
