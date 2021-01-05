@@ -138,9 +138,9 @@ class SearchCom extends React.Component {
     }
 
     handleCloseMessage() {
-        if (!this.state.IsCallAPIError) {
-            this.callSearchData(this.state.SearchData);
-        }
+        // if (!this.state.IsCallAPIError) {
+        //     this.callSearchData(this.state.SearchData);
+        // }
     }
 
     showMessage(message) {
