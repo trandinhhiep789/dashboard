@@ -35,30 +35,66 @@ export const AddPagePath = [
 ];
 
 export const InitSearchParams = [
+ 
     {
-        SearchKey: "@Keyword",
+        SearchKey: "@ShipmentOrderTypeID",
+        SearchValue: ""
+    },
+    {
+        SearchKey: "@StoreID",
         SearchValue: ""
     }
 ];
 
 export const SearchElementList = [
+   
     {
-        type: "text",
-        name: "txtKeyword",
-        label: "Từ khóa:",
+        type: "ComboBoxNewChange",
+        name: "cbShipmentOrderTypeID",
+        DataSourceMember: "ShipmentOrderTypeID",
+        label: "loại yêu cầu vận chuyển",
+        colspan: 3,
         value: "",
-        placeholder: "",
-        icon: "",
-        listoption: {}
-    }
+        isMultiSelect: false,
+        placeholder: "---Loại yêu cầu vận chuyển---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
+        ValueMember: "ShipmentOrderTypeID",
+        NameMember: "ShipmentOrderTypeName",
+        classNameCol:"col-custom"
+    },
+
+    {
+        type: "ComboBoxNewChange",
+        name: "cbStoreID",
+        DataSourceMember: "StoreID",
+        label: "Kho",
+        colspan: 3,
+        value: "",
+        isMultiSelect: false,
+        placeholder: "---Kho---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
+        ValueMember: "StoreID",
+        NameMember: "StoreName",
+        classNameCol:"col-custom"
+    },
+  
 ];
 
 export const SearchMLObjectDefinition = [
     {
-        Name: "Keyword",
+        Name: "ShipmentOrderTypeID",
         DefaultValue: "",
-        BindControlName: "txtKeyword"
-    }
+        BindControlName: "cbShipmentOrderTypeID"
+    },
+    {
+        Name: "StoreID",
+        DefaultValue: "",
+        BindControlName: "cbStoreID"
+    },
 ];
 
 export const DataGridColumnList = [
