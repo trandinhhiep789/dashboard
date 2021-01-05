@@ -1,7 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SearchForm from "../../../../../common/components/Form/SearchForm";
+// import SearchForm from "../../../../../common/components/Form/SearchForm";
+import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
+
 import DataGrid from "../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
@@ -77,8 +79,12 @@ class SearchCom extends React.Component {
     handleSearchSubmit(formData, MLObject) {
         const postData = [
             {
-                SearchKey: "@Keyword",
-                SearchValue: MLObject.Keyword
+                SearchKey: "@ShipmentOrderTypeID",
+                SearchValue: MLObject.ShipmentOrderTypeID
+            },
+            {
+                SearchKey: "@StoreID",
+                SearchValue: MLObject.StoreID
             }
         ];
         this.setState({ SearchData: postData });
@@ -172,6 +178,7 @@ class SearchCom extends React.Component {
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
+                        className="multiple"
                     />
                     <DataGrid
                         listColumn={DataGridCoordinatorStoreColumnList}
