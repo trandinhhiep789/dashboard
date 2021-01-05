@@ -446,6 +446,7 @@ class ListShipCoordinatorCom extends Component {
                             label="Nhân viên giao"
                             disabled={!this.props.IsUserCoordinator}
                             IsLabelDiv={true}
+                            isSelectedOption={true}
                             isautoloaditemfromcache={false}
                             controltype="InputControl"
                             onChange={this.handleValueChange1}

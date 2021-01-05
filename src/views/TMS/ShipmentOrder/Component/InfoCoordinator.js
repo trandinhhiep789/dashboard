@@ -654,6 +654,7 @@ class InfoCoordinatorCom extends Component {
                                     label="Nhân viên giao"
                                     disabled={!this.props.IsUserCoordinator}
                                     IsLabelDiv={true}
+                                    isSelectedOption={true}
                                     isautoloaditemfromcache={false}
                                     loaditemcachekeyid={"PIMCACHE_PIM_SHIPPINGMETHOD"}
                                     valuemember="ShippingMethodID"
