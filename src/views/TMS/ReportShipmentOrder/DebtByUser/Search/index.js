@@ -33,7 +33,10 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsLoadDataComplete: false,
             widthPercent: "",
-            params: {}
+            params: {},
+            cssNotification: "notification-custom-success",
+            iconNotification: "fa fa-check",
+            dataExport: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -47,17 +50,17 @@ class SearchCom extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         const objData = {
-            UserName:MLObject.UserName.value,
-            FromDate:toIsoStringCus(new Date(MLObject.FromDate).toISOString()), //MLObject.FromDate,
+            UserName: MLObject.UserName.value,
+            FromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()), //MLObject.FromDate,
             ToDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) // MLObject.ToDate
 
         }
 
         const objParams = {
-            UserName:MLObject.UserName.value,
+            UserName: MLObject.UserName.value,
             // FromDate:MLObject.FromDate,
             // ToDate:  MLObject.ToDate,
-            FromDate:toIsoStringCus(new Date(MLObject.FromDate).toISOString()), //MLObject.FromDate,
+            FromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()), //MLObject.FromDate,
             ToDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString()), // MLObject.ToDate
             FullName: MLObject.UserName.label
         }
@@ -69,7 +72,7 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-        
+
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             // console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
@@ -77,13 +80,36 @@ class SearchCom extends React.Component {
                     item.TotalAmount = item.Price * item.EndTermAdvanceDebt;
                     return item;
                 })
-                this.setState({
-                    gridDataSource: tempData
+
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã vật tư": item.ProductID,
+                        "Tên vật tư": item.ProductName,
+                        "Đơn vị tính": item.QuantityUnitName,
+                        "Tồn đầu kỳ": item.BeginTermAdvanceDebt,
+                        "Tăng trong kỳ": item.IncreaseAdvanceDebt,
+                        "Giảm trong kỳ": item.DecreaseAdvanceDebt,
+                        "Tồn cuối kỳ": item.EndTermAdvanceDebt,
+                        "Đơn giá": item.Price,
+                        "Thành tiền": item.TotalAmount
+                    };
+                    return element;
+
                 })
+
+                this.setState({
+                    gridDataSource: tempData,
+                    dataExport: exelData,
+                    IsCallAPIError: apiResult.IsError,
+                });
+
             }
             else {
                 this.setState({
-                    gridDataSource: []
+                    gridDataSource: [],
+                    dataExport: [],
+                    IsCallAPIError: apiResult.IsError,
                 })
                 this.showMessage(apiResult.MessageDetail)
             }
@@ -135,6 +161,10 @@ class SearchCom extends React.Component {
         });
     }
 
+    handleExportFile(result) {
+        this.addNotification(result.Message);
+    }
+
 
     render() {
         return (
@@ -161,12 +191,15 @@ class SearchCom extends React.Component {
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={false}
                     IsPrint={false}
-                    IsExportFile={false}
                     IsAutoPaging={true}
                     params={this.state.params}
                     RowsPerPage={20}
                     RequirePermission={TMS_BEGINTERMADVANCEDEBT_VIEW}
                     ref={this.gridref}
+                    IsExportFile={true}
+                    DataExport={this.state.dataExport}
+                    fileName="Danh sách thống kê công nợ theo nhân viên"
+                    onExportFile={this.handleExportFile.bind(this)}
                 />
             </React.Fragment>
         );

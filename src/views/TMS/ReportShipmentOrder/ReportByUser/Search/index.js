@@ -16,6 +16,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
+import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
@@ -34,10 +35,14 @@ class SearchCom extends React.Component {
             widthPercent: "",
             FromDate: '',
             ToDate: '',
-            shipmentOrderTypeID: ""
+            shipmentOrderTypeID: "",
+            cssNotification: "notification-custom-success",
+            iconNotification: "fa fa-check",
+            dataExport: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
+        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
@@ -114,13 +119,38 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
+
+
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Nhân viên": item.DeliverUserFullNameList,
+                        "Tổng đơn": item.TotalOrder,
+                        "Chưa giao": item.TotalUndelivery,
+                        "Đang giao": item.TotalDelivering,
+                        "Giao xong": item.TotalDelivered,
+                        "Hoàn tất": item.TotalCompletedOrder,
+                        "Huỷ giao": item.TotalCancelDelivery,
+                        "Đã nộp tiền": item.TotalPaidIn,
+                        "Chưa nộp tiền": item.UnTotalPaidIn
+                    };
+                    return element;
+
+                })
                 this.setState({
+                    dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true
                 });
             }
             else {
+                this.setState({
+                    dataExport: [],
+                    gridDataSource: [],
+                    IsCallAPIError: apiResult.IsError,
+                    IsLoadDataComplete: true
+                });
                 this.showMessage(apiResult.MessageDetail)
             }
         });
@@ -218,12 +248,49 @@ class SearchCom extends React.Component {
         });
     }
 
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
+    handleExportFile(result) {
+        this.addNotification(result.Message);
+    }
 
     render() {
         return (
             <React.Fragment>
+                <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    FormName="Tìm kiếm danh sách thống kê vận đơn theo kho điều phối"
+                    FormName="Tìm kiếm danh sách thống kê vận đơn theo nhân viên"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
@@ -244,11 +311,14 @@ class SearchCom extends React.Component {
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={false}
                     IsPrint={false}
-                    IsExportFile={false}
                     IsAutoPaging={true}
                     RowsPerPage={30}
                     ref={this.gridref}
                     RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    IsExportFile={true}
+                    DataExport={this.state.dataExport}
+                    fileName="Danh sách thống kê vận đơn theo nhân viên"
+                    onExportFile={this.handleExportFile.bind(this)}
                 />
             </React.Fragment>
         );
