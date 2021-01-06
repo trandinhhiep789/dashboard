@@ -42,7 +42,10 @@ class SearchCom extends React.Component {
             IsLoadDataComplete: false,
             widthPercent: "",
             shipmentOrderTypeID: "",
-            coordinatorStoreID: ""
+            coordinatorStoreID: "",
+            cssNotification: "notification-custom-success",
+            iconNotification: "fa fa-check",
+            dataExport: []
         };
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
@@ -116,13 +119,37 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Ngày": item.CreatedOrderTime,
+                        "Tổng đơn": item.TotalOrder,
+                        "Chưa giao": item.TotalUndelivery,
+                        "Đang giao": item.TotalDelivering,
+                        "Giao xong": item.TotalDelivered,
+                        "Hoàn tất": item.TotalCompletedOrder,
+                        "Huỷ giao": item.TotalCancelDelivery,
+                        "Đã nộp tiền": item.TotalPaidIn,
+                        "Chưa nộp tiền": item.UnTotalPaidIn
+                    };
+                    return element;
+
+                })
+
                 this.setState({
+                    dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true
                 });
             }
             else {
+                this.setState({
+                    dataExport: [],
+                    gridDataSource: [],
+                    IsCallAPIError: apiResult.IsError,
+                    IsLoadDataComplete: true
+                });
                 this.showMessage(apiResult.MessageDetail)
             }
         });
@@ -171,6 +198,10 @@ class SearchCom extends React.Component {
             dismiss: { duration: 6000 },
             dismissable: { click: true }
         });
+    }
+
+    handleExportFile(result) {
+        this.addNotification(result.Message);
     }
 
     getStatusDelivery(status) {
@@ -285,11 +316,14 @@ class SearchCom extends React.Component {
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={false}
                     IsPrint={false}
-                    IsExportFile={false}
                     IsAutoPaging={true}
                     RowsPerPage={30}
                     RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                     ref={this.gridref}
+                    IsExportFile={true}
+                    DataExport={this.state.dataExport}
+                    fileName="Danh sách thống kê vận đơn theo ngày"
+                    onExportFile={this.handleExportFile.bind(this)}
                 />
             </React.Fragment>
         );

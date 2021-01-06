@@ -43,7 +43,10 @@ class SearchCom extends React.Component {
             FromDate: '',
             ToDate: '',
             widthPercent: "",
-            shipmentOrderTypeID: ""
+            shipmentOrderTypeID: "",
+            cssNotification: "notification-custom-success",
+            iconNotification: "fa fa-check",
+            dataExport: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -124,19 +127,46 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult)
+            //console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
                 const tempData = apiResult.ResultObject.map((item, index) => {
                     item.fulNameStore = item.CoordinatorStoreID + "- " + item.StoreName;
                     return item;
                 })
+
+
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Kho điều phối": item.fulNameStore,
+                        "Tổng đơn": item.TotalOrder,
+                        "Chưa giao": item.TotalUndelivery,
+                        "Đang giao": item.TotalDelivering,
+                        "Giao xong": item.TotalDelivered,
+                        "Đã hoàn thành": item.TotalCompletedOrder,
+                        "Huỷ giao": item.TotalCancelDelivery,
+                        "Đã nộp tiền": item.TotalPaidIn,
+                        "Chưa nộp tiền": item.UnTotalPaidIn
+                    };
+                    return element;
+
+                })
+
+
                 this.setState({
+                    dataExport: exelData,
                     gridDataSource: tempData,//apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true
                 });
             }
             else {
+                this.setState({
+                    dataExport: [],
+                    gridDataSource: [],//apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError,
+                    IsLoadDataComplete: true
+                });
                 this.showMessage(apiResult.MessageDetail)
             }
         });
@@ -185,6 +215,10 @@ class SearchCom extends React.Component {
             dismiss: { duration: 6000 },
             dismissable: { click: true }
         });
+    }
+
+    handleExportFile(result) {
+        this.addNotification(result.Message);
     }
 
     getStatusDelivery(status) {
@@ -300,11 +334,14 @@ class SearchCom extends React.Component {
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={false}
                     IsPrint={false}
-                    IsExportFile={false}
                     IsAutoPaging={true}
                     RowsPerPage={30}
                     ref={this.gridref}
                     RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    IsExportFile={true}
+                    DataExport={this.state.dataExport}
+                    fileName="Danh sách thống kê vận đơn theo kho điều phối"
+                    onExportFile={this.handleExportFile.bind(this)}
                 />
             </React.Fragment>
         );
