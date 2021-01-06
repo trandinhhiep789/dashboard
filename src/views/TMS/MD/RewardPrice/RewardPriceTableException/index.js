@@ -117,7 +117,7 @@ class RewardPriceTableExceptionCom extends Component {
                             name="cbMainGroupID"
                             colspan="6"
                             labelcolspan="6"
-                            label="thông số kỹ thuật"
+                            label="Ngành hàng"
                             // validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid={ERPCOMMONCACHE_MAINGROUP}
