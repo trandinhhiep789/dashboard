@@ -124,7 +124,7 @@ class SearchCom extends React.Component {
                 const tempDataExport = apiResult.ResultObject.map((item, index) => {
                     let element = {
                         "Mã NV nợ": item.FullNameMember,
-                        "Kho điều phối": item.StoreName,
+                        "Kho điều phối": item.StoreID+"-"+item.StoreName,
                         "Tổng tiền phải thu hộ": item.TotalCOD,
                         "Tổng tiền phải thu vật tư": item.TotalSaleMaterialMoney,
                         "Tổng tiền phải thu": item.TotalMoney,
