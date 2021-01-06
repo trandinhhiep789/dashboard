@@ -257,7 +257,7 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label bold">Thu tiền khách hàng:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                {this.state.ShipmentOrder.IsCollectedMoney == true ? <span className="badge badge-success">Đã thu tiền</span> :""}
+                                {this.state.ShipmentOrder.IsCollectedMoney == true ? <span className="badge badge-success">Đã thu tiền</span> : ""}
                             </div>
                             <div className="form-group col-md-2">
                                 <label className="col-form-label bold">Tổng tiền thu:</label>
@@ -274,7 +274,28 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label bold">Nộp tiền thu ngân:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                {this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> :""}
+                                {this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : ""}
+                            </div>
+                        </div>
+
+                        <div className="form-row">
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold"> Thông tin xuất:</label>
+                            </div>
+                            <div className="form-group col-md-2">
+                                {this.state.ShipmentOrder.IsOutputGoods == true ? <span className="badge badge-success">Đã xuất hàng</span> : <span className="badge badge-danger">Chưa xuất hàng </span>}
+                            </div>
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Thời gian xuất:</label>
+                            </div>
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">   <label className="col-form-label" >{formatDate(this.state.ShipmentOrder.OutputGoodsDate)}</label></label>
+                            </div>
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Người xuất:</label>
+                            </div>
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">{this.state.ShipmentOrder.OutputGoodsUser + "-" + this.state.ShipmentOrder.OutputGoodsUserFull}</label>
                             </div>
                         </div>
 
@@ -366,7 +387,7 @@ class InfoProductCom extends Component {
                                                             <td>{item.ProductSerial}</td>
                                                             <td>{item.Quantity}</td>
                                                             <td>{formatMoney(item.ReturnPrice, 0)}đ</td>
-                                                            <td>{item.IsCreatedInputVoucherReturn==true?<span className="fa fa-check"></span>:""}</td>
+                                                            <td>{item.IsCreatedInputVoucherReturn == true ? <span className="fa fa-check"></span> : ""}</td>
                                                             <td>{item.InputVoucherID}</td>
                                                             <td>{formatDate(item.ReturnInputDate)}</td>
                                                             <td>{item.Note}</td>
@@ -420,7 +441,7 @@ class InfoProductCom extends Component {
                                                                                     <td>
                                                                                         <span className="text-danger" data-tip data-for={item.AdvanceQuantity + "-" + Index} data-id={item.AdvanceQuantity + "-" + Index} >{item.AdvanceQuantity * item.AdvanceConvertRatio}*</span>
                                                                                         <ReactTooltip id={item.AdvanceQuantity + "-" + Index} type='dark'>
-                                                                                            {item.ConvertAdvanceProductID + '-' + item.ConvertAdvanceProductName + " đã tạm ứng " + item.AdvanceQuantity * item.AdvanceConvertRatio +"m"}
+                                                                                            {item.ConvertAdvanceProductID + '-' + item.ConvertAdvanceProductName + " đã tạm ứng " + item.AdvanceQuantity * item.AdvanceConvertRatio + "m"}
                                                                                         </ReactTooltip>
                                                                                     </td>
                                                                                     <td>{item.UsageQuantity}</td>
