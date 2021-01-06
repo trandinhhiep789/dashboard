@@ -78,7 +78,7 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@USERNAME",
-                SearchValue: MLObject.UserName
+                SearchValue: MLObject.UserName.value
             },
             {
                 SearchKey: "@STOREID",
