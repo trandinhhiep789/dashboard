@@ -47,7 +47,7 @@ class DataGridShipmentOderCom extends Component {
             DataSource: this.props.dataSource,
             IsCheckAll: false, PageNumber: this.props.PageNumber, ListPKColumnName: listPKColumnName,
             GridDataShip: [],
-            KeywordId:''
+            KeywordId: ''
 
         };
         this.notificationDOMRef = React.createRef();
@@ -257,12 +257,10 @@ class DataGridShipmentOderCom extends Component {
         }
     }
 
-    handleonChange(e)
-    {
+    handleonChange(e) {
         this.setState({ KeywordId: e.target.value });
     }
-    handleSearchShip()
-    {
+    handleSearchShip() {
         if (this.props.onSearchEvent != null) {
             this.props.onSearchEvent(this.state.KeywordId)
         }
@@ -716,8 +714,10 @@ class DataGridShipmentOderCom extends Component {
                                                 }
                                             </label>
                                             <label className="item printing">
-                                                <i className="ti ti-printer"></i>
-                                                <span>In</span>
+                                            
+                                                {rowItem.IsOutputGoods == true ?<span className="badge badge-success">Đã xuất </span> :<span className="badge badge-danger">Chưa xuất</span> }
+                                                {/* <i className="ti ti-printer"></i>Chưa
+                                                <span>In</span> */}
                                             </label>
                                         </div>
                                     </td>

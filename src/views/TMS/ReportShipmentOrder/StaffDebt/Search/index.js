@@ -40,6 +40,7 @@ class SearchCom extends React.Component {
             IsLoadDataComplete: false,
             SearchData: InitSearchParams,
             widthPercent: "",
+            dataExport: []
 
         };
         this.gridref = React.createRef();
@@ -77,7 +78,7 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@USERNAME",
-                SearchValue: MLObject.UserName
+                SearchValue: MLObject.UserName.value
             },
             {
                 SearchKey: "@STOREID",
@@ -119,8 +120,26 @@ class SearchCom extends React.Component {
                     }
                     return item;
                 })
+
+                const tempDataExport = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã NV nợ": item.FullNameMember,
+                        "Kho điều phối": item.StoreID+"-"+item.StoreName,
+                        "Tổng tiền phải thu hộ": item.TotalCOD,
+                        "Tổng tiền phải thu vật tư": item.TotalSaleMaterialMoney,
+                        "Tổng tiền phải thu": item.TotalMoney,
+                        "Tổng tiền đã thu của khách hàng": item.CollectedTotalMoney,
+                        "Tổng vận đơn còn nợ": item.TotalDebtOrders,
+                        "Tổng vận đơn nợ quá hạn": item.TotALoverDueDebtOrders,
+                        "Tình trạng": item.IsLockDelivery == false ? "Hoạt động" : "Đã khóa",
+                    };
+
+                    return element;
+                })
+
                 this.setState({
-                    gridDataSource: tempData
+                    gridDataSource: tempData,
+                    dataExport: tempDataExport,
                 })
             }
             else {
@@ -246,10 +265,10 @@ class SearchCom extends React.Component {
             }
         })
 
-        
+    }
 
-        
-
+    handleExportFile(result) {
+        this.addNotification(result.Message);
     }
 
     render() {
@@ -269,7 +288,7 @@ class SearchCom extends React.Component {
                     listColumn={GridColumnList}
                     onUpdateItem={this.onhandleUpdateItem.bind(this)}
                     dataSource={this.state.gridDataSource}
-                    IsFixheaderTable={true}
+                    IsFixheaderTable={false}
                     IDSelectColumnName={'StaffDebtID'}
                     PKColumnName={'StaffDebtID'}
                     onShowModal={this.onShowModalDetail.bind(this)}
@@ -278,7 +297,10 @@ class SearchCom extends React.Component {
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={false}
                     IsPrint={false}
-                    IsExportFile={false}
+                    IsExportFile={true}
+                    DataExport={this.state.dataExport}
+                    fileName="Danh sách quản lý công nợ"
+                    onExportFile={this.handleExportFile.bind(this)}
                     IsAutoPaging={true}
                     RowsPerPage={20}
                     RequirePermission={TMS_STAFFDEBT_VIEW}

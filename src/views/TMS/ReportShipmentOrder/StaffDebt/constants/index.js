@@ -1,3 +1,5 @@
+import { toIsoStringCus } from '../../../../../utils/function';
+
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/StaffDebt/Search";
 export const UpdateUnlockAPIPath = "api/StaffDebt/UpdateUnlock";
@@ -13,7 +15,7 @@ export const PagePath = [
 export const InitSearchParams = [
     {
         SearchKey: "@FROMDATE",
-        SearchValue: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear())
+        SearchValue: toIsoStringCus(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()).toISOString())
     },
     {
         SearchKey: "@TODATE",
@@ -83,7 +85,7 @@ export const SearchElementList = [
         label: "kho điều phối",
         colspan: 2,
         value: "",
-        isMultiSelect: true,
+        isMultiSelect: false,
         placeholder: "---Kho điều phối---",
         listoption: [],
         IsAutoLoadItemFromCache: true,

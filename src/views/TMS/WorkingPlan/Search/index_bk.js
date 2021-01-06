@@ -331,7 +331,7 @@ class SearchCom extends React.Component {
     onClickWorkingPlan() {
 
         const { gridDataSource } = this.state
-        console.log("gridDataSource", gridDataSource)
+        // console.log("gridDataSource", gridDataSource)
         // this.props.callFetchAPI(APIHostName, UpdateWorkingPlanWebAPIPath, gridDataSource).then(apiResult => {
         //     console.log("apiResult", apiResult)
         //     //this.addNotification(apiResult.Message, apiResult.IsError);

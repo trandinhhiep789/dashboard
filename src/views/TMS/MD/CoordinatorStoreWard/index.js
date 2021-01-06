@@ -171,7 +171,7 @@ class CoordinatorStoreWardCom extends React.Component {
 
         const { DataSource } = this.state;
 
-        console.log("DataSource", DataSource)
+        // console.log("DataSource", DataSource)
 
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
