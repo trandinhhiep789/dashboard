@@ -875,8 +875,15 @@ const AppMenu = [
                 LinkTo: '/StaffDebt',
                 MenuIcon: '',
                 SubMenu: []
-            }
+            },
             
+            {
+                MenuName: 'ReportShipmentOrderExport',
+                MenuTitle: 'Xuất danh sách đơn hàng',
+                LinkTo: '/ReportShipmentOrderExport',
+                MenuIcon: '',
+                SubMenu: []
+            }
         ]
     }
 
