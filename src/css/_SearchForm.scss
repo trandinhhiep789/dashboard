@@ -393,29 +393,43 @@
             }
             &.group-action{
                 max-width: 10%;
-                .btnSearch {
-                    button {
-                        padding: 0 10px;
-                        line-height: 30px;
-                        height: 30px;
-                        background: #33cabb;
-                        border-color: #33cabb;
-                        color: #fff;
-                        font-size: 12px;
-                        span{
+                .group-custom-search{
+                    &.btnSearch {
+                        display: flex;
+                        justify-content: space-between;
+                        .btn-history {
+                            display: inline-flex;
+                            justify-content: center;
+                            vertical-align: middle;
+                            align-content: center;
+                            align-items: center;
+                            padding: 0 10px;
+                            cursor: pointer;
+                        }
+                        button {
+                            padding: 0 10px;
+                            line-height: 30px;
+                            height: 30px;
+                            background: #33cabb;
+                            border-color: #33cabb;
+                            color: #fff;
                             font-size: 12px;
-                            margin-right: 5px;
-                        }
-                        &:hover{
-                            background-color: #2d736c;
-                            border-color: #2d736c;
-                        }
-                        &:focus{
-                            outline: none;
-                            box-shadow: none;
+                            span{
+                                font-size: 12px;
+                                margin-right: 5px;
+                            }
+                            &:hover{
+                                background-color: #2d736c;
+                                border-color: #2d736c;
+                            }
+                            &:focus{
+                                outline: none;
+                                box-shadow: none;
+                            }
                         }
                     }
                 }
+                
             }
             
             .group-text-select {
@@ -503,7 +517,17 @@
                     }
                 }
             }
-
+            .form-group-input-treeSelect{
+                .ant-tree-select{
+                    clear: both;
+                }
+                .ant-select-multiple {
+                    .ant-select-selector{
+                        padding: 0 4px;
+                        border-color: #808080;
+                    }
+                }
+            }
             .form-group-input-select {
                 .select {
                     .css-yk16xz-control,

@@ -52,6 +52,13 @@
                                 }
                             }
                         }
+                        .groupActionRemember {
+                            button {
+                                padding: 0 10px;
+                                height: 25px;
+                                line-height: 17px;
+                            }
+                        }
                     }
                     .group-count {
                         clear: both;
@@ -350,6 +357,21 @@
                                     }
                                     &.printing{
                                         color: #6c757d;
+                                    }
+                                    .frmDateTime{
+                                        float: none;
+                                        width: 85%;
+                                        padding: 0;
+                                        border-radius: 4px;
+                                        .ant-picker-input{
+                                            input{
+                                                border: none;
+                                                padding: 2px 5px;
+                                            }
+                                            .ant-picker-suffix{
+                                                margin: 0 4px;
+                                            }
+                                        }
                                     }
                                 }
                             }

@@ -12,6 +12,46 @@ import {
 } from "./constants";
 import { MODAL_TYPE_VIEW } from "../../../constants/actionTypes";
 import { showModal, hideModal } from '../../../actions/modal';
+import { TreeSelect, DatePicker } from 'antd';
+const { SHOW_PARENT } = TreeSelect;
+
+const treeData = [
+    {
+        title: 'Node1',
+        value: '0-0',
+        key: '0-0',
+        children: [
+            {
+                title: 'Child Node1',
+                value: '0-0-0',
+                key: '0-0-0',
+            },
+        ],
+    },
+    {
+        title: 'Node2',
+        value: '0-1',
+        key: '0-1',
+        children: [
+            {
+                title: 'Child Node3',
+                value: '0-1-0',
+                key: '0-1-0',
+            },
+            {
+                title: 'Child Node4',
+                value: '0-1-1',
+                key: '0-1-1',
+            },
+            {
+                title: 'Child Node5',
+                value: '0-1-2',
+                key: '0-1-2',
+            },
+        ],
+    },
+];
+
 const options = [
     { value: 'chocolate', label: 'Chocolate' },
     { value: 'strawberry', label: 'Strawberry' },
@@ -57,15 +97,25 @@ class PageUICom extends React.Component {
             title: "aaa",
             content: {
                 text: <div>aaa aaa aaa</div>
- 
+
             },
-            maxWidth:  '500px'
+            maxWidth: '500px'
         });
     }
 
 
     render() {
-
+        const tProps = {
+            treeData,
+            value: this.state.value,
+            onChange: this.onChange,
+            treeCheckable: true,
+            showCheckedStrategy: SHOW_PARENT,
+            placeholder: '--Vui lòng chọn--',
+            style: {
+                width: '100%',
+            },
+        };
         return (
             <React.Fragment>
                 <div className="col-lg-12 SearchFormCustom">
@@ -91,7 +141,7 @@ class PageUICom extends React.Component {
                             </div>
 
                             <div className="item">
-                                <div className="form-group-input-select">
+                                {/* <div className="form-group-input-select">
                                     <Select
                                         value=""
                                         name=""
@@ -100,6 +150,9 @@ class PageUICom extends React.Component {
                                         placeholder="--Loại yêu cầu vận chuyển--"
                                         className="select"
                                     />
+                                </div> */}
+                                <div className="form-group-input-treeSelect">
+                                    <TreeSelect {...tProps} />
                                 </div>
                             </div>
 
@@ -217,7 +270,10 @@ class PageUICom extends React.Component {
                             </div>
 
                             <div className="item group-action">
-                                <div className="btnSearch">
+                                <div className="group-custom-search btnSearch">
+                                    <div className="btn-history">
+                                        <i className="ti-settings"></i>
+                                    </div>
                                     <button className="btn" type="submit"><span className="fa fa-search"></span>Tìm Kiếm</button>
                                 </div>
                             </div>
@@ -237,6 +293,16 @@ class PageUICom extends React.Component {
                                                 <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info mr-10" title="" data-provide="tooltip" data-original-title="Thêm">
                                                     <i className="fa fa-plus"></i> Gán NV giao hàng
                                             </button>
+                                                <div className="groupActionRemember mr-10">
+                                                    <button type="button" className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
+                                                        <i className="fa fa-save"></i>
+                                                    </button>
+
+                                                    <button type="button" className="btn " title="" data-provide="tooltip" data-original-title="Thêm">
+                                                        <i className="fa fa-history"></i>
+                                                    </button>
+                                                </div>
+
                                                 <input type="text" className="form-control" placeholder="" />
                                                 <div className="input-group-append">
                                                     <span className="input-group-text"><i className="ti-search"></i></span>
@@ -295,7 +361,15 @@ class PageUICom extends React.Component {
                                                         <ul>
                                                             <li className="item times">
                                                                 <i className="ti ti-timer"></i>
-                                                                <span>8/12/2020 08:00</span>
+                                                                {/* <span>8/12/2020 08:00</span>
+                                                                 */}
+                                                                <DatePicker
+                                                                    showTime={{ format: 'HH:mm' }}
+                                                                    format="YYYY-MM-DD HH:mm"
+                                                                    className="frmDateTime"
+                                                                    dropdownClassName="tree-select-custom"
+                                                                    placeholder="Thời gian giao dự kiến"
+                                                                />
                                                             </li>
                                                             <li className="item status">
                                                                 <i className="fa fa-location-arrow"></i>
