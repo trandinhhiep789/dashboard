@@ -502,7 +502,19 @@ export const GridInstallBundle_Materia = [
         BindControlName: "IsActived",
         DataSourceMember: "IsActived"
     },
-   
+    {
+        Name: "IsServiceMaterial",
+        DefaultValue: false,
+        BindControlName: "IsServiceMaterial",
+        DataSourceMember: "IsServiceMaterial"
+    },
+    {
+        Name: "IsMaterialForEachpRoduct",
+        DefaultValue: false,
+        BindControlName: "IsMaterialForEachpRoduct",
+        DataSourceMember: "IsMaterialForEachpRoduct"
+    },
+  
     {
         Name: "CreatedUser",
         DefaultValue: "",
@@ -740,6 +752,25 @@ export const InstallBundle_MateriaColumnList = [
         min:0,
         max:9999
     },
+   
+    {
+        name: "IsServiceMaterial",
+        Type: "checkbox",
+        label:"Là vật tư dịch vụ",
+        Caption: "Là vật tư dịch vụ",
+        datasourcemember: "IsServiceMaterial",
+        Width: 70,
+        OrderIndex:17
+    },
+    {
+        name: "IsMaterialForEachpRoduct",
+        Type: "checkbox",
+        label:"Là vật tư sử dụng cho từng sản phẩm lắp đặt",
+        Caption: "Là vật tư sử dụng cho từng sản phẩm lắp đặt",
+        datasourcemember: "IsMaterialForEachpRoduct",
+        Width: 70,
+        OrderIndex:18
+    },
     
     {
         name: "Note",
@@ -747,7 +778,7 @@ export const InstallBundle_MateriaColumnList = [
         label:"Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex:17,
+        OrderIndex:19,
         Colmd:12,
         hideInput: false,
         labelcolspan:2,
@@ -981,6 +1012,26 @@ export const InstallBundle_MateriaColumnListEdit = [
         min:0,
         max:9999
     },
+    {
+        name: "IsServiceMaterial",
+        Type: "checkbox",
+        label:"Là vật tư dịch vụ",
+        Caption: "Là vật tư dịch vụ",
+        datasourcemember: "IsServiceMaterial",
+        hideInput: false,
+        Width: 70,
+        OrderIndex:17
+    },
+    {
+        name: "IsMaterialForEachpRoduct",
+        Type: "checkbox",
+        label:"Là vật tư sử dụng cho từng sản phẩm lắp đặt",
+        Caption: "Là vật tư sử dụng cho từng sản phẩm lắp đặt",
+        datasourcemember: "IsMaterialForEachpRoduct",
+        hideInput: false,
+        Width: 70,
+        OrderIndex:18
+    },
     
     {
         name: "Note",
@@ -988,7 +1039,7 @@ export const InstallBundle_MateriaColumnListEdit = [
         label:"Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex:17,
+        OrderIndex:19,
         Colmd:12,
         hideInput: false,
         labelcolspan:2,
