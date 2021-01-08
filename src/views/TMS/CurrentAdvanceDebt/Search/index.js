@@ -7,7 +7,8 @@ import DataGrid from "../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../common/components/Modal";
 import { formatDate } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
-
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 import { SERVICEAGREEMENT_VIEW, SERVICEAGREEMENT_DELETE } from "../../../../constants/functionLists";
 
 
@@ -40,7 +41,10 @@ class SearchCom extends React.Component {
             IsCallAPIError: false,
             IsLoadDataComplete: false,
             widthPercent: "",
-            userName: ''
+            userName: '',
+            cssNotification: "notification-custom-success",
+            iconNotification: "fa fa-check",
+            dataExport: []
 
         };
         this.gridref = React.createRef();
@@ -84,12 +88,30 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, id).then(apiResult => {//MLObject.UserName.value
             if (apiResult.IsError) {
                 this.setState({
-                    IsCallAPIError: !apiResult.IsError
+                    IsCallAPIError: !apiResult.IsError,
+                    dataExport: [],
+                    gridDataSource: [],
                 });
                 this.showMessage(apiResult.Message);
             }
             else {
+
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã nhóm vật tư": item.MaterialGroupID,
+                        "Tên nhóm vật tư": item.MaterialGroupName,
+                        "Mã sản phẩm": item.ProductID,
+                        "Tên sản phẩm": item.ProductName,
+                        "Tổng số lượng": item.TotalQuantity,
+                        "Số lượng khả dụng": item.UsableQuantity
+                    };
+                    return element;
+
+                })
+               
                 this.setState({
+                    dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
                 });
@@ -102,12 +124,29 @@ class SearchCom extends React.Component {
             // console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
+                    dataExport: [],
+                    gridDataSource: [],
                     IsCallAPIError: !apiResult.IsError
                 });
                 this.showMessage(apiResult.Message);
             }
             else {
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã nhóm vật tư": item.MaterialGroupID,
+                        "Tên nhóm vật tư": item.MaterialGroupName,
+                        "Mã sản phẩm": item.ProductID,
+                        "Tên sản phẩm": item.ProductName,
+                        "Tổng số lượng": item.TotalQuantity,
+                        "Số lượng khả dụng": item.UsableQuantity
+                    };
+                    return element;
+
+                })
+               
                 this.setState({
+                    dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
                 });
@@ -158,6 +197,43 @@ class SearchCom extends React.Component {
 
     }
 
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
+    handleExportFile(result) {
+        this.addNotification(result.Message);
+    }
+
     handleShowModal(data) {
         const { widthPercent } = this.state;
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
@@ -176,6 +252,7 @@ class SearchCom extends React.Component {
 
         return (
             <React.Fragment>
+                <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
                     FormName={TitleFormSearch}
                     MLObjectDefinition={SearchMLObjectDefinition}
@@ -197,7 +274,10 @@ class SearchCom extends React.Component {
                     // onDetailClick={this.handleItemDetail.bind(this)}
                     onDetailModalClick={this.handleItemDetail.bind(this)}
                     RowsPerPage={10}
-                    IsExportFile={false}
+                    IsExportFile={true}
+                    DataExport={this.state.dataExport}
+                    fileName="Danh sách thống kê hạn mức tạm ứng"
+                    onExportFile={this.handleExportFile.bind(this)}
                 // RequirePermission={SERVICEAGREEMENT_VIEW}
                 // DeletePermission={SERVICEAGREEMENT_DELETE}
                 />
