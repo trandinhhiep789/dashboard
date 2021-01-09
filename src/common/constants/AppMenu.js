@@ -801,6 +801,14 @@ const AppMenu = [
                     }
                 ]
             },
+            {
+                MenuName: 'RewardPointReview',
+                MenuTitle: 'Kiểm tra điểm thưởng',
+                LinkTo: '/RewardPointReview',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            
 
         ]
     },

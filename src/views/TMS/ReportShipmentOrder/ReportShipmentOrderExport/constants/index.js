@@ -134,13 +134,28 @@ export const  SearchMLObjectDefinition = [
         BindControlName: "dtToDate"
     },
     {
-        Name: "ShipmentOrderType",
+        Name: "ReceiverProvinceID",
         DefaultValue: "",
-        BindControlName: "cbShipmentOrderTypeID"
+        BindControlName: "cbReceiverProvinceID"
     },
     {
-        Name: "CoordinatorStore",
+        Name: "ReceiverDistrictID",
+        DefaultValue: "",
+        BindControlName: "cbReceiverDistrictID"
+    },
+    {
+        Name: "SenderStoreID",
+        DefaultValue: "",
+        BindControlName: "cbSenderStoreID"
+    },
+    {
+        Name: "CoordinatorStoreID",
         DefaultValue: "",
         BindControlName: "cbCoordinatorStoreID"
+    },
+    {
+        Name: "UserName",
+        DefaultValue: "",
+        BindControlName: "cbUserName"
     },
 ]

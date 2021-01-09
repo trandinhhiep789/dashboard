@@ -83,6 +83,7 @@
             }
         }
 
+
         .btnSearch {
             width: 100%;
             position: absolute;
@@ -91,10 +92,30 @@
             margin: 0 auto;
 
             button {}
+            .btn-export{
+                clear: both;
+            }
 
             @media (max-width: 767px) {
                 margin-top: 20px;
                 position: static;
+            }
+        }
+        &.groupAction{
+            .btnSearch {
+                button {
+                    padding: 5px;
+                }
+                .btn-export{
+                    line-height: initial;
+                    height: 36px;
+                    transition: .3s all;
+                    &:hover{
+                        background-color: #cecece;
+                        color: #fff;
+                       
+                    }
+                }
             }
         }
     }

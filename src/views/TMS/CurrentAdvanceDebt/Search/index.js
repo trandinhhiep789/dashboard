@@ -9,7 +9,7 @@ import { formatDate } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { SERVICEAGREEMENT_VIEW, SERVICEAGREEMENT_DELETE } from "../../../../constants/functionLists";
+import { TMS_CURRENTADVANCEDEBT_VIEW} from "../../../../constants/functionLists";
 
 
 import {
@@ -20,7 +20,8 @@ import {
     SearchAPIPath,
     PagePath,
     TitleFormSearch,
-    SearchHistoryAPIPath
+    SearchHistoryAPIPath,
+    SearchExportAPIPath
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -86,6 +87,7 @@ class SearchCom extends React.Component {
 
     handleGetDatat(id) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, id).then(apiResult => {//MLObject.UserName.value
+            console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError,
@@ -120,8 +122,10 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, MLObject.UserName.value).then(apiResult => {//MLObject.UserName.value
-            // console.log("apiResult", apiResult)
+        console.log("â",formData, MLObject );
+        const postData =  MLObject.UserName == -1 ? MLObject.UserName  :  MLObject.UserName.value
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, postData).then(apiResult => {//MLObject.UserName.value
+             console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     dataExport: [],
@@ -248,6 +252,25 @@ class SearchCom extends React.Component {
         });
     }
 
+    handleExportSubmit(formData, MLObject){
+        console.log("export", formData, MLObject)
+        const userName =  MLObject.UserName == -1 ? MLObject.UserName  :  MLObject.UserName.value
+        this.props.callFetchAPI(APIHostName, SearchExportAPIPath, userName).then(apiResult => {
+            console.log("apiResult",userName, apiResult)
+            if (!apiResult.IsError) {
+                if(apiResult.ResultObject.length > 0){
+                    this.showMessage("Chức năng đang phát triển nên chưa xuất được file.")
+                }
+                else{
+                    this.showMessage("Dữ liệu không tồn tại nên không thể xuất.")
+                }
+            }
+            else{
+                this.showMessage(apiResult.Message)
+            }
+        })
+    }
+
     render() {
 
         return (
@@ -258,8 +281,12 @@ class SearchCom extends React.Component {
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
+                    IsButtonExport={true}
+                    onExportSubmit={this.handleExportSubmit.bind(this)}
+                    TitleButtonExport="Xuất dữ liệu"
                     ref={this.searchref}
                     className="multiple"
+                    classNamebtnSearch="groupAction"
 
                 />
                 <DataGrid
@@ -271,15 +298,13 @@ class SearchCom extends React.Component {
                     IsAutoPaging={true}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
-                    // onDetailClick={this.handleItemDetail.bind(this)}
                     onDetailModalClick={this.handleItemDetail.bind(this)}
                     RowsPerPage={10}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
                     fileName="Danh sách thống kê hạn mức tạm ứng"
                     onExportFile={this.handleExportFile.bind(this)}
-                // RequirePermission={SERVICEAGREEMENT_VIEW}
-                // DeletePermission={SERVICEAGREEMENT_DELETE}
+                   RequirePermission={TMS_CURRENTADVANCEDEBT_VIEW}
                 />
             </React.Fragment>
         );
