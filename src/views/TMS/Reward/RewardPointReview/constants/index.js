@@ -109,7 +109,7 @@ export const GridColumnList = [
     {
        
         Name: "ShipmentOrderID",
-        Type: "texttolink",
+        Type: "texttolinkNewBlank",
         Caption: "Mã vận đơn",
         DataSourceMember: "ShipmentOrderID",
         Link: "/ShipmentOrder/Detail/",
