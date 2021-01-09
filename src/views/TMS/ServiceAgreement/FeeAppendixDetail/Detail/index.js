@@ -1,6 +1,7 @@
 import React from "react";
 import { Redirect, Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
     BackLink,
@@ -25,6 +26,7 @@ class DetailCom extends React.Component {
 
     componentDidMount() {
         this.callLoadData(this.props.match.params.id);
+        
     }
 
     callLoadData(id) {
@@ -62,7 +64,6 @@ class DetailCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
-                onCloseModal={this.handleCloseMessage}
             />
         );
     }
