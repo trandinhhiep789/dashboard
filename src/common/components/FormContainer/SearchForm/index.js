@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ElementSearch from '../FormElement/ElementSearch';
 import { ValidationField } from "../../../library/validation";
 import MultiSelectUserComboBox from "../FormControl/MultiSelectComboBox/MultiSelectUserComboBox";
+import ProductComboBox from "../FormControl/MultiSelectComboBox/ProductComboBox";
 
 export default class SearchForm extends Component {
     constructor(props) {
@@ -169,7 +170,7 @@ export default class SearchForm extends Component {
                                     />
                                 );
 
-                                case "ComboBoxNewChange":
+                            case "ComboBoxNewChange":
                                 if (typeof elementItem.filterName != "undefined") {
                                     elementItem.filterValue = this.state.FormData[elementItem.filterName].value;
                                 }
@@ -236,6 +237,29 @@ export default class SearchForm extends Component {
                             case "MonthPicker":
                                 return (
                                     <ElementSearch.ElementDatetimeMonthYear
+                                        onValueChange={this.onValueChange}
+                                        ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                        {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        key={index}
+                                    />
+                                );
+                            case "ProductComboBox":
+                                return (
+                                    <ProductComboBox
+                                        onValueChange={this.onValueChange}
+                                        ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                        {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        key={index}
+                                    />
+                                );
+
+                            case "ProductComboBoxCustom":
+                                return (
+                                    <ElementSearch.ProductComboBox
                                         onValueChange={this.onValueChange}
                                         ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                         inputRef={ref => this.elementItemRefs[elementItem.name] = ref}

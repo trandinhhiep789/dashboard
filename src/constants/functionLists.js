@@ -478,6 +478,9 @@ export const REWARDDETAIL_VIEW = 'REWARDDETAIL_VIEW';
 //Xem danh sách thưởng
 export const TMS_TMSREWARD_VIEW = 'TMS_TMSREWARD_VIEW';
 
+//Kiểm tra điểm thưởng
+export const TMS_TMSREWARD_REVIEW = 'TMS_TMSREWARD_REVIEW';
+
 //Xem danh sách Tổng xuất thưởng
 export const TMS_TMSREWARD_EXPORT = 'TMS_TMSREWARD_EXPORT';
 
