@@ -269,6 +269,10 @@ class SearchCom extends React.Component {
         this.addNotification(result.Message);
     }
 
+    handleExportSubmit(formData, MLObject){
+        console.log("export", formData, MLObject)
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -278,8 +282,12 @@ class SearchCom extends React.Component {
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
+                    IsButtonExport={true}
+                    onExportSubmit={this.handleExportSubmit.bind(this)}
+                    TitleButtonExport="Xuất dữ liệu"
                     ref={this.searchref}
                     className="multiple"
+                    classNamebtnSearch="groupAction"
                 />
 
                 <DataGrid

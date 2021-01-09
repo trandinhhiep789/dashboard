@@ -55,6 +55,8 @@ export default class SearchForm extends Component {
         });
     }
 
+
+
     validationFormNew() {
         const FormDataContolLst = this.state.FormData;
         // console.log("validationFormNew", FormDataContolLst)
@@ -99,6 +101,21 @@ export default class SearchForm extends Component {
         });
         if (this.props.onSubmit != null) {
             this.props.onSubmit(this.state.FormData, MLObject);
+        }
+    }
+
+    handleExportSubmit() {
+        const { FormData } = this.state;
+        let MLObject = {};
+        const mLObjectDefinition = this.props.MLObjectDefinition;
+        mLObjectDefinition.map((Item) => {
+            const controlName = Item.BindControlName;
+            if (controlName.length > 0) {
+                MLObject = Object.assign({}, MLObject, { [Item.Name]: FormData[controlName].value });
+            }
+        });
+        if (this.props.onExportSubmit != null) {
+            this.props.onExportSubmit(FormData, MLObject);
         }
     }
 
@@ -283,6 +300,14 @@ export default class SearchForm extends Component {
                             }
 
                         </button>
+                        {
+                            this.props.IsButtonExport != undefined && this.props.IsButtonExport == true && <button className="btn btn-export ml-1" type="button" onClick={this.handleExportSubmit.bind(this)}>
+                                {
+                                    !!this.props.TitleButtonExport ? <span className="ti ti-export"> {this.props.TitleButtonExport}</span> : <span className="ti ti-export">Xuất dữ liệu</span>
+                                }
+                            </button>
+                        }
+
                     </div>
                 </div>
             </div>
