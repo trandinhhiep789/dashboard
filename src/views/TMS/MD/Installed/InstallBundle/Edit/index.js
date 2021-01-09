@@ -79,8 +79,6 @@ class EditCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-
-        console.log("MLObject",MLObject)
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
