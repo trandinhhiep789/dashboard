@@ -1,5 +1,6 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/CurrentAdvanceDebt/GetListByUser";
+export const SearchExportAPIPath = "api/CurrentAdvanceDebt/ExportByUser";
 export const SearchHistoryAPIPath = "api/AdvanceDebtFlow/GetListHistory";
 
 

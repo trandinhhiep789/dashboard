@@ -35,14 +35,57 @@ class SearchCom extends React.Component {
         this.notificationDOMRef = React.createRef();
     }
 
-    handleSearchSubmit(){
+    handleSearchSubmit(formData, MLObject) {
+        console.log("search:", formData, MLObject)
+        const postData = [
+
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: MLObject.FromDate
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: MLObject.ToDate
+            },
+            {
+                SearchKey: "@RECEIVERPROVINCEID",
+                SearchValue: MLObject.ReceiverProvinceID
+            },
+            {
+                SearchKey: "@RECEIVERDISTRICTID",
+                SearchValue: MLObject.ReceiverDistrictID
+            },
+            {
+                SearchKey: "@SENDERSTOREID",
+                SearchValue: MLObject.SenderStoreID
+            },
+            {
+                SearchKey: "@COORDINATORSTOREID",
+                SearchValue: MLObject.CoordinatorStoreID
+            },
+            {
+                SearchKey: "@USERNAME",
+                SearchValue: MLObject.UserName == -1 ? MLObject.UserName  : MLObject.UserName.value
+            },
+
+        ];
+        
+        this.callSearchData(postData);
 
     }
+
+    callSearchData(postData){
+        //api/ShipmentOrder/SearchReportExport
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchReportExport", postData).then(apiResult => {
+            console.log("postData:", postData, apiResult)
+        });
+    }
+
 
     render() {
         return (
             <React.Fragment>
-               <SearchForm
+                <SearchForm
                     FormName="Tìm kiếm danh sách vận đơn để xuất dữ liệu"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}

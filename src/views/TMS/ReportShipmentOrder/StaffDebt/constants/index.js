@@ -2,6 +2,7 @@ import { toIsoStringCus } from '../../../../../utils/function';
 
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/StaffDebt/Search";
+export const SearchExportAPIPath = "api/StaffDebt/SearchExport";
 export const UpdateUnlockAPIPath = "api/StaffDebt/UpdateUnlock";
 export const SearchDetailAPIPath = "api/StaffDebtDetail/Search";
 

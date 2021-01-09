@@ -14,7 +14,8 @@ import {
     SearchAPIPath,
     InitSearchParams,
     UpdateUnlockAPIPath,
-    SearchDetailAPIPath
+    SearchDetailAPIPath,
+    SearchExportAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -78,7 +79,7 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@USERNAME",
-                SearchValue: MLObject.UserName.value
+                SearchValue: MLObject.UserName > 0 ? MLObject.UserName.value : MLObject.UserName
             },
             {
                 SearchKey: "@STOREID",
@@ -101,7 +102,7 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            // console.log("apiResult", apiResult)
+            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
                 let objStaffDebtID = {}
                 const tempData = apiResult.ResultObject.map((item, index) => {
@@ -157,7 +158,6 @@ class SearchCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
-                onCloseModal={this.handleCloseMessage}
             />
         );
     }
@@ -271,6 +271,31 @@ class SearchCom extends React.Component {
 
     handleExportSubmit(formData, MLObject){
         console.log("export", formData, MLObject)
+        const postData = [
+            {
+                SearchKey: "@USERNAME",
+                SearchValue: MLObject.UserName > 0 ? MLObject.UserName.value : MLObject.UserName 
+            },
+            {
+                SearchKey: "@STOREID",
+                SearchValue: MLObject.CoordinatorStoreID != "" ? MLObject.CoordinatorStoreID : -1
+            },
+
+        ];
+        this.props.callFetchAPI(APIHostName, SearchExportAPIPath, postData).then(apiResult => {
+            console.log("apiResult",postData, apiResult)
+            if (!apiResult.IsError) {
+                if(apiResult.ResultObject.length > 0){
+                    this.showMessage("Chức năng đang phát triển nên chưa xuất được file.")
+                }
+                else{
+                    this.showMessage("Dữ liệu không tồn tại nên không thể xuất.")
+                }
+            }
+            else{
+                this.showMessage(apiResult.Message)
+            }
+        })
     }
 
     render() {
