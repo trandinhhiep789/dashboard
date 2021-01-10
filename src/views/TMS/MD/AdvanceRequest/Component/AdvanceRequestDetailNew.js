@@ -38,6 +38,10 @@ class AdvanceRequestDetailNewCom extends Component {
         let AdvanceQuantityUnitID = e.target[e.target.selectedIndex].getAttribute('data-advancequantityunitid');
         let AdvanceQuantityUnitName = e.target[e.target.selectedIndex].getAttribute('data-advancequantityunitname');
         let AdvanceConvertRatio = e.target[e.target.selectedIndex].getAttribute('data-advanceconvertratio');
+        let TotalUsableQuantity = e.target[e.target.selectedIndex].getAttribute('data-totalusableuuantity');
+        let SumTotalMoney = e.target[e.target.selectedIndex].getAttribute('data-sumtotalmoney');
+        
+      
         let VAT = e.target[e.target.selectedIndex].getAttribute('data-vat');
         let { AdvanceRequestDetail } = this.state
         const objAdvanceRequestDetail = AdvanceRequestDetail.MaterialList.find(n => n['MaterialGroupID'] == MaterialGroupID)
@@ -54,8 +58,9 @@ class AdvanceRequestDetailNewCom extends Component {
         objAdvanceRequestDetail.AdvanceConvertRatio = AdvanceConvertRatio;
         objAdvanceRequestDetail.Quantity = 0;
         objAdvanceRequestDetail.AdvanceQuantity = '';
+        objAdvanceRequestDetail.TotalUsableQuantity = TotalUsableQuantity;
+        objAdvanceRequestDetail.SumTotalMoney = SumTotalMoney;
         objAdvanceRequestDetail.VAT = VAT;
-        // console.log("objAdvanceRequestDetail",objAdvanceRequestDetail,AdvanceRequestDetail);
         this.setState({
             AdvanceRequestDetail: AdvanceRequestDetail
         })
@@ -79,7 +84,7 @@ class AdvanceRequestDetailNewCom extends Component {
         let AdvanceQuantityUnitName = e.target[e.target.selectedIndex].getAttribute('data-advancequantityunitname');
         let AdvanceConvertRatio = e.target[e.target.selectedIndex].getAttribute('data-advanceconvertratio');
         let VAT = e.target[e.target.selectedIndex].getAttribute('data-vat');
-        console.log(MaterialGroupID, CostPrice)
+
         let { AdvanceRequestDetail } = this.state
         const objAdvanceRequestDetail = AdvanceRequestDetail.MaterialList.find(n => n['MaterialGroupID'] == MaterialGroupID && n['InstallProductID'] == InstallProductID)
         objAdvanceRequestDetail.ProductID = ProductID;
@@ -265,6 +270,9 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                                 data-advanceconvertratio={optionItem.AdvanceConvertRatio}
                                                                                 data-costprice={optionItem.CostPrice}
                                                                                 data-vat={optionItem.VAT}
+                                                                                data-totalusableuuantity={optionItem.TotalUsableQuantity}
+                                                                                data-sumtotalmoney={optionItem.SumTotalMoney}
+                                                                                
                                                                             >
                                                                                 {optionItem.AdvanceProductID + "-" + optionItem.AdvanceProductName}</option>
                                                                         )}
@@ -282,7 +290,7 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                     Colmd='12'
                                                                     colspan='12'
                                                                     min={0}
-                                                                    max={(item.AdvanceLimitType == 1 ? ((item.AdvanceLimitQuantity - item.TotalQuantity * item.AdvanceConvertRatio) > 0 ? item.AdvanceLimitQuantity / item.AdvanceConvertRatio : 0) : 1000)}
+                                                                    max={(item.AdvanceLimitType == 1 ? ((item.AdvanceLimitQuantity - item.TotalUsableQuantity ) > 0 ? 10 : 10) : 1000)}
                                                                     value={item.AdvanceQuantity > 0 ? item.AdvanceQuantity : ''}
                                                                     indexRow={index}
                                                                     disabled={(item.AdvanceLimitType != 1 && item.CostPrice == 0) ? true : false}
@@ -298,7 +306,7 @@ class AdvanceRequestDetailNewCom extends Component {
                                                                     Colmd='12'
                                                                     colspan='12'
                                                                     min={0}
-                                                                    max={(item.AdvanceLimitType == 1 ? ((item.AdvanceLimitQuantity - item.TotalQuantity * item.AdvanceConvertRatio) > 0 ? (item.AdvanceLimitQuantity - item.TotalQuantity).toFixed(1) : 0) : 1000)}
+                                                                    max={(item.AdvanceLimitType == 1 ? ((item.AdvanceLimitQuantity - item.TotalUsableQuantity) > 0 ? 10 : 10) : 1000)}
                                                                     value={item.AdvanceQuantity > 0 ? item.AdvanceQuantity : ''}
                                                                     indexRow={index}
                                                                     disabled={item.CostPrice == 0 ? true : false}
@@ -309,8 +317,7 @@ class AdvanceRequestDetailNewCom extends Component {
                                                             <td>{item.AdvanceConvertRatio}</td>
                                                             <td>{item.Quantity}</td>
                                                             <td>{(item.AdvanceLimitType == 1 ? item.AdvanceLimitQuantity : "")}</td>
-                                                            {/* <td>{item.AdvanceLimitQuantity + "-" + item.TotalQuantity}</td> */}
-                                                            <td>{(item.AdvanceLimitType == 1 ? ((item.AdvanceLimitQuantity - item.TotalQuantity * item.AdvanceConvertRatio) > 0 ? (item.AdvanceLimitQuantity - item.TotalQuantity * item.AdvanceConvertRatio).toFixed(1) : 0) : "")}</td>
+                                                            <td>{(item.AdvanceLimitType == 1 ? ((item.AdvanceLimitQuantity - item.TotalUsableQuantity) > 0 ?(item.AdvanceConvertRatio==0?0:1) : 0) : "")}</td>
                                                         </tr>
                                                     )
                                                 })
