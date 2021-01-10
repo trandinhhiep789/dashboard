@@ -87,7 +87,7 @@ class DataGirdStaffDebtCom extends Component {
                             </label>
                         </div>
                         <div className="col-md-2">
-                            <label className="col-form-label bold">Tổng tiền nợ:</label>
+                            <label className="col-form-label bold">Số đơn nợ:</label>
                         </div>
                         <div className="col-md-2">
                             <label className="col-form-label">
