@@ -287,63 +287,6 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'CoordinatorStore',
-                MenuTitle: 'Kho điều phối giao hàng',
-                LinkTo: '/CoordinatorStore',
-                MenuIcon: '',
-                SubMenu: []
-            },
-            {
-                MenuName: 'Vehicle',
-                MenuTitle: 'Danh sách xe',
-                LinkTo: '/Vehicle',
-                MenuIcon: '',
-                SubMenu: []
-            },
-            {
-                MenuName: 'WorkingShift',
-                MenuTitle: 'Ca làm việc',
-                LinkTo: '/WorkingShift',
-                MenuIcon: '',
-                SubMenu: []
-            },
-            {
-                MenuName: 'Skills',
-                MenuTitle: 'Kỹ năng',
-                LinkTo: '',
-                MenuIcon: '',
-                SubMenu: [
-                    {
-                        MenuName: 'Skill',
-                        MenuTitle: 'Danh sách kỹ năng',
-                        LinkTo: '/Skill',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'SkillCategory',
-                        MenuTitle: 'Danh mục kỹ năng',
-                        LinkTo: '/SkillCategory',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'SkillRank',
-                        MenuTitle: 'Cấp bậc kỹ năng',
-                        LinkTo: '/SkillRank',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'UserSkill',
-                        MenuTitle: 'Kỹ năng của một nhân viên',
-                        LinkTo: '/UserSkill',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                ]
-            },
-            {
                 MenuName: 'Reward',
                 MenuTitle: 'Thưởng nhân viên',
                 LinkTo: '',
@@ -408,6 +351,64 @@ const AppMenu = [
 
                 ]
             },
+            {
+                MenuName: 'CoordinatorStore',
+                MenuTitle: 'Kho điều phối giao hàng',
+                LinkTo: '/CoordinatorStore',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'Vehicle',
+                MenuTitle: 'Danh sách xe',
+                LinkTo: '/Vehicle',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'WorkingShift',
+                MenuTitle: 'Ca làm việc',
+                LinkTo: '/WorkingShift',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'Skills',
+                MenuTitle: 'Kỹ năng',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'Skill',
+                        MenuTitle: 'Danh sách kỹ năng',
+                        LinkTo: '/Skill',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'SkillCategory',
+                        MenuTitle: 'Danh mục kỹ năng',
+                        LinkTo: '/SkillCategory',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'SkillRank',
+                        MenuTitle: 'Cấp bậc kỹ năng',
+                        LinkTo: '/SkillRank',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'UserSkill',
+                        MenuTitle: 'Kỹ năng của một nhân viên',
+                        LinkTo: '/UserSkill',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
+            },
+            
             {
                 MenuName: 'Area',
                 MenuTitle: 'Khu vực',
