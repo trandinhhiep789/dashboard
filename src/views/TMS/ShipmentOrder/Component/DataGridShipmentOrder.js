@@ -660,7 +660,7 @@ class DataGridShipmentOderCom extends Component {
                                     rowClass = "jsgrid-alt-row";
                                 }
                                 let rowtrClass = "unReadingItem";
-                                if (rowItem.IsView == true) {
+                                if (rowItem.SelectedUser != "") {
                                     rowtrClass = "noReadingItem readingItem";
                                 }
 
