@@ -79,7 +79,7 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@USERNAME",
-                SearchValue: MLObject.UserName > 0 ? MLObject.UserName.value : MLObject.UserName
+                SearchValue: MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value 
             },
             {
                 SearchKey: "@STOREID",
@@ -102,7 +102,7 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult)
+            console.log("apiResult",searchData, apiResult)
             if (!apiResult.IsError) {
                 let objStaffDebtID = {}
                 const tempData = apiResult.ResultObject.map((item, index) => {
@@ -274,7 +274,7 @@ class SearchCom extends React.Component {
         const postData = [
             {
                 SearchKey: "@USERNAME",
-                SearchValue: MLObject.UserName > 0 ? MLObject.UserName.value : MLObject.UserName 
+                SearchValue: MLObject.UserName ==  -1 ? MLObject.UserName : MLObject.UserName.value
             },
             {
                 SearchKey: "@STOREID",
