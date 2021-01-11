@@ -57,7 +57,7 @@ class SearchByUserNameCom extends React.Component {
         const paramsMobi = {
             FromDate: myParam.FromDate,
             ToDate: myParam.ToDate,
-            UserName: '0041018'
+            UserName: myParam.value
         }
          this.callSearchDataMobi(paramsMobi)
     }
@@ -71,7 +71,7 @@ class SearchByUserNameCom extends React.Component {
         //     userName: userName
         // }
         this.props.callFetchAPI(APIHostName, "api/TMSReward/LoadByUserNameMobi", params).then(apiResult => {
-            console.log("callSearchDataMobi", apiResult)
+            console.log("callSearchDataMobi",params, apiResult)
         });
     }
 

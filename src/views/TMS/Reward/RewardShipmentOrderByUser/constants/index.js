@@ -1,3 +1,5 @@
+import { toIsoStringCus } from '../../../../../utils/function'
+
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/TMSReward/SearchListUserName";
 export const SearchNewAPIPath = "api/TMSReward/SearchListUserNameNew";
@@ -22,7 +24,8 @@ dtFromdate.setDate(new Date().getDate() - 30);
 export const InitSearchParams = [
     {
         SearchKey: "@FROMDATE",
-        SearchValue: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear())
+        SearchValue: toIsoStringCus(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()).toISOString())
+        //SearchValue: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear())
     },
     {
         SearchKey: "@TODATE",
