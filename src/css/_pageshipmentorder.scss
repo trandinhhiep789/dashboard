@@ -158,6 +158,24 @@
                     }
                     &.action{
                         vertical-align: middle;
+                        ul{
+                            li{
+                                clear: both;
+                                button{
+                                    padding: 0;
+                                    border: none;
+                                    background: transparent;
+                                    width: 15px;
+                                    color: #fff;
+                                    height: 25px;
+                                }
+                                &.printing{
+                                    button{
+                                        color: #b9b7b7;
+                                    }
+                                }
+                            }
+                        }
                         &.undelivery{
                             background-color: #ec3838;
                         }
@@ -277,6 +295,7 @@
                                     &.note{
                                         font-weight: 600;
                                         font-size: 11px;
+                                        color: #f96868;
                                     }
                                 }
                             }
@@ -370,6 +389,42 @@
                                             }
                                             .ant-picker-suffix{
                                                 margin: 0 4px;
+                                            }
+                                        }
+                                    }
+                                    &.statusShipmentOder{
+                                        display: flex;
+                                        justify-content: space-between;
+                                        .badge{
+                                            pointer-events: none;
+                                            opacity: .3;
+                                            line-height: 1;
+                                            border-radius: 7px;
+                                            color: #ffffffd1;
+                                            &.noactive{
+                                                clear: both;
+                                                &.badge-danger{
+                                                    background-color: #f96868c7;
+                                                }
+                                                &.badge-info{
+                                                    background-color: #178ee0a1;
+                                                }
+                                                &.badge-success{
+                                                    background-color: #15c377db;
+                                                }
+                                            }
+                                            &.active{
+                                                opacity: 1;
+                                                color: #fff;
+                                                &.badge-danger{
+                                                    background-color: #f96868;
+                                                }
+                                                &.badge-info{
+                                                    background-color: #178ee0;
+                                                }
+                                                &.badge-success{
+                                                    background-color:#03c36f;
+                                                }
                                             }
                                         }
                                     }
