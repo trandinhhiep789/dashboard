@@ -202,7 +202,24 @@ export const SearchElementList = [
         placeholder: "",
         listoption: [{ value: 1, label: "Sắp xếp theo thời gian giao" },{ value: 2, label: "Sắp xếp theo thời gian tạo" }],
         classNameCol:"col-custom"
-    }
+    },
+    // {
+    //     type: "MultiTreeSelect",
+    //     name: "cbTreeSelect",
+    //     DataSourceMember: "TreeSelectID",
+    //     colspan: 12,
+    //     rowspan: 2,
+    //     value: -1,
+    //     isMultiSelect: false,
+    //     placeholder: "---Vui lòng chọn---",
+    //     listoption: [],
+    //     IsAutoLoadItemFromCache: false,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUSGR",
+    //     ValueMember: "ShipmentOrderStatusGroupID",
+    //     NameMember: "ShipmentOrderStatusGroupName",
+    //     classNameCol:"col-custom"
+    // },
+    
 ];
 export const InitSearchParams = [
     {
@@ -328,7 +345,12 @@ export const SearchMLObjectDefinition = [
         Name: "IsOrderBy",
         DefaultValue: "",
         BindControlName: "cbIsOrderBy"
-    }
+    },
+    // {
+    //     Name: "TreeSelectID",
+    //     DefaultValue: "",
+    //     BindControlName: "cbTreeSelect"
+    // }
     
 ];
 

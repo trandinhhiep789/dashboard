@@ -345,16 +345,31 @@ class PageUICom extends React.Component {
                                         <tbody>
                                             <tr className="jsgrid-row unread">
                                                 <td className="jsgrid-cell action undelivery" style={{ width: '2%' }}>
-                                                    <div className="group-action">
-                                                        <div className="checkbox item-action">
-                                                            <label>
-                                                                <input type="checkbox" readOnly className="form-control form-control-sm" value="" />
-                                                                <span className="cr">
-                                                                    <i className="cr-icon fa fa-check"></i>
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
+                                                    <ul>
+                                                        <li className="item ">
+                                                            <div className="group-action">
+                                                                <div className="checkbox item-action">
+                                                                    <label>
+                                                                        <input type="checkbox" readOnly className="form-control form-control-sm" value="" />
+                                                                        <span className="cr">
+                                                                            <i className="cr-icon fa fa-check"></i>
+                                                                        </span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li className="item ">
+                                                            <button className="btn">
+                                                                <i className="fa fa-user-plus"></i>
+                                                            </button>
+                                                        </li>
+                                                        <li className="item printing">
+                                                        <button className="btn">
+                                                                <i className="ti ti-printer"></i>
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+
                                                 </td>
                                                 <td className="jsgrid-cell groupTimeDelivery" style={{ width: '15%' }}>
                                                     <div className="group-info">
@@ -379,10 +394,15 @@ class PageUICom extends React.Component {
                                                                 <i className="fa fa-motorcycle"></i>
                                                                 <span>Xe gắn máy</span>
                                                             </li>
-                                                            <li className="item printing">
+                                                            <li className="item statusShipmentOder">
+                                                            <span class="badge badge-danger noactive">Chưa xuất</span>
+                                                            <span class="badge badge-info active">Đã xuất</span>
+                                                            <span class="badge badge-success noactive">Đã nhận</span>
+                                                            </li>
+                                                            {/* <li className="item printing">
                                                                 <i className="ti ti-printer"></i>
                                                                 <span>In</span>
-                                                            </li>
+                                                            </li> */}
                                                         </ul>
                                                     </div>
                                                 </td>
