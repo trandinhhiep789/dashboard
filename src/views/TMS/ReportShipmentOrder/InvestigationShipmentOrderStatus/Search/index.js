@@ -114,7 +114,7 @@ class SearchCom extends React.Component {
                     IsPrint={false}
                     IsAutoPaging={true}
                     RowsPerPage={10}
-                    //RequirePermission={TMS_INVESTIGATION_SO_STATUS}
+                    RequirePermission={TMS_INVESTIGATION_SO_STATUS}
                     ref={this.gridref}
                 />
             </React.Fragment>
