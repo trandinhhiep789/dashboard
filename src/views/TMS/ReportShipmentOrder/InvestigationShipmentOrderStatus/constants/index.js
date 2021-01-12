@@ -1,5 +1,5 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/StaffDebt/Search";
+export const SearchAPIPath = "api/ShipmentOrder/SearchInvestigationStatus";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -28,24 +28,24 @@ export const  SearchMLObjectDefinition = [
 
 export const GridColumnList = [
     {
-        Name: "AdvanceRequestTitle",
-        Type: "text",
+        Name: "ProcessDate",
+        Type: "date",
         Caption: "Thời gian xử lý",
-        DataSourceMember: "AdvanceRequestTitle",
+        DataSourceMember: "ProcessDate",
         Width: 200
     },
     {
-        Name: "AdvanceRequestTypeName",
+        Name: "ShipmentOrderStepName",
         Type: "text",
         Caption: "Bước xử lý",
-        DataSourceMember: "AdvanceRequestTypeName",
-        Width: 180
+        DataSourceMember: "ShipmentOrderStepName",
+        Width: 200
     },
     {
-        Name: "ShipmentOrderID",
+        Name: "ProcessFullName",
         Type: "text",
         Caption: "Nhân viên xử lý",
-        DataSourceMember: "ShipmentOrderID",
-        Width: 120
+        DataSourceMember: "ProcessFullName",
+        Width: 200
     },
 ];
