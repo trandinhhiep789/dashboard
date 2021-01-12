@@ -408,7 +408,7 @@ const AppMenu = [
                     },
                 ]
             },
-            
+
             {
                 MenuName: 'Area',
                 MenuTitle: 'Khu vực',
@@ -501,6 +501,28 @@ const AppMenu = [
                 LinkTo: '/TMSConfig',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'DeliveryDateUpdate',
+                MenuTitle: 'Cập nhật giờ giao hàng',
+                LinkTo: '/DeliveryDateUpdate',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'DeliveryDateUpdateType',
+                        MenuTitle: 'Loại cập nhật giờ giao hàng',
+                        LinkTo: '/DeliveryDateUpdateType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'DeliveryDateUpdateReason',
+                        MenuTitle: 'Lý do cập nhật giờ giao hàng',
+                        LinkTo: '/DeliveryDateUpdateReason',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
             }
 
 
@@ -809,7 +831,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            
+
 
         ]
     },
@@ -877,7 +899,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            
+
             {
                 MenuName: 'StaffDebt',
                 MenuTitle: 'Quản lý công nợ',
@@ -885,7 +907,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            
+
             {
                 MenuName: 'ReportShipmentOrderExport',
                 MenuTitle: 'Xuất danh sách đơn hàng',

@@ -30,7 +30,8 @@ class SearchCom extends React.Component {
 
         this.state = {
             IsCallAPIError: false,
-            gridDataSource: [],
+            dataSource: [],
+            gridDataSource:[],
             IsLoadDataComplete: false,
 
         };
@@ -43,62 +44,36 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("MLObject", MLObject)
-        const postData = [];
-        //this.callSearchData(postData)
+        const postData = [
+            {
+                SearchKey: "@Keyword",
+                SearchValue: MLObject.Keyword
+            },
+        ];
+        this.callSearchData(postData)
     }
 
     callSearchData(searchData) {
 
-        // this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-        //     console.log("apiResult",searchData, apiResult)
-        //     if (!apiResult.IsError) {
-        //         let objStaffDebtID = {}
-        //         const tempData = apiResult.ResultObject.map((item, index) => {
-        //             objStaffDebtID = {
-        //                 UserName: item.UserName,
-        //                 StoreID: item.StoreID
-        //             }
-        //             item.StaffDebtID = Base64.encode(JSON.stringify(objStaffDebtID));
-        //             item.FullNameMember = item.UserName + " - " + item.FullName
-        //             item.Note = "Xem"
-        //             if (item.IsLockDelivery) {
-        //                 item.DeliveryStatus = <span className='lblstatusLock'>Đã khóa</span>;
-        //             }
-        //             else {
-        //                 item.DeliveryStatus = <span className='lblstatusUnlock'>Hoạt động</span>;
-        //             }
-        //             return item;
-        //         })
-
-        //         const tempDataExport = apiResult.ResultObject.map((item, index) => {
-        //             let element = {
-        //                 "Mã NV nợ": item.FullNameMember,
-        //                 "Kho điều phối": item.StoreID+"-"+item.StoreName,
-        //                 "Tổng tiền phải thu hộ": item.TotalCOD,
-        //                 "Tổng tiền phải thu vật tư": item.TotalSaleMaterialMoney,
-        //                 "Tổng tiền phải thu": item.TotalMoney,
-        //                 "Tổng tiền đã thu của khách hàng": item.CollectedTotalMoney,
-        //                 "Tổng vận đơn còn nợ": item.TotalDebtOrders,
-        //                 "Tổng vận đơn nợ quá hạn": item.TotALoverDueDebtOrders,
-        //                 "Tình trạng": item.IsLockDelivery == false ? "Hoạt động" : "Đã khóa",
-        //             };
-
-        //             return element;
-        //         })
-
-        //         this.setState({
-        //             gridDataSource: tempData,
-        //             dataExport: tempDataExport,
-        //         })
-        //     }
-        //     else {
-        //         this.setState({
-        //             gridDataSource: []
-        //         })
-        //         this.showMessage(apiResult.MessageDetail)
-        //     }
-        // });
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            if (!apiResult.IsError) {
+                
+                const tempData = apiResult.ResultObject.ShipmentOrderType_WorkFlowList.map((item, index) => {
+                    item.ProcessFullName =item.ProcessUser +"-"+ item.ProcessUserName
+                    return item;
+                })
+                this.setState({
+                    gridDataSource: tempData,
+                    dataSource: apiResult.ResultObject,
+                })
+            }
+            else {
+                this.setState({
+                    gridDataSource: []
+                })
+                this.showMessage(apiResult.Message)
+            }
+        });
     }
 
     showMessage(message) {
@@ -123,15 +98,15 @@ class SearchCom extends React.Component {
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                 />
-
-                <InfoShipmentOrder dataShipmentOder= {this.state.gridDataSource} />
+              
+                <InfoShipmentOrder dataShipmentOder= {this.state.dataSource} />
 
                 <DataGrid
                     listColumn={GridColumnList}
                     dataSource={this.state.gridDataSource}
                     IsFixheaderTable={false}
-                    IDSelectColumnName={''}
-                    PKColumnName={''}
+                    IDSelectColumnName={'WorkFlowID'}
+                    PKColumnName={'WorkFlowID'}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
@@ -139,7 +114,7 @@ class SearchCom extends React.Component {
                     IsPrint={false}
                     IsAutoPaging={true}
                     RowsPerPage={10}
-                    //RequirePermission={TMS_INVESTIGATION_SO_STATUS}
+                    RequirePermission={TMS_INVESTIGATION_SO_STATUS}
                     ref={this.gridref}
                 />
             </React.Fragment>
