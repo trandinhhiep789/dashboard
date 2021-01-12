@@ -41,7 +41,6 @@ class DashboardCom extends Component {
     callSearchDataReport() {
         const postData = [];
         this.props.callFetchAPI(APIHostName, SearchAPIPath, postData).then(apiResult => {
-            debugger;
             if (!apiResult.IsError) {
                 this.setState({
                     LstDataSource: apiResult.ResultObject == null ? [] : apiResult.ResultObject.ShipmentOrderItemList,
@@ -58,6 +57,7 @@ class DashboardCom extends Component {
             }
         });
     }
+
 
     render() {
        

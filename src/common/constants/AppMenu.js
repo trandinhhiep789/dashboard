@@ -914,6 +914,13 @@ const AppMenu = [
                 LinkTo: '/ReportShipmentOrderExport',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'InvestigationShipmentOrderStatus',
+                MenuTitle: 'Tra cứu trạng thái vận đơn',
+                LinkTo: '/InvestigationShipmentOrderStatus',
+                MenuIcon: '',
+                SubMenu: []
             }
         ]
     }

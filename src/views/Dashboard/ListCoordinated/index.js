@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import { formatDate } from "../../../common/library/CommonLib.js";
 import { formatMoney } from '../../../utils/function';
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
 class ListCoordinatedCom extends Component {
     constructor(props) {
@@ -170,7 +171,7 @@ class ListCoordinatedCom extends Component {
                                                 <td className="group-address">
                                                     <div className="group-info-row">
                                                         <label className="item address-repository-created">
-                                                            <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(';', '<br/>'))}</span>
+                                                        <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, '<br/>'))}</span>
                                                         </label>
                                                         <label className="item address-receiver">
                                                             <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
