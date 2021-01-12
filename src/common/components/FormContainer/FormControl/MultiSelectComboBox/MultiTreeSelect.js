@@ -101,7 +101,7 @@ class MultiTreeSelectCom extends React.Component {
             value: this.state.value,
             onChange: this.handleValueChange,
             treeCheckable: true,
-            // showCheckedStrategy: SHOW_PARENT,
+            showCheckedStrategy: SHOW_PARENT,
             placeholder: '--Vui lòng chọn--',
             style: {
                 width: '100%',
