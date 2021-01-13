@@ -10,9 +10,10 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import Collapsible from 'react-collapsible';
-import { showModal,hideModal } from '../../../../actions/modal';
+import { showModal, hideModal } from '../../../../actions/modal';
 import { ExportStringDate } from "../../../../common/library/ultils";
 import { MODAL_TYPE_CONFIRMATIONNEW } from '../../../../constants/actionTypes';
+import ReactTooltip from 'react-tooltip';
 import {
     APIHostName,
     MLObjectExpectedDelivery,
@@ -480,18 +481,15 @@ class ShipmentOrderDetailCom extends Component {
                                                 <i className="ti ti-pencil-alt"></i>
                                             </button>
                                         </div>
-                                        : <div className="group-btn-update"><button title="Nhân viên điều phối không có quyền đổi thời gian sau 24h tạo vận đơn. Xin liên hệ cấp quản lý." className="btn btn-update-submit" type="button" >
-                                            <i className="ti ti-pencil-alt"></i>
-                                        </button> </div>
+                                        :
+                                        <div className="group-btn-update">
+                                            <button data-tip data-for={"ExpectedDeliveryD"} className="btn btn-update-submit" data-id={"ExpectedDeliveryD"} ><i className="ti ti-pencil-alt"></i></button>
+                                            <ReactTooltip id={"ExpectedDeliveryD"} type='error'>
+                                                <span>{"Nhân viên điều phối không có quyền đổi thời gian sau 24h tạo vận đơn. Xin liên hệ cấp quản lý."}</span>
+                                            </ReactTooltip>
+                                        </div>
                                     }
                                 </div>
-                                {/* <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Thời gian giao dự kiến:</label>
-                        </div>
-                        <div className="form-group col-md-4">
-                             <label className="col-form-label">{formatDate(this.state.ShipmentOrder.ExpectedDeliveryDate)}</label> 
-                            
-                        </div> */}
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-2">
