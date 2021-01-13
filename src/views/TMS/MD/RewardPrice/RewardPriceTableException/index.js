@@ -42,7 +42,7 @@ class RewardPriceTableExceptionCom extends Component {
         MLObject.RewardPriceTableID = this.props.dataSource.RewardPriceTableID;
         // console.log("submit", formData, MLObject)
 
-        if(MLObject.FromQuantity >= MLObject.ToQuantity){
+        if(parseInt(MLObject.FromQuantity)  >= parseInt(MLObject.ToQuantity)){
             this.showMessage("Số lượng đến phải lớn hơn số lượng từ")
         }
         else{
