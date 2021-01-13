@@ -13,6 +13,7 @@ import {
 import { MODAL_TYPE_VIEW } from "../../../constants/actionTypes";
 import { showModal, hideModal } from '../../../actions/modal';
 import { TreeSelect, DatePicker } from 'antd';
+import SOPrintTemplate from "../../../common/components/PrintTemplate/SOPrintTemplate";
 const { SHOW_PARENT } = TreeSelect;
 
 const treeData = [
@@ -60,7 +61,8 @@ const options = [
 class PageUICom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleShowModal = this.handleShowModal.bind(this)
+        this.handleShowModal = this.handleShowModal.bind(this);
+        this.handlePrintClick = this.handlePrintClick.bind(this);
         this.state = {
             widthPercent: "",
         };
@@ -101,6 +103,24 @@ class PageUICom extends React.Component {
             },
             maxWidth: '500px'
         });
+    }
+
+    handlePrintClick() {
+        // window.print();
+        // return;
+        var mywindow = window.open('', '', 'right=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
+        mywindow.document.write('<html><head>');
+        mywindow.document.write('<title>' + this.props.TitlePrint + '</title>');
+        mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(document.getElementById('print').innerHTML);
+        mywindow.document.write('</body></html>');
+        // mywindow.document.getElementsByName('body').css( "-webkit-print-color-adjust", "exact !important");
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+
     }
 
 
@@ -364,7 +384,7 @@ class PageUICom extends React.Component {
                                                             </button>
                                                         </li>
                                                         <li className="item printing">
-                                                        <button className="btn">
+                                                            <button className="btn" onClick={this.handlePrintClick}>
                                                                 <i className="ti ti-printer"></i>
                                                             </button>
                                                         </li>
@@ -395,9 +415,9 @@ class PageUICom extends React.Component {
                                                                 <span>Xe gắn máy</span>
                                                             </li>
                                                             <li className="item statusShipmentOder">
-                                                            <span class="badge badge-danger noactive">Chưa xuất</span>
-                                                            <span class="badge badge-info active">Đã xuất</span>
-                                                            <span class="badge badge-success noactive">Đã nhận</span>
+                                                                <span class="badge badge-danger noactive">Chưa xuất</span>
+                                                                <span class="badge badge-info active">Đã xuất</span>
+                                                                <span class="badge badge-success noactive">Đã nhận</span>
                                                             </li>
                                                             {/* <li className="item printing">
                                                                 <i className="ti ti-printer"></i>
@@ -1661,6 +1681,10 @@ class PageUICom extends React.Component {
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div style={{ display: 'none' }}>
+                    <SOPrintTemplate ref={el => (this.componentRef = el)} data={this.props.dataPrint} />
                 </div>
             </React.Fragment>
         );

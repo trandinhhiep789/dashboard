@@ -9,6 +9,8 @@ import {
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { formatMoney } from '../../../../utils/function';
+import tantamlogo from '../../../../img/tantamlogo.png'
+import mavach from '../../../../img/mavach.jpg'
 
 class SOPrintTemplateCom extends React.Component {
     constructor(props) {
@@ -47,116 +49,185 @@ class SOPrintTemplateCom extends React.Component {
 
         return (
             <div id="print">
-                <div className="header" style={{ textAlign: "center", fontSize: 20, color: '#333', fontWeight: 600, textTransform: "uppercase" }}>
-                    <p>THỐNG TIN ĐƠN HÀNG</p>
-                </div>
-                <hr style={{ borderBottom: '0' }} />
-                <div style={{ width: '100%', marginTop: 0, lineHeight: "0.5rem" }} >
-                    <div style={{ width: '100%', display: 'block', flex: 1, flexDirection: 'row', }}>
-                        <div style={{ width: '100%', display: 'inline-block', marginBottom: 0 }}>
-                            <div style={{ width: '50%', float: "left", textAlign: 'left' }}>
-                                <p>Website: dienmayxanh.com </p>
-                                <p>Kho xuất: HCM - kho quận 7</p>
-                                <p>Nhân viên tư vấn: nguyễn văn A</p>
-                                <p>Khách hàng: Nguyễn văn long</p>
-                                <p>Người nhận: Nguyễn văn long</p>
+                <div className="soprint" style={{ width: '100%', fontFamily: "verdana", fontSize: "12px", }}>
+                    <div className="group" style={{ display: "table", width: "100%" }}>
+                        <div className="item" style={{ display: "table-cell", width: "50%", border: "1px solid", boxSizing: " border-box", padding: "6px", height: "100%" }}>
+                            <div className="content" style={{ paddingLeft: "10px" }}>
+                                <img src={tantamlogo} className="logo" style={{ float: "left", width: "80px", verticalAlign: "middle", marginRight: "10px" }} />
+                                <div>
+                                    <p><b>CÔNG TY TNHH DỊCH VỤ LẮP ĐẶT SỬA CHỮA - BẢO HÀNH TẬN TÂM</b></p>
+                                    <p>128 Trần Quang Khải, Phường Tân Định , Q1, Hồ Chí Minh, Việt Nam</p>
+                                </div>
                             </div>
-                            <div style={{ width: '50%', float: 'left', textAlign: 'left' }}>
-                                <p>Ngày giao hàng: </p>
-                                <p>Thời gian xuất: 2/2/2021 10:20AM</p>
-                                <p>Thời gian yêu cầu: 2/2/2021 10:20AM</p>
-                                <p>Điện thoại: 096385829</p>
-                                <p>Điện thoại: 096385829</p>
+                            <hr style={{borderBottom: "0"}} />
+                            <h3 style={{ textAlign: "center" }}>ĐƠN VẬN CHUYỂN</h3>
+                        </div>
+                        <div className="item bleft" style={{ display: "table-cell", width: "50%", border: "1px solid", boxSizing: " border-box", padding: "6px", height: "100%", borderLeft: "0px" }}>
+                            <div className="content" style={{ paddingLeft: "10px" }}>
+                                <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Đối tác:</span> Công ty cổ phần đầu tư Thế giới di động </p>
+                                <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Loại dịch vụ:</span> TMS - Giao hàng có lắp đặt</p>
+                                <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Ngày tạo phiếu:</span> 20/10/2020 10:06</p>
                             </div>
                         </div>
-                        <hr style={{ borderBottom: '0' }} />
-                        <div style={{ width: '100%', display: 'inline-block', marginBottom: 0 }}>
-                            <div style={{ width: '100%', float: "left", textAlign: 'left' }}>
-                                <p>Phương thức thanh toán: Công nợ tiền mặt </p>
-                                <p>Nội dung: thu tiền mặt, gọi khách trước khi giao</p>
-                            </div>
-                        </div>
-                        <hr style={{ borderBottom: '0' }} />
-                        <div style={{ width: '100%', display: 'inline-block', marginBottom: 15 }}>
-                            <div style={{ width: '100%', float: "left", textAlign: 'left' }}>
-                                <p>Loại yêu cầu: <b>Yêu cầu xuất điện máy giao hàng tại nhà</b> </p>
-                                <p>Ghi chú đơn hàng: tivi 32 inch, gắn treo tường cho khách</p>
-                                <p>Ghi chú điều phối: </p>
-                            </div>
-                        </div>
-
                     </div>
-                    <table style={{ width: '100%', border: 1, borderColor: '#dee2e6', borderStyle: 'solid', borderCollapse: 'collapse' }}>
+
+                    <div className="group" style={{ display: "table", width: "100%" }}>
+                        <div className="item btop" style={{ display: "table-cell", width: "50%", border: "1px solid", boxSizing: " border-box", padding: "6px", height: "100%", borderTop: "0px" }}>
+                            <div className="content" style={{ paddingLeft: "10px" }}>
+                                <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Mã đơn vận chuyển:</span>210111000000058</p>
+                                <img src={mavach} className="mavach" style={{ display: "block", margin: "0 auto", height: "60px", width: "70%" }} />
+                            </div>
+                        </div>
+                        <div className="item btop bleft" style={{ display: "table-cell", width: "50%", border: "1px solid", boxSizing: " border-box", padding: "6px", height: "100%", borderLeft: "0px", borderTop: "0px" }}>
+                            <div className="content" style={{ paddingLeft: "10px" }}>
+                                <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Mã đơn hàng của đối tác:</span>210111000000058</p>
+                                <img src={mavach} className="mavach" style={{ display: "block", margin: "0 auto", height: "60px", width: "70%" }} />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="group" style={{ display: "table", width: "100%" }}>
+                        <div className="item btop" style={{ display: "table-cell", width: "50%", border: "1px solid", boxSizing: " border-box", padding: "6px", height: "100%", borderTop: "0px" }}>
+                            <div className="content" style={{ paddingLeft: "10px" }}>
+                                <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Người gửi:</span></p>
+                                <p><i>HCM1_ĐMX - Xô Viết Nghệ Tĩnh (Mới)</i></p>
+                                <p>12 Nguyễn Trọng Lội, Phường 4, Quận Tân Bình, Hồ Chí Minh</p>
+
+                            </div>
+                        </div>
+                        <div className="item btop bleft" style={{ display: "table-cell", width: "50%", border: "1px solid", boxSizing: " border-box", padding: "6px", height: "100%", borderLeft: "0px", borderTop: "0px" }}>
+                            <div className="content" style={{ paddingLeft: "10px" }}>
+                                <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Ngày hẹn giao:</span>10/10/2020 10:30</p>
+                                <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Ghi chú:</span></p>
+                                <p>0938488 Anh Bình, không xuất hóa đơn công ty</p>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="group" style={{ display: "table", width: "100%" }}>
+                        <div className="item btop" style={{ display: "table-cell", width: "50%", border: "1px solid", boxSizing: " border-box", padding: "6px", height: "100%", borderTop: "0px" }}>
+                            <div className="content" style={{ paddingLeft: "10px" }}>
+                                <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Người nhận hàng:</span></p>
+                                <p><i className="customername">Chị Nguyệt</i> <i>0988584485</i></p>
+                                <p><i>12 Nguyễn Trọng Lội, Phường 4, Quận Tân Bình, Hồ Chí Minh</i></p>
+
+                            </div>
+                        </div>
+                        <div className="item btop bleft" style={{ display: "table-cell", width: "50%", border: "1px solid", boxSizing: " border-box", padding: "6px", height: "100%", borderLeft: "0px", borderTop: "0px" }}>
+                            <div className="content" style={{ paddingLeft: "10px" }}>
+                                <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Người mua hàng:</span></p>
+                                <p><i className="customername">Chị Nguyệt</i> <i>0988584485</i></p>
+                                <p><i>12 Nguyễn Trọng Lội, Phường 4, Quận Tân Bình, Hồ Chí Minh</i></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div className="group" style={{ display: "table", width: "100%" }}>
+                        <div className="item" style={{ display: "table-cell", width: "50%", border: "1px solid", boxSizing: " border-box", padding: "6px", height: "100%" }}>
+                            <div className="content" style={{ paddingLeft: "10px" }}>
+                                <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Nhân viên điều phối:</span> 70445-Huỳnh Đức Kỳ</p>
+                                <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Nhân viên giao nhận:</span> 70445-Huỳnh Đức Kỳ</p>
+                            </div>
+                        </div>
+                        <div className="item bleft" style={{ display: "table-cell", width: "50%", border: "1px solid", boxSizing: " border-box", padding: "6px", height: "100%", borderLeft: "0px" }}>
+                            <div className="content" style={{ paddingLeft: "10px" }}>
+                                <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Ghi chú điều phối:</span></p>
+                                <p>0938488 Anh Bình, không xuất hóa đơn công ty</p>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <table style={{ width: "100%", borderSpacing: "10px", borderCollapse: "collapse", textAlign: "center", fontSize: "12px" }}>
                         <thead>
-                            <tr style={{ padding: 0, }}>
-                                <td style={{ padding: 6, border: 1, borderColor: '#dee2e6', borderStyle: 'solid', margin: 0, borderTop: 0, borderLeft: 0, borderBottom: 0, fontSize: 15 }} align="center">STT</td>
-                                <td style={{ padding: 6, border: 1, borderColor: '#dee2e6', borderStyle: 'solid', margin: 0, borderTop: 0, borderLeft: 0, borderBottom: 0, fontSize: 15 }} align="center">Hình thức xuất</td>
-                                <td style={{ padding: 6, border: 1, borderColor: '#dee2e6', borderStyle: 'solid', margin: 0, borderTop: 0, borderLeft: 0, borderBottom: 0, fontSize: 15 }} align="center">Tên sản phẩm</td>
-                                <td style={{ padding: 6, border: 1, borderColor: '#dee2e6', borderStyle: 'solid', margin: 0, borderTop: 0, borderLeft: 0, borderBottom: 0, fontSize: 15 }} align="center">SL</td>
-                                <td style={{ padding: 6, border: 1, borderColor: '#dee2e6', borderStyle: 'solid', margin: 0, borderTop: 0, borderLeft: 0, borderBottom: 0, fontSize: 15 }} align="center">Đơn giá</td>
-                                <td style={{ padding: 6, border: 1, borderColor: '#dee2e6', borderStyle: 'solid', margin: 0, borderTop: 0, borderLeft: 0, borderBottom: 0, fontSize: 15 }} align="center">VAT</td>
-                                <td style={{ padding: 6, border: 1, borderColor: '#dee2e6', borderStyle: 'solid', margin: 0, borderTop: 0, borderLeft: 0, borderBottom: 0, borderRight: 0, fontSize: 15 }} align="center">Xuất</td>
+                            <tr>
+                                <td colspan="6" style={{ border: "1px solid", padding: "8px" }}><b>Danh sách hàng hóa</b></td>
+                            </tr>
+                            <tr style={{ backgroundColor: "#d7d7d7" }}>
+                                <td style={{ border: "1px solid", padding: "8px" }}>Có lắp đặt</td>
+                                <td style={{ border: "1px solid", padding: "8px" }}>Mã sản phẩm</td>
+                                <td style={{ border: "1px solid", padding: "8px", width: "30%" }}>Tên sản phẩm</td>
+                                <td style={{ border: "1px solid", padding: "8px" }}>Imei</td>
+                                <td style={{ border: "1px solid", padding: "8px" }}>Số lượng</td>
+                                <td style={{ border: "1px solid", padding: "8px" }}>Đơn vị tính</td>
                             </tr>
                         </thead>
                         <tbody>
                             {
                                 this.state.girdDataSource && this.state.girdDataSource.map((item, index) => {
                                     return (
-                                        <tr key={index} style={{ padding: 0, }}>
-                                            <td style={{ padding: 6, border: 1, borderColor: '#dee2e6', borderStyle: 'solid', borderBottom: 0, borderLeft: 0, fontSize: 15 }} align="center">{index + 1}</td>
-                                            <td style={{ padding: 6, border: 1, borderColor: '#dee2e6', borderStyle: 'solid', borderBottom: 0, borderLeft: 0, fontSize: 15 }}>{item.SubGroupName}</td>
-                                            <td style={{ padding: 6, border: 1, borderColor: '#dee2e6', borderStyle: 'solid', borderBottom: 0, borderLeft: 0, fontSize: 15 }} align="center">{item.Quantity}</td>
-                                            <td style={{ padding: 6, border: 1, borderColor: '#dee2e6', borderStyle: 'solid', borderBottom: 0, borderLeft: 0, fontSize: 15 }} align="right">{formatMoney(item.ServiceFee, 0)}</td>
-                                            <td style={{ padding: 6, border: 1, borderColor: '#dee2e6', borderStyle: 'solid', borderBottom: 0, borderLeft: 0, fontSize: 15 }} align="right">{formatMoney(item.ServiceFee, 0)}</td>
-                                            <td style={{ padding: 6, border: 1, borderColor: '#dee2e6', borderStyle: 'solid', borderBottom: 0, borderLeft: 0, fontSize: 15 }} align="right">{formatMoney(item.ServiceFee, 0)}</td>
-                                            <td style={{ padding: 6, border: 1, borderColor: '#dee2e6', borderStyle: 'solid', borderBottom: 0, borderLeft: 0, fontSize: 15, borderRight: 0 }} align="right">{formatMoney(item.totalCost, 0)}</td>
+                                        <tr key={index}>
+                                            <td style={{ border: "1px solid", padding: "8px" }}><input type="checkbox" value="" /></td>
+                                            <td style={{ border: "1px solid", padding: "8px" }}>{item.product}</td>
+                                            <td style={{ border: "1px solid", padding: "8px" }}>{item.product}</td>
+                                            <td style={{ border: "1px solid", padding: "8px" }}>
+                                                <img src={mavach} style={{ height: "30px", width: "100px", display: "block", margin: "0 auto" }} />
+                                                {item.product}
+                                            </td>
+                                            <td style={{ border: "1px solid", padding: "8px" }}>{item.product}</td>
+                                            <td style={{ border: "1px solid", padding: "8px" }}>{item.product}</td>
                                         </tr>
                                     )
                                 })
                             }
-                            {/* <tr style={{}}>
-                                <td colSpan="6" style={{ fontSize: 16, fontWeight: 600, padding: 6, border: 1, borderColor: '#dee2e6', borderStyle: 'solid', borderBottom: 0, borderLeft: 0 }}>Tổng cộng</td>
-                                <td style={{ padding: 6, fontSize: 16, fontWeight: 600, border: 1, borderColor: '#dee2e6', borderStyle: 'solid', borderRight: 0, borderBottom: 0, borderLeft: 0 }} align="right">{formatMoney(this.state.totalPayableAmount, 0)}</td>
 
-                            </tr> */}
+                            <tr>
+                                <td style={{ border: "1px solid", padding: "8px" }}><input type="checkbox" value="" /></td>
+                                <td style={{ border: "1px solid", padding: "8px" }}>3051099000089</td>
+                                <td style={{ border: "1px solid", padding: "8px" }}>Máy giặt Samsung WW10K6410QX/SV</td>
+                                <td style={{ border: "1px solid", padding: "8px" }}>
+                                    <img src={mavach} style={{ height: "30px", width: "100px", display: "block", margin: "0 auto" }} />
+                                    WW10K790716708
+                                </td>
+                                <td style={{ border: "1px solid", padding: "8px" }}>1</td>
+                                <td style={{ border: "1px solid", padding: "8px" }}>Cái</td>
+                            </tr>
+
+                            <tr>
+                                <td style={{ border: "1px solid", padding: "8px" }}><input type="checkbox" value="" /></td>
+                                <td style={{ border: "1px solid", padding: "8px" }}>3051099000089</td>
+                                <td style={{ border: "1px solid", padding: "8px" }}>Máy giặt Samsung WW10K6410QX/SV</td>
+                                <td style={{ border: "1px solid", padding: "8px" }}>
+                                    <img src={mavach} style={{ height: "30px", width: "100px", display: "block", margin: "0 auto" }} />
+                                    WW10K790716708
+                                </td>
+                                <td style={{ border: "1px solid", padding: "8px" }}>1</td>
+                                <td style={{ border: "1px solid", padding: "8px" }}>Cái</td>
+                            </tr>
                         </tbody>
                     </table>
-                    <hr style={{ borderBottom: '0' }} />
-                    <div style={{ width: '100%', display: 'inline-block', marginBottom: 0 }}>
-                        <div style={{ width: '40%', float: "right", textAlign: 'left' }}>
-                            <p>Tổng tiền: <span style={{ float: 'right' }}>2.000.000đ</span> </p>
-                            <p>Đã thu: <span style={{ float: 'right' }}>0đ</span></p>
-                            <p>Giảm giá: <span style={{ float: 'right' }}>0đ</span></p>
-                            <p>Chi phí giao hàng: <span style={{ float: 'right' }}>0đ</span></p>
-                            <p>Còn lại phải thu: <span style={{ float: 'right' }}>0đ</span></p>
-                        </div>
-                    </div>
-                    <hr style={{ borderBottom: '0' }} />
-                </div>
-                <div className="footer" style={{ display: 'table', width: '100%', marginTop: 30 }}>
-                    <div style={{ display: 'table-cell', width: '33.33%', textAlign: 'center' }}>
-                        <h3 style={{ fontSize: 15 }}>Thủ kho</h3>
-                        {/* <span style={{ fontSize: 12 }}>(Ký,ghi rõ user-họ tên)</span> */}
-                    </div>
-                    <div style={{ display: 'table-cell', width: '33.33%' }}>
-                        <div style={{ textAlign: 'center' }}>
-                            <h3 style={{ fontSize: 15 }}>Trung tâm điều phối</h3>
-                            {/* <span style={{ fontSize: 12 }}>(Ký,ghi rõ họ tên)</span> */}
-                        </div>
 
 
-                        {/* <p style={{ marginTop: 100, textAlign: 'left', fontSize: 15 }}>Ngày ký (Bắt buộc):</p> */}
-                    </div>
-                    <div style={{ display: 'table-cell', width: '33.33%', textAlign: 'center' }}>
-                        <div style={{ textAlign: 'center' }}>
-                            <h3 style={{ fontSize: 15 }}>Nhân viên triển khai</h3>
-                            {/* <span style={{ fontSize: 12 }}>(Ký,ghi rõ họ tên)</span> */}
-                        </div>
 
-                        {/* <p style={{ marginTop: 100, textAlign: 'left', fontSize: 15 }}>Ngày nhận:</p> */}
+                    <br />
+
+                    <div className="footer" style={{ display: "table", border: "1px solid", width: "100%", padding: "6px", boxSizing: "border-box" }}>
+                        <div className="f-left" style={{ display: "table-cell", width: "40%", paddingLeft: "10px" }}>
+                            <p><b>TỔNG TIỀN COD: &nbsp;&nbsp;<i>10,250,000đ</i></b></p>
+                            <p><b>Hình thức thanh toán</b></p>
+                            <p>
+                                <label><input type="checkbox" value="" checked="true" />Thanh toán thẻ</label>&nbsp;&nbsp;
+                    <label><input type="checkbox" value="" />Tiền mặt</label>&nbsp;&nbsp;
+                    <label><input type="checkbox" value="" />Chuyển khoản</label>
+                            </p>
+                        </div>
+                        <div className="f-item" style={{ position: "relative", display: "table-cell", width: "20%", paddingLeft: "0px", textAlign: "center" }}>
+                            <p><b>Chữ ký NV giao hàng</b></p>
+                            <hr style={{ width: "80%", margin: "0 auto", left: "0", right: "0", bottom: "15px", position: "absolute" }} />
+                        </div>
+                        <div className="f-item" style={{ position: "relative", display: "table-cell", width: "20%", paddingLeft: "0px", textAlign: "center" }}>
+                            <p><b>Chữ ký khách hàng</b></p>
+                            <hr style={{ width: "80%", margin: "0 auto", left: "0", right: "0", bottom: "15px", position: "absolute" }} />
+                        </div>
                     </div>
                 </div>
-            </div>
+                <br />
+
+
+            </div >
 
         );
     }

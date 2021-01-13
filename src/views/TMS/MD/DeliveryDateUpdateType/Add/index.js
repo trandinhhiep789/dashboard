@@ -14,7 +14,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { AREATYPE_ADD } from "../../../../../constants/functionLists";
+import { DELIVERYDATEUPDATETYPE_ADD } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE } from "../../../../../constants/keyCache";
 
@@ -81,7 +81,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                RequirePermission={AREATYPE_ADD}
+                RequirePermission={DELIVERYDATEUPDATETYPE_ADD}
                 ref={this.searchref}
             />
         );
