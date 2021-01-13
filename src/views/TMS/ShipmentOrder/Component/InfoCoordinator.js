@@ -439,7 +439,7 @@ class InfoCoordinatorCom extends Component {
     }
 
     handleShipWorkFlowInsert() {
-        let { ShipmentOrder, validationErroDeliverUser, validationErroCarrierPartner, validationErroDriverUser } = this.state;
+        let { ShipmentOrder, validationErroDeliverUser, validationErroCarrierPartner, validationErroDriverUser,validationErroCarrierType } = this.state;
         if (ShipmentOrder.CarrierTypeID == undefined || parseInt(ShipmentOrder.CarrierTypeID) <= 0) {
             validationErroCarrierType = "Vui lòng chọn phương tiện vận chuyển"
             this.setState({ validationErroCarrierType: validationErroCarrierType });
