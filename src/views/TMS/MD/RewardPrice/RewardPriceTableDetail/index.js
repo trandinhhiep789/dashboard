@@ -127,7 +127,7 @@ class RewardPriceTableDetailCom extends Component {
                     formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
                 }
                 else {
-                    if (parseInt(formData.txtToTechspecsValue.value) <= parseInt(formData.txtFromTechspecsValue.value)) {
+                    if (parseFloat(formData.txtToTechspecsValue.value) <= parseFloat(formData.txtFromTechspecsValue.value)) {
                         formData.txtToTechspecsValue.ErrorLst.IsValidatonError = true;
                         formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập giá trị từ bé hơn giá trị đến';
                     }
