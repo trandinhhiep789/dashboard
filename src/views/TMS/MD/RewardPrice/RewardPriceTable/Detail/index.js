@@ -19,7 +19,8 @@ import {
     TitleFromRPTDetail,
     DeleteAPIRPTExceptionPath,
     TitleFromRPTException,
-    DataGridColumnItemListRPTException
+    DataGridColumnItemListRPTException,
+    DeleteAPIRPTDetailPath
 
 } from "../constants";
 import { MessageModal } from "../../../../../../common/components/Modal";
