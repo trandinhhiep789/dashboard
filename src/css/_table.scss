@@ -513,6 +513,7 @@
                 }
                 td{
                     &.btngroupleft{
+
                         .group-action{
                             display: flex;
                         }
@@ -524,6 +525,28 @@
                         }
                         &.WaitingDelivery{
                             background-color: #e0e02c;
+                        }
+                        ul{
+                            padding-left: 0;
+                            margin-bottom: 0;
+                            li{
+                                list-style: none;
+                                line-height: initial;
+                                margin-bottom: 3px;
+                                width: auto;
+                                text-align: center;
+                                &.printing{
+                                    button{
+                                        padding: 0;
+                                        border: none;
+                                        background: transparent;
+                                        width: 15px;
+                                        color: #fff;
+                                        height: 25px;
+                                    }
+                                }
+                                
+                            }
                         }
                     }
                     .checkbox {
