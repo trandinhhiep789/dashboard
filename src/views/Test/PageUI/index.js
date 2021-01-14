@@ -106,11 +106,12 @@ class PageUICom extends React.Component {
     }
 
     handlePrintClick() {
+
         // window.print();
         // return;
         var mywindow = window.open('', '', 'right=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
         mywindow.document.write('<html><head>');
-        mywindow.document.write('<title>' + this.props.TitlePrint + '</title>');
+        mywindow.document.write('<title>Đơn vận chuyển</title>');
         mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
         mywindow.document.write('</head><body >');
         mywindow.document.write(document.getElementById('print').innerHTML);
@@ -1684,7 +1685,7 @@ class PageUICom extends React.Component {
                 </div>
 
                 <div style={{ display: 'none' }}>
-                    <SOPrintTemplate ref={el => (this.componentRef = el)} data={this.props.dataPrint} />
+                    <SOPrintTemplate ref={el => (this.componentRef = el)} data={this.state.printData} />
                 </div>
             </React.Fragment>
         );
