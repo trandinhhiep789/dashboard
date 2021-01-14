@@ -136,7 +136,7 @@ class SOPrintTemplateCom extends React.Component {
                                     <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Mã đơn vận chuyển:</span></p>
                                     {/* <img src={mavach} className="mavach" style={{ display: "block", margin: "0 auto", height: "60px", width: "70%" }} /> */}
                                     <div style={{ textAlign: "center" }}>
-                                        <this.getBarcode value={this.state.PrintDataSource.ShipmentOrderID} height={60} width={2} />
+                                        <this.getBarcode value={this.state.PrintDataSource.ShipmentOrderID} height={60} width={1.5} />
                                     </div>
                                 </div>
                             </div>
