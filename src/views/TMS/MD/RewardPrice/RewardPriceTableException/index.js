@@ -40,23 +40,30 @@ class RewardPriceTableExceptionCom extends Component {
 
     handleSubmit(formData, MLObject) {
         MLObject.RewardPriceTableID = this.props.dataSource.RewardPriceTableID;
-        // console.log("submit", formData, MLObject)
+        //console.log("submit", formData, MLObject)
 
-        if(parseInt(MLObject.FromQuantity)  >= parseInt(MLObject.ToQuantity)){
-            this.showMessage("Số lượng đến phải lớn hơn số lượng từ")
+        
+        if(MLObject.MainGroupID == -1 && MLObject.SubGroupID == -1 ){
+            this.showMessage("Vui lòng chọn ngành hàng hoặc nhóm hàng.")
         }
         else{
-            if (this.props.index != undefined) {
+            if(parseInt(MLObject.FromQuantity)  >= parseInt(MLObject.ToQuantity)){
+                this.showMessage("Số lượng đến phải lớn hơn số lượng từ")
+            }
+            else{
+                if (this.props.index != undefined) {
 
-                this.props.callFetchAPI(APIHostName, EditAPIRPTExceptionPath, MLObject).then(apiResult => {
-                    this.props.onInputChangeObj(this.props.dataSource.RewardPriceTableID, apiResult);
-                });
+                    this.props.callFetchAPI(APIHostName, EditAPIRPTExceptionPath, MLObject).then(apiResult => {
+                        this.props.onInputChangeObj(this.props.dataSource.RewardPriceTableID, apiResult);
+                    });
+                }
+                else {
+                    this.props.callFetchAPI(APIHostName, AddAPIRPTExceptionPath, MLObject).then(apiResult => {
+                        this.props.onInputChangeObj(this.props.dataSource.RewardPriceTableID, apiResult);
+                    });
+                }
             }
-            else {
-                this.props.callFetchAPI(APIHostName, AddAPIRPTExceptionPath, MLObject).then(apiResult => {
-                    this.props.onInputChangeObj(this.props.dataSource.RewardPriceTableID, apiResult);
-                });
-            }
+           
         }
 
 
@@ -128,7 +135,7 @@ class RewardPriceTableExceptionCom extends Component {
                             disabled={IsUpdate}
                             listoption={[]}
                             datasourcemember="MainGroupID"
-
+                            //filterrest="cbSubGroup"
                         />
                     </div>
 
@@ -148,6 +155,9 @@ class RewardPriceTableExceptionCom extends Component {
                             disabled={IsUpdate}
                             listoption={[]}
                             datasourcemember="SubGroupID"
+                            // filterName="cbMainGroupID"
+                            // filterobj="MainGroupID"
+                            
 
                         />
 
@@ -159,15 +169,15 @@ class RewardPriceTableExceptionCom extends Component {
                             name="txtFromQuantity"
                             colspan="6"
                             labelcolspan="6"
-                            readOnly={IsSystem}
-                            disabled={IsSystem}
+                            readOnly={IsUpdate}
+                            disabled={IsUpdate}
                             label="số lượng từ"
                             placeholder="Số lượng từ"
                             controltype="InputControl"
                             value="0"
                             validatonList={["required", "number"]}
                             datasourcemember="FromQuantity"
-                            maxSize={10}
+                            maxSize={5}
                         />
                     </div>
 
@@ -176,15 +186,15 @@ class RewardPriceTableExceptionCom extends Component {
                             name="txtToQuantity"
                             colspan="6"
                             labelcolspan="6"
-                            readOnly={IsSystem}
-                            disabled={IsSystem}
+                            readOnly={IsUpdate}
+                            disabled={IsUpdate}
                             label="số lượng đến"
                             placeholder="Số lượng đến"
                             controltype="InputControl"
                             value="0"
                             validatonList={["required","number"]}
                             datasourcemember="ToQuantity"
-                            maxSize={10}
+                            maxSize={5}
                         />
 
                     </div>
@@ -203,7 +213,7 @@ class RewardPriceTableExceptionCom extends Component {
                             value="0"
                             validatonList={['required']}
                             datasourcemember="RewardPrice"
-                            maxSize={19}
+                            maxSize={11}
                         />
                     </div>
 
@@ -220,7 +230,7 @@ class RewardPriceTableExceptionCom extends Component {
                             value="0"
                             validatonList={['required']}
                             datasourcemember="RewardPriceWithoutInstall"
-                            maxSize={19}
+                            maxSize={11}
                         />
 
                     </div>

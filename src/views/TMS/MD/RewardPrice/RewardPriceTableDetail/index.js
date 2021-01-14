@@ -350,7 +350,7 @@ class RewardPriceTableDetailCom extends Component {
                             value="0"
                             // validatonList={["required"]}
                             datasourcemember="FromTechspecsValue"
-                            maxSize={19}
+                            maxSize={9}
                         />
                     </div>
 
@@ -367,7 +367,7 @@ class RewardPriceTableDetailCom extends Component {
                             value="0"
                             // validatonList={["required"]}
                             datasourcemember="ToTechspecsValue"
-                            maxSize={19}
+                            maxSize={9}
                         />
 
                     </div>
@@ -404,7 +404,7 @@ class RewardPriceTableDetailCom extends Component {
                             value="0"
                             validatonList={['required']}
                             datasourcemember="RewardPrice"
-                            maxSize={19}
+                            maxSize={11}
                         />
                     </div>
 
@@ -421,7 +421,7 @@ class RewardPriceTableDetailCom extends Component {
                             value="0"
                             validatonList={['required']}
                             datasourcemember="RewardPriceWithoutInstall"
-                            maxSize={19}
+                            maxSize={11}
                         />
 
                     </div>
