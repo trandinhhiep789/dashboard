@@ -25,6 +25,7 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
+import SOPrintTemplate from "../../../../common/components/PrintTemplate/SOPrintTemplate";
 
 import { callGetCache } from "../../../../actions/cacheAction";
 
@@ -47,6 +48,8 @@ class SearchCom extends React.Component {
             PageNumber: 1,
             IsLoadDataComplete: false,
             IsLoadData: false,
+            PrintID: '',
+            dataPrint: {}
         };
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
@@ -255,6 +258,45 @@ class SearchCom extends React.Component {
         });
     }
 
+
+    handlePrint(id) {
+        this.setState({
+            PrintID: id
+        })
+
+        this.props.callFetchAPI("TMSAPI", "api/ShipmentOrder/LoadInfoForMobile", id).then(apiResult => {
+            //this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                this.setState({ dataPrint: apiResult.ResultObject });
+                this.handlePrintClick()
+            }
+
+        });
+
+        
+    }
+
+    handlePrintClick() {
+
+        // window.print();
+        // return;
+        
+        var mywindow = window.open('', '', 'right=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
+        mywindow.document.write('<html><head>');
+        mywindow.document.write('<title>Đơn vận chuyển</title>');
+        mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(document.getElementById('printSO').innerHTML);
+        mywindow.document.write('</body></html>');
+        // mywindow.document.getElementsByName('body').css( "-webkit-print-color-adjust", "exact !important");
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+
+    }
+
+
     render() {
         this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : -1
         if (this.state.IsLoadDataComplete) {
@@ -281,6 +323,7 @@ class SearchCom extends React.Component {
                         onChangeView={this.handleonChangeView.bind(this)}
                         onSearchEvent={this.handleonSearchEvent.bind(this)}
                         onChangePageLoad={this.onChangePageLoad.bind(this)}
+                        onPrint={this.handlePrint.bind(this)}
                         IsDelete={false}
                         IsAdd={false}
                         PageNumber={this.state.PageNumber}
@@ -289,6 +332,10 @@ class SearchCom extends React.Component {
                         IsAutoPaging={true}
                         RowsPerPage={100}
                     />
+                    <div style={{ display: 'none' }}>
+                        <SOPrintTemplate ref={el => (this.componentRef = el)} data={this.state.dataPrint} DataID={this.state.PrintID} />
+                    </div>
+
                 </React.Fragment>
             );
         }

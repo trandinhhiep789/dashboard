@@ -22,6 +22,8 @@ import {
     APIHostName
 } from "../constants";
 
+import SOPrintTemplate from "../../../../common/components/PrintTemplate/SOPrintTemplate";
+
 class DataGridShipmentOderCom extends Component {
     constructor(props) {
         super(props);
@@ -47,7 +49,8 @@ class DataGridShipmentOderCom extends Component {
             DataSource: this.props.dataSource,
             IsCheckAll: false, PageNumber: this.props.PageNumber, ListPKColumnName: listPKColumnName,
             GridDataShip: [],
-            KeywordId: ''
+            KeywordId: '',
+            printDataID: ''
 
         };
         this.notificationDOMRef = React.createRef();
@@ -290,6 +293,8 @@ class DataGridShipmentOderCom extends Component {
         }
 
     }
+
+
     handleDeleteClick() {
         var doDelete = () => {
             const idSelectColumnName = this.props.IDSelectColumnName;
@@ -636,6 +641,36 @@ class DataGridShipmentOderCom extends Component {
             dismissable: { click: true }
         });
     }
+
+    handlePrintClickNew(e){
+        const ShipmentOrderID= e.target.attributes['data-id'].value;
+        this.setState({
+            printDataID: ShipmentOrderID
+        });
+
+        this.props.onPrint(ShipmentOrderID)
+    }
+
+    handlePrintClick() {
+
+        // window.print();
+        // return;
+        
+        var mywindow = window.open('', '', 'right=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
+        mywindow.document.write('<html><head>');
+        mywindow.document.write('<title>Đơn vận chuyển</title>');
+        mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(document.getElementById('printNew').innerHTML);
+        mywindow.document.write('</body></html>');
+        // mywindow.document.getElementsByName('body').css( "-webkit-print-color-adjust", "exact !important");
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+
+    }
+
     renderDataGrid() {
         const dataSource = this.state.DataSource;
         const widthTable = $('#fixtable tbody').width();
@@ -679,22 +714,32 @@ class DataGridShipmentOderCom extends Component {
                                 // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
                                 return (<tr key={rowIndex} className={rowtrClass}>
                                     <td className={rowUndelivery} style={{ width: '5%' }}>
-                                        <div className="group-action">
-                                            <div className="checkbox item-action">
-                                                <label>
-                                                    <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} checked={this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID)} />
-                                                    <span className="cr">
-                                                        <i className="cr-icon fa fa-check"></i>
-                                                    </span>
-                                                </label>
-                                            </div>
-                                            {/* <a title="" className="nav-link hover-primary  item-action" title="Edit">
+                                        <ul>
+                                            <li className="item">
+                                                <div className="group-action">
+                                                    <div className="checkbox item-action">
+                                                        <label>
+                                                            <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} checked={this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID)} />
+                                                            <span className="cr">
+                                                                <i className="cr-icon fa fa-check"></i>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                    {/* <a title="" className="nav-link hover-primary  item-action" title="Edit">
                                                 <i className="ti-pencil"></i>
                                             </a>
                                             <a title="" className="table-action hover-danger item-action" title="Xóa">
                                                 <i className="ti-trash"></i>
                                             </a> */}
-                                        </div>
+                                                </div>
+                                            </li>
+                                            <li className="item printing">
+                                                <button className="btn" onClick={this.handlePrintClickNew.bind(this)}>
+                                                    <i className="ti ti-printer" data-id={rowItem.ShipmentOrderID}></i>
+                                                </button>
+                                            </li>
+                                        </ul>
+
 
                                     </td>
                                     {/* <td>{rowItem.ExpectedDeliveryDate}</td> */}
@@ -714,8 +759,8 @@ class DataGridShipmentOderCom extends Component {
                                                 }
                                             </label>
                                             <label className="item printing">
-                                            
-                                                {rowItem.IsOutputGoods == true ?<span className="badge badge-success">Đã xuất </span> :<span className="badge badge-danger">Chưa xuất</span> }
+
+                                                {rowItem.IsOutputGoods == true ? <span className="badge badge-success">Đã xuất </span> : <span className="badge badge-danger">Chưa xuất</span>}
                                                 {/* <i className="ti ti-printer"></i>Chưa
                                                 <span>In</span> */}
                                             </label>
@@ -882,48 +927,50 @@ class DataGridShipmentOderCom extends Component {
         }
 
         return (
-            <div className={classCustom}>
-                <div className="card cardShipmentOrder">
-                    <ReactNotification ref={this.notificationDOMRef} />
-                    <div className="card-title">
-                        {(this.props.title != undefined || this.props.title != '') && <h4 className="title">{this.props.title}</h4>}
+            <React.Fragment>
 
-                        {hasHeaderToolbar &&
-                            <div className="flexbox mb-10 ">
-                                {searchTextbox}
-                                <div className="btn-toolbar">
-                                    <div className="btn-group btn-group-sm">
-                                        <div className="group-left">
-                                            <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                <i className="fa fa-plus"> Gán nhân viên giao hàng</i>
-                                            </button>
-                                            <div className="groupActionRemember ml-10">
-                                                <button type="button" onClick={this.handleSelected.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
-                                                    <i className="fa fa-save"></i>
+                <div className={classCustom}>
+                    <div className="card cardShipmentOrder">
+                        <ReactNotification ref={this.notificationDOMRef} />
+                        <div className="card-title">
+                            {(this.props.title != undefined || this.props.title != '') && <h4 className="title">{this.props.title}</h4>}
+
+                            {hasHeaderToolbar &&
+                                <div className="flexbox mb-10 ">
+                                    {searchTextbox}
+                                    <div className="btn-toolbar">
+                                        <div className="btn-group btn-group-sm">
+                                            <div className="group-left">
+                                                <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                    <i className="fa fa-plus"> Gán nhân viên giao hàng</i>
                                                 </button>
+                                                <div className="groupActionRemember ml-10">
+                                                    <button type="button" onClick={this.handleSelected.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
+                                                        <i className="fa fa-save"></i>
+                                                    </button>
 
-                                                <button type="button" onClick={this.handleSelectedView.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Thêm">
-                                                    <i className="fa fa-history"></i>
-                                                </button>
-                                            </div>
-
-
-                                            <div className="input-group input-group-select">
-                                                <input type="text" onChange={this.handleonChange.bind(this)} onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
-                                                <div className="input-group-append" onClick={this.handleSearchShip.bind(this)}>
-                                                    <span className="input-group-text"><i className="ti-search"></i></span>
+                                                    <button type="button" onClick={this.handleSelectedView.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Thêm">
+                                                        <i className="fa fa-history"></i>
+                                                    </button>
                                                 </div>
+
+
+                                                <div className="input-group input-group-select">
+                                                    <input type="text" onChange={this.handleonChange.bind(this)} onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
+                                                    <div className="input-group-append" onClick={this.handleSearchShip.bind(this)}>
+                                                        <span className="input-group-text"><i className="ti-search"></i></span>
+                                                    </div>
+                                                </div>
+
                                             </div>
 
-                                        </div>
-
-                                        <div className="group-count">
-                                            <ul>
-                                                <li>
-                                                    <span className="count-name">Tổng đơn:</span>
-                                                    <span className="count-number">{this.state.DataSource.length > 0 ? formatNumber(this.state.DataSource[0].TotaLRows) : ''}</span>
-                                                </li>
-                                                {/* <li>
+                                            <div className="group-count">
+                                                <ul>
+                                                    <li>
+                                                        <span className="count-name">Tổng đơn:</span>
+                                                        <span className="count-number">{this.state.DataSource.length > 0 ? formatNumber(this.state.DataSource[0].TotaLRows) : ''}</span>
+                                                    </li>
+                                                    {/* <li>
                                                     <span className="count-name">Đã hoàn thành:</span>
                                                     <span className="count-number">{this.state.DataSource.length}</span>
                                                 </li>
@@ -931,52 +978,52 @@ class DataGridShipmentOderCom extends Component {
                                                     <span className="count-name">Chưa hoàn thành:</span>
                                                     <span className="count-number">{this.state.DataSource.length}</span>
                                                 </li> */}
-                                            </ul>
-                                        </div>
+                                                </ul>
+                                            </div>
 
-                                        {(this.props.IsAdd == true || this.props.IsAdd == undefined) ?
-                                            (!this.props.IsCustomAddLink == true ?
-                                                (<Link
-                                                    to={{
-                                                        pathname: this.props.AddLink,
-                                                        state: {
-                                                            params: this.props.params
-                                                        }
-                                                    }}
-                                                >
-                                                    <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                        <span className="fa fa-plus ff"> Thêm </span>
-                                                    </button>
-                                                </Link>)
-                                                : (
-                                                    <button type="button" onClick={this.handleInsertClick} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                        <span className="fa fa-plus ff"> Thêm </span>
-                                                    </button>
+                                            {(this.props.IsAdd == true || this.props.IsAdd == undefined) ?
+                                                (!this.props.IsCustomAddLink == true ?
+                                                    (<Link
+                                                        to={{
+                                                            pathname: this.props.AddLink,
+                                                            state: {
+                                                                params: this.props.params
+                                                            }
+                                                        }}
+                                                    >
+                                                        <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                            <span className="fa fa-plus ff"> Thêm </span>
+                                                        </button>
+                                                    </Link>)
+                                                    : (
+                                                        <button type="button" onClick={this.handleInsertClick} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                            <span className="fa fa-plus ff"> Thêm </span>
+                                                        </button>
+                                                    )
                                                 )
-                                            )
-                                            : ""
-                                        }
-                                        {
-                                            (this.props.IsDelete == true || this.props.IsDelete == undefined) ?
-                                                (<button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa" onClick={this.handleDeleteClick}>
-                                                    <span className="fa fa-remove"> Xóa </span>
-                                                </button>)
                                                 : ""
-                                        }
+                                            }
+                                            {
+                                                (this.props.IsDelete == true || this.props.IsDelete == undefined) ?
+                                                    (<button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa" onClick={this.handleDeleteClick}>
+                                                        <span className="fa fa-remove"> Xóa </span>
+                                                    </button>)
+                                                    : ""
+                                            }
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        }
-                    </div>
-                    <div className="card-body">
+                            }
+                        </div>
+                        <div className="card-body">
 
-                        {datagrid}
+                            {datagrid}
 
-                        {this.props.IsAutoPaging &&
-                            <GridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />
-                        }
+                            {this.props.IsAutoPaging &&
+                                <GridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />
+                            }
 
-                        {/* {this.props.RowFooter ? this.props.RowFooter(this.props.dataSource) : ""}
+                            {/* {this.props.RowFooter ? this.props.RowFooter(this.props.dataSource) : ""}
                         <Media query={{ minWidth: 768 }}>
                             {matches =>
                                 matches
@@ -985,23 +1032,25 @@ class DataGridShipmentOderCom extends Component {
                             }
                         </Media> */}
 
-                        {HideHeaderToolbarGroupTextBox &&
-                            <div className="flexbox mb-20 ">
-                                <div></div>
-                                <div className="btn-toolbar">
-                                    <div className="btn-group btn-group-sm">
-                                        <button className="btn btn-w-md btn-round btn-info" onClick={this.handleOneInsertClick}>Chọn</button>
-                                        {MultipleCheck &&
-                                            <button className="btn btn-w-md btn-round btn-info ml-20" onClick={this.handleMultipleInsertClick}>Chọn & Tiếp tục</button>
-                                        }
-                                        <button className="btn btn-w-md btn-round btn-secondary  ml-20" onClick={this.handleCloseModel} >Bỏ qua</button>
+                            {HideHeaderToolbarGroupTextBox &&
+                                <div className="flexbox mb-20 ">
+                                    <div></div>
+                                    <div className="btn-toolbar">
+                                        <div className="btn-group btn-group-sm">
+                                            <button className="btn btn-w-md btn-round btn-info" onClick={this.handleOneInsertClick}>Chọn</button>
+                                            {MultipleCheck &&
+                                                <button className="btn btn-w-md btn-round btn-info ml-20" onClick={this.handleMultipleInsertClick}>Chọn & Tiếp tục</button>
+                                            }
+                                            <button className="btn btn-w-md btn-round btn-secondary  ml-20" onClick={this.handleCloseModel} >Bỏ qua</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        }
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
+
+            </React.Fragment>
         );
     }
 }

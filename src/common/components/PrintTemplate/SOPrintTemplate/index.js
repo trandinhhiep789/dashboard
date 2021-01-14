@@ -22,7 +22,7 @@ class SOPrintTemplateCom extends React.Component {
         this.getBarcode = this.getBarcode.bind(this);
         this.state = {
             titlePartnerName: '',
-            PrintDataSource: {},
+            PrintDataSource: this.props.data,
             totalPayableAmount: 0
         }
     }
@@ -41,23 +41,16 @@ class SOPrintTemplateCom extends React.Component {
         return <svg ref={inputRef} />;
     };
 
+    
+
     componentWillReceiveProps(nextProps) {
-        // if (JSON.stringify(this.props.data) !== JSON.stringify(nextProps.data)) {
-        //     const result = nextProps.data.map((item) => {
-        //         item.totalCost = item.ServiceFee * item.Quantity
-        //         return item
-        //     })
-        //     const totalPayableAmount = result.reduce((sum, curValue, curIndex, []) => {
-        //         sum += curValue.totalCost
-        //         return sum
-        //     }, 0);
+        if (JSON.stringify(this.props.data) !== JSON.stringify(nextProps.data)) {
 
-        //     this.setState({
-        //         PrintDataSource: result,
-        //         totalPayableAmount
+            this.setState({
+                PrintDataSource: nextProps.data,
 
-        //     })
-        // }
+            })
+        }
 
     }
 
@@ -75,7 +68,6 @@ class SOPrintTemplateCom extends React.Component {
 
     //nhân viên giao nhận
     getDeliver() {
-        debugger;
         if (this.state.PrintDataSource.DeliverUserFullNameList) {
             //let user = this.state.PrintDataSource.DeliverUserLst.split(",");
             let username = this.state.PrintDataSource.DeliverUserFullNameList.split(";");
@@ -98,15 +90,16 @@ class SOPrintTemplateCom extends React.Component {
 
 
     componentDidMount() {
-        this.getData();
+        //this.getData();
         //console.log("printdatasource", this.props.data);
     }
 
 
     render() {
+        //console.log('aa', this.props, this.state)
         if (this.state.PrintDataSource) {
             return (
-                <div id="print">
+                <div id="printSO">
                     <div className="soprint" style={{ width: '100%', fontFamily: "verdana", fontSize: "11px", }}>
                         <div className="group" style={{ display: "table", width: "100%" }}>
                             <div className="item" style={{ display: "table-cell", width: "50%", border: "1px solid", boxSizing: " border-box", padding: "6px", height: "100%" }}>
