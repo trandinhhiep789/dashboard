@@ -156,13 +156,6 @@ class ListShipCoordinatorCom extends Component {
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
             if (this.props.onChangeValue != null)
                 this.props.onChangeValue(apiResult);
-            // if (!apiResult.IsError) {
-            //     this.props.hideModal();
-            //     if (this.props.onChangePageLoad != null)
-            //         this.props.onChangePageLoad();
-            // }
-            // this.setState({ IsCallAPIError: apiResult.IsError });
-            // this.showMessage(apiResult.Message);
         });
     }
 

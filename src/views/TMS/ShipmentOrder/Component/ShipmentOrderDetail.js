@@ -337,9 +337,9 @@ class ShipmentOrderDetailCom extends Component {
                 {
                     ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
                     CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime,
-                    DeliverydateUpdateTypeID: formData.DeliverydateUpdateTypeID,
+                    DeliverydateUpdateTypeID: 2,
                     DeliverydateUpdateReasonID: formData.DeliverydateUpdateReasonID,
-                    OldExpectedDeliveryDate: formData.OldExpectedDeliveryDate,
+                    OldExpectedDeliveryDate: this.props.ShipmentOrderDetail.ExpectedDeliveryDate,
                     NewExpectedDeliveryDate: formData.NewExpectedDeliveryDate,
                     DeliverydateUpdateReasonNote: formData.DeliverydateUpdateReasonNote
                 }
