@@ -95,6 +95,8 @@ class SOPrintTemplateCom extends React.Component {
         }
     }
 
+
+
     componentDidMount() {
         this.getData();
         //console.log("printdatasource", this.props.data);
@@ -103,9 +105,6 @@ class SOPrintTemplateCom extends React.Component {
 
     render() {
         if (this.state.PrintDataSource) {
-
-
-
             return (
                 <div id="print">
                     <div className="soprint" style={{ width: '100%', fontFamily: "verdana", fontSize: "11px", }}>
@@ -181,8 +180,8 @@ class SOPrintTemplateCom extends React.Component {
                             <div className="item btop bleft" style={{ display: "table-cell", width: "50%", border: "1px solid", boxSizing: " border-box", padding: "6px", height: "100%", borderLeft: "0px", borderTop: "0px" }}>
                                 <div className="content" style={{ paddingLeft: "0px" }}>
                                     <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Người mua hàng:</span></p>
-                                    <p><i className="customername" style={{ marginRight: "30px" }}>{}</i> <i>{}</i></p>
-                                    <p><i>{}</i></p>
+                                    <p><i className="customername" style={{ marginRight: "30px" }}>{ }</i> <i>{ }</i></p>
+                                    <p><i>{ }</i></p>
                                 </div>
                             </div>
                         </div>
@@ -231,7 +230,7 @@ class SOPrintTemplateCom extends React.Component {
                                                     {
                                                         item.ProductSerial && <this.getBarcode value={item.ProductSerial} height={20} width={1} fontSize={15} />
                                                     }
-                                                    
+
                                                 </td>
                                                 <td style={{ border: "1px solid", padding: "8px" }}>{item.Quantity}</td>
                                                 <td style={{ border: "1px solid", padding: "8px" }}>{item.QuantityUnitName}</td>
@@ -263,9 +262,6 @@ class SOPrintTemplateCom extends React.Component {
                                 </tr> */}
                             </tbody>
                         </table>
-
-
-
                         <br />
 
                         <div className="footer" style={{ display: "table", border: "1px solid", width: "100%", padding: "6px", boxSizing: "border-box" }}>
@@ -274,8 +270,8 @@ class SOPrintTemplateCom extends React.Component {
                                 <p><b>Hình thức thanh toán</b></p>
                                 <p>
                                     <label><input type="checkbox" value="" checked="" />Thanh toán thẻ</label>&nbsp;&nbsp;
-                    <label><input type="checkbox" value="" />Tiền mặt</label>&nbsp;&nbsp;
-                    <label><input type="checkbox" value="" />Chuyển khoản</label>
+                    <label><input type="checkbox" value="" defaultChecked={this.state.PrintDataSource.ShipmentFeePaymentMethodID == 1 ? true : false} />Tiền mặt</label>&nbsp;&nbsp;
+                    <label><input type="checkbox" value="" defaultChecked={this.state.PrintDataSource.ShipmentFeePaymentMethodID == 0 ? true : false} />Chuyển khoản</label>
                                 </p>
                             </div>
                             <div className="f-item" style={{ position: "relative", display: "table-cell", width: "20%", paddingLeft: "0px", textAlign: "center" }}>
