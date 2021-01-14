@@ -4,10 +4,9 @@ import Select from 'react-select';
 import { callGetCache } from "../../../../actions/cacheAction";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { InputNumber, DatePicker } from "antd";
+import { ExportStringToDate, ExportStringDate } from "../../../../common/library/ultils";
 import moment from 'moment';
-import Datetime from 'react-datetime';
 import "antd/dist/antd.css";
-
 
 //#region connect
 const mapStateToProps = state => {
@@ -192,7 +191,7 @@ class ElementModalComboBoxCom extends Component {
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null)
-            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.label : "", this.props.filterrest,this.props.filterrestValue);
+            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.label : "", this.props.filterrest, this.props.filterrestValue);
     }
 
     bindcombox(value, listOption) {
@@ -523,7 +522,7 @@ class ProductComboBoxCom extends React.Component {
         this.props.callFetchAPI("ERPAPI", 'api/ProductSearch/Search', listMLObject).then(apiResult => {
             let listOptionNew = [{ value: -1, label: "--vui lòng chọn--" }];
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
-                listOptionNew.push({ value: apiResult.ResultObject[i].ProductID, label:apiResult.ResultObject[i].ProductID+"-"+ apiResult.ResultObject[i].ProductName,name:apiResult.ResultObject[i].ProductName });
+                listOptionNew.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductID + "-" + apiResult.ResultObject[i].ProductName, name: apiResult.ResultObject[i].ProductName });
             }
             this.setState({
                 ListOption: listOptionNew,
@@ -615,8 +614,111 @@ class ProductComboBoxCom extends React.Component {
         );
     }
 }
-
 const ProductComboBox = connect(mapStateToProps, mapDispatchToProps)(ProductComboBoxCom);
 
-export default { ElementModalText, ElementModalComboBox, CheckBox, TextArea, ElementModalNumber, ProductComboBox };
+class ElementModalDatetimeCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+    }
+    handleValueChange(name, moment) {
+        let noGetTime = false;
+        if (!this.props.IsGetTime) {
+            noGetTime = false
+        }
+        else {
+            noGetTime = true
+        }
+        const momentNew = ExportStringDate(moment, noGetTime)
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(this.props.name, momentNew);
+    }
+    componentDidMount() {
+
+    }
+    disabledDate(current) {
+        // Can not select days before today and today
+        return current && current <= moment().startOf('day');
+    }
+
+    render() {
+        let { name, label, timeFormat, dateFormat, colspan, value, validationErrorMessage } = this.props;
+        let classNamecolmd = "col-md-6";
+        if (this.props.Colmd != null)
+            classNamecolmd = "col-md-" + this.props.Colmd;
+
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+
+        if (this.props.Colmd == 12) {
+            className = className + " customcontrol";
+        }
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-8";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-4";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null) {
+            formRowClassName += this.props.classNameCustom;
+        }
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
+            className += " is-invalid";
+        }
+
+        let isShowTime;
+        if (this.props.showTime == undefined || this.props.showTime == true) {
+            isShowTime = true
+        }
+        else {
+            isShowTime = false
+        }
+        return (
+            <div className={classNamecolmd}>
+                <div className={formRowClassName} >
+                    {this.props.label.length > 0 ?
+                        <div className={labelDivClassName}>
+                            <label className="col-form-label 2">
+                                {this.props.label}<span className="text-danger"> {star}</span>
+                            </label>
+                        </div>
+                        : ""
+                    }
+
+                    <div className={formGroupClassName}>
+                        <DatePicker
+                            disabledDate={this.props.ISdisabledDate == true ? this.disabledDate : ''}
+                            showTime={isShowTime}
+                            // value={(value != '' && value != null) ? moment(value, dateFormat) : ''}
+                            defaultValue={(value != '' && value != null) ? moment(value, 'YYYY-MM-DD HH:mm') : ''}
+                            format={dateFormat}
+                            className={className}
+                            dropdownClassName="tree-select-custom"
+                            ref={this.props.inputRef}
+                            placeholder={this.props.placeholder}
+                            onChange={this.handleValueChange}
+                            disabled={this.props.disabled}
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+const ElementModalDatetime = connect(null, null)(ElementModalDatetimeCom);
+
+
+export default { ElementModalText, ElementModalComboBox, CheckBox, TextArea, ElementModalNumber, ProductComboBox, ElementModalDatetime };
 

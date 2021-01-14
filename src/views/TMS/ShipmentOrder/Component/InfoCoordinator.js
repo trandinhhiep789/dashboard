@@ -9,13 +9,15 @@ import MultiSelectComboBox from "../../../../common/components/FormContainer/For
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../actions/modal';
-import { MODAL_TYPE_SEARCH, MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_CONFIRMATION } from '../../../../constants/actionTypes';
+import { MODAL_TYPE_SEARCH, MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_CONFIRMATION ,MODAL_TYPE_CONFIRMATIONNEW} from '../../../../constants/actionTypes';
 import Select from 'react-select';
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import {
     APIHostName,
-    BackLink
+    BackLink,
+    UpdateCoordinatorStoreEdit,
+    MLObjectUpdateCoordinatorStore
 } from "../constants";
 class InfoCoordinatorCom extends Component {
     constructor(props) {
@@ -522,7 +524,36 @@ class InfoCoordinatorCom extends Component {
 
     //Chuyển kho điều phối
     handleCoordinatorStore() {
+
         this.openCoordinatorStoreModal();
+        // this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
+        //     title: 'Chuyển kho điều phối',
+        //     onConfirmNew: (isConfirmed, formData) => {
+        //         let objDLDateLog =
+        //         {
+        //             ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
+        //             CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime,
+                   
+        //         }
+
+        //         // this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_DLDateLog/Add', objDLDateLog).then((apiResult) => {
+        //         //     this.addNotification(apiResult.Message, apiResult.IsError);
+        //         //     if (!apiResult.IsError) {
+        //         //         this.props.hideModal();
+        //         //         this.setState({
+        //         //             dtExpectedDeliveryDate: formData.NewExpectedDeliveryDate
+        //         //         })
+        //         //     }
+        //         // });
+
+        //     },
+        //     modalElementList: UpdateCoordinatorStoreEdit,
+        //     modalElementOl: MLObjectUpdateCoordinatorStore,
+        //     dataSource: { CoordinatorStoreID:this.state.ShipmentOrder.CoordinatorStoreID },
+        //     isaddComboBox: true
+
+        // });
+      
     }
 
     handleValueCancelStore(selectedOption) {
@@ -864,6 +895,9 @@ const mapDispatchToProps = dispatch => {
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
+        },
+        hideModal: () => {
+            dispatch(hideModal());
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));

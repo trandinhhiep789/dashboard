@@ -202,23 +202,24 @@ export const SearchElementList = [
         placeholder: "",
         listoption: [{ value: 1, label: "Sắp xếp theo thời gian giao" },{ value: 2, label: "Sắp xếp theo thời gian tạo" }],
         classNameCol:"col-custom"
-    },
-    {
-        type: "MultiTreeSelect",
-        name: "cbTreeSelect",
-        DataSourceMember: "TreeSelectID",
-        colspan: 12,
-        rowspan: 2,
-        value: -1,
-        isMultiSelect: false,
-        placeholder: "---Vui lòng chọn---",
-        listoption: [],
-        IsAutoLoadItemFromCache: false,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUSGR",
-        ValueMember: "ShipmentOrderStatusGroupID",
-        NameMember: "ShipmentOrderStatusGroupName",
-        classNameCol:"col-custom"
     }
+    // },
+    // {
+    //     type: "MultiTreeSelect",
+    //     name: "cbTreeSelect",
+    //     DataSourceMember: "TreeSelectID",
+    //     colspan: 12,
+    //     rowspan: 2,
+    //     value: -1,
+    //     isMultiSelect: false,
+    //     placeholder: "---Vui lòng chọn---",
+    //     listoption: [],
+    //     IsAutoLoadItemFromCache: false,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUSGR",
+    //     ValueMember: "ShipmentOrderStatusGroupID",
+    //     NameMember: "ShipmentOrderStatusGroupName",
+    //     classNameCol:"col-custom"
+    // }
     
 ];
 export const InitSearchParams = [
@@ -511,7 +512,6 @@ export const EditElementList = [
         validatonList: []
     }
 ];
-
 
 export const MLObjectDefinition = [
     {
@@ -860,7 +860,6 @@ export const DataGridColumnList = [
     }
 ];
 
-
 export const DataGridColumnItemList = [
     {
         Name: "ProductID",
@@ -935,7 +934,6 @@ export const DataGridColumnItemList = [
         iputpop: false
     }
 ];
-
 
 export const GridMLObjectItem = [
     {
@@ -1086,7 +1084,6 @@ export const GridMLSenderQTQHPX = [
         DataSourceMember: "SenderFullAddress"
     }
 ]
-
 
 export const ElementQHPXList = [
 
@@ -1474,5 +1471,159 @@ export const GridMLMaterialDefinition = [
     }
 ]
 
+//Update Expected Delivery Date
+export const MLObjectExpectedDelivery = [
+    {
+        Name: "DeliverydateUpdateTypeID",
+        DefaultValue: "",
+        BindControlName: "DeliverydateUpdateTypeID",
+        DataSourceMember: "DeliverydateUpdateTypeID"
+    },
+    {
+        Name: "DeliverydateUpdateReasonID",
+        DefaultValue: "",
+        BindControlName: "DeliverydateUpdateReasonID",
+        DataSourceMember: "DeliverydateUpdateReasonID"
+    }
+    ,
+    {
+        Name: "OldExpectedDeliveryDate",
+        DefaultValue: "",
+        BindControlName: "OldExpectedDeliveryDate",
+        DataSourceMember: "OldExpectedDeliveryDate"
+    }
+    ,
+    {
+        Name: "NewExpectedDeliveryDate",
+        DefaultValue: "",
+        BindControlName: "NewExpectedDeliveryDate",
+        DataSourceMember: "NewExpectedDeliveryDate"
+    },
+    {
+        Name: "DeliverydateUpdateReasonNote",
+        DefaultValue: "",
+        BindControlName: "DeliverydateUpdateReasonNote",
+        DataSourceMember: "DeliverydateUpdateReasonNote"
+    }
+    
+]
+export const ExpectedDeliveryDateEdit = [
+    // {
+    //     name: "DeliverydateUpdateTypeID",
+    //     Type: "ComboBoxEdit",
+    //     Caption: "Loại cập nhật giờ giao",
+    //     label: "Loại cập nhật giờ giao",
+    //     value:-1,
+    //     datasourcemember: "DeliverydateUpdateTypeID",
+    //     validatonList:["Comborequired"],
+    //     isautoloaditemfromcache:true,
+    //     loaditemcachekeyid:"ERPCOMMONCACHE.DELIVERYDATEUPDATETYPE",
+    //     valuemember:"DeliverydateUpdateTypeID",
+    //     nameMember:"DeliverydateUpdateTypeName",
+    //     OrderIndex: 1
+    // },
+    {
+        name: "DeliverydateUpdateReasonID",
+        Type: "ComboBoxEdit",
+        Caption: "Lý do thay đổi",
+        label: "Lý do thay đổi",
+        value:-1,
+        datasourcemember: "DeliverydateUpdateReasonID",
+        validatonList:["Comborequired"],
+        isautoloaditemfromcache:true,
+        loaditemcachekeyid:"ERPCOMMONCACHE.DELIVERYDATEUPDATEREASON",
+        valuemember:"DeliverydateUpdateReasonID",
+        nameMember:"DeliverydateUpdateReasonName",
+        OrderIndex: 2
+    },
+    // {
+    //     name: "OldExpectedDeliveryDate",
+    //     Type: "Datetime",
+    //     Caption: "Ngày hẹn giao cũ",
+    //     label: "Ngày hẹn giao cũ",
+    //     datasourcemember: "OldExpectedDeliveryDate",
+    //     timeFormat:false,
+    //     disabled:true,
+    //     dateFormat:"DD-MM-YYYY HH:mm",//"YYYY-MM-DD HH:mm"
+    //     IsGetTime:true,
+    //     OrderIndex: 3
+    // },
+    {
+        name: "NewExpectedDeliveryDate",
+        Type: "Datetime",
+        Caption: "Ngày hẹn giao",
+        label: "Ngày hẹn giao",
+        datasourcemember: "NewExpectedDeliveryDate",
+        validatonList:["required"],
+        timeFormat:false,
+        ISdisabledDate:true,
+        dateFormat:"DD-MM-YYYY HH:mm",//"YYYY-MM-DD HH:mm"
+        IsGetTime:true,
+        OrderIndex: 4
+    },
+    {
+        name: "DeliverydateUpdateReasonNote",
+        Type: "TextArea",
+        label:"Ghi chú",
+        Caption: "Ghi chú",
+        datasourcemember: "DeliverydateUpdateReasonNote",
+        OrderIndex:5,
+        Colmd:12,
+        hideInput: false,
+        labelcolspan:2,
+        colspan:10
+    },
+];
+
+export const MLObjectUpdateCoordinatorStore = [
+    {
+        Name: "CoordinatorStoreID",
+        DefaultValue: "",
+        BindControlName: "CoordinatorStoreID",
+        DataSourceMember: "CoordinatorStoreID"
+    },
+    {
+        Name: "CoordinatorStoreNewID",
+        DefaultValue: "",
+        BindControlName: "CoordinatorStoreNewID",
+        DataSourceMember: "CoordinatorStoreNewID"
+    }
+    
+]
+export const UpdateCoordinatorStoreEdit = [
+    {
+        name: "CoordinatorStoreID",
+        Type: "ComboBoxEdit",
+        Caption: "Loại cập nhật giờ giao",
+        label: "Loại cập nhật giờ giao",
+        value:-1,
+        datasourcemember: "CoordinatorStoreID",
+        validatonList:["Comborequired"],
+        isautoloaditemfromcache:true,
+        loaditemcachekeyid:"ERPCOMMONCACHE.STORE",
+        filterobj:"CompanyID",
+        filterValue:10,
+        valuemember:"StoreID",
+        nameMember:"StoreName",
+        OrderIndex: 1
+    },
+    {
+        name: "CoordinatorStoreNewID",
+        Type: "ComboBoxEdit",
+        Caption: "Loại cập nhật giờ giao",
+        label: "Loại cập nhật giờ giao",
+        value:-1,
+        datasourcemember: "CoordinatorStoreNewID",
+        validatonList:["Comborequired"],
+        isautoloaditemfromcache:true,
+        loaditemcachekeyid:"ERPCOMMONCACHE.STORE",
+        valuemember:"StoreID",
+        nameMember:"StoreName",
+        filterobj:"CompanyID",
+        filterValue:10,
+        OrderIndex: 2
+    },
+   
+];
 
 

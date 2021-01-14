@@ -69,7 +69,6 @@ class ConfirmationNew extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.elementItemRefs = [];
         const formData = this.bindData();
-        console.log("ConfirmationNew", formData);
         this.state = {
             Title: this.props.title ? this.props.title : "",
             FormData: formData
@@ -213,6 +212,17 @@ class ConfirmationNew extends React.Component {
             });
             this.props.onConfirm(false, MLObject, this.state.SelectedFile);
         }
+        if (this.props.onConfirmNew != null) {
+            const mLObjectDefinition = this.props.modalElementOl;
+            let MLObject = {};
+            mLObjectDefinition.map((Item) => {
+                const controlName = Item.BindControlName;
+                if (controlName.length > 0 && this.state.FormData[controlName] != undefined) {
+                    MLObject = Object.assign({}, MLObject, { [Item.Name]: this.state.FormData[controlName].value });
+                }
+            });
+            this.props.onConfirmNew(false, MLObject, this.state.SelectedFile);
+        }
 
     }
     handleClose() {
@@ -249,6 +259,17 @@ class ConfirmationNew extends React.Component {
                                         key={index}
                                     />
                                 );
+                            case "Datetime":
+                                    return (
+                                        <ElementModal.ElementModalDatetime
+                                            onValueChange={this.handleInputChange}
+                                            validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                            inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                            {...elementItem}
+                                            value={this.state.FormData[elementItem.name].value}
+                                            key={index}
+                                        />
+                                    );
                             case "TextNumber":
                                 let blDisabledt = false
                                 if (typeof elementItem.objrestValue != "undefined") {

@@ -108,7 +108,6 @@ class RewardPriceTableDetailCom extends Component {
     }
 
     handleChange(formData, MLObject) {
-
         if (formData.ckIsPriceByTechspecsValueRange.value) {
 
             if (formData.txtFromTechspecsValue.value.toString().length > 0) {
@@ -128,18 +127,18 @@ class RewardPriceTableDetailCom extends Component {
                     formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
                 }
                 else {
-                    if(formData.txtToTechspecsValue.value <= formData.txtFromTechspecsValue.value){
+                    if (parseFloat(formData.txtToTechspecsValue.value) <= parseFloat(formData.txtFromTechspecsValue.value)) {
                         formData.txtToTechspecsValue.ErrorLst.IsValidatonError = true;
                         formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập giá trị từ bé hơn giá trị đến';
                     }
-                    else{
+                    else {
                         formData.txtToTechspecsValue.ErrorLst.IsValidatonError = false;
                         formData.txtToTechspecsValue.ErrorLst.ValidatonErrorMessage = '';
                     }
                 }
-    
+
             }
-           
+
             if (formData.cbProductID.value != undefined) {
                 if (formData.cbProductID.value[0].ProductID != null) {
                     this.setState({
@@ -160,7 +159,7 @@ class RewardPriceTableDetailCom extends Component {
                     IsDisableTechspecsValue: false,
                 })
             }
-           
+
 
         }
         else {
@@ -188,7 +187,7 @@ class RewardPriceTableDetailCom extends Component {
             })
         }
 
-       
+
     }
 
 

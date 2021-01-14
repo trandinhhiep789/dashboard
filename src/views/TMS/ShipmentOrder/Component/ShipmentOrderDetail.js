@@ -10,8 +10,14 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import Collapsible from 'react-collapsible';
+import { showModal, hideModal } from '../../../../actions/modal';
+import { ExportStringDate } from "../../../../common/library/ultils";
+import { MODAL_TYPE_CONFIRMATIONNEW } from '../../../../constants/actionTypes';
+import ReactTooltip from 'react-tooltip';
 import {
     APIHostName,
+    MLObjectExpectedDelivery,
+    ExpectedDeliveryDateEdit
 } from "../constants";
 import { Link } from "react-router-dom";
 class ShipmentOrderDetailCom extends Component {
@@ -19,7 +25,7 @@ class ShipmentOrderDetailCom extends Component {
         super(props);
         this.handleShipWorkFlowInsert = this.handleShipWorkFlowInsert.bind(this);
         this.handleUpdateExpectedDelivery = this.handleUpdateExpectedDelivery.bind(this);
-        
+
         this.state = {
             ShipmentOrder: this.props.ShipmentOrderDetail,
             validationErrorMessage: null,
@@ -284,17 +290,17 @@ class ShipmentOrderDetailCom extends Component {
     }
 
     addNotification(message1, IsError) {
-      let cssNotification="";
-      let iconNotification="";
+        let cssNotification = "";
+        let iconNotification = "";
         if (!IsError) {
-         
-                cssNotification= "notification-custom-success"
-                iconNotification= "fa fa-check"
-           
+
+            cssNotification = "notification-custom-success"
+            iconNotification = "fa fa-check"
+
         } else {
-           
-                cssNotification="notification-danger",
-                iconNotification= "fa fa-exclamation"
+
+            cssNotification = "notification-danger",
+                iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
@@ -322,38 +328,42 @@ class ShipmentOrderDetailCom extends Component {
             dtExpectedDeliveryDate: mod
         })
     }
-    handleUpdateExpectedDelivery(id) {
+    handleUpdateExpectedDelivery() {
+        const dtFromdate = new Date()
+        this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
+            title: 'Cập nhật thời gian giao dự kiến',
+            onConfirmNew: (isConfirmed, formData) => {
+                let objDLDateLog =
+                {
+                    ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
+                    CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime,
+                    DeliverydateUpdateTypeID: 2,
+                    DeliverydateUpdateReasonID: formData.DeliverydateUpdateReasonID,
+                    OldExpectedDeliveryDate: this.props.ShipmentOrderDetail.ExpectedDeliveryDate,
+                    NewExpectedDeliveryDate: formData.NewExpectedDeliveryDate,
+                    DeliverydateUpdateReasonNote: formData.DeliverydateUpdateReasonNote
+                }
 
-        if (id == 1) {
-            this.setState({
-                IsUpdateDate: true,
-                IsDisable: false
-            })
-        }
-        if (id == 2) {
-            this.setState({
-                IsUpdateDate: false,
-                IsDisable: true
-            })
-        }
-        if (id == 3) {
-            if (this.state.dtExpectedDeliveryDate != null&this.state.dtExpectedDeliveryDate != "") {
-                let objShipmentOrder = { ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID, ExpectedDeliveryDate: this.state.dtExpectedDeliveryDate };
-                this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateExpectedDeliveryDate', objShipmentOrder).then((apiResult) => {
+                this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_DLDateLog/Add', objDLDateLog).then((apiResult) => {
                     this.addNotification(apiResult.Message, apiResult.IsError);
                     if (!apiResult.IsError) {
+                        this.props.hideModal();
                         this.setState({
-                            IsUpdateDate: false,
-                            IsDisable: true
+                            dtExpectedDeliveryDate: formData.NewExpectedDeliveryDate
                         })
                     }
                 });
-            }
-            else {
-                this.addNotification("Vui lòng chọn thời gian giao", true);
-            }
-        }
+
+            },
+            modalElementList: ExpectedDeliveryDateEdit,
+            modalElementOl: MLObjectExpectedDelivery,
+            dataSource: { OldExpectedDeliveryDate: this.state.dtExpectedDeliveryDate, NewExpectedDeliveryDate: dtFromdate },
+            isaddComboBox: true
+
+        });
     }
+
+
     _CheckTime(dates) {
         const date = new Date(Date.parse(dates));
         let currentDate = new Date();
@@ -458,56 +468,28 @@ class ShipmentOrderDetailCom extends Component {
                                 <div className="form-group col-md-4">
                                     <label className="col-form-label" >{formatDate(this.state.ShipmentOrder.CreatedOrderTime)}</label>
                                 </div>
-                                <div className="form-group col-md-5 dateTimeCus">
-                                    <FormControl.FormControlDatetime
-                                        name="dtCreatedOrderTime"
-                                        colspan="7"
-                                        labelcolspan="5"
-                                        disabled={IsDisable}
-                                        timeFormat={false}
-                                        ISdisabledDate={true}
-                                        dateFormat="DD-MM-YYYY HH:mm"//"YYYY-MM-DD HH:mm"
-                                        IsGetTime={true}
-                                        label="Thời gian giao dự kiến:"
-                                        placeholder="Thời gian giao dự kiến"
-                                        controltype="InputControl"
-                                        onValueChange={this.onValueChangeControlDatetime.bind(this)}
-                                        value={this.state.dtExpectedDeliveryDate}
-                                        validatonList={["required"]}
-                                        datasourcemember="CreatedOrderTime"
-                                        className="frmDateTime"
-                                    />
-
+                                <div className="form-group col-md-2">
+                                    <label className="col-form-label bold">Thời gian giao dự kiến:</label>
+                                </div>
+                                <div className="form-group col-md-3 dateTimeCus">
+                                    <label className="col-form-label" >{formatDate(this.state.dtExpectedDeliveryDate)}</label>
                                 </div>
                                 <div className="form-group col-md-1">
                                     {(onclin == true || IsExpectedDeliveryDate == true) ?
                                         <div className="group-btn-update">
-                                            {
-                                                IsUpdateDate == false ?
-                                                    <button className="btn btn-update-submit" type="button" onClick={() => this.handleUpdateExpectedDelivery(1)}>
-                                                        <i className="ti ti-pencil-alt"></i>
-                                                    </button>
-                                                    :
-                                                    <React.Fragment>
-                                                        <button className="btn btn-update-submit" type="button" onClick={() => this.handleUpdateExpectedDelivery(3)}>
-                                                            <i className="ti-check"></i>
-                                                        </button>
-                                                        <button className="btn btn-update-cancel" type="button" onClick={() => this.handleUpdateExpectedDelivery(2)}>
-                                                            <i className="ti-close"></i>
-                                                        </button>
-                                                    </React.Fragment>
-                                            }
+                                            <button className="btn btn-update-submit" type="button" onClick={() => this.handleUpdateExpectedDelivery()}>
+                                                <i className="ti ti-pencil-alt"></i>
+                                            </button>
                                         </div>
-                                        : ""
+                                        :
+                                        <div className="group-btn-update">
+                                            <button data-tip data-for={"ExpectedDeliveryD"} className="btn btn-update-submit" data-id={"ExpectedDeliveryD"} ><i className="ti ti-pencil-alt"></i></button>
+                                            <ReactTooltip id={"ExpectedDeliveryD"} type='error'>
+                                                <span>{"Nhân viên điều phối không có quyền đổi thời gian sau 24h tạo vận đơn. Xin liên hệ cấp quản lý."}</span>
+                                            </ReactTooltip>
+                                        </div>
                                     }
                                 </div>
-                                {/* <div className="form-group col-md-2">
-                            <label className="col-form-label bold">Thời gian giao dự kiến:</label>
-                        </div>
-                        <div className="form-group col-md-4">
-                             <label className="col-form-label">{formatDate(this.state.ShipmentOrder.ExpectedDeliveryDate)}</label> 
-                            
-                        </div> */}
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-2">
@@ -582,6 +564,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetUserCache: (cacheKeyID) => {
             return dispatch(callGetUserCache(cacheKeyID));
+        },
+        hideModal: () => {
+            dispatch(hideModal());
         }
     }
 }
