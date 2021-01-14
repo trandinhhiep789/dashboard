@@ -33,7 +33,16 @@ const AppMenu = [
                         LinkTo: '/Partner',
                         MenuIcon: '',
                         SubMenu: []
+                    },
+                    {
+                        MenuName: 'PNServicePriceTable',
+                        MenuTitle: 'Bảng giá dịch vụ của đối tác',
+                        LinkTo: '/PNServicePriceTable',
+                        MenuIcon: '',
+                        SubMenu: []
                     }
+
+                    
                 ]
             },
             {

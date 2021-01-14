@@ -79,6 +79,8 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
         ValueMember: "StoreID",
         NameMember: "StoreName",
+        filterValue: 1,
+        filterobj:"CompanyID",
         classNameCol:"col-custom"
     },
   

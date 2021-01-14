@@ -79,6 +79,8 @@ import InventoryRequest from "../TMS/InventoryRequest";
 import RewardPriceTable from "../TMS/MD/RewardPrice/RewardPriceTable";
 import UseGuide from "../../views/UseGuide";
 import CurrentAdvanceDebt from "../TMS/CurrentAdvanceDebt";
+import PNServicePriceTable from "../TMS/MD/RewardPrice/PNServicePriceTable";
+
 
 
 import NotFound from '../NotFound'
@@ -107,6 +109,8 @@ import RewardCompute from "../TMS/Reward/RewardCompute";
 import TotalRewardExport from "../TMS/Reward/TotalRewardExport";
 import RewardDetailExport from "../TMS/Reward/RewardDetailExport";
 import RewardPointReview from "../TMS/Reward/RewardPointReview";
+import RewardPointReview from "../TMS/Reward/RewardPointReview";
+
 
 import UserRewardStore from "../TMS/MD/RewardStoreUser";
 import FuelPrice from "../TMS/MD/FuelPrice";
@@ -262,6 +266,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} isRelogin={isRelogin}/>
 
                                 <PrivateRoute path="/RewardPriceTable" component={RewardPriceTable} isLoggedIn={isLoggedIn} isRelogin={isRelogin}/>
+                                <PrivateRoute path="/PNServicePriceTable" component={PNServicePriceTable} isLoggedIn={isLoggedIn} isRelogin={isRelogin}/>
+                                
 
                                 <PrivateRoute path="/CurrentAdvanceDebt" component={CurrentAdvanceDebt} isLoggedIn={isLoggedIn} isRelogin={isRelogin}/>
 
