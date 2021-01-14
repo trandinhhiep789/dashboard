@@ -109,7 +109,6 @@ import RewardCompute from "../TMS/Reward/RewardCompute";
 import TotalRewardExport from "../TMS/Reward/TotalRewardExport";
 import RewardDetailExport from "../TMS/Reward/RewardDetailExport";
 import RewardPointReview from "../TMS/Reward/RewardPointReview";
-import RewardPointReview from "../TMS/Reward/RewardPointReview";
 
 
 import UserRewardStore from "../TMS/MD/RewardStoreUser";
