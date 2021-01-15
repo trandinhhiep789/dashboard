@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
-import SearchForm from "../../../../../../common/components/Form/SearchForm";
+//import SearchForm from "../../../../../../common/components/Form/SearchForm";
+import SearchForm from "../../../../../../common/components/FormContainer/SearchForm";
 import DataGrid from "../../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../../common/components/Modal";
 import {
@@ -77,7 +78,11 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
-            }
+            },
+            {
+                SearchKey: "@PartnerID",
+                SearchValue: MLObject.PartnerID
+            },
         ];
         this.setState({ SearchData: postData });
         this.callSearchData(postData);
@@ -155,13 +160,22 @@ class SearchCom extends React.Component {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
-                    <SearchForm
+                    {/* <SearchForm
                         FormName="Tìm kiếm người dùng của nhà cung cấp"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={this.state.SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
-                    />
+                    /> */}
+                    <SearchForm
+                    FormName="Tìm kiếm người dùng của nhà cung cấp"
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    listelement={SearchElementList}
+                    onSubmit={this.handleSearchSubmit}
+                    ref={this.searchref}
+                    className="multiple"
+
+                />
                     <DataGrid
                         listColumn={DataGridColumnList}
                         dataSource={this.state.gridDataSource}

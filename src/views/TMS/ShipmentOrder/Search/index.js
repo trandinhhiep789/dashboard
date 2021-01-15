@@ -274,10 +274,10 @@ class SearchCom extends React.Component {
                 // let tempItemList = [];
                 // if (itemList) {
                 //     tempItemList = itemList.map((item, index) => {
-                //         temp = itemList.filter((item2) => {
-                //             item2.ProductID == item.ProductID;
+                //         temp = itemList.filter(item2 => {
+                //            return item2.ProductID == item.ProductID;
                 //         });
-                //         if (temp.length > 2) {
+                //         if (temp.length > 1) {
                 //             item.Quantity = temp.length;
                 //             itemListOutside.push(temp);
                 //             temp = [];
@@ -286,18 +286,16 @@ class SearchCom extends React.Component {
                 //             temp = [];
                 //             return item;
                 //         }
-                        
+
 
                 //     });
                 //     itemListResult = tempItemList.concat(itemListOutside);
-
                 // }
-
                 // if (itemListOutside) {
                 //     apiResult.ResultObject.ShipmentOrder_ItemList = itemListResult;
                 // }
-
                 // console.log("itemListResult", itemListResult);
+
                 this.setState({ dataPrint: apiResult.ResultObject });
                 setTimeout(() => {
                     this.handlePrintClick()
