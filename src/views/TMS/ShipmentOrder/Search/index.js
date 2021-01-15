@@ -265,23 +265,56 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI("TMSAPI", "api/ShipmentOrder/LoadInfoForMobile", id).then(apiResult => {
             //this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
+                // debugger;
+                // console.log("apiResult.ResultObject", apiResult.ResultObject);
+                // let itemList = apiResult.ResultObject.ShipmentOrder_ItemList;
+                // let itemListOutside = [];
+                // let itemListResult = [];
+                // let temp = [];
+                // let tempItemList = [];
+                // if (itemList) {
+                //     tempItemList = itemList.map((item, index) => {
+                //         temp = itemList.filter((item2) => {
+                //             item2.ProductID == item.ProductID;
+                //         });
+                //         if (temp.length > 2) {
+                //             item.Quantity = temp.length;
+                //             itemListOutside.push(temp);
+                //             temp = [];
+                //             return null;
+                //         } else {
+                //             temp = [];
+                //             return item;
+                //         }
+                        
+
+                //     });
+                //     itemListResult = tempItemList.concat(itemListOutside);
+
+                // }
+
+                // if (itemListOutside) {
+                //     apiResult.ResultObject.ShipmentOrder_ItemList = itemListResult;
+                // }
+
+                // console.log("itemListResult", itemListResult);
                 this.setState({ dataPrint: apiResult.ResultObject });
                 setTimeout(() => {
                     this.handlePrintClick()
                 }, 300);
-               
+
             }
 
         });
 
-        
+
     }
 
     handlePrintClick() {
 
         // window.print();
         // return;
-        
+
         var mywindow = window.open('', '', 'right=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
         mywindow.document.write('<html><head>');
         mywindow.document.write('<title>Đơn vận chuyển</title>');

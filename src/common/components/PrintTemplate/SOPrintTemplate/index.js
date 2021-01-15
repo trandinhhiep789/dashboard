@@ -128,7 +128,7 @@ class SOPrintTemplateCom extends React.Component {
                                     <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Mã đơn vận chuyển:</span></p>
                                     {/* <img src={mavach} className="mavach" style={{ display: "block", margin: "0 auto", height: "60px", width: "70%" }} /> */}
                                     <div style={{ textAlign: "center" }}>
-                                        <this.getBarcode value={this.state.PrintDataSource.ShipmentOrderID} height={60} width={1.5} />
+                                        <this.getBarcode value={this.state.PrintDataSource.ShipmentOrderID} height={40} width={1.5} />
                                     </div>
                                 </div>
                             </div>
@@ -137,7 +137,7 @@ class SOPrintTemplateCom extends React.Component {
                                     <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Mã đơn hàng của đối tác:</span></p>
                                     {/* <img src={mavach} className="mavach" style={{ display: "block", margin: "0 auto", height: "60px", width: "70%" }} /> */}
                                     <div style={{ textAlign: "center" }}>
-                                        <this.getBarcode value={this.state.PrintDataSource.PartnerSaleOrderID} height={60} width={1.5} />
+                                        <this.getBarcode value={this.state.PrintDataSource.PartnerSaleOrderID} height={40} width={1.5} />
                                     </div>
                                 </div>
                             </div>
@@ -203,12 +203,12 @@ class SOPrintTemplateCom extends React.Component {
                                     <td colspan="6" style={{ border: "1px solid", padding: "8px" }}><b>Danh sách hàng hóa</b></td>
                                 </tr>
                                 <tr style={{ backgroundColor: "#d7d7d7" }}>
-                                    <td style={{ border: "1px solid", padding: "8px" }}>Có lắp đặt</td>
-                                    <td style={{ border: "1px solid", padding: "8px" }}>Mã sản phẩm</td>
-                                    <td style={{ border: "1px solid", padding: "8px", width: "20%" }}>Tên sản phẩm</td>
-                                    <td style={{ border: "1px solid", padding: "8px" }}>Imei</td>
-                                    <td style={{ border: "1px solid", padding: "8px" }}>Số lượng</td>
-                                    <td style={{ border: "1px solid", padding: "8px" }}>Đơn vị tính</td>
+                                    <td style={{ border: "1px solid", padding: "3px" }}>Có lắp đặt</td>
+                                    <td style={{ border: "1px solid", padding: "3px" }}>Mã sản phẩm</td>
+                                    <td style={{ border: "1px solid", padding: "3px", width: "20%" }}>Tên sản phẩm</td>
+                                    <td style={{ border: "1px solid", padding: "3px" }}>Imei</td>
+                                    <td style={{ border: "1px solid", padding: "3px" }}>Số lượng</td>
+                                    <td style={{ border: "1px solid", padding: "3px" }}>Đơn vị tính</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -216,17 +216,17 @@ class SOPrintTemplateCom extends React.Component {
                                     this.state.PrintDataSource.ShipmentOrder_ItemList && this.state.PrintDataSource.ShipmentOrder_ItemList.map((item, index) => {
                                         return (
                                             <tr key={index}>
-                                                <td style={{ border: "1px solid", padding: "8px" }}><input type="checkbox" value={item.IsInstallItem} /></td>
-                                                <td style={{ border: "1px solid", padding: "8px" }}>{item.ProductID}</td>
-                                                <td style={{ border: "1px solid", padding: "8px" }}>{item.ProductName}</td>
-                                                <td style={{ border: "1px solid", padding: "8px" }}>
+                                                <td style={{ border: "1px solid", padding: "3px" }}><input type="checkbox" value={item.IsInstallItem} /></td>
+                                                <td style={{ border: "1px solid", padding: "3px" }}>{item.ProductID}</td>
+                                                <td style={{ border: "1px solid", padding: "3px" }}>{item.ProductName}</td>
+                                                <td style={{ border: "1px solid", padding: "3px" }}>
                                                     {
                                                         item.ProductSerial && <this.getBarcode value={item.ProductSerial} height={20} width={1} fontSize={15} />
                                                     }
 
                                                 </td>
-                                                <td style={{ border: "1px solid", padding: "8px" }}>{item.Quantity}</td>
-                                                <td style={{ border: "1px solid", padding: "8px" }}>{item.QuantityUnitName}</td>
+                                                <td style={{ border: "1px solid", padding: "3px" }}>{item.Quantity}</td>
+                                                <td style={{ border: "1px solid", padding: "3px" }}>{item.QuantityUnitName}</td>
                                             </tr>
                                         )
                                     })
