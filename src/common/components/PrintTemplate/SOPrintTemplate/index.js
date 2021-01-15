@@ -114,7 +114,7 @@ class SOPrintTemplateCom extends React.Component {
                                 <h3 style={{ textAlign: "center", margin: "" }}>ĐƠN VẬN CHUYỂN</h3>
                             </div>
                             <div className="item bleft" style={{ display: "table-cell", width: "50%", border: "1px solid", boxSizing: " border-box", padding: "6px", height: "100%", borderLeft: "0px", verticalAlign: "middle" }}>
-                                <div className="content" style={{ paddingLeft: "0px", fontSize: "11px" }}>
+                                <div className="content" style={{ paddingLeft: "0px", fontSize: "11px"}}>
                                     <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Đối tác:</span>{this.state.PrintDataSource.PartnerName} </p>
                                     <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Loại dịch vụ:</span>{this.state.PrintDataSource.ShipmentOrderTypeName}</p>
                                     <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Ngày tạo phiếu:</span> {formatDate(this.state.PrintDataSource.CreatedOrderTime)}</p>

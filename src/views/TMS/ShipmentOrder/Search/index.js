@@ -267,34 +267,45 @@ class SearchCom extends React.Component {
             if (!apiResult.IsError) {
                 // debugger;
                 // console.log("apiResult.ResultObject", apiResult.ResultObject);
-                // let itemList = apiResult.ResultObject.ShipmentOrder_ItemList;
-                // let itemListOutside = [];
-                // let itemListResult = [];
-                // let temp = [];
-                // let tempItemList = [];
-                // if (itemList) {
-                //     tempItemList = itemList.map((item, index) => {
-                //         temp = itemList.filter(item2 => {
-                //            return item2.ProductID == item.ProductID;
-                //         });
-                //         if (temp.length > 1) {
-                //             item.Quantity = temp.length;
-                //             itemListOutside.push(temp);
-                //             temp = [];
-                //             return null;
-                //         } else {
-                //             temp = [];
-                //             return item;
-                //         }
+                let itemList = apiResult.ResultObject.ShipmentOrder_ItemList;
+                let itemListOutside = [];
+                let itemListResult = [];
+                if (itemList) {
+                    let tempItemList = itemList.filter((item) => {
+                        if (!item.ProductSerial) {
+                            let temp = itemList.filter(item2 => {
+                                return item2.ProductID == item.ProductID;
+                            });
+                            let existItemListOutside = itemListOutside.filter(existItem => { return existItem.ProductID == item.ProductID });
+                            if (temp.length > 1 && existItemListOutside.length == 0) {
+                                item.Quantity = temp.length;
+                                itemListOutside.push(temp[0]);
+                                return false;
+                            } else if (temp.length > 1 && existItemListOutside.length > 0) {
+                                return false;
+                            }
+                            else {
+                                return true;
+                            }
+
+                        } else {
+                            return true;
+                        }
 
 
-                //     });
-                //     itemListResult = tempItemList.concat(itemListOutside);
-                // }
-                // if (itemListOutside) {
-                //     apiResult.ResultObject.ShipmentOrder_ItemList = itemListResult;
-                // }
+                    });
+                    itemListResult = tempItemList.concat(itemListOutside);
+                    //itemListResult = tempItemList;
+                }
+
+                // console.log("itemListOutside", itemListOutside);
                 // console.log("itemListResult", itemListResult);
+
+
+                if (itemListOutside.length > 0) {
+                    apiResult.ResultObject.ShipmentOrder_ItemList = itemListResult;
+                }
+
 
                 this.setState({ dataPrint: apiResult.ResultObject });
                 setTimeout(() => {
