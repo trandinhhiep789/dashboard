@@ -221,7 +221,7 @@ class InfoProductCom extends Component {
                             </div>
                             <div className="form-group col-md-4">
                                 <button className="btn btn-icon-modal" onClick={this.handleShowTotalSaleMaterialMoney.bind(this)}>
-                                    <i className="fa fa-pencil"></i>
+                                    <i className="fa fa-eye"></i>
                                 </button>
                             </div>
                             <div className="form-group col-md-2">

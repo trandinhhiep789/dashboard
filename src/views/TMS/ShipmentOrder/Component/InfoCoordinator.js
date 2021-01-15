@@ -525,34 +525,38 @@ class InfoCoordinatorCom extends Component {
     //Chuyển kho điều phối
     handleCoordinatorStore() {
 
-        this.openCoordinatorStoreModal();
-        // this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
-        //     title: 'Chuyển kho điều phối',
-        //     onConfirmNew: (isConfirmed, formData) => {
-        //         let objDLDateLog =
-        //         {
-        //             ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
-        //             CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime,
+        //this.openCoordinatorStoreModal();
+        this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
+            title: 'Chuyển kho điều phối',
+            onConfirmNew: (isConfirmed, formData) => {
+
+                let ShipmentOrderCoord =
+                {
+                    ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
+                    CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime,
+                    CoordinatorStoreID:this.state.ShipmentOrder.CoordinatorStoreID,
+                    CoordinatorStoreNewID:formData.CoordinatorStoreNewID,
+                    CoordinatorNote:formData.CoordinatorNote,
+                    UpdatedUser :this.props.AppInfo.LoginInfo.Username
                    
-        //         }
+                }
 
-        //         // this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_DLDateLog/Add', objDLDateLog).then((apiResult) => {
-        //         //     this.addNotification(apiResult.Message, apiResult.IsError);
-        //         //     if (!apiResult.IsError) {
-        //         //         this.props.hideModal();
-        //         //         this.setState({
-        //         //             dtExpectedDeliveryDate: formData.NewExpectedDeliveryDate
-        //         //         })
-        //         //     }
-        //         // });
+             
+                this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateCoordinatorStore', ShipmentOrderCoord).then((apiResult) => {
+                    this.addNotification(apiResult.Message, apiResult.IsError);
+                    if (!apiResult.IsError) {
+                        this.props.hideModal();
+                       
+                    }
+                });
 
-        //     },
-        //     modalElementList: UpdateCoordinatorStoreEdit,
-        //     modalElementOl: MLObjectUpdateCoordinatorStore,
-        //     dataSource: { CoordinatorStoreID:this.state.ShipmentOrder.CoordinatorStoreID },
-        //     isaddComboBox: true
+            },
+            modalElementList: UpdateCoordinatorStoreEdit,
+            modalElementOl: MLObjectUpdateCoordinatorStore,
+            dataSource: { CoordinatorStoreID:this.state.ShipmentOrder.CoordinatorStoreID,CoordinatorNote:this.state.ShipmentOrder.CoordinatorNote },
+            isaddComboBox: true
 
-        // });
+        });
       
     }
 

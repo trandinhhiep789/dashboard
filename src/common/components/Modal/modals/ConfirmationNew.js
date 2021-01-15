@@ -333,6 +333,18 @@ class ConfirmationNew extends React.Component {
                                         key={index}
                                     />
                                 );
+
+                          case "ComboBoxStore":
+                                    return (
+                                        <ElementModal.ElementModalComboBoxStore
+                                            onValueChange={this.handleInputChange}
+                                            inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                            {...elementItem}
+                                            value={this.state.FormData[elementItem.name].value}
+                                            validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                            key={index}
+                                        />
+                                    );
                             case "ProductCombo":
                                 let valuename = []
                                 if (this.state.FormData[elementItem.name].value != "" && typeof this.state.FormData[elementItem.name].value != "undefined" && this.state.FormData[elementItem.name].value != -1) {
