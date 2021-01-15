@@ -41,7 +41,7 @@ class SOPrintTemplateCom extends React.Component {
         return <svg ref={inputRef} />;
     };
 
-    
+
 
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.data) !== JSON.stringify(nextProps.data)) {
@@ -263,8 +263,10 @@ class SOPrintTemplateCom extends React.Component {
                                 <p><b>Hình thức thanh toán</b></p>
                                 <p>
                                     <label><input type="checkbox" value="" checked="" />Thanh toán thẻ</label>&nbsp;&nbsp;
-                    <label><input type="checkbox" value="" defaultChecked={this.state.PrintDataSource.ShipmentFeePaymentMethodID == 1 ? true : false} />Tiền mặt</label>&nbsp;&nbsp;
-                    <label><input type="checkbox" value="" defaultChecked={this.state.PrintDataSource.ShipmentFeePaymentMethodID == 0 ? true : false} />Chuyển khoản</label>
+                                    <label><input type="checkbox" value="" checked="" />Tiền mặt</label>&nbsp;&nbsp;
+                                    <label><input type="checkbox" value="" checked="" />Chuyển khoản</label>
+                                    {/* <label><input type="checkbox" value="" defaultChecked={this.state.PrintDataSource.ShipmentFeePaymentMethodID == 1 ? true : false} />Tiền mặt</label>&nbsp;&nbsp;
+                    <label><input type="checkbox" value="" defaultChecked={this.state.PrintDataSource.ShipmentFeePaymentMethodID == 0 ? true : false} />Chuyển khoản</label> */}
                                 </p>
                             </div>
                             <div className="f-item" style={{ position: "relative", display: "table-cell", width: "20%", paddingLeft: "0px", textAlign: "center" }}>
