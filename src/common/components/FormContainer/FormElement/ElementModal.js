@@ -766,20 +766,29 @@ class ElementModalComboBoxStoreCom extends Component {
 
     componentDidMount() {
         let listOption = this.props.listoption;
-        let { isautoloaditemfromcache, loaditemcachekeyid, valuemember, nameMember, filterValue, filterobj } = this.props;
+        let { isautoloaditemfromcache, loaditemcachekeyid, valuemember, nameMember, filterValue, filterobj, othername, Othervalue } = this.props;
         if (isautoloaditemfromcache) {
             this.props.callGetCache(loaditemcachekeyid).then((result) => {
                 listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
-                    if (typeof filterobj != undefined) {
+                    if (typeof filterobj != "undefined" && othername != "undefined") {
                         result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valuemember], label:cacheItem[valuemember]+"-"+ cacheItem[nameMember] });
+                            if ( cacheItem[valuemember] != Othervalue) {
+                                listOption.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember] });
+                            }
+
                         }
                         );
                     }
-                    else {
+                    else if (typeof filterobj != "undefined") {
+                        result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
+                            listOption.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember] });
+                        }
+                        );
+
+                    } else {
                         result.ResultObject.CacheData.map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valueMember], label:cacheItem[valuemember]+"-"+ cacheItem[nameMember] });
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember] });
                         }
                         );
                     }
@@ -803,12 +812,24 @@ class ElementModalComboBoxStoreCom extends Component {
 
         if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
         {
-            let { filterobj, valuemember, nameMember } = this.props;
-            if (typeof filterobj != undefined) {
+            let { filterobj, valuemember, nameMember, othername, Othervalue } = this.props;
+            if (typeof filterobj != "undefined" && othername != "undefined") {
                 let listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (typeof nextProps.filterValue != "undefined") {
                     this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
-                        listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember]+"-"+cacheItem[nameMember] });
+                        if ( cacheItem[valuemember] != Othervalue) {
+                            listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember] });
+                        }
+                    }
+                    );
+                }
+                this.setState({ Listoption: listoptionnew });
+            }
+             else if (typeof filterobj != "undefined") {
+                let listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
+                if (typeof nextProps.filterValue != "undefined") {
+                    this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
+                        listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember] });
                     }
                     );
                 }
@@ -822,7 +843,7 @@ class ElementModalComboBoxStoreCom extends Component {
             this.setState({ SelectedOption: aa });
         }
     }
-   
+
 
     render() {
         let { name, label, rowspan, colspan, labelcolspan, validatonList, isMultiSelect, disabled, validationErrorMessage, placeholder, listoption } = this.props;
@@ -885,5 +906,5 @@ class ElementModalComboBoxStoreCom extends Component {
 }
 export const ElementModalComboBoxStore = connect(mapStateToProps, mapDispatchToProps)(ElementModalComboBoxStoreCom);
 
-export default { ElementModalText, ElementModalComboBox, CheckBox, TextArea, ElementModalNumber, ProductComboBox, ElementModalDatetime,ElementModalComboBoxStore };
+export default { ElementModalText, ElementModalComboBox, CheckBox, TextArea, ElementModalNumber, ProductComboBox, ElementModalDatetime, ElementModalComboBoxStore };
 
