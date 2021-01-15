@@ -26,7 +26,6 @@ import { updatePagePath } from "../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import SOPrintTemplate from "../../../../common/components/PrintTemplate/SOPrintTemplate";
-
 import { callGetCache } from "../../../../actions/cacheAction";
 
 class SearchCom extends React.Component {
@@ -36,7 +35,6 @@ class SearchCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleonChangePage = this.handleonChangePage.bind(this);
-
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -268,7 +266,10 @@ class SearchCom extends React.Component {
             //this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
                 this.setState({ dataPrint: apiResult.ResultObject });
-                this.handlePrintClick()
+                setTimeout(() => {
+                    this.handlePrintClick()
+                }, 300);
+               
             }
 
         });
