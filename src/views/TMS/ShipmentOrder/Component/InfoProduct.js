@@ -120,7 +120,7 @@ class InfoProductCom extends Component {
         const postData = [
             {
                 SearchKey: "@SHIPMENTORDERID",
-                SearchValue: this.props.ShipmentOrderID
+                SearchValue: this.props.ShipmentOrderID.Trim()
             }
         ];
 
@@ -143,6 +143,7 @@ class InfoProductCom extends Component {
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                 <thead className="thead-light">
                                     <tr>
+                                       <th className="jsgrid-header-cell">Ngày tạo</th>
                                         <th className="jsgrid-header-cell">Người tạo</th>
                                         <th className="jsgrid-header-cell">Tổng tiền thu hộ cũ</th>
                                         <th className="jsgrid-header-cell">Tổng tiền thu hộ mới</th>
@@ -154,6 +155,7 @@ class InfoProductCom extends Component {
                                         this.state.ShipmentOrder_CodUpdLogLst && this.state.ShipmentOrder_CodUpdLogLst.map((item, index) => {
                                             return (
                                                 <tr key={index}>
+                                                     <td>{formatDate(item.CreatedDate)}</td>
                                                     <td>{item.CreatedUser + "-" + item.CreatedUserFullName}</td>
                                                     <td>{item.OldTotalcod}</td>
                                                     <td>{item.NewTotalcod}</td>
@@ -231,7 +233,7 @@ class InfoProductCom extends Component {
 
                                 </label>
                                 <button className="btn btn-icon-modal" onClick={this.handleShowCodUpdLog.bind(this)}>
-                                    <i className="fa fa-pencil"></i>
+                                    <i className="fa fa-eye"></i>
                                 </button>
                             </div>
                         </div>
