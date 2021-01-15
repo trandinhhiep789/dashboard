@@ -42,20 +42,83 @@ export const InitSearchParams = [
     {
         SearchKey: "@Keyword",
         SearchValue: ""
+    },
+    {
+        SearchKey: "@PartnerID",
+        SearchValue: -1
     }
+   
+];
+
+export const SearchMLObjectDefinition = [
+    {
+        Name: "Keyword",
+        DefaultValue: "",
+        BindControlName: "txtKeyword"
+    },
+    {
+        Name: "PartnerID",
+        DefaultValue: "",
+        BindControlName: "cbPartnerID"
+    },
 ];
 
 export const SearchElementList = [
+
     {
         type: "text",
         name: "txtKeyword",
-        label: "Từ khóa:",
+        DataSourceMember: "Keyword",
+        label: "Từ khóa",
         value: "",
-        placeholder: "",
-        icon: "",
+        colspan: 2,
+        placeholder: "Từ khóa",
+        icon: ""
+    },
+    {
+        type: "ComboBox",
+        name: "cbPartnerID",
+        DataSourceMember: "PartnerID",
+        label: "Nhà cung cấp",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
         listoption: [],
-        validatonList: []
-    }
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
+        ValueMember: "PartnerID",
+        NameMember: "PartnerName"
+
+    },
+
+    // {
+    //     type: "text",
+    //     name: "txtKeyword",
+    //     label: "Từ khóa:",
+    //     value: "",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     validatonList: []
+    // },
+    // {
+    //     type: "multiselect",
+    //     name: "txtPartnerID",
+    //     label: "Nhà cung cấp:",
+    //     value: -1,
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "PartnerID",
+    //     readonly: false,
+    //     validatonList: [],
+    //     isMulti: false,
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
+    //     ValueMember: "PartnerID",
+    //     NameMember: "PartnerName"
+    // },
 ];
 
 export const AddElementList = [
@@ -437,13 +500,7 @@ export const EditElementList = [
     }
 ];
 
-export const SearchMLObjectDefinition = [
-    {
-        Name: "Keyword",
-        DefaultValue: "",
-        BindControlName: "txtKeyword"
-    }
-];
+
 
 export const MLObjectDefinition = [
     {
