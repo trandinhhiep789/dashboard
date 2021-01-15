@@ -1629,7 +1629,7 @@ export const UpdateCoordinatorStoreEdit = [
         valuemember:"StoreID",
         nameMember:"StoreName",
         filterobj:"CompanyID",
-        otherName:"CoordinatorStoreID",
+        othername:"CoordinatorStoreID",
         filterValue:10,
         OrderIndex: 2
     },
