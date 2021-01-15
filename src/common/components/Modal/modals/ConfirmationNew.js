@@ -260,16 +260,16 @@ class ConfirmationNew extends React.Component {
                                     />
                                 );
                             case "Datetime":
-                                    return (
-                                        <ElementModal.ElementModalDatetime
-                                            onValueChange={this.handleInputChange}
-                                            validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
-                                            inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
-                                            {...elementItem}
-                                            value={this.state.FormData[elementItem.name].value}
-                                            key={index}
-                                        />
-                                    );
+                                return (
+                                    <ElementModal.ElementModalDatetime
+                                        onValueChange={this.handleInputChange}
+                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                        {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        key={index}
+                                    />
+                                );
                             case "TextNumber":
                                 let blDisabledt = false
                                 if (typeof elementItem.objrestValue != "undefined") {
@@ -334,17 +334,25 @@ class ConfirmationNew extends React.Component {
                                     />
                                 );
 
-                          case "ComboBoxStore":
-                                    return (
-                                        <ElementModal.ElementModalComboBoxStore
-                                            onValueChange={this.handleInputChange}
-                                            inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
-                                            {...elementItem}
-                                            value={this.state.FormData[elementItem.name].value}
-                                            validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
-                                            key={index}
-                                        />
-                                    );
+                            case "ComboBoxStore":
+
+                                let Othervalue = 0
+                                if (typeof elementItem.othername != "undefined") {
+                                    Othervalue = this.state.FormData[elementItem.othername].value
+                                }
+
+                                return (
+
+                                    <ElementModal.ElementModalComboBoxStore
+                                        onValueChange={this.handleInputChange}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                        {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        Othervalue={Othervalue}
+                                        key={index}
+                                    />
+                                );
                             case "ProductCombo":
                                 let valuename = []
                                 if (this.state.FormData[elementItem.name].value != "" && typeof this.state.FormData[elementItem.name].value != "undefined" && this.state.FormData[elementItem.name].value != -1) {
