@@ -1587,15 +1587,23 @@ export const MLObjectUpdateCoordinatorStore = [
         DefaultValue: "",
         BindControlName: "CoordinatorStoreNewID",
         DataSourceMember: "CoordinatorStoreNewID"
+    },
+    {
+        Name: "CoordinatorNote",
+        DefaultValue: "",
+        BindControlName: "CoordinatorNote",
+        DataSourceMember: "CoordinatorNote"
     }
+
+    
     
 ]
 export const UpdateCoordinatorStoreEdit = [
     {
         name: "CoordinatorStoreID",
-        Type: "ComboBoxEdit",
-        Caption: "Loại cập nhật giờ giao",
-        label: "Loại cập nhật giờ giao",
+        Type: "ComboBoxStore",
+        Caption: "Kho điều phối",
+        label: "Kho điều phối",
         value:-1,
         datasourcemember: "CoordinatorStoreID",
         validatonList:["Comborequired"],
@@ -1605,13 +1613,14 @@ export const UpdateCoordinatorStoreEdit = [
         filterValue:10,
         valuemember:"StoreID",
         nameMember:"StoreName",
+        Disabled:true,
         OrderIndex: 1
     },
     {
         name: "CoordinatorStoreNewID",
-        Type: "ComboBoxEdit",
-        Caption: "Loại cập nhật giờ giao",
-        label: "Loại cập nhật giờ giao",
+        Type: "ComboBoxStore",
+        Caption: "Kho cần chuyển",
+        label: "Kho cần chuyển",
         value:-1,
         datasourcemember: "CoordinatorStoreNewID",
         validatonList:["Comborequired"],
@@ -1620,9 +1629,22 @@ export const UpdateCoordinatorStoreEdit = [
         valuemember:"StoreID",
         nameMember:"StoreName",
         filterobj:"CompanyID",
+        otherName:"CoordinatorStoreID",
         filterValue:10,
         OrderIndex: 2
     },
+    {
+        name: "CoordinatorNote",
+        Type: "TextArea",
+        label:"Nội dung điều phối",
+        Caption: "Nội dung điều phối",
+        datasourcemember: "CoordinatorNote",
+        OrderIndex:5,
+        Colmd:12,
+        hideInput: false,
+        labelcolspan:2,
+        colspan:10
+    }
    
 ];
 

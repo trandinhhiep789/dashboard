@@ -720,5 +720,170 @@ class ElementModalDatetimeCom extends Component {
 const ElementModalDatetime = connect(null, null)(ElementModalDatetimeCom);
 
 
-export default { ElementModalText, ElementModalComboBox, CheckBox, TextArea, ElementModalNumber, ProductComboBox, ElementModalDatetime };
+class ElementModalComboBoxStoreCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.state = { Listoption: [], SelectedOption: [] }
+    }
+    handleValueChange(selectedOption) {
+        const comboValues = this.getComboValue(selectedOption);
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.label : "", this.props.filterrest, this.props.filterrestValue);
+    }
+
+    bindcombox(value, listOption) {
+        let values = value;
+        let selectedOption = [];
+        if (values == null || values === -1)
+            return { value: -1, label: "--Vui lòng chọn--" };
+        if (typeof values.toString() == "string")
+            values = values.toString().split(",");
+        for (let i = 0; i < values.length; i++) {
+            for (let j = 0; j < listOption.length; j++) {
+                if (values[i] == listOption[j].value) {
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
+                }
+            }
+        }
+        return selectedOption;
+    }
+    getComboValue(selectedOption) {
+        let values = [];
+        if (selectedOption == null)
+            return -1;
+        if (this.props.isMultiSelect) {
+            for (let i = 0; i < selectedOption.length; i++) {
+                values.push(selectedOption[i].value);
+            }
+        } else {
+            return selectedOption.value;
+        }
+
+        return values;
+    }
+    //#endregion tree category
+
+    componentDidMount() {
+        let listOption = this.props.listoption;
+        let { isautoloaditemfromcache, loaditemcachekeyid, valuemember, nameMember, filterValue, filterobj } = this.props;
+        if (isautoloaditemfromcache) {
+            this.props.callGetCache(loaditemcachekeyid).then((result) => {
+                listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    if (typeof filterobj != undefined) {
+                        result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
+                            listOption.push({ value: cacheItem[valuemember], label:cacheItem[valuemember]+"-"+ cacheItem[nameMember] });
+                        }
+                        );
+                    }
+                    else {
+                        result.ResultObject.CacheData.map((cacheItem) => {
+                            listOption.push({ value: cacheItem[valueMember], label:cacheItem[valuemember]+"-"+ cacheItem[nameMember] });
+                        }
+                        );
+                    }
+                    //console.log("componentDidMount",loaditemcachekeyid,result.ResultObject.CacheData)
+                    this.setState({ Listoption: listOption, Data: result.ResultObject.CacheData });
+                    const strSelectedOption = this.bindcombox(this.props.value, listOption);
+                    this.setState({ SelectedOption: strSelectedOption });
+                }
+                else {
+                    this.setState({ Listoption: listOption });
+                }
+            });
+        }
+        else {
+            this.setState({ Listoption: listOption });
+            const strSelectedOption = this.bindcombox(this.props.value, listOption);
+            this.setState({ SelectedOption: strSelectedOption });
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+
+        if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            let { filterobj, valuemember, nameMember } = this.props;
+            if (typeof filterobj != undefined) {
+                let listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
+                if (typeof nextProps.filterValue != "undefined") {
+                    this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
+                        listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember]+"-"+cacheItem[nameMember] });
+                    }
+                    );
+                }
+                this.setState({ Listoption: listoptionnew });
+            }
+
+        }
+
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
+            const aa = this.bindcombox(nextProps.value, this.state.Listoption);
+            this.setState({ SelectedOption: aa });
+        }
+    }
+   
+
+    render() {
+        let { name, label, rowspan, colspan, labelcolspan, validatonList, isMultiSelect, disabled, validationErrorMessage, placeholder, listoption } = this.props;
+
+        let classNamecolmd = "col-md-6";
+        if (this.props.Colmd != null)
+            classNamecolmd = "col-md-" + this.props.Colmd;
+
+        let formRowClassName = "form-row";
+        if (rowspan != null) {
+            formRowClassName = "form-row col-md-" + rowspan;
+        }
+
+        let formGroupClassName = "form-group col-md-8";
+        if (colspan != null) {
+            formGroupClassName = "form-group col-md-" + colspan;
+        }
+        let labelDivClassName = "form-group col-md-4";
+        if (labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + labelcolspan;
+        }
+        let star;
+        if (validatonList != undefined && validatonList.includes("Comborequired") == true) {
+            star = '*'
+        }
+        let className = "react-select";
+        if (validationErrorMessage != undefined && validationErrorMessage != "") {
+            className += " is-invalid";
+        }
+        const selectedOption = this.state.SelectedOption;
+        const listOption = this.state.Listoption;
+        return (
+            <div className={classNamecolmd}>
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 6">
+                            {label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+                    <div className={formGroupClassName}>
+                        <Select
+                            value={selectedOption}
+                            name={name}
+                            ref={this.props.inputRef}
+                            onChange={this.handleValueChange}
+                            options={listOption}
+                            isDisabled={this.props.Disabled}
+                            isMulti={isMultiSelect}
+                            isSearchable={true}
+                            placeholder={placeholder}
+                            className={className}
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{validationErrorMessage}</li></ul></div>
+                    </div>
+                </div>
+            </div>
+
+        );
+    }
+}
+export const ElementModalComboBoxStore = connect(mapStateToProps, mapDispatchToProps)(ElementModalComboBoxStoreCom);
+
+export default { ElementModalText, ElementModalComboBox, CheckBox, TextArea, ElementModalNumber, ProductComboBox, ElementModalDatetime,ElementModalComboBoxStore };
 
