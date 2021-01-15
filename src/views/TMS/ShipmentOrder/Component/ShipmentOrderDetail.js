@@ -12,7 +12,7 @@ import FormControl from "../../../../common/components/FormContainer/FormControl
 import Collapsible from 'react-collapsible';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { ExportStringDate } from "../../../../common/library/ultils";
-import { MODAL_TYPE_CONFIRMATIONNEW } from '../../../../constants/actionTypes';
+import { MODAL_TYPE_CONFIRMATIONNEW,MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import ReactTooltip from 'react-tooltip';
 import {
     APIHostName,
@@ -34,7 +34,8 @@ class ShipmentOrderDetailCom extends Component {
             IsUpdateDate: false,
             IsDisable: true,
             IsExpectedDeliveryDate: false,
-            dtExpectedDeliveryDate: this.props.ShipmentOrderDetail.ExpectedDeliveryDate
+            dtExpectedDeliveryDate: this.props.ShipmentOrderDetail.ExpectedDeliveryDate,
+            ShipmentOrder_DLDateLogItemList:[]
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -391,6 +392,65 @@ class ShipmentOrderDetailCom extends Component {
         }
     }
 
+    handleShowDataExpectedDelivery() {
+        const postData = [
+            {
+                SearchKey: "@SHIPMENTORDERID",
+                SearchValue: this.state.ShipmentOrder.ShipmentOrderID.Trim()
+            }
+        ];
+
+        this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_CodUpdLog/SearchBYSHIPID', postData).then((apiResult) => {
+            if (!apiResult.IsError) {
+                this.setState({ ShipmentOrder_DLDateLogItemList: apiResult.ResultObject }, () => {
+                    this.showModalExpectedDeliveryLog();
+                });
+            }
+        });
+    }
+
+    showModalExpectedDeliveryLog() {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Lịch sử  thay đổi thời gian giao',
+            content: {
+                text:
+                    <div className="col-lg-12">
+                        <div className="table-responsive mt-3">
+                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                <thead className="thead-light">
+                                    <tr>
+                                       <th className="jsgrid-header-cell">Người thay đổi</th>
+                                        <th className="jsgrid-header-cell">Ngày thay đổi</th>
+                                        <th className="jsgrid-header-cell">Thời gian chuyển đổi</th>
+                                        <th className="jsgrid-header-cell">Lý do thay đổi</th>
+                                        <th className="jsgrid-header-cell">nội dung </th>
+                                     
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        this.state.ShipmentOrder_DLDateLogItemList && this.state.ShipmentOrder_DLDateLogItemList.map((item, index) => {
+                                            return (
+                                                <tr key={index}>
+                                                     <td>{item.CreatedUser + "-" + item.CreatedUserFullName}</td>
+                                                     <td>{formatDate(item.CreatedDate)}</td>
+                                                     <td>{formatDate(item.OldExpectedDeliveryDate)+" => "+formatDate(item.NewExpectedDeliveryDate)}</td>
+                                                    <td>{item.DeliverydateUpdateReasonName}</td>
+                                                    <td>{item.DeliverydateUpdateReasonNote}</td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            },
+            maxWidth: '1000px'
+        });
+    }
+
+
     render() {
         let strShipmentOrderStepName = "";
         let IsMustCompleteCollection = false;
@@ -493,7 +553,7 @@ class ShipmentOrderDetailCom extends Component {
                                             <button className="btn btn-update-submit" type="button" onClick={() => this.handleUpdateExpectedDelivery()}>
                                                 <i className="ti ti-pencil-alt"></i>
                                             </button>
-                                            <button className="btn btn-update-submit" type="button" onClick={() => this.handleUpdateExpectedDelivery()}>
+                                            <button className="btn btn-round btn-secondary" type="button" onClick={() => this.handleShowDataExpectedDelivery()}>
                                                 <i className="fa fa-eye"></i>
                                             </button>
                                         </div>
