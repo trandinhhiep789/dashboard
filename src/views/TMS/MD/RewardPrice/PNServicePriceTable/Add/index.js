@@ -16,9 +16,9 @@ import {
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { WORKINGSHIFT_ADD, REWARDPRICETABLE_ADD } from "../../../../../../constants/functionLists";
+import { TMS_PNSERVICEPRICETABLE_ADD } from "../../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
-import { ERPCOMMONCACHE_CARRIERTYPE, ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_REWARDPRICETYPE } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_SERVICESEASONTYPE, ERPCOMMONCACHE_AREATT } from "../../../../../../constants/keyCache";
 
 
 class AddCom extends React.Component {
@@ -65,12 +65,9 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        MLObject.AreaID = MLObject.AreaID != "" ? MLObject.AreaID : -1
-        MLObject.CarrierTypeID = MLObject.CarrierTypeID != "" ? MLObject.CarrierTypeID : -1
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-
         });
     }
 
@@ -125,14 +122,14 @@ class AddCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                     // onchange={this.handleChange.bind(this)}
-                    RequirePermission={REWARDPRICETABLE_ADD}
+                    RequirePermission={TMS_PNSERVICEPRICETABLE_ADD}
                 >
 
                     <div className="row">
 
                         <div className="col-md-6">
                             <FormControl.TextBox
-                                name="txtRewardPriceTableName"
+                                name="txtpnServicePriceTableName"
                                 colspan="8"
                                 labelcolspan="4"
                                 readOnly={false}
@@ -140,55 +137,37 @@ class AddCom extends React.Component {
                                 placeholder="Tên đơn giá thưởng"
                                 controltype="InputControl"
                                 value=""
-                                datasourcemember="RewardPriceTableName"
+                                datasourcemember="pnServicePriceTableName"
                                 validatonList={['required']}
                             />
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
-                                name="cbRewardPriceTypeID"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="loại đơn giá thưởng"
+                            <FormControl.FormControlComboBox
+                                name="cbServiceSeasonTypeID"
+                                colspan="9"
+                                labelcolspan="3"
+                                label="loại mùa vụ"
+                                //disabled={IsSystem}
                                 validatonList={["Comborequired"]}
                                 isautoloaditemfromcache={true}
-                                placeholder="-- Vui lòng chọn --"
-                                loaditemcachekeyid={ERPCOMMONCACHE_REWARDPRICETYPE} //"ERPCOMMONCACHE.CARRIERTYPE"
-                                valuemember="RewardPriceTypeID"
-                                nameMember="RewardPriceTypeName"
+                                loaditemcachekeyid={ERPCOMMONCACHE_SERVICESEASONTYPE} //"ERPCOMMONCACHE.SERVICESEASONTYPE"
+                                valuemember="ServiceSeasonTypeID"
+                                nameMember="ServiceSeasonTypeName"
                                 controltype="InputControl"
-                                value={""}
-                                listoption={null}
-                                datasourcemember="CarrierTypeID" />
+                                value={-1}
+                                listoption={[]}
+                                datasourcemember="ServiceSeasonTypeID"
+                            />
                         </div>
 
                         <div className="col-md-6">
                             <FormControl.ComboBoxSelect
-                                name="cbCarrierTypeID"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="loại phương tiện"
-                                // validatonList={[""]}
-                                isautoloaditemfromcache={true}
-                                placeholder="-- Vui lòng chọn --"
-                                loaditemcachekeyid={ERPCOMMONCACHE_CARRIERTYPE} //"ERPCOMMONCACHE.CARRIERTYPE"
-                                valuemember="CarrierTypeID"
-                                nameMember="CarrierTypeName"
-                                controltype="InputControl"
-                                value={""}
-                                listoption={null}
-                                datasourcemember="CarrierTypeID" />
-                        </div>
-
-
-                        <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
-                                name="cbAreaID"
+                                name="cbServiceAreaID"
                                 colspan="8"
                                 labelcolspan="4"
                                 label="khu vực"
-                                // validatonList={[""]}
+                                validatonList={["Comborequired"]}
                                 isautoloaditemfromcache={true}
                                 placeholder="-- Vui lòng chọn --"
                                 loaditemcachekeyid={ERPCOMMONCACHE_AREATT} //"ERPCOMMONCACHE.AREATT"
@@ -197,22 +176,7 @@ class AddCom extends React.Component {
                                 controltype="InputControl"
                                 value={""}
                                 listoption={null}
-                                datasourcemember="AreaID" />
-
-                        </div>
-
-                        <div className="col-md-6">
-                            <FormControl.CheckBox
-                                name="chkIsDefault"
-                                colspan="8"
-                                labelcolspan="4"
-                                readOnly={false}
-                                label="Mặc định"
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="IsDefault"
-                                classNameCustom="customCheckbox"
-                            />
+                                datasourcemember="ServiceAreaID" />
                         </div>
 
                         <div className="col-md-12">

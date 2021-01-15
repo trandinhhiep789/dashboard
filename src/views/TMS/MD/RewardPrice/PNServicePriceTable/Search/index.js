@@ -19,7 +19,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { WORKINGSHIFT_VIEW, WORKINGSHIFT_DELETE, REWARDPRICETABLE_VIEW, REWARDPRICETABLE_DELETE } from "../../../../../../constants/functionLists";
+import { TMS_PNSERVICEPRICETABLE_VIEW, TMS_PNSERVICEPRICETABLE_DELETE } from "../../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
@@ -46,6 +46,17 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
+        // this.testRewardMobi()
+    }
+
+    testRewardMobi() {
+        const searchData = {
+            ShipmentOrderID: "201030000000085 ",
+            UserName: "1125"
+        }
+        this.props.callFetchAPI(APIHostName, "api/TMSRewardDetail/LoadByUserNameAndSOMobi", searchData).then(apiResult => {
+            console.log('testRewardMobi', apiResult)
+        });
     }
 
 
@@ -81,10 +92,16 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log('â', apiResult)
             if (!apiResult.IsError) {
+                const temp = apiResult.ResultObject.map((item, index) => {
+                    item.FullServiceArea = item.ServiceAreaID + " - " + item.AreaName;
+                    item.FullServiceSeasonType = item.ServiceSeasonTypeID + " - " + item.ServiceSeasonTypeName;
+                    item.CreateFullName = item.CreatedUser + " - " + item.FullName;
+                    return item;
+                })
+
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource: temp,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true,
                 });
@@ -149,47 +166,33 @@ class SearchCom extends React.Component {
     }
 
     render() {
-        if (this.state.IsLoadDataComplete) {
-            return (
+        return (
 
-                <React.Fragment>
-                    <ReactNotification ref={this.notificationDOMRef} />
-                    <SearchForm
-                        FormName="Tìm kiếm danh sách đơn giá thưởng giao hàng và lắp đặt"
-                        MLObjectDefinition={SearchMLObjectDefinition}
-                        listelement={SearchElementList}
-                        onSubmit={this.handleSearchSubmit}
-                        ref={this.searchref}
-                    />
-                    <DataGrid
-                        listColumn={DataGridColumnList}
-                        dataSource={this.state.gridDataSource}
-                        AddLink={AddLink}
-                        IDSelectColumnName={IDSelectColumnName}
-                        PKColumnName={PKColumnName}
-                        onDeleteClick={this.handleDelete}
-                        ref={this.gridref}
-                        RequirePermission={REWARDPRICETABLE_VIEW}
-                        DeletePermission={REWARDPRICETABLE_DELETE}
-                        IsAutoPaging={true}
-                        RowsPerPage={10}
-                    />
-                </React.Fragment>
-            );
-        }
-        else {
-            return (
-                <React.Fragment>
-                    <SearchForm
-                        FormName="Tìm kiếm danh sách đơn giá thưởng giao hàng và lắp đặt"
-                        MLObjectDefinition={SearchMLObjectDefinition}
-                        listelement={SearchElementList}
-                        onSubmit={this.handleSearchSubmit}
-                        ref={this.searchref}
-                    />
-                </React.Fragment>
-            );
-        }
+            <React.Fragment>
+                <ReactNotification ref={this.notificationDOMRef} />
+                <SearchForm
+                    FormName="Tìm kiếm danh sách đơn giá thưởng giao hàng và lắp đặt đối tác"
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    listelement={SearchElementList}
+                    onSubmit={this.handleSearchSubmit}
+                    ref={this.searchref}
+                />
+                <DataGrid
+                    listColumn={DataGridColumnList}
+                    dataSource={this.state.gridDataSource}
+                    AddLink={AddLink}
+                    IDSelectColumnName={IDSelectColumnName}
+                    PKColumnName={PKColumnName}
+                    onDeleteClick={this.handleDelete}
+                    ref={this.gridref}
+                    RequirePermission={TMS_PNSERVICEPRICETABLE_VIEW}
+                    DeletePermission={TMS_PNSERVICEPRICETABLE_DELETE}
+                    IsAutoPaging={true}
+                    RowsPerPage={10}
+                />
+            </React.Fragment>
+        );
+
     }
 }
 

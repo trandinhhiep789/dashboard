@@ -18,9 +18,9 @@ import {
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { WORKINGSHIFT_ADD, REWARDPRICETABLE_ADD, REWARDPRICETABLE_UPDATE } from "../../../../../../constants/functionLists";
+import { TMS_PNSERVICEPRICETABLE_UPDATE } from "../../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
-import { ERPCOMMONCACHE_CARRIERTYPE, ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_REWARDPRICETYPE } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_SERVICESEASONTYPE, ERPCOMMONCACHE_AREATT } from "../../../../../../constants/keyCache";
 
 
 class EditCom extends React.Component {
@@ -55,6 +55,7 @@ class EditCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            console.log("sss",apiResult )
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -89,9 +90,7 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        MLObject.RewardPriceTableID = this.props.match.params.id;
-        MLObject.AreaID = MLObject.AreaID != "" ? MLObject.AreaID : -1
-        MLObject.CarrierTypeID = MLObject.CarrierTypeID != "" ? MLObject.CarrierTypeID : -1
+        MLObject.pnServicePriceTableID = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -151,14 +150,29 @@ class EditCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                     // onchange={this.handleChange.bind(this)}
-                    RequirePermission={REWARDPRICETABLE_UPDATE}
+                    RequirePermission={TMS_PNSERVICEPRICETABLE_UPDATE}
                 >
 
                     <div className="row">
+                        <div className="col-md-6">
+                            <FormControl.TextBox
+                                name="txtpnServicePriceTableID"
+                                colspan="8"
+                                labelcolspan="4"
+                                readOnly={true}
+                                hidenControll={true}
+                                label="mã bảng đơn giá thưởng"
+                                placeholder="Mã bảng đơn giá thưởng"
+                                controltype="InputControl"
+                                value=""
+                                datasourcemember="pnServicePriceTableID"
+                                validatonList={['required']}
+                            />
+                        </div>
 
                         <div className="col-md-6">
                             <FormControl.TextBox
-                                name="txtRewardPriceTableName"
+                                name="txtpnServicePriceTableName"
                                 colspan="8"
                                 labelcolspan="4"
                                 disabled={this.state.IsSystem}
@@ -167,59 +181,38 @@ class EditCom extends React.Component {
                                 placeholder="Tên bảng đơn giá thưởng"
                                 controltype="InputControl"
                                 value=""
-                                datasourcemember="RewardPriceTableName"
+                                datasourcemember="pnServicePriceTableName"
                                 validatonList={['required']}
                             />
                         </div>
 
                         <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
-                                name="cbRewardPriceTypeID"
+                            <FormControl.FormControlComboBox
+                                name="cbServiceSeasonTypeID"
                                 colspan="8"
                                 labelcolspan="4"
-                                label="loại đơn giá thưởng"
+                                label="loại mùa vụ"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 validatonList={["Comborequired"]}
                                 isautoloaditemfromcache={true}
-                                placeholder="-- Vui lòng chọn --"
-                                loaditemcachekeyid={ERPCOMMONCACHE_REWARDPRICETYPE} //"ERPCOMMONCACHE.CARRIERTYPE"
-                                valuemember="RewardPriceTypeID"
-                                nameMember="RewardPriceTypeName"
+                                loaditemcachekeyid={ERPCOMMONCACHE_SERVICESEASONTYPE} //"ERPCOMMONCACHE.SERVICESEASONTYPE"
+                                valuemember="ServiceSeasonTypeID"
+                                nameMember="ServiceSeasonTypeName"
                                 controltype="InputControl"
-                                value={""}
-                                listoption={null}
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                datasourcemember="RewardPriceTypeID" />
+                                value={-1}
+                                listoption={[]}
+                                datasourcemember="ServiceSeasonTypeID"
+                            />
                         </div>
 
                         <div className="col-md-6">
                             <FormControl.ComboBoxSelect
-                                name="cbCarrierTypeID"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="loại phương tiện"
-                                // validatonList={["Comborequired"]}
-                                isautoloaditemfromcache={true}
-                                placeholder="-- Vui lòng chọn --"
-                                loaditemcachekeyid={ERPCOMMONCACHE_CARRIERTYPE} //"ERPCOMMONCACHE.CARRIERTYPE"
-                                valuemember="CarrierTypeID"
-                                nameMember="CarrierTypeName"
-                                controltype="InputControl"
-                                value={""}
-                                listoption={null}
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                datasourcemember="CarrierTypeID" />
-                        </div>
-
-
-                        <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
-                                name="cbAreaID"
+                                name="cbServiceAreaID"
                                 colspan="8"
                                 labelcolspan="4"
                                 label="khu vực"
-                                // validatonList={["Comborequired"]}
+                                validatonList={["Comborequired"]}
                                 isautoloaditemfromcache={true}
                                 placeholder="-- Vui lòng chọn --"
                                 loaditemcachekeyid={ERPCOMMONCACHE_AREATT} //"ERPCOMMONCACHE.AREATT"
@@ -228,25 +221,7 @@ class EditCom extends React.Component {
                                 controltype="InputControl"
                                 value={""}
                                 listoption={null}
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                datasourcemember="AreaID" />
-
-                        </div>
-
-                        <div className="col-md-6">
-                            <FormControl.CheckBox
-                                name="chkIsDefault"
-                                colspan="8"
-                                labelcolspan="4"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                label="Mặc định"
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="IsDefault"
-                                classNameCustom="customCheckbox"
-                            />
+                                datasourcemember="ServiceAreaID" />
                         </div>
 
                         <div className="col-md-12">

@@ -1,49 +1,43 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/RewardPriceTable/Search";
-export const LoadAPIPath = "api/RewardPriceTable/Load";
-export const LoadNewAPIPath = "api/RewardPriceTable/LoadNew";
-export const AddAPIPath = "api/RewardPriceTable/Add";
-export const UpdateAPIPath = "api/RewardPriceTable/Update";
-export const DeleteAPIPath = "api/RewardPriceTable/DeleteList";
-export const BackLink = "/RewardPriceTable";
-export const AddLink = "/RewardPriceTable/Add";
+export const SearchAPIPath = "api/pnServicePriceTable/Search";
+export const LoadAPIPath = "api/pnServicePriceTable/Load";
+export const LoadNewAPIPath = "api/pnServicePriceTable/LoadNew";
+export const AddAPIPath = "api/pnServicePriceTable/Add";
+export const UpdateAPIPath = "api/pnServicePriceTable/Update";
+export const DeleteAPIPath = "api/pnServicePriceTable/DeleteList";
+export const BackLink = "/PNServicePriceTable";
+export const AddLink = "/PNServicePriceTable/Add";
 export const AddLogAPIPath = "api/RewardPriceTable/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "RewardPriceTableID";
+export const PKColumnName = "pnServicePriceTableID";
 
-export const EditAPIRPTDetailPath = "api/RewardPriceTableDetail/Update";
-export const AddAPIRPTDetailPath = "api/RewardPriceTableDetail/Add";
-export const DeleteAPIRPTDetailPath = "api/RewardPriceTableDetail/Delete";
+export const EditAPIRPTDetailPath = "api/PNServicePriceTableDetail/Update";
+export const AddAPIRPTDetailPath = "api/PNServicePriceTableDetail/Add";
+export const DeleteAPIRPTDetailPath = "api/PNServicePriceTableDetail/Delete";
 
-export const EditAPIRPTExceptionPath = "api/RewardPriceTable_Exception/Update";
-export const AddAPIRPTExceptionPath = "api/RewardPriceTable_Exception/Add";
-export const DeleteAPIRPTExceptionPath = "api/RewardPriceTable_Exception/Delete";
-
-export const TitleFormDetail = "Thông tin đơn giá thưởng giao hàng và lắp đặt";
-export const TitleFromRPTDetail = "Chi tiết thông tin đơn giá thưởng giao hàng và lắp đặt";
-export const TitleFromRPTException = "Chi tiết thông tin đơn giá thưởng ngoại lệ";
-
+export const TitleFormDetail = "Thông tin đơn giá thưởng giao hàng và lắp đặt đối tác";
+export const TitleFromRPTDetail = "Chi tiết bảng giá dịch vụ của đối tác";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách đơn giá thưởng giao hàng và lắp đặt" }
+    { Link: "", Title: "Danh sách đơn giá thưởng giao hàng và lắp đặt đối tác" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/RewardPriceTable", Title: "Danh sách đơn giá thưởng giao hàng và lắp đặt" },
+    { Link: "/PNServicePriceTable", Title: "Danh sách đơn giá thưởng giao hàng và lắp đặt đối tác" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/RewardPriceTable", Title: "Danh sách đơn giá thưởng giao hàng và lắp đặt" },
+    { Link: "/PNServicePriceTable", Title: "Danh sách đơn giá thưởng giao hàng và lắp đặt đối tác" },
     { Link: "", Title: "Thêm" }
 ];
 
 export const DetailPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/RewardPriceTable", Title: "Danh sách đơn giá thưởng giao hàng và lắp đặt" },
+    { Link: "/PNServicePriceTable", Title: "Danh sách đơn giá thưởng giao hàng và lắp đặt đối tác" },
     { Link: "", Title: "Chi tiết" }
 ];
 
@@ -68,7 +62,6 @@ export const SearchElementList = [
     }
 ];
 
-
 export const InitSearchParams = [
     {
         SearchKey: "@Keyword",
@@ -81,52 +74,46 @@ export const DataGridColumnList=[
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "RewardPriceTableID",
+        DataSourceMember: "pnServicePriceTableID",
         Width: 60
     },
     {
-        Name: "RewardPriceTableID",
+        Name: "pnServicePriceTableID",
         Type: "texttolink",
         Caption: "Tên đơn giá",
-        DataSourceMember: "RewardPriceTableName",
-        Link: "/RewardPriceTable/Detail/",
+        DataSourceMember: "pnServicePriceTableName",
+        Link: "/PNServicePriceTable/Detail/",
         Width: 250
     },
     {
-        Name: "RewardPriceTypeName",
+        Name: "FullServiceSeasonType",
         Type: "text",
-        Caption: "Loại đơn giá",
-        DataSourceMember: "RewardPriceTypeName",
+        Caption: "Mùa vụ",
+        DataSourceMember: "FullServiceSeasonType",
         Width: 250
     },
     {
-        Name: "AreaName",
+        Name: "FullServiceArea",
         Type: "text",
         Caption: "Khu vực áp dụng",
-        DataSourceMember: "AreaName",
+        DataSourceMember: "FullServiceArea",
         Width: 200
     },
+   
     {
-        Name: "CarrierTypeName",
-        Type: "text",
-        Caption: "Loại phương tiện",
-        DataSourceMember: "CarrierTypeName",
-        Width: 120
-    },
-    {
-        Name: "FullName",
+        Name: "CreateFullName",
         Type: "text",
         Caption: "Người tạo",
-        DataSourceMember: "FullName",
+        DataSourceMember: "CreateFullName",
         Width: 120
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "RewardPriceTableID",
+        DataSourceMember: "pnServicePriceTableID",
         Width: 100,
-        Link: "/RewardPriceTable/Edit/",
+        Link: "/PNServicePriceTable/Edit/",
         LinkText: "Chỉnh sửa"
     },
 ]
@@ -134,36 +121,29 @@ export const DataGridColumnList=[
 
 export const MLObjectDefinition = [
     {
-        Name: "RewardPriceTableID",
+        Name: "pnServicePriceTableID",
         DefaultValue: {},
-        BindControlName: "txtRewardPriceTableID",
-        DataSourceMember: "RewardPriceTableID"
+        BindControlName: "txtpnServicePriceTableID",
+        DataSourceMember: "pnServicePriceTableID"
     },
     {
-        Name: "RewardPriceTableName",
+        Name: "pnServicePriceTableName",
         DefaultValue: {},
-        BindControlName: "txtRewardPriceTableName",
-        DataSourceMember: "RewardPriceTableName"
+        BindControlName: "txtpnServicePriceTableName",
+        DataSourceMember: "pnServicePriceTableName"
     },
     {
-        Name: "RewardPriceTypeID",
+        Name: "ServiceSeasonTypeID",
         DefaultValue: {},
-        BindControlName: "cbRewardPriceTypeID",
-        DataSourceMember: "RewardPriceTypeID"
+        BindControlName: "cbServiceSeasonTypeID",
+        DataSourceMember: "ServiceSeasonTypeID"
     },
     {
-        Name: "CarrierTypeID",
+        Name: "ServiceAreaID",
         DefaultValue: {},
-        BindControlName: "cbCarrierTypeID",
-        DataSourceMember: "CarrierTypeID"
+        BindControlName: "cbServiceAreaID",
+        DataSourceMember: "ServiceAreaID"
     },
-    {
-        Name: "AreaID",
-        DefaultValue: {},
-        BindControlName: "cbAreaID",
-        DataSourceMember: "AreaID"
-    },
-
     {
         Name: "Description",
         DefaultValue: {},
@@ -181,17 +161,19 @@ export const MLObjectDefinition = [
         DefaultValue: false,
         BindControlName: "chkIsSystem",
         DataSourceMember: "IsSystem"
-    },
-    {
-        Name: "IsDefault",
-        DefaultValue: false,
-        BindControlName: "chkIsDefault",
-        DataSourceMember: "IsDefault"
-    },
+    }
+   
 
 ]
 
 export const DataGridColumnItemListRPTDetail = [
+    {
+        Name: "MainGroupName",
+        Type: "text",
+        Caption: "Nghành hàng",
+        DataSourceMember: "MainGroupName",
+        Width: 100
+    },
     {
         Name: "SubGroupName",
         Type: "text",
@@ -243,20 +225,12 @@ export const DataGridColumnItemListRPTDetail = [
         Width: 100
     },
     {
-        Name: "RewardPrice",
+        Name: "ServicePrice",
         Type: "textCurrency",
-        Caption: "Giá",
-        DataSourceMember: "RewardPrice",
+        Caption: "Giá dịch vụ",
+        DataSourceMember: "ServicePrice",
         Width: 100
     },
-    {
-        Name: "RewardPriceWithoutInstall",
-        Type: "textCurrency",
-        Caption: "Giá không lắp đặt",
-        DataSourceMember: "RewardPriceWithoutInstall",
-        Width: 100
-    },
-
     {
         Name: "Action",
         Type: "editnew",
@@ -268,7 +242,18 @@ export const DataGridColumnItemListRPTDetail = [
 ]
 
 export const MLObjectRPTDetailItem= [
-
+    {
+        Name: "pnServicePriceTableDetailID",
+        DefaultValue: {},
+        BindControlName: "txtpnServicePriceTableDetailID",
+        DataSourceMember: "pnServicePriceTableDetailID"
+    },
+    {
+        Name: "MainGroupID",
+        DefaultValue: {},
+        BindControlName: "cbMainGroup",
+        DataSourceMember: "MainGroupID"
+    },
     {
         Name: "SubGroupID",
         DefaultValue: {},
@@ -318,128 +303,12 @@ export const MLObjectRPTDetailItem= [
     },
 
     {
-        Name: "RewardPrice",
+        Name: "ServicePrice",
         DefaultValue: {},
-        BindControlName: "txtRewardPrice",
-        DataSourceMember: "RewardPrice"
-    },
-    {
-        Name: "RewardPriceWithoutInstall",
-        DefaultValue: {},
-        BindControlName: "txtRewardPriceWithoutInstall",
-        DataSourceMember: "RewardPriceWithoutInstall"
-    },
-    {
-        Name: "IsSystem",
-        DefaultValue: false,
-        BindControlName: "ckIsSystem",
-        DataSourceMember: "IsSystem"
-    },
-]
-
-
-export const DataGridColumnItemListRPTException = [
-    {
-        Name: "MainGroupName",
-        Type: "text",
-        Caption: "Ngành hàng",
-        DataSourceMember: "MainGroupName",
-        Width: 100
-    },
-    {
-        Name: "SubGroupName",
-        Type: "text",
-        Caption: "Nhóm hàng",
-        DataSourceMember: "SubGroupName",
-        Width: 100
-    },
-   
-    {
-        Name: "FromQuantity",
-        Type: "textNumber",
-        Caption: "Số lượng từ",
-        DataSourceMember: "FromQuantity",
-        Width: 100
-    },
-    {
-        Name: "ToQuantity",
-        Type: "textNumber",
-        Caption: "Số lượng đến",
-        DataSourceMember: "ToQuantity",
-        Width: 100
-    },
-    {
-        Name: "RewardPrice",
-        Type: "textCurrency",
-        Caption: "Giá",
-        DataSourceMember: "RewardPrice",
-        Width: 100
-    },
-    {
-        Name: "RewardPriceWithoutInstall",
-        Type: "textCurrency",
-        Caption: "Giá không lắp đặt",
-        DataSourceMember: "RewardPriceWithoutInstall",
-        Width: 100
+        BindControlName: "txtServicePrice",
+        DataSourceMember: "ServicePrice"
     },
 
-    {
-        Name: "Action",
-        Type: "editnew",
-        Caption: "Tác vụ",
-        DataSourceMember: "",
-        Width: 70,
-    }
-    
-]
-
-export const MLObjectRPTExceptionItem= [
-    {
-        Name: "RewardPriceTableExceptionID",
-        DefaultValue: {},
-        BindControlName: "txtRewardPriceTableExceptionID",
-        DataSourceMember: "RewardPriceTableExceptionID"
-    },
-    
-    {
-        Name: "MainGroupID",
-        DefaultValue: {},
-        BindControlName: "cbMainGroupID",
-        DataSourceMember: "MainGroupID"
-    },
-    {
-        Name: "SubGroupID",
-        DefaultValue: {},
-        BindControlName: "cbSubGroup",
-        DataSourceMember: "SubGroupID"
-    },
-   
-    {
-        Name: "FromQuantity",
-        DefaultValue: {},
-        BindControlName: "txtFromQuantity",
-        DataSourceMember: "FromQuantity"
-    },
-    
-    {
-        Name: "ToQuantity",
-        DefaultValue: {},
-        BindControlName: "txtToQuantity",
-        DataSourceMember: "ToQuantity"
-    },
-
-    {
-        Name: "RewardPrice",
-        DefaultValue: {},
-        BindControlName: "txtRewardPrice",
-        DataSourceMember: "RewardPrice"
-    },
-    {
-        Name: "RewardPriceWithoutInstall",
-        DefaultValue: {},
-        BindControlName: "txtRewardPriceWithoutInstall",
-        DataSourceMember: "RewardPriceWithoutInstall"
-    },
     {
         Name: "IsSystem",
         DefaultValue: false,
