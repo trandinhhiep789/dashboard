@@ -546,6 +546,7 @@ class InfoCoordinatorCom extends Component {
                     this.addNotification(apiResult.Message, apiResult.IsError);
                     if (!apiResult.IsError) {
                         this.props.hideModal();
+                        setTimeout(() => { this.setState({ IsCloseForm: true }) }, 2000);
                        
                     }
                 });
