@@ -364,19 +364,32 @@ class ShipmentOrderDetailCom extends Component {
     }
 
 
-    _CheckTime(dates) {
-        const date = new Date(Date.parse(dates));
-        let currentDate = new Date();
-        var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
-        var diffMinutes = parseInt((timeDiff / (3600 * 24)));
-        if (diffMinutes < 1440) {
-            return true;
+    _CheckTime(dates, id) {
+        if (id = 1002) {
+            const date = new Date(Date.parse(dates));
+            let currentDate = new Date();
+            var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
+            var diffMinutes = parseInt((timeDiff / (3600 * 24)));
+            if (diffMinutes < 43200) {
+                return true;
+            }
+            else {
+                return false
+            }
         }
         else {
-            return false
+            const date = new Date(Date.parse(dates));
+            let currentDate = new Date();
+            var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
+            var diffMinutes = parseInt((timeDiff / (3600 * 24)));
+            if (diffMinutes < 1440) {
+                return true;
+            }
+            else {
+                return false
+            }
         }
     }
-
 
     render() {
         let strShipmentOrderStepName = "";
@@ -386,7 +399,7 @@ class ShipmentOrderDetailCom extends Component {
             IsMustCompleteCollection = this.state.ShipmentOrder.ShipmentOrderType_WorkFlowList.filter(a => a.ShipmentOrderStepID === this.state.ShipmentOrder.CurrentShipmentOrderStepID)[0].IsMustCompleteCollection
         }
         const { ShipmentOrder, IsUpdateDate, IsDisable, IsExpectedDeliveryDate } = this.state;
-        let onclin = this._CheckTime(this.state.ShipmentOrder.CreatedOrderTime)
+        let onclin = this._CheckTime(this.state.ShipmentOrder.CreatedOrderTime, this.state.ShipmentOrder.ShipmentOrderTypeID)
 
         const linkHistoryTransaction = "/PartnerTransaction/Edit/" + ShipmentOrder.PartnerTransactionID;
         return (
@@ -479,6 +492,9 @@ class ShipmentOrderDetailCom extends Component {
                                         <div className="group-btn-update">
                                             <button className="btn btn-update-submit" type="button" onClick={() => this.handleUpdateExpectedDelivery()}>
                                                 <i className="ti ti-pencil-alt"></i>
+                                            </button>
+                                            <button className="btn btn-update-submit" type="button" onClick={() => this.handleUpdateExpectedDelivery()}>
+                                                <i className="fa fa-eye"></i>
                                             </button>
                                         </div>
                                         :
