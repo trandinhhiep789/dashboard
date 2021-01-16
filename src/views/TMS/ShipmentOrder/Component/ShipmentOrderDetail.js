@@ -400,7 +400,7 @@ class ShipmentOrderDetailCom extends Component {
             }
         ];
 
-        this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_CodUpdLog/SearchBYSHIPID', postData).then((apiResult) => {
+        this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_DLDateLog/LoadByShipmentOrderID', postData).then((apiResult) => {
             if (!apiResult.IsError) {
                 this.setState({ ShipmentOrder_DLDateLogItemList: apiResult.ResultObject }, () => {
                     this.showModalExpectedDeliveryLog();
@@ -419,11 +419,12 @@ class ShipmentOrderDetailCom extends Component {
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                 <thead className="thead-light">
                                     <tr>
-                                       <th className="jsgrid-header-cell">Người thay đổi</th>
-                                        <th className="jsgrid-header-cell">Ngày thay đổi</th>
+                                    <th className="jsgrid-header-cell">Nguồn thay đổi </th>
+                                       <th className="jsgrid-header-cell">Người đổi</th>
+                                        <th className="jsgrid-header-cell">Ngày đổi</th>
                                         <th className="jsgrid-header-cell">Thời gian chuyển đổi</th>
                                         <th className="jsgrid-header-cell">Lý do thay đổi</th>
-                                        <th className="jsgrid-header-cell">nội dung </th>
+                                        <th className="jsgrid-header-cell">Nội dung </th>
                                      
                                     </tr>
                                 </thead>
@@ -432,6 +433,7 @@ class ShipmentOrderDetailCom extends Component {
                                         this.state.ShipmentOrder_DLDateLogItemList && this.state.ShipmentOrder_DLDateLogItemList.map((item, index) => {
                                             return (
                                                 <tr key={index}>
+                                                     <td>{item.DeliverydateUpdateTypeName}</td>
                                                      <td>{item.CreatedUser + "-" + item.CreatedUserFullName}</td>
                                                      <td>{formatDate(item.CreatedDate)}</td>
                                                      <td>{formatDate(item.OldExpectedDeliveryDate)+" => "+formatDate(item.NewExpectedDeliveryDate)}</td>
