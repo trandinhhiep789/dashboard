@@ -62,7 +62,7 @@ class SearchCom extends React.Component {
     };
 
     handleSearchSubmit(formData, MLObject) {
-       
+       console.log("aa", MLObject);
 
         this.setState({
             FromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()),
@@ -86,7 +86,7 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@COORDINATORUSER",
-                SearchValue: MLObject.UserName.value
+                SearchValue: MLObject.UserName == -1 ? MLObject.UserName  : MLObject.UserName.value
             },
 
         ]; 
@@ -96,7 +96,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            // console.log("postData", searchData, apiResult)
+            console.log("postData", searchData, apiResult)
             if (!apiResult.IsError) {
                 const tempData = apiResult.ResultObject.map((item, index)=>{
                     item.DeliverUserFullName = item.DeliverUserLst +"-"+item.DeliverUserFullNameList

@@ -82,7 +82,7 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@COORDINATORUSER",
-                SearchValue: MLObject.UserName.value
+                SearchValue: MLObject.UserName == -1 ? MLObject.UserName  : MLObject.UserName.value
             },
 
         ]; 
@@ -92,7 +92,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult, searchData)
+            //console.log("apiResult", apiResult, searchData)
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
