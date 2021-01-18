@@ -34,7 +34,8 @@ class SOPrintTemplateCom extends React.Component {
                 background: '#ffffff',
                 height: props.height,
                 width: props.width ? props.width : 2,
-                fontSize: props.fontSize ? props.fontSize : 20
+                fontSize: props.fontSize ? props.fontSize : 20,
+                //margin: '2px auto',
             }
         });
 
