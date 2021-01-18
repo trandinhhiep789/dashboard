@@ -143,8 +143,8 @@ class InfoProductCom extends Component {
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                 <thead className="thead-light">
                                     <tr>
-                                       <th className="jsgrid-header-cell">Ngày tạo</th>
-                                        <th className="jsgrid-header-cell">Người tạo</th>
+                                       <th className="jsgrid-header-cell">Ngày cập nhật</th>
+                                        <th className="jsgrid-header-cell">Người cập nhật</th>
                                         <th className="jsgrid-header-cell">Tổng tiền thu hộ cũ</th>
                                         <th className="jsgrid-header-cell">Tổng tiền thu hộ mới</th>
                                         <th className="jsgrid-header-cell">Mã giao dịch với đối tác</th>
@@ -157,8 +157,8 @@ class InfoProductCom extends Component {
                                                 <tr key={index}>
                                                      <td>{formatDate(item.CreatedDate)}</td>
                                                     <td>{item.CreatedUser + "-" + item.CreatedUserFullName}</td>
-                                                    <td>{item.OldTotalcod}</td>
-                                                    <td>{item.NewTotalcod}</td>
+                                                    <td>{formatMoney(item.OldTotalcod, 0)}</td>
+                                                    <td>{formatMoney(item.NewTotalcod, 0)}</td>
                                                     <td><Link target="_blank" to={"/PartnerTransaction/Edit/" + item.PartnerTransactionID}>{item.PartnerTransactionID}</Link></td>
                                                 </tr>
                                             )

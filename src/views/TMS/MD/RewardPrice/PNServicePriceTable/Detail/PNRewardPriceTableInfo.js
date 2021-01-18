@@ -4,7 +4,7 @@ import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { formatDate } from "../../../../../../common/library/CommonLib.js";
 import { tr } from "date-fns/locale";
 
-class RewardPriceTableInfoCom extends Component {
+class PNRewardPriceTableInfoCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -13,7 +13,8 @@ class RewardPriceTableInfoCom extends Component {
     }
 
     render() {
-        const { RewardPriceTableInfo } = this.props;
+        const { PNRewardPriceTableInfo } = this.props;
+
         return (
             <React.Fragment>
                 <div className="form-row">
@@ -21,50 +22,28 @@ class RewardPriceTableInfoCom extends Component {
                         <label className="col-form-label bold">Tên bảng đơn giá thưởng:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{RewardPriceTableInfo.RewardPriceTableName}</label>
+                        <label className="col-form-label">{PNRewardPriceTableInfo.pnServicePriceTableName}</label>
                     </div>
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Loại đơn giá thưởng:</label>
+                        <label className="col-form-label bold">Loại mùa vụ:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{RewardPriceTableInfo.RewardPriceTypeName}</label>
+                        <label className="col-form-label">{PNRewardPriceTableInfo.ServiceSeasonTypeID + " - " + PNRewardPriceTableInfo.ServiceSeasonTypeName}</label>
                     </div>
                 </div>
 
                 <div className="form-row">
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Loại phương tiện:</label>
+                        <label className="col-form-label bold">khu vực: </label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{RewardPriceTableInfo.CarrierTypeName}</label>
-                    </div>
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Khu vực:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">{RewardPriceTableInfo.AreaName}</label>
-                    </div>
-                </div>
-
-
-                <div className="form-row">
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Mặc định:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <div className="checkbox customCheckbox">
-                            <label><input type="checkbox" disabled={true} defaultChecked={RewardPriceTableInfo.IsDefault} />
-                                <span className="cr">
-                                    <i className="cr-icon fa fa-check"></i>
-                                </span>
-                            </label>
-                        </div>
+                        <label className="col-form-label">{PNRewardPriceTableInfo.ServiceAreaID + " - " + PNRewardPriceTableInfo.AreaName}</label>
                     </div>
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Người tạo:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{RewardPriceTableInfo.CreatedUser + " - " + RewardPriceTableInfo.FullName}</label>
+                        <label className="col-form-label">{PNRewardPriceTableInfo.CreatedUser + " - " + PNRewardPriceTableInfo.FullName}</label>
                     </div>
                 </div>
 
@@ -73,7 +52,7 @@ class RewardPriceTableInfoCom extends Component {
                         <label className="col-form-label bold">Mô tả:</label>
                     </div>
                     <div className="form-group col-md-10">
-                        <label className="col-form-label">{RewardPriceTableInfo.Description}</label>
+                        <label className="col-form-label">{PNRewardPriceTableInfo.Description}</label>
                     </div>
                 </div>
 
@@ -83,7 +62,7 @@ class RewardPriceTableInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <div className="checkbox customCheckbox">
-                            <label><input type="checkbox" disabled={true} defaultChecked={RewardPriceTableInfo.IsActived} />
+                            <label><input type="checkbox" disabled={true} defaultChecked={PNRewardPriceTableInfo.IsActived} />
                                 <span className="cr"><i className="cr-icon fa fa-check"></i>
                                 </span>
                             </label>
@@ -94,7 +73,7 @@ class RewardPriceTableInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <div className="checkbox customCheckbox">
-                            <label><input type="checkbox" disabled={true} defaultChecked={RewardPriceTableInfo.IsSystem} />
+                            <label><input type="checkbox" disabled={true} defaultChecked={PNRewardPriceTableInfo.IsSystem} />
                                 <span className="cr"><i className="cr-icon fa fa-check"></i>
                                 </span>
                             </label>
@@ -127,5 +106,5 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-const RewardPriceTableInfo = connect(mapStateToProps, mapDispatchToProps)(RewardPriceTableInfoCom);
-export default RewardPriceTableInfo;
+const PNRewardPriceTableInfo = connect(mapStateToProps, mapDispatchToProps)(PNRewardPriceTableInfoCom);
+export default PNRewardPriceTableInfo;
