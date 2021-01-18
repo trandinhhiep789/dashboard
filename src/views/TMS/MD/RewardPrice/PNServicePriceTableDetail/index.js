@@ -50,10 +50,11 @@ class PNServicePriceTableDetailCom extends Component {
     }
 
     handleSubmit(formData, MLObject) {
+        console.log("MLObject", MLObject)
         MLObject.pnServicePriceTableID = this.props.dataSource.pnServicePriceTableID;
         MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
 
-        if (MLObject.IsPriceByTechspecsValueRange || MLObject.IsPriceByTechspecsValueRange != "" || MLObject.IsPriceByTechspecsValueRange == 0) {
+        if (MLObject.IsPriceByTechspecsValueRange && MLObject.IsPriceByTechspecsValueRange != "" && MLObject.IsPriceByTechspecsValueRange == 0) {
             MLObject.TechSpecsValueID = -1;
         }
         else {
@@ -79,7 +80,7 @@ class PNServicePriceTableDetailCom extends Component {
             }
         }
 
-        if ((MLObject.ProductID == undefined || MLObject.ProductID.length == 0) && MLObject.SubGroupID < 0) {
+        if ((MLObject.ProductID == undefined || MLObject.ProductID.length == 0) && MLObject.MainGroupID < 0) {
             this.showMessage("Dữ liệu bạn nhập vào không đúng. Vui lòng nhập lại!")
         }
         else {

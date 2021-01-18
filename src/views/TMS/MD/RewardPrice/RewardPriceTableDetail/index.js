@@ -12,7 +12,7 @@ import {
     AddAPIRPTDetailPath,
     MLObjectRPTDetailItem
 } from "../RewardPriceTable/constants";
-import { ERPCOMMONCACHE_SERVICESEASONTYPE, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE } from "../../../../../constants/keyCache";
+import {  ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_MAINGROUP } from "../../../../../constants/keyCache";
 import ProductComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/ProductComboBox.js";
 import { ModalManager } from "react-dynamic-modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
@@ -52,6 +52,7 @@ class RewardPriceTableDetailCom extends Component {
     }
 
     handleSubmit(formData, MLObject) {
+        console.log("MLObject", MLObject);
         MLObject.RewardPriceTableID = this.props.dataSource.RewardPriceTableID;
         MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
 
@@ -65,6 +66,7 @@ class RewardPriceTableDetailCom extends Component {
 
         if (MLObject.ProductID != undefined) {
             if (MLObject.ProductID.length > 0) {
+                MLObject.MainGroupID = -1;
                 MLObject.SubGroupID = -1;
                 MLObject.TechspecsID = -1;
                 MLObject.FromTechspecsValue = 0
@@ -72,6 +74,7 @@ class RewardPriceTableDetailCom extends Component {
                 MLObject.IsPriceByTechspecsValueRange = 0
             }
             else {
+                MLObject.MainGroupID = MLObject.MainGroupID;
                 MLObject.SubGroupID = MLObject.SubGroupID;
                 MLObject.TechspecsID = MLObject.TechspecsID;
                 MLObject.FromTechspecsValue = MLObject.FromTechspecsValue;
@@ -79,7 +82,7 @@ class RewardPriceTableDetailCom extends Component {
             }
         }
 
-        if ((MLObject.ProductID == undefined || MLObject.ProductID.length == 0) && MLObject.SubGroupID < 0) {
+        if ((MLObject.ProductID == undefined || MLObject.ProductID.length == 0) && MLObject.MainGroupID < 0) {
             this.showMessage("Dữ liệu bạn nhập vào không đúng. Vui lòng nhập lại!")
         }
         else {
@@ -248,6 +251,28 @@ class RewardPriceTableDetailCom extends Component {
                             controltype="InputControl"
                             value=""
                             datasourcemember="RewardPriceTableID"
+                        />
+
+                    </div>
+
+                    <div className="col-md-6">
+                        <FormControl.FormControlComboBox
+                            name="cbMainGroup"
+                            colspan="6"
+                            labelcolspan="6"
+                            label="ngành hàng"
+                            // validatonList={["Comborequired"]}
+                            isautoloaditemfromcache={true}
+                            loaditemcachekeyid={ERPCOMMONCACHE_MAINGROUP} //"ERPCOMMONCACHE.SUBGROUP"
+                            valuemember="MainGroupID"
+                            nameMember="MainGroupName"
+                            controltype="InputControl"
+                            value={-1}
+                            disabled={isDisableCB}
+                            listoption={[]}
+                            datasourcemember="MainGroupID"
+                            //filterrest="cbTechSpecsValue,cbTechSpecs"
+
                         />
 
                     </div>

@@ -193,6 +193,13 @@ export const MLObjectDefinition = [
 
 export const DataGridColumnItemListRPTDetail = [
     {
+        Name: "MainGroupName",
+        Type: "text",
+        Caption: "Nghành hàng",
+        DataSourceMember: "MainGroupName",
+        Width: 100
+    },
+    {
         Name: "SubGroupName",
         Type: "text",
         Caption: "Nhóm hàng",
@@ -268,7 +275,12 @@ export const DataGridColumnItemListRPTDetail = [
 ]
 
 export const MLObjectRPTDetailItem= [
-
+    {
+        Name: "MainGroupID",
+        DefaultValue: {},
+        BindControlName: "cbMainGroup",
+        DataSourceMember: "MainGroupID"
+    },
     {
         Name: "SubGroupID",
         DefaultValue: {},
