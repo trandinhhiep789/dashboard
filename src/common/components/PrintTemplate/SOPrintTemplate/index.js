@@ -35,7 +35,8 @@ class SOPrintTemplateCom extends React.Component {
                 height: props.height,
                 width: props.width ? props.width : 2,
                 fontSize: props.fontSize ? props.fontSize : 20,
-                //margin: '2px auto',
+                margin: 0
+                //margin: props.margin ? props.margin : "auto",
             }
         });
 
@@ -112,10 +113,10 @@ class SOPrintTemplateCom extends React.Component {
                                     </div>
                                 </div>
                                 <hr style={{ borderBottom: "0" }} />
-                                <h3 style={{ textAlign: "center", margin: "" }}>ĐƠN VẬN CHUYỂN</h3>
+                                <h3 style={{ textAlign: "center", margin: "1px auto" }}>ĐƠN VẬN CHUYỂN</h3>
                             </div>
-                            <div className="item bleft" style={{ display: "table-cell", width: "50%", border: "1px solid", boxSizing: " border-box", padding: "6px", height: "100%", borderLeft: "0px", verticalAlign: "middle", position:"relative"  }}>
-                                <div className="content" style={{ paddingLeft: "0px", fontSize: "11px", position: "absolute", top: "0px", left: "10px"}}>
+                            <div className="item bleft" style={{ display: "table-cell", width: "50%", border: "1px solid", boxSizing: " border-box", padding: "6px", height: "100%", borderLeft: "0px", verticalAlign: "middle", position: "relative" }}>
+                                <div className="content" style={{ paddingLeft: "0px", fontSize: "11px", position: "absolute", top: "0px", left: "10px" }}>
                                     <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Đối tác:</span>{this.state.PrintDataSource.PartnerName} </p>
                                     <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Loại dịch vụ:</span>{this.state.PrintDataSource.ShipmentOrderTypeName}</p>
                                     <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Ngày tạo phiếu:</span> {formatDate(this.state.PrintDataSource.CreatedOrderTime)}</p>
@@ -128,8 +129,8 @@ class SOPrintTemplateCom extends React.Component {
                                 <div className="content" style={{ paddingLeft: "0px" }}>
                                     <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Mã đơn vận chuyển:</span></p>
                                     {/* <img src={mavach} className="mavach" style={{ display: "block", margin: "0 auto", height: "60px", width: "70%" }} /> */}
-                                    <div style={{ textAlign: "center" }}>
-                                        <this.getBarcode value={this.state.PrintDataSource.ShipmentOrderID} height={40} width={1.5} />
+                                    <div style={{ marginTop: "-6px", marginBottom: "", textAlign: "center" }}>
+                                        <this.getBarcode value={this.state.PrintDataSource.ShipmentOrderID} height={25} width={1.5} fontSize={15} />
                                     </div>
                                 </div>
                             </div>
@@ -137,8 +138,8 @@ class SOPrintTemplateCom extends React.Component {
                                 <div className="content" style={{ paddingLeft: "0px" }}>
                                     <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Mã đơn hàng của đối tác:</span></p>
                                     {/* <img src={mavach} className="mavach" style={{ display: "block", margin: "0 auto", height: "60px", width: "70%" }} /> */}
-                                    <div style={{ textAlign: "center" }}>
-                                        <this.getBarcode value={this.state.PrintDataSource.PartnerSaleOrderID} height={40} width={1.5} />
+                                    <div style={{ marginTop: "-6px", marginBottom: "", textAlign: "center" }}>
+                                        <this.getBarcode value={this.state.PrintDataSource.PartnerSaleOrderID} height={25} width={1.5} fontSize={15} />
                                     </div>
                                 </div>
                             </div>
@@ -198,18 +199,18 @@ class SOPrintTemplateCom extends React.Component {
                         </div>
                         <br />
 
-                        <table style={{ width: "100%", borderSpacing: "10px", borderCollapse: "collapse", textAlign: "center", fontSize: "12px" }}>
+                        <table style={{ width: "100%", borderSpacing: "10px", borderCollapse: "collapse", textAlign: "center", fontSize: "10px" }}>
                             <thead>
                                 <tr>
                                     <td colspan="6" style={{ border: "1px solid", padding: "8px" }}><b>Danh sách hàng hóa</b></td>
                                 </tr>
                                 <tr style={{ backgroundColor: "#d7d7d7" }}>
-                                    <td style={{ border: "1px solid", padding: "3px" }}>Có lắp đặt</td>
+                                    {/* <td style={{ border: "1px solid", padding: "3px" }}>Có lắp đặt</td> */}
                                     <td style={{ border: "1px solid", padding: "3px" }}>Mã sản phẩm</td>
-                                    <td style={{ border: "1px solid", padding: "3px", width: "20%" }}>Tên sản phẩm</td>
+                                    <td style={{ border: "1px solid", padding: "3px", width: "" }}>Tên sản phẩm</td>
                                     <td style={{ border: "1px solid", padding: "3px" }}>Imei</td>
-                                    <td style={{ border: "1px solid", padding: "3px" }}>Số lượng</td>
-                                    <td style={{ border: "1px solid", padding: "3px" }}>Đơn vị tính</td>
+                                    <td style={{ border: "1px solid", padding: "3px" }}>SL</td>
+                                    <td style={{ border: "1px solid", padding: "3px" }}>ĐVT</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -217,14 +218,13 @@ class SOPrintTemplateCom extends React.Component {
                                     this.state.PrintDataSource.ShipmentOrder_ItemList && this.state.PrintDataSource.ShipmentOrder_ItemList.map((item, index) => {
                                         return (
                                             <tr key={index}>
-                                                <td style={{ border: "1px solid", padding: "3px" }}><input type="checkbox" value={item.IsInstallItem} /></td>
+                                                {/* <td style={{ border: "1px solid", padding: "3px" }}><input type="checkbox" value={item.IsInstallItem} /></td> */}
                                                 <td style={{ border: "1px solid", padding: "3px" }}>{item.ProductID}</td>
-                                                <td style={{ border: "1px solid", padding: "3px" }}>{item.ProductName}</td>
+                                                <td style={{ border: "1px solid", padding: "3px", textAlign: "left" }}>{item.ProductName}</td>
                                                 <td style={{ border: "1px solid", padding: "3px" }}>
                                                     {
-                                                        item.ProductSerial && <this.getBarcode value={item.ProductSerial} height={20} width={1} fontSize={15} />
+                                                        item.ProductSerial && <this.getBarcode value={item.ProductSerial} height={12} width={1} fontSize={10} />
                                                     }
-
                                                 </td>
                                                 <td style={{ border: "1px solid", padding: "3px" }}>{item.Quantity}</td>
                                                 <td style={{ border: "1px solid", padding: "3px" }}>{item.QuantityUnitName}</td>
