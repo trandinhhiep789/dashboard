@@ -590,9 +590,12 @@ class ShipmentOrderDetailCom extends Component {
                                             <span className="badge badge-danger">Hủy giao hàng</span>
                                         </div>
                                         <div className="form-group col-md-2">
+                                            <label className="col-form-label" >Người hủy: {this.state.ShipmentOrder.CancelDeliveryUser}</label>
+                                        </div>
+                                        <div className="form-group col-md-2">
                                             <label className="col-form-label" >Lúc: {formatDate(this.state.ShipmentOrder.CancelDeliveryTime)}</label>
                                         </div>
-                                        <div className="form-group col-md-8">
+                                        <div className="form-group col-md-6">
                                             <label className="col-form-label" >Ghi chú lý do hủy: {this.state.ShipmentOrder.CancelDeliveryReasonNote}</label>
                                         </div>
                                     </div>

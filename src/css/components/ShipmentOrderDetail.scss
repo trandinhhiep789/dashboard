@@ -1,5 +1,19 @@
 .page-detail {
-    
+    .Collapsible{
+        .form-group{
+            &.lineTotal{
+                position: relative;
+                &::before{
+                    content: "";
+                    width: 200px;
+                    height: 1px;
+                    background: #d5d3d3;
+                    position: absolute;
+                    bottom: 0;
+                }
+            }
+        }
+    }
     .card {
         margin-bottom: 15px;
 

@@ -216,14 +216,7 @@ class InfoProductCom extends Component {
                         </div>
 
                         <div className="form-row">
-                            <div className="form-group col-md-2">
-                                <label className="col-form-label bold">Xem thông tin phí dịch vụ:</label>
-                            </div>
-                            <div className="form-group col-md-4">
-                                <button className="btn btn-icon-modal" onClick={this.handleShowTotalSaleMaterialMoney.bind(this)}>
-                                    <i className="fa fa-eye"></i>
-                                </button>
-                            </div>
+                         
                             <div className="form-group col-md-2">
                                 <label className="col-form-label bold">Tổng tiền COD:</label>
                             </div>
@@ -233,6 +226,14 @@ class InfoProductCom extends Component {
 
                                 </label>
                                 <button className="btn btn-icon-modal" onClick={this.handleShowCodUpdLog.bind(this)}>
+                                    <i className="fa fa-eye"></i>
+                                </button>
+                            </div>
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Xem thông tin phí dịch vụ:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <button className="btn btn-icon-modal" onClick={this.handleShowTotalSaleMaterialMoney.bind(this)}>
                                     <i className="fa fa-eye"></i>
                                 </button>
                             </div>
@@ -246,23 +247,21 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label lbl-currency">{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney, 0)}đ</label>
                             </div>
                             <div className="form-group col-md-2">
-                                <label className="col-form-label bold">Tổng tiền phải thu:</label>
-                            </div>
-                            <div className="form-group col-md-4">
-                                <label className="col-form-label lbl-currency-total" >{formatMoney((this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD) - this.state.ShipmentOrder.TotalReturnPrice, 0)}đ</label>
-                            </div>
-
-                        </div>
-
-                        <div className="form-row">
-                            <div className="form-group col-md-2">
                                 <label className="col-form-label bold">Thu tiền khách hàng:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                {this.state.ShipmentOrder.IsCollectedMoney == true ? <span className="badge badge-success">Đã thu tiền</span> : ""}
+                                {this.state.ShipmentOrder.IsCollectedMoney == true ? <span className="badge badge-success">Đã thu tiền</span> : <span className="badge badge-danger">Chưa thu tiền</span>}
+                            </div>
+                        </div>
+                        <div className="form-row">
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Tổng tiền nhập trả:</label>
+                            </div>
+                            <div className="form-group col-md-4 lineTotal">
+                                <label className="col-form-label lbl-currency">{formatMoney(this.state.ShipmentOrder.TotalReturnPrice, 0)}đ</label>
                             </div>
                             <div className="form-group col-md-2">
-                                <label className="col-form-label bold">Tổng tiền thu:</label>
+                                <label className="col-form-label bold">Tổng đã tiền thu khách hàng:</label>
                             </div>
                             <div className="form-group col-md-4">
                                 <label className="col-form-label">
@@ -273,10 +272,21 @@ class InfoProductCom extends Component {
 
                         <div className="form-row">
                             <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Tổng tiền phải thu:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label lbl-currency-total" >{formatMoney((this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD) - this.state.ShipmentOrder.TotalReturnPrice, 0)}đ</label>
+                            </div>
+                        </div>
+
+                        <div className="form-row">
+                            <div className="form-group col-md-2">
                                 <label className="col-form-label bold">Nộp tiền thu ngân:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                {this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : ""}
+                                {(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD - this.state.ShipmentOrder.TotalReturnPrice)>0?
+                         this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : <span className="badge badge-danger">Chưa tiền thu ngân </span>:""
+                         }
                             </div>
                         </div>
 
