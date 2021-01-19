@@ -357,7 +357,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
 
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
         this.setState({ IsInsert: true });
-        console.log("MaterialGroup_InstallCondDataSource", this.state.MaterialGroup_InstallCondDataSource);
+        //console.log("MaterialGroup_InstallCondDataSource", this.state.MaterialGroup_InstallCondDataSource);
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Thêm mới điều kiện lắp đặt của nhóm vật tư',
             autoCloseModal: false,
