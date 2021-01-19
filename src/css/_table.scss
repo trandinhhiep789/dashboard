@@ -247,7 +247,7 @@
                                     .time-item {
                                         display: flex;
                                         justify-content: center;
-                                        width: 50%;
+                                        
                                         flex: auto;
                                         .intervale {
                                             display: inline-block;
@@ -256,6 +256,12 @@
                                         }
                                         .item {
                                             width: auto;
+                                        }
+                                        &.itemCreatedOrderTime{
+                                            width: 60%;
+                                        }
+                                        &.itemEstimat{
+                                            width: 40%;
                                         }
                                     }
 

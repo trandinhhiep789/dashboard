@@ -642,8 +642,8 @@ class DataGridShipmentOderCom extends Component {
         });
     }
 
-    handlePrintClickNew(e){
-        const ShipmentOrderID= e.target.attributes['data-id'].value;
+    handlePrintClickNew(e) {
+        const ShipmentOrderID = e.target.attributes['data-id'].value;
         this.setState({
             printDataID: ShipmentOrderID
         });
@@ -655,7 +655,7 @@ class DataGridShipmentOderCom extends Component {
 
         // window.print();
         // return;
-        
+
         var mywindow = window.open('', '', 'right=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
         mywindow.document.write('<html><head>');
         mywindow.document.write('<title>Đơn vận chuyển</title>');
@@ -759,10 +759,9 @@ class DataGridShipmentOderCom extends Component {
                                                 }
                                             </label>
                                             <label className="item printing">
-
-                                                {rowItem.IsOutputGoods == true ? <span className="badge badge-success">Đã xuất </span> : <span className="badge badge-danger">Chưa xuất</span>}
-                                                {/* <i className="ti ti-printer"></i>Chưa
-                                                <span>In</span> */}
+                                               {(rowItem.IsOutputGoods == false && rowItem.IsHandoverGoods == false) ? <span className="badge badge-danger">Chưa xuất </span> :""}
+                                                {(rowItem.IsOutputGoods == true && rowItem.IsHandoverGoods == false) ? <span className="badge badge-info">Đã xuất </span> :""}
+                                                {rowItem.IsHandoverGoods == true ? <span className="badge badge-success">NV đã nhận </span> : ""}
                                             </label>
                                         </div>
                                     </td>
@@ -790,11 +789,11 @@ class DataGridShipmentOderCom extends Component {
                                             </label>
                                             <label className="item creacte-time">
                                                 <span className="times group-times">
-
-                                                    <span className="time-item">
+                                                    <span className="time-item itemCreatedOrderTime">
                                                         <span className="txtCreatedOrderTime"><i className="ti ti-dashboard"></i> {formatDate(rowItem.CreatedOrderTime)}</span>
+                                                        <span className="txtCreatedOrderTime"><i className="ti ti-dashboard"></i> {formatDate(rowItem.OutputGoodsDate)}</span>
                                                     </span>
-                                                    <span className="time-item">
+                                                    <span className="time-item itemEstimat">
                                                         <span className="intervale">
                                                             <i className="fa fa-paper-plane-o"></i>
                                                             <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km"}</span>

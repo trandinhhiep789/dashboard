@@ -252,7 +252,7 @@
                                             .time-item {
                                                 display: flex;
                                                 justify-content: center;
-                                                width: 50%;
+                                               // width: 50%;
                                                 flex: auto;
                                                 .txtCreatedOrderTime {
                                                     font-weight: 600;
@@ -266,6 +266,12 @@
                                                     text-align: right;
                                                     width: 100%;
                                                     float: right;
+                                                }
+                                                &.itemCreatedOrderTime{
+                                                    clear: both;
+                                                }
+                                                &.itemEstimat{
+                                                    clear: both;
                                                 }
                                             }
                                         }
