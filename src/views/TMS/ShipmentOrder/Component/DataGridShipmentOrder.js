@@ -791,7 +791,7 @@ class DataGridShipmentOderCom extends Component {
                                                 <span className="times group-times">
                                                     <span className="time-item itemCreatedOrderTime">
                                                         <span className="txtCreatedOrderTime"><i className="ti ti-dashboard"></i> {formatDate(rowItem.CreatedOrderTime)}</span>
-                                                        <span className="txtCreatedOrderTime"><i className="ti ti-dashboard"></i> {formatDate(rowItem.OutputGoodsDate)}</span>
+                                                        <span className="txtCreatedOrderTime"><i className="fa fa-dashboard"></i> {formatDate(rowItem.OutputGoodsDate)}</span>
                                                     </span>
                                                     <span className="time-item itemEstimat">
                                                         <span className="intervale">
