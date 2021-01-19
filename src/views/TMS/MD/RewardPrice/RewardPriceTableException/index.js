@@ -42,7 +42,7 @@ class RewardPriceTableExceptionCom extends Component {
         MLObject.RewardPriceTableID = this.props.dataSource.RewardPriceTableID;
         console.log("submit", formData, MLObject)
 
-        if(MLObject.RewardPrice < 0 && MLObject.RewardPriceWithoutInstall < 0 ){
+        if(parseFloat(MLObject.RewardPrice) < 0 || parseFloat(MLObject.RewardPriceWithoutInstall) < 0 ){
             this.showMessage("Dữ liệu bạn nhập vào không đúng. Vui lòng nhập lại!")
             return;
         }
