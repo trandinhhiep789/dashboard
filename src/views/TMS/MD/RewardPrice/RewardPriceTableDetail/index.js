@@ -69,8 +69,8 @@ class RewardPriceTableDetailCom extends Component {
                 MLObject.MainGroupID = -1;
                 MLObject.SubGroupID = -1;
                 MLObject.TechspecsID = -1;
-                MLObject.FromTechspecsValue = -1
-                MLObject.ToTechspecsValue = -1
+                MLObject.FromTechspecsValue = 0
+                MLObject.ToTechspecsValue = 0
                 MLObject.IsPriceByTechspecsValueRange = 0
             }
             else {
