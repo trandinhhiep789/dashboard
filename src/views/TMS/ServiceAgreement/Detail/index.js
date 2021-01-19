@@ -62,7 +62,6 @@ class DetailCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(DetailAPIPath);
-        console.log('id', this.props.match.params.id)
         this.callLoadData(this.props.match.params.id);
     }
 

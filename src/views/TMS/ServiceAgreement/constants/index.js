@@ -91,6 +91,13 @@ export const DataGridColumnItemListFeeAppendix = [
         Width: 250,
     },
     {
+        Name: "PNServicePriceTableName",
+        Type: "text",
+        Caption: "Bảng giá",
+        DataSourceMember: "PNServicePriceTableName",
+        Width: 250,
+    },
+    {
         Name: "ApplyFromDate",
         Type: "date",
         Caption: "Từ ngày",

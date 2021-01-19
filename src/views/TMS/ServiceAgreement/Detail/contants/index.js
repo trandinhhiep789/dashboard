@@ -219,6 +219,12 @@ export const MLObjectFeeAppendixDetailItem=[
         DataSourceMember: "ApplyFromDate"
     },
     {
+        Name: "PNServicePriceTableID",
+        DefaultValue: "",
+        BindControlName: "cbPNServicePriceTableID",
+        DataSourceMember: "PNServicePriceTableID"
+    },
+    {
         Name: "Description",
         DefaultValue: "",
         BindControlName: "txtDescription",
