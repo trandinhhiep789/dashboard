@@ -82,8 +82,14 @@ class RewardPriceTableDetailCom extends Component {
             }
         }
 
+        if(parseFloat(MLObject.RewardPrice) < 0 || parseFloat(MLObject.RewardPriceWithoutInstall) < 0 ){
+            this.showMessage("Dữ liệu bạn nhập vào không đúng. Vui lòng nhập lại!")
+            return;
+        }
+
         if ((MLObject.ProductID == undefined || MLObject.ProductID.length == 0) && MLObject.MainGroupID < 0) {
             this.showMessage("Dữ liệu bạn nhập vào không đúng. Vui lòng nhập lại!")
+            return;
         }
         else {
             if (this.props.index != undefined) {
@@ -271,7 +277,7 @@ class RewardPriceTableDetailCom extends Component {
                             disabled={isDisableCB}
                             listoption={[]}
                             datasourcemember="MainGroupID"
-                            //filterrest="cbTechSpecsValue,cbTechSpecs"
+                            filterrest="cbSubGroup,cbTechSpecsValue,cbTechSpecs"
 
                         />
 
@@ -293,6 +299,9 @@ class RewardPriceTableDetailCom extends Component {
                             disabled={isDisableCB}
                             listoption={[]}
                             datasourcemember="SubGroupID"
+                            filterobj="MainGroupID"
+                            filterName="cbMainGroup"
+                            filterValue=''
                             filterrest="cbTechSpecsValue,cbTechSpecs"
 
                         />
@@ -360,7 +369,7 @@ class RewardPriceTableDetailCom extends Component {
                             classNameCustom="customCheckbox"
                         />
                     </div>
-
+                    <div className="col-md-6"></div>
                     <div className="col-md-6">
 
                         <FormControl.TextBox
@@ -423,6 +432,7 @@ class RewardPriceTableDetailCom extends Component {
                             labelcolspan="6"
                             readOnly={IsSystem}
                             disabled={IsSystem}
+                            isNegativeNumber={false}
                             label="giá"
                             placeholder="Giá "
                             controltype="InputControl"

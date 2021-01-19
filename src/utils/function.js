@@ -14,6 +14,13 @@ export const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands =
     }
 };
 
+export const thousandNum = (num = 0) => {
+    const str = (+num).toString().split(".");
+    const int = nums => nums.split("").reverse().reduceRight((t, v, i) => t + (i % 3 ? v : `${v},`), "").replace(/^,|,$/g, "");
+    const dec = nums => nums.split("").reduce((t, v, i) => t + ((i + 1) % 3 ? v : `${v},`), "").replace(/^,|,$/g, "");
+    return str.length > 1 ? `${int(str[0])}.${(str[1])}` : int(str[0]);
+}
+
 export const formatNumber = (num) => {
     if (num != undefined && num != '') {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
