@@ -285,7 +285,7 @@ class InfoProductCom extends Component {
                             </div>
                             <div className="form-group col-md-4">
                                 {(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD - this.state.ShipmentOrder.TotalReturnPrice)>0?
-                         this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : <span className="badge badge-danger">Chưa tiền thu ngân </span>:""
+                         this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : <span className="badge badge-danger">Chưa nộp tiền</span>:""
                          }
                             </div>
                         </div>
