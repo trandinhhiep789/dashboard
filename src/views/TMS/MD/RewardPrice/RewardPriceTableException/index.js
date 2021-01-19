@@ -40,15 +40,20 @@ class RewardPriceTableExceptionCom extends Component {
 
     handleSubmit(formData, MLObject) {
         MLObject.RewardPriceTableID = this.props.dataSource.RewardPriceTableID;
-        //console.log("submit", formData, MLObject)
+        console.log("submit", formData, MLObject)
 
-        
+        if(MLObject.RewardPrice < 0 && MLObject.RewardPriceWithoutInstall < 0 ){
+            this.showMessage("Dữ liệu bạn nhập vào không đúng. Vui lòng nhập lại!")
+            return;
+        }
         if(MLObject.MainGroupID == -1 && MLObject.SubGroupID == -1 ){
             this.showMessage("Vui lòng chọn ngành hàng hoặc nhóm hàng.")
+            return;
         }
         else{
             if(parseInt(MLObject.FromQuantity)  >= parseInt(MLObject.ToQuantity)){
                 this.showMessage("Số lượng đến phải lớn hơn số lượng từ")
+                return
             }
             else{
                 if (this.props.index != undefined) {
@@ -135,7 +140,7 @@ class RewardPriceTableExceptionCom extends Component {
                             disabled={IsUpdate}
                             listoption={[]}
                             datasourcemember="MainGroupID"
-                            //filterrest="cbSubGroup"
+                            filterrest="cbSubGroup"
                         />
                     </div>
 
@@ -155,8 +160,10 @@ class RewardPriceTableExceptionCom extends Component {
                             disabled={IsUpdate}
                             listoption={[]}
                             datasourcemember="SubGroupID"
-                            // filterName="cbMainGroupID"
-                            // filterobj="MainGroupID"
+                            filterName="cbMainGroupID"
+                            filterobj="MainGroupID"
+                            filterValue=''
+                            
                             
 
                         />
