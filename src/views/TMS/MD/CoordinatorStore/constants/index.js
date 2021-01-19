@@ -76,11 +76,11 @@ export const SearchElementList = [
         placeholder: "---Kho---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORETMS",
         ValueMember: "StoreID",
         NameMember: "StoreName",
-        filterValue: 1,
-        filterobj:"CompanyID",
+        // filterValue: 1,
+        // filterobj:"CompanyID",
         classNameCol:"col-custom"
     },
   
