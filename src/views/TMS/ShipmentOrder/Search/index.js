@@ -119,7 +119,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        // console.log("aaa",formData, MLObject)
+        console.log("aaa",formData, MLObject)
         const postData = [
             {
                 SearchKey: "@Keyword",

@@ -202,7 +202,7 @@ class SOPrintTemplateCom extends React.Component {
                         <table style={{ width: "100%", borderSpacing: "10px", borderCollapse: "collapse", textAlign: "center", fontSize: "10px" }}>
                             <thead>
                                 <tr>
-                                    <td colspan="6" style={{ border: "1px solid", padding: "8px" }}><b>Danh sách hàng hóa</b></td>
+                                    <td colSpan="6" style={{ border: "1px solid", padding: "8px" }}><b>Danh sách hàng hóa</b></td>
                                 </tr>
                                 <tr style={{ backgroundColor: "#d7d7d7" }}>
                                     {/* <td style={{ border: "1px solid", padding: "3px" }}>Có lắp đặt</td> */}
@@ -260,12 +260,12 @@ class SOPrintTemplateCom extends React.Component {
 
                         <div className="footer" style={{ display: "table", border: "1px solid", width: "100%", padding: "6px", boxSizing: "border-box" }}>
                             <div className="f-left" style={{ display: "table-cell", width: "40%", paddingLeft: "0px" }}>
-                                <p><b>TỔNG TIỀN COD: &nbsp;&nbsp;<i>{formatMoney(this.state.PrintDataSource.TotalCOD, 0)}</i></b></p>
+                                <p><b>TỔNG TIỀN COD: &nbsp;&nbsp;<i>{this.state.PrintDataSource.TotalCOD!=undefined? formatMoney(this.state.PrintDataSource.TotalCOD, 0):0}</i></b></p>
                                 <p><b>Hình thức thanh toán</b></p>
                                 <p>
-                                    <label><input type="checkbox" value="" checked="" />Thanh toán thẻ</label>&nbsp;&nbsp;
-                                    <label><input type="checkbox" value="" checked="" />Tiền mặt</label>&nbsp;&nbsp;
-                                    <label><input type="checkbox" value="" checked="" />Chuyển khoản</label>
+                                    <label><input type="checkbox" value="" defaultChecked={false} />Thanh toán thẻ</label>&nbsp;&nbsp;
+                                    <label><input type="checkbox" value="" defaultChecked={false} />Tiền mặt</label>&nbsp;&nbsp;
+                                    <label><input type="checkbox" value="" defaultChecked={false} />Chuyển khoản</label>
                                     {/* <label><input type="checkbox" value="" defaultChecked={this.state.PrintDataSource.ShipmentFeePaymentMethodID == 1 ? true : false} />Tiền mặt</label>&nbsp;&nbsp;
                     <label><input type="checkbox" value="" defaultChecked={this.state.PrintDataSource.ShipmentFeePaymentMethodID == 0 ? true : false} />Chuyển khoản</label> */}
                                 </p>
