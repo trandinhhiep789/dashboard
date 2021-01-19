@@ -74,7 +74,8 @@ class SearchCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
-                this.callSearchData(this.state.SearchData);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_PNSERVICEPRICETABLE);
+                this.callSearchData(this.state.SearchData);   
             }
         });
     }

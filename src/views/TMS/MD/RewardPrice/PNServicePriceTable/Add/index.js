@@ -18,7 +18,7 @@ import { updatePagePath } from "../../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import { TMS_PNSERVICEPRICETABLE_ADD } from "../../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
-import { ERPCOMMONCACHE_SERVICESEASONTYPE, ERPCOMMONCACHE_AREATT } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_SERVICESEASONTYPE, ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_PNSERVICEPRICETABLE } from "../../../../../../constants/keyCache";
 
 
 class AddCom extends React.Component {
@@ -68,6 +68,9 @@ class AddCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(ERPCOMMONCACHE_PNSERVICEPRICETABLE);
+            }
         });
     }
 

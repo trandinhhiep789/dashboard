@@ -94,6 +94,9 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(ERPCOMMONCACHE_PNSERVICEPRICETABLE);
+            }
 
         });
     }
