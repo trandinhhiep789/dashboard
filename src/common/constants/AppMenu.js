@@ -33,13 +33,6 @@ const AppMenu = [
                         LinkTo: '/Partner',
                         MenuIcon: '',
                         SubMenu: []
-                    },
-                    {
-                        MenuName: 'PNServicePriceTable',
-                        MenuTitle: 'Bảng giá dịch vụ của đối tác',
-                        LinkTo: '/PNServicePriceTable',
-                        MenuIcon: '',
-                        SubMenu: []
                     }
 
                     
@@ -302,6 +295,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: [
                     {
+                        MenuName: 'RewardCompute',
+                        MenuTitle: 'Tính thưởng',
+                        LinkTo: '/RewardCompute',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'RewardType',
                         MenuTitle: 'Loại thưởng',
                         LinkTo: '/RewardType',
@@ -357,6 +357,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'PNServicePriceTable',
+                        MenuTitle: 'Bảng giá dịch vụ của đối tác',
+                        LinkTo: '/PNServicePriceTable',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
 
                 ]
             },
@@ -680,13 +687,7 @@ const AppMenu = [
                 LinkTo: '',
                 MenuIcon: '',
                 SubMenu: [
-                    {
-                        MenuName: 'RewardCompute',
-                        MenuTitle: 'Tính thưởng',
-                        LinkTo: '/RewardCompute',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
+                   
                     {
                         MenuName: 'RewardShipmentOrder',
                         MenuTitle: 'Tổng thưởng giao hàng',
@@ -783,13 +784,6 @@ const AppMenu = [
         LinkTo: '',
         MenuIcon: '',
         SubMenu: [
-            {
-                MenuName: 'RewardCompute',
-                MenuTitle: 'Tính thưởng',
-                LinkTo: '/RewardCompute',
-                MenuIcon: '',
-                SubMenu: []
-            },
             {
                 MenuName: 'RewardShipmentOrder',
                 MenuTitle: 'Tổng thưởng giao hàng',
