@@ -323,13 +323,13 @@ export const DataGridColumnList = [
         DataSourceMember: "FuelPriceID",
         Width: 60
     },
-    {
-        Name: "FuelPriceID",
-        Type: "text",
-        Caption: "Mã bảng giá nhiên liệu",
-        DataSourceMember: "FuelPriceID",
-        Width: 160
-    },
+    // {
+    //     Name: "FuelPriceID",
+    //     Type: "text",
+    //     Caption: "Mã bảng giá nhiên liệu",
+    //     DataSourceMember: "FuelPriceID",
+    //     Width: 160
+    // },
     {
         Name: "FuelPriceName",
         Type: "text",
@@ -353,7 +353,7 @@ export const DataGridColumnList = [
     },
     {
         Name: "Price",
-        Type: "text",
+        Type: "textCurrency",
         Caption: "Giá",
         DataSourceMember: "Price",
         Width: 150
