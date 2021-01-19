@@ -37,8 +37,8 @@ class MaterialGroup_InstallCondCom extends React.Component {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
-            cssNotification: "",
-            iconNotification: "",
+            cssNotification: "notification-custom-success",
+            iconNotification: "fa fa-check",
             MaterialGroup_InstallCondDataSource: this.props.MaterialGroup_InstallCondDataSource ? this.props.MaterialGroup_InstallCondDataSource : [],
             MaterialGroup_ProductDataSource: this.props.MaterialGroup_ProductDataSource ? this.props.MaterialGroup_ProductDataSource : [],
             MaterialGroupID: this.props.MaterialGroupID,
@@ -357,6 +357,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
 
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
         this.setState({ IsInsert: true });
+        console.log("MaterialGroup_InstallCondDataSource", this.state.MaterialGroup_InstallCondDataSource);
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Thêm mới điều kiện lắp đặt của nhóm vật tư',
             autoCloseModal: false,
@@ -378,6 +379,15 @@ class MaterialGroup_InstallCondCom extends React.Component {
                         //MLObject.MaterialProductID = MLObject.MaterialProductID && MLObject.MaterialProductID[0].ProductID ? MLObject.MaterialProductID[0].ProductID : MLObject.MaterialProductID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+
+                        //check duplicated data
+                        let _exitsduplicated = this.state.MaterialGroup_InstallCondDataSource.filter(x => x.ApplyProductID == MLObject.ApplyProductID && x.ApplySubGroupID == MLObject.ApplySubGroupID
+                            && x.ApplyTechspecsID == MLObject.ApplyTechspecsID && x.ApplyTechspecsValueID == MLObject.ApplyTechspecsValueID && x.BrandID == MLObject.BrandID && x.MaterialProductID == MLObject.MaterialProductID
+                        );
+                        if (_exitsduplicated.length > 0) {
+                            this.addNotification("Dữ liệu đã tồn tại", true);
+                            return;
+                        }
 
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
@@ -448,6 +458,15 @@ class MaterialGroup_InstallCondCom extends React.Component {
                         //MLObject.MaterialProductID = MLObject.MaterialProductID && MLObject.MaterialProductID[0].ProductID ? MLObject.MaterialProductID[0].ProductID : MLObject.MaterialProductID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+
+                        //check duplicated data
+                        let _exitsduplicated = this.state.MaterialGroup_InstallCondDataSource.filter(x => x.ApplyProductID == MLObject.ApplyProductID && x.ApplySubGroupID == MLObject.ApplySubGroupID
+                            && x.ApplyTechspecsID == MLObject.ApplyTechspecsID && x.ApplyTechspecsValueID == MLObject.ApplyTechspecsValueID && x.BrandID == MLObject.BrandID && x.MaterialProductID == MLObject.MaterialProductID
+                        );
+                        if (_exitsduplicated.length > 0) {
+                            this.addNotification("Dữ liệu đã tồn tại", true);
+                            return;
+                        }
 
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
