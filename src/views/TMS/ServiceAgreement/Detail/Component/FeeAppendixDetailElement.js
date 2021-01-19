@@ -10,7 +10,7 @@ import {
     AddAPIFeeAppendixPath,
     EditAPIFeeAppendixPath
 } from "../contants/index.js";
-import { ERPCOMMONCACHE_SERVICESEASONTYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_SERVICESEASONTYPE, ERPCOMMONCACHE_PNSERVICEPRICETABLE } from "../../../../../constants/keyCache";
 
 
 class FeeAppendixDetailElementCom extends Component {
@@ -168,7 +168,27 @@ class FeeAppendixDetailElementCom extends Component {
                             datasourcemember="ApplyToDate"
                         />
                     </div>
+                    <div className="col-md-6">
+                        <FormControl.FormControlComboBox
+                            name="cbPNServicePriceTableID"
+                            colspan="9"
+                            labelcolspan="3"
+                            disabled={IsSystem}
+                            label="Bảng giá"
+                            validatonList={["Comborequired"]}
+                            isautoloaditemfromcache={true}
+                            loaditemcachekeyid={ERPCOMMONCACHE_PNSERVICEPRICETABLE} //"ERPCOMMONCACHE.PNSERVICEPRICETABLE"
+                            valuemember="PNServicePriceTableID"
+                            nameMember="PNServicePriceTableName"
+                            controltype="InputControl"
+                            value={-1}
+                            listoption={[]}
+                            datasourcemember="PNServicePriceTableID"
+                        />
 
+                    </div>
+
+                    <div className="col-md-6"></div>
 
 
                     <div className="col-md-6">
