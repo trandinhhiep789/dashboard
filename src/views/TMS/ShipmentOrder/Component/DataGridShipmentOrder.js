@@ -794,11 +794,11 @@ class DataGridShipmentOderCom extends Component {
                                                         <span className="txtCreatedOrderTime"><i className="fa fa-dashboard"></i> {formatDate(rowItem.OutputGoodsDate)}</span>
                                                     </span>
                                                     <span className="time-item itemEstimat">
-                                                        <span className="intervale">
+                                                        <span className="intervale itemDistance">
                                                             <i className="fa fa-paper-plane-o"></i>
-                                                            <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km"}</span>
+                                                            <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km/"+rowItem.ActualDeliveryDistance + "Km"}</span>
                                                         </span>
-                                                        <span className="intervale">
+                                                        <span className="intervale itemLong">
                                                             <i className="ti ti-timer"></i>
                                                             <span className="txtintervale">{rowItem.EstimateDeliveryLong + "'"}</span>
                                                         </span>

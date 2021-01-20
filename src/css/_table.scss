@@ -279,11 +279,18 @@
                                         font-weight: 600;
                                         color: #615d5d;
                                     }
+
+                                }
+                                &.itemDistance {
+
+                                    width: 75%;
+                                    
+                                }
+                                &.itemLong {
+                                    width: 25%;
                                 }
 
                                 &.times {
-
-                                    .item {}
 
                                     .pull-left {
                                         width: 70px;
