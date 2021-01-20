@@ -8,13 +8,13 @@ export const SearchDetailAPIPath = "api/TMSRewardDetail/LoadRewardTypeByDate";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Thưởng giao hàng" }
+    { Link: "", Title: "Thưởng giao hàng theo loại" }
 ];
 
 
 export const PagePathByUserName = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/RewardShipmentOrderByType", Title: "Thưởng giao hàng" },
+    { Link: "/RewardShipmentOrderByType", Title: "Thưởng giao hàng theo loại" },
     { Link: "", Title: "Thưởng giao hàng với loại thưởng theo ngày" }
 ];
 
