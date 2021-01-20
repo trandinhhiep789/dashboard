@@ -90,7 +90,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchNewAPIPath, searchData).then(apiResult => {
-            console.log("searchData", searchData, apiResult)
+            console.log("1111", searchData, apiResult)
             if (!apiResult.IsError) {
                 const totalAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
                     sum += curValue.TotalReward
@@ -196,7 +196,7 @@ class SearchCom extends React.Component {
                     IsPrint={false}
                     IsExportFile={false}
                     IsAutoPaging={true}
-                    RowsPerPage={10}
+                    RowsPerPage={30}
                     totalCurrency={true}
                     params={this.state.params}
                     totalCurrencyColSpan={2}
