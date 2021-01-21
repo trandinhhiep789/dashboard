@@ -28,6 +28,8 @@ import { showModal, hideModal } from '../../../../../actions/modal';
 import { toIsoStringCus } from '../../../../../utils/function';
 import { Base64 } from 'js-base64';
 import DataGirdStaffDebt from "../DataGirdStaffDebt";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -270,7 +272,6 @@ class SearchCom extends React.Component {
     }
 
     handleExportSubmit(formData, MLObject){
-        console.log("export", formData, MLObject)
         const postData = [
             {
                 SearchKey: "@USERNAME",
@@ -283,10 +284,24 @@ class SearchCom extends React.Component {
 
         ];
         this.props.callFetchAPI(APIHostName, SearchExportAPIPath, postData).then(apiResult => {
-            console.log("apiResult",postData, apiResult)
             if (!apiResult.IsError) {
                 if(apiResult.ResultObject.length > 0){
-                    this.showMessage("Chức năng đang phát triển nên chưa xuất được file.")
+                    const tempDataExport = apiResult.ResultObject.map((item, index) => {
+                        let element = {
+                            "Mã NV nợ":  item.UserName + " - " + item.FullName,
+                            "Kho điều phối": item.StoreID + "-" + item.StoreName,
+                            "Tổng tiền phải thu hộ": item.TotalCOD,
+                            "Tổng tiền phải thu vật tư": item.TotalSaleMaterialMoney,
+                            "Tổng tiền phải thu": item.TotalMoney,
+                            "Tổng tiền đã thu của khách hàng": item.CollectedTotalMoney,
+                            "Tổng vận đơn còn nợ": item.TotalDebtOrders,
+                            "Tổng vận đơn nợ quá hạn": item.TotALoverDueDebtOrders,
+                            "Tình trạng": item.IsLockDelivery == false ? "Hoạt động" : "Đã khóa",
+                        };
+    
+                        return element;
+                    })
+                    this.handleExportCSV(tempDataExport);
                 }
                 else{
                     this.showMessage("Dữ liệu không tồn tại nên không thể xuất.")
@@ -296,6 +311,36 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message)
             }
         })
+    }
+
+    
+    handleExportCSV(dataExport) {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        const fileName = 'Danh sách quản lý công nợ';
+        let result;
+        if (dataExport.length == 0) {
+            result = {
+                IsError: true,
+                Message: "Dữ liệu không tồn tại. Không thể xuất file!"
+            };
+        }
+        else {
+
+            const ws = XLSX.utils.json_to_sheet(dataExport);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+
+
+            FileSaver.saveAs(data, fileName + fileExtension);
+
+            result = {
+                IsError: false,
+                Message: "Xuất file thành công!"
+            };
+            this.addNotification(result.Message, result.IsError);
+        }
     }
 
     render() {
