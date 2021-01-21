@@ -115,7 +115,7 @@ class MultiTreeSelectCom extends React.Component {
 
     render() {
 
-        let { placeholder } = this.props;
+        let { placeholder,maxTagCount } = this.props;
         let formRowClassName = "form-row";
         if (this.props.rowspan)
             formRowClassName = "col-md-" + this.props.rowspan + " " + this.props.classNameCol;
@@ -147,7 +147,7 @@ class MultiTreeSelectCom extends React.Component {
             onChange: this.handleValueChange,
             treeCheckable: true,
             showCheckedStrategy: SHOW_PARENT,
-            maxTagCount: 0,
+            maxTagCount: maxTagCount,
             placeholder: placeholder,
             style: {
                 width: '100%',
