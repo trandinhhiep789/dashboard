@@ -119,7 +119,16 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("aaa",formData, MLObject)
+        console.log("MLObject",formData, MLObject)
+        // let result="";
+        // if ( MLObject.ShipmentOrderTypeID != -1 &&  MLObject.ShipmentOrderTypeID != null &&  MLObject.ShipmentOrderTypeID != "") {
+        //     result =  MLObject.ShipmentOrderTypeID.reduce((data, item, index) => {
+        //         const comma = data.length ? "," : "";
+        //         return data + comma + item;
+        //     }, '');
+        // }
+       
+
         const postData = [
             {
                 SearchKey: "@Keyword",

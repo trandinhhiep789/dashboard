@@ -26,12 +26,9 @@ class MultiTreeSelectCom extends React.Component {
         // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
         if (IsAutoLoadItemFromCache) {
             // console.log("ValueMember ", ValueMember, NameMember, this.props);
-
-
             this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
 
                 // console.log("this.props.isautoloaditemfromcach2: ", result);
-
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     if (typeof filterobj != undefined) {
                         // console.log(filterobj,result.ResultObject.CacheData,result.ResultObject.CacheData.filter(n => n.filterobj == 1))
@@ -67,21 +64,7 @@ class MultiTreeSelectCom extends React.Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-
-        if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
-        {
-            let { filterName, filterobj, ValueMember, NameMember } = this.props;
-            if (typeof filterobj != undefined) {
-                let listoptionnew = [{ value: -1, label: this.props.placeholder }];
-                //  console.log(filterobj,this.state.Data.filter(n => n[filterobj] == nextProps.filterValue))
-                this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
-                    listoptionnew.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
-                }
-                );
-                this.setState({ ListOption: listoptionnew });
-            }
-
-        }
+   
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             const aa = this.bindcombox(nextProps.value, this.state.ListOption);
@@ -92,30 +75,43 @@ class MultiTreeSelectCom extends React.Component {
         let values = value;
         let selectedOption = [];
         if (values == null || values === -1)
-            return { value: -1, label: this.props.placeholder };
+            return selectedOption;
         if (typeof values.toString() == "string")
             values = values.toString().split(',');
-        for (let i = 0; i < values.length; i++) {
-            for (let j = 0; j < listOption.length; j++) {
-                if (values[i] == listOption[j].value) {
-                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
+            for (let i = 0; i < values.length; i++) {
+                for (let j = 0; j < listOption.length; j++) {
+                    if (values[i] == listOption[j].value) {
+                        selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
+                    }
                 }
             }
-        }
         return selectedOption;
     }
 
     handleValueChange(selectedOption) {
-        this.setState({ value: selectedOption });
-        console.log("handleValueChange",selectedOption)
+
+        let comboValues = [];
+        if (Array.isArray(selectedOption)) {
+            comboValues = this.getComboValue(selectedOption);
+        }
         if (this.props.onValueChange)
-            this.props.onValueChange(this.props.name, selectedOption);
+            this.props.onValueChange(this.props.name, comboValues);
     }
 
+    getComboValue(selectedOption) {
+         let result="";
+        if (selectedOption != -1 &&  selectedOption!= null &&  selectedOption != "") {
+            result =  selectedOption.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item;
+            }, '');
+        }
+        return result;
+    }
 
     render() {
 
-        let { placeholder,maxTagCount } = this.props;
+        let { placeholder, maxTagCount } = this.props;
         let formRowClassName = "form-row";
         if (this.props.rowspan)
             formRowClassName = "col-md-" + this.props.rowspan + " " + this.props.classNameCol;
@@ -140,10 +136,11 @@ class MultiTreeSelectCom extends React.Component {
         if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
             classNameselect += " is-invalid";
         }
-
+    //    console.log("this.state.ListOption",this.state.ListOption)
+    //    console.log("this.state.SelectedOption",this.state.SelectedOption)
         const tProps = {
             treeData: this.state.ListOption,
-            value: this.state.value,
+            value: this.state.SelectedOption,
             onChange: this.handleValueChange,
             treeCheckable: true,
             showCheckedStrategy: SHOW_PARENT,

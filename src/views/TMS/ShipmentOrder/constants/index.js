@@ -59,13 +59,31 @@ export const SearchElementList = [
             { value: 4, label: 'Mã NV điều phối' },
         ]
     },
+    // {
+    //     type: "ComboBox",
+    //     name: "cbShipmentOrderTypeID",
+    //     DataSourceMember: "ShipmentOrderTypeID",
+    //     colspan: 2,
+    //     value: -1,
+    //     isMultiSelect: false,
+    //     placeholder: "---Loại yêu cầu vận chuyển---",
+    //     listoption: [],
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
+    //     ValueMember: "ShipmentOrderTypeID",
+    //     NameMember: "ShipmentOrderTypeName",
+    //     classNameCol:"col-custom"
+    // },
+   
     {
-        type: "ComboBox",
+        type: "MultiTreeSelect",
         name: "cbShipmentOrderTypeID",
         DataSourceMember: "ShipmentOrderTypeID",
-        colspan: 2,
-        value: -1,
-        isMultiSelect: false,
+        colspan: 12,
+        rowspan: 2,
+        value: "1001,1004",
+        maxTagCount:1,
+        isMultiSelect: true,
         placeholder: "---Loại yêu cầu vận chuyển---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
@@ -203,24 +221,7 @@ export const SearchElementList = [
         listoption: [{ value: 1, label: "Sắp xếp theo thời gian giao" },{ value: 2, label: "Sắp xếp theo thời gian tạo" }],
         classNameCol:"col-custom"
     }
-    ,
-    {
-        type: "MultiTreeSelect",
-        name: "TreeSelectID",
-        DataSourceMember: "TreeSelectID",
-        colspan: 12,
-        rowspan: 2,
-        value: -1,
-        maxTagCount:1,
-        isMultiSelect: false,
-        placeholder: "---Loại yêu cầu vận chuyển---",
-        listoption: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
-        ValueMember: "ShipmentOrderTypeID",
-        NameMember: "ShipmentOrderTypeName",
-        classNameCol:"col-custom"
-    }
+    
     
 ];
 export const InitSearchParams = [
@@ -295,7 +296,7 @@ export const SearchMLObjectDefinition = [
     },
     {
         Name: "ShipmentOrderTypeID",
-        DefaultValue: "",
+        DefaultValue:"1001,1004",
         BindControlName: "cbShipmentOrderTypeID"
     },
     {
@@ -348,12 +349,12 @@ export const SearchMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "cbIsOrderBy"
     }
-  ,
-    {
-        Name: "TreeSelectID",
-        DefaultValue: "",
-        BindControlName: "TreeSelectID"
-    }  
+//   ,
+//     {
+//         Name: "TreeSelectID",
+//         DefaultValue: "",
+//         BindControlName: "TreeSelectID"
+//     }  
     
 ];
 
