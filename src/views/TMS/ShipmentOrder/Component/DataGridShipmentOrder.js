@@ -9,7 +9,7 @@ import GridPage from "../../../../common/components/DataGrid/GridPage";
 import { connect } from 'react-redux';
 import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
-import { formatDate } from "../../../../common/library/CommonLib.js";
+import { formatDate ,formatMonthDate} from "../../../../common/library/CommonLib.js";
 import { formatMoney, formatNumber } from '../../../../utils/function';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
@@ -790,13 +790,13 @@ class DataGridShipmentOderCom extends Component {
                                             <label className="item creacte-time">
                                                 <span className="times group-times">
                                                     <span className="time-item itemCreatedOrderTime">
-                                                        <span className="txtCreatedOrderTime"><i className="ti ti-dashboard"></i> {formatDate(rowItem.CreatedOrderTime)}</span>
-                                                        <span className="txtCreatedOrderTime"><i className="fa fa-dashboard"></i> {formatDate(rowItem.OutputGoodsDate)}</span>
+                                                        <span className="txtCreatedOrderTime">Tạo lúc: {formatMonthDate(rowItem.CreatedOrderTime)}</span>
+                                                        <span className="txtCreatedOrderTime">Xuất: {formatMonthDate(rowItem.OutputGoodsDate)}</span>
                                                     </span>
                                                     <span className="time-item itemEstimat">
                                                         <span className="intervale itemDistance">
                                                             <i className="fa fa-paper-plane-o"></i>
-                                                            <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km/"+rowItem.ActualDeliveryDistance + "Km"}</span>
+                                                            <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km/"+rowItem.ActualDeliveryDistance.toFixed(2) + "Km"}</span>
                                                         </span>
                                                         <span className="intervale itemLong">
                                                             <i className="ti ti-timer"></i>

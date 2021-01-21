@@ -931,6 +931,13 @@ const AppMenu = [
                 LinkTo: '/InvestigationShipmentOrderStatus',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'InventoryMaterials',
+                MenuTitle: 'Báo cáo tồn kho vật tư',
+                LinkTo: '/InventoryMaterials',
+                MenuIcon: '',
+                SubMenu: []
             }
         ]
     }
