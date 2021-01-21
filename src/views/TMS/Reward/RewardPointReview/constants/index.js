@@ -123,6 +123,14 @@ export const GridColumnList = [
         Width: 100
     },
     {
+        Name: "DeliveryDistance",
+        Type: "text",
+        Caption: "Số Km",
+        DataSourceMember: "DeliveryDistance",
+        Width: 100
+    },
+    
+    {
         Name: "RewardPrice",
         Type: "textCurrency",
         Caption: "Đơn giá thưởng",
