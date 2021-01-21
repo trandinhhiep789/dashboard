@@ -18,10 +18,8 @@ import "react-notifications-component/dist/theme.css";
 import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
-import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
-import DataGirdReportShipmentOrder from '../../components/DataGirdReportShipmentOrder'
-
-import { toIsoStringCus } from '../../../../../utils/function'
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 
 
 class SearchCom extends React.Component {
@@ -78,7 +76,43 @@ class SearchCom extends React.Component {
         //api/ShipmentOrder/SearchReportExport
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchReportExport", postData).then(apiResult => {
             console.log("postData:", postData, apiResult)
+            if (!apiResult.IsError) {
+                
+
+            }
+            else {
+                this.showMessage(apiResult.Message)
+            }
         });
+    }
+
+    handleExportCSV(dataExport) {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        const fileName= 'Thông kê hạn mức tạm ứng';
+        let result;
+        if (dataExport.length == 0) {
+            result = {
+                IsError: true,
+                Message: "Dữ liệu không tồn tại. Không thể xuất file!"
+            };
+        }
+        else {
+
+            const ws = XLSX.utils.json_to_sheet(dataExport);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+
+
+            FileSaver.saveAs(data, fileName + fileExtension);
+
+            result = {
+                IsError: false,
+                Message: "Xuất file thành công!"
+            };
+            this.addNotification(result.Message, result.IsError);
+        }
     }
 
 
