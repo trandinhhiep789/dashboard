@@ -3,6 +3,15 @@
         .ant-select-selector{
             padding: 2px 4px;
             border-color: #808080;
+            .ant-select-selection-overflow {
+                .ant-select-selection-overflow-item {
+                    &:first-child {
+                        max-width: 60%;
+                        overflow: hidden;
+                    }
+
+                }
+            }
         }
     }
 }
