@@ -123,8 +123,8 @@ class EditCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Thời gian tính(mili giây): </span>
-                                            <span>{this.state.DataSource.ComputeInterval}</span>
+                                            <span>Thời gian tính(giây): </span>
+                                            <span>{parseFloat((this.state.DataSource.ComputeInterval / 1000) % 60).toFixed(2)}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
@@ -146,7 +146,7 @@ class EditCom extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                  
+
                                 <div className="row">
                                     <div className="col-md-12">
                                         <div className="form-group">
