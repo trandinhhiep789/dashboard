@@ -9,8 +9,9 @@ import { formatDate } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { TMS_CURRENTADVANCEDEBT_VIEW} from "../../../../constants/functionLists";
-
+import { TMS_CURRENTADVANCEDEBT_VIEW } from "../../../../constants/functionLists";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 
 import {
     SearchElementList,
@@ -111,7 +112,7 @@ class SearchCom extends React.Component {
                     return element;
 
                 })
-               
+
                 this.setState({
                     dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
@@ -122,10 +123,9 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("â",formData, MLObject );
-        const postData =  MLObject.UserName == -1 ? MLObject.UserName  :  MLObject.UserName.value
+        const postData = MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
         this.props.callFetchAPI(APIHostName, SearchAPIPath, postData).then(apiResult => {//MLObject.UserName.value
-             console.log("apiResult", apiResult)
+            // console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     dataExport: [],
@@ -148,7 +148,7 @@ class SearchCom extends React.Component {
                     return element;
 
                 })
-               
+
                 this.setState({
                     dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
@@ -159,7 +159,7 @@ class SearchCom extends React.Component {
     }
 
     handleItemDetail(item) {
-        
+
         const { gridDataSource } = this.state;
         let MLObject = {}
         MLObject.MaterialGroupID = item.MaterialGroupID;
@@ -252,23 +252,67 @@ class SearchCom extends React.Component {
         });
     }
 
-    handleExportSubmit(formData, MLObject){
-        console.log("export", formData, MLObject)
-        const userName =  MLObject.UserName == -1 ? MLObject.UserName  :  MLObject.UserName.value
+    handleExportSubmit(formData, MLObject) {
+        const userName = MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
         this.props.callFetchAPI(APIHostName, SearchExportAPIPath, userName).then(apiResult => {
-            console.log("apiResult",userName, apiResult)
+            // console.log("handleExportSubmit", userName, apiResult)
             if (!apiResult.IsError) {
-                if(apiResult.ResultObject.length > 0){
-                    this.showMessage("Chức năng đang phát triển nên chưa xuất được file.")
+                if (apiResult.ResultObject.length > 0) {
+                    const exelData = apiResult.ResultObject.map((item, index) => {
+                        let element = {
+                            "Mã nhân viên": item.UserName,
+                            "Tên nhân viên": item.FullName,
+                            "Mã nhóm vật tư": item.MaterialGroupID,
+                            "Tên nhóm vật tư": item.MaterialGroupName,
+                            "Mã sản phẩm": item.ProductID,
+                            "Tên sản phẩm": item.ProductName,
+                            "Tổng số lượng": item.TotalQuantity,
+                            "Số lượng khả dụng": item.UsableQuantity
+                        };
+                        return element;
+
+                    })
+
+                    this.handleExportCSV(exelData);
                 }
-                else{
+                else {
                     this.showMessage("Dữ liệu không tồn tại nên không thể xuất.")
                 }
+
             }
-            else{
+            else {
                 this.showMessage(apiResult.Message)
             }
         })
+    }
+
+    handleExportCSV(dataExport) {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        const fileName = 'Thông kê hạn mức tạm ứng';
+        let result;
+        if (dataExport.length == 0) {
+            result = {
+                IsError: true,
+                Message: "Dữ liệu không tồn tại. Không thể xuất file!"
+            };
+        }
+        else {
+
+            const ws = XLSX.utils.json_to_sheet(dataExport);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+
+
+            FileSaver.saveAs(data, fileName + fileExtension);
+
+            result = {
+                IsError: false,
+                Message: "Xuất file thành công!"
+            };
+            this.addNotification(result.Message, result.IsError);
+        }
     }
 
     render() {
@@ -304,7 +348,7 @@ class SearchCom extends React.Component {
                     DataExport={this.state.dataExport}
                     fileName="Danh sách thống kê hạn mức tạm ứng"
                     onExportFile={this.handleExportFile.bind(this)}
-                   RequirePermission={TMS_CURRENTADVANCEDEBT_VIEW}
+                    RequirePermission={TMS_CURRENTADVANCEDEBT_VIEW}
                 />
             </React.Fragment>
         );
