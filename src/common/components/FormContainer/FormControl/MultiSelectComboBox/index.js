@@ -97,6 +97,7 @@ class MultiSelectComboBoxCom extends React.Component {
 
     }
     render() {
+        console.log("aa", this.state.SelectedOption)
         const listOption = this.state.ListOption;
         let listOptionNew = [];
         if (listOption != []) {

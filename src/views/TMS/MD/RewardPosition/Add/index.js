@@ -15,7 +15,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_SHIPMENTFEETYPE, ERPCOMMONCACHE_TMSREWARDPOSITION } from "../../../../../constants/keyCache";
 import { SHIPMENTFEETYPE_ADD, INVENTORYREQUESTTYPE_ADD, REWARDPOSITION_ADD } from "../../../../../constants/functionLists";
 class AddCom extends React.Component {
     constructor(props) {
@@ -40,7 +40,7 @@ class AddCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if(!apiResult.IsError){
-                //this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTFEETYPE);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_TMSREWARDPOSITION);
                 //this.handleSubmitInsertLog(MLObject);
             }            
             this.showMessage(apiResult.Message);

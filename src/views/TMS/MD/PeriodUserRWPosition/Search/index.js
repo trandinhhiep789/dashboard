@@ -19,11 +19,11 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
+import { REWARDCOMPUTESCHEDULE_VIEW, REWARDCOMPUTESCHEDULE_DELETE } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SHIPMENTFEETYPE, ERPCOMMONCACHE_TMSREWARDPOSITION } from "../../../../../constants/keyCache";
-import { SHIPMENTFEETYPE_VIEW, SHIPMENTFEETYPE_DELETE, INVENTORYREQUESTTYPE_VIEW, INVENTORYREQUESTTYPE_DELETE, REWARDPOSITION_VIEW, REWARDPOSITION_DELETE } from "../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -64,8 +64,7 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                this.props.callClearLocalCache(ERPCOMMONCACHE_TMSREWARDPOSITION);
-                // this.handleSubmitInsertLog();
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
             }
         });
     }
@@ -92,8 +91,10 @@ class SearchCom extends React.Component {
                     IsShowForm: true
                 });
             } else {
-                this.showMessage(apiResult.Message);
-                this.setState({ IsShowForm: false });
+                this.setState({ IsShowForm: false,
+                    IsCallAPIError:!apiResult.IsError,
+                 });
+                 this.showMessage(apiResult.Message);
             }
         });
     }
@@ -154,7 +155,7 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách vị trí thưởng"
+                        FormName="Tìm kiếm vị trí thưởng theo khoảng thời gian"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
@@ -168,10 +169,10 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={REWARDPOSITION_VIEW}
-                        DeletePermission={REWARDPOSITION_DELETE}
+                        RequirePermission={REWARDCOMPUTESCHEDULE_VIEW}
+                        DeletePermission={REWARDCOMPUTESCHEDULE_DELETE}
                         IsAutoPaging={true}
-                        RowsPerPage={10}
+                        RowsPerPage={30}
                     />
                 </React.Fragment>
             );
