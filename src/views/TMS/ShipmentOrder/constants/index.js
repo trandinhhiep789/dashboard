@@ -53,10 +53,12 @@ export const SearchElementList = [
         classNameCol:"col-custom",
         listoption: [
             { value: -1, label: '--Vui lòng chọn--' },
-            { value: 1, label: 'SĐT khách hàng' },
+            { value: 1, label: 'SĐT người nhận hàng' },
             { value: 2, label: 'Mã NV giao hàng' },
-            { value: 3, label: 'Mã đơn hàng ' },
-            { value: 4, label: 'Mã NV điều phối' },
+            { value: 3, label: 'Mã ycx của đối tác' },
+            { value: 4, label: 'Mã vận đơn' },
+            { value: 5, label: 'Tên sản phảm' },
+            { value: 6, label: 'Mã NV điều phối' }
         ]
     },
     // {
@@ -81,7 +83,7 @@ export const SearchElementList = [
         DataSourceMember: "ShipmentOrderTypeID",
         colspan: 12,
         rowspan: 2,
-        value: "1001,1004",
+        value: "",
         maxTagCount:1,
         isMultiSelect: true,
         placeholder: "---Loại yêu cầu vận chuyển---",
@@ -184,13 +186,30 @@ export const SearchElementList = [
         filterobj:"CompanyID",
         classNameCol:"col-custom"
     },
+    // {
+    //     type: "ComboBox",
+    //     name: "cbShipmentOrderStatusGroupID",
+    //     DataSourceMember: "ShipmentOrderStatusGroupID",
+    //     colspan: 2,
+    //     value: -1,
+    //     isMultiSelect: false,
+    //     placeholder: "---Trạng thái---",
+    //     listoption: [],
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUSGR",
+    //     ValueMember: "ShipmentOrderStatusGroupID",
+    //     NameMember: "ShipmentOrderStatusGroupName",
+    //     classNameCol:"col-custom"
+    // },
     {
-        type: "ComboBox",
+        type: "MultiTreeSelect",
         name: "cbShipmentOrderStatusGroupID",
         DataSourceMember: "ShipmentOrderStatusGroupID",
-        colspan: 2,
-        value: -1,
-        isMultiSelect: false,
+        colspan: 12,
+        rowspan: 2,
+        value: "1,2,3",
+        maxTagCount:1,
+        isMultiSelect: true,
         placeholder: "---Trạng thái---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
@@ -296,7 +315,7 @@ export const SearchMLObjectDefinition = [
     },
     {
         Name: "ShipmentOrderTypeID",
-        DefaultValue:"1001,1004",
+        DefaultValue:"",
         BindControlName: "cbShipmentOrderTypeID"
     },
     {

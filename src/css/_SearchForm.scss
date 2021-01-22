@@ -179,6 +179,20 @@
                 .col-custom {
                     padding-right: 2px;
                     padding-left: 2px;
+                    .group-text-select{
+                        clear: both;
+                        .input-group-append{
+                            &.is-invalid{
+                                clear: both;
+                                &~ .invalid-feedback{
+                                    display: block;
+                                }
+                                .dropdown-toggle{
+                                    border-color: #f96868;
+                                }
+                            }
+                        }
+                    }
 
                     &.btn-custom-right {
                         clear: both;
