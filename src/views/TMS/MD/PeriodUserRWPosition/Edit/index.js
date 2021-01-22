@@ -148,7 +148,7 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        MLObject.RewardComputeScheduleID = this.props.match.params.id;
+        MLObject.PeriodUserRWPositionID = this.props.match.params.id;
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.UserName = this.state.Username;
@@ -226,13 +226,13 @@ class EditCom extends React.Component {
                 MLObject.ApplyToDate = this.state.DataSource.ApplyToDate;
             }
 
-            // this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-            //     this.setState({ IsCallAPIError: apiResult.IsError });
-            //     if (!apiResult.IsError) {
-            //         //this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
-            //     }
-            //     this.showMessage(apiResult.Message);
-            // });
+            this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+                this.setState({ IsCallAPIError: apiResult.IsError });
+                if (!apiResult.IsError) {
+                    //this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
+                }
+                this.showMessage(apiResult.Message);
+            });
         }
 
     }
@@ -260,7 +260,7 @@ class EditCom extends React.Component {
 
             let listOption = [];
             if (this.state.DataSource.UserName) {
-                listOption.push({ value: this.state.DataSource.UserName, name: this.state.DataSource.UserName, label: this.state.DataSource.UserName });
+                listOption.push({ value: this.state.DataSource.UserName, name: this.state.DataSource.FullName, label: this.state.DataSource.FullName });
             }
 
 
@@ -291,32 +291,31 @@ class EditCom extends React.Component {
                         dataSource={this.state.DataSource}
                         BackLink={BackLink}
                         onchange={this.handleChange.bind(this)}
-                    //RequirePermission={REWARDCOMPUTESCHEDULE_ADD}
+                        RequirePermission={REWARDCOMPUTESCHEDULE_ADD}
                     >
 
                         <MultiSelectComboBox
                             name="UserName"
                             labelcolspan={3} colspan={6} rowspan={8}
-                            label="Mã người dùng"
+                            label="mã người dùng"
                             disabled={false}
                             IsLabelDiv={true}
                             isautoloaditemfromcache={false}
                             onChange={this.onChangeUser.bind(this)}
-                            controltype="InputControl"
+                            //controltype="InputControl"
                             value={listOption}
                             listoption={listOption}
                             isMultiSelect={false}
                             datasourcemember="UserName"
                             validationErrorMessage={''}
-                            //validatonList={["Comborequired"]}
+                            validatonList={["Comborequired"]}
                             isRequired={true}
                         />
 
                         
-
                         <FormControl.FormControlComboBox
                             name="RewardPositionID"
-                            label="Mã vị trí thưởng"
+                            label="mã vị trí thưởng"
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid={ERPCOMMONCACHE_TMSREWARDPOSITION}
                             valuemember="RewardPositionID"
@@ -336,12 +335,13 @@ class EditCom extends React.Component {
                             readOnly={false}
                             timeFormat={false}
                             dateFormat="DD/MM/YYYY"
-                            label="Áp dụng từ ngày"
-                            placeholder="Áp dụng từ ngày"
+                            label="áp dụng từ ngày"
+                            placeholder="áp dụng từ ngày"
                             controltype="InputControl"
                             value={""}
                             datasourcemember="ApplyFromDateString"
                             labelcolspan={3} colspan={6} rowspan={8}
+                            validatonList={["required"]}
                         />
 
                         <FormControl.ElementDatetime
@@ -349,12 +349,13 @@ class EditCom extends React.Component {
                             readOnly={false}
                             timeFormat={false}
                             dateFormat="DD/MM/YYYY"
-                            label="Áp dụng đến ngày"
+                            label="áp dụng đến ngày"
                             placeholder="Áp dụng đến ngày"
                             controltype="InputControl"
                             value={""}
                             datasourcemember="ApplyToDateString"
                             labelcolspan={3} colspan={6} rowspan={8}
+                            validatonList={["required"]}
                         />
 
                         <FormControl.CheckBox
