@@ -278,7 +278,7 @@ class AddCom extends React.Component {
                     <MultiSelectComboBox
                         name="UserName"
                         labelcolspan={3} colspan={6} rowspan={8}
-                        label="Mã người dùng"
+                        label="mã người dùng"
                         disabled={false}
                         IsLabelDiv={true}
                         isautoloaditemfromcache={false}
@@ -289,13 +289,13 @@ class AddCom extends React.Component {
                         isMultiSelect={false}
                         datasourcemember="UserName"
                         validationErrorMessage={''}
-                        //validatonList={["Comborequired"]}
+                        validatonList={["Comborequired"]}
                         isRequired={true}
                     />
 
                     <FormControl.FormControlComboBox
                         name="RewardPositionID"
-                        label="Mã vị trí thưởng"
+                        label="mã vị trí thưởng"
                         isautoloaditemfromcache={true}
                         loaditemcachekeyid={ERPCOMMONCACHE_TMSREWARDPOSITION}
                         valuemember="RewardPositionID"
@@ -315,12 +315,13 @@ class AddCom extends React.Component {
                         readOnly={false}
                         timeFormat={false}
                         dateFormat="DD/MM/YYYY"
-                        label="Áp dụng từ ngày"
+                        label="áp dụng từ ngày"
                         placeholder="Áp dụng từ ngày"
                         controltype="InputControl"
                         value={""}
                         datasourcemember="ApplyFromDate"
                         labelcolspan={3} colspan={6} rowspan={8}
+                        validatonList={["required"]}
                     />
 
                     <FormControl.ElementDatetime
@@ -328,12 +329,13 @@ class AddCom extends React.Component {
                         readOnly={false}
                         timeFormat={false}
                         dateFormat="DD/MM/YYYY"
-                        label="Áp dụng đến ngày"
+                        label="áp dụng đến ngày"
                         placeholder="Áp dụng đến ngày"
                         controltype="InputControl"
                         value={""}
                         datasourcemember="ApplyToDate"
                         labelcolspan={3} colspan={6} rowspan={8}
+                        validatonList={["required"]}
                     />
 
                     <FormControl.CheckBox
