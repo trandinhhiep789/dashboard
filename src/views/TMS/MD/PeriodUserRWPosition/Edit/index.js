@@ -291,7 +291,7 @@ class EditCom extends React.Component {
                         dataSource={this.state.DataSource}
                         BackLink={BackLink}
                         onchange={this.handleChange.bind(this)}
-                    //RequirePermission={REWARDCOMPUTESCHEDULE_ADD}
+                        RequirePermission={REWARDCOMPUTESCHEDULE_ADD}
                     >
 
                         <MultiSelectComboBox
