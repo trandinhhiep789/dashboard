@@ -63,7 +63,7 @@ class EditCom extends React.Component {
             } else {
                 this.setState({
                     DataSource: apiResult.ResultObject,
-                    UserName: apiResult.ResultObject.Username
+                    Username: apiResult.ResultObject.UserName
                 });
             }
             this.setState({
@@ -151,7 +151,7 @@ class EditCom extends React.Component {
         MLObject.RewardComputeScheduleID = this.props.match.params.id;
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.UserName = this.state.Username?this.state.Username:MLObject.UserName;
+        MLObject.UserName = this.state.Username;
 
         console.log("estimate ---", MLObject);
         var dates = {
@@ -216,23 +216,23 @@ class EditCom extends React.Component {
 
             if (MLObject.ApplyFromDate.getMonth) {
                 MLObject.ApplyFromDate.setDate(MLObject.ApplyFromDate.getDate() + 1);
-            }else {
+            } else {
                 MLObject.ApplyFromDate = this.state.DataSource.ApplyFromDate;
             }
 
             if (MLObject.ApplyToDate.getMonth) {
                 MLObject.ApplyToDate.setDate(MLObject.ApplyToDate.getDate() + 1);
-            }else {
+            } else {
                 MLObject.ApplyToDate = this.state.DataSource.ApplyToDate;
             }
 
-            this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                if (!apiResult.IsError) {
-                    //this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
-                }
-                this.showMessage(apiResult.Message);
-            });
+            // this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+            //     this.setState({ IsCallAPIError: apiResult.IsError });
+            //     if (!apiResult.IsError) {
+            //         //this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
+            //     }
+            //     this.showMessage(apiResult.Message);
+            // });
         }
 
     }
@@ -257,6 +257,13 @@ class EditCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
         if (this.state.IsLoadDataComplete) {
+
+            let listOption = [];
+            if (this.state.DataSource.UserName) {
+                listOption.push({ value: this.state.DataSource.UserName, name: this.state.DataSource.UserName, label: this.state.DataSource.UserName });
+            }
+
+
             return (
                 // <SimpleForm
                 //     FormName="Cập nhật vị trí thưởng theo khoảng thời gian"
@@ -284,7 +291,7 @@ class EditCom extends React.Component {
                         dataSource={this.state.DataSource}
                         BackLink={BackLink}
                         onchange={this.handleChange.bind(this)}
-                        //RequirePermission={REWARDCOMPUTESCHEDULE_ADD}
+                    //RequirePermission={REWARDCOMPUTESCHEDULE_ADD}
                     >
 
                         <MultiSelectComboBox
@@ -296,15 +303,16 @@ class EditCom extends React.Component {
                             isautoloaditemfromcache={false}
                             onChange={this.onChangeUser.bind(this)}
                             controltype="InputControl"
-                            value={98138}
-                            //listoption={[{value:98138, name:"thái"}]}
-                            listoption ={[]}
+                            value={listOption}
+                            listoption={listOption}
                             isMultiSelect={false}
                             datasourcemember="UserName"
                             validationErrorMessage={''}
                             //validatonList={["Comborequired"]}
                             isRequired={true}
                         />
+
+                        
 
                         <FormControl.FormControlComboBox
                             name="RewardPositionID"
