@@ -216,13 +216,13 @@ class EditCom extends React.Component {
 
             if (MLObject.ApplyFromDate.getMonth) {
                 MLObject.ApplyFromDate.setDate(MLObject.ApplyFromDate.getDate() + 1);
-            }else {
+            } else {
                 MLObject.ApplyFromDate = this.state.DataSource.ApplyFromDate;
             }
 
             if (MLObject.ApplyToDate.getMonth) {
                 MLObject.ApplyToDate.setDate(MLObject.ApplyToDate.getDate() + 1);
-            }else {
+            } else {
                 MLObject.ApplyToDate = this.state.DataSource.ApplyToDate;
             }
 
@@ -257,6 +257,13 @@ class EditCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
         if (this.state.IsLoadDataComplete) {
+
+            let listOption = [];
+            if (this.state.DataSource.UserName) {
+                listOption.push({ value: this.state.DataSource.UserName, name: this.state.DataSource.UserName, label: this.state.DataSource.UserName });
+            }
+
+
             return (
                 // <SimpleForm
                 //     FormName="Cập nhật vị trí thưởng theo khoảng thời gian"
@@ -284,10 +291,10 @@ class EditCom extends React.Component {
                         dataSource={this.state.DataSource}
                         BackLink={BackLink}
                         onchange={this.handleChange.bind(this)}
-                        //RequirePermission={REWARDCOMPUTESCHEDULE_ADD}
+                    //RequirePermission={REWARDCOMPUTESCHEDULE_ADD}
                     >
 
-                        <FormControl.MultiUserComboBox
+                        <MultiSelectComboBox
                             name="UserName"
                             labelcolspan={3} colspan={6} rowspan={8}
                             label="Mã người dùng"
@@ -296,15 +303,16 @@ class EditCom extends React.Component {
                             isautoloaditemfromcache={false}
                             onChange={this.onChangeUser.bind(this)}
                             controltype="InputControl"
-                            value={this.state.Username}
-                            //listoption={[{value:this.state.Username, name:"thai"}]}
-                            listoption={[]}
+                            value={listOption}
+                            listoption={listOption}
                             isMultiSelect={false}
                             datasourcemember="UserName"
                             validationErrorMessage={''}
                             //validatonList={["Comborequired"]}
                             isRequired={true}
                         />
+
+                        
 
                         <FormControl.FormControlComboBox
                             name="RewardPositionID"
