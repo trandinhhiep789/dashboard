@@ -51,7 +51,7 @@ class RewardPriceTableExceptionCom extends Component {
             return;
         }
         else{
-            if(parseInt(MLObject.FromQuantity)  >= parseInt(MLObject.ToQuantity)){
+            if(parseInt(MLObject.FromQuantity)  > parseInt(MLObject.ToQuantity)){
                 this.showMessage("Số lượng đến phải lớn hơn số lượng từ")
                 return
             }
@@ -86,10 +86,44 @@ class RewardPriceTableExceptionCom extends Component {
         );
     }
 
-    // handleChange(formData, MLObject) {
-    //     console.log("change", formData, MLObject)
+    handleChange(formData, MLObject) {
+        if (formData.txtFromQuantity.value.toString().length > 0) {
 
-    // }
+            if (!/^\d*\.?\d+$/.test(formData.txtFromQuantity.value)) {
+                formData.txtFromQuantity.ErrorLst.IsValidatonError = true;
+                formData.txtFromQuantity.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
+            }
+            else {
+                formData.txtFromQuantity.ErrorLst.IsValidatonError = false;
+                formData.txtFromQuantity.ErrorLst.ValidatonErrorMessage = '';
+            }
+        }
+        if (formData.txtToQuantity.value.toString().length > 0) {
+            if (!/^\d*\.?\d+$/.test(formData.txtToQuantity.value)) {
+                formData.txtToQuantity.ErrorLst.IsValidatonError = true;
+                formData.txtToQuantity.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập số';
+            }
+            else {
+                
+                if(!formData.txtFromQuantity.ErrorLst.IsValidatonError && formData.txtFromQuantity.value.toString().length > 0){
+                    if (parseFloat(formData.txtToQuantity.value) < parseFloat(formData.txtFromQuantity.value)) {
+                        formData.txtToQuantity.ErrorLst.IsValidatonError = true;
+                        formData.txtToQuantity.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập giá trị từ bé hơn giá trị đến';
+                    }
+                    else {
+                        formData.txtToQuantity.ErrorLst.IsValidatonError = false;
+                        formData.txtToQuantity.ErrorLst.ValidatonErrorMessage = '';
+                    }
+                }
+                else{
+                    formData.txtToQuantity.ErrorLst.IsValidatonError = false;
+                    formData.txtToQuantity.ErrorLst.ValidatonErrorMessage = '';
+                }
+                
+            }
+
+        }
+    }
 
 
     render() {
@@ -104,7 +138,7 @@ class RewardPriceTableExceptionCom extends Component {
                 listelement={[]}
                 onSubmit={this.handleSubmit}
                 IsCloseModal={true}
-                // onchange={this.handleChange.bind(this)}
+                onchange={this.handleChange.bind(this)}
             >
 
                 <div className="row">
@@ -182,7 +216,7 @@ class RewardPriceTableExceptionCom extends Component {
                             placeholder="Số lượng từ"
                             controltype="InputControl"
                             value="0"
-                            validatonList={["required", "number"]}
+                            //validatonList={["required", "number"]}
                             datasourcemember="FromQuantity"
                             maxSize={5}
                         />
@@ -199,7 +233,7 @@ class RewardPriceTableExceptionCom extends Component {
                             placeholder="Số lượng đến"
                             controltype="InputControl"
                             value="0"
-                            validatonList={["required","number"]}
+                            //validatonList={["required","number"]}
                             datasourcemember="ToQuantity"
                             maxSize={5}
                         />

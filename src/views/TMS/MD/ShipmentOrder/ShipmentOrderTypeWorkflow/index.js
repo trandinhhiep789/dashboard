@@ -79,7 +79,7 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
             let permisionData = [];
             if (dataSource.ShipmentOrderType_WF_Permis) {
                 permisionData = dataSource.ShipmentOrderType_WF_Permis.map((item, index) => {
-                        return Object.assign({}, item, { ["chkSelectUserGroupID"]: true });
+                    return Object.assign({}, item, { ["chkSelectUserGroupID"]: true });
                 });
             }
 
@@ -685,6 +685,10 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     />
                                     <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước yêu cầu chụp hình" name="IsPhotoTakenStep"
                                         controltype="InputControl" datasourcemember="IsPhotoTakenStep"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước phải được xử lý bởi nhân viên giao hàng" name="IsMustProcessByDeliveryUser"
+                                        controltype="InputControl" datasourcemember="IsMustProcessByDeliveryUser"
                                         swaplabelModal={true}
                                     />
                                 </div>
