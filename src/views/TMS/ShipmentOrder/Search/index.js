@@ -350,7 +350,7 @@ class SearchCom extends React.Component {
 
 
     render() {
-        this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : -1
+        this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3"
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>

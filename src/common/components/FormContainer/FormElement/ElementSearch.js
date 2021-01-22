@@ -119,6 +119,7 @@ class ElementTextdropdownCom extends Component {
                                         {optionItem.label}</a>
                                 )}
                             </div>
+                            <div className="invalid-feedback">Please provide a valid value.</div>
                         </div>
                         <div className="invalid-feedback">{ValidatonErrorMessage}</div>
                     </div>
