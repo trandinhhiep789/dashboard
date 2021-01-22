@@ -179,6 +179,17 @@
                 .col-custom {
                     padding-right: 2px;
                     padding-left: 2px;
+                    .group-text-select{
+                        clear: both;
+                        .input-group-append{
+                            &.is-invalid{
+                                clear: both;
+                                &~ .invalid-feedback{
+                                    display: block;
+                                }
+                            }
+                        }
+                    }
 
                     &.btn-custom-right {
                         clear: both;
