@@ -86,8 +86,12 @@ class SearchCom extends React.Component {
             //this.searchref.current.changeLoadComplete();
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
+                let _data = apiResult.ResultObject.map((item, index) => {
+                    item.ComputeInterval = parseFloat((item.ComputeInterval / 1000) % 60).toFixed(2);
+                    return item;
+                })
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource: _data,
                     IsShowForm: true
                 });
             } else {

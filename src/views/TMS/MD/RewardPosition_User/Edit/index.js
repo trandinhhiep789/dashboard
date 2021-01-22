@@ -20,7 +20,7 @@ import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../..
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { ERPUSERCACHE_FUNCTION } from "../../../../../constants/keyCache";
-import { USERSKILL_VIEW, USERSKILL_UPDATE, GET_CACHE_USER_FUNCTION_LIST, USER_REWARDPOSITION_VIEW, USER_REWARDPOSITION_UPDATE } from "../../../../../constants/functionLists";
+import { USERSKILL_VIEW, USERSKILL_UPDATE, GET_CACHE_USER_FUNCTION_LIST, USER_REWARDPOSITION_VIEW, USER_REWARDPOSITION_UPDATE, USER_REWARDPOSITION_ADD } from "../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -56,7 +56,7 @@ class EditCom extends React.Component {
                     this.setState({ IsAllowView: true });
                 }
 
-                let _update = result.ResultObject.CacheData.filter(x => x.FunctionID == USER_REWARDPOSITION_UPDATE);
+                let _update = result.ResultObject.CacheData.filter(x => x.FunctionID == USER_REWARDPOSITION_ADD);
                 if (_update && _update.length > 0) {
                     this.setState({ IsAllowUpdate: true });
                 }

@@ -62,13 +62,13 @@ class SearchCom extends React.Component {
         const dtFromdate = new Date();
         dtFromdate.setDate(new Date().getDate() - 60);
         const searchData = {
-            FromDate: dtFromdate,
-            ToDate: new Date(),
-            UserName: "0041017"
+            FromDate: "2021-01-01T00:00:00+07:00",
+            ToDate: "2021-01-31T23:59:59+07:00",
+            Username: "0041018"
         }
         this.props.callFetchAPI(APIHostName, 'api/TMSRewardDetail/LoadByUserNameMobi', searchData).then(apiResult => {
-            console.log("callDataMobi", apiResult)
-            
+            console.log("callDataMobi", searchData, apiResult)
+
         });
     }
 
@@ -98,7 +98,7 @@ class SearchCom extends React.Component {
         const postData = [
             {
                 SearchKey: "@FROMDATE",
-                SearchValue:  toIsoStringCus(new Date(MLObject.FromDate).toISOString()) //MLObject.FromDate
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString()) //MLObject.FromDate
             },
             {
                 SearchKey: "@TODATE",

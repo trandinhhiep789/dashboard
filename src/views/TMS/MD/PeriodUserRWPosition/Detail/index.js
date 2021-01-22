@@ -162,8 +162,8 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Thời gian tính(tính bằng giây): </span>
-                                            <span>{parseFloat((this.state.DataSource.ComputeInterval / 1000) % 60).toFixed(2)}</span>
+                                            <span>Thời gian tính(tính bằng mili giây): </span>
+                                            <span>{this.state.DataSource.ComputeInterval}</span>
                                         </div>
                                     </div>
 

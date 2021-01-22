@@ -330,6 +330,13 @@ const AppMenu = [
                         SubMenu: []
                     },
                     {
+                        MenuName: 'PeriodUserRWPosition',
+                        MenuTitle: 'Vị trí thưởng của 1 nhân viên theo khoảng thời gian',
+                        LinkTo: '/PeriodUserRWPosition',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'UserRewardStore',
                         MenuTitle: 'Kho thưởng của nhân viên quản lý',
                         LinkTo: '/UserRewardStore',

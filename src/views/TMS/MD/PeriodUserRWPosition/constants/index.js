@@ -1,37 +1,37 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/RewardComputeSchedule/Search";
-export const LoadAPIPath = "api/RewardComputeSchedule/Load";
-export const AddAPIPath = "api/RewardComputeSchedule/Add";
-export const UpdateAPIPath = "api/RewardComputeSchedule/Update";
-export const DeleteAPIPath = "api/RewardComputeSchedule/Delete";
-export const UpdateOrderAPIPath = "api/RewardComputeSchedule/UpdateOrder";
-export const BackLink = "/RewardComputeSchedule";
-export const AddLink = "/RewardComputeSchedule/Add";
+export const SearchAPIPath = "api/PeriodUserRWPosition/Search";
+export const LoadAPIPath = "api/PeriodUserRWPosition/Load";
+export const AddAPIPath = "api/PeriodUserRWPosition/Add";
+export const UpdateAPIPath = "api/PeriodUserRWPosition/Update";
+export const DeleteAPIPath = "api/PeriodUserRWPosition/Delete";
+export const UpdateOrderAPIPath = "api/PeriodUserRWPosition/UpdateOrder";
+export const BackLink = "/PeriodUserRWPosition";
+export const AddLink = "/PeriodUserRWPosition/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "RewardComputeScheduleID";
+export const PKColumnName = "PeriodUserRWPositionID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách lịch tính thưởng" }
+    { Link: "", Title: "Danh sách vị trí thưởng theo khoảng thời gian" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/RewardComputeSchedule", Title: "Danh sách lịch tính thưởng" },
+    { Link: "/PeriodUserRWPosition", Title: "Danh sách vị trí thưởng theo khoảng thời gian" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/RewardComputeSchedule", Title: "Danh sách lịch tính thưởng" },
+    { Link: "/PeriodUserRWPosition", Title: "Danh sách vị trí thưởng theo khoảng thời gian" },
     { Link: "", Title: "Thêm" }
 ];
 
 export const DetailPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/RewardComputeSchedule", Title: "Danh sách lịch tính thưởng" },
+    { Link: "/PeriodUserRWPosition", Title: "Danh sách vị trí thưởng theo khoảng thời gian" },
     { Link: "", Title: "Chi tiết" }
 ];
 
@@ -126,14 +126,14 @@ export const AddElementList = [
 export const EditElementList = [
     {
         type: "text",
-        name: "txtRewardComputeScheduleID",
-        label: "mã lịch tính thưởng",
+        name: "txtPeriodUserRWPositionID",
+        label: "mã vị trí thưởng theo khoảng thời gian",
         value: "",
         maxSize: "20",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "RewardComputeScheduleID",
+        DataSourceMember: "PeriodUserRWPositionID",
         readonly: true,
         validatonList: ["required"]
     },
@@ -210,47 +210,59 @@ export const SearchMLObjectDefinition = [
 
 export const MLObjectDefinition = [
     {
-        Name: "RewardComputeScheduleID",
+        Name: "PeriodUserRWPositionID",
         DefaultValue: "",
-        BindControlName: "txtRewardComputeScheduleID",
-        DataSourceMember: "RewardComputeScheduleID"
+        BindControlName: "",
+        DataSourceMember: "PeriodUserRWPositionID"
     },
     {
-        Name: "RewardDate",
+        Name: "UserName",
         DefaultValue: "",
-        BindControlName: "RewardDate",
-        DataSourceMember: "RewardDate"
+        BindControlName: "UserName",
+        DataSourceMember: "UserName"
     },
     {
-        Name: "RewardDateFrom",
+        Name: "RewardPositionID",
         DefaultValue: "",
-        BindControlName: "RewardDateFrom",
-        DataSourceMember: "RewardDateFrom"
+        BindControlName: "RewardPositionID",
+        DataSourceMember: "RewardPositionID"
     },
     {
-        Name: "RewardDateTo",
+        Name: "ApplyFromDate",
         DefaultValue: "",
-        BindControlName: "RewardDateTo",
-        DataSourceMember: "RewardDateTo"
+        BindControlName: "ApplyFromDate",
+        DataSourceMember: "ApplyFromDate"
     },
     {
-        Name: "RewardDateString",
+        Name: "ApplyToDate",
         DefaultValue: "",
-        BindControlName: "RewardDateString",
-        DataSourceMember: "RewardDateString"
+        BindControlName: "ApplyToDate",
+        DataSourceMember: "ApplyToDate"
     },
     {
-        Name: "Description",
+        Name: "ApplyFromDateString",
         DefaultValue: "",
-        BindControlName: "txtDescription",
-        DataSourceMember: "Description"
+        BindControlName: "ApplyFromDateString",
+        DataSourceMember: "ApplyFromDateString"
     },
     {
-        Name: "PriorityIndex",
+        Name: "ApplyToDateString",
         DefaultValue: "",
-        BindControlName: "txtPriorityIndex",
-        DataSourceMember: "PriorityIndex"
+        BindControlName: "ApplyToDateString",
+        DataSourceMember: "ApplyToDateString"
     },
+    // {
+    //     Name: "Description",
+    //     DefaultValue: "",
+    //     BindControlName: "txtDescription",
+    //     DataSourceMember: "Description"
+    // },
+    // {
+    //     Name: "PriorityIndex",
+    //     DefaultValue: "",
+    //     BindControlName: "txtPriorityIndex",
+    //     DataSourceMember: "PriorityIndex"
+    // },
     {
         Name: "IsActived",
         DefaultValue: false,
@@ -288,61 +300,100 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "RewardComputeScheduleID",
+        DataSourceMember: "PeriodUserRWPositionID",
         Width: 60
     },
-    // {
-    //     Name: "RewardComputeScheduleID",
-    //     Type: "texttolink",
-    //     Link: "/RewardComputeSchedule/Detail/",
-    //     Caption: "Mã lịch tính thưởng",
-    //     DataSourceMember: "RewardComputeScheduleID",
-    //     Width: 150
-    // },
     {
-        Name: "RewardDate",
-        //Type: "date",
-        Type: "texttolink",
-        Link: "/RewardComputeSchedule/Detail/",
-        Caption: "Ngày tính thưởng",
-        DataSourceMember: "RewardDateString",
-        Width: 110
-    },
-    {
-        Name: "Description",
+        Name: "UserName",
         Type: "text",
-        Caption: "Mô tả",
-        DataSourceMember: "Description",
+        Caption: "Người dùng",
+        DataSourceMember: "UserName",
         Width: 160
     },
     {
-        Name: "IsAutoAdd",
-        Type: "checkicon",
-        Caption: "Lịch tự động thêm",
-        DataSourceMember: "IsAutoAdd",
-        Width: 120
-    },
-    {
-        Name: "IsCompletedCompute",
-        Type: "checkicon",
-        Caption: "Kết thúc tính thưởng",
-        DataSourceMember: "IsCompletedCompute",
-        Width: 120
-    },
-    {
-        Name: "ComputeInterval",
+        Name: "RewardPositionName",
         Type: "text",
-        Caption: "Thời gian tính(giây)",
-        DataSourceMember: "ComputeInterval",
-        Width: 150
+        Caption: "Vị trí thưởng",
+        DataSourceMember: "RewardPositionName",
+        Width: 160
+    },
+
+    {
+        Name: "ApplyFromDate",
+        Type: "date",
+        Caption: "Áp dụng từ ngày",
+        DataSourceMember: "ApplyFromDate",
+        Width: 160
     },
     {
-        Name: "IsComputeError",
-        Type: "checkicon",
-        Caption: "Lỗi tính thưởng",
-        DataSourceMember: "IsComputeError",
-        Width: 100
+        Name: "ApplyToDate",
+        Type: "date",
+        Caption: "Áp dụng đến ngày",
+        DataSourceMember: "ApplyToDate",
+        Width: 160
     },
+
+    // {
+    //     Name: "RewardDate",
+    //     //Type: "date",
+    //     Type: "texttolink",
+    //     Link: "/PeriodUserRWPosition/Detail/",
+    //     Caption: "Ngày tính thưởng",
+    //     DataSourceMember: "RewardDateString",
+    //     Width: 110
+    // },
+    // {
+    //     Name: "PeriodUserRWPositionID",
+    //     Type: "texttolink",
+    //     Link: "/PeriodUserRWPosition/Detail/",
+    //     Caption: "Mã vị trí thưởng theo khoảng thời gian",
+    //     DataSourceMember: "PeriodUserRWPositionID",
+    //     Width: 150
+    // },
+    // {
+    //     Name: "RewardDate",
+    //     //Type: "date",
+    //     Type: "texttolink",
+    //     Link: "/PeriodUserRWPosition/Detail/",
+    //     Caption: "Ngày tính thưởng",
+    //     DataSourceMember: "RewardDateString",
+    //     Width: 110
+    // },
+    // {
+    //     Name: "Description",
+    //     Type: "text",
+    //     Caption: "Mô tả",
+    //     DataSourceMember: "Description",
+    //     Width: 160
+    // },
+    // {
+    //     Name: "IsAutoAdd",
+    //     Type: "checkicon",
+    //     Caption: "Lịch tự động thêm",
+    //     DataSourceMember: "IsAutoAdd",
+    //     Width: 120
+    // },
+    // {
+    //     Name: "IsCompletedCompute",
+    //     Type: "checkicon",
+    //     Caption: "Kết thúc tính thưởng",
+    //     DataSourceMember: "IsCompletedCompute",
+    //     Width: 120
+    // },
+    // {
+    //     Name: "ComputeInterval",
+    //     Type: "text",
+    //     Caption: "Thời gian tính(mili giây)",
+    //     DataSourceMember: "ComputeInterval",
+    //     Width: 150
+    // },
+    // {
+    //     Name: "IsComputeError",
+    //     Type: "checkicon",
+    //     Caption: "Lỗi tính thưởng",
+    //     DataSourceMember: "IsComputeError",
+    //     Width: 100
+    // },
     {
         Name: "IsActived",
         Type: "checkicon",
@@ -376,9 +427,9 @@ export const DataGridColumnList = [
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "RewardComputeScheduleID",
+        DataSourceMember: "PeriodUserRWPositionID",
         Width: 80,
-        Link: "/RewardComputeSchedule/Edit/",
+        Link: "/PeriodUserRWPosition/Edit/",
         LinkText: "Chỉnh sửa"
     }
 ];
