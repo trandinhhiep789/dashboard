@@ -109,7 +109,7 @@ class ElementTextdropdownCom extends Component {
                             readOnly={readonly}
                             defaultValue={value}
                             placeholder={placeholder} />
-                        <div className="input-group-append">
+                        <div className="input-group-append is-invalid">
                             <button className="btn dropdown-toggle" type="button" data-toggle="dropdown">{listoption.filter(a => a.value.toString() === valuenameOption.toString())[0].label}</button>
                             <div className="dropdown dropdown-menu dropdown-menu-right">
                                 {listoption && listoption.map((optionItem) =>
