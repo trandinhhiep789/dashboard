@@ -12,6 +12,7 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
+    SearchByUserAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -20,6 +21,10 @@ import "react-notifications-component/dist/theme.css";
 import { TMS_TMSREWARD_EXPORT } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { toIsoStringCus } from '../../../../../utils/function'
+import DataGirdRewardShipmentOrder from '../component/DataGirdRewardShipmentOrder'
+import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
+import { showModal, hideModal } from '../../../../../actions/modal';
+
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -32,7 +37,10 @@ class SearchCom extends React.Component {
             IsCallAPIError: false,
             gridDataSource: [],
             IsLoadDataComplete: false,
-            dataExport: []
+            dataExport: [],
+            widthPercent: "",
+            fromDate: '',
+            toDate: ''
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -42,9 +50,19 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         // this.handleCallData();
+        this.updateWindowDimensions();
+        window.addEventListener("resize", this.updateWindowDimensions);
     }
 
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateWindowDimensions);
+    }
 
+    updateWindowDimensions = () => {
+        this.setState({
+            widthPercent: (window.innerWidth * 90) / 100
+        })
+    };
 
     handleCallData() {
         const { SearchData } = this.state;
@@ -63,6 +81,10 @@ class SearchCom extends React.Component {
                 SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) //MLObject.ToDate
             }
         ];
+        this.setState({
+            fromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()),
+            toDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
+        })
         this.callSearchData(postData);
     }
 
@@ -148,6 +170,45 @@ class SearchCom extends React.Component {
         this.addNotification(result.Message, result.IsError);
     }
 
+    onShowModalDetail(objValue, name) {
+        const { fromDate, toDate } = this.state;
+        //console.log("objValue, name", objValue, fromDate, toDate)
+        const postData = {
+            UserName: objValue[0].value,
+            FromDate: fromDate,
+            ToDate: toDate
+        }
+
+        this.props.callFetchAPI(APIHostName, SearchByUserAPIPath, postData).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.handleShowModal(apiResult.ResultObject, postData)
+            }
+            else {
+                this.showMessage(apiResult.MessageDetail)
+            }
+        })
+    }
+
+    handleShowModal(data, paramData) {
+        const { widthPercent } = this.state;
+        const titleModal = "Hiển thị chi tiết thưởng đơn thàng theo nhân viên";
+
+
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: titleModal,
+            content: {
+                text: <DataGirdRewardShipmentOrder
+                    dataSource={data}
+                    paramData= {paramData}
+                    RowsPerPage={20}
+                    IsAutoPaging={true}
+                />
+
+            },
+            maxWidth: widthPercent + 'px'
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -180,6 +241,7 @@ class SearchCom extends React.Component {
                     DataExport={this.state.dataExport}
                     fileName="Danh sách thưởng"
                     onExportFile={this.handleExportFile.bind(this)}
+                    onShowModal={this.onShowModalDetail.bind(this)}
                     ref={this.gridref}
                 />
             </React.Fragment>
@@ -205,6 +267,12 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
         }
     };
 };

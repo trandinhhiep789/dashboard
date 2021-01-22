@@ -55,6 +55,7 @@ class SearchUserByDateCom extends React.Component {
             UserName: myParam.UserName
         }
         this.props.callFetchAPI(APIHostName, LoadUserNameByDateAPIPath, objData).then(apiResult => {
+            // console.log("objData", objData)
             if (!apiResult.IsError) {
                 const totalAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
                     sum += curValue.TotalReward
@@ -64,9 +65,15 @@ class SearchUserByDateCom extends React.Component {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
-                    TotalReward: totalAmount
-                    // fullName: apiResult.ResultObject[0].RewardUser + " - " + apiResult.ResultObject[0].FullName
+                    TotalReward: totalAmount,
+                   // fullName: apiResult.ResultObject[0].RewardUser + " - " + apiResult.ResultObject[0].FullName
                 });
+
+                if(objData.UserName!= ""){
+                    this.setState({
+                        fullName: apiResult.ResultObject[0].RewardUser + " - " + apiResult.ResultObject[0].FullName
+                    })
+                }
             }
             else {
                 this.showMessage(apiResult.MessageDetail)
