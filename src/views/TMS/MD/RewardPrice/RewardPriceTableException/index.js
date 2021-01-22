@@ -51,7 +51,7 @@ class RewardPriceTableExceptionCom extends Component {
             return;
         }
         else{
-            if(parseInt(MLObject.FromQuantity)  >= parseInt(MLObject.ToQuantity)){
+            if(parseInt(MLObject.FromQuantity)  > parseInt(MLObject.ToQuantity)){
                 this.showMessage("Số lượng đến phải lớn hơn số lượng từ")
                 return
             }
@@ -106,7 +106,7 @@ class RewardPriceTableExceptionCom extends Component {
             else {
                 
                 if(!formData.txtFromQuantity.ErrorLst.IsValidatonError && formData.txtFromQuantity.value.toString().length > 0){
-                    if (parseFloat(formData.txtToQuantity.value) <= parseFloat(formData.txtFromQuantity.value)) {
+                    if (parseFloat(formData.txtToQuantity.value) < parseFloat(formData.txtFromQuantity.value)) {
                         formData.txtToQuantity.ErrorLst.IsValidatonError = true;
                         formData.txtToQuantity.ErrorLst.ValidatonErrorMessage = 'Vui lòng nhập giá trị từ bé hơn giá trị đến';
                     }
