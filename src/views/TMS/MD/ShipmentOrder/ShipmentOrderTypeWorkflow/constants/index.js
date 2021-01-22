@@ -264,6 +264,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsPhotoTakenStep"
     },
     {
+        Name: "IsMustProcessByDeliveryUser",
+        DefaultValue: "",
+        BindControlName: "IsMustProcessByDeliveryUser",
+        DataSourceMember: "IsMustProcessByDeliveryUser"
+    },
+    {
         Name: "OrderIndex",
         DefaultValue: "",
         BindControlName: "OrderIndex",
