@@ -50,6 +50,7 @@ export const SearchElementList = [
         nameOption: "txtTypename",
         labelOption: "--Vui lòng chọn--",
         valueOption: -1,
+        // validatonList:["Comborequired"],
         classNameCol:"col-custom",
         listoption: [
             { value: -1, label: '--Vui lòng chọn--' },
