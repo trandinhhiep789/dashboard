@@ -153,7 +153,7 @@ class EditCom extends React.Component {
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.UserName = this.state.Username;
 
-        console.log("estimate ---", MLObject);
+        //console.log("estimate ---", MLObject);
         var dates = {
             convert: function (d) {
                 // Converts the date in d to a date-object. The input can be:
