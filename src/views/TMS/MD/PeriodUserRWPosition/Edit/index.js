@@ -16,7 +16,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { REWARDCOMPUTESCHEDULE_UPDATE } from "../../../../../constants/functionLists";
+import { PERIODUSERRWPOSITION_UPDATE } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
@@ -291,7 +291,7 @@ class EditCom extends React.Component {
                         dataSource={this.state.DataSource}
                         BackLink={BackLink}
                         onchange={this.handleChange.bind(this)}
-                        RequirePermission={REWARDCOMPUTESCHEDULE_ADD}
+                        RequirePermission={PERIODUSERRWPOSITION_UPDATE}
                     >
 
                         <MultiSelectComboBox
