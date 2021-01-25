@@ -14,7 +14,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { REWARDCOMPUTESCHEDULE_ADD } from "../../../../../constants/functionLists";
+import { PERIODUSERRWPOSITION_ADD } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
@@ -272,7 +272,7 @@ class AddCom extends React.Component {
                     dataSource={null}
                     BackLink={BackLink}
                     onchange={this.handleChange.bind(this)}
-                    RequirePermission={REWARDCOMPUTESCHEDULE_ADD}
+                    RequirePermission={PERIODUSERRWPOSITION_ADD}
                 >
 
                     <MultiSelectComboBox

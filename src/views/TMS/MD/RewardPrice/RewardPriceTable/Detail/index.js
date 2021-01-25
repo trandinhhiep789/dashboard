@@ -51,6 +51,8 @@ class DetailCom extends React.Component {
             RewardPriceTableID: '',
             RewardPriceTableDetail: [],
             RewardPriceTable_Exception: [],
+            dataExport_DetailList: [],
+            dataExport_ExceptionList: [],
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -69,11 +71,47 @@ class DetailCom extends React.Component {
             if (apiResult.IsError) {
 
                 this.setState({
-                    IsCallAPIError: !apiResult.IsError
+                    IsCallAPIError: !apiResult.IsError,
+                    dataExport_DetailList: [],
+                    dataExport_ExceptionList: [],
                 });
                 this.showMessage(apiResult.Message);
             }
             else {
+
+                // xuất exel
+                const exelDataDetailist = apiResult.ResultObject.RewardPriceTableDetailList.map((item, index) => {
+                    let element = {
+                        "Ngành hàng": item.MainGroupID + " - " + item.MainGroupName,
+                        "Nhóm hàng": item.SubGroupID == "-1" ? item.SubGroupID : item.SubGroupID + " - " + item.SubGroupName,
+                        "Thông số kỹ thuật": item.TechspecsName,
+                        "Giá trị TSKT": item.TechspecsValue,
+                        "Tính theo giá trị TSKT": item.IsPriceByTechspecsValueRange ? "Có" : "Không",
+                        "Giá trị TSKT từ": item.FromTechspecsValue,
+                        "Giá trị TSKT đến": item.ToTechspecsValue,
+                        "Sản phẩm": item.ProductName,
+                        "Giá": item.RewardPrice,
+                        "Giá không lắp đặt": item.RewardPriceWithoutInstall
+                    };
+                    return element;
+
+                })
+
+
+                const exelDataExceptionList = apiResult.ResultObject.RewardPriceTable_ExceptionList.map((item, index) => {
+                    let element = {
+                        "Ngành hàng": item.MainGroupID + " - " + item.MainGroupName,
+                        "Nhóm hàng": item.SubGroupID == "-1" ? item.SubGroupID : item.SubGroupID + " - " + item.SubGroupName,
+                        "Số lượng từ": item.FromQuantity,
+                        "Số lượng đến": item.ToQuantity,
+                        "Giá": item.RewardPrice,
+                        "Giá không lắp đặt": item.RewardPriceWithoutInstall
+                    };
+                    return element;
+
+                })
+
+
 
                 const RewardPriceTableDetailList = apiResult.ResultObject.RewardPriceTableDetailList.map((item, index) => {
                     item.MainGroupFullName = item.MainGroupID + " - " + item.MainGroupName;
@@ -88,6 +126,8 @@ class DetailCom extends React.Component {
                 });
 
                 this.setState({
+                    dataExport_DetailList: exelDataDetailist,
+                    dataExport_ExceptionList: exelDataExceptionList,
                     RewardPriceTableDetail: RewardPriceTableDetailList,
                     RewardPriceTable_Exception: RewardPriceTable_ExceptionList,
                     DataSource: apiResult.ResultObject,
@@ -225,6 +265,10 @@ class DetailCom extends React.Component {
         });
     }
 
+    handleExportFile(result) {
+        this.addNotification(result.Message);
+    }
+
     addNotification(message1, IsError) {
         let cssNotification, iconNotification;
         if (!IsError) {
@@ -292,6 +336,10 @@ class DetailCom extends React.Component {
                                 onDeleteClick={this.handleItemDeleteRPTDetail.bind(this)}
                                 ref={this.gridref}
                                 isSystem={IsSystem}
+                                IsExportFile={true}
+                                DataExport={this.state.dataExport_DetailList}
+                                fileName={TitleFromRPTDetail}
+                                onExportFile={this.handleExportFile.bind(this)}
                             />
 
                             <InputGridControl
@@ -307,6 +355,10 @@ class DetailCom extends React.Component {
                                 onDeleteClick={this.handleItemDeleteRPTException.bind(this)}
                                 ref={this.gridref}
                                 isSystem={IsSystem}
+                                IsExportFile={true}
+                                DataExport={this.state.dataExport_ExceptionList}
+                                fileName={TitleFromRPTException}
+                                onExportFile={this.handleExportFile.bind(this)}
                             />
 
                         </div>
