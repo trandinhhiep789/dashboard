@@ -3,6 +3,12 @@
         .ant-select-selector{
             padding: 2px 4px;
             border-color: #808080;
+            .ant-select-selection-search{
+                height: 29px;
+            }
+            .ant-select-selection-overflow{
+                height: 29px;
+            }
             .ant-select-selection-item{
                 &:first-child {
                     max-width: 70%;

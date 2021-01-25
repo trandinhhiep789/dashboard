@@ -560,6 +560,13 @@
                     .ant-select-selector{
                         padding: 0 4px;
                         border-color: #808080;
+                        clear: both;
+                        .ant-select-selection-search{
+                            height: 30px;
+                        }
+                        .ant-select-selection-overflow{
+                            height: 29px;
+                        }
                     }
                 }
             }
