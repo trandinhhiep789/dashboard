@@ -194,7 +194,6 @@ class SearchCom extends React.Component {
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={false}
                     IsPrint={false}
-                    IsExportFile={false}
                     IsAutoPaging={true}
                     RowsPerPage={30}
                     totalCurrency={true}

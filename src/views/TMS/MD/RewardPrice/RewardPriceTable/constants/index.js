@@ -193,17 +193,17 @@ export const MLObjectDefinition = [
 
 export const DataGridColumnItemListRPTDetail = [
     {
-        Name: "MainGroupName",
+        Name: "MainGroupFullName",
         Type: "text",
         Caption: "Nghành hàng",
-        DataSourceMember: "MainGroupName",
+        DataSourceMember: "MainGroupFullName",
         Width: 100
     },
     {
-        Name: "SubGroupName",
+        Name: "SubGroupFullName",
         Type: "text",
         Caption: "Nhóm hàng",
-        DataSourceMember: "SubGroupName",
+        DataSourceMember: "SubGroupFullName",
         Width: 100
     },
     {
@@ -352,17 +352,17 @@ export const MLObjectRPTDetailItem= [
 
 export const DataGridColumnItemListRPTException = [
     {
-        Name: "MainGroupName",
+        Name: "MainGroupFullName",
         Type: "text",
         Caption: "Ngành hàng",
-        DataSourceMember: "MainGroupName",
+        DataSourceMember: "MainGroupFullName",
         Width: 100
     },
     {
-        Name: "SubGroupName",
+        Name: "SubGroupFullName",
         Type: "text",
         Caption: "Nhóm hàng",
-        DataSourceMember: "SubGroupName",
+        DataSourceMember: "SubGroupFullName",
         Width: 100
     },
    

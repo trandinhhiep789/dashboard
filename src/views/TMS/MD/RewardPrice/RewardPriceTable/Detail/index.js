@@ -48,7 +48,9 @@ class DetailCom extends React.Component {
             Abiliti: {},
             IsLoadDataComplete: false,
             IsSystem: false,
-            RewardPriceTableID: ''
+            RewardPriceTableID: '',
+            RewardPriceTableDetail: [],
+            RewardPriceTable_Exception: [],
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -63,8 +65,9 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-             console.log('apiResult', apiResult)
+            console.log('apiResult', apiResult)
             if (apiResult.IsError) {
+
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
                 });
@@ -72,9 +75,21 @@ class DetailCom extends React.Component {
             }
             else {
 
+                const RewardPriceTableDetailList = apiResult.ResultObject.RewardPriceTableDetailList.map((item, index) => {
+                    item.MainGroupFullName = item.MainGroupID + " - " + item.MainGroupName;
+                    item.SubGroupFullName = item.SubGroupID == "-1" ? item.SubGroupID : item.SubGroupID + " - " + item.SubGroupName;
+                    return item;
+                });
+
+                const RewardPriceTable_ExceptionList = apiResult.ResultObject.RewardPriceTable_ExceptionList.map((item, index) => {
+                    item.MainGroupFullName = item.MainGroupID + " - " + item.MainGroupName;
+                    item.SubGroupFullName = item.SubGroupID == "-1" ? item.SubGroupID : item.SubGroupID + " - " + item.SubGroupName;
+                    return item;
+                });
 
                 this.setState({
-                    // DataSource: apiResult.ResultObject,
+                    RewardPriceTableDetail: RewardPriceTableDetailList,
+                    RewardPriceTable_Exception: RewardPriceTable_ExceptionList,
                     DataSource: apiResult.ResultObject,
                     IsLoadDataComplete: true,
                     IsSystem: apiResult.ResultObject.IsSystem
@@ -271,7 +286,7 @@ class DetailCom extends React.Component {
                                 IDSelectColumnName={"RewardPriceTableDetailID"}
                                 PKColumnName={"RewardPriceTableDetailID"}
                                 listColumn={DataGridColumnItemListRPTDetail}
-                                dataSource={this.state.DataSource.RewardPriceTableDetailList}
+                                dataSource={this.state.RewardPriceTableDetail}
                                 onInsertClick={this.handleItemInsertRPTDetail.bind(this)}
                                 onEditClick={this.handleItemEditRPTDetail.bind(this)}
                                 onDeleteClick={this.handleItemDeleteRPTDetail.bind(this)}
@@ -286,7 +301,7 @@ class DetailCom extends React.Component {
                                 IDSelectColumnName={"RewardPriceTableExceptionID"}
                                 PKColumnName={"RewardPriceTableExceptionID"}
                                 listColumn={DataGridColumnItemListRPTException}
-                                dataSource={this.state.DataSource.RewardPriceTable_ExceptionList}
+                                dataSource={this.state.RewardPriceTable_Exception}
                                 onInsertClick={this.handleItemInsertRPTException.bind(this)}
                                 onEditClick={this.handleItemEditRPTException.bind(this)}
                                 onDeleteClick={this.handleItemDeleteRPTException.bind(this)}
