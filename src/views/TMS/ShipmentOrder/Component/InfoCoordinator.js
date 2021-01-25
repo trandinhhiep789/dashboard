@@ -9,7 +9,7 @@ import MultiSelectComboBox from "../../../../common/components/FormContainer/For
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../actions/modal';
-import { MODAL_TYPE_SEARCH, MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_CONFIRMATION ,MODAL_TYPE_CONFIRMATIONNEW} from '../../../../constants/actionTypes';
+import { MODAL_TYPE_SEARCH, MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_CONFIRMATION, MODAL_TYPE_CONFIRMATIONNEW } from '../../../../constants/actionTypes';
 import Select from 'react-select';
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
@@ -266,7 +266,7 @@ class InfoCoordinatorCom extends Component {
                 listMLObject.push({
                     ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
                     UserName: selectedOption[i].value,
-                    FullName: selectedOption[i].label,
+                    FullName: selectedOption[i].FullName,
                     CreatedUser: this.props.AppInfo.LoginInfo.Username,
                     CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
                 });
@@ -276,27 +276,24 @@ class InfoCoordinatorCom extends Component {
                 });
             }
         }
-        
+
         let { ShipmentOrder } = this.state;
         if (selectedOption) {
             this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
-                if(!apiResult.IsError)
-                {
+                if (!apiResult.IsError) {
                     ShipmentOrder.ShipmentOrder_DeliverUserList = listMLObject;
                     this.setState({ ShipmentOrder: ShipmentOrder })
                 }
-                else
-                {
+                else {
                     this.addNotification(apiResult.Message, apiResult.IsError);
                 }
             });
         }
-        else
-        {
-            ShipmentOrder.ShipmentOrder_DeliverUserList =[];
+        else {
+            ShipmentOrder.ShipmentOrder_DeliverUserList = [];
             this.setState({ ShipmentOrder: ShipmentOrder })
         }
-      
+
     }
     handleValueChangeDriverUser(e, selectedOption) {
         let { ShipmentOrder } = this.state;
@@ -333,20 +330,17 @@ class InfoCoordinatorCom extends Component {
         let { ShipmentOrder } = this.state;
         if (selectedOption) {
             this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
-                if(!apiResult.IsError)
-                {
+                if (!apiResult.IsError) {
                     ShipmentOrder.ShipmentOrder_DeliverUserList = listMLObject;
                     this.setState({ ShipmentOrder: ShipmentOrder })
                 }
-                else
-                {
+                else {
                     this.addNotification(apiResult.Message, apiResult.IsError);
                 }
             });
         }
-        else
-        {
-            ShipmentOrder.ShipmentOrder_DeliverUserList =[];
+        else {
+            ShipmentOrder.ShipmentOrder_DeliverUserList = [];
             this.setState({ ShipmentOrder: ShipmentOrder })
         }
     }
@@ -441,7 +435,7 @@ class InfoCoordinatorCom extends Component {
     }
 
     handleShipWorkFlowInsert() {
-        let { ShipmentOrder, validationErroDeliverUser, validationErroCarrierPartner, validationErroDriverUser,validationErroCarrierType } = this.state;
+        let { ShipmentOrder, validationErroDeliverUser, validationErroCarrierPartner, validationErroDriverUser, validationErroCarrierType } = this.state;
         if (ShipmentOrder.CarrierTypeID == undefined || parseInt(ShipmentOrder.CarrierTypeID) <= 0) {
             validationErroCarrierType = "Vui lòng chọn phương tiện vận chuyển"
             this.setState({ validationErroCarrierType: validationErroCarrierType });
@@ -534,31 +528,31 @@ class InfoCoordinatorCom extends Component {
                 {
                     ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
                     CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime,
-                    CoordinatorStoreID:this.state.ShipmentOrder.CoordinatorStoreID,
-                    CoordinatorStoreNewID:formData.CoordinatorStoreNewID,
-                    CoordinatorNote:formData.CoordinatorNote,
-                    UpdatedUser :this.props.AppInfo.LoginInfo.Username
-                   
+                    CoordinatorStoreID: this.state.ShipmentOrder.CoordinatorStoreID,
+                    CoordinatorStoreNewID: formData.CoordinatorStoreNewID,
+                    CoordinatorNote: formData.CoordinatorNote,
+                    UpdatedUser: this.props.AppInfo.LoginInfo.Username
+
                 }
 
-             
+
                 this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateCoordinatorStore', ShipmentOrderCoord).then((apiResult) => {
                     this.addNotification(apiResult.Message, apiResult.IsError);
                     if (!apiResult.IsError) {
                         this.props.hideModal();
                         setTimeout(() => { this.setState({ IsCloseForm: true }) }, 2000);
-                       
+
                     }
                 });
 
             },
             modalElementList: UpdateCoordinatorStoreEdit,
             modalElementOl: MLObjectUpdateCoordinatorStore,
-            dataSource: { CoordinatorStoreID:this.state.ShipmentOrder.CoordinatorStoreID,CoordinatorNote:this.state.ShipmentOrder.CoordinatorNote },
+            dataSource: { CoordinatorStoreID: this.state.ShipmentOrder.CoordinatorStoreID, CoordinatorNote: this.state.ShipmentOrder.CoordinatorNote },
             isaddComboBox: true
 
         });
-      
+
     }
 
     handleValueCancelStore(selectedOption) {
@@ -645,7 +639,7 @@ class InfoCoordinatorCom extends Component {
         }
         else {
             this.state.ShipmentOrder.ShipmentOrder_DeliverUserList && this.state.ShipmentOrder.ShipmentOrder_DeliverUserList.map((item, index) => {
-                listOption.push({ value: item.UserName, label: item.FullName, FullName: item.FullName });
+                listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName, FullName: item.FullName });
             })
         }
         if (this.state.ShipmentOrder.DriverUser != "") {

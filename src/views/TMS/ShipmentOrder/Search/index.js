@@ -54,7 +54,7 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
-        const ShipOrdStatusGroupID = { SearchKey: "@SHIPMENTORDERSTATUSGROUPID", SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : -1 };
+        const ShipOrdStatusGroupID = { SearchKey: "@SHIPMENTORDERSTATUSGROUPID", SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3" };
         let listSearchDataObject = Object.assign([], this.state.SearchData, { [9]: ShipOrdStatusGroupID });
         this.callSearchData(listSearchDataObject);
         this.props.updatePagePath(PagePath);
@@ -94,13 +94,24 @@ class SearchCom extends React.Component {
 
     handleonSearchEvent(Keywordid) {
         if (Keywordid != "") {
-            this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByKeyword", Keywordid).then(apiResult => {
-                if (!apiResult.IsError) {
-                    this.setState({
-                        gridDataSource: apiResult.ResultObject
-                    });
-                }
-            });
+            if (Keywordid.includes("SO")) {
+                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPartnerSaleOrderID", String(Keywordid).trim()).then(apiResult => {
+                    if (!apiResult.IsError) {
+                        this.setState({
+                            gridDataSource: apiResult.ResultObject
+                        });
+                    }
+                });
+            }
+            else {
+                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByKeyword", String(Keywordid).trim()).then(apiResult => {
+                    if (!apiResult.IsError) {
+                        this.setState({
+                            gridDataSource: apiResult.ResultObject
+                        });
+                    }
+                });
+            }
         }
     }
 
@@ -119,7 +130,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("MLObject",formData, MLObject)
+        console.log("MLObject", formData, MLObject)
         // let result="";
         // if ( MLObject.ShipmentOrderTypeID != -1 &&  MLObject.ShipmentOrderTypeID != null &&  MLObject.ShipmentOrderTypeID != "") {
         //     result =  MLObject.ShipmentOrderTypeID.reduce((data, item, index) => {
@@ -127,7 +138,7 @@ class SearchCom extends React.Component {
         //         return data + comma + item;
         //     }, '');
         // }
-       
+
 
         const postData = [
             {
@@ -196,7 +207,6 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-
         this.setState({
             IsLoadData: false
         });
