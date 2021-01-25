@@ -193,7 +193,7 @@ class InputGridChageControlCom extends Component {
                                                 }
                                                 else {
                                                     rowItem["ShipmentOrder_DeliverUserList"] && rowItem["ShipmentOrder_DeliverUserList"].map((item, index) => {
-                                                        listOption.push({ value: item.UserName, label: item.FullName, FullName: item.FullName });
+                                                        listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName, FullName: item.FullName });
                                                     })
                                                     cellData = <ElementInputModal.MultiUserComboBox
                                                         validationErrorMessage={(this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex] != undefined ? this.state.FormValidation[columnItem.dataSourcemember + "-" + rowIndex].ValidationErrorMessage : "")}

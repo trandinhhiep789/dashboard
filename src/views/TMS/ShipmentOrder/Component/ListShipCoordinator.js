@@ -77,7 +77,7 @@ class ListShipCoordinatorCom extends Component {
         let objDeliverUser = [];
         let listStaffDebtObject = [];
         selectedOption1 && selectedOption1.map((item, index) => {
-            let objShip_DeliverUser = { UserName: item.value, FullName: item.label }
+            let objShip_DeliverUser = { UserName: item.value, FullName: item.FullName }
             objDeliverUser.push(objShip_DeliverUser)
             listStaffDebtObject.push({
                 UserName: item.value,
@@ -175,7 +175,7 @@ class ListShipCoordinatorCom extends Component {
             let listStaffDebtObject = [];
             rowvalue && rowvalue.map((item, index) => {
                 if (item.value != -1 && item.value != 0) {
-                    let objShipmentOrder_DeliverUser = { UserName: item.value, FullName: item.label }
+                    let objShipmentOrder_DeliverUser = { UserName: item.value, FullName: item.FullName }
                     objDeliverUser.push(objShipmentOrder_DeliverUser)
                     listStaffDebtObject.push({
                         UserName: item.value,

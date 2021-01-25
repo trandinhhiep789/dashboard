@@ -251,11 +251,11 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@RECEIVERPHONENUMBER",
-        SearchValue: "-1"
+        SearchValue: ""
     },
     {
         SearchKey: "@SHIPMENTORDERTYPEID",
-        SearchValue: "-1"
+        SearchValue: ""
     },
     {
         SearchKey: "@FromDate",
@@ -284,7 +284,7 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-        SearchValue: -1
+        SearchValue: "1,2,3"
     },
     {
         SearchKey: "@IsCoordinator",
