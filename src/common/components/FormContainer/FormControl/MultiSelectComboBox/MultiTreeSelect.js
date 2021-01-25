@@ -64,7 +64,7 @@ class MultiTreeSelectCom extends React.Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        console.log("bindcombox",this.props.name,this.props.value,nextProps.value)
+      //  console.log("bindcombox",this.props.name,this.props.value,nextProps.value)
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             const aa = this.bindcombox(nextProps.value, this.state.ListOption);
@@ -73,7 +73,7 @@ class MultiTreeSelectCom extends React.Component {
     }
     bindcombox(value, listOption) {
 
-        console.log("bindcombox",this.props.name,value)
+        //console.log("bindcombox",this.props.name,value)
         let values = value;
         let selectedOption = [];
         if (values == null || values === -1)
@@ -138,8 +138,8 @@ class MultiTreeSelectCom extends React.Component {
         if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
             classNameselect += " is-invalid";
         }
-        console.log("this.state.ListOption",name,this.state.ListOption)
-       console.log("this.state.SelectedOption",name,this.state.SelectedOption)
+        //console.log("this.state.ListOption",name,this.state.ListOption)
+       //console.log("this.state.SelectedOption",name,this.state.SelectedOption)
         const tProps = {
             treeData: this.state.ListOption,
             value: this.state.SelectedOption,

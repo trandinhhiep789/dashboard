@@ -54,7 +54,7 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
-        const ShipOrdStatusGroupID = { SearchKey: "@SHIPMENTORDERSTATUSGROUPID", SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : -1 };
+        const ShipOrdStatusGroupID = { SearchKey: "@SHIPMENTORDERSTATUSGROUPID", SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3" };
         let listSearchDataObject = Object.assign([], this.state.SearchData, { [9]: ShipOrdStatusGroupID });
         this.callSearchData(listSearchDataObject);
         this.props.updatePagePath(PagePath);
@@ -196,7 +196,7 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-
+     console.log("callSearchData",searchData)
         this.setState({
             IsLoadData: false
         });
