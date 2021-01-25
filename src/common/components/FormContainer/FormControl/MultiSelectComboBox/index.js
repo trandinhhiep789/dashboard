@@ -107,7 +107,7 @@ class MultiSelectComboBoxCom extends React.Component {
             for (let i = 0; i < listOption.length; i++) {
                 listOptionNew.push({
                     value: listOption[i].value,
-                    label: listOption[i].name,
+                    label:listOption[i].value+"-"+listOption[i].FullName,
                     FullName: listOption[i].FullName,
                     DepartmentName: listOption[i].DepartmentName,
                     PositionName: listOption[i].PositionName,

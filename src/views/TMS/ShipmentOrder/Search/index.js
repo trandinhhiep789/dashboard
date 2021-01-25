@@ -196,7 +196,6 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-     console.log("callSearchData",searchData)
         this.setState({
             IsLoadData: false
         });
