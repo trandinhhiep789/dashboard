@@ -27,29 +27,29 @@ class MultiTreeSelectCom extends React.Component {
         if (IsAutoLoadItemFromCache) {
             // console.log("ValueMember ", ValueMember, NameMember, this.props);
             this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
-
+                let listoptionnew=[];
                 // console.log("this.props.isautoloaditemfromcach2: ", result);
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     if (typeof filterobj != undefined) {
                         // console.log(filterobj,result.ResultObject.CacheData,result.ResultObject.CacheData.filter(n => n.filterobj == 1))
                         result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
-                            listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                            listoptionnew.push({ value: cacheItem[ValueMember],key:cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
                         }
                         );
                     }
                     else {
                         result.ResultObject.CacheData.map((cacheItem) => {
-                            listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                            listoptionnew.push({ value: cacheItem[ValueMember],key:cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
                         }
                         );
                     }
 
-                    this.setState({ ListOption: listoption, Data: result.ResultObject.CacheData });
-                    const aa = this.bindcombox(this.props.value, listoption);
+                    this.setState({ ListOption: listoptionnew, Data: result.ResultObject.CacheData });
+                    const aa = this.bindcombox(this.props.value, listoptionnew);
                     this.setState({ SelectedOption: aa });
                 }
                 else {
-                    this.setState({ ListOption: listoption });
+                    this.setState({ ListOption: listoptionnew });
                 }
                 //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
             });
@@ -83,7 +83,7 @@ class MultiTreeSelectCom extends React.Component {
             for (let i = 0; i < values.length; i++) {
                 for (let j = 0; j < listOption.length; j++) {
                     if (values[i] == listOption[j].value) {
-                        selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
+                        selectedOption.push({ value: listOption[j].value,key: listOption[j], label: listOption[j].label });
                     }
                 }
             }
