@@ -11,7 +11,6 @@
             }
             .ant-select-selection-item{
                 &:first-child {
-                    max-width: 70%;
                     overflow: hidden;
                 }
             }
@@ -22,12 +21,27 @@
                         max-width: 60%;
                         overflow: hidden;
                     }
-
                 }
             }
         }
     }
 }
+
+.ant-select-tree {
+    .ant-select-tree-list {
+        // .ant-select-tree-list-holder {
+            .ant-select-tree-list-holder-inner {
+                .ant-select-tree-treenode {
+                    padding-left: 5px;
+                    .ant-select-tree-switcher {
+                        display: none;
+                    }
+                }
+            }
+        // }
+    }
+}
+
 .form-group-input-select {
     .select {
 
