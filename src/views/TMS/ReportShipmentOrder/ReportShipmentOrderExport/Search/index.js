@@ -20,6 +20,7 @@ import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 
 
 class SearchCom extends React.Component {
@@ -113,6 +114,16 @@ class SearchCom extends React.Component {
             };
             this.addNotification(result.Message, result.IsError);
         }
+    }
+
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+            />
+        );
     }
 
 
