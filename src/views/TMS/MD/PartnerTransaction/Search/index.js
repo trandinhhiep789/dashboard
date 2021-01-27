@@ -102,8 +102,10 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.ToDate
             }
         ];
+
+        MLObject.SearchKeyword = MLObject.Keyword;
         this.setState({ SearchData: postData });
-        this.callSearchData(postData);
+        this.callSearchData(MLObject);
         //this.gridref.current.clearData();
         //console.log("handleSearchSubmit",MLObject);
     }
@@ -118,6 +120,7 @@ class SearchCom extends React.Component {
                     gridDataSource: apiResult.ResultObject,
                     IsShowForm: true
                 });
+                //console.log("callSearchData",apiResult);
             } else {
                 this.showMessage(apiResult.Message);
                 this.setState({ IsShowForm: false });

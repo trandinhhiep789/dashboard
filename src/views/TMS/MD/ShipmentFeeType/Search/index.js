@@ -24,6 +24,7 @@ import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
 import { SHIPMENTFEETYPE_VIEW, SHIPMENTFEETYPE_DELETE } from "../../../../../constants/functionLists";
+import { formatDate } from "../../../../../common/library/CommonLib";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -37,7 +38,8 @@ class SearchCom extends React.Component {
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
-            iconNotification: ""
+            iconNotification: "",
+            dataExport: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -47,6 +49,10 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
+    }
+
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
     }
 
     handleDelete(deleteList, pkColumnName) {
@@ -87,13 +93,34 @@ class SearchCom extends React.Component {
             //this.searchref.current.changeLoadComplete();
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã loại phí vận chuyển": item.ShipmentFeeTypeID,
+                        "Tên loại phí vận chuyển": item.ShipmentFeeTypeName,
+                        "Mô tả": item.Description,
+                        "Kích hoạt": item.IsActived ? "Có" : "Không",
+                        "Ngày tạo": formatDate(item.CreatedDate),
+                        "Người tạo": item.CreatedUserFullName
+                    };
+                    return element;
+
+                })
+
+
+
                 this.setState({
+                    dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
                     IsShowForm: true
                 });
             } else {
                 this.showMessage(apiResult.Message);
-                this.setState({ IsShowForm: false });
+                this.setState({
+                    dataExport: [],
+                    gridDataSource: [],
+                    IsShowForm: false
+                });
             }
         });
     }
@@ -116,23 +143,20 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -147,6 +171,7 @@ class SearchCom extends React.Component {
             dismissable: { click: true }
         });
     }
+
 
     render() {
         if (this.state.IsShowForm) {
@@ -172,6 +197,10 @@ class SearchCom extends React.Component {
                         DeletePermission={SHIPMENTFEETYPE_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
+                        IsExportFile={true}
+                        DataExport={this.state.dataExport}
+                        fileName="Danh sách loại phí vận chuyển"
+                        onExportFile={this.handleExportFile.bind(this)}
                     />
                 </React.Fragment>
             );

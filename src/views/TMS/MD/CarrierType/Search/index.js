@@ -28,6 +28,7 @@ import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_CARRIERTYPE } from "../../../../../constants/keyCache";
+import { formatDate } from "../../../../../common/library/CommonLib";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -41,7 +42,8 @@ class SearchCom extends React.Component {
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
-            iconNotification: ""
+            iconNotification: "",
+            dataExport: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -53,39 +55,40 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
     }
 
-    // handleClearLocalCache() {
-    //     const cacheKeyID = "PIMCACHE.PIMATTRIBUTECATEGORYTYPE";
-    //     const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-    //     return db.delete(cacheKeyID).then((result) => {
-    //         const postData = {
-    //             CacheKeyID: cacheKeyID,
-    //             UserName: this.props.AppInfo.LoginInfo.Username,
-    //             AdditionParamList: []
-    //         };
-    //         this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-    //             this.handleGetCache();
-    //             //console.log("apiResult", apiResult)
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
 
-    //         });
-    //     }
-    //     );
-    // }
+    addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
+        if (!IsError) {
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
+        } else {
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
 
-    // handleGetCache() {
-    //     this.props.callGetCache("PIMCACHE.PIMATTRIBUTECATEGORYTYPE").then((result) => {
-    //         console.log("handleGetCache: ", result);
-    //     });
-    // }
-
-    // handleSubmitInsertLog() {
-    //     let MLObject = {};
-    //     MLObject.ActivityTitle = "Xóa loại danh mục thuộc tính";
-    //     MLObject.ActivityDetail = "Xóa loại danh mục thuộc tính";
-    //     MLObject.ObjectID = "PIM_ATTRIBUTECATEGORYTYPE";
-    //     MLObject.ActivityUser = this.props.AppInfo.LoginInfo.Username;
-    //     MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-    //     this.props.callFetchAPI(APIHostName, AddLogAPIPath, MLObject);
-    // }
 
     handleDelete(deleteList, pkColumnName) {
         let listMLObject = [];
@@ -125,13 +128,34 @@ class SearchCom extends React.Component {
             //this.searchref.current.changeLoadComplete();
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã loại phương tiện vận chuyển": item.CarrierTypeID,
+                        "Tên loại phương tiện vận chuyển": item.CarrierTypeName,
+                        "Mô tả": item.Description,
+                        "Kích hoạt": item.IsActived ? "Có" : "Không",
+                        "Ngày tạo": formatDate(item.CreatedDate),
+                        "Người tạo": item.CreatedUserFullName
+                    };
+                    return element;
+
+                })
+
+
+
                 this.setState({
+                    dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
                     IsShowForm: true
                 });
             } else {
                 this.showMessage(apiResult.Message);
-                this.setState({ IsShowForm: false });
+                this.setState({
+                    IsShowForm: false,
+                    dataExport: [],
+                    gridDataSource: []
+                });
             }
         });
     }
@@ -154,23 +178,20 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -185,6 +206,8 @@ class SearchCom extends React.Component {
             dismissable: { click: true }
         });
     }
+
+
 
     render() {
         if (this.state.IsShowForm) {
@@ -210,12 +233,15 @@ class SearchCom extends React.Component {
                         DeletePermission={CARRIERTYPE_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
+                        IsExportFile={true}
+                        DataExport={this.state.dataExport}
+                        fileName="Danh sách loại phương tiện vận chuyển"
+                        onExportFile={this.handleExportFile.bind(this)}
                     />
                 </React.Fragment>
             );
         }
-        else 
-        {
+        else {
             return (
                 <div>
                     <label>Đang nạp dữ liệu ......</label>
