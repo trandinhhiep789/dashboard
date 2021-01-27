@@ -115,6 +115,16 @@ class SearchCom extends React.Component {
         }
     }
 
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+            />
+        );
+    }
+
 
     render() {
         return (
