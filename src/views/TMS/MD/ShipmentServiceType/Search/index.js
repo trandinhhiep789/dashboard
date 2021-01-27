@@ -27,6 +27,7 @@ import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { SHIPMENTSERVICETYPE_VIEW, SHIPMENTSERVICETYPE_DELETE } from "../../../../../constants/functionLists";
+import { formatDate } from "../../../../../common/library/CommonLib";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -40,7 +41,8 @@ class SearchCom extends React.Component {
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
-            iconNotification: ""
+            iconNotification: "",
+            dataExport: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -52,39 +54,11 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
     }
 
-    // handleClearLocalCache() {
-    //     const cacheKeyID = "PIMCACHE.PIMATTRIBUTECATEGORYTYPE";
-    //     const db = new indexedDBLib(CACHE_OBJECT_STORENAME);
-    //     return db.delete(cacheKeyID).then((result) => {
-    //         const postData = {
-    //             CacheKeyID: cacheKeyID,
-    //             UserName: this.props.AppInfo.LoginInfo.Username,
-    //             AdditionParamList: []
-    //         };
-    //         this.props.callFetchAPI('CacheAPI', 'api/Cache/ClearCache', postData).then((apiResult) => {
-    //             this.handleGetCache();
-    //             //console.log("apiResult", apiResult)
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
 
-    //         });
-    //     }
-    //     );
-    // }
 
-    // handleGetCache() {
-    //     this.props.callGetCache("PIMCACHE.PIMATTRIBUTECATEGORYTYPE").then((result) => {
-    //         console.log("handleGetCache: ", result);
-    //     });
-    // }
-
-    // handleSubmitInsertLog() {
-    //     let MLObject = {};
-    //     MLObject.ActivityTitle = "Xóa loại danh mục thuộc tính";
-    //     MLObject.ActivityDetail = "Xóa loại danh mục thuộc tính";
-    //     MLObject.ObjectID = "PIM_ATTRIBUTECATEGORYTYPE";
-    //     MLObject.ActivityUser = this.props.AppInfo.LoginInfo.Username;
-    //     MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-    //     this.props.callFetchAPI(APIHostName, AddLogAPIPath, MLObject);
-    // }
 
     handleDelete(deleteList, pkColumnName) {
         let listMLObject = [];
@@ -124,13 +98,31 @@ class SearchCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             //this.searchref.current.changeLoadComplete();
             if (!apiResult.IsError) {
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã loại dịch vụ": item.ShipmentServiceTypeID,
+                        "Tên loại dịch vụ": item.ShipmentServiceTypeName,
+                        "Kích hoạt": item.IsActived ? "Có" : "Không",
+                        "Ngày tạo": formatDate(item.CreatedDate),
+                        "Người tạo": item.CreatedFullName
+                    };
+                    return element;
+
+                })
+
                 this.setState({
+                    dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
                     IsShowForm: true
                 });
             } else {
                 this.showMessage(apiResult.Message);
-                this.setState({ IsShowForm: false });
+                this.setState({
+                    dataExport: [],
+                    gridDataSource: [],
+                    IsShowForm: false
+                });
             }
 
         });
@@ -154,23 +146,20 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -186,13 +175,14 @@ class SearchCom extends React.Component {
         });
     }
 
+
     render() {
         if (this.state.IsShowForm) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                        FormName="Tìm kiếm danh sách loại dịch vụ vận chuyển"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
@@ -210,6 +200,10 @@ class SearchCom extends React.Component {
                         DeletePermission={SHIPMENTSERVICETYPE_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
+                        IsExportFile={true}
+                        DataExport={this.state.dataExport}
+                        fileName="Danh sách loại dịch vụ vận chuyển"
+                        onExportFile={this.handleExportFile.bind(this)}
                     />
                 </React.Fragment>
             );

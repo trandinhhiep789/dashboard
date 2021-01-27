@@ -636,7 +636,7 @@ class FormElementCom extends Component {
                 );
                 break;
             default:
-                control = <input className={controlCSSClassName} name={this.props.name} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} />;
+                control = <input className={controlCSSClassName} name={this.props.name} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} ref={this.props.inputRef}/>;
                 break;
         }
 

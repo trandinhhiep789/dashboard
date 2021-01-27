@@ -28,6 +28,7 @@ import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SHIPMENTORDERSTATUSGR } from "../../../../../constants/keyCache";
+import { formatDate } from "../../../../../common/library/CommonLib";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -41,7 +42,8 @@ class SearchCom extends React.Component {
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
-            iconNotification: ""
+            iconNotification: "",
+            dataExport: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -53,7 +55,11 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
     }
 
-    
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
+
+
     handleDelete(deleteList, pkColumnName) {
         let listMLObject = [];
         deleteList.map((row, index) => {
@@ -92,12 +98,32 @@ class SearchCom extends React.Component {
             //this.searchref.current.changeLoadComplete();
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã nhóm trạng thái yêu cầu vận chuyển": item.ShipmentOrderStatusGroupID,
+                        "Tên nhóm trạng thái yêu cầu vận chuyển": item.ShipmentOrderStatusGroupName,
+                        "Mô tả": item.Description,
+                        "Kích hoạt": item.IsActived ? "Có" : "Không",
+                        "Ngày tạo": formatDate(item.CreatedDate),
+                        "Người tạo": item.CreatedUserFullName
+                    };
+                    return element;
+
+                })
+
                 this.setState({
+                    dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
                     IsShowForm: true
                 });
             } else {
-                this.setState({ IsShowForm: false, MessageDetail: apiResult.Message });
+                this.setState({
+                    IsShowForm: false,
+                    MessageDetail: apiResult.Message,
+                    dataExport: [],
+                    gridDataSource: []
+                });
             }
         });
     }
@@ -120,23 +146,20 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -176,12 +199,15 @@ class SearchCom extends React.Component {
                         DeletePermission={SHIPMENTORDERSTATUSGROUP_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
+                        IsExportFile={true}
+                        DataExport={this.state.dataExport}
+                        fileName="Danh sách nhóm trạng thái yêu cầu vận chuyển"
+                        onExportFile={this.handleExportFile.bind(this)}
                     />
                 </React.Fragment>
             );
         }
-        else 
-        {
+        else {
             return (
                 <div className="col-md-12 message-detail">
                     <label>{this.state.MessageDetail}</label>
