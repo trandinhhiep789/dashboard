@@ -17,13 +17,13 @@ module.exports = {
     },
     optimization: {
         // removeAvailableModules: true,
-        runtimeChunk: 'single',
-        splitChunks: {
-            chunks: 'all',
-            maxInitialRequests: 4,
-            minSize: 0,
-            maxSize: 550000
-        },
+        // runtimeChunk: 'single',
+        // splitChunks: {
+        //     chunks: 'all',
+        //     maxInitialRequests: 4,
+        //     minSize: 0,
+        //     maxSize: 550000
+        // },
         // minimizer: [
         //     // new OptimizeCSSAssetsPlugin({}),
         //     new TerserPlugin({
@@ -41,11 +41,11 @@ module.exports = {
         //     })
         // ]
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: './index.html'
-        })
-    ],
+    // plugins: [
+    //     new HtmlWebpackPlugin({
+    //         template: './index.html'
+    //     })
+    // ],
     // 	devServer: {
     //     historyApiFallback: true,
     //     contentBase: './',
