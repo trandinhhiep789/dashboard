@@ -360,6 +360,7 @@ class DetailCom extends React.Component {
                                 DataExport={this.state.dataExport_ExceptionList}
                                 fileName={TitleFromRPTException}
                                 onExportFile={this.handleExportFile.bind(this)}
+                                IsScrollBody={true}
                             />
 
                         </div>

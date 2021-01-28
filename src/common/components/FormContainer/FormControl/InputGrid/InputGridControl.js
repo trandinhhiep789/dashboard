@@ -327,9 +327,8 @@ class InputGridControlCom extends Component {
             dataSource = this.props.value;
         }
         const idSelectColumnName = this.props.IDSelectColumnName;
-        const classNameTable = `table table-sm table-striped table-bordered table-hover table-condensed ${this.props.IsScrollBody !== undefined && this.props.IsScrollBody === true ? "tableScrollBody" : ""}`
         return (
-            <table className={classNameTable} >
+            <table className="table table-sm table-striped table-bordered table-hover table-condensed" >
                 <thead className="thead-light">
                     <tr className="jsgrid-header-row">
                         {
@@ -423,7 +422,7 @@ class InputGridControlCom extends Component {
     //#endregion get Page
 
     render() {
-        console.log("props", this.props)
+        const classNameTable = `table-responsive ${this.props.IsScrollBody !== undefined && this.props.IsScrollBody === true ? "tableScrollBody" : ""}`
         return (
             <div className="card">
                 <div className="card-title">
@@ -486,8 +485,9 @@ class InputGridControlCom extends Component {
 
                 </div>
                 <div className="card-body">
-                    <div className="table-responsive">
+                    <div className={classNameTable}>
                         {
+
                             this.renderInputGrid()
                         }
                     </div>
