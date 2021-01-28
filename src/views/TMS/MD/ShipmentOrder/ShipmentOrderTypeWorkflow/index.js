@@ -691,6 +691,14 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         controltype="InputControl" datasourcemember="IsMustProcessByDeliveryUser"
                                         swaplabelModal={true}
                                     />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Có kiểm tra phải xuất kho hàng hóa vận chuyển khi chuyển bước không" name="IsCheckMustOutputGoods"
+                                        controltype="InputControl" datasourcemember="IsCheckMustOutputGoods"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Có kiểm tra phải bàn giao hàng hóa vận chuyển khi chuyển bước không" name="IsCheckMustHandOverGoods"
+                                        controltype="InputControl" datasourcemember="IsCheckMustHandOverGoods"
+                                        swaplabelModal={true}
+                                    />
                                 </div>
                             </div>
                         </TabPage>
