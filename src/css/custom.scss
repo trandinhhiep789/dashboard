@@ -478,6 +478,12 @@ select.form-control:-webkit-autofill:focus {
         }
         
     }
+    &.detail-inputgrid{
+        .card-title{
+            margin-bottom: -65px;
+        }
+        margin-bottom: -10px;
+    }
 }
 
 .message-detail {

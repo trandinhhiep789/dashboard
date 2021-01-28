@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { ModalManager } from 'react-dynamic-modal';
+import { Button } from 'antd'
+
 import { setCookie, getCookie } from "../../common/library/CommonLib.js";
 import { MessageModal } from "../../common/components/Modal";
 import MD5Digest from "../../common/library/cryptography/MD5Digest.js";
@@ -76,7 +78,7 @@ class LoginCom extends React.Component {
         let sessionlogin = getCookie(COOKIELOGIN);
         if (sessionlogin) {
             let LoginInfo = JSON.parse(sessionlogin);
-         //   console.log("componentDidMount login",LoginInfo);
+            //   console.log("componentDidMount login",LoginInfo);
             this.props.loginSuccess(LoginInfo.LoginUserInfo, LoginInfo.TokenString, LoginInfo.Password);
             this.setState({ IsLoginSuccess: true })
         }
@@ -112,7 +114,8 @@ class LoginCom extends React.Component {
                             </div>
                             <a className="text-muted hover-primary fs-13 mt-2 mt-md-0" href="#">Quên mật khẩu?</a>
                         </div>
-                        <button className="btn btn-lg btn-primary btn-block btn-signin" type="submit" onClick={this.handleLogin} >Đăng nhập</button>
+                        {/* <button className="btn btn-lg btn-primary btn-block btn-signin" type="submit" onClick={this.handleLogin} >Đăng nhập</button> */}
+                        <Button className="btn btn-lg btn-primary btn-block btn-signin" onClick={this.handleLogin} loading={this.state.IsClickLoginButton}>Đăng nhập</Button>
                     </form>
                 </div>
             </div>

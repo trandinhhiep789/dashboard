@@ -30,6 +30,12 @@ export const AddPagePath = [
     { Link: "", Title: "Thêm" }
 ];
 
+export const DetailPagePath = [
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
+    { Link: "/PartnerUser", Title: "Người dùng của nhà cung cấp" },
+    { Link: "", Title: "Chi tiết" }
+];
+
 /****************************************** giấy tờ tùy thân *******************************************/
 
 export const AddAPIPath_PartnerUserIDDocument = "api/PartnerUser_IDDocument/Add";
@@ -124,7 +130,7 @@ export const SearchElementList = [
 export const AddElementList = [
     {
         type: "text",
-        name: "txtUserName",
+        Name: "txtUserName",
         label: "tên truy cập người dùng:",
         value: "",
         maxSize: "20",
@@ -150,7 +156,7 @@ export const AddElementList = [
     // },
     {
         type: "multiselect",
-        name: "txtPartnerID",
+        Name: "txtPartnerID",
         label: "Nhà cung cấp:",
         value: -1,
         placeholder: "",
@@ -167,8 +173,8 @@ export const AddElementList = [
     },
     {
         type: "password",
-        name: "txtPassWord",
-        label: "Mật khẩu:",
+        Name: "txtPassWord",
+        label: "mật khẩu:",
         value: "",
         maxSize: "400",
         placeholder: "",
@@ -180,7 +186,7 @@ export const AddElementList = [
     },
     {
         type: "password",
-        name: "txtPassWordConfirm",
+        Name: "txtPassWordConfirm",
         label: "Xác nhận mật khẩu:",
         value: "",
         maxSize: "400",
@@ -193,7 +199,7 @@ export const AddElementList = [
     },
     {
         type: "checkbox",
-        name: "chkShowPassWord",
+        Name: "chkShowPassWord",
         label: "Hiển thị mật khẩu:",
         value: "",
         placeholder: "",
@@ -205,8 +211,8 @@ export const AddElementList = [
     },
     {
         type: "text",
-        name: "txtFullName",
-        label: "Họ tên đầy đủ:",
+        Name: "txtFullName",
+        label: "họ tên đầy đủ:",
         value: "",
         maxSize: "400",
         placeholder: "",
@@ -242,7 +248,7 @@ export const AddElementList = [
     // },
     {
         type: "text",
-        name: "txtPhoneNumber",
+        Name: "txtPhoneNumber",
         label: "Điện thoại:",
         value: "",
         maxSize: "11",
@@ -255,7 +261,7 @@ export const AddElementList = [
     },
     {
         type: "text",
-        name: "dtBirthday",
+        Name: "dtBirthday",
         label: "Ngày sinh:",
         value: "",
         placeholder: "",
@@ -267,7 +273,7 @@ export const AddElementList = [
     },
     {
         type: "text",
-        name: "txtEmail",
+        Name: "txtEmail",
         label: "Email:",
         value: "",
         maxSize: "200",
@@ -280,7 +286,7 @@ export const AddElementList = [
     },
     {
         type: "textarea",
-        name: "txtDescription",
+        Name: "txtDescription",
         label: "Mô tả:",
         value: "",
         placeholder: "Mô tả",
@@ -294,7 +300,7 @@ export const AddElementList = [
     },
     {
         type: "checkbox",
-        name: "chkIsActived",
+        Name: "chkIsActived",
         label: "Kích hoạt:",
         value: true,
         placeholder: "",
@@ -305,7 +311,7 @@ export const AddElementList = [
     },
     {
         type: "checkbox",
-        name: "chkIsSystem",
+        Name: "chkIsSystem",
         label: "Hệ thống:",
         value: "",
         placeholder: "",
@@ -501,6 +507,192 @@ export const EditElementList = [
 ];
 
 
+export const ModalColumnList_Edit = [
+    {
+        type: "text",
+        Name: "txtUserName",
+        label: "tên truy cập người dùng:",
+        value: "",
+        maxSize: "20",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "UserName",
+        readonly: true,
+        validatonList: ["required"]
+    },
+    {
+        type: "multiselect",
+        Name: "txtPartnerID",
+        label: "Nhà cung cấp:",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "PartnerID",
+        readonly: false,
+        validatonList: [],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
+        ValueMember: "PartnerID",
+        NameMember: "PartnerName",
+    },
+    {
+        type: "password",
+        Name: "txtPassWord",
+        label: "Mật khẩu:",
+        value: "",
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "password",
+        Name: "txtPassWordConfirm",
+        label: "Xác nhận mật khẩu:",
+        value: "",
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "checkbox",
+        Name: "chkShowPassWord",
+        label: "Hiển thị mật khẩu:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        readonly: false,
+        DataSourceMember: "",
+        validatonList: []
+    },
+    {
+        type: "text",
+        Name: "txtFullName",
+        label: "Họ tên đầy đủ:",
+        value: "",
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "FullName",
+        readonly: false,
+        validatonList: []
+    },
+    // {
+    //     type: "text",
+    //     name: "txtFirstName",
+    //     label: "Tên:",
+    //     value: "",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "FirstName",
+    //     readonly: false,
+    //     validatonList: []
+    // },
+    // {
+    //     type: "text",
+    //     name: "txtLastName",
+    //     label: "Họ:",
+    //     value: "",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "LastName",
+    //     readonly: false,
+    //     validatonList: []
+    // },
+    {
+        type: "text",
+        Name: "txtPhoneNumber",
+        label: "Điện thoại:",
+        value: "",
+        maxSize: "11",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "PhoneNumber",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
+        type: "text",
+        Name: "dtBirthday",
+        label: "Ngày sinh:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        DataSourceMember: "Birthday",
+        ValueMember: "Birthday",
+        NameMember: "Birthday",
+        validatonList: ["date"]
+    },
+    {
+        type: "text",
+        Name: "txtEmail",
+        label: "Email:",
+        value: "",
+        maxSize: "200",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "Email",
+        readonly: false,
+        validatonList: ["Email"]
+    },
+    {
+        type: "textarea",
+        Name: "txtDescription",
+        label: "Mô tả:",
+        value: "",
+        maxSize: "2000",
+        placeholder: "Mô tả",
+        icon: "",
+        rows: "6",
+        listoption: [],
+        DataSourceMember: "Description",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "checkbox",
+        Name: "chkIsActived",
+        label: "Kích hoạt:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        readonly: false,
+        DataSourceMember: "IsActived",
+        validatonList: []
+    },
+    {
+        type: "checkbox",
+        Name: "chkIsSystem",
+        label: "Hệ thống:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        readonly: false,
+        DataSourceMember: "IsSystem",
+        validatonList: []
+    }
+];
+
+
+
 
 export const MLObjectDefinition = [
     {
@@ -585,7 +777,7 @@ export const MLObjectDefinition = [
         Name: "UpdatedUser",
         DefaultValue: "administrator",
         BindControlName: "",
-        DataSourceMember: "UpdatedUser"
+        DataSourceMember: "UpdatedUserFullName"
     },
     {
         Name: "LstMcUser_Role",
@@ -598,12 +790,20 @@ export const MLObjectDefinition = [
 
 export const DataGridColumnList = [
     {
-        Name: "chkSelect",
+        Name: "chkSelectUserName",
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "UserName",
         Width: 100
     },
+    // {
+    //     Name: "UserName",
+    //     Type: "texttolink",
+    //     Link: "/PartnerUser/Detail/",
+    //     Caption: "Tên người dùng",
+    //     DataSourceMember: "UserName",
+    //     Width: 200
+    // },
     {
         Name: "UserName",
         Type: "text",
@@ -624,6 +824,13 @@ export const DataGridColumnList = [
         Caption: "Tên nhà cung cấp",
         DataSourceMember: "PartnerName",
         Width: 800
+    },
+    {
+        Name: "PhoneNumber",
+        Type: "text",
+        Caption: "Điện thoại",
+        DataSourceMember: "PhoneNumber",
+        Width: 150
     },
     {
         Name: "IsActived",
@@ -648,6 +855,13 @@ export const DataGridColumnList = [
         Link: "/PartnerUser/edit/",
         LinkText: "Chỉnh sửa"
     }
+    // {
+    //     Name: "UserName",
+    //     Type: "edit",
+    //     Caption: "Sửa",
+    //     DataSourceMember: "UserName",
+    //     Width: 80
+    // }
 ];
 
 export const GridMLPartnerRoleDefinition = [

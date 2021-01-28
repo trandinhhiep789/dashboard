@@ -1,5 +1,5 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/PartnerTransaction/Search";
+export const SearchAPIPath = "api/PartnerTransaction/SearchNew";
 export const LoadAPIPath = "api/PartnerTransaction/Load";
 export const AddAPIPath = "api/PartnerTransaction/Add";
 export const UpdateAPIPath = "api/PartnerTransaction/Update";
@@ -172,17 +172,18 @@ export const SearchMLObjectDefinition = [
 
 
 export const DataGridColumnList = [
-    {
-        Name: "PartnerTransactionID",
-        Type: "texttolink",
-        Caption: "Mã giao dịch",
-        Link: "/PartnerTransaction/Edit/",
-        DataSourceMember: "PartnerTransactionID",
-        Width: 100
-    },
+    // {
+    //     Name: "PartnerTransactionID",
+    //     Type: "texttolink",
+    //     Caption: "Mã giao dịch",
+    //     Link: "/PartnerTransaction/Edit/",
+    //     DataSourceMember: "PartnerTransactionID",
+    //     Width: 100
+    // },
     {
         Name: "PartnerTransactionTypeName",
-        Type: "text",
+        Type: "texttolink",
+        Link: "/PartnerTransaction/Edit/",
         Caption: "Loại giao dịch",
         DataSourceMember: "PartnerTransactionTypeName",
         Width: 250

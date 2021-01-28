@@ -5,6 +5,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
+import Detail from "./Detail";
 
 class PartnerUserCom extends React.Component {
     constructor(props) {
@@ -17,6 +18,7 @@ class PartnerUserCom extends React.Component {
                 <Route exact path="/PartnerUser" component={Search} />
                 <Route path="/PartnerUser/add" component={Add} />
                 <Route path="/PartnerUser/edit/:id" component={Edit} />
+                <Route exact path="/PartnerUser/Detail/:id" component={Detail} />  
             </React.Fragment>
         );
     }
