@@ -17,7 +17,7 @@ module.exports = {
         publicPath: '/'
     },
     devServer: {
-        historyApiFallback: false,
+        historyApiFallback: true,
         host: "dev.tms.tterpbeta.vn",
         port: 8089,
         https: false
