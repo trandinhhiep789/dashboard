@@ -58,6 +58,7 @@ module.exports = {
                 { from: './src/fonts', to: './src/fonts' },
                 { from: './src/css', to: './src/css' },
                 { from: './web.config', to: './' },
+                { from: './main.css', to: './' },
             ],
         }),
         new webpack.ProvidePlugin({
