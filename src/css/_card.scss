@@ -193,9 +193,21 @@
                 margin-right: 2px;
             }
         }
-        // .table-responsive {
-        //     max-height: 240px;
-        // }
+        .table-responsive {
+            &.tableScrollBody {
+                max-height: 650px;
+                .table {
+                    .thead-light {
+                        .jsgrid-header-row {
+                            .jsgrid-header-cell {
+                                position: sticky;
+                                top: 0;
+                            }
+                        }
+                    }
+                }
+            } 
+        }
     }
 
     .card-title {
