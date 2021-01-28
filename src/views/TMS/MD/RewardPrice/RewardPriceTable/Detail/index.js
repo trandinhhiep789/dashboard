@@ -340,6 +340,7 @@ class DetailCom extends React.Component {
                                 DataExport={this.state.dataExport_DetailList}
                                 fileName={TitleFromRPTDetail}
                                 onExportFile={this.handleExportFile.bind(this)}
+                                IsScrollBody={true}
                             />
 
                             <InputGridControl

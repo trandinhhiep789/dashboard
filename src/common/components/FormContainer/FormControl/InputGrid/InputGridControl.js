@@ -327,8 +327,9 @@ class InputGridControlCom extends Component {
             dataSource = this.props.value;
         }
         const idSelectColumnName = this.props.IDSelectColumnName;
+        const classNameTable = `table table-sm table-striped table-bordered table-hover table-condensed ${this.props.IsScrollBody !== undefined && this.props.IsScrollBody === true ? "tableScrollBody" : ""}`
         return (
-            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+            <table className={classNameTable} >
                 <thead className="thead-light">
                     <tr className="jsgrid-header-row">
                         {
@@ -416,12 +417,13 @@ class InputGridControlCom extends Component {
                         )
                     }
                 </tbody>
-            </table>
+            </table >
         );
     }
     //#endregion get Page
 
     render() {
+        console.log("props", this.props)
         return (
             <div className="card">
                 <div className="card-title">
@@ -445,7 +447,7 @@ class InputGridControlCom extends Component {
                                     </Link>)
                                     : (
                                         <React.Fragment>
-                                            {(this.props.isHiddenButtonAdd == undefined || this.props.isHiddenButtonAdd == false) && 
+                                            {(this.props.isHiddenButtonAdd == undefined || this.props.isHiddenButtonAdd == false) &&
                                                 <button type="button" className="btn btnEditCard btnEditCard2" title="" data-provide="tooltip" data-original-title="Thêm" onClick={this.handleInsertClick}>
                                                     <span className="fa fa-plus ff"> Thêm </span>
                                                 </button>
