@@ -270,6 +270,18 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsMustProcessByDeliveryUser"
     },
     {
+        Name: "IsCheckMustOutputGoods",
+        DefaultValue: "",
+        BindControlName: "IsCheckMustOutputGoods",
+        DataSourceMember: "IsCheckMustOutputGoods"
+    },
+    {
+        Name: "IsCheckMustHandOverGoods",
+        DefaultValue: "",
+        BindControlName: "IsCheckMustHandOverGoods",
+        DataSourceMember: "IsCheckMustHandOverGoods"
+    },
+    {
         Name: "OrderIndex",
         DefaultValue: "",
         BindControlName: "OrderIndex",
