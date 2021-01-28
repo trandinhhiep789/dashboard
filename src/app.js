@@ -9,7 +9,7 @@ import authenticationReducer from "./reducers";
 import { FETCH_API_REQUEST, FETCH_API_SUCCESS, FETCH_API_FAILURE } from "./constants/actionTypes";
 import { logout,calllogout,relogin } from "./actions/loginAction";
 import '../node_modules/react-image-gallery/styles/css/image-gallery.css';
-
+import  "jquery";
 
 import "./css/login3.css";
 import "./css/core.min.css";
