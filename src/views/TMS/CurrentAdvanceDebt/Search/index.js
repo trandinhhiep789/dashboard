@@ -173,7 +173,7 @@ class SearchCom extends React.Component {
     getdataHistory(obj) {
 
         this.props.callFetchAPI(APIHostName, SearchHistoryAPIPath, obj).then(apiResult => {//
-
+            console.log("obj", obj, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -181,21 +181,27 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-                apiResult.ResultObject.map((item, index) => {
+                if(apiResult.ResultObject != null ){
+                    apiResult.ResultObject.map((item, index) => {
 
-                    //1: Tạm ứng, 2: sử dụng; 3: Hủy vật tư
-                    if (item.AdvanceDebtFlowTypeID == 1) {
-                        item.AdvanceDebtFlowTypeName = "Tạm ứng";
-                    }
-                    else if (item.AdvanceDebtFlowTypeID == 2) {
-                        item.AdvanceDebtFlowTypeName = "Sử dụng";
-                    }
-                    else if (item.AdvanceDebtFlowTypeID == 3) {
-                        item.AdvanceDebtFlowTypeName = "Hủy vật tư";
-                    }
-
-                })
-                this.handleShowModal(apiResult.ResultObject)
+                        //1: Tạm ứng, 2: sử dụng; 3: Hủy vật tư
+                        if (item.AdvanceDebtFlowTypeID == 1) {
+                            item.AdvanceDebtFlowTypeName = "Tạm ứng";
+                        }
+                        else if (item.AdvanceDebtFlowTypeID == 2) {
+                            item.AdvanceDebtFlowTypeName = "Sử dụng";
+                        }
+                        else if (item.AdvanceDebtFlowTypeID == 3) {
+                            item.AdvanceDebtFlowTypeName = "Hủy vật tư";
+                        }
+    
+                    })
+                    this.handleShowModal(apiResult.ResultObject)
+                }
+                else{
+                    this.showMessage("Không tồn tại dữ liệu.");
+                }
+                
             }
         });
 
@@ -255,7 +261,7 @@ class SearchCom extends React.Component {
     handleExportSubmit(formData, MLObject) {
         const userName = MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
         this.props.callFetchAPI(APIHostName, SearchExportAPIPath, userName).then(apiResult => {
-            // console.log("handleExportSubmit", userName, apiResult)
+             console.log("handleExportSubmit", userName, apiResult)
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const exelData = apiResult.ResultObject.map((item, index) => {
