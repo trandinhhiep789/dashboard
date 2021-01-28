@@ -1,5 +1,11 @@
+'use strict';
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const webpack = require("webpack");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+
 
 module.exports = {
     entry: ['./src/app.js'],
@@ -15,8 +21,7 @@ module.exports = {
         port: 8089,
         https: false
     },
-    optimization: {
-        // removeAvailableModules: true,
+     optimization: {
         runtimeChunk: 'single',
         splitChunks: {
             chunks: 'all',
@@ -24,27 +29,35 @@ module.exports = {
             minSize: 0,
             maxSize: 550000
         },
-        // minimizer: [
-        //     // new OptimizeCSSAssetsPlugin({}),
-        //     new TerserPlugin({
-        //         extractComments: true,
-        //         cache: true,
-        //         parallel: true,
-        //         sourceMap: true, // Must be set to true if using source-maps in production
-        //         terserOptions: {
-        //             // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
-        //             extractComments: 'all',
-        //             compress: {
-        //                 drop_console: true,
-        //             },
-        //         }
-        //     })
-        // ]
-    },
+     },
     plugins: [
+        new CleanWebpackPlugin(),// clean thu mục trước khi build
         new HtmlWebpackPlugin({
-            template: './index.html'
-        })
+            inject: true,
+            template: "./index.html",
+            // minify: {
+            //     removeComments: true,
+            //     collapseWhitespace: true,
+            //     removeRedundantAttributes: true,
+            //     useShortDoctype: true,
+            //     removeEmptyAttributes: true,
+            //     removeStyleLinkTypeAttributes: true,
+            //     keepClosingSlash: true,
+            //     minifyJS: true,
+            //     minifyCSS: true,
+            //     minifyURLs: true,
+            // },
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: './src/js', to: './src/js' },
+                { from: './src/scripts', to: './src/scripts' },
+                { from: './src/scripts', to: './src/scripts' },
+                { from: './src/img', to: './src/img' },
+                { from: './src/fonts', to: './src/fonts' },
+                { from: './src/css', to: './src/css' },
+            ],
+        }),
     ],
     // 	devServer: {
     //     historyApiFallback: true,
