@@ -487,6 +487,7 @@ class InputGridControlCom extends Component {
                 <div className="card-body">
                     <div className={classNameTable}>
                         {
+
                             this.renderInputGrid()
                         }
                     </div>
