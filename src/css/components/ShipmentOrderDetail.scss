@@ -185,6 +185,24 @@
         .Collapsible {
             .Collapsible__trigger {
                 padding: 5px 10px;
+                .input-group-dropdown-custom {
+                    width: 100%;
+                    .dropdown-toggle {
+                        width: 100%;
+                        position: relative;
+                        display: flex;
+                        justify-content: space-between;
+                        line-height: 25px; 
+                        &::after {
+                            position: absolute;
+                            top:0;
+                            right: 10px;
+                            bottom: 0;
+                            margin: auto 0;
+                        }
+                    }
+                }
+                
             }
         }
     }
