@@ -5,6 +5,12 @@ header{
     .topbar-right{
        .topbar-btns {
             line-height: 58px;
+            .ant-dropdown-link {
+                font: {
+                    size: 16px;
+                }
+                letter-spacing: 0.8px;
+            }
        } 
     }
 }

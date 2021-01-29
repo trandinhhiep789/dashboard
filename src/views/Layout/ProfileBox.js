@@ -29,7 +29,7 @@ class ProfileBoxCom extends React.Component {
     }
 
     menu() {
-        return <Menu>
+        return <Menu className="dropdown-custom">
             <Menu.Item key="accountinfo">
                 <Link to="/accountinfo"><i className="ti-user"></i>{"  "}Thông tin cá nhân</Link>
             </Menu.Item>
