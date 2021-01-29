@@ -193,6 +193,22 @@
                 margin-right: 2px;
             }
         }
+        .table-responsive {
+            &.tableScrollBody {
+                max-height: 650px;
+                .table {
+                    .thead-light {
+                        .jsgrid-header-row {
+                            .jsgrid-header-cell {
+                                position: sticky;
+                                top: 0;
+                                z-index: 10;
+                            }
+                        }
+                    }
+                }
+            } 
+        }
     }
 
     .card-title {

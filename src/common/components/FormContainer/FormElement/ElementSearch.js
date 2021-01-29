@@ -2,10 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Datetime from 'react-datetime';
 import Select from 'react-select';
-import { DatePicker } from 'antd';
-import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
+import { DatePicker, Menu, Dropdown, Button } from 'antd';
 import vi_VN from 'antd/es/date-picker/locale/vi_VN';
 import moment from 'moment';
+
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { ExportStringToMonth } from "../../../../common/library/ultils";
 import MultiSelectUserComboBox from "../FormControl/MultiSelectComboBox/MultiSelectUserComboBox";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -78,6 +79,7 @@ class ElementTextdropdownCom extends Component {
         if (this.props.onValueChange != null)
             this.props.onValueChange(e.target.name, e.currentTarget.dataset.option);
     }
+
     render() {
         let { name, label, placeholder, icon, colspan, value, readonly, ValidatonErrorMessage, nameOption, valuenameOption, listoption, classNameCol } = this.props;
         let className = "form-control form-control-sm txtKeyword";
@@ -97,6 +99,19 @@ class ElementTextdropdownCom extends Component {
         if (ValidatonErrorMessage && ValidatonErrorMessage != "") {
             className += " is-invalid";
         }
+
+        const dropdownItem = () => {
+            return <Menu>
+                {listoption.map((optionItem) => <Menu.Item key={`menuItem${optionItem.value}`}>
+                    <a className={optionItem.value.toString() === valuenameOption.toString() ? "dropdown-item active" : "dropdown-item"}
+                        key={optionItem.value} name={nameOption} data-option={optionItem.value}
+                        onClick={this.handleClick.bind(this)}>
+                        {optionItem.label}
+                    </a>
+                </Menu.Item>)}
+            </Menu>
+        }
+
         return (
             <div className={colspanClassName}  >
                 <div className="input-group">
@@ -110,7 +125,7 @@ class ElementTextdropdownCom extends Component {
                             defaultValue={value}
                             placeholder={placeholder} />
                         <div className="input-group-append">
-                            <button className="btn dropdown-toggle" type="button" data-toggle="dropdown">{listoption.filter(a => a.value.toString() === valuenameOption.toString())[0].label}</button>
+                            {/* <button className="btn dropdown-toggle" type="button" data-toggle="dropdown">{listoption.filter(a => a.value.toString() === valuenameOption.toString())[0].label}</button>
                             <div className="dropdown dropdown-menu dropdown-menu-right">
                                 {listoption && listoption.map((optionItem) =>
                                     <a className={optionItem.value.toString() === valuenameOption.toString() ? "dropdown-item active" : "dropdown-item"}
@@ -118,7 +133,13 @@ class ElementTextdropdownCom extends Component {
                                         onClick={this.handleClick.bind(this)}>
                                         {optionItem.label}</a>
                                 )}
-                            </div>
+                            </div> */}
+
+                            <Dropdown overlay={dropdownItem} trigger={["click"]}>
+                                <div className="btn dropdown-toggle">
+                                    {listoption.filter(a => a.value.toString() === valuenameOption.toString())[0].label}
+                                </div>
+                            </Dropdown>
                         </div>
                         <div className="invalid-feedback">{ValidatonErrorMessage}</div>
                     </div>
@@ -394,7 +415,7 @@ class ElementComboBoxNewChangeCom extends Component {
             className += " is-invalid";
         }
         const selectedOption = this.state.SelectedOption;
-        
+
         return (
             <div className={colspanClassName}  >
                 <div className="form-group form-group-input form-group-input-select">
@@ -586,7 +607,7 @@ class ElementComboBoxCom extends Component {
             className += " is-invalid";
         }
         const selectedOption = this.state.SelectedOption;
-        
+
         return (
             <div className={colspanClassName}  >
                 <div className="form-group form-group-input form-group-input-select">
@@ -872,12 +893,12 @@ class ElementDatetimeCom extends Component {
         this.handleValueChange = this.handleValueChange.bind(this);
     }
     handleValueChange(name, moment) {
-        
+
         //e.preventDefault();
         if (this.props.onValueChange != null)
             this.props.onValueChange(name, moment);
     }
-    
+
     render() {
         let { name, label, timeFormat, dateFormat, colspan, value, ValidatonErrorMessage, classNameCol } = this.props;
         let className = "";
@@ -1421,9 +1442,9 @@ class ProductComboBoxCom extends React.Component {
             <div className={formRowClassName} >
                 {isLabelDiv &&
                     // <div className={labelDivClassName}>
-                        <label className="col-form-label 6">
-                            {this.props.label}<span className="text-danger"> {star}</span>
-                        </label>
+                    <label className="col-form-label 6">
+                        {this.props.label}<span className="text-danger"> {star}</span>
+                    </label>
                     // </div> 
                 }
                 <div className={formGroupClassName}>
