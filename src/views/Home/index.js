@@ -210,7 +210,7 @@ class HomeCom extends React.Component {
         //console.log("Home this.props.AuthenticationInfo.LoginInfo.IsRelogin: ", this.props.AuthenticationInfo.LoginInfo.IsRelogin);
         return (
             <React.Fragment>
-                <Spin spinning={this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL} size="large" style={{ zIndex: 1001 }}>
+                <Spin className="ant-spin-custom" spinning={this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL} size="large">
                     <Header />
                     <main className="main-container">
                         <div className="main-content">

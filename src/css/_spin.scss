@@ -1,0 +1,9 @@
+.ant-spin-nested-loading {
+    .ant-spin {
+        &.ant-spin-custom{
+            background-color: #0e0a05c7;
+            z-index: 1001;
+            max-height: 100vh;
+        }
+    }
+}
