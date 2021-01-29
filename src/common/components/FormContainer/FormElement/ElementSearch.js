@@ -100,17 +100,6 @@ class ElementTextdropdownCom extends Component {
             className += " is-invalid";
         }
 
-        const dropdownItem = () => {
-            return <Menu className={this.props.classNameDropdown != "" ? this.props.classNameDropdown : ""}>
-                {listoption.map((optionItem) => <Menu.Item key={`menuItem${optionItem.value}`}>
-                    <a className={optionItem.value.toString() === valuenameOption.toString() ? "dropdown-item active" : "dropdown-item"}
-                        key={optionItem.value} name={nameOption} data-option={optionItem.value}
-                        onClick={this.handleClick.bind(this)}>
-                        {optionItem.label}
-                    </a>
-                </Menu.Item>)}
-            </Menu>
-        }
         return (
             <div className={colspanClassName}  >
                 <div className="input-group">
@@ -124,7 +113,7 @@ class ElementTextdropdownCom extends Component {
                             defaultValue={value}
                             placeholder={placeholder} />
                         <div className="input-group-append">
-                            {/* <button className="btn dropdown-toggle" type="button" data-toggle="dropdown">{listoption.filter(a => a.value.toString() === valuenameOption.toString())[0].label}</button>
+                            <button className="btn dropdown-toggle" type="button" data-toggle="dropdown">{listoption.filter(a => a.value.toString() === valuenameOption.toString())[0].label}</button>
                             <div className="dropdown dropdown-menu dropdown-menu-right">
                                 {listoption && listoption.map((optionItem) =>
                                     <a className={optionItem.value.toString() === valuenameOption.toString() ? "dropdown-item active" : "dropdown-item"}
@@ -132,13 +121,7 @@ class ElementTextdropdownCom extends Component {
                                         onClick={this.handleClick.bind(this)}>
                                         {optionItem.label}</a>
                                 )}
-                            </div> */}
-
-                            <Dropdown overlay={dropdownItem} trigger={["click"]} >
-                                <div className="btn dropdown-toggle">
-                                    {listoption.filter(a => a.value.toString() === valuenameOption.toString())[0].label}
-                                </div>
-                            </Dropdown>
+                            </div>
                         </div>
                         <div className="invalid-feedback">{ValidatonErrorMessage}</div>
                     </div>
@@ -1473,6 +1456,85 @@ const mapStateToProps = state => {
 };
 const ProductComboBox = connect(mapStateToProps, mapDispatchToProps)(ProductComboBoxCom);
 
+class ElementTextdropdownNewCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+
+    }
+    handleValueChange(e) {
+        e.preventDefault();
+
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(e.target.name, e.target.value);
+    }
+
+    handleClick(e) {
+        e.preventDefault();
+        if (this.props.onValueChange != null)
+            this.props.onValueChange(e.target.name, e.currentTarget.dataset.option);
+    }
+
+    render() {
+        let { name, label, placeholder, icon, colspan, value, readonly, ValidatonErrorMessage, nameOption, valuenameOption, listoption, classNameCol } = this.props;
+        let className = "form-control form-control-sm txtKeyword";
+        let colspanClassName = "col-md-3";
+        if (colspan) {
+            if (classNameCol) {
+                colspanClassName = "col-md-" + this.props.colspan + " " + classNameCol;
+            }
+            else {
+                colspanClassName = "col-md-" + this.props.colspan;
+            }
+        }
+        let labeldiv;
+        if (label) {
+            labeldiv = <label className="col-form-label" htmlFor="input-normal">{label}</label>;
+        }
+        if (ValidatonErrorMessage && ValidatonErrorMessage != "") {
+            className += " is-invalid";
+        }
+
+        const dropdownItem = () => {
+            return <Menu className={this.props.classNameDropdown != "" ? this.props.classNameDropdown : ""}>
+                {listoption.map((optionItem) => <Menu.Item key={`menuItem${optionItem.value}`}>
+                    <a className={optionItem.value.toString() === valuenameOption.toString() ? "dropdown-item active" : "dropdown-item"}
+                        key={optionItem.value} name={nameOption} data-option={optionItem.value}
+                        onClick={this.handleClick.bind(this)}>
+                        {optionItem.label}
+                    </a>
+                </Menu.Item>)}
+            </Menu>
+        }
+        return (
+            <div className={colspanClassName}  >
+                <div className="input-group">
+                    {labeldiv}
+                    <div className="group-text-select">
+                        <input type="text"
+                            className={className}
+                            name={name}
+                            onChange={this.handleValueChange}
+                            readOnly={readonly}
+                            defaultValue={value}
+                            placeholder={placeholder} />
+                        <div className="input-group-append">
+                            <Dropdown overlay={dropdownItem} trigger={["click"]} >
+                                <div className="btn dropdown-toggle">
+                                    {listoption.filter(a => a.value.toString() === valuenameOption.toString())[0].label}
+                                </div>
+                            </Dropdown>
+                        </div>
+                        <div className="invalid-feedback">{ValidatonErrorMessage}</div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+const ElementTextdropdownNew = connect(null, null)(ElementTextdropdownNewCom);
+
 export default {
     ElementText,
     ElementTextdropdown,
@@ -1488,6 +1550,7 @@ export default {
     ElementDatetimeMonthYear,
     MultiSelectUserComboBox,
     ElementComboBoxNewChange,
-    ProductComboBox
+    ProductComboBox,
+    ElementTextdropdownNew
 };
 
