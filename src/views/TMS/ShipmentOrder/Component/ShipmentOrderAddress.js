@@ -1269,7 +1269,7 @@ class ShipmentOrderAddressCom extends Component {
                                             </label>
                                         </div>
                                         <div className="form-group col-md-11">
-                                            <label className="col-form-label">{this.state.ShipmentOrder.ReceiverPhoneNumber}</label>
+                                            <label className="col-form-label">{(this.state.ShipmentOrder.ShipmentOrderTypeID==1002||this.state.ShipmentOrder.ShipmentOrderTypeID==1003)? this.state.ShipmentOrder.ReceiverPhoneNumber.substr(0, 7)+"***":this.state.ShipmentOrder.ReceiverPhoneNumber}</label>
                                         </div>
                                     </div>
                                     <div className="form-row">
