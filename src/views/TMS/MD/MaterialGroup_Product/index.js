@@ -16,8 +16,9 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
-import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SKILLRANK } from "../../../../constants/keyCache";
+import { GET_CACHE_USER_FUNCTION_LIST, MATERIALGROUP_ADD, MATERIALGROUP_DELETE, MATERIALGROUP_UPDATE } from "../../../../constants/functionLists";
 
 class MaterialGroup_ProductCom extends React.Component {
     constructor(props) {
@@ -29,6 +30,7 @@ class MaterialGroup_ProductCom extends React.Component {
         this.initCache = this.initCache.bind(this);
         this.resetCombobox = this.resetCombobox.bind(this);
         this.initDatasource = this.initDatasource.bind(this);
+        this.checkPermission = this.checkPermission.bind(this);
         this.onClose = this.onClose.bind(this);
         this.state = {
             CallAPIMessage: "",
@@ -64,7 +66,38 @@ class MaterialGroup_ProductCom extends React.Component {
 
     componentDidMount() {
         this.initCache();
+        this.checkPermission();
 
+    }
+
+    checkPermission() {
+        let IsAllowedAdd = false;
+        let IsAllowedDelete = false;
+        let IsAllowedUpdate = false;
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                let _isAllowedAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == MATERIALGROUP_ADD);
+                if (_isAllowedAdd && _isAllowedAdd.length > 0) {
+                    IsAllowedAdd = true;
+                }
+
+                let _isAllowedUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == MATERIALGROUP_UPDATE);
+                if (_isAllowedUpdate && _isAllowedUpdate.length > 0) {
+                    IsAllowedUpdate = true;
+                }
+
+                let _isAlloweDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == MATERIALGROUP_DELETE);
+                if (_isAlloweDelete && _isAlloweDelete.length > 0) {
+                    IsAllowedDelete = true;
+                }
+
+                this.setState({
+                    IsAllowedAdd,
+                    IsAllowedUpdate,
+                    IsAllowedDelete
+                });
+            }
+        });
     }
 
     handleCloseMessage() {
@@ -157,6 +190,10 @@ class MaterialGroup_ProductCom extends React.Component {
     }
 
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
+        if (!this.state.IsAllowedAdd) {
+            this.showMessage("Bạn không có quyền");
+            return;
+        }
         this.setState({ IsInsert: true });
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Thêm mới sản phẩm của nhóm vật tư',
@@ -256,7 +293,10 @@ class MaterialGroup_ProductCom extends React.Component {
     }
 
     handleDelete(deleteList, pkColumnName) {
-        debugger;
+        if (!this.state.IsAllowedDelete) {
+            this.showMessage("Bạn không có quyền");
+            return;
+        }
         //kiểm tra xem mã sản phẩm vật tư có đang dc sử dụng hay không
         let match = [];
         let tempMaterialGroupProductDataSource = [];
@@ -404,6 +444,9 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
         }
 
     };
