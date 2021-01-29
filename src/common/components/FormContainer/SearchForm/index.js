@@ -152,15 +152,19 @@ export default class SearchForm extends Component {
                                 );
                             case "textdropdown":
                                 return (
-                                    // <ElementSearch.ElementTextdropdown
-                                    //     onValueChange={this.onValueChange}
-                                    //     valuenameOption={this.state.FormData[elementItem.nameOption].value}
-                                    //     ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
-                                    //     inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
-                                    //     {...elementItem}
-                                    //     value={this.state.FormData[elementItem.name].value}
-                                    //     key={index}
-                                    // />
+                                    <ElementSearch.ElementTextdropdown
+                                        onValueChange={this.onValueChange}
+                                        valuenameOption={this.state.FormData[elementItem.nameOption].value}
+                                        ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                        {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        key={index}
+                                    />
+
+                                );
+                            case "textdropdownNew":
+                                return (
                                     <ElementSearch.ElementTextdropdownNew
                                         onValueChange={this.onValueChange}
                                         valuenameOption={this.state.FormData[elementItem.nameOption].value}

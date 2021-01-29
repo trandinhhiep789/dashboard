@@ -38,7 +38,7 @@ dtFromdate.setDate(new Date().getDate() - 30);
 
 export const SearchElementList = [
     {
-        type: "textdropdown",
+        type: "textdropdownNew",
         dropdownName: "txtTypename",
         name: "txtKeyword",
         colspan: 2,
@@ -51,8 +51,8 @@ export const SearchElementList = [
         labelOption: "--Vui lòng chọn--",
         valueOption: -1,
         // validatonList:["Comborequired"],
-        classNameCol:"col-custom",
-        classNameDropdown:"dropdown-custom",
+        classNameCol: "col-custom",
+        classNameDropdown: "dropdown-custom",
         listoption: [
             { value: -1, label: '--Vui lòng chọn--' },
             { value: 1, label: 'SĐT người nhận hàng' },
@@ -78,7 +78,7 @@ export const SearchElementList = [
     //     NameMember: "ShipmentOrderTypeName",
     //     classNameCol:"col-custom"
     // },
-   
+
     {
         type: "MultiTreeSelect",
         name: "cbShipmentOrderTypeID",
@@ -86,7 +86,7 @@ export const SearchElementList = [
         colspan: 12,
         rowspan: 2,
         value: "",
-        maxTagCount:1,
+        maxTagCount: 1,
         isMultiSelect: true,
         placeholder: "---Loại yêu cầu vận chuyển---",
         listoption: [],
@@ -94,7 +94,7 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
         ValueMember: "ShipmentOrderTypeID",
         NameMember: "ShipmentOrderTypeName",
-        classNameCol:"col-custom"
+        classNameCol: "col-custom"
     },
     {
         type: "Datetime",
@@ -105,7 +105,7 @@ export const SearchElementList = [
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 1,
-        classNameCol:"col-custom"
+        classNameCol: "col-custom"
     },
     {
         type: "Datetime",
@@ -116,7 +116,7 @@ export const SearchElementList = [
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 1,
-        classNameCol:"col-custom"
+        classNameCol: "col-custom"
     },
     {
         type: "ComboBox",
@@ -131,8 +131,8 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
         ValueMember: "ProvinceID",
         NameMember: "ProvinceName",
-        filterrest:"cbReceiverDistrictID,cbSenderStoreID",
-        classNameCol:"col-custom"
+        filterrest: "cbReceiverDistrictID,cbSenderStoreID",
+        classNameCol: "col-custom"
     },
     {
         type: "ComboBox",
@@ -146,12 +146,12 @@ export const SearchElementList = [
         IsAutoLoadItemFromCache: true,
         filterName: "cbReceiverProvinceID",
         filterValue: "",
-        filterobj:"ProvinceID",
+        filterobj: "ProvinceID",
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
         ValueMember: "DistrictID",
         NameMember: "DistrictName",
-        filterrest:"cbSenderStoreID",
-        classNameCol:"col-custom"
+        filterrest: "cbSenderStoreID",
+        classNameCol: "col-custom"
     },
     {
         type: "ComboBox",
@@ -168,8 +168,8 @@ export const SearchElementList = [
         NameMember: "StoreName",
         filterName: "cbReceiverDistrictID",
         filterValue: "",
-        filterobj:"DistrictID",
-        classNameCol:"col-custom"
+        filterobj: "DistrictID",
+        classNameCol: "col-custom"
     },
     {
         type: "ComboBox",
@@ -185,8 +185,8 @@ export const SearchElementList = [
         ValueMember: "StoreID",
         NameMember: "StoreName",
         filterValue: 10,
-        filterobj:"CompanyID",
-        classNameCol:"col-custom"
+        filterobj: "CompanyID",
+        classNameCol: "col-custom"
     },
     // {
     //     type: "ComboBox",
@@ -210,7 +210,7 @@ export const SearchElementList = [
         colspan: 12,
         rowspan: 2,
         value: "1,2,3",
-        maxTagCount:1,
+        maxTagCount: 1,
         isMultiSelect: true,
         placeholder: "---Trạng thái---",
         listoption: [],
@@ -218,7 +218,7 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUSGR",
         ValueMember: "ShipmentOrderStatusGroupID",
         NameMember: "ShipmentOrderStatusGroupName",
-        classNameCol:"col-custom"
+        classNameCol: "col-custom"
     },
     {
         type: "ComboBox",
@@ -228,8 +228,8 @@ export const SearchElementList = [
         value: -1,
         isMultiSelect: false,
         placeholder: "--Trạng thái điều phối--",
-        listoption: [{ value: -1, label: "--Điều phối--" },{ value: 1, label: "Đã điều phối" },{ value: 2, label: "Chưa điều phối" }],
-        classNameCol:"col-custom"
+        listoption: [{ value: -1, label: "--Điều phối--" }, { value: 1, label: "Đã điều phối" }, { value: 2, label: "Chưa điều phối" }],
+        classNameCol: "col-custom"
     },
     {
         type: "ComboBox",
@@ -239,11 +239,11 @@ export const SearchElementList = [
         value: 1,
         isMultiSelect: false,
         placeholder: "",
-        listoption: [{ value: 1, label: "Sắp xếp theo thời gian giao" },{ value: 2, label: "Sắp xếp theo thời gian tạo" }],
-        classNameCol:"col-custom"
+        listoption: [{ value: 1, label: "Sắp xếp theo thời gian giao" }, { value: 2, label: "Sắp xếp theo thời gian tạo" }],
+        classNameCol: "col-custom"
     }
-    
-    
+
+
 ];
 export const InitSearchParams = [
     {
@@ -317,7 +317,7 @@ export const SearchMLObjectDefinition = [
     },
     {
         Name: "ShipmentOrderTypeID",
-        DefaultValue:"",
+        DefaultValue: "",
         BindControlName: "cbShipmentOrderTypeID"
     },
     {
@@ -370,13 +370,13 @@ export const SearchMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "cbIsOrderBy"
     }
-//   ,
-//     {
-//         Name: "TreeSelectID",
-//         DefaultValue: "",
-//         BindControlName: "TreeSelectID"
-//     }  
-    
+    //   ,
+    //     {
+    //         Name: "TreeSelectID",
+    //         DefaultValue: "",
+    //         BindControlName: "TreeSelectID"
+    //     }  
+
 ];
 
 export const AddElementList = [
@@ -568,14 +568,14 @@ export const MLObjectDefinition = [
         BindControlName: "txtCarrierTypeID",
         DataSourceMember: "CarrierTypeID"
     },
-    
+
     {
         Name: "ShipmentServiceTypeID",
         DefaultValue: "",
         BindControlName: "txtShipmentServiceTypeID",
         DataSourceMember: "ShipmentServiceTypeID"
     },
-    
+
     {
         Name: "ShipmentGoodsTypeID",
         DefaultValue: "",
@@ -750,7 +750,7 @@ export const MLObjectDefinition = [
         BindControlName: "txtCoordinatorNote",
         DataSourceMember: "CoordinatorNote"
     },
-    
+
     {
         Name: "IsActived",
         DefaultValue: true,
@@ -811,7 +811,7 @@ export const MLObjectDefinition = [
         BindControlName: "ShipmentOrder_DeliverUserList",
         DataSourceMember: "ShipmentOrder_DeliverUserList"
     }
-                             
+
 
 ];
 
@@ -1193,7 +1193,7 @@ export const ElementQHPXList = [
         label: "địa chỉ",
         placeholder: "Địa chỉ",
         value: "",
-        DataSourceMember:"ReceiverFullAddress",
+        DataSourceMember: "ReceiverFullAddress",
         classNameCustom: "customcontrol"
     }
 ];
@@ -1342,8 +1342,8 @@ export const DataGridColumnMaterialList = [
         OrderIndex: 1,
         Width: 150,
         Colmd: 12,
-        labelcolspan:2,
-        colspan:10,
+        labelcolspan: 2,
+        colspan: 10,
     },
     {
         name: "ProductName",
@@ -1355,8 +1355,8 @@ export const DataGridColumnMaterialList = [
         validatonList: ["required"],
         OrderIndex: 2,
         Colmd: 12,
-        labelcolspan:2,
-        colspan:10,
+        labelcolspan: 2,
+        colspan: 10,
     },
     {
         name: "Quantity",
@@ -1365,8 +1365,8 @@ export const DataGridColumnMaterialList = [
         label: "số lượng",
         datasourcemember: "Quantity",
         Width: 100,
-        min:1,
-        max:9999,
+        min: 1,
+        max: 9999,
         OrderIndex: 3
     },
     {
@@ -1375,12 +1375,12 @@ export const DataGridColumnMaterialList = [
         Caption: "Đơn vị tính",
         label: "Đơn vị tính",
         datasourcemember: "QuantityUnitID",
-        validatonList:["Comborequired"],
-        isautoloaditemfromcache:true,
-        loaditemcachekeyid:"ERPCOMMONCACHE.QUANTITYUNIT",
-        valuemember:"QuantityUnitID",
-        nameMember:"QuantityUnit",
-        namelabel:"QuantityUnitName",
+        validatonList: ["Comborequired"],
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.QUANTITYUNIT",
+        valuemember: "QuantityUnitID",
+        nameMember: "QuantityUnit",
+        namelabel: "QuantityUnitName",
         OrderIndex: 4,
         hideInput: false
     },
@@ -1412,8 +1412,8 @@ export const DataGridColumnMaterialList = [
         hideInput: false,
         OrderIndex: 6,
         Colmd: 12,
-        labelcolspan:2,
-        colspan:10
+        labelcolspan: 2,
+        colspan: 10
     },
     {
         name: "Action",
@@ -1529,7 +1529,7 @@ export const MLObjectExpectedDelivery = [
         BindControlName: "DeliverydateUpdateReasonNote",
         DataSourceMember: "DeliverydateUpdateReasonNote"
     }
-    
+
 ]
 export const ExpectedDeliveryDateEdit = [
     // {
@@ -1551,13 +1551,13 @@ export const ExpectedDeliveryDateEdit = [
         Type: "ComboBoxEdit",
         Caption: "Lý do thay đổi",
         label: "Lý do thay đổi",
-        value:-1,
+        value: -1,
         datasourcemember: "DeliverydateUpdateReasonID",
-        validatonList:["Comborequired"],
-        isautoloaditemfromcache:true,
-        loaditemcachekeyid:"ERPCOMMONCACHE.DELIVERYDATEUPDATEREASON",
-        valuemember:"DeliverydateUpdateReasonID",
-        nameMember:"DeliverydateUpdateReasonName",
+        validatonList: ["Comborequired"],
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.DELIVERYDATEUPDATEREASON",
+        valuemember: "DeliverydateUpdateReasonID",
+        nameMember: "DeliverydateUpdateReasonName",
         OrderIndex: 2
     },
     // {
@@ -1578,24 +1578,24 @@ export const ExpectedDeliveryDateEdit = [
         Caption: "Ngày hẹn giao",
         label: "Ngày hẹn giao",
         datasourcemember: "NewExpectedDeliveryDate",
-        validatonList:["required"],
-        timeFormat:false,
-        ISdisabledDate:true,
-        dateFormat:"DD-MM-YYYY HH:mm",//"YYYY-MM-DD HH:mm"
-        IsGetTime:true,
+        validatonList: ["required"],
+        timeFormat: false,
+        ISdisabledDate: true,
+        dateFormat: "DD-MM-YYYY HH:mm",//"YYYY-MM-DD HH:mm"
+        IsGetTime: true,
         OrderIndex: 4
     },
     {
         name: "DeliverydateUpdateReasonNote",
         Type: "TextArea",
-        label:"Ghi chú",
+        label: "Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "DeliverydateUpdateReasonNote",
-        OrderIndex:5,
-        Colmd:12,
+        OrderIndex: 5,
+        Colmd: 12,
         hideInput: false,
-        labelcolspan:2,
-        colspan:10
+        labelcolspan: 2,
+        colspan: 10
     },
 ];
 
@@ -1619,8 +1619,8 @@ export const MLObjectUpdateCoordinatorStore = [
         DataSourceMember: "CoordinatorNote"
     }
 
-    
-    
+
+
 ]
 export const UpdateCoordinatorStoreEdit = [
     {
@@ -1628,16 +1628,16 @@ export const UpdateCoordinatorStoreEdit = [
         Type: "ComboBoxStore",
         Caption: "Kho điều phối",
         label: "Kho điều phối",
-        value:-1,
+        value: -1,
         datasourcemember: "CoordinatorStoreID",
-        validatonList:["Comborequired"],
-        isautoloaditemfromcache:true,
-        loaditemcachekeyid:"ERPCOMMONCACHE.STORE",
-        filterobj:"CompanyID",
-        filterValue:10,
-        valuemember:"StoreID",
-        nameMember:"StoreName",
-        Disabled:true,
+        validatonList: ["Comborequired"],
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.STORE",
+        filterobj: "CompanyID",
+        filterValue: 10,
+        valuemember: "StoreID",
+        nameMember: "StoreName",
+        Disabled: true,
         OrderIndex: 1
     },
     {
@@ -1645,31 +1645,31 @@ export const UpdateCoordinatorStoreEdit = [
         Type: "ComboBoxStore",
         Caption: "Kho cần chuyển",
         label: "Kho cần chuyển",
-        value:-1,
+        value: -1,
         datasourcemember: "CoordinatorStoreNewID",
-        validatonList:["Comborequired"],
-        isautoloaditemfromcache:true,
-        loaditemcachekeyid:"ERPCOMMONCACHE.STORE",
-        valuemember:"StoreID",
-        nameMember:"StoreName",
-        filterobj:"CompanyID",
-        othername:"CoordinatorStoreID",
-        filterValue:10,
+        validatonList: ["Comborequired"],
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.STORE",
+        valuemember: "StoreID",
+        nameMember: "StoreName",
+        filterobj: "CompanyID",
+        othername: "CoordinatorStoreID",
+        filterValue: 10,
         OrderIndex: 2
     },
     {
         name: "CoordinatorNote",
         Type: "TextArea",
-        label:"Nội dung điều phối",
+        label: "Nội dung điều phối",
         Caption: "Nội dung điều phối",
         datasourcemember: "CoordinatorNote",
-        OrderIndex:5,
-        Colmd:12,
+        OrderIndex: 5,
+        Colmd: 12,
         hideInput: false,
-        labelcolspan:2,
-        colspan:10
+        labelcolspan: 2,
+        colspan: 10
     }
-   
+
 ];
 
 
