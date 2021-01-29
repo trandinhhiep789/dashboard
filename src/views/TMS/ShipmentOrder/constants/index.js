@@ -52,6 +52,7 @@ export const SearchElementList = [
         valueOption: -1,
         // validatonList:["Comborequired"],
         classNameCol:"col-custom",
+        classNameDropdown:"dropdown-custom",
         listoption: [
             { value: -1, label: '--Vui lòng chọn--' },
             { value: 1, label: 'SĐT người nhận hàng' },

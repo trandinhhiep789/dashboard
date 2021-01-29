@@ -101,7 +101,7 @@ class ElementTextdropdownCom extends Component {
         }
 
         const dropdownItem = () => {
-            return <Menu>
+            return <Menu className={this.props.classNameDropdown != "" ? this.props.classNameDropdown : ""}>
                 {listoption.map((optionItem) => <Menu.Item key={`menuItem${optionItem.value}`}>
                     <a className={optionItem.value.toString() === valuenameOption.toString() ? "dropdown-item active" : "dropdown-item"}
                         key={optionItem.value} name={nameOption} data-option={optionItem.value}
@@ -111,7 +111,6 @@ class ElementTextdropdownCom extends Component {
                 </Menu.Item>)}
             </Menu>
         }
-
         return (
             <div className={colspanClassName}  >
                 <div className="input-group">
@@ -135,7 +134,7 @@ class ElementTextdropdownCom extends Component {
                                 )}
                             </div> */}
 
-                            <Dropdown overlay={dropdownItem} trigger={["click"]}>
+                            <Dropdown overlay={dropdownItem} trigger={["click"]} >
                                 <div className="btn dropdown-toggle">
                                     {listoption.filter(a => a.value.toString() === valuenameOption.toString())[0].label}
                                 </div>
