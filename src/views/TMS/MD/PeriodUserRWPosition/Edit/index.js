@@ -147,6 +147,29 @@ class EditCom extends React.Component {
         }
     }
 
+    // Convert 'D/M/YY' to Date()
+    mdyToDate(mdy) {
+        var d;
+        try {
+            d = mdy.split(/[\/\-\.]/, 3);
+        }
+        catch (err) {
+            return mdy;
+        }
+
+        if (d.length != 3) return null;
+
+        // Check if date is valid
+        var mon = parseInt(d[1]),
+            day = parseInt(d[0]),
+            year = parseInt(d[2]);
+        if (d[2].length == 2) year += 2000;
+        if (day <= 31 && mon <= 12 && year >= 2015)
+            return new Date(year, mon - 1, day);
+
+        return null;
+    }
+
     handleSubmit(formData, MLObject) {
         MLObject.PeriodUserRWPositionID = this.props.match.params.id;
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
@@ -205,6 +228,11 @@ class EditCom extends React.Component {
                 );
             }
         }
+        MLObject.ApplyFromDate = this.mdyToDate(MLObject.ApplyFromDate);
+        MLObject.ApplyToDate = this.mdyToDate(MLObject.ApplyToDate);
+
+        // let a = this.mdyToDate(MLObject.ApplyFromDate);
+        // console.log("MLObject.ApplyFromDate", a)
 
         let validDate = dates.compare(MLObject.ApplyFromDate, MLObject.ApplyToDate);
         if (validDate == 1) {
@@ -312,7 +340,7 @@ class EditCom extends React.Component {
                             isRequired={true}
                         />
 
-                        
+
                         <FormControl.FormControlComboBox
                             name="RewardPositionID"
                             label="mã vị trí thưởng"

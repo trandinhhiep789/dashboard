@@ -16,8 +16,9 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
-import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_MAINGROUP, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_BRAND } from "../../../../constants/keyCache";
+import { GET_CACHE_USER_FUNCTION_LIST, MATERIALGROUP_ADD, MATERIALGROUP_DELETE, MATERIALGROUP_UPDATE } from "../../../../constants/functionLists";
 
 class MaterialGroup_InstallCondCom extends React.Component {
     constructor(props) {
@@ -32,6 +33,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
         this.initDatasource = this.initDatasource.bind(this);
         this.setValueCombobox = this.setValueCombobox.bind(this);
         this.initComboboxMaterialProduct = this.initComboboxMaterialProduct.bind(this);
+        this.checkPermission = this.checkPermission.bind(this);
         this.onClose = this.onClose.bind(this);
         this.state = {
             CallAPIMessage: "",
@@ -68,7 +70,39 @@ class MaterialGroup_InstallCondCom extends React.Component {
     componentDidMount() {
         this.initCache();
         this.initComboboxMaterialProduct(this.state.MaterialGroup_ProductDataSource);
+        this.checkPermission();
     }
+
+    checkPermission() {
+        let IsAllowedAdd = false;
+        let IsAllowedDelete = false;
+        let IsAllowedUpdate = false;
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                let _isAllowedAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == MATERIALGROUP_ADD);
+                if (_isAllowedAdd && _isAllowedAdd.length > 0) {
+                    IsAllowedAdd = true;
+                }
+
+                let _isAllowedUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == MATERIALGROUP_UPDATE);
+                if (_isAllowedUpdate && _isAllowedUpdate.length > 0) {
+                    IsAllowedUpdate = true;
+                }
+
+                let _isAlloweDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == MATERIALGROUP_DELETE);
+                if (_isAlloweDelete && _isAlloweDelete.length > 0) {
+                    IsAllowedDelete = true;
+                }
+
+                this.setState({
+                    IsAllowedAdd,
+                    IsAllowedUpdate,
+                    IsAllowedDelete
+                });
+            }
+        });
+    }
+
 
 
 
@@ -356,6 +390,10 @@ class MaterialGroup_InstallCondCom extends React.Component {
     }
 
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
+        if (!this.state.IsAllowedAdd) {
+            this.showMessage("Bạn không có quyền");
+            return;
+        }
         this.setState({ IsInsert: true });
         //console.log("MaterialGroup_InstallCondDataSource", this.state.MaterialGroup_InstallCondDataSource);
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
@@ -410,6 +448,10 @@ class MaterialGroup_InstallCondCom extends React.Component {
     }
 
     handleEdit(value, pkColumnName) {
+        if (!this.state.IsAllowedUpdate) {
+            this.showMessage("Bạn không có quyền");
+            return;
+        }
         this.setState({ IsInsert: false });
         let _MaterialGroup_InstallCondDataSource = {};
         this.state.MaterialGroup_InstallCondDataSource.map((item, index) => {
@@ -461,7 +503,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
 
                         //check duplicated data
                         let _exitsduplicated = this.state.MaterialGroup_InstallCondDataSource.filter(x => x.ApplyProductID == MLObject.ApplyProductID && x.ApplySubGroupID == MLObject.ApplySubGroupID
-                            && x.ApplyTechspecsID == MLObject.ApplyTechspecsID && x.ApplyTechspecsValueID == MLObject.ApplyTechspecsValueID && x.BrandID == MLObject.BrandID && x.MaterialProductID == MLObject.MaterialProductID
+                            && x.ApplyTechspecsID == MLObject.ApplyTechspecsID && x.ApplyTechspecsValueID == MLObject.ApplyTechspecsValueID && x.BrandID == MLObject.BrandID && x.MaterialProductID == MLObject.MaterialProductID && MLObject.InstallCondID != x.InstallCondID
                         );
                         if (_exitsduplicated.length > 0) {
                             this.addNotification("Dữ liệu đã tồn tại", true);
@@ -480,7 +522,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
                             this.addNotification(apiResult.Message, apiResult.IsError);
                         });
 
-
+                        
                     }
                 }
             },
@@ -490,6 +532,10 @@ class MaterialGroup_InstallCondCom extends React.Component {
     }
 
     handleDelete(deleteList, pkColumnName) {
+        if (!this.state.IsAllowedDelete) {
+            this.showMessage("Bạn không có quyền");
+            return;
+        }
         let listMLObject = [];
         let _MaterialGroup_InstallCondDataSource = this.state.MaterialGroup_InstallCondDataSource;
         deleteList.map((row, index) => {
@@ -637,6 +683,9 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
         }
 
     };
