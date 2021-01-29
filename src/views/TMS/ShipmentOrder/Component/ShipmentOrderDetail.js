@@ -12,8 +12,10 @@ import FormControl from "../../../../common/components/FormContainer/FormControl
 import Collapsible from 'react-collapsible';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { ExportStringDate } from "../../../../common/library/ultils";
-import { MODAL_TYPE_CONFIRMATIONNEW,MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import { MODAL_TYPE_CONFIRMATIONNEW, MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import ReactTooltip from 'react-tooltip';
+
+import { DatePicker, Menu, Dropdown, Button } from 'antd';
 import {
     APIHostName,
     MLObjectExpectedDelivery,
@@ -35,7 +37,7 @@ class ShipmentOrderDetailCom extends Component {
             IsDisable: true,
             IsExpectedDeliveryDate: false,
             dtExpectedDeliveryDate: this.props.ShipmentOrderDetail.ExpectedDeliveryDate,
-            ShipmentOrder_DLDateLogItemList:[]
+            ShipmentOrder_DLDateLogItemList: []
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -420,13 +422,13 @@ class ShipmentOrderDetailCom extends Component {
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                 <thead className="thead-light">
                                     <tr>
-                                    <th className="jsgrid-header-cell">Nguồn thay đổi </th>
-                                       <th className="jsgrid-header-cell">Người đổi</th>
+                                        <th className="jsgrid-header-cell">Nguồn thay đổi </th>
+                                        <th className="jsgrid-header-cell">Người đổi</th>
                                         <th className="jsgrid-header-cell">Ngày đổi</th>
                                         <th className="jsgrid-header-cell">Thời gian chuyển đổi</th>
                                         <th className="jsgrid-header-cell">Lý do thay đổi</th>
                                         <th className="jsgrid-header-cell">Nội dung </th>
-                                     
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -434,10 +436,10 @@ class ShipmentOrderDetailCom extends Component {
                                         this.state.ShipmentOrder_DLDateLogItemList && this.state.ShipmentOrder_DLDateLogItemList.map((item, index) => {
                                             return (
                                                 <tr key={index}>
-                                                     <td>{item.DeliverydateUpdateTypeName}</td>
-                                                     <td>{item.CreatedUser + "-" + item.CreatedUserFullName}</td>
-                                                     <td>{formatDate(item.CreatedDate)}</td>
-                                                     <td>{formatDate(item.OldExpectedDeliveryDate)+" => "+formatDate(item.NewExpectedDeliveryDate)}</td>
+                                                    <td>{item.DeliverydateUpdateTypeName}</td>
+                                                    <td>{item.CreatedUser + "-" + item.CreatedUserFullName}</td>
+                                                    <td>{formatDate(item.CreatedDate)}</td>
+                                                    <td>{formatDate(item.OldExpectedDeliveryDate) + " => " + formatDate(item.NewExpectedDeliveryDate)}</td>
                                                     <td>{item.DeliverydateUpdateReasonName}</td>
                                                     <td>{item.DeliverydateUpdateReasonNote}</td>
                                                 </tr>
@@ -465,6 +467,27 @@ class ShipmentOrderDetailCom extends Component {
         let onclin = this._CheckTime(this.state.ShipmentOrder.CreatedOrderTime, this.state.ShipmentOrder.ShipmentOrderTypeID)
 
         const linkHistoryTransaction = "/PartnerTransaction/Edit/" + ShipmentOrder.PartnerTransactionID;
+
+
+        const dropdownItem = () => {
+            return <Menu>
+
+                {this.state.ShipmentOrder.ShipmentOrderType_WF_NextList.map((optionItem) => <Menu.Item key={optionItem.NextShipmentOrderStep}>
+                    <a className={optionItem.NextShipmentOrderStep === this.state.ShipmentOrder.CurrentShipmentOrderStepID ? "dropdown-item active" : "dropdown-item"}
+                        key={optionItem.NextShipmentOrderStep}
+                        name={optionItem.NextShipmentOrderStep}
+                        data-option={optionItem.NextShipmentOrderStep}
+                        data-functionid={optionItem.ChooseFunctionID}
+                        data-lable={optionItem.NextShipmentOrderStepName}
+                        onClick={this.onChangeInput.bind(this)}
+                    >
+                        {optionItem.NextShipmentOrderStepName}
+                    </a>
+                </Menu.Item>)}
+            </Menu>
+        }
+
+
         return (
             <div className="ShipmentOrderDetail">
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -474,7 +497,7 @@ class ShipmentOrderDetailCom extends Component {
                             <h4 className="title">
                                 <strong>Thông tin yêu cầu vận chuyển</strong>
                             </h4>
-                            <div className="form-group form-group-dropdown form-group-dropdown-custom">
+                            {/* <div className="form-group form-group-dropdown form-group-dropdown-custom">
                                 <div className="input-group input-group-dropdown-custom">
                                     <div className="input-group-append">
 
@@ -490,12 +513,29 @@ class ShipmentOrderDetailCom extends Component {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
+
+
                         </div>
                     </div>}
                     easing="ease-in" open={false}>
                     <div className="card cardCollapsible">
                         <div className="card-body">
+
+
+                            <div className="form-row">
+                                <div className="form-group col-md-12">
+                                    <div className="form-group form-group-dropdown form-group-dropdown-custom">
+                                        <div className="input-group input-group-dropdown-custom">
+                                            <Dropdown overlay={dropdownItem} trigger={["click"]}>
+                                                <div className="btn dropdown-toggle">
+                                                    {strShipmentOrderStepName}
+                                                </div>
+                                            </Dropdown>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="form-row">
                                 <div className="form-group col-md-2">
                                     <label className="col-form-label bold">Mã yêu cầu vận chuyển:</label>
