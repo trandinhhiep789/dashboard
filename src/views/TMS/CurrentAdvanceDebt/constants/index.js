@@ -101,7 +101,7 @@ export const DataGridHistoryColumnList = [
 
     {
         Name: "FlowContent",
-        Type: "link",
+        Type: "text",
         Caption: "Nội dung",
         DataSourceMember: "FlowContent",
         Width: 250
