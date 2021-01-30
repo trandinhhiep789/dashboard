@@ -245,7 +245,20 @@ class RewardPriceTableDetailCom extends Component {
             >
 
                 <div className="row">
+                    
                     <div className="col-md-12">
+                        <FormControl.FormControlTextBox
+                            name="txtRewardPriceTableDetailID"
+                            colspan="9"
+                            labelcolspan="3"
+                            readOnly={true}
+                            hidenControll={true}
+                            label="Mã chi tiết bảng giá thưởng"
+                            placeholder="Mã chi tiết bảng giá thưởng"
+                            controltype="InputControl"
+                            value=""
+                            datasourcemember="RewardPriceTableDetailID"
+                        />
                         <FormControl.FormControlTextBox
                             name="txtRewardPriceTableID"
                             colspan="9"
