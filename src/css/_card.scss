@@ -209,6 +209,34 @@
                 }
             } 
         }
+        .table-custom {
+            .table {
+                .thead-light {
+                    tr {
+                        display: block;
+                    }
+                }
+                tbody {
+                    max-height: 333px;
+                    overflow-y: auto;
+                    display: block;
+                    width: 812px;
+                    tr {
+                        td {
+                            &:nth-child(1) {
+                                width: 124px;
+                            }
+                            &:nth-child(2) {
+                                width: 127px;
+                            }
+                            &:nth-child(3) {
+                                width: 550px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     .card-title {

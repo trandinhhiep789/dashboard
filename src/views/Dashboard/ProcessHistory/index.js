@@ -8,7 +8,7 @@ class ProcessHistoryCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-   
+
         };
     }
 
@@ -26,13 +26,13 @@ class ProcessHistoryCom extends Component {
                         <h5 className="card-title">Nhật ký xử lý</h5>
                     </div>
                     <div className="card-body">
-                        <div className=" table-responsive">
+                        <div className="table-responsive table-custom">
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0" >
                                 <thead className="thead-light">
                                     <tr>
                                         <th className="jsgrid-header-cell" style={{ width: 150 }} >Mã vận đơn</th>
                                         <th className="jsgrid-header-cell" style={{ width: 150 }}>Thời gian xử lý</th>
-                                        <th className="jsgrid-header-cell" style={{ width: 700}} >Nội dung</th>
+                                        <th className="jsgrid-header-cell" style={{ width: 700 }} >Nội dung</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -43,9 +43,9 @@ class ProcessHistoryCom extends Component {
                                                 rowClass = "jsgrid-alt-row";
                                             }
                                             return (<tr key={rowIndex}>
-                                                  <td>{rowItem.ShipmentOrderID}</td>
-                                                  <td>{formatDate(rowItem.CreatedDate)}</td>
-                                                  <td>{rowItem.ActionContent}</td>
+                                                <td>{rowItem.ShipmentOrderID}</td>
+                                                <td>{formatDate(rowItem.CreatedDate)}</td>
+                                                <td>{rowItem.ActionContent}</td>
                                             </tr>
                                             );
                                         })

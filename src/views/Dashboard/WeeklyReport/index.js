@@ -76,7 +76,7 @@ class WeeklyReportCom extends Component {
                         <Line height={197} data={datanew} /> */}
                         <Bar
                             data={dataBar}
-                            height={160}
+                            height={210}
                             options={{}}
                         />
                     </div>
