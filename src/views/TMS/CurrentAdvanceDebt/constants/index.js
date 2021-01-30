@@ -101,10 +101,14 @@ export const DataGridHistoryColumnList = [
 
     {
         Name: "FlowContent",
-        Type: "link",
+        Type: "hyperlink",
         Caption: "Nội dung",
         DataSourceMember: "FlowContent",
-        Width: 250
+        Width: 250,
+        Hyperlinks: {
+            AREdit: "AdvanceRequest/Edit",
+            SODetail: "ShipmentOrder/Detail"
+        }
     },
 
     {
