@@ -10,9 +10,9 @@ export const SearchElementList = [
     {
         type: "text",
         name: "txtKeyword",
-        label: "Từ khóa:",
+        label: "Mã vận đơn:",
         value: "",
-        placeholder: "",
+        placeholder: "Nhập mã vận đơn",
         icon: "",
         listoption: {}
     },
