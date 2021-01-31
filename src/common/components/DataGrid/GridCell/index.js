@@ -98,7 +98,7 @@ class GridCell extends Component {
         const linkText = this.props.linkText;
         const name = this.props.caption;
         const popupContent = this.props.popupContent;
-        const { hyperlink } = this.props
+        const { destinationHyperlink, textHyperLink } = this.props
 
         let linkTo;
         if (link) {
@@ -341,7 +341,10 @@ class GridCell extends Component {
                     </div>
                 );
             case "hyperlink":
-                control = <Link to={hyperlink} target="_blank">{text}</Link >
+                let partsText = text.split(textHyperLink);
+                control = <p>
+                    {partsText[0]}<Link to={`${destinationHyperlink}/${textHyperLink}`} target="_blank">{textHyperLink}</Link>{partsText[1]}
+                </p>
                 break;
             default:
                 control = <label>{text}</label>;

@@ -509,14 +509,12 @@ class DataGridCom extends Component {
                                                     return { key: obj.key, value: rowItem[obj.key] };
                                                 })
 
-                                                let hyperLink = ""
+                                                let destinationHyperlink = "";
+                                                const { RelatedVoucherID } = rowItem;
                                                 if (columnItem.Hyperlinks !== undefined) {
-                                                    const { RelatedVoucherID } = rowItem;
                                                     const { AREdit, SODetail } = columnItem.Hyperlinks
 
-                                                    RelatedVoucherID.includes("AR")
-                                                        ? hyperLink = `${AREdit}/${RelatedVoucherID}`
-                                                        : hyperLink = `${SODetail}/${RelatedVoucherID}`
+                                                    RelatedVoucherID.includes("AR") ? destinationHyperlink = AREdit : destinationHyperlink = SODetail;
                                                 }
 
 
@@ -540,10 +538,11 @@ class DataGridCom extends Component {
                                                     params={this.props.params}
                                                     linkTo={this.state.ListPKColumnName + index}
                                                     rowItem={rowItem}
-                                                    hyperlink={hyperLink}
+                                                    destinationHyperlink={destinationHyperlink}
+                                                    textHyperLink={RelatedVoucherID}
                                                 />;
                                                 return (
-                                                    <td key={columnItem.Name} style={cellStyle}  >{cellData}</td>
+                                                    <td key={columnItem.Name} style={cellStyle}>{cellData}</td>
                                                 );
                                             })
                                         }
