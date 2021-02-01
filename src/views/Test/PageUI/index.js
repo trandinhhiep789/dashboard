@@ -416,9 +416,9 @@ class PageUICom extends React.Component {
                                                                 <span>Xe gắn máy</span>
                                                             </li>
                                                             <li className="item statusShipmentOder">
-                                                                <span class="badge badge-danger noactive">Chưa xuất</span>
-                                                                <span class="badge badge-info active">Đã xuất</span>
-                                                                <span class="badge badge-success noactive">Đã nhận</span>
+                                                                <span className="badge badge-danger noactive">Chưa xuất</span>
+                                                                <span className="badge badge-info active">Đã xuất</span>
+                                                                <span className="badge badge-success noactive">Đã nhận</span>
                                                             </li>
                                                             {/* <li className="item printing">
                                                                 <i className="ti ti-printer"></i>

@@ -98,7 +98,7 @@ class GridCell extends Component {
         const linkText = this.props.linkText;
         const name = this.props.caption;
         const popupContent = this.props.popupContent;
-        const { destinationHyperlink, textHyperLink } = this.props
+        const { rowItem, hyperLink } = this.props
 
         let linkTo;
         if (link) {
@@ -341,10 +341,10 @@ class GridCell extends Component {
                     </div>
                 );
             case "hyperlink":
-                let partsText = text.split(textHyperLink);
-                control = <p>
-                    {partsText[0]}<Link to={`${destinationHyperlink}/${textHyperLink}`} target="_blank">{textHyperLink}</Link>{partsText[1]}
-                </p>
+                const { RelatedVoucherID } = rowItem;
+                const destinationHyperlink = RelatedVoucherID.includes("AR") ? hyperLink.AREdit : hyperLink.SODetail;
+                const partsText = text.split(RelatedVoucherID);
+                control = <p>{partsText[0]}<Link to={`${destinationHyperlink}/${RelatedVoucherID}`} target="_blank">{RelatedVoucherID}</Link>{partsText[1]}</p>
                 break;
             default:
                 control = <label>{text}</label>;

@@ -509,14 +509,7 @@ class DataGridCom extends Component {
                                                     return { key: obj.key, value: rowItem[obj.key] };
                                                 })
 
-                                                let destinationHyperlink = "";
                                                 const { RelatedVoucherID } = rowItem;
-                                                if (columnItem.Hyperlinks !== undefined) {
-                                                    const { AREdit, SODetail } = columnItem.Hyperlinks
-
-                                                    RelatedVoucherID.includes("AR") ? destinationHyperlink = AREdit : destinationHyperlink = SODetail;
-                                                }
-
 
                                                 const cellData = <GridCell type={columnItem.Type}
                                                     text={rowItem[columnItem.DataSourceMember]}
@@ -538,7 +531,7 @@ class DataGridCom extends Component {
                                                     params={this.props.params}
                                                     linkTo={this.state.ListPKColumnName + index}
                                                     rowItem={rowItem}
-                                                    destinationHyperlink={destinationHyperlink}
+                                                    hyperLink={columnItem.Hyperlinks}
                                                     textHyperLink={RelatedVoucherID}
                                                 />;
                                                 return (
