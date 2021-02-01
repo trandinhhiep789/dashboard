@@ -38,7 +38,7 @@ class ElementTextCom extends Component {
         let labeldiv = "";
         if (label && subLabel) {
             labeldiv = <label className="col-form-label" htmlFor="input-normal">{label} <small>( {subLabel} )</small></label>;
-        } else {
+        } else if (label) {
             labeldiv = <label className="col-form-label" htmlFor="input-normal">{label}</label>;
         }
 
