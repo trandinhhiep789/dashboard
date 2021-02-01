@@ -84,126 +84,135 @@ class ListCoordinatedCom extends Component {
         const dataSource = this.props.DataSource.filter(n => n.CoordinatorUser == "");
         return (
             <div className="col-lg-12">
-                <div className="card shadow-1">
+                <div className="card shadow-1 list-yet-coordinated">
                     <div className="card-header">
                         <h5 className="card-title">Danh sách vận đơn chưa điều phối</h5>
                     </div>
                     <div className="card-body">
-                        <div className=" table-responsive">
-                            <table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0" >
-                                <thead className="thead-light">
-                                    <tr>
-                                        <th className="jsgrid-header-cell" style={{ width: 190, minWidth: 190 }} >Thời gian giao</th>
-                                        <th className="jsgrid-header-cell" style={{ width: 300, minWidth: 350 }}>Địa chỉ</th>
-                                        <th className="jsgrid-header-cell" style={{ width: 200 }}>Mã/Loại yêu cầu vận chuyển</th>
-                                        <th className="jsgrid-header-cell" style={{ width: 250, minWidth: 200 }} >Ghi chú</th>
-                                        <th className="jsgrid-header-cell" style={{ width: 150, minWidth: 150 }} >COD/Vật tư/Tổng tiền</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {dataSource.length > 0 &&
-                                        dataSource.map((rowItem, rowIndex) => {
-                                            let rowClass = "jsgrid-row";
-                                            if (index % 2 != 0) {
-                                                rowClass = "jsgrid-alt-row";
-                                            }
-                                            // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
-                                            return (<tr key={rowIndex}>
+                        <div className=" table-responsive jsgrid">
+                            <div className="jsgrid-grid-header jsgrid-header-scrollbar">
+                                <table className="jsgrid-table">
+                                    <thead className="thead-light jsgrid-header-row">
+                                        <tr>
+                                            <th className="jsgrid-header-cell" style={{ width: "15%" }}>Thời gian giao</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "33%" }} >Địa chỉ</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "15%" }} >Mã/Loại yêu cầu vận chuyển</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "25%" }} >Ghi chú</th>
+                                            <th className="jsgrid-header-cell" style={{ width: '12%' }} >COD/Vật tư/Tổng tiền</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
 
-                                                <td className="groupInfoAction">
-                                                    <div className="group-info-row">
-                                                        <label className="item time">
-                                                            <i className="ti ti-timer"></i>
-                                                            <span>{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
-                                                        </label>
-                                                        <label className="item status">
-                                                            <i className="fa fa-location-arrow"></i>
-                                                            <span>{rowItem.ShipmentOrderStatusName}</span>
-                                                        </label>
-                                                        <label className="item vehicle">
-                                                            {
-                                                                this._genCommentCarrierPartner(rowItem.CarrierTypeID, rowItem.CarrierTypeName)
+                            <div className="jsgrid-grid-body">
+                                <table className="table table-sm table-striped table-bordered table-hover table-condensed jsgrid-table" cellSpacing="0" >
+
+                                    <tbody>
+                                        {dataSource.length > 0 &&
+                                            dataSource.map((rowItem, rowIndex) => {
+                                                let rowClass = "jsgrid-row";
+                                                if (index % 2 != 0) {
+                                                    rowClass = "jsgrid-alt-row";
+                                                }
+                                                // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
+                                                return (<tr className="jsgrid-row" key={rowIndex}>
+
+                                                    <td className="groupInfoAction jsgrid-cell" style={{ width: "15%" }} >
+                                                        <div className="group-info-row">
+                                                            <label className="item time">
+                                                                <i className="ti ti-timer"></i>
+                                                                <span>{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
+                                                            </label>
+                                                            <label className="item status">
+                                                                <i className="fa fa-location-arrow"></i>
+                                                                <span>{rowItem.ShipmentOrderStatusName}</span>
+                                                            </label>
+                                                            <label className="item vehicle">
+                                                                {
+                                                                    this._genCommentCarrierPartner(rowItem.CarrierTypeID, rowItem.CarrierTypeName)
+                                                                }
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                    <td className="group-address jsgrid-cell" style={{ width: "33%" }} >
+                                                        <div className="group-info-row">
+                                                            <label className="item person">
+                                                                <i className="fa fa-user"></i>
+                                                                <span className="person-info">
+                                                                    <span className="name">
+                                                                        {rowItem.ReceiverFullName}
+                                                                    </span>
+                                                                    <span className="line">-</span>
+                                                                    <span className="phone">({rowItem.ReceiverPhoneNumber.substr(0, 6)}****)</span>
+                                                                </span>
+                                                            </label>
+                                                            <label className="item address-receiver">
+                                                                <span>{rowItem.ReceiverFullAddress}</span>
+                                                            </label>
+                                                            <label className="item address-repository-created">
+                                                                <span>
+                                                                    {rowItem.SenderFullName}
+                                                                </span>
+                                                            </label>
+                                                            <label className="item creacte-time">
+                                                                <i className="ti ti-timer"></i>
+                                                                <span className="times">
+                                                                    <span className="item pull-left">Tạo lúc: </span>
+                                                                    <span className="item pull-right"> {formatDate(rowItem.CreatedOrderTime)}</span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                    <td className="jsgrid-cell" style={{ width: "15%" }} >
+                                                        <div className="group-info-row">
+                                                            <label className="item person">
+                                                                <span className="person-info" style={{ fontSize: 14 }}>
+                                                                    <Link to={"/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID}>{rowItem.ShipmentOrderID}</Link>
+                                                                </span>
+                                                            </label>
+                                                            <label className="item address-receiver">
+                                                                <span>{rowItem.ShipmentOrderTypeName}</span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                    <td className="group-address jsgrid-cell" style={{ width: "25%" }} >
+                                                        <div className="group-info-row">
+                                                            <label className="item address-repository-created">
+                                                                <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, '<br/>'))}</span>
+                                                            </label>
+                                                            <label className="item address-receiver">
+                                                                <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                    <td className="group-price jsgrid-cell" style={{ width: '12%' }} >
+                                                        <div className="group-row">
+                                                            <span className="item pricecod"> {formatMoney(rowItem.TotalCOD, 0)}</span>
+                                                            <span className="item price-supplies">{formatMoney(rowItem.TotalSaleMaterialMoney, 0)}</span>
+                                                            {rowItem.IsCollectedMoney == true ?
+                                                                (
+                                                                    <span className="item price3 price-success">
+                                                                        <span className="price-title ">Đã thu: </span>
+                                                                        <span className="price-debt">{formatMoney(rowItem.CollectedTotalMoney, 0)}</span>
+                                                                    </span>
+                                                                ) :
+                                                                (
+                                                                    <span className="item price3">
+                                                                        <span className="price-title">Nợ: </span>
+                                                                        <span className="price-debt">-{formatMoney(rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD, 0)}</span>
+                                                                    </span>
+                                                                )
                                                             }
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td className="group-address">
-                                                    <div className="group-info-row">
-                                                        <label className="item person">
-                                                            <i className="fa fa-user"></i>
-                                                            <span className="person-info">
-                                                                <span className="name">
-                                                                    {rowItem.ReceiverFullName}
-                                                                </span>
-                                                                <span className="line">-</span>
-                                                                <span className="phone">({rowItem.ReceiverPhoneNumber.substr(0, 6)}****)</span>
-                                                            </span>
-                                                        </label>
-                                                        <label className="item address-receiver">
-                                                            <span>{rowItem.ReceiverFullAddress}</span>
-                                                        </label>
-                                                        <label className="item address-repository-created">
-                                                            <span>
-                                                                {rowItem.SenderFullName}
-                                                            </span>
-                                                        </label>
-                                                        <label className="item creacte-time">
-                                                            <i className="ti ti-timer"></i>
-                                                            <span className="times">
-                                                                <span className="item pull-left">Tạo lúc: </span>
-                                                                <span className="item pull-right"> {formatDate(rowItem.CreatedOrderTime)}</span>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="group-info-row">
-                                                        <label className="item person">
-                                                            <span className="person-info" style={{ fontSize: 15 }}>
-                                                                <Link to={"/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID}>{rowItem.ShipmentOrderID}</Link>
-                                                            </span>
-                                                        </label>
-                                                        <label className="item address-receiver">
-                                                            <span>{rowItem.ShipmentOrderTypeName}</span>
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td className="group-address">
-                                                    <div className="group-info-row">
-                                                        <label className="item address-repository-created">
-                                                        <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, '<br/>'))}</span>
-                                                        </label>
-                                                        <label className="item address-receiver">
-                                                            <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td className="group-price">
-                                                    <div className="group-row">
-                                                        <span className="item pricecod"> {formatMoney(rowItem.TotalCOD, 0)}</span>
-                                                        <span className="item price-supplies">{formatMoney(rowItem.TotalSaleMaterialMoney, 0)}</span>
-                                                        {rowItem.IsCollectedMoney == true ?
-                                                            (
-                                                                <span className="item price3 price-success">
-                                                                    <span className="price-title ">Đã thu: </span>
-                                                                    <span className="price-debt">{formatMoney(rowItem.CollectedTotalMoney, 0)}</span>
-                                                                </span>
-                                                            ) :
-                                                            (
-                                                                <span className="item price3">
-                                                                    <span className="price-title">Nợ: </span>
-                                                                    <span className="price-debt">-{formatMoney(rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD, 0)}</span>
-                                                                </span>
-                                                            )
-                                                        }
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            );
-                                        })
-                                    }
-                                </tbody>
-                            </table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                );
+                                            })
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
                     </div>
                 </div>
