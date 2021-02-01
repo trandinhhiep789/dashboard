@@ -23,7 +23,7 @@ class ElementTextCom extends Component {
             this.props.onValueChange(e.target.name, e.target.value);
     }
     render() {
-        let { name, label, placeholder, icon, colspan, value, readonly, ValidatonErrorMessage, classNameCol } = this.props;
+        let { name, label, placeholder, icon, colspan, value, readonly, ValidatonErrorMessage, classNameCol, subLabel } = this.props;
         let className = "form-control form-control-sm";
         let colspanClassName = "col-md-3";
         if (colspan) {
@@ -34,10 +34,14 @@ class ElementTextCom extends Component {
                 colspanClassName = "col-md-" + this.props.colspan;
             }
         }
-        let labeldiv;
-        if (label) {
+
+        let labeldiv = "";
+        if (label && subLabel) {
+            labeldiv = <label className="col-form-label" htmlFor="input-normal">{label} <small>( {subLabel} )</small></label>;
+        } else {
             labeldiv = <label className="col-form-label" htmlFor="input-normal">{label}</label>;
         }
+
         if (ValidatonErrorMessage && ValidatonErrorMessage != "") {
             className += " is-invalid";
         }
