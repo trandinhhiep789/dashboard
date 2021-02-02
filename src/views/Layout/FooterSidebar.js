@@ -21,11 +21,9 @@ class FooterSidebar extends React.Component {
         const { fullName } = this.state;
         return (
             <div className="footer-sidebar" >
-                <div>
+                <div className="profile">
                     <img className="avatar" src="/src/img/avatar/1.jpg" alt="..." />
-                </div>
-                <div className="username">
-                    {fullName}
+                    <div className="profile-name">{fullName}</div>
                 </div>
                 <div>
                     <Link className="link-logout" to="/logout"><i className="fa fa-sign-out"></i></Link>
