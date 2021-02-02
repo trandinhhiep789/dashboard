@@ -191,14 +191,12 @@ class DetailCom extends React.Component {
     }
 
     handleItemDeleteRPTDetail(index) {
-
         const { RewardPriceTableID, DataSource } = this.state;
-
         const resultItem = DataSource.RewardPriceTableDetailList[index];
-        let MLObject = {};
-        MLObject.RewardPriceTableDetailID = resultItem.RewardPriceTableDetailID.trim();
+        // let MLObject = {};
+        // MLObject.RewardPriceTableDetailID = resultItem.RewardPriceTableDetailID.trim();
 
-        this.props.callFetchAPI(APIHostName, DeleteAPIRPTDetailPath, MLObject).then((apiResult) => {
+        this.props.callFetchAPI(APIHostName, DeleteAPIRPTDetailPath, resultItem).then((apiResult) => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {

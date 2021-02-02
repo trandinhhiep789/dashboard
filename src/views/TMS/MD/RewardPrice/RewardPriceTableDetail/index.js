@@ -149,7 +149,8 @@ class RewardPriceTableDetailCom extends Component {
             }
 
             if (formData.cbProductID.value != undefined) {
-                if (formData.cbProductID.value[0].ProductID != null) {
+                const temProductID= formData.cbProductID.value && Array.isArray(formData.cbProductID.value) ? formData.cbProductID.value[0].ProductID : formData.cbProductID.value;
+                if (temProductID != null) {
                     this.setState({
                         IsDisableTechspecsValue: true,
                     })
@@ -179,7 +180,8 @@ class RewardPriceTableDetailCom extends Component {
             })
         }
         if (formData.cbProductID.value != undefined) {
-            if (formData.cbProductID.value[0].ProductID != null) {
+            const temProductID= formData.cbProductID.value && Array.isArray(formData.cbProductID.value) ? formData.cbProductID.value[0].ProductID : formData.cbProductID.value;
+            if (temProductID != null) {
                 this.setState({
                     IsDisableCbTechspecsValue: true
                 })
