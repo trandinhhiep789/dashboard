@@ -12,7 +12,9 @@ export default function TopMenu() {
                     if (MenuItem.SubMenu.length > 0) {
                         return (
                             <li className="menu-item" key={MenuItem.MenuName} >
-                                <Link className="menu-link item" to="#">{MenuItem.MenuTitle}</Link>
+                                <Link className="menu-link item" to="#">
+                                    {MenuItem.MenuTitle}
+                                </Link>
                                 <ul className="menu-submenu">
                                     {
                                         MenuItem.SubMenu.map((SubMenuItem) => {
@@ -32,11 +34,11 @@ export default function TopMenu() {
                                                                                     < ul className="menu-sub-sub-menu">
                                                                                         {
                                                                                             SubMenuItem2.SubMenu.map((SubMenuItem3) =>
-                                                                                                (
-                                                                                                    <li className="menu-item" key={SubMenuItem3.MenuName}>
-                                                                                                        <Link className="menu-link" to={SubMenuItem3.LinkTo}>{SubMenuItem3.MenuTitle}</Link>
-                                                                                                    </li>
-                                                                                                )
+                                                                                            (
+                                                                                                <li className="menu-item" key={SubMenuItem3.MenuName}>
+                                                                                                    <Link className="menu-link" to={SubMenuItem3.LinkTo}>{SubMenuItem3.MenuTitle}</Link>
+                                                                                                </li>
+                                                                                            )
                                                                                             )
                                                                                         }
                                                                                     </ul>
