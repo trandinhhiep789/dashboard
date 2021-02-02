@@ -73,7 +73,7 @@ class ProfileBoxCom extends React.Component {
             // </li>
             <Dropdown overlay={this.menu} trigger={["click"]}>
                 <a className="ant-dropdown-link">
-                    {fullName} <img className="avatar" src="/src/img/avatar/1.jpg" alt="..." />
+                    <span>{fullName}</span>&nbsp;<img className="avatar" src="/src/img/avatar/1.jpg" alt="..." />
                 </a>
             </Dropdown >
 

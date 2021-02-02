@@ -1,0 +1,19 @@
+.sidebar {
+    .sidebar-navigation {
+        .sidebar-brand {
+            display: flex;
+            justify-content: center;
+            background-color: white;
+            -webkit-box-shadow: 0px -5px 7px 1px rgba(42,40,40,0.88);
+            box-shadow: 0px -5px 7px 1px rgba(42,40,40,0.88);
+            img {
+                height: 64px;
+            }
+        }
+        .menu {
+            .menu-item {
+
+            }
+        }
+    }
+}
