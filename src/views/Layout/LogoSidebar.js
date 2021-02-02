@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function LogoSidebar() {
     return (
-        <div className="sidebar-brand">
+        <div className="brand-sidebar">
             <Link to="/">
                 <img src="/src/img/TMSLogo.png" alt="sidebar-logo" />
             </Link>

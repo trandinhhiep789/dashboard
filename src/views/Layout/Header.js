@@ -1,19 +1,21 @@
 import React from "react";
+import Media from "react-media";
 
 import Logo from './Logo';
 import LogoSidebar from './LogoSidebar'
 import TopMenu from './TopMenu';
 import ProfileBox from './ProfileBox';
-import Media from "react-media";
+import FooterSidebar from './FooterSidebar'
 
 const Header = () => {
     return (
         <React.Fragment>
             <Media query="(max-width: 991px)">
-                <aside className="sidebar sidebar-icons-right sidebar-icons-boxed sidebar-expand-lg sidebar-mobile">
+                <aside className="sidebar sidebar-icons-right sidebar-icons-boxed sidebar-expand-lg sidebar-mobile sidebar-custom">
                     <nav className="sidebar-navigation">
                         <LogoSidebar />
                         <TopMenu />
+                        <FooterSidebar />
                     </nav>
                 </aside>
             </Media>

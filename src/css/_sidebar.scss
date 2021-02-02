@@ -1,6 +1,8 @@
-.sidebar {
+.sidebar-custom {
     .sidebar-navigation {
-        .sidebar-brand {
+        display: flex;
+        flex-direction: column;
+        .brand-sidebar {
             display: flex;
             justify-content: center;
             background-color: white;
@@ -11,8 +13,27 @@
             }
         }
         .menu {
-            .menu-item {
-
+            height: 100vh;
+            margin-bottom: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .footer-sidebar {
+            width: 100%;
+            bottom: 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 0;
+            background-color: #fff;
+            .username {
+                font-size: 16px;
+            }
+            .fa-sign-out {
+                font-size: 25px;
+            }
+            .link-logout {
+                color: #4d5259;
             }
         }
     }
