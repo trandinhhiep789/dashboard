@@ -108,7 +108,7 @@ class ListShipCoordinatorCom extends Component {
         let objMultiDeliverUser = [];
         let listStaffDebtObject = [];
         selectedOption && selectedOption.map((item, index) => {
-            let objMultiShip_DeliverUser = { UserName: item.value, FullName: item.label }
+            let objMultiShip_DeliverUser = { UserName: item.value, FullName: item.FullName }
             objMultiDeliverUser.push(objMultiShip_DeliverUser)
             listStaffDebtObject.push({
                 UserName: item.value,
@@ -153,10 +153,43 @@ class ListShipCoordinatorCom extends Component {
     }
 
     handleShipWorkFlowInsert() {
+        let elementobject = {};
+        this.state.ShipmentOrder.map((row, indexRow) => {
+          
+            if (row["CarrierTypeID"] == -1 || row["CarrierTypeID"] == "-1") {
+                const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng phương tiện" };
+                elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
+            }
+            else {
+                const validationObject = { IsValidatonError: false, ValidationErrorMessage: "" };
+                elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
+            }
+        });
+        this.setState({ FormValidation: elementobject });
+
+        if (this.checkInputName(elementobject) != "")
+            return;
+    
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
             if (this.props.onChangeValue != null)
                 this.props.onChangeValue(apiResult);
         });
+    }
+
+    checkInputName(formValidation) {
+        debugger;
+        for (const key in formValidation) {
+            //      console.log("formValidation:", formValidation);
+
+            if (formValidation[key] != undefined) {
+                // console.log("validation:", key, this.elementItemRefs[key]);
+                if (formValidation[key] != [] && formValidation[key].IsValidatonError) {
+                   
+                    return key;
+                }
+            }
+        }
+        return "";
     }
 
     handleDeleteShip(e) {
@@ -385,6 +418,7 @@ class ListShipCoordinatorCom extends Component {
             //     iputpop: false
             // }
         ];
+        console.log("this.state.ShipmentOrder",this.state.ShipmentOrder)
         return (
             <div className="card modalForm">
                 <ReactNotification ref={this.notificationDOMRef} />

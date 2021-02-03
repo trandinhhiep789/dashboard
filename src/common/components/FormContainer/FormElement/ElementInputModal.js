@@ -395,6 +395,8 @@ class ElementModalComboBoxCom extends Component {
         if (validatonList != undefined && validatonList.includes("Comborequired") == true) {
             star = '*'
         }
+
+        let formGroupClassName = "form-group col-md-12";
         let className = "react-select";
         if (validationErrorMessage != undefined && validationErrorMessage != "") {
             className += " is-invalid";
@@ -402,7 +404,7 @@ class ElementModalComboBoxCom extends Component {
         const selectedOption = this.state.SelectedOption;
         const listOption = this.state.Listoption;
         return (
-
+            <div >
             <Select
                 value={selectedOption}
                 name={name}
@@ -415,7 +417,8 @@ class ElementModalComboBoxCom extends Component {
                 placeholder={placeholder}
                 className={className}
             />
-
+            <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+            </div>
         );
     }
 }
