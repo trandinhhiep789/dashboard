@@ -1,6 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import ReactNotification from "react-notifications-component";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import "react-notifications-component/dist/theme.css";
+
 // import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import { MessageModal } from "../../../../../common/components/Modal";
@@ -15,13 +20,10 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
 import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
-import * as FileSaver from 'file-saver';
-import * as XLSX from 'xlsx';
+import { formatDate } from "../../../../../common/library/CommonLib";
 
 
 class SearchCom extends React.Component {
@@ -100,10 +102,10 @@ class SearchCom extends React.Component {
                     const exelData = apiResult.ResultObject.map((item, index) => {
                         let element = {
                             "Mã vận đơn": item.ShipmentOrderID,
-                            "Thời gian tạo": item.CreatedOrderTime,
+                            "Thời gian tạo": formatDate(item.CreatedOrderTime, false),
                             "Mã đơn hàng": item.PartnerSaleOrderID,
-                            "Thời gian hẹn giao": item.ExpectedDeliveryDate,
-                            "Thời gian thực giao": item.ActualDeliveryDate,
+                            "Thời gian hẹn giao": formatDate(item.ExpectedDeliveryDate, false),
+                            "Thời gian thực giao": formatDate(item.ActualDeliveryDate, false),
                             "Tên khách hàng": item.ReceiverFullName,
                             "Địa chỉ": item.ReceiverFullAddress,
                             "Nhân viên giao": item.DeliverUserFullNameList,
@@ -118,7 +120,7 @@ class SearchCom extends React.Component {
                             "Mã sản phẩm": item.ProductID,
                             "Tên sản phẩm": item.ProductName,
                             "Số lượng": item.Quantity,
-                            "Giá":item.Price,
+                            "Giá": item.Price,
                             "Có lắp đặt": item.IsInstallItem,
                             "Đã hoàn thành": item.IsCompleteDeliverIed,
                             "Đã hủy giao": item.IsCancelDelivery,
