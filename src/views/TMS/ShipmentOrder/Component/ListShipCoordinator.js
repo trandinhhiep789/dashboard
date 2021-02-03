@@ -157,7 +157,7 @@ class ListShipCoordinatorCom extends Component {
         this.state.ShipmentOrder.map((row, indexRow) => {
           
             if (row["CarrierTypeID"] == -1 || row["CarrierTypeID"] == "-1") {
-                const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng phương tiện" };
+                const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn phương tiện" };
                 elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
             }
             else {
