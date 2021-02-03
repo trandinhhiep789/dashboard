@@ -96,7 +96,7 @@ class SearchCom extends React.Component {
     callSearchData(postData) {
         //api/ShipmentOrder/SearchReportExport
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchReportExportNew", postData).then(apiResult => {
-            console.log("postData:", postData, apiResult)
+            //console.log("postData:", postData, apiResult)
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const exelData = apiResult.ResultObject.map((item, index) => {
@@ -130,7 +130,8 @@ class SearchCom extends React.Component {
 
                     })
 
-                    this.handleExportCSV(exelData);
+                    //this.handleExportCSV(exelData);
+                    this.showMessage("Chức năng đang phát triển chưa.")
                 } else {
                     this.showMessage("Dữ liệu không tồn tại nên không thể xuất.")
                 }

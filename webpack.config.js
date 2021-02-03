@@ -1,12 +1,4 @@
 'use strict';
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const webpack = require("webpack");
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const path = require("path");
-
-
 
 module.exports = {
     entry: ['./src/app.js'],
