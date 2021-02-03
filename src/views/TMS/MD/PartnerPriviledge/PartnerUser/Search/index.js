@@ -22,8 +22,10 @@ import {
     PagePath,
     AddElementList,
     MLObjectDefinition,
+    Modal_MLObjectDefinition,
     AddAPIPath,
     CreateUserNameAPIPath,
+    ModalColumnList_Insert,
     ModalColumnList_Edit,
     UpdateAPIPath
 } from "../constants";
@@ -45,7 +47,9 @@ class SearchCom extends React.Component {
         this.handleEdit = this.handleEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleModalChange = this.handleModalChange.bind(this);
+        this.handleModalChangeEdit = this.handleModalChangeEdit.bind(this);
         this.CreateUserName = this.CreateUserName.bind(this);
+        this.onClose = this.onClose.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -85,6 +89,14 @@ class SearchCom extends React.Component {
 
     }
 
+    onClose() {
+        this.setState({
+            PassWord: "",
+            PassWordConfirm: ""
+
+        });
+    }
+
     handleModalChange(formData, formValidation, elementName, elementValue) {
         if (elementName == "txtPassWord") {
             this.setState({ PassWord: elementValue });
@@ -93,6 +105,19 @@ class SearchCom extends React.Component {
         } else if (elementName == "chkShowPassWord") {
             this.showPassWord("txtPassWord");
             this.showPassWord("txtPassWordConfirm");
+            return;
+        }
+
+    }
+
+    handleModalChangeEdit(formData, formValidation, elementName, elementValue) {
+        if (elementName == "PassWord") {
+            this.setState({ PassWord: elementValue });
+        } else if (elementName == "PassWordConfirm") {
+            this.setState({ PassWordConfirm: elementValue });
+        } else if (elementName == "ShowPassWord") {
+            this.showPassWord("PassWord");
+            this.showPassWord("PassWordConfirm");
             return;
         }
 
@@ -114,7 +139,7 @@ class SearchCom extends React.Component {
             title: 'Thêm mới người dùng của nhà cung cấp',
             autoCloseModal: false,
             onValueChange: this.handleModalChange,
-            //onClose: this.onClose,
+            onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
@@ -195,41 +220,79 @@ class SearchCom extends React.Component {
             }
         });
 
-        console.log("_partnerUserData", _partnerUserData, this.state.gridDataSource)
+        this.setState({
+            PassWord: _partnerUserData.PassWord,
+            PassWordConfirm: _partnerUserData.PassWord
+        })
 
+        //console.log("_partnerUserData", _partnerUserData, this.state.gridDataSource)
+        _partnerUserData.Birthday = _partnerUserData.BirthdayString;
+        _partnerUserData.PassWord = "";
 
 
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Chỉnh sửa người dùng của nhà cung cấp',
             autoCloseModal: false,
-            onValueChange: this.handleModalChange,
+            onValueChange: this.handleModalChangeEdit,
+            onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, _partnerUserData);
                     if (MLObject) {
-                        MLObject.MaterialGroup = this.state.MaterialGroupID;
-                        MLObject.MainGroupID = MLObject.MainGroupID && Array.isArray(MLObject.MainGroupID) ? MLObject.MainGroupID[0] : MLObject.MainGroupID;
-                        MLObject.ApplySubGroupID = MLObject.ApplySubGroupID && Array.isArray(MLObject.ApplySubGroupID) ? MLObject.ApplySubGroupID[0] : MLObject.ApplySubGroupID;
-                        MLObject.ApplyTechspecsID = MLObject.ApplyTechspecsID && Array.isArray(MLObject.ApplyTechspecsID) ? MLObject.ApplyTechspecsID[0] : MLObject.ApplyTechspecsID;
-                        MLObject.ApplyTechspecsValueID = MLObject.ApplyTechspecsValueID && Array.isArray(MLObject.ApplyTechspecsValueID) ? MLObject.ApplyTechspecsValueID[0] : MLObject.ApplyTechspecsValueID;
-                        MLObject.ApplyBrandID = MLObject.ApplyBrandID && Array.isArray(MLObject.ApplyBrandID) ? MLObject.ApplyBrandID[0] : MLObject.ApplyBrandID;
-                        MLObject.ApplyProductID = MLObject.ApplyProductID && Array.isArray(MLObject.ApplyProductID) ? MLObject.ApplyProductID[0].ProductID : MLObject.ApplyProductID;
-                        // MLObject.ApplyProductID = MLObject.ApplyProductID && MLObject.ApplyProductID[0].ProductID ? MLObject.ApplyProductID[0].ProductID : MLObject.ApplyProductID;
-                        //MLObject.MaterialProductID = MLObject.MaterialProductID && MLObject.MaterialProductID[0].ProductID ? MLObject.MaterialProductID[0].ProductID : MLObject.MaterialProductID;
+                        MLObject.UserName = this.props.match.params.id;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
+                        //check password valid
+                        let { PassWord, PassWordConfirm } = this.state;
+                        if (PassWord != PassWordConfirm) {
+                            this.setState({ IsCallAPIError: true });
+                            this.showMessage("Xác nhận mật khẩu chưa đúng.");
+                            return false;
+                        }
 
-
-                        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-                            if (!apiResult.IsError) {
-                                this.callSearchData(this.state.SearchData);
-                                this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERUSER);
-                                this.props.hideModal();
+                        let fullName = MLObject.FullName.split(" ");
+                        let firstName = fullName[fullName.length - 1];
+                        let lastName = "";
+                        fullName.map((item, index) => {
+                            if (item != firstName) {
+                                lastName += item + " ";
                             }
-                            //this.showMessage(apiResult.Message);
-                            this.addNotification(apiResult.Message, apiResult.IsError);
-                        });
+                        })
+
+                        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+                        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+                        MLObject.FirstName = firstName.trim();
+                        MLObject.LastName = lastName.trim();
+                        //MLObject.ListPartnerUser_Role = this.state.DataSource.ListPartnerUser_Role;
+                        MLObject.PartnerID = MLObject.PartnerID && Array.isArray(MLObject.PartnerID) ? MLObject.PartnerID[0] : MLObject.PartnerID;
+
+                        if (MLObject.Birthday) {
+                            let temp = MLObject.Birthday.trim().split('/');
+                            let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
+                            myDate.setDate(myDate.getDate() + 1);
+                            MLObject.Birthday = myDate;
+                        }
+
+                        if (!MLObject.PassWord) {
+                            MLObject.PassWord = this.state.PassWord;
+                        } else {
+                            MLObject.PassWord = MD5Digest(PassWord);
+                        }
+
+
+
+                        // this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+                        //     if (!apiResult.IsError) {
+                        //         this.callSearchData(this.state.SearchData);
+                        //         this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERUSER);
+                        //         this.props.hideModal();
+                        //     }
+                        //     //this.showMessage(apiResult.Message);
+                        //     this.addNotification(apiResult.Message, apiResult.IsError);
+                        // });
+
+                        //console.log("dsad1111111", MLObject);
 
 
                     }
