@@ -113,13 +113,13 @@ class SearchCom extends React.Component {
                             "Nhân viên điều phối": item.CoordinatorUserName,
                             "Sản phẩm giao chính": item.PrimaryShipItemName,
                             "Tổng COD": item.TotalCOD,
-                            "Mã ngành hàng": "",
-                            "Mã nhóm hàng": "",
-                            "Mã sản phẩm": "",
-                            "Tên sản phẩm": "",
-                            "Số lượng": "",
-                            "Giá": "",
-                            "Có lắp đặt": "",
+                            "Mã ngành hàng": item.MainGroupID,
+                            "Mã nhóm hàng": item.SubGroupID,
+                            "Mã sản phẩm": item.ProductID,
+                            "Tên sản phẩm": item.ProductName,
+                            "Số lượng": item.Quantity,
+                            "Giá":item.Price,
+                            "Có lắp đặt": item.IsInstallItem,
                             "Đã hoàn thành": item.IsCompleteDeliverIed,
                             "Đã hủy giao": item.IsCancelDelivery,
                             "Trạng thái giao hàng": item.ShipmentOrderStatusName
@@ -175,7 +175,7 @@ class SearchCom extends React.Component {
     handleExportCSV(dataExport) {
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         const fileExtension = '.xlsx';
-        const fileName = 'Thông kê hạn mức tạm ứng';
+        const fileName = 'Báo cáo danh sách vận đơn';
         let result;
         if (dataExport.length == 0) {
             result = {
