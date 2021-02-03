@@ -5,7 +5,7 @@ export const SearchHistoryAPIPath = "api/AdvanceDebtFlow/GetListHistory";
 
 
 
-export const TitleFormSearch =""
+export const TitleFormSearch = ""
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -37,12 +37,12 @@ export const SearchElementList = [
         IsAutoLoadItemFromCache: false,
         isMultiSelect: false
     },
-   
+
 ];
 
 
 export const DataGridColumnList = [
-  
+
     {
         Name: "MaterialGroupID",
         Type: "text",
@@ -85,12 +85,12 @@ export const DataGridColumnList = [
         DataSourceMember: "UsableQuantity",
         Width: 100
     },
-   
-   
+
+
 ];
 
 export const DataGridHistoryColumnList = [
-  
+
     {
         Name: "AdvanceDebtFlowTypeName",
         Type: "text",
@@ -101,12 +101,16 @@ export const DataGridHistoryColumnList = [
 
     {
         Name: "FlowContent",
-        Type: "text",
+        Type: "hyperlink",
         Caption: "Nội dung",
         DataSourceMember: "FlowContent",
-        Width: 250
+        Width: 250,
+        Hyperlinks: {
+            AREdit: "AdvanceRequest/Edit",
+            SODetail: "ShipmentOrder/Detail"
+        }
     },
-    
+
     {
         Name: "OldTotalQuantity",
         Type: "text",
@@ -142,5 +146,5 @@ export const DataGridHistoryColumnList = [
         DataSourceMember: "CreatedDate",
         Width: 150
     },
-    
+
 ];

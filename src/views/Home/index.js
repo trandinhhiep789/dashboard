@@ -210,13 +210,14 @@ class HomeCom extends React.Component {
         //console.log("Home this.props.AuthenticationInfo.LoginInfo.IsRelogin: ", this.props.AuthenticationInfo.LoginInfo.IsRelogin);
         return (
             <React.Fragment>
-                <Header />
-                <main className="main-container">
-                    <div className="main-content">
-                        {isShowAppPath &&
-                            <AppPath />
-                        }
-                        <Spin spinning={this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL} size="large">
+                <Spin className="ant-spin-custom" spinning={this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL} size="large">
+                    <Header />
+                    <main className="main-container">
+                        <div className="main-content">
+                            {isShowAppPath &&
+                                <AppPath />
+                            }
+
                             <div className="row">
                                 {/* {this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL ? <div className="preloader"><div className="spinner-linear"><div className="line"></div></div></div> : ''} */}
 
@@ -347,10 +348,11 @@ class HomeCom extends React.Component {
                                 </Switch>
 
                             </div>
-                        </Spin>
-                    </div>
-                </main>
-                <Footer />
+
+                        </div>
+                    </main>
+                    <Footer />
+                </Spin>
             </React.Fragment >
         );
     }

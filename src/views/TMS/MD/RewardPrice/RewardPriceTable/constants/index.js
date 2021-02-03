@@ -276,6 +276,12 @@ export const DataGridColumnItemListRPTDetail = [
 
 export const MLObjectRPTDetailItem= [
     {
+        Name: "RewardPriceTableDetailID",
+        DefaultValue: {},
+        BindControlName: "txtRewardPriceTableDetailID",
+        DataSourceMember: "RewardPriceTableDetailID"
+    },
+    {
         Name: "MainGroupID",
         DefaultValue: {},
         BindControlName: "cbMainGroup",

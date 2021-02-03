@@ -9,16 +9,17 @@ export const PagePath = [
 export const SearchElementList = [
     {
         type: "text",
+        subLabel: "Nhập mã đơn hàng/ Mã vận đơn",
         name: "txtKeyword",
-        label: "Từ khóa:",
+        label: "Mã vận đơn",
         value: "",
-        placeholder: "",
+        placeholder: "Nhập mã vận đơn",
         icon: "",
         listoption: {}
     },
 ];
 
-export const  SearchMLObjectDefinition = [
+export const SearchMLObjectDefinition = [
     {
         Name: "Keyword",
         DefaultValue: "",

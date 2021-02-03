@@ -5,6 +5,25 @@ header{
     .topbar-right{
        .topbar-btns {
             line-height: 58px;
+            .ant-dropdown-link {
+                display: flex;
+                align-items: center;
+                font: {
+                    size: 16px;
+                }
+                letter-spacing: 0.8px;
+                span {
+                    @media (max-width: 1077px) {
+                        display: none;
+                    }
+                    @media (max-width: 991px) {
+                        display: inline-block;
+                    }
+                    @media (max-width: $breakpoint-small) {
+                        display: none;
+                    }
+                }
+            }
        } 
     }
 }

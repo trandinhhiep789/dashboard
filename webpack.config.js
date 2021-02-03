@@ -28,7 +28,7 @@ module.exports = {
             chunks: 'all',
             maxInitialRequests: 4,
             minSize: 0,
-            maxSize: 550000
+            maxSize: 5500000
         },
     },
     plugins: [

@@ -443,7 +443,7 @@ class DataGridCom extends Component {
             isFixed = true
             widthTable = $('#fixtable tbody').width();
         }
-        // console.log("this.props", this.props);
+
         return (
             <div className=" table-responsive">
                 <table id={isFixed == true ? "fixtable" : ""} className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0">
@@ -509,6 +509,8 @@ class DataGridCom extends Component {
                                                     return { key: obj.key, value: rowItem[obj.key] };
                                                 })
 
+                                                const { RelatedVoucherID } = rowItem;
+
                                                 const cellData = <GridCell type={columnItem.Type}
                                                     text={rowItem[columnItem.DataSourceMember]}
                                                     value={value}
@@ -529,9 +531,11 @@ class DataGridCom extends Component {
                                                     params={this.props.params}
                                                     linkTo={this.state.ListPKColumnName + index}
                                                     rowItem={rowItem}
+                                                    hyperLink={columnItem.Hyperlinks}
+                                                    textHyperLink={RelatedVoucherID}
                                                 />;
                                                 return (
-                                                    <td key={columnItem.Name} style={cellStyle}  >{cellData}</td>
+                                                    <td key={columnItem.Name} style={cellStyle}>{cellData}</td>
                                                 );
                                             })
                                         }

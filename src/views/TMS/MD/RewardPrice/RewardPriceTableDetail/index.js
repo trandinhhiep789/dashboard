@@ -149,7 +149,8 @@ class RewardPriceTableDetailCom extends Component {
             }
 
             if (formData.cbProductID.value != undefined) {
-                if (formData.cbProductID.value[0].ProductID != null) {
+                const temProductID= formData.cbProductID.value && Array.isArray(formData.cbProductID.value) ? formData.cbProductID.value[0].ProductID : formData.cbProductID.value;
+                if (temProductID != null) {
                     this.setState({
                         IsDisableTechspecsValue: true,
                     })
@@ -179,7 +180,8 @@ class RewardPriceTableDetailCom extends Component {
             })
         }
         if (formData.cbProductID.value != undefined) {
-            if (formData.cbProductID.value[0].ProductID != null) {
+            const temProductID= formData.cbProductID.value && Array.isArray(formData.cbProductID.value) ? formData.cbProductID.value[0].ProductID : formData.cbProductID.value;
+            if (temProductID != null) {
                 this.setState({
                     IsDisableCbTechspecsValue: true
                 })
@@ -245,7 +247,20 @@ class RewardPriceTableDetailCom extends Component {
             >
 
                 <div className="row">
+                    
                     <div className="col-md-12">
+                        <FormControl.FormControlTextBox
+                            name="txtRewardPriceTableDetailID"
+                            colspan="9"
+                            labelcolspan="3"
+                            readOnly={true}
+                            hidenControll={true}
+                            label="Mã chi tiết bảng giá thưởng"
+                            placeholder="Mã chi tiết bảng giá thưởng"
+                            controltype="InputControl"
+                            value=""
+                            datasourcemember="RewardPriceTableDetailID"
+                        />
                         <FormControl.FormControlTextBox
                             name="txtRewardPriceTableID"
                             colspan="9"

@@ -487,6 +487,7 @@ class ShipmentOrderDetailCom extends Component {
             </Menu>
         }
 
+        let triggerDropdown = this.state.ShipmentOrder.ShipmentOrderType_WF_NextList != undefined && this.state.ShipmentOrder.ShipmentOrderType_WF_NextList.length > 0 ? "click" : "contextMenu";
 
         return (
             <div className="ShipmentOrderDetail">
@@ -515,27 +516,22 @@ class ShipmentOrderDetailCom extends Component {
                                 </div>
                             </div> */}
 
+                            <div className="form-group form-group-dropdown form-group-dropdown-custom">
+                                <div className="input-group input-group-dropdown-custom">
+                                    <Dropdown overlay={dropdownItem} trigger={[triggerDropdown]}>
+                                        <div className="btn dropdown-toggle">
+                                            {strShipmentOrderStepName}
+                                        </div>
+                                    </Dropdown>
+                                </div>
+                            </div>
 
                         </div>
                     </div>}
+
                     easing="ease-in" open={false}>
                     <div className="card cardCollapsible">
                         <div className="card-body">
-
-
-                            <div className="form-row">
-                                <div className="form-group col-md-12">
-                                    <div className="form-group form-group-dropdown form-group-dropdown-custom">
-                                        <div className="input-group input-group-dropdown-custom">
-                                            <Dropdown overlay={dropdownItem} trigger={["click"]}>
-                                                <div className="btn dropdown-toggle">
-                                                    {strShipmentOrderStepName}
-                                                </div>
-                                            </Dropdown>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div className="form-row">
                                 <div className="form-group col-md-2">
                                     <label className="col-form-label bold">Mã yêu cầu vận chuyển:</label>
@@ -661,7 +657,7 @@ class ShipmentOrderDetailCom extends Component {
                         </div>
                     </div>
                 </Collapsible>
-            </div>
+            </div >
         );
     }
 }

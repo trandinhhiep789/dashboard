@@ -3,6 +3,19 @@
         margin-bottom: 10px;
         .card-body{
             padding: 7px 1.25rem;
+            .row {
+                .input-group {
+                    .col-form-label {
+                        small {
+                            font: {
+                                style: italic;
+                                size: 10px;
+                            }
+                            color: #656262;
+                        }
+                    }
+                }
+            }
         }
     }
     .rdt {

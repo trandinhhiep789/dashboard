@@ -82,8 +82,8 @@ class DetailCom extends React.Component {
                 // xuất exel
                 const exelDataDetailist = apiResult.ResultObject.RewardPriceTableDetailList.map((item, index) => {
                     let element = {
-                        "Ngành hàng": item.MainGroupID + " - " + item.MainGroupName,
-                        "Nhóm hàng": item.SubGroupID == "-1" ? item.SubGroupID : item.SubGroupID + " - " + item.SubGroupName,
+                        "Ngành hàng": item.MainGroupID > 0 ? item.MainGroupID + " - " + item.MainGroupName : "",
+                        "Nhóm hàng": item.SubGroupID > 0 ?  item.SubGroupID + " - " + item.SubGroupName : "",
                         "Thông số kỹ thuật": item.TechspecsName,
                         "Giá trị TSKT": item.TechspecsValue,
                         "Tính theo giá trị TSKT": item.IsPriceByTechspecsValueRange ? "Có" : "Không",
@@ -100,8 +100,8 @@ class DetailCom extends React.Component {
 
                 const exelDataExceptionList = apiResult.ResultObject.RewardPriceTable_ExceptionList.map((item, index) => {
                     let element = {
-                        "Ngành hàng": item.MainGroupID + " - " + item.MainGroupName,
-                        "Nhóm hàng": item.SubGroupID == "-1" ? item.SubGroupID : item.SubGroupID + " - " + item.SubGroupName,
+                        "Ngành hàng": item.MainGroupID > 0 ? item.MainGroupID + " - " + item.MainGroupName : "",
+                        "Nhóm hàng": item.SubGroupID > 0 ?  item.SubGroupID + " - " + item.SubGroupName : "",
                         "Số lượng từ": item.FromQuantity,
                         "Số lượng đến": item.ToQuantity,
                         "Giá": item.RewardPrice,
@@ -114,14 +114,14 @@ class DetailCom extends React.Component {
 
 
                 const RewardPriceTableDetailList = apiResult.ResultObject.RewardPriceTableDetailList.map((item, index) => {
-                    item.MainGroupFullName = item.MainGroupID + " - " + item.MainGroupName;
-                    item.SubGroupFullName = item.SubGroupID == "-1" ? item.SubGroupID : item.SubGroupID + " - " + item.SubGroupName;
+                    item.MainGroupFullName = item.MainGroupID > 0 ? item.MainGroupID + " - " + item.MainGroupName : "";
+                    item.SubGroupFullName = item.SubGroupID > 0 ?  item.SubGroupID + " - " + item.SubGroupName : "";
                     return item;
                 });
 
                 const RewardPriceTable_ExceptionList = apiResult.ResultObject.RewardPriceTable_ExceptionList.map((item, index) => {
-                    item.MainGroupFullName = item.MainGroupID + " - " + item.MainGroupName;
-                    item.SubGroupFullName = item.SubGroupID == "-1" ? item.SubGroupID : item.SubGroupID + " - " + item.SubGroupName;
+                    item.MainGroupFullName = item.MainGroupID> 0 ? item.MainGroupID + " - " + item.MainGroupName : "";
+                    item.SubGroupFullName = item.SubGroupID > 0 ?  item.SubGroupID + " - " + item.SubGroupName : "";
                     return item;
                 });
 
@@ -191,14 +191,12 @@ class DetailCom extends React.Component {
     }
 
     handleItemDeleteRPTDetail(index) {
-
         const { RewardPriceTableID, DataSource } = this.state;
-
         const resultItem = DataSource.RewardPriceTableDetailList[index];
-        let MLObject = {};
-        MLObject.RewardPriceTableDetailID = resultItem.RewardPriceTableDetailID.trim();
+        // let MLObject = {};
+        // MLObject.RewardPriceTableDetailID = resultItem.RewardPriceTableDetailID.trim();
 
-        this.props.callFetchAPI(APIHostName, DeleteAPIRPTDetailPath, MLObject).then((apiResult) => {
+        this.props.callFetchAPI(APIHostName, DeleteAPIRPTDetailPath, resultItem).then((apiResult) => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {

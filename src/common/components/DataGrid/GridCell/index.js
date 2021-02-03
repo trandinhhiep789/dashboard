@@ -98,6 +98,8 @@ class GridCell extends Component {
         const linkText = this.props.linkText;
         const name = this.props.caption;
         const popupContent = this.props.popupContent;
+        const { rowItem, hyperLink } = this.props
+
         let linkTo;
         if (link) {
             linkTo = listValue.reduce((link, item, index, listValue) => {
@@ -115,8 +117,8 @@ class GridCell extends Component {
                 control = <div className="textCustom" onClick={() => { this.onClickAction(listValue) }} >{text}</div>;
                 break;
             case "textList":
-                    control = <label>{text == "" ? text : ReactHtmlParser(text.replace(/;/g, '<br/>'))}</label>;
-                    break;
+                control = <label>{text == "" ? text : ReactHtmlParser(text.replace(/;/g, '<br/>'))}</label>;
+                break;
             case "text":
                 control = <label>{text}</label>;
                 break;
@@ -338,6 +340,12 @@ class GridCell extends Component {
                         </a>
                     </div>
                 );
+            case "hyperlink":
+                const { RelatedVoucherID } = rowItem;
+                const destinationHyperlink = RelatedVoucherID.includes("AR") ? hyperLink.AREdit : hyperLink.SODetail;
+                const partsText = text.split(RelatedVoucherID);
+                control = <p>{partsText[0]}<Link to={`${destinationHyperlink}/${RelatedVoucherID}`} target="_blank">{RelatedVoucherID}</Link>{partsText[1]}</p>
+                break;
             default:
                 control = <label>{text}</label>;
                 break;

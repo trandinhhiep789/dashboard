@@ -50,10 +50,10 @@ export const SearchElementList = [
         type: "text",
         name: "txtShipmentOderId",
         DataSourceMember: "ShipmentOderId",
-        label: "Mã đơn hàng",
+        label: "Mã vận đơn",
         value: "",
         colspan: 2,
-        placeholder: "Nhập mã đơn hàng",
+        placeholder: "Nhập mã vận đơn",
         icon: ""
     },
 
