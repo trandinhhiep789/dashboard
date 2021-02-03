@@ -67,14 +67,31 @@ class SearchCom extends React.Component {
             },
 
         ];
+
+        const dtFromdate = new Date();
+        dtFromdate.setDate(new Date().getDate() - 30);
+
+        const postDataNew = [
+
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: dtFromdate
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: new Date()
+            },
+           
+
+        ];
         
-        this.callSearchData(postData);
+        this.callSearchData(postDataNew);
 
     }
 
     callSearchData(postData){
         //api/ShipmentOrder/SearchReportExport
-        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchReportExport", postData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchReportExportNew", postData).then(apiResult => {
             console.log("postData:", postData, apiResult)
             if (!apiResult.IsError) {
                 

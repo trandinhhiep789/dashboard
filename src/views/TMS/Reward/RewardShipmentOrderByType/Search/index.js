@@ -18,7 +18,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { TMS_TMSREWARD_VIEW } from "../../../../../constants/functionLists";
+import { TMS_TMSREWARD_VIEW, TMS_TMSREWARD_SO_TYPE_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { toIsoStringCus } from '../../../../../utils/function'
 
@@ -200,7 +200,7 @@ class SearchCom extends React.Component {
                     params={this.state.params}
                     totalCurrencyColSpan={2}
                     totalCurrencyNumber={this.state.totalAmount}
-                    RequirePermission={TMS_TMSREWARD_VIEW}
+                    RequirePermission={TMS_TMSREWARD_SO_TYPE_VIEW}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
                     fileName="Danh sách thưởng giao hàng"
