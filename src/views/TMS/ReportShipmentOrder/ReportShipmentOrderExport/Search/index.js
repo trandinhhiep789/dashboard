@@ -1,6 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import ReactNotification from "react-notifications-component";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import "react-notifications-component/dist/theme.css";
+
 // import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import { MessageModal } from "../../../../../common/components/Modal";
@@ -10,16 +15,15 @@ import {
     APIHostName,
     SearchMLObjectDefinition,
     SearchElementList,
+    SearchElementListNew,
+    SearchMLObjectDefinitionNew
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
 import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
-import * as FileSaver from 'file-saver';
-import * as XLSX from 'xlsx';
+import { formatDate } from "../../../../../common/library/CommonLib";
 
 
 class SearchCom extends React.Component {
@@ -35,38 +39,38 @@ class SearchCom extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         console.log("search:", formData, MLObject)
-        const postData = [
+        // const postData = [
 
-            {
-                SearchKey: "@FROMDATE",
-                SearchValue: MLObject.FromDate
-            },
-            {
-                SearchKey: "@TODATE",
-                SearchValue: MLObject.ToDate
-            },
-            {
-                SearchKey: "@RECEIVERPROVINCEID",
-                SearchValue: MLObject.ReceiverProvinceID
-            },
-            {
-                SearchKey: "@RECEIVERDISTRICTID",
-                SearchValue: MLObject.ReceiverDistrictID
-            },
-            {
-                SearchKey: "@SENDERSTOREID",
-                SearchValue: MLObject.SenderStoreID
-            },
-            {
-                SearchKey: "@COORDINATORSTOREID",
-                SearchValue: MLObject.CoordinatorStoreID
-            },
-            {
-                SearchKey: "@USERNAME",
-                SearchValue: MLObject.UserName == -1 ? MLObject.UserName  : MLObject.UserName.value
-            },
+        //     {
+        //         SearchKey: "@FROMDATE",
+        //         SearchValue: MLObject.FromDate
+        //     },
+        //     {
+        //         SearchKey: "@TODATE",
+        //         SearchValue: MLObject.ToDate
+        //     },
+        //     {
+        //         SearchKey: "@RECEIVERPROVINCEID",
+        //         SearchValue: MLObject.ReceiverProvinceID
+        //     },
+        //     {
+        //         SearchKey: "@RECEIVERDISTRICTID",
+        //         SearchValue: MLObject.ReceiverDistrictID
+        //     },
+        //     {
+        //         SearchKey: "@SENDERSTOREID",
+        //         SearchValue: MLObject.SenderStoreID
+        //     },
+        //     {
+        //         SearchKey: "@COORDINATORSTOREID",
+        //         SearchValue: MLObject.CoordinatorStoreID
+        //     },
+        //     {
+        //         SearchKey: "@USERNAME",
+        //         SearchValue: MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
+        //     },
 
-        ];
+        // ];
 
         const dtFromdate = new Date();
         dtFromdate.setDate(new Date().getDate() - 30);
@@ -81,21 +85,55 @@ class SearchCom extends React.Component {
                 SearchKey: "@TODATE",
                 SearchValue: new Date()
             },
-           
+
 
         ];
-        
+
         this.callSearchData(postDataNew);
 
     }
 
-    callSearchData(postData){
+    callSearchData(postData) {
         //api/ShipmentOrder/SearchReportExport
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchReportExportNew", postData).then(apiResult => {
             console.log("postData:", postData, apiResult)
             if (!apiResult.IsError) {
-                
+                if (apiResult.ResultObject.length > 0) {
+                    const exelData = apiResult.ResultObject.map((item, index) => {
+                        let element = {
+                            "Mã vận đơn": item.ShipmentOrderID,
+                            "Thời gian tạo": formatDate(item.CreatedOrderTime, false),
+                            "Mã đơn hàng": item.PartnerSaleOrderID,
+                            "Thời gian hẹn giao": formatDate(item.ExpectedDeliveryDate, false),
+                            "Thời gian thực giao": formatDate(item.ActualDeliveryDate, false),
+                            "Tên khách hàng": item.ReceiverFullName,
+                            "Địa chỉ": item.ReceiverFullAddress,
+                            "Nhân viên giao": item.DeliverUserFullNameList,
+                            "Mã phương tiện(1 XM,2.XT)": item.CarrierTypeID,
+                            "Km giao dự kiến": item.EstimateDeliveryDistance,
+                            "Km giao thực tế": item.ActualDeliveryDistance,
+                            "Nhân viên điều phối": item.CoordinatorUserName,
+                            "Sản phẩm giao chính": item.PrimaryShipItemName,
+                            "Tổng COD": item.TotalCOD,
+                            "Mã ngành hàng": item.MainGroupID,
+                            "Mã nhóm hàng": item.SubGroupID,
+                            "Mã sản phẩm": item.ProductID,
+                            "Tên sản phẩm": item.ProductName,
+                            "Số lượng": item.Quantity,
+                            "Giá": item.Price,
+                            "Có lắp đặt": item.IsInstallItem,
+                            "Đã hoàn thành": item.IsCompleteDeliverIed,
+                            "Đã hủy giao": item.IsCancelDelivery,
+                            "Trạng thái giao hàng": item.ShipmentOrderStatusName
+                        };
+                        return element;
 
+                    })
+
+                    this.handleExportCSV(exelData);
+                } else {
+                    this.showMessage("Dữ liệu không tồn tại nên không thể xuất.")
+                }
             }
             else {
                 this.showMessage(apiResult.Message)
@@ -103,10 +141,43 @@ class SearchCom extends React.Component {
         });
     }
 
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
     handleExportCSV(dataExport) {
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         const fileExtension = '.xlsx';
-        const fileName= 'Thông kê hạn mức tạm ứng';
+        const fileName = 'Báo cáo danh sách vận đơn';
         let result;
         if (dataExport.length == 0) {
             result = {
@@ -146,10 +217,11 @@ class SearchCom extends React.Component {
     render() {
         return (
             <React.Fragment>
+                <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
                     FormName="Tìm kiếm danh sách vận đơn để xuất dữ liệu"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
+                    MLObjectDefinition={SearchMLObjectDefinitionNew}
+                    listelement={SearchElementListNew}
                     TitleButton="Xuất dữ liệu"
                     onSubmit={this.handleSearchSubmit.bind(this)}
                     ref={this.searchref}

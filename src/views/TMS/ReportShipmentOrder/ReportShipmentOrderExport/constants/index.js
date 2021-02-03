@@ -6,7 +6,7 @@ export const PagePath = [
 ];
 
 export const SearchElementList = [
-    
+
     {
         type: "Datetime",
         name: "dtFromDate",
@@ -42,8 +42,8 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
         ValueMember: "ProvinceID",
         NameMember: "ProvinceName",
-        filterrest:"cbReceiverDistrictID,cbSenderStoreID",
-        classNameCol:"col-custom"
+        filterrest: "cbReceiverDistrictID,cbSenderStoreID",
+        classNameCol: "col-custom"
     },
     {
         type: "ComboBox",
@@ -58,12 +58,12 @@ export const SearchElementList = [
         IsAutoLoadItemFromCache: true,
         filterName: "cbReceiverProvinceID",
         filterValue: "",
-        filterobj:"ProvinceID",
+        filterobj: "ProvinceID",
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
         ValueMember: "DistrictID",
         NameMember: "DistrictName",
-        filterrest:"cbSenderStoreID",
-        classNameCol:"col-custom"
+        filterrest: "cbSenderStoreID",
+        classNameCol: "col-custom"
     },
     {
         type: "ComboBox",
@@ -81,8 +81,8 @@ export const SearchElementList = [
         NameMember: "StoreName",
         filterName: "cbReceiverDistrictID",
         filterValue: "",
-        filterobj:"DistrictID",
-        classNameCol:"col-custom"
+        filterobj: "DistrictID",
+        classNameCol: "col-custom"
     },
     {
         type: "ComboBox",
@@ -99,8 +99,8 @@ export const SearchElementList = [
         ValueMember: "StoreID",
         NameMember: "StoreName",
         filterValue: 10,
-        filterobj:"CompanyID",
-        classNameCol:"col-custom"
+        filterobj: "CompanyID",
+        classNameCol: "col-custom"
     },
     {
         type: "MultiSelectUser",
@@ -121,8 +121,44 @@ export const SearchElementList = [
 
 ]
 
+export const SearchElementListNew = [
+    {
+        type: "Datetime",
+        name: "dtFromDate",
+        DataSourceMember: "FromDate",
+        label: "Từ Ngày",
+        value: new Date(),
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 2,
+    },
+    {
+        type: "Datetime",
+        name: "dtToDate",
+        DataSourceMember: "ToDate",
+        label: "Đến Ngày",
+        value: new Date(),
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 2,
+    }
+]
 
-export const  SearchMLObjectDefinition = [
+export const SearchMLObjectDefinitionNew = [
+    {
+        Name: "FromDate",
+        DefaultValue: "",
+        BindControlName: "dtFromDate"
+    },
+    {
+        Name: "ToDate",
+        DefaultValue: "",
+        BindControlName: "dtToDate"
+    }
+]
+
+
+export const SearchMLObjectDefinition = [
     {
         Name: "FromDate",
         DefaultValue: "",

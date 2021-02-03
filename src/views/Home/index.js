@@ -210,7 +210,7 @@ class HomeCom extends React.Component {
         //console.log("Home this.props.AuthenticationInfo.LoginInfo.IsRelogin: ", this.props.AuthenticationInfo.LoginInfo.IsRelogin);
         return (
             <React.Fragment>
-                <Spin className="ant-spin-custom" spinning={this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL} size="large">
+                {/* <Spin className="ant-spin-custom" spinning={this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL} size="large"> */}
                     <Header />
                     <main className="main-container">
                         <div className="main-content">
@@ -219,7 +219,7 @@ class HomeCom extends React.Component {
                             }
 
                             <div className="row">
-                                {/* {this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL ? <div className="preloader"><div className="spinner-linear"><div className="line"></div></div></div> : ''} */}
+                                {this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL ? <div className="preloader"><div className="spinner-linear"><div className="line"></div></div></div> : ''}
 
                                 <Switch>
                                     <PrivateRoute exact path="/" component={Dashboard} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -352,7 +352,7 @@ class HomeCom extends React.Component {
                         </div>
                     </main>
                     <Footer />
-                </Spin>
+                {/* </Spin> */}
             </React.Fragment >
         );
     }
