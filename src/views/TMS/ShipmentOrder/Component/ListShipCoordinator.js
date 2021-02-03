@@ -177,7 +177,6 @@ class ListShipCoordinatorCom extends Component {
     }
 
     checkInputName(formValidation) {
-        debugger;
         for (const key in formValidation) {
             //      console.log("formValidation:", formValidation);
 
