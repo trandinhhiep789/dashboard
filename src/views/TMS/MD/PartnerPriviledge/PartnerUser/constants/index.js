@@ -507,10 +507,206 @@ export const EditElementList = [
 ];
 
 
+
+export const ModalColumnList_Insert = [
+    {
+        type: "text",
+        Name: "UserName",
+        label: "tên truy cập người dùng:",
+        value: "",
+        maxSize: "20",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "UserName",
+        readonly: true,
+        validatonList: []
+    },
+    // {
+    //     type: "button",
+    //     name: "btnCreateUserName",
+    //     label: "Lấy tên đăng nhập",
+    //     value: "",
+    //     maxSize: "20",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "",
+    //     readonly: false,
+    //     validatonList: []
+    // },
+    {
+        type: "multiselect",
+        Name: "PartnerID",
+        label: "Nhà cung cấp:",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "PartnerID",
+        readonly: false,
+        validatonList: [],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
+        ValueMember: "PartnerID",
+        NameMember: "PartnerName"
+    },
+    {
+        type: "password",
+        Name: "PassWord",
+        label: "mật khẩu:",
+        value: "",
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "PassWord",
+        readonly: false,
+        validatonList: ["required"]
+    },
+    {
+        type: "password",
+        Name: "PassWordConfirm",
+        label: "Xác nhận mật khẩu:",
+        value: "",
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "PassWordConfirm",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "checkbox",
+        Name: "ShowPassWord",
+        label: "Hiển thị mật khẩu:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        readonly: false,
+        DataSourceMember: "",
+        validatonList: []
+    },
+    {
+        type: "text",
+        Name: "FullName",
+        label: "họ tên đầy đủ:",
+        value: "",
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "FullName",
+        readonly: false,
+        validatonList: ["required"]
+    },
+    // {
+    //     type: "text",
+    //     name: "txtFirstName",
+    //     label: "Tên:",
+    //     value: "",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "FirstName",
+    //     readonly: false,
+    //     validatonList: []
+    // },
+    // {
+    //     type: "text",
+    //     name: "txtLastName",
+    //     label: "Họ:",
+    //     value: "",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "LastName",
+    //     readonly: false,
+    //     validatonList: []
+    // },
+    {
+        type: "text",
+        Name: "PhoneNumber",
+        label: "Điện thoại:",
+        value: "",
+        maxSize: "11",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "PhoneNumber",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
+        type: "text",
+        Name: "Birthday",
+        label: "Ngày sinh:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        DataSourceMember: "Birthday",
+        ValueMember: "Birthday",
+        NameMember: "Birthday",
+        validatonList: ["date"]
+    },
+    {
+        type: "text",
+        Name: "txtEmail",
+        label: "Email:",
+        value: "",
+        maxSize: "200",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "Email",
+        readonly: false,
+        validatonList: ["Email"]
+    },
+    {
+        type: "textarea",
+        Name: "Description",
+        label: "Mô tả:",
+        value: "",
+        placeholder: "Mô tả",
+        maxSize: "2000",
+        icon: "",
+        rows: "6",
+        listoption: [],
+        DataSourceMember: "Description",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "checkbox",
+        Name: "IsActived",
+        label: "Kích hoạt:",
+        value: true,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "checkbox",
+        Name: "IsSystem",
+        label: "Hệ thống:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        readonly: false,
+        validatonList: []
+    }
+];
+
 export const ModalColumnList_Edit = [
     {
         type: "text",
-        Name: "txtUserName",
+        Name: "UserName",
         label: "tên truy cập người dùng:",
         value: "",
         maxSize: "20",
@@ -523,7 +719,7 @@ export const ModalColumnList_Edit = [
     },
     {
         type: "multiselect",
-        Name: "txtPartnerID",
+        Name: "PartnerID",
         label: "Nhà cung cấp:",
         value: -1,
         placeholder: "",
@@ -540,7 +736,7 @@ export const ModalColumnList_Edit = [
     },
     {
         type: "password",
-        Name: "txtPassWord",
+        Name: "PassWord",
         label: "Mật khẩu:",
         value: "",
         maxSize: "400",
@@ -553,7 +749,7 @@ export const ModalColumnList_Edit = [
     },
     {
         type: "password",
-        Name: "txtPassWordConfirm",
+        Name: "PassWordConfirm",
         label: "Xác nhận mật khẩu:",
         value: "",
         maxSize: "400",
@@ -566,7 +762,7 @@ export const ModalColumnList_Edit = [
     },
     {
         type: "checkbox",
-        Name: "chkShowPassWord",
+        Name: "ShowPassWord",
         label: "Hiển thị mật khẩu:",
         value: "",
         placeholder: "",
@@ -578,7 +774,7 @@ export const ModalColumnList_Edit = [
     },
     {
         type: "text",
-        Name: "txtFullName",
+        Name: "FullName",
         label: "Họ tên đầy đủ:",
         value: "",
         maxSize: "400",
@@ -615,7 +811,7 @@ export const ModalColumnList_Edit = [
     // },
     {
         type: "text",
-        Name: "txtPhoneNumber",
+        Name: "PhoneNumber",
         label: "Điện thoại:",
         value: "",
         maxSize: "11",
@@ -628,19 +824,17 @@ export const ModalColumnList_Edit = [
     },
     {
         type: "text",
-        Name: "dtBirthday",
+        Name: "Birthday",
         label: "Ngày sinh:",
         value: "",
         placeholder: "",
         icon: "",
         DataSourceMember: "Birthday",
-        ValueMember: "Birthday",
-        NameMember: "Birthday",
         validatonList: ["date"]
     },
     {
         type: "text",
-        Name: "txtEmail",
+        Name: "Email",
         label: "Email:",
         value: "",
         maxSize: "200",
@@ -653,7 +847,7 @@ export const ModalColumnList_Edit = [
     },
     {
         type: "textarea",
-        Name: "txtDescription",
+        Name: "Description",
         label: "Mô tả:",
         value: "",
         maxSize: "2000",
@@ -667,7 +861,7 @@ export const ModalColumnList_Edit = [
     },
     {
         type: "checkbox",
-        Name: "chkIsActived",
+        Name: "IsActived",
         label: "Kích hoạt:",
         value: "",
         placeholder: "",
@@ -679,7 +873,7 @@ export const ModalColumnList_Edit = [
     },
     {
         type: "checkbox",
-        Name: "chkIsSystem",
+        Name: "IsSystem",
         label: "Hệ thống:",
         value: "",
         placeholder: "",
@@ -787,6 +981,102 @@ export const MLObjectDefinition = [
     }
 
 ];
+
+
+export const Modal_MLObjectDefinition = [
+    {
+        Name: "UserName",
+        DefaultValue: "",
+        BindControlName: "UserName",
+        DataSourceMember: "UserName"
+    },
+    {
+        Name: "PartnerID",
+        DefaultValue: "",
+        BindControlName: "PartnerID",
+        DataSourceMember: "PartnerID"
+    },
+    {
+        Name: "PassWord",
+        DefaultValue: "",
+        BindControlName: "PassWord",
+        DataSourceMember: "PassWord"
+    },
+    {
+        Name: "FullName",
+        DefaultValue: "",
+        BindControlName: "FullName",
+        DataSourceMember: "FullName"
+    },
+    {
+        Name: "FirstName",
+        DefaultValue: "",
+        BindControlName: "FirstName",
+        DataSourceMember: "FirstName"
+    },
+    {
+        Name: "LastName",
+        DefaultValue: "",
+        BindControlName: "LastName",
+        DataSourceMember: "LastName"
+    },
+    {
+        Name: "PhoneNumber",
+        DefaultValue: "",
+        BindControlName: "PhoneNumber",
+        DataSourceMember: "PhoneNumber"
+    },
+    {
+        Name: "Birthday",
+        DefaultValue: "",
+        BindControlName: "Birthday",
+        DataSourceMember: "Birthday"
+    },
+    {
+        Name: "Email",
+        DefaultValue: "",
+        BindControlName: "Email",
+        DataSourceMember: "Email"
+    },
+    {
+        Name: "Description",
+        DefaultValue: "",
+        BindControlName: "Description",
+        DataSourceMember: "Description"
+    },
+    {
+        Name: "IsActived",
+        DefaultValue: true,
+        BindControlName: "IsActived",
+        DataSourceMember: "IsActived"
+    },
+    {
+        Name: "IsSystem",
+        DefaultValue: false,
+        BindControlName: "IsSystem",
+        DataSourceMember: "IsSystem"
+    },
+    {
+        Name: "CreatedUser",
+        DefaultValue: "administrator",
+        BindControlName: "",
+        DataSourceMember: "CreatedUserFullName"
+    },
+    {
+        Name: "UpdatedUser",
+        DefaultValue: "administrator",
+        BindControlName: "",
+        DataSourceMember: "UpdatedUserFullName"
+    },
+    {
+        Name: "LstMcUser_Role",
+        DefaultValue: {},
+        BindControlName: "LstMcUser_Role",
+        DataSourceMember: "LstMcUser_Role"
+    }
+
+];
+
 
 export const DataGridColumnList = [
     {
