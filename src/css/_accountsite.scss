@@ -1,0 +1,30 @@
+.account-site {
+    .card {
+        &.card-tabs {
+            height: 100vh;
+            .card-body {
+                height: 100%;
+                .ant-layout{
+                    &.ant-layout-has-sider {
+                        background-color: #fff;
+                        height: 100%;
+                        .ant-layout-sider {
+                            &.site-layout-background {
+                                background-color: #fff;
+                            }
+                            
+                        }
+                        main.ant-layout-content {
+                            height: 100%;
+                            overflow: auto;
+                        }
+
+                    }
+                } 
+                .ant-layout-content {
+                    padding: 20px;
+                }
+            }
+        }
+    }
+}
