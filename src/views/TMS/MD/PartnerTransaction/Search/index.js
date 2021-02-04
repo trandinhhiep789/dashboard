@@ -27,6 +27,7 @@ import "react-notifications-component/dist/theme.css";
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { toIsoStringCus } from "../../../../../utils/function";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -95,11 +96,11 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@FromDate",
-                SearchValue: MLObject.FromDate
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
             },
             {
                 SearchKey: "@ToDate",
-                SearchValue: MLObject.ToDate
+                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
             }
         ];
 
