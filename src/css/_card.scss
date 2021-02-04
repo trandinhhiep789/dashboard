@@ -51,11 +51,32 @@
     }
 }
 
+.row {
+    .weekly-report {
+        display: flex;
+        .card {
+            flex-grow: 1;
+        }
+    }
+    .process-history {
+        display: flex;
+        .card {
+            flex-grow: 1;
+            @extend %scrollTabel;
+            .card-body {
+                .jsgrid {
+                    .jsgrid-grid-body {
+                        max-height: 366px;
+                    }
+                }
+            }
+        }
+    }
+}
+
 .card {
     margin-bottom: 15px;
-    &.Process-history {
-        @extend %scrollTabel;
-    }
+
     &.list-yet-coordinated {
         @extend %scrollTabel;
         .card-body{

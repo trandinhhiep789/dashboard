@@ -105,10 +105,11 @@ class ListShipCoordinatorCom extends Component {
     }
 
     handleOnValueChangeDeliverUser(name, value, selectedOption) {
+        debugger
         let objMultiDeliverUser = [];
         let listStaffDebtObject = [];
         selectedOption && selectedOption.map((item, index) => {
-            let objMultiShip_DeliverUser = { UserName: item.value, FullName: item.FullName }
+            let objMultiShip_DeliverUser = { UserName: item.value, FullName: item.name }
             objMultiDeliverUser.push(objMultiShip_DeliverUser)
             listStaffDebtObject.push({
                 UserName: item.value,
@@ -207,7 +208,7 @@ class ListShipCoordinatorCom extends Component {
             let listStaffDebtObject = [];
             rowvalue && rowvalue.map((item, index) => {
                 if (item.value != -1 && item.value != 0) {
-                    let objShipmentOrder_DeliverUser = { UserName: item.value, FullName: item.FullName }
+                    let objShipmentOrder_DeliverUser = { UserName: item.value, FullName: item.name }
                     objDeliverUser.push(objShipmentOrder_DeliverUser)
                     listStaffDebtObject.push({
                         UserName: item.value,

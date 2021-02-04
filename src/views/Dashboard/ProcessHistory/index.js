@@ -21,8 +21,8 @@ class ProcessHistoryCom extends Component {
         const dataSource = this.props.DataSource;
         return (
             // <div className="col-12 col-md-7 col-lg-7">
-            <div className="col-12 col-lg-6">
-                <div className="card shadow-1 Process-history">
+            <div className="col-12 col-lg-6 process-history">
+                <div className="card shadow-1">
                     <div className="card-header">
                         <h5 className="card-title">Nhật ký xử lý</h5>
                     </div>
