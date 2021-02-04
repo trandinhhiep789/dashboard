@@ -1192,7 +1192,7 @@ class ShipmentOrderAddressCom extends Component {
                                         </div>
                                     </div>
                                     <div className="form-row">
-                                    <div className="form-group col-md-1">
+                                        <div className="form-group col-md-1">
                                             <label className="col-form-label icon">
                                                 <i className="fa fa-mobile " aria-hidden="true"></i>
                                             </label>
@@ -1222,7 +1222,7 @@ class ShipmentOrderAddressCom extends Component {
                                         </div>
                                     </div>
                                     <div className="form-row">
-                                    <div className="form-group col-md-1">
+                                        <div className="form-group col-md-1">
                                             <label className="col-form-label icon">
                                                 <i className="fa fa-mobile " aria-hidden="true"></i>
                                             </label>
@@ -1263,13 +1263,13 @@ class ShipmentOrderAddressCom extends Component {
                                         </div>
                                     </div>
                                     <div className="form-row">
-                                    <div className="form-group col-md-1">
+                                        <div className="form-group col-md-1">
                                             <label className="col-form-label icon">
                                                 <i className="fa fa-mobile " aria-hidden="true"></i>
                                             </label>
                                         </div>
                                         <div className="form-group col-md-11">
-                                            <label className="col-form-label">{(this.state.ShipmentOrder.ShipmentOrderTypeID==1002||this.state.ShipmentOrder.ShipmentOrderTypeID==1003)? this.state.ShipmentOrder.ReceiverPhoneNumber.substr(0, 7)+"***":this.state.ShipmentOrder.ReceiverPhoneNumber}</label>
+                                            <label className="col-form-label">{(this.state.ShipmentOrder.ShipmentOrderTypeID == 1002 || this.state.ShipmentOrder.ShipmentOrderTypeID == 1003) && this.state.ShipmentOrder.TotalCOD > 0 ? this.state.ShipmentOrder.ReceiverPhoneNumber.substr(0, 7) + "***" : this.state.ShipmentOrder.ReceiverPhoneNumber}</label>
                                         </div>
                                     </div>
                                     <div className="form-row">

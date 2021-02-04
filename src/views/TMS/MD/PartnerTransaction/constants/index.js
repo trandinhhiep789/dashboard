@@ -27,8 +27,8 @@ export const AddPagePath = [
     { Link: "", Title: "Thêm" }
 ];
 
-const dtFromdate = new Date()
-dtFromdate.setDate(new Date().getDate() - 1);
+const dtFromdate = new Date(new Date().setHours(0,0,0,0));
+//dtFromdate.setDate(new Date().getDate() - 1);
 export const InitSearchParams = [
     {
         SearchKey: "@Keyword",
