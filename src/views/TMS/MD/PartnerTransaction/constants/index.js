@@ -112,7 +112,7 @@ export const SearchElementList = [
         NameMember: "PartnerName"
     },
     {
-        type: "date",
+        type: "datetimes",
         name: "dtFromDate",
         label: "Từ ngày",
         value: dtFromdate,
@@ -123,7 +123,7 @@ export const SearchElementList = [
         NameMember: "FromDate"
     },
     {
-        type: "date",
+        type: "datetimes",
         name: "dtToDate",
         label: "Đến ngày",
         value: new Date(),
@@ -172,41 +172,48 @@ export const SearchMLObjectDefinition = [
 
 
 export const DataGridColumnList = [
-    // {
-    //     Name: "PartnerTransactionID",
-    //     Type: "texttolink",
-    //     Caption: "Mã giao dịch",
-    //     Link: "/PartnerTransaction/Edit/",
-    //     DataSourceMember: "PartnerTransactionID",
-    //     Width: 100
-    // },
+    {
+        Name: "PartnerTransactionID",
+        Type: "texttolink",
+        Caption: "Mã giao dịch",
+        Link: "/PartnerTransaction/Edit/",
+        DataSourceMember: "PartnerTransactionID",
+        //Width: 
+    },
     {
         Name: "PartnerTransactionTypeName",
-        Type: "texttolink",
-        Link: "/PartnerTransaction/Edit/",
+        Type: "text",
+        //Link: "/PartnerTransaction/Edit/",
         Caption: "Loại giao dịch",
         DataSourceMember: "PartnerTransactionTypeName",
-        Width: 250
+        Width: 300
     },
     {
         Name: "PartnerTransactionDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày giao dịch",
         DataSourceMember: "PartnerTransactionDate",
         Width: 150
     },
+    // {
+    //     Name: "PartnerName",
+    //     Type: "text",
+    //     Caption: "Đối tác",
+    //     DataSourceMember: "PartnerName",
+    //     Width: 220
+    // },
+    // {
+    //     Name: "RequestTimeString",
+    //     Type: "text",
+    //     Caption: "Ngày yêu cầu",
+    //     DataSourceMember: "RequestTimeString",
+    //     Width: 150
+    // },
     {
-        Name: "PartnerName",
-        Type: "text",
-        Caption: "Đối tác",
-        DataSourceMember: "PartnerName",
-        Width: 220
-    },
-    {
-        Name: "RequestTimeString",
-        Type: "text",
+        Name: "RequestTime",
+        Type: "datetime",
         Caption: "Ngày yêu cầu",
-        DataSourceMember: "RequestTimeString",
+        DataSourceMember: "RequestTime",
         Width: 150
     },
     {
@@ -224,10 +231,17 @@ export const DataGridColumnList = [
         Width: 120
     },
     {
-        Name: "ResponseTimeString",
-        Type: "text",
+        Name: "ResponseTime",
+        Type: "datetime",
         Caption: "Thời gian phản hồi",
-        DataSourceMember: "ResponseTimeString",
+        DataSourceMember: "ResponseTime",
         Width: 150
     }
+    // {
+    //     Name: "ResponseTimeString",
+    //     Type: "text",
+    //     Caption: "Thời gian phản hồi",
+    //     DataSourceMember: "ResponseTimeString",
+    //     Width: 150
+    // }
 ];

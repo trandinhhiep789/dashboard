@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from "react-router-dom";
-import { formatDate } from "../../../library/CommonLib.js";
+import { formatDate, formatMonthDate } from "../../../library/CommonLib.js";
 import { ModalManager } from 'react-dynamic-modal';
 import { MessageModal } from "../../../../common/components/Modal";
 import { formatMoney, formatNumber } from '../../../../utils/function';
@@ -246,6 +246,12 @@ class GridCell extends Component {
             case "date":
                 {
                     const datestring = formatDate(text, true);
+                    control = <label>{datestring}</label>;
+                    break;
+                }
+            case "datetime":
+                {
+                    const datestring = formatDate(text, false);
                     control = <label>{datestring}</label>;
                     break;
                 }
