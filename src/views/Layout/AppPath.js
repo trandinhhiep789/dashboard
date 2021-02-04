@@ -8,6 +8,22 @@ class AppPathCom extends React.Component {
             pagePath: this.props.PageInfo.PagePath ? this.props.PageInfo.PagePath : ""
         }
     }
+
+    componentDidUpdate() {
+        const { PageInfo } = this.props;
+
+        //Begin customize the Title of Any Page
+        let arrPageInfoTitle = document.title.split("|");
+        let pageInfoTitle = arrPageInfoTitle[arrPageInfoTitle.length - 1];
+        PageInfo.PagePath.forEach((pageInfo, index) => {
+            if (index != 0) {
+                pageInfoTitle = `${pageInfo.Title} | ${pageInfoTitle}`;
+            }
+        });
+        document.title = pageInfoTitle;
+        //End customize the Title of Any Page
+    }
+
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.PageInfo) !== JSON.stringify(nextProps.PageInfo)) {
             this.setState({
@@ -31,7 +47,7 @@ class AppPathCom extends React.Component {
                         <ol className="breadcrumb">
                             {
                                 pagePath.map((item, index) => {
-                                    
+
                                     if (index == pagePath.length - 1) {
                                         if (item.Link.length > 0) {
                                             return <li className="breadcrumb-item active 2" key={"li" + index}>
