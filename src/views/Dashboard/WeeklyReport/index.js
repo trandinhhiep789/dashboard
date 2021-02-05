@@ -67,7 +67,7 @@ class WeeklyReportCom extends Component {
 
         return (
             // <div className="col-md-12 col-md-5 col-lg-5">
-            <div className="col-12 col-lg-6">
+            <div className="col-12 col-lg-6 weekly-report">
                 <div className="card shadow-1">
                     <div className="card-header">
                         <h5 className="card-title">Biểu đồ điều phối trong tuần</h5>
@@ -77,7 +77,7 @@ class WeeklyReportCom extends Component {
                         <Line height={197} data={datanew} /> */}
                         <Bar
                             data={dataBar}
-                            height={210}
+                            height={180}
                             options={{}}
                         />
                     </div>
