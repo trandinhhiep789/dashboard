@@ -83,11 +83,11 @@ class SearchCom extends React.Component {
 
             {
                 SearchKey: "@FROMDATE",
-                SearchValue: dtFromdate
+                SearchValue: MLObject.FromDate
             },
             {
                 SearchKey: "@TODATE",
-                SearchValue: new Date()
+                SearchValue: MLObject.ToDate
             },
 
 
