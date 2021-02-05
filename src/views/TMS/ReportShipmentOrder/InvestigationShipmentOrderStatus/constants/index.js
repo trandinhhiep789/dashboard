@@ -9,11 +9,11 @@ export const PagePath = [
 export const SearchElementList = [
     {
         type: "text",
-        subLabel: "Nhập mã đơn hàng/ Mã vận đơn",
+        // subLabel: "Nhập mã đơn hàng/ Mã vận đơn",
         name: "txtKeyword",
         label: "Mã vận đơn",
         value: "",
-        placeholder: "Nhập mã vận đơn",
+        placeholder: "Nhập mã đơn hàng/ Mã vận đơn",
         icon: "",
         listoption: {}
     },
