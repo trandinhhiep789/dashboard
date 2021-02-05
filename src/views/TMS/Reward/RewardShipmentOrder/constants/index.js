@@ -131,7 +131,7 @@ export const GridColumnList = [
         Caption: "Mã nhân viên",
         DataSourceMember: "RewardUser",
         Link: "/RewardShipmentOrder/UserName/",
-        Width: 100
+        Width: 70
     },
     {
         Name: "FullName",
@@ -145,7 +145,14 @@ export const GridColumnList = [
         Type: "textCurrency",
         Caption: "Tổng thưởng",
         DataSourceMember: "TotalReward",
-        Width: 100
+        Width: 50
+    },
+    {
+        Name: "NoteReward",
+        Type: "text",
+        Caption: "Nội dung thưởng",
+        DataSourceMember: "NoteReward",
+        Width: 300
     },
     
 ]
@@ -165,6 +172,13 @@ export const GridColumnListByUserName = [
         Caption: "Tổng thưởng",
         DataSourceMember: "TotalReward",
         Width: 100
+    },
+    {
+        Name: "NoteReward",
+        Type: "text",
+        Caption: "Nội dung thưởng",
+        DataSourceMember: "NoteReward",
+        Width: 300
     },
   
     
