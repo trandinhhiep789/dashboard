@@ -37,6 +37,10 @@ class SearchCom extends React.Component {
         this.notificationDOMRef = React.createRef();
     }
 
+    componentDidMount(){
+        this.props.updatePagePath(PagePath);
+    }
+
     handleSearchSubmit(formData, MLObject) {
         console.log("search:", formData, MLObject)
         // const postData = [
