@@ -11,6 +11,8 @@
                         .ant-layout-sider {
                             &.site-layout-background {
                                 background-color: #fff;
+                                height: 100%;
+                                overflow: auto;
                             }
                             
                         }

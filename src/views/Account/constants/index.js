@@ -34,5 +34,149 @@ export const SidebarAccountInfo = [
         LinkTo: "/accountinfo/video",
         MenuIcon: "",
         SubMenu: []
+    },
+    {
+        MenuName: "Video1",
+        MenuTitle: "Video1",
+        LinkTo: "",
+        MenuIcon: "",
+        SubMenu: [
+            {
+                MenuName: "Video1",
+                MenuTitle: "Video1",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: []
+            },
+            {
+                MenuName: "Video2",
+                MenuTitle: "Video2",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: []
+            },
+            {
+                MenuName: "Video3",
+                MenuTitle: "Video3",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: []
+            },
+            {
+                MenuName: "Video4",
+                MenuTitle: "Video4",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: []
+            }
+        ]
+    },
+    {
+        MenuName: "Video2",
+        MenuTitle: "Video2",
+        LinkTo: "",
+        MenuIcon: "",
+        SubMenu: [
+            {
+                MenuName: "Video1",
+                MenuTitle: "Video1",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: []
+            },
+            {
+                MenuName: "Video2",
+                MenuTitle: "Video2",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: []
+            },
+            {
+                MenuName: "Video3",
+                MenuTitle: "Video3",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: []
+            },
+            {
+                MenuName: "Video4",
+                MenuTitle: "Video4",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: []
+            }
+        ]
+    },
+    {
+        MenuName: "Video3",
+        MenuTitle: "Video3",
+        LinkTo: "",
+        MenuIcon: "",
+        SubMenu: [
+            {
+                MenuName: "Video1",
+                MenuTitle: "Video1",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: []
+            },
+            {
+                MenuName: "Video2",
+                MenuTitle: "Video2",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: []
+            },
+            {
+                MenuName: "Video3",
+                MenuTitle: "Video3",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: []
+            },
+            {
+                MenuName: "Video4",
+                MenuTitle: "Video4",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: []
+            }
+        ]
+    },
+    {
+        MenuName: "Video4",
+        MenuTitle: "Video4",
+        LinkTo: "",
+        MenuIcon: "",
+        SubMenu: [
+            {
+                MenuName: "Video1",
+                MenuTitle: "Video1",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: []
+            },
+            {
+                MenuName: "Video2",
+                MenuTitle: "Video2",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: []
+            },
+            {
+                MenuName: "Video3",
+                MenuTitle: "Video3",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: []
+            },
+            {
+                MenuName: "Video4",
+                MenuTitle: "Video4",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: []
+            }
+        ]
     }
 ]
