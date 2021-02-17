@@ -37,6 +37,10 @@ class SearchCom extends React.Component {
         this.notificationDOMRef = React.createRef();
     }
 
+    componentDidMount(){
+        this.props.updatePagePath(PagePath);
+    }
+
     handleSearchSubmit(formData, MLObject) {
         console.log("search:", formData, MLObject)
         // const postData = [
@@ -79,11 +83,11 @@ class SearchCom extends React.Component {
 
             {
                 SearchKey: "@FROMDATE",
-                SearchValue: dtFromdate
+                SearchValue: MLObject.FromDate
             },
             {
                 SearchKey: "@TODATE",
-                SearchValue: new Date()
+                SearchValue: MLObject.ToDate
             },
 
 
@@ -130,8 +134,8 @@ class SearchCom extends React.Component {
 
                     })
 
-                    //this.handleExportCSV(exelData);
-                    this.showMessage("Chức năng đang phát triển chưa.")
+                    this.handleExportCSV(exelData);
+                   // this.showMessage("Chức năng đang phát triển chưa.")
                 } else {
                     this.showMessage("Dữ liệu không tồn tại nên không thể xuất.")
                 }

@@ -114,6 +114,13 @@ export const GridColumnList = [
         DataSourceMember: "TotalReward",
         Width: 100
     },
+    {
+        Name: "NoteReward",
+        Type: "text",
+        Caption: "Nội dung thưởng",
+        DataSourceMember: "NoteReward",
+        Width: 300
+    },
     
 ]
 

@@ -109,8 +109,15 @@ class SearchCom extends React.Component {
 
                 })
 
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                    item.NoteReward = "Điểm thưởng này chỉ mang tính chất tham khảo, kết quả thưởng cuối cùng sẽ được KSNB và Phòng Lao động tiền lương điều chỉnh sau khi đối chiếu với các số liệu khác";
+
+                    return item;
+
+                })
+
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource: tempData,
                     IsCallAPIError: apiResult.IsError,
                     totalAmount: totalAmount,
                     IsLoadDataComplete: true,
@@ -198,7 +205,7 @@ class SearchCom extends React.Component {
                     RowsPerPage={30}
                     totalCurrency={true}
                     params={this.state.params}
-                    totalCurrencyColSpan={2}
+                    totalCurrencyColSpan={3}
                     totalCurrencyNumber={this.state.totalAmount}
                     RequirePermission={TMS_TMSREWARD_SO_TYPE_VIEW}
                     IsExportFile={true}

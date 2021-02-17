@@ -84,8 +84,15 @@ class SearchByUserNameCom extends React.Component {
                     return sum
                 }, 0);
 
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                    item.NoteReward = "Điểm thưởng này chỉ mang tính chất tham khảo, kết quả thưởng cuối cùng sẽ được KSNB và Phòng Lao động tiền lương điều chỉnh sau khi đối chiếu với các số liệu khác";
+
+                    return item;
+
+                })
+
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource: tempData,
                     IsCallAPIError: apiResult.IsError,
                     totalAmount: totalAmount,
                     fullName: apiResult.ResultObject[0].RewardUser + " - " + apiResult.ResultObject[0].FullName
@@ -161,7 +168,7 @@ class SearchByUserNameCom extends React.Component {
                     IsAutoPaging={true}
                     RowsPerPage={31}
                     totalCurrency={true}
-                    totalCurrencyColSpan={1}
+                    totalCurrencyColSpan={3}
                     totalCurrencyNumber={this.state.totalAmount}
                     //RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                     ref={this.gridref}
