@@ -2,7 +2,7 @@ export const APIHostName = "TMSAPI";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Xuất danh sách vận đơn" }
+    { Link: "", Title: "Xuất danh sách đơn hàng" }
 ];
 
 export const SearchElementList = [
