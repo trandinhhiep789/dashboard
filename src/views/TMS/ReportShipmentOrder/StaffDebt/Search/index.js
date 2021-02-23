@@ -212,6 +212,7 @@ class SearchCom extends React.Component {
         }
 
         this.props.callFetchAPI(APIHostName, UpdateUnlockAPIPath, objDataRequest).then(apiResult => {
+            console.log("objDataRequest", apiResult, objDataRequest)
             this.addNotification(apiResult.Message, apiResult.IsError)
             this.callSearchData(this.state.SearchData)
         });
