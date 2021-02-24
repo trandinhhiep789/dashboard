@@ -47,8 +47,8 @@ class ReviewLevel_UserCom extends React.Component {
             this.setState({ StoreID: formData.StoreID.value, ReviewUser: [{ value: -1, label: "--Vui lòng chọn--" }] });
             this.props.callFetchAPI(APIHostName, GetUserAPIPath, formData.StoreID.value).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
-                if (!apiResult.IsError) {
-                    let listOption = [];
+                if (!apiResult.IsError && apiResult.ResultObject) {
+                    let listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                     apiResult.ResultObject.map((item, index) => {
                         listOption.push({ value: item.UserName, label: item.FullName });
                     });
