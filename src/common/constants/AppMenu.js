@@ -226,6 +226,13 @@ const AppMenu = [
                         SubMenu: []
                     },
                     {
+                        MenuName: 'MTReturnRequestType',
+                        MenuTitle: 'Loại yêu cầu nhập trả vật tư',
+                        LinkTo: '/MTReturnRequestType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'InstallBundle',
                         MenuTitle: 'Danh sách gói sản phẩm lắp đặt kèm theo',
                         LinkTo: '/InstallBundle',
