@@ -224,7 +224,6 @@ class SearchCom extends React.Component {
         const dataFind = gridDataSource.find(n => {
             return n.StaffDebtID == objId[0].value
         });
-        console.log("dataFind", dataFind)
 
         const postData = [
             {
