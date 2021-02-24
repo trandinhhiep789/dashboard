@@ -2,6 +2,7 @@ import { toIsoStringCus } from '../../../../../utils/function';
 
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/StaffDebt/Search";
+export const SearchUnlockLogAPIPath = "api/StaffDebt_unLockLog/Search";
 export const SearchExportAPIPath = "api/StaffDebt/SearchExport";
 export const UpdateUnlockAPIPath = "api/StaffDebt/UpdateUnlock";
 export const SearchDetailAPIPath = "api/StaffDebtDetail/Search";
@@ -171,70 +172,77 @@ export const GridColumnList = [
         Type: "text",
         Caption: "Mã NV nợ",
         DataSourceMember: "FullNameMember",
-        Width: "12%"
+        Width: "15%"
     },
     {
         Name: "StoreName",
         Type: "text",
         Caption: "Kho điều phối",
         DataSourceMember: "StoreName",
-        Width: "14%"
+        Width: "15%"
     },
     {
         Name: "TotalCOD",
         Type: "textCurrency",
         Caption: "Tổng tiền phải thu hộ",
         DataSourceMember: "TotalCOD",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "TotalSaleMaterialMoney",
         Type: "textCurrency",
         Caption: "Tổng tiền phải thu vật tư",
         DataSourceMember: "TotalSaleMaterialMoney",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "TotalMoney",
         Type: "textCurrency",
         Caption: "Tổng tiền phải thu",
         DataSourceMember: "TotalMoney",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "CollectedTotalMoney",
         Type: "textCurrency",
         Caption: "Tổng tiền đã thu của khách hàng",
         DataSourceMember: "CollectedTotalMoney",
-        Width: "10%"
+        Width: "12%"
     },
     {
         Name: "TotalDebtOrders",
         Type: "text",
         Caption: "Tổng vận đơn còn nợ",
         DataSourceMember: "TotalDebtOrders",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "TotALoverDueDebtOrders",
         Type: "text",
         Caption: "Tổng vận đơn nợ quá hạn",
         DataSourceMember: "TotALoverDueDebtOrders",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "DeliveryStatus",
         Type: "textCustom",
         Caption: "Tình trạng",
         DataSourceMember: "DeliveryStatus",
-        Width: "7%"
+        Width: "8%"
+    },
+    {
+        Name: "History",
+        Type: "btnHistory",
+        Caption: "Lịch sử",
+        DataSourceMember: "History",
+        Width: "5%"
     },
     {
         Name: "Note",
         Type: "popupNew",
         Caption: "Ghi chú",
         DataSourceMember: "Note",
-        Width: "7%"
+        Width: "5%"
     },
 ]
 
@@ -311,4 +319,35 @@ export const  DataGirdStaffDebtColumnList=[
         DataSourceMember: "IsOverDueDebt",
         Width: "10%"
     },
+]
+
+export const DataGirdStaffDebtHistoryColumnList=[
+    {
+        Name: "FullName",
+        Type: "text",
+        Caption: "Mã NV",
+        DataSourceMember: "FullName",
+        Width: "10%"
+    }, 
+    {
+        Name: "StoreFullName",
+        Type: "text",
+        Caption: "Kho điều phối",
+        DataSourceMember: "StoreFullName",
+        Width: "10%"
+    }, 
+    {
+        Name: "UnLockFullName",
+        Type: "text",
+        Caption: "Người mở khóa",
+        DataSourceMember: "UnLockFullName",
+        Width: "10%"
+    }, 
+    {
+        Name: "unLockDeliveryDate",
+        Type: "date",
+        Caption: "Ngày mở khóa",
+        DataSourceMember: "unLockDeliveryDate",
+        Width: "10%"
+    }, 
 ]

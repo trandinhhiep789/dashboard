@@ -12,6 +12,7 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
+    SearchUnlockLogAPIPath,
     InitSearchParams,
     UpdateUnlockAPIPath,
     SearchDetailAPIPath,
@@ -30,6 +31,7 @@ import { Base64 } from 'js-base64';
 import DataGirdStaffDebt from "../DataGirdStaffDebt";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import DataGirdHistoryStaffDebt from "../DataGirdHistoryStaffDebt";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -212,11 +214,61 @@ class SearchCom extends React.Component {
         }
 
         this.props.callFetchAPI(APIHostName, UpdateUnlockAPIPath, objDataRequest).then(apiResult => {
-            console.log("objDataRequest", apiResult, objDataRequest)
             this.addNotification(apiResult.Message, apiResult.IsError)
             this.callSearchData(this.state.SearchData)
         });
+    }
 
+    onhandleHistoryItem(objId){
+        const { gridDataSource } = this.state;
+        const dataFind = gridDataSource.find(n => {
+            return n.StaffDebtID == objId[0].value
+        });
+        console.log("dataFind", dataFind)
+
+        const postData = [
+            {
+                SearchKey: "@USERNAME",
+                SearchValue: dataFind.UserName
+            },
+            {
+                SearchKey: "@STOREID",
+                SearchValue: dataFind.StoreID
+            },
+          
+        ];
+
+        this.props.callFetchAPI(APIHostName, SearchUnlockLogAPIPath, postData).then(apiResult => {
+            if(apiResult.IsError){
+                this.showMessage(apiResult.MessageDetail);
+            }
+            else{
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                    
+                    item.FullName = item.UserName + " - " + item.FullName;
+                    item.StoreFullName = item.StoreID + " - " + item.StoreName;
+                    item.UnLockFullName = item.unLockDeliveryUser + " - " + item.unLockDeliveryFullName;
+                    return item;
+                })
+                this.onShowModalHistory(tempData, dataFind); 
+            }
+        })
+
+    }
+
+    onShowModalHistory(dataSource, dataItem) {
+        const { widthPercent } = this.state;
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: "Danh sách lịch sử quản lý công nợ",
+            content: {
+                text: <DataGirdHistoryStaffDebt
+                    dataSource={dataSource}
+                    dataItem={dataItem}
+                />
+
+            },
+            maxWidth: widthPercent + 'px'
+        });
     }
 
     onShowModal(dataSource, dataItem) {
@@ -364,6 +416,7 @@ class SearchCom extends React.Component {
                 <DataGrid
                     listColumn={GridColumnList}
                     onUpdateItem={this.onhandleUpdateItem.bind(this)}
+                    onHistoryItem={this.onhandleHistoryItem.bind(this)}
                     dataSource={this.state.gridDataSource}
                     IsFixheaderTable={false}
                     IDSelectColumnName={'StaffDebtID'}
