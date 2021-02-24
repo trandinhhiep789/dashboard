@@ -97,6 +97,11 @@ class DataGridCom extends Component {
             this.props.onUpdateItem(id)
     }
 
+    handleHistoryItemClick(id) {
+        if (this.props.onHistoryItem != null)
+            this.props.onHistoryItem(id)
+    }
+
     handleDetailClick(id) {
         if (this.props.onDetailClick != null)
             this.props.onDetailClick(id);
@@ -527,6 +532,7 @@ class DataGridCom extends Component {
                                                     onDetailtModalClick={this.handleDetailModalClick.bind(this)}
                                                     onModalClick={this.handleShowModalClick.bind(this)}
                                                     onUpdateClick={this.handleUpdateItemClick.bind(this)}
+                                                    onHistoryClick={this.handleHistoryItemClick.bind(this)}
                                                     pkColumnName={this.state.ListPKColumnName}
                                                     params={this.props.params}
                                                     linkTo={this.state.ListPKColumnName + index}

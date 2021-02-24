@@ -1,4 +1,15 @@
 button {
+    &.btnHistory {
+        background: transparent;
+        border: none;
+        text-align: center;
+        width: 100%;
+        cursor: pointer;
+        &:focus{
+            box-shadow: none;
+            outline: none;
+        }
+    }
     &.btn-light{
         &:disabled{
             color: #212529;

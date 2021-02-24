@@ -89,6 +89,10 @@ class GridCell extends Component {
     onClickAction(objValue) {
         this.props.onUpdateClick(objValue)
     }
+    onHistoryClickAction(objValue){
+       
+        this.props.onHistoryClick(objValue)
+    }
 
     render() {
         let link = this.props.link;
@@ -115,6 +119,9 @@ class GridCell extends Component {
         switch (type) {
             case "textCustom":
                 control = <div className="textCustom" onClick={() => { this.onClickAction(listValue) }} >{text}</div>;
+                break;
+            case "btnHistory":
+                control = <button className="btnHistory" onClick={() => { this.onHistoryClickAction(listValue) }}><i className="fa fa-history"></i></button>;
                 break;
             case "textList":
                 control = <label>{text == "" ? text : ReactHtmlParser(text.replace(/;/g, '<br/>'))}</label>;
