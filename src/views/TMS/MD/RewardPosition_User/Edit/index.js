@@ -153,23 +153,21 @@ class EditCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification = "";
+        let iconNotification = "";
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check";
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation";
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -219,19 +217,17 @@ class EditCom extends React.Component {
 
             //console.log("this.state.DataSourceUser_RewardPosition", this.state.DataSourceUser_RewardPosition);
 
-            // let countSelected = 0;
-            // countSelected = data.filter(item => item.IsSelected == true).length;
-            // if (countSelected > 1) {
-            //     this.addNotification("Chỉ được phép chọn 1 vị trí thưởng", true);
-            // } else {
-            //     this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
-            //         this.addNotification(apiResult.Message, apiResult.IsError);
-            //     });
-            // }
+            let countSelected = 0;
+            countSelected = data.filter(item => item.IsSelected == true && (item.RewardPositionID === 1 || item.RewardPositionID === 5)).length;
+            if (countSelected > 1) {
+                this.addNotification("Vị trí thưởng nhân viên và cộng tác viên chỉ được phép chọn 1.", true);
+            } else {
+                this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
+                    this.addNotification(apiResult.Message, apiResult.IsError);
+                });
+            }
 
-            this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
-                this.addNotification(apiResult.Message, apiResult.IsError);
-            });
+
 
         } else {
             this.addNotification("Bạn không có quyền cập nhật", true);
