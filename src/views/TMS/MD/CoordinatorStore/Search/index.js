@@ -45,6 +45,7 @@ class SearchCom extends React.Component {
             cssNotification: "",
             iconNotification: "",
             IsLoadDataComplete: false,
+            dataExport: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -52,8 +53,9 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
-        this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
+        this.callSearchData(this.state.SearchData);
+        
     }
 
 
@@ -101,7 +103,21 @@ class SearchCom extends React.Component {
                     item.ShipmentOrderTypeLable = item.ShipmentOrderTypeID + " - " + item.ShipmentOrderTypeName
                     return item;
                 })
+
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Loại yêu cầu xuất":item.ShipmentOrderTypeID + " - " + item.ShipmentOrderTypeName,
+                        "Đối tác": item.PartnerID + " - " + item.PartnerName,
+                        "Kho điều phối": item.StoreID + " - " + item.StoreName,
+                        "Kho gửi": item.SenderStoreID + " - " + item.SenderStoreName,
+                    };
+                    return element;
+
+                })
+
                 this.setState({
+                    dataExport: exelData,
                     gridDataSource: result,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true
@@ -166,6 +182,10 @@ class SearchCom extends React.Component {
             dismissable: { click: true }
         });
     }
+    handleExportFile(result){
+        console.log("result", result)
+        this.addNotification(result.Message);
+    }
 
     render() {
         if (this.state.IsLoadDataComplete) {
@@ -192,6 +212,10 @@ class SearchCom extends React.Component {
                         DeletePermission={COORDINATORSTORE_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
+                        IsExportFile={true}
+                        DataExport={this.state.dataExport}
+                        fileName="Danh sách định nghĩa kho điều phối giao hàng"
+                        onExportFile={this.handleExportFile.bind(this)}
                     />
                 </React.Fragment>
             );
