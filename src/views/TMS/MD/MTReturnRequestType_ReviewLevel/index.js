@@ -16,9 +16,9 @@ import ReactNotification from "react-notifications-component";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache,callGetUserCache } from "../../../../actions/cacheAction";
-import { GET_CACHE_USER_FUNCTION_LIST, INVENTORYREQUESTTYPE_ADD, INVENTORYREQUESTTYPE_DELETE, INVENTORYREQUESTTYPE_UPDATE } from "../../../../constants/functionLists";
+import { GET_CACHE_USER_FUNCTION_LIST, MTRETURNREQUESTTYPE_ADD, MTRETURNREQUESTTYPE_DELETE, MTRETURNREQUESTTYPE_UPDATE } from "../../../../constants/functionLists";
 
-class InventoryRequestType_ReviewLevelCom extends React.Component {
+class MTRETURNREQUESTTYPE_ReviewLevelCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
@@ -112,17 +112,17 @@ class InventoryRequestType_ReviewLevelCom extends React.Component {
         
         this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == INVENTORYREQUESTTYPE_ADD);
+                let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == MTRETURNREQUESTTYPE_ADD);
                 if (isAllowAdd && isAllowAdd.length > 0) {
                     IsAllowedAdd = true;
                 }
 
-                let isAllowUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == INVENTORYREQUESTTYPE_UPDATE);
+                let isAllowUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == MTRETURNREQUESTTYPE_UPDATE);
                 if (isAllowUpdate && isAllowUpdate.length > 0) {
                     IsAllowedUpdate = true;
                 }
 
-                let isAllowDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == INVENTORYREQUESTTYPE_DELETE);
+                let isAllowDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == MTRETURNREQUESTTYPE_DELETE);
                 if (isAllowDelete && isAllowDelete.length > 0) {
                     IsAllowedDelete = true;
                 }
@@ -324,5 +324,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const InventoryRequestType_ReviewLevel = connect(mapStateToProps, mapDispatchToProps)(InventoryRequestType_ReviewLevelCom);
-export default InventoryRequestType_ReviewLevel;
+const MTRETURNREQUESTTYPE_ReviewLevel = connect(mapStateToProps, mapDispatchToProps)(MTRETURNREQUESTTYPE_ReviewLevelCom);
+export default MTRETURNREQUESTTYPE_ReviewLevel;

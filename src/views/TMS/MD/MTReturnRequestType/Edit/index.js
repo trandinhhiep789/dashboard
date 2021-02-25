@@ -18,7 +18,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
-import { SHIPMENTFEETYPE_UPDATE, INVENTORYREQUESTTYPE_UPDATE } from "../../../../../constants/functionLists";
+import { MTRETURNREQUESTTYPE_UPDATE } from "../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -102,7 +102,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={INVENTORYREQUESTTYPE_UPDATE}
+                    RequirePermission={MTRETURNREQUESTTYPE_UPDATE}
                     ref={this.searchref}
                 />
             );
