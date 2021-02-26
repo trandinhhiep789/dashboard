@@ -15,24 +15,24 @@ import { CDN_LOGO_IMAGE } from '../../../../../../constants/systemVars';
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/PartnerUser", Title: "Người dùng của nhà cung cấp" }
+    { Link: "/PartnerUser", Title: "Khai báo user đối tác" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/PartnerUser", Title: "Người dùng của nhà cung cấp" },
+    { Link: "/PartnerUser", Title: "Khai báo user đối tác" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/PartnerUser", Title: "Người dùng của nhà cung cấp" },
+    { Link: "/PartnerUser", Title: "Khai báo user đối tác" },
     { Link: "", Title: "Thêm" }
 ];
 
 export const DetailPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/PartnerUser", Title: "Người dùng của nhà cung cấp" },
+    { Link: "/PartnerUser", Title: "Khai báo user đối tác" },
     { Link: "", Title: "Chi tiết" }
 ];
 
@@ -78,14 +78,14 @@ export const SearchElementList = [
         label: "Từ khóa",
         value: "",
         colspan: 2,
-        placeholder: "Từ khóa",
+        placeholder: "số điện thoại/mã user",
         icon: ""
     },
     {
         type: "ComboBox",
         name: "cbPartnerID",
         DataSourceMember: "PartnerID",
-        label: "Nhà cung cấp",
+        label: "Chọn đối tác",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
@@ -1080,7 +1080,7 @@ export const Modal_MLObjectDefinition = [
 
 export const DataGridColumnList = [
     {
-        Name: "chkSelectUserName",
+        Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "UserName",
