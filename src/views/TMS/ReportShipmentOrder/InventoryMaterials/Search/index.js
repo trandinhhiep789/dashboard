@@ -31,7 +31,9 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsLoadDataComplete: false,
             widthPercent: "",
-            dataExport: []
+            dataExport: [],
+            dataMaterialGroup: [],
+            dataSimiliGroup: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -50,29 +52,41 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@USERNAME",
-                SearchValue: MLObject.UserName == -1 ? MLObject.UserName :  MLObject.UserName.value
+                SearchValue: MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
             },
 
         ];
 
-        console.log("search",formData, MLObject, postData);
-        this.callSearchData(postData);
+        const objData = {
+            UserName: MLObject.UserName == -1 ? "" : MLObject.UserName.value,
+            Month: MLObject.Month
+
+        }
+
+
+        console.log("search", formData, MLObject, postData);
+        this.callSearchData(objData);
     }
 
     callSearchData(searchData) {
-        // this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-        //     console.log("apiResult", apiResult)
-        //     if (!apiResult.IsError) {
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("apiResult", apiResult)
+            if (!apiResult.IsError) {
 
+                const tempData = apiResult.ResultObject.filter(a => a.MaterialGroupID.trim() == 'VT001');
+                const tempData1 = apiResult.ResultObject.filter(a => a.MaterialGroupID.trim() != 'VT001');
 
-        //         this.setState({
-        //             IsLoadDataComplete: true,
-        //         });
-        //     }
-        //     else {
-        //         this.showMessage(apiResult.MessageDetail)
-        //     }
-        // });
+                console.log("111", tempData, tempData1)
+                this.setState({
+                    IsLoadDataComplete: true,
+                    dataMaterialGroup: tempData1,
+                    dataSimiliGroup: tempData
+                });
+            }
+            else {
+                this.showMessage(apiResult.MessageDetail)
+            }
+        });
     }
 
     showMessage(message) {
@@ -143,8 +157,8 @@ class SearchCom extends React.Component {
 
                 <DataGrid
                     listColumn={GridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    IsFixheaderTable={true}
+                    dataSource={this.state.dataSimiliGroup}
+                    IsFixheaderTable={false}
                     IDSelectColumnName={''}
                     PKColumnName={''}
                     isHideHeaderToolbar={false}
@@ -164,8 +178,8 @@ class SearchCom extends React.Component {
 
                 <DataGrid
                     listColumn={GridColumnListPrice}
-                    dataSource={this.state.gridDataSource}
-                    IsFixheaderTable={true}
+                    dataSource={this.state.dataMaterialGroup}
+                    IsFixheaderTable={false}
                     IDSelectColumnName={''}
                     PKColumnName={''}
                     isHideHeaderToolbar={false}
