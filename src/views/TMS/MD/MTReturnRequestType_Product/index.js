@@ -17,7 +17,7 @@ import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache,callGetUserCache } from "../../../../actions/cacheAction";
-import { GET_CACHE_USER_FUNCTION_LIST, INVENTORYREQUESTTYPE_ADD, INVENTORYREQUESTTYPE_DELETE } from "../../../../constants/functionLists";
+import { GET_CACHE_USER_FUNCTION_LIST, MTRETURNREQUESTTYPE_ADD, MTRETURNREQUESTTYPE_DELETE } from "../../../../constants/functionLists";
 
 class MTReturnRequestType_ProductCom extends React.Component {
     constructor(props) {
@@ -109,12 +109,12 @@ class MTReturnRequestType_ProductCom extends React.Component {
         let IsAllowedDelete = false;
         this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                let _isAllowedAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == INVENTORYREQUESTTYPE_ADD);
+                let _isAllowedAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == MTRETURNREQUESTTYPE_ADD);
                 if (_isAllowedAdd && _isAllowedAdd.length > 0) {
                     IsAllowedAdd = true;
                 }
 
-                let _isAllowedDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == INVENTORYREQUESTTYPE_DELETE);
+                let _isAllowedDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == MTRETURNREQUESTTYPE_DELETE);
                 if (_isAllowedDelete && _isAllowedDelete.length > 0) {
                     IsAllowedDelete = true;
                 }

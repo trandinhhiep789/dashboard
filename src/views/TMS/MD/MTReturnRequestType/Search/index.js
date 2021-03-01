@@ -23,7 +23,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
-import { SHIPMENTFEETYPE_VIEW, SHIPMENTFEETYPE_DELETE, INVENTORYREQUESTTYPE_VIEW, INVENTORYREQUESTTYPE_DELETE } from "../../../../../constants/functionLists";
+import { MTRETURNREQUESTTYPE_VIEW, MTRETURNREQUESTTYPE_DELETE } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -168,8 +168,8 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={INVENTORYREQUESTTYPE_VIEW}
-                        DeletePermission={INVENTORYREQUESTTYPE_DELETE}
+                        RequirePermission={MTRETURNREQUESTTYPE_VIEW}
+                        DeletePermission={MTRETURNREQUESTTYPE_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />

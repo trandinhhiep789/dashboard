@@ -17,10 +17,10 @@ import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache,callGetUserCache } from "../../../../actions/cacheAction";
-import { GET_CACHE_USER_FUNCTION_LIST, INVENTORYREQUESTTYPE_ADD, INVENTORYREQUESTTYPE_DELETE } from "../../../../constants/functionLists";
+import { GET_CACHE_USER_FUNCTION_LIST, MTRETURNREQUESTTYPE_ADD, MTRETURNREQUESTTYPE_DELETE } from "../../../../constants/functionLists";
 import ReviewLevel_User from "./Components/ReviewLevel_User";
 
-class InventoryRequestType_ReviewLevel_UserCom extends React.Component {
+class MTReturnRequestType_ReviewLevel_UserCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
@@ -44,8 +44,8 @@ class InventoryRequestType_ReviewLevel_UserCom extends React.Component {
 
 
     componentWillReceiveProps(nextProps) {
-        // if (nextProps.InventoryRequestTypeID !== this.state.InventoryRequestTypeID) {
-        //     this.setState({ InventoryRequestTypeID: nextProps.InventoryRequestTypeID });
+        // if (nextProps.MTReturnRequestTypeID !== this.state.MTReturnRequestTypeID) {
+        //     this.setState({ MTReturnRequestTypeID: nextProps.MTReturnRequestTypeID });
         // }
 
         if (nextProps.DataSource !== this.state.DataSource) {
@@ -149,12 +149,12 @@ class InventoryRequestType_ReviewLevel_UserCom extends React.Component {
         let IsAllowedDelete = false;
         this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == INVENTORYREQUESTTYPE_ADD);
+                let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == MTRETURNREQUESTTYPE_ADD);
                 if (isAllowAdd && isAllowAdd.length > 0) {
                     IsAllowedAdd = true;
                 }
 
-                let isAllowDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == INVENTORYREQUESTTYPE_DELETE);
+                let isAllowDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == MTRETURNREQUESTTYPE_DELETE);
                 if (isAllowDelete && isAllowDelete.length > 0) {
                     IsAllowedDelete = true;
                 }
@@ -179,8 +179,8 @@ class InventoryRequestType_ReviewLevel_UserCom extends React.Component {
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
         // let reviewLevelOption = [{ value: -1, label: "--Vui lòng chọn--" }];
 
-        // if (this.state.InventoryRequestType_ReviewLevel_DataSource.length > 0) {
-        //     let reviewLevel_DataSource = this.state.InventoryRequestType_ReviewLevel_DataSource;
+        // if (this.state.MTReturnRequestType_ReviewLevel_DataSource.length > 0) {
+        //     let reviewLevel_DataSource = this.state.MTReturnRequestType_ReviewLevel_DataSource;
         //     reviewLevel_DataSource.forEach(element => {
         //         reviewLevelOption.push({ value: element.ReviewLevelID, label: element.ReviewLevelName });
         //     });
@@ -320,5 +320,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const InventoryRequestType_ReviewLevel_User = connect(mapStateToProps, mapDispatchToProps)(InventoryRequestType_ReviewLevel_UserCom);
-export default InventoryRequestType_ReviewLevel_User;
+const MTReturnRequestType_ReviewLevel_User = connect(mapStateToProps, mapDispatchToProps)(MTReturnRequestType_ReviewLevel_UserCom);
+export default MTReturnRequestType_ReviewLevel_User;

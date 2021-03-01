@@ -30,11 +30,11 @@ import {
     UpdateAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
-import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../../../actions/cacheAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { PARTNERUSER_VIEW, PARTNERUSER_DELETE } from "../../../../../../constants/functionLists";
+import { PARTNERUSER_VIEW, PARTNERUSER_DELETE, PARTNERUSER_ADD, GET_CACHE_USER_FUNCTION_LIST, PARTNERUSER_UPDATE } from "../../../../../../constants/functionLists";
 import { ERPCOMMONCACHE_PARTNERUSER } from "../../../../../../constants/keyCache";
 import MD5Digest from "../../../../../../common/library/cryptography/MD5Digest";
 class SearchCom extends React.Component {
@@ -50,6 +50,7 @@ class SearchCom extends React.Component {
         this.handleModalChangeEdit = this.handleModalChangeEdit.bind(this);
         this.CreateUserName = this.CreateUserName.bind(this);
         this.onClose = this.onClose.bind(this);
+        this.checkPermission = this.checkPermission.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -69,6 +70,7 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
+        this.checkPermission();
     }
 
     CreateUserName() {
@@ -132,7 +134,41 @@ class SearchCom extends React.Component {
         }
     }
 
+    checkPermission() {
+        let IsAllowedAdd = false;
+        let IsAllowedDelete = false;
+        let IsAllowedUpdate = false;
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                let _isAllowedAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == PARTNERUSER_ADD);
+                if (_isAllowedAdd && _isAllowedAdd.length > 0) {
+                    IsAllowedAdd = true;
+                }
+
+                let _isAllowedUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == PARTNERUSER_UPDATE);
+                if (_isAllowedUpdate && _isAllowedUpdate.length > 0) {
+                    IsAllowedUpdate = true;
+                }
+
+                let _isAlloweDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == PARTNERUSER_DELETE);
+                if (_isAlloweDelete && _isAlloweDelete.length > 0) {
+                    IsAllowedDelete = true;
+                }
+
+                this.setState({
+                    IsAllowedAdd,
+                    //IsAllowedUpdate,
+                    IsAllowedDelete
+                });
+            }
+        });
+    }
+
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
+        if (!this.state.IsAllowedAdd) {
+            this.showMessage("Bạn không có quyền");
+            return;
+        }
         this.setState({ IsInsert: true });
         this.CreateUserName();
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
@@ -202,6 +238,10 @@ class SearchCom extends React.Component {
 
 
     handleEdit(value, pkColumnName) {
+        if (!this.state.IsAllowedUpdate) {
+            this.showMessage("Bạn không có quyền");
+            return;
+        }
         this.setState({ IsInsert: false });
         let _partnerUserData = {};
         this.state.gridDataSource.map((item, index) => {
@@ -306,6 +346,10 @@ class SearchCom extends React.Component {
 
 
     handleDelete(deleteList, pkColumnName) {
+        if (!this.state.IsAllowedDelete) {
+            this.showMessage("Bạn không có quyền");
+            return;
+        }
         let listMLObject = [];
         deleteList.map((row, index) => {
             let MLObject = {};
@@ -494,6 +538,9 @@ const mapDispatchToProps = dispatch => {
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
         },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
+        }
         /*callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
         }*/
