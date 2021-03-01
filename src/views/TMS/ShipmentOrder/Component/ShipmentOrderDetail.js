@@ -556,7 +556,7 @@ class ShipmentOrderDetailCom extends Component {
                                     <label className="col-form-label bold">Kho gửi:</label>
                                 </div>
                                 <div className="form-group col-md-4">
-                                    <label className="col-form-label" >{this.state.ShipmentOrder.SenderStoreName}</label>
+                                    <label className="col-form-label" >{this.state.ShipmentOrder.SenderStoreID + " - " +this.state.ShipmentOrder.SenderStoreName}</label>
                                 </div>
                             </div>
                             <div className="form-row">
