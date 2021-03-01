@@ -1,3 +1,4 @@
+import { USER_PERMISSION_VIEW } from '../../../../../constants/functionLists';
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/BeginTermAdvanceDebt/LoadInStock";
 
@@ -31,6 +32,8 @@ export const SearchElementList = [
         listoption: [],
         IsAutoLoadItemFromCache: false,
         isMultiSelect: false,
+        IsPermission: true,
+        PermissionKey: USER_PERMISSION_VIEW
     },
 
 ]
