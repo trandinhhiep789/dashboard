@@ -1,3 +1,5 @@
+import { USER_PERMISSION_VIEW } from '../../../../../constants/functionLists'
+
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/BeginTermAdvanceDebt/LoadBADByUserName";
 export const LoadByProductIDAPIPath = "api/AdvanceDebtFlow/LoadBADByProductID";
@@ -14,7 +16,7 @@ dtFromdate.setDate(new Date().getDate() - 30);
 
 
 export const SearchElementList = [
-    
+
     {
         type: "Datetime",
         name: "dtFromDate",
@@ -48,13 +50,14 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: false,
-        isMultiSelect: false
-
+        isMultiSelect: false,
+        IsPermission: true,
+        PermissionKey: USER_PERMISSION_VIEW
     },
 
 ]
 
-export const  SearchMLObjectDefinition = [
+export const SearchMLObjectDefinition = [
     {
         Name: "FromDate",
         DefaultValue: "",
@@ -139,7 +142,7 @@ export const GridColumnList = [
     },
 ]
 
-export const GridColumnListDetail=[
+export const GridColumnListDetail = [
     {
         Name: "DebtFlowDate",
         Type: "date",
@@ -202,5 +205,5 @@ export const GridColumnListDetail=[
         Caption: "Thành tiền",
         DataSourceMember: "TotalAmount",
         Width: "10%"
-    }, 
+    },
 ]
