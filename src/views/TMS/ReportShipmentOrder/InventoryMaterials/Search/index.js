@@ -31,7 +31,8 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsLoadDataComplete: false,
             widthPercent: "",
-            dataExport: [],
+            dataMaterialGroupExport: [],
+            dataSimiliGroupExport: [],
             dataMaterialGroup: [],
             dataSimiliGroup: []
         };
@@ -171,7 +172,7 @@ class SearchCom extends React.Component {
                     ref={this.gridref}
                     RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                     IsExportFile={true}
-                    DataExport={this.state.dataExport}
+                    DataExport={this.state.dataSimiliGroupExport}
                     fileName="Danh sách báo cáo tồn vật tư ống đồng"
                     onExportFile={this.handleExportFile.bind(this)}
                 />
@@ -192,7 +193,7 @@ class SearchCom extends React.Component {
                     ref={this.gridref}
                     //RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                     IsExportFile={true}
-                    DataExport={this.state.dataExport}
+                    DataExport={this.state.dataMaterialGroupExport}
                     fileName="Danh sách báo cáo tồn vật tư khác"
                     onExportFile={this.handleExportFilePrice.bind(this)}
                 />
