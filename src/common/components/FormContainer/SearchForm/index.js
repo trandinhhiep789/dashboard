@@ -103,6 +103,7 @@ export default class SearchForm extends Component {
         if (this.props.onSubmit != null) {
             this.props.onSubmit(this.state.FormData, MLObject);
         }
+        console.log(this.state.FormData)
     }
 
     handleExportSubmit() {

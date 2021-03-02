@@ -88,7 +88,7 @@ class SearchCom extends React.Component {
 
     handleGetDatat(id) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, id).then(apiResult => {//MLObject.UserName.value
-            console.log("apiResult", apiResult)
+            // console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError,
@@ -181,7 +181,7 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-                if(apiResult.ResultObject != null ){
+                if (apiResult.ResultObject != null) {
                     apiResult.ResultObject.map((item, index) => {
 
                         //1: Tạm ứng, 2: sử dụng; 3: Hủy vật tư
@@ -194,14 +194,14 @@ class SearchCom extends React.Component {
                         else if (item.AdvanceDebtFlowTypeID == 3) {
                             item.AdvanceDebtFlowTypeName = "Hủy vật tư";
                         }
-    
+
                     })
                     this.handleShowModal(apiResult.ResultObject)
                 }
-                else{
+                else {
                     this.showMessage("Không tồn tại dữ liệu.");
                 }
-                
+
             }
         });
 
@@ -261,7 +261,7 @@ class SearchCom extends React.Component {
     handleExportSubmit(formData, MLObject) {
         const userName = MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
         this.props.callFetchAPI(APIHostName, SearchExportAPIPath, userName).then(apiResult => {
-             console.log("handleExportSubmit", userName, apiResult)
+            console.log("handleExportSubmit", userName, apiResult)
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const exelData = apiResult.ResultObject.map((item, index) => {

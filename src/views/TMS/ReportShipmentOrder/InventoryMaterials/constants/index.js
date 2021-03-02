@@ -1,5 +1,6 @@
+import { USER_PERMISSION_VIEW } from '../../../../../constants/functionLists';
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "";
+export const SearchAPIPath = "api/BeginTermAdvanceDebt/LoadInStock";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -30,8 +31,9 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: false,
-        isMultiSelect: false
-
+        isMultiSelect: false,
+        IsPermission: true,
+        PermissionKey: USER_PERMISSION_VIEW
     },
 
 ]
@@ -51,66 +53,66 @@ export const  SearchMLObjectDefinition = [
 
 export const GridColumnList = [
     {
-        Name: "aa",
+        Name: "MaterialGroupID",
         Type: "text",
         Caption: "Ống đồng",
-        DataSourceMember: "aa",
+        DataSourceMember: "MaterialGroupID",
         Width: 100
     },
     {
-        Name: "a1",
+        Name: "QuantityUnit",
         Type: "text",
         Caption: "Đơn vị",
-        DataSourceMember: "a1",
+        DataSourceMember: "QuantityUnit",
         Width: 100
     },
     {
-        Name: "a2",
+        Name: "TotalQuantityBegin",
         Type: "text",
         Caption: "Số dư đầu kỳ",
-        DataSourceMember: "a2",
+        DataSourceMember: "TotalQuantityBegin",
         Width: 100
     },
     {
-        Name: "a3",
+        Name: "QuantityHanOverDone",
         Type: "text",
         Caption: "Nhận trong kỳ",
-        DataSourceMember: "a1",
+        DataSourceMember: "QuantityHanOverDone",
         Width: 100
     },
     {
-        Name: "a4",
+        Name: "QuantityHanOverDoing",
         Type: "text",
         Caption: "Chờ bàn giao",
-        DataSourceMember: "a4",
+        DataSourceMember: "QuantityHanOverDoing",
         Width: 100
     },
     {
-        Name: "a5",
+        Name: "QuantityReturn",
         Type: "text",
         Caption: "Nhập trả",
-        DataSourceMember: "a5",
+        DataSourceMember: "QuantityReturn",
         Width: 100
     },
     {
-        Name: "a6",
+        Name: "ChangeTotalQuantity",
         Type: "text",
         Caption: "Sử dụng trong kỳ",
-        DataSourceMember: "a6",
+        DataSourceMember: "ChangeTotalQuantity",
         Width: 100
     },
     {
-        Name: "a7",
+        Name: "QuantityExpend",
         Type: "text",
         Caption: "Tiêu hao khác",
-        DataSourceMember: "a7",
+        DataSourceMember: "QuantityExpend",
         Width: 100
     },
     {
-        Name: "a8",
+        Name: "TotalQuantity",
         Type: "text",
         Caption: "Cuối kỳ",
-        DataSourceMember: "a8",
+        DataSourceMember: "TotalQuantity",
         Width: 100
     },
     
@@ -118,80 +120,80 @@ export const GridColumnList = [
 
 export const GridColumnListPrice = [
     {
-        Name: "aa",
+        Name: "MaterialGroupID",
         Type: "text",
         Caption: "Vật tư khác",
-        DataSourceMember: "aa",
+        DataSourceMember: "MaterialGroupID",
         Width: 100
     },
     {
-        Name: "a1",
+        Name: "QuantityUnit",
         Type: "text",
         Caption: "Đơn vị",
-        DataSourceMember: "a1",
+        DataSourceMember: "QuantityUnit",
         Width: 100
     },
     {
-        Name: "a2",
+        Name: "TotalQuantityBegin",
         Type: "text",
         Caption: "Số dư đầu kỳ",
-        DataSourceMember: "a2",
+        DataSourceMember: "TotalQuantityBegin",
         Width: 100
     },
     {
-        Name: "a3",
+        Name: "QuantityHanOverDone",
         Type: "text",
         Caption: "Nhận trong kỳ",
-        DataSourceMember: "a1",
+        DataSourceMember: "QuantityHanOverDone",
         Width: 100
     },
     {
-        Name: "a4",
+        Name: "QuantityHanOverDoing",
         Type: "text",
         Caption: "Chờ bàn giao",
-        DataSourceMember: "a4",
+        DataSourceMember: "QuantityHanOverDoing",
         Width: 100
     },
     {
-        Name: "a5",
+        Name: "QuantityReturn",
         Type: "text",
         Caption: "Nhập trả",
-        DataSourceMember: "a5",
+        DataSourceMember: "QuantityReturn",
         Width: 100
     },
     {
-        Name: "a6",
+        Name: "ChangeTotalQuantity",
         Type: "text",
         Caption: "Sử dụng trong kỳ",
-        DataSourceMember: "a6",
+        DataSourceMember: "ChangeTotalQuantity",
         Width: 100
     },
     {
-        Name: "a7",
+        Name: "QuantityExpend",
         Type: "text",
         Caption: "Tiêu hao khác",
-        DataSourceMember: "a7",
+        DataSourceMember: "QuantityExpend",
         Width: 100
     },
     {
-        Name: "a8",
+        Name: "TotalQuantity",
         Type: "text",
         Caption: "Cuối kỳ",
-        DataSourceMember: "a8",
+        DataSourceMember: "TotalQuantity",
         Width: 100
     },
     {
-        Name: "a9",
+        Name: "SalePrice",
         Type: "text",
         Caption: "Đơn giá (giá vốn)",
-        DataSourceMember: "a9",
+        DataSourceMember: "SalePrice",
         Width: 100
     },
     {
-        Name: "a10",
+        Name: "TotalSalePrice",
         Type: "text",
         Caption: "Số tiền quy đổi",
-        DataSourceMember: "a10",
+        DataSourceMember: "TotalSalePrice",
         Width: 100
     },
     
