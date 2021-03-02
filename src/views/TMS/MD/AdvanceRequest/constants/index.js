@@ -215,10 +215,10 @@ export const DataGridColumnList = [
     },
     {
         Name: "RequestDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày yêu cầu",
         DataSourceMember: "RequestDate",
-        Width: 80
+        Width: 100
     },
     {
         Name: "IsOutput",
