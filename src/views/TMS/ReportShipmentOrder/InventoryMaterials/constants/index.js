@@ -183,17 +183,17 @@ export const GridColumnListPrice = [
         Width: 100
     },
     {
-        Name: "a9",
+        Name: "SalePrice",
         Type: "text",
         Caption: "Đơn giá (giá vốn)",
-        DataSourceMember: "a9",
+        DataSourceMember: "SalePrice",
         Width: 100
     },
     {
-        Name: "a10",
+        Name: "TotalSalePrice",
         Type: "text",
         Caption: "Số tiền quy đổi",
-        DataSourceMember: "a10",
+        DataSourceMember: "TotalSalePrice",
         Width: 100
     },
     
