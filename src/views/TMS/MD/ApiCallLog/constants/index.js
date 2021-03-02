@@ -27,8 +27,8 @@ export const AddPagePath = [
     { Link: "", Title: "Thêm" }
 ];
 
-const dtFromdate = new Date()
-dtFromdate.setDate(new Date().getDate() - 1);
+const dtFromdate = new Date(new Date().setHours(0,0,0,0));
+//dtFromdate.setDate(new Date().getDate() - 1);
 export const InitSearchParams = [
     {
         SearchKey: "@Keyword",
@@ -72,7 +72,7 @@ export const SearchElementList = [
         IsAutoLoadItemFromCache: false
     },
     {
-        type: "date",
+        type: "datetimes",
         name: "dtFromDate",
         label: "Từ ngày",
         value: dtFromdate,
@@ -83,7 +83,7 @@ export const SearchElementList = [
         NameMember: "FromDate"
     },
     {
-        type: "date",
+        type: "datetimes",
         name: "dtToDate",
         label: "Đến ngày",
         value: new Date(),
