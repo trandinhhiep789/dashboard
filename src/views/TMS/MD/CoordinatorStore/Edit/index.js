@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { ModalManager } from "react-dynamic-modal";
+import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import InputGrid from "../../../../../common/components/FormContainer/FormControl/InputGrid";
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
@@ -31,7 +31,6 @@ import ReactNotification from "react-notifications-component";
 
 import MultiStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiStoreComboBox";
 import MultiAllStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiAllStoreComboBox";
-
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -126,7 +125,6 @@ class EditCom extends React.Component {
         );
     }
 
-
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
@@ -137,8 +135,10 @@ class EditCom extends React.Component {
         });
     }
 
+
     handleChange(formData, MLObject) {
         if (formData.chkIsCheckCustomerAddress.value) {
+
             this.setState({
                 IsShowCustomerAddress: false
             })
