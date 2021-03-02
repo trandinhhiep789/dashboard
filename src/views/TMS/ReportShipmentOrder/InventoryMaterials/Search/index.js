@@ -72,20 +72,77 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             console.log("apiResult", apiResult)
-            if (!apiResult.IsError) {
+            if (apiResult && !apiResult.IsError && apiResult.ResultObject) {
 
                 const tempData = apiResult.ResultObject.filter(a => a.MaterialGroupID.trim() == 'VT001');
                 const tempData1 = apiResult.ResultObject.filter(a => a.MaterialGroupID.trim() != 'VT001');
 
-                console.log("111", tempData, tempData1)
+
+                // xuất exel
+                let exelDataSimiliGroupExport = [];
+                let exelDataMaterialGroupExport = [];
+
+                if (tempData) {
+                    exelDataSimiliGroupExport = tempData.map((item, index) => {
+                        let element = {
+                            "Ống đồng": item.MaterialGroupID,
+                            "Đơn vị": item.QuantityUnit,
+                            "Số dư đầu kỳ": item.TotalQuantityBegin,
+                            "Nhận trong kỳ": item.QuantityHanOverDone,
+                            "Chờ bàn giao": item.QuantityHanOverDoing,
+                            "Nhập trả": item.QuantityReturn,
+                            "Sử dụng trong kỳ": item.ChangeTotalQuantity,
+                            "Tiêu hao khác": item.QuantityExpend,
+                            "Cuối kỳ": item.TotalQuantity
+                        };
+                        return element;
+
+                    })
+                }
+
+
+                if (tempData1) {
+                    exelDataMaterialGroupExport = tempData1.map((item, index) => {
+                        let element = {
+                            "Vật tư khác": item.MaterialGroupID,
+                            "Đơn vị": item.QuantityUnit,
+                            "Số dư đầu kỳ": item.TotalQuantityBegin,
+                            "Nhận trong kỳ": item.QuantityHanOverDone,
+                            "Chờ bàn giao": item.QuantityHanOverDoing,
+                            "Nhập trả": item.QuantityReturn,
+                            "Sử dụng trong kỳ": item.ChangeTotalQuantity,
+                            "Tiêu hao khác": item.QuantityExpend,
+                            "Cuối kỳ": item.TotalQuantity,
+                            "Đơn giá (giá vốn)": item.SalePrice,
+                            "Số tiền quy đổi": item.TotalSalePrice
+                        };
+                        return element;
+
+                    })
+
+                }
+
                 this.setState({
                     IsLoadDataComplete: true,
                     dataMaterialGroup: tempData1,
-                    dataSimiliGroup: tempData
+                    dataSimiliGroup: tempData,
+                    dataSimiliGroupExport: exelDataSimiliGroupExport,
+                    dataMaterialGroupExport: exelDataMaterialGroupExport
                 });
+
+
+                console.log("111", tempData, tempData1)
+
             }
             else {
-                this.showMessage(apiResult.MessageDetail)
+                this.showMessage(apiResult.MessageDetail);
+                this.setState({
+                    IsLoadDataComplete: false,
+                    dataMaterialGroup: [],
+                    dataSimiliGroup: [],
+                    dataSimiliGroupExport: [],
+                    dataMaterialGroupExport: []
+                });
             }
         });
     }
@@ -100,9 +157,11 @@ class SearchCom extends React.Component {
         );
     }
 
-    handleExportFile() {
-
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
     }
+
+
 
     handleExportFilePrice() {
 
@@ -195,7 +254,7 @@ class SearchCom extends React.Component {
                     IsExportFile={true}
                     DataExport={this.state.dataMaterialGroupExport}
                     fileName="Danh sách báo cáo tồn vật tư khác"
-                    onExportFile={this.handleExportFilePrice.bind(this)}
+                    onExportFile={this.handleExportFile.bind(this)}
                 />
             </React.Fragment>
         );
