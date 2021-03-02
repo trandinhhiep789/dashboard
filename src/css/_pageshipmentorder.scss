@@ -1,3 +1,5 @@
+$font-weight-600: 600;
+
 .cardShipmentOrder-page{
     background: #fff;
     margin-top: 5px;
@@ -458,6 +460,136 @@
                             &.page-link{
                                 min-width: 25px;
                                 line-height: 25px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.card {
+    &.card-shipment-order-mobile-view {
+        width: 100%;
+        padding: 0.5rem;
+        margin: 0.8rem 1rem;
+        .card-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            .total-orders {
+                font-size: 14px;
+            }
+            .input-group {
+                width: fit-content;
+            }
+        }
+        .card-body {
+            .un-reading-item {
+                background-color: #c2d8de;
+                border: 1px solid #ebebeb;
+                &.reading-item {
+                    background-color: #fcfdfe;
+                }
+                .btngroupleft {
+                    width: 0.5rem;
+                    &.undelivery{
+                        background-color: #fb5353;
+                    }
+                    &.uncoordinated{
+                        background-color: #f3a31e;
+                    }
+                    &.waitingDelivery{
+                        background-color: #e0e02c;
+                    }
+                }
+                .data-row {
+                    padding: .5rem 1rem;
+                    .group-shipment-order-and-time{
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        .data-time {
+                            color: #1890ff;
+                        }
+                    }
+                    .group-address {
+                        display: flex;
+                        align-items: center;
+                        i {
+                            color: #444242;
+                            margin-right: 0.5rem;
+                        }
+                        .person-info {
+                            .name {
+                                font-weight: $font-weight-600;
+                                color: #615d5d;
+                                font-size: 12px;
+                                text-transform: uppercase;
+                            }
+                            .line {
+                                margin: 0 5px;
+                            }
+                            .phone {
+                                color: #1890ff;
+                                &.partner-sale-Order{
+                                    clear: both;
+                                }
+                                &.phonered{
+                                    color: red;
+                                }
+                            }
+                        }
+                    }
+                    .address-receiver {
+                        color: #505050;
+                        text-transform: capitalize;
+                    }
+                    .group-address {
+                        .item {
+                            &.address-repository-created {
+                                font-weight: $font-weight-600;
+                                color: #615d5d;
+                                text-transform: capitalize;
+                                font-family: inherit;
+                                &.lblReturns{
+                                    color: #d07300;
+                                }
+                            }
+                        }
+                    }
+                    .price-debt {
+                        color: #e64343;
+                        font-weight: $font-weight-600;
+                    }
+                    .group-price {
+                        .price3 {
+                            color: #4a4a4a;
+                        }
+                        .price-supplies{
+                            color: #f7c110;
+                        }
+                        .price-success {
+                            .price-debt {
+                                color: #15c377;
+                            }
+
+                            .price-title {
+                                color: #15c377;
+                                font-weight: $font-weight-600;
+                            }
+                        }
+                        .price-error {
+                            .price-title {
+                                color: #e64343;
+                                font-weight: $font-weight-600;
+                            }
+    
+                            .price-debt {
+                                color: #e64343;
+                                font-weight: $font-weight-600;
                             }
                         }
                     }

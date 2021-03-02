@@ -64,7 +64,6 @@ class SearchCom extends React.Component {
         }
 
 
-        console.log("search", formData, MLObject, postData);
         this.callSearchData(objData);
     }
 
