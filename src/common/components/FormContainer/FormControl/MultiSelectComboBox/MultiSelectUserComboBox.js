@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../../../actions/cacheAction";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
+import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../../constants/functionLists";
 
 class MultiSelectUserComboBoxCom extends React.Component {
     static defaultProps = {
@@ -12,16 +13,25 @@ class MultiSelectUserComboBoxCom extends React.Component {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
         this.handleValueChange1 = this.handleValueChange1.bind(this);
-        this.state = { ListOption: [], SelectedOption: [] }
+        this.checkPermission = this.checkPermission.bind(this);
+        this.state = { ListOption: [], SelectedOption: [], IsDisabled: true }
     }
 
 
 
     componentDidMount() {
+        const { disabled, IsPermission, PermissionKey } = this.props;
         this.setState({
             ListOption: this.props.listoption,
             SelectedOption: this.props.value == undefined ? this.props.listoption : this.props.value
         });
+
+        if (!disabled) {
+            this.setState({ IsDisabled: false });
+        }
+        if (!disabled && IsPermission) {
+            this.checkPermission(PermissionKey);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -94,8 +104,38 @@ class MultiSelectUserComboBoxCom extends React.Component {
         }
     }
 
+
+    checkPermission(permissionKey) {
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
+                    if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
+                        this.setState({ IsDisabled: false });
+                        return;
+                    }
+                }
+            }
+
+            const LoginInfo = localStorage.getItem('LoginInfo');
+            if (LoginInfo) {
+                const LoginInfo1 = JSON.parse(LoginInfo);
+
+                this.handleValueChange({
+                    value: LoginInfo1.LoginUserInfo.UserName,
+                    label: LoginInfo1.LoginUserInfo.UserName + "-" + LoginInfo1.LoginUserInfo.FullName,
+                    name: LoginInfo1.LoginUserInfo.UserName + "-" + LoginInfo1.LoginUserInfo.FullName,
+                    FullName: LoginInfo1.LoginUserInfo.FullName,
+                    DepartmentName: LoginInfo1.LoginUserInfo.DepartmentName,
+                    PositionName: LoginInfo1.LoginUserInfo.PositionName,
+                    Address: ""
+                })
+
+                this.setState({ IsDisabled: true });
+            }
+        });
+    }
+
     render() {
-        console.log("adasdsa")
         const listOption = this.state.ListOption;
         let listOptionNew = [];
         for (let i = 0; i < listOption.length; i++) {
@@ -155,7 +195,8 @@ class MultiSelectUserComboBoxCom extends React.Component {
                         onKeyDown={this.handleValueChange1}
                         options={listOptionNew}
                         isMulti={this.props.isMultiSelect}
-                        isDisabled={this.props.disabled}
+                        // isDisabled={this.props.disabled }
+                        isDisabled={this.state.IsDisabled}
                         isSearchable={true}
                         placeholder={"----Chọn -----"}
                         className={classNameselect}
@@ -177,10 +218,13 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         callGetCache: (cacheKeyID) => {
-            return dispatch(callGetCache(cacheKeyID)); selectedOption
+            return dispatch(callGetCache(cacheKeyID));
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
         }
     }
 }

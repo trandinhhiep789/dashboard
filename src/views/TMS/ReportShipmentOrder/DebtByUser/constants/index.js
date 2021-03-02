@@ -51,6 +51,7 @@ export const SearchElementList = [
         listoption: [],
         IsAutoLoadItemFromCache: false,
         isMultiSelect: false,
+        disabled: false,
         IsPermission: true,
         PermissionKey: USER_PERMISSION_VIEW
     },
