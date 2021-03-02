@@ -95,7 +95,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("â", searchData, apiResult)
+            // console.log("â", searchData, apiResult)
             if (!apiResult.IsError) {
                 const result = apiResult.ResultObject.map((item) => {
                     item.SenderStoreNameLable = item.SenderStoreID + " - " + item.SenderStoreName;
@@ -184,7 +184,7 @@ class SearchCom extends React.Component {
         });
     }
     handleExportFile(result) {
-        console.log("result", result)
+        // console.log("result", result)
         this.addNotification(result.Message);
     }
 
