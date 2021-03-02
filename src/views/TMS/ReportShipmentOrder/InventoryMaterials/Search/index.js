@@ -85,7 +85,7 @@ class SearchCom extends React.Component {
                 if (tempData) {
                     exelDataSimiliGroupExport = tempData.map((item, index) => {
                         let element = {
-                            "Ống đồng": item.MaterialGroupID,
+                            "Ống đồng": item.ProductName,
                             "Đơn vị": item.QuantityUnit,
                             "Số dư đầu kỳ": item.TotalQuantityBegin,
                             "Nhận trong kỳ": item.QuantityHanOverDone,
@@ -104,7 +104,7 @@ class SearchCom extends React.Component {
                 if (tempData1) {
                     exelDataMaterialGroupExport = tempData1.map((item, index) => {
                         let element = {
-                            "Vật tư khác": item.MaterialGroupID,
+                            "Vật tư khác": item.ProductName,
                             "Đơn vị": item.QuantityUnit,
                             "Số dư đầu kỳ": item.TotalQuantityBegin,
                             "Nhận trong kỳ": item.QuantityHanOverDone,
