@@ -54,8 +54,8 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        this.callSearchData(this.state.SearchData);
-        
+        //this.callSearchData(this.state.SearchData);
+
     }
 
 
@@ -95,6 +95,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("â", searchData, apiResult)
             if (!apiResult.IsError) {
                 const result = apiResult.ResultObject.map((item) => {
                     item.SenderStoreNameLable = item.SenderStoreID + " - " + item.SenderStoreName;
@@ -107,7 +108,7 @@ class SearchCom extends React.Component {
                 // xuất exel
                 const exelData = apiResult.ResultObject.map((item, index) => {
                     let element = {
-                        "Loại yêu cầu xuất":item.ShipmentOrderTypeID + " - " + item.ShipmentOrderTypeName,
+                        "Loại yêu cầu xuất": item.ShipmentOrderTypeID + " - " + item.ShipmentOrderTypeName,
                         "Đối tác": item.PartnerID + " - " + item.PartnerName,
                         "Kho điều phối": item.StoreID + " - " + item.StoreName,
                         "Kho gửi": item.SenderStoreID + " - " + item.SenderStoreName,
@@ -182,59 +183,60 @@ class SearchCom extends React.Component {
             dismissable: { click: true }
         });
     }
-    handleExportFile(result){
+    handleExportFile(result) {
         console.log("result", result)
         this.addNotification(result.Message);
     }
 
     render() {
-        if (this.state.IsLoadDataComplete) {
-            return (
-                <React.Fragment>
-                    <ReactNotification ref={this.notificationDOMRef} />
-                    <SearchForm
-                        FormName="Tìm kiếm danh sách định nghĩa kho điều phối giao hàng"
-                        MLObjectDefinition={SearchMLObjectDefinition}
-                        listelement={SearchElementList}
-                        onSubmit={this.handleSearchSubmit}
-                        ref={this.searchref}
-                        className="multiple"
-                    />
-                    <DataGrid
-                        listColumn={DataGridCoordinatorStoreColumnList}
-                        dataSource={this.state.gridDataSource}
-                        AddLink={AddLink}
-                        IDSelectColumnName={IDSelectColumnName}
-                        PKColumnName={PKColumnName}
-                        onDeleteClick={this.handleDelete}
-                        ref={this.gridref}
-                        RequirePermission={COORDINATORSTORE_VIEW}
-                        DeletePermission={COORDINATORSTORE_DELETE}
-                        IsAutoPaging={true}
-                        RowsPerPage={10}
-                        IsExportFile={true}
-                        DataExport={this.state.dataExport}
-                        fileName="Danh sách định nghĩa kho điều phối giao hàng"
-                        onExportFile={this.handleExportFile.bind(this)}
-                    />
-                </React.Fragment>
-            );
-        }
-        else {
-            return (
-                <React.Fragment>
-                    <ReactNotification ref={this.notificationDOMRef} />
-                    <SearchForm
-                        FormName="Tìm kiếm danh sách định nghĩa kho điều phối giao hàng"
-                        MLObjectDefinition={SearchMLObjectDefinition}
-                        listelement={SearchElementList}
-                        onSubmit={this.handleSearchSubmit}
-                        ref={this.searchref}
-                    />
-                    <label>Đang nạp dữ liệu...</label>
-                </React.Fragment>
-            );
-        }
+        return (
+            <React.Fragment>
+                <ReactNotification ref={this.notificationDOMRef} />
+                <SearchForm
+                    FormName="Tìm kiếm danh sách định nghĩa kho điều phối giao hàng"
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    listelement={SearchElementList}
+                    onSubmit={this.handleSearchSubmit}
+                    ref={this.searchref}
+                    className="multiple"
+                />
+                <DataGrid
+                    listColumn={DataGridCoordinatorStoreColumnList}
+                    dataSource={this.state.gridDataSource}
+                    AddLink={AddLink}
+                    IDSelectColumnName={IDSelectColumnName}
+                    PKColumnName={PKColumnName}
+                    onDeleteClick={this.handleDelete}
+                    ref={this.gridref}
+                    RequirePermission={COORDINATORSTORE_VIEW}
+                    DeletePermission={COORDINATORSTORE_DELETE}
+                    IsAutoPaging={true}
+                    RowsPerPage={10}
+                    IsExportFile={true}
+                    DataExport={this.state.dataExport}
+                    fileName="Danh sách định nghĩa kho điều phối giao hàng"
+                    onExportFile={this.handleExportFile.bind(this)}
+                />
+            </React.Fragment>
+        );
+        // if (this.state.IsLoadDataComplete) {
+
+        // }
+        // else {
+        //     return (
+        //         <React.Fragment>
+        //             <ReactNotification ref={this.notificationDOMRef} />
+        //             <SearchForm
+        //                 FormName="Tìm kiếm danh sách định nghĩa kho điều phối giao hàng"
+        //                 MLObjectDefinition={SearchMLObjectDefinition}
+        //                 listelement={SearchElementList}
+        //                 onSubmit={this.handleSearchSubmit}
+        //                 ref={this.searchref}
+        //             />
+        //             <label>Đang nạp dữ liệu...</label>
+        //         </React.Fragment>
+        //     );
+        // }
     }
 }
 
