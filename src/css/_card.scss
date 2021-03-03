@@ -179,6 +179,33 @@
                 }
             }
         }
+        .card-body {
+            .table-responsive {
+                .table {
+                    tbody {
+                        tr {
+                            .group-infoShipmentOrder {
+                                .group-info-row {
+                                    .item {
+                                        .btn-copy-clipboard {
+                                            border: none;
+                                            background: transparent;
+                                            font-size: 13px;
+                                            cursor: pointer;
+                                            &:focus{
+                                                outline: none;
+                                                box-shadow: none;
+                                                border: none;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     &.modalForm {
         margin-bottom: 0;

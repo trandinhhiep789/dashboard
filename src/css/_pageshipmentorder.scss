@@ -565,6 +565,9 @@ $font-weight-600: 600;
                         font-weight: $font-weight-600;
                     }
                     .group-price {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
                         .price3 {
                             color: #4a4a4a;
                         }

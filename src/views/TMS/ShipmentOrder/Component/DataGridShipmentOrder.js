@@ -24,6 +24,7 @@ import {
 } from "../constants";
 
 import SOPrintTemplate from "../../../../common/components/PrintTemplate/SOPrintTemplate";
+import { fn } from 'moment';
 
 class DataGridShipmentOderCom extends Component {
     constructor(props) {
@@ -674,16 +675,16 @@ class DataGridShipmentOderCom extends Component {
 
     copyToClipboard(e) {
         const PartnerSaleOrderID = e.target.attributes['data-id'].value;
-        console.log("PartnerSaleOrderID", PartnerSaleOrderID)
-        // PartnerSaleOrderID.select();
-        document.execCommand('copy');
+        let temponaryInput = $('<input>').val(PartnerSaleOrderID).appendTo('body').select();
+        document.execCommand("copy");
+        temponaryInput.remove();
     }
 
-    copyToClipboardShipmentOrder(e){
+    copyToClipboardShipmentOrder(e) {
         const ShipmentOrderID = e.target.attributes['data-id'].value;
-        console.log("ShipmentOrderID", ShipmentOrderID)
-       // ShipmentOrderID.select();
-        document.execCommand('copy');
+        let temponaryInput = $('<input>').val(ShipmentOrderID).appendTo('body').select();
+        document.execCommand("copy");
+        temponaryInput.remove();
     }
 
     renderDataGrid() {
@@ -930,8 +931,7 @@ class DataGridShipmentOderCom extends Component {
                     <tbody>
                         {
                             DataSource != null && DataSource.map((rowItem, rowIndex) => {
-                                console.log(rowItem)
-                                const { ShipmentOrderID, PartnerSaleOrderID, ReceiverFullAddress, ShipItemNameList, OrderNote, TotalCOD, IsCancelDelivery, TotalSaleMaterialMoney, TotalReturnPrice, IsPaidIn, ReceiverFullName, ReceiverPhoneNumber, SelectedUser, IsInputReturn, PrimaryShipItemName, PhoneCount } = rowItem;
+                                const { ShipmentOrderID, PartnerSaleOrderID, ReceiverFullAddress, ShipItemNameList, OrderNote, TotalCOD, IsCancelDelivery, TotalSaleMaterialMoney, TotalReturnPrice, IsPaidIn, ReceiverFullName, ReceiverPhoneNumber, SelectedUser, IsInputReturn, PrimaryShipItemName, PhoneCount, IsOutputGoods, IsHandoverGoods, ExpectedDeliveryDate, CurrentShipmentOrderStepID, CoordinatorUser } = rowItem;
 
                                 let rowtrClass = "un-reading-item";
                                 if (SelectedUser != "") {
@@ -939,11 +939,11 @@ class DataGridShipmentOderCom extends Component {
                                 }
 
                                 let rowUndelivery = "btngroupleft";
-                                if (this._CheckTime(rowItem.ExpectedDeliveryDate) == true && rowItem.CurrentShipmentOrderStepID < 105) {
+                                if (this._CheckTime(ExpectedDeliveryDate) == true && CurrentShipmentOrderStepID < 105) {
                                     rowUndelivery = "btngroupleft undelivery";
                                 }
                                 else {
-                                    if (rowItem.CoordinatorUser == "") {
+                                    if (CoordinatorUser == "") {
                                         rowUndelivery = "btngroupleft uncoordinated";
                                     }
                                     else {
@@ -960,19 +960,13 @@ class DataGridShipmentOderCom extends Component {
                                                 {ShipmentOrderID}
                                             </Link>
                                             <div className="data-time">
-                                                <i className="ti ti-timer"></i>
-                                                <span className="fw-600">{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
+                                                <span className="fw-600">{ExpectedDeliveryDate != null ? this._genCommentTime(ExpectedDeliveryDate) : ""}</span>
                                             </div>
                                         </div>
 
-                                        <div>
-                                            {(rowItem.IsOutputGoods == false && rowItem.IsHandoverGoods == false) ? <span className="badge badge-danger">Chưa xuất </span> : ""}
-                                            {(rowItem.IsOutputGoods == true && rowItem.IsHandoverGoods == false) ? <span className="badge badge-info">Đã xuất </span> : ""}
-                                            {rowItem.IsHandoverGoods == true ? <span className="badge badge-success">NV đã nhận </span> : ""}
-                                        </div>
 
                                         <div className="group-address">
-                                            <i className="fa fa-user"></i>
+                                            {/* <i className="fa fa-user"></i> */}
                                             <div className="person-info">
                                                 <span className="name">
                                                     {ReceiverFullName}
@@ -995,24 +989,32 @@ class DataGridShipmentOderCom extends Component {
                                         <div className="price-debt">{OrderNote != "" && "Ghi chú: " + OrderNote}</div>
 
                                         <div className="group-price">
-                                            {rowItem.IsCancelDelivery && <div className="badge badge-danger">Đã hủy</div>}
-                                            {rowItem.TotalCOD > 0 && <div className="pricecod">COD:{formatMoney(rowItem.TotalCOD, 0)}</div>}
-                                            {rowItem.TotalSaleMaterialMoney > 0 && <div className="price-supplies">Vật tư:{formatMoney(rowItem.TotalSaleMaterialMoney, 0)}</div>}
-                                            {rowItem.IsInputReturn && <div className="price-supplies">Nhập trả:{formatMoney(rowItem.TotalReturnPrice, 0)}</div>}
-                                            {(rowItem.IsPaidIn == true || (rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice) == 0) ?
-                                                (
-                                                    <div className="price-success">
-                                                        <span className="price-title ">Nợ: </span>
-                                                        <span className="price-debt">0đ</span>
-                                                    </div>
-                                                ) :
-                                                (
-                                                    <div className="price-error">
-                                                        <span className="price-title">Nợ: </span>
-                                                        <span className="price-debt">-{formatMoney(rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice, 0)}</span>
-                                                    </div>
-                                                )
-                                            }
+                                            <div>
+                                                {IsCancelDelivery && <div className="badge badge-danger">Đã hủy</div>}
+                                                {TotalCOD > 0 && <div className="pricecod">COD:{formatMoney(TotalCOD, 0)}</div>}
+                                                {TotalSaleMaterialMoney > 0 && <div className="price-supplies">Vật tư:{formatMoney(TotalSaleMaterialMoney, 0)}</div>}
+                                                {IsInputReturn && <div className="price-supplies">Nhập trả:{formatMoney(TotalReturnPrice, 0)}</div>}
+                                                {(IsPaidIn == true || (TotalSaleMaterialMoney + TotalCOD - TotalReturnPrice) == 0) ?
+                                                    (
+                                                        <div className="price-success">
+                                                            <span className="price-title ">Nợ: </span>
+                                                            <span className="price-debt">0đ</span>
+                                                        </div>
+                                                    ) :
+                                                    (
+                                                        <div className="price-error">
+                                                            <span className="price-title">Nợ: </span>
+                                                            <span className="price-debt">-{formatMoney(TotalSaleMaterialMoney + TotalCOD - TotalReturnPrice, 0)}</span>
+                                                        </div>
+                                                    )
+                                                }
+                                            </div>
+
+                                            <div>
+                                                {(IsOutputGoods == false && IsHandoverGoods == false) ? <span className="badge badge-danger">Chưa xuất </span> : ""}
+                                                {(IsOutputGoods == true && IsHandoverGoods == false) ? <span className="badge badge-info">Đã xuất </span> : ""}
+                                                {IsHandoverGoods == true ? <span className="badge badge-success">NV đã nhận </span> : ""}
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>)
