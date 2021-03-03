@@ -469,6 +469,18 @@ $font-weight-600: 600;
     }
 }
 
+%btn-clip-board {
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    cursor: pointer;
+    &:focus{
+        outline: none;
+        box-shadow: none;
+        border: none;
+    }
+}
+
 .card {
     &.card-shipment-order-mobile-view {
         width: 100%;
@@ -487,6 +499,7 @@ $font-weight-600: 600;
             }
         }
         .card-body {
+            margin-bottom: 1rem;
             .un-reading-item {
                 background-color: #c2d8de;
                 border: 1px solid #ebebeb;
@@ -494,7 +507,7 @@ $font-weight-600: 600;
                     background-color: #fcfdfe;
                 }
                 .btngroupleft {
-                    width: 0.5rem;
+                    width: 0.2rem;
                     &.undelivery{
                         background-color: #fb5353;
                     }
@@ -507,14 +520,30 @@ $font-weight-600: 600;
                 }
                 .data-row {
                     padding: .5rem 1rem;
-                    .group-shipment-order-and-time{
+                    .group-shipment-order-and-vehicle{
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
+                        .group-shipment-order {
+                            .btn-copy-clipboard {
+                                @extend %btn-clip-board;
+                            }
+                        }
+                        .vehicle {
+                            color: #15c377;
+                        }
+                    }
+
+                    .group-shipment-order-status-name {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        color: #fc7425;
                         .data-time {
                             color: #1890ff;
                         }
                     }
+
                     .group-address {
                         display: flex;
                         align-items: center;
@@ -526,7 +555,7 @@ $font-weight-600: 600;
                             .name {
                                 font-weight: $font-weight-600;
                                 color: #615d5d;
-                                font-size: 12px;
+                                font-size: 0.8rem;
                                 text-transform: uppercase;
                             }
                             .line {
@@ -541,11 +570,21 @@ $font-weight-600: 600;
                                     color: red;
                                 }
                             }
+                            .btn-copy-clipboard {
+                                @extend %btn-clip-board;
+                            }
                         }
                     }
                     .address-receiver {
                         color: #505050;
+                        font-size: 0.8rem;
                         text-transform: capitalize;
+                        .receiver-full-address {
+                            margin: 0;
+                        }
+                        .shipment-order-type-name {
+                            margin: 0;
+                        }
                     }
                     .group-address {
                         .item {

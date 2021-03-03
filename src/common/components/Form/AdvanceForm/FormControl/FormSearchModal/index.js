@@ -24,7 +24,7 @@ class SearchModalCom extends Component {
             DataGridColumnList: [],
             SearchData: this.props.InitSearchParams,
             inputCheckItem: false,
-            ListPKColumnName: listPKColumnName 
+            ListPKColumnName: listPKColumnName
         }
         this.gridref = React.createRef();
     }
@@ -74,11 +74,11 @@ class SearchModalCom extends Component {
                 }
             }
         }
-        else{
-            const {ListPKColumnName}= this.state;
-            
+        else {
+            const { ListPKColumnName } = this.state;
+
             if (listMLObject !== null && listMLObject !== undefined) {
-                selectedOption= listMLObject;
+                selectedOption = listMLObject;
             }
         }
 
@@ -102,7 +102,7 @@ class SearchModalCom extends Component {
                     isMultipleCheck={this.props.multipleCheck}
                     IDSelectColumnName={this.props.IDSelectColumnName}
                     hasSearch={false}
-                    isHideHeaderToolbarGroupTextBox={true}
+                    isHideHeaderToolbarGroupTextBox={false}
                     isHideHeaderToolbar={true}
                     RowsPerPage={10}
                     IsAutoPaging={true}

@@ -611,6 +611,25 @@ class DataGridShipmentOderCom extends Component {
         }
 
     }
+
+    _genCommentCarrierPartnerOnMobileView(CarrierTypeID) {
+        if (CarrierTypeID < 1) {
+            return (<div className="vehicle"><span>Chưa chọn phương tiện</span></div>)
+        } else if (CarrierTypeID == 1) {
+            return (<div className="vehicle">
+                <i className="fa fa-motorcycle"></i>
+            </div>
+            );
+        }
+        else {
+            return (<div className="vehicle">
+                <i className="fa fa-truck"></i>
+            </div>
+            );
+        }
+
+    }
+
     addNotification(message1, IsError) {
         if (!IsError) {
             this.setState({
@@ -909,6 +928,7 @@ class DataGridShipmentOderCom extends Component {
 
     renderDataGridSmallSize() {
         const { DataSource } = this.state;
+        const pageCount = this.getPageCount(this.props.dataSource[0]);
 
         return (
             <div className="card card-shipment-order-mobile-view">
@@ -931,7 +951,7 @@ class DataGridShipmentOderCom extends Component {
                     <tbody>
                         {
                             DataSource != null && DataSource.map((rowItem, rowIndex) => {
-                                const { ShipmentOrderID, PartnerSaleOrderID, ReceiverFullAddress, ShipItemNameList, OrderNote, TotalCOD, IsCancelDelivery, TotalSaleMaterialMoney, TotalReturnPrice, IsPaidIn, ReceiverFullName, ReceiverPhoneNumber, SelectedUser, IsInputReturn, PrimaryShipItemName, PhoneCount, IsOutputGoods, IsHandoverGoods, ExpectedDeliveryDate, CurrentShipmentOrderStepID, CoordinatorUser } = rowItem;
+                                const { ShipmentOrderID, PartnerSaleOrderID, ReceiverFullAddress, ShipItemNameList, OrderNote, TotalCOD, IsCancelDelivery, TotalSaleMaterialMoney, TotalReturnPrice, IsPaidIn, ReceiverFullName, ReceiverPhoneNumber, SelectedUser, IsInputReturn, PrimaryShipItemName, PhoneCount, IsOutputGoods, IsHandoverGoods, ExpectedDeliveryDate, CurrentShipmentOrderStepID, CoordinatorUser, ShipmentOrderStatusName, ShipmentOrderTypeName, CoordinatorUserName, DeliverUserFullNameList, CoordinatorNote } = rowItem;
 
                                 let rowtrClass = "un-reading-item";
                                 if (SelectedUser != "") {
@@ -954,16 +974,30 @@ class DataGridShipmentOderCom extends Component {
                                 return (<tr key={rowIndex} className={rowtrClass}>
                                     <td className={rowUndelivery}></td>
                                     <td className="data-row">
-                                        <div className="group-shipment-order-and-time">
-                                            <Link className="shipment-order fw-600" target="_blank"
-                                                to={{ pathname: "/ShipmentOrder/Detail/" + ShipmentOrderID }}>
-                                                {ShipmentOrderID}
-                                            </Link>
+                                        <div className="group-shipment-order-status-name">
+                                            <div>
+                                                {rowItem.ShipmentOrderStatusName}
+                                            </div>
                                             <div className="data-time">
                                                 <span className="fw-600">{ExpectedDeliveryDate != null ? this._genCommentTime(ExpectedDeliveryDate) : ""}</span>
                                             </div>
                                         </div>
 
+                                        <div className="group-shipment-order-and-vehicle">
+                                            <div className="group-shipment-order">
+                                                <Link className="shipment-order fw-600" target="_blank"
+                                                    to={{ pathname: "/ShipmentOrder/Detail/" + ShipmentOrderID }}>
+                                                    {ShipmentOrderID}
+                                                </Link>
+                                                <button className="btn-copy-clipboard" data-id={ShipmentOrderID} onClick={this.copyToClipboardShipmentOrder.bind(this)}>
+                                                    <i className="fa fa-copy" data-id={ShipmentOrderID}></i>
+                                                </button>
+                                            </div>
+
+                                            {
+                                                this._genCommentCarrierPartnerOnMobileView(rowItem.CarrierTypeID)
+                                            }
+                                        </div>
 
                                         <div className="group-address">
                                             {/* <i className="fa fa-user"></i> */}
@@ -975,15 +1009,25 @@ class DataGridShipmentOderCom extends Component {
                                                 <span className={PhoneCount > 1 ? "phone  phonered" : "phone"}>({ReceiverPhoneNumber.substr(0, 4)}****)</span>
                                                 {PartnerSaleOrderID != "" ? <span className="line">-</span> : ""}
                                                 <span className="phone partner-sale-Order fw-600">{PartnerSaleOrderID}</span>
+                                                <button className="btn-copy-clipboard" data-id={PartnerSaleOrderID} onClick={this.copyToClipboard.bind(this)}>
+                                                    <i className="fa fa-copy" data-id={PartnerSaleOrderID}></i>
+                                                </button>
                                             </div>
                                         </div>
-
-                                        <div className="address-receiver">{ReceiverFullAddress}</div>
 
                                         <div className="group-address">
                                             <div className={IsInputReturn == true ? "item address-repository-created lblReturns" : "item address-repository-created"}>
                                                 <span>{ShipItemNameList == "" ? PrimaryShipItemName : ReactHtmlParser(ShipItemNameList.replace(/;/g, '<br/>'))}</span>
                                             </div>
+                                        </div>
+
+                                        <div className="address-receiver">
+                                            <p className="receiver-full-address">{ReceiverFullAddress}</p>
+                                            <p className="shipment-order-type-name">{ShipmentOrderTypeName}</p>
+                                            {
+                                                CoordinatorUser != "" ? <div className="receiverred">{CoordinatorNote != "" ? "Ghi chú: " + CoordinatorNote : ""}</div>
+                                                    : <div className="receiverred">{CoordinatorNote != "" ? "Ghi chú: " + CoordinatorNote : ""}</div>
+                                            }
                                         </div>
 
                                         <div className="price-debt">{OrderNote != "" && "Ghi chú: " + OrderNote}</div>
@@ -1022,7 +1066,14 @@ class DataGridShipmentOderCom extends Component {
                         }
                     </tbody>
                 </table>
-            </div>
+
+                <div>
+                    {
+                        this.props.IsAutoPaging &&
+                        <GridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />
+                    }
+                </div>
+            </div >
         )
     }
 
