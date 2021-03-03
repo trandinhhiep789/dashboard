@@ -676,6 +676,37 @@ class InfoCoordinatorCom extends Component {
                             />
                         </div>
                         <div className="col-md-6">
+                            <div className="form-row">
+                                <div class="form-group col-md-3"><label class="col-form-label 6">Kho điều phối</label></div>
+                                <div class="form-group col-md-9"><label class="col-form-label 6">{this.state.ShipmentOrder.CoordinatorStoreID + '-' + this.state.ShipmentOrder.CoordinatorStoreName}</label></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="form-row">
+                        <div className="col-md-6">
+                            <FormControl.FormControlComboBox
+                                name="CarrierTypeID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="phương tiện vận chuyển"
+                                validatonList={["Comborequired"]}
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                valuemember="CarrierTypeID"
+                                nameMember="CarrierTypeName"
+                                controltype="InputControl"
+                                onValueChange={this.handleOnValueChange}
+                                value={this.state.ShipmentOrder.CarrierTypeID}
+                                listoption={null}
+                                datasourcemember="CarrierTypeID"
+                                placeholder="---Vui lòng chọn---"
+                                isMultiSelect={false}
+                                disabled={!this.props.IsCoordinator}
+                                validationErrorMessage={this.state.validationErroCarrierType}
+                            />
+                        </div>
+                        <div className="col-md-6">
                             {(this.state.ShipmentOrder.CarrierPartnerID == -1 || this.state.ShipmentOrder.CarrierPartnerID == 0) ?
                                 <MultiSelectComboBox
                                     name="ShipmentOrder_DeliverUserList"
@@ -722,28 +753,23 @@ class InfoCoordinatorCom extends Component {
                             }
                         </div>
                     </div>
-
                     <div className="form-row">
                         <div className="col-md-6">
-                            <FormControl.FormControlComboBox
-                                name="CarrierTypeID"
+                            <MultiSelectComboBox
+                                name="DriverUser"
                                 colspan="8"
                                 labelcolspan="4"
-                                label="phương tiện vận chuyển"
-                                validatonList={["Comborequired"]}
-                                isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
-                                valuemember="CarrierTypeID"
-                                nameMember="CarrierTypeName"
+                                label="Tài xế"
+                                disabled={this.state.ShipmentOrder.CarrierTypeID != 1 ? false : true}
+                                IsLabelDiv={true}
+                                isautoloaditemfromcache={false}
                                 controltype="InputControl"
-                                onValueChange={this.handleOnValueChange}
-                                value={this.state.ShipmentOrder.CarrierTypeID}
-                                listoption={null}
-                                datasourcemember="CarrierTypeID"
-                                placeholder="---Vui lòng chọn---"
+                                value={listOptionDriverUser}
+                                ShipmentOrder={this.state.ShipmentOrder.DriverUser}
+                                onChange={this.handleValueChangeDriverUser.bind(this)}
+                                listoption={[]}
                                 isMultiSelect={false}
-                                disabled={!this.props.IsCoordinator}
-                                validationErrorMessage={this.state.validationErroCarrierType}
+                                datasourcemember="DriverUser"
                             />
                         </div>
                         <div className="col-md-6">
