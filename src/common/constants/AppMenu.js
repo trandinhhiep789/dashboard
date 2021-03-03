@@ -746,6 +746,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'RefundSupplies',
+                MenuTitle: 'Nhập trả vật tư',
+                LinkTo: '/RefundSupplies',
+                MenuIcon: '',
+                SubMenu: []
+            },
         ]
     },
     {

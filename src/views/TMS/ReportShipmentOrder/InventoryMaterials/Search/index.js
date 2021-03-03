@@ -21,16 +21,19 @@ import "react-notifications-component/dist/theme.css";
 import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
+import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
 
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
+        this.getCacheMTG = this.getCacheMTG.bind(this);
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
             IsLoadDataComplete: false,
             widthPercent: "",
+            ConfigValue: "",
             dataMaterialGroupExport: [],
             dataSimiliGroupExport: [],
             dataMaterialGroup: [],
@@ -43,6 +46,22 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+        this.getCacheMTG()
+    }
+
+    getCacheMTG() {
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
+            if (result && !result.IsError && result.ResultObject) {
+                let _configValue = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "MATERIALGROUP_COPPERPIPE");
+                if (_configValue) {
+                    this.setState({
+                        ConfigValue: _configValue[0].TMSConfigValue
+                    })
+                }
+                //console.log("getCacheMTG",result,_configValue);
+            }
+
+        });
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -70,12 +89,11 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult)
+            //console.log("apiResult", apiResult)
             if (apiResult && !apiResult.IsError && apiResult.ResultObject) {
 
-                const tempData = apiResult.ResultObject.filter(a => a.MaterialGroupID.trim() == 'VT001');
-                const tempData1 = apiResult.ResultObject.filter(a => a.MaterialGroupID.trim() != 'VT001');
-
+                const tempData = apiResult.ResultObject.filter(a => a.MaterialGroupID.trim() == this.state.ConfigValue);
+                const tempData1 = apiResult.ResultObject.filter(a => a.MaterialGroupID.trim() != this.state.ConfigValue);
 
                 // xuất exel
                 let exelDataSimiliGroupExport = [];
@@ -84,6 +102,7 @@ class SearchCom extends React.Component {
                 if (tempData) {
                     exelDataSimiliGroupExport = tempData.map((item, index) => {
                         let element = {
+                            "Nhóm vật tư": item.MaterialGroupID,
                             "Ống đồng": item.ProductName,
                             "Đơn vị": item.QuantityUnit,
                             "Số dư đầu kỳ": item.TotalQuantityBegin,
@@ -103,6 +122,7 @@ class SearchCom extends React.Component {
                 if (tempData1) {
                     exelDataMaterialGroupExport = tempData1.map((item, index) => {
                         let element = {
+                            "Nhóm vật tư": item.MaterialGroupID,
                             "Vật tư khác": item.ProductName,
                             "Đơn vị": item.QuantityUnit,
                             "Số dư đầu kỳ": item.TotalQuantityBegin,
