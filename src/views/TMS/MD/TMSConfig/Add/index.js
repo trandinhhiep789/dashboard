@@ -16,7 +16,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { TMSCONFIG_ADD } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
 
 
 class AddCom extends React.Component {
@@ -42,7 +42,7 @@ class AddCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if(!apiResult.IsError){
-                // this.props.callClearLocalCache(ERPCOMMONCACHE_AREATYPE);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_TMSCONFIG);
                 // this.props.callClearLocalCache(ERPCOMMONCACHE_AREATT);
             }            
             this.showMessage(apiResult.Message);
