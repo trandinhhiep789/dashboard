@@ -53,6 +53,13 @@ export const  SearchMLObjectDefinition = [
 
 export const GridColumnList = [
     {
+        Name: "MaterialGroupID",
+        Type: "text",
+        Caption: "Nhóm vật tư",
+        DataSourceMember: "MaterialGroupID",
+        Width: 100
+    },
+    {
         Name: "ProductName",
         Type: "text",
         Caption: "Ống đồng",
@@ -119,6 +126,13 @@ export const GridColumnList = [
 ]
 
 export const GridColumnListPrice = [
+    {
+        Name: "MaterialGroupID",
+        Type: "text",
+        Caption: "Nhóm vật tư",
+        DataSourceMember: "MaterialGroupID",
+        Width: 100
+    },
     {
         Name: "ProductName",
         Type: "text",
