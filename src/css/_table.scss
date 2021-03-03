@@ -191,6 +191,17 @@
                             }
 
                             .person-info {
+                                .btn-copy-clipboard{
+                                    border: none;
+                                    background: transparent;
+                                    font-size: 13px;
+                                    cursor: pointer;
+                                    &:focus{
+                                        outline: none;
+                                        box-shadow: none;
+                                        border: none;
+                                    }
+                                }
                                 .name {
                                     font-weight: 600;
                                     color: #615d5d;
