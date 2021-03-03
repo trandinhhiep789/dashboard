@@ -792,7 +792,7 @@ class InfoCoordinatorCom extends Component {
                         <div className="col-md-6">
                             <div className="form-row">
                                 <div class="form-group col-md-3"><label class="col-form-label 6">Mã Kho điều phối</label></div>
-                        <div class="form-group col-md-9"><label class="col-form-label 6">{this.state.ShipmentOrder.CoordinatorStoreID}</label></div>
+                                <div class="form-group col-md-9"><label class="col-form-label 6">{this.state.ShipmentOrder.CoordinatorStoreID}</label></div>
                             </div>
                         </div>
                     </div>
@@ -810,7 +810,7 @@ class InfoCoordinatorCom extends Component {
                             />
                         </div>
                     </div>
-                    <div className="form-row">
+                    <div className="form-row suggest-shipper">
                         <div className="form-group col-md-2">
                         </div>
                         <div className="form-group col-md-10">

@@ -1,0 +1,13 @@
+$breakpoint-tablet: 768px;
+
+.card {
+    .card-body {
+        .form-row {
+            @media (max-width: $breakpoint-tablet) {
+                &.suggest-shipper {
+                    display: none;
+                }
+            }
+        }
+    }
+}
