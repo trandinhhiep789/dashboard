@@ -672,6 +672,20 @@ class DataGridShipmentOderCom extends Component {
 
     }
 
+    copyToClipboard(e) {
+        const PartnerSaleOrderID = e.target.attributes['data-id'].value;
+        console.log("PartnerSaleOrderID", PartnerSaleOrderID)
+        // PartnerSaleOrderID.select();
+        document.execCommand('copy');
+    }
+
+    copyToClipboardShipmentOrder(e){
+        const ShipmentOrderID = e.target.attributes['data-id'].value;
+        console.log("ShipmentOrderID", ShipmentOrderID)
+       // ShipmentOrderID.select();
+        document.execCommand('copy');
+    }
+
     renderDataGrid() {
         const dataSource = this.state.DataSource;
         const widthTable = $('#fixtable tbody').width();
@@ -778,6 +792,9 @@ class DataGridShipmentOderCom extends Component {
                                                     <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber.substr(0, 4)}****)</span>
                                                     {rowItem.PartnerSaleOrderID != "" ? <span className="line">-</span> : ""}
                                                     <span className="phone partner-sale-Order fw-600">{rowItem.PartnerSaleOrderID}</span>
+                                                    <button className="btn-copy-clipboard" data-id={rowItem.PartnerSaleOrderID} onClick={this.copyToClipboard.bind(this)}>
+                                                        <i className="fa fa-copy" data-id={rowItem.PartnerSaleOrderID}></i>
+                                                    </button>
                                                 </div>
                                             </label>
                                             <label className="item address-receiver">
@@ -819,6 +836,9 @@ class DataGridShipmentOderCom extends Component {
                                                         to={{ pathname: "/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID }}>
                                                         {rowItem.ShipmentOrderID}</Link>
                                                 </span>
+                                                <button className="btn-copy-clipboard" data-id={rowItem.ShipmentOrderID} onClick={this.copyToClipboardShipmentOrder.bind(this)}>
+                                                    <i className="fa fa-copy" data-id={rowItem.ShipmentOrderID}></i>
+                                                </button>
                                             </label>
                                             <label className="item address-receiver">
                                                 <span>{rowItem.ShipmentOrderTypeName}</span>
