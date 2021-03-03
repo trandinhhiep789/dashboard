@@ -347,3 +347,36 @@ export const DataGridColumnList = [
         LinkText: "Chỉnh sửa"
     }
 ];
+
+export const DataGridColumnListOnMobileView = [
+    {
+        Name: "chkSelect",
+        Type: "checkbox",
+        Caption: "Chọn",
+        DataSourceMember: "PartnerTypeID",
+        Width: 70
+    },
+    {
+        Name: "PartnerTypeID",
+        Type: "text",
+        Caption: "Mã loại đối tác",
+        DataSourceMember: "PartnerTypeID",
+        Width: 150
+    },
+    {
+        Name: "PartnerTypeName",
+        Type: "text",
+        Caption: "Tên loại đối tác",
+        DataSourceMember: "PartnerTypeName",
+        Width: 400
+    },
+    {
+        Name: "Action",
+        Type: "link",
+        Caption: "Tác vụ",
+        DataSourceMember: "PartnerTypeID",
+        Width: 70,
+        Link: "/PartnerType/Edit/",
+        LinkText: "Chỉnh sửa"
+    }
+];

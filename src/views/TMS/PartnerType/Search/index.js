@@ -16,7 +16,8 @@ import {
     PKColumnName,
     InitSearchParams,
     PagePath,
-    AddLogAPIPath
+    AddLogAPIPath,
+    DataGridColumnListOnMobileView
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -189,6 +190,8 @@ class SearchCom extends React.Component {
                     />
                     <DataGrid
                         listColumn={DataGridColumnList}
+                        isMobileView={true}
+                        listColumnOnMobileView={DataGridColumnListOnMobileView}
                         dataSource={this.state.gridDataSource}
                         AddLink={AddLink}
                         IDSelectColumnName={IDSelectColumnName}

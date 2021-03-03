@@ -36,6 +36,7 @@ class DataGridCom extends Component {
         this.handleMultipleInsertClick = this.handleMultipleInsertClick.bind(this);
         this.handleOneInsertClick = this.handleOneInsertClick.bind(this);
         this.handleImportFile = this.handleImportFile.bind(this);
+        this.mediaRenderDataGrid = this.mediaRenderDataGrid.bind(this);
 
         this.checkAll = this.checkAll.bind(this);
         this.getCheckList = this.getCheckList.bind(this);
@@ -65,7 +66,6 @@ class DataGridCom extends Component {
                 }
             });
         }
-
     }
 
     componentWillReceiveProps(nextProps) {
@@ -433,8 +433,8 @@ class DataGridCom extends Component {
         return { [idSelectColumnName]: checkList };
     }
 
-    renderDataGrid() {
-        const listColumn = this.props.listColumn;
+    renderDataGrid(listColumn) {
+        // const { onMobileView, listColumnOnMobileView, listColumn } = this.props;
         const dataSource = this.getDisplayData(this.props.dataSource);
         const pkColumnName = this.state.ListPKColumnName;
         const idSelectColumnName = this.props.IDSelectColumnName;
@@ -574,6 +574,24 @@ class DataGridCom extends Component {
         );
     }
 
+    mediaRenderDataGrid() {
+        const { isMobileView, listColumnOnMobileView, listColumn } = this.props;
+
+        return (
+            <Media queries={{
+                small: "(max-width: 576px)",
+                medium: "(min-width: 577px)"
+            }}>
+                {matches => (
+                    <Fragment>
+                        {matches.small && this.renderDataGrid(listColumnOnMobileView)}
+                        {matches.medium && this.renderDataGrid(listColumn)}
+                    </Fragment>
+                )}
+            </Media>
+        )
+    }
+
     checkPermission(permissionKey) {
         return new Promise((resolve, reject) => {
             this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
@@ -666,7 +684,7 @@ class DataGridCom extends Component {
             </div>;
         }
         const pageCount = this.getPageCount(this.props.dataSource);
-        const datagrid = this.renderDataGrid();
+        const datagrid = this.mediaRenderDataGrid();
         let hasHeaderToolbar = true;
         if (this.props.isHideHeaderToolbar)
             hasHeaderToolbar = false;
