@@ -27,6 +27,7 @@ import "react-notifications-component/dist/theme.css";
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { toIsoStringCus } from "../../../../../utils/function";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -75,6 +76,19 @@ class SearchCom extends React.Component {
         });
     }
 
+    convertFormatDateTime(obj) {
+        var date = new Date(obj);
+        var day = date.getDate();       
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();  
+        var hour = date.getHours();     
+        var minute = date.getMinutes(); 
+        var second = date.getSeconds(); 
+        
+        var time = day + "/" + month + "/" + year + " " + hour + ':' + minute + ':' + second;
+        return time;
+    }
+
     handleSearchSubmit(formData, MLObject) {
         const postData = [
             {
@@ -91,17 +105,17 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@FromDate",
-                SearchValue: MLObject.FromDate
+                SearchValue: this.convertFormatDateTime(MLObject.FromDate)
             },
             {
                 SearchKey: "@ToDate",
-                SearchValue: MLObject.ToDate
+                SearchValue: this.convertFormatDateTime(MLObject.ToDate)
             }
         ];
         this.setState({ SearchData: postData });
         this.callSearchData(postData);
         //this.gridref.current.clearData();
-        //console.log("handleSearchSubmit",MLObject);
+        //console.log("handleSearchSubmit", MLObject, formData, postData);
     }
 
     callSearchData(searchData) {
