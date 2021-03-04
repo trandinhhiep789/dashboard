@@ -142,7 +142,7 @@ export const SearchElementList = [
         listoption: [
             { value: -1, label: '--Tất cả--' },
             { value: 1, label: 'Đã khóa' },
-            { value: 2, label: 'Hoạt động' }
+            { value: 0, label: 'Hoạt động' }
         ],
     }
 ]
@@ -177,6 +177,11 @@ export const SearchMLObjectDefinition = [
         Name: "UserName",
         DefaultValue: "",
         BindControlName: "cbUserName"
+    },
+    {
+        Name: "DeliveryStatus",
+        DefaultValue: "",
+        BindControlName: "cbDeliveryStatus"
     }
 ]
 

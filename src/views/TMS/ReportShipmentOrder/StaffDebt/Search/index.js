@@ -71,7 +71,6 @@ class SearchCom extends React.Component {
 
 
     handleSearchSubmit(formData, MLObject) {
-        // console.log("MLObject", MLObject)
         const postData = [
             {
                 SearchKey: "@FROMDATE",
@@ -83,20 +82,16 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@USERNAME",
-                SearchValue: MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value 
+                SearchValue: MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
             },
             {
                 SearchKey: "@STOREID",
                 SearchValue: MLObject.CoordinatorStoreID != "" ? MLObject.CoordinatorStoreID : -1
             },
-            // {
-            //     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-            //     SearchValue: MLObject.ShipmentOrderStatusGroupID
-            // },
-            // {
-            //     SearchKey: "@RECEIVERDISTRICTID",
-            //     SearchValue: MLObject.ReceiverProvinceID
-            // },
+            {
+                SearchKey: "@ISLOCKDELIVERY",
+                SearchValue: MLObject.DeliveryStatus
+            },
 
         ];
 
@@ -106,7 +101,7 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult",searchData, apiResult)
+            console.log("apiResult", searchData, apiResult)
             if (!apiResult.IsError) {
                 let objStaffDebtID = {}
                 const tempData = apiResult.ResultObject.map((item, index) => {
@@ -129,9 +124,9 @@ class SearchCom extends React.Component {
                 const tempDataExport = apiResult.ResultObject.map((item, index) => {
                     let element = {
                         "Mã NV nợ": item.FullNameMember,
-                        "Kho điều phối": item.StoreID+"-"+item.StoreName,
+                        "Kho điều phối": item.StoreID + "-" + item.StoreName,
                         "Tổng tiền phải thu hộ": item.TotalCOD,
-                        "Tổng tiền phải thu vật tư": item.TotalSaleMaterialMoney,
+                        "Tổng tiền phải thu vật tư": item.TotlSleMaterialMoney,
                         "Tổng tiền phải thu": item.TotalMoney,
                         "Tổng tiền đã thu của khách hàng": item.CollectedTotalMoney,
                         "Tổng vận đơn còn nợ": item.TotalDebtOrders,
@@ -171,7 +166,7 @@ class SearchCom extends React.Component {
         if (!IsError) {
             cssNotification = "notification-custom-success";
             iconNotification = "fa fa-check"
-           
+
         } else {
             cssNotification = "notification-danger";
             iconNotification = "fa fa-exclamation"
@@ -206,11 +201,11 @@ class SearchCom extends React.Component {
 
         if (dataFind.iSunLockDelivery) {
             objDataRequest.IsLockDelivery = 1
-            objDataRequest.IsUnLockDelivery= 0
+            objDataRequest.IsUnLockDelivery = 0
         }
         else {
             objDataRequest.IsLockDelivery = 0
-            objDataRequest.IsUnLockDelivery= 1
+            objDataRequest.IsUnLockDelivery = 1
         }
 
         this.props.callFetchAPI(APIHostName, UpdateUnlockAPIPath, objDataRequest).then(apiResult => {
@@ -219,9 +214,9 @@ class SearchCom extends React.Component {
         });
     }
 
-    onhandleHistoryItem(objId){
+    onhandleHistoryItem(objId) {
         const { gridDataSource } = this.state;
-        const dataFind = gridDataSource.find(n => {
+        const dataFind = gridDtaSource.find(n => {
             return n.StaffDebtID == objId[0].value
         });
 
@@ -234,22 +229,22 @@ class SearchCom extends React.Component {
                 SearchKey: "@STOREID",
                 SearchValue: dataFind.StoreID
             },
-          
+
         ];
 
         this.props.callFetchAPI(APIHostName, SearchUnlockLogAPIPath, postData).then(apiResult => {
-            if(apiResult.IsError){
+            if (apiResult.IsError) {
                 this.showMessage(apiResult.MessageDetail);
             }
-            else{
+            else {
                 const tempData = apiResult.ResultObject.map((item, index) => {
-                    
+
                     item.FullName = item.UserName + " - " + item.FullName;
                     item.StoreFullName = item.StoreID + " - " + item.StoreName;
                     item.UnLockFullName = item.unLockDeliveryUser + " - " + item.unLockDeliveryFullName;
                     return item;
                 })
-                this.onShowModalHistory(tempData, dataFind); 
+                this.onShowModalHistory(tempData, dataFind);
             }
         })
 
@@ -291,28 +286,28 @@ class SearchCom extends React.Component {
             return n.StaffDebtID == objValue[0].value
         });
         const obj = JSON.parse(Base64.decode(objValue[0].value));
-        const param =[
-           
+        const param = [
+
             {
                 SearchKey: "@USERNAME",
                 SearchValue: obj.UserName
             },
             {
                 SearchKey: "@STOREID",
-                SearchValue:  obj.StoreID
+                SearchValue: obj.StoreID
             },
 
         ]
 
         this.props.callFetchAPI(APIHostName, SearchDetailAPIPath, param).then(apiResult => {
-            if(!apiResult.IsError){
-                const dataTemp=  apiResult.ResultObject.map((item, index) => {
-                    item.FullNameMember = item.UserName + " - " + item.FullName
+            if (!apiResult.IsError) {
+                const dataTemp = apiResult.ResultObject.map((item, index) => {
+                    item.FullNameMemer = item.UserName + " - " + item.FullName
                     return item;
                 })
                 this.onShowModal(dataTemp, tempItme)
             }
-            else{
+            else {
                 this.showMessage(apiResult.Message)
             }
         })
@@ -323,11 +318,11 @@ class SearchCom extends React.Component {
         this.addNotification(result.Message);
     }
 
-    handleExportSubmit(formData, MLObject){
+    handleExportSubmit(formData, MLObject) {
         const postData = [
             {
                 SearchKey: "@USERNAME",
-                SearchValue: MLObject.UserName ==  -1 ? MLObject.UserName : MLObject.UserName.value
+                SearchValue: MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
             },
             {
                 SearchKey: "@STOREID",
@@ -337,12 +332,12 @@ class SearchCom extends React.Component {
         ];
         this.props.callFetchAPI(APIHostName, SearchExportAPIPath, postData).then(apiResult => {
             if (!apiResult.IsError) {
-                if(apiResult.ResultObject.length > 0){
+                if (apiResult.ResultObject.length > 0) {
                     const tempDataExport = apiResult.ResultObject.map((item, index) => {
                         let element = {
-                            "Mã NV nợ":  item.UserName + " - " + item.FullName,
+                            "Mã NV nợ": item.UserName + " - " + item.FullName,
                             "Kho điều phối": item.StoreID + "-" + item.StoreName,
-                            "Tổng tiền phải thu hộ": item.TotalCOD,
+                            "Tổng tiền p hải thu hộ": item.TotalCOD,
                             "Tổng tiền phải thu vật tư": item.TotalSaleMaterialMoney,
                             "Tổng tiền phải thu": item.TotalMoney,
                             "Tổng tiền đã thu của khách hàng": item.CollectedTotalMoney,
@@ -350,22 +345,22 @@ class SearchCom extends React.Component {
                             "Tổng vận đơn nợ quá hạn": item.TotALoverDueDebtOrders,
                             "Tình trạng": item.IsLockDelivery == false ? "Hoạt động" : "Đã khóa",
                         };
-    
+
                         return element;
                     })
                     this.handleExportCSV(tempDataExport);
                 }
-                else{
+                else {
                     this.showMessage("Dữ liệu không tồn tại nên không thể xuất.")
                 }
             }
-            else{
+            else {
                 this.showMessage(apiResult.Message)
             }
         })
     }
 
-    
+
     handleExportCSV(dataExport) {
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         const fileExtension = '.xlsx';
