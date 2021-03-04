@@ -13,7 +13,7 @@ export const SearchElementList = [
         name: "dtMonth",
         DataSourceMember: "Month",
         label: "Tháng",
-        value: "",
+        value: new Date(),
         format: "MM-YYYY",
         colspan: 2,
         placeholder: "MM-YYYY",
@@ -38,7 +38,7 @@ export const SearchElementList = [
 
 ]
 
-export const  SearchMLObjectDefinition = [
+export const SearchMLObjectDefinition = [
     {
         Name: "Month",
         DefaultValue: "",
@@ -122,7 +122,7 @@ export const GridColumnList = [
         DataSourceMember: "TotalQuantity",
         Width: 100
     },
-    
+
 ]
 
 export const GridColumnListPrice = [
@@ -210,7 +210,7 @@ export const GridColumnListPrice = [
         DataSourceMember: "TotalSalePrice",
         Width: 100
     },
-    
-    
+
+
 ]
 
