@@ -20,14 +20,14 @@ class DashboardCom extends Component {
         super(props);
         this.state = {
             LstDataSource: [],
-            WeekShipmentOrderCoord:[],
-            ShipmentOrderActionLogList:[],
+            WeekShipmentOrderCoord: [],
+            ShipmentOrderActionLogList: [],
             IsLoadDataComplete: false,
-            NoCoordinated:0,
-            NoDelivery:0,
-            Delivery:0,
-            Delivered:0,
-            ShipmentOrderStatusGroup7:0
+            NoCoordinated: 0,
+            NoDelivery: 0,
+            Delivery: 0,
+            Delivered: 0,
+            ShipmentOrderStatusGroup7: 0
 
         };
     }
@@ -46,11 +46,11 @@ class DashboardCom extends Component {
                     LstDataSource: apiResult.ResultObject == null ? [] : apiResult.ResultObject.ShipmentOrderItemList,
                     WeekShipmentOrderCoord: apiResult.ResultObject == null ? [] : apiResult.ResultObject.WeekShipmentOrderCoordList,
                     ShipmentOrderActionLogList: apiResult.ResultObject == null ? [] : apiResult.ResultObject.ShipmentOrder_ActionLogList,
-                    NoCoordinated:apiResult.ResultObject.NoCoordinated,
-                    NoDelivery:apiResult.ResultObject.NoDelivery,
-                    Delivery:apiResult.ResultObject.Delivery,
-                    Delivered:apiResult.ResultObject.Delivered,
-                    ShipmentOrderStatusGroup7:apiResult.ResultObject.ShipmentOrderStatusGroup7,
+                    NoCoordinated: apiResult.ResultObject.NoCoordinated,
+                    NoDelivery: apiResult.ResultObject.NoDelivery,
+                    Delivery: apiResult.ResultObject.Delivery,
+                    Delivered: apiResult.ResultObject.Delivered,
+                    ShipmentOrderStatusGroup7: apiResult.ResultObject.ShipmentOrderStatusGroup7,
                     IsLoadDataComplete: true,
 
                 });
@@ -60,7 +60,6 @@ class DashboardCom extends Component {
 
 
     render() {
-       
         if (this.state.IsLoadDataComplete) {
             return (
                 <div className="col-lg-12 dashboard">
