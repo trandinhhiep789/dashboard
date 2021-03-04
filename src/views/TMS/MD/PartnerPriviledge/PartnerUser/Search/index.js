@@ -493,7 +493,7 @@ class SearchCom extends React.Component {
                         onDeleteClick={this.handleDelete}
                         onInsertClick={this.handleInsert}
                         onInsertClickEdit={this.handleEdit}
-                        IsAutoPaging={false}
+                        IsAutoPaging={true}
                         RowsPerPage={10}
                         IsCustomAddLink={true}
                         //headingTitle={"Người dùng của nhà cung cấp"}
