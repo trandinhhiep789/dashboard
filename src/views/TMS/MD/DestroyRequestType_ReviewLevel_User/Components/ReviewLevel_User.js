@@ -191,7 +191,8 @@ class ReviewLevel_UserCom extends React.Component {
                     FormMessage={this.state.CallAPIMessage}
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={null}
-                    BackLink={BackLink}
+                    //BackLink={BackLink}
+                    IsCloseModal={true}
                     onchange={this.handleChange.bind(this)}
                 //RequirePermission={AREA_UPDATE}
                 >
