@@ -577,19 +577,23 @@ class DataGridCom extends Component {
     mediaRenderDataGrid() {
         const { isMobileView, listColumnOnMobileView, listColumn } = this.props;
 
-        return (
-            <Media queries={{
-                small: "(max-width: 576px)",
-                medium: "(min-width: 577px)"
-            }}>
-                {matches => (
-                    <Fragment>
-                        {matches.small && this.renderDataGrid(listColumnOnMobileView)}
-                        {matches.medium && this.renderDataGrid(listColumn)}
-                    </Fragment>
-                )}
-            </Media>
-        )
+        if (isMobileView) {
+            return (
+                <Media queries={{
+                    small: "(max-width: 576px)",
+                    medium: "(min-width: 577px)"
+                }}>
+                    {matches => (
+                        <Fragment>
+                            {matches.small && this.renderDataGrid(listColumnOnMobileView)}
+                            {matches.medium && this.renderDataGrid(listColumn)}
+                        </Fragment>
+                    )}
+                </Media>
+            )
+        } else {
+            return this.renderDataGrid(listColumn);
+        }
     }
 
     checkPermission(permissionKey) {

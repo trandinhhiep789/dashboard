@@ -25,7 +25,7 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@USERNAME",
-        SearchValue:-1
+        SearchValue: -1
     },
     {
         SearchKey: "@STOREID",
@@ -39,11 +39,11 @@ export const InitSearchParams = [
     //     SearchKey: "@RECEIVERDISTRICTID",
     //     SearchValue: -1
     // },
-  
+
 ];
 
 export const SearchElementList = [
-    
+
     {
         type: "Datetime",
         name: "dtFromDate",
@@ -96,7 +96,7 @@ export const SearchElementList = [
         NameMember: "StoreName",
         // filterValue: 10,
         // filterobj:"CompanyID",
-        classNameCol:"col-custom"
+        classNameCol: "col-custom"
     },
     // {
     //     type: "ComboBox",
@@ -130,10 +130,24 @@ export const SearchElementList = [
         isMultiSelect: false
 
     },
-
+    {
+        type: "ComboBox",
+        name: "cbDeliveryStatus",
+        DataSourceMember: "DeliveryStatus",
+        label: "Trạng thái giao hàng",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "--Tất cả--",
+        listoption: [
+            { value: -1, label: '--Tất cả--' },
+            { value: 1, label: 'Đã khóa' },
+            { value: 2, label: 'Hoạt động' }
+        ],
+    }
 ]
 
-export const  SearchMLObjectDefinition = [
+export const SearchMLObjectDefinition = [
     {
         Name: "FromDate",
         DefaultValue: "",
@@ -163,7 +177,7 @@ export const  SearchMLObjectDefinition = [
         Name: "UserName",
         DefaultValue: "",
         BindControlName: "cbUserName"
-    },
+    }
 ]
 
 export const GridColumnList = [
@@ -246,7 +260,7 @@ export const GridColumnList = [
     },
 ]
 
-export const  DataGirdStaffDebtColumnList=[
+export const DataGirdStaffDebtColumnList = [
     {
         Name: "ShipmentOrderID",
         Type: "texttolinkNewBlank",
@@ -321,33 +335,33 @@ export const  DataGirdStaffDebtColumnList=[
     },
 ]
 
-export const DataGirdStaffDebtHistoryColumnList=[
+export const DataGirdStaffDebtHistoryColumnList = [
     {
         Name: "FullName",
         Type: "text",
         Caption: "Mã NV",
         DataSourceMember: "FullName",
         Width: "10%"
-    }, 
+    },
     {
         Name: "StoreFullName",
         Type: "text",
         Caption: "Kho điều phối",
         DataSourceMember: "StoreFullName",
         Width: "10%"
-    }, 
+    },
     {
         Name: "UnLockFullName",
         Type: "text",
         Caption: "Người mở khóa",
         DataSourceMember: "UnLockFullName",
         Width: "10%"
-    }, 
+    },
     {
         Name: "unLockDeliveryDate",
         Type: "date",
         Caption: "Ngày mở khóa",
         DataSourceMember: "unLockDeliveryDate",
         Width: "10%"
-    }, 
+    },
 ]

@@ -59,13 +59,15 @@ class CommentCom extends Component {
 
     handleKeyPress(e) {
         if (e.key === 'Enter') {
+            e.preventDefault();
             this.onSendComment();
         }
     }
 
     onSendComment() {
         const { CommentValue } = this.state;
-        this.props.onKeyPressSumit(CommentValue)
+        this.props.onKeyPressSumit(CommentValue);
+        this.setState({ CommentValue: '' });
     }
 
 
