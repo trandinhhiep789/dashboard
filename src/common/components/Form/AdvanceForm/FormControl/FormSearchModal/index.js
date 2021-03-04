@@ -102,7 +102,7 @@ class SearchModalCom extends Component {
                     isMultipleCheck={this.props.multipleCheck}
                     IDSelectColumnName={this.props.IDSelectColumnName}
                     hasSearch={false}
-                    isHideHeaderToolbarGroupTextBox={false}
+                    isHideHeaderToolbarGroupTextBox={true}
                     isHideHeaderToolbar={true}
                     RowsPerPage={10}
                     IsAutoPaging={true}
