@@ -198,7 +198,7 @@ export const GridColumnListPrice = [
     },
     {
         Name: "SalePrice",
-        Type: "text",
+        Type: "textCurrency",
         Caption: "Đơn giá (giá vốn)",
         DataSourceMember: "SalePrice",
         Width: 100
