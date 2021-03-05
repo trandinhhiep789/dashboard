@@ -132,7 +132,7 @@ export const DataGridHistoryColumnList = [
     // },
     {
         Name: "CreatedDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày thay đổi",
         DataSourceMember: "CreatedDate",
         Width: 150
