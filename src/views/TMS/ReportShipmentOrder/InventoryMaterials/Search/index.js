@@ -81,9 +81,15 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        const objData = {
+        const objDatatest = {
             UserName: 1125, //MLObject.UserName == -1 ? "" : MLObject.UserName.value,
             Month: new Date()//MLObject.Month
+
+        }
+
+        const objData = {
+            UserName: MLObject.UserName == -1 ? "" : MLObject.UserName.value,
+            Month: MLObject.Month
 
         }
         console.log("objData", objData)
