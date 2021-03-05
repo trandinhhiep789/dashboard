@@ -105,7 +105,6 @@ class ListShipCoordinatorCom extends Component {
     }
 
     handleOnValueChangeDeliverUser(name, value, selectedOption) {
-        debugger
         let objMultiDeliverUser = [];
         let listStaffDebtObject = [];
         selectedOption && selectedOption.map((item, index) => {
@@ -202,13 +201,14 @@ class ListShipCoordinatorCom extends Component {
         this.setState({ ShipmentOrder: this.state.ShipmentOrder });
     }
     handleonValueChange(rowname, rowvalue, rowIndex) {
+        debugger;
         let objDeliverUser = [];
         let { ShipmentOrder } = this.state;
         if (rowname == "ShipmentOrder_DeliverUserList") {
             let listStaffDebtObject = [];
             rowvalue && rowvalue.map((item, index) => {
                 if (item.value != -1 && item.value != 0) {
-                    let objShipmentOrder_DeliverUser = { UserName: item.value, FullName: item.name }
+                    let objShipmentOrder_DeliverUser = { UserName: item.value, FullName: item.FullName }
                     objDeliverUser.push(objShipmentOrder_DeliverUser)
                     listStaffDebtObject.push({
                         UserName: item.value,
