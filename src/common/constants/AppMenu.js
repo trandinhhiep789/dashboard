@@ -939,13 +939,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            {
-                MenuName: 'InvestigationShipmentOrderStatus',
-                MenuTitle: 'Tra cứu trạng thái vận đơn',
-                LinkTo: '/InvestigationShipmentOrderStatus',
-                MenuIcon: '',
-                SubMenu: []
-            },
+            
             {
                 MenuName: 'InventoryMaterials',
                 MenuTitle: 'Báo cáo tồn kho vật tư',
@@ -954,7 +948,14 @@ const AppMenu = [
                 SubMenu: []
             }
         ]
-    }
+    },
+    {
+        MenuName: 'InvestigationShipmentOrderStatus',
+        MenuTitle: 'Tra cứu vận đơn',
+        LinkTo: '/InvestigationShipmentOrderStatus',
+        MenuIcon: '',
+        SubMenu: []
+    },
 
 ];
 
