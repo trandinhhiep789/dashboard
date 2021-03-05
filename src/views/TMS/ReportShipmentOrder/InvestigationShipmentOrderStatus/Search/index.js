@@ -57,6 +57,7 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
 
                 const tempData = apiResult.ResultObject.ShipmentOrderType_WorkFlowList.map((item, index) => {
@@ -114,8 +115,8 @@ class SearchCom extends React.Component {
                     listColumn={GridColumnListShipmentOrder}
                     dataSource={this.state.gridDataSourceShipmentOrder}
                     IsFixheaderTable={false}
-                    IDSelectColumnName={'WorkFlowID'}
-                    PKColumnName={'WorkFlowID'}
+                    IDSelectColumnName={'DeliverUserID'}
+                    PKColumnName={'DeliverUserID'}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
