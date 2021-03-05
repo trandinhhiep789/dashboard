@@ -51,7 +51,7 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         this.getCacheMTG()
-        this.handleSearchSubmit();
+        //this.handleSearchSubmit();
         window.addEventListener("resize", this.updateWindowDimensions);
     }
 
