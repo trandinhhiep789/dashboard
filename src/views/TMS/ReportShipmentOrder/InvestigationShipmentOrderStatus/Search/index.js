@@ -10,6 +10,7 @@ import {
     SearchMLObjectDefinition,
     SearchElementList,
     GridColumnList,
+    GridColumnListShipmentOrder,
     APIHostName,
     SearchAPIPath,
 } from "../constants";
@@ -31,9 +32,9 @@ class SearchCom extends React.Component {
         this.state = {
             IsCallAPIError: false,
             dataSource: [],
-            gridDataSource:[],
+            gridDataSource: [],
             IsLoadDataComplete: false,
-
+            gridDataSourceShipmentOrder: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -56,15 +57,22 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
-                
+
                 const tempData = apiResult.ResultObject.ShipmentOrderType_WorkFlowList.map((item, index) => {
-                    item.ProcessFullName =item.ProcessUser +"-"+ item.ProcessUserName
+                    item.ProcessFullName = item.ProcessUser + "-" + item.ProcessUserName
                     return item;
                 })
                 this.setState({
                     gridDataSource: tempData,
                     dataSource: apiResult.ResultObject,
+                })
+
+                // test GridColumnListShipmentOrder
+                this.setState({
+                    gridDataSourceShipmentOrder: tempData,
+                    dataSource: apiResult.ResultObject
                 })
             }
             else {
@@ -74,6 +82,8 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message)
             }
         });
+
+
     }
 
     showMessage(message) {
@@ -98,8 +108,25 @@ class SearchCom extends React.Component {
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                 />
-              
-                <InfoShipmentOrder dataShipmentOder= {this.state.dataSource} />
+
+                <InfoShipmentOrder dataShipmentOder={this.state.dataSource} />
+
+                <DataGrid
+                    listColumn={GridColumnListShipmentOrder}
+                    dataSource={this.state.gridDataSourceShipmentOrder}
+                    IsFixheaderTable={false}
+                    IDSelectColumnName={'DeliverUserID'}
+                    PKColumnName={'DeliverUserID'}
+                    isHideHeaderToolbar={false}
+                    IsShowButtonAdd={false}
+                    IsShowButtonDelete={false}
+                    IsShowButtonPrint={false}
+                    IsPrint={false}
+                    IsAutoPaging={true}
+                    RowsPerPage={10}
+                    // RequirePermission={TMS_INVESTIGATION_SO_STATUS}
+                    ref={this.gridref}
+                />
 
                 <DataGrid
                     listColumn={GridColumnList}
