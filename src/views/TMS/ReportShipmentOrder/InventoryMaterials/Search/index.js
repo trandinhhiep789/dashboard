@@ -37,7 +37,9 @@ class SearchCom extends React.Component {
             dataMaterialGroupExport: [],
             dataSimiliGroupExport: [],
             dataMaterialGroup: [],
-            dataSimiliGroup: []
+            dataSimiliGroup: [],
+            UserName: "",
+            Month: ""
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -49,6 +51,7 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         this.getCacheMTG()
+        this.handleSearchSubmit();
         window.addEventListener("resize", this.updateWindowDimensions);
     }
 
@@ -78,23 +81,17 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        const postData = [
-            {
-                SearchKey: "@MONTH",
-                SearchValue: MLObject.Month
-            },
-            {
-                SearchKey: "@USERNAME",
-                SearchValue: MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
-            },
-
-        ];
-
         const objData = {
-            UserName: MLObject.UserName == -1 ? "" : MLObject.UserName.value,
-            Month: MLObject.Month
+            UserName: 1125, //MLObject.UserName == -1 ? "" : MLObject.UserName.value,
+            Month: new Date()//MLObject.Month
 
         }
+        console.log("objData", objData)
+
+        this.setState({
+            UserName: objData.UserName,
+            Month: objData.Month
+        })
 
 
         this.callSearchData(objData);
@@ -193,8 +190,6 @@ class SearchCom extends React.Component {
         this.addNotification(result.Message, result.IsError);
     }
 
-
-
     handleExportFilePrice() {
 
     }
@@ -233,7 +228,22 @@ class SearchCom extends React.Component {
         });
     }
 
-    onShowModal() {
+    getStatusDelivery(status) {
+        switch (status) {
+            case 'QuantityHanOverDone':  // Nhận trong kỳ
+                return 1;
+            case 'QuantityHanOverDoing': // Chờ bàn giao
+                return 2;
+            case 'QuantityReturn':       // Nhập trả
+                return 3;
+            case 'ChangeTotalQuantity':  // Sử dụng trong kỳ
+                return 4;
+            default:
+                return 0;
+        }
+    }
+
+    onShowModal(Data) {
         const { widthPercent } = this.state;
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: "Số dư đầu kỳ",
@@ -244,8 +254,75 @@ class SearchCom extends React.Component {
         });
     }
 
-    onShowModalDetail() {
-        this.onShowModal();
+    onShowModalDetail(objValue, name) {
+        const { UserName, Month } = this.state;
+        const status = this.getStatusDelivery(name);
+
+
+        let objData = {};
+        if (status == 1) { //	Nhận trong kỳ
+            objData = {
+                Month: Month,
+                UserName: UserName,
+                ProductID: objValue[0].value,
+                IsHandOverMaterial: 1 // v_ISHANDOVERMATERIAL
+            }
+            this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
+                console.log(' 111:', objData, apiResult)
+                if (!apiResult.IsError) {
+                    //this.onShowModal(apiResult.ResultObject);
+                }
+                else {
+                    this.showMessage(apiResult.MessageDetail)
+                }
+            });
+
+        }
+        if (status == 2) { //	Chờ bàn giao
+            objData = {
+                Month: Month,
+                UserName: UserName,
+                ProductID: objValue[0].value,
+                IsHandOverMaterial: 0 // v_ISHANDOVERMATERIAL
+            }
+            this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
+                console.log(' 2222:', objData, apiResult)
+                if (!apiResult.IsError) {
+
+                }
+                else {
+                    this.showMessage(apiResult.MessageDetail)
+                }
+            });
+        }
+        if (status == 3) { //Nhập trả
+            this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.handleShowModal(apiResult.ResultObject, status)
+                }
+                else {
+                    this.showMessage(apiResult.MessageDetail)
+                }
+            });
+        }
+        if (status == 4) { //	Sử dụng trong kỳ
+            objData = {
+                Month: Month,
+                UserName: UserName,
+                ProductID: objValue[0].value
+            }
+            this.props.callFetchAPI(APIHostName, "api/AdvanceDebtFlow/LoadAdvanceDebtFlowUsing", objData).then(apiResult => {
+                console.log(' 2222:', objData, apiResult)
+                if (!apiResult.IsError) {
+
+                }
+                else {
+                    this.showMessage(apiResult.MessageDetail)
+                }
+            });
+        }
+
+
     }
 
 
@@ -287,8 +364,8 @@ class SearchCom extends React.Component {
                     listColumn={GridColumnListPrice}
                     dataSource={this.state.dataMaterialGroup}
                     IsFixheaderTable={false}
-                    IDSelectColumnName={''}
-                    PKColumnName={''}
+                    IDSelectColumnName={'ProductID'}
+                    PKColumnName={'ProductID'}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}

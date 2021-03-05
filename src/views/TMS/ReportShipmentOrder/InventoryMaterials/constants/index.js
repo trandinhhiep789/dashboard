@@ -149,7 +149,7 @@ export const GridColumnListPrice = [
     },
     {
         Name: "TotalQuantityBegin",
-        Type: "popupNew",
+        Type: "text",
         Caption: "Số dư đầu kỳ",
         DataSourceMember: "TotalQuantityBegin",
         Width: 100
@@ -177,7 +177,7 @@ export const GridColumnListPrice = [
     },
     {
         Name: "ChangeTotalQuantity",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Sử dụng trong kỳ",
         DataSourceMember: "ChangeTotalQuantity",
         Width: 100
