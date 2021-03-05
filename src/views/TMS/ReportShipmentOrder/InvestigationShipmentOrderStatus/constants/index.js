@@ -50,3 +50,27 @@ export const GridColumnList = [
         Width: 200
     },
 ];
+
+export const GridColumnListShipmentOrder = [
+    {
+        Name: "Username",
+        Type: "text",
+        Caption: "Mã nhân viên",
+        DataSourceMember: "Username",
+        Width: 200
+    },
+    {
+        Name: "Name",
+        Type: "text",
+        Caption: "Nhân viên",
+        DataSourceMember: "Name",
+        Width: 200
+    },
+    {
+        Name: "PhoneNumber",
+        Type: "text",
+        Caption: "Số điện thoại",
+        DataSourceMember: "PhoneNumber",
+        Width: 200
+    }
+]
