@@ -19,13 +19,15 @@ import {
     PKColumnName,
     TitleFormSearch,
     SearchMLObjectDefinition,
-    SearchElementList
+    SearchElementList,
+    AddLink
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 
 import { callGetCache } from "../../../../actions/cacheAction";
+import ListMTReturnRequestType from "../Component/ListMTReturnRequestType";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -44,7 +46,7 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        this.showMessage("Tính năng đang phát triển. Vui lòng quay lại!")
+       // this.showMessage("Tính năng đang phát triển. Vui lòng quay lại!")
     }
 
 
@@ -65,7 +67,13 @@ class SearchCom extends React.Component {
     }
 
     handleInputGridInsert(MLObjectDefinition, modalElementList, dataSource) {
-
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Loại yêu cầu nhập trả vật tư',
+            content: {
+                text: <ListMTReturnRequestType/>
+            },
+            maxWidth: '800px'
+        });
 
 
     }

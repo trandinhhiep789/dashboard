@@ -2,33 +2,32 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import ElementInputModal from '../../../../common/components/FormContainer/FormElement/ElementInputModal';
 
-class DestroyRequestRVListCom extends Component {
+class MTReturnRequestRVListCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            DestroyRequestRVList: this.props.dataSource,
+            MTReturnRequestRVList: this.props.dataSource,
         }
     }
 
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.dataSource) !== JSON.stringify(nextProps.dataSource)) {
             this.setState({
-                DestroyRequestRVList: nextProps.dataSource
+                MTReturnRequestRVList: nextProps.dataSource
             })
         }
     }
     handleInputChangeComboBox(name, inputvalue, index) {
-        let { DestroyRequestRVList } = this.state
-        DestroyRequestRVList[index].UserName = inputvalue
+        let { MTReturnRequestRVList } = this.state
+        MTReturnRequestRVList[index].UserName = inputvalue
 
         if (this.props.onValueChangeGridRV != null)
-            this.props.onValueChangeGridRV(DestroyRequestRVList);
+            this.props.onValueChangeGridRV(MTReturnRequestRVList);
     }
 
     render() {
-        const { DestroyRequestRVList } = this.state;
+        const { MTReturnRequestRVList } = this.state;
         const { disabledControll } = this.props;
-
         return (
             <div className="card">
                 <div className="card-title group-card-title">
@@ -46,13 +45,13 @@ class DestroyRequestRVListCom extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {DestroyRequestRVList != null &&
-                                            DestroyRequestRVList.map((rowItem, rowIndex) => {
+                                        {MTReturnRequestRVList != null &&
+                                            MTReturnRequestRVList.map((rowItem, rowIndex) => {
 
                                                 let listOption = [];
                                                 // rowItem.UserName=rowItem.InventoryRequestType_ReviewLevelList[0].UserName
                                                 {
-                                                    rowItem.DestroyRequest_ReviewLevelList && rowItem.DestroyRequest_ReviewLevelList.map((item, index) => {
+                                                    rowItem.MTReturnRequest_ReviewLevelList && rowItem.MTReturnRequest_ReviewLevelList.map((item, index) => {
                                                         listOption.push({ value: item.UserName, label: item.UserName + "-" + item.FullName, FullName: item.FullName });
                                                     })
                                                 }
@@ -96,5 +95,5 @@ const mapDispatchToProps = dispatch => {
     return {
     }
 }
-const DestroyRequestRVList = connect(mapStateToProps, mapDispatchToProps)(DestroyRequestRVListCom);
-export default DestroyRequestRVList;
+const MTReturnRequestRVList = connect(mapStateToProps, mapDispatchToProps)(MTReturnRequestRVListCom);
+export default MTReturnRequestRVList;

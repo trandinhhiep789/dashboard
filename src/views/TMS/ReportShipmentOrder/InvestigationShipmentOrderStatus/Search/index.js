@@ -57,7 +57,6 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
 
                 const tempData = apiResult.ResultObject.ShipmentOrderType_WorkFlowList.map((item, index) => {
@@ -69,11 +68,6 @@ class SearchCom extends React.Component {
                     dataSource: apiResult.ResultObject,
                 })
 
-                // test GridColumnListShipmentOrder
-                this.setState({
-                    gridDataSourceShipmentOrder: tempData,
-                    dataSource: apiResult.ResultObject
-                })
             }
             else {
                 this.setState({
@@ -113,7 +107,7 @@ class SearchCom extends React.Component {
 
                 <DataGrid
                     listColumn={GridColumnListShipmentOrder}
-                    dataSource={this.state.gridDataSourceShipmentOrder}
+                    dataSource={this.state.dataSource.ShipmentOrder_DeliverUserList}
                     IsFixheaderTable={false}
                     IDSelectColumnName={'DeliverUserID'}
                     PKColumnName={'DeliverUserID'}
