@@ -514,6 +514,18 @@ export const GridInstallBundle_Materia = [
         BindControlName: "IsMaterialForEachpRoduct",
         DataSourceMember: "IsMaterialForEachpRoduct"
     },
+    {
+        Name: "IsCheckStockInanotheRGroup",
+        DefaultValue: false,
+        BindControlName: "IsCheckStockInanotheRGroup",
+        DataSourceMember: "IsCheckStockInanotheRGroup"
+    },
+    {
+        Name: "InStockMaterialGroupID",
+        DefaultValue: "",
+        BindControlName: "InStockMaterialGroupID",
+        DataSourceMember: "InStockMaterialGroupID"
+    },
   
     {
         Name: "CreatedUser",
@@ -771,6 +783,30 @@ export const InstallBundle_MateriaColumnList = [
         Width: 70,
         OrderIndex:18
     },
+    {
+        name: "IsCheckStockInanotheRGroup",
+        Type: "checkbox",
+        label:"Kiểm tra tồn kho tại nhóm vật tư khác",
+        Caption: "Kiểm tra tồn kho tại nhóm vật tư khác",
+        datasourcemember: "IsCheckStockInanotheRGroup",
+        hideInput: false,
+        Width: 70,
+        OrderIndex:19
+    },
+    {
+        name: "InStockMaterialGroupID",
+        Type: "ComboBox",
+        Caption: "Nhóm vật tư kiểm tra tồn kho",
+        label: "Nhóm vật tư kiểm tra tồn kho",
+        datasourcemember: "InStockMaterialGroupID",
+        isautoloaditemfromcache:true,
+        loaditemcachekeyid:"ERPCOMMONCACHE.MATERIALGROUP",
+        valuemember:"MaterialGroupID",
+        nameMember:"MaterialGroupName",
+        Disabled:false,
+        OrderIndex: 20,
+        hideInput: false
+    },
     
     {
         name: "Note",
@@ -778,7 +814,7 @@ export const InstallBundle_MateriaColumnList = [
         label:"Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex:19,
+        OrderIndex:21,
         Colmd:12,
         hideInput: false,
         labelcolspan:2,
@@ -1032,14 +1068,37 @@ export const InstallBundle_MateriaColumnListEdit = [
         Width: 70,
         OrderIndex:18
     },
-    
+    {
+        name: "IsCheckStockInanotheRGroup",
+        Type: "checkbox",
+        label:"Kiểm tra tồn kho tại nhóm vật tư khác",
+        Caption: "Kiểm tra tồn kho tại nhóm vật tư khác",
+        datasourcemember: "IsCheckStockInanotheRGroup",
+        hideInput: false,
+        Width: 70,
+        OrderIndex:19
+    },
+    {
+        name: "InStockMaterialGroupID",
+        Type: "ComboBox",
+        Caption: "Nhóm vật tư kiểm tra tồn kho",
+        label: "Nhóm vật tư kiểm tra tồn kho",
+        datasourcemember: "InStockMaterialGroupID",
+        isautoloaditemfromcache:true,
+        loaditemcachekeyid:"ERPCOMMONCACHE.MATERIALGROUP",
+        valuemember:"MaterialGroupID",
+        nameMember:"MaterialGroupName",
+        Disabled:false,
+        OrderIndex: 20,
+        hideInput: false
+    },
     {
         name: "Note",
         Type: "TextArea",
         label:"Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex:19,
+        OrderIndex:21,
         Colmd:12,
         hideInput: false,
         labelcolspan:2,

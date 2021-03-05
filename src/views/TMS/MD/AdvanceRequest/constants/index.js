@@ -176,7 +176,7 @@ export const DataGridColumnList = [
         Caption: "Mã yêu cầu tạm ứng",
         Link: "/AdvanceRequest/Edit/",
         DataSourceMember: "AdvanceRequestID",
-        Width: 100
+        Width: 70
     },
     {
         Name: "AdvanceRequestTitle",
@@ -225,13 +225,20 @@ export const DataGridColumnList = [
         Type: "checkicon",
         Caption: "Đã xuất",
         DataSourceMember: "IsOutput",
-        Width: 60
+        Width: 50
     },
     {
         Name: "IsDeleted",
         Type: "checkicon",
         Caption: "Đã hủy",
         DataSourceMember: "IsDeleted",
+        Width: 50
+    },
+    {
+        Name: "IsHandoverMaterial",
+        Type: "checkicon",
+        Caption: "Đã bàn giao",
+        DataSourceMember: "IsHandoverMaterial",
         Width: 50
     },
 ];
