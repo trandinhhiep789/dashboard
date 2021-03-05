@@ -53,17 +53,17 @@ export const GridColumnList = [
 
 export const GridColumnListShipmentOrder = [
     {
-        Name: "Username",
+        Name: "UserName",
         Type: "text",
         Caption: "Mã nhân viên",
-        DataSourceMember: "Username",
+        DataSourceMember: "UserName",
         Width: 200
     },
     {
-        Name: "Name",
+        Name: "FullName",
         Type: "text",
         Caption: "Nhân viên",
-        DataSourceMember: "Name",
+        DataSourceMember: "FullName",
         Width: 200
     },
     {
