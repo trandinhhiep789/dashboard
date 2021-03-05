@@ -22,7 +22,7 @@ import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionList
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
-
+import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -42,11 +42,24 @@ class SearchCom extends React.Component {
         this.gridref = React.createRef();
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
+        this.onShowModalDetail = this.onShowModalDetail.bind(this);
+        this.onShowModal = this.onShowModal.bind(this);
     }
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         this.getCacheMTG()
+        window.addEventListener("resize", this.updateWindowDimensions);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions = () => {
+        this.setState({
+            widthPercent: (window.innerWidth * 90) / 100
+        })
     }
 
     getCacheMTG() {
@@ -220,6 +233,21 @@ class SearchCom extends React.Component {
         });
     }
 
+    onShowModal() {
+        const { widthPercent } = this.state;
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: "Số dư đầu kỳ",
+            content: {
+                text: <div>Tính năng đang phát triển</div>
+            },
+            maxWidth: widthPercent + 'px'
+        });
+    }
+
+    onShowModalDetail() {
+        this.onShowModal();
+    }
+
 
     render() {
         return (
@@ -274,6 +302,7 @@ class SearchCom extends React.Component {
                     DataExport={this.state.dataMaterialGroupExport}
                     fileName="Danh sách báo cáo tồn vật tư khác"
                     onExportFile={this.handleExportFile.bind(this)}
+                    onShowModal={this.onShowModalDetail}
                 />
             </React.Fragment>
         );
