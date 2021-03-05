@@ -142,8 +142,7 @@ class SearchCom extends React.Component {
                         "Tên nhóm vật tư": item.MaterialGroupName,
                         "Mã sản phẩm": item.ProductID,
                         "Tên sản phẩm": item.ProductName,
-                        "Tổng số lượng": item.TotalQuantity,
-                        "Số lượng khả dụng": item.UsableQuantity
+                        "Tổng số lượng": item.TotalQuantity
                     };
                     return element;
 
@@ -261,7 +260,7 @@ class SearchCom extends React.Component {
     handleExportSubmit(formData, MLObject) {
         const userName = MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
         this.props.callFetchAPI(APIHostName, SearchExportAPIPath, userName).then(apiResult => {
-            console.log("handleExportSubmit", userName, apiResult)
+           
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const exelData = apiResult.ResultObject.map((item, index) => {
@@ -272,8 +271,7 @@ class SearchCom extends React.Component {
                             "Tên nhóm vật tư": item.MaterialGroupName,
                             "Mã sản phẩm": item.ProductID,
                             "Tên sản phẩm": item.ProductName,
-                            "Tổng số lượng": item.TotalQuantity,
-                            "Số lượng khả dụng": item.UsableQuantity
+                            "Tổng số lượng": item.TotalQuantity
                         };
                         return element;
 
