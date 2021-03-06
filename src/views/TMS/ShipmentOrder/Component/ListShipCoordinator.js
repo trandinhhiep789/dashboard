@@ -169,6 +169,9 @@ class ListShipCoordinatorCom extends Component {
 
         if (this.checkInputName(elementobject) != "")
             return;
+
+
+        console.log("this.state.ShipmentOrder",this.state.ShipmentOrder)
     
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
             if (this.props.onChangeValue != null)
@@ -201,14 +204,13 @@ class ListShipCoordinatorCom extends Component {
         this.setState({ ShipmentOrder: this.state.ShipmentOrder });
     }
     handleonValueChange(rowname, rowvalue, rowIndex) {
-        debugger;
         let objDeliverUser = [];
         let { ShipmentOrder } = this.state;
         if (rowname == "ShipmentOrder_DeliverUserList") {
             let listStaffDebtObject = [];
             rowvalue && rowvalue.map((item, index) => {
                 if (item.value != -1 && item.value != 0) {
-                    let objShipmentOrder_DeliverUser = { UserName: item.value, FullName: item.FullName }
+                    let objShipmentOrder_DeliverUser = { UserName: item.value,FullName: item.FullName }
                     objDeliverUser.push(objShipmentOrder_DeliverUser)
                     listStaffDebtObject.push({
                         UserName: item.value,
