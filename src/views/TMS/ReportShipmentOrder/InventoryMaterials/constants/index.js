@@ -184,7 +184,7 @@ export const GridColumnListPrice = [
     },
     {
         Name: "QuantityExpend",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Tiêu hao khác",
         DataSourceMember: "QuantityExpend",
         Width: 100
@@ -214,3 +214,144 @@ export const GridColumnListPrice = [
 
 ]
 
+export const DataGridModalQuantityHanOverDone = [
+    {
+        Name: "AdvancerequestID",
+        Type: "text",
+        Caption: "Yêu cầu tạm ứng",
+        DataSourceMember: "ADVANCEREQUESTID",
+        Width: 100
+    },
+    {
+        Name: "SaleOrderID",
+        Type: "text",
+        Caption: "Yêu cầu xuất",
+        DataSourceMember: "SALEORDERID",
+        Width: 100
+    },
+    {
+        Name: "OutputVoucher",
+        Type: "text",
+        Caption: "Mã phiếu xuất",
+        DataSourceMember: "OUTPUTVOUCHER",
+        Width: 100
+    },
+    {
+        Name: "Quantity",
+        Type: "text",
+        Caption: "Số lượng",
+        DataSourceMember: "QUANTITY",
+        Width: 100
+    },
+    {
+        Name: "HANDOVERDATE",
+        Type: "text",
+        Caption: "Ngày bàn giao",
+        DataSourceMember: "HANDOVERDATE",
+        Width: 100
+    },
+
+];
+
+export const DataGridModalQuantityHanOverDoing = [
+    {
+        Name: "AdvancerequestID",
+        Type: "text",
+        Caption: "Yêu cầu xuất",
+        DataSourceMember: "ADVANCEREQUESTID",
+        Width: 100
+    },
+    {
+        Name: "SaleOrderID",
+        Type: "text",
+        Caption: "Yêu cầu xuất",
+        DataSourceMember: "SALEORDERID",
+        Width: 100
+    },
+    {
+        Name: "OutputVoucher",
+        Type: "text",
+        Caption: "Mã phiếu xuất",
+        DataSourceMember: "OUTPUTVOUCHER",
+        Width: 100
+    },
+    {
+        Name: "Quantity",
+        Type: "text",
+        Caption: "Số lượng ",
+        DataSourceMember: "QUANTITY",
+        Width: 100
+    }
+];
+
+export const DataGridModalQuantityReturn = [
+    {
+        Name: "SaleOrderID",
+        Type: "text",
+        Caption: "Yêu cầu xuất",
+        DataSourceMember: "SALEORDERID",
+        Width: 100
+    },
+    {
+        Name: "OutputVoucherID",
+        Type: "text",
+        Caption: "Mã phiếu xuất ",
+        DataSourceMember: "OUTPUTVOUCHERID",
+        Width: 100
+    },
+    {
+        Name: "ExchangeOrderID",
+        Type: "text",
+        Caption: "Mã nhập trả",
+        DataSourceMember: "EXCHANGEORDERID",
+        Width: 100
+    },
+    {
+        Name: "QuantityUnitName",
+        Type: "text",
+        Caption: "Số lượng",
+        DataSourceMember: "QUANTITYUNITNAME",
+        Width: 100
+    },
+];
+
+export const DataGridModalChangeTotalQuantity = [
+    {
+        Name: "ShipmentOrderID",
+        Type: "text",
+        Caption: "Mã vận đơn",
+        DataSourceMember: "SHIPMENTORDERID",
+        Width: 100
+    },
+    {
+        Name: "PartnerSaleOrderID",
+        Type: "text",
+        Caption: "Mã đơn hàng",
+        DataSourceMember: "PARTNERSALEORDERID",
+        Width: 100
+    },
+    {
+        Name: "QuantityUnitName",
+        Type: "text",
+        Caption: "Số lượng",
+        DataSourceMember: "QUANTITYUNITNAME",
+        Width: 100
+    },
+];
+
+export const DataGridModalQuantityExpend = [
+    {
+        Name: "",
+        Type: "text",
+        Caption: "Xuất tiêu hao",
+        DataSourceMember: "",
+        Width: 100
+    },
+    {
+        Name: "Quantity",
+        Type: "text",
+        Caption: "Số lượng",
+        DataSourceMember: "QUANTITY",
+        Width: 100
+    }
+]
