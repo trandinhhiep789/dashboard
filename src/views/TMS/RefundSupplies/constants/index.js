@@ -424,3 +424,80 @@ export const GridMLObjectDefinition = [
         DataSourceMember: "Quantity"
     }
 ];
+
+export const GirdMTReturnRequestDetailColumnList = [
+    {
+        Name: "MaterialGroupID",
+        Type: "text",
+        Caption: "Nhóm vật tư",
+        DataSourceMember: "MaterialGroupID",
+        Width: 150
+    },
+    {
+        Name: "ProductID",
+        Type: "text",
+        Caption: "Mã sản phẩm",
+        DataSourceMember: "ProductID",
+        Width: 150
+    },
+    {
+        Name: "ProductName",
+        Type: "text",
+        Caption: "Tên sản phẩm",
+        DataSourceMember: "ProductName",
+        Width: 150
+    },
+    {
+        Name: "UsableQuantity",
+        Type: "textNew",
+        Caption: "Số dư tạm ứng",
+        DataSourceMember: "UsableQuantity",
+        Width: 150
+    },
+    {
+        Name: "Quantity",
+        Type: "text",
+        Caption: "Số lượng hủy",
+        labelError: 'aaa',
+        DataSourceMember: "Quantity",
+        Width: 200,
+    },
+]
+
+export const GirdMTReturnRequestReviewLevelColumnList = [
+    {
+        Name: "ReviewLevelName",
+        Type: "text",
+        Caption: "Mức duyệt",
+        DataSourceMember: "ReviewLevelName",
+        Width: 100
+    },
+    {
+        Name: "ApproverName",
+        Type: "text",
+        Caption: "Người duyệt",
+        DataSourceMember: "ApproverName",
+        Width: 100
+    },
+    {
+        Name: "ReviewStatusLable",
+        Type: "text",
+        Caption: "Trạng thái duyệt",
+        DataSourceMember: "ReviewStatusLable",
+        Width: 100
+    },
+    {
+        Name: "reViewedDate",
+        Type: "date",
+        Caption: "Ngày duyệt",
+        DataSourceMember: "reViewedDate",
+        Width: 100
+    },
+    {
+        Name: "reViewedNote",
+        Type: "text",
+        Caption: "Ghi chú duyệt",
+        DataSourceMember: "reViewedNote",
+        Width: 100
+    },
+]
