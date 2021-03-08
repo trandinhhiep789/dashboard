@@ -285,12 +285,7 @@ export const DataGridColumnList = [
 ];
 
 export const MLObjectDefinition = [
-    {
-        Name: "MtreturnRequestTypeID",
-        DefaultValue: "",
-        BindControlName: "cboMtreturnRequestType",
-        DataSourceMember: "MtreturnRequestTypeID"
-    },
+
     {
         Name: "MtreturnRequestTypeID",
         DefaultValue: "",
