@@ -33,12 +33,12 @@ export const ModalColumnList_Insert = [
         readonly: false,
         validatonList: ["Comborequired"],
         isMulti: false,
-        IsAutoLoadItemFromCache: true,
+        IsAutoLoadItemFromCache: false,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
         ValueMember: "StoreID",
         NameMember: "StoreName",
-        KeyFilter: "CompanyID",
-        ValueFilter: "10"
+        // KeyFilter: "CompanyID",
+        // ValueFilter: "10"
     },
     {
         Name: "IsSystem",

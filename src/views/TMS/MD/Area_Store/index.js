@@ -39,6 +39,7 @@ class Area_StoreCom extends React.Component {
             cssNotification: "",
             iconNotification: "",
             AreaStoreDataSource: this.props.AreaStoreDataSource ? this.props.AreaStoreDataSource : [],
+            AreaStoreAllDataSource: this.props.AreaStoreAllDataSource ? this.props.AreaStoreAllDataSource : [],
             AreaID: this.props.AreaID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
@@ -53,8 +54,13 @@ class Area_StoreCom extends React.Component {
             this.setState({ AreaID: nextProps.AreaID });
         }
 
+        if (nextProps.AreaStoreAllDataSource !== this.state.AreaStoreAllDataSource) {
+            this.setState({ AreaStoreAllDataSource: nextProps.AreaStoreAllDataSource });
+        }
+
         if (nextProps.AreaStoreDataSource !== this.state.AreaStoreDataSource) {
             this.setState({ AreaStoreDataSource: nextProps.AreaStoreDataSource });
+            this.initCache();
         }
     }
 
@@ -87,7 +93,7 @@ class Area_StoreCom extends React.Component {
                 this.setState({
                     IsAllowedAdd: IsAllowedAdd,
                     IsAllowedUpdate: IsAllowedUpdate,
-                    IsAllowedDelete: IsAllowedDelete     
+                    IsAllowedDelete: IsAllowedDelete
                 });
             }
         });
@@ -155,6 +161,29 @@ class Area_StoreCom extends React.Component {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 this.setState({
                     Store: result.ResultObject.CacheData
+                });
+            }
+        });
+
+        this.props.callGetCache(ERPCOMMONCACHE_STORE).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                //console.log("FormElement listOption: ", listOption)
+                let _AreaStoreAll = this.state.AreaStoreAllDataSource ? this.state.AreaStoreAllDataSource : [];
+                //let _list = result.ResultObject.CacheData.filter(x => x.AreaID == this.state.AreaID && datasource.filter(y => y.StoreID == x.StoreID).length == 0)
+                let _list = result.ResultObject.CacheData.filter(x => x.CompanyID == 10 && x.IsActive == true && _AreaStoreAll.filter(y => y.StoreID == x.StoreID).length == 0);
+                //console.log("_list", _list, _AreaStoreAll)
+                let _list2 = [];
+                if (_list.length > 0) {
+                    _list2 = _list.map((item, index) => {
+                        return { value: item.StoreID, label: item.StoreName, name: item.StoreName };
+                    });
+                }
+                this.setState({
+                    StoreArea: _list2
+                });
+            } else {
+                this.setState({
+                    StoreArea: []
                 });
             }
         });
@@ -232,6 +261,17 @@ class Area_StoreCom extends React.Component {
             return;
         }
         this.setState({ IsInsert: true });
+
+
+        modalElementList.map((item, index) => {
+            if (item.Name == "StoreID") {
+                item.listoption = this.state.StoreArea;
+            }
+        });
+
+
+
+        console.log("modalElementList", modalElementList, this.state.AreaStoreDataSource);
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Thêm mới kho điều phối của khu vực',
             autoCloseModal: false,
@@ -280,6 +320,8 @@ class Area_StoreCom extends React.Component {
             },
             modalElementList: modalElementList,
         });
+
+
     }
 
     handleEdit(value, pkColumnName) {
@@ -395,7 +437,7 @@ class Area_StoreCom extends React.Component {
         //     //this.showMessage(apiResult.Message);
         //     this.addNotification(apiResult.Message, apiResult.IsError);
         // });
-        
+
         if (!this.state.IsAllowedDelete) {
             this.showMessage("Bạn không có quyền");
             return;
@@ -407,7 +449,7 @@ class Area_StoreCom extends React.Component {
             pkColumnName.map((pkItem, pkIndex) => {
                 MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
             });
-            
+
             let _deleteList = _AreaStoreDataSource.filter(item => item.AreaStoreCSID == MLObject.AreaStoreCSID);
             if (_deleteList && _deleteList.length > 0) {
                 _deleteList[0].DeletedUser = this.props.AppInfo.LoginInfo.Username;
