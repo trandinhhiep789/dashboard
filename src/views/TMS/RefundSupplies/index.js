@@ -9,6 +9,7 @@ import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
+import Detail from "./Detail";
 import NotFound from '../../NotFound';
 
 
@@ -21,6 +22,7 @@ class RefundSuppliesCom extends React.Component {
                 <Route exact path="/RefundSupplies" component={Search} />
                 <Route exact path="/RefundSupplies/Add/" component={Add} />
                 <Route exact path="/RefundSupplies/Edit/:id" component={Edit} />
+                <Route exact path="/RefundSupplies/Detail/" component={Detail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );

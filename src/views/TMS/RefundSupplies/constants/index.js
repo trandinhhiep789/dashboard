@@ -6,6 +6,8 @@ export const BackLink = "/RefundSupplies";
 export const AddLink = "/RefundSupplies/Add";
 
 export const AddAPIPath = "api/MTReturnRequest/Add";
+export const DeleteNewAPIPath = "api/MTReturnRequest/DeleteNew";
+
 
 export const LoadAPIByMtreturnRequestTypeIDPath = "api/MTReturnRequest_ReviewList/LoadByMTReturnRequesTypeID";
 export const LoadAPIByRequestTypeIDPath = "api/MTReturnRequestType_Product/GetListByRequestTypeID";
@@ -216,44 +218,67 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "DestroyRequestID",
+        DataSourceMember: "MTReturnRequestID",
         Width: 60
     },
     {
-        Name: "MaterialGroupID",
-        Type: "text",
-        Caption: "Nhóm vật tư",
-        DataSourceMember: "MaterialGroupID",
+        Name: "MTReturnRequestID",
+        Type: "texttolink",
+        Caption: "Mã yêu cầu",
+        DataSourceMember: "MTReturnRequestID",
+        Link: "/MTReturnRequest/Detail/",
         Width: 140
     },
     {
-        Name: "ProductName",
+        Name: "MTReturnRequestTypeName",
         Type: "text",
-        Caption: "Tên vật tư",
-        DataSourceMember: "ProductName",
+        Caption: "Loại yêu cầu nhập trả vật tư",
+        DataSourceMember: "MTReturnRequestTypeName",
         Width: 300
     },
     {
-        Name: "QuantityUnit",
+        Name: "StoreName",
         Type: "text",
-        Caption: "Đơn vị tính",
-        DataSourceMember: "QuantityUnit",
+        Caption: "Kho yêu cầu",
+        DataSourceMember: "StoreName",
         Width: 250
     },
     {
-        Name: "Quantity",
-        Type: "text",
-        Caption: "Số lượng",
-        DataSourceMember: "Quantity",
+        Name: "RequestDate",
+        Type: "date",
+        Caption: "Ngày yêu cầu",
+        DataSourceMember: "RequestDate",
         Width: 150
+    },
+
+    {
+        Name: "ApproverName",
+        Type: "text",
+        Caption: "Người yêu cầu",
+        DataSourceMember: "ApproverName",
+        Width: 150
+    },
+    {
+        Name: "ReviewStatusLable",
+        Type: "text",
+        Caption: "Đã duyệt",
+        DataSourceMember: "ReviewStatusLable",
+        Width: 130
+    },
+    {
+        Name: "CreatedInputVoucherStatusLable",
+        Type: "text",
+        Caption: "Phiếu nhập",
+        DataSourceMember: "CreatedInputVoucherStatusLable",
+        Width: 130
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "DestroyRequestID",
+        DataSourceMember: "MTReturnRequestID",
         Width: 100,
-        Link: "/DestroyRequest/Edit/",
+        Link: "/MTReturnRequest/Edit/",
         LinkText: "Chỉnh sửa"
     },
 ];

@@ -9,7 +9,7 @@ import { MessageModal } from "../../../../common/components/Modal";
 import { formatDate } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
-import { REFUNDSUPPLIES_VIEW, REFUNDSUPPLIES_DELETE } from "../../../../constants/functionLists";
+import { TMS_MTRETURNREQUEST_VIEW, TMS_MTRETURNREQUEST_DELETE } from "../../../../constants/functionLists";
 import {
 
     APIHostName,
@@ -22,12 +22,14 @@ import {
     SearchMLObjectDefinition,
     SearchElementList,
     AddLink,
-    InitSearchParams
+    InitSearchParams,
+    DeleteNewAPIPath
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
-
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 import { callGetCache } from "../../../../actions/cacheAction";
 import ListMTReturnRequestType from "../Component/ListMTReturnRequestType";
 
@@ -45,46 +47,14 @@ class SearchCom extends React.Component {
         this.searchref = React.createRef();
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
+        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
+        console.log("aa", this.state, this.props)
         this.props.updatePagePath(PagePath);
-        // this.showMessage("Tính năng đang phát triển. Vui lòng quay lại!")
-        const InitSearchParams = [
-            {
-                SearchKey: "@Keyword",
-                SearchValue: ""
-            },
-            {
-                SearchKey: "@MTRETURNREQUESTTYPEID",
-                SearchValue: "-1"
-            },
-            {
-                SearchKey: "@REQUESTSTOREID",
-                SearchValue: "-1"
-            },
-            {
-                SearchKey: "@FROMDATE",
-                SearchValue: new Date()
-            },
-            {
-                SearchKey: "@TODATE",
-                SearchValue: new Date()
-            },
-            {
-                SearchKey: "@ISREVIEWED",
-                SearchValue: "-1"
-            },
-            {
-                SearchKey: "@ISCREATEDINPUTVOUCHERT",
-                SearchValue: "-1"
-            }
-        ];
-        this.callSearchData(InitSearchParams)
+        this.callSearchData(this.state.SearchData)
     }
-
-
-
 
     showMessage(message) {
         ModalManager.open(
@@ -96,8 +66,24 @@ class SearchCom extends React.Component {
         );
     }
 
-    handleDelete(deleteList, pkColumnName) {
 
+    handleDelete(deleteList, pkColumnName) {
+        let listMLObject = [];
+        deleteList.map((row, index) => {
+            let MLObject = {};
+            pkColumnName.map((pkItem, pkIndex) => {
+                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+            });
+            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+            listMLObject.push(MLObject);
+        });
+        this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callSearchData(this.state.SearchData);
+            }
+        });
     }
 
     handleInputGridInsert(MLObjectDefinition, modalElementList, dataSource) {
@@ -116,6 +102,39 @@ class SearchCom extends React.Component {
         const { callFetchAPI } = this.props;
         callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             console.log("22", searchData, apiResult)
+            
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                const dataSource = apiResult.ResultObject.map((item, index) => {
+                    item.ApproverName = item.RequestUser + " - " + item.RequestFullName;
+                    if (item.IsCreatedInputVoucher) {
+                        item.CreatedInputVoucherStatusLable = <span className='lblstatus text-success'>Đã tạo phiếu nhập</span>;
+                    }
+                    else {
+                        item.CreatedInputVoucherStatusLable = <span className='lblstatus text-warning'>Chưa tạo phiếu nhập</span>;
+                    }
+                    if (item.IsreViewed) {
+                        item.ReviewStatusLable = <span className='lblstatus text-success'>Đã duyệt</span>;
+
+                    }
+                    else {
+                        item.ReviewStatusLable = <span className='lblstatus text-warning'>Chưa duyệt</span>;
+
+                    }
+                    return item;
+                })
+
+                this.setState({
+                    gridDataSource: dataSource,
+                    IsCallAPIError: apiResult.IsError,
+                });
+                //this.callDataTest()
+            }
         })
     }
 
@@ -158,9 +177,40 @@ class SearchCom extends React.Component {
         this.callSearchData(DataSearch);
     }
 
+    addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
+        if (!IsError) {
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
+        } else {
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
+                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
                     FormName={TitleFormSearch}
                     MLObjectDefinition={SearchMLObjectDefinition}
@@ -184,8 +234,8 @@ class SearchCom extends React.Component {
                     IsAutoPaging={true}
                     RowsPerPage={20}
                     IsExportFile={false}
-                // RequirePermission={REFUNDSUPPLIES_VIEW}
-                // DeletePermission={REFUNDSUPPLIES_DELETE}
+                // RequirePermission={TMS_MTRETURNREQUEST_VIEW}
+                // DeletePermission={TMS_MTRETURNREQUEST_DELETE}
                 />
             </React.Fragment>
         );
