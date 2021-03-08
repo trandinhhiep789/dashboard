@@ -1,10 +1,13 @@
 export const APIHostName = "TMSAPI";
+export const SearchAPIPath = "api/MTReturnRequest/Search";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "MTReturnRequestID";
 export const BackLink = "/RefundSupplies";
 export const AddLink = "/RefundSupplies/Add";
 
 export const AddAPIPath = "api/MTReturnRequest/Add";
+export const DeleteNewAPIPath = "api/MTReturnRequest/DeleteNew";
+
 
 export const LoadAPIByMtreturnRequestTypeIDPath = "api/MTReturnRequest_ReviewList/LoadByMTReturnRequesTypeID";
 export const LoadAPIByRequestTypeIDPath = "api/MTReturnRequestType_Product/GetListByRequestTypeID";
@@ -12,7 +15,7 @@ export const LoadAPIByRequestTypeIDPath = "api/MTReturnRequestType_Product/GetLi
 export const TitleFormSearch = "Tìm kiếm danh sách yêu cầu nhập trả vật tư";
 export const TitleFormAdd = "Thêm yêu cầu nhập trả vật tư";
 export const TitleFormEdit = "Cập nhật nhập trả vật tư";
-export const TitleFormDetail = "Thông tin nhập trảy vật tư";
+export const TitleFormDetail = "Thông tin nhập trả vật tư";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -37,6 +40,40 @@ export const DetailAPIPath = [
     { Link: "", Title: "Chi tiết" }
 ];
 
+const dtFromdate = new Date();
+dtFromdate.setDate(new Date().getDate() - 30);
+
+export const InitSearchParams = [
+    {
+        SearchKey: "@Keyword",
+        SearchValue: ""
+    },
+    {
+        SearchKey: "@MTRETURNREQUESTTYPEID",
+        SearchValue: "-1"
+    },
+    {
+        SearchKey: "@REQUESTSTOREID",
+        SearchValue: "-1"
+    },
+    {
+        SearchKey: "@FROMDATE",
+        SearchValue: dtFromdate
+    },
+    {
+        SearchKey: "@TODATE",
+        SearchValue: new Date()
+    },
+    {
+        SearchKey: "@ISREVIEWED",
+        SearchValue: "-1"
+    },
+    {
+        SearchKey: "@ISCREATEDINPUTVOUCHERT",
+        SearchValue: "-1"
+    }
+];
+
 export const SearchMLObjectDefinition = [
     {
         Name: "Keyword",
@@ -44,11 +81,36 @@ export const SearchMLObjectDefinition = [
         BindControlName: "txtKeyword"
     },
     {
+        Name: "MTReturnRequestTypeID",
+        DefaultValue: "",
+        BindControlName: "cbMTReturnRequestTypeID"
+    },
+    {
         Name: "RequestStoreID",
         DefaultValue: "",
         BindControlName: "cbRequestStoreID"
     },
-   
+    {
+        Name: "FromDate",
+        DefaultValue: "",
+        BindControlName: "dtFromDate"
+    },
+    {
+        Name: "ToDate",
+        DefaultValue: "",
+        BindControlName: "dtToDate"
+    },
+    {
+        Name: "IsreViewed",
+        DefaultValue: "",
+        BindControlName: "cbIsreViewed"
+    },
+    {
+        Name: "IsCreatedInputVouchert",
+        DefaultValue: "",
+        BindControlName: "cbIsCreatedInputVouchert"
+    }
+
 ];
 
 export const SearchElementList = [
@@ -61,6 +123,22 @@ export const SearchElementList = [
         colspan: 2,
         placeholder: "Từ khóa",
         icon: ""
+    },
+    {
+        type: "ComboBox",
+        name: "cbMTReturnRequestTypeID",
+        DataSourceMember: "MTReturnRequestTypeID",
+        label: "Loại yêu cầu hủy vật tư",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.MTRETURNREQUESTTYPE",
+        ValueMember: "MtreturnRequestTypeID",
+        NameMember: "MtreturnRequestTypeName",
+
     },
     {
         type: "ComboBox",
@@ -78,6 +156,60 @@ export const SearchElementList = [
         NameMember: "StoreName"
 
     },
+    {
+        type: "Datetime",
+        name: "dtFromDate",
+        DataSourceMember: "FromDate",
+        label: "Từ ngày",
+        value: dtFromdate,
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 2,
+    },
+    {
+        type: "Datetime",
+        name: "dtToDate",
+        DataSourceMember: "ToDate",
+        label: "Đến ngày",
+        value: new Date(),
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 2,
+    },
+    {
+        type: "ComboBox",
+        name: "cbIsreViewed",
+        DataSourceMember: "IsreViewed",
+        label: "Trạng thái duyệt",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "--Tất cả--",
+        listoption: [
+            { value: -1, label: '--Tất cả--' },
+            { value: 1, label: 'Hết hạn' },
+            { value: 2, label: 'Còn hạn' },
+        ],
+
+
+    },
+    {
+        type: "ComboBox",
+        name: "cbIsCreatedInputVouchert",
+        DataSourceMember: "IsCreatedInputVouchert",
+        label: "Trạng thái xuất",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "--Tất cả--",
+        listoption: [
+            { value: -1, label: '--Tất cả--' },
+            { value: 1, label: 'Chưa Xuất hủy vật tư' },
+            { value: 2, label: 'Đã xuất hủy vật tư' },
+        ],
+
+
+    }
 ];
 
 
@@ -86,44 +218,67 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "DestroyRequestID",
+        DataSourceMember: "MTReturnRequestID",
         Width: 60
     },
     {
-        Name: "MaterialGroupID",
-        Type: "text",
-        Caption: "Nhóm vật tư",
-        DataSourceMember: "MaterialGroupID",
+        Name: "MTReturnRequestID",
+        Type: "texttolink",
+        Caption: "Mã yêu cầu",
+        DataSourceMember: "MTReturnRequestID",
+        Link: "/RefundSupplies/Detail/",
         Width: 140
     },
     {
-        Name: "ProductName",
+        Name: "MTReturnRequestTypeName",
         Type: "text",
-        Caption: "Tên vật tư",
-        DataSourceMember: "ProductName",
+        Caption: "Loại yêu cầu nhập trả vật tư",
+        DataSourceMember: "MTReturnRequestTypeName",
         Width: 300
     },
     {
-        Name: "QuantityUnit",
+        Name: "StoreName",
         Type: "text",
-        Caption: "Đơn vị tính",
-        DataSourceMember: "QuantityUnit",
+        Caption: "Kho yêu cầu",
+        DataSourceMember: "StoreName",
         Width: 250
     },
     {
-        Name: "Quantity",
-        Type: "text",
-        Caption: "Số lượng",
-        DataSourceMember: "Quantity",
+        Name: "RequestDate",
+        Type: "date",
+        Caption: "Ngày yêu cầu",
+        DataSourceMember: "RequestDate",
         Width: 150
+    },
+
+    {
+        Name: "ApproverName",
+        Type: "text",
+        Caption: "Người yêu cầu",
+        DataSourceMember: "ApproverName",
+        Width: 150
+    },
+    {
+        Name: "ReviewStatusLable",
+        Type: "text",
+        Caption: "Đã duyệt",
+        DataSourceMember: "ReviewStatusLable",
+        Width: 130
+    },
+    {
+        Name: "CreatedInputVoucherStatusLable",
+        Type: "text",
+        Caption: "Phiếu nhập",
+        DataSourceMember: "CreatedInputVoucherStatusLable",
+        Width: 130
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "DestroyRequestID",
+        DataSourceMember: "MTReturnRequestID",
         Width: 100,
-        Link: "/DestroyRequest/Edit/",
+        Link: "/RefundSupplies/Edit/",
         LinkText: "Chỉnh sửa"
     },
 ];
@@ -220,7 +375,7 @@ export const InputMTReturnRequestDetailColumnList = [
         // validatonList: [ "number"],
         IsNoneZero: false
     },
-   
+
 ];
 
 
@@ -254,6 +409,12 @@ export const GridMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "QuantityUnitName",
         DataSourceMember: "QuantityUnitName"
+    },
+    {
+        Name: "QuantityUnitID",
+        DefaultValue: "",
+        BindControlName: "QuantityUnitID",
+        DataSourceMember: "QuantityUnitID"
     },
     {
         Name: "Quantity",

@@ -12,7 +12,12 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
-    GridColumnListPrice
+    GridColumnListPrice,
+    DataGridModalQuantityHanOverDone,
+    DataGridModalQuantityHanOverDoing,
+    DataGridModalQuantityReturn,
+    DataGridModalChangeTotalQuantity,
+    DataGridModalQuantityExpend
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -23,6 +28,7 @@ import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
 import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
+import ModalBox from "../components/ModalBox";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -74,7 +80,6 @@ class SearchCom extends React.Component {
                         ConfigValue: _configValue[0].TMSConfigValue
                     })
                 }
-                //console.log("getCacheMTG",result,_configValue);
             }
 
         });
@@ -92,7 +97,6 @@ class SearchCom extends React.Component {
             Month: MLObject.Month
 
         }
-        console.log("objData", objData)
 
         this.setState({
             UserName: objData.UserName,
@@ -105,7 +109,6 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            //console.log("apiResult", apiResult)
             if (apiResult && !apiResult.IsError && apiResult.ResultObject) {
 
                 const tempData = apiResult.ResultObject.filter(a => a.MaterialGroupID.trim() == this.state.ConfigValue);
@@ -164,9 +167,6 @@ class SearchCom extends React.Component {
                     dataSimiliGroupExport: exelDataSimiliGroupExport,
                     dataMaterialGroupExport: exelDataMaterialGroupExport
                 });
-
-
-                console.log("111", tempData, tempData1)
 
             }
             else {
@@ -244,20 +244,90 @@ class SearchCom extends React.Component {
                 return 3;
             case 'ChangeTotalQuantity':  // Sử dụng trong kỳ
                 return 4;
+            case 'QuantityExpend':       // Tiêu hao khác
+                return 5;
             default:
                 return 0;
         }
     }
 
-    onShowModal(Data) {
-        const { widthPercent } = this.state;
-        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: "Số dư đầu kỳ",
-            content: {
-                text: <div>Tính năng đang phát triển</div>
-            },
-            maxWidth: widthPercent + 'px'
-        });
+    onShowModal(data, typeDataGrid) {
+        const { widthPercent, UserName, Month } = this.state;
+
+        switch (typeDataGrid) {
+            case 1:
+                this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                    title: "Nhận trong kỳ",
+                    content: {
+                        text: <ModalBox
+                            UserName={UserName}
+                            Month={`${Month.getMonth() + 1}-${Month.getFullYear()}`}
+                            listColumn={DataGridModalQuantityHanOverDone}
+                            dataSource={data}
+                        />
+                    },
+                    maxWidth: widthPercent + 'px'
+                });
+                break;
+            case 2:
+                this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                    title: "Chờ bàn giao",
+                    content: {
+                        text: <ModalBox
+                            UserName={UserName}
+                            Month={`${Month.getMonth() + 1}-${Month.getFullYear()}`}
+                            listColumn={DataGridModalQuantityHanOverDoing}
+                            dataSource={data}
+                        />
+                    },
+                    maxWidth: widthPercent + 'px'
+                });
+                break;
+            case 3:
+                this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                    title: "Nhập trả",
+                    content: {
+                        text: <ModalBox
+                            UserName={UserName}
+                            Month={`${Month.getMonth() + 1}-${Month.getFullYear()}`}
+                            listColumn={DataGridModalQuantityReturn}
+                            dataSource={data}
+                        />
+                    },
+                    maxWidth: widthPercent + 'px'
+                });
+                break;
+            case 4:
+                this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                    title: "Sử dụng trong kỳ",
+                    content: {
+                        text: <ModalBox
+                            UserName={UserName}
+                            Month={`${Month.getMonth() + 1}-${Month.getFullYear()}`}
+                            listColumn={DataGridModalChangeTotalQuantity}
+                            dataSource={data}
+                        />
+                    },
+                    maxWidth: widthPercent + 'px'
+                });
+                break;
+            case 5:
+                this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                    title: "Tiêu hao khác",
+                    content: {
+                        text: <ModalBox
+                            UserName={UserName}
+                            Month={`${Month.getMonth() + 1}-${Month.getFullYear()}`}
+                            listColumn={DataGridModalQuantityExpend}
+                            dataSource={data}
+                        />
+                    },
+                    maxWidth: widthPercent + 'px'
+                });
+                break;
+            default:
+                break;
+        }
     }
 
     onShowModalDetail(objValue, name) {
@@ -274,9 +344,10 @@ class SearchCom extends React.Component {
                 IsHandOverMaterial: 1 // v_ISHANDOVERMATERIAL
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
-                console.log(' 111:', objData, apiResult)
+                // console.log('1', objData, apiResult)
                 if (!apiResult.IsError) {
                     //this.onShowModal(apiResult.ResultObject);
+                    this.onShowModal(apiResult.ResultObject, status);
                 }
                 else {
                     this.showMessage(apiResult.MessageDetail)
@@ -292,9 +363,10 @@ class SearchCom extends React.Component {
                 IsHandOverMaterial: 0 // v_ISHANDOVERMATERIAL
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
-                console.log(' 2222:', objData, apiResult)
+                // console.log('2', objData, apiResult)
                 if (!apiResult.IsError) {
 
+                    this.onShowModal('', status);
                 }
                 else {
                     this.showMessage(apiResult.MessageDetail)
@@ -304,7 +376,9 @@ class SearchCom extends React.Component {
         if (status == 3) { //Nhập trả
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
                 if (!apiResult.IsError) {
-                    this.handleShowModal(apiResult.ResultObject, status)
+                    // console.log('3:', objData, apiResult);
+                    // this.handleShowModal(apiResult.ResultObject, status)
+                    this.onShowModal('', status);
                 }
                 else {
                     this.showMessage(apiResult.MessageDetail)
@@ -318,16 +392,18 @@ class SearchCom extends React.Component {
                 ProductID: objValue[0].value
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceDebtFlow/LoadAdvanceDebtFlowUsing", objData).then(apiResult => {
-                console.log(' 2222:', objData, apiResult)
+                // console.log('4:', objData, apiResult)
                 if (!apiResult.IsError) {
-
+                    this.onShowModal('', status);
                 }
                 else {
                     this.showMessage(apiResult.MessageDetail)
                 }
             });
         }
-
+        if (status == 5) { //	Tiêu hao khác
+            this.onShowModal("", status);
+        }
 
     }
 
@@ -349,8 +425,8 @@ class SearchCom extends React.Component {
                     listColumn={GridColumnList}
                     dataSource={this.state.dataSimiliGroup}
                     IsFixheaderTable={false}
-                    IDSelectColumnName={''}
-                    PKColumnName={''}
+                    IDSelectColumnName={'ProductID'}
+                    PKColumnName={'ProductID'}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
@@ -364,6 +440,7 @@ class SearchCom extends React.Component {
                     DataExport={this.state.dataSimiliGroupExport}
                     fileName="Danh sách báo cáo tồn vật tư ống đồng"
                     onExportFile={this.handleExportFile.bind(this)}
+                    onShowModal={this.onShowModalDetail}
                 />
 
                 <DataGrid
