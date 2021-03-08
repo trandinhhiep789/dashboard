@@ -16,11 +16,11 @@ import {
     LoadAPIPath,
     APIHostName,
     UpdateAPIPath,
-    InputDestroyRequestDetailColumnList,
+    InputMTReturnRequestDetailColumnList,
     InputDestroyRequestRLColumnList,
     GridMLObjectDefinition,
     GridDestroyRequestRLMLObjectDefinition,
-    LoadAPIByDestroyRequestTypeIDPath
+    LoadAPIByMtreturnRequestTypeIDPath
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -46,25 +46,26 @@ class EditCom extends React.Component {
             IsExtended: false,
             IsLiquidated: false,
             IsDeposited: false,
-            DestroyRequestDetail: [],
-            DestroyRequestRL: [],
-            gridDestroyRequestRL: {},
+            MTReturnRequestDetail: [],
+            MTReturnRequestRL: [],
+            gridMTReturnRequestRL: {},
             isError: false,
             isAutoReview: false,
-            isAutoOutput: false,
+            isCreatedInputVoucher: false,
             RequestUser: '',
-            gridDestroyRequestRLSort: []
+            gridMTReturnRequestRLSort: []
         };
     }
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
+        console.log("object", this.props.match.params.id)
         this.callLoadData(this.props.match.params.id);
     }
 
     getDataDestroyRequestRLByDestroyRequestType(param) {
-        const { DataSource, DestroyRequestRL } = this.state;
-        this.props.callFetchAPI(APIHostName, LoadAPIByDestroyRequestTypeIDPath, param).then(apiResult => {
+        const { DataSource, MTReturnRequestRL } = this.state;
+        this.props.callFetchAPI(APIHostName, LoadAPIByMtreturnRequestTypeIDPath, param).then(apiResult => {
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -85,12 +86,12 @@ class EditCom extends React.Component {
                     if (!r[`${a.ReviewLevelID}`]["ReviewLevelName"]) r[`${a.ReviewLevelID}`]["ReviewLevelName"] = "";
                     if (!r[`${a.ReviewLevelID}`]["UserName"]) r[`${a.ReviewLevelID}`]["UserName"] = "";
                     if (!r[`${a.ReviewLevelID}`]["FullName"]) r[`${a.ReviewLevelID}`]["FullName"] = "";
-                    if (!r[`${a.ReviewLevelID}`]["DestroyRequest_ReviewLevelList"]) r[`${a.ReviewLevelID}`]["DestroyRequest_ReviewLevelList"] = [];
+                    if (!r[`${a.ReviewLevelID}`]["MTReturnRequest_ReviewLevelList"]) r[`${a.ReviewLevelID}`]["MTReturnRequest_ReviewLevelList"] = [];
                     if (!r[`${a.ReviewLevelID}`]["ReviewOrderIndex"]) r[`${a.ReviewLevelID}`]["ReviewOrderIndex"] = "";
                     a.value = a.UserName
                     a.name = a.UserName + " - " + a.FullName
                     a.label = a.UserName + " - " + a.FullName
-                    r[`${a.ReviewLevelID}`]["DestroyRequest_ReviewLevelList"].push(a);
+                    r[`${a.ReviewLevelID}`]["MTReturnRequest_ReviewLevelList"].push(a);
 
                     return r;
                 }, {});
@@ -98,29 +99,29 @@ class EditCom extends React.Component {
 
                 Object.keys(lstoption).map(function (key) {
                     // console.log("key", key)
-                    const filterItem = DestroyRequestRL.filter(e => { return e.ReviewLevelID == key });
+                    const filterItem = MTReturnRequestRL.filter(e => { return e.ReviewLevelID == key });
                     if (filterItem.length > 0) {
-                        lstoption[key]["ReviewLevelID"] = lstoption[key]["DestroyRequest_ReviewLevelList"][0].ReviewLevelID;
-                        lstoption[key]["ReviewLevelName"] = lstoption[key]["DestroyRequest_ReviewLevelList"][0].ReviewLevelName;
+                        lstoption[key]["ReviewLevelID"] = lstoption[key]["MTReturnRequest_ReviewLevelList"][0].ReviewLevelID;
+                        lstoption[key]["ReviewLevelName"] = lstoption[key]["MTReturnRequest_ReviewLevelList"][0].ReviewLevelName;
                         lstoption[key]["IsreViewed"] = filterItem[0].IsreViewed
                         lstoption[key]["UserName"] = !!filterItem && filterItem.length > 0 ? filterItem[0].UserName : lstoption[key]["Child"][0].UserName
                         lstoption[key]["FullName"] = !!filterItem && filterItem.length > 0 ? filterItem[0].FullName : lstoption[key]["Child"][0].FullName
-                        lstoption[key]["ReviewOrderIndex"] = lstoption[key]["DestroyRequest_ReviewLevelList"][0].ReviewOrderIndex
+                        lstoption[key]["ReviewOrderIndex"] = lstoption[key]["MTReturnRequest_ReviewLevelList"][0].ReviewOrderIndex
                         // lstoption[key]["Child"].unshift({ value: "-1", name: "-- Vui lòng chọn --", UserName: "-1", FullName: "-- Vui lòng chọn --" })
                     }
 
                 })
 
-                console.log("1111", lstoption)
+               
                 let resultSort = Object.values(lstoption).sort((a, b) => a.ReviewOrderIndex - b.ReviewOrderIndex)
 
-
+                console.log("resultSort", lstoption, resultSort)
 
                 this.setState({
-                    DestroyRequestRL: apiResult.ResultObject,
+                    MTReturnRequestRL: apiResult.ResultObject,
                     IsLoadDataComplete: true,
-                    gridDestroyRequestRL: lstoption,
-                    gridDestroyRequestRLSort: resultSort
+                    gridMTReturnRequestRL: lstoption,
+                    gridMTReturnRequestRLSort: resultSort
                 });
             }
         });
@@ -128,63 +129,64 @@ class EditCom extends React.Component {
 
 
     prevDataSubmit(formData, MLObject) {
-        const { isError, gridDestroyRequestRL, isAutoReview, isAutoOutput, RequestUser, gridDestroyRequestRLSort } = this.state;
+        // const { isError, gridMTReturnRequestRL, isAutoReview, isAutoOutput, RequestUser, gridMTReturnRequestRLSort } = this.state;
 
-        //  console.log("prevDataSubmit", gridDestroyRequestRL, MLObject);
+        // //  console.log("prevDataSubmit", gridDestroyRequestRL, MLObject);
 
-        let arrReviewLevel = [];
-        Object.keys(gridDestroyRequestRL).map(function (key) {
-            let objItem = {}
-            objItem.ReviewLevelID = key;
-            objItem.UserName = gridDestroyRequestRL[key].UserName;
+        // let arrReviewLevel = [];
+        // Object.keys(gridMTReturnRequestRL).map(function (key) {
+        //     let objItem = {}
+        //     objItem.ReviewLevelID = key;
+        //     objItem.UserName = gridMTReturnRequestRL[key].UserName;
 
-            arrReviewLevel.push(objItem)
-            return objItem;
-        })
+        //     arrReviewLevel.push(objItem)
+        //     return objItem;
+        // })
 
-        MLObject.lstDestroyRequestReviewLevel = gridDestroyRequestRLSort;
+        // MLObject.lstMTReturnRequestReviewLevel = gridMTReturnRequestRLSort;
 
-        if (isError == false) {
-            const ReviewLevel = MLObject.lstDestroyRequestReviewLevel.reduce(function (prev, cur) {
-                return cur.UserName;
-            }, 0);
+        // if (isError == false) {
+        //     const ReviewLevel = MLObject.lstMTReturnRequestReviewLevel.reduce(function (prev, cur) {
+        //         return cur.UserName;
+        //     }, 0);
 
-            const DestroyRequestDetail = MLObject.lstDestroyRequestDetail.filter((item, index) => {
-                if (item.Quantity != undefined && item.Quantity > 0) {
-                    return item;
-                }
-            });
+        //     const MTReturnRequestDetail = MLObject.lstMTReturnRequestDetail.filter((item, index) => {
+        //         if (item.Quantity != undefined && item.Quantity > 0) {
+        //             return item;
+        //         }
+        //     });
 
-            if (!isAutoReview) {
-                MLObject.CurrentReviewLevelID = MLObject.lstDestroyRequestReviewLevel[0].ReviewLevelID;
-                if (ReviewLevel == undefined || ReviewLevel == 0) {
-                    this.showMessage('Danh sách duyệt người chưa được chọn. Vui lòng kiểm tra lại.');
-                    this.setState({
-                        IsCallAPIError: true,
-                    })
-                    return;
-                }
-            }
+        //     if (!isAutoReview) {
+        //         MLObject.CurrentReviewLevelID = MLObject.lstMTReturnRequestReviewLevel[0].ReviewLevelID;
+        //         if (ReviewLevel == undefined || ReviewLevel == 0) {
+        //             this.showMessage('Danh sách duyệt người chưa được chọn. Vui lòng kiểm tra lại.');
+        //             this.setState({
+        //                 IsCallAPIError: true,
+        //             })
+        //             return;
+        //         }
+        //     }
 
 
 
-            if (DestroyRequestDetail.length <= 0) {
-                this.showMessage('Danh sách vật tư chưa được chọn.');
-                this.setState({
-                    IsCallAPIError: true,
-                })
-                return;
-            }
+        //     if (MTReturnRequestDetail.length <= 0) {
+        //         this.showMessage('Danh sách vật tư chưa được chọn.');
+        //         this.setState({
+        //             IsCallAPIError: true,
+        //         })
+        //         return;
+        //     }
 
-            MLObject.lstDestroyRequestDetail = DestroyRequestDetail;
-            MLObject.RequestUser = RequestUser;
-            console.log("MLObject", MLObject)
-            this.handleSubmit(MLObject)
+        //     MLObject.lstMTReturnRequestDetail = MTReturnRequestDetail;
+        //     MLObject.RequestUser = RequestUser;
+        //     console.log("MLObject", MLObject)
+        //     this.handleSubmit(MLObject)
 
-        }
-        else {
-            this.showMessage('Thông tin nhập vào bị lỗi. Vui lòng kiểm tra lại.');
-        }
+        // }
+        // else {
+        //     this.showMessage('Thông tin nhập vào bị lỗi. Vui lòng kiểm tra lại.');
+        // }
+        this.showMessage('Tính năng đang phát triển. Vui lòng thử lại sau.');
     }
 
     handleSubmit(MLObject) {
@@ -222,7 +224,7 @@ class EditCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-                const resultDestroyRequestReviewLevel = apiResult.ResultObject.lstDestroyRequestReviewLevel.map((item, index) => {
+                const resultMTReturnRequestReviewLevel = apiResult.ResultObject.lstMTReturnRequestReviewLevel.map((item, index) => {
                     if (item.ReviewStatus == 0) {
                         item.ReviewStatusLable = "Chưa duyệt";
                     }
@@ -238,12 +240,12 @@ class EditCom extends React.Component {
                     disabledControll = true
                 }
                 else {
-                    if (apiResult.ResultObject.IsCreatedOrder == true || apiResult.ResultObject.IsreViewed == true) {
+                    if (apiResult.ResultObject.IsCreatedInputVoucher == true || apiResult.ResultObject.IsreViewed == true) {
                         disabledControll = true
                     }
                     else {
-                        if (apiResult.ResultObject.lstDestroyRequestReviewLevel.length > 0) {
-                            let IsExitRV = apiResult.ResultObject.lstDestroyRequestReviewLevel.filter(e => { return e.IsreViewed === true });
+                        if (apiResult.ResultObject.lstMTReturnRequestReviewLevel.length > 0) {
+                            let IsExitRV = apiResult.ResultObject.lstMTReturnRequestReviewLevel.filter(e => { return e.IsreViewed === true });
                             console.log("IsExitRV", IsExitRV)
                             if (IsExitRV.length > 0) {
                                 disabledControll = true
@@ -263,18 +265,18 @@ class EditCom extends React.Component {
                     DataSource: apiResult.ResultObject,
                     IsLoadDataComplete: true,
                     IsSystem: disabledControll,
-                    DestroyRequestRL: resultDestroyRequestReviewLevel,
-                    DestroyRequestDetail: apiResult.ResultObject.lstDestroyRequestDetail,
+                    MTReturnRequestRL: resultMTReturnRequestReviewLevel,
+                    MTReturnRequestDetail: apiResult.ResultObject.lstMTReturnRequestDetail,
                     isAutoReview: apiResult.ResultObject.IsreViewed,
-                    isAutoOutput: apiResult.ResultObject.IsOutput,
+                    isCreatedInputVoucher: apiResult.ResultObject.IsOutput,
                     RequestUser: apiResult.ResultObject.RequestUser,
                 });
 
 
                 const param = [
                     {
-                        SearchKey: "@DESTROYREQUESTTYPEID",
-                        SearchValue: apiResult.ResultObject.DestroyRequestTypeID
+                        SearchKey: "@MTRETURNREQUESTTYPEID",
+                        SearchValue: apiResult.ResultObject.MTReturnRequestTypeID
                     },
                     {
                         SearchKey: "@STOREID",
@@ -289,74 +291,20 @@ class EditCom extends React.Component {
     handleChange(formData, MLObject) {
     }
 
-    // valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
-    //     // console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
-    //     const { DestroyRequestDetail } = this.state;
-    //     if (elementdata.Name == 'Quantity') {
-    //         let Quantity = DestroyRequestDetail[index].UsableQuantity;
-    //         let item = elementdata.Name + '_' + index;
-    //         if (!gridFormValidation[item].IsValidationError) {
-    //             if (elementdata.Value > Quantity) {
-    //                 gridFormValidation[item].IsValidationError = true;
-    //                 gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
-    //                 this.setState({
-    //                     isError: true,
-    //                     IsCallAPIError: true,
-    //                 })
-    //             }
-    //             else {
-    //                 this.setState({
-    //                     isError: false,
-    //                     IsCallAPIError: false,
-    //                 })
-    //             }
-    //         }
-    //     }
-    //     else {
-    //         this.setState({
-    //             isError: false,
-    //             IsCallAPIError: false,
-    //         })
-    //     }
-
-    // }
-
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
         // console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
 
-        const { DestroyRequestDetail } = this.state;
+        const { MTReturnRequestDetail } = this.state;
         // console.log('111', DestroyRequestDetail[index])
-        const isAllowDecimal = DestroyRequestDetail[index].IsAllowDecimal;
+        const isAllowDecimal = MTReturnRequestDetail[index].IsAllowDecimal;
         let item = elementdata.Name + '_' + index;
         if (!isAllowDecimal) {
             if (elementdata.Value.toString().length > 1) {
                 if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
-                    if (elementdata.Name == 'Quantity') {
-                        let Quantity = DestroyRequestDetail[index].UsableQuantity;
-
-                        if (!gridFormValidation[item].IsValidationError) {
-                            if (elementdata.Value > Quantity) {
-                                gridFormValidation[item].IsValidationError = true;
-                                gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
-                                this.setState({
-                                    isError: true,
-                                    IsCallAPIError: true,
-                                })
-                            }
-                            else {
-                                this.setState({
-                                    isError: false,
-                                    IsCallAPIError: false,
-                                })
-                            }
-                        }
-                    }
-                    else {
-                        this.setState({
-                            isError: false,
-                            IsCallAPIError: false,
-                        })
-                    }
+                    this.setState({
+                        isError: false,
+                        IsCallAPIError: false,
+                    })
                 }
                 else {
                     gridFormValidation[item].IsValidationError = true;
@@ -371,32 +319,10 @@ class EditCom extends React.Component {
                 if (elementdata.Value.length > 0) {
                     if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
                         if (parseInt(elementdata.Value) > 0) {
-                            if (elementdata.Name == 'Quantity') {
-                                let Quantity = DestroyRequestDetail[index].UsableQuantity;
-
-                                if (!gridFormValidation[item].IsValidationError) {
-                                    if (elementdata.Value > Quantity) {
-                                        gridFormValidation[item].IsValidationError = true;
-                                        gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
-                                        this.setState({
-                                            isError: true,
-                                            IsCallAPIError: true,
-                                        })
-                                    }
-                                    else {
-                                        this.setState({
-                                            isError: false,
-                                            IsCallAPIError: false,
-                                        })
-                                    }
-                                }
-                            }
-                            else {
-                                this.setState({
-                                    isError: false,
-                                    IsCallAPIError: false,
-                                })
-                            }
+                            this.setState({
+                                isError: false,
+                                IsCallAPIError: false,
+                            })
                         }
                         else {
                             gridFormValidation[item].IsValidationError = true;
@@ -432,32 +358,10 @@ class EditCom extends React.Component {
             if (elementdata.Value.toString().length > 1) {
 
                 if (/^\d*\.?\d+$/.test(elementdata.Value)) {
-                    if (elementdata.Name == 'Quantity') {
-                        let Quantity = DestroyRequestDetail[index].UsableQuantity;
-
-                        if (!gridFormValidation[item].IsValidationError) {
-                            if (elementdata.Value > Quantity) {
-                                gridFormValidation[item].IsValidationError = true;
-                                gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
-                                this.setState({
-                                    isError: true,
-                                    IsCallAPIError: true,
-                                })
-                            }
-                            else {
-                                this.setState({
-                                    isError: false,
-                                    IsCallAPIError: false,
-                                })
-                            }
-                        }
-                    }
-                    else {
-                        this.setState({
-                            isError: false,
-                            IsCallAPIError: false,
-                        })
-                    }
+                    this.setState({
+                        isError: false,
+                        IsCallAPIError: false,
+                    })
                 }
                 else {
                     gridFormValidation[item].IsValidationError = true;
@@ -472,26 +376,10 @@ class EditCom extends React.Component {
                 if (elementdata.Value.length > 0) {
                     if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
                         if (parseInt(elementdata.Value) > 0) {
-                            if (elementdata.Name == 'Quantity') {
-                                let Quantity = DestroyRequestDetail[index].UsableQuantity;
-
-                                if (!gridFormValidation[item].IsValidationError) {
-                                    if (elementdata.Value > Quantity) {
-                                        gridFormValidation[item].IsValidationError = true;
-                                        gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
-                                        this.setState({
-                                            isError: true,
-                                            IsCallAPIError: true,
-                                        })
-                                    }
-                                    else {
-                                        this.setState({
-                                            isError: false,
-                                            IsCallAPIError: false,
-                                        })
-                                    }
-                                }
-                            }
+                            this.setState({
+                                isError: false,
+                                IsCallAPIError: false,
+                            })
                         }
                         else {
                             gridFormValidation[item].IsValidationError = true;
@@ -527,17 +415,17 @@ class EditCom extends React.Component {
     }
 
     handleInputChangeGridRV(objDestroyRequestRL) {
-        this.setState({ gridDestroyRequestRLSort: objDestroyRequestRL });
+        this.setState({ gridMTReturnRequestRLSort: objDestroyRequestRL });
     }
 
     render() {
-
+        console.log("object", this.state)
 
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
         let currentDate = new Date();
-        const { DestroyRequestDetail, DestroyRequestRL, gridDestroyRequestRL, isAutoReview, gridDestroyRequestRLSort } = this.state;
+        const { MTReturnRequestDetail, MTReturnRequestRL, gridMTReturnRequestRL, isAutoReview, gridMTReturnRequestRLSort } = this.state;
 
         const onChange = (aaa, event) => {
             const value = event.target.value;
@@ -559,20 +447,19 @@ class EditCom extends React.Component {
                 })
             }
 
-            const element = Object.assign({}, gridDestroyRequestRL[DestroyRequestRLID], {
+            const element = Object.assign({}, gridMTReturnRequestRL[DestroyRequestRLID], {
                 "UserName": value,
                 "FullName": name,
             })
             //  console.log("element", element);
 
-            const parent = Object.assign({}, gridDestroyRequestRL, { [DestroyRequestRLID]: element });
+            const parent = Object.assign({}, gridMTReturnRequestRL, { [DestroyRequestRLID]: element });
 
 
 
-            this.setState({ gridDestroyRequestRL: parent })
+            this.setState({ gridMTReturnRequestRL: parent })
         }
 
-        // console.log("gridDestroyRequestRLSort", gridDestroyRequestRLSort);
 
         if (this.state.IsLoadDataComplete) {
             return (
@@ -607,7 +494,7 @@ class EditCom extends React.Component {
 
                             <div className="col-md-6">
                                 <FormControl.FormControlComboBox
-                                    name="cboMTReturnRequestTypeID"
+                                    name="cboMtreturnRequestType"
                                     colspan="8"
                                     labelcolspan="4"
                                     label="loại yêu cầu nhập trả vật tư"
@@ -622,7 +509,7 @@ class EditCom extends React.Component {
                                     controltype="InputControl"
                                     value={""}
                                     listoption={null}
-                                    datasourcemember="MtreturnRequestTypeID" />
+                                    datasourcemember="MTReturnRequestTypeID" />
 
                             </div>
 
@@ -710,10 +597,10 @@ class EditCom extends React.Component {
                             </div>
                             <div className="card-body">
                                 <InputGrid
-                                    name="lstDestroyRequestDetail"
+                                    name="lstMTReturnRequestDetail"
                                     controltype="GridControl"
-                                    listColumn={InputDestroyRequestDetailColumnList}
-                                    dataSource={DestroyRequestDetail}
+                                    listColumn={InputMTReturnRequestDetailColumnList}
+                                    dataSource={MTReturnRequestDetail}
                                     isDisabled={this.state.IsSystem}
                                     isHideHeaderToolbar={true}
                                     MLObjectDefinition={GridMLObjectDefinition}
@@ -725,7 +612,7 @@ class EditCom extends React.Component {
 
                         {isAutoReview == false ?
                             <MTReturnRequestRVList
-                                dataSource={gridDestroyRequestRLSort}
+                                dataSource={gridMTReturnRequestRLSort}
                                 disabledControll={this.state.IsSystem}
                                 onValueChangeGridRV={this.handleInputChangeGridRV.bind(this)}
                             />
