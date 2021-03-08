@@ -15,7 +15,7 @@ export const LoadAPIByRequestTypeIDPath = "api/MTReturnRequestType_Product/GetLi
 export const TitleFormSearch = "Tìm kiếm danh sách yêu cầu nhập trả vật tư";
 export const TitleFormAdd = "Thêm yêu cầu nhập trả vật tư";
 export const TitleFormEdit = "Cập nhật nhập trả vật tư";
-export const TitleFormDetail = "Thông tin nhập trảy vật tư";
+export const TitleFormDetail = "Thông tin nhập trả vật tư";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },

@@ -27,7 +27,7 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import { DESTROYREQUEST_UPDATE } from "../../../../constants/functionLists";
-import DestroyRequestRVList from '../Component/DestroyRequestRVList.js';
+import MTReturnRequestRVList from '../Component/MTReturnRequestRVList';
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -592,7 +592,7 @@ class EditCom extends React.Component {
                         <div className="row">
                             <div className="col-md-6">
                                 <FormControl.TextBox
-                                    name="txtDestroyRequestID"
+                                    name="txtMTReturnRequestID"
                                     colspan="8"
                                     labelcolspan="4"
                                     readOnly={true}
@@ -600,35 +600,35 @@ class EditCom extends React.Component {
                                     placeholder="Mã yêu cầu"
                                     controltype="InputControl"
                                     value=""
-                                    datasourcemember="DestroyRequestID"
+                                    datasourcemember="MTReturnRequestID"
                                     validatonList={['required']}
                                 />
                             </div>
 
                             <div className="col-md-6">
                                 <FormControl.FormControlComboBox
-                                    name="cboDestroyRequestType"
+                                    name="cboMTReturnRequestTypeID"
                                     colspan="8"
                                     labelcolspan="4"
-                                    label="loại yêu cầu hủy vật tư"
+                                    label="loại yêu cầu nhập trả vật tư"
                                     validatonList={["Comborequired"]}
                                     placeholder="-- Vui lòng chọn --"
                                     isautoloaditemfromcache={true}
                                     disabled={true}
                                     readOnly={this.state.IsSystem}
-                                    loaditemcachekeyid="ERPCOMMONCACHE.DESTROYREQUESTTYPE"
-                                    valuemember="DestroyRequestTypeID"
-                                    nameMember="DestroyRequestTypeName"
+                                    loaditemcachekeyid="ERPCOMMONCACHE.MTRETURNREQUESTTYPE"
+                                    valuemember="MtreturnRequestTypeID"
+                                    nameMember="MtreturnRequestTypeName"
                                     controltype="InputControl"
                                     value={""}
                                     listoption={null}
-                                    datasourcemember="DestroyRequestTypeID" />
+                                    datasourcemember="MtreturnRequestTypeID" />
 
                             </div>
 
                             <div className="col-md-12">
                                 <FormControl.TextBox
-                                    name="txtDestroyRequestTitle"
+                                    name="txtMTReturnRequestTitle"
                                     labelcolspan={2}
                                     colspan={10}
                                     disabled={this.state.IsSystem}
@@ -637,7 +637,7 @@ class EditCom extends React.Component {
                                     placeholder="Tiêu đề"
                                     controltype="InputControl"
                                     value=""
-                                    datasourcemember="DestroyRequestTitle"
+                                    datasourcemember="MTReturnRequestTitle"
                                     validatonList={['required']}
                                     classNameCustom="customcontrol"
                                 />
@@ -724,7 +724,7 @@ class EditCom extends React.Component {
                         </div>
 
                         {isAutoReview == false ?
-                            <DestroyRequestRVList
+                            <MTReturnRequestRVList
                                 dataSource={gridDestroyRequestRLSort}
                                 disabledControll={this.state.IsSystem}
                                 onValueChangeGridRV={this.handleInputChangeGridRV.bind(this)}
