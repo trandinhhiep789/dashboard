@@ -216,38 +216,38 @@ export const GridColumnListPrice = [
 
 export const DataGridModalQuantityHanOverDone = [
     {
-        Name: "AdvancerequestID",
+        Name: "AdvanceRequestID",
         Type: "text",
         Caption: "Yêu cầu tạm ứng",
-        DataSourceMember: "ADVANCEREQUESTID",
+        DataSourceMember: "AdvanceRequestID",
         Width: 100
     },
     {
         Name: "SaleOrderID",
         Type: "text",
         Caption: "Yêu cầu xuất",
-        DataSourceMember: "SALEORDERID",
+        DataSourceMember: "SaleOrderID",
         Width: 100
     },
     {
-        Name: "OutputVoucher",
+        Name: "OutputVoucherID",
         Type: "text",
         Caption: "Mã phiếu xuất",
-        DataSourceMember: "OUTPUTVOUCHER",
+        DataSourceMember: "OutputVoucherID",
         Width: 100
     },
     {
-        Name: "Quantity",
+        Name: "ConvertQuantity",
         Type: "text",
         Caption: "Số lượng",
-        DataSourceMember: "QUANTITY",
+        DataSourceMember: "ConvertQuantity",
         Width: 100
     },
     {
-        Name: "HANDOVERDATE",
+        Name: "HandOverDate",
         Type: "text",
         Caption: "Ngày bàn giao",
-        DataSourceMember: "HANDOVERDATE",
+        DataSourceMember: "HandOverDate",
         Width: 100
     },
 

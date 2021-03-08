@@ -7,12 +7,12 @@ export default class ModalBox extends Component {
 
     }
     render() {
-        const { firstLabel, secondLabel, listColumn, dataSource } = this.props;
+        const { UserName, Month, listColumn, dataSource } = this.props;
         return (
             <React.Fragment>
                 <div className="header-modal-box">
-                    <div>{firstLabel}: 123</div>
-                    <div>{secondLabel}: 0</div>
+                    <div>Nhân viên: {UserName}</div>
+                    <div>Tháng: {Month}</div>
                 </div>
 
                 <DataGrid

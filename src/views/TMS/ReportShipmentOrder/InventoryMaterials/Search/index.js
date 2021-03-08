@@ -252,8 +252,7 @@ class SearchCom extends React.Component {
     }
 
     onShowModal(data, typeDataGrid) {
-        const { widthPercent } = this.state;
-        const a = [{}];
+        const { widthPercent, UserName, Month } = this.state;
 
         switch (typeDataGrid) {
             case 1:
@@ -261,10 +260,10 @@ class SearchCom extends React.Component {
                     title: "Nhận trong kỳ",
                     content: {
                         text: <ModalBox
-                            firstLabel={"Nhóm vật tư"}
-                            secondLabel={"Tổng"}
+                            UserName={UserName}
+                            Month={`${Month.getMonth() + 1}-${Month.getFullYear()}`}
                             listColumn={DataGridModalQuantityHanOverDone}
-                            dataSource={a}
+                            dataSource={data}
                         />
                     },
                     maxWidth: widthPercent + 'px'
@@ -275,10 +274,10 @@ class SearchCom extends React.Component {
                     title: "Chờ bàn giao",
                     content: {
                         text: <ModalBox
-                            firstLabel={"Nhóm vật tư"}
-                            secondLabel={"Tổng"}
+                            UserName={UserName}
+                            Month={`${Month.getMonth() + 1}-${Month.getFullYear()}`}
                             listColumn={DataGridModalQuantityHanOverDoing}
-                            dataSource={a}
+                            dataSource={data}
                         />
                     },
                     maxWidth: widthPercent + 'px'
@@ -289,10 +288,10 @@ class SearchCom extends React.Component {
                     title: "Nhập trả",
                     content: {
                         text: <ModalBox
-                            firstLabel={"Nhóm vật tư"}
-                            secondLabel={"Tổng"}
+                            UserName={UserName}
+                            Month={`${Month.getMonth() + 1}-${Month.getFullYear()}`}
                             listColumn={DataGridModalQuantityReturn}
-                            dataSource={a}
+                            dataSource={data}
                         />
                     },
                     maxWidth: widthPercent + 'px'
@@ -303,10 +302,10 @@ class SearchCom extends React.Component {
                     title: "Sử dụng trong kỳ",
                     content: {
                         text: <ModalBox
-                            firstLabel={"Nhóm vật tư"}
-                            secondLabel={"Tổng"}
+                            UserName={UserName}
+                            Month={`${Month.getMonth() + 1}-${Month.getFullYear()}`}
                             listColumn={DataGridModalChangeTotalQuantity}
-                            dataSource={a}
+                            dataSource={data}
                         />
                     },
                     maxWidth: widthPercent + 'px'
@@ -317,10 +316,10 @@ class SearchCom extends React.Component {
                     title: "Tiêu hao khác",
                     content: {
                         text: <ModalBox
-                            firstLabel={"Nhóm vật tư"}
-                            secondLabel={"Tổng"}
+                            UserName={UserName}
+                            Month={`${Month.getMonth() + 1}-${Month.getFullYear()}`}
                             listColumn={DataGridModalQuantityExpend}
-                            dataSource={a}
+                            dataSource={data}
                         />
                     },
                     maxWidth: widthPercent + 'px'
@@ -345,10 +344,10 @@ class SearchCom extends React.Component {
                 IsHandOverMaterial: 1 // v_ISHANDOVERMATERIAL
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
-                console.log('1', objData, apiResult)
+                // console.log('1', objData, apiResult)
                 if (!apiResult.IsError) {
                     //this.onShowModal(apiResult.ResultObject);
-                    this.onShowModal('', status);
+                    this.onShowModal(apiResult.ResultObject, status);
                 }
                 else {
                     this.showMessage(apiResult.MessageDetail)
@@ -364,7 +363,7 @@ class SearchCom extends React.Component {
                 IsHandOverMaterial: 0 // v_ISHANDOVERMATERIAL
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
-                console.log('2', objData, apiResult)
+                // console.log('2', objData, apiResult)
                 if (!apiResult.IsError) {
 
                     this.onShowModal('', status);
@@ -377,7 +376,7 @@ class SearchCom extends React.Component {
         if (status == 3) { //Nhập trả
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
                 if (!apiResult.IsError) {
-                    console.log('3:', objData, apiResult);
+                    // console.log('3:', objData, apiResult);
                     // this.handleShowModal(apiResult.ResultObject, status)
                     this.onShowModal('', status);
                 }
@@ -393,7 +392,7 @@ class SearchCom extends React.Component {
                 ProductID: objValue[0].value
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceDebtFlow/LoadAdvanceDebtFlowUsing", objData).then(apiResult => {
-                console.log('4:', objData, apiResult)
+                // console.log('4:', objData, apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal('', status);
                 }
