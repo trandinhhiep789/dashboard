@@ -126,6 +126,7 @@ class AddCom extends React.Component {
 
     GetDataByRequestTypeID(MtreturnRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByRequestTypeIDPath, MtreturnRequestTypeID).then(apiResult => {
+            console.log("products:",apiResult )
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
