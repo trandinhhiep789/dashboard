@@ -256,6 +256,12 @@ export const GridMLObjectDefinition = [
         DataSourceMember: "QuantityUnitName"
     },
     {
+        Name: "QuantityUnitID",
+        DefaultValue: "",
+        BindControlName: "QuantityUnitID",
+        DataSourceMember: "QuantityUnitID"
+    },
+    {
         Name: "Quantity",
         DefaultValue: "",
         BindControlName: "Quantity",
