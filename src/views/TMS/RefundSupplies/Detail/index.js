@@ -1,12 +1,15 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { Component } from 'react';
+import {
+    Link
+} from "react-router-dom";
+import { connect } from 'react-redux';
 import { ModalManager } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
 
-import { updatePagePath } from '../../../../actions/pageAction'
-import { callFetchAPI } from '../../../../actions/fetchAPIAction'
-import { MessageModal } from '../../../../common/components/Modal'
-import RenfundSuppliesInfo from './RenfundSuppliesInfo'
+import { updatePagePath } from '../../../../actions/pageAction';
+import { callFetchAPI } from '../../../../actions/fetchAPIAction';
+import { MessageModal } from '../../../../common/components/Modal';
+import RenfundSuppliesInfo from './RenfundSuppliesInfo';
 import {
     APIHostName,
     LoadAPIPath,
@@ -14,35 +17,48 @@ import {
     TitleFormDetail,
     GirdMTReturnRequestDetailColumnList,
     GirdMTReturnRequestReviewLevelColumnList
-} from '../constants'
-import InputGrid from '../../../../common/components/Form/AdvanceForm/FormControl/InputGrid'
+} from '../constants';
+import InputGrid from '../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
+import Attachment from "../../../../common/components/Attachment";
+import Comment from "../../../../common/components/Comment";
 
 export class Detail extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            DestroyRequestID: '',
+            RenfundSuppliesID: '',
             IsCallAPIError: false,
             RenfundSupplies: {},
             MTReturnRequestDetail: [],
             MTReturnRequestReviewLevel: [],
             isAutoReview: false,
             CurrentReviewLevelID: '',
-            isUserNameReviewLevel: false
+            isUserNameReviewLevel: false,
+            MTReturnRequest_AttachmentList: [],
+            MTReturnRequest_CommentList: [],
+            IsOutPut: false,
+            CurrentReviewLevelName: ''
         }
 
         this.callLoadData = this.callLoadData.bind(this);
         this.showMessage = this.showMessage.bind(this);
+        this.handleSelectFile = this.handleSelectFile.bind(this);
+        this.handleDeletefile = this.handleDeletefile.bind(this);
+        this.handleChangeValue = this.handleChangeValue.bind(this);
+        this.handleKeyPressSumit = this.handleKeyPressSumit.bind(this);
+        this.handleSubmitOutputRenfundSupplies = this.handleSubmitOutputRenfundSupplies.bind(this);
+        this.handleInsertDRNoteRV = this.handleInsertDRNoteRV.bind(this);
     }
 
     componentDidMount() {
         const { updatePagePath } = this.props;
         updatePagePath(DetailAPIPath);
         this.setState({
-            DestroyRequestID: this.props.match.params.id
+            RenfundSuppliesID: this.props.match.params.id
         })
         this.callLoadData(this.props.match.params.id);
+        console.log(this.props.AppInfo)
     }
 
     callLoadData(id) {
@@ -55,90 +71,15 @@ export class Detail extends Component {
                 this.showMessage(apiResult.Message);
             } else {
                 console.log(apiResult)
-                const { lstMTReturnRequestDetail, lstMTReturnRequestReviewLevel, IsreViewed } = apiResult.ResultObject;
+                const { lstMTReturnRequestDetail, lstMTReturnRequestReviewLevel, IsreViewed, IsSystem, IsCreatedInputVoucher, ReviewLevelName } = apiResult.ResultObject;
 
-                const resultRenfundSuppliesReviewLevel = lstMTReturnRequestReviewLevel.map((item, index) => {
-                    item.ApproverName = item.UserName + " - " + item.FullName;
-
-                    if (item.ReviewStatus == 0) {
-                        item.ReviewStatusLable = "Chưa duyệt";
-                    }
-                    else {
-                        if (item.ReviewStatus == 1) {
-                            item.ReviewStatusLable = "Đã duyệt";
-                        }
-                        else {
-                            item.ReviewStatusLable = "Từ chối duyệt";
-                        }
-
-                    }
-                    return item;
-                })
-
-                if (lstMTReturnRequestReviewLevel.length > 0) {
-                    const resultUserNameReviewLevel = lstMTReturnRequestReviewLevel.filter((item, index) => {
-                        if (item.ReviewLevelID == CurrentReviewLevelID) {
-                            return item;
-                        }
-                    })
-
-                    const Username = this.props.AppInfo.LoginInfo.Username;
-
-                    if (resultUserNameReviewLevel.length > 0) {
-                        const userName = resultUserNameReviewLevel[0].UserName;
-                        if (userName.trim() === Username.trim()) {
-                            this.setState({
-                                isUserNameReviewLevel: true
-                            })
-                        }
-                        else {
-                            this.setState({
-                                isUserNameReviewLevel: false
-                            })
-                        }
-                    }
-
-                    const returnStatusDiffer = lstMTReturnRequestReviewLevel.filter((item, index) => {
-                        if (item.ReviewStatus != 1) {
-                            return item;
-                        }
-                    })
-
-                    const returnStatusReject = lstMTReturnRequestReviewLevel.filter((item, index) => {
-                        if (item.ReviewStatus == 2) {
-                            return item;
-                        }
-                    })
-
-                    if (returnStatusReject.length > 0) {
-                        this.setState({
-                            IsStatusReject: true
-                        })
-                    }
-                    else {
-                        this.setState({
-                            IsStatusReject: false
-                        })
-                    }
-
-                    if (returnStatusDiffer.length > 0) {
-                        this.setState({
-                            IsStatus: true
-                        })
-                    }
-                    else {
-                        this.setState({
-                            IsStatus: false
-                        })
-                    }
-                }
 
                 let disabledIsOutPut = false;
-                if (apiResult.ResultObject.IsSystem) {
+                if (IsSystem) {
                     disabledIsOutPut = true
                 }
                 else {
-                    if (apiResult.ResultObject.IsreViewed == true && apiResult.ResultObject.IsCreatedInputVoucher == false) {
+                    if (IsreViewed == true && IsCreatedInputVoucher == false) {
                         disabledIsOutPut = false
                     }
                     else {
@@ -151,11 +92,39 @@ export class Detail extends Component {
                     MTReturnRequestDetail: lstMTReturnRequestDetail,
                     MTReturnRequestReviewLevel: lstMTReturnRequestReviewLevel,
                     isAutoReview: IsreViewed,
+                    MTReturnRequest_AttachmentList: apiResult.ResultObject.MTReturnRequest_AttachmentList,
+                    MTReturnRequest_CommentList: apiResult.ResultObject.MTReturnRequest_CommentList,
+                    IsOutPut: disabledIsOutPut,
+                    CurrentReviewLevelName: ReviewLevelName
                 })
             }
         });
 
 
+    }
+
+    handleSelectFile() {
+        this.showMessage("Tính năng đang phát triển")
+    }
+
+    handleDeletefile() {
+
+    }
+
+    handleChangeValue() {
+
+    }
+
+    handleKeyPressSumit() {
+        this.showMessage("Tính năng đang phát triển")
+    }
+
+    handleSubmitOutputRenfundSupplies() {
+        this.showMessage("Tính năng đang phát triển")
+    }
+
+    handleInsertDRNoteRV(id) {
+        this.showMessage("Tính năng đang phát triển")
     }
 
     showMessage(message) {
@@ -170,7 +139,7 @@ export class Detail extends Component {
     }
 
     render() {
-        const { RenfundSupplies, MTReturnRequestDetail, MTReturnRequestReviewLevel, isAutoReview, CurrentReviewLevelID } = this.state;
+        const { RenfundSupplies, MTReturnRequestDetail, MTReturnRequestReviewLevel, isAutoReview, CurrentReviewLevelID, MTReturnRequest_AttachmentList, MTReturnRequest_CommentList, isUserNameReviewLevel, IsOutPut, CurrentReviewLevelName } = this.state;
 
         let IsAutoReview;
 
@@ -181,9 +150,29 @@ export class Detail extends Component {
             IsAutoReview = false
         }
 
+        let IsExitBtnReview = false;
+        if (isUserNameReviewLevel == true) {
+            if (isHiddenButtonRV) {
+                IsExitBtnReview = true;
+            }
+            else {
+                if (IsStatusReject) {
+                    IsExitBtnReview = true
+                }
+                else {
+                    IsExitBtnReview = false
+                }
+            }
+
+        }
+        else {
+            IsExitBtnReview = true
+        }
+
         return (
             <div className="col-lg-12">
                 <ReactNotification ref={this.notificationDOMRef} />
+
                 <div className="card">
                     <h4 className="card-title">
                         <strong>{TitleFormDetail}</strong>
@@ -230,7 +219,52 @@ export class Detail extends Component {
                                 </div>
                             </div>
                         }
+
+                        <Attachment
+                            IsAttachment={true}
+                            onSelectFile={this.handleSelectFile}
+                            onDeletefile={this.handleDeletefile}
+                            DataAttachment={MTReturnRequest_AttachmentList}
+                        />
+
+                        {/* <Comment
+                            DataComments={MTReturnRequest_CommentList}
+                            IsComment={true}
+                            onChangeValue={this.handleChangeValue}
+                            onKeyPressSumit={this.handleKeyPressSumit}
+                        /> */}
                     </div>
+
+                    <footer className="card-footer text-right ">
+                        {IsAutoReview == false ?
+                            IsExitBtnReview == false ?
+
+                                < div className="btn-group btn-group-dropdown mr-3">
+                                    <button disabled={IsExitBtnReview} className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                    <div className="dropdown-menu" x-placement="bottom-start" >
+                                        <button className="dropdown-item" type="button" onClick={() => this.handleInsertDRNoteRV(1)}>Đồng ý</button>
+                                        <button className="dropdown-item" type="button" onClick={() => this.handleInsertDRNoteRV(2)}>Từ chối</button>
+                                    </div>
+                                </div>
+                                : < div className="btn-group btn-group-dropdown mr-3">
+                                    <button disabled={IsExitBtnReview} className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                    <div className="dropdown-menu" x-placement="bottom-start" >
+                                        <button className="dropdown-item" type="button">Đồng ý</button>
+                                        <button className="dropdown-item" type="button">Từ chối</button>
+                                    </div>
+                                </div>
+                            : <div></div>
+
+                        }
+                        {IsOutPut == false ?
+                            <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitOutputRenfundSupplies}>Tạo phiếu xuất</button>
+                            : <button disabled={true} className="btn btn-primary mr-3" type="button">Tạo phiếu xuất</button>
+                        }
+
+                        <Link to="/RefundSupplies">
+                            <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
+                        </Link>
+                    </footer>
                 </div>
             </div>
         )
