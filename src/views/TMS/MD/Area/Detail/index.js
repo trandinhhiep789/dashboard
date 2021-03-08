@@ -49,7 +49,8 @@ class DetailCom extends React.Component {
             } else {
                 this.setState({
                     DataSource: apiResult.ResultObject,
-                    AreaStore: apiResult.ResultObject.AreaStore ? apiResult.ResultObject.AreaStore : []
+                    AreaStore: apiResult.ResultObject.AreaStore ? apiResult.ResultObject.AreaStore : [],
+                    AreaStoreAll: apiResult.ResultObject.AreaStoreAll ? apiResult.ResultObject.AreaStoreAll : []
                 });
 
             }
@@ -183,6 +184,7 @@ class DetailCom extends React.Component {
                     <Area_Store
                         AreaID={this.props.match.params.id}
                         AreaStoreDataSource={this.state.AreaStore ? this.state.AreaStore : []}
+                        AreaStoreAllDataSource={this.state.AreaStoreAll? this.state.AreaStoreAll : []}
                         onAreaStoreChange={this.onComponentChange}
                     />
 
