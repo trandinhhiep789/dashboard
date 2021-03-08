@@ -25,7 +25,7 @@ export class RenfundSuppliesInfo extends Component {
 
     render() {
         const { RenfundSupplies } = this.state;
-        console.log(RenfundSupplies)
+
         return (
             <React.Fragment>
                 <div className="form-row">

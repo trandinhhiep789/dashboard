@@ -253,6 +253,7 @@ class SearchCom extends React.Component {
 
     onShowModal(data, typeDataGrid) {
         const { widthPercent, UserName, Month } = this.state;
+        const formatMonth = `${Month.getMonth() + 1}-${Month.getFullYear()}`;
 
         switch (typeDataGrid) {
             case 1:
@@ -261,7 +262,7 @@ class SearchCom extends React.Component {
                     content: {
                         text: <ModalBox
                             UserName={UserName}
-                            Month={`${Month.getMonth() + 1}-${Month.getFullYear()}`}
+                            Month={formatMonth}
                             listColumn={DataGridModalQuantityHanOverDone}
                             dataSource={data}
                         />
@@ -275,7 +276,7 @@ class SearchCom extends React.Component {
                     content: {
                         text: <ModalBox
                             UserName={UserName}
-                            Month={`${Month.getMonth() + 1}-${Month.getFullYear()}`}
+                            Month={formatMonth}
                             listColumn={DataGridModalQuantityHanOverDoing}
                             dataSource={data}
                         />
@@ -289,7 +290,7 @@ class SearchCom extends React.Component {
                     content: {
                         text: <ModalBox
                             UserName={UserName}
-                            Month={`${Month.getMonth() + 1}-${Month.getFullYear()}`}
+                            Month={formatMonth}
                             listColumn={DataGridModalQuantityReturn}
                             dataSource={data}
                         />
@@ -303,7 +304,7 @@ class SearchCom extends React.Component {
                     content: {
                         text: <ModalBox
                             UserName={UserName}
-                            Month={`${Month.getMonth() + 1}-${Month.getFullYear()}`}
+                            Month={formatMonth}
                             listColumn={DataGridModalChangeTotalQuantity}
                             dataSource={data}
                         />
@@ -317,7 +318,7 @@ class SearchCom extends React.Component {
                     content: {
                         text: <ModalBox
                             UserName={UserName}
-                            Month={`${Month.getMonth() + 1}-${Month.getFullYear()}`}
+                            Month={formatMonth}
                             listColumn={DataGridModalQuantityExpend}
                             dataSource={data}
                         />
