@@ -226,7 +226,7 @@ export const DataGridColumnList = [
         Type: "texttolink",
         Caption: "Mã yêu cầu",
         DataSourceMember: "MTReturnRequestID",
-        Link: "/MTReturnRequest/Detail/",
+        Link: "/RefundSupplies/Detail/",
         Width: 140
     },
     {
@@ -278,7 +278,7 @@ export const DataGridColumnList = [
         Caption: "Tác vụ",
         DataSourceMember: "MTReturnRequestID",
         Width: 100,
-        Link: "/MTReturnRequest/Edit/",
+        Link: "/RefundSupplies/Edit/",
         LinkText: "Chỉnh sửa"
     },
 ];
