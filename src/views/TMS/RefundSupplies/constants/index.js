@@ -1,4 +1,5 @@
 export const APIHostName = "TMSAPI";
+export const SearchAPIPath = "api/MTReturnRequest/Search";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "MTReturnRequestID";
 export const BackLink = "/RefundSupplies";
@@ -37,6 +38,40 @@ export const DetailAPIPath = [
     { Link: "", Title: "Chi tiết" }
 ];
 
+const dtFromdate = new Date();
+dtFromdate.setDate(new Date().getDate() - 30);
+
+export const InitSearchParams = [
+    {
+        SearchKey: "@Keyword",
+        SearchValue: ""
+    },
+    {
+        SearchKey: "@MTRETURNREQUESTTYPEID",
+        SearchValue: "-1"
+    },
+    {
+        SearchKey: "@REQUESTSTOREID",
+        SearchValue: "-1"
+    },
+    {
+        SearchKey: "@FROMDATE",
+        SearchValue: dtFromdate
+    },
+    {
+        SearchKey: "@TODATE",
+        SearchValue: new Date()
+    },
+    {
+        SearchKey: "@ISREVIEWED",
+        SearchValue: "-1"
+    },
+    {
+        SearchKey: "@ISCREATEDINPUTVOUCHERT",
+        SearchValue: "-1"
+    }
+];
+
 export const SearchMLObjectDefinition = [
     {
         Name: "Keyword",
@@ -44,11 +79,36 @@ export const SearchMLObjectDefinition = [
         BindControlName: "txtKeyword"
     },
     {
+        Name: "MTReturnRequestTypeID",
+        DefaultValue: "",
+        BindControlName: "cbMTReturnRequestTypeID"
+    },
+    {
         Name: "RequestStoreID",
         DefaultValue: "",
         BindControlName: "cbRequestStoreID"
     },
-   
+    {
+        Name: "FromDate",
+        DefaultValue: "",
+        BindControlName: "dtFromDate"
+    },
+    {
+        Name: "ToDate",
+        DefaultValue: "",
+        BindControlName: "dtToDate"
+    },
+    {
+        Name: "IsreViewed",
+        DefaultValue: "",
+        BindControlName: "cbIsreViewed"
+    },
+    {
+        Name: "IsCreatedInputVouchert",
+        DefaultValue: "",
+        BindControlName: "cbIsCreatedInputVouchert"
+    }
+
 ];
 
 export const SearchElementList = [
@@ -61,6 +121,22 @@ export const SearchElementList = [
         colspan: 2,
         placeholder: "Từ khóa",
         icon: ""
+    },
+    {
+        type: "ComboBox",
+        name: "cbMTReturnRequestTypeID",
+        DataSourceMember: "MTReturnRequestTypeID",
+        label: "Loại yêu cầu hủy vật tư",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.MTRETURNREQUESTTYPE",
+        ValueMember: "MtreturnRequestTypeID",
+        NameMember: "MtreturnRequestTypeName",
+
     },
     {
         type: "ComboBox",
@@ -78,6 +154,60 @@ export const SearchElementList = [
         NameMember: "StoreName"
 
     },
+    {
+        type: "Datetime",
+        name: "dtFromDate",
+        DataSourceMember: "FromDate",
+        label: "Từ ngày",
+        value: dtFromdate,
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 2,
+    },
+    {
+        type: "Datetime",
+        name: "dtToDate",
+        DataSourceMember: "ToDate",
+        label: "Đến ngày",
+        value: new Date(),
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 2,
+    },
+    {
+        type: "ComboBox",
+        name: "cbIsreViewed",
+        DataSourceMember: "IsreViewed",
+        label: "Trạng thái duyệt",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "--Tất cả--",
+        listoption: [
+            { value: -1, label: '--Tất cả--' },
+            { value: 1, label: 'Hết hạn' },
+            { value: 2, label: 'Còn hạn' },
+        ],
+
+
+    },
+    {
+        type: "ComboBox",
+        name: "cbIsCreatedInputVouchert",
+        DataSourceMember: "IsCreatedInputVouchert",
+        label: "Trạng thái xuất",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "--Tất cả--",
+        listoption: [
+            { value: -1, label: '--Tất cả--' },
+            { value: 1, label: 'Chưa Xuất hủy vật tư' },
+            { value: 2, label: 'Đã xuất hủy vật tư' },
+        ],
+
+
+    }
 ];
 
 
@@ -220,7 +350,7 @@ export const InputMTReturnRequestDetailColumnList = [
         // validatonList: [ "number"],
         IsNoneZero: false
     },
-   
+
 ];
 
 

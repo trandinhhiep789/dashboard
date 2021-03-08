@@ -261,7 +261,7 @@ class SearchCom extends React.Component {
                     title: "Nhận trong kỳ",
                     content: {
                         text: <ModalBox
-                            firstLabel={"Nhận trong kỳ"}
+                            firstLabel={"Nhóm vật tư"}
                             secondLabel={"Tổng"}
                             listColumn={DataGridModalQuantityHanOverDone}
                             dataSource={a}
@@ -275,7 +275,7 @@ class SearchCom extends React.Component {
                     title: "Chờ bàn giao",
                     content: {
                         text: <ModalBox
-                            firstLabel={"Chờ bàn giao"}
+                            firstLabel={"Nhóm vật tư"}
                             secondLabel={"Tổng"}
                             listColumn={DataGridModalQuantityHanOverDoing}
                             dataSource={a}
@@ -289,7 +289,7 @@ class SearchCom extends React.Component {
                     title: "Nhập trả",
                     content: {
                         text: <ModalBox
-                            firstLabel={"Nhập trả"}
+                            firstLabel={"Nhóm vật tư"}
                             secondLabel={"Tổng"}
                             listColumn={DataGridModalQuantityReturn}
                             dataSource={a}
@@ -303,7 +303,7 @@ class SearchCom extends React.Component {
                     title: "Sử dụng trong kỳ",
                     content: {
                         text: <ModalBox
-                            firstLabel={"Sử dụng trong kỳ"}
+                            firstLabel={"Nhóm vật tư"}
                             secondLabel={"Tổng"}
                             listColumn={DataGridModalChangeTotalQuantity}
                             dataSource={a}
@@ -317,7 +317,7 @@ class SearchCom extends React.Component {
                     title: "Tiêu hao khác",
                     content: {
                         text: <ModalBox
-                            firstLabel={"Sử dụng trong kỳ"}
+                            firstLabel={"Nhóm vật tư"}
                             secondLabel={"Tổng"}
                             listColumn={DataGridModalQuantityExpend}
                             dataSource={a}
@@ -426,8 +426,8 @@ class SearchCom extends React.Component {
                     listColumn={GridColumnList}
                     dataSource={this.state.dataSimiliGroup}
                     IsFixheaderTable={false}
-                    IDSelectColumnName={''}
-                    PKColumnName={''}
+                    IDSelectColumnName={'ProductID'}
+                    PKColumnName={'ProductID'}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
@@ -441,6 +441,7 @@ class SearchCom extends React.Component {
                     DataExport={this.state.dataSimiliGroupExport}
                     fileName="Danh sách báo cáo tồn vật tư ống đồng"
                     onExportFile={this.handleExportFile.bind(this)}
+                    onShowModal={this.onShowModalDetail}
                 />
 
                 <DataGrid

@@ -69,7 +69,7 @@ class SearchCom extends React.Component {
     }
 
     testAPI() {
-   
+
         this.props.callFetchAPI(APIHostName, 'api/CurrentAdvanceDebt/GetListByUser', "68913").then(apiResult => {
             console.log("testAPI", apiResult)
         })
@@ -87,7 +87,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-             console.log('callSearchData', searchData, apiResult)
+            console.log('callSearchData', searchData, apiResult)
 
             if (apiResult.IsError) {
                 this.setState({
@@ -109,7 +109,7 @@ class SearchCom extends React.Component {
 
                     }
                     else {
-                        item.ReviewStatusLable =<span className='lblstatus text-warning'>Chưa duyệt</span>;
+                        item.ReviewStatusLable = <span className='lblstatus text-warning'>Chưa duyệt</span>;
 
                     }
                     return item;
@@ -286,7 +286,7 @@ class SearchCom extends React.Component {
                     RowsPerPage={10}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
-                   // RequirePermission={DESTROYREQUEST_VIEW}
+                    // RequirePermission={DESTROYREQUEST_VIEW}
                     DeletePermission={DESTROYREQUEST_DELETE}
                     fileName="Danh sách yêu cầu hủy vật tư"
                     onExportFile={this.handleExportFile.bind(this)}

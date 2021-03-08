@@ -13,6 +13,7 @@ import { REFUNDSUPPLIES_VIEW, REFUNDSUPPLIES_DELETE } from "../../../../constant
 import {
 
     APIHostName,
+    SearchAPIPath,
     PagePath,
     DataGridColumnList,
     IDSelectColumnName,
@@ -20,7 +21,8 @@ import {
     TitleFormSearch,
     SearchMLObjectDefinition,
     SearchElementList,
-    AddLink
+    AddLink,
+    InitSearchParams
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -37,16 +39,48 @@ class SearchCom extends React.Component {
             CallAPIMessage: "",
             gridDataSource: [],
             IsCallAPIError: false,
-
-
+            SearchData: InitSearchParams
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.callSearchData = this.callSearchData.bind(this);
     }
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-       // this.showMessage("Tính năng đang phát triển. Vui lòng quay lại!")
+        // this.showMessage("Tính năng đang phát triển. Vui lòng quay lại!")
+        const InitSearchParams = [
+            {
+                SearchKey: "@Keyword",
+                SearchValue: ""
+            },
+            {
+                SearchKey: "@MTRETURNREQUESTTYPEID",
+                SearchValue: "-1"
+            },
+            {
+                SearchKey: "@REQUESTSTOREID",
+                SearchValue: "-1"
+            },
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: new Date()
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: new Date()
+            },
+            {
+                SearchKey: "@ISREVIEWED",
+                SearchValue: "-1"
+            },
+            {
+                SearchKey: "@ISCREATEDINPUTVOUCHERT",
+                SearchValue: "-1"
+            }
+        ];
+        this.callSearchData(InitSearchParams)
     }
 
 
@@ -70,7 +104,7 @@ class SearchCom extends React.Component {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Loại yêu cầu nhập trả vật tư',
             content: {
-                text: <ListMTReturnRequestType/>
+                text: <ListMTReturnRequestType />
             },
             maxWidth: '800px'
         });
@@ -78,9 +112,51 @@ class SearchCom extends React.Component {
 
     }
 
-     handleSearchSubmit(formData, MLObject) {
+    callSearchData(searchData) {
+        const { callFetchAPI } = this.props;
+        callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("22", searchData, apiResult)
+        })
+    }
 
-     }
+    handleSearchSubmit(formData, MLObject) {
+        const DataSearch = [
+            {
+                SearchKey: "@Keyword",
+                SearchValue: MLObject.Keyword
+            },
+            {
+                SearchKey: "@MTRETURNREQUESTTYPEID",
+                SearchValue: MLObject.MTReturnRequestTypeID
+            },
+            {
+                SearchKey: "@REQUESTSTOREID",
+                SearchValue: MLObject.RequestStoreID
+            },
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: MLObject.FromDate
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: MLObject.ToDate
+            },
+            {
+                SearchKey: "@ISREVIEWED",
+                SearchValue: MLObject.IsreViewed
+            },
+            {
+                SearchKey: "@ISCREATEDINPUTVOUCHERT",
+                SearchValue: MLObject.IsCreatedInputVouchert
+            }
+        ];
+
+        this.setState({
+            SearchData: DataSearch
+        });
+
+        this.callSearchData(DataSearch);
+    }
 
     render() {
         return (

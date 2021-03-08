@@ -82,35 +82,35 @@ export const GridColumnList = [
     },
     {
         Name: "QuantityHanOverDone",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Nhận trong kỳ",
         DataSourceMember: "QuantityHanOverDone",
         Width: 100
     },
     {
         Name: "QuantityHanOverDoing",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Chờ bàn giao",
         DataSourceMember: "QuantityHanOverDoing",
         Width: 100
     },
     {
         Name: "QuantityReturn",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Nhập trả",
         DataSourceMember: "QuantityReturn",
         Width: 100
     },
     {
         Name: "ChangeTotalQuantity",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Sử dụng trong kỳ",
         DataSourceMember: "ChangeTotalQuantity",
         Width: 100
     },
     {
         Name: "QuantityExpend",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Tiêu hao khác",
         DataSourceMember: "QuantityExpend",
         Width: 100
