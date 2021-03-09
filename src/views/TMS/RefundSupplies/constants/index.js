@@ -8,6 +8,7 @@ export const AddLink = "/RefundSupplies/Add";
 export const AddAPIPath = "api/MTReturnRequest/Add";
 export const DeleteNewAPIPath = "api/MTReturnRequest/DeleteNew";
 export const LoadAPIPath = "api/MTReturnRequest/Load";
+export const UpdateAPIPath = "api/MTReturnRequest/Update";
 
 
 export const LoadAPIByMtreturnRequestTypeIDPath = "api/MTReturnRequest_ReviewList/LoadByMTReturnRequesTypeID";
