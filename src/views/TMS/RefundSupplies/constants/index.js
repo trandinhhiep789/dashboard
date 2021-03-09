@@ -9,6 +9,9 @@ export const AddAPIPath = "api/MTReturnRequest/Add";
 export const DeleteNewAPIPath = "api/MTReturnRequest/DeleteNew";
 export const LoadAPIPath = "api/MTReturnRequest/Load";
 export const UpdateAPIPath = "api/MTReturnRequest/Update";
+export const UpdateCurrentReviewLevelAPIPath = "api/MTReturnRequest/UpdateCurrentReviewLevel";
+
+export const UpdateCreateVocherAPIPath = "api/MTReturnRequest/UpdateCreatedInputVoucher";
 
 
 export const LoadAPIByMtreturnRequestTypeIDPath = "api/MTReturnRequest_ReviewList/LoadByMTReturnRequesTypeID";

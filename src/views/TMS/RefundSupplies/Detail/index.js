@@ -17,7 +17,9 @@ import {
     DetailAPIPath,
     TitleFormDetail,
     GirdMTReturnRequestDetailColumnList,
-    GirdMTReturnRequestReviewLevelColumnList
+    GirdMTReturnRequestReviewLevelColumnList,
+    UpdateCurrentReviewLevelAPIPath,
+    UpdateCreateVocherAPIPath
 } from '../constants';
 import InputGrid from '../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
 import Attachment from "../../../../common/components/Attachment";
@@ -30,7 +32,7 @@ export class DetailCom extends Component {
         super(props);
 
         this.state = {
-            RenfundSuppliesID: '',
+            MTReturnRequestID: '',
             IsCallAPIError: false,
             RenfundSupplies: {},
             RenfundSuppliesRL: [],
@@ -54,16 +56,17 @@ export class DetailCom extends Component {
         this.handleDeletefile = this.handleDeletefile.bind(this);
         this.handleChangeValue = this.handleChangeValue.bind(this);
         this.handleKeyPressSumit = this.handleKeyPressSumit.bind(this);
-        this.handleSubmitOutputRenfundSupplies = this.handleSubmitOutputRenfundSupplies.bind(this);
         this.handleInsertDRNoteRV = this.handleInsertDRNoteRV.bind(this);
         this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
+
+        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
         const { updatePagePath } = this.props;
         updatePagePath(DetailAPIPath);
         this.setState({
-            RenfundSuppliesID: this.props.match.params.id
+            MTReturnRequestID: this.props.match.params.id
         })
         this.callLoadData(this.props.match.params.id);
     }
@@ -181,6 +184,7 @@ export class DetailCom extends Component {
                     CurrentReviewLevelID: CurrentReviewLevelID,
                     RenfundSuppliesRL: resultMTReturnRequestReviewLevel,
                     isHiddenButtonRV: apiResult.ResultObject.IsreViewed,
+                    lastReviewLevelID: lstMTReturnRequestReviewLevel.length > 0 ? lstMTReturnRequestReviewLevel[lstMTReturnRequestReviewLevel.length - 1].ReviewLevelID : 0,
                 })
             }
         });
@@ -204,12 +208,92 @@ export class DetailCom extends Component {
         this.showMessage("Tính năng đang phát triển")
     }
 
-    handleSubmitOutputRenfundSupplies() {
-        this.showMessage("Tính năng đang phát triển")
+    handleSubmitCreateVoucheRenfundSupplies() {
+        const { MTReturnRequestID } = this.state;
+        let MLObject = {};
+        MLObject.MTReturnRequestID = MTReturnRequestID;
+        MLObject.InputVoucherID = "";
+        MLObject.IsCreatedInputVoucher = true;
+        console.log("MLObject", MLObject)
+        this.props.callFetchAPI(APIHostName, UpdateCreateVocherAPIPath, MLObject).then((apiResult) => {
+            console.log("apiResult", apiResult)
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.callLoadData(MTReturnRequestID);
+                this.addNotification(apiResult.Message, apiResult.IsError)
+            }
+        })
+    }
+
+    handleRequestRL(objData) {
+
+        let MLObject = {};
+        const { RenfundSupplies, RenfundSuppliesRL, CurrentReviewLevelID, MTReturnRequestID, lastReviewLevelID } = this.state;
+        MLObject.MTReturnRequestID = RenfundSupplies.MTReturnRequestID;
+
+        MLObject.IsreViewed = 1;
+        MLObject.ReviewStatus = objData.ReviewStatus;
+        MLObject.reViewedNote = objData.reViewedNote;//Trạng thái duyệt;(0: Chưa duyệt, 1: Đồng ý, 2: Từ chối)
+
+        let nextReviewLevelID;
+
+        if (RenfundSuppliesRL.length > 1) {
+            nextReviewLevelID = RenfundSuppliesRL.filter((item, index) => {
+                if (item.ReviewLevelID != CurrentReviewLevelID && item.IsreViewed == false) {
+                    return item;
+                }
+            });
+        }
+        else {
+            nextReviewLevelID = RenfundSuppliesRL.filter((item, index) => {
+                if (item.ReviewLevelID == CurrentReviewLevelID) {
+                    return item;
+                }
+            });
+        }
+
+        const isLastList = CurrentReviewLevelID == lastReviewLevelID ? true : false
+
+        if (objData.ReviewStatus == 1) {
+            MLObject.IsreViewed = 1;
+            MLObject.IsReViewedMTReturnRequest = !!isLastList ? 1 : 0;
+        }
+        else {
+            MLObject.IsReViewedMTReturnRequest = 0;
+        }
+
+        MLObject.ReviewLevelID = CurrentReviewLevelID;
+
+        MLObject.CurrentReviewLevelID = !!isLastList ? CurrentReviewLevelID : nextReviewLevelID[0].ReviewLevelID;
+
+        console.log("aa", MLObject);
+
+        this.props.callFetchAPI(APIHostName, UpdateCurrentReviewLevelAPIPath, MLObject).then((apiResult) => {
+             console.log("id",  apiResult)
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.callLoadData(MTReturnRequestID);
+                this.addNotification(apiResult.Message, apiResult.IsError)
+            }
+        })
     }
 
     handleInputChangeObjItem(noteContent, statusId) {
-        console.log(noteContent, statusId)
+        let MLObject = {};
+        MLObject.ReviewStatus = statusId;
+        MLObject.reViewedNote = noteContent;
+        this.props.hideModal();
+        this.handleRequestRL(MLObject)
     }
 
     handleInsertDRNoteRV(id) {
@@ -234,6 +318,38 @@ export class DetailCom extends Component {
             // onCloseModal={this.handleCloseMessage}
             />
         );
+    }
+
+    addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
+        if (!IsError) {
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
+
+        } else {
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
+
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
     }
 
     render() {
@@ -368,7 +484,7 @@ export class DetailCom extends Component {
 
                         }
                         {IsOutPut == false ?
-                            <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitOutputRenfundSupplies}>Tạo phiếu xuất</button>
+                            <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitCreateVoucheRenfundSupplies.bind(this)}>Tạo phiếu nhập</button>
                             : <button disabled={true} className="btn btn-primary mr-3" type="button">Tạo phiếu nhập</button>
                         }
 
