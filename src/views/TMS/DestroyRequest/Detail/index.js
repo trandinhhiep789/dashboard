@@ -79,7 +79,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            // console.log('apiResult', apiResult)
+            console.log('apiResult', apiResult.ResultObject)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
