@@ -8,6 +8,7 @@ export const AddLink = "/RefundSupplies/Add";
 export const AddAPIPath = "api/MTReturnRequest/Add";
 export const DeleteNewAPIPath = "api/MTReturnRequest/DeleteNew";
 export const LoadAPIPath = "api/MTReturnRequest/Load";
+export const UpdateAPIPath = "api/MTReturnRequest/Update";
 
 
 export const LoadAPIByMtreturnRequestTypeIDPath = "api/MTReturnRequest_ReviewList/LoadByMTReturnRequesTypeID";
@@ -283,7 +284,12 @@ export const DataGridColumnList = [
 ];
 
 export const MLObjectDefinition = [
-
+    {
+        Name: "MTReturnRequestID",
+        DefaultValue: "",
+        BindControlName: "txtMTReturnRequestID",
+        DataSourceMember: "MTReturnRequestID"
+    },
     {
         Name: "MtreturnRequestTypeID",
         DefaultValue: "",
@@ -374,6 +380,12 @@ export const InputMTReturnRequestDetailColumnList = [
 
 
 export const GridMLObjectDefinition = [
+    {
+        Name: "MTReturnRequestDetailID",
+        DefaultValue: "",
+        BindControlName: "MTReturnRequestDetailID",
+        DataSourceMember: "MTReturnRequestDetailID"
+    },
     {
         Name: "MtreturnRequestTypeID",
         DefaultValue: "",

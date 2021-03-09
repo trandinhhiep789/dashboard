@@ -59,7 +59,6 @@ class EditCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
-        console.log("object", this.props.match.params.id)
         this.callLoadData(this.props.match.params.id);
     }
 
@@ -129,64 +128,63 @@ class EditCom extends React.Component {
 
 
     prevDataSubmit(formData, MLObject) {
-        // const { isError, gridMTReturnRequestRL, isAutoReview, isAutoOutput, RequestUser, gridMTReturnRequestRLSort } = this.state;
+        const { isError, gridMTReturnRequestRL, isAutoReview, isAutoOutput, RequestUser, gridMTReturnRequestRLSort } = this.state;
 
-        // //  console.log("prevDataSubmit", gridDestroyRequestRL, MLObject);
+        //  console.log("prevDataSubmit", gridDestroyRequestRL, MLObject);
 
-        // let arrReviewLevel = [];
-        // Object.keys(gridMTReturnRequestRL).map(function (key) {
-        //     let objItem = {}
-        //     objItem.ReviewLevelID = key;
-        //     objItem.UserName = gridMTReturnRequestRL[key].UserName;
+        let arrReviewLevel = [];
+        Object.keys(gridMTReturnRequestRL).map(function (key) {
+            let objItem = {}
+            objItem.ReviewLevelID = key;
+            objItem.UserName = gridMTReturnRequestRL[key].UserName;
 
-        //     arrReviewLevel.push(objItem)
-        //     return objItem;
-        // })
+            arrReviewLevel.push(objItem)
+            return objItem;
+        })
 
-        // MLObject.lstMTReturnRequestReviewLevel = gridMTReturnRequestRLSort;
+        MLObject.lstMTReturnRequestReviewLevel = gridMTReturnRequestRLSort;
 
-        // if (isError == false) {
-        //     const ReviewLevel = MLObject.lstMTReturnRequestReviewLevel.reduce(function (prev, cur) {
-        //         return cur.UserName;
-        //     }, 0);
+        if (isError == false) {
+            const ReviewLevel = MLObject.lstMTReturnRequestReviewLevel.reduce(function (prev, cur) {
+                return cur.UserName;
+            }, 0);
 
-        //     const MTReturnRequestDetail = MLObject.lstMTReturnRequestDetail.filter((item, index) => {
-        //         if (item.Quantity != undefined && item.Quantity > 0) {
-        //             return item;
-        //         }
-        //     });
+            const MTReturnRequestDetail = MLObject.lstMTReturnRequestDetail.filter((item, index) => {
+                if (item.Quantity != undefined && item.Quantity > 0) {
+                    return item;
+                }
+            });
 
-        //     if (!isAutoReview) {
-        //         MLObject.CurrentReviewLevelID = MLObject.lstMTReturnRequestReviewLevel[0].ReviewLevelID;
-        //         if (ReviewLevel == undefined || ReviewLevel == 0) {
-        //             this.showMessage('Danh sách duyệt người chưa được chọn. Vui lòng kiểm tra lại.');
-        //             this.setState({
-        //                 IsCallAPIError: true,
-        //             })
-        //             return;
-        //         }
-        //     }
+            if (!isAutoReview) {
+                MLObject.CurrentReviewLevelID = MLObject.lstMTReturnRequestReviewLevel[0].ReviewLevelID;
+                if (ReviewLevel == undefined || ReviewLevel == 0) {
+                    this.showMessage('Danh sách duyệt người chưa được chọn. Vui lòng kiểm tra lại.');
+                    this.setState({
+                        IsCallAPIError: true,
+                    })
+                    return;
+                }
+            }
 
 
 
-        //     if (MTReturnRequestDetail.length <= 0) {
-        //         this.showMessage('Danh sách vật tư chưa được chọn.');
-        //         this.setState({
-        //             IsCallAPIError: true,
-        //         })
-        //         return;
-        //     }
+            if (MTReturnRequestDetail.length <= 0) {
+                this.showMessage('Danh sách vật tư chưa được chọn.');
+                this.setState({
+                    IsCallAPIError: true,
+                })
+                return;
+            }
 
-        //     MLObject.lstMTReturnRequestDetail = MTReturnRequestDetail;
-        //     MLObject.RequestUser = RequestUser;
-        //     console.log("MLObject", MLObject)
-        //     this.handleSubmit(MLObject)
+            MLObject.lstMTReturnRequestDetail = MTReturnRequestDetail;
+            MLObject.RequestUser = RequestUser;
+          
+           this.handleSubmit(MLObject)
 
-        // }
-        // else {
-        //     this.showMessage('Thông tin nhập vào bị lỗi. Vui lòng kiểm tra lại.');
-        // }
-        this.showMessage('Tính năng đang phát triển. Vui lòng thử lại sau.');
+        }
+        else {
+            this.showMessage('Thông tin nhập vào bị lỗi. Vui lòng kiểm tra lại.');
+        }
     }
 
     handleSubmit(MLObject) {
@@ -419,7 +417,6 @@ class EditCom extends React.Component {
     }
 
     render() {
-        console.log("object", this.state)
 
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
