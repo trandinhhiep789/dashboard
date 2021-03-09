@@ -10,9 +10,22 @@ export default class ModalBox extends Component {
         const { UserName, Month, listColumn, dataSource } = this.props;
         return (
             <React.Fragment>
-                <div className="header-modal-box">
-                    <div>Nhân viên: {UserName}</div>
-                    <div>Tháng: {Month}</div>
+                <div className="col-12" style={{ textAlign: "initial" }}>
+                    <div className="row">
+                        <div className="col-md-2">
+                            <label className="col-form-label bold">Nhân viên:</label>
+                        </div>
+                        <div className="col-md-4">
+                            <label className="col-form-label">{UserName}</label>
+                        </div>
+
+                        <div className="col-md-2">
+                            <label className="col-form-label bold">Tháng:</label>
+                        </div>
+                        <div className="col-md-4">
+                            <label className="col-form-label">{Month}</label>
+                        </div>
+                    </div>
                 </div>
 
                 <DataGrid
@@ -27,7 +40,7 @@ export default class ModalBox extends Component {
                     RowsPerPage={10}
                     IsExportFile={false}
                 />
-            </React.Fragment>
+            </React.Fragment >
         )
     }
 }
