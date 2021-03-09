@@ -130,7 +130,7 @@ export const SearchElementList = [
         type: "ComboBox",
         name: "cbMTReturnRequestTypeID",
         DataSourceMember: "MTReturnRequestTypeID",
-        label: "Loại yêu cầu nhập trả vật tư",
+        label: "Loại YCNT vật tư",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
@@ -197,7 +197,7 @@ export const SearchElementList = [
         type: "ComboBox",
         name: "cbIsCreatedInputVouchert",
         DataSourceMember: "IsCreatedInputVouchert",
-        label: "Trạng thái xuất",
+        label: "Trạng thái nhập trả",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
@@ -442,16 +442,16 @@ export const GirdMTReturnRequestDetailColumnList = [
         Width: 150
     },
     {
-        Name: "UsableQuantity",
+        Name: "QuantityUnitName",
         Type: "textNew",
-        Caption: "Số dư tạm ứng",
-        DataSourceMember: "UsableQuantity",
+        Caption: "Đơn vị tính",
+        DataSourceMember: "QuantityUnitName",
         Width: 150
     },
     {
         Name: "Quantity",
         Type: "text",
-        Caption: "Số lượng hủy",
+        Caption: "Số lượng nhập trả",
         labelError: 'aaa',
         DataSourceMember: "Quantity",
         Width: 200,

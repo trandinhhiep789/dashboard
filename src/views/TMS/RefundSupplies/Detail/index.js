@@ -30,15 +30,19 @@ export class DetailCom extends Component {
             RenfundSuppliesID: '',
             IsCallAPIError: false,
             RenfundSupplies: {},
+            RenfundSuppliesRL: [],
             MTReturnRequestDetail: [],
             MTReturnRequestReviewLevel: [],
             isAutoReview: false,
             CurrentReviewLevelID: '',
+            CurrentReviewLevelName: '',
             isUserNameReviewLevel: false,
             MTReturnRequest_AttachmentList: [],
             MTReturnRequest_CommentList: [],
             IsOutPut: false,
-            CurrentReviewLevelName: ''
+            IsStatusReject: false,
+            IsStatus: false,
+            isHiddenButtonRV: false
         }
 
         this.callLoadData = this.callLoadData.bind(this);
@@ -69,8 +73,83 @@ export class DetailCom extends Component {
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                const { lstMTReturnRequestDetail, lstMTReturnRequestReviewLevel, IsreViewed, IsSystem, IsCreatedInputVoucher, ReviewLevelName } = apiResult.ResultObject;
+                const { lstMTReturnRequestDetail, lstMTReturnRequestReviewLevel, IsreViewed, IsSystem, IsCreatedInputVoucher, ReviewLevelName, CurrentReviewLevelID } = apiResult.ResultObject;
 
+                const resultMTReturnRequestReviewLevel = lstMTReturnRequestReviewLevel.map((item, index) => {
+                    item.ApproverName = item.UserName + " - " + item.FullName;
+
+                    if (item.ReviewStatus == 0) {
+                        item.ReviewStatusLable = "Chưa duyệt";
+                    }
+                    else {
+                        if (item.ReviewStatus == 1) {
+                            item.ReviewStatusLable = "Đã duyệt";
+                        }
+                        else {
+                            item.ReviewStatusLable = "Từ chối duyệt";
+                        }
+
+                    }
+                    return item;
+                })
+
+                if (lstMTReturnRequestReviewLevel.length > 0) {
+                    const resultUserNameReviewLevel = lstMTReturnRequestReviewLevel.filter((item, index) => {
+                        if (item.ReviewLevelID == CurrentReviewLevelID) {
+                            return item;
+                        }
+                    })
+
+                    const Username = this.props.AppInfo.LoginInfo.Username;
+
+                    if (resultUserNameReviewLevel.length > 0) {
+                        const userName = resultUserNameReviewLevel[0].UserName;
+                        if (userName.trim() === Username.trim()) {
+                            this.setState({
+                                isUserNameReviewLevel: true
+                            })
+                        }
+                        else {
+                            this.setState({
+                                isUserNameReviewLevel: false
+                            })
+                        }
+                    }
+
+                    const returnStatusDiffer = lstMTReturnRequestReviewLevel.filter((item, index) => {
+                        if (item.ReviewStatus != 1) {
+                            return item;
+                        }
+                    })
+
+                    const returnStatusReject = lstMTReturnRequestReviewLevel.filter((item, index) => {
+                        if (item.ReviewStatus == 2) {
+                            return item;
+                        }
+                    })
+
+                    if (returnStatusReject.length > 0) {
+                        this.setState({
+                            IsStatusReject: true
+                        })
+                    }
+                    else {
+                        this.setState({
+                            IsStatusReject: false
+                        })
+                    }
+
+                    if (returnStatusDiffer.length > 0) {
+                        this.setState({
+                            IsStatus: true
+                        })
+                    }
+                    else {
+                        this.setState({
+                            IsStatus: false
+                        })
+                    }
+                }
 
                 let disabledIsOutPut = false;
                 if (IsSystem) {
@@ -93,7 +172,10 @@ export class DetailCom extends Component {
                     MTReturnRequest_AttachmentList: apiResult.ResultObject.MTReturnRequest_AttachmentList,
                     MTReturnRequest_CommentList: apiResult.ResultObject.MTReturnRequest_CommentList,
                     IsOutPut: disabledIsOutPut,
-                    CurrentReviewLevelName: ReviewLevelName
+                    CurrentReviewLevelName: ReviewLevelName,
+                    CurrentReviewLevelID: CurrentReviewLevelID,
+                    RenfundSuppliesRL: resultMTReturnRequestReviewLevel,
+                    isHiddenButtonRV: apiResult.ResultObject.IsreViewed,
                 })
             }
         });
@@ -137,7 +219,7 @@ export class DetailCom extends Component {
     }
 
     render() {
-        const { RenfundSupplies, MTReturnRequestDetail, MTReturnRequestReviewLevel, isAutoReview, CurrentReviewLevelID, MTReturnRequest_AttachmentList, MTReturnRequest_CommentList, isUserNameReviewLevel, IsOutPut, CurrentReviewLevelName } = this.state;
+        const { RenfundSupplies, MTReturnRequestDetail, MTReturnRequestReviewLevel, isAutoReview, CurrentReviewLevelID, MTReturnRequest_AttachmentList, MTReturnRequest_CommentList, isUserNameReviewLevel, IsOutPut, CurrentReviewLevelName, IsStatusReject, IsStatus, isHiddenButtonRV } = this.state;
 
         let IsAutoReview;
 
@@ -147,6 +229,19 @@ export class DetailCom extends Component {
         else {
             IsAutoReview = false
         }
+
+        // let IsDisableButtonOutPut = false;
+        // if (IsOutPut == false) {
+        //     IsDisableButtonOutPut = false
+        // }
+        // else {
+        //     if (IsStatus == true || IsStatusReject) {
+        //         IsDisableButtonOutPut = true
+        //     }
+        //     else {
+        //         IsDisableButtonOutPut = false
+        //     }
+        // }
 
         let IsExitBtnReview = false;
         if (isUserNameReviewLevel == true) {
@@ -256,7 +351,7 @@ export class DetailCom extends Component {
                         }
                         {IsOutPut == false ?
                             <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitOutputRenfundSupplies}>Tạo phiếu xuất</button>
-                            : <button disabled={true} className="btn btn-primary mr-3" type="button">Tạo phiếu xuất</button>
+                            : <button disabled={true} className="btn btn-primary mr-3" type="button">Tạo phiếu nhập</button>
                         }
 
                         <Link to="/RefundSupplies">
