@@ -219,7 +219,7 @@ export class DetailCom extends Component {
     }
 
     render() {
-        const { RenfundSupplies, MTReturnRequestDetail, MTReturnRequestReviewLevel, isAutoReview, CurrentReviewLevelID, MTReturnRequest_AttachmentList, MTReturnRequest_CommentList, isUserNameReviewLevel, IsOutPut, CurrentReviewLevelName, IsStatusReject, IsStatus } = this.state;
+        const { RenfundSupplies, MTReturnRequestDetail, MTReturnRequestReviewLevel, isAutoReview, CurrentReviewLevelID, MTReturnRequest_AttachmentList, MTReturnRequest_CommentList, isUserNameReviewLevel, IsOutPut, CurrentReviewLevelName, IsStatusReject, IsStatus, isHiddenButtonRV } = this.state;
 
         let IsAutoReview;
 
@@ -351,7 +351,7 @@ export class DetailCom extends Component {
                         }
                         {IsOutPut == false ?
                             <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitOutputRenfundSupplies}>Tạo phiếu xuất</button>
-                            : <button disabled={true} className="btn btn-primary mr-3" type="button">Tạo phiếu xuất</button>
+                            : <button disabled={true} className="btn btn-primary mr-3" type="button">Tạo phiếu nhập</button>
                         }
 
                         <Link to="/RefundSupplies">
