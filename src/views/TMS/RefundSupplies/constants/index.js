@@ -129,7 +129,7 @@ export const SearchElementList = [
         type: "ComboBox",
         name: "cbMTReturnRequestTypeID",
         DataSourceMember: "MTReturnRequestTypeID",
-        label: "Loại yêu cầu hủy vật tư",
+        label: "Loại yêu cầu nhập trả vật tư",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
@@ -188,11 +188,9 @@ export const SearchElementList = [
         placeholder: "--Tất cả--",
         listoption: [
             { value: -1, label: '--Tất cả--' },
-            { value: 1, label: 'Hết hạn' },
-            { value: 2, label: 'Còn hạn' },
-        ],
-
-
+            { value: 0, label: 'Chưa duyệt' },
+            { value: 1, label: 'Đã duyệt' }
+        ]
     },
     {
         type: "ComboBox",
@@ -205,8 +203,8 @@ export const SearchElementList = [
         placeholder: "--Tất cả--",
         listoption: [
             { value: -1, label: '--Tất cả--' },
-            { value: 1, label: 'Chưa Xuất hủy vật tư' },
-            { value: 2, label: 'Đã xuất hủy vật tư' },
+            { value: 0, label: 'Chưa tạo phiếu nhập' },
+            { value: 1, label: 'Đã tạo phiếu nhập' },
         ],
 
 

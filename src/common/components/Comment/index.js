@@ -13,9 +13,10 @@ class CommentCom extends Component {
     }
 
     componentDidMount() {
-        this.setState({
-            FullName: this.props.AppInfo.LoginInfo.LoginUserInfo.UserName + " - " + this.props.AppInfo.LoginInfo.LoginUserInfo.FullName
-        })
+        // this.setState({
+        //     FullName: this.props.AppInfo.LoginInfo.LoginUserInfo.UserName + " - " + this.props.AppInfo.LoginInfo.LoginUserInfo.FullName
+        // })
+
     }
 
     componentWillReceiveProps(nextProps) {

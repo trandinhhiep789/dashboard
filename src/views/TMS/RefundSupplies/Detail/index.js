@@ -22,7 +22,7 @@ import InputGrid from '../../../../common/components/Form/AdvanceForm/FormContro
 import Attachment from "../../../../common/components/Attachment";
 import Comment from "../../../../common/components/Comment";
 
-export class Detail extends Component {
+export class DetailCom extends Component {
     constructor(props) {
         super(props);
 
@@ -58,7 +58,6 @@ export class Detail extends Component {
             RenfundSuppliesID: this.props.match.params.id
         })
         this.callLoadData(this.props.match.params.id);
-        console.log(this.props.AppInfo)
     }
 
     callLoadData(id) {
@@ -70,7 +69,6 @@ export class Detail extends Component {
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                console.log(apiResult)
                 const { lstMTReturnRequestDetail, lstMTReturnRequestReviewLevel, IsreViewed, IsSystem, IsCreatedInputVoucher, ReviewLevelName } = apiResult.ResultObject;
 
 
@@ -227,12 +225,12 @@ export class Detail extends Component {
                             DataAttachment={MTReturnRequest_AttachmentList}
                         />
 
-                        {/* <Comment
-                            DataComments={MTReturnRequest_CommentList}
+                        <Comment
+                            DataComments={[]}
                             IsComment={true}
                             onChangeValue={this.handleChangeValue}
                             onKeyPressSumit={this.handleKeyPressSumit}
-                        /> */}
+                        />
                     </div>
 
                     <footer className="card-footer text-right ">
@@ -294,5 +292,5 @@ const mapDispatchToProps = dispatch => {
         }
     };
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Detail)
+const Detail = connect(mapStateToProps, mapDispatchToProps)(DetailCom);
+export default Detail;
