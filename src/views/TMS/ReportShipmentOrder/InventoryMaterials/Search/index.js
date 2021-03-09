@@ -374,7 +374,7 @@ class SearchCom extends React.Component {
                 ProductID: objValue[0].value
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceDebtFlow/LoadAdvanceDebtFlowUsing", objData).then(apiResult => {
-                // console.log('4:', objData, apiResult)
+                 console.log('4:', objData, apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status);
                 }
@@ -436,7 +436,7 @@ class SearchCom extends React.Component {
                     IsAutoPaging={true}
                     RowsPerPage={20}
                     ref={this.gridref}
-                    //RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                     IsExportFile={true}
                     DataExport={this.state.dataMaterialGroupExport}
                     fileName="Danh sách báo cáo tồn vật tư khác"
