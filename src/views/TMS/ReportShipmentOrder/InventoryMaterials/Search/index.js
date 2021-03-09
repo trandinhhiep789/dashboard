@@ -347,7 +347,6 @@ class SearchCom extends React.Component {
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
                 // console.log('1', objData, apiResult)
                 if (!apiResult.IsError) {
-                    //this.onShowModal(apiResult.ResultObject);
                     this.onShowModal(apiResult.ResultObject, status);
                 }
                 else {
@@ -366,8 +365,7 @@ class SearchCom extends React.Component {
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
                 // console.log('2', objData, apiResult)
                 if (!apiResult.IsError) {
-
-                    this.onShowModal('', status);
+                    this.onShowModal(apiResult.ResultObject, status);
                 }
                 else {
                     this.showMessage(apiResult.MessageDetail)
@@ -378,8 +376,7 @@ class SearchCom extends React.Component {
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
                 if (!apiResult.IsError) {
                     // console.log('3:', objData, apiResult);
-                    // this.handleShowModal(apiResult.ResultObject, status)
-                    this.onShowModal('', status);
+                    this.onShowModal(apiResult.ResultObject, status);
                 }
                 else {
                     this.showMessage(apiResult.MessageDetail)
@@ -395,7 +392,7 @@ class SearchCom extends React.Component {
             this.props.callFetchAPI(APIHostName, "api/AdvanceDebtFlow/LoadAdvanceDebtFlowUsing", objData).then(apiResult => {
                 // console.log('4:', objData, apiResult)
                 if (!apiResult.IsError) {
-                    this.onShowModal('', status);
+                    this.onShowModal(apiResult.ResultObject, status);
                 }
                 else {
                     this.showMessage(apiResult.MessageDetail)

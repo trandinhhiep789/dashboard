@@ -8,6 +8,7 @@ import ReactNotification from "react-notifications-component";
 
 import { updatePagePath } from '../../../../actions/pageAction';
 import { callFetchAPI } from '../../../../actions/fetchAPIAction';
+import { showModal, hideModal } from '../../../../actions/modal';
 import { MessageModal } from '../../../../common/components/Modal';
 import RenfundSuppliesInfo from './RenfundSuppliesInfo';
 import {
@@ -21,6 +22,8 @@ import {
 import InputGrid from '../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
 import Attachment from "../../../../common/components/Attachment";
 import Comment from "../../../../common/components/Comment";
+import RenfundSuppliesNoteRV from '../Component/RenfundSuppliesNoteRV';
+import { MODAL_TYPE_COMMONTMODALS } from "../../../../constants/actionTypes";
 
 export class DetailCom extends Component {
     constructor(props) {
@@ -53,6 +56,7 @@ export class DetailCom extends Component {
         this.handleKeyPressSumit = this.handleKeyPressSumit.bind(this);
         this.handleSubmitOutputRenfundSupplies = this.handleSubmitOutputRenfundSupplies.bind(this);
         this.handleInsertDRNoteRV = this.handleInsertDRNoteRV.bind(this);
+        this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
     }
 
     componentDidMount() {
@@ -67,6 +71,7 @@ export class DetailCom extends Component {
     callLoadData(id) {
         const { callFetchAPI } = this.props;
         callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            console.log(apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -203,8 +208,21 @@ export class DetailCom extends Component {
         this.showMessage("Tính năng đang phát triển")
     }
 
+    handleInputChangeObjItem(noteContent, statusId) {
+        console.log(noteContent, statusId)
+    }
+
     handleInsertDRNoteRV(id) {
-        this.showMessage("Tính năng đang phát triển")
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Thêm ghi chú cho mức duyệt',
+            content: {
+                text: <RenfundSuppliesNoteRV
+                    StatusID={id}
+                    onInputChangeObj={this.handleInputChangeObjItem}
+                />
+            },
+            maxWidth: '1000px'
+        });
     }
 
     showMessage(message) {

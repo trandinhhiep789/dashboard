@@ -494,3 +494,12 @@ export const GirdMTReturnRequestReviewLevelColumnList = [
         Width: 100
     },
 ]
+
+export const MLObjectDRNoteRV = [
+    {
+        Name: "ReViewedNote",
+        DefaultValue: "",
+        BindControlName: "txtReViewedNote",
+        DataSourceMember: "ReViewedNote"
+    }
+]
