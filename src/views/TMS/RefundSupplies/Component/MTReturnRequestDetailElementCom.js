@@ -14,7 +14,6 @@ class MTReturnRequestDetailElementCom extends Component {
         this.state = {
             IsSystem: false,
         }
-        this.gridref = React.createRef();
     }
 
     componentDidMount() {
@@ -23,13 +22,11 @@ class MTReturnRequestDetailElementCom extends Component {
 
 
     handleInsertItem(listMLObject) {
-        console.log("12231", listMLObject)
         if (this.props.onClickInsertItem)
             this.props.onClickInsertItem(listMLObject)
     }
 
     render() {
-        console.log("data", this.props)
         const { IsSystem } = this.state;
         return (
             <React.Fragment>
@@ -44,7 +41,6 @@ class MTReturnRequestDetailElementCom extends Component {
                     hasSearch={false}
                     IsAutoPaging={true}
                     RowsPerPage={10}
-                    ref={this.gridref}
                     onSubmitItem={this.handleInsertItem.bind(this)}
                 />
             </React.Fragment>

@@ -38,6 +38,7 @@ class AddCom extends React.Component {
         super(props);
         this.prevDataSubmit = this.prevDataSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.onChangeDataMTRRequestDetail = this.onChangeDataMTRRequestDetail.bind(this);
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -156,7 +157,7 @@ class AddCom extends React.Component {
     }
 
     prevDataSubmit(formData, MLObject) {
-        console.log("11", formData, MLObject)
+        // console.log("11", formData, MLObject)
         const { isError, gridMTReturnRequestRL, isAutoReview, gridMTReturnRequestRLSort } = this.state;
         let arrReviewLevel = [];
         // console.log("MLObject", MLObject, gridMTReturnRequestRL, gridMTReturnRequestRLSort)
@@ -223,7 +224,7 @@ class AddCom extends React.Component {
             MLObject.IsCreatedInputVoucher = false;
             MLObject.lstMTReturnRequestDetail = MTReturnRequestDetail;
 
-            console.log("MLObject", MLObject)
+            // console.log("MLObject", MLObject)
             this.handleSubmit(MLObject)
         }
         else {
@@ -263,7 +264,7 @@ class AddCom extends React.Component {
     }
 
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
-        console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
+        // console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
         const { MTReturnRequestDetailNew } = this.state;
         const isAllowDecimal = MTReturnRequestDetailNew[index].IsAllowDecimal;
         let item = elementdata.Name + '_' + index;
@@ -480,11 +481,15 @@ class AddCom extends React.Component {
         });
         tmpObjectItem =  tmpObjectItem.concat(MTReturnRequestDetailNew);
 
-        this.setState({
-            MTReturnRequestDetailNew: tmpObjectItem
-        })
+       this.onChangeDataMTRRequestDetail(tmpObjectItem)
 
         console.log("handleinsertItemNew", objData, tmpObjectItem, this.state.MTReturnRequestDetail)
+    }
+
+    onChangeDataMTRRequestDetail(data){
+        this.setState({
+            MTReturnRequestDetailNew: data
+        })
     }
 
     handleItemInsert() {
@@ -500,8 +505,8 @@ class AddCom extends React.Component {
                     PKColumnName={"MaterialGroupID,ProductID"}
                     isHideHeaderToolbarGroupTextBox={true}
                     isHideHeaderToolbar={true}
-                    name={"ProductID"}
-                    value={"MaterialGroupID"}
+                    // name={"ProductID"}
+                    // value={"MaterialGroupID"}
                 />
             },
             maxWidth: '1000px'
@@ -518,7 +523,7 @@ class AddCom extends React.Component {
         });
 
     }
-    
+
     handleMTReturnRequestDetailItem(id) {
         console.log("id", id)
     }
@@ -659,7 +664,7 @@ class AddCom extends React.Component {
                                 name="lstMTReturnRequestDetail"
                                 controltype="GridControl"
                                 listColumn={InputMTReturnRequestDetailColumnList}
-                                dataSource={MTReturnRequestDetailNew}
+                                dataSource={this.state.MTReturnRequestDetailNew}
                                 MLObjectDefinition={GridMLObjectDefinition}
                                 colspan="12"
                                 onValueChangeInputGrid={this.valueChangeInputGrid.bind(this)}
