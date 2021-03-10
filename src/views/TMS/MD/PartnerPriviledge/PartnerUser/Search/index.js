@@ -222,10 +222,13 @@ class SearchCom extends React.Component {
                             if (!apiResult.IsError) {
                                 this.callSearchData(this.state.SearchData);
                                 this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERUSER);
-                               // this.props.hideModal();
+                                // this.props.hideModal();
+                                this.showMessage(apiResult.Message);
+                            } else {
+                                this.addNotification(apiResult.Message, apiResult.IsError);
                             }
                             //this.showMessage(apiResult.Message);
-                            this.addNotification(apiResult.Message, apiResult.IsError);
+                            //this.addNotification(apiResult.Message, apiResult.IsError);
                         });
 
                         //console.log("MLObject", MLObject);

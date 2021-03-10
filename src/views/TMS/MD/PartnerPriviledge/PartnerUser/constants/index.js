@@ -285,6 +285,19 @@ export const AddElementList = [
         validatonList: ["Email"]
     },
     {
+        type: "text",
+        Name: "txtIdCardNumber",
+        label: "số CMND:",
+        value: "",
+        maxSize: "20",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "IdCardNumber",
+        readonly: false,
+        validatonList: ["required", "number"]
+    },
+    {
         type: "textarea",
         Name: "txtDescription",
         label: "Mô tả:",
@@ -465,6 +478,19 @@ export const EditElementList = [
         DataSourceMember: "Email",
         readonly: false,
         validatonList: ["Email"]
+    },
+    {
+        type: "text",
+        Name: "txtIdCardNumber",
+        label: "số CMND:",
+        value: "",
+        maxSize: "20",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "IdCardNumber",
+        readonly: false,
+        validatonList: ["number"]
     },
     {
         type: "textarea",
@@ -942,6 +968,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtEmail",
         DataSourceMember: "Email"
+    },
+    {
+        Name: "IdCardNumber",
+        DefaultValue: "",
+        BindControlName: "txtIdCardNumber",
+        DataSourceMember: "IdCardNumber"
     },
     {
         Name: "Description",
