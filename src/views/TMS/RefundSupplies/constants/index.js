@@ -390,6 +390,54 @@ export const InputMTReturnRequestDetailColumnList = [
 ];
 
 
+export const InputMTReturnRequestDetailColumnListNew = [
+    {
+        Name: "chkSelect",
+        Type: "checkbox",
+        Caption: "Chọn",
+        DataSourceMember: "MTReturnRequestID",
+        Width: 60
+    },
+    {
+        Name: "MaterialGroupID",
+        Type: "text",
+        Caption: "Nhóm vật tư",
+        DataSourceMember: "MaterialGroupID",
+        Width: 100
+    },
+    {
+        Name: "ProductID",
+        Type: "text",
+        Caption: "Mã sản phẩm",
+        DataSourceMember: "ProductID",
+        Width: 150
+    },
+    {
+        Name: "ProductName",
+        Type: "text",
+        Caption: "Tên sản phẩm",
+        DataSourceMember: "ProductName",
+        Width: 300
+    },
+    {
+        Name: "QuantityUnit",
+        Type: "text",
+        Caption: "Đơn vị tính",
+        DataSourceMember: "QuantityUnit",
+        Width: 100
+    },
+    {
+        Name: "UsableQuantity",
+        Type: "textNew",
+        Caption: "Số dư tạm ứng",
+        DataSourceMember: "UsableQuantity",
+        Width: 150
+    },
+    
+];
+
+
+
 export const GridMLObjectDefinition = [
     {
         Name: "MTReturnRequestDetailID",
@@ -471,10 +519,17 @@ export const GirdMTReturnRequestDetailColumnList = [
         Width: 150
     },
     {
-        Name: "QuantityUnitName",
+        Name: "QuantityUnit",
         Type: "textNew",
         Caption: "Đơn vị tính",
-        DataSourceMember: "QuantityUnitName",
+        DataSourceMember: "QuantityUnit",
+        Width: 150
+    },
+    {
+        Name: "UsableQuantity",
+        Type: "textNew",
+        Caption: "Số dư tạm ứng",
+        DataSourceMember: "UsableQuantity",
         Width: 150
     },
     {
@@ -532,4 +587,20 @@ export const MLObjectDRNoteRV = [
         BindControlName: "txtReViewedNote",
         DataSourceMember: "ReViewedNote"
     }
+]
+
+export const MLObjectMTReturnRequestDetailItem = [
+    {
+        Name: "MainGroupID",
+        DefaultValue: "",
+        BindControlName: "cbMaterialGroup",
+        DataSourceMember: "MainGroupID"
+    },
+    {
+
+        Name: "ProductGroupID",
+        DefaultValue: "",
+        BindControlName: "cbProductGroupID",
+        DataSourceMember: "ProductGroupID"
+    },
 ]

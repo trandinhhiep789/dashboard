@@ -74,6 +74,7 @@ export class DetailCom extends Component {
     callLoadData(id) {
         const { callFetchAPI } = this.props;
         callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            console.log("object",id, apiResult)
             console.log(apiResult)
             if (apiResult.IsError) {
                 this.setState({
