@@ -53,7 +53,7 @@ export const InitSearchParams = [
         SearchKey: "@PartnerID",
         SearchValue: -1
     }
-   
+
 ];
 
 export const SearchMLObjectDefinition = [
@@ -269,7 +269,7 @@ export const AddElementList = [
         DataSourceMember: "Birthday",
         ValueMember: "Birthday",
         NameMember: "Birthday",
-        validatonList: ["date"]
+        validatonList: ["required", "date"]
     },
     {
         type: "text",
@@ -464,7 +464,7 @@ export const EditElementList = [
         DataSourceMember: "Birthday",
         ValueMember: "Birthday",
         NameMember: "Birthday",
-        validatonList: ["date"]
+        validatonList: ["required", "date"]
     },
     {
         type: "text",
@@ -481,7 +481,7 @@ export const EditElementList = [
     },
     {
         type: "text",
-        Name: "txtIdCardNumber",
+        name: "txtIdCardNumber",
         label: "số CMND:",
         value: "",
         maxSize: "20",

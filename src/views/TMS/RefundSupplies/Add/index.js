@@ -518,6 +518,7 @@ class AddCom extends React.Component {
         });
 
     }
+    
     handleMTReturnRequestDetailItem(id) {
         console.log("id", id)
     }

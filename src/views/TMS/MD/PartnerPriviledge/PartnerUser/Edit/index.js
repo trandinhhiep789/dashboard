@@ -420,9 +420,12 @@ class EditCom extends React.Component {
             MLObject.Birthday = myDate;
         }
 
+        
+
         if (!MLObject.PassWord) {
             MLObject.PassWord = this.state.PassWord;
         } else {
+            MLObject.RawPass = PassWord;
             MLObject.PassWord = MD5Digest(PassWord);
         }
 
