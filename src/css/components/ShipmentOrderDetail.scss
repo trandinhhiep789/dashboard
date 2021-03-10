@@ -54,7 +54,7 @@
         }
 
         .mapslink {
-            margin-left: 20px;
+            // margin-left: 20px;
             color: #0e82ff;
             font-size: 12px;
             border: none;
@@ -212,6 +212,36 @@
         
         .Collapsible__contentInner {
             clear: both;
+            .row {
+                align-items: stretch;
+                .card-contact-information {
+                    margin-bottom: 0.5rem;
+                    .card {
+                        height: 100%;
+                    }
+                    &.card-contact {
+                        .card {
+                            .card-body {
+                                .row-contact-info {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    .sub-row {
+                                        display: flex;
+                                        align-items: center;
+                                        .form-group:first-child {
+                                            margin-right: 1rem;
+                                        } 
+                                    }
+                                }
+                            }
+                            hr {
+                                margin: 0.5rem 0 1rem 0;
+                            }
+                        }
+                    }
+                }
+            }
         }
         .Collapsible__trigger{
             background: #909ba7;

@@ -64,6 +64,7 @@ class ShipmentOrderAddressCom extends Component {
     componentDidMount() {
         this.initCombobox();
         this.setValueCombobox();
+        console.log(this.props)
     }
 
     CheckPermissionUser(id) {
@@ -1175,7 +1176,7 @@ class ShipmentOrderAddressCom extends Component {
                 <ReactNotification ref={this.notificationDOMRef} />
                 <Collapsible trigger="Thông tin liên hệ" easing="ease-in" open={true}>
                     <div className="row">
-                        <div className="col-sm-12 col-lg-4">
+                        <div className="col-sm-12 col-lg-4 card-contact-information">
                             <div className="card">
                                 <div className="card-title">
                                     <h4 className="title">Nhân viên tạo</h4>
@@ -1215,7 +1216,8 @@ class ShipmentOrderAddressCom extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-sm-12 col-lg-4">
+
+                        <div className="col-sm-12 col-lg-4 card-contact-information">
                             <div className="card">
                                 <div className="card-title">
                                     <h4 className="title">Người gửi</h4>
@@ -1256,69 +1258,107 @@ class ShipmentOrderAddressCom extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-sm-12 col-lg-4">
+                        <div className="col-sm-12 col-lg-4 card-contact-information card-contact">
                             <div className="card">
                                 <div className="card-title">
                                     <h4 className="title">Người liên hệ</h4>
                                     <button className="btn btnEditCard" onClick={this.handleShowModalReceiver.bind(this)}>chỉnh sửa</button>
                                 </div>
                                 <div className="card-body">
-                                    <div className="form-row">
-                                        <div className="form-group col-md-12">
-                                            <label className="col-form-label" >Người mua</label>
-                                        </div>
+                                    <div>
+                                        Người mua
                                     </div>
-                                    <div className="form-row">
-                                        <div className="form-group col-md-1">
-                                            <label className="col-form-label icon">
-                                                <i className="fa fa-user" aria-hidden="true"></i>
-                                            </label>
+                                    <div className="row-contact-info">
+                                        <div className="sub-row">
+                                            <div className="form-group">
+                                                <label className="col-form-label icon">
+                                                    <i className="fa fa-user" aria-hidden="true"></i>
+                                                </label>
+                                            </div>
+                                            <div className="form-group">
+                                                <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullName}</label>
+                                            </div>
                                         </div>
-                                        <div className="form-group col-md-8">
-                                            <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullName}</label>
-                                        </div>
-                                        <div className="form-group col-md-1">
-                                            <label className="col-form-label icon">
-                                                <i className="fa fa-mobile " aria-hidden="true"></i>
-                                            </label>
-                                        </div>
-                                        <div className="form-group col-md-2">
-                                            <label className="col-form-label">{(this.state.ShipmentOrder.ShipmentOrderTypeID == 1002 || this.state.ShipmentOrder.ShipmentOrderTypeID == 1003) && this.state.ShipmentOrder.TotalCOD > 0 ? this.state.ShipmentOrder.ReceiverPhoneNumber.substr(0, 7) + "***" : this.state.ShipmentOrder.ReceiverPhoneNumber}</label>
-                                        </div>
-                                    </div>
-                                    <div className="form-row">
-                                        <div className="form-group col-md-12">
-                                            <label className="col-form-label" >Người nhận</label>
-                                        </div>
-                                    </div>
-                                    <div className="form-row">
-                                        <div className="form-group col-md-1">
-                                            <label className="col-form-label icon">
-                                                <i className="fa fa-user" aria-hidden="true"></i>
-                                            </label>
-                                        </div>
-                                        <div className="form-group col-md-8">
-                                            <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullName}</label>
-                                        </div>
-                                        <div className="form-group col-md-1">
-                                            <label className="col-form-label icon">
-                                                <i className="fa fa-mobile " aria-hidden="true"></i>
-                                            </label>
-                                        </div>
-                                        <div className="form-group col-md-2">
-                                            <label className="col-form-label">{(this.state.ShipmentOrder.ShipmentOrderTypeID == 1002 || this.state.ShipmentOrder.ShipmentOrderTypeID == 1003) && this.state.ShipmentOrder.TotalCOD > 0 ? this.state.ShipmentOrder.ReceiverPhoneNumber.substr(0, 7) + "***" : this.state.ShipmentOrder.ReceiverPhoneNumber}</label>
+
+                                        <div className="sub-row">
+                                            <div className="form-group">
+                                                <label className="col-form-label icon">
+                                                    <i className="fa fa-mobile " aria-hidden="true"></i>
+                                                </label>
+                                            </div>
+                                            <div className="form-group">
+                                                <label className="col-form-label">
+                                                    {
+                                                        (this.state.ShipmentOrder.ShipmentOrderTypeID == 1002 || this.state.ShipmentOrder.ShipmentOrderTypeID == 1003) && this.state.ShipmentOrder.TotalCOD > 0
+                                                            ? this.state.ShipmentOrder.ReceiverPhoneNumber.substr(0, 7) + "***"
+                                                            : <a href={`tel:${this.state.ShipmentOrder.ReceiverPhoneNumber}`}>
+                                                                {this.state.ShipmentOrder.ReceiverPhoneNumber}
+                                                            </a>
+                                                    }
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div className="form-row">
-                                        <div className="form-group col-md-1">
-                                            <label className="col-form-label icon">
-                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                            </label>
+                                    <hr />
+
+                                    <div>
+                                        Người nhận
+                                    </div>
+
+                                    <div className="row-contact-info">
+                                        <div className="sub-row">
+                                            <div className="form-group">
+                                                <label className="col-form-label icon">
+                                                    <i className="fa fa-user" aria-hidden="true"></i>
+                                                </label>
+                                            </div>
+                                            <div className="form-group">
+                                                <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullName}</label>
+                                            </div>
                                         </div>
-                                        <div className="form-group col-md-11">
-                                            <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullAddress}</label>
-                                            <a className="mapslink" onClick={this.handleShowModalSenderReceiver.bind(this)}>Xem bản đồ</a>
+
+                                        <div className="sub-row">
+                                            <div className="form-group">
+                                                <label className="col-form-label icon">
+                                                    <i className="fa fa-mobile" aria-hidden="true"></i>
+                                                </label>
+                                            </div>
+                                            <div className="form-group">
+                                                <label className="col-form-label" >
+                                                    {
+                                                        (this.state.ShipmentOrder.ShipmentOrderTypeID == 1002 || this.state.ShipmentOrder.ShipmentOrderTypeID == 1003) && this.state.ShipmentOrder.TotalCOD > 0
+                                                            ? this.state.ShipmentOrder.ReceiverPhoneNumber.substr(0, 7) + "***"
+                                                            : <a href={`tel:${this.state.ShipmentOrder.ReceiverPhoneNumber}`}>
+                                                                {this.state.ShipmentOrder.ReceiverPhoneNumber}
+                                                            </a>
+                                                    }
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="row-contact-info">
+                                        <div className="sub-row">
+                                            <div className="form-group">
+                                                <label className="col-form-label icon">
+                                                    <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                </label>
+                                            </div>
+                                            <div className="form-group">
+                                                <label className="col-form-label" >
+                                                    {this.state.ShipmentOrder.ReceiverFullAddress}
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div className="sub-row">
+                                            <div className="form-group"></div>
+                                            <div className="form-group">
+                                                <label className="col-form-label" >
+                                                    <a className="mapslink" onClick={this.handleShowModalSenderReceiver.bind(this)}>Xem bản đồ</a>
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
