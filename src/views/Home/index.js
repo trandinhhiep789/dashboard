@@ -134,6 +134,8 @@ import DeliveryDateUpdateType from "../TMS/MD/DeliveryDateUpdateType";
 import DeliveryDateUpdateReason from "../TMS/MD/DeliveryDateUpdateReason";
 import PeriodUserRWPosition from "../TMS/MD/PeriodUserRWPosition";
 import MTReturnRequestType from "../TMS/MD/MTReturnRequestType";
+import QualityAssessGroup from "../TMS/MD/QualityAssessGroup";
+import QualityAssessType from "../TMS/MD/QualityAssessType";
 
 
 class HomeCom extends React.Component {
@@ -348,6 +350,8 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/DeliveryDateUpdateReason" component={DeliveryDateUpdateReason} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/MTReturnRequestType" component={MTReturnRequestType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/QualityAssessGroup" component={QualityAssessGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/QualityAssessType" component={QualityAssessType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 

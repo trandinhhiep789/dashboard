@@ -526,13 +526,6 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'TMSConfig',
-                MenuTitle: 'Cấu hình hệ thống TMS',
-                LinkTo: '/TMSConfig',
-                MenuIcon: '',
-                SubMenu: []
-            },
-            {
                 MenuName: 'DeliveryDateUpdate',
                 MenuTitle: 'Cập nhật giờ giao hàng',
                 LinkTo: '/DeliveryDateUpdate',
@@ -553,7 +546,36 @@ const AppMenu = [
                         SubMenu: []
                     },
                 ]
-            }
+            },
+            {
+                MenuName: 'QualityAssess',
+                MenuTitle: 'Tiêu chí đánh giá chất lượng',
+                LinkTo: '/QualityAssess',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'QualityAssessGroup',
+                        MenuTitle: 'Nhóm tiêu chí đánh giá chất lượng',
+                        LinkTo: '/QualityAssessGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'QualityAssessType',
+                        MenuTitle: 'Loại tiêu chí đánh giá chất lượng',
+                        LinkTo: '/QualityAssessType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
+            },
+            {
+                MenuName: 'TMSConfig',
+                MenuTitle: 'Cấu hình hệ thống TMS',
+                LinkTo: '/TMSConfig',
+                MenuIcon: '',
+                SubMenu: []
+            },
 
 
         ]
