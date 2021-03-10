@@ -16,6 +16,7 @@ export const UpdateCreateVocherAPIPath = "api/MTReturnRequest/UpdateCreatedInput
 
 export const LoadAPIByMtreturnRequestTypeIDPath = "api/MTReturnRequest_ReviewList/LoadByMTReturnRequesTypeID";
 export const LoadAPIByRequestTypeIDPath = "api/MTReturnRequestType_Product/GetListByRequestTypeID";
+export const LoadAPIByMTRRequestTypeIDPath = "api/CurrentAdvanceDebt/GetListByMTReturnRequestTypeID";
 
 export const TitleFormSearch = "Tìm kiếm danh sách yêu cầu nhập trả vật tư";
 export const TitleFormAdd = "Thêm yêu cầu nhập trả vật tư";
@@ -360,11 +361,18 @@ export const InputMTReturnRequestDetailColumnList = [
         Width: 300
     },
     {
-        Name: "QuantityUnitName",
+        Name: "QuantityUnit",
         Type: "text",
         Caption: "Đơn vị tính",
-        DataSourceMember: "QuantityUnitName",
+        DataSourceMember: "QuantityUnit",
         Width: 100
+    },
+    {
+        Name: "UsableQuantity",
+        Type: "textNew",
+        Caption: "Số dư tạm ứng",
+        DataSourceMember: "UsableQuantity",
+        Width: 150
     },
     {
         Name: "Quantity",
@@ -414,10 +422,17 @@ export const GridMLObjectDefinition = [
         DataSourceMember: "ProductName"
     },
     {
-        Name: "QuantityUnitName",
+        Name: "QuantityUnit",
         DefaultValue: "",
-        BindControlName: "QuantityUnitName",
-        DataSourceMember: "QuantityUnitName"
+        BindControlName: "QuantityUnit",
+        DataSourceMember: "QuantityUnit"
+    },
+    {
+        Name: "UsableQuantity",
+        DefaultValue: "",
+        BindControlName: "UsableQuantity",
+        DataSourceMember: "UsableQuantity"
+        
     },
     {
         Name: "QuantityUnitID",

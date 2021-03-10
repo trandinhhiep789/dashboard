@@ -17,7 +17,8 @@ import {
     InputMTReturnRequestDetailColumnList,
     GridMLObjectDefinition,
     LoadAPIByMtreturnRequestTypeIDPath,
-    LoadAPIByRequestTypeIDPath
+    LoadAPIByRequestTypeIDPath,
+    LoadAPIByMTRRequestTypeIDPath
 
 } from "../constants";
 import MTReturnRequestRVList from '../Component/MTReturnRequestRVList'
@@ -125,8 +126,8 @@ class AddCom extends React.Component {
     }
 
     GetDataByRequestTypeID(MtreturnRequestTypeID) {
-        this.props.callFetchAPI(APIHostName, LoadAPIByRequestTypeIDPath, MtreturnRequestTypeID).then(apiResult => {
-            console.log("products:",apiResult )
+        this.props.callFetchAPI(APIHostName, LoadAPIByMTRRequestTypeIDPath, MtreturnRequestTypeID).then(apiResult => {
+            console.log("products:", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -151,7 +152,7 @@ class AddCom extends React.Component {
     }
 
     prevDataSubmit(formData, MLObject) {
-        console.log("11",formData, MLObject )
+        console.log("11", formData, MLObject)
         const { isError, gridMTReturnRequestRL, isAutoReview, gridMTReturnRequestRLSort } = this.state;
         let arrReviewLevel = [];
         // console.log("MLObject", MLObject, gridMTReturnRequestRL, gridMTReturnRequestRLSort)
@@ -180,7 +181,7 @@ class AddCom extends React.Component {
 
             if (isAutoReview) {
                 MLObject.IsreViewed = isAutoReview;
-                MLObject.reViewedUser = this.props.AppInfo.LoginInfo.Username; 
+                MLObject.reViewedUser = this.props.AppInfo.LoginInfo.Username;
                 MLObject.CurrentReviewLevelID = 0;
                 MLObject.reViewedDate = new Date();
             }
@@ -205,7 +206,7 @@ class AddCom extends React.Component {
                 }
 
             }
-         
+
 
             if (MTReturnRequestDetail.length <= 0) {
                 this.showMessage('Danh sách vật tư chưa được chọn.');
@@ -224,7 +225,7 @@ class AddCom extends React.Component {
         else {
             this.showMessage('Thông tin nhập vào không chính xác. Vui lòng kiểm tra lại.');
         }
-       // this.handleSubmit(MLObject)
+        // this.handleSubmit(MLObject)
     }
 
     handleSubmit(MLObject) {
@@ -265,10 +266,32 @@ class AddCom extends React.Component {
         if (!isAllowDecimal) {
             if (elementdata.Value.toString().length > 1) {
                 if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
-                    this.setState({
-                        isError: false,
-                        IsCallAPIError: false,
-                    })
+                    if (elementdata.Name == 'Quantity') {
+                        let Quantity = MTReturnRequestDetail[index].UsableQuantity;
+
+                        if (!gridFormValidation[item].IsValidationError) {
+                            if (elementdata.Value > Quantity) {
+                                gridFormValidation[item].IsValidationError = true;
+                                gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                this.setState({
+                                    isError: true,
+                                    IsCallAPIError: true,
+                                })
+                            }
+                            else {
+                                this.setState({
+                                    isError: false,
+                                    IsCallAPIError: false,
+                                })
+                            }
+                        }
+                    }
+                    else {
+                        this.setState({
+                            isError: false,
+                            IsCallAPIError: false,
+                        })
+                    }
                 }
                 else {
                     gridFormValidation[item].IsValidationError = true;
@@ -283,10 +306,32 @@ class AddCom extends React.Component {
                 if (elementdata.Value.length > 0) {
                     if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
                         if (parseInt(elementdata.Value) > 0) {
-                            this.setState({
-                                isError: false,
-                                IsCallAPIError: false,
-                            })
+                            if (elementdata.Name == 'Quantity') {
+                                let Quantity = MTReturnRequestDetail[index].UsableQuantity;
+
+                                if (!gridFormValidation[item].IsValidationError) {
+                                    if (elementdata.Value > Quantity) {
+                                        gridFormValidation[item].IsValidationError = true;
+                                        gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                        this.setState({
+                                            isError: true,
+                                            IsCallAPIError: true,
+                                        })
+                                    }
+                                    else {
+                                        this.setState({
+                                            isError: false,
+                                            IsCallAPIError: false,
+                                        })
+                                    }
+                                }
+                            }
+                            else {
+                                this.setState({
+                                    isError: false,
+                                    IsCallAPIError: false,
+                                })
+                            }
                         }
                         else {
                             gridFormValidation[item].IsValidationError = true;
@@ -320,10 +365,32 @@ class AddCom extends React.Component {
             if (elementdata.Value.toString().length > 1) {
 
                 if (/^\d*\.?\d+$/.test(elementdata.Value)) {
-                    this.setState({
-                        isError: false,
-                        IsCallAPIError: false,
-                    })
+                    if (elementdata.Name == 'Quantity') {
+                        let Quantity = MTReturnRequestDetail[index].UsableQuantity;
+
+                        if (!gridFormValidation[item].IsValidationError) {
+                            if (elementdata.Value > Quantity) {
+                                gridFormValidation[item].IsValidationError = true;
+                                gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                this.setState({
+                                    isError: true,
+                                    IsCallAPIError: true,
+                                })
+                            }
+                            else {
+                                this.setState({
+                                    isError: false,
+                                    IsCallAPIError: false,
+                                })
+                            }
+                        }
+                    }
+                    else {
+                        this.setState({
+                            isError: false,
+                            IsCallAPIError: false,
+                        })
+                    }
                 }
                 else {
                     gridFormValidation[item].IsValidationError = true;
@@ -338,10 +405,26 @@ class AddCom extends React.Component {
                 if (elementdata.Value.length > 0) {
                     if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
                         if (parseInt(elementdata.Value) > 0) {
-                            this.setState({
-                                isError: false,
-                                IsCallAPIError: false,
-                            })
+                            if (elementdata.Name == 'Quantity') {
+                                let Quantity = MTReturnRequestDetail[index].UsableQuantity;
+
+                                if (!gridFormValidation[item].IsValidationError) {
+                                    if (elementdata.Value > Quantity) {
+                                        gridFormValidation[item].IsValidationError = true;
+                                        gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                        this.setState({
+                                            isError: true,
+                                            IsCallAPIError: true,
+                                        })
+                                    }
+                                    else {
+                                        this.setState({
+                                            isError: false,
+                                            IsCallAPIError: false,
+                                        })
+                                    }
+                                }
+                            }
                         }
                         else {
                             gridFormValidation[item].IsValidationError = true;
