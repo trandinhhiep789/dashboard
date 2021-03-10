@@ -542,7 +542,7 @@ class ShipmentOrderDetailCom extends Component {
                                     <label className="col-form-label bold">Loại yêu cầu vận chuyển:</label>
                                 </div>
                                 <div className="form-group col-md-4">
-                                    <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentOrderTypeName}</label>
+                                    <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentOrderTypeID + " - " +this.state.ShipmentOrder.ShipmentOrderTypeName}</label>
                                 </div>
                             </div>
                             <div className="form-row">
@@ -564,7 +564,7 @@ class ShipmentOrderDetailCom extends Component {
                                     <label className="col-form-label bold">Loại dịch vụ:</label>
                                 </div>
                                 <div className="form-group col-md-4">
-                                    <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentServiceTypeName}</label>
+                                    <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentServiceTypeID + " - " +this.state.ShipmentOrder.ShipmentServiceTypeName}</label>
                                 </div>
                                 <div className="form-group col-md-2">
                                     <label className="col-form-label bold">Trạng thái:</label>
