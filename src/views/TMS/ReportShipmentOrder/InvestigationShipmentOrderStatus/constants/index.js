@@ -30,7 +30,7 @@ export const SearchMLObjectDefinition = [
 export const GridColumnList = [
     {
         Name: "ProcessDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Thời gian xử lý",
         DataSourceMember: "ProcessDate",
         Width: 200
