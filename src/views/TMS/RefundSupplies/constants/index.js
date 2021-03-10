@@ -7,6 +7,11 @@ export const AddLink = "/RefundSupplies/Add";
 
 export const AddAPIPath = "api/MTReturnRequest/Add";
 export const DeleteNewAPIPath = "api/MTReturnRequest/DeleteNew";
+export const LoadAPIPath = "api/MTReturnRequest/Load";
+export const UpdateAPIPath = "api/MTReturnRequest/Update";
+export const UpdateCurrentReviewLevelAPIPath = "api/MTReturnRequest/UpdateCurrentReviewLevel";
+
+export const UpdateCreateVocherAPIPath = "api/MTReturnRequest/UpdateCreatedInputVoucher";
 
 
 export const LoadAPIByMtreturnRequestTypeIDPath = "api/MTReturnRequest_ReviewList/LoadByMTReturnRequesTypeID";
@@ -128,7 +133,7 @@ export const SearchElementList = [
         type: "ComboBox",
         name: "cbMTReturnRequestTypeID",
         DataSourceMember: "MTReturnRequestTypeID",
-        label: "Loại yêu cầu hủy vật tư",
+        label: "Loại YCNT vật tư",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
@@ -187,25 +192,23 @@ export const SearchElementList = [
         placeholder: "--Tất cả--",
         listoption: [
             { value: -1, label: '--Tất cả--' },
-            { value: 1, label: 'Hết hạn' },
-            { value: 2, label: 'Còn hạn' },
-        ],
-
-
+            { value: 0, label: 'Chưa duyệt' },
+            { value: 1, label: 'Đã duyệt' }
+        ]
     },
     {
         type: "ComboBox",
         name: "cbIsCreatedInputVouchert",
         DataSourceMember: "IsCreatedInputVouchert",
-        label: "Trạng thái xuất",
+        label: "Trạng thái nhập trả",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
         placeholder: "--Tất cả--",
         listoption: [
             { value: -1, label: '--Tất cả--' },
-            { value: 1, label: 'Chưa Xuất hủy vật tư' },
-            { value: 2, label: 'Đã xuất hủy vật tư' },
+            { value: 0, label: 'Chưa tạo phiếu nhập' },
+            { value: 1, label: 'Đã tạo phiếu nhập' },
         ],
 
 
@@ -285,10 +288,10 @@ export const DataGridColumnList = [
 
 export const MLObjectDefinition = [
     {
-        Name: "MtreturnRequestTypeID",
+        Name: "MTReturnRequestID",
         DefaultValue: "",
-        BindControlName: "cboMtreturnRequestType",
-        DataSourceMember: "MtreturnRequestTypeID"
+        BindControlName: "txtMTReturnRequestID",
+        DataSourceMember: "MTReturnRequestID"
     },
     {
         Name: "MtreturnRequestTypeID",
@@ -381,6 +384,12 @@ export const InputMTReturnRequestDetailColumnList = [
 
 export const GridMLObjectDefinition = [
     {
+        Name: "MTReturnRequestDetailID",
+        DefaultValue: "",
+        BindControlName: "MTReturnRequestDetailID",
+        DataSourceMember: "MTReturnRequestDetailID"
+    },
+    {
         Name: "MtreturnRequestTypeID",
         DefaultValue: "",
         BindControlName: "MtreturnRequestTypeID",
@@ -423,3 +432,89 @@ export const GridMLObjectDefinition = [
         DataSourceMember: "Quantity"
     }
 ];
+
+export const GirdMTReturnRequestDetailColumnList = [
+    {
+        Name: "MaterialGroupID",
+        Type: "text",
+        Caption: "Nhóm vật tư",
+        DataSourceMember: "MaterialGroupID",
+        Width: 150
+    },
+    {
+        Name: "ProductID",
+        Type: "text",
+        Caption: "Mã sản phẩm",
+        DataSourceMember: "ProductID",
+        Width: 150
+    },
+    {
+        Name: "ProductName",
+        Type: "text",
+        Caption: "Tên sản phẩm",
+        DataSourceMember: "ProductName",
+        Width: 150
+    },
+    {
+        Name: "QuantityUnitName",
+        Type: "textNew",
+        Caption: "Đơn vị tính",
+        DataSourceMember: "QuantityUnitName",
+        Width: 150
+    },
+    {
+        Name: "Quantity",
+        Type: "text",
+        Caption: "Số lượng nhập trả",
+        labelError: 'aaa',
+        DataSourceMember: "Quantity",
+        Width: 200,
+    },
+]
+
+export const GirdMTReturnRequestReviewLevelColumnList = [
+    {
+        Name: "ReviewLevelName",
+        Type: "text",
+        Caption: "Mức duyệt",
+        DataSourceMember: "ReviewLevelName",
+        Width: 100
+    },
+    {
+        Name: "ApproverName",
+        Type: "text",
+        Caption: "Người duyệt",
+        DataSourceMember: "ApproverName",
+        Width: 100
+    },
+    {
+        Name: "ReviewStatusLable",
+        Type: "text",
+        Caption: "Trạng thái duyệt",
+        DataSourceMember: "ReviewStatusLable",
+        Width: 100
+    },
+    {
+        Name: "reViewedDate",
+        Type: "date",
+        Caption: "Ngày duyệt",
+        DataSourceMember: "reViewedDate",
+        Width: 100
+    },
+    {
+        Name: "reViewedNote",
+        Type: "text",
+        Caption: "Ghi chú duyệt",
+        DataSourceMember: "reViewedNote",
+        Width: 100
+    },
+]
+
+export const MLObjectDRNoteRV = [
+    {
+        Name: "ReViewedNote",
+        DefaultValue: "",
+        BindControlName: "txtReViewedNote",
+        DataSourceMember: "ReViewedNote"
+    }
+]

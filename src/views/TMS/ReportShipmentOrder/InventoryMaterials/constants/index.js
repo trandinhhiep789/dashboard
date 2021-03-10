@@ -110,7 +110,7 @@ export const GridColumnList = [
     },
     {
         Name: "QuantityExpend",
-        Type: "popupNew",
+        Type: "text",
         Caption: "Tiêu hao khác",
         DataSourceMember: "QuantityExpend",
         Width: 100
@@ -184,7 +184,7 @@ export const GridColumnListPrice = [
     },
     {
         Name: "QuantityExpend",
-        Type: "popupNew",
+        Type: "text",
         Caption: "Tiêu hao khác",
         DataSourceMember: "QuantityExpend",
         Width: 100
@@ -255,31 +255,31 @@ export const DataGridModalQuantityHanOverDone = [
 
 export const DataGridModalQuantityHanOverDoing = [
     {
-        Name: "AdvancerequestID",
+        Name: "AdvanceRequestID",
         Type: "text",
-        Caption: "Yêu cầu xuất",
-        DataSourceMember: "ADVANCEREQUESTID",
+        Caption: "Yêu cầu tạm ứng",
+        DataSourceMember: "AdvanceRequestID",
         Width: 100
     },
     {
         Name: "SaleOrderID",
         Type: "text",
         Caption: "Yêu cầu xuất",
-        DataSourceMember: "SALEORDERID",
+        DataSourceMember: "SaleOrderID",
         Width: 100
     },
     {
-        Name: "OutputVoucher",
+        Name: "OutputVoucherID",
         Type: "text",
         Caption: "Mã phiếu xuất",
-        DataSourceMember: "OUTPUTVOUCHER",
+        DataSourceMember: "OutputVoucherID",
         Width: 100
     },
     {
-        Name: "Quantity",
+        Name: "ConvertQuantity",
         Type: "text",
-        Caption: "Số lượng ",
-        DataSourceMember: "QUANTITY",
+        Caption: "Số lượng",
+        DataSourceMember: "ConvertQuantity",
         Width: 100
     }
 ];
@@ -320,38 +320,21 @@ export const DataGridModalChangeTotalQuantity = [
         Name: "ShipmentOrderID",
         Type: "text",
         Caption: "Mã vận đơn",
-        DataSourceMember: "SHIPMENTORDERID",
+        DataSourceMember: "ShipmentOrderID",
         Width: 100
     },
     {
         Name: "PartnerSaleOrderID",
         Type: "text",
         Caption: "Mã đơn hàng",
-        DataSourceMember: "PARTNERSALEORDERID",
+        DataSourceMember: "PartnerSaleOrderID",
         Width: 100
     },
     {
-        Name: "QuantityUnitName",
+        Name: "ChangeTotalQuantity",
         Type: "text",
         Caption: "Số lượng",
-        DataSourceMember: "QUANTITYUNITNAME",
+        DataSourceMember: "ChangeTotalQuantity",
         Width: 100
     },
 ];
-
-export const DataGridModalQuantityExpend = [
-    {
-        Name: "",
-        Type: "text",
-        Caption: "Xuất tiêu hao",
-        DataSourceMember: "",
-        Width: 100
-    },
-    {
-        Name: "Quantity",
-        Type: "text",
-        Caption: "Số lượng",
-        DataSourceMember: "QUANTITY",
-        Width: 100
-    }
-]

@@ -14,7 +14,7 @@ import NotFound from '../../NotFound';
 
 
 class RefundSuppliesCom extends React.Component {
-    
+
 
     render() {
         return (
@@ -22,7 +22,7 @@ class RefundSuppliesCom extends React.Component {
                 <Route exact path="/RefundSupplies" component={Search} />
                 <Route exact path="/RefundSupplies/Add/" component={Add} />
                 <Route exact path="/RefundSupplies/Edit/:id" component={Edit} />
-                <Route exact path="/RefundSupplies/Detail/" component={Detail} />
+                <Route exact path="/RefundSupplies/Detail/:id" component={Detail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );

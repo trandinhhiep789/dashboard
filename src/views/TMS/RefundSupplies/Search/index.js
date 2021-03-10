@@ -51,7 +51,6 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
-        console.log("aa", this.state, this.props)
         this.props.updatePagePath(PagePath);
         this.callSearchData(this.state.SearchData)
     }
@@ -101,8 +100,6 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
         const { callFetchAPI } = this.props;
         callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("22", searchData, apiResult)
-            
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -210,7 +207,7 @@ class SearchCom extends React.Component {
     render() {
         return (
             <React.Fragment>
-                 <ReactNotification ref={this.notificationDOMRef} />
+                <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
                     FormName={TitleFormSearch}
                     MLObjectDefinition={SearchMLObjectDefinition}
