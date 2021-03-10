@@ -78,16 +78,16 @@ class SearchCom extends React.Component {
 
         // }
 
-        this.props.callFetchAPI(APIHostName, CreateUserNameAPIPath, "abc").then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            if (!apiResult.IsError) {
-                this.setState({ UserID: apiResult.ResultObject })
-                document.getElementsByName("txtUserName")[0].value = apiResult.ResultObject;
-            } else {
-                this.showMessage("Lỗi tạo tên đăng nhập.");
-            }
-            //console.log("username", apiResult);
-        });
+        // this.props.callFetchAPI(APIHostName, CreateUserNameAPIPath, "abc").then(apiResult => {
+        //     this.setState({ IsCallAPIError: apiResult.IsError });
+        //     if (!apiResult.IsError) {
+        //         this.setState({ UserID: apiResult.ResultObject })
+        //         document.getElementsByName("txtUserName")[0].value = apiResult.ResultObject;
+        //     } else {
+        //         this.showMessage("Lỗi tạo tên đăng nhập.");
+        //     }
+        //     //console.log("username", apiResult);
+        // });
 
     }
 
@@ -188,11 +188,11 @@ class SearchCom extends React.Component {
                             return false;
                         }
 
-                        if (!this.state.UserID) {
-                            this.setState({ IsCallAPIError: true });
-                            this.showMessage("Chưa có tên đăng nhập. Vui lòng bấm nút tạo tên đăng nhập.");
-                            return false;
-                        }
+                        // if (!this.state.UserID) {
+                        //     this.setState({ IsCallAPIError: true });
+                        //     this.showMessage("Chưa có tên đăng nhập. Vui lòng bấm nút tạo tên đăng nhập.");
+                        //     return false;
+                        // }
 
                         let fullName = MLObject.FullName.split(" ");
                         let firstName = fullName[fullName.length - 1];
@@ -222,7 +222,7 @@ class SearchCom extends React.Component {
                             if (!apiResult.IsError) {
                                 this.callSearchData(this.state.SearchData);
                                 this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERUSER);
-                                this.props.hideModal();
+                               // this.props.hideModal();
                             }
                             //this.showMessage(apiResult.Message);
                             this.addNotification(apiResult.Message, apiResult.IsError);
