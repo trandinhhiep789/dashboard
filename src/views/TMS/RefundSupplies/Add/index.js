@@ -15,9 +15,11 @@ import {
     TitleFormAdd,
     AddPagePath,
     InputMTReturnRequestDetailColumnList,
+    InputMTReturnRequestDetailColumnListNew,
     GridMLObjectDefinition,
     LoadAPIByMtreturnRequestTypeIDPath,
-    LoadAPIByRequestTypeIDPath
+    LoadAPIByRequestTypeIDPath,
+    LoadAPIByMTRRequestTypeIDPath
 
 } from "../constants";
 import MTReturnRequestRVList from '../Component/MTReturnRequestRVList'
@@ -28,7 +30,9 @@ import { callGetCache, callClearLocalCache } from "../../../../actions/cacheActi
 import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { REFUNDSUPPLIES_ADD } from "../../../../constants/functionLists";
-
+import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import MTReturnRequestDetailElement from "../Component/MTReturnRequestDetailElementCom";
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -39,6 +43,7 @@ class AddCom extends React.Component {
             IsCloseForm: false,
             DataSource: {},
             MTReturnRequestDetail: [],
+            MTReturnRequestDetailNew: [],
             isAutoReview: false,
             gridMTReturnRequestRLSort: [],
             gridMTReturnRequestRL: {},
@@ -125,8 +130,8 @@ class AddCom extends React.Component {
     }
 
     GetDataByRequestTypeID(MtreturnRequestTypeID) {
-        this.props.callFetchAPI(APIHostName, LoadAPIByRequestTypeIDPath, MtreturnRequestTypeID).then(apiResult => {
-            console.log("products:",apiResult )
+        this.props.callFetchAPI(APIHostName, LoadAPIByMTRRequestTypeIDPath, MtreturnRequestTypeID).then(apiResult => {
+            console.log("products:", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -151,7 +156,7 @@ class AddCom extends React.Component {
     }
 
     prevDataSubmit(formData, MLObject) {
-        console.log("11",formData, MLObject )
+        console.log("11", formData, MLObject)
         const { isError, gridMTReturnRequestRL, isAutoReview, gridMTReturnRequestRLSort } = this.state;
         let arrReviewLevel = [];
         // console.log("MLObject", MLObject, gridMTReturnRequestRL, gridMTReturnRequestRLSort)
@@ -180,7 +185,7 @@ class AddCom extends React.Component {
 
             if (isAutoReview) {
                 MLObject.IsreViewed = isAutoReview;
-                MLObject.reViewedUser = this.props.AppInfo.LoginInfo.Username; 
+                MLObject.reViewedUser = this.props.AppInfo.LoginInfo.Username;
                 MLObject.CurrentReviewLevelID = 0;
                 MLObject.reViewedDate = new Date();
             }
@@ -205,7 +210,7 @@ class AddCom extends React.Component {
                 }
 
             }
-         
+
 
             if (MTReturnRequestDetail.length <= 0) {
                 this.showMessage('Danh sách vật tư chưa được chọn.');
@@ -224,7 +229,7 @@ class AddCom extends React.Component {
         else {
             this.showMessage('Thông tin nhập vào không chính xác. Vui lòng kiểm tra lại.');
         }
-       // this.handleSubmit(MLObject)
+        // this.handleSubmit(MLObject)
     }
 
     handleSubmit(MLObject) {
@@ -258,17 +263,39 @@ class AddCom extends React.Component {
     }
 
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
-        // console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
-        const { MTReturnRequestDetail } = this.state;
-        const isAllowDecimal = MTReturnRequestDetail[index].IsAllowDecimal;
+        console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
+        const { MTReturnRequestDetailNew } = this.state;
+        const isAllowDecimal = MTReturnRequestDetailNew[index].IsAllowDecimal;
         let item = elementdata.Name + '_' + index;
         if (!isAllowDecimal) {
             if (elementdata.Value.toString().length > 1) {
                 if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
-                    this.setState({
-                        isError: false,
-                        IsCallAPIError: false,
-                    })
+                    if (elementdata.Name == 'Quantity') {
+                        let Quantity = MTReturnRequestDetailNew[index].UsableQuantity;
+
+                        if (!gridFormValidation[item].IsValidationError) {
+                            if (elementdata.Value > Quantity) {
+                                gridFormValidation[item].IsValidationError = true;
+                                gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                this.setState({
+                                    isError: true,
+                                    IsCallAPIError: true,
+                                })
+                            }
+                            else {
+                                this.setState({
+                                    isError: false,
+                                    IsCallAPIError: false,
+                                })
+                            }
+                        }
+                    }
+                    else {
+                        this.setState({
+                            isError: false,
+                            IsCallAPIError: false,
+                        })
+                    }
                 }
                 else {
                     gridFormValidation[item].IsValidationError = true;
@@ -283,10 +310,32 @@ class AddCom extends React.Component {
                 if (elementdata.Value.length > 0) {
                     if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
                         if (parseInt(elementdata.Value) > 0) {
-                            this.setState({
-                                isError: false,
-                                IsCallAPIError: false,
-                            })
+                            if (elementdata.Name == 'Quantity') {
+                                let Quantity = MTReturnRequestDetailNew[index].UsableQuantity;
+
+                                if (!gridFormValidation[item].IsValidationError) {
+                                    if (elementdata.Value > Quantity) {
+                                        gridFormValidation[item].IsValidationError = true;
+                                        gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                        this.setState({
+                                            isError: true,
+                                            IsCallAPIError: true,
+                                        })
+                                    }
+                                    else {
+                                        this.setState({
+                                            isError: false,
+                                            IsCallAPIError: false,
+                                        })
+                                    }
+                                }
+                            }
+                            else {
+                                this.setState({
+                                    isError: false,
+                                    IsCallAPIError: false,
+                                })
+                            }
                         }
                         else {
                             gridFormValidation[item].IsValidationError = true;
@@ -320,10 +369,32 @@ class AddCom extends React.Component {
             if (elementdata.Value.toString().length > 1) {
 
                 if (/^\d*\.?\d+$/.test(elementdata.Value)) {
-                    this.setState({
-                        isError: false,
-                        IsCallAPIError: false,
-                    })
+                    if (elementdata.Name == 'Quantity') {
+                        let Quantity = MTReturnRequestDetailNew[index].UsableQuantity;
+
+                        if (!gridFormValidation[item].IsValidationError) {
+                            if (elementdata.Value > Quantity) {
+                                gridFormValidation[item].IsValidationError = true;
+                                gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                this.setState({
+                                    isError: true,
+                                    IsCallAPIError: true,
+                                })
+                            }
+                            else {
+                                this.setState({
+                                    isError: false,
+                                    IsCallAPIError: false,
+                                })
+                            }
+                        }
+                    }
+                    else {
+                        this.setState({
+                            isError: false,
+                            IsCallAPIError: false,
+                        })
+                    }
                 }
                 else {
                     gridFormValidation[item].IsValidationError = true;
@@ -338,10 +409,26 @@ class AddCom extends React.Component {
                 if (elementdata.Value.length > 0) {
                     if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
                         if (parseInt(elementdata.Value) > 0) {
-                            this.setState({
-                                isError: false,
-                                IsCallAPIError: false,
-                            })
+                            if (elementdata.Name == 'Quantity') {
+                                let Quantity = MTReturnRequestDetailNew[index].UsableQuantity;
+
+                                if (!gridFormValidation[item].IsValidationError) {
+                                    if (elementdata.Value > Quantity) {
+                                        gridFormValidation[item].IsValidationError = true;
+                                        gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                        this.setState({
+                                            isError: true,
+                                            IsCallAPIError: true,
+                                        })
+                                    }
+                                    else {
+                                        this.setState({
+                                            isError: false,
+                                            IsCallAPIError: false,
+                                        })
+                                    }
+                                }
+                            }
                         }
                         else {
                             gridFormValidation[item].IsValidationError = true;
@@ -379,7 +466,64 @@ class AddCom extends React.Component {
         this.setState({ gridMTReturnRequestRLSort: objMTReturnRequestRL });
     }
 
+    handleinsertItemNew(objData) {
+        const { MTReturnRequestDetailNew } = this.state;
+        let tmpObjectItem = [];
+
+        objData.map((row, index) => {
+            let match = this.state.MTReturnRequestDetail.filter(item => {
+                return item.MaterialGroupID == row.MaterialGroupID && item.ProductID == row.ProductID;
+            });
+            if (match.length > 0) {
+                tmpObjectItem = tmpObjectItem.concat(match);
+            }
+        });
+        tmpObjectItem =  tmpObjectItem.concat(MTReturnRequestDetailNew);
+
+        this.setState({
+            MTReturnRequestDetailNew: tmpObjectItem
+        })
+
+        console.log("handleinsertItemNew", objData, tmpObjectItem, this.state.MTReturnRequestDetail)
+    }
+
+    handleItemInsert() {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Thêm chi tiết nhập trả vật tư',
+            content: {
+                text: <MTReturnRequestDetailElement
+                    dataSource={this.state.MTReturnRequestDetail}
+                    multipleCheck={true}
+                    listColumn={InputMTReturnRequestDetailColumnListNew}
+                    onClickInsertItem={this.handleinsertItemNew.bind(this)}
+                    IDSelectColumnName={"chkSelect"}
+                    PKColumnName={"MaterialGroupID,ProductID"}
+                    isHideHeaderToolbarGroupTextBox={true}
+                    isHideHeaderToolbar={true}
+                    name={"ProductID"}
+                    value={"MaterialGroupID"}
+                />
+            },
+            maxWidth: '1000px'
+        });
+    }
+
+    handleItemEdit(index) {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Cập nhật chi tiết nhập trả vật tư',
+            content: {
+                text: <div>chỉnh sửa</div>
+            },
+            maxWidth: '1000px'
+        });
+
+    }
+    handleMTReturnRequestDetailItem(id) {
+        console.log("id", id)
+    }
+
     render() {
+        
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -387,6 +531,7 @@ class AddCom extends React.Component {
 
         const {
             MTReturnRequestDetail,
+            MTReturnRequestDetailNew,
             isError,
             gridDestroyRequestRL,
             validationErrorMessageSelect,
@@ -394,7 +539,7 @@ class AddCom extends React.Component {
             isAutoReview,
             gridMTReturnRequestRLSort
         } = this.state;
-
+        console.log("MTReturnRequestDetailNew", MTReturnRequestDetailNew)
         return (
             <React.Fragment>
                 <FormContainer
@@ -513,11 +658,11 @@ class AddCom extends React.Component {
                                 name="lstMTReturnRequestDetail"
                                 controltype="GridControl"
                                 listColumn={InputMTReturnRequestDetailColumnList}
-                                dataSource={MTReturnRequestDetail}
-                                isHideHeaderToolbar={true}
+                                dataSource={MTReturnRequestDetailNew}
                                 MLObjectDefinition={GridMLObjectDefinition}
                                 colspan="12"
                                 onValueChangeInputGrid={this.valueChangeInputGrid.bind(this)}
+                                onInsertClick={this.handleItemInsert.bind(this)}
                             />
                         </div>
                     </div>

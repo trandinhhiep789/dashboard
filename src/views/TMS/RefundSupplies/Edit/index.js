@@ -291,18 +291,38 @@ class EditCom extends React.Component {
 
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
         // console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
-
         const { MTReturnRequestDetail } = this.state;
-        // console.log('111', DestroyRequestDetail[index])
         const isAllowDecimal = MTReturnRequestDetail[index].IsAllowDecimal;
         let item = elementdata.Name + '_' + index;
         if (!isAllowDecimal) {
             if (elementdata.Value.toString().length > 1) {
                 if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
-                    this.setState({
-                        isError: false,
-                        IsCallAPIError: false,
-                    })
+                    if (elementdata.Name == 'Quantity') {
+                        let Quantity = MTReturnRequestDetail[index].UsableQuantity;
+
+                        if (!gridFormValidation[item].IsValidationError) {
+                            if (elementdata.Value > Quantity) {
+                                gridFormValidation[item].IsValidationError = true;
+                                gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                this.setState({
+                                    isError: true,
+                                    IsCallAPIError: true,
+                                })
+                            }
+                            else {
+                                this.setState({
+                                    isError: false,
+                                    IsCallAPIError: false,
+                                })
+                            }
+                        }
+                    }
+                    else {
+                        this.setState({
+                            isError: false,
+                            IsCallAPIError: false,
+                        })
+                    }
                 }
                 else {
                     gridFormValidation[item].IsValidationError = true;
@@ -317,10 +337,32 @@ class EditCom extends React.Component {
                 if (elementdata.Value.length > 0) {
                     if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
                         if (parseInt(elementdata.Value) > 0) {
-                            this.setState({
-                                isError: false,
-                                IsCallAPIError: false,
-                            })
+                            if (elementdata.Name == 'Quantity') {
+                                let Quantity = MTReturnRequestDetail[index].UsableQuantity;
+
+                                if (!gridFormValidation[item].IsValidationError) {
+                                    if (elementdata.Value > Quantity) {
+                                        gridFormValidation[item].IsValidationError = true;
+                                        gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                        this.setState({
+                                            isError: true,
+                                            IsCallAPIError: true,
+                                        })
+                                    }
+                                    else {
+                                        this.setState({
+                                            isError: false,
+                                            IsCallAPIError: false,
+                                        })
+                                    }
+                                }
+                            }
+                            else {
+                                this.setState({
+                                    isError: false,
+                                    IsCallAPIError: false,
+                                })
+                            }
                         }
                         else {
                             gridFormValidation[item].IsValidationError = true;
@@ -348,18 +390,38 @@ class EditCom extends React.Component {
                         IsCallAPIError: false,
                     })
                 }
-
             }
-
         }
         else {
             if (elementdata.Value.toString().length > 1) {
 
                 if (/^\d*\.?\d+$/.test(elementdata.Value)) {
-                    this.setState({
-                        isError: false,
-                        IsCallAPIError: false,
-                    })
+                    if (elementdata.Name == 'Quantity') {
+                        let Quantity = MTReturnRequestDetail[index].UsableQuantity;
+
+                        if (!gridFormValidation[item].IsValidationError) {
+                            if (elementdata.Value > Quantity) {
+                                gridFormValidation[item].IsValidationError = true;
+                                gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                this.setState({
+                                    isError: true,
+                                    IsCallAPIError: true,
+                                })
+                            }
+                            else {
+                                this.setState({
+                                    isError: false,
+                                    IsCallAPIError: false,
+                                })
+                            }
+                        }
+                    }
+                    else {
+                        this.setState({
+                            isError: false,
+                            IsCallAPIError: false,
+                        })
+                    }
                 }
                 else {
                     gridFormValidation[item].IsValidationError = true;
@@ -374,10 +436,26 @@ class EditCom extends React.Component {
                 if (elementdata.Value.length > 0) {
                     if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
                         if (parseInt(elementdata.Value) > 0) {
-                            this.setState({
-                                isError: false,
-                                IsCallAPIError: false,
-                            })
+                            if (elementdata.Name == 'Quantity') {
+                                let Quantity = MTReturnRequestDetail[index].UsableQuantity;
+
+                                if (!gridFormValidation[item].IsValidationError) {
+                                    if (elementdata.Value > Quantity) {
+                                        gridFormValidation[item].IsValidationError = true;
+                                        gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
+                                        this.setState({
+                                            isError: true,
+                                            IsCallAPIError: true,
+                                        })
+                                    }
+                                    else {
+                                        this.setState({
+                                            isError: false,
+                                            IsCallAPIError: false,
+                                        })
+                                    }
+                                }
+                            }
                         }
                         else {
                             gridFormValidation[item].IsValidationError = true;
@@ -407,9 +485,7 @@ class EditCom extends React.Component {
                 }
 
             }
-
         }
-
     }
 
     handleInputChangeGridRV(objDestroyRequestRL) {

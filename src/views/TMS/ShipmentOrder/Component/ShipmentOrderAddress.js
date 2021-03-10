@@ -1201,6 +1201,17 @@ class ShipmentOrderAddressCom extends Component {
                                             <label className="col-form-label">{this.state.ShipmentOrder.CreatedUserPhoneNumber}</label>
                                         </div>
                                     </div>
+
+                                    <div className="form-row">
+                                        <div className="form-group col-md-1">
+                                            <label className="col-form-label icon">
+                                                <i className="fa fa-mobile " aria-hidden="true"></i>
+                                            </label>
+                                        </div>
+                                        <div className="form-group col-md-11">
+                                            <label className="col-form-label">{this.state.ShipmentOrder.RequestStoreID + " - " + this.state.ShipmentOrder.RequestStoreName}</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1248,30 +1259,57 @@ class ShipmentOrderAddressCom extends Component {
                         <div className="col-sm-12 col-lg-4">
                             <div className="card">
                                 <div className="card-title">
-                                    <h4 className="title">Người nhận</h4>
+                                    <h4 className="title">Người liên hệ</h4>
                                     <button className="btn btnEditCard" onClick={this.handleShowModalReceiver.bind(this)}>chỉnh sửa</button>
                                 </div>
                                 <div className="card-body">
+                                    <div className="form-row">
+                                        <div className="form-group col-md-12">
+                                            <label className="col-form-label" >Người mua</label>
+                                        </div>
+                                    </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-1">
                                             <label className="col-form-label icon">
                                                 <i className="fa fa-user" aria-hidden="true"></i>
                                             </label>
                                         </div>
-                                        <div className="form-group col-md-11">
+                                        <div className="form-group col-md-8">
                                             <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullName}</label>
                                         </div>
-                                    </div>
-                                    <div className="form-row">
                                         <div className="form-group col-md-1">
                                             <label className="col-form-label icon">
                                                 <i className="fa fa-mobile " aria-hidden="true"></i>
                                             </label>
                                         </div>
-                                        <div className="form-group col-md-11">
+                                        <div className="form-group col-md-2">
                                             <label className="col-form-label">{(this.state.ShipmentOrder.ShipmentOrderTypeID == 1002 || this.state.ShipmentOrder.ShipmentOrderTypeID == 1003) && this.state.ShipmentOrder.TotalCOD > 0 ? this.state.ShipmentOrder.ReceiverPhoneNumber.substr(0, 7) + "***" : this.state.ShipmentOrder.ReceiverPhoneNumber}</label>
                                         </div>
                                     </div>
+                                    <div className="form-row">
+                                        <div className="form-group col-md-12">
+                                            <label className="col-form-label" >Người nhận</label>
+                                        </div>
+                                    </div>
+                                    <div className="form-row">
+                                        <div className="form-group col-md-1">
+                                            <label className="col-form-label icon">
+                                                <i className="fa fa-user" aria-hidden="true"></i>
+                                            </label>
+                                        </div>
+                                        <div className="form-group col-md-8">
+                                            <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullName}</label>
+                                        </div>
+                                        <div className="form-group col-md-1">
+                                            <label className="col-form-label icon">
+                                                <i className="fa fa-mobile " aria-hidden="true"></i>
+                                            </label>
+                                        </div>
+                                        <div className="form-group col-md-2">
+                                            <label className="col-form-label">{(this.state.ShipmentOrder.ShipmentOrderTypeID == 1002 || this.state.ShipmentOrder.ShipmentOrderTypeID == 1003) && this.state.ShipmentOrder.TotalCOD > 0 ? this.state.ShipmentOrder.ReceiverPhoneNumber.substr(0, 7) + "***" : this.state.ShipmentOrder.ReceiverPhoneNumber}</label>
+                                        </div>
+                                    </div>
+
                                     <div className="form-row">
                                         <div className="form-group col-md-1">
                                             <label className="col-form-label icon">
