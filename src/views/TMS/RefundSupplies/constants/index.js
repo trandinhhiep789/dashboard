@@ -8,6 +8,10 @@ export const AddLink = "/RefundSupplies/Add";
 export const AddAPIPath = "api/MTReturnRequest/Add";
 export const DeleteNewAPIPath = "api/MTReturnRequest/DeleteNew";
 export const LoadAPIPath = "api/MTReturnRequest/Load";
+export const UpdateAPIPath = "api/MTReturnRequest/Update";
+export const UpdateCurrentReviewLevelAPIPath = "api/MTReturnRequest/UpdateCurrentReviewLevel";
+
+export const UpdateCreateVocherAPIPath = "api/MTReturnRequest/UpdateCreatedInputVoucher";
 
 
 export const LoadAPIByMtreturnRequestTypeIDPath = "api/MTReturnRequest_ReviewList/LoadByMTReturnRequesTypeID";
@@ -129,7 +133,7 @@ export const SearchElementList = [
         type: "ComboBox",
         name: "cbMTReturnRequestTypeID",
         DataSourceMember: "MTReturnRequestTypeID",
-        label: "Loại yêu cầu nhập trả vật tư",
+        label: "Loại YCNT vật tư",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
@@ -196,7 +200,7 @@ export const SearchElementList = [
         type: "ComboBox",
         name: "cbIsCreatedInputVouchert",
         DataSourceMember: "IsCreatedInputVouchert",
-        label: "Trạng thái xuất",
+        label: "Trạng thái nhập trả",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
@@ -283,7 +287,12 @@ export const DataGridColumnList = [
 ];
 
 export const MLObjectDefinition = [
-
+    {
+        Name: "MTReturnRequestID",
+        DefaultValue: "",
+        BindControlName: "txtMTReturnRequestID",
+        DataSourceMember: "MTReturnRequestID"
+    },
     {
         Name: "MtreturnRequestTypeID",
         DefaultValue: "",
@@ -375,6 +384,12 @@ export const InputMTReturnRequestDetailColumnList = [
 
 export const GridMLObjectDefinition = [
     {
+        Name: "MTReturnRequestDetailID",
+        DefaultValue: "",
+        BindControlName: "MTReturnRequestDetailID",
+        DataSourceMember: "MTReturnRequestDetailID"
+    },
+    {
         Name: "MtreturnRequestTypeID",
         DefaultValue: "",
         BindControlName: "MtreturnRequestTypeID",
@@ -441,16 +456,16 @@ export const GirdMTReturnRequestDetailColumnList = [
         Width: 150
     },
     {
-        Name: "UsableQuantity",
+        Name: "QuantityUnitName",
         Type: "textNew",
-        Caption: "Số dư tạm ứng",
-        DataSourceMember: "UsableQuantity",
+        Caption: "Đơn vị tính",
+        DataSourceMember: "QuantityUnitName",
         Width: 150
     },
     {
         Name: "Quantity",
         Type: "text",
-        Caption: "Số lượng hủy",
+        Caption: "Số lượng nhập trả",
         labelError: 'aaa',
         DataSourceMember: "Quantity",
         Width: 200,
@@ -493,4 +508,13 @@ export const GirdMTReturnRequestReviewLevelColumnList = [
         DataSourceMember: "reViewedNote",
         Width: 100
     },
+]
+
+export const MLObjectDRNoteRV = [
+    {
+        Name: "ReViewedNote",
+        DefaultValue: "",
+        BindControlName: "txtReViewedNote",
+        DataSourceMember: "ReViewedNote"
+    }
 ]
