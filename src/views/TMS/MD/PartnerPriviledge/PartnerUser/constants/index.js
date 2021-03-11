@@ -128,19 +128,19 @@ export const SearchElementList = [
 ];
 
 export const AddElementList = [
-    {
-        type: "text",
-        Name: "txtUserName",
-        label: "tên truy cập người dùng:",
-        value: "",
-        maxSize: "20",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "UserName",
-        readonly: true,
-        validatonList: []
-    },
+    // {
+    //     type: "text",
+    //     Name: "txtUserName",
+    //     label: "tên truy cập người dùng:",
+    //     value: "",
+    //     maxSize: "20",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "UserName",
+    //     readonly: true,
+    //     validatonList: []
+    // },
     // {
     //     type: "button",
     //     name: "btnCreateUserName",
@@ -167,6 +167,23 @@ export const AddElementList = [
         validatonList: [],
         isMulti: false,
         IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
+        ValueMember: "PartnerID",
+        NameMember: "PartnerName"
+    },
+    {
+        type: "multiselect",
+        Name: "txtPartnerRoleID",
+        label: "Vai trò:",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [{ value: 1, name: "Quản lý" }, { value: 2, name: "Nhân viên" }],
+        DataSourceMember: "PartnerRoleID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        isMulti: false,
+        IsAutoLoadItemFromCache: false,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
         ValueMember: "PartnerID",
         NameMember: "PartnerName"
@@ -257,10 +274,10 @@ export const AddElementList = [
         listoption: [],
         DataSourceMember: "PhoneNumber",
         readonly: false,
-        validatonList: ["number"]
+        validatonList: ["required", "number"]
     },
     {
-        type: "text",
+        type: "date",
         Name: "dtBirthday",
         label: "Ngày sinh:",
         value: "",
@@ -269,7 +286,7 @@ export const AddElementList = [
         DataSourceMember: "Birthday",
         ValueMember: "Birthday",
         NameMember: "Birthday",
-        validatonList: ["required", "date"]
+        validatonList: ["required"]
     },
     {
         type: "text",
@@ -455,16 +472,16 @@ export const EditElementList = [
         validatonList: ["number"]
     },
     {
-        type: "text",
+        type: "date",
         name: "dtBirthday",
         label: "Ngày sinh:",
         value: "",
         placeholder: "",
         icon: "",
-        DataSourceMember: "Birthday",
+        DataSourceMember: "BirthdayString",
         ValueMember: "Birthday",
         NameMember: "Birthday",
-        validatonList: ["required", "date"]
+        validatonList: ["required"]
     },
     {
         type: "text",
@@ -926,6 +943,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtPartnerID",
         DataSourceMember: "PartnerID"
+    },
+    {
+        Name: "PartnerRoleID",
+        DefaultValue: "",
+        BindControlName: "txtPartnerRoleID",
+        DataSourceMember: "PartnerRoleID"
     },
     {
         Name: "PassWord",

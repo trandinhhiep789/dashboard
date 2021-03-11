@@ -37,6 +37,7 @@ import "react-notifications-component/dist/theme.css";
 import { PARTNERUSER_VIEW, PARTNERUSER_DELETE, PARTNERUSER_ADD, GET_CACHE_USER_FUNCTION_LIST, PARTNERUSER_UPDATE } from "../../../../../../constants/functionLists";
 import { ERPCOMMONCACHE_PARTNERUSER } from "../../../../../../constants/keyCache";
 import MD5Digest from "../../../../../../common/library/cryptography/MD5Digest";
+import { toIsoStringCus } from "../../../../../../utils/function";
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -164,6 +165,19 @@ class SearchCom extends React.Component {
         });
     }
 
+    convertFormatDateTime(obj) {
+        var date = new Date(obj);
+        var day = date.getDate();       
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();  
+        var hour = date.getHours();     
+        var minute = date.getMinutes(); 
+        var second = date.getSeconds(); 
+        
+        var time = day + "/" + month + "/" + year + " " + hour + ':' + minute + ':' + second;
+        return time;
+    }
+
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
         if (!this.state.IsAllowedAdd) {
             this.showMessage("Bạn không có quyền");
@@ -212,12 +226,14 @@ class SearchCom extends React.Component {
                         MLObject.UserName = this.state.UserID;
                         MLObject.PartnerID = MLObject.PartnerID && Array.isArray(MLObject.PartnerID) ? MLObject.PartnerID[0] : MLObject.PartnerID;
 
-                        if (MLObject.Birthday) {
-                            let temp = MLObject.Birthday.trim().split('/');
-                            let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
-                            myDate.setDate(myDate.getDate() + 1);
-                            MLObject.Birthday = myDate;
-                        }
+                        // if (MLObject.Birthday) {
+                        //     let temp = MLObject.Birthday.trim().split('/');
+                        //     let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
+                        //     myDate.setDate(myDate.getDate() + 1);
+                        //     MLObject.Birthday = myDate;
+                        // }
+
+                        MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
 
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {

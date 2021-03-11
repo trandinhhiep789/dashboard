@@ -36,6 +36,7 @@ import Collapsible from 'react-collapsible';
 import { Prompt } from 'react-router';
 import { PARTNERUSER_UPDATE } from "../../../../../../constants/functionLists";
 import { ERPCOMMONCACHE_PARTNERUSER } from "../../../../../../constants/keyCache";
+import { toIsoStringCus } from "../../../../../../utils/function";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -122,13 +123,14 @@ class EditCom extends React.Component {
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                apiResult.ResultObject.Birthday = apiResult.ResultObject.BirthdayString;
+                //apiResult.ResultObject.Birthday = apiResult.ResultObject.BirthdayString;
                 if (key === undefined) {
                     this.setState({
                         DataSource: apiResult.ResultObject,
                         PassWord: apiResult.ResultObject.PassWord,
                         PassWordConfirm: apiResult.ResultObject.PassWord,
-                        ListPartnerUser_IDDocument: apiResult.ResultObject.ListPartnerUser_IDDocument
+                        ListPartnerUser_IDDocument: apiResult.ResultObject.ListPartnerUser_IDDocument,
+                        Birthday: apiResult.ResultObject.Birthday
                     });
                 } else {
                     this.setState({ ListPartnerUser_IDDocument: apiResult.ResultObject.ListPartnerUser_IDDocument });
@@ -413,12 +415,19 @@ class EditCom extends React.Component {
         MLObject.ListPartnerUser_Role = this.state.DataSource.ListPartnerUser_Role;
         MLObject.PartnerID = MLObject.PartnerID && Array.isArray(MLObject.PartnerID) ? MLObject.PartnerID[0] : MLObject.PartnerID;
 
-        if (MLObject.Birthday) {
-            let temp = MLObject.Birthday.trim().split('/');
-            let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
-            myDate.setDate(myDate.getDate() + 1);
-            MLObject.Birthday = myDate;
+        // if (MLObject.Birthday) {
+        //     let temp = MLObject.Birthday.trim().split('/');
+        //     let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
+        //     myDate.setDate(myDate.getDate() + 1);
+        //     MLObject.Birthday = myDate;
+        // }
+
+        try {
+            MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
+        } catch (error) {
+            MLObject.Birthday = toIsoStringCus(new Date(this.state.Birthday).toISOString());
         }
+        
 
         
 
