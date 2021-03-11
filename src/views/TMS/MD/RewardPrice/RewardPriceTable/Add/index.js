@@ -65,7 +65,20 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        MLObject.AreaID = MLObject.AreaID != "" ? MLObject.AreaID : -1
+        let RewardPriceTable_Area = [];
+        if (!!MLObject.AreaID && MLObject.AreaID.length > 0) {
+            RewardPriceTable_Area = MLObject.AreaID.map((item, index) => {
+                let element = {}
+                element.AreaID = item;
+                return element;
+            })
+        }
+
+        // console.log("object", formData, MLObject, RewardPriceTable_Area)
+
+
+        MLObject.RewardPriceTable_AreaList = RewardPriceTable_Area
+        MLObject.AreaID = MLObject.AreaID != "" ? MLObject.AreaID[0] : -1
         MLObject.CarrierTypeID = MLObject.CarrierTypeID != "" ? MLObject.CarrierTypeID : -1
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -183,13 +196,14 @@ class AddCom extends React.Component {
 
 
                         <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
+                            <FormControl.FormControlComboBox
                                 name="cbAreaID"
                                 colspan="8"
                                 labelcolspan="4"
                                 label="khu vực"
                                 // validatonList={[""]}
                                 isautoloaditemfromcache={true}
+                                isMultiSelect={true}
                                 placeholder="-- Vui lòng chọn --"
                                 loaditemcachekeyid={ERPCOMMONCACHE_AREATT} //"ERPCOMMONCACHE.AREATT"
                                 valuemember="AreaID"
