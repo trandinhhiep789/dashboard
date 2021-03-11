@@ -580,7 +580,7 @@ class InputGridCom extends Component {
                     for (const key in GridData.Quantity) {
 
                         if (GridData.Quantity[key].Value != "") {
-                            dataSelect.push({...dataSource[key], Quantity: GridData.Quantity[key].Value});
+                            dataSelect.push({ ...dataSource[key], Quantity: GridData.Quantity[key].Value });
                         }
                     }
                 }
@@ -1005,8 +1005,8 @@ class InputGridCom extends Component {
                                             )
                                         }
 									&nbsp;
-									<button type="button" className="btn btn-sm btn-outline btn-primary" onClick={this.handleCancel.bind(this)}>
-                                            <span className="fa">Quay lại</span>
+									<button type="button" className="btn btn-w-md btn-outline btn-info" onClick={this.handleCancel.bind(this)}>
+                                            Quay lại
                                         </button>
                                     </div>
                                 </div>

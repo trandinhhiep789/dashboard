@@ -237,19 +237,6 @@ class MTReturnRequestDetailElementCom extends Component {
         const { IsSystem } = this.state;
         return (
             <React.Fragment>
-                {/* <DataGrid
-                    listColumn={this.props.listColumn}
-                    dataSource={this.props.dataSource}
-                    isMultipleCheck={this.props.multipleCheck}
-                    IDSelectColumnName={this.props.IDSelectColumnName}
-                    PKColumnName={this.props.PKColumnName}
-                    isHideHeaderToolbar={this.props.isHideHeaderToolbar}
-                    isHideHeaderToolbarGroupTextBox={this.props.isHideHeaderToolbarGroupTextBox}
-                    hasSearch={false}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                    onSubmitItem={this.handleInsertItem.bind(this)}
-                /> */}
                 <InputGrid
                     name="lstMTReturnRequestDetail"
                     controltype="GridControl"

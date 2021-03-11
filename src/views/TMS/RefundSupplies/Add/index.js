@@ -39,6 +39,8 @@ class AddCom extends React.Component {
         this.prevDataSubmit = this.prevDataSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.onChangeDataMTRRequestDetail = this.onChangeDataMTRRequestDetail.bind(this);
+        this.combineSameMaterial = this.combineSameMaterial.bind(this);
+        this.checkValidateArrCombineSameMaterial = this.checkValidateArrCombineSameMaterial.bind(this);
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -50,6 +52,7 @@ class AddCom extends React.Component {
             gridMTReturnRequestRL: {},
             validationErrorMessageSelect: '',
             isValidationSelect: false,
+            isError: false
         };
     }
 
@@ -148,13 +151,59 @@ class AddCom extends React.Component {
         });
     }
 
+    checkValidateArrCombineSameMaterial(arrUniqueMaterial) {
+        const { isError, MTReturnRequestDetail } = this.state;
+        console.log(MTReturnRequestDetail, arrUniqueMaterial);
+
+        arrUniqueMaterial.forEach(item => {
+            if (item.Quantity > item.TotalQuantity) {
+                console.log(`Loi vat tu ${item.MaterialGroupID}-${item.ProductName} qua so luong nhap tra`)
+            }
+        })
+    }
+
+    combineSameMaterial() {
+        const { MTReturnRequestDetailNew } = this.state;
+        let arrUniqueMaterial = [];
+
+        if (MTReturnRequestDetailNew.length > 0) {
+
+            arrUniqueMaterial.push({
+                ...MTReturnRequestDetailNew[0], Quantity: parseInt(MTReturnRequestDetailNew[0].Quantity)
+            });
+
+            if (MTReturnRequestDetailNew.length == 1) return;
+
+            for (let index = 1; index < MTReturnRequestDetailNew.length; index++) {
+                const material = MTReturnRequestDetailNew[index];
+
+                let detectSameMaterial = false, indexSameMaterial = null;
+                arrUniqueMaterial.forEach((item, subIndex) => {
+                    if (material.MaterialGroupID.localeCompare(item.MaterialGroupID) == 0
+                        && material.ProductID.localeCompare(item.ProductID) == 0) {
+                        detectSameMaterial = true;
+                        indexSameMaterial = subIndex;
+                    }
+                })
+
+                detectSameMaterial
+                    ? arrUniqueMaterial[indexSameMaterial].Quantity = parseInt(arrUniqueMaterial[indexSameMaterial].Quantity) + parseInt(material.Quantity)
+                    : arrUniqueMaterial.push({ ...material, Quantity: parseInt(material.Quantity) });
+            }
+        }
+
+        // this.setState({
+        //     MTReturnRequestDetail: arrUniqueMaterial
+        // })
+
+        this.checkValidateArrCombineSameMaterial(arrUniqueMaterial);
+    }
+
     prevDataSubmit(formData, MLObject) {
         const { isError, gridMTReturnRequestRL, isAutoReview, gridMTReturnRequestRLSort, MTReturnRequestDetailNew } = this.state;
         let arrReviewLevel = [];
-        console.log("MTReturnRequestDetailNew", MTReturnRequestDetailNew)
-        debugger
 
-
+        this.combineSameMaterial();
 
         Object.keys(gridMTReturnRequestRL).map(function (key) {
             let objItem = {}
@@ -216,7 +265,7 @@ class AddCom extends React.Component {
             }
 
             MLObject.IsCreatedInputVoucher = false;
-            MLObject.lstMTReturnRequestDetail = MTReturnRequestDetail; // day du lieu vo day
+            MLObject.lstMTReturnRequestDetail = MTReturnRequestDetail; //
 
             this.handleSubmit(MLObject)
         }
@@ -256,7 +305,7 @@ class AddCom extends React.Component {
     }
 
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
-    
+
     }
 
 
@@ -271,7 +320,7 @@ class AddCom extends React.Component {
 
     }
 
-    onChangeDataMTRRequestDetail(data){
+    onChangeDataMTRRequestDetail(data) {
         this.setState({
             MTReturnRequestDetailNew: data
         })
@@ -290,8 +339,8 @@ class AddCom extends React.Component {
                     PKColumnName={"MaterialGroupID,ProductID"}
                     isHideHeaderToolbarGroupTextBox={true}
                     isHideHeaderToolbar={true}
-                    // name={"ProductID"}
-                    // value={"MaterialGroupID"}
+                // name={"ProductID"}
+                // value={"MaterialGroupID"}
                 />
             },
             maxWidth: '1000px'
