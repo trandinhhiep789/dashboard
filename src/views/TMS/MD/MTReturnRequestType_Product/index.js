@@ -17,7 +17,7 @@ import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache,callGetUserCache } from "../../../../actions/cacheAction";
-import { GET_CACHE_USER_FUNCTION_LIST, MTRETURNREQUESTTYPE_ADD, MTRETURNREQUESTTYPE_DELETE } from "../../../../constants/functionLists";
+import { GET_CACHE_USER_FUNCTION_LIST, MTRETURNREQUESTTYPE_ADD, MTRETURNREQUESTTYPE_DELETE, MTRETURNREQUESTTYPE_UPDATE } from "../../../../constants/functionLists";
 
 class MTReturnRequestType_ProductCom extends React.Component {
     constructor(props) {
@@ -25,6 +25,7 @@ class MTReturnRequestType_ProductCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleInsert = this.handleInsert.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
         this.onClose = this.onClose.bind(this);
         this.state = {
             CallAPIMessage: "",
@@ -106,6 +107,7 @@ class MTReturnRequestType_ProductCom extends React.Component {
 
     checkPermission() {
         let IsAllowedAdd = false;
+        let IsAllowedUpdate = false;
         let IsAllowedDelete = false;
         this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
@@ -114,12 +116,18 @@ class MTReturnRequestType_ProductCom extends React.Component {
                     IsAllowedAdd = true;
                 }
 
+                let _isAllowUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == MTRETURNREQUESTTYPE_UPDATE);
+                if (_isAllowUpdate && _isAllowUpdate.length > 0) {
+                    IsAllowedUpdate = true;
+                }
+
                 let _isAllowedDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == MTRETURNREQUESTTYPE_DELETE);
                 if (_isAllowedDelete && _isAllowedDelete.length > 0) {
                     IsAllowedDelete = true;
                 }
                 this.setState({
                     IsAllowedAdd,
+                    IsAllowedUpdate,
                     IsAllowedDelete
                 });
             }
@@ -170,6 +178,63 @@ class MTReturnRequestType_ProductCom extends React.Component {
         });
     }
 
+    handleEdit(value, pkColumnName) {
+        if(!this.state.IsAllowedUpdate){
+            this.showMessage("Bạn không có quyền");
+            return;
+        }
+        this.setState({ IsInsert: false });
+        let _DataSource = {};
+        this.state.DataSource.map((item, index) => {
+            let isMath = false;
+            for (var j = 0; j < pkColumnName.length; j++) {
+                if (item[pkColumnName[j].key] != value.pkColumnName[j].value) {
+                    isMath = false;
+                    break;
+                }
+                else {
+                    isMath = true;
+                }
+            }
+            if (isMath) {
+                _DataSource = item;
+            }
+        });
+
+        this.props.showModal(MODAL_TYPE_CONFIRMATION, {
+            title: 'Chỉnh sửa vật tư được phép trả của một yêu cầu nhập trả vật tư',
+            //onValueChange: this.handleModalChange,
+            onClose: this.onClose,
+            onConfirm: (isConfirmed, formData) => {
+                if (isConfirmed) {
+                    let MLObject = GetMLObjectData(MLObjectDefinition, formData, _DataSource);
+                    if (MLObject) {
+                        MLObject.MTReturnRequestTypeID = this.state.MTReturnRequestTypeID;
+                        MLObject.MaterialGroupID = MLObject.MaterialGroupID && Array.isArray(MLObject.MaterialGroupID) ? MLObject.MaterialGroupID[0] : MLObject.MaterialGroupID;
+                        MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
+                        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+                        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+                        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+                            if (!apiResult.IsError) {
+                                if (this.props.onComponentChange) {
+                                    this.props.onComponentChange();
+                                }
+                                this.props.hideModal();
+                            }
+                            //this.showMessage(apiResult.Message);
+                            this.addNotification(apiResult.Message, apiResult.IsError);
+                        });
+                        //this.resetCombobox();
+                        //console.log("edit", MLObject);
+                    }
+                }
+            },
+            modalElementList: ModalColumnList_Edit,
+            formData: _DataSource
+        });
+    }
+
+
 
     handleDelete(deleteList, pkColumnName) {
         if(!this.state.IsAllowedDelete){
@@ -219,6 +284,7 @@ class MTReturnRequestType_ProductCom extends React.Component {
                     PKColumnName={"ProductID,MaterialGroupID"}
                     onDeleteClick={this.handleDelete}
                     onInsertClick={this.handleInsert}
+                    onInsertClickEdit={this.handleEdit}
                     IsAutoPaging={false}
                     //RowsPerPage={10}
                     IsCustomAddLink={true}

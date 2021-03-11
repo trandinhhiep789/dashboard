@@ -19,7 +19,6 @@ class MTReturnRequestDetailElementCom extends Component {
             IsSystem: false,
             MTReturnRequestDetailNew: this.props.dataSource
         }
-        this.gridref = React.createRef();
     }
 
     componentDidMount() {
@@ -249,7 +248,6 @@ class MTReturnRequestDetailElementCom extends Component {
                     hasSearch={false}
                     IsAutoPaging={true}
                     RowsPerPage={10}
-                    ref={this.gridref}
                     onSubmitItem={this.handleInsertItem.bind(this)}
                 /> */}
                 <InputGrid

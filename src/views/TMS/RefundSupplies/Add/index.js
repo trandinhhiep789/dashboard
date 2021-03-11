@@ -38,6 +38,7 @@ class AddCom extends React.Component {
         super(props);
         this.prevDataSubmit = this.prevDataSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.onChangeDataMTRRequestDetail = this.onChangeDataMTRRequestDetail.bind(this);
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -255,201 +256,7 @@ class AddCom extends React.Component {
     }
 
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
-        // const { MTReturnRequestDetailNew } = this.state;
-        // const isAllowDecimal = MTReturnRequestDetailNew[index].IsAllowDecimal;
-        // let item = elementdata.Name + '_' + index;
-        // if (!isAllowDecimal) {
-        //     if (elementdata.Value.toString().length > 1) {
-        //         if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
-        //             if (elementdata.Name == 'Quantity') {
-        //                 let Quantity = MTReturnRequestDetailNew[index].TotalQuantity;
-
-        //                 if (!gridFormValidation[item].IsValidationError) {
-        //                     if (elementdata.Value > Quantity) {
-        //                         gridFormValidation[item].IsValidationError = true;
-        //                         gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
-        //                         this.setState({
-        //                             isError: true,
-        //                             IsCallAPIError: true,
-        //                         })
-        //                     }
-        //                     else {
-        //                         this.setState({
-        //                             isError: false,
-        //                             IsCallAPIError: false,
-        //                         })
-        //                     }
-        //                 }
-        //             }
-        //             else {
-        //                 this.setState({
-        //                     isError: false,
-        //                     IsCallAPIError: false,
-        //                 })
-        //             }
-        //         }
-        //         else {
-        //             gridFormValidation[item].IsValidationError = true;
-        //             gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
-        //             this.setState({
-        //                 isError: true,
-        //                 IsCallAPIError: true,
-        //             })
-        //         }
-        //     }
-        //     else {
-        //         if (elementdata.Value.length > 0) {
-        //             if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
-        //                 if (parseInt(elementdata.Value) > 0) {
-        //                     if (elementdata.Name == 'Quantity') {
-        //                         let Quantity = MTReturnRequestDetailNew[index].TotalQuantity;
-
-        //                         if (!gridFormValidation[item].IsValidationError) {
-        //                             if (elementdata.Value > Quantity) {
-        //                                 gridFormValidation[item].IsValidationError = true;
-        //                                 gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
-        //                                 this.setState({
-        //                                     isError: true,
-        //                                     IsCallAPIError: true,
-        //                                 })
-        //                             }
-        //                             else {
-        //                                 this.setState({
-        //                                     isError: false,
-        //                                     IsCallAPIError: false,
-        //                                 })
-        //                             }
-        //                         }
-        //                     }
-        //                     else {
-        //                         this.setState({
-        //                             isError: false,
-        //                             IsCallAPIError: false,
-        //                         })
-        //                     }
-        //                 }
-        //                 else {
-        //                     gridFormValidation[item].IsValidationError = true;
-        //                     gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số lớn hơn 0";
-        //                     this.setState({
-        //                         isError: true,
-        //                         IsCallAPIError: true,
-        //                     })
-        //                 }
-        //             }
-        //             else {
-        //                 gridFormValidation[item].IsValidationError = true;
-        //                 gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
-        //                 this.setState({
-        //                     isError: true,
-        //                     IsCallAPIError: true,
-        //                 })
-        //             }
-        //         }
-        //         else {
-        //             gridFormValidation[item].IsValidationError = false;
-        //             gridFormValidation[item].ValidationErrorMessage = "";
-        //             this.setState({
-        //                 isError: false,
-        //                 IsCallAPIError: false,
-        //             })
-        //         }
-        //     }
-        // }
-        // else {
-        //     if (elementdata.Value.toString().length > 1) {
-
-        //         if (/^\d*\.?\d+$/.test(elementdata.Value)) {
-        //             if (elementdata.Name == 'Quantity') {
-        //                 let Quantity = MTReturnRequestDetailNew[index].TotalQuantity;
-
-        //                 if (!gridFormValidation[item].IsValidationError) {
-        //                     if (elementdata.Value > Quantity) {
-        //                         gridFormValidation[item].IsValidationError = true;
-        //                         gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
-        //                         this.setState({
-        //                             isError: true,
-        //                             IsCallAPIError: true,
-        //                         })
-        //                     }
-        //                     else {
-        //                         this.setState({
-        //                             isError: false,
-        //                             IsCallAPIError: false,
-        //                         })
-        //                     }
-        //                 }
-        //             }
-        //             else {
-        //                 this.setState({
-        //                     isError: false,
-        //                     IsCallAPIError: false,
-        //                 })
-        //             }
-        //         }
-        //         else {
-        //             gridFormValidation[item].IsValidationError = true;
-        //             gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
-        //             this.setState({
-        //                 isError: true,
-        //                 IsCallAPIError: true,
-        //             })
-        //         }
-        //     }
-        //     else {
-        //         if (elementdata.Value.length > 0) {
-        //             if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
-        //                 if (parseInt(elementdata.Value) > 0) {
-        //                     if (elementdata.Name == 'Quantity') {
-        //                         let Quantity = MTReturnRequestDetailNew[index].TotalQuantity;
-
-        //                         if (!gridFormValidation[item].IsValidationError) {
-        //                             if (elementdata.Value > Quantity) {
-        //                                 gridFormValidation[item].IsValidationError = true;
-        //                                 gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
-        //                                 this.setState({
-        //                                     isError: true,
-        //                                     IsCallAPIError: true,
-        //                                 })
-        //                             }
-        //                             else {
-        //                                 this.setState({
-        //                                     isError: false,
-        //                                     IsCallAPIError: false,
-        //                                 })
-        //                             }
-        //                         }
-        //                     }
-        //                 }
-        //                 else {
-        //                     gridFormValidation[item].IsValidationError = true;
-        //                     gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số lớn hơn 0";
-        //                     this.setState({
-        //                         isError: true,
-        //                         IsCallAPIError: true,
-        //                     })
-        //                 }
-        //             }
-        //             else {
-        //                 gridFormValidation[item].IsValidationError = true;
-        //                 gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
-        //                 this.setState({
-        //                     isError: true,
-        //                     IsCallAPIError: true,
-        //                 })
-        //             }
-        //         }
-        //         else {
-        //             gridFormValidation[item].IsValidationError = false;
-        //             gridFormValidation[item].ValidationErrorMessage = "";
-        //             this.setState({
-        //                 isError: false,
-        //                 IsCallAPIError: false,
-        //             })
-        //         }
-
-        //     }
-        // }
+    
     }
 
 
@@ -462,6 +269,12 @@ class AddCom extends React.Component {
             MTReturnRequestDetailNew: [...this.state.MTReturnRequestDetailNew, ...data]
         })
 
+    }
+
+    onChangeDataMTRRequestDetail(data){
+        this.setState({
+            MTReturnRequestDetailNew: data
+        })
     }
 
     handleItemInsert() {
@@ -477,8 +290,8 @@ class AddCom extends React.Component {
                     PKColumnName={"MaterialGroupID,ProductID"}
                     isHideHeaderToolbarGroupTextBox={true}
                     isHideHeaderToolbar={true}
-                    name={"ProductID"}
-                    value={"MaterialGroupID"}
+                    // name={"ProductID"}
+                    // value={"MaterialGroupID"}
                 />
             },
             maxWidth: '1000px'

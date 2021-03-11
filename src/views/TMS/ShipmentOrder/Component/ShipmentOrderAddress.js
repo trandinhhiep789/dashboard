@@ -1276,7 +1276,7 @@ class ShipmentOrderAddressCom extends Component {
                                                 </label>
                                             </div>
                                             <div className="form-group">
-                                                <label className="col-form-label" >{this.state.ShipmentOrder.ReceiverFullName}</label>
+                                                <label className="col-form-label" >{this.state.ShipmentOrder.CustomerName}</label>
                                             </div>
                                         </div>
 
@@ -1290,9 +1290,9 @@ class ShipmentOrderAddressCom extends Component {
                                                 <label className="col-form-label">
                                                     {
                                                         (this.state.ShipmentOrder.ShipmentOrderTypeID == 1002 || this.state.ShipmentOrder.ShipmentOrderTypeID == 1003) && this.state.ShipmentOrder.TotalCOD > 0
-                                                            ? this.state.ShipmentOrder.ReceiverPhoneNumber.substr(0, 7) + "***"
-                                                            : <a href={`tel:${this.state.ShipmentOrder.ReceiverPhoneNumber}`}>
-                                                                {this.state.ShipmentOrder.ReceiverPhoneNumber}
+                                                            ? this.state.ShipmentOrder.CustomerPhone.substr(0, 7) + "***"
+                                                            : <a href={`tel:${this.state.ShipmentOrder.CustomerPhone}`}>
+                                                                {this.state.ShipmentOrder.CustomerPhone}
                                                             </a>
                                                     }
                                                 </label>

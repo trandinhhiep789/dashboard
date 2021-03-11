@@ -101,6 +101,17 @@ export const AddElementList = [
         readonly: false,
         validatonList: []
     },
+    {
+        type: "checkbox",
+        name: "IsAllowDuplicationProduct",
+        label: "cho phép nhập trùng sản phẩm trên 1 yêu cầu",
+        value: 0,
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        readonly: false,
+        validatonList: []
+    },
     // {
     //     type: "checkbox",
     //     name: "IsAutoOutput",
@@ -218,6 +229,18 @@ export const EditElementList = [
         readonly: false,
         validatonList: []
     },
+    {
+        type: "checkbox",
+        name: "IsAllowDuplicationProduct",
+        label: "cho Phép Nhập Trùng Sản Phẩm Trên 1 Yêu Cầu",
+        value: 0,
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "IsAllowDuplicationProduct",
+        readonly: false,
+        validatonList: []
+    },
     // {
     //     type: "checkbox",
     //     name: "IsAutoOutput",
@@ -321,6 +344,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "IsAutoOutput",
         DataSourceMember: "IsAutoOutput"
+    },
+    {
+        Name: "IsAllowDuplicationProduct",
+        DefaultValue: "",
+        BindControlName: "IsAllowDuplicationProduct",
+        DataSourceMember: "IsAllowDuplicationProduct"
     },
     {
         Name: "Description",
