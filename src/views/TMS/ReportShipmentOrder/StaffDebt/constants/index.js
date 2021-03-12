@@ -134,7 +134,7 @@ export const SearchElementList = [
         type: "ComboBox",
         name: "cbDeliveryStatus",
         DataSourceMember: "DeliveryStatus",
-        label: "Trạng thái giao hàng",
+        label: "Trạng thái khóa",
         colspan: 2,
         value: -1,
         isMultiSelect: false,

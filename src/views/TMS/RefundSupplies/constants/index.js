@@ -339,6 +339,13 @@ export const MLObjectDefinition = [
 ];
 
 export const InputMTReturnRequestDetailColumnList = [
+    // {
+    //     Name: "chkSelect",
+    //     Type: "checkbox",
+    //     Caption: "Chọn",
+    //     DataSourceMember: "MTReturnRequestID",
+    //     Width: 60
+    // },
     {
         Name: "MaterialGroupID",
         Type: "text",
@@ -368,10 +375,10 @@ export const InputMTReturnRequestDetailColumnList = [
         Width: 100
     },
     {
-        Name: "UsableQuantity",
+        Name: "TotalQuantity",
         Type: "textNew",
         Caption: "Số dư tạm ứng",
-        DataSourceMember: "UsableQuantity",
+        DataSourceMember: "TotalQuantity",
         Width: 150
     },
     {
@@ -427,13 +434,19 @@ export const InputMTReturnRequestDetailColumnListNew = [
         Width: 100
     },
     {
-        Name: "UsableQuantity",
+        Name: "TotalQuantity",
         Type: "textNew",
         Caption: "Số dư tạm ứng",
-        DataSourceMember: "UsableQuantity",
+        DataSourceMember: "TotalQuantity",
         Width: 150
     },
-    
+    {
+        Name: "Quantity",
+        Type: "text",
+        Caption: "Số lượng nhập trả",
+        DataSourceMember: "Quantity",
+        Width: 150
+    }
 ];
 
 
