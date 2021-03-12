@@ -383,7 +383,7 @@ export const InputMTReturnRequestDetailColumnList = [
     },
     {
         Name: "Quantity",
-        Type: "textbox",
+        Type: "textNew",
         // Type: "textboxNewGroup",
         Caption: "Số lượng nhập trả",
         Value: '',
@@ -398,13 +398,13 @@ export const InputMTReturnRequestDetailColumnList = [
 
 
 export const InputMTReturnRequestDetailColumnListNew = [
-    {
-        Name: "chkSelect",
-        Type: "checkbox",
-        Caption: "Chọn",
-        DataSourceMember: "MTReturnRequestID",
-        Width: 60
-    },
+    // {
+    //     Name: "chkSelect",
+    //     Type: "checkbox",
+    //     Caption: "Chọn",
+    //     DataSourceMember: "MTReturnRequestID",
+    //     Width: 60
+    // },
     {
         Name: "MaterialGroupID",
         Type: "text",
@@ -434,15 +434,29 @@ export const InputMTReturnRequestDetailColumnListNew = [
         Width: 100
     },
     {
+        Name: "MinQuantity",
+        Type: "textNew",
+        Caption: "Số lượng min",
+        DataSourceMember: "MinQuantity",
+        Width: 80
+    },
+    {
+        Name: "MaxQuantity",
+        Type: "textNew",
+        Caption: "Số lượng max",
+        DataSourceMember: "MaxQuantity",
+        Width: 80
+    },
+    {
         Name: "TotalQuantity",
         Type: "textNew",
         Caption: "Số dư tạm ứng",
         DataSourceMember: "TotalQuantity",
-        Width: 150
+        Width: 80
     },
     {
         Name: "Quantity",
-        Type: "text",
+        Type: "textbox",
         Caption: "Số lượng nhập trả",
         DataSourceMember: "Quantity",
         Width: 150

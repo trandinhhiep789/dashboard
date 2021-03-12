@@ -65,7 +65,7 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        console.log("123", formData, MLObject)
+        // console.log("123", formData, MLObject)
         let result;
         if (!!MLObject.AreaID && MLObject.AreaID != -1 && MLObject.AreaID != null && MLObject.AreaID != "" ) {
             result = MLObject.AreaID.reduce((data, item, index) => {
@@ -93,7 +93,7 @@ class AddCom extends React.Component {
         MLObject.AreaID = !!MLObject.AreaID && MLObject.AreaID != "" ? MLObject.AreaID[0] : -1
         MLObject.CarrierTypeID = MLObject.CarrierTypeID != "" ? MLObject.CarrierTypeID : -1
 
-        console.log("object", formData, MLObject, RewardPriceTable_Area)
+        // console.log("object", formData, MLObject, RewardPriceTable_Area)
 
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {

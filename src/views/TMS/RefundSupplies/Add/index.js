@@ -17,6 +17,7 @@ import {
     InputMTReturnRequestDetailColumnList,
     InputMTReturnRequestDetailColumnListNew,
     GridMLObjectDefinition,
+    GirdMTReturnRequestDetailColumnList,
     LoadAPIByMtreturnRequestTypeIDPath,
     LoadAPIByRequestTypeIDPath,
     LoadAPIByMTRRequestTypeIDPath
@@ -131,7 +132,6 @@ class AddCom extends React.Component {
 
     GetDataByRequestTypeID(MtreturnRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByMTRRequestTypeIDPath, MtreturnRequestTypeID).then(apiResult => {
-            console.log("object",apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -160,7 +160,8 @@ class AddCom extends React.Component {
 
     checkValidateArrCombineSameMaterial(arrUniqueMaterial) {
         const { isError, MTReturnRequestDetail } = this.state;
-        console.log(MTReturnRequestDetail, arrUniqueMaterial);
+
+        console.log("arrUniqueMaterial", arrUniqueMaterial);
 
         arrUniqueMaterial.forEach(item => {
             if (item.Quantity > item.TotalQuantity) {
@@ -201,10 +202,6 @@ class AddCom extends React.Component {
                     : arrUniqueMaterial.push({ ...material, Quantity: parseInt(material.Quantity) });
             }
         }
-
-        // this.setState({
-        //     MTReturnRequestDetail: arrUniqueMaterial
-        // })
 
         this.checkValidateArrCombineSameMaterial(arrUniqueMaterial);
     }
@@ -387,7 +384,7 @@ class AddCom extends React.Component {
             isAutoReview,
             gridMTReturnRequestRLSort
         } = this.state;
-        console.log("MTReturnRequestDetail", MTReturnRequestDetail)
+
         return (
             <React.Fragment>
                 <FormContainer
@@ -504,7 +501,7 @@ class AddCom extends React.Component {
                             <InputGrid
                                 name="lstMTReturnRequestDetail"
                                 controltype="GridControl"
-                                listColumn={InputMTReturnRequestDetailColumnListNew}
+                                listColumn={InputMTReturnRequestDetailColumnList}
                                 dataSource={MTReturnRequestDetailNew}
                                 MLObjectDefinition={GridMLObjectDefinition}
                                 colspan="12"
