@@ -309,7 +309,7 @@ class InfoCoordinatorCom extends Component {
     }
 
     handleOnValueChangeDeliverUser(name, selectedOption) {
-        debugger;
+       
         let listMLObject = [];
         let listStaffDebtObject = [];
         if (selectedOption) {
