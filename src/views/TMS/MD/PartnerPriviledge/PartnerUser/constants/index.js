@@ -237,6 +237,7 @@ export const AddElementList = [
         listoption: [],
         DataSourceMember: "FullName",
         readonly: false,
+        textTransform: "uppercase",
         validatonList: ["required"]
     },
     // {

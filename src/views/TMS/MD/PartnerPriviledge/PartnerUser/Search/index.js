@@ -35,7 +35,7 @@ import { updatePagePath } from "../../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { PARTNERUSER_VIEW, PARTNERUSER_DELETE, PARTNERUSER_ADD, GET_CACHE_USER_FUNCTION_LIST, PARTNERUSER_UPDATE } from "../../../../../../constants/functionLists";
-import { ERPCOMMONCACHE_PARTNERUSER } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_PARTNERUSER, ERPCOMMONCACHE_TMSCONFIG } from "../../../../../../constants/keyCache";
 import MD5Digest from "../../../../../../common/library/cryptography/MD5Digest";
 import { toIsoStringCus } from "../../../../../../utils/function";
 class SearchCom extends React.Component {
@@ -165,6 +165,16 @@ class SearchCom extends React.Component {
         });
     }
 
+    initCache(){
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                this.setState({
+                    Store: result.ResultObject.CacheData
+                });
+            }
+        });
+    }
+
     convertFormatDateTime(obj) {
         var date = new Date(obj);
         var day = date.getDate();       
@@ -225,6 +235,7 @@ class SearchCom extends React.Component {
                         MLObject.LastName = lastName.trim();
                         MLObject.UserName = this.state.UserID;
                         MLObject.PartnerID = MLObject.PartnerID && Array.isArray(MLObject.PartnerID) ? MLObject.PartnerID[0] : MLObject.PartnerID;
+                        MLObject.PartnerRoleID = MLObject.PartnerRoleID && Array.isArray(MLObject.PartnerRoleID) ? MLObject.PartnerRoleID[0] : MLObject.PartnerRoleID;
 
                         // if (MLObject.Birthday) {
                         //     let temp = MLObject.Birthday.trim().split('/');
@@ -235,20 +246,20 @@ class SearchCom extends React.Component {
 
                         MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
 
-                        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-                            if (!apiResult.IsError) {
-                                this.callSearchData(this.state.SearchData);
-                                this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERUSER);
-                                this.props.hideModal();
-                                this.showMessage(apiResult.Message);
-                            } else {
-                                this.addNotification(apiResult.Message, apiResult.IsError);
-                            }
-                            //this.showMessage(apiResult.Message);
-                            //this.addNotification(apiResult.Message, apiResult.IsError);
-                        });
+                        // this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+                        //     if (!apiResult.IsError) {
+                        //         this.callSearchData(this.state.SearchData);
+                        //         this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERUSER);
+                        //         this.props.hideModal();
+                        //         this.showMessage(apiResult.Message);
+                        //     } else {
+                        //         this.addNotification(apiResult.Message, apiResult.IsError);
+                        //     }
+                        //     //this.showMessage(apiResult.Message);
+                        //     //this.addNotification(apiResult.Message, apiResult.IsError);
+                        // });
 
-                        //console.log("MLObject", MLObject);
+                        console.log("MLObject", MLObject);
                     }
                 }
             },

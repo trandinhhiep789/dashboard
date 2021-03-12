@@ -262,6 +262,7 @@ class ModalCom extends React.Component {
                                     isMulti={elementItem.isMulti}
                                     KeyFilter={elementItem.KeyFilter}
                                     ValueFilter={elementItem.ValueFilter}
+                                    textTransform={elementItem.textTransform}
                                 />
                             </div>);
                     }
