@@ -21,8 +21,7 @@ class MTReturnRequestDetailElementCom extends Component {
         }
     }
 
-    componentDidMount() {
-    }
+    componentDidMount() { }
 
 
     handleInsertItem(listMLObject) {
@@ -247,9 +246,9 @@ class MTReturnRequestDetailElementCom extends Component {
                     IDSelectColumnName={this.props.IDSelectColumnName}
                     PKColumnName={this.props.PKColumnName}
                     isMultipleCheck={this.props.multipleCheck}
-                    listColumn={InputMTReturnRequestDetailColumnList}
+                    listColumn={this.props.listColumn}
                     dataSource={this.state.MTReturnRequestDetailNew}
-                    MLObjectDefinition={GridMLObjectDefinition}
+                    MLObjectDefinition={this.props.MLObjectDefinition}
                     IDSelectColumnName={this.props.IDSelectColumnName}
                     colspan="12"
                     isHideHeaderToolbar={true}
