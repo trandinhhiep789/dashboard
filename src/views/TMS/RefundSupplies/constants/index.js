@@ -384,15 +384,32 @@ export const InputMTReturnRequestDetailColumnList = [
     {
         Name: "Quantity",
         Type: "textNew",
-        // Type: "textboxNewGroup",
         Caption: "Số lượng nhập trả",
-        Value: '',
-        labelError: 'số lượng nhập trả',
         DataSourceMember: "Quantity",
-        Width: 200,
-        // validatonList: [ "number"],
-        IsNoneZero: false
+        Width: 80
     },
+    // {
+    //     Name: "Quantity",
+    //     Type: "textNew",
+    //     // Type: "textboxNewGroup",
+    //     Caption: "Số lượng nhập trả",
+    //     Value: '',
+    //     labelError: 'số lượng nhập trả',
+    //     DataSourceMember: "Quantity",
+    //     Width: 200,
+    //     // validatonList: [ "number"],
+    //     IsNoneZero: false
+    // },
+
+    {
+
+        Name: "Action",
+        Type: "buttonDelete",
+        Caption: "Tác vụ",
+        DataSourceMember: "MaterialGroupID",
+        Width: 70,
+        IsShowEdit: true,
+    }
 
 ];
 
@@ -435,14 +452,14 @@ export const InputMTReturnRequestDetailColumnListNew = [
     },
     {
         Name: "MinQuantity",
-        Type: "textNew",
+        Type: "textCurrency",
         Caption: "Số lượng min",
         DataSourceMember: "MinQuantity",
         Width: 80
     },
     {
         Name: "MaxQuantity",
-        Type: "textNew",
+        Type: "textCurrency",
         Caption: "Số lượng max",
         DataSourceMember: "MaxQuantity",
         Width: 80

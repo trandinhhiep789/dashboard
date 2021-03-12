@@ -34,6 +34,7 @@ import { REFUNDSUPPLIES_ADD } from "../../../../constants/functionLists";
 import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import MTReturnRequestDetailElement from "../Component/MTReturnRequestDetailElementCom";
+import { Base64 } from 'js-base64';
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -132,6 +133,8 @@ class AddCom extends React.Component {
 
     GetDataByRequestTypeID(MtreturnRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByMTRRequestTypeIDPath, MtreturnRequestTypeID).then(apiResult => {
+            console.log("aaa", apiResult)
+
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -321,15 +324,27 @@ class AddCom extends React.Component {
     }
 
     handleinsertItemNew(data) {
+        const { IsAllowdUpliCatiOnProduct } = this.state;
         this.setState({
             MTReturnRequestDetailNew: [...this.state.MTReturnRequestDetailNew, ...data]
         })
-
     }
 
     onChangeDataMTRRequestDetail(data) {
         this.setState({
             MTReturnRequestDetailNew: data
+        })
+    }
+
+    handleItemDelete(index, item) {
+        const { MTReturnRequestDetailNew } = this.state;
+
+        const result = MTReturnRequestDetailNew.filter((item, i) => {
+            if (i != index) return item;
+        })
+
+        this.setState({
+            MTReturnRequestDetailNew: result
         })
     }
 
@@ -339,6 +354,7 @@ class AddCom extends React.Component {
             content: {
                 text: <MTReturnRequestDetailElement
                     dataSource={this.state.MTReturnRequestDetail}
+                    dataCompare={this.state.MTReturnRequestDetailNew}
                     multipleCheck={false}
                     listColumn={InputMTReturnRequestDetailColumnListNew}
                     onClickInsertItem={this.handleinsertItemNew.bind(this)}
@@ -384,7 +400,6 @@ class AddCom extends React.Component {
             isAutoReview,
             gridMTReturnRequestRLSort
         } = this.state;
-
         return (
             <React.Fragment>
                 <FormContainer
@@ -493,7 +508,7 @@ class AddCom extends React.Component {
                         </div>
                     </div>
 
-                    <div className="card">
+                    {/* <div className="card">
                         <div className="card-title group-card-title">
                             <h4 className="title">Danh sách vật tư nhập trả</h4>
                         </div>
@@ -508,8 +523,23 @@ class AddCom extends React.Component {
                                 // onValueChangeInputGrid={this.valueChangeInputGrid.bind(this)}
                                 onInsertClick={this.handleItemInsert.bind(this)}
                             />
+
+
                         </div>
-                    </div>
+                    </div> */}
+
+                    <InputGridControl
+                        name="lstMTReturnRequestDetail"
+                        //controltype="InputGridControl"
+                        title={"Danh sách vật tư nhập trả"}
+                        IDSelectColumnName={"MaterialGroupID"}
+                        PKColumnName={"MaterialGroupID"}
+                        listColumn={InputMTReturnRequestDetailColumnList}
+                        dataSource={MTReturnRequestDetailNew}
+                        onInsertClick={this.handleItemInsert.bind(this)}
+                        onClickDeleteNew={this.handleItemDelete.bind(this)}
+                        ref={this.gridref}
+                    />
 
                     {isAutoReview == false ?
                         <MTReturnRequestRVList
