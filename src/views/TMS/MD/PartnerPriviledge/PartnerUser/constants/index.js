@@ -172,6 +172,37 @@ export const AddElementList = [
         NameMember: "PartnerName"
     },
     {
+        type: "multiselect",
+        Name: "txtPartnerRoleID",
+        label: "Vai trò:",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "PartnerRoleID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNERROLE",
+        ValueMember: "PartnerRoleID",
+        NameMember: "PartnerRoleName"
+    },
+    {
+        type: "text",
+        Name: "txtLimit",
+        label: "hạn mức người dùng:",
+        value: 0,
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "",
+        readonly: true,
+        disabled: true,
+        validatonList: []
+    },
+    {
         type: "password",
         Name: "txtPassWord",
         label: "mật khẩu:",
@@ -220,6 +251,7 @@ export const AddElementList = [
         listoption: [],
         DataSourceMember: "FullName",
         readonly: false,
+        textTransform: "uppercase",
         validatonList: ["required"]
     },
     // {
@@ -257,10 +289,10 @@ export const AddElementList = [
         listoption: [],
         DataSourceMember: "PhoneNumber",
         readonly: false,
-        validatonList: ["number"]
+        validatonList: ["required", "number"]
     },
     {
-        type: "text",
+        type: "date",
         Name: "dtBirthday",
         label: "Ngày sinh:",
         value: "",
@@ -269,7 +301,7 @@ export const AddElementList = [
         DataSourceMember: "Birthday",
         ValueMember: "Birthday",
         NameMember: "Birthday",
-        validatonList: ["required", "date"]
+        validatonList: ["required"]
     },
     {
         type: "text",
@@ -367,6 +399,37 @@ export const EditElementList = [
         NameMember: "PartnerName",
     },
     {
+        type: "multiselect",
+        name: "txtPartnerRoleID",
+        label: "Vai trò:",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "PartnerRoleID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNERROLE",
+        ValueMember: "PartnerRoleID",
+        NameMember: "PartnerRoleName"
+    },
+    {
+        type: "text",
+        name: "txtLimit",
+        label: "hạn mức người dùng:",
+        value: 0,
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "",
+        readonly: true,
+        disabled: true,
+        validatonList: []
+    },
+    {
         type: "password",
         name: "txtPassWord",
         label: "Mật khẩu:",
@@ -455,16 +518,16 @@ export const EditElementList = [
         validatonList: ["number"]
     },
     {
-        type: "text",
+        type: "date",
         name: "dtBirthday",
         label: "Ngày sinh:",
         value: "",
         placeholder: "",
         icon: "",
-        DataSourceMember: "Birthday",
+        DataSourceMember: "BirthdayString",
         ValueMember: "Birthday",
         NameMember: "Birthday",
-        validatonList: ["required", "date"]
+        validatonList: ["required"]
     },
     {
         type: "text",
@@ -926,6 +989,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtPartnerID",
         DataSourceMember: "PartnerID"
+    },
+    {
+        Name: "PartnerRoleID",
+        DefaultValue: "",
+        BindControlName: "txtPartnerRoleID",
+        DataSourceMember: "PartnerRoleID"
     },
     {
         Name: "PassWord",

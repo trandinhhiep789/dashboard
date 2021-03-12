@@ -28,10 +28,11 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { callGetCache } from "../../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import Collapsible from 'react-collapsible';
 import Search from "antd/lib/transfer/search";
 import { PARTNERROLE_ADD } from "../../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_PARTNERROLE } from "../../../../../../constants/keyCache";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -138,6 +139,9 @@ class AddCom extends React.Component {
         MLObject.ListPartnerRolePriviledge = this.state.LstPartnerRole_Priviledge;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERROLE);
+            }
             this.showMessage(apiResult.Message);
         });
     }
@@ -198,6 +202,9 @@ const mapDispatchToProps = dispatch => {
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
     };
 };

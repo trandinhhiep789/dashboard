@@ -31,9 +31,10 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { callGetCache } from "../../../../../../actions/cacheAction";
+import { callClearLocalCache, callGetCache } from "../../../../../../actions/cacheAction";
 import Collapsible from 'react-collapsible';
 import { PARTNERROLE_UPDATE } from "../../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_PARTNERROLE } from "../../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -156,6 +157,9 @@ class EditCom extends React.Component {
         MLObject.ListPartnerRolePriviledge = this.state.DataSource.ListPartnerRolePriviledge;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERROLE);
+            }
             this.showMessage(apiResult.Message);
         });
     }
@@ -222,6 +226,9 @@ const mapDispatchToProps = dispatch => {
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
     };
 };

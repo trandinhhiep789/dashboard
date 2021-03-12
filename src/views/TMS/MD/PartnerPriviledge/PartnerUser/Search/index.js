@@ -35,8 +35,9 @@ import { updatePagePath } from "../../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { PARTNERUSER_VIEW, PARTNERUSER_DELETE, PARTNERUSER_ADD, GET_CACHE_USER_FUNCTION_LIST, PARTNERUSER_UPDATE } from "../../../../../../constants/functionLists";
-import { ERPCOMMONCACHE_PARTNERUSER } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_PARTNERUSER, ERPCOMMONCACHE_TMSCONFIG } from "../../../../../../constants/keyCache";
 import MD5Digest from "../../../../../../common/library/cryptography/MD5Digest";
+import { toIsoStringCus } from "../../../../../../utils/function";
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -51,6 +52,7 @@ class SearchCom extends React.Component {
         this.CreateUserName = this.CreateUserName.bind(this);
         this.onClose = this.onClose.bind(this);
         this.checkPermission = this.checkPermission.bind(this);
+        this.initCache = this.initCache.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -71,6 +73,7 @@ class SearchCom extends React.Component {
         this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
         this.checkPermission();
+        this.initCache();
     }
 
     CreateUserName() {
@@ -107,8 +110,22 @@ class SearchCom extends React.Component {
         } else if (elementName == "chkShowPassWord") {
             this.showPassWord("txtPassWord");
             this.showPassWord("txtPassWordConfirm");
-            return;
         }
+
+        if (elementName == "txtPartnerRoleID") {
+            let role = formData.txtPartnerRoleID && Array.isArray(formData.txtPartnerRoleID) ? formData.txtPartnerRoleID[0] : -1;
+            let limitValue = 0;
+            if (role == 1) { //quản lý
+                limitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
+            } else if (role == 2) { // nhân viên
+                limitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
+            }
+
+            this.setLimit("txtLimit", limitValue);
+        }
+
+        //console.log("dsadsda", formData);
+
 
     }
 
@@ -132,6 +149,11 @@ class SearchCom extends React.Component {
         } else {
             x.type = "password";
         }
+    }
+
+    setLimit(name, elementValue) {
+        var x = document.getElementsByName(name)[0];
+        x.value = Number(elementValue).toLocaleString();
     }
 
     checkPermission() {
@@ -164,6 +186,33 @@ class SearchCom extends React.Component {
         });
     }
 
+    initCache() {
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
+            if (result && !result.IsError && result.ResultObject) {
+                let _ADVANCELIMIT_LEADERPARTNER = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "ADVANCELIMIT_LEADERPARTNER");
+                let _ADVANCELIMIT_STAFFPARTNER = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "ADVANCELIMIT_STAFFPARTNER");
+                this.setState({
+                    ADVANCELIMIT_LEADERPARTNER: _ADVANCELIMIT_LEADERPARTNER ? _ADVANCELIMIT_LEADERPARTNER[0].TMSConfigValue : 0,
+                    ADVANCELIMIT_STAFFPARTNER: _ADVANCELIMIT_STAFFPARTNER ? _ADVANCELIMIT_STAFFPARTNER[0].TMSConfigValue : 0,
+                })
+            }
+
+        });
+    }
+
+    convertFormatDateTime(obj) {
+        var date = new Date(obj);
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+
+        var time = day + "/" + month + "/" + year + " " + hour + ':' + minute + ':' + second;
+        return time;
+    }
+
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
         if (!this.state.IsAllowedAdd) {
             this.showMessage("Bạn không có quyền");
@@ -171,6 +220,9 @@ class SearchCom extends React.Component {
         }
         this.setState({ IsInsert: true });
         this.CreateUserName();
+
+
+
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Thêm mới người dùng của nhà cung cấp',
             autoCloseModal: false,
@@ -211,12 +263,23 @@ class SearchCom extends React.Component {
                         MLObject.LastName = lastName.trim();
                         MLObject.UserName = this.state.UserID;
                         MLObject.PartnerID = MLObject.PartnerID && Array.isArray(MLObject.PartnerID) ? MLObject.PartnerID[0] : MLObject.PartnerID;
+                        MLObject.PartnerRoleID = MLObject.PartnerRoleID && Array.isArray(MLObject.PartnerRoleID) ? MLObject.PartnerRoleID[0] : MLObject.PartnerRoleID;
 
-                        if (MLObject.Birthday) {
-                            let temp = MLObject.Birthday.trim().split('/');
-                            let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
-                            myDate.setDate(myDate.getDate() + 1);
-                            MLObject.Birthday = myDate;
+                        // if (MLObject.Birthday) {
+                        //     let temp = MLObject.Birthday.trim().split('/');
+                        //     let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
+                        //     myDate.setDate(myDate.getDate() + 1);
+                        //     MLObject.Birthday = myDate;
+                        // }
+
+                        MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
+
+                        if (MLObject.PartnerRoleID == 1) {// quản lý
+                            MLObject.LimitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
+                        } else if (MLObject.PartnerRoleID == 2) {// nhân viên
+                            MLObject.LimitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
+                        }else{
+                            MLObject.LimitValue = 0;
                         }
 
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
@@ -544,10 +607,10 @@ const mapDispatchToProps = dispatch => {
         },
         callGetUserCache: (cacheKeyID) => {
             return dispatch(callGetUserCache(cacheKeyID));
-        }
-        /*callGetCache: (cacheKeyID) => {
+        },
+        callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
-        }*/
+        }
     };
 };
 
