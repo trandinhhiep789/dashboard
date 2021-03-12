@@ -35,7 +35,8 @@ import { callGetCache, callClearLocalCache } from "../../../../../../actions/cac
 import Collapsible from 'react-collapsible';
 import { Prompt } from 'react-router';
 import { PARTNERUSER_UPDATE } from "../../../../../../constants/functionLists";
-import { ERPCOMMONCACHE_PARTNERUSER } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_PARTNERUSER, ERPCOMMONCACHE_TMSCONFIG } from "../../../../../../constants/keyCache";
+import { toIsoStringCus } from "../../../../../../utils/function";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -44,6 +45,8 @@ class EditCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleInputUserRoleInsert = this.handleInputUserRoleInsert.bind(this);
         this.callLoadData = this.callLoadData.bind(this);
+        this.initCache = this.initCache.bind(this);
+        this.initLimit = this.initLimit.bind(this);
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
         this.handleInputUserRoleDelete = this.handleInputUserRoleDelete.bind(this);
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
@@ -111,6 +114,42 @@ class EditCom extends React.Component {
     componentDidMount() {
         this.callLoadData();
         this.props.updatePagePath(EditPagePath);
+        this.initCache();
+        setTimeout(() => {
+            this.initLimit();
+        }, 1000);
+
+    }
+
+    setLimit(name, elementValue) {
+        var x = document.getElementsByName(name)[0];
+        x.value = Number(elementValue).toLocaleString();
+    }
+
+    initCache() {
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
+            if (result && !result.IsError && result.ResultObject) {
+                let _ADVANCELIMIT_LEADERPARTNER = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "ADVANCELIMIT_LEADERPARTNER");
+                let _ADVANCELIMIT_STAFFPARTNER = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "ADVANCELIMIT_STAFFPARTNER");
+                this.setState({
+                    ADVANCELIMIT_LEADERPARTNER: _ADVANCELIMIT_LEADERPARTNER ? _ADVANCELIMIT_LEADERPARTNER[0].TMSConfigValue : 0,
+                    ADVANCELIMIT_STAFFPARTNER: _ADVANCELIMIT_STAFFPARTNER ? _ADVANCELIMIT_STAFFPARTNER[0].TMSConfigValue : 0,
+                })
+            }
+
+        });
+    }
+
+    initLimit() {
+        let role = this.state.PartnerRoleID;
+        let limitValue = 0;
+        if (role == 1) { //quản lý
+            limitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
+        } else if (role == 2) { // nhân viên
+            limitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
+        }
+        this.setLimit("txtLimit", limitValue);
+        
     }
 
     callLoadData(key) {
@@ -122,13 +161,16 @@ class EditCom extends React.Component {
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                apiResult.ResultObject.Birthday = apiResult.ResultObject.BirthdayString;
+                //apiResult.ResultObject.Birthday = apiResult.ResultObject.BirthdayString;
+                apiResult.ResultObject.PartnerRoleID = apiResult.ResultObject.ListPartnerUser_Role ? apiResult.ResultObject.ListPartnerUser_Role[0].PartnerRoleID : -1;
                 if (key === undefined) {
                     this.setState({
                         DataSource: apiResult.ResultObject,
                         PassWord: apiResult.ResultObject.PassWord,
                         PassWordConfirm: apiResult.ResultObject.PassWord,
-                        ListPartnerUser_IDDocument: apiResult.ResultObject.ListPartnerUser_IDDocument
+                        ListPartnerUser_IDDocument: apiResult.ResultObject.ListPartnerUser_IDDocument,
+                        Birthday: apiResult.ResultObject.Birthday,
+                        PartnerRoleID: apiResult.ResultObject.ListPartnerUser_Role ? apiResult.ResultObject.ListPartnerUser_Role[0].PartnerRoleID : -1
                     });
                 } else {
                     this.setState({ ListPartnerUser_IDDocument: apiResult.ResultObject.ListPartnerUser_IDDocument });
@@ -377,6 +419,23 @@ class EditCom extends React.Component {
             return;
         }
 
+
+        if (name == "txtPartnerRoleID") {
+            let role = value[0];
+            let limitValue = 0;
+            if (role == 1) { //quản lý
+                limitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
+            } else if (role == 2) { // nhân viên
+                limitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
+            }
+            this.setLimit("txtLimit", limitValue);
+            this.setState({
+                PartnerRoleID: role
+            });
+        }
+
+        //console.log("formdata", formdata);
+
     }
 
     showPassWord(name) {
@@ -387,6 +446,8 @@ class EditCom extends React.Component {
             x.type = "password";
         }
     }
+
+
 
     handleSubmit(formData, MLObject) {
         //check password valid
@@ -412,15 +473,19 @@ class EditCom extends React.Component {
         MLObject.LastName = lastName.trim();
         MLObject.ListPartnerUser_Role = this.state.DataSource.ListPartnerUser_Role;
         MLObject.PartnerID = MLObject.PartnerID && Array.isArray(MLObject.PartnerID) ? MLObject.PartnerID[0] : MLObject.PartnerID;
+        MLObject.PartnerRoleID = this.state.PartnerRoleID;
+        // if (MLObject.Birthday) {
+        //     let temp = MLObject.Birthday.trim().split('/');
+        //     let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
+        //     myDate.setDate(myDate.getDate() + 1);
+        //     MLObject.Birthday = myDate;
+        // }
 
-        if (MLObject.Birthday) {
-            let temp = MLObject.Birthday.trim().split('/');
-            let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
-            myDate.setDate(myDate.getDate() + 1);
-            MLObject.Birthday = myDate;
+        try {
+            MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
+        } catch (error) {
+            MLObject.Birthday = toIsoStringCus(new Date(this.state.Birthday).toISOString());
         }
-
-        
 
         if (!MLObject.PassWord) {
             MLObject.PassWord = this.state.PassWord;
@@ -429,6 +494,15 @@ class EditCom extends React.Component {
             MLObject.PassWord = MD5Digest(PassWord);
         }
 
+        if (MLObject.PartnerRoleID == 1) {// quản lý
+            MLObject.LimitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
+        } else if (MLObject.PartnerRoleID == 2) {// nhân viên
+            MLObject.LimitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
+        } else {
+            MLObject.LimitValue = 0;
+        }
+
+        //console.log("MLObject", MLObject);
 
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
@@ -464,7 +538,7 @@ class EditCom extends React.Component {
                         {/* <Collapsible trigger="Vai trò của người dùng" easing="ease-in" open={true}>
                             
                         </Collapsible> */}
-                        <div>
+                        {/* <div>
                             <InputGrid
                                 name="LstPartnerUser_Role"
                                 controltype="GridControl"
@@ -480,7 +554,7 @@ class EditCom extends React.Component {
                                 headingTitle={"Vai trò của người dùng"}
                             />
                         </div>
-                        <br />
+                        <br /> */}
                         {/* <Collapsible trigger="Giấy tờ tùy thân của người dùng" easing="ease-in" open={true}>
                             
                         </Collapsible> */}
