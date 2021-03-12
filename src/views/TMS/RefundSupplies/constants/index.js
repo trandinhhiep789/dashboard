@@ -365,21 +365,21 @@ export const InputMTReturnRequestDetailColumnList = [
         Type: "text",
         Caption: "Tên sản phẩm",
         DataSourceMember: "ProductName",
-        Width: 300
+        Width: 250
     },
     {
         Name: "QuantityUnit",
         Type: "text",
         Caption: "Đơn vị tính",
         DataSourceMember: "QuantityUnit",
-        Width: 100
+        Width: 80
     },
     {
         Name: "TotalQuantity",
         Type: "textNew",
         Caption: "Số dư tạm ứng",
         DataSourceMember: "TotalQuantity",
-        Width: 150
+        Width: 80
     },
     {
         Name: "Quantity",
@@ -389,7 +389,7 @@ export const InputMTReturnRequestDetailColumnList = [
         Value: '',
         labelError: 'số lượng nhập trả',
         DataSourceMember: "Quantity",
-        Width: 150,
+        Width: 200,
         // validatonList: [ "number"],
         IsNoneZero: false
     },
@@ -493,7 +493,7 @@ export const GridMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "UsableQuantity",
         DataSourceMember: "UsableQuantity"
-        
+
     },
     {
         Name: "QuantityUnitID",

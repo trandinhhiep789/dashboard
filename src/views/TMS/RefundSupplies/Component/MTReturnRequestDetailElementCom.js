@@ -35,6 +35,10 @@ class MTReturnRequestDetailElementCom extends Component {
         const isAllowDecimal = MTReturnRequestDetailNew[index].IsAllowDecimal;
         let item = elementdata.Name + '_' + index;
 
+        console.log("1", elementdata, "2", index, "3", name, "4", gridFormValidation)
+
+        // return;
+
         if (!isAllowDecimal) {
             if (elementdata.Value.toString().length > 1) {
                 if (/^[0-9][0-9]*$/.test(elementdata.Value)) {

@@ -346,7 +346,7 @@ class AddCom extends React.Component {
                 // value={"MaterialGroupID"}
                 />
             },
-            maxWidth: '1000px'
+            maxWidth: '100%'
         });
     }
 
