@@ -55,6 +55,7 @@ class EditCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            console.log("edit", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -62,6 +63,11 @@ class EditCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+
+
+                const arrAreaTmp = apiResult.ResultObject.AreaIDList.toString().split(",");
+                apiResult.ResultObject.AreaIDListNew = arrAreaTmp;
+                console.log("AreaIDList", apiResult.ResultObject.AreaIDList, apiResult.ResultObject);
 
                 this.setState({
                     DataSource: apiResult.ResultObject,
@@ -214,12 +220,13 @@ class EditCom extends React.Component {
 
 
                         <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
+                            <FormControl.FormControlComboBox
                                 name="cbAreaID"
                                 colspan="8"
                                 labelcolspan="4"
                                 label="khu vực"
                                 // validatonList={["Comborequired"]}
+                                isMultiSelect={true}
                                 isautoloaditemfromcache={true}
                                 placeholder="-- Vui lòng chọn --"
                                 loaditemcachekeyid={ERPCOMMONCACHE_AREATT} //"ERPCOMMONCACHE.AREATT"
@@ -230,7 +237,7 @@ class EditCom extends React.Component {
                                 listoption={null}
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
-                                datasourcemember="AreaID" />
+                                datasourcemember="AreaIDListNew" />
 
                         </div>
 

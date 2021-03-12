@@ -52,7 +52,10 @@ class AddCom extends React.Component {
             gridMTReturnRequestRL: {},
             validationErrorMessageSelect: '',
             isValidationSelect: false,
-            isError: false
+            isError: false,
+            InventoryStatusID: "",
+            IsAllowdUpliCatiOnProduct: false,
+            IsCheckmInMaxQuantity: false
         };
     }
 
@@ -128,6 +131,7 @@ class AddCom extends React.Component {
 
     GetDataByRequestTypeID(MtreturnRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByMTRRequestTypeIDPath, MtreturnRequestTypeID).then(apiResult => {
+            console.log("object",apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -140,6 +144,9 @@ class AddCom extends React.Component {
 
                     this.setState({
                         isAutoReview: apiResult.ResultObject[0].IsAutoReview,
+                        InventoryStatusID: apiResult.ResultObject[0].InventoryStatusID,
+                        IsAllowdUpliCatiOnProduct: apiResult.ResultObject[0].IsAllowdUpliCatiOnProduct,
+                        IsCheckmInMaxQuantity: apiResult.ResultObject[0].IsCheckmInMaxQuantity,
                     });
                 }
 
@@ -380,7 +387,7 @@ class AddCom extends React.Component {
             isAutoReview,
             gridMTReturnRequestRLSort
         } = this.state;
-
+        console.log("MTReturnRequestDetail", MTReturnRequestDetail)
         return (
             <React.Fragment>
                 <FormContainer

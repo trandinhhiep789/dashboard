@@ -158,6 +158,13 @@ export const MLObjectDefinition = [
         DataSourceMember: "CarrierTypeID"
     },
     {
+        Name: "AreaIDListNew",
+        DefaultValue: {},
+        BindControlName: "cbAreaID",
+        DataSourceMember: "AreaIDListNew"
+    },
+
+    {
         Name: "AreaID",
         DefaultValue: {},
         BindControlName: "cbAreaID",
