@@ -52,6 +52,7 @@ class SearchCom extends React.Component {
         this.CreateUserName = this.CreateUserName.bind(this);
         this.onClose = this.onClose.bind(this);
         this.checkPermission = this.checkPermission.bind(this);
+        this.initCache = this.initCache.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -72,6 +73,7 @@ class SearchCom extends React.Component {
         this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
         this.checkPermission();
+        this.initCache();
     }
 
     CreateUserName() {
@@ -108,8 +110,22 @@ class SearchCom extends React.Component {
         } else if (elementName == "chkShowPassWord") {
             this.showPassWord("txtPassWord");
             this.showPassWord("txtPassWordConfirm");
-            return;
         }
+
+        if (elementName == "txtPartnerRoleID") {
+            let role = formData.txtPartnerRoleID && Array.isArray(formData.txtPartnerRoleID) ? formData.txtPartnerRoleID[0] : -1;
+            let limitValue = 0;
+            if (role == 1) { //quản lý
+                limitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
+            } else if (role == 2) { // nhân viên
+                limitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
+            }
+
+            this.setLimit("txtLimit", limitValue);
+        }
+
+        //console.log("dsadsda", formData);
+
 
     }
 
@@ -133,6 +149,11 @@ class SearchCom extends React.Component {
         } else {
             x.type = "password";
         }
+    }
+
+    setLimit(name, elementValue) {
+        var x = document.getElementsByName(name)[0];
+        x.value = Number(elementValue).toLocaleString();
     }
 
     checkPermission() {
@@ -165,25 +186,29 @@ class SearchCom extends React.Component {
         });
     }
 
-    initCache(){
+    initCache() {
         this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
-            if (!result.IsError && result.ResultObject.CacheData != null) {
+            if (result && !result.IsError && result.ResultObject) {
+                let _ADVANCELIMIT_LEADERPARTNER = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "ADVANCELIMIT_LEADERPARTNER");
+                let _ADVANCELIMIT_STAFFPARTNER = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "ADVANCELIMIT_STAFFPARTNER");
                 this.setState({
-                    Store: result.ResultObject.CacheData
-                });
+                    ADVANCELIMIT_LEADERPARTNER: _ADVANCELIMIT_LEADERPARTNER ? _ADVANCELIMIT_LEADERPARTNER[0].TMSConfigValue : 0,
+                    ADVANCELIMIT_STAFFPARTNER: _ADVANCELIMIT_STAFFPARTNER ? _ADVANCELIMIT_STAFFPARTNER[0].TMSConfigValue : 0,
+                })
             }
+
         });
     }
 
     convertFormatDateTime(obj) {
         var date = new Date(obj);
-        var day = date.getDate();       
+        var day = date.getDate();
         var month = date.getMonth() + 1;
-        var year = date.getFullYear();  
-        var hour = date.getHours();     
-        var minute = date.getMinutes(); 
-        var second = date.getSeconds(); 
-        
+        var year = date.getFullYear();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+
         var time = day + "/" + month + "/" + year + " " + hour + ':' + minute + ':' + second;
         return time;
     }
@@ -195,6 +220,9 @@ class SearchCom extends React.Component {
         }
         this.setState({ IsInsert: true });
         this.CreateUserName();
+
+
+
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Thêm mới người dùng của nhà cung cấp',
             autoCloseModal: false,
@@ -246,20 +274,28 @@ class SearchCom extends React.Component {
 
                         MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
 
-                        // this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-                        //     if (!apiResult.IsError) {
-                        //         this.callSearchData(this.state.SearchData);
-                        //         this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERUSER);
-                        //         this.props.hideModal();
-                        //         this.showMessage(apiResult.Message);
-                        //     } else {
-                        //         this.addNotification(apiResult.Message, apiResult.IsError);
-                        //     }
-                        //     //this.showMessage(apiResult.Message);
-                        //     //this.addNotification(apiResult.Message, apiResult.IsError);
-                        // });
+                        if (MLObject.PartnerRoleID == 1) {// quản lý
+                            MLObject.LimitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
+                        } else if (MLObject.PartnerRoleID == 2) {// nhân viên
+                            MLObject.LimitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
+                        }else{
+                            MLObject.LimitValue = 0;
+                        }
 
-                        console.log("MLObject", MLObject);
+                        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+                            if (!apiResult.IsError) {
+                                this.callSearchData(this.state.SearchData);
+                                this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERUSER);
+                                this.props.hideModal();
+                                this.showMessage(apiResult.Message);
+                            } else {
+                                this.addNotification(apiResult.Message, apiResult.IsError);
+                            }
+                            //this.showMessage(apiResult.Message);
+                            //this.addNotification(apiResult.Message, apiResult.IsError);
+                        });
+
+                        //console.log("MLObject", MLObject);
                     }
                 }
             },
@@ -571,10 +607,10 @@ const mapDispatchToProps = dispatch => {
         },
         callGetUserCache: (cacheKeyID) => {
             return dispatch(callGetUserCache(cacheKeyID));
-        }
-        /*callGetCache: (cacheKeyID) => {
+        },
+        callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
-        }*/
+        }
     };
 };
 
