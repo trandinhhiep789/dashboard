@@ -95,9 +95,34 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
+        // console.log("121",MLObject )
+
+        let result;
+        if (!!MLObject.AreaID && MLObject.AreaID != -1 && MLObject.AreaID != null && MLObject.AreaID != "" ) {
+            result = MLObject.AreaID.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item;
+            }, '');
+        }
+        else {
+            result = ""
+        }
+
+        let RewardPriceTable_Area = [];
+        if (!!MLObject.AreaID && MLObject.AreaID.length > 0) {
+            RewardPriceTable_Area = MLObject.AreaID.map((item, index) => {
+                let element = {}
+                element.AreaID = item;
+                return element;
+            })
+        }
         MLObject.RewardPriceTableID = this.props.match.params.id;
-        MLObject.AreaID = MLObject.AreaID != "" ? MLObject.AreaID : -1
+        MLObject.ApplyAreaNameList = result
+        MLObject.RewardPriceTable_AreaList = RewardPriceTable_Area
+        MLObject.AreaID = !!MLObject.AreaID && MLObject.AreaID != "" ? MLObject.AreaID[0] : -1
         MLObject.CarrierTypeID = MLObject.CarrierTypeID != "" ? MLObject.CarrierTypeID : -1
+
+
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
