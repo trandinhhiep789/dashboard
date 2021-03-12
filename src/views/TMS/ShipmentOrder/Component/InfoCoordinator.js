@@ -309,6 +309,7 @@ class InfoCoordinatorCom extends Component {
     }
 
     handleOnValueChangeDeliverUser(name, selectedOption) {
+        debugger;
         let listMLObject = [];
         let listStaffDebtObject = [];
         if (selectedOption) {
@@ -316,7 +317,7 @@ class InfoCoordinatorCom extends Component {
                 listMLObject.push({
                     ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
                     UserName: selectedOption[i].value,
-                    FullName: selectedOption[i].label,
+                    FullName: selectedOption[i].name,
                     CreatedUser: this.props.AppInfo.LoginInfo.Username,
                     CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime
                 });
