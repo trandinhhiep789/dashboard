@@ -128,19 +128,19 @@ export const SearchElementList = [
 ];
 
 export const AddElementList = [
-    {
-        type: "text",
-        Name: "txtUserName",
-        label: "tên truy cập người dùng:",
-        value: "",
-        maxSize: "20",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "UserName",
-        readonly: true,
-        validatonList: []
-    },
+    // {
+    //     type: "text",
+    //     Name: "txtUserName",
+    //     label: "tên truy cập người dùng:",
+    //     value: "",
+    //     maxSize: "20",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "UserName",
+    //     readonly: true,
+    //     validatonList: []
+    // },
     // {
     //     type: "button",
     //     name: "btnCreateUserName",
