@@ -27,6 +27,7 @@ class InputGridControlCom extends Component {
         this.renderInputGrid = this.renderInputGrid.bind(this);
         this.handleInsertClickEdit = this.handleInsertClickEdit.bind(this);
         this.handleInsertClickDelete = this.handleInsertClickDelete.bind(this);
+        this.handleInsertClickDeleteNew = this.handleInsertClickDeleteNew.bind(this);
 
         //check isSystem
         let isSystem = false;
@@ -262,6 +263,23 @@ class InputGridControlCom extends Component {
 
     }
 
+    handleInsertClickDeleteNew(index, item) {
+        if (this.props.onClickDeleteNew === undefined) {
+            let dataSource = this.props.dataSource;
+
+            if (this.props.value != null) {
+                dataSource = this.props.value;
+            }
+            let dataSourceValue = dataSource.filter(function (value, index1) { return index1 != index; });
+            if (this.props.onValueChange != null) {
+                this.props.onValueChange(this.props.name, dataSourceValue, this.props.controltype, undefined);
+            }
+        }
+        else {
+            this.props.onClickDeleteNew(index, item);
+        }
+    }
+
     handleInsertClickDelete(index) {
         if (this.props.onDeleteClick === undefined) {
             let dataSource = this.props.dataSource;
@@ -368,7 +386,6 @@ class InputGridControlCom extends Component {
 
                                         let objlink = rowItem[this.props.PKColumnName];
                                         let objID = rowItem[this.props.PKColumnName];
-
                                         const cellData = <InputGridCell type={columnItem.Type}
                                             idItem={objID}
                                             linkId={objlink}
@@ -392,6 +409,7 @@ class InputGridControlCom extends Component {
                                             onHandleEditClick={this.handleEditClick}
                                             onValueChangeALL={this.handleClick}
                                             onClickDelete={this.handleInsertClickDelete}
+                                            onClickDeleteNew={this.handleInsertClickDeleteNew}
                                             validationErrorMessage={validationErrorMessage}
                                             label={columnItem.label}
                                             cation={columnItem.Caption}
@@ -404,6 +422,7 @@ class InputGridControlCom extends Component {
                                             IsPermisionDelete={this.props.IsPermisionDelete}
                                             isSystem={this.state.IsSystem}
                                             Ispopup={this.props.Ispopup === undefined ? false : this.props.Ispopup}
+                                            rowsItem={rowItem}
                                         />;
                                         return (
                                             <td key={columnItem.Name} style={cellStyle}  >{cellData}</td>
