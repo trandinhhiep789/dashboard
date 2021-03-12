@@ -158,8 +158,11 @@ class AddCom extends React.Component {
         arrUniqueMaterial.forEach(item => {
             if (item.Quantity > item.TotalQuantity) {
                 console.log(`Loi vat tu ${item.MaterialGroupID}-${item.ProductName} qua so luong nhap tra`)
+                return;
             }
         })
+
+        console.log(`Success`)
     }
 
     combineSameMaterial() {
