@@ -70,8 +70,6 @@ class MTReturnRequestDetailElementCom extends Component {
         const isCheckMinMaxQuantity = MTReturnRequestDetailNew[index].IsCheckMinMaxQuantity;
         let item = elementdata.Name + '_' + index;
 
-        console.log("1", elementdata, "2", index, "3", name, "4", gridFormValidation)
-
         if (!isAllowDecimal) {
             if (!isCheckMinMaxQuantity) {
                 if (elementdata.Value.toString().length > 1) {
@@ -171,7 +169,6 @@ class MTReturnRequestDetailElementCom extends Component {
                     }
                 }
             } else {
-                console.log("checkMinMax")
                 if (parseInt(elementdata.Value) > parseInt(MTReturnRequestDetailNew[index].MinQuantity)
                     && parseInt(elementdata.Value) < parseInt(MTReturnRequestDetailNew[index].MaxQuantity)) {
                     gridFormValidation[item].IsValidationError = false;
@@ -286,7 +283,6 @@ class MTReturnRequestDetailElementCom extends Component {
 
             }
             else {
-                console.log("checkMinMax")
                 if (parseInt(elementdata.Value) >= parseInt(MTReturnRequestDetailNew[index].MinQuantity)
                     && parseInt(elementdata.Value) <= parseInt(MTReturnRequestDetailNew[index].MaxQuantity)) {
                     gridFormValidation[item].IsValidationError = false;

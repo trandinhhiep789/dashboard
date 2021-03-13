@@ -56,8 +56,7 @@ class AddCom extends React.Component {
             isValidationSelect: false,
             isError: false,
             InventoryStatusID: "",
-            IsAllowdUpliCatiOnProduct: false,
-            IsCheckmInMaxQuantity: false
+            IsAllowdUpliCatiOnProduct: false
         };
     }
 
@@ -133,8 +132,7 @@ class AddCom extends React.Component {
 
     GetDataByRequestTypeID(MtreturnRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByMTRRequestTypeIDPath, MtreturnRequestTypeID).then(apiResult => {
-            console.log("aaa", apiResult)
-
+            console.log("id", apiResult.ResultObject)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -149,7 +147,6 @@ class AddCom extends React.Component {
                         isAutoReview: apiResult.ResultObject[0].IsAutoReview,
                         InventoryStatusID: apiResult.ResultObject[0].InventoryStatusID,
                         IsAllowdUpliCatiOnProduct: apiResult.ResultObject[0].IsAllowdUpliCatiOnProduct,
-                        IsCheckmInMaxQuantity: apiResult.ResultObject[0].IsCheckmInMaxQuantity,
                     });
                 }
 
@@ -163,17 +160,14 @@ class AddCom extends React.Component {
 
     checkValidateArrCombineSameMaterial(arrUniqueMaterial) {
         const { isError, MTReturnRequestDetail } = this.state;
-
-        console.log("arrUniqueMaterial", arrUniqueMaterial);
-
+        debugger
         arrUniqueMaterial.forEach(item => {
             if (item.Quantity > item.TotalQuantity) {
-                console.log(`Loi vat tu ${item.MaterialGroupID}-${item.ProductName} qua so luong nhap tra`)
+                console.log(`Lỗi vật tư ${item.MaterialGroupID}-${item.ProductName} quá số lượng tạm ứng`)
                 return;
             }
         })
 
-        console.log(`Success`)
     }
 
     combineSameMaterial() {
@@ -186,7 +180,7 @@ class AddCom extends React.Component {
                 ...MTReturnRequestDetailNew[0], Quantity: parseInt(MTReturnRequestDetailNew[0].Quantity)
             });
 
-            if (MTReturnRequestDetailNew.length == 1) return;
+            if (MTReturnRequestDetailNew.length == 1) return MTReturnRequestDetailNew;
 
             for (let index = 1; index < MTReturnRequestDetailNew.length; index++) {
                 const material = MTReturnRequestDetailNew[index];
@@ -205,15 +199,14 @@ class AddCom extends React.Component {
                     : arrUniqueMaterial.push({ ...material, Quantity: parseInt(material.Quantity) });
             }
         }
-
-        this.checkValidateArrCombineSameMaterial(arrUniqueMaterial);
+        return arrUniqueMaterial
+        //this.checkValidateArrCombineSameMaterial(arrUniqueMaterial);
     }
 
     prevDataSubmit(formData, MLObject) {
         const { isError, gridMTReturnRequestRL, isAutoReview, gridMTReturnRequestRLSort, MTReturnRequestDetailNew } = this.state;
         let arrReviewLevel = [];
-
-        this.combineSameMaterial();
+        const arrProductDetai = this.combineSameMaterial();
 
         Object.keys(gridMTReturnRequestRL).map(function (key) {
             let objItem = {}
@@ -231,7 +224,7 @@ class AddCom extends React.Component {
                 return cur.UserName;
             }, 0);
 
-            const MTReturnRequestDetail = MLObject.lstMTReturnRequestDetail.filter((item, index) => {
+            const MTReturnRequestDetail = MTReturnRequestDetailNew.filter((item, index) => {
                 if (item.Quantity != undefined && item.Quantity > 0) {
                     return item;
                 }
@@ -273,16 +266,37 @@ class AddCom extends React.Component {
                 })
                 return;
             }
+            let itemCheck = []
+            if (!!arrProductDetai) {
+                itemCheck = arrProductDetai.filter((item, index) => {
+                    if (item.Quantity > item.TotalQuantity) {
+                        return item;
+                    }
+                })
+            }
+
+
+            if (itemCheck.length > 0) {
+                this.showMessage('Lỗi vật tư quá số lượng tạm ứng');
+                this.setState({
+                    IsCallAPIError: true,
+                })
+                return;
+            }
+
 
             MLObject.IsCreatedInputVoucher = false;
             MLObject.lstMTReturnRequestDetail = MTReturnRequestDetail; //
+
+            console.log("MLObject", MLObject);
+
 
             this.handleSubmit(MLObject)
         }
         else {
             this.showMessage('Thông tin nhập vào không chính xác. Vui lòng kiểm tra lại.');
         }
-        // this.handleSubmit(MLObject)
+
     }
 
     handleSubmit(MLObject) {
@@ -400,6 +414,7 @@ class AddCom extends React.Component {
             isAutoReview,
             gridMTReturnRequestRLSort
         } = this.state;
+        console.log("IsAllowdUpliCatiOnProduct", this.state.IsAllowdUpliCatiOnProduct)
         return (
             <React.Fragment>
                 <FormContainer
@@ -476,11 +491,11 @@ class AddCom extends React.Component {
                         </div>
 
 
-                        <div className="col-md-12">
+                        <div className="col-md-6">
                             <FormControl.TextBox
                                 name="txtMTReturnRequestTitle"
-                                labelcolspan={2}
-                                colspan={10}
+                                labelcolspan={4}
+                                colspan={8}
                                 readOnly={false}
                                 label="tiêu đề"
                                 placeholder="Tiêu đề"
@@ -488,8 +503,26 @@ class AddCom extends React.Component {
                                 value=""
                                 datasourcemember="MTReturnRequestTitle"
                                 validatonList={['required']}
-                                classNameCustom="customcontrol"
+                            //classNameCustom="customcontrol"
                             />
+                        </div>
+
+                        <div className="col-md-6">
+                            <div className="form-row">
+                                <div className="form-group col-md-4">
+                                    <label className="col-form-label 5">Cho phép nhập trùng</label>
+                                </div>
+                                <div className="form-group col-md-8">
+                                    <div className="checkbox customCheckbox">
+                                        <label>
+                                            <input name="ckIsAllowdUpliCatiOnProduct" type="checkbox" defaultChecked={this.state.IsAllowdUpliCatiOnProduct} disabled={true} value={this.state.IsAllowdUpliCatiOnProduct} defaultChecked={this.state.IsAllowdUpliCatiOnProduct} checked={this.state.IsAllowdUpliCatiOnProduct} />
+                                            <span className="cr">
+                                                <i className="cr-icon fa fa-check"></i>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="col-md-12">
@@ -530,7 +563,6 @@ class AddCom extends React.Component {
 
                     <InputGridControl
                         name="lstMTReturnRequestDetail"
-                        //controltype="InputGridControl"
                         title={"Danh sách vật tư nhập trả"}
                         IDSelectColumnName={"MaterialGroupID"}
                         PKColumnName={"MaterialGroupID"}

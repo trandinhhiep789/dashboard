@@ -319,6 +319,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "RequestDate"
     },
     {
+        Name: "IsAllowdUpliCatiOnProduct",
+        DefaultValue: "",
+        BindControlName: "ckIsAllowdUpliCatiOnProduct",
+        DataSourceMember: "IsAllowdUpliCatiOnProduct"
+    },
+    {
         Name: "Description",
         DefaultValue: "",
         BindControlName: "txtDescription",
@@ -453,14 +459,14 @@ export const InputMTReturnRequestDetailColumnListNew = [
     {
         Name: "MinQuantity",
         Type: "textCurrency",
-        Caption: "Số lượng min",
+        Caption: "SL nhỏ nhất",
         DataSourceMember: "MinQuantity",
         Width: 80
     },
     {
         Name: "MaxQuantity",
         Type: "textCurrency",
-        Caption: "Số lượng max",
+        Caption: "SL lớn nhất",
         DataSourceMember: "MaxQuantity",
         Width: 80
     },
@@ -474,7 +480,7 @@ export const InputMTReturnRequestDetailColumnListNew = [
     {
         Name: "Quantity",
         Type: "textbox",
-        Caption: "Số lượng nhập trả",
+        Caption: "SL nhập trả",
         DataSourceMember: "Quantity",
         Width: 150
     }
