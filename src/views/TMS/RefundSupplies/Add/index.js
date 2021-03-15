@@ -20,8 +20,8 @@ import {
     GirdMTReturnRequestDetailColumnList,
     LoadAPIByMtreturnRequestTypeIDPath,
     LoadAPIByRequestTypeIDPath,
-    LoadAPIByMTRRequestTypeIDPath
-
+    LoadAPIByMTRRequestTypeIDPath,
+    addImportMaterialModalWidth
 } from "../constants";
 import MTReturnRequestRVList from '../Component/MTReturnRequestRVList'
 
@@ -380,7 +380,7 @@ class AddCom extends React.Component {
                 // value={"MaterialGroupID"}
                 />
             },
-            maxWidth: '100%'
+            maxWidth: addImportMaterialModalWidth.maxWidth
         });
     }
 
