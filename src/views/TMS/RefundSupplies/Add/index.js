@@ -288,7 +288,7 @@ class AddCom extends React.Component {
             MLObject.IsCreatedInputVoucher = false;
             MLObject.lstMTReturnRequestDetail = MTReturnRequestDetail; //
 
-            console.log("MLObject", MLObject);
+            // console.log("MLObject", MLObject);
 
 
             this.handleSubmit(MLObject)
@@ -380,7 +380,7 @@ class AddCom extends React.Component {
                 // value={"MaterialGroupID"}
                 />
             },
-            maxWidth: addImportMaterialModalWidth.maxWidth
+            maxWidth: addImportMaterialModalWidth
         });
     }
 

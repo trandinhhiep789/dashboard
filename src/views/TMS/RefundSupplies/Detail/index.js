@@ -16,7 +16,7 @@ import {
     LoadAPIPath,
     DetailAPIPath,
     TitleFormDetail,
-    GirdMTReturnRequestDetailColumnList,
+    InputMTReturnRequestDetailColumnList,
     GirdMTReturnRequestReviewLevelColumnList,
     UpdateCurrentReviewLevelAPIPath,
     UpdateCreateVocherAPIPath
@@ -74,8 +74,6 @@ export class DetailCom extends Component {
     callLoadData(id) {
         const { callFetchAPI } = this.props;
         callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("object",id, apiResult)
-            console.log(apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -418,7 +416,7 @@ export class DetailCom extends Component {
                                 <InputGrid
                                     name="lstMTReturnRequestDetail"
                                     controltype="GridControl"
-                                    listColumn={GirdMTReturnRequestDetailColumnList}
+                                    listColumn={InputMTReturnRequestDetailColumnList}
                                     dataSource={MTReturnRequestDetail}
                                     isHideHeaderToolbar={true}
                                     //MLObjectDefinition={GridMLObjectDefinition}

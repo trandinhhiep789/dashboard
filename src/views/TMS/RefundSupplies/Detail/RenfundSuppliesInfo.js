@@ -141,12 +141,12 @@ export class RenfundSuppliesInfo extends Component {
                     </div>
 
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Người tạo đơn hàng nhập vật tư:</label>
+                        <label className="col-form-label bold">Người tạo phiếu nhập vật tư:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
                             {
-                                `${RenfundSupplies.CreatedInputVoucherUser} ${RenfundSupplies.CreatedUser && "-"} ${RenfundSupplies.CreatedUser}`
+                                `${RenfundSupplies.CreatedInputVoucherUser} ${RenfundSupplies.CreatedInputVoucherUser && "-"} ${RenfundSupplies.CreatedInputVoucherFullName}`
                             }
                         </label>
                     </div>
@@ -156,7 +156,7 @@ export class RenfundSuppliesInfo extends Component {
                     <div className="form-group col-md-4">
                         <div className="checkbox customCheckbox">
                             <label className="col-form-label">
-                                {formatDate(RenfundSupplies.CreatedDate, true)}
+                                {formatDate(RenfundSupplies.CreatedInputVoucherDate, true)}
                             </label>
                         </div>
 
