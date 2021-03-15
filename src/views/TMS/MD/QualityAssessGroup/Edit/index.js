@@ -17,7 +17,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_QUALITYASSESSGROUP, ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
 import { REWARDTYPE_UPDATE, SERVICETYPE_UPDATE } from "../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
@@ -58,7 +58,7 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 if(!apiResult.IsError){
-                    this.props.callClearLocalCache(ERPCOMMONCACHE_TMSREWARDTYPE);
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_QUALITYASSESSGROUP);
                     // this.handleSubmitInsertLog(MLObject);
                 }      
                 this.showMessage(apiResult.Message);
