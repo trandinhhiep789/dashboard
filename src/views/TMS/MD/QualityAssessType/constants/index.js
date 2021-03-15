@@ -79,10 +79,10 @@ export const AddElementList = [
         DataSourceMember: "QualityAssessGroupID",
         readonly: false,
         validatonList: [],
-        IsAutoLoadItemFromCache: false,
-        LoadItemCacheKeyID: "PIMCACHE.CATEGORYTYPE",
-        ValueMember: "CategoryTypeID",
-        NameMember: "CategoryTypeName"
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.QUALITYASSESSGROUP",
+        ValueMember: "QualityAssessGroupID",
+        NameMember: "QualityAssessGroupName"
 
     },
     {
@@ -176,6 +176,23 @@ export const EditElementList = [
         DataSourceMember: "QualityAssessTypeName",
         readonly: false,
         validatonList: ["required"],
+    },
+    {
+        type: "select",
+        name: "txtQualityAssessGroupID",
+        label: "nhóm tiêu chí",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "QualityAssessGroupID",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.QUALITYASSESSGROUP",
+        ValueMember: "QualityAssessGroupID",
+        NameMember: "QualityAssessGroupName"
+
     },
     {
         type: "select",

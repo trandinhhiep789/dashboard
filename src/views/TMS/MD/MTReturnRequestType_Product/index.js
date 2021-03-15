@@ -18,6 +18,7 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache,callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST, MTRETURNREQUESTTYPE_ADD, MTRETURNREQUESTTYPE_DELETE, MTRETURNREQUESTTYPE_UPDATE } from "../../../../constants/functionLists";
+import { ERPCOMMONCACHE_MTRETURNRQTYPE_PR } from "../../../../constants/keyCache";
 
 class MTReturnRequestType_ProductCom extends React.Component {
     constructor(props) {
@@ -166,6 +167,7 @@ class MTReturnRequestType_ProductCom extends React.Component {
                                 if (this.props.onComponentChange) {
                                     this.props.onComponentChange();
                                 }
+                                this.props.callClearLocalCache(ERPCOMMONCACHE_MTRETURNRQTYPE_PR);
                                 this.props.hideModal();
                             }
                             //this.showMessage(apiResult.Message);
@@ -219,6 +221,7 @@ class MTReturnRequestType_ProductCom extends React.Component {
                                 if (this.props.onComponentChange) {
                                     this.props.onComponentChange();
                                 }
+                                this.props.callClearLocalCache(ERPCOMMONCACHE_MTRETURNRQTYPE_PR);
                                 this.props.hideModal();
                             }
                             //this.showMessage(apiResult.Message);
@@ -259,6 +262,7 @@ class MTReturnRequestType_ProductCom extends React.Component {
                 if (this.props.onComponentChange) {
                     this.props.onComponentChange();
                 }
+                this.props.callClearLocalCache(ERPCOMMONCACHE_MTRETURNRQTYPE_PR);
                 this.props.hideModal();
             }
             //this.showMessage(apiResult.Message);
