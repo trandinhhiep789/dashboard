@@ -168,7 +168,7 @@ class InputGridCellCom extends Component {
     }
 
     handleInputChangeDicimal(e) {
-        const IsAllowDecimal =  e.target.dataset.isallowdecimal;
+        const IsAllowDecimal = e.target.dataset.isallowdecimal;
         console.log('e', IsAllowDecimal)
         let arrValidationList = [];
         if (this.props.type == 'textboxNewGroup') {
@@ -187,7 +187,7 @@ class InputGridCellCom extends Component {
     }
 
     validateInputNew(e, arrValidationList) {
-        
+
         const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
         let inputvalue = e.target.value;
         // if (e.target.type == 'checkbox') {
@@ -196,7 +196,7 @@ class InputGridCellCom extends Component {
         if (this.props.type == 'numeric') {
             inputvalue = this.formatNumeric(inputvalue);
         }
-        
+
         const inputname = e.target.name;
         let elementdata = { Name: inputname, Value: inputvalue, IsChecked: ischecked, HasChanged: true };
         let isVavalidatonError = false;
@@ -471,12 +471,12 @@ class InputGridCellCom extends Component {
                     let control;
                     if (this.props.isAllowDecimal) {
 
-                        control = <input type="text" data-IsAllowDecimal = {this.props.isAllowDecimal} name={this.props.name} className={className} readOnly={isSystem}
+                        control = <input type="text" data-IsAllowDecimal={this.props.isAllowDecimal} name={this.props.name} className={className} readOnly={isSystem}
                             onChange={this.handleInputChangeDicimal} defaultValue={text} value={textNoneZero} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} />;
                     }
                     else {
                         // control = <div>{this.props.isAllowDecimal == true ? 'true' : 'false'}</div>
-                        control = <input type="text" name={this.props.name} data-IsAllowDecimal = {this.props.isAllowDecimal} className={className} readOnly={isSystem}
+                        control = <input type="text" name={this.props.name} data-IsAllowDecimal={this.props.isAllowDecimal} className={className} readOnly={isSystem}
                             onChange={this.handleInputChangeDicimal} defaultValue={text} value={textNoneZero} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} />;
                     }
 
