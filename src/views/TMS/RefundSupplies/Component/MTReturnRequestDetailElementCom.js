@@ -52,6 +52,16 @@ class MTReturnRequestDetailElementCom extends Component {
                     this.props.onClickInsertItem(listMLObject)
             }
         }
+
+        // set MTReturnRequestDetailNew state ve trang thai ban dau
+        const cloneMTReturnRequestDetailNew = MTReturnRequestDetailNew.map(item => {
+            if (item.Quantity) item.Quantity = "";
+            return item;
+        })
+
+        this.setState({
+            MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
+        })
     }
 
     showMessage(message) {
