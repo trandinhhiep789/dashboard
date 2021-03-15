@@ -11,6 +11,7 @@ export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "UserName";
 export const SearchPartnerRoleAPIPath = "api/PartnerRole/Search2";
 export const CreateUserNameAPIPath = "api/PartnerUser/CreateNewUserID";
+import { ERPCOMMONCACHE_STORE } from '../../../../../../constants/keyCache';
 import { CDN_LOGO_IMAGE } from '../../../../../../constants/systemVars';
 
 export const PagePath = [
@@ -188,19 +189,38 @@ export const AddElementList = [
         ValueMember: "PartnerRoleID",
         NameMember: "PartnerRoleName"
     },
+    // {
+    //     type: "text",
+    //     Name: "txtLimit",
+    //     label: "hạn mức người dùng:",
+    //     value: 0,
+    //     maxSize: "400",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "",
+    //     readonly: true,
+    //     disabled: true,
+    //     validatonList: []
+    // },
     {
-        type: "text",
-        Name: "txtLimit",
-        label: "hạn mức người dùng:",
-        value: 0,
-        maxSize: "400",
+        type: "multiselect",
+        Name: "txtCoordinatorStoreID",
+        label: "Kho được điều phối:",
+        value: "",
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "",
-        readonly: true,
-        disabled: true,
-        validatonList: []
+        DataSourceMember: "CoordinatorStoreID",
+        readonly: false,
+        validatonList: [],
+        isMulti: true,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: ERPCOMMONCACHE_STORE,
+        ValueMember: "StoreID",
+        NameMember: "StoreName",
+        KeyFilter: "CompanyID",
+        ValueFilter: 10
     },
     {
         type: "password",
@@ -415,19 +435,38 @@ export const EditElementList = [
         ValueMember: "PartnerRoleID",
         NameMember: "PartnerRoleName"
     },
+    // {
+    //     type: "text",
+    //     name: "txtLimit",
+    //     label: "hạn mức người dùng:",
+    //     value: 0,
+    //     maxSize: "400",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "",
+    //     readonly: true,
+    //     disabled: true,
+    //     validatonList: []
+    // },
     {
-        type: "text",
-        name: "txtLimit",
-        label: "hạn mức người dùng:",
-        value: 0,
-        maxSize: "400",
+        type: "multiselect",
+        name: "txtCoordinatorStoreID",
+        label: "Kho được điều phối:",
+        value: "",
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "",
-        readonly: true,
-        disabled: true,
-        validatonList: []
+        DataSourceMember: "CoordinatorStoreID",
+        readonly: false,
+        validatonList: [],
+        isMulti: true,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: ERPCOMMONCACHE_STORE,
+        ValueMember: "StoreID",
+        NameMember: "StoreName",
+        KeyFilter: "CompanyID",
+        ValueFilter: 10
     },
     {
         type: "password",
@@ -995,6 +1034,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtPartnerRoleID",
         DataSourceMember: "PartnerRoleID"
+    },
+    {
+        Name: "CoordinatorStoreID",
+        DefaultValue: "",
+        BindControlName: "txtCoordinatorStoreID",
+        DataSourceMember: "CoordinatorStoreID"
     },
     {
         Name: "PassWord",
