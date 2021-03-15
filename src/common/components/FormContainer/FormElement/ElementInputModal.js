@@ -729,9 +729,22 @@ class MultiUserComboBoxCom extends React.Component {
 
     handleValueChange1(e) {
         let value = e.target.value;
-        if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38) {
-            this.callSearchData("*" + value + "*");
+
+        if (this.props.isPartner == undefined || this.props.isPartner == false)
+        {
+            if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38 ) {
+                this.callSearchData("*" + value + "*");
+            }
         }
+        else
+        {
+            if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38 && value.substr(0, 3)!="004") {
+                this.callSearchData("*" + value + "*");
+            }
+        }
+        // if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38) {
+        //     this.callSearchData("*" + value + "*");
+        // }
 
     }
     render() {

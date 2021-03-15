@@ -342,6 +342,7 @@ class ListShipCoordinatorCom extends Component {
                 placeholder: "---Nhân viên giao nhận---",
                 isMultiSelect: true,
                 disabled: false,
+                isPartner: true,
                 filterValue: "-1",
                 filterobj: "PartnerID",
                 filterrest: "CarrierPartnerID"
@@ -482,6 +483,7 @@ class ListShipCoordinatorCom extends Component {
                             value={this.state.selectedOption}
                             listoption={this.state.selectedOption}
                             isMultiSelect={true}
+                            isPartner={true}
                             datasourcemember="ShipmentOrder_DeliverUserList"
                         /> :
                         <FormControl.FormControlComboBoxUser
