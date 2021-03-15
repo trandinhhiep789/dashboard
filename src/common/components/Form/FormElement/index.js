@@ -470,6 +470,7 @@ class FormElementCom extends Component {
                         labelcolspan={this.props.labelcolspan}
                         controltype={this.props.controltype}
                         listoption={this.state.Listoption}
+                        SelectedOption={this.props.SelectedOption}
                         IsLabelDiv={false}
                         isMulti={this.props.isMulti}
                         onValueChange={this.handleMultiSelectChange}
@@ -520,7 +521,7 @@ class FormElementCom extends Component {
                 control = <input className={this.props.CSSClassName} name={this.props.name} type={this.props.type} defaultValue={this.props.value} checked={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} />;
                 break;
             case "text":
-                control = <input className={controlCSSClassName} name={this.props.name} ref={this.props.inputRef} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsSystem} maxLength={this.props.maxSize} style={{ textTransform: this.props.textTransform ? this.props.textTransform : "lowercase" }} />;
+                control = <input className={controlCSSClassName} name={this.props.name} ref={this.props.inputRef} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsSystem} maxLength={this.props.maxSize} style={{ textTransform: this.props.textTransform ? this.props.textTransform : "inherit" }} />;
                 break;
             case "textType":
                 control = <input className={controlCSSClassName} name={this.props.name} type={this.props.type} type="text" placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsSystem} />;
