@@ -24,6 +24,7 @@ import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import MultiSelectComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 import { ERPCOMMONCACHE_TMSREWARDPOSITION } from "../../../../../constants/keyCache";
+import { toIsoStringCus } from "../../../../../utils/function";
 
 
 class EditCom extends React.Component {
@@ -242,17 +243,20 @@ class EditCom extends React.Component {
         }
         else {
 
-            if (MLObject.ApplyFromDate.getMonth) {
-                MLObject.ApplyFromDate.setDate(MLObject.ApplyFromDate.getDate() + 1);
-            } else {
-                MLObject.ApplyFromDate = this.state.DataSource.ApplyFromDate;
-            }
+            MLObject.ApplyFromDate = toIsoStringCus(new Date(MLObject.ApplyFromDate).toISOString());
+            MLObject.ApplyToDate = toIsoStringCus(new Date(MLObject.ApplyToDate).toISOString());
 
-            if (MLObject.ApplyToDate.getMonth) {
-                MLObject.ApplyToDate.setDate(MLObject.ApplyToDate.getDate() + 1);
-            } else {
-                MLObject.ApplyToDate = this.state.DataSource.ApplyToDate;
-            }
+            // if (MLObject.ApplyFromDate.getMonth) {
+            //     MLObject.ApplyFromDate.setDate(MLObject.ApplyFromDate.getDate() + 1);
+            // } else {
+            //     MLObject.ApplyFromDate = this.state.DataSource.ApplyFromDate;
+            // }
+
+            // if (MLObject.ApplyToDate.getMonth) {
+            //     MLObject.ApplyToDate.setDate(MLObject.ApplyToDate.getDate() + 1);
+            // } else {
+            //     MLObject.ApplyToDate = this.state.DataSource.ApplyToDate;
+            // }
 
             this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });

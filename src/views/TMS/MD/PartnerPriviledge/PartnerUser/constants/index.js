@@ -216,11 +216,11 @@ export const AddElementList = [
         validatonList: [],
         isMulti: true,
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: ERPCOMMONCACHE_STORE,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.USER_COOSTORE_BYUSER",
         ValueMember: "StoreID",
         NameMember: "StoreName",
-        KeyFilter: "CompanyID",
-        ValueFilter: 10
+        // KeyFilter: "CompanyID",
+        // ValueFilter: 10
     },
     {
         type: "password",
@@ -462,11 +462,11 @@ export const EditElementList = [
         validatonList: [],
         isMulti: true,
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: ERPCOMMONCACHE_STORE,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.USER_COOSTORE_BYUSER",
         ValueMember: "StoreID",
         NameMember: "StoreName",
-        KeyFilter: "CompanyID",
-        ValueFilter: 10
+        // KeyFilter: "CompanyID",
+        // ValueFilter: 10
     },
     {
         type: "password",

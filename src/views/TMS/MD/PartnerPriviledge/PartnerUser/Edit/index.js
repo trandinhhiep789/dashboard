@@ -166,7 +166,7 @@ class EditCom extends React.Component {
                     let selectedOptionStore = [];
                     if (apiResult.ResultObject.ListUser_CoordinatorStore) {
                         apiResult.ResultObject.ListUser_CoordinatorStore.map(row => {
-                            selectedOptionStore.push({ value: row.StoreID, label: row.StoreName });
+                            selectedOptionStore.push({ value: row.StoreID, label: row.StoreName, name: row.StoreName });
                         })
                     }
 
