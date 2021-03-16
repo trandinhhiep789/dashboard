@@ -1,14 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import DataGrid from "../../../../common/components/DataGrid";
 import { ModalManager } from "react-dynamic-modal";
-import {
-    APIHostName,
-    MLObjectMTReturnRequestDetailItem,
-    InputMTReturnRequestDetailColumnList,
-    GridMLObjectDefinition,
-    GirdMTReturnRequestDetailColumnList
-} from "../constants/index.js";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
 import { showModal, hideModal } from '../../../../actions/modal';
@@ -40,8 +32,7 @@ class ModalAddReturnRequestDetailCom extends Component {
                     maxInputNumber: MaxQuantity,
                     disabled: MaxQuantity == 0 ? true : false,
                     isDisabled: IsAllowdUpliCatiOnProduct ? true : false,
-                    isDecimalInputNumber: true,
-                    stepDecimalInputNumber: QuantityUnit.trim() == "Mét" ? "0.00001" : 1
+                    stepDecimalInputNumber: QuantityUnit.trim() == "Mét" ? "0.01" : 1
                 }
             } else {
                 return {
@@ -51,7 +42,7 @@ class ModalAddReturnRequestDetailCom extends Component {
                     disabled: TotalQuantity == 0 ? true : false,
                     isDisabled: IsAllowdUpliCatiOnProduct ? true : false,
                     isDecimalInputNumber: true,
-                    stepDecimalInputNumber: QuantityUnit.trim() == "Mét" ? "0.00001" : 1
+                    stepDecimalInputNumber: QuantityUnit.trim() == "Mét" ? "0.01" : 1
                 }
             }
         })
@@ -61,9 +52,9 @@ class ModalAddReturnRequestDetailCom extends Component {
         })
     }
 
-    handleInsertItem() {
+    onHandleSubmitGridNew() {
         const { MTReturnRequestDetailNew } = this.state;
-        const { dataSource, dataCompare } = this.props;
+        const { dataSource, dataCompare, IsAllowdUpliCatiOnProduct } = this.props;
         let dataSelect = [], errorValidate = false;
 
         for (const key in MTReturnRequestDetailNew) {
@@ -87,7 +78,7 @@ class ModalAddReturnRequestDetailCom extends Component {
             this.props.hideModal();
         }
 
-        if (MTReturnRequestDetailNew[0].IsAllowdUpliCatiOnProduct) {
+        if (IsAllowdUpliCatiOnProduct) {
             if (this.props.onClickInsertItem)
                 this.props.onClickInsertItem(dataSelect)
         } else {
@@ -111,13 +102,8 @@ class ModalAddReturnRequestDetailCom extends Component {
         }
 
         // set MTReturnRequestDetailNew state ve trang thai ban dau
-        const cloneMTReturnRequestDetailNew = MTReturnRequestDetailNew.map(item => {
-            if (item.Quantity) item.Quantity = "";
-            return item;
-        })
-
         this.setState({
-            MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
+            MTReturnRequestDetailNew: this.props.dataSource
         })
     }
 
@@ -129,279 +115,6 @@ class ModalAddReturnRequestDetailCom extends Component {
                 onRequestClose={() => true}
             />
         );
-    }
-
-    valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
-        const { MTReturnRequestDetailNew } = this.state;
-        const isAllowDecimal = MTReturnRequestDetailNew[index].IsAllowDecimal;
-        const isCheckMinMaxQuantity = MTReturnRequestDetailNew[index].IsCheckMinMaxQuantity;
-        let item = elementdata.Name + '_' + index;
-        let cloneMTReturnRequestDetailNew = MTReturnRequestDetailNew;
-
-        if (!isAllowDecimal) {
-            if (!isCheckMinMaxQuantity) {
-                if (elementdata.Value.toString().length > 1) {
-                    if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
-                        if (elementdata.Name == 'Quantity') {
-                            let Quantity = MTReturnRequestDetailNew[index].TotalQuantity;
-
-                            if (!gridFormValidation[item].IsValidationError) {
-                                if (elementdata.Value > Quantity) {
-                                    cloneMTReturnRequestDetailNew[index] = { ...cloneMTReturnRequestDetailNew[index], Quantity: elementdata.Value };
-                                    gridFormValidation[item].IsValidationError = true;
-                                    gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
-                                    this.setState({
-                                        isError: true,
-                                        IsCallAPIError: true,
-                                        MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
-                                    })
-                                }
-                                else {
-                                    this.setState({
-                                        isError: false,
-                                        IsCallAPIError: false,
-                                    })
-                                }
-                            }
-                        }
-                        else {
-                            this.setState({
-                                isError: false,
-                                IsCallAPIError: false,
-                            })
-                        }
-                    }
-                    else {
-                        cloneMTReturnRequestDetailNew[index] = { ...cloneMTReturnRequestDetailNew[index], Quantity: elementdata.Value };
-                        gridFormValidation[item].IsValidationError = true;
-                        gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
-                        this.setState({
-                            isError: true,
-                            IsCallAPIError: true,
-                            MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
-                        })
-                    }
-                }
-                else {
-                    if (elementdata.Value.length > 0) {
-                        if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
-                            if (parseInt(elementdata.Value) > 0) {
-                                if (elementdata.Name == 'Quantity') {
-                                    let Quantity = MTReturnRequestDetailNew[index].TotalQuantity;
-
-                                    if (!gridFormValidation[item].IsValidationError) {
-                                        if (elementdata.Value > Quantity) {
-                                            cloneMTReturnRequestDetailNew[index] = { ...cloneMTReturnRequestDetailNew[index], Quantity: elementdata.Value };
-                                            gridFormValidation[item].IsValidationError = true;
-                                            gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
-                                            this.setState({
-                                                isError: true,
-                                                IsCallAPIError: true,
-                                                MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
-                                            })
-                                        }
-                                        else {
-                                            this.setState({
-                                                isError: false,
-                                                IsCallAPIError: false,
-                                            })
-                                        }
-                                    }
-                                }
-                                else {
-                                    this.setState({
-                                        isError: false,
-                                        IsCallAPIError: false,
-                                    })
-                                }
-                            }
-                            else {
-                                cloneMTReturnRequestDetailNew[index] = { ...cloneMTReturnRequestDetailNew[index], Quantity: elementdata.Value };
-                                gridFormValidation[item].IsValidationError = true;
-                                gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số lớn hơn 0";
-                                this.setState({
-                                    isError: true,
-                                    IsCallAPIError: true,
-                                    MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
-                                })
-                            }
-                        }
-                        else {
-                            cloneMTReturnRequestDetailNew[index] = { ...cloneMTReturnRequestDetailNew[index], Quantity: elementdata.Value };
-                            gridFormValidation[item].IsValidationError = true;
-                            gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
-                            this.setState({
-                                isError: true,
-                                IsCallAPIError: true,
-                                MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
-                            })
-                        }
-                    }
-                    else {
-                        cloneMTReturnRequestDetailNew[index] = { ...cloneMTReturnRequestDetailNew[index], Quantity: elementdata.Value };
-                        gridFormValidation[item].IsValidationError = false;
-                        gridFormValidation[item].ValidationErrorMessage = "";
-                        this.setState({
-                            isError: false,
-                            IsCallAPIError: false,
-                            MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
-                        })
-                    }
-                }
-            } else {
-                if (parseInt(elementdata.Value) > parseInt(MTReturnRequestDetailNew[index].MinQuantity)
-                    && parseInt(elementdata.Value) < parseInt(MTReturnRequestDetailNew[index].MaxQuantity)) {
-                    cloneMTReturnRequestDetailNew[index] = { ...cloneMTReturnRequestDetailNew[index], Quantity: elementdata.Value };
-                    gridFormValidation[item].IsValidationError = false;
-                    gridFormValidation[item].ValidationErrorMessage = "";
-                    this.setState({
-                        isError: false,
-                        IsCallAPIError: false,
-                        MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
-                    })
-                } else {
-                    cloneMTReturnRequestDetailNew[index] = { ...cloneMTReturnRequestDetailNew[index], Quantity: elementdata.Value };
-                    gridFormValidation[item].IsValidationError = true;
-                    gridFormValidation[item].ValidationErrorMessage = "Số lượng nhập trả không nằm trong hạn mức khai báo.";
-                    this.setState({
-                        isError: true,
-                        IsCallAPIError: true,
-                        MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
-                    })
-                }
-            }
-        }
-        else {
-            if (!isCheckMinMaxQuantity) {
-                if (elementdata.Value.toString().length > 1) {
-                    if (/^\d*\.?\d+$/.test(elementdata.Value)) {
-                        if (elementdata.Name == 'Quantity') {
-                            let Quantity = MTReturnRequestDetailNew[index].TotalQuantity;
-
-                            if (!gridFormValidation[item].IsValidationError) {
-                                if (elementdata.Value > Quantity) {
-                                    cloneMTReturnRequestDetailNew[index] = { ...cloneMTReturnRequestDetailNew[index], Quantity: elementdata.Value };
-                                    gridFormValidation[item].IsValidationError = true;
-                                    gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
-                                    this.setState({
-                                        isError: true,
-                                        IsCallAPIError: true,
-                                        MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
-                                    })
-                                }
-                                else {
-                                    this.setState({
-                                        isError: false,
-                                        IsCallAPIError: false,
-                                    })
-                                }
-                            }
-                        }
-                        else {
-                            this.setState({
-                                isError: false,
-                                IsCallAPIError: false,
-                            })
-                        }
-                    }
-                    else {
-                        cloneMTReturnRequestDetailNew[index] = { ...cloneMTReturnRequestDetailNew[index], Quantity: elementdata.Value };
-                        gridFormValidation[item].IsValidationError = true;
-                        gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
-                        this.setState({
-                            isError: true,
-                            IsCallAPIError: true,
-                            MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
-                        })
-                    }
-                }
-                else {
-                    if (elementdata.Value.length > 0) {
-                        if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
-                            if (parseInt(elementdata.Value) > 0) {
-                                if (elementdata.Name == 'Quantity') {
-                                    let Quantity = MTReturnRequestDetailNew[index].TotalQuantity;
-
-                                    if (!gridFormValidation[item].IsValidationError) {
-                                        if (elementdata.Value > Quantity) {
-                                            cloneMTReturnRequestDetailNew[index] = { ...cloneMTReturnRequestDetailNew[index], Quantity: elementdata.Value };
-                                            gridFormValidation[item].IsValidationError = true;
-                                            gridFormValidation[item].ValidationErrorMessage = "Số lượng tạm ứng không được vượt số dư tạm ứng.";
-                                            this.setState({
-                                                isError: true,
-                                                IsCallAPIError: true,
-                                                MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
-                                            })
-                                        }
-                                        else {
-                                            this.setState({
-                                                isError: false,
-                                                IsCallAPIError: false,
-                                            })
-                                        }
-                                    }
-                                }
-                            }
-                            else {
-                                cloneMTReturnRequestDetailNew[index] = { ...cloneMTReturnRequestDetailNew[index], Quantity: elementdata.Value };
-                                gridFormValidation[item].IsValidationError = true;
-                                gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số lớn hơn 0";
-                                this.setState({
-                                    isError: true,
-                                    IsCallAPIError: true,
-                                    MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
-                                })
-                            }
-                        }
-                        else {
-                            cloneMTReturnRequestDetailNew[index] = { ...cloneMTReturnRequestDetailNew[index], Quantity: elementdata.Value };
-                            gridFormValidation[item].IsValidationError = true;
-                            gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
-                            this.setState({
-                                isError: true,
-                                IsCallAPIError: true,
-                                MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
-                            })
-                        }
-                    }
-                    else {
-                        cloneMTReturnRequestDetailNew[index] = { ...cloneMTReturnRequestDetailNew[index], Quantity: elementdata.Value };
-                        gridFormValidation[item].IsValidationError = false;
-                        gridFormValidation[item].ValidationErrorMessage = "";
-                        this.setState({
-                            isError: false,
-                            IsCallAPIError: false,
-                            MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
-                        })
-                    }
-
-                }
-
-            }
-            else {
-                if (parseInt(elementdata.Value) >= parseInt(MTReturnRequestDetailNew[index].MinQuantity)
-                    && parseInt(elementdata.Value) <= parseInt(MTReturnRequestDetailNew[index].MaxQuantity)) {
-                    cloneMTReturnRequestDetailNew[index] = { ...cloneMTReturnRequestDetailNew[index], Quantity: elementdata.Value };
-                    gridFormValidation[item].IsValidationError = false;
-                    gridFormValidation[item].ValidationErrorMessage = "";
-                    this.setState({
-                        isError: false,
-                        IsCallAPIError: false,
-                        MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
-                    })
-                } else {
-                    cloneMTReturnRequestDetailNew[index] = { ...cloneMTReturnRequestDetailNew[index], Quantity: elementdata.Value };
-                    gridFormValidation[item].IsValidationError = true;
-                    gridFormValidation[item].ValidationErrorMessage = "Số lượng nhập trả không nằm trong hạn mức khai báo.";
-                    this.setState({
-                        isError: true,
-                        IsCallAPIError: true,
-                        MTReturnRequestDetailNew: cloneMTReturnRequestDetailNew
-                    })
-                }
-            }
-
-        }
     }
 
     onChangeInputNumber(e, rowItem, rowIndex) {
@@ -444,7 +157,7 @@ class ModalAddReturnRequestDetailCom extends Component {
     }
 
     render() {
-        const { IsSystem, MTReturnRequestDetailNew } = this.state;
+        const { MTReturnRequestDetailNew } = this.state;
         return (
             <React.Fragment>
                 <InputGrid
@@ -460,8 +173,7 @@ class ModalAddReturnRequestDetailCom extends Component {
                     colspan="12"
                     isHideHeaderToolbar={true}
                     isShowFooterToolbar={true}
-                    // onValueChangeInputGrid={this.valueChangeInputGrid.bind(this)}
-                    onHandleSubmitGridNew={this.handleInsertItem.bind(this)}
+                    onHandleSubmitGridNew={this.onHandleSubmitGridNew.bind(this)}
                     onChangeInputNumber={this.onChangeInputNumber.bind(this)}
                 />
             </React.Fragment>

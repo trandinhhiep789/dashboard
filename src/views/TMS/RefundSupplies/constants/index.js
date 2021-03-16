@@ -497,7 +497,7 @@ export const InputMTReturnRequestDetailColumnListNew = [
     },
     {
         Name: "Quantity",
-        Type: "textbox",
+        Type: "inputNumber",
         Caption: "SL nhập trả",
         DataSourceMember: "Quantity",
         Width: 100

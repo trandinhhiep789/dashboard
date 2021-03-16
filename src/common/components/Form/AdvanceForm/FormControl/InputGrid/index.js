@@ -563,31 +563,32 @@ class InputGridCom extends Component {
             this.props.onHandleSubmitGrid(this.props.name);
         }
         else {
-            const { dataSource, GridData, FormValidation } = this.state;
-            let dataSelect = [], errorValidate = false;
+            // const { dataSource, GridData, FormValidation } = this.state;
+            // let dataSelect = [], errorValidate = false;
 
-            for (const key in FormValidation) {
-                if (FormValidation[key].IsValidationError == true) {
-                    errorValidate = true;
-                    break;
-                }
-            }
+            // for (const key in FormValidation) {
+            //     if (FormValidation[key].IsValidationError == true) {
+            //         errorValidate = true;
+            //         break;
+            //     }
+            // }
 
-            if (errorValidate) {
-                this.showMessage("Dữ liệu nhập vào không hợp lệ. Vui lòng nhập lại.")
-            } else {
-                if (GridData.Quantity) {
-                    for (const key in GridData.Quantity) {
+            // if (errorValidate) {
+            //     this.showMessage("Dữ liệu nhập vào không hợp lệ. Vui lòng nhập lại.")
+            // } else {
+            //     if (GridData.Quantity) {
+            //         for (const key in GridData.Quantity) {
 
-                        if (GridData.Quantity[key].Value != "") {
-                            dataSelect.push({ ...dataSource[key], Quantity: GridData.Quantity[key].Value });
-                        }
-                    }
-                }
+            //             if (GridData.Quantity[key].Value != "") {
+            //                 dataSelect.push({ ...dataSource[key], Quantity: GridData.Quantity[key].Value });
+            //             }
+            //         }
+            //     }
 
-                this.props.onHandleSubmitGridNew(dataSelect)
-                this.props.hideModal();
-            }
+            //     this.props.onHandleSubmitGridNew(dataSelect)
+            //     this.props.hideModal();
+            // }
+            this.props.onHandleSubmitGridNew()
         }
     }
 
