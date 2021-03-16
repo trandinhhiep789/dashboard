@@ -838,6 +838,7 @@ class EditCom extends React.Component {
                             onInsertClick={this.handleItemInsert.bind(this)}
                             onClickDeleteNew={this.handleItemDelete.bind(this)}
                             ref={this.gridref}
+                            isHiddenButtonAdd={this.state.IsSystem}
                         />
 
                         {isAutoReview == false ?
