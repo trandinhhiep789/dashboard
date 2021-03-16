@@ -22,6 +22,7 @@ import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import MultiSelectComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 import { ERPCOMMONCACHE_TMSREWARDPOSITION } from "../../../../../constants/keyCache";
+import { toIsoStringCus } from "../../../../../utils/function";
 
 
 
@@ -201,13 +202,18 @@ class AddCom extends React.Component {
         }
         else {
 
-            if (MLObject.ApplyFromDate.getMonth) {
-                MLObject.ApplyFromDate.setDate(MLObject.ApplyFromDate.getDate() + 1);
-            }
+            // if (MLObject.ApplyFromDate.getMonth) {
+            //     MLObject.ApplyFromDate.setDate(MLObject.ApplyFromDate.getDate() + 1);
+                 
+            // }
 
-            if (MLObject.ApplyToDate.getMonth) {
-                MLObject.ApplyToDate.setDate(MLObject.ApplyToDate.getDate() + 1);
-            }
+            // if (MLObject.ApplyToDate.getMonth) {
+            //     MLObject.ApplyToDate.setDate(MLObject.ApplyToDate.getDate() + 1);
+            // }
+
+
+            MLObject.ApplyFromDate = toIsoStringCus(new Date(MLObject.ApplyFromDate).toISOString());
+            MLObject.ApplyToDate = toIsoStringCus(new Date(MLObject.ApplyToDate).toISOString());
 
             this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
