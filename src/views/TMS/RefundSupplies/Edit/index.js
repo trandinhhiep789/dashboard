@@ -599,6 +599,7 @@ class EditCom extends React.Component {
                 text: <ModalAddReturnRequestDetail
                     dataSource={this.state.MTReturnRequestDetailModal}
                     dataCompare={this.state.MTReturnRequestDetailNew}
+                    IsAllowdUpliCatiOnProduct={this.state.IsAllowdUpliCatiOnProduct}
                     multipleCheck={false}
                     listColumn={InputMTReturnRequestDetailColumnListNew}
                     onClickInsertItem={this.handleinsertItemNew.bind(this)}
