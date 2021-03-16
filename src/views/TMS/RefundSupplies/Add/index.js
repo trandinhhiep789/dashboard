@@ -33,7 +33,7 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { REFUNDSUPPLIES_ADD } from "../../../../constants/functionLists";
 import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
-import MTReturnRequestDetailElement from "../Component/MTReturnRequestDetailElementCom";
+import ModalAddReturnRequestDetail from "../Component/ModalAddReturnRequestDetail";
 import { Base64 } from 'js-base64';
 class AddCom extends React.Component {
     constructor(props) {
@@ -132,7 +132,6 @@ class AddCom extends React.Component {
 
     GetDataByRequestTypeID(MtreturnRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByMTRRequestTypeIDPath, MtreturnRequestTypeID).then(apiResult => {
-            console.log("id", apiResult.ResultObject)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -286,10 +285,7 @@ class AddCom extends React.Component {
 
 
             MLObject.IsCreatedInputVoucher = false;
-            MLObject.lstMTReturnRequestDetail = MTReturnRequestDetail; //
-
-            // console.log("MLObject", MLObject);
-
+            MLObject.lstMTReturnRequestDetail = MTReturnRequestDetail;
 
             this.handleSubmit(MLObject)
         }
@@ -338,7 +334,6 @@ class AddCom extends React.Component {
     }
 
     handleinsertItemNew(data) {
-        const { IsAllowdUpliCatiOnProduct } = this.state;
         this.setState({
             MTReturnRequestDetailNew: [...this.state.MTReturnRequestDetailNew, ...data]
         })
@@ -366,9 +361,10 @@ class AddCom extends React.Component {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Thêm chi tiết nhập trả vật tư',
             content: {
-                text: <MTReturnRequestDetailElement
+                text: <ModalAddReturnRequestDetail
                     dataSource={this.state.MTReturnRequestDetail}
                     dataCompare={this.state.MTReturnRequestDetailNew}
+                    IsAllowdUpliCatiOnProduct={this.state.IsAllowdUpliCatiOnProduct}
                     multipleCheck={false}
                     listColumn={InputMTReturnRequestDetailColumnListNew}
                     onClickInsertItem={this.handleinsertItemNew.bind(this)}
@@ -414,7 +410,7 @@ class AddCom extends React.Component {
             isAutoReview,
             gridMTReturnRequestRLSort
         } = this.state;
-        console.log("IsAllowdUpliCatiOnProduct", this.state.IsAllowdUpliCatiOnProduct)
+
         return (
             <React.Fragment>
                 <FormContainer

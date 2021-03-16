@@ -563,31 +563,32 @@ class InputGridCom extends Component {
             this.props.onHandleSubmitGrid(this.props.name);
         }
         else {
-            const { dataSource, GridData, FormValidation } = this.state;
-            let dataSelect = [], errorValidate = false;
+            // const { dataSource, GridData, FormValidation } = this.state;
+            // let dataSelect = [], errorValidate = false;
 
-            for (const key in FormValidation) {
-                if (FormValidation[key].IsValidationError == true) {
-                    errorValidate = true;
-                    break;
-                }
-            }
+            // for (const key in FormValidation) {
+            //     if (FormValidation[key].IsValidationError == true) {
+            //         errorValidate = true;
+            //         break;
+            //     }
+            // }
 
-            if (errorValidate) {
-                this.showMessage("Dữ liệu nhập vào không hợp lệ. Vui lòng nhập lại.")
-            } else {
-                if (GridData.Quantity) {
-                    for (const key in GridData.Quantity) {
+            // if (errorValidate) {
+            //     this.showMessage("Dữ liệu nhập vào không hợp lệ. Vui lòng nhập lại.")
+            // } else {
+            //     if (GridData.Quantity) {
+            //         for (const key in GridData.Quantity) {
 
-                        if (GridData.Quantity[key].Value != "") {
-                            dataSelect.push({ ...dataSource[key], Quantity: GridData.Quantity[key].Value });
-                        }
-                    }
-                }
+            //             if (GridData.Quantity[key].Value != "") {
+            //                 dataSelect.push({ ...dataSource[key], Quantity: GridData.Quantity[key].Value });
+            //             }
+            //         }
+            //     }
 
-                this.props.onHandleSubmitGridNew(dataSelect)
-                this.props.hideModal();
-            }
+            //     this.props.onHandleSubmitGridNew(dataSelect)
+            //     this.props.hideModal();
+            // }
+            this.props.onHandleSubmitGridNew()
         }
     }
 
@@ -696,7 +697,6 @@ class InputGridCom extends Component {
         }
         return listDataSourceMember;
     }
-
 
     renderInputGrid() {
         const listColumn = this.props.listColumn;
@@ -878,6 +878,7 @@ class InputGridCom extends Component {
                                             DataSourceMember={dataSourceMember}
                                             onInsertClickEdit={this.handleInsertClickEdit}
                                             onValueChange={this.onValueChange}
+                                            onChangeInputNumber={(e) => this.props.onChangeInputNumber(e, rowItem, rowIndex)}
                                             index={rowIndex}
                                             isChecked={isChecked}
                                             IsFilterData={columnItem.IsFilterData}
@@ -897,7 +898,13 @@ class InputGridCom extends Component {
                                             maxSize={columnItem.maxSize}
                                             IsSystem={this.state.IsSystem}
                                             isNoneZero={columnItem.IsNoneZero}
-                                        // isAllowDecimal={columnItem.isAllowDecimal}
+                                            isDecimalInputNumber={rowItem.isDecimalInputNumber}
+                                            stepDecimalInputNumber={rowItem.stepDecimalInputNumber}
+                                            minInputNumber={rowItem.minInputNumber}
+                                            maxInputNumber={rowItem.maxInputNumber}
+                                            errorInputNumber={rowItem.errorInputNumber}
+                                            errMsgInputNumber={rowItem.errMsgInputNumber}
+                                            disabled={rowItem.disabled}
                                         />;
                                         return (
                                             <td key={columnItem.Name} style={cellStyle}  >{cellData}</td>
