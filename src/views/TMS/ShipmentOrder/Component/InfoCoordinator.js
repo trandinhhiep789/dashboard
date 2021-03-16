@@ -704,6 +704,7 @@ class InfoCoordinatorCom extends Component {
                                     onChange={this.handleValueChange1}
                                     listoption={[]}
                                     isMultiSelect={true}
+                                    isPartner={true}
                                     datasourcemember="ShipmentOrder_DeliverUserList"
 
                                 /> :

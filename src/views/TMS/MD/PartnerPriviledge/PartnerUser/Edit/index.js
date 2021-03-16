@@ -46,7 +46,7 @@ class EditCom extends React.Component {
         this.handleInputUserRoleInsert = this.handleInputUserRoleInsert.bind(this);
         this.callLoadData = this.callLoadData.bind(this);
         this.initCache = this.initCache.bind(this);
-        this.initLimit = this.initLimit.bind(this);
+        //this.initLimit = this.initLimit.bind(this);
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
         this.handleInputUserRoleDelete = this.handleInputUserRoleDelete.bind(this);
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
@@ -59,7 +59,6 @@ class EditCom extends React.Component {
             FormContent: "",
             IsLoadDataComplete: false,
             IsCloseForm: false,
-            EditElementList: EditElementList,
             Password: "",
             PasswordConfirm: "",
             Files: [],
@@ -115,9 +114,9 @@ class EditCom extends React.Component {
         this.callLoadData();
         this.props.updatePagePath(EditPagePath);
         this.initCache();
-        setTimeout(() => {
-            this.initLimit();
-        }, 1000);
+        // setTimeout(() => {
+        //     this.initLimit();
+        // }, 1000);
 
     }
 
@@ -130,27 +129,25 @@ class EditCom extends React.Component {
         this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
             if (result && !result.IsError && result.ResultObject) {
                 let _ADVANCELIMIT_LEADERPARTNER = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "ADVANCELIMIT_LEADERPARTNER");
-                let _ADVANCELIMIT_STAFFPARTNER = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "ADVANCELIMIT_STAFFPARTNER");
                 this.setState({
-                    ADVANCELIMIT_LEADERPARTNER: _ADVANCELIMIT_LEADERPARTNER ? _ADVANCELIMIT_LEADERPARTNER[0].TMSConfigValue : 0,
-                    ADVANCELIMIT_STAFFPARTNER: _ADVANCELIMIT_STAFFPARTNER ? _ADVANCELIMIT_STAFFPARTNER[0].TMSConfigValue : 0,
+                    ADVANCELIMIT_LEADERPARTNER: _ADVANCELIMIT_LEADERPARTNER ? _ADVANCELIMIT_LEADERPARTNER[0].TMSConfigValue : 0
                 })
             }
 
         });
     }
 
-    initLimit() {
-        let role = this.state.PartnerRoleID;
-        let limitValue = 0;
-        if (role == 1) { //quản lý
-            limitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
-        } else if (role == 2) { // nhân viên
-            limitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
-        }
-        this.setLimit("txtLimit", limitValue);
-        
-    }
+    // initLimit() {
+    //     let role = this.state.PartnerRoleID;
+    //     let limitValue = 0;
+    //     if (role == 1) { //quản lý
+    //         limitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
+    //     }
+    //     this.setLimit("txtLimit", limitValue);
+
+    // }
+
+
 
     callLoadData(key) {
         const id = this.props.match.params.id;
@@ -164,13 +161,32 @@ class EditCom extends React.Component {
                 //apiResult.ResultObject.Birthday = apiResult.ResultObject.BirthdayString;
                 apiResult.ResultObject.PartnerRoleID = apiResult.ResultObject.ListPartnerUser_Role ? apiResult.ResultObject.ListPartnerUser_Role[0].PartnerRoleID : -1;
                 if (key === undefined) {
+
+                    //khởi tạo kho điều phối
+                    let selectedOptionStore = [];
+                    if (apiResult.ResultObject.ListUser_CoordinatorStore) {
+                        apiResult.ResultObject.ListUser_CoordinatorStore.map(row => {
+                            selectedOptionStore.push({ value: row.StoreID, label: row.StoreName });
+                        })
+                    }
+
+                    const _editElement = EditElementList;
+                    _editElement.forEach(function (objElement) {
+                        if (objElement.name == 'txtCoordinatorStoreID') {
+                            objElement.SelectedOption = selectedOptionStore;
+                        }
+                    });
+
+
+
                     this.setState({
                         DataSource: apiResult.ResultObject,
                         PassWord: apiResult.ResultObject.PassWord,
                         PassWordConfirm: apiResult.ResultObject.PassWord,
                         ListPartnerUser_IDDocument: apiResult.ResultObject.ListPartnerUser_IDDocument,
                         Birthday: apiResult.ResultObject.Birthday,
-                        PartnerRoleID: apiResult.ResultObject.ListPartnerUser_Role ? apiResult.ResultObject.ListPartnerUser_Role[0].PartnerRoleID : -1
+                        PartnerRoleID: apiResult.ResultObject.ListPartnerUser_Role ? apiResult.ResultObject.ListPartnerUser_Role[0].PartnerRoleID : -1,
+                        EditElementList: _editElement
                     });
                 } else {
                     this.setState({ ListPartnerUser_IDDocument: apiResult.ResultObject.ListPartnerUser_IDDocument });
@@ -420,19 +436,19 @@ class EditCom extends React.Component {
         }
 
 
-        if (name == "txtPartnerRoleID") {
-            let role = value[0];
-            let limitValue = 0;
-            if (role == 1) { //quản lý
-                limitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
-            } else if (role == 2) { // nhân viên
-                limitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
-            }
-            this.setLimit("txtLimit", limitValue);
-            this.setState({
-                PartnerRoleID: role
-            });
-        }
+        // if (name == "txtPartnerRoleID") {
+        //     let role = value[0];
+        //     let limitValue = 0;
+        //     if (role == 1) { //quản lý
+        //         limitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
+        //     } else if (role == 2) { // nhân viên
+        //         limitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
+        //     }
+        //     this.setLimit("txtLimit", limitValue);
+        //     this.setState({
+        //         PartnerRoleID: role
+        //     });
+        // }
 
         //console.log("formdata", formdata);
 
@@ -473,7 +489,7 @@ class EditCom extends React.Component {
         MLObject.LastName = lastName.trim();
         MLObject.ListPartnerUser_Role = this.state.DataSource.ListPartnerUser_Role;
         MLObject.PartnerID = MLObject.PartnerID && Array.isArray(MLObject.PartnerID) ? MLObject.PartnerID[0] : MLObject.PartnerID;
-        MLObject.PartnerRoleID = this.state.PartnerRoleID;
+        MLObject.PartnerRoleID = MLObject.PartnerRoleID && Array.isArray(MLObject.PartnerRoleID) ? MLObject.PartnerRoleID[0] : this.state.PartnerRoleID;
         // if (MLObject.Birthday) {
         //     let temp = MLObject.Birthday.trim().split('/');
         //     let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
@@ -496,8 +512,6 @@ class EditCom extends React.Component {
 
         if (MLObject.PartnerRoleID == 1) {// quản lý
             MLObject.LimitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
-        } else if (MLObject.PartnerRoleID == 2) {// nhân viên
-            MLObject.LimitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
         } else {
             MLObject.LimitValue = 0;
         }

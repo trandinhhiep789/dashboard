@@ -5,6 +5,7 @@ import { ModalManager } from "react-dynamic-modal";
 import FormContainer from "../../../../common/components/FormContainer";
 import { MessageModal } from "../../../../common/components/Modal";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
+import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
 import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
 import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
 import {
@@ -20,14 +21,19 @@ import {
     InputDestroyRequestRLColumnList,
     GridMLObjectDefinition,
     GridDestroyRequestRLMLObjectDefinition,
-    LoadAPIByMtreturnRequestTypeIDPath
+    LoadAPIByMtreturnRequestTypeIDPath,
+    InputMTReturnRequestDetailColumnListNew,
+    LoadAPIByMTRRequestTypeIDPath,
+    addImportMaterialModalWidth
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
-import { DESTROYREQUEST_UPDATE } from "../../../../constants/functionLists";
+import MTReturnRequestDetailElement from "../Component/MTReturnRequestDetailElementCom";
 import MTReturnRequestRVList from '../Component/MTReturnRequestRVList';
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import { showModal, hideModal } from '../../../../actions/modal';
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -37,6 +43,7 @@ class EditCom extends React.Component {
         this.callLoadData = this.callLoadData.bind(this);
         this.valueChangeInputGrid = this.valueChangeInputGrid.bind(this);
         this.getDataDestroyRequestRLByDestroyRequestType = this.getDataDestroyRequestRLByDestroyRequestType.bind(this);
+        this.GetDataByRequestTypeID = this.GetDataByRequestTypeID.bind(this);
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -47,13 +54,16 @@ class EditCom extends React.Component {
             IsLiquidated: false,
             IsDeposited: false,
             MTReturnRequestDetail: [],
+            MTReturnRequestDetailModal: [],
             MTReturnRequestRL: [],
             gridMTReturnRequestRL: {},
             isError: false,
             isAutoReview: false,
             isCreatedInputVoucher: false,
             RequestUser: '',
-            gridMTReturnRequestRLSort: []
+            gridMTReturnRequestRLSort: [],
+            IsAllowdUpliCatiOnProduct: false,
+            MTReturnRequestDetailNew: []
         };
     }
 
@@ -62,7 +72,7 @@ class EditCom extends React.Component {
         this.callLoadData(this.props.match.params.id);
     }
 
-    getDataDestroyRequestRLByDestroyRequestType(param) {
+    getDataDestroyRequestRLByDestroyRequestType(param, MTReturnRequestTypeID) {
         const { DataSource, MTReturnRequestRL } = this.state;
         this.props.callFetchAPI(APIHostName, LoadAPIByMtreturnRequestTypeIDPath, param).then(apiResult => {
             if (apiResult.IsError) {
@@ -77,7 +87,7 @@ class EditCom extends React.Component {
                     return e;
                 })
 
-                console.log("ResultObject", apiResult.ResultObject)
+                // console.log("ResultObject", apiResult.ResultObject)
 
                 let lstoption = apiResult.ResultObject.reduce((r, a) => {
                     if (!r[`${a.ReviewLevelID}`]) r[`${a.ReviewLevelID}`] = {};
@@ -111,7 +121,7 @@ class EditCom extends React.Component {
 
                 })
 
-               
+
                 let resultSort = Object.values(lstoption).sort((a, b) => a.ReviewOrderIndex - b.ReviewOrderIndex)
 
                 console.log("resultSort", lstoption, resultSort)
@@ -122,15 +132,55 @@ class EditCom extends React.Component {
                     gridMTReturnRequestRL: lstoption,
                     gridMTReturnRequestRLSort: resultSort
                 });
+
+                this.GetDataByRequestTypeID(MTReturnRequestTypeID)
             }
         });
     }
 
 
-    prevDataSubmit(formData, MLObject) {
-        const { isError, gridMTReturnRequestRL, isAutoReview, isAutoOutput, RequestUser, gridMTReturnRequestRLSort } = this.state;
+    combineSameMaterial() {
+        const { MTReturnRequestDetailNew } = this.state;
+        debugger
+        let arrUniqueMaterial = [];
 
-        //  console.log("prevDataSubmit", gridDestroyRequestRL, MLObject);
+        if (MTReturnRequestDetailNew.length > 0) {
+
+            arrUniqueMaterial.push({
+                ...MTReturnRequestDetailNew[0], Quantity: parseInt(MTReturnRequestDetailNew[0].Quantity)
+            });
+
+            if (MTReturnRequestDetailNew.length == 1) return MTReturnRequestDetailNew;
+
+            for (let index = 1; index < MTReturnRequestDetailNew.length; index++) {
+                const material = MTReturnRequestDetailNew[index];
+
+                let detectSameMaterial = false, indexSameMaterial = null;
+                arrUniqueMaterial.forEach((item, subIndex) => {
+                    if (material.MaterialGroupID.trim().localeCompare(item.MaterialGroupID.trim()) == 0
+                        && material.ProductID.trim().localeCompare(item.ProductID.trim()) == 0) {
+                        detectSameMaterial = true;
+                        indexSameMaterial = subIndex;
+                    }
+                })
+
+                detectSameMaterial
+                    ? arrUniqueMaterial[indexSameMaterial].Quantity = parseInt(arrUniqueMaterial[indexSameMaterial].Quantity) + parseInt(material.Quantity)
+                    : arrUniqueMaterial.push({ ...material, Quantity: parseInt(material.Quantity) });
+            }
+        }
+        return arrUniqueMaterial
+        //this.checkValidateArrCombineSameMaterial(arrUniqueMaterial);
+    }
+
+    prevDataSubmit(formData, MLObject) {
+        const { isError, gridMTReturnRequestRL, isAutoReview, isAutoOutput, RequestUser, gridMTReturnRequestRLSort, MTReturnRequestDetailNew } = this.state;
+
+        console.log("prevDataSubmit", MLObject);
+
+        const arrProductDetai = this.combineSameMaterial();
+
+        console.log("arrProductDetai", arrProductDetai);
 
         let arrReviewLevel = [];
         Object.keys(gridMTReturnRequestRL).map(function (key) {
@@ -149,11 +199,6 @@ class EditCom extends React.Component {
                 return cur.UserName;
             }, 0);
 
-            const MTReturnRequestDetail = MLObject.lstMTReturnRequestDetail.filter((item, index) => {
-                if (item.Quantity != undefined && item.Quantity > 0) {
-                    return item;
-                }
-            });
 
             if (!isAutoReview) {
                 MLObject.CurrentReviewLevelID = MLObject.lstMTReturnRequestReviewLevel[0].ReviewLevelID;
@@ -167,8 +212,7 @@ class EditCom extends React.Component {
             }
 
 
-
-            if (MTReturnRequestDetail.length <= 0) {
+            if (MTReturnRequestDetailNew.length <= 0) {
                 this.showMessage('Danh sách vật tư chưa được chọn.');
                 this.setState({
                     IsCallAPIError: true,
@@ -176,10 +220,28 @@ class EditCom extends React.Component {
                 return;
             }
 
-            MLObject.lstMTReturnRequestDetail = MTReturnRequestDetail;
+
+            let itemCheck = []
+            if (!!arrProductDetai) {
+                itemCheck = arrProductDetai.filter((item, index) => {
+                    if (item.Quantity > item.TotalQuantity) {
+                        return item;
+                    }
+                })
+            }
+
+            if (itemCheck.length > 0) {
+                this.showMessage('Lỗi vật tư quá số lượng tạm ứng.');
+                this.setState({
+                    IsCallAPIError: true,
+                })
+                return;
+            }
+
+            MLObject.lstMTReturnRequestDetail = MTReturnRequestDetailNew;
             MLObject.RequestUser = RequestUser;
-          
-           this.handleSubmit(MLObject)
+
+            this.handleSubmit(MLObject)
 
         }
         else {
@@ -214,7 +276,7 @@ class EditCom extends React.Component {
     callLoadData(id) {
         // console.log('callLoadData', id)
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("222", apiResult);
+            // console.log("222", apiResult);
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -244,7 +306,7 @@ class EditCom extends React.Component {
                     else {
                         if (apiResult.ResultObject.lstMTReturnRequestReviewLevel.length > 0) {
                             let IsExitRV = apiResult.ResultObject.lstMTReturnRequestReviewLevel.filter(e => { return e.IsreViewed === true });
-                            console.log("IsExitRV", IsExitRV)
+                            // console.log("IsExitRV", IsExitRV)
                             if (IsExitRV.length > 0) {
                                 disabledControll = true
                             }
@@ -264,10 +326,11 @@ class EditCom extends React.Component {
                     IsLoadDataComplete: true,
                     IsSystem: disabledControll,
                     MTReturnRequestRL: resultMTReturnRequestReviewLevel,
-                    MTReturnRequestDetail: apiResult.ResultObject.lstMTReturnRequestDetail,
+                    MTReturnRequestDetailNew: apiResult.ResultObject.MTReturnRequestDetailList,
                     isAutoReview: apiResult.ResultObject.IsreViewed,
                     isCreatedInputVoucher: apiResult.ResultObject.IsOutput,
                     RequestUser: apiResult.ResultObject.RequestUser,
+                    IsAllowdUpliCatiOnProduct: apiResult.ResultObject.IsAllowDuplicationProduct
                 });
 
 
@@ -281,7 +344,26 @@ class EditCom extends React.Component {
                         SearchValue: apiResult.ResultObject.RequestStoreID
                     }
                 ];
-                this.getDataDestroyRequestRLByDestroyRequestType(param);
+
+                this.getDataDestroyRequestRLByDestroyRequestType(param, apiResult.ResultObject.MTReturnRequestTypeID);
+            }
+        });
+    }
+
+    GetDataByRequestTypeID(MtreturnRequestTypeID) {
+        this.props.callFetchAPI(APIHostName, LoadAPIByMTRRequestTypeIDPath, MtreturnRequestTypeID).then(apiResult => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+
+
+                this.setState({
+                    MTReturnRequestDetailModal: apiResult.ResultObject,
+                });
             }
         });
     }
@@ -492,13 +574,57 @@ class EditCom extends React.Component {
         this.setState({ gridMTReturnRequestRLSort: objDestroyRequestRL });
     }
 
+    handleItemDelete(index, item) {
+        const { MTReturnRequestDetailNew } = this.state;
+
+        const result = MTReturnRequestDetailNew.filter((item, i) => {
+            if (i != index) return item;
+        })
+
+        this.setState({
+            MTReturnRequestDetailNew: result
+        })
+    }
+
+    handleinsertItemNew(data) {
+        this.setState({
+            MTReturnRequestDetailNew: [...this.state.MTReturnRequestDetailNew, ...data]
+        })
+    }
+
+    handleItemInsert() {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Thêm chi tiết nhập trả vật tư',
+            content: {
+                text: <MTReturnRequestDetailElement
+                    dataSource={this.state.MTReturnRequestDetailModal}
+                    dataCompare={this.state.MTReturnRequestDetailNew}
+                    multipleCheck={false}
+                    listColumn={InputMTReturnRequestDetailColumnListNew}
+                    onClickInsertItem={this.handleinsertItemNew.bind(this)}
+                    IDSelectColumnName={"chkSelect"}
+                    PKColumnName={"MaterialGroupID,ProductID"}
+                    isHideHeaderToolbarGroupTextBox={true}
+                    isHideHeaderToolbar={true}
+                />
+            },
+            maxWidth: addImportMaterialModalWidth
+        });
+    }
+
     render() {
 
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
         let currentDate = new Date();
-        const { MTReturnRequestDetail, MTReturnRequestRL, gridMTReturnRequestRL, isAutoReview, gridMTReturnRequestRLSort } = this.state;
+        const { MTReturnRequestDetail,
+            MTReturnRequestRL,
+            gridMTReturnRequestRL,
+            isAutoReview,
+            gridMTReturnRequestRLSort,
+            MTReturnRequestDetailNew
+        } = this.state;
 
         const onChange = (aaa, event) => {
             const value = event.target.value;
@@ -544,7 +670,7 @@ class EditCom extends React.Component {
                         listelement={[]}
                         BackLink={BackLink}
                         onSubmit={this.prevDataSubmit}
-                        RequirePermission={DESTROYREQUEST_UPDATE}
+                        // RequirePermission={DESTROYREQUEST_UPDATE}
                         onchange={this.handleChange.bind(this)}
                         IsDisabledSubmitForm={this.state.IsSystem}
                     >
@@ -586,11 +712,11 @@ class EditCom extends React.Component {
 
                             </div>
 
-                            <div className="col-md-12">
+                            <div className="col-md-6">
                                 <FormControl.TextBox
                                     name="txtMTReturnRequestTitle"
-                                    labelcolspan={2}
-                                    colspan={10}
+                                    labelcolspan={4}
+                                    colspan={8}
                                     disabled={this.state.IsSystem}
                                     readOnly={this.state.IsSystem}
                                     label="tiêu đề"
@@ -599,8 +725,26 @@ class EditCom extends React.Component {
                                     value=""
                                     datasourcemember="MTReturnRequestTitle"
                                     validatonList={['required']}
-                                    classNameCustom="customcontrol"
+                                // classNameCustom="customcontrol"
                                 />
+                            </div>
+
+                            <div className="col-md-6">
+                                <div className="form-row">
+                                    <div className="form-group col-md-4">
+                                        <label className="col-form-label 5">Cho phép nhập trùng</label>
+                                    </div>
+                                    <div className="form-group col-md-8">
+                                        <div className="checkbox customCheckbox">
+                                            <label>
+                                                <input name="ckIsAllowdUpliCatiOnProduct" type="checkbox" defaultChecked={this.state.IsAllowdUpliCatiOnProduct} disabled={true} value={this.state.IsAllowdUpliCatiOnProduct} defaultChecked={this.state.IsAllowdUpliCatiOnProduct} checked={this.state.IsAllowdUpliCatiOnProduct} />
+                                                <span className="cr">
+                                                    <i className="cr-icon fa fa-check"></i>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="col-md-6">
@@ -663,7 +807,7 @@ class EditCom extends React.Component {
                             </div>
                         </div>
 
-
+                        {/* 
                         <div className="card">
                             <div className="card-title group-card-title">
                                 <h4 className="title">Danh sách vật tư</h4>
@@ -681,7 +825,19 @@ class EditCom extends React.Component {
                                     onValueChangeInputGrid={this.valueChangeInputGrid}
                                 />
                             </div>
-                        </div>
+                        </div> */}
+
+                        <InputGridControl
+                            name="lstMTReturnRequestDetail"
+                            title={"Danh sách vật tư nhập trả"}
+                            IDSelectColumnName={"MaterialGroupID"}
+                            PKColumnName={"MaterialGroupID"}
+                            listColumn={InputMTReturnRequestDetailColumnList}
+                            dataSource={MTReturnRequestDetailNew}
+                            onInsertClick={this.handleItemInsert.bind(this)}
+                            onClickDeleteNew={this.handleItemDelete.bind(this)}
+                            ref={this.gridref}
+                        />
 
                         {isAutoReview == false ?
                             <MTReturnRequestRVList
@@ -726,6 +882,12 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
         }
     };
 };

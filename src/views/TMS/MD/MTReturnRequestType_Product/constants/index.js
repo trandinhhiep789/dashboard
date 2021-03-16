@@ -61,6 +61,20 @@ export const ModalColumnList_Insert = [
         readonly: false,
         validatonList: ["number"]
     },
+    {
+        Name: "InventoryStatusID",
+        type: "multiselect",
+        label: "trạng thái tồn kho",
+        DataSourceMember: "InventoryStatusID",
+        readonly: false,
+        value: -1,
+        validatonList: [],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPRELATECACHE.INVENTORYSTATUS",
+        ValueMember: "InventoryStatusID",
+        NameMember: "InventoryStatusName"
+    }
 
 ];
 
@@ -124,6 +138,20 @@ export const ModalColumnList_Edit = [
         readonly: false,
         validatonList: ["number"]
     },
+    {
+        Name: "InventoryStatusID",
+        type: "multiselect",
+        label: "trạng thái tồn kho",
+        DataSourceMember: "InventoryStatusID",
+        readonly: false,
+        value: -1,
+        validatonList: [],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPRELATECACHE.INVENTORYSTATUS",
+        ValueMember: "InventoryStatusID",
+        NameMember: "InventoryStatusName"
+    }
 ];
 
 export const DataGridColumnList = [
@@ -234,5 +262,11 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "MaxQuality",
         DataSourceMember: "MaxQuality"
+    },
+    {
+        Name: "InventoryStatusID",
+        DefaultValue: "",
+        BindControlName: "InventoryStatusID",
+        DataSourceMember: "InventoryStatusID"
     },
 ];

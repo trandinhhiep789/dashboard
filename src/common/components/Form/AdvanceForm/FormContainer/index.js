@@ -566,6 +566,7 @@ class FormContainerCom extends Component {
                     isMulti={elementItem.isMulti}
                     KeyFilter={elementItem.KeyFilter}
                     ValueFilter={elementItem.ValueFilter}
+                    SelectedOption={elementItem.SelectedOption}
                 />
             </div>);
         }

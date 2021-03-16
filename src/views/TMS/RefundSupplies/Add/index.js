@@ -376,7 +376,7 @@ class AddCom extends React.Component {
                 // value={"MaterialGroupID"}
                 />
             },
-            maxWidth: addImportMaterialModalWidth.maxWidth
+            maxWidth: addImportMaterialModalWidth
         });
     }
 

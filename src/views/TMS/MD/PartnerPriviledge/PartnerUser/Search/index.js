@@ -112,17 +112,17 @@ class SearchCom extends React.Component {
             this.showPassWord("txtPassWordConfirm");
         }
 
-        if (elementName == "txtPartnerRoleID") {
-            let role = formData.txtPartnerRoleID && Array.isArray(formData.txtPartnerRoleID) ? formData.txtPartnerRoleID[0] : -1;
-            let limitValue = 0;
-            if (role == 1) { //quản lý
-                limitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
-            } else if (role == 2) { // nhân viên
-                limitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
-            }
+        // if (elementName == "txtPartnerRoleID") {
+        //     let role = formData.txtPartnerRoleID && Array.isArray(formData.txtPartnerRoleID) ? formData.txtPartnerRoleID[0] : -1;
+        //     let limitValue = 0;
+        //     if (role == 1) { //quản lý
+        //         limitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
+        //     } else if (role == 2) { // nhân viên
+        //         limitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
+        //     }
 
-            this.setLimit("txtLimit", limitValue);
-        }
+        //     this.setLimit("txtLimit", limitValue);
+        // }
 
         //console.log("dsadsda", formData);
 
@@ -190,10 +190,8 @@ class SearchCom extends React.Component {
         this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
             if (result && !result.IsError && result.ResultObject) {
                 let _ADVANCELIMIT_LEADERPARTNER = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "ADVANCELIMIT_LEADERPARTNER");
-                let _ADVANCELIMIT_STAFFPARTNER = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "ADVANCELIMIT_STAFFPARTNER");
                 this.setState({
-                    ADVANCELIMIT_LEADERPARTNER: _ADVANCELIMIT_LEADERPARTNER ? _ADVANCELIMIT_LEADERPARTNER[0].TMSConfigValue : 0,
-                    ADVANCELIMIT_STAFFPARTNER: _ADVANCELIMIT_STAFFPARTNER ? _ADVANCELIMIT_STAFFPARTNER[0].TMSConfigValue : 0,
+                    ADVANCELIMIT_LEADERPARTNER: _ADVANCELIMIT_LEADERPARTNER ? _ADVANCELIMIT_LEADERPARTNER[0].TMSConfigValue : 0
                 })
             }
 
@@ -261,7 +259,7 @@ class SearchCom extends React.Component {
                         MLObject.PassWord = MD5Digest(PassWord);
                         MLObject.FirstName = firstName.trim();
                         MLObject.LastName = lastName.trim();
-                        MLObject.UserName = this.state.UserID;
+                        MLObject.UserName = -1;
                         MLObject.PartnerID = MLObject.PartnerID && Array.isArray(MLObject.PartnerID) ? MLObject.PartnerID[0] : MLObject.PartnerID;
                         MLObject.PartnerRoleID = MLObject.PartnerRoleID && Array.isArray(MLObject.PartnerRoleID) ? MLObject.PartnerRoleID[0] : MLObject.PartnerRoleID;
 
@@ -276,9 +274,8 @@ class SearchCom extends React.Component {
 
                         if (MLObject.PartnerRoleID == 1) {// quản lý
                             MLObject.LimitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
-                        } else if (MLObject.PartnerRoleID == 2) {// nhân viên
-                            MLObject.LimitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
-                        }else{
+                        } 
+                        else{
                             MLObject.LimitValue = 0;
                         }
 
@@ -291,8 +288,6 @@ class SearchCom extends React.Component {
                             } else {
                                 this.addNotification(apiResult.Message, apiResult.IsError);
                             }
-                            //this.showMessage(apiResult.Message);
-                            //this.addNotification(apiResult.Message, apiResult.IsError);
                         });
 
                         //console.log("MLObject", MLObject);
