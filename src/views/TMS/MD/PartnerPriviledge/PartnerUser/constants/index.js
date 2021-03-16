@@ -469,44 +469,6 @@ export const EditElementList = [
         // ValueFilter: 10
     },
     {
-        type: "password",
-        name: "txtPassWord",
-        label: "Mật khẩu:",
-        value: "",
-        maxSize: "400",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "",
-        readonly: false,
-        validatonList: []
-    },
-    {
-        type: "password",
-        name: "txtPassWordConfirm",
-        label: "Xác nhận mật khẩu:",
-        value: "",
-        maxSize: "400",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "",
-        readonly: false,
-        validatonList: []
-    },
-    {
-        type: "checkbox",
-        name: "chkShowPassWord",
-        label: "Hiển thị mật khẩu:",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        readonly: false,
-        DataSourceMember: "",
-        validatonList: []
-    },
-    {
         type: "text",
         name: "txtFullName",
         label: "Họ tên đầy đủ:",
@@ -630,6 +592,70 @@ export const EditElementList = [
         listoption: [],
         readonly: false,
         DataSourceMember: "IsSystem",
+        validatonList: []
+    },
+    {
+        type: "button",
+        name: "btnSetNewPass",
+        label: "Đổi mật khẩu",
+        value: "",
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "checkbox",
+        name: "chkShowPassWord",
+        label: "Hiển thị mật khẩu:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        readonly: false,
+        DataSourceMember: "",
+        validatonList: []
+    },
+    {
+        type: "password",
+        name: "txtOldPassWord",
+        label: "Mật khẩu cũ:",
+        value: "",
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "password",
+        name: "txtPassWord",
+        label: "Mật khẩu mới:",
+        value: "",
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "password",
+        name: "txtPassWordConfirm",
+        label: "Xác nhận mật khẩu mới:",
+        value: "",
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "",
+        readonly: false,
         validatonList: []
     }
 ];
@@ -1046,6 +1072,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtPassWord",
         DataSourceMember: "PassWord"
+    },
+    {
+        Name: "OldPassWord",
+        DefaultValue: "",
+        BindControlName: "txtOldPassWord",
+        DataSourceMember: "OldPassWord"
     },
     {
         Name: "FullName",

@@ -48,6 +48,8 @@ class EditCom extends React.Component {
         this.initCache = this.initCache.bind(this);
         //this.initLimit = this.initLimit.bind(this);
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
+        this.handleSetNewPass = this.handleSetNewPass.bind(this);
+        this.displayInputControl = this.displayInputControl.bind(this);
         this.handleInputUserRoleDelete = this.handleInputUserRoleDelete.bind(this);
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
         this.addPartnerUser_IDDocumentPopup = this.addPartnerUser_IDDocumentPopup.bind(this);
@@ -114,11 +116,14 @@ class EditCom extends React.Component {
         this.callLoadData();
         this.props.updatePagePath(EditPagePath);
         this.initCache();
+
         // setTimeout(() => {
-        //     this.initLimit();
-        // }, 1000);
+        //     this.displayInputControl(false);
+        // }, 1500);
 
     }
+
+
 
     setLimit(name, elementValue) {
         var x = document.getElementsByName(name)[0];
@@ -194,6 +199,11 @@ class EditCom extends React.Component {
                 // apiResult.ResultObject.PassWord = null;
                 // apiResult.ResultObject.PassWordConfirm = null;
             }
+
+            setTimeout(() => {
+                this.displayInputControl(false);
+            }, 1000);
+
             this.setState({
                 IsLoadDataComplete: true
             });
@@ -423,6 +433,8 @@ class EditCom extends React.Component {
         });
     }
 
+
+
     handleOnInputChange(name, value) {
         this.setState({ IsNotSaved: true });
         if (name == "txtPassWord") {
@@ -432,6 +444,7 @@ class EditCom extends React.Component {
         } else if (name == "chkShowPassWord") {
             this.showPassWord("txtPassWord");
             this.showPassWord("txtPassWordConfirm");
+            this.showPassWord("txtOldPassWord");
             return;
         }
 
@@ -463,6 +476,17 @@ class EditCom extends React.Component {
         }
     }
 
+    displayInputControl(value) {
+        var selector = document.getElementsByClassName('form-row');
+        for (var i = 16; i <= 19; i++) {
+            var item = selector[i];
+            selector[i].style.display = value ? "" : "none";
+        }
+    }
+
+    handleSetNewPass() {
+        this.displayInputControl(true);
+    }
 
 
     handleSubmit(formData, MLObject) {
@@ -546,6 +570,7 @@ class EditCom extends React.Component {
                         BackLink={BackLink}
                         dataSource={this.state.DataSource}
                         onValueChange={this.handleOnInputChange}
+                        handleButtonClick={this.handleSetNewPass}
                         RequirePermission={PARTNERUSER_UPDATE}
                     >
                         <br />
