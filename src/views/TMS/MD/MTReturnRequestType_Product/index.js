@@ -160,6 +160,7 @@ class MTReturnRequestType_ProductCom extends React.Component {
                         MLObject.MTReturnRequestTypeID = this.state.MTReturnRequestTypeID;
                         MLObject.MaterialGroupID = MLObject.MaterialGroupID && Array.isArray(MLObject.MaterialGroupID) ? MLObject.MaterialGroupID[0] : MLObject.MaterialGroupID;
                         MLObject.ProductID = MLObject.ProductID[0].ProductID;
+                        MLObject.InventoryStatusID = MLObject.InventoryStatusID && Array.isArray(MLObject.InventoryStatusID) ? MLObject.InventoryStatusID[0] : MLObject.InventoryStatusID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
@@ -214,6 +215,7 @@ class MTReturnRequestType_ProductCom extends React.Component {
                         MLObject.MTReturnRequestTypeID = this.state.MTReturnRequestTypeID;
                         MLObject.MaterialGroupID = MLObject.MaterialGroupID && Array.isArray(MLObject.MaterialGroupID) ? MLObject.MaterialGroupID[0] : MLObject.MaterialGroupID;
                         MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
+                        MLObject.InventoryStatusID = MLObject.InventoryStatusID && Array.isArray(MLObject.InventoryStatusID) ? MLObject.InventoryStatusID[0] : MLObject.InventoryStatusID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
