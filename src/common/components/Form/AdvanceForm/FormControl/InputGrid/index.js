@@ -697,7 +697,6 @@ class InputGridCom extends Component {
         return listDataSourceMember;
     }
 
-
     renderInputGrid() {
         const listColumn = this.props.listColumn;
         let dataSource = this.props.dataSource;
@@ -878,6 +877,7 @@ class InputGridCom extends Component {
                                             DataSourceMember={dataSourceMember}
                                             onInsertClickEdit={this.handleInsertClickEdit}
                                             onValueChange={this.onValueChange}
+                                            onChangeInputNumber={(e) => this.props.onChangeInputNumber(e, rowItem, rowIndex)}
                                             index={rowIndex}
                                             isChecked={isChecked}
                                             IsFilterData={columnItem.IsFilterData}
@@ -897,7 +897,13 @@ class InputGridCom extends Component {
                                             maxSize={columnItem.maxSize}
                                             IsSystem={this.state.IsSystem}
                                             isNoneZero={columnItem.IsNoneZero}
-                                        // isAllowDecimal={columnItem.isAllowDecimal}
+                                            isDecimalInputNumber={rowItem.isDecimalInputNumber}
+                                            stepDecimalInputNumber={rowItem.stepDecimalInputNumber}
+                                            minInputNumber={rowItem.minInputNumber}
+                                            maxInputNumber={rowItem.maxInputNumber}
+                                            errorInputNumber={rowItem.errorInputNumber}
+                                            errMsgInputNumber={rowItem.errMsgInputNumber}
+                                            disabled={rowItem.disabled}
                                         />;
                                         return (
                                             <td key={columnItem.Name} style={cellStyle}  >{cellData}</td>

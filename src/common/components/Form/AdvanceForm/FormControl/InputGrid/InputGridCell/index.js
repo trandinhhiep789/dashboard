@@ -501,6 +501,43 @@ class InputGridCellCom extends Component {
                     let valueFormat = this.props.text ? Number(this.props.text).toLocaleString() : 0;
                     return <input className={className} name={this.props.name} value={valueFormat} type="text" placeholder={this.props.placeholder} onChange={this.handleInputChange} readOnly={isSystem} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} onKeyUp={(e) => { e.target.value = Number(this.formatNumeric(e.target.value)).toLocaleString() }} />;
                 }
+            case "inputNumber":
+                {
+                    const {
+                        isDecimalInputNumber,
+                        stepDecimalInputNumber,
+                        isNoneZero,
+                        maxInputNumber,
+                        minInputNumber,
+                        disabled,
+                        CSSClassName,
+                        errorInputNumber,
+                        errMsgInputNumber,
+                        value,
+                        text
+                    } = this.props;
+
+                    return (
+                        <React.Fragment>
+                            <InputNumber
+                                className={CSSClassName ? CSSClassName : "form-control form-control-sm"}
+                                min={minInputNumber}
+                                max={maxInputNumber}
+                                step={stepDecimalInputNumber ? stepDecimalInputNumber : 1}
+                                formatter={isDecimalInputNumber && (value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','))}
+                                parser={isDecimalInputNumber && (value => value.replace(/\$\s?|(,*)/g, ''))}
+                                disabled={disabled ? disabled : false}
+                                onChange={(e) => this.props.onChangeInputNumber(e)}
+                                defaultValue={text}
+                                value={value}
+                            />
+                            <div className={"text-danger"}>
+                                {errMsgInputNumber}
+                            </div>
+
+                        </React.Fragment>
+                    )
+                }
             case "textarea":
                 {
                     let className = "form-control form-control-sm";

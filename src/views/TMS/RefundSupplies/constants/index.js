@@ -437,56 +437,72 @@ export const InputMTReturnRequestDetailColumnListNew = [
         Type: "text",
         Caption: "Nhóm vật tư",
         DataSourceMember: "MaterialGroupID",
-        Width: 100
+        Width: 60
     },
     {
         Name: "ProductID",
         Type: "text",
         Caption: "Mã sản phẩm",
         DataSourceMember: "ProductID",
-        Width: 150
+        Width: 80
     },
     {
         Name: "ProductName",
         Type: "text",
         Caption: "Tên sản phẩm",
         DataSourceMember: "ProductName",
-        Width: 300
+        Width: 200
     },
     {
         Name: "QuantityUnit",
         Type: "text",
-        Caption: "Đơn vị tính",
+        Caption: "Đơn vị",
         DataSourceMember: "QuantityUnit",
-        Width: 100
+        Width: 60
+    },
+    {
+        Name: "IsAllowdUpliCatiOnProduct",
+        Type: "checkbox",
+        Caption: "Thêm trùng",
+        DataSourceMember: "IsAllowdUpliCatiOnProduct",
+        Width: 60
+    },
+
+
+    {
+        Name: "IsCheckMinMaxQuantity",
+        Type: "checkbox",
+        Caption: "Có kiểm tra SL",
+        DataSourceMember: "IsCheckMinMaxQuantity",
+        Width: 70
     },
     {
         Name: "MinQuantity",
         Type: "textCurrency",
         Caption: "SL nhỏ nhất",
         DataSourceMember: "MinQuantity",
-        Width: 80
+        Width: 60
     },
     {
         Name: "MaxQuantity",
         Type: "textCurrency",
         Caption: "SL lớn nhất",
         DataSourceMember: "MaxQuantity",
-        Width: 80
+        Width: 60
     },
     {
         Name: "TotalQuantity",
         Type: "textNew",
         Caption: "Số dư tạm ứng",
         DataSourceMember: "TotalQuantity",
-        Width: 80
+        Width: 70
     },
     {
         Name: "Quantity",
         Type: "textbox",
         Caption: "SL nhập trả",
         DataSourceMember: "Quantity",
-        Width: 150
+        Width: 100
     }
 ];
 

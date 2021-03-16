@@ -132,7 +132,6 @@ class AddCom extends React.Component {
 
     GetDataByRequestTypeID(MtreturnRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByMTRRequestTypeIDPath, MtreturnRequestTypeID).then(apiResult => {
-            console.log("id", apiResult.ResultObject)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -286,10 +285,7 @@ class AddCom extends React.Component {
 
 
             MLObject.IsCreatedInputVoucher = false;
-            MLObject.lstMTReturnRequestDetail = MTReturnRequestDetail; //
-
-            console.log("MLObject", MLObject);
-
+            MLObject.lstMTReturnRequestDetail = MTReturnRequestDetail;
 
             this.handleSubmit(MLObject)
         }
@@ -414,7 +410,7 @@ class AddCom extends React.Component {
             isAutoReview,
             gridMTReturnRequestRLSort
         } = this.state;
-        console.log("IsAllowdUpliCatiOnProduct", this.state.IsAllowdUpliCatiOnProduct)
+
         return (
             <React.Fragment>
                 <FormContainer
