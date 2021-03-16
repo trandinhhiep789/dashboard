@@ -30,7 +30,7 @@ import {
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
-import MTReturnRequestDetailElement from "../Component/MTReturnRequestDetailElementCom";
+import ModalAddReturnRequestDetail from "../Component/ModalAddReturnRequestDetail";
 import MTReturnRequestRVList from '../Component/MTReturnRequestRVList';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import { showModal, hideModal } from '../../../../actions/modal';
@@ -596,7 +596,7 @@ class EditCom extends React.Component {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Thêm chi tiết nhập trả vật tư',
             content: {
-                text: <MTReturnRequestDetailElement
+                text: <ModalAddReturnRequestDetail
                     dataSource={this.state.MTReturnRequestDetailModal}
                     dataCompare={this.state.MTReturnRequestDetailNew}
                     multipleCheck={false}

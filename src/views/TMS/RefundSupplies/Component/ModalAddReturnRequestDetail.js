@@ -86,7 +86,8 @@ class ModalAddReturnRequestDetailCom extends Component {
 
             dataSelect.forEach(item => {
                 dataCompare.forEach(element => {
-                    if (item.MaterialGroupID == element.MaterialGroupID && item.ProductID == element.ProductID) {
+                    if (item.MaterialGroupID.trim() == element.MaterialGroupID.trim()
+                        && item.ProductID.trim() == element.ProductID.trim()) {
                         flagCheck = true;
                         return;
                     }
@@ -138,7 +139,8 @@ class ModalAddReturnRequestDetailCom extends Component {
             errMsgInputNumber = null;
             errorInputNumber = false;
         } else if (e == maxInputNumber) {
-            errMsgInputNumber = IsCheckMinMaxQuantity ? `Số lượng tạm ứng nhỏ hơn hoặc bằng ${MaxQuantity}` : `Số lượng tạm ứng nhỏ hơn hoặc bằng ${TotalQuantity}`;
+            // errMsgInputNumber = IsCheckMinMaxQuantity ? `Số lượng tạm ứng nhỏ hơn hoặc bằng ${MaxQuantity}` : `Số lượng tạm ứng nhỏ hơn hoặc bằng ${TotalQuantity}`;
+            errMsgInputNumber = null;
             errorInputNumber = false;
         }
 
