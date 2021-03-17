@@ -109,6 +109,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("report", searchData, apiResult)
             if (apiResult && !apiResult.IsError && apiResult.ResultObject) {
 
                 const tempData = apiResult.ResultObject.filter(a => a.MaterialGroupID.trim() == this.state.ConfigValue);
@@ -251,7 +252,6 @@ class SearchCom extends React.Component {
 
     onShowModal(data, typeDataGrid) {
         const { widthPercent, MLObject, Month } = this.state;
-        const formatMonth = `${Month.getMonth() + 1}-${Month.getFullYear()}`;
 
         switch (typeDataGrid) {
             case 1:
@@ -260,7 +260,7 @@ class SearchCom extends React.Component {
                     content: {
                         text: <ModalBox
                             UserName={MLObject.UserName.label}
-                            Month={formatMonth}
+                            Month={Month}
                             listColumn={DataGridModalQuantityHanOverDone}
                             dataSource={data}
                         />
@@ -274,7 +274,7 @@ class SearchCom extends React.Component {
                     content: {
                         text: <ModalBox
                             UserName={MLObject.UserName.label}
-                            Month={formatMonth}
+                            Month={Month}
                             listColumn={DataGridModalQuantityHanOverDoing}
                             dataSource={data}
                         />
@@ -288,7 +288,7 @@ class SearchCom extends React.Component {
                     content: {
                         text: <ModalBox
                             UserName={MLObject.UserName.label}
-                            Month={formatMonth}
+                            Month={Month}
                             listColumn={DataGridModalQuantityReturn}
                             dataSource={data}
                         />
@@ -302,7 +302,7 @@ class SearchCom extends React.Component {
                     content: {
                         text: <ModalBox
                             UserName={MLObject.UserName.label}
-                            Month={formatMonth}
+                            Month={Month}
                             listColumn={DataGridModalChangeTotalQuantity}
                             dataSource={data}
                         />
@@ -329,7 +329,6 @@ class SearchCom extends React.Component {
                 IsHandOverMaterial: 1 // v_ISHANDOVERMATERIAL
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
-                console.log('1', objData, apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status);
                 }
@@ -347,7 +346,6 @@ class SearchCom extends React.Component {
                 IsHandOverMaterial: 0 // v_ISHANDOVERMATERIAL
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
-                // console.log('2', objData, apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status);
                 }
@@ -357,15 +355,22 @@ class SearchCom extends React.Component {
             });
         }
         if (status == 3) { //Nhập trả
-            this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
-                if (!apiResult.IsError) {
-                    // console.log('3:', objData, apiResult)
-                    this.onShowModal(apiResult.ResultObject, status);
-                }
-                else {
-                    this.showMessage(apiResult.MessageDetail)
-                }
-            });
+            objData = {
+                Month: Month,
+                UserName: UserName,
+                ProductID: objValue[0].value,
+                IsHandOverMaterial: 0 // v_ISHANDOVERMATERIAL
+            }
+            this.showMessage("Tính năng đang phát triển.")
+            // this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/GetExchangeOrderByUser", objData).then(apiResult => {
+            //     if (!apiResult.IsError) {
+            //         console.log('3:', objData, apiResult)
+            //         // this.onShowModal(apiResult.ResultObject, status);
+            //     }
+            //     else {
+            //         // this.showMessage(apiResult.MessageDetail)
+            //     }
+            // });
         }
         if (status == 4) { //	Sử dụng trong kỳ
             objData = {
@@ -374,7 +379,6 @@ class SearchCom extends React.Component {
                 ProductID: objValue[0].value
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceDebtFlow/LoadAdvanceDebtFlowUsing", objData).then(apiResult => {
-                 console.log('4:', objData, apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status);
                 }

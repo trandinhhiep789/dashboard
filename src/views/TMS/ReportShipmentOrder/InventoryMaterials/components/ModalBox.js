@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import DataGrid from '../../../../../common/components/DataGrid'
-
+import { formatMonthYear } from "../../../../../common/library/CommonLib.js";
 export default class ModalBox extends Component {
     constructor(props) {
         super(props);
@@ -8,6 +8,7 @@ export default class ModalBox extends Component {
     }
     render() {
         const { UserName, Month, listColumn, dataSource } = this.props;
+        console.log("1212", this.props)
         return (
             <React.Fragment>
                 <div className="col-12" style={{ textAlign: "initial" }}>
@@ -23,7 +24,7 @@ export default class ModalBox extends Component {
                             <label className="col-form-label bold">Tháng:</label>
                         </div>
                         <div className="col-md-4">
-                            <label className="col-form-label">{Month}</label>
+                            <label className="col-form-label">{formatMonthYear(Month, true)}</label>
                         </div>
                     </div>
                 </div>
