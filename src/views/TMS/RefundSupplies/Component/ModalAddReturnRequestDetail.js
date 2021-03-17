@@ -41,7 +41,6 @@ class ModalAddReturnRequestDetailCom extends Component {
                     maxInputNumber: TotalQuantity,
                     disabled: TotalQuantity == 0 ? true : false,
                     isDisabled: IsAllowdUpliCatiOnProduct ? true : false,
-                    isDecimalInputNumber: true,
                     stepDecimalInputNumber: QuantityUnit.trim() == "Mét" ? "0.01" : 1
                 }
             }

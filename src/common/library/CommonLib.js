@@ -84,7 +84,7 @@ export function formatMonthDate(dateString, notGetTime) {
     if (dateString) {
         try {
             const d = new Date(Date.parse(dateString));
-            let dateStringFormated = ConvertStr(d.getDate()) + "/" + ConvertStr(d.getMonth() + 1) 
+            let dateStringFormated = ConvertStr(d.getDate()) + "/" + ConvertStr(d.getMonth() + 1)
             if (!notGetTime)
                 dateStringFormated += " " + ConvertStr(d.getHours()) + ":" + ConvertStr(d.getMinutes());
             return dateStringFormated;
@@ -94,6 +94,22 @@ export function formatMonthDate(dateString, notGetTime) {
     }
     return dateString;
 }
+
+export function formatMonthYear(dateString, notGetTime) {
+    if (dateString) {
+        try {
+            const d = new Date(Date.parse(dateString));
+            let dateStringFormated = ConvertStr(d.getMonth() + 1) + "/" + d.getFullYear().toString()
+            if (!notGetTime)
+                dateStringFormated += " " + ConvertStr(d.getHours()) + ":" + ConvertStr(d.getMinutes());
+            return dateStringFormated;
+        } catch (error) {
+            return dateString;
+        }
+    }
+    return dateString;
+}
+
 export function setCookie(cname, cvalue, exminute) {
     var d = new Date();
     d.setTime(d.getTime() + (exminute * 60 * 1000));
