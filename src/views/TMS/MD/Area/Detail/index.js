@@ -183,6 +183,7 @@ class DetailCom extends React.Component {
                     <br />
                     <Area_Store
                         AreaID={this.props.match.params.id}
+                        AreaTypeID={this.state.DataSource.AreaTypeID}
                         AreaStoreDataSource={this.state.AreaStore ? this.state.AreaStore : []}
                         AreaStoreAllDataSource={this.state.AreaStoreAll? this.state.AreaStoreAll : []}
                         onAreaStoreChange={this.onComponentChange}

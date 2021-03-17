@@ -41,6 +41,7 @@ class Area_StoreCom extends React.Component {
             AreaStoreDataSource: this.props.AreaStoreDataSource ? this.props.AreaStoreDataSource : [],
             AreaStoreAllDataSource: this.props.AreaStoreAllDataSource ? this.props.AreaStoreAllDataSource : [],
             AreaID: this.props.AreaID,
+            AreaTypeID: this.props.AreaTypeID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
             ModalColumnList_Edit: ModalColumnList_Edit
@@ -53,7 +54,9 @@ class Area_StoreCom extends React.Component {
         if (nextProps.AreaID !== this.state.AreaID) {
             this.setState({ AreaID: nextProps.AreaID });
         }
-
+        if (nextProps.AreaTypeID !== this.state.AreaTypeID) {
+            this.setState({ AreaTypeID: nextProps.AreaTypeID });
+        }
         if (nextProps.AreaStoreAllDataSource !== this.state.AreaStoreAllDataSource) {
             this.setState({ AreaStoreAllDataSource: nextProps.AreaStoreAllDataSource });
         }
@@ -271,7 +274,7 @@ class Area_StoreCom extends React.Component {
 
 
 
-        console.log("modalElementList", modalElementList, this.state.AreaStoreDataSource);
+        //console.log("modalElementList", modalElementList, this.state.AreaStoreDataSource);
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Thêm mới kho điều phối của khu vực',
             autoCloseModal: false,
@@ -283,6 +286,7 @@ class Area_StoreCom extends React.Component {
                     if (MLObject) {
                         MLObject.AreaStoreCSID = this.state.AreaID + "," + MLObject.StoreID;
                         MLObject.AreaID = this.state.AreaID;
+                        MLObject.AreaTypeID = this.state.AreaTypeID;
                         MLObject.StoreID = MLObject.StoreID && Array.isArray(MLObject.StoreID) ? MLObject.StoreID[0] : MLObject.StoreID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
@@ -358,6 +362,7 @@ class Area_StoreCom extends React.Component {
                     if (MLObject) {
                         MLObject.AreaStoreCSID = this.state.AreaID + "," + MLObject.StoreID;
                         MLObject.AreaID = this.state.AreaID;
+                        MLObject.AreaTypeID = this.state.AreaTypeID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         // let _AreaStoreDataSource = this.state.AreaStoreDataSource
