@@ -9,7 +9,6 @@ import { MessageModal } from "../../../../common/components/Modal";
 import { formatDate } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
-import { TMS_MTRETURNREQUEST_VIEW, TMS_MTRETURNREQUEST_DELETE } from "../../../../constants/functionLists";
 import {
 
     APIHostName,
@@ -32,6 +31,8 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache } from "../../../../actions/cacheAction";
 import ListMTReturnRequestType from "../Component/ListMTReturnRequestType";
+
+import { TMS_MTRETURNREQUEST_VIEW, TMS_MTRETURNREQUEST_DELETE } from "../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -231,8 +232,8 @@ class SearchCom extends React.Component {
                     IsAutoPaging={true}
                     RowsPerPage={20}
                     IsExportFile={false}
-                // RequirePermission={TMS_MTRETURNREQUEST_VIEW}
-                // DeletePermission={TMS_MTRETURNREQUEST_DELETE}
+                    RequirePermission={TMS_MTRETURNREQUEST_VIEW}
+                    DeletePermission={TMS_MTRETURNREQUEST_DELETE}
                 />
             </React.Fragment>
         );

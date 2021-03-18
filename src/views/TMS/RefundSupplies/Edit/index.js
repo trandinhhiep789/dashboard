@@ -34,6 +34,7 @@ import ModalAddReturnRequestDetail from "../Component/ModalAddReturnRequestDetai
 import MTReturnRequestRVList from '../Component/MTReturnRequestRVList';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import { showModal, hideModal } from '../../../../actions/modal';
+import { TMS_MTRETURNREQUEST_UPDATE } from "../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -671,7 +672,7 @@ class EditCom extends React.Component {
                         listelement={[]}
                         BackLink={BackLink}
                         onSubmit={this.prevDataSubmit}
-                        // RequirePermission={DESTROYREQUEST_UPDATE}
+                        RequirePermission={TMS_MTRETURNREQUEST_UPDATE}
                         onchange={this.handleChange.bind(this)}
                         IsDisabledSubmitForm={this.state.IsSystem}
                     >

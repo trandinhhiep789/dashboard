@@ -30,7 +30,7 @@ import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
-import { REFUNDSUPPLIES_ADD } from "../../../../constants/functionLists";
+import { TMS_MTRETURNREQUEST_ADD } from "../../../../constants/functionLists";
 import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import ModalAddReturnRequestDetail from "../Component/ModalAddReturnRequestDetail";
@@ -418,7 +418,7 @@ class AddCom extends React.Component {
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={[]}
                     BackLink={BackLink}
-                    // RequirePermission={REFUNDSUPPLIES_ADD}
+                    RequirePermission={TMS_MTRETURNREQUEST_ADD}
                     onSubmit={this.prevDataSubmit}
                     onchange={this.handleChange.bind(this)}
                 >
