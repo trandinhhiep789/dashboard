@@ -42,7 +42,8 @@ class SearchCom extends React.Component {
             CallAPIMessage: "",
             gridDataSource: [],
             IsCallAPIError: false,
-            SearchData: InitSearchParams
+            SearchData: InitSearchParams,
+            dataExport: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -127,9 +128,24 @@ class SearchCom extends React.Component {
                     return item;
                 })
 
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã yêu cầu": item.MTReturnRequestID,
+                        "Loại yêu cầu nhập trả vật tư": item.MTReturnRequestTypeName,
+                        "Kho yêu cầu": item.StoreName,
+                        "Ngày yêu cầu": formatDate(item.RequestDate, true),
+                        "Người yêu cầu": item.ApproverName,
+                        "Đã duyệt": item.ReviewStatusLable.props.children,
+                        "Phiếu nhập": item.CreatedInputVoucherStatusLable.props.children
+                    };
+
+                    return element;
+                })
+
                 this.setState({
                     gridDataSource: dataSource,
                     IsCallAPIError: apiResult.IsError,
+                    dataExport: tempData
                 });
                 //this.callDataTest()
             }
@@ -205,6 +221,10 @@ class SearchCom extends React.Component {
         });
     }
 
+    onExportFile(result) {
+        this.addNotification(result.Message);
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -231,7 +251,10 @@ class SearchCom extends React.Component {
                     IsDelete={true}
                     IsAutoPaging={true}
                     RowsPerPage={20}
-                    IsExportFile={false}
+                    IsExportFile={true}
+                    DataExport={this.state.dataExport}
+                    onExportFile={this.onExportFile.bind(this)}
+                    fileName="Danh sách yêu cầu nhập trả vật tư"
                     RequirePermission={TMS_MTRETURNREQUEST_VIEW}
                     DeletePermission={TMS_MTRETURNREQUEST_DELETE}
                 />
