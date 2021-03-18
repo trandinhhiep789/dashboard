@@ -19,7 +19,10 @@ import {
     InputMTReturnRequestDetailColumnList,
     GirdMTReturnRequestReviewLevelColumnList,
     UpdateCurrentReviewLevelAPIPath,
-    UpdateCreateVocherAPIPath
+    UpdateCreateVocherAPIPath,
+    AddAPIComment,
+    AddAPIAttachment,
+    DeleteAPIAttachment
 } from '../constants';
 import InputGrid from '../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
 import Attachment from "../../../../common/components/Attachment";
@@ -191,20 +194,77 @@ export class DetailCom extends Component {
 
     }
 
-    handleSelectFile() {
-        this.showMessage("Tính năng đang phát triển")
+    handleSelectFile(e) {
+        const { MTReturnRequestID, RenfundSupplies } = this.state;
+        var data = new FormData();
+        let MLObject = {
+            MTReturnRequestID,
+            RequestDate: RenfundSupplies.RequestDate,
+        }
+
+        data.append('file', e.target.files[0])
+        data.append("ObjMTReturnRequest_Attachment", JSON.stringify(MLObject));
+        console.log(MLObject)
+
+        this.props.callFetchAPI(APIHostName, AddAPIAttachment, data).then((apiResult) => {
+            console.log(apiResult)
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.callLoadData(MTReturnRequestID);
+                this.addNotification(apiResult.Message, apiResult.IsError)
+            }
+        })
     }
 
-    handleDeletefile() {
+    handleDeletefile(id) {
+        const { MTReturnRequestID } = this.state;
+        let MLObject = {
+            AttachmentID: id
+        }
 
+        this.props.callFetchAPI(APIHostName, DeleteAPIAttachment, MLObject).then((apiResult) => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.callLoadData(MTReturnRequestID);
+                this.addNotification(apiResult.Message, apiResult.IsError)
+            }
+        })
     }
 
     handleChangeValue() {
 
     }
 
-    handleKeyPressSumit() {
-        this.showMessage("Tính năng đang phát triển")
+    handleKeyPressSumit(CommentValue) {
+        const { MTReturnRequestID, RenfundSupplies } = this.state;
+        let MLObject = {
+            MTReturnRequestID,
+            RequestDate: RenfundSupplies.RequestDate,
+            CommentContent: CommentValue
+        };
+
+        this.props.callFetchAPI(APIHostName, AddAPIComment, MLObject).then((apiResult) => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.callLoadData(MTReturnRequestID);
+                this.addNotification(apiResult.Message, apiResult.IsError)
+            }
+        })
     }
 
     handleSubmitCreateVoucheRenfundSupplies() {
@@ -273,7 +333,7 @@ export class DetailCom extends Component {
         console.log("aa", MLObject);
 
         this.props.callFetchAPI(APIHostName, UpdateCurrentReviewLevelAPIPath, MLObject).then((apiResult) => {
-             console.log("id",  apiResult)
+            console.log("id", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -454,7 +514,7 @@ export class DetailCom extends Component {
                         />
 
                         <Comment
-                            DataComments={[]}
+                            DataComments={MTReturnRequest_CommentList}
                             IsComment={true}
                             onChangeValue={this.handleChangeValue}
                             onKeyPressSumit={this.handleKeyPressSumit}
