@@ -10,7 +10,8 @@ import {
     LoadAPIPath,
     BackLink,
     EditPagePath,
-    DetailPagePath
+    DetailPagePath,
+    GetMaterialProductAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -57,6 +58,18 @@ class DetailCom extends React.Component {
                 IsLoadDataComplete: true
             });
             //console.log("apiResult", apiResult);
+        });
+        
+        this.props.callFetchAPI(APIHostName, GetMaterialProductAPIPath, id).then(apiResult => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            } else {
+                this.setState({ MaterialProductDataSource: apiResult.ResultObject });
+            }
+            console.log("apiResult", apiResult);
         });
     }
 
@@ -217,6 +230,7 @@ class DetailCom extends React.Component {
                         MTReturnRequestTypeID={this.props.match.params.id}
                         DataSource={this.state.DataSource.ListMTReturnRequestType_Product ? this.state.DataSource.ListMTReturnRequestType_Product : []}
                         onComponentChange={this.onComponentChange}
+                        MaterialProductDataSource={this.state.MaterialProductDataSource ? this.state.MaterialProductDataSource : []}
                     />
 
                     <br />

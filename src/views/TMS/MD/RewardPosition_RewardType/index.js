@@ -15,7 +15,7 @@ import {
 import ReactNotification from "react-notifications-component";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
-import { callGetCache, callClearLocalCache,callGetUserCache } from "../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST, INVENTORYREQUESTTYPE_ADD, INVENTORYREQUESTTYPE_DELETE, INVENTORYREQUESTTYPE_UPDATE, REWARDPOSITION_REWARDTYPE_ADD, REWARDPOSITION_REWARDTYPE_DELETE, REWARDPOSITION_REWARDTYPE_UPDATE } from "../../../../constants/functionLists";
 
 class RewardPosition_RewardTypeCom extends React.Component {
@@ -25,6 +25,7 @@ class RewardPosition_RewardTypeCom extends React.Component {
         this.handleInsert = this.handleInsert.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleModalChange = this.handleModalChange.bind(this);
         this.onClose = this.onClose.bind(this);
         this.state = {
             CallAPIMessage: "",
@@ -109,7 +110,7 @@ class RewardPosition_RewardTypeCom extends React.Component {
         let IsAllowedAdd = false;
         let IsAllowedUpdate = false;
         let IsAllowedDelete = false;
-        
+
         this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == REWARDPOSITION_REWARDTYPE_ADD);
@@ -134,13 +135,25 @@ class RewardPosition_RewardTypeCom extends React.Component {
             }
         });
     }
-    
+
     onClose() {
 
     }
 
+    displayInputControl(elementValue) {
+        var selector = document.getElementsByClassName("form-row");
+            selector[8].style.display = elementValue ? "" : "none";
+    }
+
+    handleModalChange(formData, formValidation, elementName, elementValue) {
+        if (elementName == "IsLimitTotalReward") {
+            var selector = document.getElementsByClassName("form-row");
+            selector[8].style.display = elementValue ? "" : "none";
+        }
+    }
+
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
-        if(!this.state.IsAllowedAdd){
+        if (!this.state.IsAllowedAdd) {
             this.showMessage("Bạn không có quyền");
             return;
         }
@@ -148,7 +161,7 @@ class RewardPosition_RewardTypeCom extends React.Component {
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Thêm mới loại thưởng của một vị trí thưởng',
             autoCloseModal: false,
-            //onValueChange: this.handleModalChange,
+            onValueChange: this.handleModalChange,
             onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
@@ -175,7 +188,7 @@ class RewardPosition_RewardTypeCom extends React.Component {
     }
 
     handleEdit(value, pkColumnName) {
-        if(!this.state.IsAllowedUpdate){
+        if (!this.state.IsAllowedUpdate) {
             this.showMessage("Bạn không có quyền");
             return;
         }
@@ -197,9 +210,14 @@ class RewardPosition_RewardTypeCom extends React.Component {
             }
         });
 
+        let _IsLimitTotalReward = _RewardPosition_RewardType_DataSource.IsLimitTotalReward;
+        setTimeout(() => {
+            this.displayInputControl(_IsLimitTotalReward);
+        }, 100);
+
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Chỉnh sửa loại thưởng của một vị trí thưởng',
-            //onValueChange: this.handleModalChange,
+            onValueChange: this.handleModalChange,
             onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
@@ -241,7 +259,7 @@ class RewardPosition_RewardTypeCom extends React.Component {
             pkColumnName.map((pkItem, pkIndex) => {
                 MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
             });
-            
+
             let _deleteList = _RewardPosition_RewardType_DataSource.filter(item => item.RewardPositionCSID == MLObject.RewardPositionCSID);
             if (_deleteList && _deleteList.length > 0) {
                 _deleteList[0].DeletedUser = this.props.AppInfo.LoginInfo.Username;

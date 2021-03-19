@@ -5,6 +5,7 @@ export const AddAPIPath = "api/MTReturnRequestType/Add";
 export const UpdateAPIPath = "api/MTReturnRequestType/Update";
 export const DeleteAPIPath = "api/MTReturnRequestType/Delete";
 export const UpdateOrderAPIPath = "api/MTReturnRequestType/UpdateOrder";
+export const GetMaterialProductAPIPath= "api/MaterialGroup_Product/GetAll";
 export const BackLink = "/MTReturnRequestType";
 export const AddLink = "/MTReturnRequestType/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";

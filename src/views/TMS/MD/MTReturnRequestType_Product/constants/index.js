@@ -23,20 +23,37 @@ export const ModalColumnList_Insert = [
     },
     {
         Name: "ProductID",
-        type: "productbox",
-        label: "Mã sản phẩm vật tư",
-        colspan: 12,
-        isMulti: false,
+        type: "multiselect",
+        label: "sản phẩm vật tư",
         DataSourceMember: "ProductID",
         readonly: false,
-        validatonList: ["Comborequired"]
+        value: -1,
+        listoption: [],
+        validatonList: ["Comborequired"],
+        isMulti: false,
+        IsAutoLoadItemFromCache: false,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.MATERIALGROUP",
+        ValueMember: "MaterialGroupID",
+        NameMember: "MaterialGroupName",
+        // KeyFilter: "FunctionCategoryID",
+        // ValueFilter: "1,2"
     },
+    // {
+    //     Name: "ProductID",
+    //     type: "productbox",
+    //     label: "Mã sản phẩm vật tư",
+    //     colspan: 12,
+    //     isMulti: false,
+    //     DataSourceMember: "ProductID",
+    //     readonly: false,
+    //     validatonList: ["Comborequired"]
+    // },
     {
         Name: "IsCheckMinMaxQuality",
         type: "checkbox",
         label: "Có kiểm tra số lượng nhỏ nhất, lớn nhất",
         colspan: 12,
-        value: false,
+        value: true,
         DataSourceMember: "IsCheckMinMaxQuality",
         readonly: false,
         validatonList: []
@@ -49,7 +66,7 @@ export const ModalColumnList_Insert = [
         value: 0,
         DataSourceMember: "MinQuality",
         readonly: false,
-        validatonList: ["number"]
+        validatonList: ["digit"]
     },
     {
         Name: "MaxQuality",
@@ -59,7 +76,7 @@ export const ModalColumnList_Insert = [
         value: 0,
         DataSourceMember: "MaxQuality",
         readonly: false,
-        validatonList: ["number"]
+        validatonList: ["digit"]
     },
     {
         Name: "InventoryStatusID",

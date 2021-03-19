@@ -164,7 +164,7 @@ class EditCom extends React.Component {
                 this.showMessage(apiResult.Message);
             } else {
                 //apiResult.ResultObject.Birthday = apiResult.ResultObject.BirthdayString;
-                apiResult.ResultObject.PartnerRoleID = apiResult.ResultObject.ListPartnerUser_Role ? apiResult.ResultObject.ListPartnerUser_Role[0].PartnerRoleID : -1;
+                apiResult.ResultObject.PartnerRoleID = apiResult.ResultObject.ListPartnerUser_Role.length > 0 ? apiResult.ResultObject.ListPartnerUser_Role[0].PartnerRoleID : -1;
                 if (key === undefined) {
 
                     //khởi tạo kho điều phối
@@ -190,7 +190,7 @@ class EditCom extends React.Component {
                         PassWordConfirm: apiResult.ResultObject.PassWord,
                         ListPartnerUser_IDDocument: apiResult.ResultObject.ListPartnerUser_IDDocument,
                         Birthday: apiResult.ResultObject.Birthday,
-                        PartnerRoleID: apiResult.ResultObject.ListPartnerUser_Role ? apiResult.ResultObject.ListPartnerUser_Role[0].PartnerRoleID : -1,
+                        PartnerRoleID: apiResult.ResultObject.PartnerRoleID,
                         EditElementList: _editElement
                     });
                 } else {
@@ -520,6 +520,13 @@ class EditCom extends React.Component {
         //     myDate.setDate(myDate.getDate() + 1);
         //     MLObject.Birthday = myDate;
         // }
+
+        ///kiểm tra người dùng đủ 18 tuổi
+        let validYearOld = (new Date()).getFullYear() - (new Date(MLObject.Birthday)).getFullYear();
+        if(validYearOld < 18){
+            this.showMessage2("Yêu cầu người dùng trên 18 tuổi.");
+            return;
+        }
 
         try {
             MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());

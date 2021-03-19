@@ -111,7 +111,7 @@ export const ModalColumnList_Insert = [
         DataSourceMember: "IsLimitTotalReward",
         readonly: false,
         validatonList: [],
-        value: false
+        value: true
     },
     {
         Name: "MaxTotalReward",

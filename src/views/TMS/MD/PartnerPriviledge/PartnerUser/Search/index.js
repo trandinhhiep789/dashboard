@@ -270,7 +270,18 @@ class SearchCom extends React.Component {
                         //     MLObject.Birthday = myDate;
                         // }
 
+                        ///kiểm tra người dùng đủ 18 tuổi
+                        let validYearOld = (new Date()).getFullYear() - (new Date(MLObject.Birthday)).getFullYear();
+                        if(validYearOld < 18){
+                            this.addNotification("Yêu cầu người dùng trên 18 tuổi.", true);
+                            return;
+                        }
+
+
                         MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
+
+                        
+
 
                         if (MLObject.PartnerRoleID == 1) {// quản lý
                             MLObject.LimitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
