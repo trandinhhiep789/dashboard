@@ -42,7 +42,7 @@ class RewardPriceTableInfoCom extends Component {
                         <label className="col-form-label bold">Khu vực:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{RewardPriceTableInfo.AreaName}</label>
+                        <label className="col-form-label">{RewardPriceTableInfo.AreaNameList}</label>
                     </div>
                 </div>
 
