@@ -554,7 +554,7 @@ export const EditElementList = [
         listoption: [],
         DataSourceMember: "IdCardNumber",
         readonly: false,
-        validatonList: ["number"]
+        validatonList: ["required", "number"]
     },
     {
         type: "textarea",
