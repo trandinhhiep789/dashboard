@@ -143,7 +143,7 @@ class InfoProductCom extends Component {
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                 <thead className="thead-light">
                                     <tr>
-                                       <th className="jsgrid-header-cell">Ngày cập nhật</th>
+                                        <th className="jsgrid-header-cell">Ngày cập nhật</th>
                                         <th className="jsgrid-header-cell">Người cập nhật</th>
                                         <th className="jsgrid-header-cell">Tổng tiền thu hộ cũ</th>
                                         <th className="jsgrid-header-cell">Tổng tiền thu hộ mới</th>
@@ -155,7 +155,7 @@ class InfoProductCom extends Component {
                                         this.state.ShipmentOrder_CodUpdLogLst && this.state.ShipmentOrder_CodUpdLogLst.map((item, index) => {
                                             return (
                                                 <tr key={index}>
-                                                     <td>{formatDate(item.CreatedDate)}</td>
+                                                    <td>{formatDate(item.CreatedDate)}</td>
                                                     <td>{item.CreatedUser + "-" + item.CreatedUserFullName}</td>
                                                     <td>{formatMoney(item.OldTotalcod, 0)}</td>
                                                     <td>{formatMoney(item.NewTotalcod, 0)}</td>
@@ -216,7 +216,26 @@ class InfoProductCom extends Component {
                         </div>
 
                         <div className="form-row">
-                         
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Mã chương trình bán hàng:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label lbl-currency">
+                                    {this.state.ShipmentOrder.SaleProgramID}
+                                </label>
+                            </div>
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Mã đối tác cung cấp dịch vụ trả góp(Công ty tài chính):</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label lbl-currency">
+                                    {this.state.ShipmentOrder.InstalmentPartnerID}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div className="form-row">
+
                             <div className="form-group col-md-2">
                                 <label className="col-form-label bold">Tổng tiền COD:</label>
                             </div>
@@ -284,9 +303,9 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label bold">Nộp tiền thu ngân:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                {(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD - this.state.ShipmentOrder.TotalReturnPrice)>0?
-                         this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : <span className="badge badge-danger">Chưa nộp tiền</span>:""
-                         }
+                                {(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD - this.state.ShipmentOrder.TotalReturnPrice) > 0 ?
+                                    this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : <span className="badge badge-danger">Chưa nộp tiền</span> : ""
+                                }
                             </div>
                         </div>
 
