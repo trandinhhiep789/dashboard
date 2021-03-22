@@ -330,10 +330,10 @@ export const DataGridColumnList = [
         Width: 120
     },
     {
-        Name: "ComputeInterval",
+        Name: "ComputeIntervalString",
         Type: "text",
-        Caption: "Thời gian tính(giây)",
-        DataSourceMember: "ComputeInterval",
+        Caption: "Thời gian tính",
+        DataSourceMember: "ComputeIntervalString",
         Width: 150
     },
     {

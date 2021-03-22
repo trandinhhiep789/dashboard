@@ -202,7 +202,7 @@ class EditCom extends React.Component {
 
             setTimeout(() => {
                 this.displayInputControl(false);
-            }, 1000);
+            }, 600);
 
             this.setState({
                 IsLoadDataComplete: true
@@ -497,6 +497,8 @@ class EditCom extends React.Component {
             this.showMessage("Xác nhận mật khẩu chưa đúng.");
             return false;
         }
+
+        MLObject.FullName = MLObject.FullName.toUpperCase();
 
         let fullName = MLObject.FullName.split(" ");
         let firstName = fullName[fullName.length - 1];

@@ -244,6 +244,8 @@ class SearchCom extends React.Component {
                         //     return false;
                         // }
 
+                        MLObject.FullName = MLObject.FullName.toUpperCase();
+
                         let fullName = MLObject.FullName.split(" ");
                         let firstName = fullName[fullName.length - 1];
                         let lastName = "";

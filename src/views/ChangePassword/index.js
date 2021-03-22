@@ -45,7 +45,7 @@ class ChangePasswordCom extends React.Component {
     }
     render() {
         let listElement1 = ElementList;
-        listElement1[0].value = this.props.AppInfo.LoginInfo.LoginUserInfo.UserName;
+      //  listElement1[0].value = this.props.AppInfo.LoginInfo.LoginUserInfo.UserName;
         return (
             <React.Fragment>
                 <SimpleForm FormName="Đổi mật khẩu" MLObjectDefinition={MLObjectDefinition} listelement={listElement1} url="http://localhost:8910/api/contact" onSubmit={this.handleSubmit}

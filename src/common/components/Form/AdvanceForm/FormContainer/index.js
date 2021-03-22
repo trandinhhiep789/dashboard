@@ -245,9 +245,19 @@ class FormContainerCom extends Component {
             //console.log("this.state.FormVavalidaton[key]: ", this.state.FormVavalidaton[key]);
             if (formValidation[key].IsValidationError) {
                 //console.log("index: ", index);
-                this.elementItemRefs[key].focus();
+                // this.elementItemRefs[key].focus();
+                // index++;
+                // return false;
+
                 index++;
-                return false;
+                if (this.elementItemRefs && this.elementItemRefs[key] && typeof this.elementItemRefs[key].focus !== "undefined") {
+                    this.elementItemRefs[key].focus();
+                    return false;
+                } else {
+                    return false;
+                }
+
+
             }
             index++;
         }
