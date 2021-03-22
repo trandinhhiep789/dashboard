@@ -134,8 +134,10 @@ class EditCom extends React.Component {
         this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
             if (result && !result.IsError && result.ResultObject) {
                 let _ADVANCELIMIT_LEADERPARTNER = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "ADVANCELIMIT_LEADERPARTNER");
+                let _ADVANCELIMIT_STAFFPARTNER = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "ADVANCELIMIT_STAFFPARTNER");
                 this.setState({
-                    ADVANCELIMIT_LEADERPARTNER: _ADVANCELIMIT_LEADERPARTNER ? _ADVANCELIMIT_LEADERPARTNER[0].TMSConfigValue : 0
+                    ADVANCELIMIT_LEADERPARTNER: _ADVANCELIMIT_LEADERPARTNER ? _ADVANCELIMIT_LEADERPARTNER[0].TMSConfigValue : 0,
+                    ADVANCELIMIT_STAFFPARTNER: _ADVANCELIMIT_STAFFPARTNER ? _ADVANCELIMIT_STAFFPARTNER[0].TMSConfigValue : 0
                 })
             }
 
@@ -543,9 +545,13 @@ class EditCom extends React.Component {
             MLObject.PassWord = MD5Digest(PassWord);
         }
 
+        //hạn mức người dùng
         if (MLObject.PartnerRoleID == 1) {// quản lý
             MLObject.LimitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
-        } else {
+        } else if (MLObject.PartnerRoleID == 2) {// nhân viên
+            MLObject.LimitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
+        }
+        else {
             MLObject.LimitValue = 0;
         }
 
