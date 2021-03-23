@@ -22,6 +22,7 @@ import { TMS_INVESTIGATION_SO_STATUS } from "../../../../../constants/functionLi
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import InfoShipmentOrder from "../InfoShipmentOrder";
+import { MODAL_TYPE_IMAGE_SLIDE } from '../../../../../constants/actionTypes';
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -56,9 +57,7 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log(apiResult)
             if (!apiResult.IsError) {
 
                 const tempData = apiResult.ResultObject.ShipmentOrderType_WorkFlowList.map((item, index) => {
@@ -92,8 +91,24 @@ class SearchCom extends React.Component {
         );
     }
 
-    handleShowImage(data){
-        console.log("data", data)
+    handleShowImage(data) {
+        let images = [];
+        const objlst = data.split(";");
+        for (let i = 0; i < objlst.length; i++) {
+            images.push({
+                original: JSON.parse(objlst[i]).ImageFileURL,
+                thumbnail: JSON.parse(objlst[i]).ImageFileURL,
+                ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
+                description: ""
+            });
+        }
+        this.props.showModal(MODAL_TYPE_IMAGE_SLIDE, {
+            title: 'Danh sách hình ảnh ',
+            ImageCaptureGeoLocation: JSON.parse(objlst[0]).ImageCaptureGeoLocation,
+            content: {
+                lstImage: images
+            },
+        });
     }
 
 

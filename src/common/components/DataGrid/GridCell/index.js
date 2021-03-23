@@ -24,7 +24,7 @@ class GridCell extends Component {
     componentDidMount() {
     }
 
-    handleShowImage(e){
+    handleShowImage(e) {
         const objIme = e.currentTarget.dataset.id;
         this.props.onShowImageClick(objIme)
     }
@@ -364,13 +364,11 @@ class GridCell extends Component {
                 control = <p>{partsText[0]}<Link to={`${destinationHyperlink}/${RelatedVoucherID}`} target="_blank">{RelatedVoucherID}</Link>{partsText[1]}</p>
                 break;
             case "images":
-
                 const objlst = this.props.text.split(";");
-                console.log(objlst)
                 // const { RelatedVoucherID } = rowItem;
                 // const destinationHyperlink = RelatedVoucherID.includes("AR") ? hyperLink.AREdit : hyperLink.SODetail;
                 // const partsText = text.split(RelatedVoucherID);
-                control = <ul className="img-group"  data-id={this.props.text} onClick={this.handleShowImage.bind(this)} >
+                control = <ul className="img-group" data-id={this.props.text} onClick={this.handleShowImage.bind(this)} >
                     {objlst[0] != "" && objlst.map((item, index) =>
                         <li key={index}>
                             <div className="img-item">
