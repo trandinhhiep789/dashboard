@@ -22,7 +22,11 @@ class GridCell extends Component {
     }
 
     componentDidMount() {
-        console.log("this.props", this.props)
+    }
+
+    handleShowImage(e){
+        const objIme = e.currentTarget.dataset.id;
+        this.props.onShowImageClick(objIme)
     }
 
     handleInputChange(e) {
@@ -366,7 +370,7 @@ class GridCell extends Component {
                 // const { RelatedVoucherID } = rowItem;
                 // const destinationHyperlink = RelatedVoucherID.includes("AR") ? hyperLink.AREdit : hyperLink.SODetail;
                 // const partsText = text.split(RelatedVoucherID);
-                control = <ul className="img-group" >
+                control = <ul className="img-group"  data-id={this.props.text} onClick={this.handleShowImage.bind(this)} >
                     {objlst[0] != "" && objlst.map((item, index) =>
                         <li key={index}>
                             <div className="img-item">

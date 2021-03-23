@@ -102,6 +102,11 @@ class DataGridCom extends Component {
             this.props.onHistoryItem(id)
     }
 
+    handleShowImageClick(id){
+        if (this.props.onShowImage != null)
+        this.props.onShowImage(id)
+    }
+
     handleDetailClick(id) {
         if (this.props.onDetailClick != null)
             this.props.onDetailClick(id);
@@ -533,6 +538,7 @@ class DataGridCom extends Component {
                                                     onModalClick={this.handleShowModalClick.bind(this)}
                                                     onUpdateClick={this.handleUpdateItemClick.bind(this)}
                                                     onHistoryClick={this.handleHistoryItemClick.bind(this)}
+                                                    onShowImageClick={this.handleShowImageClick.bind(this)}
                                                     pkColumnName={this.state.ListPKColumnName}
                                                     params={this.props.params}
                                                     linkTo={this.state.ListPKColumnName + index}

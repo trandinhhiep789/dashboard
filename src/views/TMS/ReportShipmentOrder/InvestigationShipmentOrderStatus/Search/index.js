@@ -92,6 +92,10 @@ class SearchCom extends React.Component {
         );
     }
 
+    handleShowImage(data){
+        console.log("data", data)
+    }
+
 
     render() {
         return (
@@ -139,6 +143,7 @@ class SearchCom extends React.Component {
                     RowsPerPage={10}
                     RequirePermission={TMS_INVESTIGATION_SO_STATUS}
                     ref={this.gridref}
+                    onShowImage={this.handleShowImage.bind(this)}
                 />
 
                 {/* <div className="card">
