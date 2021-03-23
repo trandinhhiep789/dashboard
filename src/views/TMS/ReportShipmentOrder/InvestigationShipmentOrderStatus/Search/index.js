@@ -138,6 +138,31 @@ class SearchCom extends React.Component {
                     RequirePermission={TMS_INVESTIGATION_SO_STATUS}
                     ref={this.gridref}
                 />
+                 
+            <div className="card">
+                <h4 className="card-title"><strong>Lịch sử xử lý</strong></h4>
+                <div className="card-body">
+                    <div className="table-responsive">
+                        <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                            <thead className="thead-light">
+                                <tr>
+                                    <th className="jsgrid-header-cell" style={{ width: 100 }} >Thời gian</th>
+                                    <th className="jsgrid-header-cell" style={{ width: 250 }} >Bước xử lý</th>
+                                    <th className="jsgrid-header-cell" style={{ width: 150 }} >Nhân viên</th>
+                                    <th className="jsgrid-header-cell" style={{ width: 150 }} >Hình ảnh</th>
+                                    <th className="jsgrid-header-cell" style={{ width: 70 }} >Tọa độ GPS</th>
+                                    <th className="jsgrid-header-cell" style={{ width: 250 }} >Ghi chú</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {/* sss */}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+     
+                
             </React.Fragment>
         );
 
