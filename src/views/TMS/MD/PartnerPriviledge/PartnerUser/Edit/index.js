@@ -518,12 +518,12 @@ class EditCom extends React.Component {
         MLObject.ListPartnerUser_Role = this.state.DataSource.ListPartnerUser_Role;
         MLObject.PartnerID = MLObject.PartnerID && Array.isArray(MLObject.PartnerID) ? MLObject.PartnerID[0] : MLObject.PartnerID;
         MLObject.PartnerRoleID = MLObject.PartnerRoleID && Array.isArray(MLObject.PartnerRoleID) ? MLObject.PartnerRoleID[0] : this.state.PartnerRoleID;
-        // if (MLObject.Birthday) {
-        //     let temp = MLObject.Birthday.trim().split('/');
-        //     let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
-        //     myDate.setDate(myDate.getDate() + 1);
-        //     MLObject.Birthday = myDate;
-        // }
+        if (MLObject.Birthday) {
+            let temp = MLObject.Birthday.trim().split('/');
+            let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
+            MLObject.Birthday = myDate;
+        }
+        MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
 
         ///kiểm tra người dùng đủ 18 tuổi
         let validYearOld = (new Date()).getFullYear() - (new Date(MLObject.Birthday)).getFullYear();
@@ -532,11 +532,11 @@ class EditCom extends React.Component {
             return;
         }
 
-        try {
-            MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
-        } catch (error) {
-            MLObject.Birthday = toIsoStringCus(new Date(this.state.Birthday).toISOString());
-        }
+        // try {
+        //     MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
+        // } catch (error) {
+        //     MLObject.Birthday = toIsoStringCus(new Date(this.state.Birthday).toISOString());
+        // }
 
         if (!MLObject.PassWord) {
             MLObject.PassWord = this.state.PassWord;

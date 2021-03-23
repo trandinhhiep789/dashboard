@@ -55,14 +55,14 @@ class EditCom extends React.Component {
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                if (apiResult.ResultObject.IsAutoAdd) {
+                if(apiResult.ResultObject.IsAutoAdd){
                     this.showMessage("Lịch tự động thêm, không thể chỉnh sửa.");
                     this.setState({ IsCloseForm: true });
-                } else {
+                }else{
                     this.setState({
                         DataSource: apiResult.ResultObject
                     });
-                }
+                }  
             }
             this.setState({
                 IsLoadDataComplete: true
@@ -77,15 +77,13 @@ class EditCom extends React.Component {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
-        if (MLObject.RewardDate.getMonth) {
-            //MLObject.RewardDate.setDate(MLObject.RewardDate.getDate() + 1);
-            MLObject.RewardDate = toIsoStringCus(new Date(MLObject.RewardDate).toISOString());
+        if (MLObject.SynDate.getMonth) {
+           //MLObject.SynDate.setDate(MLObject.SynDate.getDate() + 1);
+           MLObject.SynDate = toIsoStringCus(new Date(MLObject.SynDate).toISOString());
         } else {
-            MLObject.RewardDate = this.state.DataSource.RewardDate;
+            MLObject.SynDate = this.state.DataSource.SynDate;
         }
 
-        MLObject.MaterialGroup_Product = this.state.MaterialGroup_Product;
-        MLObject.MaterialGroup_InstallCond = this.state.MaterialGroup_InstallCond;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
@@ -117,7 +115,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <SimpleForm
-                    FormName="Cập nhật lịch tính thưởng"
+                    FormName="Cập nhật lịch đồng bộ dữ liệu đánh giá vận đơn"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
@@ -128,7 +126,7 @@ class EditCom extends React.Component {
                     RequirePermission={REWARDCOMPUTESCHEDULE_UPDATE}
                     ref={this.searchref}
                 />
-
+                
             );
         }
         return (

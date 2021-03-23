@@ -137,6 +137,7 @@ import PeriodUserRWPosition from "../TMS/MD/PeriodUserRWPosition";
 import MTReturnRequestType from "../TMS/MD/MTReturnRequestType";
 import QualityAssessGroup from "../TMS/MD/QualityAssessGroup";
 import QualityAssessType from "../TMS/MD/QualityAssessType";
+import SoAssessSynSchedule from "../TMS/MD/SoAssessSynSchedule";
 
 
 class HomeCom extends React.Component {

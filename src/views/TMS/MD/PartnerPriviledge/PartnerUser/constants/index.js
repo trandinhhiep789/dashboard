@@ -312,7 +312,7 @@ export const AddElementList = [
         validatonList: ["required", "number"]
     },
     {
-        type: "date",
+        type: "text",
         Name: "dtBirthday",
         label: "Ngày sinh:",
         value: "",
@@ -321,7 +321,7 @@ export const AddElementList = [
         DataSourceMember: "Birthday",
         ValueMember: "Birthday",
         NameMember: "Birthday",
-        validatonList: ["required"]
+        validatonList: ["required", "date"]
     },
     {
         type: "text",
@@ -519,7 +519,7 @@ export const EditElementList = [
         validatonList: ["number"]
     },
     {
-        type: "date",
+        type: "text",
         name: "dtBirthday",
         label: "Ngày sinh:",
         value: "",
@@ -528,7 +528,7 @@ export const EditElementList = [
         DataSourceMember: "BirthdayString",
         ValueMember: "Birthday",
         NameMember: "Birthday",
-        validatonList: ["required"]
+        validatonList: ["required", "date"]
     },
     {
         type: "text",
