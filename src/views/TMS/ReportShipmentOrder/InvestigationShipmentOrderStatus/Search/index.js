@@ -42,14 +42,6 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-
-        const postData = [
-            {
-                SearchKey: "@Keyword",
-                SearchValue: 210306000000028
-            },
-        ];
-        this.callSearchData(postData)
     }
 
     handleSearchSubmit(formData, MLObject) {
