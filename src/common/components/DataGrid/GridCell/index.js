@@ -89,8 +89,8 @@ class GridCell extends Component {
     onClickAction(objValue) {
         this.props.onUpdateClick(objValue)
     }
-    onHistoryClickAction(objValue){
-       
+    onHistoryClickAction(objValue) {
+
         this.props.onHistoryClick(objValue)
     }
 
@@ -358,6 +358,23 @@ class GridCell extends Component {
                 const destinationHyperlink = RelatedVoucherID.includes("AR") ? hyperLink.AREdit : hyperLink.SODetail;
                 const partsText = text.split(RelatedVoucherID);
                 control = <p>{partsText[0]}<Link to={`${destinationHyperlink}/${RelatedVoucherID}`} target="_blank">{RelatedVoucherID}</Link>{partsText[1]}</p>
+                break;
+            case "images":
+
+                const objlst = this.props.text.split(";");
+                console.log(objlst)
+                // const { RelatedVoucherID } = rowItem;
+                // const destinationHyperlink = RelatedVoucherID.includes("AR") ? hyperLink.AREdit : hyperLink.SODetail;
+                // const partsText = text.split(RelatedVoucherID);
+                control = <ul className="img-group" >
+                    {objlst[0] != "" && objlst.map((item, index) =>
+                        <li key={index}>
+                            <div className="img-item">
+                                <img src={JSON.parse(item).ImageFileURL} />
+                            </div>
+                        </li>
+                    )}
+                </ul>
                 break;
             default:
                 control = <label>{text}</label>;

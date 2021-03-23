@@ -49,6 +49,13 @@ export const GridColumnList = [
         DataSourceMember: "ProcessFullName",
         Width: 200
     },
+    {
+        Name: "ImageFileURL",
+        Type: "images",
+        Caption: "Hình ảnh",
+        DataSourceMember: "ImageFileURL",
+        Width: 200
+    },
 ];
 
 export const GridColumnListShipmentOrder = [
@@ -74,3 +81,4 @@ export const GridColumnListShipmentOrder = [
         Width: 200
     }
 ]
+

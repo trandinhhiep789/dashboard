@@ -42,6 +42,14 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+
+        const postData = [
+            {
+                SearchKey: "@Keyword",
+                SearchValue: 210306000000028
+            },
+        ];
+        this.callSearchData(postData)
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -52,11 +60,13 @@ class SearchCom extends React.Component {
             },
         ];
         this.callSearchData(postData)
+
     }
 
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log(apiResult)
             if (!apiResult.IsError) {
 
                 const tempData = apiResult.ResultObject.ShipmentOrderType_WorkFlowList.map((item, index) => {
@@ -138,31 +148,48 @@ class SearchCom extends React.Component {
                     RequirePermission={TMS_INVESTIGATION_SO_STATUS}
                     ref={this.gridref}
                 />
-                 
-            <div className="card">
-                <h4 className="card-title"><strong>Lịch sử xử lý</strong></h4>
-                <div className="card-body">
-                    <div className="table-responsive">
-                        <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                            <thead className="thead-light">
-                                <tr>
-                                    <th className="jsgrid-header-cell" style={{ width: 100 }} >Thời gian</th>
-                                    <th className="jsgrid-header-cell" style={{ width: 250 }} >Bước xử lý</th>
-                                    <th className="jsgrid-header-cell" style={{ width: 150 }} >Nhân viên</th>
-                                    <th className="jsgrid-header-cell" style={{ width: 150 }} >Hình ảnh</th>
-                                    <th className="jsgrid-header-cell" style={{ width: 70 }} >Tọa độ GPS</th>
-                                    <th className="jsgrid-header-cell" style={{ width: 250 }} >Ghi chú</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {/* sss */}
-                            </tbody>
-                        </table>
+
+                {/* <div className="card">
+                    <h4 className="card-title"><strong>Lịch sử xử lý</strong></h4>
+                    <div className="card-body">
+                        <div className="table-responsive">
+                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                <thead className="thead-light">
+                                    <tr>
+                                        <th className="jsgrid-header-cell" style={{ width: 100 }} >Thời gian</th>
+                                        <th className="jsgrid-header-cell" style={{ width: 250 }} >Bước xử lý</th>
+                                        <th className="jsgrid-header-cell" style={{ width: 150 }} >Nhân viên</th>
+                                        <th className="jsgrid-header-cell" style={{ width: 150 }} >Hình ảnh</th>
+                                        <th className="jsgrid-header-cell" style={{ width: 70 }} >Tọa độ GPS</th>
+                                        <th className="jsgrid-header-cell" style={{ width: 250 }} >Ghi chú</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            </div>
-     
-                
+                </div> */}
+                {/* 
+                <DataGrid
+                    listColumn={GridColumnList}
+                    dataSource={this.state.gridDataSource}
+                    IsFixheaderTable={false}
+                    IDSelectColumnName={'WorkFlowID'}
+                    PKColumnName={'WorkFlowID'}
+                    isHideHeaderToolbar={false}
+                    IsShowButtonAdd={false}
+                    IsShowButtonDelete={false}
+                    IsShowButtonPrint={false}
+                    IsPrint={false}
+                    IsAutoPaging={true}
+                    RowsPerPage={10}
+                    RequirePermission={TMS_INVESTIGATION_SO_STATUS}
+                    ref={this.gridref}
+                /> */}
+
+
             </React.Fragment>
         );
 
