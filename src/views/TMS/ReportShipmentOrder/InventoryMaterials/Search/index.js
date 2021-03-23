@@ -329,8 +329,6 @@ class SearchCom extends React.Component {
         const { UserName, Month, ConfigValueMTReturn } = this.state;
         const status = this.getStatusDelivery(name);
 
-        console.log("state", UserName, Month, ConfigValueMTReturn)
-
         let objData = {};
         if (status == 1) { //	Nhận trong kỳ
             objData = {
@@ -377,10 +375,10 @@ class SearchCom extends React.Component {
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/GetExchangeOrderByUser", objData).then(apiResult => {
                 if (!apiResult.IsError) {
                     console.log('3:', objData, apiResult)
-                    // this.onShowModal(apiResult.ResultObject, status);
+                    this.onShowModal(apiResult.ResultObject, status);
                 }
                 else {
-                    // this.showMessage(apiResult.MessageDetail)
+                    this.showMessage(apiResult.MessageDetail)
                 }
             });
         }
