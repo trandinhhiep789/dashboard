@@ -45,7 +45,8 @@ class SearchCom extends React.Component {
             dataSimiliGroup: [],
             UserName: "",
             Month: "",
-            MLObject: {}
+            MLObject: {},
+            ConfigValueMTReturn: "",
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -80,14 +81,23 @@ class SearchCom extends React.Component {
                         ConfigValue: _configValue[0].TMSConfigValue
                     })
                 }
+                let _configValue1 = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "MTRETURNREQUEST_INPUTTYPEID");
+                if (_configValue1) {
+                    this.setState({
+                        ConfigValueMTReturn: _configValue1[0].TMSConfigValue
+                    })
+                }
+
+
             }
+
 
         });
     }
 
     handleSearchSubmit(formData, MLObject) {
         const objDatatest = {
-            UserName: 1125, //MLObject.UserName == -1 ? "" : MLObject.UserName.value,
+            UserName: "0041017", //MLObject.UserName == -1 ? "" : MLObject.UserName.value,
             Month: new Date()//MLObject.Month
 
         }
@@ -251,7 +261,7 @@ class SearchCom extends React.Component {
     }
 
     onShowModal(data, typeDataGrid) {
-        const { widthPercent, MLObject, Month } = this.state;
+        const { widthPercent, MLObject, Month, ConfigValueMTReturn } = this.state;
 
         switch (typeDataGrid) {
             case 1:
@@ -316,9 +326,10 @@ class SearchCom extends React.Component {
     }
 
     onShowModalDetail(objValue, name) {
-        const { UserName, Month } = this.state;
+        const { UserName, Month, ConfigValueMTReturn } = this.state;
         const status = this.getStatusDelivery(name);
 
+        console.log("state", UserName, Month, ConfigValueMTReturn)
 
         let objData = {};
         if (status == 1) { //	Nhận trong kỳ
@@ -357,20 +368,21 @@ class SearchCom extends React.Component {
         if (status == 3) { //Nhập trả
             objData = {
                 Month: Month,
-                UserName: UserName,
-                ProductID: objValue[0].value,
-                IsHandOverMaterial: 0 // v_ISHANDOVERMATERIAL
+                UserNameList: UserName,
+                OrderTypeID: ConfigValueMTReturn
+                // ProductID: objValue[0].value,
+                // IsHandOverMaterial: 0 // v_ISHANDOVERMATERIAL
             }
-            this.showMessage("Tính năng đang phát triển.")
-            // this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/GetExchangeOrderByUser", objData).then(apiResult => {
-            //     if (!apiResult.IsError) {
-            //         console.log('3:', objData, apiResult)
-            //         // this.onShowModal(apiResult.ResultObject, status);
-            //     }
-            //     else {
-            //         // this.showMessage(apiResult.MessageDetail)
-            //     }
-            // });
+            //this.showMessage("Tính năng đang phát triển.")
+            this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/GetExchangeOrderByUser", objData).then(apiResult => {
+                if (!apiResult.IsError) {
+                    console.log('3:', objData, apiResult)
+                    // this.onShowModal(apiResult.ResultObject, status);
+                }
+                else {
+                    // this.showMessage(apiResult.MessageDetail)
+                }
+            });
         }
         if (status == 4) { //	Sử dụng trong kỳ
             objData = {

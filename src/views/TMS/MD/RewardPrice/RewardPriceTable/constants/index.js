@@ -76,7 +76,7 @@ export const InitSearchParams = [
     }
 ];
 
-export const DataGridColumnList=[
+export const DataGridColumnList = [
     {
         Name: "chkSelect",
         Type: "checkbox",
@@ -100,10 +100,10 @@ export const DataGridColumnList=[
         Width: 250
     },
     {
-        Name: "AreaName",
+        Name: "ApplyAreaNameList",
         Type: "text",
         Caption: "Khu vực áp dụng",
-        DataSourceMember: "AreaName",
+        DataSourceMember: "ApplyAreaNameList",
         Width: 200
     },
     {
@@ -278,10 +278,10 @@ export const DataGridColumnItemListRPTDetail = [
         DataSourceMember: "",
         Width: 70,
     }
-    
+
 ]
 
-export const MLObjectRPTDetailItem= [
+export const MLObjectRPTDetailItem = [
     {
         Name: "RewardPriceTableDetailID",
         DefaultValue: {},
@@ -319,23 +319,23 @@ export const MLObjectRPTDetailItem= [
         BindControlName: "ckIsPriceByTechspecsValueRange",
         DataSourceMember: "IsPriceByTechspecsValueRange"
     },
-    
+
     {
         Name: "FromTechspecsValue",
         DefaultValue: {},
         BindControlName: "txtFromTechspecsValue",
         DataSourceMember: "FromTechspecsValue"
     },
-    
+
     {
         Name: "ToTechspecsValue",
         DefaultValue: {},
         BindControlName: "txtToTechspecsValue",
         DataSourceMember: "ToTechspecsValue"
     },
-    
+
     {
-        
+
         Name: "ProductID",
         DefaultValue: "",
         BindControlName: "cbProductID",
@@ -378,7 +378,7 @@ export const DataGridColumnItemListRPTException = [
         DataSourceMember: "SubGroupFullName",
         Width: 100
     },
-   
+
     {
         Name: "FromQuantity",
         Type: "textNumber",
@@ -415,17 +415,17 @@ export const DataGridColumnItemListRPTException = [
         DataSourceMember: "",
         Width: 70,
     }
-    
+
 ]
 
-export const MLObjectRPTExceptionItem= [
+export const MLObjectRPTExceptionItem = [
     {
         Name: "RewardPriceTableExceptionID",
         DefaultValue: {},
         BindControlName: "txtRewardPriceTableExceptionID",
         DataSourceMember: "RewardPriceTableExceptionID"
     },
-    
+
     {
         Name: "MainGroupID",
         DefaultValue: {},
@@ -438,14 +438,14 @@ export const MLObjectRPTExceptionItem= [
         BindControlName: "cbSubGroup",
         DataSourceMember: "SubGroupID"
     },
-   
+
     {
         Name: "FromQuantity",
         DefaultValue: {},
         BindControlName: "txtFromQuantity",
         DataSourceMember: "FromQuantity"
     },
-    
+
     {
         Name: "ToQuantity",
         DefaultValue: {},

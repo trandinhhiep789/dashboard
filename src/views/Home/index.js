@@ -15,7 +15,7 @@ import { callGetCacheFromLocal, callClearLocalCache } from "../../actions/cacheA
 import { getCookie } from "../../common/library/CommonLib.js";
 
 import PrivateRoute from '../../Route/PrivateRoute'
-
+import ChangePassword from '../../views/ChangePassword';
 import PageUI from '../../views/Test/PageUI';
 import TestModal from '../../views/Test/TestModal';
 import TestCache from '../../views/Test/TestCache';
@@ -235,7 +235,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/TestFormContainer" component={TestFormContainer} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/TestTabs" component={TestTabs} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/TestPageLayout" component={TestPageLayout} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-
+                                    <PrivateRoute path="/changepassword" component={ChangePassword}  isLoggedIn={isLoggedIn} isRelogin={isRelogin}/>
                                     <PrivateRoute path="/CacheManager" component={CacheManager} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     {/* <PrivateRoute path="*" component={Category} isLoggedIn={isLoggedIn} /> */}
 
