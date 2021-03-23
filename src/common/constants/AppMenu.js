@@ -775,6 +775,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'SoAssessSynSchedule',
+                MenuTitle: 'Đồng bộ dữ liệu đánh giá vận đơn',
+                LinkTo: '/SoAssessSynSchedule',
+                MenuIcon: '',
+                SubMenu: []
+            },
         ]
     },
     {
