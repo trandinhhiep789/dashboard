@@ -216,7 +216,7 @@ class SearchCom extends React.Component {
 
     onhandleHistoryItem(objId) {
         const { gridDataSource } = this.state;
-        const dataFind = gridDtaSource.find(n => {
+        const dataFind = gridDataSource.find(n => {
             return n.StaffDebtID == objId[0].value
         });
 

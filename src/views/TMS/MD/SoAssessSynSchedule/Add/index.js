@@ -77,8 +77,8 @@ class AddCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
-        MLObject.RewardDateFrom = toIsoStringCus(new Date(MLObject.RewardDateFrom).toISOString());
-        MLObject.RewardDateTo = toIsoStringCus(new Date(MLObject.RewardDateTo).toISOString());
+        MLObject.SynDateFrom = toIsoStringCus(new Date(MLObject.SynDateFrom).toISOString());
+        MLObject.SynDateTo = toIsoStringCus(new Date(MLObject.SynDateTo).toISOString());
 
         var dates = {
             convert: function (d) {
@@ -132,10 +132,18 @@ class AddCom extends React.Component {
             }
         }
 
-        let validDate = dates.compare(MLObject.RewardDateFrom, MLObject.RewardDateTo);
+        let validDate = dates.compare(MLObject.SynDateFrom, MLObject.SynDateTo);
         if (validDate == 1) {
-            this.addNotification("Ngày tính thưởng không hợp lệ. Vui lòng kiểm tra lại.", true);
+            this.addNotification("Ngày đồng bộ không hợp lệ. Vui lòng kiểm tra lại.", true);
         } else {
+
+            // if (MLObject.SynDateFrom.getMonth) {
+            //     MLObject.SynDateFrom.setDate(MLObject.SynDateFrom.getDate() + 1);
+            // }
+
+            // if (MLObject.SynDateTo.getMonth) {
+            //     MLObject.SynDateTo.setDate(MLObject.SynDateTo.getDate() + 1);
+            // }
 
             this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
@@ -174,7 +182,7 @@ class AddCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SimpleForm
-                    FormName="Thêm lịch tính thưởng"
+                    FormName="Thêm lịch đồng bộ dữ liệu đánh giá vận đơn"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={AddElementList}
                     onSubmit={this.handleSubmit}
