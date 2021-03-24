@@ -89,18 +89,35 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.StoreID
             }
         ];
-        if ((MLObject.ShipmentOrderTypeID == "" || MLObject.ShipmentOrderTypeID < 0) && (MLObject.StoreID == "" || MLObject.StoreID < 0)) {
-            this.showMessage("Không tôn tại dữ liệu theo điều kiện tìm kiếm!");
-            this.setState({
-                gridDataSource: [],
-                dataExport: []
-            })
+        // if ((MLObject.ShipmentOrderTypeID == "" || MLObject.ShipmentOrderTypeID < 0) && (MLObject.StoreID == "" || MLObject.StoreID < 0)) {
+        //     this.showMessage("Không tôn tại dữ liệu theo điều kiện tìm kiếm!");
+        //     this.setState({
+        //         gridDataSource: [],
+        //         dataExport: []
+        //     })
+        // }
+        // else {
+        //     this.setState({ SearchData: postData });
+        //     this.callSearchData(postData);
+        // }
+        if ((MLObject.ShipmentOrderTypeID == "") && (MLObject.StoreID == "")) {
+            const tempPostData = [
+                {
+                    SearchKey: "@ShipmentOrderTypeID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@StoreID",
+                    SearchValue: -1
+                }
+            ]
+            this.setState({ SearchData: tempPostData });
+            this.callSearchData(tempPostData);
         }
         else {
             this.setState({ SearchData: postData });
             this.callSearchData(postData);
         }
-
     }
 
     callSearchData(searchData) {

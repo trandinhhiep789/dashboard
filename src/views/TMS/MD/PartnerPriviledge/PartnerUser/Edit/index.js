@@ -37,6 +37,8 @@ import { Prompt } from 'react-router';
 import { PARTNERUSER_UPDATE } from "../../../../../../constants/functionLists";
 import { ERPCOMMONCACHE_PARTNERUSER, ERPCOMMONCACHE_TMSCONFIG } from "../../../../../../constants/keyCache";
 import { toIsoStringCus } from "../../../../../../utils/function";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -55,6 +57,7 @@ class EditCom extends React.Component {
         this.addPartnerUser_IDDocumentPopup = this.addPartnerUser_IDDocumentPopup.bind(this);
         this.editPartnerUser_IDDocumentPopup = this.editPartnerUser_IDDocumentPopup.bind(this);
         this.delete_PartnerUser_IDDocumentPopup = this.delete_PartnerUser_IDDocumentPopup.bind(this);
+        this.addNotification = this.addNotification.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -67,6 +70,7 @@ class EditCom extends React.Component {
             IsNotSaved: false
         };
         this.searchref = React.createRef();
+        this.notificationDOMRef = React.createRef();
     }
 
     handleCloseMessage() {
@@ -93,6 +97,37 @@ class EditCom extends React.Component {
             />
         );
     }
+
+    addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
+        if (!IsError) {
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
+        } else {
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
 
     //file upload
     handleSelectedFile(file, nameValue, isDeletetedFile) {
@@ -494,11 +529,13 @@ class EditCom extends React.Component {
     handleSubmit(formData, MLObject) {
         //check password valid
         let { PassWord, PassWordConfirm } = this.state;
-        if (PassWord != PassWordConfirm) {
+        if (PassWord && PassWord != PassWordConfirm) {
             this.setState({ IsCallAPIError: true });
-            this.showMessage("Xác nhận mật khẩu chưa đúng.");
+            this.addNotification("Xác nhận mật khẩu chưa đúng.", true);
             return false;
         }
+
+        
 
         MLObject.FullName = MLObject.FullName.toUpperCase();
 
@@ -527,8 +564,8 @@ class EditCom extends React.Component {
 
         ///kiểm tra người dùng đủ 18 tuổi
         let validYearOld = (new Date()).getFullYear() - (new Date(MLObject.Birthday)).getFullYear();
-        if(validYearOld < 18){
-            this.showMessage2("Yêu cầu người dùng trên 18 tuổi.");
+        if (validYearOld < 18) {
+            this.addNotification("Yêu cầu người dùng trên 18 tuổi.", true);
             return;
         }
 
@@ -561,7 +598,12 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERUSER);
-            this.showMessage(apiResult.Message);
+            if (apiResult.IsError) {
+                this.addNotification(apiResult.Message, true);
+            } else {
+                this.showMessage(apiResult.Message);
+            }
+
         });
     }
     render() {
@@ -571,6 +613,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
                     <Prompt
                         when={this.state.IsNotSaved}
                         message='Có dữ liệu chưa được lưu. Bạn có muốn rời trang?'
