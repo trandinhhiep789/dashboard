@@ -12,7 +12,8 @@ import {
     APIHostName,
     PagePath,
     AddAPIPath,
-    GetAllByUserNameAPIPath
+    GetAllByUserNameAPIPath,
+    GetAllAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -21,6 +22,9 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { ERPUSERCACHE_FUNCTION } from "../../../../../constants/keyCache";
 import { USERSKILL_VIEW, USERSKILL_UPDATE, GET_CACHE_USER_FUNCTION_LIST, USER_REWARDPOSITION_VIEW, USER_REWARDPOSITION_UPDATE, USER_REWARDPOSITION_ADD } from "../../../../../constants/functionLists";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import readXlsxFile from 'read-excel-file'
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -29,6 +33,8 @@ class EditCom extends React.Component {
         this.getDataCombobox = this.getDataCombobox.bind(this);
         this.onClickUser_RewardPosition = this.onClickUser_RewardPosition.bind(this);
         this.checkAddPermission = this.checkAddPermission.bind(this);
+        this.handleExportCSV = this.handleExportCSV.bind(this);
+        this.getDataForExport = this.getDataForExport.bind(this);
         this.state = {
             Username: "",
             DepartmentName: "",
@@ -36,8 +42,7 @@ class EditCom extends React.Component {
             Address: "",
             DataSource: [],
             DataSourceUser_RewardPosition: [],
-            cssNotification: "notification-danger",
-            iconNotification: "fa fa-exclamation"
+            DataExport: []
         };
 
         this.notificationDOMRef = React.createRef();
@@ -46,6 +51,7 @@ class EditCom extends React.Component {
     componentDidMount() {
         this.checkAddPermission();
         this.props.updatePagePath(PagePath);
+        this.getDataForExport();
     }
 
     checkAddPermission() {
@@ -152,6 +158,8 @@ class EditCom extends React.Component {
         });
     }
 
+
+
     addNotification(message1, IsError) {
         let cssNotification = "";
         let iconNotification = "";
@@ -246,6 +254,61 @@ class EditCom extends React.Component {
         );
     }
 
+    getDataForExport() {
+        this.props.callFetchAPI(APIHostName, GetAllAPIPath, null).then(apiResult => {
+            //console.log("apiResult", apiResult);
+            if (!apiResult.IsError && apiResult.ResultObject != null) {
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã nhân viên": item.UserName,
+                        "Tên nhân viên": item.FullName,
+                        "Mã vị trí thưởng": item.RewardPositionID,
+                        "Tên vị trí thưởng": item.RewardPositionName,
+                        "Loại nhân viên": item.StaffTypeName
+                    };
+                    return element;
+
+                })
+
+                this.setState({
+                    DataExport: exelData
+                });
+            }
+        });
+    }
+
+
+
+    handleExportCSV() {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        let result;
+        if (this.state.DataExport.length == 0) {
+            result = {
+                IsError: true,
+                Message: "Dữ liệu không tồn tại. Không thể xuất file!"
+            };
+        }
+        else {
+
+            const ws = XLSX.utils.json_to_sheet(this.state.DataExport);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+
+
+            FileSaver.saveAs(data, "Danh sách vị trí thưởng của nhân viên" + fileExtension);
+
+            result = {
+                IsError: false,
+                Message: "Xuất file thành công!"
+            };
+        }
+        //this.props.onExportFile(result);
+        this.addNotification(result.Message, result.IsError);
+
+    }
+
     render() {
         if (this.state.IsAllowView) {
             return (
@@ -258,7 +321,7 @@ class EditCom extends React.Component {
                             </div>
                             <div className="card-body">
                                 <div className="row">
-                                    <div className="col-md-6">
+                                    <div className="col-md-5">
                                         <div className="row">
                                             <div className="col-md-12">
                                                 <MultiSelectComboBox
@@ -281,7 +344,7 @@ class EditCom extends React.Component {
 
                                         </div>
                                     </div>
-                                    <div className="col-md-6 container">
+                                    <div className="col-md-5 container">
                                         <div className="row">
                                             <div className="col-md-12">
                                                 {this.state.FullName ?
@@ -296,6 +359,21 @@ class EditCom extends React.Component {
 
                                         </div>
                                     </div>
+                                    {/* <div className="col-md-2">
+                                        <button type="button" class="btn btn-primary" style={{ position: "absolute", bottom: "-47px", right: "16px", zIndex: "1" }} onClick={this.handleExportCSV}>Xuất exel</button>
+                                    </div> */}
+
+
+                                    <div className="col-md-2">
+                                        <div className="btn-toolbar" style={{ position: "absolute", bottom: "-47px", right: "16px", zIndex: "1" }}>
+                                            <div className="btn-group btn-group-sm">
+                                                <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file"  onClick={this.handleExportCSV}>
+                                                    <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <br />
 
