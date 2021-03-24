@@ -35,7 +35,7 @@ export const AddPagePath = [
 ];
 
 export const InitSearchParams = [
- 
+
     {
         SearchKey: "@ShipmentOrderTypeID",
         SearchValue: ""
@@ -47,7 +47,7 @@ export const InitSearchParams = [
 ];
 
 export const SearchElementList = [
-   
+
     {
         type: "ComboBoxNewChange",
         name: "cbShipmentOrderTypeID",
@@ -62,7 +62,7 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
         ValueMember: "ShipmentOrderTypeID",
         NameMember: "ShipmentOrderTypeName",
-        classNameCol:"col-custom"
+        classNameCol: "col-custom"
     },
 
     {
@@ -81,20 +81,20 @@ export const SearchElementList = [
         NameMember: "StoreName",
         // filterValue: 1,
         // filterobj:"CompanyID",
-        classNameCol:"col-custom"
+        classNameCol: "col-custom"
     },
-  
+
 ];
 
 export const SearchMLObjectDefinition = [
     {
         Name: "ShipmentOrderTypeID",
-        DefaultValue: "",
+        DefaultValue: -1,
         BindControlName: "cbShipmentOrderTypeID"
     },
     {
         Name: "StoreID",
-        DefaultValue: "",
+        DefaultValue: -1,
         BindControlName: "cbStoreID"
     },
 ];
@@ -108,7 +108,7 @@ export const DataGridColumnList = [
         DataSourceMember: "ProvinceName",
         Width: 200
     },
-    
+
     {
         Name: "DistrictName",
         Type: "text",
@@ -116,7 +116,7 @@ export const DataGridColumnList = [
         DataSourceMember: "DistrictName",
         Width: 200
     },
-  
+
     {
         Name: "WardName",
         Type: "text",
@@ -124,7 +124,7 @@ export const DataGridColumnList = [
         DataSourceMember: "WardName",
         Width: 200
     },
-    
+
 
     {
         Name: "chkIsSystem",
@@ -133,7 +133,7 @@ export const DataGridColumnList = [
         DataSourceMember: "IsSystem",
         Width: 70
     },
-  
+
     {
 
         Name: "Action",
@@ -220,7 +220,7 @@ export const AddElementList = [
         loaditemcachekeyid: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
         valuemember: "ShipmentOrderTypeID",
         nameMember: "ShipmentOrderTypeName",
-        OrderIndex:1
+        OrderIndex: 1
     },
     {
         type: "select",
@@ -237,7 +237,7 @@ export const AddElementList = [
         loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
         valuemember: "PartnerID",
         nameMember: "PartnerName",
-        OrderIndex:2
+        OrderIndex: 2
     },
     {
         type: "select",
@@ -256,7 +256,7 @@ export const AddElementList = [
         nameMember: "StoreName",
         filterValue: 10,
         filterobj: "CompanyID",
-        OrderIndex:3
+        OrderIndex: 3
     },
     {
         type: "select",
@@ -275,16 +275,16 @@ export const AddElementList = [
         nameMember: "StoreName",
         filterValue: 1,
         filterobj: "CompanyID",
-        OrderIndex:4
+        OrderIndex: 4
     },
     {
         type: "checkbox",
         name: "chkIsCheckCustomerAddress",
-        datasourcemember:"IsCheckCustomerAddress",
+        datasourcemember: "IsCheckCustomerAddress",
         label: "kiểm tra địa chỉ khách hàng",
         value: false,
         readonly: false,
-        OrderIndex:5
+        OrderIndex: 5
     }
 
 ];
@@ -299,7 +299,7 @@ export const EditElementList = [
 
 ];
 
-export const DataGridCoordinatorStoreColumnList=[
+export const DataGridCoordinatorStoreColumnList = [
     {
         Name: "chkSelect",
         Type: "checkbox",
