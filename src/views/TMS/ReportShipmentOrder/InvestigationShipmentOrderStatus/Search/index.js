@@ -145,7 +145,7 @@ class SearchCom extends React.Component {
 
                 <DataGrid
                     listColumn={GridColumnList}
-                    dataSource={this.state.gridDataSource}
+                    dataSource={this.state.gridDataSource.sort((a, b) => new Date(a.ProcessDate) - new Date(b.ProcessDate))}
                     IsFixheaderTable={false}
                     IDSelectColumnName={'WorkFlowID'}
                     PKColumnName={'WorkFlowID'}
