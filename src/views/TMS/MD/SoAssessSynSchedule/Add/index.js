@@ -14,7 +14,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { REWARDCOMPUTESCHEDULE_ADD } from "../../../../../constants/functionLists";
+import { REWARDCOMPUTESCHEDULE_ADD, SOASSESSSYNSCHEDULE_ADD } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
@@ -190,7 +190,7 @@ class AddCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={dataSource}
                     BackLink={BackLink}
-                    RequirePermission={REWARDCOMPUTESCHEDULE_ADD}
+                    RequirePermission={SOASSESSSYNSCHEDULE_ADD}
                     ref={this.searchref}
                 />
             </React.Fragment>
