@@ -32,8 +32,8 @@ export default class ModalBox extends Component {
                 <DataGrid
                     listColumn={listColumn}
                     dataSource={dataSource}
-                    IDSelectColumnName={""}
-                    PKColumnName={""}
+                    IDSelectColumnName={"AdvanceRequestID"}
+                    PKColumnName={"AdvanceRequestID"}
                     IsDelete={false}
                     IsAutoPaging={true}
                     IsShowButtonAdd={false}

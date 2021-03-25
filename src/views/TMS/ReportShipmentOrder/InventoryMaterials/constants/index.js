@@ -217,8 +217,9 @@ export const GridColumnListPrice = [
 export const DataGridModalQuantityHanOverDone = [
     {
         Name: "AdvanceRequestID",
-        Type: "text",
+        Type: "texttolinkNewBlank",
         Caption: "Yêu cầu tạm ứng",
+        Link: "/AdvanceRequest/Edit/",
         DataSourceMember: "AdvanceRequestID",
         Width: 100
     },
