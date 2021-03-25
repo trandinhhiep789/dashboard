@@ -354,6 +354,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/MTReturnRequestType" component={MTReturnRequestType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/QualityAssessGroup" component={QualityAssessGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/QualityAssessType" component={QualityAssessType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/SoAssessSynSchedule" component={SoAssessSynSchedule} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/DevTest" component={PageTest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
