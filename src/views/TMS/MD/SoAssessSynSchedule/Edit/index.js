@@ -16,7 +16,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { REWARDCOMPUTESCHEDULE_UPDATE } from "../../../../../constants/functionLists";
+import { REWARDCOMPUTESCHEDULE_UPDATE, SOASSESSSYNSCHEDULE_UPDATE } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
 import { toIsoStringCus } from "../../../../../utils/function";
@@ -123,7 +123,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={REWARDCOMPUTESCHEDULE_UPDATE}
+                    RequirePermission={SOASSESSSYNSCHEDULE_UPDATE}
                     ref={this.searchref}
                 />
                 

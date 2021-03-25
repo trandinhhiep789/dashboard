@@ -19,7 +19,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { REWARDCOMPUTESCHEDULE_VIEW, REWARDCOMPUTESCHEDULE_DELETE } from "../../../../../constants/functionLists";
+import { REWARDCOMPUTESCHEDULE_VIEW, REWARDCOMPUTESCHEDULE_DELETE, SOASSESSSYNSCHEDULE_VIEW, SOASSESSSYNSCHEDULE_DELETE } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
@@ -173,8 +173,8 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={REWARDCOMPUTESCHEDULE_VIEW}
-                        DeletePermission={REWARDCOMPUTESCHEDULE_DELETE}
+                        RequirePermission={SOASSESSSYNSCHEDULE_VIEW}
+                        DeletePermission={SOASSESSSYNSCHEDULE_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={30}
                     />
