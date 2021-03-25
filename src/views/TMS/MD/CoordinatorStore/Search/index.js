@@ -101,24 +101,6 @@ class SearchCom extends React.Component {
         //     this.setState({ SearchData: postData });
         //     this.callSearchData(postData);
         // }
-        // if ((MLObject.ShipmentOrderTypeID == "") && (MLObject.StoreID == "")) {
-        //     const tempPostData = [
-        //         {
-        //             SearchKey: "@ShipmentOrderTypeID",
-        //             SearchValue: -1
-        //         },
-        //         {
-        //             SearchKey: "@StoreID",
-        //             SearchValue: -1
-        //         }
-        //     ]
-        //     this.setState({ SearchData: tempPostData });
-        //     this.callSearchData(tempPostData);
-        // }
-        // else {
-        //     this.setState({ SearchData: postData });
-        //     this.callSearchData(postData);
-        // }
 
         this.setState({ SearchData: postData });
         this.callSearchData(postData);

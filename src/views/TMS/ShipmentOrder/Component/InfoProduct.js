@@ -296,6 +296,12 @@ class InfoProductCom extends Component {
                             <div className="form-group col-md-4">
                                 <label className="col-form-label lbl-currency-total" >{formatMoney((this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD) - this.state.ShipmentOrder.TotalReturnPrice, 0)}đ</label>
                             </div>
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Thời gian xuất:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label bold">{formatDate(this.state.ShipmentOrder.OutputGoodsDate)}</label>
+                            </div>
                         </div>
 
                         <div className="form-row">
@@ -307,6 +313,12 @@ class InfoProductCom extends Component {
                                     this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : <span className="badge badge-danger">Chưa nộp tiền</span> : ""
                                 }
                             </div>
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Người xuất:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label bold">{this.state.ShipmentOrder.OutputGoodsUser + "-" + this.state.ShipmentOrder.OutputGoodsUserFull}</label>
+                            </div>
                         </div>
 
                         <div className="form-row">
@@ -315,18 +327,6 @@ class InfoProductCom extends Component {
                             </div>
                             <div className="form-group col-md-2">
                                 {this.state.ShipmentOrder.IsOutputGoods == true ? <span className="badge badge-success">Đã xuất hàng</span> : <span className="badge badge-danger">Chưa xuất hàng </span>}
-                            </div>
-                            <div className="form-group col-md-2">
-                                <label className="col-form-label bold">Thời gian xuất:</label>
-                            </div>
-                            <div className="form-group col-md-2">
-                                <label className="col-form-label bold">   <label className="col-form-label" >{formatDate(this.state.ShipmentOrder.OutputGoodsDate)}</label></label>
-                            </div>
-                            <div className="form-group col-md-2">
-                                <label className="col-form-label bold">Người xuất:</label>
-                            </div>
-                            <div className="form-group col-md-2">
-                                <label className="col-form-label bold">{this.state.ShipmentOrder.OutputGoodsUser + "-" + this.state.ShipmentOrder.OutputGoodsUserFull}</label>
                             </div>
                         </div>
 
