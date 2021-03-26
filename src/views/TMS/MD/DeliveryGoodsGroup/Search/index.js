@@ -19,11 +19,11 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { FUELPRICE_VIEW, FUELPRICE_DELETE } from "../../../../../constants/functionLists";
+import { MATERIALGROUP_VIEW, MATERIALGROUP_DELETE } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -64,8 +64,7 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                this.props.callClearLocalCache(ERPCOMMONCACHE_AREATYPE);
-                this.props.callClearLocalCache(ERPCOMMONCACHE_AREATT);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
             }
         });
     }
@@ -92,8 +91,10 @@ class SearchCom extends React.Component {
                     IsShowForm: true
                 });
             } else {
-                this.showMessage(apiResult.Message);
-                this.setState({ IsShowForm: false });
+                this.setState({ IsShowForm: false,
+                    IsCallAPIError:!apiResult.IsError,
+                 });
+                 this.showMessage(apiResult.Message);
             }
         });
     }
@@ -154,7 +155,7 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm bảng giá nhiên liệu"
+                        FormName="Tìm kiếm nhóm hàng hóa vận chuyển"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
@@ -168,8 +169,8 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={FUELPRICE_VIEW}
-                        DeletePermission={FUELPRICE_DELETE}
+                        RequirePermission={MATERIALGROUP_VIEW}
+                        DeletePermission={MATERIALGROUP_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />

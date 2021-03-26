@@ -63,7 +63,7 @@ export const ModalColumnList_Insert = [
         type: "text",
         label: "số lượng nhỏ nhất",
         maxSize: "19",
-        value: 0,
+        value: "",
         DataSourceMember: "MinQuality",
         readonly: false,
         validatonList: ["digit"]
@@ -73,7 +73,7 @@ export const ModalColumnList_Insert = [
         type: "text",
         label: "số lượng lớn nhất",
         maxSize: "19",
-        value: 0,
+        value: "",
         DataSourceMember: "MaxQuality",
         readonly: false,
         validatonList: ["digit"]
@@ -140,7 +140,7 @@ export const ModalColumnList_Edit = [
         type: "text",
         label: "số lượng nhỏ nhất",
         maxSize: "19",
-        value: 0,
+        value: "",
         DataSourceMember: "MinQuality",
         readonly: false,
         validatonList: ["number"]
@@ -150,7 +150,7 @@ export const ModalColumnList_Edit = [
         type: "text",
         label: "số lượng lớn nhất",
         maxSize: "19",
-        value: 0,
+        value: "",
         DataSourceMember: "MaxQuality",
         readonly: false,
         validatonList: ["number"]
