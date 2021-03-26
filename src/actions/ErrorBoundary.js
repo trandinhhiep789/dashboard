@@ -13,7 +13,7 @@ export default class ErrorBoundary extends React.Component {
 
     componentDidCatch(error, info) {
         // Log the error to an error reporting service
-        console.log("%cError from ErrorBoundary", "color:red", info);
+        console.log("%cErrorBoundary detected error", "color:red");
     }
 
     render() {

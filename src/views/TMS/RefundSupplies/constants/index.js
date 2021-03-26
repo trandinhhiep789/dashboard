@@ -352,13 +352,51 @@ export const MLObjectDefinition = [
 ];
 
 export const InputMTReturnRequestDetailColumnList = [
-    // {
-    //     Name: "chkSelect",
-    //     Type: "checkbox",
-    //     Caption: "Chọn",
-    //     DataSourceMember: "MTReturnRequestID",
-    //     Width: 60
-    // },
+    {
+        Name: "MaterialGroupID",
+        Type: "text",
+        Caption: "Nhóm vật tư",
+        DataSourceMember: "MaterialGroupID",
+        Width: 100
+    },
+    {
+        Name: "ProductID",
+        Type: "text",
+        Caption: "Mã sản phẩm",
+        DataSourceMember: "ProductID",
+        Width: 150
+    },
+    {
+        Name: "ProductName",
+        Type: "text",
+        Caption: "Tên sản phẩm",
+        DataSourceMember: "ProductName",
+        Width: 250
+    },
+    {
+        Name: "QuantityUnit",
+        Type: "text",
+        Caption: "Đơn vị tính",
+        DataSourceMember: "QuantityUnit",
+        Width: 80
+    },
+    {
+        Name: "TotalQuantity",
+        Type: "textNew",
+        Caption: "Số dư tạm ứng",
+        DataSourceMember: "TotalQuantity",
+        Width: 80
+    },
+    {
+        Name: "Quantity",
+        Type: "textNew",
+        Caption: "Số lượng nhập trả",
+        DataSourceMember: "Quantity",
+        Width: 80
+    }
+];
+
+export const InputMTReturnRequestAddColumnList = [
     {
         Name: "MaterialGroupID",
         Type: "text",
@@ -401,27 +439,15 @@ export const InputMTReturnRequestDetailColumnList = [
         DataSourceMember: "Quantity",
         Width: 80
     },
-    // {
-    //     Name: "Quantity",
-    //     Type: "textNew",
-    //     // Type: "textboxNewGroup",
-    //     Caption: "Số lượng nhập trả",
-    //     Value: '',
-    //     labelError: 'số lượng nhập trả',
-    //     DataSourceMember: "Quantity",
-    //     Width: 200,
-    //     // validatonList: [ "number"],
-    //     IsNoneZero: false
-    // },
-
-    // {
-    //     Name: "Action",
-    //     Type: "buttonDelete",
-    //     Caption: "Tác vụ",
-    //     DataSourceMember: "MaterialGroupID",
-    //     Width: 70,
-    //     IsShowEdit: true,
-    // }
+    {
+        Name: "Action",
+        // Type: "buttonDelete",
+        Type: "editnew",
+        Caption: "Tác vụ",
+        DataSourceMember: "MaterialGroupID",
+        Width: 70,
+        IsShowEdit: true,
+    }
 
 ];
 
