@@ -414,15 +414,14 @@ export const InputMTReturnRequestDetailColumnList = [
     //     IsNoneZero: false
     // },
 
-    {
-
-        Name: "Action",
-        Type: "buttonDelete",
-        Caption: "Tác vụ",
-        DataSourceMember: "MaterialGroupID",
-        Width: 70,
-        IsShowEdit: true,
-    }
+    // {
+    //     Name: "Action",
+    //     Type: "buttonDelete",
+    //     Caption: "Tác vụ",
+    //     DataSourceMember: "MaterialGroupID",
+    //     Width: 70,
+    //     IsShowEdit: true,
+    // }
 
 ];
 
