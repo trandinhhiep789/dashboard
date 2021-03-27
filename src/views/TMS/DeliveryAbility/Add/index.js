@@ -222,6 +222,7 @@ class AddCom extends React.Component {
                             colspan={10}
                             labelcolspan={2}
                             classNameCustom="customCheckbox"
+                            value={false}
                         />
                     </div>
 
