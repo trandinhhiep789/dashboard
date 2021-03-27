@@ -138,9 +138,8 @@ import MTReturnRequestType from "../TMS/MD/MTReturnRequestType";
 import QualityAssessGroup from "../TMS/MD/QualityAssessGroup";
 import QualityAssessType from "../TMS/MD/QualityAssessType";
 import SoAssessSynSchedule from "../TMS/MD/SoAssessSynSchedule";
-import DeliveryAbility from '../../views/TMS/DeliveryAbility';
 import DeliveryGoodsGroup from "../TMS/MD/DeliveryGoodsGroup";
-
+import DeliveryAbility from '../../views/TMS/DeliveryAbility';
 
 class HomeCom extends React.Component {
     constructor(props) {
