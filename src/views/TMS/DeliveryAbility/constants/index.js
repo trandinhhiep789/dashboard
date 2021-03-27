@@ -179,5 +179,58 @@ export const DataGridColumnList = [
 ]
 
 export const MLObjectDefinition=[
+    
+    {
+        Name: "ProvinceID",
+        DefaultValue: "",
+        BindControlName: "cbProvinceID",
+        DataSourceMember: "ProvinceID"
+    },
+    {
+        Name: "StoreID",
+        DefaultValue: "",
+        BindControlName: "cbStoreID",
+        DataSourceMember: "StoreID"
+    },
+    {
+        Name: "DeliveryTimeFrameID",
+        DefaultValue: "",
+        BindControlName: "cbDeliveryTimeFrameID",
+        DataSourceMember: "DeliveryTimeFrameID"
+    },
+    {
+        Name: "CarrierTypeID",
+        DefaultValue: "",
+        BindControlName: "cbCarrierTypeID",
+        DataSourceMember: "CarrierTypeID"
+    },
 
+    {
+        Name: "WeekDayID",
+        DefaultValue: "",
+        BindControlName: "cbWeekDayID",
+        DataSourceMember: "WeekDayID"
+    },
+
+    
+    {
+        Name: "Description",
+        DefaultValue: "",
+        BindControlName: "txtDescription",
+        DataSourceMember: "Description"
+    },
+
+    {
+        Name: "IsActived",
+        DefaultValue: true,
+        BindControlName: "chkIsActived",
+        DataSourceMember: "IsActived"
+    },
+
+    {
+        Name: "IsSystem",
+        DefaultValue: false,
+        BindControlName: "chkIsSystem",
+        DataSourceMember: "IsSystem"
+    },
 ]
