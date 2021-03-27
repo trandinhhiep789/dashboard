@@ -139,6 +139,7 @@ import QualityAssessGroup from "../TMS/MD/QualityAssessGroup";
 import QualityAssessType from "../TMS/MD/QualityAssessType";
 import SoAssessSynSchedule from "../TMS/MD/SoAssessSynSchedule";
 import DeliveryAbility from '../../views/TMS/DeliveryAbility';
+import DeliveryGoodsGroup from "../TMS/MD/DeliveryGoodsGroup";
 
 
 class HomeCom extends React.Component {
@@ -351,6 +352,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/TMSConfig" component={TMSConfig} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/DeliveryDateUpdateType" component={DeliveryDateUpdateType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/DeliveryDateUpdateReason" component={DeliveryDateUpdateReason} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/DeliveryGoodsGroup" component={DeliveryGoodsGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                 <PrivateRoute path="/MTReturnRequestType" component={MTReturnRequestType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/QualityAssessGroup" component={QualityAssessGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />

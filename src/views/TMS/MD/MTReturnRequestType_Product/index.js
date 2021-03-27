@@ -82,23 +82,20 @@ class MTReturnRequestType_ProductCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -156,9 +153,9 @@ class MTReturnRequestType_ProductCom extends React.Component {
             selector[6].style.display = elementValue ? "" : "none";
         } else if (elementName == "MaterialGroupID" && this.state.IsInsert) {
             let options = [];
-            this.props.MaterialProductDataSource.map((item, index)=>{
-                if(item.MaterialGroupID == elementValue){
-                    options.push({value:item.ProductID, name: item.ProductID + "-" +  item.ProductName})
+            this.props.MaterialProductDataSource.map((item, index) => {
+                if (item.MaterialGroupID == elementValue) {
+                    options.push({ value: item.ProductID, name: item.ProductID + "-" + item.ProductName })
                 }
             })
             const elementlist = ModalColumnList_Insert;
@@ -167,16 +164,16 @@ class MTReturnRequestType_ProductCom extends React.Component {
                     objElement.listoption = options;
                     objElement.value = [];
                     formData.ProductID = [];
-                } 
-    
-    
+                }
+
+
             });
             this.setState({
                 ModalColumnList_Insert: elementlist
             });
             return formData;
         }
-        
+
 
         //console.log("formdata",formData);
 
@@ -211,6 +208,22 @@ class MTReturnRequestType_ProductCom extends React.Component {
                         MLObject.InventoryStatusID = MLObject.InventoryStatusID && Array.isArray(MLObject.InventoryStatusID) ? MLObject.InventoryStatusID[0] : MLObject.InventoryStatusID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+
+                        //có kiểm tra số lượng lớn nhất nhỏ nhất
+                        if (MLObject.IsCheckMinMaxQuality) {
+                            if (MLObject.MinQuality === "") {
+                                this.addNotification("Vui lòng nhập số lượng nhỏ nhất", true);
+                                return;
+                            } else if (MLObject.MaxQuality === "") {
+                                this.addNotification("Vui lòng nhập số lượng lớn nhất", true);
+                                return;
+                            } else if (!(MLObject.MaxQuality > MLObject.MinQuality)) {
+                                this.addNotification("Số lượng lớn nhất phải > số lượng nhỏ nhất", true);
+                                return;
+                            }
+
+                        }
+
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
                                 if (this.props.onComponentChange) {
@@ -272,6 +285,22 @@ class MTReturnRequestType_ProductCom extends React.Component {
                         MLObject.InventoryStatusID = MLObject.InventoryStatusID && Array.isArray(MLObject.InventoryStatusID) ? MLObject.InventoryStatusID[0] : MLObject.InventoryStatusID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+
+                        if (MLObject.IsCheckMinMaxQuality) {
+                            debugger;
+                            if (MLObject.MinQuality === "") {
+                                this.addNotification("Vui lòng nhập số lượng nhỏ nhất", true);
+                                return;
+                            } else if (MLObject.MaxQuality === "") {
+                                this.addNotification("Vui lòng nhập số lượng lớn nhất", true);
+                                return;
+                            } else if (!(MLObject.MaxQuality > MLObject.MinQuality)) {
+                                this.addNotification("Số lượng lớn nhất phải > số lượng nhỏ nhất", true);
+                                return;
+                            }
+
+                        }
+
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
                                 if (this.props.onComponentChange) {
@@ -283,7 +312,7 @@ class MTReturnRequestType_ProductCom extends React.Component {
                             //this.showMessage(apiResult.Message);
                             this.addNotification(apiResult.Message, apiResult.IsError);
                         });
-                        //this.resetCombobox();
+                        this.resetCombobox();
                         //console.log("edit", MLObject);
                     }
                 }

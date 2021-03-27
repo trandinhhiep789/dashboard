@@ -10,17 +10,14 @@ import {
     LoadAPIPath,
     BackLink,
     EditPagePath,
-    DetailPagePath,
-    GetMaterialProductAPIPath
+    DetailPagePath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { format } from "date-fns";
 import { formatDate } from "../../../../../common/library/CommonLib";
-import MTReturnRequestType_Product from "../../MTReturnRequestType_Product";
-import MTReturnRequestType_ReviewLevel from "../../MTReturnRequestType_ReviewLevel";
-import MTReturnRequestType_ReviewLevel_User from "../../MTReturnRequestType_ReviewLevel_User";
+import DeliveryGoodsGroup_Apply from "../../DeliveryGoodsGroup_Apply";
 
 
 class DetailCom extends React.Component {
@@ -28,7 +25,7 @@ class DetailCom extends React.Component {
         super(props);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.callLoadData = this.callLoadData.bind(this);
-        this.onComponentChange = this.onComponentChange.bind(this);
+        this.onDeliveryGoodsGroupApplyChange = this.onDeliveryGoodsGroupApplyChange.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -52,28 +49,18 @@ class DetailCom extends React.Component {
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                this.setState({ DataSource: apiResult.ResultObject });
+                this.setState({
+                    DataSource: apiResult.ResultObject,
+                    DeliveryGoodsGroupApply: apiResult.ResultObject.ListDeliveryGoodsGroup_Apply ? apiResult.ResultObject.ListDeliveryGoodsGroup_Apply : []
+                });
             }
             this.setState({
                 IsLoadDataComplete: true
             });
-            //console.log("apiResult", apiResult);
-        });
-        
-        this.props.callFetchAPI(APIHostName, GetMaterialProductAPIPath, id).then(apiResult => {
-            if (apiResult.IsError) {
-                this.setState({
-                    IsCallAPIError: apiResult.IsError
-                });
-                this.showMessage(apiResult.Message);
-            } else {
-                this.setState({ MaterialProductDataSource: apiResult.ResultObject });
-            }
-            console.log("apiResult", apiResult);
         });
     }
 
-    onComponentChange() {
+    onDeliveryGoodsGroupApplyChange() {
         this.callLoadData();
     }
 
@@ -105,7 +92,7 @@ class DetailCom extends React.Component {
                     <div className="col-md-12 col-sm-12 col-xs-12">
                         <div className="x_panel">
                             <div className="x_title">
-                                <h2>Thông tin loại yêu cầu nhập trả vật tư</h2>
+                                <h2>Thông tin nhóm hàng hóa vận chuyển</h2>
                                 <div className="clearfix"></div>
                             </div>
 
@@ -113,38 +100,39 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Mã loại yêu cầu nhập trả vật tư: </span>
-                                            <span className="xcode">{this.state.DataSource.MTReturnRequestTypeID}</span>
+                                            <span>Mã nhóm hàng hóa vận chuyển: </span>
+                                            <span className="xcode">{this.state.DataSource.DeliveryGoodsGroupID}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Tên loại yêu cầu nhập trả vật tư: </span>
-                                            <span>{this.state.DataSource.MTReturnRequestTypeName}</span>
+                                            <span>Tên nhóm hàng hóa vận chuyển: </span>
+                                            <span>{this.state.DataSource.DeliveryGoodsGroupName}</span>
                                         </div>
                                     </div>
                                 </div>
+
 
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Quyền thêm: </span>
-                                            <span>{this.state.DataSource.AddFunctionName}</span>
+                                            <span>Khả năng giao hàng: </span>
+                                            <span>{this.state.DataSource.DeliveryAbilityFactor}</span>
                                         </div>
                                     </div>
-
                                     <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span> Thứ tự hiển thị: </span>
-                                            <span>{this.state.DataSource.OrderIndex}</span>
+                                    <div className="form-group checkbox customCheckbox">
+                                            <span>Thuộc nhóm khác: </span>
+                                            <label>
+                                                <input name="IsOtherGroup" type="checkbox" id="IsOtherGroup" checked={this.state.DataSource.IsOtherGroup} />
+                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
 
-
                                 
-
-
+                       
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group checkbox customCheckbox">
@@ -189,27 +177,12 @@ class DetailCom extends React.Component {
                                             <span>{this.state.DataSource.Description}</span>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group checkbox customCheckbox">
-                                            <span>Có tự động duyệt: </span>
-                                            <label>
-                                                <input name="IsAutoReview" type="checkbox" id="IsAutoReview" checked={this.state.DataSource.IsAutoReview} />
-                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                            </label>
+                                    {/* <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span> Thứ tự hiển thị: </span>
+                                            <span>{this.state.DataSource.OrderIndex}</span>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <div className="form-group checkbox customCheckbox">
-                                            <span>Cho phép nhập trùng SP </span>
-                                            <label>
-                                                <input name="IsAllowDuplicationProduct" type="checkbox" id="IsAllowDuplicationProduct" checked={this.state.DataSource.IsAllowDuplicationProduct} />
-                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                            </label>
-                                        </div>
-                                    </div>         
+                                    </div> */}
                                 </div>
 
 
@@ -217,33 +190,13 @@ class DetailCom extends React.Component {
                             </div>
                         </div>
                     </div>
-
                     <br />
-                    <MTReturnRequestType_Product
-                        MTReturnRequestTypeID={this.props.match.params.id}
-                        DataSource={this.state.DataSource.ListMTReturnRequestType_Product ? this.state.DataSource.ListMTReturnRequestType_Product : []}
-                        onComponentChange={this.onComponentChange}
-                        MaterialProductDataSource={this.state.MaterialProductDataSource ? this.state.MaterialProductDataSource : []}
+                    <DeliveryGoodsGroup_Apply
+                        DeliveryGoodsGroupID={this.props.match.params.id}
+                        DataSource={this.state.DeliveryGoodsGroupApply}
+                        onDeliveryGoodsGroupApplyChange={this.onDeliveryGoodsGroupApplyChange}
                     />
 
-                    <br />
-                    {!this.state.DataSource.IsAutoReview ?
-                        <MTReturnRequestType_ReviewLevel
-                            MTReturnRequestTypeID={this.props.match.params.id}
-                            DataSource={this.state.DataSource.ListMTReturnRequestType_ReviewLevel ? this.state.DataSource.ListMTReturnRequestType_ReviewLevel : []}
-                            //MTReturnRequestType_ReviewLevel_User_DataSource={this.state.DataSource.ListMTReturnRequestType_ReviewLevel_User ? this.state.DataSource.ListMTReturnRequestType_ReviewLevel_User : []}
-                            onComponentChange={this.onComponentChange}
-                        />
-                        : ""
-                    }
-
-
-                    {/* <MTReturnRequestType_ReviewLevel_User
-                        MTReturnRequestTypeID={this.props.match.params.id}
-                        MTReturnRequestType_ReviewLevel_DataSource={this.state.DataSource.ListMTReturnRequestType_ReviewLevel ? this.state.DataSource.ListMTReturnRequestType_ReviewLevel : []}
-                        MTReturnRequestType_ReviewLevel_User_DataSource={this.state.DataSource.ListMTReturnRequestType_ReviewLevel_User ? this.state.DataSource.ListMTReturnRequestType_ReviewLevel_User : []}
-                        onComponentChange={this.onComponentChange}
-                    /> */}
                 </React.Fragment >
             );
         }
