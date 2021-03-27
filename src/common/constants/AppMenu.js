@@ -35,7 +35,7 @@ const AppMenu = [
                         SubMenu: []
                     }
 
-                    
+
                 ]
             },
             {
@@ -723,7 +723,7 @@ const AppMenu = [
                 LinkTo: '',
                 MenuIcon: '',
                 SubMenu: [
-                   
+
                     {
                         MenuName: 'RewardShipmentOrder',
                         MenuTitle: 'Tổng thưởng giao hàng',
@@ -782,6 +782,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'DeliveryAbility',
+                MenuTitle: 'Khai báo tổng tải',
+                LinkTo: '/DeliveryAbility',
+                MenuIcon: '',
+                SubMenu: []
+            }
         ]
     },
     {
@@ -968,7 +975,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            
+
             {
                 MenuName: 'InventoryMaterials',
                 MenuTitle: 'Báo cáo tồn kho vật tư',
