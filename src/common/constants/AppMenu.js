@@ -114,6 +114,21 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'DeliveryExpress',
+                        MenuTitle: 'Tải giao hàng',
+                        LinkTo: '',
+                        MenuIcon: '',
+                        SubMenu: [
+                            {
+                                MenuName: 'DeliveryGoodsGroup',
+                                MenuTitle: 'Danh sách nhóm hàng hóa vận chuyển',
+                                LinkTo: '/DeliveryGoodsGroup',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                        ]
+                    },
 
                 ]
             },
