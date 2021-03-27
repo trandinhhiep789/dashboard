@@ -64,6 +64,8 @@ class AddCom extends React.Component {
         this.props.hideModal();
         this.props.updatePagePath(AddPagePath);
         this.GetDataByRequestTypeID(this.props.location.state.MtreturnRequestTypeID);
+      
+
         const param = [
             {
                 SearchKey: "@MTRETURNREQUESTTYPEID",
@@ -75,6 +77,19 @@ class AddCom extends React.Component {
             }
         ];
         this.getDataMTReturnRequestRLByMTReturnRequestType(param);
+
+        const param1 ={
+            MtreturnRequestTypeID: this.props.location.state.MtreturnRequestTypeID,
+            RequestStoreID: this.props.location.state.RequestStoreID
+        }
+        this.testGetMTReturnRequestMobile(param1)
+       
+    }
+
+    testGetMTReturnRequestMobile(param){
+        this.props.callFetchAPI(APIHostName, "api/MTReturnRequest/GetMTReturnRequestMobile", param).then(apiResult => {
+            console.log("GetMTReturnRequestMobile", param, apiResult)
+        })
     }
 
     getDataMTReturnRequestRLByMTReturnRequestType(param) {
@@ -127,6 +142,8 @@ class AddCom extends React.Component {
                     gridMTReturnRequestRLSort: resultSort
                 });
             }
+
+          
         })
     }
 
@@ -153,6 +170,8 @@ class AddCom extends React.Component {
                     MTReturnRequestDetail: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
                 });
+
+              
             }
         });
     }
