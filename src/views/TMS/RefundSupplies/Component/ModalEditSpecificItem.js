@@ -5,7 +5,8 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MessageModal } from "../../../../common/components/Modal";
-class ModalAddReturnRequestDetailCom extends Component {
+
+class ModalEditSpecificItemCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,16 +23,15 @@ class ModalAddReturnRequestDetailCom extends Component {
 
     updateDataSourceCompatibleWithInutGridCom() {
         const { MTReturnRequestDetailNew } = this.state;
-
         const cloneMTReturnRequestDetailNew = MTReturnRequestDetailNew.map((item, index) => {
-            const { IsCheckMinMaxQuantity, MinQuantity, MaxQuantity, TotalQuantity, IsAllowdUpliCatiOnProduct, QuantityUnit } = item;
+            const { IsCheckMinMaxQuantity, MinQuantity, MaxQuantity,
+                TotalQuantity, QuantityUnit } = item;
             if (IsCheckMinMaxQuantity) {
                 return {
                     ...item,
                     minInputNumber: MinQuantity,
                     maxInputNumber: MaxQuantity,
                     disabled: MaxQuantity == 0 ? true : false,
-                    isDisabled: IsAllowdUpliCatiOnProduct ? true : false,
                     stepDecimalInputNumber: QuantityUnit.trim() == "Mét" ? "0.01" : 1
                 }
             } else {
@@ -40,7 +40,6 @@ class ModalAddReturnRequestDetailCom extends Component {
                     minInputNumber: 0,
                     maxInputNumber: TotalQuantity,
                     disabled: TotalQuantity == 0 ? true : false,
-                    isDisabled: IsAllowdUpliCatiOnProduct ? true : false,
                     stepDecimalInputNumber: QuantityUnit.trim() == "Mét" ? "0.01" : 1
                 }
             }
@@ -53,8 +52,8 @@ class ModalAddReturnRequestDetailCom extends Component {
 
     onHandleSubmitGridNew() {
         const { MTReturnRequestDetailNew } = this.state;
-        const { dataSource, dataCompare, IsAllowdUpliCatiOnProduct } = this.props;
-        let dataSelect = [], errorValidate = false;
+        const { dataSource } = this.props;
+        let dateEdit = [], errorValidate = false;
 
         for (const key in MTReturnRequestDetailNew) {
             if (MTReturnRequestDetailNew[key].errorInputNumber == true) {
@@ -68,7 +67,7 @@ class ModalAddReturnRequestDetailCom extends Component {
         } else {
             MTReturnRequestDetailNew.forEach((item, index) => {
                 if (item.Quantity) {
-                    dataSelect.push({
+                    dateEdit.push({
                         ...dataSource[index],
                         Quantity: item.Quantity
                     })
@@ -77,29 +76,7 @@ class ModalAddReturnRequestDetailCom extends Component {
             this.props.hideModal();
         }
 
-        if (IsAllowdUpliCatiOnProduct) {
-            if (this.props.onClickInsertItem)
-                this.props.onClickInsertItem(dataSelect)
-        } else {
-            let flagCheck = false;
-
-            dataSelect.forEach(item => {
-                dataCompare.forEach(element => {
-                    if (item.MaterialGroupID.trim() == element.MaterialGroupID.trim()
-                        && item.ProductID.trim() == element.ProductID.trim()) {
-                        flagCheck = true;
-                        return;
-                    }
-                });
-            });
-
-            if (flagCheck) {
-                this.showMessage("Dữ liệu đã tồn tại.")
-            } else {
-                if (this.props.onClickInsertItem)
-                    this.props.onClickInsertItem(dataSelect)
-            }
-        }
+        if (this.props.onClickInsertItem) this.props.onClickInsertItem(dateEdit)
 
         // set MTReturnRequestDetailNew state ve trang thai ban dau
         this.setState({
@@ -123,7 +100,7 @@ class ModalAddReturnRequestDetailCom extends Component {
 
     validateInputNumber(e, rowItem, rowIndex) {
         const { MTReturnRequestDetailNew } = this.state;
-        const { IsCheckMinMaxQuantity, MaxQuantity, maxInputNumber, TotalQuantity, QuantityUnit } = MTReturnRequestDetailNew[rowIndex];
+        const { maxInputNumber } = MTReturnRequestDetailNew[rowIndex];
 
         let cloneMTReturnRequestDetailNew = [...MTReturnRequestDetailNew];
         let itemRowIndex = { ...MTReturnRequestDetailNew[rowIndex] };
@@ -137,7 +114,6 @@ class ModalAddReturnRequestDetailCom extends Component {
             errMsgInputNumber = null;
             errorInputNumber = false;
         } else if (e == maxInputNumber) {
-            // errMsgInputNumber = IsCheckMinMaxQuantity ? `Số lượng tạm ứng nhỏ hơn hoặc bằng ${MaxQuantity}` : `Số lượng tạm ứng nhỏ hơn hoặc bằng ${TotalQuantity}`;
             errMsgInputNumber = null;
             errorInputNumber = false;
         }
@@ -203,5 +179,5 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-const ModalAddReturnRequestDetail = connect(mapStateToProps, mapDispatchToProps)(ModalAddReturnRequestDetailCom);
-export default ModalAddReturnRequestDetail;
+const ModalEditSpecificItem = connect(mapStateToProps, mapDispatchToProps)(ModalEditSpecificItemCom);
+export default ModalEditSpecificItem;

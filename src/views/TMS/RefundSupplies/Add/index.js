@@ -14,7 +14,7 @@ import {
     BackLink,
     TitleFormAdd,
     AddPagePath,
-    InputMTReturnRequestDetailColumnList,
+    InputMTReturnRequestAddColumnList,
     InputMTReturnRequestDetailColumnListNew,
     GridMLObjectDefinition,
     GirdMTReturnRequestDetailColumnList,
@@ -34,6 +34,7 @@ import { TMS_MTRETURNREQUEST_ADD } from "../../../../constants/functionLists";
 import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import ModalAddReturnRequestDetail from "../Component/ModalAddReturnRequestDetail";
+import ModalEditSpecificItem from '../Component/ModalEditSpecificItem'
 import { Base64 } from 'js-base64';
 class AddCom extends React.Component {
     constructor(props) {
@@ -56,7 +57,8 @@ class AddCom extends React.Component {
             isValidationSelect: false,
             isError: false,
             InventoryStatusID: "",
-            IsAllowdUpliCatiOnProduct: false
+            IsAllowdUpliCatiOnProduct: false,
+            RowEditMTReturnRequestDetail: []
         };
     }
 
@@ -295,7 +297,8 @@ class AddCom extends React.Component {
 
 
             if (itemCheck.length > 0) {
-                this.showMessage('Lỗi vật tư quá số lượng tạm ứng');
+                // this.showMessage('Lỗi vật tư quá số lượng tạm ứng');
+                this.showMessage('Số lượng nhập trả vượt quá số lượng tồn của nhân viên');
                 this.setState({
                     IsCallAPIError: true,
                 })
@@ -367,13 +370,72 @@ class AddCom extends React.Component {
     handleItemDelete(index, item) {
         const { MTReturnRequestDetailNew } = this.state;
 
-        const result = MTReturnRequestDetailNew.filter((item, i) => {
-            if (i != index) return item;
+        const result = MTReturnRequestDetailNew.filter((dataItem, i) => {
+            if (i != index) return dataItem;
         })
 
         this.setState({
             MTReturnRequestDetailNew: result
         })
+    }
+
+    handleItemDeleteNew(index) {
+
+        const { MTReturnRequestDetailNew } = this.state;
+
+        const result = MTReturnRequestDetailNew.filter((dataItem, i) => {
+            if (i != index) return dataItem;
+        })
+
+        this.setState({
+            MTReturnRequestDetailNew: result
+        })
+    }
+
+    handleInsertItemEdit(data) {
+        const { MTReturnRequestDetailNew } = this.state
+        const { key } = data[0]
+        delete data[0].key
+        const cloneData = [...MTReturnRequestDetailNew]
+        cloneData[key] = data[0]
+        this.setState({
+            MTReturnRequestDetailNew: cloneData
+        })
+    }
+
+    handleItemEditClick(index) {
+        const { MTReturnRequestDetailNew } = this.state
+
+        const newDataSource = []
+        MTReturnRequestDetailNew.forEach((item, i) => {
+            if (index == i) {
+                newDataSource.push({
+                    key: i,
+                    ...item
+                })
+            }
+        })
+
+        this.setState({
+            RowEditMTReturnRequestDetail: newDataSource
+        })
+
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Chỉnh sửa nhập trả vật tư',
+            content: {
+                text: <ModalEditSpecificItem
+                    dataSource={newDataSource}
+                    multipleCheck={false}
+                    listColumn={InputMTReturnRequestDetailColumnListNew}
+                    onClickInsertItem={this.handleInsertItemEdit.bind(this)}
+                    IDSelectColumnName={"chkSelect"}
+                    PKColumnName={"MaterialGroupID,ProductID"}
+                    isHideHeaderToolbarGroupTextBox={true}
+                    isHideHeaderToolbar={true}
+                />
+            },
+            maxWidth: addImportMaterialModalWidth
+        });
     }
 
     handleItemInsert() {
@@ -410,9 +472,6 @@ class AddCom extends React.Component {
 
     }
 
-    handleMTReturnRequestDetailItem(id) {
-    }
-
     render() {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
@@ -420,14 +479,7 @@ class AddCom extends React.Component {
         let currentDate = new Date();
 
         const {
-            MTReturnRequestDetail,
-            MTReturnRequestDetailNew,
-            isError,
-            gridDestroyRequestRL,
-            validationErrorMessageSelect,
-            isValidationSelect,
-            isAutoReview,
-            gridMTReturnRequestRLSort
+            MTReturnRequestDetailNew, isAutoReview, gridMTReturnRequestRLSort
         } = this.state;
 
         return (
@@ -556,35 +608,16 @@ class AddCom extends React.Component {
                         </div>
                     </div>
 
-                    {/* <div className="card">
-                        <div className="card-title group-card-title">
-                            <h4 className="title">Danh sách vật tư nhập trả</h4>
-                        </div>
-                        <div className="card-body">
-                            <InputGrid
-                                name="lstMTReturnRequestDetail"
-                                controltype="GridControl"
-                                listColumn={InputMTReturnRequestDetailColumnList}
-                                dataSource={MTReturnRequestDetailNew}
-                                MLObjectDefinition={GridMLObjectDefinition}
-                                colspan="12"
-                                // onValueChangeInputGrid={this.valueChangeInputGrid.bind(this)}
-                                onInsertClick={this.handleItemInsert.bind(this)}
-                            />
-
-
-                        </div>
-                    </div> */}
-
                     <InputGridControl
                         name="lstMTReturnRequestDetail"
                         title={"Danh sách vật tư nhập trả"}
                         IDSelectColumnName={"MaterialGroupID"}
                         PKColumnName={"MaterialGroupID"}
-                        listColumn={InputMTReturnRequestDetailColumnList}
+                        listColumn={InputMTReturnRequestAddColumnList}
                         dataSource={MTReturnRequestDetailNew}
                         onInsertClick={this.handleItemInsert.bind(this)}
-                        onClickDeleteNew={this.handleItemDelete.bind(this)}
+                        onDeleteClick={this.handleItemDeleteNew.bind(this)}
+                        onEditClick={this.handleItemEditClick.bind(this)}
                         ref={this.gridref}
                     />
 
