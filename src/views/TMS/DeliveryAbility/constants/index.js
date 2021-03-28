@@ -1,6 +1,8 @@
 export const APIHostName = "TMSAPI";
 
 export const AddAPIPath = "api/DeliveryAbility/Add";
+export const SearchAPIPath = "api/DeliveryAbility/Search";
+
 export const AddLink = "/DeliveryAbility/Add";
 export const BackLink = "/DeliveryAbility";
 export const IDSelectColumnName = "chkSelect";
@@ -17,13 +19,13 @@ export const PagePath = [
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/DeliveryAbility", Title: "Danh sách khai báo tổng tải" },
     { Link: "", Title: "Cập nhật" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/DeliveryAbility", Title: "Danh sách khai báo tổng tải" },
     { Link: "", Title: "Thêm" }
 ];
@@ -68,23 +70,24 @@ export const SearchElementList = [
         classNameCol: "col-custom"
     },
     {
-        type: "ComboBox",
+        type: "ComboBoxNewChange",
         name: "cbStoreID",
         DataSourceMember: "StoreID",
-        colspan: 3,
-        value: -1,
-        isMultiSelect: false,
-        placeholder: "---Kho---",
         label: "Kho",
+        colspan: 3,
+        value: "",
+        isMultiSelect: true,
+        placeholder: "---Kho---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
-        ValueMember: "StoreID",
         NameMember: "StoreName",
+        ValueMember: "StoreID",
         filterName: "cbProvinceID",
         filterValue: "",
         filterobj: "ProvinceID",
-        classNameCol: "col-custom"
+        classNameCol: "col-custom",
+        maxTagCount: 1
     },
 ]
 
@@ -112,10 +115,10 @@ export const DataGridColumnList = [
     },
 
     {
-        Name: "ServiceAgreementNumber",
+        Name: "OutputStoreID",
         Type: "text",
         Caption: "Siêu thị",
-        DataSourceMember: "ServiceAgreementNumber",
+        DataSourceMember: "OutputStoreID",
         Width: 150
     },
     {
@@ -128,7 +131,7 @@ export const DataGridColumnList = [
     {
         Name: "ServiceTypeName",
         Type: "text",
-        Caption:"Máy lạnh",
+        Caption: "Máy lạnh",
         DataSourceMember: "ServiceTypeName",
         Width: 100
     },
@@ -161,10 +164,10 @@ export const DataGridColumnList = [
         Width: 100
     },
     {
-        Name: "StatusLable",
+        Name: "WeekDaysList",
         Type: "text",
         Caption: "Thứ áp dụng",
-        DataSourceMember: "StatusLable",
+        DataSourceMember: "WeekDaysList",
         Width: 200
     },
     {
@@ -178,8 +181,8 @@ export const DataGridColumnList = [
     },
 ]
 
-export const MLObjectDefinition=[
-    
+export const MLObjectDefinition = [
+
     {
         Name: "ProvinceID",
         DefaultValue: "",
@@ -212,7 +215,7 @@ export const MLObjectDefinition=[
         DataSourceMember: "WeekDayID"
     },
 
-    
+
     {
         Name: "Description",
         DefaultValue: "",

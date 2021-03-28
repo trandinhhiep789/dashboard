@@ -4,20 +4,21 @@ import ReactNotification from "react-notifications-component";
 import { ModalManager } from 'react-dynamic-modal';
 
 import { updatePagePath } from "../../../../actions/pageAction";
-import { callGetCache } from "../../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MessageModal } from "../../../../common/components/Modal";
 import DataGrid from "../../../../common/components/DataGrid";
 import {
     APIHostName, PagePath, SearchElementList,
-    tableHead, SearchMLObjectDefinition,
-    DataGridColumnList,
-    IDSelectColumnName, PKColumnName, AddLink ,TitleFormSearch, InitSearchParams
+    tableHead, SearchMLObjectDefinition, AddAPIPath,
+    DataGridColumnList, SearchAPIPath,
+    IDSelectColumnName, PKColumnName, AddLink, TitleFormSearch, InitSearchParams
 } from '../constants'
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import { MODAL_TYPE_CONFIRMATION } from '../../../../constants/actionTypes';
 import { DELIVERYABILITY_VIEW, DELIVERYABILITY_DELETE } from "../../../../constants/functionLists";
+import { ERPCOMMONCACHE_STORE } from '../../../../constants/keyCache'
 
 export class Search extends Component {
     constructor(props) {
@@ -42,16 +43,12 @@ export class Search extends Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        const { StoreID } = MLObject;
         const DataSearch = [
-          
             {
-                SearchKey: "@SERVICETYPEID",
-                SearchValue: MLObject.ServiceTypeID
-            },
-            {
-                SearchKey: "@AREAID",
-                SearchValue: MLObject.AreaID
-            },
+                SearchKey: "@OUTPUTSTOREID",
+                SearchValue: StoreID.toString()
+            }
         ];
         this.setState({
             SearchData: DataSearch
@@ -60,7 +57,34 @@ export class Search extends Component {
     }
 
     callSearchData(searchData) {
-        console.log("searchData", searchData)
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: apiResult.IsError
+                });
+                this.addNotification(apiResult.Message, apiResult.IsError)
+            } else {
+                this.props.callGetUserCache(ERPCOMMONCACHE_STORE).then(result => {
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        let tempGridDataSource = apiResult.ResultObject.map(item => {
+                            const tempStore = result.ResultObject.CacheData.find(element => element.StoreID == item.OutputStoreID)
+                            return {
+                                ...item,
+                                OutputStoreID: tempStore.StoreName
+                            }
+                        })
+                        this.setState({
+                            gridDataSource: tempGridDataSource
+                        })
+                    } else {
+                        this.setState({
+                            gridDataSource: [...apiResult.ResultObject]
+                        })
+                    }
+                })
+
+            }
+        })
     }
 
     showMessage(message) {
@@ -79,11 +103,11 @@ export class Search extends Component {
 
 
 
-    handleImportFile(){
+    handleImportFile() {
 
     }
 
-    handleExportFile(){
+    handleExportFile() {
 
     }
 
@@ -168,7 +192,7 @@ export class Search extends Component {
                     fileName="Danh sách tải giao hàng"
                     onExportFile={this.handleExportFile.bind(this)}
                     IsImportFile={true}
-                    // onImportFile={this.handleImportFile.bind(this)}
+                // onImportFile={this.handleImportFile.bind(this)}
 
                 />
 
@@ -200,6 +224,9 @@ const mapDispatchToProps = dispatch => {
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
         }
     };
 };
