@@ -19,6 +19,8 @@ import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import { MODAL_TYPE_CONFIRMATION } from '../../../../constants/actionTypes';
 import { DELIVERYABILITY_VIEW, DELIVERYABILITY_DELETE } from "../../../../constants/functionLists";
 import { ERPCOMMONCACHE_STORE } from '../../../../constants/keyCache'
+import { Link } from 'react-router-dom';
+import DatagirdDeliveryAbility from '../Component/DatagirdDeliveryAbility';
 
 export class Search extends Component {
     constructor(props) {
@@ -30,7 +32,10 @@ export class Search extends Component {
             SearchData: InitSearchParams,
             IsCallAPIError: false,
             IsLoadDataComplete: false,
-            dataExport: []
+            dataExport: [],
+            deliveryGoodSgroup: [],
+            PageNumber: 1,
+            gridDataSourceNew: [],
         }
 
         this.notificationDOMRef = React.createRef()
@@ -40,6 +45,8 @@ export class Search extends Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath)
+
+        this.callSearchData(this.state.SearchData);
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -58,31 +65,72 @@ export class Search extends Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("callSearchData", apiResult, searchData)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: apiResult.IsError
                 });
-                this.addNotification(apiResult.Message, apiResult.IsError)
+                this.showMessage(apiResult.Message)
             } else {
-                this.props.callGetUserCache(ERPCOMMONCACHE_STORE).then(result => {
-                    if (!result.IsError && result.ResultObject.CacheData != null) {
-                        let tempGridDataSource = apiResult.ResultObject.map(item => {
-                            const tempStore = result.ResultObject.CacheData.find(element => element.StoreID == item.OutputStoreID)
-                            return {
-                                ...item,
-                                OutputStoreID: tempStore.StoreName
-                            }
-                        })
-                        this.setState({
-                            gridDataSource: tempGridDataSource
-                        })
-                    } else {
-                        this.setState({
-                            gridDataSource: [...apiResult.ResultObject]
-                        })
-                    }
+
+                let dataSource = apiResult.ResultObject.reduce((catsSoFar, item, index) => {
+                    if (!catsSoFar[item.DeliveryAbilityID]) catsSoFar[item.DeliveryAbilityID] = [];
+                    catsSoFar[item.DeliveryAbilityID].push(item);
+                    return catsSoFar;
+                }, {});
+
+                console.log("dataSource 222", dataSource)
+
+                this.setState({
+                    gridDataSource: apiResult.ResultObject
+                })
+                this.callDataDeliveryGoodSgroup(dataSource);
+            }
+        })
+    }
+
+    callDataDeliveryGoodSgroup(dataSource) {
+        const intDeliveryGoodsGroupID = -1
+        this.props.callFetchAPI(APIHostName, "api/DeliveryGoodsGroup/LoadNew", intDeliveryGoodsGroupID).then(apiResult => {
+            console.log("callDataDeliveryGoodSgroup", intDeliveryGoodsGroupID, apiResult)
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: apiResult.IsError
+                });
+                this.showMessage(apiResult.Message)
+            }
+            else {
+
+                let tmpDatasource = []
+
+                Object.keys(dataSource).map(function (key) {
+                    // dataSource[key]["Child"] = [...dataSource[key]]
+                    let tmsResult = [...apiResult.ResultObject]
+                    tmsResult.map(e => {
+                        let find = dataSource[key].find(f => { return e.DeliveryGoodsGroupID == f.DeliveryGoodsGroupID })
+                        e.TotalAbility = !!find ? find.TotalAbility : 0
+
+                        return e
+                    })
+                    // dataSource[key]["Resource"] = [...tmsResult]
+                    tmpDatasource.push({
+                        Child: [...dataSource[key]],
+                        Resource: [...tmsResult],
+                        StoreName: dataSource[key][0].StoreName,
+                        OutputStoreID: dataSource[key][0].OutputStoreID,
+                        DeliveryTimeFrameID: dataSource[key][0].DeliveryTimeFrameID,
+                        DeliveryTimeFrameName: dataSource[key][0].DeliveryTimeFrameName,
+                        WeekDaysList: dataSource[key][0].WeekDaysList,
+                    })
                 })
 
+                console.log("dataSource 333", dataSource)
+                console.log("tmpDatasource", tmpDatasource)
+
+                this.setState({
+                    deliveryGoodSgroup: apiResult.ResultObject,
+                    gridDataSourceNew: tmpDatasource
+                })
             }
         })
     }
@@ -161,7 +209,29 @@ export class Search extends Component {
         });
     }
 
+    handleonChangePage() {
+
+    }
+
+    handleonChangeView() {
+
+    }
+
+    handleonSearchEvent() {
+
+    }
+
+    onChangePageLoad() {
+
+    }
+
+    handlePrint() {
+
+    }
+
     render() {
+        const { deliveryGoodSgroup, gridDataSource, gridDataSourceNew } = this.state;
+        // console.log("111", deliveryGoodSgroup,gridDataSource)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -174,7 +244,7 @@ export class Search extends Component {
                     ref={this.searchref}
                     className="multiple"
                 />
-
+                {/* 
                 <DataGrid
                     listColumn={DataGridColumnList}
                     dataSource={this.state.gridDataSource}
@@ -194,7 +264,142 @@ export class Search extends Component {
                     IsImportFile={true}
                 // onImportFile={this.handleImportFile.bind(this)}
 
-                />
+                /> */}
+                <div className="col-lg-12 SearchForm">
+                    <DatagirdDeliveryAbility
+                        listColumn={DataGridColumnList}
+                        dataSource={this.state.gridDataSourceNew}
+                        AddLink={AddLink}
+                        IDSelectColumnName={IDSelectColumnName}
+                        PKColumnName={PKColumnName}
+                        onDeleteClick={this.handleDelete.bind(this)}
+                        onChangePage={this.handleonChangePage.bind(this)}
+                        onChangeView={this.handleonChangeView.bind(this)}
+                        onSearchEvent={this.handleonSearchEvent.bind(this)}
+                        onChangePageLoad={this.onChangePageLoad.bind(this)}
+                        onPrint={this.handlePrint.bind(this)}
+                        IsDelete={true}
+                        IsAdd={true}
+                        isHideHeaderToolbar={false}
+                        PageNumber={this.state.PageNumber}
+                        // RequirePermission={DELIVERYABILITY_VIEW}
+                        // DeletePermission={DELIVERYABILITY_DELETE}
+                        IsAutoPaging={true}
+                        RowsPerPage={20}
+                    />
+                </div>
+
+
+                <div className="col-lg-12 SearchForm">
+                    <div className="card">
+                        <div className="card-body">
+                            <div className="flexbox mb-10 ">
+                                <div></div>
+                                <div className="btn-toolbar">
+                                    <div className="btn-group btn-group-sm">
+                                        <Link to="/DeliveryAbility/Add">
+                                            <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                <span className="fa fa-plus ff"> Thêm </span>
+                                            </button>
+                                        </Link>
+                                        <button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa">
+                                            <span className="fa fa-remove"> Xóa </span>
+                                        </button>
+                                        <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file">
+                                            <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                        </button>
+                                        <button type="button" className="btn btn-export  ml-10">
+                                            <span className="fa fa-exchange"> Import File </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className=" table-responsive">
+                                <table id="" className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0">
+                                    <thead className="thead-light">
+                                        <tr>
+                                            <th className="jsgrid-header-cell " style={{ width: 60 }}>
+                                                <div className="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" className="form-control form-control-sm" />
+                                                        <span className="cr">
+                                                            <i className="cr-icon fa fa-check"></i>
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </th>
+                                            <th className="jsgrid-header-cell" style={{ width: 150 }}>Siêu thị</th>
+                                            <th className="jsgrid-header-cell" style={{ width: 100 }}>Khung giờ làm việc</th>
+
+                                            {
+                                                this.state.deliveryGoodSgroup && this.state.deliveryGoodSgroup.map((item, index) => {
+                                                    return (
+                                                        <th key={index} className="jsgrid-header-cell" style={{ width: 100 }}>{item.DeliveryGoodsGroupName}</th>
+                                                    )
+                                                })
+                                            }
+                                            <th className="jsgrid-header-cell" style={{ width: 200 }}>Thứ áp dụng</th>
+                                            <th className="jsgrid-header-cell" style={{ width: 100 }}>Tác vụ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            !!gridDataSourceNew && gridDataSourceNew.map((item,) => {
+
+                                                return (
+                                                    <tr key={index}>
+                                                        <td>11</td>
+                                                        <td>{item.OutputStoreID + "-" + item.StoreName}</td>
+                                                        <td>{item.DeliveryTimeFrameName}</td>
+                                                        {
+                                                            !!item.Resource && item.Resource.map((item1, index1) => {
+                                                                return (
+                                                                    <td key={index1}>{item1.TotalAbility}</td>
+                                                                )
+                                                            })
+                                                        }
+                                                        <td>{item.WeekDaysList}</td>
+                                                        <td>chỉnh sửa</td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <nav>
+                                <ul className="pagination justify-content-center">
+                                    <li className="page-item"><strong>Trang(1/1):</strong> </li>
+                                    <li className="page-item disabled">
+                                        <a className="page-link" data-pagenum="1" data-linktext="previous">
+                                            <span className="fa fa-step-backward" data-pagenum="1"></span>
+                                        </a>
+                                    </li>
+                                    <li className="page-item disabled">
+                                        <a className="page-link" data-pagenum="1" data-linktext="previous">
+                                            <span className="ti-arrow-left" data-pagenum="1"></span>
+                                        </a>
+                                    </li>
+                                    <li className="page-item active">
+                                        <a className="page-link" data-pagenum="1">1</a>
+                                    </li>
+                                    <li className="page-item disabled">
+                                        <a className="page-link" id="next" data-pagenum="1" data-linktext="next">
+                                            <span className="ti-arrow-right" data-pagenum="1"></span>
+                                        </a>
+                                    </li>
+                                    <li className="page-item disabled">
+                                        <a className="page-link" id="next" data-pagenum="1" data-linktext="next">
+                                            <span className="fa fa-step-forward" data-pagenum="1"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
 
 
 
