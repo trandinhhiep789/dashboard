@@ -19,6 +19,7 @@ import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import { MODAL_TYPE_CONFIRMATION } from '../../../../constants/actionTypes';
 import { DELIVERYABILITY_VIEW, DELIVERYABILITY_DELETE } from "../../../../constants/functionLists";
 import { ERPCOMMONCACHE_STORE } from '../../../../constants/keyCache'
+import { Link } from 'react-router-dom';
 
 export class Search extends Component {
     constructor(props) {
@@ -30,7 +31,8 @@ export class Search extends Component {
             SearchData: InitSearchParams,
             IsCallAPIError: false,
             IsLoadDataComplete: false,
-            dataExport: []
+            dataExport: [],
+            deliveryGoodSgroup: []
         }
 
         this.notificationDOMRef = React.createRef()
@@ -40,6 +42,8 @@ export class Search extends Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath)
+
+        this.callSearchData(this.state.SearchData);
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -58,31 +62,35 @@ export class Search extends Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            // console.log("aa", apiResult, searchData)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: apiResult.IsError
                 });
-                this.addNotification(apiResult.Message, apiResult.IsError)
+                this.showMessage(apiResult.Message)
             } else {
-                this.props.callGetUserCache(ERPCOMMONCACHE_STORE).then(result => {
-                    if (!result.IsError && result.ResultObject.CacheData != null) {
-                        let tempGridDataSource = apiResult.ResultObject.map(item => {
-                            const tempStore = result.ResultObject.CacheData.find(element => element.StoreID == item.OutputStoreID)
-                            return {
-                                ...item,
-                                OutputStoreID: tempStore.StoreName
-                            }
-                        })
-                        this.setState({
-                            gridDataSource: tempGridDataSource
-                        })
-                    } else {
-                        this.setState({
-                            gridDataSource: [...apiResult.ResultObject]
-                        })
-                    }
+                this.setState({
+                    gridDataSource: apiResult.ResultObject
                 })
+                this.callDataDeliveryGoodSgroup();
+            }
+        })
+    }
 
+    callDataDeliveryGoodSgroup() {
+        const intDeliveryGoodsGroupID = -1
+        this.props.callFetchAPI(APIHostName, "api/DeliveryGoodsGroup/LoadNew", intDeliveryGoodsGroupID).then(apiResult => {
+            // console.log("aa1211", intDeliveryGoodsGroupID, apiResult)
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: apiResult.IsError
+                });
+                this.showMessage(apiResult.Message)
+            }
+            else{
+                this.setState({
+                    deliveryGoodSgroup: apiResult.ResultObject
+                })
             }
         })
     }
@@ -162,6 +170,8 @@ export class Search extends Component {
     }
 
     render() {
+        const {deliveryGoodSgroup,gridDataSource }= this.state;
+        console.log("111", deliveryGoodSgroup,gridDataSource)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -174,7 +184,7 @@ export class Search extends Component {
                     ref={this.searchref}
                     className="multiple"
                 />
-
+                {/* 
                 <DataGrid
                     listColumn={DataGridColumnList}
                     dataSource={this.state.gridDataSource}
@@ -194,7 +204,95 @@ export class Search extends Component {
                     IsImportFile={true}
                 // onImportFile={this.handleImportFile.bind(this)}
 
-                />
+                /> */}
+
+                <div className="col-lg-12 SearchForm">
+                    <div className="card">
+                        <div className="card-body">
+                            <div className="flexbox mb-10 ">
+                                <div></div>
+                                <div className="btn-toolbar">
+                                    <div className="btn-group btn-group-sm">
+                                        <Link to="/DeliveryAbility/Add">
+                                            <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                <span className="fa fa-plus ff"> Thêm </span>
+                                            </button>
+                                        </Link>
+                                        <button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa">
+                                            <span className="fa fa-remove"> Xóa </span>
+                                        </button>
+                                        <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file">
+                                            <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                        </button>
+                                        <button type="button" className="btn btn-export  ml-10">
+                                            <span className="fa fa-exchange"> Import File </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className=" table-responsive">
+                                <table id="" className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0">
+                                    <thead className="thead-light">
+                                        <tr>
+                                            <th className="jsgrid-header-cell " style={{ width: 60 }}>
+                                                <div className="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" className="form-control form-control-sm" />
+                                                        <span className="cr">
+                                                            <i className="cr-icon fa fa-check"></i>
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </th>
+                                            <th className="jsgrid-header-cell" style={{ width: 150 }}>Siêu thị</th>
+                                            <th className="jsgrid-header-cell" style={{ width: 100 }}>Khung giờ làm việc</th>
+                                            <th className="jsgrid-header-cell" style={{ width: 100 }}>Máy lạnh</th>
+                                            <th className="jsgrid-header-cell" style={{ width: 100 }}>SP có lắp đặt</th>
+                                            <th className="jsgrid-header-cell" style={{ width: 100 }}>SP dịc vụ</th>
+                                            <th className="jsgrid-header-cell" style={{ width: 100 }}>Bảo hành</th>
+                                            <th className="jsgrid-header-cell" style={{ width: 100 }}>SP khác</th>
+                                            <th className="jsgrid-header-cell" style={{ width: 200 }}>Thứ áp dụng</th>
+                                            <th className="jsgrid-header-cell" style={{ width: 100 }}>Tác vụ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <nav>
+                                <ul className="pagination justify-content-center">
+                                    <li className="page-item"><strong>Trang(1/1):</strong> </li>
+                                    <li className="page-item disabled">
+                                        <a className="page-link" data-pagenum="1" data-linktext="previous">
+                                            <span className="fa fa-step-backward" data-pagenum="1"></span>
+                                        </a>
+                                    </li>
+                                    <li className="page-item disabled">
+                                        <a className="page-link" data-pagenum="1" data-linktext="previous">
+                                            <span className="ti-arrow-left" data-pagenum="1"></span>
+                                        </a>
+                                    </li>
+                                    <li className="page-item active">
+                                        <a className="page-link" data-pagenum="1">1</a>
+                                    </li>
+                                    <li className="page-item disabled">
+                                        <a className="page-link" id="next" data-pagenum="1" data-linktext="next">
+                                            <span className="ti-arrow-right" data-pagenum="1"></span>
+                                        </a>
+                                    </li>
+                                    <li className="page-item disabled">
+                                        <a className="page-link" id="next" data-pagenum="1" data-linktext="next">
+                                            <span className="fa fa-step-forward" data-pagenum="1"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
 
 
 

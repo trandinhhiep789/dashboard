@@ -36,16 +36,11 @@ export const DetailAPIPath = [
     { Link: "", Title: "Chi tiết" }
 ];
 
-AddPagePath
 
 export const InitSearchParams = [
 
     {
-        SearchKey: "@SERVICETYPEID",
-        SearchValue: "-1"
-    },
-    {
-        SearchKey: "@AREAID",
+        SearchKey: "@OUTPUTSTOREID",
         SearchValue: "-1"
     },
 ];
