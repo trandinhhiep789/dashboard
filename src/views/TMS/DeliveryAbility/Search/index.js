@@ -106,12 +106,15 @@ export class Search extends Component {
                 Object.keys(dataSource).map(function (key) {
                     // dataSource[key]["Child"] = [...dataSource[key]]
                     let tmsResult = [...apiResult.ResultObject]
+
                     tmsResult.map(e => {
-                        let find = dataSource[key].find(f => { return e.DeliveryGoodsGroupID == f.DeliveryGoodsGroupID })
-                        e.TotalAbility = !!find ? find.TotalAbility : 0
+                        let find = dataSource[key].find(f => { 
+                            return e.DeliveryGoodsGroupID === f.DeliveryGoodsGroupID })
+                            e.TotalAbility = !!find ? find.TotalAbility : 0
 
                         return e
                     })
+                    console.log("tmsResult",tmsResult)
                     // dataSource[key]["Resource"] = [...tmsResult]
                     tmpDatasource.push({
                         Child: [...dataSource[key]],

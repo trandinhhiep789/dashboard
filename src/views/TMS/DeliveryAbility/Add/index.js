@@ -44,6 +44,8 @@ class AddCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
+
+        const { dataSourceDeliveryAbilityDetail } = this.state;
         let tempMLObject = {
             OutputStoreID: MLObject.StoreID,
             DeliveryTimeFrameID: MLObject.DeliveryTimeFrameID,
@@ -51,8 +53,13 @@ class AddCom extends React.Component {
             WeekDaysList: MLObject.WeekDayID.toString(),
             Description: MLObject.Description,
             IsActived: MLObject.IsActived,
-            IsSystem: MLObject.IsSystem
+            IsSystem: MLObject.IsSystem,
+            DeliveryAbilityDetailList: dataSourceDeliveryAbilityDetail
         }
+
+
+        console.log("121",dataSourceDeliveryAbilityDetail, tempMLObject)
+
         this.props.callFetchAPI(APIHostName, AddAPIPath, tempMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);

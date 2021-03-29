@@ -38,7 +38,7 @@ export class ModalAddDeliveryAbility extends Component {
             this.setState({
                 dataSumit: [{
                     ...rowItem,
-                    TotalAlability: value
+                    TotalAbility: value
                 }]
             })
         } else {
@@ -49,7 +49,7 @@ export class ModalAddDeliveryAbility extends Component {
                     flagExistItem = true;
                     newDataSubmit.push({
                         ...data,
-                        TotalAlability: value
+                        TotalAbility: value
                     })
                 } else {
                     newDataSubmit.push({ ...data })
@@ -58,7 +58,7 @@ export class ModalAddDeliveryAbility extends Component {
 
             !flagExistItem && newDataSubmit.push({
                 ...rowItem,
-                TotalAlability: value
+                TotalAbility: value
             })
 
             this.setState({
