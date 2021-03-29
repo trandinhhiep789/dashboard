@@ -2,6 +2,7 @@ export const APIHostName = "TMSAPI";
 
 export const AddAPIPath = "api/DeliveryAbility/Add";
 export const SearchAPIPath = "api/DeliveryAbility/Search";
+export const ApiSearchDeliveryGoods = "api/DeliveryGoodsGroup/Search";
 
 export const AddLink = "/DeliveryAbility/Add";
 export const BackLink = "/DeliveryAbility";
@@ -12,6 +13,7 @@ export const PKColumnName = "DeliveryAbilityID";
 export const TitleFormSearch = "Tìm kiếm danh sách tải giao hàng";
 export const TitleFormAdd = "Thêm danh sách tải giao hàng";
 
+export const widthModalAddDeliveryAbility = "50%";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -236,4 +238,38 @@ export const MLObjectDefinition = [
         BindControlName: "chkIsSystem",
         DataSourceMember: "IsSystem"
     },
+]
+
+export const lstDeliveryAbilityDetail = [
+    {
+        Name: "DeliveryGoodsGroupName",
+        Type: "text",
+        Caption: "Nhóm hàng vận chuyển",
+        DataSourceMember: "DeliveryGoodsGroupName",
+        Width: 100
+    },
+    {
+        Name: "TotalAlability",
+        Type: "text",
+        Caption: "Số lượng",
+        DataSourceMember: "TotalAlability",
+        Width: 50
+    }
+]
+
+export const lstDeliveryGoodsGroup = [
+    {
+        Name: "DeliveryGoodsGroupName",
+        Type: "text",
+        Caption: "Nhóm hàng vận chuyển",
+        DataSourceMember: "DeliveryGoodsGroupName",
+        Width: 100
+    },
+    {
+        Name: "TotalAlability",
+        Type: "inputNumber",
+        Caption: "Số lượng",
+        DataSourceMember: "TotalAlability",
+        Width: 50
+    }
 ]

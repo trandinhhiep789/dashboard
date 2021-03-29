@@ -6,29 +6,32 @@ import FormContainer from "../../../../common/components/FormContainer";
 import { MessageModal } from "../../../../common/components/Modal";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import {
-    APIHostName,
-    AddAPIPath,
-    MLObjectDefinition,
-    BackLink,
-    AddPagePath,
-    TitleFormAdd,
-
+    APIHostName, AddAPIPath, MLObjectDefinition,
+    BackLink, AddPagePath, TitleFormAdd,
+    lstDeliveryGoodsGroup, lstDeliveryAbilityDetail, widthModalAddDeliveryAbility,
+    ApiSearchDeliveryGoods
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import { ERPRELATECACHE_WEEKDAY, ERPRELATECACHE_DELIVERYTIMEFRAME, ERPCOMMONCACHE_CARRIERTYPE, ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_STORE } from "../../../../constants/keyCache";
-
+import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
+import { showModal, hideModal } from '../../../../actions/modal';
+import ModalAddDeliveryAbility from '../components/ModalAddDeliveryAbility';
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.callDataDeliveryGoodsGroup = this.callDataDeliveryGoodsGroup.bind(this);
+
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
-            DataSource: {},
+            dataSourceDeliveryAbilityDetail: [],
+            dataSourceDeliveryGoodsGroup: [],
             IsExtended: false,
             IsLiquidated: false,
             IsDeposited: false,
@@ -37,17 +40,23 @@ class AddCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(AddPagePath);
+        this.callDataDeliveryGoodsGroup();
     }
 
     handleSubmit(formData, MLObject) {
-
-        console.log("add", formData, MLObject)
-
-        // this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-        //     this.setState({ IsCallAPIError: apiResult.IsError });
-        //     this.showMessage(apiResult.Message);
-
-        // });
+        let tempMLObject = {
+            OutputStoreID: MLObject.StoreID,
+            DeliveryTimeFrameID: MLObject.DeliveryTimeFrameID,
+            CarrierTypeID: MLObject.CarrierTypeID,
+            WeekDaysList: MLObject.WeekDayID.toString(),
+            Description: MLObject.Description,
+            IsActived: MLObject.IsActived,
+            IsSystem: MLObject.IsSystem
+        }
+        this.props.callFetchAPI(APIHostName, AddAPIPath, tempMLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
+        });
     }
 
 
@@ -70,6 +79,85 @@ class AddCom extends React.Component {
 
     }
 
+    handleModalItemInsert(data) {
+        this.setState({
+            dataSourceDeliveryAbilityDetail: data
+        })
+    }
+
+    callDataDeliveryGoodsGroup() {
+        const param = [
+            {
+                SearchKey: "@Keyword",
+                SearchValue: ""
+            }
+        ];
+
+        this.props.callFetchAPI(APIHostName, ApiSearchDeliveryGoods, param).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.setState({
+                    dataSourceDeliveryGoodsGroup: apiResult.ResultObject
+                })
+            } else {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError,
+                });
+                this.showMessage(apiResult.Message);
+            }
+        })
+    }
+
+    handleItemInsert() {
+        const { dataSourceDeliveryAbilityDetail, dataSourceDeliveryGoodsGroup } = this.state
+
+        let dataModalAddDeliveryAbility = [...dataSourceDeliveryGoodsGroup]
+        // if (dataSourceDeliveryAbilityDetail.length > 0) {
+        //     dataModalAddDeliveryAbility = dataSourceDeliveryGoodsGroup.map(data => {
+        //         let result
+        //         dataSourceDeliveryAbilityDetail.every(subData => {
+        //             if (data.DeliveryGoodsGroupID == subData.DeliveryGoodsGroupID) {
+        //                 result = {
+        //                     ...data,
+        //                     TotalAlability: subData.TotalAlability
+        //                 }
+        //                 return false;
+        //             }
+        //             return true;
+        //         });
+        //         return result
+        //     })
+        //     console.log(dataModalAddDeliveryAbility)
+        // } else {
+        //     dataModalAddDeliveryAbility = [...dataSourceDeliveryGoodsGroup]
+        // }
+
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Thêm chi tiết danh sách tải giao hàng',
+            content: {
+                text: <ModalAddDeliveryAbility
+                    listColumn={lstDeliveryGoodsGroup}
+                    dataSource={dataModalAddDeliveryAbility}
+                    multipleCheck={false}
+                    IDSelectColumnName={"chkSelect"}
+                    PKColumnName={"MaterialGroupID,ProductID"}
+                    isHideHeaderToolbarGroupTextBox={true}
+                    isHideHeaderToolbar={true}
+                    // name={"ProductID"}
+                    // value={"MaterialGroupID"}
+                    onClickInsertItem={this.handleModalItemInsert.bind(this)}
+                />
+            },
+            maxWidth: widthModalAddDeliveryAbility
+        });
+    }
+
+    handleItemDelete() {
+
+    }
+
+    handleItemEdit() {
+
+    }
 
     render() {
         if (this.state.IsCloseForm) {
@@ -96,7 +184,7 @@ class AddCom extends React.Component {
                             // validatonList={[""]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid={ERPCOMMONCACHE_PROVINCE} 
+                            loaditemcachekeyid={ERPCOMMONCACHE_PROVINCE}
                             valuemember="ProvinceID"
                             nameMember="ProvinceName"
                             controltype="InputControl"
@@ -115,7 +203,7 @@ class AddCom extends React.Component {
                             // validatonList={[""]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid={ERPCOMMONCACHE_STORE} 
+                            loaditemcachekeyid={ERPCOMMONCACHE_STORE}
                             valuemember="StoreID"
                             nameMember="StoreName"
                             controltype="InputControl"
@@ -137,32 +225,13 @@ class AddCom extends React.Component {
                             // validatonList={[""]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid={ERPRELATECACHE_DELIVERYTIMEFRAME} 
+                            loaditemcachekeyid={ERPRELATECACHE_DELIVERYTIMEFRAME}
                             valuemember="DeliveryTimeFrameID"
                             nameMember="DeliveryTimeFrame"
                             controltype="InputControl"
                             value={""}
                             listoption={null}
                             datasourcemember="DeliveryTimeFrameID" />
-                    </div>
-
-
-                    <div className="col-md-6">
-                        <FormControl.ComboBoxSelect
-                            name="cbCarrierTypeID"
-                            colspan="8"
-                            labelcolspan="4"
-                            label="loại phương tiện"
-                            // validatonList={[""]}
-                            isautoloaditemfromcache={true}
-                            placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid={ERPCOMMONCACHE_CARRIERTYPE} 
-                            valuemember="CarrierTypeID"
-                            nameMember="CarrierTypeName"
-                            controltype="InputControl"
-                            value={""}
-                            listoption={null}
-                            datasourcemember="CarrierTypeID" />
                     </div>
 
                     <div className="col-md-6">
@@ -175,7 +244,7 @@ class AddCom extends React.Component {
                             isautoloaditemfromcache={true}
                             isMultiSelect={true}
                             placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid={ERPRELATECACHE_WEEKDAY} 
+                            loaditemcachekeyid={ERPRELATECACHE_WEEKDAY}
                             valuemember="WeekDayID"
                             nameMember="WeekDayName"
                             controltype="InputControl"
@@ -228,6 +297,18 @@ class AddCom extends React.Component {
 
                 </div>
 
+                <InputGridControl
+                    name="lstDeliveryAbilityDetail"
+                    title="Danh sách tải giao hàng"
+                    // IDSelectColumnName={""}
+                    // PKColumnName={""}
+                    listColumn={lstDeliveryAbilityDetail}
+                    dataSource={this.state.dataSourceDeliveryAbilityDetail}
+                    onInsertClick={this.handleItemInsert.bind(this)}
+                    onDeleteClick={this.handleItemDelete.bind(this)}
+                    onEditClick={this.handleItemEdit.bind(this)}
+                    ref={this.gridref}
+                />
             </FormContainer>
         );
     }
@@ -253,6 +334,9 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
         }
     };
 };
