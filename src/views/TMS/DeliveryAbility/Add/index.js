@@ -115,13 +115,21 @@ class AddCom extends React.Component {
     handleDataModalAddDelivery() {
         const { dataSourceDeliveryAbilityDetail, dataSourceDeliveryGoodsGroup } = this.state
         const newDataGroup = dataSourceDeliveryGoodsGroup.map(item => {
+            let flagDuplicate = false
             for (let index = 0; index < dataSourceDeliveryAbilityDetail.length; index++) {
                 const element = dataSourceDeliveryAbilityDetail[index];
 
                 if (item.DeliveryGoodsGroupID == element.DeliveryGoodsGroupID) {
                     item = { ...element }
+                    flagDuplicate = true
                 }
             }
+
+            if (!flagDuplicate) {
+                const { TotalAbility, ...child } = item
+                item = { ...child }
+            }
+
             return item
         })
 
