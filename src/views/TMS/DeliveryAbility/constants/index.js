@@ -244,10 +244,10 @@ export const lstDeliveryAbilityDetail = [
         Width: 100
     },
     {
-        Name: "TotalAlability",
+        Name: "TotalAbility",
         Type: "text",
         Caption: "Số lượng",
-        DataSourceMember: "TotalAlability",
+        DataSourceMember: "TotalAbility",
         Width: 50
     }
 ]
@@ -261,10 +261,10 @@ export const lstDeliveryGoodsGroup = [
         Width: 100
     },
     {
-        Name: "TotalAlability",
+        Name: "TotalAbility",
         Type: "inputNumber",
         Caption: "Số lượng",
-        DataSourceMember: "TotalAlability",
+        DataSourceMember: "TotalAbility",
         Width: 50
     }
 ]

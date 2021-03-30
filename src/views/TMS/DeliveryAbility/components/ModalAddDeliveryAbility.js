@@ -14,6 +14,8 @@ export class ModalAddDeliveryAbility extends Component {
             dataSource: this.props.dataSource,
             dataSumit: []
         }
+
+        this.getDataSubmit = this.getDataSubmit.bind(this)
     }
 
     showMessage(message) {
@@ -26,45 +28,35 @@ export class ModalAddDeliveryAbility extends Component {
         );
     }
 
+    getDataSubmit() {
+        const { dataSource } = this.state
+        let tempDataSubmit = []
+        dataSource.forEach(item => {
+            if (this.state[item.DeliveryGoodsGroupID]) {
+                tempDataSubmit.push({
+                    ...item,
+                    TotalAbility: this.state[item.DeliveryGoodsGroupID]
+                })
+            }
+        })
+
+        this.setState({
+            dataSumit: tempDataSubmit
+        })
+
+        return tempDataSubmit
+    }
+
     onHandleSubmit(name) {
-        this.props.onClickInsertItem(this.state.dataSumit)
+        const dtSubmit = this.getDataSubmit()
+        this.props.onClickInsertItem(dtSubmit)
         this.props.hideModal()
     }
 
     onHandleChange(value, rowItem, rowIndex) {
-        const { DeliveryGoodsGroupID } = rowItem
-
-        if (this.state.dataSumit.length == 0) {
-            this.setState({
-                dataSumit: [{
-                    ...rowItem,
-                    TotalAbility: value
-                }]
-            })
-        } else {
-            let newDataSubmit = [], flagExistItem = false
-
-            this.state.dataSumit.forEach(data => {
-                if (data.DeliveryGoodsGroupID == DeliveryGoodsGroupID) {
-                    flagExistItem = true;
-                    newDataSubmit.push({
-                        ...data,
-                        TotalAbility: value
-                    })
-                } else {
-                    newDataSubmit.push({ ...data })
-                }
-            });
-
-            !flagExistItem && newDataSubmit.push({
-                ...rowItem,
-                TotalAbility: value
-            })
-
-            this.setState({
-                dataSumit: newDataSubmit
-            })
-        }
+        this.setState({
+            [rowItem.DeliveryGoodsGroupID]: value
+        })
     }
 
     render() {
