@@ -267,8 +267,10 @@ class DatagirdDeliveryAbilityCom extends Component {
 
     handleDeleteChecked() {
         const { GridData, DataSource } = this.state
+        let ListPKColumnName = [];
         const dataChecked = GridData.chkSelect.filter(item => {
             if (item.IsChecked) {
+                ListPKColumnName= item.pkColumnName
                 return item
             }
         })
@@ -279,6 +281,10 @@ class DatagirdDeliveryAbilityCom extends Component {
             const dataDelete = DataSource.filter(item => {
                 return dataChecked.find(sItem => sItem.pkColumnName[0].value == item.DeliveryAbilityID)
             })
+
+
+            if (this.props.onDeleteClick)
+                this.props.onDeleteClick(dataChecked, ListPKColumnName)
         }
     }
 

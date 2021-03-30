@@ -3,9 +3,12 @@ export const APIHostName = "TMSAPI";
 export const AddAPIPath = "api/DeliveryAbility/Add";
 export const SearchAPIPath = "api/DeliveryAbility/Search";
 export const ApiSearchDeliveryGoods = "api/DeliveryGoodsGroup/Search";
+export const LoadAPIPath = "api/DeliveryAbility/LoadNew";
+export const DeleteNewAPIPath = "api/DeliveryAbility/DeleteNew";
+
 
 export const AddLink = "/DeliveryAbility/Add";
-export const EditLink = "/DeliveryAbility/Edit";
+export const EditLink ="/DeliveryAbility/Edit";
 export const BackLink = "/DeliveryAbility";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "DeliveryAbilityID";
@@ -13,6 +16,7 @@ export const PKColumnName = "DeliveryAbilityID";
 
 export const TitleFormSearch = "Tìm kiếm danh sách tải giao hàng";
 export const TitleFormAdd = "Thêm danh sách tải giao hàng";
+export const TitleFormEdit = "Cập nhật danh sách tải giao hàng";
 
 export const widthModalAddDeliveryAbility = "50%";
 

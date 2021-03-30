@@ -13,7 +13,7 @@ import {
     APIHostName, PagePath, SearchElementList,
     tableHead, SearchMLObjectDefinition, AddAPIPath,
     DataGridColumnList, SearchAPIPath,
-    IDSelectColumnName, PKColumnName, AddLink, TitleFormSearch, InitSearchParams, EditLink
+    IDSelectColumnName, PKColumnName, AddLink, TitleFormSearch, InitSearchParams, EditLink,DeleteNewAPIPath
 } from '../constants'
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import { MODAL_TYPE_CONFIRMATION } from '../../../../constants/actionTypes';
@@ -185,6 +185,7 @@ export class Search extends Component {
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
+        console.log("del", deleteList, pkColumnName, listMLObject)
         this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);

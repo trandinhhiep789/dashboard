@@ -10,8 +10,9 @@ import {
     AddAPIPath,
     MLObjectDefinition,
     BackLink,
-    AddPagePath,
-    TitleFormAdd,
+    EditPagePath,
+    TitleFormEdit,
+    LoadAPIPath
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -25,6 +26,7 @@ class EditCom extends React.Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.callLoadData = this.callLoadData.bind(this)
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -36,8 +38,26 @@ class EditCom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updatePagePath(AddPagePath);
+        this.props.updatePagePath(EditPagePath);
+        this.callLoadData(this.props.match.params.id);
     }
+
+    callLoadData(id) {
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            console.log("222", apiResult, id);
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                const arrAreaTmp = apiResult.ResultObject.WeekDayIdList.toString().split(",");
+                apiResult.ResultObject.WeekDaysList = arrAreaTmp;
+            }
+        });
+    }
+
 
     handleSubmit(formData, MLObject) {
 
@@ -47,6 +67,9 @@ class EditCom extends React.Component {
 
         });
     }
+
+
+
 
 
     handleCloseMessage() {
@@ -76,7 +99,7 @@ class EditCom extends React.Component {
 
         return (
             <FormContainer
-                FormName={TitleFormAdd}
+                FormName={TitleFormEdit}
                 MLObjectDefinition={MLObjectDefinition}
                 listelement={[]}
                 BackLink={BackLink}
@@ -94,7 +117,7 @@ class EditCom extends React.Component {
                             // validatonList={[""]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid={ERPCOMMONCACHE_PROVINCE} 
+                            loaditemcachekeyid={ERPCOMMONCACHE_PROVINCE}
                             valuemember="ProvinceID"
                             nameMember="ProvinceName"
                             controltype="InputControl"
@@ -113,7 +136,7 @@ class EditCom extends React.Component {
                             // validatonList={[""]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid={ERPCOMMONCACHE_STORE} 
+                            loaditemcachekeyid={ERPCOMMONCACHE_STORE}
                             valuemember="StoreID"
                             nameMember="StoreName"
                             controltype="InputControl"
@@ -135,7 +158,7 @@ class EditCom extends React.Component {
                             // validatonList={[""]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid={ERPRELATECACHE_DELIVERYTIMEFRAME} 
+                            loaditemcachekeyid={ERPRELATECACHE_DELIVERYTIMEFRAME}
                             valuemember="DeliveryTimeFrameID"
                             nameMember="DeliveryTimeFrame"
                             controltype="InputControl"
@@ -154,7 +177,7 @@ class EditCom extends React.Component {
                             // validatonList={[""]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid={ERPCOMMONCACHE_CARRIERTYPE} 
+                            loaditemcachekeyid={ERPCOMMONCACHE_CARRIERTYPE}
                             valuemember="CarrierTypeID"
                             nameMember="CarrierTypeName"
                             controltype="InputControl"
@@ -173,7 +196,7 @@ class EditCom extends React.Component {
                             isautoloaditemfromcache={true}
                             isMultiSelect={true}
                             placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid={ERPRELATECACHE_WEEKDAY} 
+                            loaditemcachekeyid={ERPRELATECACHE_WEEKDAY}
                             valuemember="WeekDayID"
                             nameMember="WeekDayName"
                             controltype="InputControl"

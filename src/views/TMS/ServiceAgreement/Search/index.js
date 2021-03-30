@@ -208,13 +208,14 @@ class SearchCom extends React.Component {
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
-        this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
-            if (!apiResult.IsError) {
-                this.callSearchData(this.state.SearchData);
-            }
-        });
+        console.log("del", deleteList, pkColumnName)
+        // this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
+        //     this.setState({ IsCallAPIError: apiResult.IsError });
+        //     this.addNotification(apiResult.Message, apiResult.IsError);
+        //     if (!apiResult.IsError) {
+        //         this.callSearchData(this.state.SearchData);
+        //     }
+        // });
     }
 
 
