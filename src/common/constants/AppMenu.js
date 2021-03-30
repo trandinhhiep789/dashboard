@@ -127,6 +127,20 @@ const AppMenu = [
                                 MenuIcon: '',
                                 SubMenu: []
                             },
+                            {
+                                MenuName: 'DeliveryTimeFrame',
+                                MenuTitle: 'Danh sách khung thời gian vận chuyển',
+                                LinkTo: '/DeliveryTimeFrame',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'WeekDay',
+                                MenuTitle: 'Danh sách các ngày trong tuần',
+                                LinkTo: '/WeekDay',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
                         ]
                     },
 
