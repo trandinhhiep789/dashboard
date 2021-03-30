@@ -34,6 +34,7 @@ class InputGridCom extends Component {
     }
     constructor(props) {
         super(props);
+        this.onChangeInputNumber = this.onChangeInputNumber.bind(this)
         this.onValueChange = this.onValueChange.bind(this);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -53,6 +54,7 @@ class InputGridCom extends Component {
         this.getCheckList = this.getCheckList.bind(this);
         this.getKeyListCheckbox = this.getKeyListCheckbox.bind(this);
         const listDataSourceMember = this.getKeyListCheckbox(this.props.listColumn);
+
         const gridData = this.bindData();
 
         //check isSystem
@@ -249,6 +251,11 @@ class InputGridCom extends Component {
 
     onChangePageHandle(pageNum) {
         this.setState({ PageNumber: pageNum });
+    }
+
+    onChangeInputNumber(e, rowsItem, rowsIndex) {
+        if (this.props.onChangeInputNumber)
+            this.props.onChangeInputNumber( e, rowsItem, rowsIndex)
     }
 
     onValueChange(elementdata, index, isVavalidationError, validationErrorMessage) {
@@ -878,7 +885,7 @@ class InputGridCom extends Component {
                                             DataSourceMember={dataSourceMember}
                                             onInsertClickEdit={this.handleInsertClickEdit}
                                             onValueChange={this.onValueChange}
-                                            onChangeInputNumber={(e) => this.props.onChangeInputNumber(e, rowItem, rowIndex)}
+                                            onChangeInputNumber={(e) => this.onChangeInputNumber(e, rowItem, rowIndex)}//this.props.onChangeInputNumber(e, rowItem, rowIndex)
                                             index={rowIndex}
                                             isChecked={isChecked}
                                             IsFilterData={columnItem.IsFilterData}

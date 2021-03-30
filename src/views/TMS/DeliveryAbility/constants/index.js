@@ -263,9 +263,32 @@ export const lstDeliveryGoodsGroup = [
     },
     {
         Name: "TotalAbility",
-        Type: "inputNumber",
+        Type: "number",
         Caption: "Số lượng",
         DataSourceMember: "TotalAbility",
-        Width: 50
+        Width: 50,
+        validatonList: ["number"]
     }
 ]
+
+export const GridMLObjectDefinition = [
+    {
+        Name: "DeliveryGoodsGroupName",
+        DefaultValue: "",
+        BindControlName: "DeliveryGoodsGroupName",
+        DataSourceMember: "DeliveryGoodsGroupName"
+    },
+    {
+        Name: "TotalAbility",
+        DefaultValue: "",
+        BindControlName: "TotalAbility",
+        DataSourceMember: "TotalAbility"
+    },
+    {
+        Name: "DeliveryGoodsGroupID",
+        DefaultValue: "",
+        BindControlName: "DeliveryGoodsGroupID",
+        DataSourceMember: "DeliveryGoodsGroupID"
+    },
+
+];

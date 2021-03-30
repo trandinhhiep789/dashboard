@@ -21,7 +21,7 @@ class InputGridCellCom extends Component {
         this.previewMedia = this.previewMedia.bind(this);
         this.handleInputFocus = this.handleInputFocus.bind(this);
         this.handleInputChangeDicimal = this.handleInputChangeDicimal.bind(this);
-
+        this.onChangeInputNumber= this.onChangeInputNumber.bind(this)
     }
 
 
@@ -289,6 +289,12 @@ class InputGridCellCom extends Component {
         // const inputvalue  =  e.target.value;
         this.props.onValueChangeALL(inputvalue, this.props.index);
     }
+    onChangeInputNumber(e) {
+
+        if (this.props.onChangeInputNumber)
+            this.props.onChangeInputNumber(e)
+
+    }
 
     handleEditClick() {
         if (this.props.IsSystem) {
@@ -527,7 +533,7 @@ class InputGridCellCom extends Component {
                                 formatter={isDecimalInputNumber && (value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','))}
                                 parser={isDecimalInputNumber && (value => value.replace(/\$\s?|(,*)/g, ''))}
                                 disabled={disabled ? disabled : false}
-                                onChange={(e) => this.props.onChangeInputNumber(e)}
+                                onChange={(e) => this.onChangeInputNumber(e)}
                                 defaultValue={text}
                                 value={value}
                             />

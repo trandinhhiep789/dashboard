@@ -9,7 +9,8 @@ import {
     APIHostName, AddAPIPath, MLObjectDefinition,
     BackLink, AddPagePath, TitleFormAdd,
     lstDeliveryGoodsGroup, lstDeliveryAbilityDetail, widthModalAddDeliveryAbility,
-    ApiSearchDeliveryGoods
+    ApiSearchDeliveryGoods,
+    GridMLObjectDefinition
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -27,8 +28,6 @@ class AddCom extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.callDataDeliveryGoodsGroup = this.callDataDeliveryGoodsGroup.bind(this);
-        // this.handleDataModalAddDelivery = this.handleDataModalAddDelivery.bind(this)
-        this.handleDataSubmitDeliveryAbilityDetail = this.handleDataSubmitDeliveryAbilityDetail.bind(this)
 
         this.state = {
             IsCallAPIError: false,
@@ -47,27 +46,20 @@ class AddCom extends React.Component {
         this.callDataDeliveryGoodsGroup();
     }
 
-    handleDataSubmitDeliveryAbilityDetail() {
-        const { dataSourceDeliveryGoodsGroup } = this.state
-        let tempDataSubmit = []
-        dataSourceDeliveryGoodsGroup.forEach(item => {
-            if (this.state[item.DeliveryGoodsGroupID]) {
-                tempDataSubmit.push({
-                    ...item,
-                    TotalAbility: this.state[item.DeliveryGoodsGroupID]
-                })
-            }
-        })
 
-        this.setState({
-            dataSubmitDeliveryGoodsGroup: tempDataSubmit
-        })
-
-        return tempDataSubmit
-    }
 
     handleSubmit(formData, MLObject) {
-        const dtSubmitDeliveryGoodsGroup = this.handleDataSubmitDeliveryAbilityDetail()
+        const { dataSourceDeliveryGoodsGroup } = this.state
+
+        const tmpDeliveryGoodsGroup = dataSourceDeliveryGoodsGroup.filter((item, index) => {
+            if (parseInt(item.TotalAbility) > 0)
+                return item
+        })
+
+        if (tmpDeliveryGoodsGroup.length <= 0) {
+            this.showMessage("Danh sách chi tiết tải giảo hàng không tồn tại.")
+            return;
+        }
 
         let tempMLObject = {
             OutputStoreID: MLObject.StoreID,
@@ -77,9 +69,9 @@ class AddCom extends React.Component {
             Description: MLObject.Description,
             IsActived: MLObject.IsActived,
             IsSystem: MLObject.IsSystem,
-            DeliveryAbilityDetailList: dtSubmitDeliveryGoodsGroup
+            DeliveryAbilityDetailList: tmpDeliveryGoodsGroup
         }
-
+        console.log("param", tempMLObject, dataSourceDeliveryGoodsGroup, tmpDeliveryGoodsGroup)
         this.props.callFetchAPI(APIHostName, AddAPIPath, tempMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -97,7 +89,7 @@ class AddCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
-                onCloseModal={this.handleCloseMessage}
+                // onCloseModal={this.handleCloseMessage}
             />
         );
     }
@@ -193,13 +185,22 @@ class AddCom extends React.Component {
 
     }
 
+    valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
+        // console.log("change", elementdata, index, name, gridFormValidation)
+        const rowGridData = Object.assign({}, this.state.dataSourceDeliveryGoodsGroup[index], { [elementdata.Name]: elementdata.Value }, { HasChanged: true });
+        const dataSource = Object.assign([], this.state.dataSourceDeliveryGoodsGroup, { [index]: rowGridData });
+        this.setState({ dataSourceDeliveryGoodsGroup: dataSource, GridFormValidation: gridFormValidation });
+    }
+
     handleChangeDeliveryAbilityDetail(value, rowItem, rowIndex) {
+        console.log("change", value, rowItem, rowIndex)
         this.setState({
             [rowItem.DeliveryGoodsGroupID]: value
         })
     }
 
     render() {
+
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -357,9 +358,10 @@ class AddCom extends React.Component {
                     colspan="12"
                     dataSource={this.state.dataSourceDeliveryGoodsGroup}
                     isHideHeaderToolbar={true}
-                    isShowFooterToolbar={false}
                     listColumn={lstDeliveryGoodsGroup}
-                    onChangeInputNumber={this.handleChangeDeliveryAbilityDetail.bind(this)}
+                    MLObjectDefinition={GridMLObjectDefinition}
+                    // onChangeInputNumber={this.handleChangeDeliveryAbilityDetail.bind(this)}
+                    onValueChangeInputGrid={this.valueChangeInputGrid.bind(this)}
                 // onHandleSubmitGrid={}
                 />
             </FormContainer>
