@@ -29,7 +29,8 @@ class ModalAddReturnRequestDetailCom extends Component {
                 return {
                     ...item,
                     minInputNumber: MinQuantity,
-                    maxInputNumber: MaxQuantity,
+                    // maxInputNumber: MaxQuantity,
+                    maxInputNumber: QuantityUnit.trim() == "Mét" ? MaxQuantity - 0.1 : MaxQuantity,
                     disabled: MaxQuantity == 0 ? true : false,
                     isDisabled: IsAllowdUpliCatiOnProduct ? true : false,
                     stepDecimalInputNumber: QuantityUnit.trim() == "Mét" ? "0.01" : 1
@@ -38,7 +39,8 @@ class ModalAddReturnRequestDetailCom extends Component {
                 return {
                     ...item,
                     minInputNumber: 0,
-                    maxInputNumber: TotalQuantity,
+                    // maxInputNumber: TotalQuantity,
+                    maxInputNumber: QuantityUnit.trim() == "Mét" ? TotalQuantity - 0.1 : TotalQuantity,
                     disabled: TotalQuantity == 0 ? true : false,
                     isDisabled: IsAllowdUpliCatiOnProduct ? true : false,
                     stepDecimalInputNumber: QuantityUnit.trim() == "Mét" ? "0.01" : 1
