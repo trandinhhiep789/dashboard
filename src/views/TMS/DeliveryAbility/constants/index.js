@@ -5,6 +5,7 @@ export const SearchAPIPath = "api/DeliveryAbility/Search";
 export const ApiSearchDeliveryGoods = "api/DeliveryGoodsGroup/Search";
 
 export const AddLink = "/DeliveryAbility/Add";
+export const EditLink = "/DeliveryAbility/Edit";
 export const BackLink = "/DeliveryAbility";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "DeliveryAbilityID";

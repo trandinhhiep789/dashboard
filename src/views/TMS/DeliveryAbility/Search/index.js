@@ -13,7 +13,7 @@ import {
     APIHostName, PagePath, SearchElementList,
     tableHead, SearchMLObjectDefinition, AddAPIPath,
     DataGridColumnList, SearchAPIPath,
-    IDSelectColumnName, PKColumnName, AddLink, TitleFormSearch, InitSearchParams
+    IDSelectColumnName, PKColumnName, AddLink, TitleFormSearch, InitSearchParams, EditLink
 } from '../constants'
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import { MODAL_TYPE_CONFIRMATION } from '../../../../constants/actionTypes';
@@ -101,25 +101,39 @@ export class Search extends Component {
             }
             else {
 
+                let arrDeliveryGoodSgroup = [];
+
+                arrDeliveryGoodSgroup = apiResult.ResultObject.map((item, index) => {
+                    item.Name = item.DeliveryGoodsGroupName;
+                    item.ID = item.DeliveryGoodsGroupID;
+                    return item
+                })
+
+                this.setState({
+                    deliveryGoodSgroup: arrDeliveryGoodSgroup,
+                })
+
                 let tmpDatasource = []
 
                 Object.keys(dataSource).map(function (key) {
                     // dataSource[key]["Child"] = [...dataSource[key]]
-                    let tmsResult = [...apiResult.ResultObject]
-
-                    tmsResult.map(e => {
-                        let find = dataSource[key].find(f => { 
-                            return e.DeliveryGoodsGroupID === f.DeliveryGoodsGroupID })
-                            e.TotalAbility = !!find ? find.TotalAbility : 0
-
-                        return e
+                    const tmsResult = apiResult.ResultObject.map(e => {
+                        let find = dataSource[key].find(f => { return e.DeliveryGoodsGroupID == f.DeliveryGoodsGroupID })
+                        e.TotalAbility = !!find ? find.TotalAbility : 0
+                        // return { e }
+                        return {
+                            DeliveryGoodsGroupID: e.DeliveryGoodsGroupID,
+                            DeliveryGoodsGroupName: e.DeliveryGoodsGroupName,
+                            TotalAbility: e.TotalAbility,
+                        }
                     })
-                    console.log("tmsResult",tmsResult)
+                    // console.log("tmsResult", tmsResult)
                     // dataSource[key]["Resource"] = [...tmsResult]
                     tmpDatasource.push({
                         Child: [...dataSource[key]],
                         Resource: [...tmsResult],
                         StoreName: dataSource[key][0].StoreName,
+                        DeliveryAbilityID: dataSource[key][0].DeliveryAbilityID,
                         OutputStoreID: dataSource[key][0].OutputStoreID,
                         DeliveryTimeFrameID: dataSource[key][0].DeliveryTimeFrameID,
                         DeliveryTimeFrameName: dataSource[key][0].DeliveryTimeFrameName,
@@ -127,11 +141,10 @@ export class Search extends Component {
                     })
                 })
 
-                console.log("dataSource 333", dataSource)
-                console.log("tmpDatasource", tmpDatasource)
+                // console.log("dataSource 333", dataSource)
+                // console.log("tmpDatasource", tmpDatasource)
 
                 this.setState({
-                    deliveryGoodSgroup: apiResult.ResultObject,
                     gridDataSourceNew: tmpDatasource
                 })
             }
@@ -247,32 +260,15 @@ export class Search extends Component {
                     ref={this.searchref}
                     className="multiple"
                 />
-                {/* 
-                <DataGrid
-                    listColumn={DataGridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    AddLink={AddLink}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
-                    onDeleteClick={this.handleDelete.bind(this)}
-                    IsDelete={true}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                    // RequirePermission={DELIVERYABILITY_VIEW}
-                    // DeletePermission={DELIVERYABILITY_DELETE}
-                    IsExportFile={true}
-                    DataExport={this.state.dataExport}
-                    fileName="Danh sách tải giao hàng"
-                    onExportFile={this.handleExportFile.bind(this)}
-                    IsImportFile={true}
-                // onImportFile={this.handleImportFile.bind(this)}
-
-                /> */}
+        
                 <div className="col-lg-12 SearchForm">
                     <DatagirdDeliveryAbility
                         listColumn={DataGridColumnList}
                         dataSource={this.state.gridDataSourceNew}
+                        IsGroupColumnTable={true}
+                        dataColumGroup={this.state.deliveryGoodSgroup}
                         AddLink={AddLink}
+                        EditLink={EditLink}
                         IDSelectColumnName={IDSelectColumnName}
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete.bind(this)}
@@ -287,13 +283,15 @@ export class Search extends Component {
                         PageNumber={this.state.PageNumber}
                         // RequirePermission={DELIVERYABILITY_VIEW}
                         // DeletePermission={DELIVERYABILITY_DELETE}
+                        IsExportFile={true}
+                        IsImportFile={true}
                         IsAutoPaging={true}
                         RowsPerPage={20}
                     />
                 </div>
 
 
-                <div className="col-lg-12 SearchForm">
+                {/* <div className="col-lg-12 SearchForm">
                     <div className="card">
                         <div className="card-body">
                             <div className="flexbox mb-10 ">
@@ -352,7 +350,16 @@ export class Search extends Component {
 
                                                 return (
                                                     <tr key={index}>
-                                                        <td>11</td>
+                                                        <td>
+                                                            <div className="checkbox">
+                                                                <label>
+                                                                    <input type="checkbox" name="chkSelect" className="form-control form-control-sm" value={item.DeliveryAbilityID} />
+                                                                    <span className="cr">
+                                                                        <i className="cr-icon fa fa-check"></i>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
                                                         <td>{item.OutputStoreID + "-" + item.StoreName}</td>
                                                         <td>{item.DeliveryTimeFrameName}</td>
                                                         {
@@ -402,7 +409,7 @@ export class Search extends Component {
                             </nav>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
 
 
