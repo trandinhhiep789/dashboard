@@ -57,7 +57,7 @@ class AddCom extends React.Component {
         })
 
         if (tmpDeliveryGoodsGroup.length <= 0) {
-            this.showMessage("Danh sách chi tiết tải giảo hàng không tồn tại.")
+            this.showMessage("Danh sách chi tiết tải giao hàng không tồn tại.")
             return;
         }
 
@@ -89,7 +89,7 @@ class AddCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
-                // onCloseModal={this.handleCloseMessage}
+            // onCloseModal={this.handleCloseMessage}
             />
         );
     }
