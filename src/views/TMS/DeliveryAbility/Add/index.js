@@ -56,11 +56,6 @@ class AddCom extends React.Component {
                     ...item,
                     TotalAbility: this.state[item.DeliveryGoodsGroupID]
                 })
-            } else {
-                tempDataSubmit.push({
-                    ...item,
-                    TotalAbility: 0
-                })
             }
         })
 
