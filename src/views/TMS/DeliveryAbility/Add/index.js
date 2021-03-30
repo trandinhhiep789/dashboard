@@ -51,15 +51,24 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         const { dataSourceDeliveryGoodsGroup } = this.state
 
-        const tmpDeliveryGoodsGroup = dataSourceDeliveryGoodsGroup.filter((item, index) => {
-            if (parseInt(item.TotalAbility) > 0)
-                return item
+        const tmpDeliveryGoodsGroup = dataSourceDeliveryGoodsGroup.map(item => {
+            if (parseInt(item.TotalAbility) > 0) {
+                return {
+                    ...item,
+                    TotalAbility: parseInt(item.TotalAbility)
+                }
+            } else {
+                return {
+                    ...item,
+                    TotalAbility: 0
+                }
+            }
         })
 
-        if (tmpDeliveryGoodsGroup.length <= 0) {
-            this.showMessage("Danh sách chi tiết tải giao hàng không tồn tại.")
-            return;
-        }
+        // if (tmpDeliveryGoodsGroup.length <= 0) {
+        //     this.showMessage("Danh sách chi tiết tải giao hàng không tồn tại.")
+        //     return;
+        // }
 
         let tempMLObject = {
             OutputStoreID: MLObject.StoreID,
@@ -71,7 +80,7 @@ class AddCom extends React.Component {
             IsSystem: MLObject.IsSystem,
             DeliveryAbilityDetailList: tmpDeliveryGoodsGroup
         }
-        console.log("param", tempMLObject, dataSourceDeliveryGoodsGroup, tmpDeliveryGoodsGroup)
+
         this.props.callFetchAPI(APIHostName, AddAPIPath, tempMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -89,7 +98,7 @@ class AddCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
-            // onCloseModal={this.handleCloseMessage}
+                onCloseModal={this.handleCloseMessage}
             />
         );
     }
@@ -186,14 +195,12 @@ class AddCom extends React.Component {
     }
 
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
-        // console.log("change", elementdata, index, name, gridFormValidation)
         const rowGridData = Object.assign({}, this.state.dataSourceDeliveryGoodsGroup[index], { [elementdata.Name]: elementdata.Value }, { HasChanged: true });
         const dataSource = Object.assign([], this.state.dataSourceDeliveryGoodsGroup, { [index]: rowGridData });
         this.setState({ dataSourceDeliveryGoodsGroup: dataSource, GridFormValidation: gridFormValidation });
     }
 
     handleChangeDeliveryAbilityDetail(value, rowItem, rowIndex) {
-        console.log("change", value, rowItem, rowIndex)
         this.setState({
             [rowItem.DeliveryGoodsGroupID]: value
         })
