@@ -26,6 +26,7 @@ class AddCom extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.callDataDeliveryGoodsGroup = this.callDataDeliveryGoodsGroup.bind(this);
+        this.handleDataModalAddDelivery = this.handleDataModalAddDelivery.bind(this)
 
         this.state = {
             IsCallAPIError: false,
@@ -56,9 +57,6 @@ class AddCom extends React.Component {
             IsSystem: MLObject.IsSystem,
             DeliveryAbilityDetailList: dataSourceDeliveryAbilityDetail
         }
-
-
-        console.log("121",dataSourceDeliveryAbilityDetail, tempMLObject)
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, tempMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -114,36 +112,35 @@ class AddCom extends React.Component {
         })
     }
 
-    handleItemInsert() {
+    handleDataModalAddDelivery() {
         const { dataSourceDeliveryAbilityDetail, dataSourceDeliveryGoodsGroup } = this.state
+        const newDataGroup = dataSourceDeliveryGoodsGroup.map(item => {
+            for (let index = 0; index < dataSourceDeliveryAbilityDetail.length; index++) {
+                const element = dataSourceDeliveryAbilityDetail[index];
 
-        let dataModalAddDeliveryAbility = [...dataSourceDeliveryGoodsGroup]
-        // if (dataSourceDeliveryAbilityDetail.length > 0) {
-        //     dataModalAddDeliveryAbility = dataSourceDeliveryGoodsGroup.map(data => {
-        //         let result
-        //         dataSourceDeliveryAbilityDetail.every(subData => {
-        //             if (data.DeliveryGoodsGroupID == subData.DeliveryGoodsGroupID) {
-        //                 result = {
-        //                     ...data,
-        //                     TotalAlability: subData.TotalAlability
-        //                 }
-        //                 return false;
-        //             }
-        //             return true;
-        //         });
-        //         return result
-        //     })
-        //     console.log(dataModalAddDeliveryAbility)
-        // } else {
-        //     dataModalAddDeliveryAbility = [...dataSourceDeliveryGoodsGroup]
-        // }
+                if (item.DeliveryGoodsGroupID == element.DeliveryGoodsGroupID) {
+                    item = { ...element }
+                }
+            }
+            return item
+        })
+
+        this.setState({
+            dataSourceDeliveryGoodsGroup: newDataGroup
+        })
+
+        return newDataGroup
+    }
+
+    handleItemInsert() {
+        const dataGoodsGroup = this.handleDataModalAddDelivery()
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Thêm chi tiết danh sách tải giao hàng',
             content: {
                 text: <ModalAddDeliveryAbility
                     listColumn={lstDeliveryGoodsGroup}
-                    dataSource={dataModalAddDeliveryAbility}
+                    dataSource={dataGoodsGroup}
                     multipleCheck={false}
                     IDSelectColumnName={"chkSelect"}
                     PKColumnName={"MaterialGroupID,ProductID"}

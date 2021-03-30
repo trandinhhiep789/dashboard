@@ -16,6 +16,21 @@ export class ModalAddDeliveryAbility extends Component {
         }
 
         this.getDataSubmit = this.getDataSubmit.bind(this)
+        this.setStateTotalAbilityFromDataSource = this.setStateTotalAbilityFromDataSource.bind(this)
+        this.insertValueChangeToDataSource = this.insertValueChangeToDataSource.bind(this)
+    }
+
+    componentDidMount() {
+        this.setStateTotalAbilityFromDataSource()
+    }
+
+    setStateTotalAbilityFromDataSource() {
+        const { dataSource } = this.state
+        dataSource.forEach(item => {
+            item.TotalAbility && this.setState({
+                [item.DeliveryGoodsGroupID]: item.TotalAbility
+            })
+        })
     }
 
     showMessage(message) {
@@ -53,10 +68,30 @@ export class ModalAddDeliveryAbility extends Component {
         this.props.hideModal()
     }
 
+    insertValueChangeToDataSource(value, rowItem, rowIndex) {
+        const { dataSource } = this.state
+
+        const newDataSource = dataSource.map(item => {
+            if (rowItem.DeliveryGoodsGroupID == item.DeliveryGoodsGroupID) {
+                return {
+                    ...item, TotalAbility: value
+                }
+            } else {
+                return { ...item }
+            }
+        })
+
+        this.setState({
+            dataSource: newDataSource
+        })
+    }
+
     onHandleChange(value, rowItem, rowIndex) {
         this.setState({
             [rowItem.DeliveryGoodsGroupID]: value
         })
+
+        this.insertValueChangeToDataSource(value, rowItem, rowIndex)
     }
 
     render() {
