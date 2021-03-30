@@ -19,6 +19,7 @@ import InputGridControl from "../../../../common/components/FormContainer/FormCo
 import { showModal, hideModal } from '../../../../actions/modal';
 import ModalAddDeliveryAbility from '../components/ModalAddDeliveryAbility';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -26,13 +27,15 @@ class AddCom extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.callDataDeliveryGoodsGroup = this.callDataDeliveryGoodsGroup.bind(this);
-        this.handleDataModalAddDelivery = this.handleDataModalAddDelivery.bind(this)
+        // this.handleDataModalAddDelivery = this.handleDataModalAddDelivery.bind(this)
+        this.handleDataSubmitDeliveryAbilityDetail = this.handleDataSubmitDeliveryAbilityDetail.bind(this)
 
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
-            dataSourceDeliveryAbilityDetail: [],
+            // dataSourceDeliveryAbilityDetail: [],
             dataSourceDeliveryGoodsGroup: [],
+            dataSubmitDeliveryGoodsGroup: [],
             IsExtended: false,
             IsLiquidated: false,
             IsDeposited: false,
@@ -44,9 +47,33 @@ class AddCom extends React.Component {
         this.callDataDeliveryGoodsGroup();
     }
 
-    handleSubmit(formData, MLObject) {
+    handleDataSubmitDeliveryAbilityDetail() {
+        const { dataSourceDeliveryGoodsGroup } = this.state
+        let tempDataSubmit = []
+        dataSourceDeliveryGoodsGroup.forEach(item => {
+            if (this.state[item.DeliveryGoodsGroupID]) {
+                tempDataSubmit.push({
+                    ...item,
+                    TotalAbility: this.state[item.DeliveryGoodsGroupID]
+                })
+            } else {
+                tempDataSubmit.push({
+                    ...item,
+                    TotalAbility: 0
+                })
+            }
+        })
 
-        const { dataSourceDeliveryAbilityDetail } = this.state;
+        this.setState({
+            dataSubmitDeliveryGoodsGroup: tempDataSubmit
+        })
+
+        return tempDataSubmit
+    }
+
+    handleSubmit(formData, MLObject) {
+        const dtSubmitDeliveryGoodsGroup = this.handleDataSubmitDeliveryAbilityDetail()
+
         let tempMLObject = {
             OutputStoreID: MLObject.StoreID,
             DeliveryTimeFrameID: MLObject.DeliveryTimeFrameID,
@@ -55,7 +82,7 @@ class AddCom extends React.Component {
             Description: MLObject.Description,
             IsActived: MLObject.IsActived,
             IsSystem: MLObject.IsSystem,
-            DeliveryAbilityDetailList: dataSourceDeliveryAbilityDetail
+            DeliveryAbilityDetailList: dtSubmitDeliveryGoodsGroup
         }
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, tempMLObject).then(apiResult => {
@@ -84,11 +111,11 @@ class AddCom extends React.Component {
 
     }
 
-    handleModalItemInsert(data) {
-        this.setState({
-            dataSourceDeliveryAbilityDetail: data
-        })
-    }
+    // handleModalItemInsert(data) {
+    //     this.setState({
+    //         dataSourceDeliveryAbilityDetail: data
+    //     })
+    // }
 
     callDataDeliveryGoodsGroup() {
         const param = [
@@ -112,56 +139,56 @@ class AddCom extends React.Component {
         })
     }
 
-    handleDataModalAddDelivery() {
-        const { dataSourceDeliveryAbilityDetail, dataSourceDeliveryGoodsGroup } = this.state
-        const newDataGroup = dataSourceDeliveryGoodsGroup.map(item => {
-            let flagDuplicate = false
-            for (let index = 0; index < dataSourceDeliveryAbilityDetail.length; index++) {
-                const element = dataSourceDeliveryAbilityDetail[index];
+    // handleDataModalAddDelivery() {
+    //     const { dataSourceDeliveryAbilityDetail, dataSourceDeliveryGoodsGroup } = this.state
+    //     const newDataGroup = dataSourceDeliveryGoodsGroup.map(item => {
+    //         let flagDuplicate = false
+    //         for (let index = 0; index < dataSourceDeliveryAbilityDetail.length; index++) {
+    //             const element = dataSourceDeliveryAbilityDetail[index];
 
-                if (item.DeliveryGoodsGroupID == element.DeliveryGoodsGroupID) {
-                    item = { ...element }
-                    flagDuplicate = true
-                }
-            }
+    //             if (item.DeliveryGoodsGroupID == element.DeliveryGoodsGroupID) {
+    //                 item = { ...element }
+    //                 flagDuplicate = true
+    //             }
+    //         }
 
-            if (!flagDuplicate) {
-                const { TotalAbility, ...child } = item
-                item = { ...child }
-            }
+    //         if (!flagDuplicate) {
+    //             const { TotalAbility, ...child } = item
+    //             item = { ...child }
+    //         }
 
-            return item
-        })
+    //         return item
+    //     })
 
-        this.setState({
-            dataSourceDeliveryGoodsGroup: newDataGroup
-        })
+    //     this.setState({
+    //         dataSourceDeliveryGoodsGroup: newDataGroup
+    //     })
 
-        return newDataGroup
-    }
+    //     return newDataGroup
+    // }
 
-    handleItemInsert() {
-        const dataGoodsGroup = this.handleDataModalAddDelivery()
+    // handleItemInsert() {
+    //     const dataGoodsGroup = this.handleDataModalAddDelivery()
 
-        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Thêm chi tiết danh sách tải giao hàng',
-            content: {
-                text: <ModalAddDeliveryAbility
-                    listColumn={lstDeliveryGoodsGroup}
-                    dataSource={dataGoodsGroup}
-                    multipleCheck={false}
-                    IDSelectColumnName={"chkSelect"}
-                    PKColumnName={"MaterialGroupID,ProductID"}
-                    isHideHeaderToolbarGroupTextBox={true}
-                    isHideHeaderToolbar={true}
-                    // name={"ProductID"}
-                    // value={"MaterialGroupID"}
-                    onClickInsertItem={this.handleModalItemInsert.bind(this)}
-                />
-            },
-            maxWidth: widthModalAddDeliveryAbility
-        });
-    }
+    //     this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+    //         title: 'Thêm chi tiết danh sách tải giao hàng',
+    //         content: {
+    //             text: <ModalAddDeliveryAbility
+    //                 listColumn={lstDeliveryGoodsGroup}
+    //                 dataSource={dataGoodsGroup}
+    //                 multipleCheck={false}
+    //                 IDSelectColumnName={"chkSelect"}
+    //                 PKColumnName={"MaterialGroupID,ProductID"}
+    //                 isHideHeaderToolbarGroupTextBox={true}
+    //                 isHideHeaderToolbar={true}
+    //                 // name={"ProductID"}
+    //                 // value={"MaterialGroupID"}
+    //                 onClickInsertItem={this.handleModalItemInsert.bind(this)}
+    //             />
+    //         },
+    //         maxWidth: widthModalAddDeliveryAbility
+    //     });
+    // }
 
     handleItemDelete() {
 
@@ -169,6 +196,12 @@ class AddCom extends React.Component {
 
     handleItemEdit() {
 
+    }
+
+    handleChangeDeliveryAbilityDetail(value, rowItem, rowIndex) {
+        this.setState({
+            [rowItem.DeliveryGoodsGroupID]: value
+        })
     }
 
     render() {
@@ -309,7 +342,7 @@ class AddCom extends React.Component {
 
                 </div>
 
-                <InputGridControl
+                {/* <InputGridControl
                     name="lstDeliveryAbilityDetail"
                     title="Danh sách tải giao hàng"
                     // IDSelectColumnName={""}
@@ -320,6 +353,19 @@ class AddCom extends React.Component {
                     onDeleteClick={this.handleItemDelete.bind(this)}
                     onEditClick={this.handleItemEdit.bind(this)}
                     ref={this.gridref}
+                /> */}
+
+                <InputGrid
+                    name="lstDeliveryAbilityDetail"
+                    controltype="GridControl"
+                    headingTitle="Thêm chi tiết danh sách tải giao hàng"
+                    colspan="12"
+                    dataSource={this.state.dataSourceDeliveryGoodsGroup}
+                    isHideHeaderToolbar={true}
+                    isShowFooterToolbar={false}
+                    listColumn={lstDeliveryGoodsGroup}
+                    onChangeInputNumber={this.handleChangeDeliveryAbilityDetail.bind(this)}
+                // onHandleSubmitGrid={}
                 />
             </FormContainer>
         );
