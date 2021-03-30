@@ -54,6 +54,25 @@ class DatagirdDeliveryAbilityCom extends Component {
 
     }
 
+    getDisplayData(dataSource) {
+        if (!this.props.IsAutoPaging)
+            return dataSource;
+        let resultData = [];
+        if (dataSource == null)
+            return resultData;
+        let rowsPerPage = DEFAULT_ROW_PER_PAGE;
+        if (this.props.RowsPerPage != null)
+            rowsPerPage = this.props.RowsPerPage;
+        let startRowIndex = (this.state.PageNumber - 1) * rowsPerPage;
+        let endRowIndex = startRowIndex + rowsPerPage;
+        if (endRowIndex > dataSource.length)
+            endRowIndex = dataSource.length;
+        for (let i = startRowIndex; i < endRowIndex; i++) {
+            resultData.push(dataSource[i]);
+        }
+        return resultData;
+    }
+
     checkAll(e) {
         const isCheck = e.target.checked;
         const dataSource = this.props.dataSource;
