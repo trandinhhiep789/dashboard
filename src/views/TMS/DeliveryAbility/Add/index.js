@@ -228,8 +228,8 @@ class AddCom extends React.Component {
                             name="cbProvinceID"
                             colspan="8"
                             labelcolspan="4"
-                            label="Tỉnh /thành phố"
-                            // validatonList={[""]}
+                            label="Khu vực"
+                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
                             loaditemcachekeyid={ERPCOMMONCACHE_PROVINCE}
@@ -248,7 +248,7 @@ class AddCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             label="kho"
-                            // validatonList={[""]}
+                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
                             loaditemcachekeyid={ERPCOMMONCACHE_STORE}
@@ -270,7 +270,7 @@ class AddCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             label="Khung giờ"
-                            // validatonList={[""]}
+                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
                             loaditemcachekeyid={ERPRELATECACHE_DELIVERYTIMEFRAME}
@@ -288,7 +288,7 @@ class AddCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             label="Thứ áp dụng"
-                            // validatonList={[""]}
+                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             isMultiSelect={true}
                             placeholder="-- Vui lòng chọn --"
