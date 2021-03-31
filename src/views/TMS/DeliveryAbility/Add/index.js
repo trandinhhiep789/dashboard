@@ -185,13 +185,7 @@ class AddCom extends React.Component {
     //     });
     // }
 
-    handleItemDelete() {
 
-    }
-
-    handleItemEdit() {
-
-    }
 
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
         const rowGridData = Object.assign({}, this.state.dataSourceDeliveryGoodsGroup[index], { [elementdata.Name]: elementdata.Value }, { HasChanged: true });

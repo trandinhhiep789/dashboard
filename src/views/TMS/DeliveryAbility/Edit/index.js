@@ -15,14 +15,15 @@ import {
     LoadAPIPath,
     lstDeliveryGoodsGroup,
     GridMLObjectDefinition,
-    ApiSearchDeliveryGoods
+    ApiSearchDeliveryGoods,
+    UpdateAPIPath
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import { ERPRELATECACHE_WEEKDAY, ERPRELATECACHE_DELIVERYTIMEFRAME, ERPCOMMONCACHE_CARRIERTYPE, ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_STORE } from "../../../../constants/keyCache";
-import { DELIVERYABILITY_VIEW } from "../../../../constants/functionLists";
+import { DELIVERYABILITY_UPDATE, DELIVERYABILITY_VIEW } from "../../../../constants/functionLists";
 import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
 import { fi } from "date-fns/locale";
 
@@ -54,7 +55,6 @@ class EditCom extends React.Component {
 
     callLoadData(id, dataSourceDeliveryGoodsGroup) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("222", apiResult, dataSourceDeliveryGoodsGroup);
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -82,7 +82,8 @@ class EditCom extends React.Component {
                 })
 
                 this.setState({
-                    DataSource: apiResult.ResultObject
+                    DataSource: apiResult.ResultObject,
+                    dataSourceDeliveryGoodsGroup: apiResult.ResultObject.DeliveryAbilityDetailList
                 })
             }
         });
@@ -114,7 +115,43 @@ class EditCom extends React.Component {
 
     handleSubmit(formData, MLObject) {
 
-        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+
+
+        const { dataSourceDeliveryGoodsGroup } = this.state
+
+        const tmpDeliveryGoodsGroup = dataSourceDeliveryGoodsGroup.filter(item => {
+            if (parseInt(item.TotalAbility) >= 0) {
+                return item
+            }
+        })
+
+        if (dataSourceDeliveryGoodsGroup.length <= 0) {
+            this.showMessage("Danh sách chi tiết tải giao hàng không tồn tại.")
+            return;
+        }
+
+        const dataDeliveryAbilityDetail = tmpDeliveryGoodsGroup.map(item => {
+            return {
+                ...item,
+                TotalAbility: parseInt(item.TotalAbility)
+            }
+        })
+
+        let tempMLObject = {
+            DeliveryAbilityID: this.props.match.params.id,
+            OutputStoreID: MLObject.StoreID,
+            DeliveryTimeFrameID: MLObject.DeliveryTimeFrameID,
+            CarrierTypeID: MLObject.CarrierTypeID,
+            WeekDaysList: MLObject.WeekDayID.toString(),
+            Description: MLObject.Description,
+            IsActived: MLObject.IsActived,
+            IsSystem: MLObject.IsSystem,
+            DeliveryAbilityDetailList: dataDeliveryAbilityDetail
+        }
+
+        console.log("aaa", tempMLObject, MLObject)
+
+        this.props.callFetchAPI(APIHostName, UpdateAPIPath, tempMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
 
@@ -145,9 +182,13 @@ class EditCom extends React.Component {
     }
 
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
-        const rowGridData = Object.assign({}, this.state.dataSourceDeliveryGoodsGroup[index], { [elementdata.Name]: elementdata.Value }, { HasChanged: true });
-        const dataSource = Object.assign([], this.state.dataSourceDeliveryGoodsGroup, { [index]: rowGridData });
-        this.setState({ dataSourceDeliveryGoodsGroup: dataSource, GridFormValidation: gridFormValidation });
+
+        const { dataSourceDeliveryGoodsGroup } = this.state
+        console.log("dataSourceDeliveryGoodsGroup", dataSourceDeliveryGoodsGroup)
+
+        const rowGridData = Object.assign({}, dataSourceDeliveryGoodsGroup[index], { [elementdata.Name]: elementdata.Value }, { HasChanged: true });
+        const dataSource = Object.assign([], dataSourceDeliveryGoodsGroup, { [index]: rowGridData });
+        this.setState({ dataSourceDeliveryGoodsGroup: dataSource , GridFormValidation: gridFormValidation });
     }
 
 
@@ -164,7 +205,7 @@ class EditCom extends React.Component {
                 dataSource={this.state.DataSource}
                 listelement={[]}
                 BackLink={BackLink}
-                RequirePermission={DELIVERYABILITY_VIEW}
+                RequirePermission={DELIVERYABILITY_UPDATE}
                 onSubmit={this.handleSubmit}
             >
 
@@ -298,7 +339,7 @@ class EditCom extends React.Component {
                     controltype="GridControl"
                     headingTitle="Thêm chi tiết danh sách tải giao hàng"
                     colspan="12"
-                    dataSource={this.state.DataSource.DeliveryAbilityDetailList}
+                    dataSource={this.state.dataSourceDeliveryGoodsGroup}
                     isHideHeaderToolbar={true}
                     listColumn={lstDeliveryGoodsGroup}
                     MLObjectDefinition={GridMLObjectDefinition}

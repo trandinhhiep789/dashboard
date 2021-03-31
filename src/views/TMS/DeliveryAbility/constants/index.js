@@ -1,6 +1,7 @@
 export const APIHostName = "TMSAPI";
 
 export const AddAPIPath = "api/DeliveryAbility/Add";
+export const UpdateAPIPath = "api/DeliveryAbility/Update";
 export const SearchAPIPath = "api/DeliveryAbility/Search";
 export const ApiSearchDeliveryGoods = "api/DeliveryGoodsGroup/Search";
 export const LoadAPIPath = "api/DeliveryAbility/LoadNew";
