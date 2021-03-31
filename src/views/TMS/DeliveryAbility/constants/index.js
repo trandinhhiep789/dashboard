@@ -198,6 +198,13 @@ export const MLObjectDefinition = [
         DataSourceMember: "StoreID"
     },
     {
+        Name: "OutputStoreID",
+        DefaultValue: "",
+        BindControlName: "cbOutputStoreID",
+        DataSourceMember: "OutputStoreID"
+    },
+    
+    {
         Name: "DeliveryTimeFrameID",
         DefaultValue: "",
         BindControlName: "cbDeliveryTimeFrameID",
@@ -216,7 +223,6 @@ export const MLObjectDefinition = [
         BindControlName: "cbWeekDayID",
         DataSourceMember: "WeekDayID"
     },
-
 
     {
         Name: "Description",
