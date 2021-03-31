@@ -17,7 +17,7 @@ import {
 } from '../constants'
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import { MODAL_TYPE_CONFIRMATION } from '../../../../constants/actionTypes';
-import { DELIVERYABILITY_VIEW, DELIVERYABILITY_DELETE } from "../../../../constants/functionLists";
+import { DELIVERYABILITY_VIEW, DELIVERYABILITY_DELETE, DELIVERYABILITY_EXPORT } from "../../../../constants/functionLists";
 import { ERPCOMMONCACHE_STORE } from '../../../../constants/keyCache'
 import { Link } from 'react-router-dom';
 import DatagirdDeliveryAbility from '../Component/DatagirdDeliveryAbility';
@@ -26,6 +26,8 @@ export class Search extends Component {
     constructor(props) {
         super(props)
         this.callSearchData = this.callSearchData.bind(this);
+        this.handleDataExport = this.handleDataExport.bind(this)
+
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -86,6 +88,26 @@ export class Search extends Component {
         })
     }
 
+    handleDataExport(Data) {
+        const dataExport = Data.map(item => {
+            const { Resource } = item
+
+            const dataResource = Resource.reduce((accumulator, currentValue, currentIndex, array) => {
+                const { DeliveryGoodsGroupName, TotalAbility } = currentValue
+                return { ...accumulator, [DeliveryGoodsGroupName]: TotalAbility };
+            }, {});
+
+            return {
+                "Siêu thị": `${item.OutputStoreID}-${item.StoreName}`,
+                "Khung giờ làm việc": item.DeliveryTimeFrameName,
+                ...dataResource,
+                "Thứ áp dụng": item.WeekDaysList
+            };
+        })
+
+        return dataExport
+    }
+
     callDataDeliveryGoodSgroup(dataSource) {
         const intDeliveryGoodsGroupID = -1
         this.props.callFetchAPI(APIHostName, "api/DeliveryGoodsGroup/LoadNew", intDeliveryGoodsGroupID).then(apiResult => {
@@ -136,8 +158,11 @@ export class Search extends Component {
                     })
                 })
 
+                const dataExport = this.handleDataExport(tmpDatasource)
+
                 this.setState({
-                    gridDataSourceNew: tmpDatasource
+                    gridDataSourceNew: tmpDatasource,
+                    dataExport
                 })
             }
         })
@@ -160,10 +185,6 @@ export class Search extends Component {
 
 
     handleImportFile() {
-
-    }
-
-    handleExportFile() {
 
     }
 
@@ -233,13 +254,7 @@ export class Search extends Component {
 
     }
 
-    handlePrint() {
-
-    }
-
     render() {
-        const { deliveryGoodSgroup, gridDataSource, gridDataSourceNew } = this.state;
-
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -268,14 +283,17 @@ export class Search extends Component {
                         onChangeView={this.handleonChangeView.bind(this)}
                         onSearchEvent={this.handleonSearchEvent.bind(this)}
                         onChangePageLoad={this.onChangePageLoad.bind(this)}
-                        onPrint={this.handlePrint.bind(this)}
                         IsDelete={true}
                         IsAdd={true}
                         isHideHeaderToolbar={false}
                         PageNumber={this.state.PageNumber}
                         RequirePermission={DELIVERYABILITY_VIEW}
                         DeletePermission={DELIVERYABILITY_DELETE}
+                        ExportPermission={DELIVERYABILITY_EXPORT}
                         IsExportFile={true}
+                        fileName={"Danh sách khai báo tổng tải"}
+                        DataExport={this.state.dataExport}
+                        onExportFile={this.handleExportFile.bind(this)}
                         IsImportFile={true}
                         IsAutoPaging={true}
                         RowsPerPage={5}

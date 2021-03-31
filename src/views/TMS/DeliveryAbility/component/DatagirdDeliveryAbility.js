@@ -1,9 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+
 import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
 import { MessageModal } from "../../../../common/components/Modal";
 import { DEFAULT_ROW_PER_PAGE } from "../../../../constants/systemVars.js";
-import { connect } from 'react-redux';
 import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
 import { showModal, hideModal } from '../../../../actions/modal';
@@ -326,6 +329,49 @@ class DatagirdDeliveryAbilityCom extends Component {
         }
     }
 
+    handleExportCSV() {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        let result;
+
+        const doExportFile = () => {
+            if (this.props.DataExport.length == 0) {
+                result = {
+                    IsError: true,
+                    Message: "Dữ liệu không tồn tại. Không thể xuất file!"
+                };
+            }
+            else {
+                const ws = XLSX.utils.json_to_sheet(this.props.DataExport);
+                const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+                const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                const data = new Blob([excelBuffer], { type: fileType });
+
+
+                FileSaver.saveAs(data, this.props.fileName + fileExtension);
+
+                result = {
+                    IsError: false,
+                    Message: "Xuất file thành công!"
+                };
+            }
+            this.props.onExportFile(result);
+        }
+
+        if (this.props.ExportPermission) {
+            this.checkPermission(this.props.ExportPermission).then(result => {
+                if (result == true) {
+                    doExportFile();
+                }
+                else if (result == 'error') {
+                    this.showMessage("Lỗi khi kiểm tra quyền")
+                } else {
+                    this.showMessage("Bạn không có quyền tải file!")
+                }
+            })
+        }
+    }
+
 
     renderDataGrid() {
         const dataSource = this.state.DataSource;
@@ -503,7 +549,7 @@ class DatagirdDeliveryAbilityCom extends Component {
                                                 : ""
                                         }
                                         {this.props.IsExportFile == true &&
-                                            <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file">
+                                            <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)}>
                                                 <span className="fa fa-file-excel-o"> Xuất file excel </span>
                                             </button>
                                         }
