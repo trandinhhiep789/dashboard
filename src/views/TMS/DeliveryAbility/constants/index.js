@@ -291,7 +291,7 @@ export const GridMLObjectDefinition = [
     },
     {
         Name: "TotalAbility",
-        DefaultValue: "",
+        DefaultValue: 0,
         BindControlName: "TotalAbility",
         DataSourceMember: "TotalAbility"
     },

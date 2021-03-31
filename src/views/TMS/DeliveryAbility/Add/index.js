@@ -123,6 +123,9 @@ class AddCom extends React.Component {
 
         this.props.callFetchAPI(APIHostName, ApiSearchDeliveryGoods, param).then(apiResult => {
             if (!apiResult.IsError) {
+                apiResult.ResultObject.map((item)=>{
+                    item.TotalAbility = 0
+                })
                 this.setState({
                     dataSourceDeliveryGoodsGroup: apiResult.ResultObject
                 })

@@ -125,7 +125,7 @@ class EditCom extends React.Component {
             }
         })
 
-        if (dataSourceDeliveryGoodsGroup.length <= 0) {
+        if (tmpDeliveryGoodsGroup.length <= 0) {
             this.showMessage("Danh sách chi tiết tải giao hàng không tồn tại.")
             return;
         }
