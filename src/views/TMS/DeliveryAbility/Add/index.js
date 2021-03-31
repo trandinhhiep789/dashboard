@@ -21,6 +21,7 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import ModalAddDeliveryAbility from '../components/ModalAddDeliveryAbility';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+import { DELIVERYABILITY_ADD } from "../../../../constants/functionLists";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -212,6 +213,7 @@ class AddCom extends React.Component {
                 listelement={[]}
                 BackLink={BackLink}
                 onSubmit={this.handleSubmit}
+                RequirePermission={DELIVERYABILITY_ADD}
             // onchange={this.handleChange.bind(this)}
             >
 
