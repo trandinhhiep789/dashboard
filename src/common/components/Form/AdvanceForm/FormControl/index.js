@@ -619,7 +619,7 @@ class FileUpload extends React.Component {
                         required={this.props.required}
                         ref={this.props.inputRef}
                     />
-                    <span className="input-group-append"><label className="btn btn-light file-browser" htmlFor={this.props.name}><i class="fa fa-upload"></i></label></span>
+                    <span className="input-group-append"><label className="btn btn-light file-browser" htmlFor={this.props.name}><i className="fa fa-upload"></i></label></span>
                 </div>
             </div>
 

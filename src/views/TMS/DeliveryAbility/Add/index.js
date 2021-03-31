@@ -51,24 +51,23 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         const { dataSourceDeliveryGoodsGroup } = this.state
 
-        const tmpDeliveryGoodsGroup = dataSourceDeliveryGoodsGroup.map(item => {
-            if (parseInt(item.TotalAbility) > 0) {
-                return {
-                    ...item,
-                    TotalAbility: parseInt(item.TotalAbility)
-                }
-            } else {
-                return {
-                    ...item,
-                    TotalAbility: 0
-                }
+        const tmpDeliveryGoodsGroup = dataSourceDeliveryGoodsGroup.filter(item => {
+            if (parseInt(item.TotalAbility) >= 0) {
+                return item
             }
         })
 
-        // if (tmpDeliveryGoodsGroup.length <= 0) {
-        //     this.showMessage("Danh sách chi tiết tải giao hàng không tồn tại.")
-        //     return;
-        // }
+        if (tmpDeliveryGoodsGroup.length <= 0) {
+            this.showMessage("Danh sách chi tiết tải giao hàng không tồn tại.")
+            return;
+        }
+
+        const dataDeliveryAbilityDetail = tmpDeliveryGoodsGroup.map(item => {
+            return {
+                ...item,
+                TotalAbility: parseInt(item.TotalAbility)
+            }
+        })
 
         let tempMLObject = {
             OutputStoreID: MLObject.StoreID,
@@ -78,7 +77,7 @@ class AddCom extends React.Component {
             Description: MLObject.Description,
             IsActived: MLObject.IsActived,
             IsSystem: MLObject.IsSystem,
-            DeliveryAbilityDetailList: tmpDeliveryGoodsGroup
+            DeliveryAbilityDetailList: dataDeliveryAbilityDetail
         }
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, tempMLObject).then(apiResult => {
