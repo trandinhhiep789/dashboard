@@ -13,7 +13,7 @@ import {
     APIHostName, PagePath, SearchElementList,
     tableHead, SearchMLObjectDefinition, AddAPIPath,
     DataGridColumnList, SearchAPIPath,
-    IDSelectColumnName, PKColumnName, AddLink, TitleFormSearch, InitSearchParams, EditLink,DeleteNewAPIPath
+    IDSelectColumnName, PKColumnName, AddLink, TitleFormSearch, InitSearchParams, EditLink, DeleteNewAPIPath
 } from '../constants'
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import { MODAL_TYPE_CONFIRMATION } from '../../../../constants/actionTypes';
@@ -65,7 +65,6 @@ export class Search extends Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("callSearchData", apiResult, searchData)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: apiResult.IsError
@@ -79,8 +78,6 @@ export class Search extends Component {
                     return catsSoFar;
                 }, {});
 
-                console.log("dataSource 222", dataSource)
-
                 this.setState({
                     gridDataSource: apiResult.ResultObject
                 })
@@ -92,7 +89,6 @@ export class Search extends Component {
     callDataDeliveryGoodSgroup(dataSource) {
         const intDeliveryGoodsGroupID = -1
         this.props.callFetchAPI(APIHostName, "api/DeliveryGoodsGroup/LoadNew", intDeliveryGoodsGroupID).then(apiResult => {
-            console.log("callDataDeliveryGoodSgroup", intDeliveryGoodsGroupID, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: apiResult.IsError
@@ -127,7 +123,6 @@ export class Search extends Component {
                             TotalAbility: e.TotalAbility,
                         }
                     })
-                    // console.log("tmsResult", tmsResult)
                     // dataSource[key]["Resource"] = [...tmsResult]
                     tmpDatasource.push({
                         Child: [...dataSource[key]],
@@ -140,9 +135,6 @@ export class Search extends Component {
                         WeekDaysList: dataSource[key][0].WeekDaysList,
                     })
                 })
-
-                // console.log("dataSource 333", dataSource)
-                // console.log("tmpDatasource", tmpDatasource)
 
                 this.setState({
                     gridDataSourceNew: tmpDatasource
@@ -185,7 +177,7 @@ export class Search extends Component {
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
-        console.log("del", deleteList, pkColumnName, listMLObject)
+
         this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
@@ -193,7 +185,6 @@ export class Search extends Component {
                 this.callSearchData(this.state.SearchData);
             }
         });
-
     }
 
     addNotification(message1, IsError) {
@@ -248,7 +239,7 @@ export class Search extends Component {
 
     render() {
         const { deliveryGoodSgroup, gridDataSource, gridDataSourceNew } = this.state;
-        // console.log("111", deliveryGoodSgroup,gridDataSource)
+
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -261,7 +252,7 @@ export class Search extends Component {
                     ref={this.searchref}
                     className="multiple"
                 />
-        
+
                 <div className="col-lg-12 SearchForm">
                     <DatagirdDeliveryAbility
                         listColumn={DataGridColumnList}
@@ -282,12 +273,12 @@ export class Search extends Component {
                         IsAdd={true}
                         isHideHeaderToolbar={false}
                         PageNumber={this.state.PageNumber}
-                        // RequirePermission={DELIVERYABILITY_VIEW}
-                        // DeletePermission={DELIVERYABILITY_DELETE}
+                        RequirePermission={DELIVERYABILITY_VIEW}
+                        DeletePermission={DELIVERYABILITY_DELETE}
                         IsExportFile={true}
                         IsImportFile={true}
                         IsAutoPaging={true}
-                        RowsPerPage={20}
+                        RowsPerPage={5}
                     />
                 </div>
 
