@@ -54,7 +54,7 @@ class InfoHistoryWFCom extends Component {
             });
         }
 
-        const timeImg = formatStrToDate(JSON.parse(objlst[0]).ImageCaptureTime, true)
+        const timeImg = formatStrToDate(JSON.parse(objlst[0]).ImageCaptureTime)
 
         this.props.showModal(MODAL_TYPE_IMAGE_SLIDE, {
             title: 'Danh sách hình ảnh ',

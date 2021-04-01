@@ -84,8 +84,12 @@ export function formatStrToDate(dateString, notGetTime) {
     try {
         const arrDateString = dateString.split(/[\s,-.]+/);
         const newDate = new Date(Date.parse(dateString.split(" ")[0]))
-        const result = `${newDate.getDate()}/${newDate.getMonth()}/${newDate.getFullYear()} ${arrDateString[3]}:${arrDateString[4]} ${arrDateString[arrDateString.length - 1]}`
-        return result;
+
+        if (!notGetTime) {
+            return `${newDate.getDate()}/${newDate.getMonth() + 1}/${newDate.getFullYear()} ${arrDateString[3]}:${arrDateString[4]} ${arrDateString[arrDateString.length - 1]}`
+        } else {
+            return `${newDate.getDate()}/${newDate.getMonth() + 1}/${newDate.getFullYear()}`
+        }
     } catch (error) {
         return dateString;
     }
