@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { formatDate } from "../../../../common/library/CommonLib.js";
+import ReactTooltip from 'react-tooltip';
+
+import { formatDate, formatStrToDate } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_IMAGE_SLIDE } from '../../../../constants/actionTypes';
 import ModelContainerMap from "../../../../common/components/Modal/ModelContainerMap";
 import { ModalManager } from 'react-dynamic-modal';
 import MapContainer from './MapContainer ';
-import ReactTooltip from 'react-tooltip';
+
 
 
 const containerStyle = {
@@ -42,19 +44,22 @@ class InfoHistoryWFCom extends Component {
         const objIme = e.currentTarget.dataset.id;
         const objlst = objIme.split(";");
         for (let i = 0; i < objlst.length; i++) {
-            images.push({ 
-                original: JSON.parse(objlst[i]).ImageFileURL, 
-                thumbnail: JSON.parse(objlst[i]).ImageFileURL, 
+            images.push({
+                original: JSON.parse(objlst[i]).ImageFileURL,
+                thumbnail: JSON.parse(objlst[i]).ImageFileURL,
                 ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
                 ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
                 ImageCaptureTime: JSON.parse(objlst[i]).ImageCaptureTime,
                 description: ""
-             });
+            });
         }
+
+        const timeImg = formatStrToDate(JSON.parse(objlst[0]).ImageCaptureTime, true)
 
         this.props.showModal(MODAL_TYPE_IMAGE_SLIDE, {
             title: 'Danh sách hình ảnh ',
             ImageCaptureGeoLocation: JSON.parse(objlst[0]).ImageCaptureGeoLocation,
+            ImageCaptureTime: timeImg,
             content: {
                 lstImage: images
             },
@@ -111,7 +116,7 @@ class InfoHistoryWFCom extends Component {
                                             <td>{item.ShipmentOrderStepName}</td>
                                             <td>{item.ProcessUser}</td>
                                             <td>
-                                                <ul className="img-group" data-id={item.ImageFileURL}  onClick={this.handleShowImage.bind(this)}>
+                                                <ul className="img-group" data-id={item.ImageFileURL} onClick={this.handleShowImage.bind(this)}>
                                                     {objlst[0] != "" && objlst.map((item, index) =>
                                                         <li key={index}>
                                                             <div className="img-item">

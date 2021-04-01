@@ -64,7 +64,6 @@ class ShipmentOrderAddressCom extends Component {
     componentDidMount() {
         this.initCombobox();
         this.setValueCombobox();
-        console.log(this.props)
     }
 
     CheckPermissionUser(id) {

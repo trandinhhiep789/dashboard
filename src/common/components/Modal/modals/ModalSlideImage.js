@@ -9,21 +9,32 @@ import ImageGallery from 'react-image-gallery';
 
 
 
-const ModalSlideImage = ({ ImageCaptureGeoLocation, afterClose, hideModal, content, id, maxWidth }) => {
+const ModalSlideImage = ({ ImageCaptureGeoLocation, ImageCaptureTime, afterClose, hideModal, content, id, maxWidth }) => {
     const onClose = () => {
         hideModal(id);
         if (afterClose) {
             afterClose();
         }
     };
-const herfurl ="https://www.google.com/maps/search/" + ImageCaptureGeoLocation+"?sa=X&ved=2ahUKEwidyvfo7tvsAhUlwosBHXBpAngQ8gEwAHoECAEQAQ";
+    const herfurl = "https://www.google.com/maps/search/" + ImageCaptureGeoLocation + "?sa=X&ved=2ahUKEwidyvfo7tvsAhUlwosBHXBpAngQ8gEwAHoECAEQAQ";
     return (
-        <Modal title={ <a target="_blank" href={herfurl}>Danh sách hình ảnh  | Tọa độ: {ImageCaptureGeoLocation}</a>} onClose={onClose} id={"modalid-" + id} maxWidth={maxWidth}>
+        // <Modal title={ <a target="_blank" href={herfurl}>Danh sách hình ảnh  | Tọa độ: {ImageCaptureGeoLocation}</a>} onClose={onClose} id={"modalid-" + id} maxWidth={maxWidth}>
+        <Modal
+            // title={<a target="_blank" href={herfurl}>Danh sách hình ảnh  | Tọa độ: {ImageCaptureGeoLocation}</a>}
+            title={
+                <div>
+                    Danh sách hình ảnh | <a className="text-success" target="_blank" href={herfurl}>Tọa độ</a> | Thời gian: {ImageCaptureTime}
+                </div>
+            }
+            onClose={onClose}
+            id={"modalid-" + id}
+            maxWidth={maxWidth}
+        >
             {content.lstImage != undefined && content.lstImage.length > 1 ? <ImageGallery
                 items={content.lstImage}
                 originalClass="img-original"
             />
-            : <img src={content.lstImage[0].original} />
+                : <img src={content.lstImage[0].original} />
             }
         </Modal>
     );
