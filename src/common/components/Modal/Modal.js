@@ -327,7 +327,8 @@ class ModalCom extends React.Component {
 }
 ModalCom.propTypes = {
     children: PropTypes.node,
-    title: PropTypes.string,
+    // title: PropTypes.string,
+    title: PropTypes.node,
     onClose: PropTypes.func
 }
 const mapStateToProps = state => {

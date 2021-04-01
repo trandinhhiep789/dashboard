@@ -80,6 +80,17 @@ export function formatDate(dateString, notGetTime) {
     return dateString;
 }
 
+export function formatStrToDate(dateString, notGetTime) {
+    try {
+        const arrDateString = dateString.split(/[\s,-.]+/);
+        const newDate = new Date(Date.parse(dateString.split(" ")[0]))
+        const result = `${newDate.getDate()}/${newDate.getMonth()}/${newDate.getFullYear()} ${arrDateString[3]}:${arrDateString[4]} ${arrDateString[arrDateString.length - 1]}`
+        return result;
+    } catch (error) {
+        return dateString;
+    }
+}
+
 export function formatMonthDate(dateString, notGetTime) {
     if (dateString) {
         try {
