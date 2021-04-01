@@ -13,11 +13,11 @@ import {
     APIHostName, PagePath, SearchElementList,
     tableHead, SearchMLObjectDefinition, AddAPIPath,
     DataGridColumnList, SearchAPIPath,
-    IDSelectColumnName, PKColumnName, AddLink, TitleFormSearch, InitSearchParams
+    IDSelectColumnName, PKColumnName, AddLink, TitleFormSearch, InitSearchParams, EditLink, DeleteNewAPIPath
 } from '../constants'
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import { MODAL_TYPE_CONFIRMATION } from '../../../../constants/actionTypes';
-import { DELIVERYABILITY_VIEW, DELIVERYABILITY_DELETE } from "../../../../constants/functionLists";
+import { DELIVERYABILITY_VIEW, DELIVERYABILITY_DELETE, DELIVERYABILITY_EXPORT } from "../../../../constants/functionLists";
 import { ERPCOMMONCACHE_STORE } from '../../../../constants/keyCache'
 import { Link } from 'react-router-dom';
 import DatagirdDeliveryAbility from '../Component/DatagirdDeliveryAbility';
@@ -26,6 +26,8 @@ export class Search extends Component {
     constructor(props) {
         super(props)
         this.callSearchData = this.callSearchData.bind(this);
+        this.handleDataExport = this.handleDataExport.bind(this)
+
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -65,7 +67,6 @@ export class Search extends Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("callSearchData", apiResult, searchData)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: apiResult.IsError
@@ -79,8 +80,6 @@ export class Search extends Component {
                     return catsSoFar;
                 }, {});
 
-                console.log("dataSource 222", dataSource)
-
                 this.setState({
                     gridDataSource: apiResult.ResultObject
                 })
@@ -89,10 +88,29 @@ export class Search extends Component {
         })
     }
 
+    handleDataExport(Data) {
+        const dataExport = Data.map(item => {
+            const { Resource } = item
+
+            const dataResource = Resource.reduce((accumulator, currentValue, currentIndex, array) => {
+                const { DeliveryGoodsGroupName, TotalAbility } = currentValue
+                return { ...accumulator, [DeliveryGoodsGroupName]: TotalAbility };
+            }, {});
+
+            return {
+                "Siêu thị": `${item.OutputStoreID}-${item.StoreName}`,
+                "Khung giờ làm việc": item.DeliveryTimeFrameName,
+                ...dataResource,
+                "Thứ áp dụng": item.WeekDaysList
+            };
+        })
+
+        return dataExport
+    }
+
     callDataDeliveryGoodSgroup(dataSource) {
         const intDeliveryGoodsGroupID = -1
         this.props.callFetchAPI(APIHostName, "api/DeliveryGoodsGroup/LoadNew", intDeliveryGoodsGroupID).then(apiResult => {
-            console.log("callDataDeliveryGoodSgroup", intDeliveryGoodsGroupID, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: apiResult.IsError
@@ -101,25 +119,38 @@ export class Search extends Component {
             }
             else {
 
+                let arrDeliveryGoodSgroup = [];
+
+                arrDeliveryGoodSgroup = apiResult.ResultObject.map((item, index) => {
+                    item.Name = item.DeliveryGoodsGroupName;
+                    item.ID = item.DeliveryGoodsGroupID;
+                    return item
+                })
+
+                this.setState({
+                    deliveryGoodSgroup: arrDeliveryGoodSgroup,
+                })
+
                 let tmpDatasource = []
 
                 Object.keys(dataSource).map(function (key) {
                     // dataSource[key]["Child"] = [...dataSource[key]]
-                    let tmsResult = [...apiResult.ResultObject]
-
-                    tmsResult.map(e => {
-                        let find = dataSource[key].find(f => { 
-                            return e.DeliveryGoodsGroupID === f.DeliveryGoodsGroupID })
-                            e.TotalAbility = !!find ? find.TotalAbility : 0
-
-                        return e
+                    const tmsResult = apiResult.ResultObject.map(e => {
+                        let find = dataSource[key].find(f => { return e.DeliveryGoodsGroupID == f.DeliveryGoodsGroupID })
+                        e.TotalAbility = !!find ? find.TotalAbility : 0
+                        // return { e }
+                        return {
+                            DeliveryGoodsGroupID: e.DeliveryGoodsGroupID,
+                            DeliveryGoodsGroupName: e.DeliveryGoodsGroupName,
+                            TotalAbility: e.TotalAbility,
+                        }
                     })
-                    console.log("tmsResult",tmsResult)
                     // dataSource[key]["Resource"] = [...tmsResult]
                     tmpDatasource.push({
                         Child: [...dataSource[key]],
                         Resource: [...tmsResult],
                         StoreName: dataSource[key][0].StoreName,
+                        DeliveryAbilityID: dataSource[key][0].DeliveryAbilityID,
                         OutputStoreID: dataSource[key][0].OutputStoreID,
                         DeliveryTimeFrameID: dataSource[key][0].DeliveryTimeFrameID,
                         DeliveryTimeFrameName: dataSource[key][0].DeliveryTimeFrameName,
@@ -127,12 +158,11 @@ export class Search extends Component {
                     })
                 })
 
-                console.log("dataSource 333", dataSource)
-                console.log("tmpDatasource", tmpDatasource)
+                const dataExport = this.handleDataExport(tmpDatasource)
 
                 this.setState({
-                    deliveryGoodSgroup: apiResult.ResultObject,
-                    gridDataSourceNew: tmpDatasource
+                    gridDataSourceNew: tmpDatasource,
+                    dataExport
                 })
             }
         })
@@ -158,10 +188,6 @@ export class Search extends Component {
 
     }
 
-    handleExportFile() {
-
-    }
-
     handleDelete(deleteList, pkColumnName) {
         let listMLObject = [];
         deleteList.map((row, index) => {
@@ -172,6 +198,7 @@ export class Search extends Component {
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
+
         this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
@@ -179,7 +206,6 @@ export class Search extends Component {
                 this.callSearchData(this.state.SearchData);
             }
         });
-
     }
 
     addNotification(message1, IsError) {
@@ -228,13 +254,7 @@ export class Search extends Component {
 
     }
 
-    handlePrint() {
-
-    }
-
     render() {
-        const { deliveryGoodSgroup, gridDataSource, gridDataSourceNew } = this.state;
-        // console.log("111", deliveryGoodSgroup,gridDataSource)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -247,32 +267,15 @@ export class Search extends Component {
                     ref={this.searchref}
                     className="multiple"
                 />
-                {/* 
-                <DataGrid
-                    listColumn={DataGridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    AddLink={AddLink}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
-                    onDeleteClick={this.handleDelete.bind(this)}
-                    IsDelete={true}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                    // RequirePermission={DELIVERYABILITY_VIEW}
-                    // DeletePermission={DELIVERYABILITY_DELETE}
-                    IsExportFile={true}
-                    DataExport={this.state.dataExport}
-                    fileName="Danh sách tải giao hàng"
-                    onExportFile={this.handleExportFile.bind(this)}
-                    IsImportFile={true}
-                // onImportFile={this.handleImportFile.bind(this)}
 
-                /> */}
                 <div className="col-lg-12 SearchForm">
                     <DatagirdDeliveryAbility
                         listColumn={DataGridColumnList}
                         dataSource={this.state.gridDataSourceNew}
+                        IsGroupColumnTable={true}
+                        dataColumGroup={this.state.deliveryGoodSgroup}
                         AddLink={AddLink}
+                        EditLink={EditLink}
                         IDSelectColumnName={IDSelectColumnName}
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete.bind(this)}
@@ -280,20 +283,25 @@ export class Search extends Component {
                         onChangeView={this.handleonChangeView.bind(this)}
                         onSearchEvent={this.handleonSearchEvent.bind(this)}
                         onChangePageLoad={this.onChangePageLoad.bind(this)}
-                        onPrint={this.handlePrint.bind(this)}
                         IsDelete={true}
                         IsAdd={true}
                         isHideHeaderToolbar={false}
                         PageNumber={this.state.PageNumber}
-                        // RequirePermission={DELIVERYABILITY_VIEW}
-                        // DeletePermission={DELIVERYABILITY_DELETE}
+                        RequirePermission={DELIVERYABILITY_VIEW}
+                        DeletePermission={DELIVERYABILITY_DELETE}
+                        ExportPermission={DELIVERYABILITY_EXPORT}
+                        IsExportFile={true}
+                        fileName={"Danh sách khai báo tổng tải"}
+                        DataExport={this.state.dataExport}
+                        onExportFile={this.handleExportFile.bind(this)}
+                        IsImportFile={true}
                         IsAutoPaging={true}
-                        RowsPerPage={20}
+                        RowsPerPage={5}
                     />
                 </div>
 
 
-                <div className="col-lg-12 SearchForm">
+                {/* <div className="col-lg-12 SearchForm">
                     <div className="card">
                         <div className="card-body">
                             <div className="flexbox mb-10 ">
@@ -352,7 +360,16 @@ export class Search extends Component {
 
                                                 return (
                                                     <tr key={index}>
-                                                        <td>11</td>
+                                                        <td>
+                                                            <div className="checkbox">
+                                                                <label>
+                                                                    <input type="checkbox" name="chkSelect" className="form-control form-control-sm" value={item.DeliveryAbilityID} />
+                                                                    <span className="cr">
+                                                                        <i className="cr-icon fa fa-check"></i>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
                                                         <td>{item.OutputStoreID + "-" + item.StoreName}</td>
                                                         <td>{item.DeliveryTimeFrameName}</td>
                                                         {
@@ -402,7 +419,7 @@ export class Search extends Component {
                             </nav>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
 
 

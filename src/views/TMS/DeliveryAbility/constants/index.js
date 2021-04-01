@@ -1,10 +1,15 @@
 export const APIHostName = "TMSAPI";
 
 export const AddAPIPath = "api/DeliveryAbility/Add";
+export const UpdateAPIPath = "api/DeliveryAbility/Update";
 export const SearchAPIPath = "api/DeliveryAbility/Search";
 export const ApiSearchDeliveryGoods = "api/DeliveryGoodsGroup/Search";
+export const LoadAPIPath = "api/DeliveryAbility/LoadNew";
+export const DeleteNewAPIPath = "api/DeliveryAbility/DeleteNew";
+
 
 export const AddLink = "/DeliveryAbility/Add";
+export const EditLink ="/DeliveryAbility/Edit";
 export const BackLink = "/DeliveryAbility";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "DeliveryAbilityID";
@@ -12,6 +17,7 @@ export const PKColumnName = "DeliveryAbilityID";
 
 export const TitleFormSearch = "Tìm kiếm danh sách tải giao hàng";
 export const TitleFormAdd = "Thêm danh sách tải giao hàng";
+export const TitleFormEdit = "Cập nhật danh sách tải giao hàng";
 
 export const widthModalAddDeliveryAbility = "50%";
 
@@ -56,8 +62,8 @@ export const SearchElementList = [
         colspan: 2,
         value: -1,
         isMultiSelect: false,
-        placeholder: "---Tỉnh /thành phố---",
-        label: "Tỉnh /thành phố",
+        placeholder: "---Khu vực---",
+        label: "Khu vực",
         listoption: [],
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
@@ -193,6 +199,13 @@ export const MLObjectDefinition = [
         DataSourceMember: "StoreID"
     },
     {
+        Name: "OutputStoreID",
+        DefaultValue: "",
+        BindControlName: "cbOutputStoreID",
+        DataSourceMember: "OutputStoreID"
+    },
+    
+    {
         Name: "DeliveryTimeFrameID",
         DefaultValue: "",
         BindControlName: "cbDeliveryTimeFrameID",
@@ -211,7 +224,6 @@ export const MLObjectDefinition = [
         BindControlName: "cbWeekDayID",
         DataSourceMember: "WeekDayID"
     },
-
 
     {
         Name: "Description",
@@ -262,9 +274,32 @@ export const lstDeliveryGoodsGroup = [
     },
     {
         Name: "TotalAbility",
-        Type: "inputNumber",
+        Type: "number",
         Caption: "Số lượng",
         DataSourceMember: "TotalAbility",
-        Width: 50
+        Width: 50,
+        validatonList: ["number"]
     }
 ]
+
+export const GridMLObjectDefinition = [
+    {
+        Name: "DeliveryGoodsGroupName",
+        DefaultValue: "",
+        BindControlName: "DeliveryGoodsGroupName",
+        DataSourceMember: "DeliveryGoodsGroupName"
+    },
+    {
+        Name: "TotalAbility",
+        DefaultValue: 0,
+        BindControlName: "TotalAbility",
+        DataSourceMember: "TotalAbility"
+    },
+    {
+        Name: "DeliveryGoodsGroupID",
+        DefaultValue: "",
+        BindControlName: "DeliveryGoodsGroupID",
+        DataSourceMember: "DeliveryGoodsGroupID"
+    },
+
+];

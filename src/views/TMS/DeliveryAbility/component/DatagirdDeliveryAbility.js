@@ -1,35 +1,27 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from "react-router-dom";
-import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
-import Media from "react-media";
-import { MessageModal } from "../../../../common/components/Modal";
-import ModelContainer from "../../../../common/components/Modal/ModelContainer";
-import { DEFAULT_ROW_PER_PAGE } from "../../../../constants/systemVars.js";
-import GridCell from "../../../../common/components/DataGrid/GridCell";
-import GridPage from "../../../../common/components/DataGrid/GridPage";
 import { connect } from 'react-redux';
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+
+import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
+import { MessageModal } from "../../../../common/components/Modal";
+import { DEFAULT_ROW_PER_PAGE } from "../../../../constants/systemVars.js";
 import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
-import { formatDate, formatMonthDate } from "../../../../common/library/CommonLib.js";
-import { formatMoney, formatNumber } from '../../../../utils/function';
 import { showModal, hideModal } from '../../../../actions/modal';
-import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import {
-    APIHostName
-} from "../constants";
+import GridPage from "../../../../common/components/DataGrid/GridPage";
 
 class DatagirdDeliveryAbilityCom extends Component {
     constructor(props) {
         super(props);
-        this.checkAll = this.checkAll.bind(this);
         this.getCheckList = this.getCheckList.bind(this);
+        this.checkChild = this.checkChild.bind(this)
+        this.handleStatusCheckAll = this.handleStatusCheckAll.bind(this)
 
-
-        this.getCheckList = this.getCheckList.bind(this);
         const pkColumnName = this.props.PKColumnName.split(',');
         const listPKColumnName = pkColumnName.map(item => { return { key: item } });
 
@@ -47,8 +39,6 @@ class DatagirdDeliveryAbilityCom extends Component {
         this.notificationDOMRef = React.createRef();
     }
 
-
-
     componentDidMount() {
         if (this.props.dataSource) {
             const gridData = this.getCheckList(this.props.dataSource);
@@ -61,60 +51,6 @@ class DatagirdDeliveryAbilityCom extends Component {
         this.checkPermission(permissionKey).then((result) => {
             this.setState({ IsPermision: result });
         })
-
-
-    }
-
-    checkAll(e) {
-        const isCheck = e.target.checked;
-        const dataSource = this.props.dataSource;
-        const pkColumnName = this.state.ListPKColumnName;
-        const idSelectColumnName = this.props.IDSelectColumnName;
-        const dataSourceFilter = this.getDisplayData(this.props.dataSource);
-        let checkList = this.state.GridData[idSelectColumnName];
-        let elementobject;
-        dataSource.map((rowItem, rowIndex) => {
-            let isMath = false;
-            for (var i = 0; i < dataSourceFilter.length; i++) {
-                for (var j = 0; j < pkColumnName.length; j++) {
-                    if (rowItem[pkColumnName[j].key] != dataSourceFilter[i][pkColumnName[j].key]) {
-                        isMath = false;
-                        break;
-                    }
-                    else {
-                        isMath = true;
-                    }
-                }
-                if (isMath) {
-                    break;
-                }
-            }
-            const value = pkColumnName.map((obj, index) => {
-                return { key: obj.key, value: rowItem[obj.key] };
-            })
-            if (isMath) {
-                elementobject = { pkColumnName: value, IsChecked: isCheck };
-            }
-            else {
-                elementobject = { pkColumnName: value, IsChecked: false };
-            }
-            checkList = Object.assign([], checkList, { [rowIndex]: elementobject });
-        });
-        this.setState({ GridData: { [idSelectColumnName]: checkList }, IsCheckAll: isCheck });
-    }
-
-    getCheckList(dataSource) {
-        const idSelectColumnName = this.props.IDSelectColumnName;
-        const pkColumnName = this.state.ListPKColumnName;
-        let checkList = [];
-        dataSource.map((rowItem, rowIndex) => {
-            const value = pkColumnName.map((obj, index) => {
-                return { key: obj.key, value: rowItem[obj.key] };
-            })
-            const elementobject = { pkColumnName: value, IsChecked: false };
-            checkList = Object.assign([], checkList, { [rowIndex]: elementobject });
-        });
-        return { [idSelectColumnName]: checkList };
     }
 
     componentWillReceiveProps(nextProps) {
@@ -135,7 +71,132 @@ class DatagirdDeliveryAbilityCom extends Component {
                 GridDataShip: []
             });
         }
+    }
 
+    componentDidUpdate(prevProps, prevState) {
+        const { PageNumber } = this.state
+        if (prevState.PageNumber != PageNumber) {
+            this.handleStatusCheckAll()
+        }
+    }
+
+    getDisplayData(dataSource) {
+        if (!this.props.IsAutoPaging)
+            return dataSource;
+        let resultData = [];
+        if (dataSource == null)
+            return resultData;
+        let rowsPerPage = DEFAULT_ROW_PER_PAGE;
+        if (this.props.RowsPerPage != null)
+            rowsPerPage = this.props.RowsPerPage;
+        let startRowIndex = (this.state.PageNumber - 1) * rowsPerPage;
+        let endRowIndex = startRowIndex + rowsPerPage;
+        if (endRowIndex > dataSource.length)
+            endRowIndex = dataSource.length;
+        for (let i = startRowIndex; i < endRowIndex; i++) {
+            resultData.push(dataSource[i]);
+        }
+
+        return resultData;
+    }
+
+    handleStatusCheckAll(inputGridData) {
+        const { dataSource, IDSelectColumnName } = this.props
+        const { GridData } = this.state
+        const dataDisplayPerPage = this.getDisplayData(dataSource)
+
+        let checkedAll = true
+
+        let cloneGribData = inputGridData ? inputGridData : GridData
+
+        for (let index = 0; index < cloneGribData[IDSelectColumnName].length; index++) {
+            const item = cloneGribData[IDSelectColumnName][index];
+
+            const { IsChecked, pkColumnName } = item
+            const { key, value } = pkColumnName[0]
+
+            const matchItem = dataDisplayPerPage.find(sItem => sItem[key].trim() == value.trim())
+
+            if (matchItem && IsChecked == false) {
+                checkedAll = false
+                break
+            }
+        }
+
+        this.setState({
+            IsCheckAll: checkedAll
+        })
+    }
+
+    checkAll(e) {
+        const { dataSource, IDSelectColumnName } = this.props
+        const { ListPKColumnName, GridData, IsCheckAll } = this.state
+        const dataDisplayPerPage = this.getDisplayData(dataSource)
+
+        const newCheck = GridData[IDSelectColumnName].map(item => {
+            const { IsChecked, pkColumnName } = item
+            const { key, value } = pkColumnName[0]
+
+            let result = dataDisplayPerPage.find(sItem => {
+                return value == sItem[key]
+            });
+
+            if (result) {
+                return {
+                    pkColumnName,
+                    IsChecked: !IsCheckAll
+                }
+            } else {
+                return item
+            }
+        })
+
+        this.setState({
+            GridData: { [IDSelectColumnName]: newCheck },
+            IsCheckAll: !IsCheckAll
+        })
+    }
+
+    checkChild(e, rowItem, rowIndex) {
+        const { GridData } = this.state
+        const { dataSource, IDSelectColumnName } = this.props
+
+        let tempChkSelect = GridData.chkSelect.map((item, index) => {
+            const { pkColumnName } = item
+
+            if (pkColumnName[0].value.trim() == rowItem[pkColumnName[0].key].trim()) {
+                return {
+                    ...item,
+                    IsChecked: !item.IsChecked
+                }
+            } else {
+                return { ...item }
+            }
+        })
+
+        this.handleStatusCheckAll({
+            [IDSelectColumnName]: tempChkSelect
+        })
+
+        this.setState({
+            GridData: {
+                [IDSelectColumnName]: tempChkSelect
+            },
+        })
+    }
+
+    getCheckList(dataSource) {
+        const idSelectColumnName = this.props.IDSelectColumnName;
+        const pkColumnName = this.state.ListPKColumnName;
+        let checkList = [];
+        dataSource.map((rowItem, rowIndex) => {
+            const value = pkColumnName.map((obj, index) => {
+                return { key: obj.key, value: rowItem[obj.key] };
+            })
+            const elementobject = { pkColumnName: value, IsChecked: false };
+            checkList = Object.assign([], checkList, { [rowIndex]: elementobject });
+        });
+        return { [idSelectColumnName]: checkList };
     }
 
     handleCloseMessage() {
@@ -184,13 +245,13 @@ class DatagirdDeliveryAbilityCom extends Component {
         });
     }
 
-    getPageCount(dataRows) {
-        if (dataRows == null)
+    getPageCount(dataSource) {
+        if (dataSource == null)
             return 1;
         let rowsPerPage = DEFAULT_ROW_PER_PAGE;
         if (this.props.RowsPerPage != null)
             rowsPerPage = this.props.RowsPerPage;
-        let pageCount = parseInt(Math.ceil(dataRows.TotaLRows / rowsPerPage));
+        let pageCount = parseInt(Math.ceil(dataSource.length / rowsPerPage));
         if (pageCount < 1)
             pageCount = 1;
         return pageCount;
@@ -232,37 +293,171 @@ class DatagirdDeliveryAbilityCom extends Component {
         });
     }
 
+    handleDeleteChecked() {
+        const doDelete = () => {
+            const { GridData, DataSource } = this.state
+            let ListPKColumnName = [];
+            const dataChecked = GridData.chkSelect.filter(item => {
+                if (item.IsChecked) {
+                    ListPKColumnName = item.pkColumnName
+                    return item
+                }
+            })
 
+            if (dataChecked.length == 0) {
+                this.showMessage("Vui chọn dòng bạn muốn xóa")
+            } else {
+                const confir = confirm("Bạn có chắc rằng muốn xóa ?");
+                if (this.props.onDeleteClick && confir == 1)
+                    this.props.onDeleteClick(dataChecked, ListPKColumnName)
+            }
+        }
+
+        if (this.props.DeletePermission) {
+            this.checkPermission(this.props.DeletePermission).then(result => {
+                if (result == true) {
+                    doDelete();
+                }
+                else if (result == 'error') {
+                    this.showMessage("Lỗi khi kiểm tra quyền")
+                } else {
+                    this.showMessage("Bạn không có quyền xóa!")
+                }
+            })
+        } else {
+            doDelete();
+        }
+    }
+
+    handleExportCSV() {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        let result;
+
+        const doExportFile = () => {
+            if (this.props.DataExport.length == 0) {
+                result = {
+                    IsError: true,
+                    Message: "Dữ liệu không tồn tại. Không thể xuất file!"
+                };
+            }
+            else {
+                const ws = XLSX.utils.json_to_sheet(this.props.DataExport);
+                const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+                const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                const data = new Blob([excelBuffer], { type: fileType });
+
+
+                FileSaver.saveAs(data, this.props.fileName + fileExtension);
+
+                result = {
+                    IsError: false,
+                    Message: "Xuất file thành công!"
+                };
+            }
+            this.props.onExportFile(result);
+        }
+
+        if (this.props.ExportPermission) {
+            this.checkPermission(this.props.ExportPermission).then(result => {
+                if (result == true) {
+                    doExportFile();
+                }
+                else if (result == 'error') {
+                    this.showMessage("Lỗi khi kiểm tra quyền")
+                } else {
+                    this.showMessage("Bạn không có quyền tải file!")
+                }
+            })
+        }
+    }
 
 
     renderDataGrid() {
         const dataSource = this.state.DataSource;
-        const widthTable = $('#fixtable tbody').width();
+        const DisplayData = this.getDisplayData(dataSource)
+        const { GridData, IsCheckAll } = this.state
+
         return (
             <div className=" table-responsive">
-                <table id="fixtable" className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder" cellSpacing="0" >
-                    <thead className="thead-light" style={{ maxWidth: widthTable }}>
+                <table id="fixtable" className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0" >
+                    <thead className="thead-light">
                         <tr>
-                            <th className="jsgrid-header-cell" >Tác vụ</th>
-                           
+                            <th className="jsgrid-header-cell " style={{ width: 60 }}>
+                                <div className="checkbox">
+                                    <label>
+                                        <input type="checkbox" className="form-control form-control-sm"
+                                            onChange={this.checkAll.bind(this)}
+                                            checked={IsCheckAll}
+                                        />
+                                        <span className="cr">
+                                            <i className="cr-icon fa fa-check"></i>
+                                        </span>
+                                    </label>
+                                </div>
+                            </th>
+                            <th className="jsgrid-header-cell" style={{ width: 150 }}>Siêu thị</th>
+                            <th className="jsgrid-header-cell" style={{ width: 100 }}>Khung giờ làm việc</th>
+
+                            {
+                                this.props.IsGroupColumnTable == true && this.props.dataColumGroup && this.props.dataColumGroup.map((item, index) => {
+                                    return (
+                                        <th key={index} className="jsgrid-header-cell" style={{ width: 100 }}>{item.Name}</th>
+                                    )
+                                })
+                            }
+                            <th className="jsgrid-header-cell" style={{ width: 200 }}>Thứ áp dụng</th>
+                            <th className="jsgrid-header-cell" style={{ width: 100 }}>Tác vụ</th>
                         </tr>
                     </thead>
                     <tbody>
                         {dataSource != null &&
-                            dataSource.map((rowItem, rowIndex) => {
+                            DisplayData.map((rowItem, rowIndex) => {
                                 let rowClass = "jsgrid-row";
                                 if (index % 2 != 0) {
                                     rowClass = "jsgrid-alt-row";
                                 }
-                                let rowtrClass = "unReadingItem";
-                                if (rowItem.SelectedUser != "" || rowItem.IsView == true) {
-                                    rowtrClass = "noReadingItem readingItem";
-                                }
 
-                               
+                                const checked = GridData.chkSelect.find(item => {
+                                    return item.pkColumnName[0].value == rowItem[item.pkColumnName[0].key]
+                                })
+
                                 return (
-                                    <tr key={rowIndex} className={rowtrClass}>
-                                        <td>aa</td>
+                                    <tr key={rowIndex}>
+                                        <td>
+                                            <div className="checkbox">
+                                                <label>
+                                                    <input type="checkbox"
+                                                        name="chkSelect"
+                                                        className="form-control form-control-sm"
+                                                        value={rowItem.DeliveryAbilityID}
+                                                        onChange={e => this.checkChild(e, rowItem, rowIndex)}
+                                                        // checked={GridData.chkSelect[rowIndex].IsChecked}
+                                                        checked={checked.IsChecked}
+                                                    />
+                                                    <span className="cr">
+                                                        <i className="cr-icon fa fa-check"></i>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>{rowItem.OutputStoreID + "-" + rowItem.StoreName}</td>
+                                        <td>{rowItem.DeliveryTimeFrameName}</td>
+                                        {
+                                            !!rowItem.Resource && rowItem.Resource.map((item1, index1) => {
+                                                return (
+                                                    <td key={index1}>{item1.TotalAbility}</td>
+                                                )
+                                            })
+                                        }
+                                        <td>{rowItem.WeekDaysList}</td>
+                                        <td>
+                                            <div className="group-action">
+                                                <Link title="Edit" data-id={rowItem.DeliveryAbilityID} className="btn-edit" to={this.props.EditLink + "/" + rowItem.DeliveryAbilityID.toString().trim() + "/"} >
+                                                    <i className="ti-pencil"></i>
+                                                </Link>
+                                            </div>
+                                        </td>
                                     </tr>
                                 );
                             })
@@ -275,16 +470,7 @@ class DatagirdDeliveryAbilityCom extends Component {
 
 
     render() {
-
-        
-        let searchTextbox = <div></div>;
-        if (this.props.hasSearch) {
-            searchTextbox = <div className="lookup">
-                <input className="w-200px" type="text" name="txtKeyword" placeholder="Search" onKeyPress={this.handleKeyPress} />
-            </div>;
-        }
-        const pageCount = this.getPageCount(this.props.dataSource[0]);
-
+        const pageCount = this.getPageCount(this.props.dataSource);
         const datagrid = this.renderDataGrid();
         let hasHeaderToolbar = true;
         if (this.props.isHideHeaderToolbar)
@@ -317,20 +503,22 @@ class DatagirdDeliveryAbilityCom extends Component {
             IsCompleteDeliverIed = this.props.dataSource.filter(n => n.IsCompleteDeliverIed == true);
         }
 
+        let isShowButtonImport = false;
+        if (this.props.IsImportFile != undefined && this.props.IsImportFile != false) {
+            isShowButtonImport = true;
+        }
+
         return (
             <React.Fragment>
-                <div className="card cardShipmentOrder">
+                <div className="card SearchForm">
                     <ReactNotification ref={this.notificationDOMRef} />
-                    <div className="card-title">
-                        {(this.props.title != undefined || this.props.title != '') && <h4 className="title">{this.props.title}</h4>}
+                    <div className="card-body">
 
                         {hasHeaderToolbar &&
                             <div className="flexbox mb-10 ">
-                                {searchTextbox}
+                                <div></div>
                                 <div className="btn-toolbar">
                                     <div className="btn-group btn-group-sm">
-                                        <div className="group-left"></div>
-
                                         {(this.props.IsAdd == true || this.props.IsAdd == undefined) ?
                                             (!this.props.IsCustomAddLink == true ?
                                                 (<Link
@@ -355,24 +543,32 @@ class DatagirdDeliveryAbilityCom extends Component {
                                         }
                                         {
                                             (this.props.IsDelete == true || this.props.IsDelete == undefined) ?
-                                                (<button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa" onClick={this.handleDeleteClick}>
+                                                (<button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa" onClick={this.handleDeleteChecked.bind(this)}>
                                                     <span className="fa fa-remove"> Xóa </span>
                                                 </button>)
                                                 : ""
+                                        }
+                                        {this.props.IsExportFile == true &&
+                                            <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)}>
+                                                <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                            </button>
+                                        }
+                                        {
+                                            isShowButtonImport == true &&
+                                            <button type="button" className="btn btn-export  ml-10">
+                                                <span className="fa fa-exchange"> Import File </span>
+                                            </button>
                                         }
                                     </div>
                                 </div>
                             </div>
                         }
-                    </div>
-                    <div className="card-body">
 
                         {datagrid}
 
                         {this.props.IsAutoPaging &&
                             <GridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle.bind(this)} />
                         }
-
 
 
                         {HideHeaderToolbarGroupTextBox &&
@@ -390,6 +586,7 @@ class DatagirdDeliveryAbilityCom extends Component {
                             </div>
                         }
                     </div>
+
                 </div>
 
             </React.Fragment>

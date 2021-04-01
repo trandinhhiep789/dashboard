@@ -9,7 +9,8 @@ import {
     APIHostName, AddAPIPath, MLObjectDefinition,
     BackLink, AddPagePath, TitleFormAdd,
     lstDeliveryGoodsGroup, lstDeliveryAbilityDetail, widthModalAddDeliveryAbility,
-    ApiSearchDeliveryGoods
+    ApiSearchDeliveryGoods,
+    GridMLObjectDefinition
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -20,6 +21,7 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import ModalAddDeliveryAbility from '../components/ModalAddDeliveryAbility';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+import { DELIVERYABILITY_ADD } from "../../../../constants/functionLists";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -27,8 +29,6 @@ class AddCom extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.callDataDeliveryGoodsGroup = this.callDataDeliveryGoodsGroup.bind(this);
-        // this.handleDataModalAddDelivery = this.handleDataModalAddDelivery.bind(this)
-        this.handleDataSubmitDeliveryAbilityDetail = this.handleDataSubmitDeliveryAbilityDetail.bind(this)
 
         this.state = {
             IsCallAPIError: false,
@@ -47,27 +47,28 @@ class AddCom extends React.Component {
         this.callDataDeliveryGoodsGroup();
     }
 
-    handleDataSubmitDeliveryAbilityDetail() {
+
+
+    handleSubmit(formData, MLObject) {
         const { dataSourceDeliveryGoodsGroup } = this.state
-        let tempDataSubmit = []
-        dataSourceDeliveryGoodsGroup.forEach(item => {
-            if (this.state[item.DeliveryGoodsGroupID]) {
-                tempDataSubmit.push({
-                    ...item,
-                    TotalAbility: this.state[item.DeliveryGoodsGroupID]
-                })
+
+        const tmpDeliveryGoodsGroup = dataSourceDeliveryGoodsGroup.filter(item => {
+            if (parseInt(item.TotalAbility) >= 0) {
+                return item
             }
         })
 
-        this.setState({
-            dataSubmitDeliveryGoodsGroup: tempDataSubmit
+        if (tmpDeliveryGoodsGroup.length <= 0) {
+            this.showMessage("Danh sách chi tiết tải giao hàng không tồn tại.")
+            return;
+        }
+
+        const dataDeliveryAbilityDetail = tmpDeliveryGoodsGroup.map(item => {
+            return {
+                ...item,
+                TotalAbility: parseInt(item.TotalAbility)
+            }
         })
-
-        return tempDataSubmit
-    }
-
-    handleSubmit(formData, MLObject) {
-        const dtSubmitDeliveryGoodsGroup = this.handleDataSubmitDeliveryAbilityDetail()
 
         let tempMLObject = {
             OutputStoreID: MLObject.StoreID,
@@ -77,7 +78,7 @@ class AddCom extends React.Component {
             Description: MLObject.Description,
             IsActived: MLObject.IsActived,
             IsSystem: MLObject.IsSystem,
-            DeliveryAbilityDetailList: dtSubmitDeliveryGoodsGroup
+            DeliveryAbilityDetailList: dataDeliveryAbilityDetail
         }
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, tempMLObject).then(apiResult => {
@@ -122,6 +123,9 @@ class AddCom extends React.Component {
 
         this.props.callFetchAPI(APIHostName, ApiSearchDeliveryGoods, param).then(apiResult => {
             if (!apiResult.IsError) {
+                apiResult.ResultObject.map((item)=>{
+                    item.TotalAbility = 0
+                })
                 this.setState({
                     dataSourceDeliveryGoodsGroup: apiResult.ResultObject
                 })
@@ -185,12 +189,12 @@ class AddCom extends React.Component {
     //     });
     // }
 
-    handleItemDelete() {
 
-    }
 
-    handleItemEdit() {
-
+    valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
+        const rowGridData = Object.assign({}, this.state.dataSourceDeliveryGoodsGroup[index], { [elementdata.Name]: elementdata.Value }, { HasChanged: true });
+        const dataSource = Object.assign([], this.state.dataSourceDeliveryGoodsGroup, { [index]: rowGridData });
+        this.setState({ dataSourceDeliveryGoodsGroup: dataSource, GridFormValidation: gridFormValidation });
     }
 
     handleChangeDeliveryAbilityDetail(value, rowItem, rowIndex) {
@@ -200,6 +204,7 @@ class AddCom extends React.Component {
     }
 
     render() {
+
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -211,6 +216,7 @@ class AddCom extends React.Component {
                 listelement={[]}
                 BackLink={BackLink}
                 onSubmit={this.handleSubmit}
+                RequirePermission={DELIVERYABILITY_ADD}
             // onchange={this.handleChange.bind(this)}
             >
 
@@ -220,8 +226,8 @@ class AddCom extends React.Component {
                             name="cbProvinceID"
                             colspan="8"
                             labelcolspan="4"
-                            label="Tỉnh /thành phố"
-                            // validatonList={[""]}
+                            label="Khu vực"
+                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
                             loaditemcachekeyid={ERPCOMMONCACHE_PROVINCE}
@@ -240,7 +246,7 @@ class AddCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             label="kho"
-                            // validatonList={[""]}
+                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
                             loaditemcachekeyid={ERPCOMMONCACHE_STORE}
@@ -262,7 +268,7 @@ class AddCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             label="Khung giờ"
-                            // validatonList={[""]}
+                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
                             loaditemcachekeyid={ERPRELATECACHE_DELIVERYTIMEFRAME}
@@ -280,7 +286,7 @@ class AddCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             label="Thứ áp dụng"
-                            // validatonList={[""]}
+                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             isMultiSelect={true}
                             placeholder="-- Vui lòng chọn --"
@@ -357,9 +363,10 @@ class AddCom extends React.Component {
                     colspan="12"
                     dataSource={this.state.dataSourceDeliveryGoodsGroup}
                     isHideHeaderToolbar={true}
-                    isShowFooterToolbar={false}
                     listColumn={lstDeliveryGoodsGroup}
-                    onChangeInputNumber={this.handleChangeDeliveryAbilityDetail.bind(this)}
+                    MLObjectDefinition={GridMLObjectDefinition}
+                    // onChangeInputNumber={this.handleChangeDeliveryAbilityDetail.bind(this)}
+                    onValueChangeInputGrid={this.valueChangeInputGrid.bind(this)}
                 // onHandleSubmitGrid={}
                 />
             </FormContainer>

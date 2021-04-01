@@ -10,21 +10,30 @@ import {
     AddAPIPath,
     MLObjectDefinition,
     BackLink,
-    AddPagePath,
-    TitleFormAdd,
+    EditPagePath,
+    TitleFormEdit,
+    LoadAPIPath,
+    lstDeliveryGoodsGroup,
+    GridMLObjectDefinition,
+    ApiSearchDeliveryGoods,
+    UpdateAPIPath
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import { ERPRELATECACHE_WEEKDAY, ERPRELATECACHE_DELIVERYTIMEFRAME, ERPCOMMONCACHE_CARRIERTYPE, ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_STORE } from "../../../../constants/keyCache";
-
+import { DELIVERYABILITY_UPDATE, DELIVERYABILITY_VIEW } from "../../../../constants/functionLists";
+import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+import { fi } from "date-fns/locale";
 
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.callLoadData = this.callLoadData.bind(this)
+        this.callDataDeliveryGoodsGroup = this.callDataDeliveryGoodsGroup.bind(this)
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -32,21 +41,125 @@ class EditCom extends React.Component {
             IsExtended: false,
             IsLiquidated: false,
             IsDeposited: false,
+            dataSourceDeliveryGoodsGroup: [],
+            dataSubmitDeliveryGoodsGroup: [],
+
         };
     }
 
     componentDidMount() {
-        this.props.updatePagePath(AddPagePath);
+        this.props.updatePagePath(EditPagePath);
+
+        this.callDataDeliveryGoodsGroup();
     }
+
+    callLoadData(id, dataSourceDeliveryGoodsGroup) {
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                const arrAreaTmp = apiResult.ResultObject.WeekDayIdList.toString().split(",");
+                apiResult.ResultObject.WeekDayID = arrAreaTmp;
+
+                let tmpDataDetail = []
+                let tmpDataDetail1 = []
+
+                let { DeliveryAbilityDetailList, } = apiResult.ResultObject
+
+                dataSourceDeliveryGoodsGroup && dataSourceDeliveryGoodsGroup.map((item, index) => {
+                    const findElement = DeliveryAbilityDetailList.find(f => {
+                        return f.DeliveryGoodsGroupID == item.DeliveryGoodsGroupID
+                    })
+
+                    if (!findElement) {
+                        DeliveryAbilityDetailList.push(item)
+                    }
+
+                })
+
+                this.setState({
+                    DataSource: apiResult.ResultObject,
+                    dataSourceDeliveryGoodsGroup: apiResult.ResultObject.DeliveryAbilityDetailList
+                })
+            }
+        });
+    }
+
+    callDataDeliveryGoodsGroup() {
+        const param = [
+            {
+                SearchKey: "@Keyword",
+                SearchValue: ""
+            }
+        ];
+
+        this.props.callFetchAPI(APIHostName, ApiSearchDeliveryGoods, param).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.setState({
+                    dataSourceDeliveryGoodsGroup: apiResult.ResultObject
+                })
+                this.callLoadData(this.props.match.params.id, apiResult.ResultObject);
+            } else {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError,
+                });
+                this.showMessage(apiResult.Message);
+            }
+        })
+    }
+
 
     handleSubmit(formData, MLObject) {
 
-        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+
+
+        const { dataSourceDeliveryGoodsGroup } = this.state
+
+        const tmpDeliveryGoodsGroup = dataSourceDeliveryGoodsGroup.filter(item => {
+            if (parseInt(item.TotalAbility) >= 0) {
+                return item
+            }
+        })
+
+        if (tmpDeliveryGoodsGroup.length <= 0) {
+            this.showMessage("Danh sách chi tiết tải giao hàng không tồn tại.")
+            return;
+        }
+
+        const dataDeliveryAbilityDetail = tmpDeliveryGoodsGroup.map(item => {
+            return {
+                ...item,
+                TotalAbility: parseInt(item.TotalAbility)
+            }
+        })
+
+        let tempMLObject = {
+            DeliveryAbilityID: this.props.match.params.id,
+            OutputStoreID: MLObject.StoreID,
+            DeliveryTimeFrameID: MLObject.DeliveryTimeFrameID,
+            CarrierTypeID: MLObject.CarrierTypeID,
+            WeekDaysList: MLObject.WeekDayID.toString(),
+            Description: MLObject.Description,
+            IsActived: MLObject.IsActived,
+            IsSystem: MLObject.IsSystem,
+            DeliveryAbilityDetailList: dataDeliveryAbilityDetail
+        }
+
+        console.log("aaa", tempMLObject, MLObject)
+
+        this.props.callFetchAPI(APIHostName, UpdateAPIPath, tempMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
 
         });
     }
+
+
+
 
 
     handleCloseMessage() {
@@ -68,6 +181,17 @@ class EditCom extends React.Component {
 
     }
 
+    valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
+
+        const { dataSourceDeliveryGoodsGroup } = this.state
+        console.log("dataSourceDeliveryGoodsGroup", dataSourceDeliveryGoodsGroup)
+
+        const rowGridData = Object.assign({}, dataSourceDeliveryGoodsGroup[index], { [elementdata.Name]: elementdata.Value }, { HasChanged: true });
+        const dataSource = Object.assign([], dataSourceDeliveryGoodsGroup, { [index]: rowGridData });
+        this.setState({ dataSourceDeliveryGoodsGroup: dataSource , GridFormValidation: gridFormValidation });
+    }
+
+
 
     render() {
         if (this.state.IsCloseForm) {
@@ -76,12 +200,13 @@ class EditCom extends React.Component {
 
         return (
             <FormContainer
-                FormName={TitleFormAdd}
+                FormName={TitleFormEdit}
                 MLObjectDefinition={MLObjectDefinition}
+                dataSource={this.state.DataSource}
                 listelement={[]}
                 BackLink={BackLink}
+                RequirePermission={DELIVERYABILITY_UPDATE}
                 onSubmit={this.handleSubmit}
-            // onchange={this.handleChange.bind(this)}
             >
 
                 <div className="row">
@@ -90,40 +215,40 @@ class EditCom extends React.Component {
                             name="cbProvinceID"
                             colspan="8"
                             labelcolspan="4"
-                            label="Tỉnh /thành phố"
+                            label="Khu vực"
                             // validatonList={[""]}
                             isautoloaditemfromcache={true}
-                            placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid={ERPCOMMONCACHE_PROVINCE} 
+                            placeholder="-- Khu vực --"
+                            loaditemcachekeyid={ERPCOMMONCACHE_PROVINCE}
                             valuemember="ProvinceID"
                             nameMember="ProvinceName"
                             controltype="InputControl"
                             value={""}
                             listoption={null}
-                            filterrest="cbStoreID"
+                            disabled={true}
+                            readOnly={true}
                             datasourcemember="ProvinceID" />
 
                     </div>
                     <div className="col-md-6">
                         <FormControl.FormControlComboBox
-                            name="cbStoreID"
+                            name="cbOutputStoreID"
                             colspan="8"
                             labelcolspan="4"
                             label="kho"
-                            // validatonList={[""]}
+                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid={ERPCOMMONCACHE_STORE} 
+                            loaditemcachekeyid={ERPCOMMONCACHE_STORE}
                             valuemember="StoreID"
                             nameMember="StoreName"
                             controltype="InputControl"
                             value={""}
                             listoption={null}
                             isMultiSelect={false}
-                            filterobj="ProvinceID"
-                            filterName="cbProvinceID"
-                            filterValue=''
-                            datasourcemember="StoreID" />
+                            disabled={true}
+                            readOnly={true}
+                            datasourcemember="OutputStoreID" />
                     </div>
 
                     <div className="col-md-6">
@@ -132,36 +257,20 @@ class EditCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             label="Khung giờ"
-                            // validatonList={[""]}
+                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid={ERPRELATECACHE_DELIVERYTIMEFRAME} 
+                            loaditemcachekeyid={ERPRELATECACHE_DELIVERYTIMEFRAME}
                             valuemember="DeliveryTimeFrameID"
                             nameMember="DeliveryTimeFrame"
                             controltype="InputControl"
                             value={""}
                             listoption={null}
+                            disabled={true}
+                            readOnly={true}
                             datasourcemember="DeliveryTimeFrameID" />
                     </div>
 
-
-                    <div className="col-md-6">
-                        <FormControl.ComboBoxSelect
-                            name="cbCarrierTypeID"
-                            colspan="8"
-                            labelcolspan="4"
-                            label="loại phương tiện"
-                            // validatonList={[""]}
-                            isautoloaditemfromcache={true}
-                            placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid={ERPCOMMONCACHE_CARRIERTYPE} 
-                            valuemember="CarrierTypeID"
-                            nameMember="CarrierTypeName"
-                            controltype="InputControl"
-                            value={""}
-                            listoption={null}
-                            datasourcemember="CarrierTypeID" />
-                    </div>
 
                     <div className="col-md-6">
                         <FormControl.FormControlComboBox
@@ -169,11 +278,11 @@ class EditCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             label="Thứ áp dụng"
-                            // validatonList={[""]}
+                            validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             isMultiSelect={true}
                             placeholder="-- Vui lòng chọn --"
-                            loaditemcachekeyid={ERPRELATECACHE_WEEKDAY} 
+                            loaditemcachekeyid={ERPRELATECACHE_WEEKDAY}
                             valuemember="WeekDayID"
                             nameMember="WeekDayName"
                             controltype="InputControl"
@@ -224,6 +333,20 @@ class EditCom extends React.Component {
                     </div>
 
                 </div>
+
+                <InputGrid
+                    name="lstDeliveryAbilityDetail"
+                    controltype="GridControl"
+                    headingTitle="Thêm chi tiết danh sách tải giao hàng"
+                    colspan="12"
+                    dataSource={this.state.dataSourceDeliveryGoodsGroup}
+                    isHideHeaderToolbar={true}
+                    listColumn={lstDeliveryGoodsGroup}
+                    MLObjectDefinition={GridMLObjectDefinition}
+                    // onChangeInputNumber={this.handleChangeDeliveryAbilityDetail.bind(this)}
+                    onValueChangeInputGrid={this.valueChangeInputGrid.bind(this)}
+                // onHandleSubmitGrid={}
+                />
 
             </FormContainer>
         );

@@ -375,15 +375,22 @@ class FormControlComboBoxCom extends Component {
         let selectedOption = [];
         if ((values == null || values === -1) && !this.props.isMultiSelect)
             return { value: -1, label: "--Vui lòng chọn--" };
-        if (typeof values.toString() == "string")
-            values = values.toString().split(",");
-        for (let i = 0; i < values.length; i++) {
-            for (let j = 0; j < listOption.length; j++) {
-                if (values[i] == listOption[j].value) {
-                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label,name: listOption[j].name });
+
+        if (!!values) {
+            if (typeof values.toString() == "string")
+                values = values.toString().split(",");
+
+
+            for (let i = 0; i < values.length; i++) {
+                for (let j = 0; j < listOption.length; j++) {
+                    if (values[i] == listOption[j].value) {
+                        selectedOption.push({ value: listOption[j].value, label: listOption[j].label, name: listOption[j].name });
+                    }
                 }
             }
         }
+
+
         return selectedOption;
     }
     getComboValue(selectedOption) {
@@ -562,7 +569,7 @@ class FormControlComboBoxUserCom extends Component {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null)
             this.props.onValueChange(this.props.name, comboValues, selectedOption);
-     
+
     }
 
     bindcombox(value, listOption) {
@@ -570,6 +577,7 @@ class FormControlComboBoxUserCom extends Component {
         let selectedOption = [];
         if ((values == null || values === -1) && !this.props.isMultiSelect)
             return { value: -1, label: "--Vui lòng chọn--" };
+
         if (typeof values.toString() == "string")
             values = values.toString().split(",");
         for (let i = 0; i < values.length; i++) {
@@ -1227,7 +1235,7 @@ class CheckBox extends React.Component {
                 <div className={labelDivClassName}>
                     <label className="col-form-label 5">
                         {this.props.label}<span className="text-danger"> {star}</span>
-                        
+
 
                     </label>
                 </div>
@@ -1246,7 +1254,7 @@ class CheckBox extends React.Component {
                                 disabled={this.props.disabled}
                             />
                             <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                            
+
                         </label>
                         {this.props.titleSmall != null ? <span className="txtSmall">{this.props.titleSmall}</span> : ""}
                     </div>

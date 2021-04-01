@@ -21,7 +21,7 @@ class InputGridCellCom extends Component {
         this.previewMedia = this.previewMedia.bind(this);
         this.handleInputFocus = this.handleInputFocus.bind(this);
         this.handleInputChangeDicimal = this.handleInputChangeDicimal.bind(this);
-
+        this.onChangeInputNumber = this.onChangeInputNumber.bind(this)
     }
 
 
@@ -158,7 +158,6 @@ class InputGridCellCom extends Component {
             return;
         }
         const id = e.currentTarget.dataset.id;
-        //console.log("cellhandleonClickEdit inputname",id)
         this.props.onInsertClickEdit(this.props.index);
     }
 
@@ -169,7 +168,6 @@ class InputGridCellCom extends Component {
 
     handleInputChangeDicimal(e) {
         const IsAllowDecimal = e.target.dataset.isallowdecimal;
-        console.log('e', IsAllowDecimal)
         let arrValidationList = [];
         if (this.props.type == 'textboxNewGroup') {
             if (!IsAllowDecimal) {
@@ -179,7 +177,6 @@ class InputGridCellCom extends Component {
                 arrValidationList.push('numberDecimal')
             }
         }
-        console.log('arrValidationList', arrValidationList)
 
         this.validateInputNew(e, arrValidationList);
 
@@ -230,7 +227,7 @@ class InputGridCellCom extends Component {
 
 
     handleInputChangeNew(evalue) {
-        console.log("ee", evalue, this.props)
+        // console.log("ee", evalue, this.props)
     }
 
     handleInputFocus(e) {
@@ -288,6 +285,12 @@ class InputGridCellCom extends Component {
         // }
         // const inputvalue  =  e.target.value;
         this.props.onValueChangeALL(inputvalue, this.props.index);
+    }
+    onChangeInputNumber(e) {
+
+        if (this.props.onChangeInputNumber)
+            this.props.onChangeInputNumber(e)
+
     }
 
     handleEditClick() {
@@ -449,8 +452,6 @@ class InputGridCellCom extends Component {
 
             case "textboxNewGroup":
                 {
-                    // console.log('aa', this.props);
-
                     let className = "form-control form-control-sm";
                     if (this.props.CSSClassName != null)
                         className = this.props.CSSClassName;
@@ -527,7 +528,7 @@ class InputGridCellCom extends Component {
                                 formatter={isDecimalInputNumber && (value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','))}
                                 parser={isDecimalInputNumber && (value => value.replace(/\$\s?|(,*)/g, ''))}
                                 disabled={disabled ? disabled : false}
-                                onChange={(e) => this.props.onChangeInputNumber(e)}
+                                onChange={(e) => this.onChangeInputNumber(e)}
                                 defaultValue={text}
                                 value={value}
                             />

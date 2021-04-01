@@ -18,7 +18,7 @@ export class DeliveryAbility extends Component {
             <Switch>
                 <Route exact path="/DeliveryAbility" component={Search} />
                 <Route exact path="/DeliveryAbility/Add" component={Add} />
-                <Route exact path="/DeliveryAbility/Edit" component={Edit} />
+                <Route exact path="/DeliveryAbility/Edit/:id" component={Edit} />
                 <Route path="*" component={NotFound} />
             </Switch>
         )
