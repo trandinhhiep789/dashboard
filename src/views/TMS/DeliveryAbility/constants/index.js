@@ -9,7 +9,7 @@ export const DeleteNewAPIPath = "api/DeliveryAbility/DeleteNew";
 
 
 export const AddLink = "/DeliveryAbility/Add";
-export const EditLink ="/DeliveryAbility/Edit";
+export const EditLink = "/DeliveryAbility/Edit";
 export const BackLink = "/DeliveryAbility";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "DeliveryAbilityID";
@@ -204,7 +204,7 @@ export const MLObjectDefinition = [
         BindControlName: "cbOutputStoreID",
         DataSourceMember: "OutputStoreID"
     },
-    
+
     {
         Name: "DeliveryTimeFrameID",
         DefaultValue: "",
@@ -303,3 +303,39 @@ export const GridMLObjectDefinition = [
     },
 
 ];
+
+export const schema = {
+    'Siêu thị': {
+        prop: 'OutputStoreID',
+        type: String
+    },
+    'Khung giờ làm việc': {
+        prop: 'PartnerName',
+        type: String
+    },
+    'Máy lạnh': {
+        prop: 'ServiceTypeName',
+        type: Number
+    },
+
+    'Sản phẩm có lắp đặt': {
+        prop: 'AreaName',
+        type: Number,
+    },
+    'Sản phẩm dịch vụ': {
+        prop: 'SignedDate',
+        type: Number,
+    },
+    'Bảo hành': {
+        prop: 'ExpiredDate',
+        type: Number
+    },
+    'Sản phẩm khác': {
+        prop: 'ExtendLable',
+        type: Number
+    },
+    'Thứ áp dụng': {
+        prop: 'WeekDaysList',
+        type: String
+    }
+}

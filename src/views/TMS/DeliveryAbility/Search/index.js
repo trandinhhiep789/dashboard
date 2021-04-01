@@ -13,7 +13,8 @@ import {
     APIHostName, PagePath, SearchElementList,
     tableHead, SearchMLObjectDefinition, AddAPIPath,
     DataGridColumnList, SearchAPIPath,
-    IDSelectColumnName, PKColumnName, AddLink, TitleFormSearch, InitSearchParams, EditLink, DeleteNewAPIPath
+    IDSelectColumnName, PKColumnName, AddLink, TitleFormSearch, InitSearchParams, EditLink, DeleteNewAPIPath,
+    schema
 } from '../constants'
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import { MODAL_TYPE_CONFIRMATION } from '../../../../constants/actionTypes';
@@ -184,8 +185,8 @@ export class Search extends Component {
 
 
 
-    handleImportFile() {
-
+    handleImportFile(rows, errors) {
+        console.log(rows, errors)
     }
 
     handleDelete(deleteList, pkColumnName) {
@@ -295,8 +296,10 @@ export class Search extends Component {
                         DataExport={this.state.dataExport}
                         onExportFile={this.handleExportFile.bind(this)}
                         IsImportFile={true}
+                        SchemaData={schema}
+                        onImportFile={this.handleImportFile.bind(this)}
                         IsAutoPaging={true}
-                        RowsPerPage={5}
+                        RowsPerPage={15}
                     />
                 </div>
 

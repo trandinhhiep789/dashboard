@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import readXlsxFile from 'read-excel-file';
 
 import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
 import { MessageModal } from "../../../../common/components/Modal";
@@ -21,6 +22,7 @@ class DatagirdDeliveryAbilityCom extends Component {
         this.getCheckList = this.getCheckList.bind(this);
         this.checkChild = this.checkChild.bind(this)
         this.handleStatusCheckAll = this.handleStatusCheckAll.bind(this)
+        this.handleImportFile = this.handleImportFile.bind(this)
 
         const pkColumnName = this.props.PKColumnName.split(',');
         const listPKColumnName = pkColumnName.map(item => { return { key: item } });
@@ -372,6 +374,22 @@ class DatagirdDeliveryAbilityCom extends Component {
         }
     }
 
+    handleImportFile() {
+        this.showMessage("Tính năng đang phát triển")
+
+        // const input = document.getElementById('buttonImportFile');
+        // input.click();
+        // const schema = this.props.SchemaData;
+
+        // input.addEventListener('change', () => {
+        //     readXlsxFile(input.files[0], { schema }).then(({ rows, errors }) => {
+        //         if (this.props.onImportFile != null)
+        //             this.props.onImportFile(rows, errors);
+        //     }, function (error) {
+        //         alert("File vừa chọn lỗi. Vui lòng chọn file khác.")
+        //     })
+        // })
+    }
 
     renderDataGrid() {
         const dataSource = this.state.DataSource;
@@ -555,7 +573,9 @@ class DatagirdDeliveryAbilityCom extends Component {
                                         }
                                         {
                                             isShowButtonImport == true &&
-                                            <button type="button" className="btn btn-export  ml-10">
+                                            <button type="button" className="btn btn-export  ml-10"
+                                                onClick={this.handleImportFile}
+                                            >
                                                 <span className="fa fa-exchange"> Import File </span>
                                             </button>
                                         }
@@ -584,6 +604,11 @@ class DatagirdDeliveryAbilityCom extends Component {
                                     </div>
                                 </div>
                             </div>
+                        }
+
+                        {
+                            isShowButtonImport == true &&
+                            < input type="file" id="buttonImportFile" style={{ display: "none" }} ref={input => this.inputElement = input} />
                         }
                     </div>
 
