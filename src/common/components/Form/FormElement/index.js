@@ -254,6 +254,10 @@ class FormElementCom extends Component {
         this.validateInput(inputname, moment ? moment._d : null);
     }
 
+    handleDateTimeSearchChange(inputname, moment) {
+        this.validateInput(inputname, moment ? moment : null);
+    }
+
     handleMultiSelectChange(name, comboValues) {
         if (this.props.onValueChange)
             this.props.onValueChange(name, comboValues);
@@ -608,7 +612,7 @@ class FormElementCom extends Component {
                     datetimeclassName += " is-invalid";
                 }
 
-                control = <Datetime timeFormat={true} dateFormat="DD/MM/YYYY" value={this.props.value} readOnly={this.props.readonly} name={this.props.name} type={this.props.type} className={CSSClassName} onChange={(moment) => this.handleDateTimeChange(this.props.name, moment)} className={datetimeclassName} locale={"vi-VN"}></Datetime>
+                control = <Datetime timeFormat={true} input={true} dateFormat="DD/MM/YYYY" value={this.props.value} readOnly={this.props.readonly} name={this.props.name} type={this.props.type} className={CSSClassName} onChange={(moment) => this.handleDateTimeSearchChange(this.props.name, moment)} className={datetimeclassName} locale={"vi-VN"}></Datetime>
                 break;
             case "treeSelect":
                 let disabledd = this.state.IsSystem;
