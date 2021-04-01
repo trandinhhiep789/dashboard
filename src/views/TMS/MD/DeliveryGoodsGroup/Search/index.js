@@ -19,7 +19,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { MATERIALGROUP_VIEW, MATERIALGROUP_DELETE } from "../../../../../constants/functionLists";
+import { MATERIALGROUP_VIEW, MATERIALGROUP_DELETE, DELIVERYGOODSGROUP_VIEW, DELIVERYGOODSGROUP_DELETE } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
@@ -169,8 +169,8 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={MATERIALGROUP_VIEW}
-                        DeletePermission={MATERIALGROUP_DELETE}
+                        RequirePermission={DELIVERYGOODSGROUP_VIEW}
+                        DeletePermission={DELIVERYGOODSGROUP_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />

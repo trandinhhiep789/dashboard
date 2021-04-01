@@ -24,7 +24,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { WORKINGSHIFT_UPDATE } from "../../../../../constants/functionLists";
+import { DELIVERYTIMEFRAME_UPDATE, WORKINGSHIFT_UPDATE } from "../../../../../constants/functionLists";
 import CoordinatorStoreWard from '../../CoordinatorStoreWard'
 import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
 import ReactNotification from "react-notifications-component";
@@ -176,7 +176,7 @@ class EditCom extends React.Component {
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
                     onchange={this.handleChange.bind(this)}
-                    RequirePermission={WORKINGSHIFT_UPDATE}
+                    RequirePermission={DELIVERYTIMEFRAME_UPDATE}
                 >
 
                     <div className="row">

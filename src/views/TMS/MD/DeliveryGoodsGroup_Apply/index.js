@@ -18,7 +18,7 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_MAINGROUP, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_BRAND } from "../../../../constants/keyCache";
-import { GET_CACHE_USER_FUNCTION_LIST, MATERIALGROUP_ADD, MATERIALGROUP_DELETE, MATERIALGROUP_UPDATE } from "../../../../constants/functionLists";
+import { DELIVERYGOODSGROUP_ADD, DELIVERYGOODSGROUP_DELETE, DELIVERYGOODSGROUP_UPDATE, GET_CACHE_USER_FUNCTION_LIST, MATERIALGROUP_ADD, MATERIALGROUP_DELETE, MATERIALGROUP_UPDATE } from "../../../../constants/functionLists";
 
 class DeliveryGoodsGroup_ApplyCom extends React.Component {
     constructor(props) {
@@ -79,17 +79,17 @@ class DeliveryGoodsGroup_ApplyCom extends React.Component {
         let IsAllowedUpdate = false;
         this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                let _isAllowedAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == MATERIALGROUP_ADD);
+                let _isAllowedAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == DELIVERYGOODSGROUP_ADD);
                 if (_isAllowedAdd && _isAllowedAdd.length > 0) {
                     IsAllowedAdd = true;
                 }
 
-                let _isAllowedUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == MATERIALGROUP_UPDATE);
+                let _isAllowedUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == DELIVERYGOODSGROUP_UPDATE);
                 if (_isAllowedUpdate && _isAllowedUpdate.length > 0) {
                     IsAllowedUpdate = true;
                 }
 
-                let _isAlloweDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == MATERIALGROUP_DELETE);
+                let _isAlloweDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == DELIVERYGOODSGROUP_DELETE);
                 if (_isAlloweDelete && _isAlloweDelete.length > 0) {
                     IsAllowedDelete = true;
                 }

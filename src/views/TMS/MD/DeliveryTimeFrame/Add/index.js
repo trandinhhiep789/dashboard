@@ -21,7 +21,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { WORKINGSHIFT_ADD } from "../../../../../constants/functionLists";
+import { DELIVERYTIMEFRAME_ADD, WORKINGSHIFT_ADD } from "../../../../../constants/functionLists";
 import CoordinatorStoreWard from '../../CoordinatorStoreWard'
 import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
 import ReactNotification from "react-notifications-component";
@@ -183,7 +183,7 @@ class AddCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                     onchange={this.handleChange.bind(this)}
-                    RequirePermission={WORKINGSHIFT_ADD}
+                    RequirePermission={DELIVERYTIMEFRAME_ADD}
                 >
 
                     <div className="row">

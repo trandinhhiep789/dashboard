@@ -14,7 +14,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { AREATYPE_ADD, MATERIALGROUP_ADD } from "../../../../../constants/functionLists";
+import { AREATYPE_ADD, DELIVERYGOODSGROUP_ADD, MATERIALGROUP_ADD } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
 
@@ -81,7 +81,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                RequirePermission={MATERIALGROUP_ADD}
+                RequirePermission={DELIVERYGOODSGROUP_ADD}
                 ref={this.searchref}
             />
         );

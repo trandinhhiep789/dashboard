@@ -16,7 +16,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { MATERIALGROUP_UPDATE } from "../../../../../constants/functionLists";
+import { DELIVERYGOODSGROUP_UPDATE, MATERIALGROUP_UPDATE } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
 import MaterialGroup_Product from "../../MaterialGroup_Product";
@@ -131,7 +131,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={MATERIALGROUP_UPDATE}
+                    RequirePermission={DELIVERYGOODSGROUP_UPDATE}
                     ref={this.searchref}
                 >       
                 </SimpleForm>

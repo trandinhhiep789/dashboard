@@ -282,6 +282,18 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsCheckMustHandOverGoods"
     },
     {
+        Name: "IsCanHandoverToReceiver",
+        DefaultValue: "",
+        BindControlName: "IsCanHandoverToReceiver",
+        DataSourceMember: "IsCanHandoverToReceiver"
+    },
+    {
+        Name: "IsCheckMustHandoverToReceiver",
+        DefaultValue: "",
+        BindControlName: "IsCheckMustHandoverToReceiver",
+        DataSourceMember: "IsCheckMustHandoverToReceiver"
+    },
+    {
         Name: "OrderIndex",
         DefaultValue: "",
         BindControlName: "OrderIndex",
