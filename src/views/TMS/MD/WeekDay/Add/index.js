@@ -39,7 +39,7 @@ class AddCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if(!apiResult.IsError){
-                this.props.callClearLocalCache(ERPCOMMONCACHE_TMSREWARDTYPE);
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_TMSREWARDTYPE);
                 //this.handleSubmitInsertLog(MLObject);
             }            
             this.showMessage(apiResult.Message);

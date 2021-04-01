@@ -67,7 +67,8 @@ class EditCom extends React.Component {
             Password: "",
             PasswordConfirm: "",
             Files: [],
-            IsNotSaved: false
+            IsNotSaved: false,
+            IsShowChangePass: false
         };
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
@@ -522,7 +523,11 @@ class EditCom extends React.Component {
     }
 
     handleSetNewPass() {
-        this.displayInputControl(true);
+        let isShow = !this.state.IsShowChangePass;
+        this.displayInputControl(isShow);
+        this.setState({
+            IsShowChangePass: isShow
+        });
     }
 
 
