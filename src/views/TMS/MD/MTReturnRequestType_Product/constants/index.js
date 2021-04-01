@@ -66,7 +66,7 @@ export const ModalColumnList_Insert = [
         value: "",
         DataSourceMember: "MinQuality",
         readonly: false,
-        validatonList: ["number"]
+        validatonList: ["digit"]
     },
     {
         Name: "MaxQuality",
@@ -76,7 +76,7 @@ export const ModalColumnList_Insert = [
         value: "",
         DataSourceMember: "MaxQuality",
         readonly: false,
-        validatonList: ["number"]
+        validatonList: ["digit"]
     },
     {
         Name: "InventoryStatusID",
@@ -143,7 +143,7 @@ export const ModalColumnList_Edit = [
         value: "",
         DataSourceMember: "MinQuality",
         readonly: false,
-        validatonList: ["number"]
+        validatonList: ["digit"]
     },
     {
         Name: "MaxQuality",
@@ -153,7 +153,7 @@ export const ModalColumnList_Edit = [
         value: "",
         DataSourceMember: "MaxQuality",
         readonly: false,
-        validatonList: ["number"]
+        validatonList: ["digit"]
     },
     {
         Name: "InventoryStatusID",
