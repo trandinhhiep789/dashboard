@@ -526,7 +526,12 @@ export const GridInstallBundle_Materia = [
         BindControlName: "InStockMaterialGroupID",
         DataSourceMember: "InStockMaterialGroupID"
     },
-  
+    {
+        Name: "IsNonOutputMaterial",
+        DefaultValue: false,
+        BindControlName: "IsNonOutputMaterial",
+        DataSourceMember: "IsNonOutputMaterial"
+    },
     {
         Name: "CreatedUser",
         DefaultValue: "",
@@ -807,6 +812,16 @@ export const InstallBundle_MateriaColumnList = [
         OrderIndex: 20,
         hideInput: false
     },
+    {
+        name: "IsNonOutputMaterial",
+        Type: "checkbox",
+        label:"Nhóm vật tư không xuất kho",
+        Caption: "Nhóm vật tư không xuất kho",
+        datasourcemember: "IsNonOutputMaterial",
+        hideInput: false,
+        Width: 70,
+        OrderIndex:21
+    },
     
     {
         name: "Note",
@@ -814,7 +829,7 @@ export const InstallBundle_MateriaColumnList = [
         label:"Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex:21,
+        OrderIndex:22,
         Colmd:12,
         hideInput: false,
         labelcolspan:2,
@@ -1093,12 +1108,22 @@ export const InstallBundle_MateriaColumnListEdit = [
         hideInput: false
     },
     {
+        name: "IsNonOutputMaterial",
+        Type: "checkbox",
+        label:"Nhóm vật tư không xuất kho",
+        Caption: "Nhóm vật tư không xuất kho",
+        datasourcemember: "IsNonOutputMaterial",
+        hideInput: false,
+        Width: 70,
+        OrderIndex:21
+    },
+    {
         name: "Note",
         Type: "TextArea",
         label:"Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex:21,
+        OrderIndex:22,
         Colmd:12,
         hideInput: false,
         labelcolspan:2,
