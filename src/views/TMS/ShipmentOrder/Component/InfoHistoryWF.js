@@ -46,9 +46,12 @@ class InfoHistoryWFCom extends Component {
                 original: JSON.parse(objlst[i]).ImageFileURL, 
                 thumbnail: JSON.parse(objlst[i]).ImageFileURL, 
                 ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
+                ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
+                ImageCaptureTime: JSON.parse(objlst[i]).ImageCaptureTime,
                 description: ""
              });
         }
+
         this.props.showModal(MODAL_TYPE_IMAGE_SLIDE, {
             title: 'Danh sách hình ảnh ',
             ImageCaptureGeoLocation: JSON.parse(objlst[0]).ImageCaptureGeoLocation,
@@ -108,7 +111,7 @@ class InfoHistoryWFCom extends Component {
                                             <td>{item.ShipmentOrderStepName}</td>
                                             <td>{item.ProcessUser}</td>
                                             <td>
-                                                <ul className="img-group" data-id={item.ImageFileURL} onClick={this.handleShowImage.bind(this)}>
+                                                <ul className="img-group" data-id={item.ImageFileURL}  onClick={this.handleShowImage.bind(this)}>
                                                     {objlst[0] != "" && objlst.map((item, index) =>
                                                         <li key={index}>
                                                             <div className="img-item">
