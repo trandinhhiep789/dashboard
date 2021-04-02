@@ -198,14 +198,35 @@ export const DataGridColumnList=[
         Type: "text",
         Caption: "Mã loại giới hạn",
         DataSourceMember: "LimitTypeID",
-        Width: 70
+        Width: 100
     },
     {
         Name: "LimitTypeName",
         Type: "text",
         Caption: "Tên loại giới hạn",
         DataSourceMember: "LimitTypeName",
-        Width: 500
+        Width: 300
+    },
+    {
+        Name: "IsActived",
+        Type: "checkicon",
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived",
+        Width: 80
+    },
+    {
+        Name: "CreatedDate",
+        Type: "date",
+        Caption: "Ngày tạo",
+        DataSourceMember: "CreatedDate",
+        Width: 150
+    },
+    {
+        Name: "CreatedUserFullName",
+        Type: "text",
+        Caption: "Người tạo",
+        DataSourceMember: "CreatedUserFullName",
+        Width: 150
     },
     {
         Name: "Action",
