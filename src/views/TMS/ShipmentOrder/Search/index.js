@@ -189,8 +189,8 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.Typename
             },
             {
-                SearchKey: "@IsOrderBy",
-                SearchValue: MLObject.IsOrderBy
+                SearchKey: "@RequestStoreID",
+                SearchValue: MLObject.RequestStoreID
             },
             {
                 SearchKey: "@PAGESIZE",
@@ -202,7 +202,7 @@ class SearchCom extends React.Component {
             }
         ];
         this.setState({ SearchData: postData });
-        this.callSearchData(postData);
+         this.callSearchData(postData);
     }
 
     callSearchData(searchData) {

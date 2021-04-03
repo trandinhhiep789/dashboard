@@ -154,6 +154,18 @@ export const SearchElementList = [
         classNameCol: "col-custom"
     },
     {
+        type: "StoreComboBox",
+        name: "cbRequestStoreID",
+        DataSourceMember: "RequestStoreID",
+        colspan: 2,
+        value: -1,
+        placeholder: "--Kho tạo--",
+        listoption: [],
+        IsAutoLoadItemFromCache: false,
+        isMultiSelect: false,
+        classNameCol: "col-custom"
+    },
+    {
         type: "ComboBox",
         name: "cbSenderStoreID",
         DataSourceMember: "SenderStoreID",
@@ -230,17 +242,6 @@ export const SearchElementList = [
         placeholder: "--Trạng thái điều phối--",
         listoption: [{ value: -1, label: "--Điều phối--" }, { value: 1, label: "Đã điều phối" }, { value: 2, label: "Chưa điều phối" }],
         classNameCol: "col-custom"
-    },
-    {
-        type: "ComboBox",
-        name: "cbIsOrderBy",
-        DataSourceMember: "IsOrderBy",
-        colspan: 2,
-        value: 1,
-        isMultiSelect: false,
-        placeholder: "",
-        listoption: [{ value: 1, label: "Sắp xếp theo thời gian giao" }, { value: 2, label: "Sắp xếp theo thời gian tạo" }],
-        classNameCol: "col-custom"
     }
 
 
@@ -296,8 +297,8 @@ export const InitSearchParams = [
         SearchValue: -1
     },
     {
-        SearchKey: "@IsOrderBy",
-        SearchValue: 1
+        SearchKey: "@RequestStoreID",
+        SearchValue: -1
     },
     {
         SearchKey: "@PAGESIZE",
@@ -366,17 +367,10 @@ export const SearchMLObjectDefinition = [
         BindControlName: "txtTypename"
     },
     {
-        Name: "IsOrderBy",
-        DefaultValue: "",
-        BindControlName: "cbIsOrderBy"
+        Name: "RequestStoreID",
+        DefaultValue: "-1",
+        BindControlName: "cbRequestStoreID"
     }
-    //   ,
-    //     {
-    //         Name: "TreeSelectID",
-    //         DefaultValue: "",
-    //         BindControlName: "TreeSelectID"
-    //     }  
-
 ];
 
 export const AddElementList = [

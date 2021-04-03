@@ -4,6 +4,7 @@ import { ValidationField } from "../../../library/validation";
 import MultiSelectUserComboBox from "../FormControl/MultiSelectComboBox/MultiSelectUserComboBox";
 import ProductComboBox from "../FormControl/MultiSelectComboBox/ProductComboBox";
 import MultiTreeSelect from '../FormControl/MultiSelectComboBox/MultiTreeSelect'
+import MultiStoreSearchComboBox from '../FormControl/MultiSelectComboBox/MultiStoreSearchComboBox'
 
 export default class SearchForm extends Component {
     constructor(props) {
@@ -311,6 +312,18 @@ export default class SearchForm extends Component {
                                         key={index}
                                     />
                                 );
+
+                             case "StoreComboBox":
+                                    return (
+                                        <MultiStoreSearchComboBox
+                                            onValueChange={this.onValueChange}
+                                            ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                            inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                            {...elementItem}
+                                            value={this.state.FormData[elementItem.name].value}
+                                            key={index}
+                                        />
+                                    );
                             default:
                                 break;
                         }
