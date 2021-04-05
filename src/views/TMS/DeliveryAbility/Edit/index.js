@@ -134,12 +134,16 @@ class EditCom extends React.Component {
             }
         })
 
+        const getWeekDaysList = MLObject.WeekDayID.filter(item => {
+            return Number.isInteger(item)
+        })
+
         let tempMLObject = {
             DeliveryAbilityID: this.props.match.params.id,
             OutputStoreID: MLObject.StoreID,
             DeliveryTimeFrameID: MLObject.DeliveryTimeFrameID,
             CarrierTypeID: MLObject.CarrierTypeID,
-            WeekDaysList: MLObject.WeekDayID.toString(),
+            WeekDaysList: getWeekDaysList.toString(),
             Description: MLObject.Description,
             IsActived: MLObject.IsActived,
             IsSystem: MLObject.IsSystem,
@@ -284,7 +288,9 @@ class EditCom extends React.Component {
                             value={-1}
                             // isselectedOp={true}
                             listoption={null}
-                            datasourcemember="WeekDayID" />
+                            datasourcemember="WeekDayID"
+                            allowSelectAll={true}
+                        />
                     </div>
 
                     <div className="col-md-12">
