@@ -84,7 +84,11 @@ export const InitSearchParams = [
     {
         SearchKey: "@ISCREATEDINPUTVOUCHERT",
         SearchValue: "-1"
-    }
+    },
+    {
+        SearchKey: "@REQUESTUSER",
+        SearchValue: "-1"
+    },
 ];
 
 export const SearchMLObjectDefinition = [
@@ -122,8 +126,12 @@ export const SearchMLObjectDefinition = [
         Name: "IsCreatedInputVouchert",
         DefaultValue: "",
         BindControlName: "cbIsCreatedInputVouchert"
+    },
+    {
+        Name: "RequestUser",
+        DefaultValue: "",
+        BindControlName: "cbRequestUser"
     }
-
 ];
 
 export const SearchElementList = [
@@ -218,8 +226,21 @@ export const SearchElementList = [
             { value: 0, label: 'Chưa tạo phiếu nhập' },
             { value: 1, label: 'Đã tạo phiếu nhập' },
         ],
-
-
+    },
+    {
+        type: "MultiSelectUser",
+        name: "cbRequestUser",
+        DataSourceMember: "RequestUser",
+        label: "Nhân viên",
+        colspan: 12,
+        rowspan: 2,
+        labelcolspan: 12,
+        IsLabelDiv: true,
+        value: -1,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: false,
+        isMultiSelect: false
     }
 ];
 
