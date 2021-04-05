@@ -114,9 +114,6 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-
-
-
         const { dataSourceDeliveryGoodsGroup } = this.state
 
         const tmpDeliveryGoodsGroup = dataSourceDeliveryGoodsGroup.filter(item => {
@@ -148,8 +145,6 @@ class EditCom extends React.Component {
             IsSystem: MLObject.IsSystem,
             DeliveryAbilityDetailList: dataDeliveryAbilityDetail
         }
-
-        console.log("aaa", tempMLObject, MLObject)
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, tempMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -188,7 +183,7 @@ class EditCom extends React.Component {
 
         const rowGridData = Object.assign({}, dataSourceDeliveryGoodsGroup[index], { [elementdata.Name]: elementdata.Value }, { HasChanged: true });
         const dataSource = Object.assign([], dataSourceDeliveryGoodsGroup, { [index]: rowGridData });
-        this.setState({ dataSourceDeliveryGoodsGroup: dataSource , GridFormValidation: gridFormValidation });
+        this.setState({ dataSourceDeliveryGoodsGroup: dataSource, GridFormValidation: gridFormValidation });
     }
 
 

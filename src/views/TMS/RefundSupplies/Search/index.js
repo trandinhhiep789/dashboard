@@ -181,6 +181,10 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@ISCREATEDINPUTVOUCHERT",
                 SearchValue: MLObject.IsCreatedInputVouchert
+            },
+            {
+                SearchKey: "@REQUESTUSER",
+                SearchValue: MLObject.RequestUser == -1 ? MLObject.RequestUser : MLObject.RequestUser.value
             }
         ];
 
