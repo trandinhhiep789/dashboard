@@ -14,7 +14,7 @@ import { TreeSelect, DatePicker, TimePicker } from "antd";
 import moment from 'moment';
 import Datetime from 'react-datetime';
 import "antd/dist/antd.css";
-import Select from 'react-select';
+import Select, { components } from 'react-select';
 import { formatMoney } from '../../../../utils/function';
 import { formatDateNew } from '../../../../common/library/CommonLib.js';
 import { ExportStringToDate, ExportStringDate } from "../../../../common/library/ultils";
@@ -351,6 +351,56 @@ class FormControlTextBox extends React.Component {
     }
 }
 
+const MySelectCCB = ({ allOption = { label: "Select all", value: "*" }, ...props }) => {
+    return (
+        <Select
+            {...props}
+            options={[allOption, ...props.options]}
+            onChange={(selected, event) => {
+                if (selected !== null && selected.length > 0) {
+                    if (selected[selected.length - 1].value === allOption.value) {
+                        return props.onChange([allOption, ...props.options]);
+                    }
+                    let result = [];
+                    if (selected.length === props.options.length) {
+                        if (selected.includes(allOption)) {
+                            result = selected.filter(
+                                option => option.value !== allOption.value
+                            );
+                        } else if (event.action === "select-option") {
+                            result = [allOption, ...props.options];
+                        }
+                        return props.onChange(result);
+                    }
+                }
+
+                return props.onChange(selected);
+            }}
+        />
+    );
+}
+
+const OptionCCB = props => {
+    return (
+        <div>
+            <components.Option {...props}>
+                {/* <input
+                    type="checkbox"
+                    checked={props.isSelected}
+                    onChange={() => null}
+                />{" "} */}
+                <label>{props.label}</label>
+            </components.Option>
+        </div>
+    );
+};
+
+const MultiValueCCB = props => (
+    <components.MultiValue {...props}>
+        <span>{props.data.label}</span>
+    </components.MultiValue>
+);
+
 class FormControlComboBoxCom extends Component {
     constructor(props) {
         super(props);
@@ -539,18 +589,33 @@ class FormControlComboBoxCom extends Component {
                     </label>
                 </div>
                 <div className={formGroupClassName}>
-                    <Select
-                        value={selectedOption}
-                        name={name}
-                        ref={this.props.inputRef}
-                        onChange={this.handleValueChange}
-                        options={listOption}
-                        isDisabled={disabled}
-                        isMulti={isMultiSelect}
-                        isSearchable={true}
-                        placeholder={placeholder}
-                        className={className}
-                    />
+
+                    {
+                        this.props.allowSelectAll
+                            ? <MySelectCCB
+                                options={listOption}
+                                isMulti={isMultiSelect}
+                                closeMenuOnSelect={false}
+                                hideSelectedOptions={false}
+                                components={{ OptionCCB, MultiValueCCB }}
+                                onChange={this.handleValueChange}
+                                allowSelectAll={true}
+                                value={selectedOption}
+                            />
+                            : <Select
+                                value={selectedOption}
+                                name={name}
+                                ref={this.props.inputRef}
+                                onChange={this.handleValueChange}
+                                options={listOption}
+                                isDisabled={disabled}
+                                isMulti={isMultiSelect}
+                                isSearchable={true}
+                                placeholder={placeholder}
+                                className={className}
+                            />
+                    }
+
                     <div className="invalid-feedback"><ul className="list-unstyled"><li>{validationErrorMessage}</li></ul></div>
                 </div>
             </div>
