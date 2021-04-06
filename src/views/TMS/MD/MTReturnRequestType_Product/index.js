@@ -225,10 +225,10 @@ class MTReturnRequestType_ProductCom extends React.Component {
                         }
 
                         //số lượng chỉ được 1 số thập phân
-                        if (!(/^\d+(\.\d{1})$/).test(parseFloat(MLObject.MinQuality))) {
+                        if (MLObject.MinQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{1})$/).test(parseFloat(MLObject.MinQuality))) {
                             this.addNotification("Số lượng nhỏ nhất chỉ được phép nhập 1 số thập phân", true);
                             return;
-                        } else if (!(/^\d+(\.\d{1})$/).test(parseFloat(MLObject.MaxQuality))) {
+                        } else if (MLObject.MaxQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{1})$/).test(parseFloat(MLObject.MaxQuality))) {
                             this.addNotification("Số lượng lớn nhất chỉ được phép nhập 1 số thập phân", true);
                             return;
                         }
@@ -311,11 +311,12 @@ class MTReturnRequestType_ProductCom extends React.Component {
 
                         }
 
+
                         //số lượng chỉ được 1 số thập phân
-                        if (!(/^\d+(\.\d{1})$/).test(parseFloat(MLObject.MinQuality))) {
+                        if (MLObject.MinQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{1})$/).test(parseFloat(MLObject.MinQuality))) {
                             this.addNotification("Số lượng nhỏ nhất chỉ được phép nhập 1 số thập phân", true);
                             return;
-                        } else if (!(/^\d+(\.\d{1})$/).test(parseFloat(MLObject.MaxQuality))) {
+                        } else if (MLObject.MaxQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{1})$/).test(parseFloat(MLObject.MaxQuality))) {
                             this.addNotification("Số lượng lớn nhất chỉ được phép nhập 1 số thập phân", true);
                             return;
                         }
