@@ -114,9 +114,6 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-
-
-
         const { dataSourceDeliveryGoodsGroup } = this.state
 
         const tmpDeliveryGoodsGroup = dataSourceDeliveryGoodsGroup.filter(item => {
@@ -137,19 +134,21 @@ class EditCom extends React.Component {
             }
         })
 
+        const getWeekDaysList = MLObject.WeekDayID.filter(item => {
+            return Number.isInteger(item)
+        })
+
         let tempMLObject = {
             DeliveryAbilityID: this.props.match.params.id,
             OutputStoreID: MLObject.StoreID,
             DeliveryTimeFrameID: MLObject.DeliveryTimeFrameID,
             CarrierTypeID: MLObject.CarrierTypeID,
-            WeekDaysList: MLObject.WeekDayID.toString(),
+            WeekDaysList: getWeekDaysList.toString(),
             Description: MLObject.Description,
             IsActived: MLObject.IsActived,
             IsSystem: MLObject.IsSystem,
             DeliveryAbilityDetailList: dataDeliveryAbilityDetail
         }
-
-        console.log("aaa", tempMLObject, MLObject)
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, tempMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -188,7 +187,7 @@ class EditCom extends React.Component {
 
         const rowGridData = Object.assign({}, dataSourceDeliveryGoodsGroup[index], { [elementdata.Name]: elementdata.Value }, { HasChanged: true });
         const dataSource = Object.assign([], dataSourceDeliveryGoodsGroup, { [index]: rowGridData });
-        this.setState({ dataSourceDeliveryGoodsGroup: dataSource , GridFormValidation: gridFormValidation });
+        this.setState({ dataSourceDeliveryGoodsGroup: dataSource, GridFormValidation: gridFormValidation });
     }
 
 
@@ -289,7 +288,9 @@ class EditCom extends React.Component {
                             value={-1}
                             // isselectedOp={true}
                             listoption={null}
-                            datasourcemember="WeekDayID" />
+                            datasourcemember="WeekDayID"
+                            allowSelectAll={true}
+                        />
                     </div>
 
                     <div className="col-md-12">

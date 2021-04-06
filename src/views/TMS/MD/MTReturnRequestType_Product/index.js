@@ -217,12 +217,22 @@ class MTReturnRequestType_ProductCom extends React.Component {
                             } else if (MLObject.MaxQuality === "") {
                                 this.addNotification("Vui lòng nhập số lượng lớn nhất", true);
                                 return;
-                            } else if (!(MLObject.MaxQuality > MLObject.MinQuality)) {
+                            } else if (!(parseFloat(MLObject.MaxQuality) > parseFloat(MLObject.MinQuality))) {
                                 this.addNotification("Số lượng lớn nhất phải > số lượng nhỏ nhất", true);
                                 return;
                             }
 
                         }
+
+                        //số lượng chỉ được 1 số thập phân
+                        if (MLObject.MinQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{1})$/).test(parseFloat(MLObject.MinQuality))) {
+                            this.addNotification("Số lượng nhỏ nhất chỉ được phép nhập 1 số thập phân", true);
+                            return;
+                        } else if (MLObject.MaxQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{1})$/).test(parseFloat(MLObject.MaxQuality))) {
+                            this.addNotification("Số lượng lớn nhất chỉ được phép nhập 1 số thập phân", true);
+                            return;
+                        }
+
 
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
@@ -294,11 +304,21 @@ class MTReturnRequestType_ProductCom extends React.Component {
                             } else if (MLObject.MaxQuality === "") {
                                 this.addNotification("Vui lòng nhập số lượng lớn nhất", true);
                                 return;
-                            } else if (!(MLObject.MaxQuality > MLObject.MinQuality)) {
+                            } else if (!(parseFloat(MLObject.MaxQuality) > parseFloat(MLObject.MinQuality))) {
                                 this.addNotification("Số lượng lớn nhất phải > số lượng nhỏ nhất", true);
                                 return;
                             }
 
+                        }
+
+
+                        //số lượng chỉ được 1 số thập phân
+                        if (MLObject.MinQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{1})$/).test(parseFloat(MLObject.MinQuality))) {
+                            this.addNotification("Số lượng nhỏ nhất chỉ được phép nhập 1 số thập phân", true);
+                            return;
+                        } else if (MLObject.MaxQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{1})$/).test(parseFloat(MLObject.MaxQuality))) {
+                            this.addNotification("Số lượng lớn nhất chỉ được phép nhập 1 số thập phân", true);
+                            return;
                         }
 
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {

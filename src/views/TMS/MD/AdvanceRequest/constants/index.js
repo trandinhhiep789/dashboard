@@ -176,70 +176,70 @@ export const DataGridColumnList = [
         Caption: "Mã yêu cầu tạm ứng",
         Link: "/AdvanceRequest/Edit/",
         DataSourceMember: "AdvanceRequestID",
-        Width: 70
+        //Width: 70
     },
     {
         Name: "AdvanceRequestTitle",
         Type: "text",
         Caption: "Tiêu đề yêu cầu tạm ứng",
         DataSourceMember: "AdvanceRequestTitle",
-        Width: 200
+        //Width: 200
     },
     {
         Name: "AdvanceRequestTypeName",
         Type: "text",
         Caption: "Loại yêu cầu tạm ứng",
         DataSourceMember: "AdvanceRequestTypeName",
-        Width: 180
+        //Width: 180
     },
     {
         Name: "ShipmentOrderID",
         Type: "text",
         Caption: "Mã yêu cầu vận chuyển",
         DataSourceMember: "ShipmentOrderID",
-        Width: 120
+        //Width: 120
     },
     {
         Name: "SaleOrderID",
         Type: "text",
         Caption: "Mã đơn hàng tạm ứng",
         DataSourceMember: "SaleOrderID",
-        Width: 120
+       // Width: 120
     },
     {
         Name: "RequestUserName",
         Type: "text",
         Caption: "Người yêu cầu",
         DataSourceMember: "RequestUserName",
-        Width: 160
+        //Width: 160
     },
     {
         Name: "RequestDate",
         Type: "datetime",
         Caption: "Ngày yêu cầu",
         DataSourceMember: "RequestDate",
-        Width: 100
+        //Width: 100
     },
     {
         Name: "IsOutput",
         Type: "checkicon",
         Caption: "Đã xuất",
         DataSourceMember: "IsOutput",
-        Width: 50
+        //Width: 50
     },
     {
         Name: "IsDeleted",
         Type: "checkicon",
         Caption: "Đã hủy",
         DataSourceMember: "IsDeleted",
-        Width: 50
+       // Width: 50
     },
     {
         Name: "IsHandoverMaterial",
         Type: "checkicon",
         Caption: "Đã bàn giao",
         DataSourceMember: "IsHandoverMaterial",
-        Width: 50
+        //Width: 50
     },
 ];
 

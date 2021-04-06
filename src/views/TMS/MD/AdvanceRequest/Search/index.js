@@ -24,6 +24,7 @@ import { ADVANCEREQUEST_VIEW } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { formatDate } from "../../../../../common/library/CommonLib";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -36,8 +37,7 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
-            cssNotification: "",
-            iconNotification: ""
+            dataExport: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -49,6 +49,9 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
     }
 
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
 
     handleDelete(deleteList, pkColumnName) {
         let listMLObject = [];
@@ -105,14 +108,75 @@ class SearchCom extends React.Component {
             //this.searchref.current.changeLoadComplete();
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
+
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã yêu cầu tạm ứng": item.AdvanceRequestID,
+                        "Tiêu đề yêu cầu tạm ứng": item.AdvanceRequestTitle,
+                        "Loại yêu cầu tạm ứng": item.AdvanceRequestTypeName,
+                        "Mã yêu cầu vận chuyển": item.ShipmentOrderID,
+                        "Mã đơn hàng tạm ứng": item.SaleOrderID,
+                        "Người yêu cầu": item.RequestUserName,
+                        "Ngày yêu cầu": formatDate(item.RequestDate),
+                        "Đã xuất": item.IsOutput ? "Có" : "Không",
+                        "Đã hủy": item.IsDeleted ? "Có" : "Không",
+                        "Đã bàn giao": item.IsHandoverMaterial ? "Có" : "Không",
+
+
+                        // "Mô tả": item.Description,
+                        // "Kích hoạt": item.IsActived ? "Có" : "Không",
+                        // "Ngày tạo": formatDate(item.CreatedDate),
+                        // "Người tạo": item.CreatedFullName
+                    };
+                    return element;
+
+                })
+
                 this.setState({
+                    dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError,
+                    IsLoadDataComplete: true,
                     IsShowForm: true
                 });
+
+
+
             } else {
                 this.setState({ IsShowForm: false, MessageDetail: apiResult.Message });
             }
 
+        });
+    }
+
+    addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
+        if (!IsError) {
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
+        } else {
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
         });
     }
 
@@ -131,39 +195,6 @@ class SearchCom extends React.Component {
                 onCloseModal={this.handleCloseMessage}
             />
         );
-    }
-
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
-        } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close">
-                            <span>×</span>
-                        </div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
     }
 
     render() {
@@ -192,6 +223,10 @@ class SearchCom extends React.Component {
                         //DeletePermission={CANCELDELIVERYREASON_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
+                        IsExportFile={true}
+                        DataExport={this.state.dataExport}
+                        fileName="Danh sách thông tin yêu cầu tạm ứng"
+                        onExportFile={this.handleExportFile.bind(this)}
                     />
                 </React.Fragment>
             );
