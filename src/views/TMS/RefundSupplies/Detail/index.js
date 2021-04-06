@@ -541,8 +541,8 @@ export class DetailCom extends Component {
 
                         }
                         {IsOutPut == false ?
-                            <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitCreateVoucheRenfundSupplies.bind(this)}>Xác nhận</button>
-                            : <button disabled={true} className="btn btn-primary mr-3" type="button">Xác nhận</button>
+                            <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitCreateVoucheRenfundSupplies.bind(this)}>Nhập kho</button>
+                            : <button disabled={true} className="btn btn-primary mr-3" type="button">Nhập kho</button>
                         }
 
                         <Link to="/RefundSupplies">
