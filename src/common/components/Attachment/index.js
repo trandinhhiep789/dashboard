@@ -51,95 +51,32 @@ class AttachmentCom extends Component {
                                 </div>)
                             }
                         </li>
-                        {this.state.Attachments != [] && this.state.Attachments.map((item, index) => {
-                            if (item.FileName.split(".")[1] == "docx" || item.FileName.split(".")[1] == "doc") {
-                                return (
-                                    <li key={index}>
-                                        {this.props.IsAttachment == true ?
-                                            (<div className="delIcon" data-id={item.AttachmentID} onClick={this.handleDeleteFile.bind(this)} >˟</div>) :
-                                            (<div className="delIcon" >˟</div>)
-                                        }
-                                        <a href={CDN_UPLOAD_FILE + item.FilePath} target="_blank" download >
-                                            <div className="pull-left fileType"><span className="doctype docx"></span></div>
-                                            <div className="attachName">
-                                                <div className="hideCont bold">{item.FileName}</div>
-                                                {/* <span className="attachSize">300 KB</span> */}
-                                            </div>
-                                        </a>
-                                        {/* <a download target='_blank' className='attachmentitem' href={item.FilePath} key={index}>{item.FileName}</a> */}
-                                    </li>
-                                )
-                            }
-                            else if (item.FileName.split(".")[1] == "xlsx") {
-                                return (
-                                    <li key={index}>
-                                        {this.props.IsAttachment == true ?
-                                            (<div className="delIcon" data-id={item.AttachmentID} onClick={this.handleDeleteFile.bind(this)} >˟</div>) :
-                                            (<div className="delIcon" >˟</div>)
-                                        }
-                                        <a href={CDN_UPLOAD_FILE + item.FilePath} target="_blank" download >
-                                            <div className="pull-left fileType"><span className="doctype xlsx"></span></div>
-                                            <div className="attachName">
-                                                <div className="hideCont bold">{item.FileName}</div>
-                                                {/* <span className="attachSize">300 KB</span> */}
-                                            </div>
-                                        </a>
-                                        {/* <a download target='_blank' className='attachmentitem' href={item.FilePath} key={index}>{item.FileName}</a> */}
-                                    </li>
-                                )
-                            }
-                            else if (item.FileName.split(".")[1] == "zip") {
-                                return (
-                                    <li key={index}>
-                                        {this.props.IsAttachment == true ?
-                                            (<div className="delIcon" data-id={item.AttachmentID} onClick={this.handleDeleteFile.bind(this)} >˟</div>) :
-                                            (<div className="delIcon" >˟</div>)
-                                        }
-                                        <a href={CDN_UPLOAD_FILE + item.FilePath} target="_blank" download >
-                                            <div className="pull-left fileType"><span className="doctype zip"></span></div>
-                                            <div className="attachName">
-                                                <div className="hideCont bold">{item.FileName}</div>
-                                                {/* <span className="attachSize">300 KB</span> */}
-                                            </div>
-                                        </a>
-                                        {/* <a download target='_blank' className='attachmentitem' href={item.FilePath} key={index}>{item.FileName}</a> */}
-                                    </li>
-                                )
-                            }
-                            else if (item.FileName.split(".")[1] == "pdf") {
-                                return (
-                                    <li key={index}>
-                                        {this.props.IsAttachment == true ?
-                                            (<div className="delIcon" data-id={item.AttachmentID} onClick={this.handleDeleteFile.bind(this)} >˟</div>) :
-                                            (<div className="delIcon" >˟</div>)
-                                        }
-                                        <a href={CDN_UPLOAD_FILE + item.FilePath} target="_blank" download >
-                                            <div className="pull-left fileType"><span className="doctype pdf"></span></div>
-                                            <div className="attachName">
-                                                <div className="hideCont bold">{item.FileName}</div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                )
-                            }
-                            else {
-                                return (
-                                    <li key={index}>
-                                        {this.props.IsAttachment == true ?
-                                            (<div className="delIcon" data-id={item.AttachmentID} onClick={this.handleDeleteFile.bind(this)} >˟</div>) :
-                                            (<div className="delIcon" >˟</div>)
-                                        }
-                                        <a href={CDN_UPLOAD_FILE + item.FilePath} target="_blank" download >
-                                            <div className="pull-left fileType"><span className="doctype other"></span></div>
-                                            <div className="attachName">
-                                                <div className="hideCont bold">{item.FileName}</div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                )
-                            }
+                        {
+                            this.state.Attachments != [] && this.state.Attachments.map((item, index) => {
+                                const listTypeFile = ["docx", "doc", "zip", "xlsx", "pdf", "png", "jpg"]
+                                let typeFile = listTypeFile.find(i => i == item.FileName.split(".")[1].trim())
+                                if (typeFile == undefined) {
+                                    typeFile = "default"
+                                }
 
-                        })}
+                                return (
+                                    <li key={index}>
+                                        {this.props.IsAttachment == true ?
+                                            (<div className="delIcon" data-id={item.AttachmentID} onClick={this.handleDeleteFile.bind(this)} >˟</div>) :
+                                            (<div className="delIcon" >˟</div>)
+                                        }
+                                        <a href={CDN_UPLOAD_FILE + item.FilePath} target="_blank" download >
+                                            <div className="pull-left fileType"><span className={`doctype ${typeFile}`}></span></div>
+                                            <div className="attachName">
+                                                <div className="hideCont bold">{item.FileName}</div>
+                                                {/* <span className="attachSize">300 KB</span> */}
+                                            </div>
+                                        </a>
+                                        {/* <a download target='_blank' className='attachmentitem' href={item.FilePath} key={index}>{item.FileName}</a> */}
+                                    </li>
+                                )
+                            })
+                        }
                     </ul>
                 </div>
             </div>
