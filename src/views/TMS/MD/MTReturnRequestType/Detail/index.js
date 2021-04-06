@@ -69,7 +69,7 @@ class DetailCom extends React.Component {
             } else {
                 this.setState({ MaterialProductDataSource: apiResult.ResultObject });
             }
-            console.log("apiResult", apiResult);
+            //console.log("apiResult", apiResult);
         });
     }
 
