@@ -204,10 +204,8 @@ export class DetailCom extends Component {
 
         data.append('file', e.target.files[0])
         data.append("ObjMTReturnRequest_Attachment", JSON.stringify(MLObject));
-        console.log(MLObject)
 
         this.props.callFetchAPI(APIHostName, AddAPIAttachment, data).then((apiResult) => {
-            console.log(apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError

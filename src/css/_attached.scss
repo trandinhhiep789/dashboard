@@ -30,6 +30,12 @@
                         background-position: -201px 0px;
                     }
                 }
+                
+                &.doc {
+                    &::before {
+                        background-position: -30px 0px;
+                    }
+                }
 
                 &.zip {
                     &::before {
@@ -45,6 +51,21 @@
                 &.pdf {
                     &::before {
                         background-position: -135px 0px;
+                    }
+                }
+                &.png {
+                    &::before {
+                        background-position: -168px 0px;
+                    }
+                }
+                &.jpg {
+                    &::before {
+                        background-position: -60px 0px;
+                    }
+                }
+                &.default {
+                    &::before {
+                        background-position: -198px -38px;
                     }
                 }
             }

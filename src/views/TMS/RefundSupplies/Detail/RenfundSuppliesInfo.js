@@ -83,7 +83,7 @@ export class RenfundSuppliesInfo extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {formatDate(RenfundSupplies.RequestDate, true)}
+                            {formatDate(RenfundSupplies.RequestDate, false)}
                         </label>
                     </div>
                 </div>
@@ -121,7 +121,7 @@ export class RenfundSuppliesInfo extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {formatDate(RenfundSupplies.reViewedDate, true)}
+                            {formatDate(RenfundSupplies.reViewedDate, false)}
                         </label>
                     </div>
                 </div>
