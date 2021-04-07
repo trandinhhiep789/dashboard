@@ -210,14 +210,14 @@ export const DataGridColumnList = [
     {
         Name: "MinQuality",
         Type: "text",
-        Caption: "Số lượng lớn nhất",
+        Caption: "Số lượng nhỏ nhất",
         DataSourceMember: "MinQuality",
         Width: 120
     },
     {
         Name: "MaxQuality",
         Type: "text",
-        Caption: "Số lượng nhỏ nhất",
+        Caption: "Số lượng lớn nhất",
         DataSourceMember: "MaxQuality",
         Width: 120
     },
