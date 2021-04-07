@@ -578,7 +578,7 @@ export class DetailCom extends Component {
                                 : <button disabled={true} className="btn btn-primary mr-3" type="button" title="Bạn không có quyền!">Nhập kho</button>
                         }
 
-                        <Link to="/RefundSupplies">
+                        <Link to="/MTReturnRequest">
                             <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
                         </Link>
                     </footer>
