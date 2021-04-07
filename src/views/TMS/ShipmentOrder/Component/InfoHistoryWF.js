@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
 
-import { formatDate, formatStrToDate } from "../../../../common/library/CommonLib.js";
+import { formatDate } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_IMAGE_SLIDE } from '../../../../constants/actionTypes';
 import ModelContainerMap from "../../../../common/components/Modal/ModelContainerMap";
@@ -54,12 +54,9 @@ class InfoHistoryWFCom extends Component {
             });
         }
 
-        const timeImg = formatStrToDate(JSON.parse(objlst[0]).ImageCaptureTime)
-
         this.props.showModal(MODAL_TYPE_IMAGE_SLIDE, {
             title: 'Danh sách hình ảnh ',
             ImageCaptureGeoLocation: JSON.parse(objlst[0]).ImageCaptureGeoLocation,
-            ImageCaptureTime: timeImg,
             content: {
                 lstImage: images
             },
