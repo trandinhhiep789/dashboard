@@ -297,7 +297,6 @@ class MTReturnRequestType_ProductCom extends React.Component {
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
                         if (MLObject.IsCheckMinMaxQuality) {
-                            debugger;
                             if (MLObject.MinQuality === "") {
                                 this.addNotification("Vui lòng nhập số lượng nhỏ nhất", true);
                                 return;
