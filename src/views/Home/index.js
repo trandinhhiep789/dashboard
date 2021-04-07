@@ -78,7 +78,7 @@ import LimitType from "../TMS/MD/Limit/LimitType";
 import UserLimit from "../TMS/MD/Limit/UserLimit";
 import UserLimitTest from "../TMS/MD/Limit/UserLimit/Search/indexNew.js";
 import DestroyRequest from "../TMS/DestroyRequest";
-import RefundSupplies from "../TMS/RefundSupplies";
+import MTReturnRequest from "../TMS/MTReturnRequest";
 import InventoryRequest from "../TMS/InventoryRequest";
 import RewardPriceTable from "../TMS/MD/RewardPrice/RewardPriceTable";
 import UseGuide from "../../views/UseGuide";
@@ -330,7 +330,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/InventoryRequest" component={InventoryRequest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/UseGuide" component={UseGuide} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
-                                <PrivateRoute path="/RefundSupplies" component={RefundSupplies} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/MTReturnRequest" component={MTReturnRequest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                 <PrivateRoute path="/RewardType" component={RewardType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/RewardPriceType" component={RewardPriceType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />

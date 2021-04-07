@@ -13,16 +13,16 @@ import Detail from "./Detail";
 import NotFound from '../../NotFound';
 
 
-class RefundSuppliesCom extends React.Component {
+class MTReturnRequestCom extends React.Component {
 
 
     render() {
         return (
             <Switch>
-                <Route exact path="/RefundSupplies" component={Search} />
-                <Route exact path="/RefundSupplies/Add/" component={Add} />
-                <Route exact path="/RefundSupplies/Edit/:id" component={Edit} />
-                <Route exact path="/RefundSupplies/Detail/:id" component={Detail} />
+                <Route exact path="/MTReturnRequest" component={Search} />
+                <Route exact path="/MTReturnRequest/Add/" component={Add} />
+                <Route exact path="/MTReturnRequest/Edit/:id" component={Edit} />
+                <Route exact path="/MTReturnRequest/Detail/:id" component={Detail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
@@ -44,5 +44,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const RefundSupplies = connect(mapStateToProps, mapDispatchToProps)(RefundSuppliesCom);
-export default RefundSupplies;
+const MTReturnRequest = connect(mapStateToProps, mapDispatchToProps)(MTReturnRequestCom);
+export default MTReturnRequest;

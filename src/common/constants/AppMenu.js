@@ -798,9 +798,9 @@ const AppMenu = [
                 SubMenu: []
             },
             {
-                MenuName: 'RefundSupplies',
+                MenuName: 'MTReturnRequest',
                 MenuTitle: 'Yêu cầu nhập trả vật tư',
-                LinkTo: '/RefundSupplies',
+                LinkTo: '/MTReturnRequest',
                 MenuIcon: '',
                 SubMenu: []
             },

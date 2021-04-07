@@ -2,8 +2,8 @@ export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/MTReturnRequest/Search";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "MTReturnRequestID";
-export const BackLink = "/RefundSupplies";
-export const AddLink = "/RefundSupplies/Add";
+export const BackLink = "/MTReturnRequest";
+export const AddLink = "/MTReturnRequest/Add";
 
 export const AddAPIPath = "api/MTReturnRequest/Add";
 export const DeleteNewAPIPath = "api/MTReturnRequest/DeleteNew";
@@ -37,19 +37,19 @@ export const PagePath = [
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/RefundSupplies", Title: "Danh sách  yêu cầu nhập trả vật tư" },
+    { Link: "/MTReturnRequest", Title: "Danh sách  yêu cầu nhập trả vật tư" },
     { Link: "", Title: "Cập nhật" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/RefundSupplies", Title: "Danh sách  yêu cầu nhập trả vật tư" },
+    { Link: "/MTReturnRequest", Title: "Danh sách  yêu cầu nhập trả vật tư" },
     { Link: "", Title: "Thêm" }
 ];
 
 export const DetailAPIPath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/RefundSupplies", Title: "Danh sách yêu cầu nhập trả vật tư" },
+    { Link: "/MTReturnRequest", Title: "Danh sách yêu cầu nhập trả vật tư" },
     { Link: "", Title: "Chi tiết" }
 ];
 
@@ -258,7 +258,7 @@ export const DataGridColumnList = [
         Type: "texttolink",
         Caption: "Mã yêu cầu",
         DataSourceMember: "MTReturnRequestID",
-        Link: "/RefundSupplies/Detail/",
+        Link: "/MTReturnRequest/Detail/",
         Width: 140
     },
     {
@@ -310,7 +310,7 @@ export const DataGridColumnList = [
         Caption: "Tác vụ",
         DataSourceMember: "MTReturnRequestID",
         Width: 100,
-        Link: "/RefundSupplies/Edit/",
+        Link: "/MTReturnRequest/Edit/",
         LinkText: "Chỉnh sửa"
     },
 ];

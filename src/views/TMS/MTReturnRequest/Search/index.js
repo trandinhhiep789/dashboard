@@ -32,7 +32,9 @@ import "react-notifications-component/dist/theme.css";
 import { callGetCache } from "../../../../actions/cacheAction";
 import ListMTReturnRequestType from "../Component/ListMTReturnRequestType";
 
-import { TMS_MTRETURNREQUEST_VIEW, TMS_MTRETURNREQUEST_DELETE } from "../../../../constants/functionLists";
+import {
+    TMS_MTRETURNREQUEST_VIEW, TMS_MTRETURNREQUEST_DELETE, TMS_MTRETURNREQUEST_EXPORT
+} from "../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -261,6 +263,7 @@ class SearchCom extends React.Component {
                     fileName="Danh sách yêu cầu nhập trả vật tư"
                     RequirePermission={TMS_MTRETURNREQUEST_VIEW}
                     DeletePermission={TMS_MTRETURNREQUEST_DELETE}
+                    ExportPermission={TMS_MTRETURNREQUEST_EXPORT}
                 />
             </React.Fragment>
         );
