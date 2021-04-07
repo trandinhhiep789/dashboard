@@ -220,6 +220,9 @@ class MTReturnRequestType_ProductCom extends React.Component {
                             } else if (!(parseFloat(MLObject.MaxQuality) > parseFloat(MLObject.MinQuality))) {
                                 this.addNotification("Số lượng lớn nhất phải > số lượng nhỏ nhất", true);
                                 return;
+                            } else if (parseFloat(MLObject.MaxQuality) < 0 || parseFloat(MLObject.MinQuality) < 0) {
+                                this.addNotification("Vui lòng nhập số dương", true);
+                                return;
                             }
 
                         }
@@ -305,6 +308,9 @@ class MTReturnRequestType_ProductCom extends React.Component {
                                 return;
                             } else if (!(parseFloat(MLObject.MaxQuality) > parseFloat(MLObject.MinQuality))) {
                                 this.addNotification("Số lượng lớn nhất phải > số lượng nhỏ nhất", true);
+                                return;
+                            } else if (parseFloat(MLObject.MaxQuality) < 0 || parseFloat(MLObject.MinQuality) < 0) {
+                                this.addNotification("Vui lòng nhập số dương", true);
                                 return;
                             }
 
