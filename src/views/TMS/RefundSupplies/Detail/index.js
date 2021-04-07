@@ -29,6 +29,10 @@ import Attachment from "../../../../common/components/Attachment";
 import Comment from "../../../../common/components/Comment";
 import RenfundSuppliesNoteRV from '../Component/RenfundSuppliesNoteRV';
 import { MODAL_TYPE_COMMONTMODALS } from "../../../../constants/actionTypes";
+import {
+    TMS_MTRETURNREQUEST_CREATEDVOUCHER, GET_CACHE_USER_FUNCTION_LIST
+} from "../../../../constants/functionLists";
+import { callGetUserCache } from "../../../../actions/cacheAction";
 
 export class DetailCom extends Component {
     constructor(props) {
@@ -50,7 +54,8 @@ export class DetailCom extends Component {
             IsOutPut: false,
             IsStatusReject: false,
             IsStatus: false,
-            isHiddenButtonRV: false
+            isHiddenButtonRV: false,
+            visibleOutPut: false
         }
 
         this.callLoadData = this.callLoadData.bind(this);
@@ -61,6 +66,8 @@ export class DetailCom extends Component {
         this.handleKeyPressSumit = this.handleKeyPressSumit.bind(this);
         this.handleInsertDRNoteRV = this.handleInsertDRNoteRV.bind(this);
         this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
+        this.checkPermission = this.checkPermission.bind(this)
+        this.handlePermissionCreatedVoucher = this.handlePermissionCreatedVoucher.bind(this)
 
         this.notificationDOMRef = React.createRef();
     }
@@ -72,6 +79,7 @@ export class DetailCom extends Component {
             MTReturnRequestID: this.props.match.params.id
         })
         this.callLoadData(this.props.match.params.id);
+        this.handlePermissionCreatedVoucher()
     }
 
     callLoadData(id) {
@@ -194,6 +202,24 @@ export class DetailCom extends Component {
 
     }
 
+    checkPermission(permissionKey) {
+        return new Promise((resolve, reject) => {
+            this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
+                        if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
+                            resolve(true);
+                            return;
+                        }
+                    }
+                    resolve(false)
+                } else {
+                    resolve('error');
+                }
+            });
+        });
+    }
+
     handleSelectFile(e) {
         const { MTReturnRequestID, RenfundSupplies } = this.state;
         var data = new FormData();
@@ -271,7 +297,7 @@ export class DetailCom extends Component {
         MLObject.MTReturnRequestID = MTReturnRequestID;
         MLObject.InputVoucherID = "";
         MLObject.IsCreatedInputVoucher = true;
-        console.log("MLObject", MLObject)
+
         this.props.callFetchAPI(APIHostName, UpdateCreateVocherAPIPath, MLObject).then((apiResult) => {
             console.log("apiResult", apiResult)
             if (apiResult.IsError) {
@@ -328,8 +354,6 @@ export class DetailCom extends Component {
 
         MLObject.CurrentReviewLevelID = !!isLastList ? CurrentReviewLevelID : nextReviewLevelID[0].ReviewLevelID;
 
-        console.log("aa", MLObject);
-
         this.props.callFetchAPI(APIHostName, UpdateCurrentReviewLevelAPIPath, MLObject).then((apiResult) => {
             console.log("id", apiResult)
             if (apiResult.IsError) {
@@ -364,6 +388,14 @@ export class DetailCom extends Component {
             },
             maxWidth: '1000px'
         });
+    }
+
+    handlePermissionCreatedVoucher() {
+        this.checkPermission(TMS_MTRETURNREQUEST_CREATEDVOUCHER).then(result => {
+            this.setState({
+                visibleOutPut: result
+            })
+        })
     }
 
     showMessage(message) {
@@ -410,7 +442,7 @@ export class DetailCom extends Component {
     }
 
     render() {
-        const { RenfundSupplies, MTReturnRequestDetail, MTReturnRequestReviewLevel, isAutoReview, CurrentReviewLevelID, MTReturnRequest_AttachmentList, MTReturnRequest_CommentList, isUserNameReviewLevel, IsOutPut, CurrentReviewLevelName, IsStatusReject, IsStatus, isHiddenButtonRV } = this.state;
+        const { RenfundSupplies, MTReturnRequestDetail, MTReturnRequestReviewLevel, isAutoReview, CurrentReviewLevelID, MTReturnRequest_AttachmentList, MTReturnRequest_CommentList, isUserNameReviewLevel, IsOutPut, CurrentReviewLevelName, IsStatusReject, IsStatus, isHiddenButtonRV, visibleOutPut } = this.state;
 
         let IsAutoReview;
 
@@ -540,9 +572,10 @@ export class DetailCom extends Component {
                             : <div></div>
 
                         }
-                        {IsOutPut == false ?
-                            <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitCreateVoucheRenfundSupplies.bind(this)}>Nhập kho</button>
-                            : <button disabled={true} className="btn btn-primary mr-3" type="button">Nhập kho</button>
+                        {
+                            visibleOutPut && IsOutPut == false ?
+                                <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitCreateVoucheRenfundSupplies.bind(this)}>Nhập kho</button>
+                                : <button disabled={true} className="btn btn-primary mr-3" type="button" title="Bạn không có quyền!">Nhập kho</button>
                         }
 
                         <Link to="/RefundSupplies">
@@ -575,7 +608,10 @@ const mapDispatchToProps = dispatch => {
         },
         hideModal: () => {
             dispatch(hideModal());
-        }
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
+        },
     };
 }
 const Detail = connect(mapStateToProps, mapDispatchToProps)(DetailCom);

@@ -42,7 +42,13 @@ class DataGridCom extends Component {
         this.getCheckList = this.getCheckList.bind(this);
         const pkColumnName = this.props.PKColumnName.split(',');
         const listPKColumnName = pkColumnName.map(item => { return { key: item } });
-        this.state = { GridData: {}, IsCheckAll: false, PageNumber: 1, ListPKColumnName: listPKColumnName };
+        this.state = {
+            GridData: {},
+            IsCheckAll: false,
+            PageNumber: 1,
+            ListPKColumnName: listPKColumnName,
+            IsExportFile: this.props.IsExportFile
+        };
     }
 
     componentDidMount() {
@@ -65,6 +71,11 @@ class DataGridCom extends Component {
                     $("#fixtable").removeClass("tofixtable")
                 }
             });
+        }
+        if (this.props.ExportPermission) {
+            this.checkPermission(this.props.ExportPermission).then((result) => {
+                this.setState({ IsExportFile: result });
+            })
         }
     }
 
@@ -102,9 +113,9 @@ class DataGridCom extends Component {
             this.props.onHistoryItem(id)
     }
 
-    handleShowImageClick(id){
+    handleShowImageClick(id) {
         if (this.props.onShowImage != null)
-        this.props.onShowImage(id)
+            this.props.onShowImage(id)
     }
 
     handleDetailClick(id) {
@@ -789,10 +800,14 @@ class DataGridCom extends Component {
                                                 )
                                                 : ""
                                         }
-                                        {this.props.IsExportFile == true &&
-                                            <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)}>
-                                                <span className="fa fa-file-excel-o"> Xuất file excel </span>
-                                            </button>
+                                        {
+                                            this.state.IsExportFile == true
+                                                ? <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)}>
+                                                    <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                                </button>
+                                                : <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" disabled title="Bạn Không có quyền!">
+                                                    <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                                </button>
                                         }
                                         {
                                             //hiển thị nút in 
