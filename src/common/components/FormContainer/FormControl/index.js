@@ -351,7 +351,7 @@ class FormControlTextBox extends React.Component {
     }
 }
 
-const MySelectCCB = ({ allOption = { label: "Select all", value: "*" }, ...props }) => {
+const MySelectCCB = ({ allOption = { label: "Chọn tất cả", value: "*" }, ...props }) => {
     return (
         <Select
             {...props}
@@ -601,6 +601,7 @@ class FormControlComboBoxCom extends Component {
                                 onChange={this.handleValueChange}
                                 allowSelectAll={true}
                                 value={selectedOption}
+                                placeholder={placeholder}
                             />
                             : <Select
                                 value={selectedOption}
@@ -613,6 +614,7 @@ class FormControlComboBoxCom extends Component {
                                 isSearchable={true}
                                 placeholder={placeholder}
                                 className={className}
+                                closeMenuOnSelect={false}
                             />
                     }
 

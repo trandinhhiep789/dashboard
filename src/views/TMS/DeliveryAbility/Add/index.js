@@ -238,7 +238,9 @@ class AddCom extends React.Component {
                             value={-1}
                             // isselectedOp={true}
                             listoption={null}
-                            datasourcemember="WeekDayID" />
+                            datasourcemember="WeekDayID"
+                            allowSelectAll={true}
+                        />
                     </div>
 
                     <div className="col-md-12">
