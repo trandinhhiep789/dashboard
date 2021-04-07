@@ -255,7 +255,7 @@ export const DataGridColumnList = [
     },
     {
         Name: "MTReturnRequestID",
-        Type: "texttolink",
+        Type: "texttolinkNewBlank",
         Caption: "Mã yêu cầu",
         DataSourceMember: "MTReturnRequestID",
         Link: "/MTReturnRequest/Detail/",
