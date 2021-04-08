@@ -62,7 +62,8 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
         ValueMember: "ShipmentOrderTypeID",
         NameMember: "ShipmentOrderTypeName",
-        classNameCol: "col-custom"
+        classNameCol: "col-custom",
+        validatonList: ["Comborequired"]
     },
 
     {

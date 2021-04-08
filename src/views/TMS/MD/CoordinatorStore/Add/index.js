@@ -129,7 +129,7 @@ class AddCom extends React.Component {
     }
 
     handleEdit(index) {
-        console.log('handleEdit',index)
+        console.log('handleEdit', index)
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
             content: {
@@ -187,7 +187,7 @@ class AddCom extends React.Component {
     }
 
     onChangeAllStore(name, objstore) {
-        
+
         this.setState({
             SenderStoreID: objstore.value
         })
@@ -199,7 +199,7 @@ class AddCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-    
+
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -214,7 +214,7 @@ class AddCom extends React.Component {
                 >
                     <div className="row">
                         <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
+                            {/* <FormControl.ComboBoxSelect
 
                                 name="cbShipmentOrderTypeID"
                                 colspan="8"
@@ -229,7 +229,28 @@ class AddCom extends React.Component {
                                 controltype="InputControl"
                                 value={""}
                                 listoption={null}
-                                datasourcemember="ShipmentOrderTypeID" />
+                                isMultiSelect={true}
+                                datasourcemember="ShipmentOrderTypeID" /> */}
+
+                            <FormControl.FormControlComboBox
+                                name="cbShipmentOrderTypeID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="loại yêu cầu vận chuyển"
+                                // validatonList={[""]}
+                                isautoloaditemfromcache={true}
+                                validatonList={["Comborequired"]}
+                                isMultiSelect={true}
+                                placeholder="-- Vui lòng chọn --"
+                                loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
+                                valuemember="ShipmentOrderTypeID"
+                                nameMember="ShipmentOrderTypeName"
+                                controltype="InputControl"
+                                value={""}
+                                listoption={null}
+                                datasourcemember="ShipmentOrderTypeID"
+                                isAllowSelectAll={true}
+                            />
                         </div>
                         <div className="col-md-6">
                             <FormControl.FormControlComboBox
@@ -247,10 +268,10 @@ class AddCom extends React.Component {
                                 controltype="InputControl"
                                 value={""}
                                 listoption={null}
-                                datasourcemember="PartnerID" 
+                                datasourcemember="PartnerID"
                                 filterValue={1}
                                 filterobj="PartnerTypeID"
-                                />
+                            />
 
                         </div>
 
