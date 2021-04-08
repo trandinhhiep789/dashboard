@@ -243,6 +243,12 @@ class EditCom extends React.Component {
 
     handleImportFile(resultRows, errors) {
         console.log('handleImportFile', resultRows, errors)
+        this.setState({
+            DataSource: {
+                ...this.state.DataSource,
+                CoordinatorStoreWard_ItemList: [...this.state.DataSource.CoordinatorStoreWard_ItemList, ...resultRows]
+            }
+        })
         // this.props.callFetchAPI(APIHostName, AddAutoAPIPath, resultRows).then(apiResult => {
         //     console.log('apiResult', apiResult)
         // });
