@@ -349,31 +349,34 @@ export const DataGridCoordinatorStoreColumnList = [
 
 
 export const schema = {
-    'ProvinceID': {
+    'Mã tỉnh': {
         prop: 'ProvinceID',
-        type: String
+        type: String,
+        required: true
     },
-    'ProvinceName': {
+    'Tên tỉnh': {
         prop: 'ProvinceName',
         type: String
     },
-    'DistrictID': {
+    'Mã Huyện/ Quận': {
         prop: 'DistrictID',
-        type: String
+        type: String,
+        required: true
     },
-    'DistrictName': {
+    'Tên Huyện/ Quận': {
         prop: 'DistrictName',
         type: String
     },
-    'WardName': {
+    'Tên khu vực': {
         prop: 'WardName',
         type: String
     },
-    'WardID': {
+    'Mã khu vực': {
         prop: 'WardID',
-        type: String
+        type: String,
+        required: true
     },
-    'IsSystem': {
+    'Hệ thống': {
         prop: 'IsSystem',
         type: Number
     },
