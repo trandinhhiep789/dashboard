@@ -596,12 +596,12 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                 </div>
                                 <div className="col-sm-1"></div>
                                 <div className="col-sm-3">
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước khởi tạo" name="IsInitStep"
-                                        datasourcemember="IsInitStep" controltype="InputControl"
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Kích hoạt" name="IsActived"
+                                        controltype="InputControl" datasourcemember="IsActived"
                                         swaplabelModal={true}
                                     />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước hoàn thành" name="IsFinishStep"
-                                        datasourcemember="IsFinishStep" controltype="InputControl"
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Hệ thống" name="IsSystem"
+                                        controltype="InputControl" datasourcemember="IsSystem"
                                         swaplabelModal={true}
                                     />
                                     <FormControl.CheckBox labelcolspan={1} colspan={11} label="Bắt buộc chọn người xử lý" name="IsMustChooseProcessUser"
@@ -612,79 +612,12 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         datasourcemember="IsSentEmail" controltype="InputControl"
                                         swaplabelModal={true}
                                     />
-
                                     <FormControl.CheckBox labelcolspan={1} colspan={11} label="Gửi SMS" name="IsSentSMS"
                                         datasourcemember="IsSentSMS" controltype="InputControl"
                                         swaplabelModal={true}
                                     />
-
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Kích hoạt" name="IsActived"
-                                        controltype="InputControl" datasourcemember="IsActived"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Hệ thống" name="IsSystem"
-                                        controltype="InputControl" datasourcemember="IsSystem"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước bắt đầu đi giao hàng" name="IsBeginDeliveryStep"
-                                        controltype="InputControl" datasourcemember="IsBeginDeliveryStep"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước hoàn thành giao hàng" name="IsCompletedDeliveryStep"
-                                        controltype="InputControl" datasourcemember="IsCompletedDeliveryStep"
-                                        swaplabelModal={true}
-                                    />
                                     <FormControl.CheckBox labelcolspan={1} colspan={11} label="Có thông báo đến hệ thống của đối tác" name="IsNotifyToPartnerSystem"
                                         controltype="InputControl" datasourcemember="IsNotifyToPartnerSystem"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Chỉ hiển thị khi có phải thu tiền của khách hàng(có tiền COD hoặc tiền vật tư)" name="IsOnlyShowOnHasCollection"
-                                        controltype="InputControl" datasourcemember="IsOnlyShowOnHasCollection"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước nộp tiền cho thu ngân" name="IsPaidInStep"
-                                        controltype="InputControl" datasourcemember="IsPaidInStep"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước đến nhà khách" name="IsArrivalReceiverLocationStep"
-                                        controltype="InputControl" datasourcemember="IsArrivalReceiverLocationStep"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Phải thu tiền mới được chuyển bước kế tiếp" name="IsMustCompleteCollection"
-                                        controltype="InputControl" datasourcemember="IsMustCompleteCollection"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước xuất vật tư bán cho khách" name="IsOutputSaleMaterialStep"
-                                        controltype="InputControl" datasourcemember="IsOutputSaleMaterialStep"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Hiển thị nút nhấn thu tiền" name="IsShowCollectionButton"
-                                        controltype="InputControl" datasourcemember="IsShowCollectionButton"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước hủy giao hàng" name="IsCancelDeliveryStep"
-                                        controltype="InputControl" datasourcemember="IsCancelDeliveryStep"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước có thể tạm ứng vật tư" name="IsCanAdvanceMaterialStep"
-                                        controltype="InputControl" datasourcemember="IsCanAdvanceMaterialStep"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Hiển thị danh sách vật tư để chỉnh sửa" name="IsShowMaterialList"
-                                        controltype="InputControl" datasourcemember="IsShowMaterialList"
-                                        swaplabelModal={true}
-                                    />
-
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước lắp đặt" name="IsSetupStep"
-                                        controltype="InputControl" datasourcemember="IsSetupStep"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước có thể cập nhật hàng trả lại" name="IsCanUpdateReturnItemStep"
-                                        controltype="InputControl" datasourcemember="IsCanUpdateReturnItemStep"
-                                        swaplabelModal={true}
-                                    />
-                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước yêu cầu chụp hình" name="IsPhotoTakenStep"
-                                        controltype="InputControl" datasourcemember="IsPhotoTakenStep"
                                         swaplabelModal={true}
                                     />
                                     <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước phải được xử lý bởi nhân viên giao hàng" name="IsMustProcessByDeliveryUser"
@@ -699,17 +632,78 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         controltype="InputControl" datasourcemember="IsCheckMustHandOverGoods"
                                         swaplabelModal={true}
                                     />
-
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước khởi tạo" name="IsInitStep"
+                                        datasourcemember="IsInitStep" controltype="InputControl"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước hoàn thành" name="IsFinishStep"
+                                        datasourcemember="IsFinishStep" controltype="InputControl"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước bắt đầu đi giao hàng" name="IsBeginDeliveryStep"
+                                        controltype="InputControl" datasourcemember="IsBeginDeliveryStep"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước hoàn thành giao hàng" name="IsCompletedDeliveryStep"
+                                        controltype="InputControl" datasourcemember="IsCompletedDeliveryStep"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước nộp tiền cho thu ngân" name="IsPaidInStep"
+                                        controltype="InputControl" datasourcemember="IsPaidInStep"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước đến nhà khách" name="IsArrivalReceiverLocationStep"
+                                        controltype="InputControl" datasourcemember="IsArrivalReceiverLocationStep"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước hủy giao hàng" name="IsCancelDeliveryStep"
+                                        controltype="InputControl" datasourcemember="IsCancelDeliveryStep"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước lắp đặt" name="IsSetupStep"
+                                        controltype="InputControl" datasourcemember="IsSetupStep"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước có thể cập nhật hàng trả lại" name="IsCanUpdateReturnItemStep"
+                                        controltype="InputControl" datasourcemember="IsCanUpdateReturnItemStep"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước yêu cầu chụp hình" name="IsPhotoTakenStep"
+                                        controltype="InputControl" datasourcemember="IsPhotoTakenStep"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước có thể tạm ứng vật tư" name="IsCanAdvanceMaterialStep"
+                                        controltype="InputControl" datasourcemember="IsCanAdvanceMaterialStep"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Chỉ hiển thị khi có phải thu tiền của khách hàng(có tiền COD hoặc tiền vật tư)" name="IsOnlyShowOnHasCollection"
+                                        controltype="InputControl" datasourcemember="IsOnlyShowOnHasCollection"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Phải thu tiền mới được chuyển bước kế tiếp" name="IsMustCompleteCollection"
+                                        controltype="InputControl" datasourcemember="IsMustCompleteCollection"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước xuất vật tư bán cho khách" name="IsOutputSaleMaterialStep"
+                                        controltype="InputControl" datasourcemember="IsOutputSaleMaterialStep"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Hiển thị nút nhấn thu tiền" name="IsShowCollectionButton"
+                                        controltype="InputControl" datasourcemember="IsShowCollectionButton"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Hiển thị danh sách vật tư để chỉnh sửa" name="IsShowMaterialList"
+                                        controltype="InputControl" datasourcemember="IsShowMaterialList"
+                                        swaplabelModal={true}
+                                    />
                                     <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước có thể bàn giao hàng vận chuyển cho người nhận" name="IsCanHandoverToReceiver"
                                         controltype="InputControl" datasourcemember="IsCanHandoverToReceiver"
                                         swaplabelModal={true}
                                     />
-
                                     <FormControl.CheckBox labelcolspan={1} colspan={11} label="Có kiểm tra phải bàn giao hàng hóa vận chuyển cho người nhận khi chuyển bước không" name="IsCheckMustHandoverToReceiver"
                                         controltype="InputControl" datasourcemember="IsCheckMustHandoverToReceiver"
                                         swaplabelModal={true}
                                     />
-
                                 </div>
                             </div>
                         </TabPage>
