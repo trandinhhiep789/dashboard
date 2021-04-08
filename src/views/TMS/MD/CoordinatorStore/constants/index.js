@@ -346,3 +346,35 @@ export const DataGridCoordinatorStoreColumnList = [
         LinkText: "Chỉnh sửa"
     },
 ]
+
+
+export const schema = {
+    'ProvinceID': {
+        prop: 'ProvinceID',
+        type: String
+    },
+    'ProvinceName': {
+        prop: 'ProvinceName',
+        type: String
+    },
+    'DistrictID': {
+        prop: 'DistrictID',
+        type: String
+    },
+    'DistrictName': {
+        prop: 'DistrictName',
+        type: String
+    },
+    'WardName': {
+        prop: 'WardName',
+        type: String
+    },
+    'WardID': {
+        prop: 'WardID',
+        type: String
+    },
+    'IsSystem': {
+        prop: 'IsSystem',
+        type: Number
+    },
+}
