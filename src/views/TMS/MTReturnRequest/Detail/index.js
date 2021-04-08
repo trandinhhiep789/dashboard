@@ -55,7 +55,8 @@ export class DetailCom extends Component {
             IsStatusReject: false,
             IsStatus: false,
             isHiddenButtonRV: false,
-            visibleOutPut: false
+            visibleOutPut: false,
+            IsLoadDataComplete: false
         }
 
         this.callLoadData = this.callLoadData.bind(this);
@@ -195,6 +196,7 @@ export class DetailCom extends Component {
                     RenfundSuppliesRL: resultMTReturnRequestReviewLevel,
                     isHiddenButtonRV: apiResult.ResultObject.IsreViewed,
                     lastReviewLevelID: lstMTReturnRequestReviewLevel.length > 0 ? lstMTReturnRequestReviewLevel[lstMTReturnRequestReviewLevel.length - 1].ReviewLevelID : 0,
+                    IsLoadDataComplete: true
                 })
             }
         });
@@ -442,7 +444,7 @@ export class DetailCom extends Component {
     }
 
     render() {
-        const { RenfundSupplies, MTReturnRequestDetail, MTReturnRequestReviewLevel, isAutoReview, CurrentReviewLevelID, MTReturnRequest_AttachmentList, MTReturnRequest_CommentList, isUserNameReviewLevel, IsOutPut, CurrentReviewLevelName, IsStatusReject, IsStatus, isHiddenButtonRV, visibleOutPut } = this.state;
+        const { RenfundSupplies, MTReturnRequestDetail, MTReturnRequestReviewLevel, isAutoReview, CurrentReviewLevelID, MTReturnRequest_AttachmentList, MTReturnRequest_CommentList, isUserNameReviewLevel, IsOutPut, CurrentReviewLevelName, IsStatusReject, IsStatus, isHiddenButtonRV, visibleOutPut, IsLoadDataComplete } = this.state;
 
         let IsAutoReview;
 
@@ -486,104 +488,113 @@ export class DetailCom extends Component {
         }
 
         return (
-            <div className="col-lg-12">
-                <ReactNotification ref={this.notificationDOMRef} />
+            <React.Fragment>
+                {
+                    IsLoadDataComplete == true
+                        ? <div className="col-lg-12">
+                            <ReactNotification ref={this.notificationDOMRef} />
 
-                <div className="card">
-                    <h4 className="card-title">
-                        <strong>{TitleFormDetail}</strong>
-                    </h4>
-                    <div className="card-body">
-                        <RenfundSuppliesInfo
-                            RenfundSupplies={RenfundSupplies}
-                        />
-
-                        <div className="card">
-                            <div className="card-title group-card-title">
-                                <h4 className="title">Danh sách vật tư</h4>
-                            </div>
-                            <div className="card-body">
-                                <InputGrid
-                                    name="lstMTReturnRequestDetail"
-                                    controltype="GridControl"
-                                    listColumn={InputMTReturnRequestDetailColumnList}
-                                    dataSource={MTReturnRequestDetail}
-                                    isHideHeaderToolbar={true}
-                                    //MLObjectDefinition={GridMLObjectDefinition}
-                                    colspan="12"
-                                    onValueChangeInputGrid={this.valueChangeInputGrid}
-                                />
-                            </div>
-                        </div>
-
-                        {
-                            !IsAutoReview &&
                             <div className="card">
-                                <div className="card-title group-card-title">
-                                    <h4 className="title">Danh sách duyệt</h4>
-                                </div>
+                                <h4 className="card-title">
+                                    <strong>{TitleFormDetail}</strong>
+                                </h4>
                                 <div className="card-body">
-                                    <InputGrid
-                                        name="lstMTReturnRequestReviewLevel"
-                                        controltype="GridControl"
-                                        listColumn={GirdMTReturnRequestReviewLevelColumnList}
-                                        dataSource={MTReturnRequestReviewLevel}
-                                        isHideHeaderToolbar={true}
-                                        colspan="12"
-                                        onValueChangeInputGrid={this.valueChangeInputGrid}
+                                    <RenfundSuppliesInfo
+                                        RenfundSupplies={RenfundSupplies}
+                                    />
+
+                                    <div className="card">
+                                        <div className="card-title group-card-title">
+                                            <h4 className="title">Danh sách vật tư</h4>
+                                        </div>
+                                        <div className="card-body">
+                                            <InputGrid
+                                                name="lstMTReturnRequestDetail"
+                                                controltype="GridControl"
+                                                listColumn={InputMTReturnRequestDetailColumnList}
+                                                dataSource={MTReturnRequestDetail}
+                                                isHideHeaderToolbar={true}
+                                                //MLObjectDefinition={GridMLObjectDefinition}
+                                                colspan="12"
+                                                onValueChangeInputGrid={this.valueChangeInputGrid}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {
+                                        !IsAutoReview &&
+                                        <div className="card">
+                                            <div className="card-title group-card-title">
+                                                <h4 className="title">Danh sách duyệt</h4>
+                                            </div>
+                                            <div className="card-body">
+                                                <InputGrid
+                                                    name="lstMTReturnRequestReviewLevel"
+                                                    controltype="GridControl"
+                                                    listColumn={GirdMTReturnRequestReviewLevelColumnList}
+                                                    dataSource={MTReturnRequestReviewLevel}
+                                                    isHideHeaderToolbar={true}
+                                                    colspan="12"
+                                                    onValueChangeInputGrid={this.valueChangeInputGrid}
+                                                />
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <Attachment
+                                        IsAttachment={true}
+                                        onSelectFile={this.handleSelectFile}
+                                        onDeletefile={this.handleDeletefile}
+                                        DataAttachment={MTReturnRequest_AttachmentList}
+                                    />
+
+                                    <Comment
+                                        DataComments={MTReturnRequest_CommentList}
+                                        IsComment={true}
+                                        onChangeValue={this.handleChangeValue}
+                                        onKeyPressSumit={this.handleKeyPressSumit}
                                     />
                                 </div>
+
+                                <footer className="card-footer text-right ">
+                                    {IsAutoReview == false ?
+                                        IsExitBtnReview == false ?
+
+                                            < div className="btn-group btn-group-dropdown mr-3">
+                                                <button disabled={IsExitBtnReview} className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                                <div className="dropdown-menu" x-placement="bottom-start" >
+                                                    <button className="dropdown-item" type="button" onClick={() => this.handleInsertDRNoteRV(1)}>Đồng ý</button>
+                                                    <button className="dropdown-item" type="button" onClick={() => this.handleInsertDRNoteRV(2)}>Từ chối</button>
+                                                </div>
+                                            </div>
+                                            : < div className="btn-group btn-group-dropdown mr-3">
+                                                <button disabled={IsExitBtnReview} className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                                <div className="dropdown-menu" x-placement="bottom-start" >
+                                                    <button className="dropdown-item" type="button">Đồng ý</button>
+                                                    <button className="dropdown-item" type="button">Từ chối</button>
+                                                </div>
+                                            </div>
+                                        : <div></div>
+
+                                    }
+                                    {
+                                        visibleOutPut && IsOutPut == false ?
+                                            <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitCreateVoucheRenfundSupplies.bind(this)}>Nhập kho</button>
+                                            : <button disabled={true} className="btn btn-primary mr-3" type="button" title="Bạn không có quyền!">Nhập kho</button>
+                                    }
+
+                                    <Link to="/MTReturnRequest">
+                                        <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
+                                    </Link>
+                                </footer>
                             </div>
-                        }
+                        </div>
+                        : <div className="col-lg-12">
+                            Đang tải dữ liệu, xin vui lòng chờ
+                        </div>
+                }
+            </React.Fragment>
 
-                        <Attachment
-                            IsAttachment={true}
-                            onSelectFile={this.handleSelectFile}
-                            onDeletefile={this.handleDeletefile}
-                            DataAttachment={MTReturnRequest_AttachmentList}
-                        />
-
-                        <Comment
-                            DataComments={MTReturnRequest_CommentList}
-                            IsComment={true}
-                            onChangeValue={this.handleChangeValue}
-                            onKeyPressSumit={this.handleKeyPressSumit}
-                        />
-                    </div>
-
-                    <footer className="card-footer text-right ">
-                        {IsAutoReview == false ?
-                            IsExitBtnReview == false ?
-
-                                < div className="btn-group btn-group-dropdown mr-3">
-                                    <button disabled={IsExitBtnReview} className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
-                                    <div className="dropdown-menu" x-placement="bottom-start" >
-                                        <button className="dropdown-item" type="button" onClick={() => this.handleInsertDRNoteRV(1)}>Đồng ý</button>
-                                        <button className="dropdown-item" type="button" onClick={() => this.handleInsertDRNoteRV(2)}>Từ chối</button>
-                                    </div>
-                                </div>
-                                : < div className="btn-group btn-group-dropdown mr-3">
-                                    <button disabled={IsExitBtnReview} className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
-                                    <div className="dropdown-menu" x-placement="bottom-start" >
-                                        <button className="dropdown-item" type="button">Đồng ý</button>
-                                        <button className="dropdown-item" type="button">Từ chối</button>
-                                    </div>
-                                </div>
-                            : <div></div>
-
-                        }
-                        {
-                            visibleOutPut && IsOutPut == false ?
-                                <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitCreateVoucheRenfundSupplies.bind(this)}>Nhập kho</button>
-                                : <button disabled={true} className="btn btn-primary mr-3" type="button" title="Bạn không có quyền!">Nhập kho</button>
-                        }
-
-                        <Link to="/MTReturnRequest">
-                            <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
-                        </Link>
-                    </footer>
-                </div>
-            </div>
         )
     }
 }
