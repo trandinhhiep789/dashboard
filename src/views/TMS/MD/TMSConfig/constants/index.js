@@ -374,10 +374,10 @@ export const DataGridColumnList = [
     //     Width: 200
     // },
     {
-        Name: "CreatedDate",
+        Name: "UpdatedDate",
         Type: "date",
-        Caption: "Ngày tạo",
-        DataSourceMember: "CreatedDate",
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
         Width: 140
     },
     {
