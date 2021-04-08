@@ -13,6 +13,7 @@ import { MODAL_TYPE_CONFIRMATIONNEW, MODAL_TYPE_CONFICOMPONET } from '../../../.
 
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import readXlsxFile from 'read-excel-file'
 
 
 class InputGridControlCom extends Component {
@@ -335,6 +336,24 @@ class InputGridControlCom extends Component {
         return resultData;
     }
 
+    handleImportFile() {
+        const input = document.getElementById('buttonImportFileInputGrid');
+        input.click();
+
+
+        const schema = this.props.schemaData;
+
+        input.addEventListener('change', () => {
+            readXlsxFile(input.files[0], { schema }).then(({ rows, errors }) => {
+                // errors.length === 0
+                if (this.props.onImportFile != null)
+                    this.props.onImportFile(rows, errors);
+            }, function (error) {
+                alert("File vừa chọn lỗi. Vui lòng chọn file khác.")
+            })
+        })
+    }
+
     renderInputGrid() {
         const listColumn = this.props.listColumn;
         let listColumnNew = listColumn.filter((person, index) => {
@@ -440,8 +459,16 @@ class InputGridControlCom extends Component {
     }
     //#endregion get Page
 
+
+
     render() {
-        const classNameTable = `table-responsive ${this.props.IsScrollBody !== undefined && this.props.IsScrollBody === true ? "tableScrollBody" : ""}`
+        const classNameTable = `table-responsive ${this.props.IsScrollBody !== undefined && this.props.IsScrollBody === true ? "tableScrollBody" : ""}`;
+
+        let isShowButtonImport = false;
+        if (this.props.isImportFile != undefined && this.props.isImportFile != false) {
+            isShowButtonImport = true;
+        }
+
         return (
             <div className="card">
                 <div className="card-title">
@@ -449,6 +476,7 @@ class InputGridControlCom extends Component {
 
                     <div className="btn-toolbar btn-toolbar-inputgirdcontroll">
                         <div className="btn-group btn-group-sm">
+
                             {(this.props.IsPermisionAdd == true || this.props.IsPermisionAdd == undefined) && this.state.IsSystem == false ?
                                 (this.props.IsCustomAddLink == true || this.props.IsCustomAddLink != undefined ?
                                     (<Link
@@ -499,6 +527,13 @@ class InputGridControlCom extends Component {
 
                             }
 
+                            {
+                                isShowButtonImport == true &&
+                                <button type="button" className="btn btn-export  ml-10" onClick={this.handleImportFile.bind(this)} >
+                                    <span className="fa fa-exchange"> Import File </span>
+                                </button>
+                            }
+
                         </div>
                     </div>
 
@@ -511,6 +546,10 @@ class InputGridControlCom extends Component {
                         }
                     </div>
                 </div>
+                {
+                    isShowButtonImport == true &&
+                    < input type="file" id="buttonImportFileInputGrid" style={{ display: "none" }} ref={input => this.inputElement = input} />
+                }
             </div>
         );
     }

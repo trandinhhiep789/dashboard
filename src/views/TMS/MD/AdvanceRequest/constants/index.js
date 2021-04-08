@@ -51,6 +51,10 @@ export const InitSearchParams = [
     {
         SearchKey: "@ToDate",
         SearchValue: new Date()
+    },
+    {
+        SearchKey: "@Status",
+        SearchValue: -1
     }
 ];
 
@@ -115,6 +119,35 @@ export const SearchElementList = [
     //     NameMember: "PartnerName"
     // },
     {
+        type: "select",
+        name: "bcStatus",
+        label: "Trạng thái",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [
+            {
+                value: -1, label: "--Chọn tất cả--"
+            },
+            {
+                value: 0, label: "Đã xuất"
+            },
+            {
+                value: 1, label: "Đã bàn giao"
+            },
+            {
+                value: 2, label: "Đã hủy"
+            }
+        ],
+        DataSourceMember: "Status",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: true,
+        // LoadItemCacheKeyID: "",
+        ValueMember: "Status",
+        NameMember: "Status"
+    },
+    {
         type: "date",
         name: "dtFromDate",
         label: "Từ ngày",
@@ -164,7 +197,12 @@ export const SearchMLObjectDefinition = [
         Name: "ToDate",
         DefaultValue: "",
         BindControlName: "dtToDate"
-    }
+    },
+    {
+        Name: "Status",
+        DefaultValue: "",
+        BindControlName: "bcStatus"
+    },
 ];
 
 
@@ -204,7 +242,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Mã đơn hàng tạm ứng",
         DataSourceMember: "SaleOrderID",
-       // Width: 120
+        // Width: 120
     },
     {
         Name: "RequestUserName",
@@ -228,18 +266,18 @@ export const DataGridColumnList = [
         //Width: 50
     },
     {
-        Name: "IsDeleted",
-        Type: "checkicon",
-        Caption: "Đã hủy",
-        DataSourceMember: "IsDeleted",
-       // Width: 50
-    },
-    {
         Name: "IsHandoverMaterial",
         Type: "checkicon",
         Caption: "Đã bàn giao",
         DataSourceMember: "IsHandoverMaterial",
         //Width: 50
+    },
+    {
+        Name: "IsDeleted",
+        Type: "checkicon",
+        Caption: "Đã hủy",
+        DataSourceMember: "IsDeleted",
+        // Width: 50
     },
 ];
 

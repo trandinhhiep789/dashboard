@@ -95,6 +95,10 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@ToDate",
                 SearchValue: MLObject.ToDate
+            },
+            {
+                SearchKey: "@Status",
+                SearchValue: parseInt(MLObject.Status)
             }
         ];
         this.setState({ SearchData: postData });

@@ -557,7 +557,7 @@ class FormControlComboBoxCom extends Component {
     }
 
     render() {
-        let { name, label, rowspan, colspan, labelcolspan, validatonList, isMultiSelect, disabled, validationErrorMessage, placeholder, listoption } = this.props;
+        let { name, label, rowspan, colspan, labelcolspan, validatonList, isMultiSelect, disabled, validationErrorMessage, placeholder, listoption, isCloseMenuOnSelect } = this.props;
         let formRowClassName = "form-row";
         if (rowspan != null) {
             formRowClassName = "form-row col-md-" + rowspan;
@@ -579,6 +579,7 @@ class FormControlComboBoxCom extends Component {
         if (validationErrorMessage != undefined && validationErrorMessage != "") {
             className += " is-invalid";
         }
+        const closeMenuOnSelect = isCloseMenuOnSelect == false ? isCloseMenuOnSelect : true
         const selectedOption = this.state.SelectedOption;
         const listOption = this.state.Listoption;
         return (
@@ -595,7 +596,7 @@ class FormControlComboBoxCom extends Component {
                             ? <MySelectCCB
                                 options={listOption}
                                 isMulti={isMultiSelect}
-                                closeMenuOnSelect={false}
+                                closeMenuOnSelect={closeMenuOnSelect}
                                 hideSelectedOptions={false}
                                 components={{ OptionCCB, MultiValueCCB }}
                                 onChange={this.handleValueChange}
@@ -614,7 +615,7 @@ class FormControlComboBoxCom extends Component {
                                 isSearchable={true}
                                 placeholder={placeholder}
                                 className={className}
-                                closeMenuOnSelect={false}
+                                closeMenuOnSelect={closeMenuOnSelect}
                             />
                     }
 

@@ -19,7 +19,8 @@ import {
     LoadNewAPIPath,
     MLObjectDefinition,
     DataGridColumnList,
-    PKColumnNameWard
+    PKColumnNameWard,
+    schema
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -240,6 +241,13 @@ class EditCom extends React.Component {
 
     }
 
+    handleImportFile(resultRows, errors) {
+        console.log('handleImportFile', resultRows, errors)
+        // this.props.callFetchAPI(APIHostName, AddAutoAPIPath, resultRows).then(apiResult => {
+        //     console.log('apiResult', apiResult)
+        // });
+    }
+
     render() {
         const { DataSource, IsShowCustomerAddress, DataWard } = this.state;
         if (this.state.IsCloseForm) {
@@ -409,6 +417,9 @@ class EditCom extends React.Component {
                         onEditClick={this.handleEdit}
                         onDeleteClick={this.handleDelete}
                         isHiddenButtonAdd={IsShowCustomerAddress}
+                        isImportFile={true}
+                        schemaData={schema}
+                        onImportFile={this.handleImportFile.bind(this)}
                     />
 
 
