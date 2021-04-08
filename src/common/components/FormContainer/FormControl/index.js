@@ -591,7 +591,7 @@ class FormControlComboBoxCom extends Component {
                 <div className={formGroupClassName}>
 
                     {
-                        this.props.allowSelectAll
+                        this.props.isAllowSelectAll
                             ? <MySelectCCB
                                 options={listOption}
                                 isMulti={isMultiSelect}

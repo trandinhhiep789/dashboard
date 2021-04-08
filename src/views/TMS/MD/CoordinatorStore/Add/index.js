@@ -249,7 +249,7 @@ class AddCom extends React.Component {
                                 value={""}
                                 listoption={null}
                                 datasourcemember="ShipmentOrderTypeID"
-                                allowSelectAll={true}
+                                isAllowSelectAll={true}
                             />
                         </div>
                         <div className="col-md-6">
