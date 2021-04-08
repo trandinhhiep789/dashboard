@@ -86,10 +86,19 @@ class AddCom extends React.Component {
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.CoordinatorStoreWard_ItemList = this.state.DataSource.CoordinatorStoreWard_ItemList;
         MLObject.SenderStoreID = SenderStoreID;
+
+        if(MLObject.ShipmentOrderTypeID && Array.isArray(MLObject.ShipmentOrderTypeID)){
+            let result = MLObject.ShipmentOrderTypeID.filter(item => Number.isInteger(item) === true);
+            MLObject.ListShipmentOrderTypeID = result;
+            MLObject.ShipmentOrderTypeID = -1;
+        }
+
         this.props.callFetchAPI(APIHostName, AddNewAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
         });
+
+        //console.log("databc", MLObject);
     }
 
     handleChange(formData, MLObject) {
@@ -398,6 +407,7 @@ class AddCom extends React.Component {
                                 controltype="InputControl"
                                 colspan="8"
                                 value={false}
+                                disabled={true}
                                 labelcolspan="4"
                                 classNameCustom="customCheckbox"
                                 titleSmall="Chọn vào đây để khai báo danh sách phường/xã"
@@ -406,7 +416,7 @@ class AddCom extends React.Component {
                         <div className="col-md-6"></div>
                     </div>
 
-                    <InputGridControl
+                    {/* <InputGridControl
                         name="CoordinatorStoreWard_ItemList"
                         controltype="InputGridControl"
                         title="Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối"
@@ -419,7 +429,7 @@ class AddCom extends React.Component {
                         onDeleteClick={this.handleDelete}
                         isHiddenButtonAdd={IsShowCustomerAddress}
                         ref={this.gridref}
-                    />
+                    /> */}
 
                 </FormContainer>
             </React.Fragment>
