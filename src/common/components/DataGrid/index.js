@@ -47,7 +47,7 @@ class DataGridCom extends Component {
             IsCheckAll: false,
             PageNumber: 1,
             ListPKColumnName: listPKColumnName,
-            IsExportFile: this.props.IsExportFile
+            IsExportFile: false
         };
     }
 
@@ -734,6 +734,12 @@ class DataGridCom extends Component {
         if (this.props.IsShowButtonDelete != undefined && this.props.IsShowButtonDelete == false) {
             isShowButtonDelete = false;
         }
+
+        let isShowButtonExport = false;
+        if (this.props.IsExportFile != undefined && this.props.IsExportFile == true) {
+            isShowButtonExport = true;
+        }
+     
         if (this.state.IsPermision == undefined) {
             return <p className="col-md-12">Đang kiểm tra quyền...</p>
         }
@@ -801,13 +807,18 @@ class DataGridCom extends Component {
                                                 : ""
                                         }
                                         {
-                                            this.state.IsExportFile == true
-                                                ? <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)}>
-                                                    <span className="fa fa-file-excel-o"> Xuất file excel </span>
-                                                </button>
-                                                : <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" disabled title="Bạn Không có quyền!">
-                                                    <span className="fa fa-file-excel-o"> Xuất file excel </span>
-                                                </button>
+
+                                            isShowButtonExport ?
+                                                (
+                                                    // (this.state.IsExportFile == true) ?
+                                                        <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)}>
+                                                            <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                                        </button>
+                                                //         : <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" disabled title="Bạn Không có quyền!">
+                                                //             <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                                //         </button>
+                                                )
+                                                : ""
                                         }
                                         {
                                             //hiển thị nút in 

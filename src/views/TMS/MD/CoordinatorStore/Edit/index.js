@@ -20,7 +20,8 @@ import {
     MLObjectDefinition,
     DataGridColumnList,
     PKColumnNameWard,
-    schema
+    schema,
+    DataTemplateExport
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -57,6 +58,7 @@ class EditCom extends React.Component {
             SenderStoreID: "",
             SenderStoreSelect: [],
             IsSystem: false,
+            DataTemplateExport
         };
         this.searchref = React.createRef();
         this.gridref = React.createRef();
@@ -243,9 +245,19 @@ class EditCom extends React.Component {
 
     handleImportFile(resultRows, errors) {
         console.log('handleImportFile', resultRows, errors)
+        this.setState({
+            DataSource: {
+                ...this.state.DataSource,
+                CoordinatorStoreWard_ItemList: [...this.state.DataSource.CoordinatorStoreWard_ItemList, ...resultRows]
+            }
+        })
         // this.props.callFetchAPI(APIHostName, AddAutoAPIPath, resultRows).then(apiResult => {
         //     console.log('apiResult', apiResult)
         // });
+    }
+
+    handleExportFileTemplate(result) {
+        this.addNotification(result.Message);
     }
 
     render() {
@@ -420,6 +432,10 @@ class EditCom extends React.Component {
                         isImportFile={true}
                         schemaData={schema}
                         onImportFile={this.handleImportFile.bind(this)}
+                        isExportFileTemplate={true}
+                        DataTemplateExport={this.state.DataTemplateExport}
+                        fileNameTemplate={"File mẫu"}
+                        onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                     />
 
 
