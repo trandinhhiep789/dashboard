@@ -240,6 +240,7 @@ class AddCom extends React.Component {
                             listoption={null}
                             datasourcemember="WeekDayID"
                             allowSelectAll={true}
+                            isCloseMenuOnSelect={false}
                         />
                     </div>
 
