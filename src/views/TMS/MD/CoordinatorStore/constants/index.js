@@ -381,3 +381,13 @@ export const schema = {
         type: Number
     },
 }
+
+export const DataTemplateExport = [{
+    "Mã tỉnh": "",
+    "Tên tỉnh": "",
+    "Mã Huyện/ Quận": "",
+    "Tên Huyện/ Quận": "",
+    "Mã khu vực": "",
+    "Tên khu vực": "",
+    "Hệ thống": ""
+}];

@@ -20,7 +20,8 @@ import {
     MLObjectDefinition,
     DataGridColumnList,
     PKColumnNameWard,
-    schema
+    schema,
+    DataTemplateExport
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -57,6 +58,7 @@ class EditCom extends React.Component {
             SenderStoreID: "",
             SenderStoreSelect: [],
             IsSystem: false,
+            DataTemplateExport
         };
         this.searchref = React.createRef();
         this.gridref = React.createRef();
@@ -254,6 +256,10 @@ class EditCom extends React.Component {
         // });
     }
 
+    handleExportFileTemplate(result) {
+        this.addNotification(result.Message);
+    }
+
     render() {
         const { DataSource, IsShowCustomerAddress, DataWard } = this.state;
         if (this.state.IsCloseForm) {
@@ -426,6 +432,10 @@ class EditCom extends React.Component {
                         isImportFile={true}
                         schemaData={schema}
                         onImportFile={this.handleImportFile.bind(this)}
+                        isExportFileTemplate={true}
+                        DataTemplateExport={this.state.DataTemplateExport}
+                        fileNameTemplate={"File mẫu"}
+                        onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                     />
 
 
