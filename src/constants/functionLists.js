@@ -495,8 +495,7 @@ export const DELIVERYDATEUPDATETYPE_DELETE = 'DELIVERYDATEUPDATETYPE_DELETE';
 export const SHIPMENTORDER_REPORT_VIEW = 'SHIPMENTORDER_REPORT_VIEW';
 //Xuất báo cáo vận đơn
 export const SHIPMENTORDER_REPORT = 'SHIPMENTORDER_REPORT';
-//Xuất báo cáo vận đơn
-export const SHIPMENTORDER_REPORT_EXPORT = 'SHIPMENTORDER_REPORT_EXPORT';
+
 
 
 
@@ -515,20 +514,16 @@ export const TMS_TMSREWARD_SO_TYPE_VIEW = 'TMS_TMSREWARD_SO_TYPE_VIEW';
 //Kiểm tra điểm thưởng
 export const TMS_TMSREWARD_REVIEW = 'TMS_TMSREWARD_REVIEW';
 
-//Xem danh sách Tổng xuất thưởng
-export const TMS_TMSREWARD_EXPORT = 'TMS_TMSREWARD_EXPORT';
-
 //Xem danh sách báo cao công nợ
 export const TMS_BEGINTERMADVANCEDEBT_VIEW = 'TMS_BEGINTERMADVANCEDEBT_VIEW';
 
 //Bảng lưu nợ tiền thu hộ của nhân viên
 export const TMS_STAFFDEBT_VIEW = 'TMS_STAFFDEBT_VIEW';
-export const TMS_STAFFDEBT_EXPORT = 'TMS_STAFFDEBT_EXPORT';
 export const TMS_STAFFDEBT_UNLOCKDELIVERY = 'TMS_STAFFDEBT_UNLOCKDELIVERY';
 
 //Bảng Thông kê hạn mức tạm ứng
 export const TMS_CURRENTADVANCEDEBT_VIEW = 'TMS_CURRENTADVANCEDEBT_VIEW';
-export const TMS_CURRENTADVANCEDEBT_EXPORT = 'TMS_CURRENTADVANCEDEBT_EXPORT';
+
 
 //Tra cứu trạng thái đơn hàng
 export const TMS_INVESTIGATION_SO_STATUS = 'TMS_INVESTIGATION_SO_STATUS';
@@ -597,3 +592,76 @@ export const WEEKDAY_VIEW = 'WEEKDAY_VIEW';
 export const WEEKDAY_ADD = 'WEEKDAY_ADD';
 export const WEEKDAY_UPDATE = 'WEEKDAY_UPDATE';
 export const WEEKDAY_DELETE = 'WEEKDAY_DELETE';
+
+
+
+
+//Xuất báo cáo vận đơn
+export const SHIPMENTORDER_REPORT_EXPORT = 'SHIPMENTORDER_REPORT_EXPORT';
+
+//Xuất danh sách báo cao công nợ theo nhân viên
+export const TMS_BEGINTERMADVANCEDEBT_EXPORT = 'TMS_BEGINTERMADVANCEDEBT_EXPORT';
+
+// Xuất danh sách quản lý công nợ
+export const TMS_STAFFDEBT_EXPORT = 'TMS_STAFFDEBT_EXPORT';
+
+//xuất danh sách thưởng giao hàng
+export const TMS_TMSREWARD_EXPORT = 'TMS_TMSREWARD_EXPORT';
+
+// xuất danh sách thưởng giao hàng theo loại
+export const TMS_TMSREWARD_SO_TYPE_EXPORT = 'TMS_TMSREWARD_SO_TYPE_EXPORT';
+
+//xuất danh sách hợp đồng dịch vụ
+export const SERVICEAGREEMENT_EXPORT = 'SERVICEAGREEMENT_EXPORT';
+
+// xuất danh sách chi tiết tiền phải trả cho nhà cung cấp dịch vụ
+export const PARTNERPAYABLEDETAIL_EXPORT = 'PARTNERPAYABLEDETAIL_EXPORT';
+
+// xuất danh sách yêu cầu tạm ứng
+export const ADVANCEREQUEST_EXPORT = 'ADVANCEREQUEST_EXPORT';
+
+//xuất danh sách yêu cầu hủy vật tư
+export const DESTROYREQUEST_EXPORT = 'DESTROYREQUEST_EXPORT';
+
+// xuất danh sách yêu cầu kiểm kê
+export const INVENTORYREQUEST_EXPORT = 'INVENTORYREQUEST_EXPORT';
+
+// xuất thống kê hạn mức tạm ứng
+export const TMS_CURRENTADVANCEDEBT_EXPORT = 'TMS_CURRENTADVANCEDEBT_EXPORT';
+
+//xuất danh sách loại đối tác
+export const PARTNERTYPE_EXPORT = 'PARTNERTYPE_EXPORT';
+
+//xuất danh sách đối tác
+export const PARTNER_EXPORT = 'PARTNER_EXPORT';
+
+// xuất danh sách lý do hủy giao hàng
+export const CANCELDELIVERYREASON_EXPORT = 'CANCELDELIVERYREASON_EXPORT';
+
+// xuất danh sách loại phương tiện vận chuyển
+export const CARRIERTYPE_EXPORT = 'CARRIERTYPE_EXPORT';
+
+// xuất danh sách loại đóng gói hàng hóa vận chuyển
+export const PACKAGETYPE_EXPORT = 'PACKAGETYPE_EXPORT';
+
+// xuất danh sách phương thức thanh toán chi phí vận chuyển
+export const SHIPMENTFEEPAYMENTMETHOD_EXPORT = 'SHIPMENTFEEPAYMENTMETHOD_EXPORT';
+
+// xuất danh sách loại dịch vụ vận chuyển
+export const SHIPMENTSERVICETYPE_EXPORT = 'SHIPMENTSERVICETYPE_EXPORT';
+
+// xuất danh sách loại hàng hóa vận chuyển
+export const SHIPMENTGOODSTYPE_EXPORT = 'SHIPMENTGOODSTYPE_EXPORT';
+
+// xuất nhóm trạng thái yêu cầu vận chuyển
+export const SHIPMENTORDERSTATUSGROUP_EXPORT = 'SHIPMENTORDERSTATUSGROUP_EXPORT';
+
+// xuất trạng thái yêu cầu vận chuyển
+export const SHIPMENTORDERSTATUS_EXPORT = 'SHIPMENTORDERSTATUS_EXPORT';
+
+// xuất danh sách loại phí vận chuyển
+export const SHIPMENTFEETYPE_EXPORT = 'SHIPMENTFEETYPE_EXPORT';
+
+//xuất danh sách vị trí thưởng của nhân viên
+export const USER_REWARDPOSITION_EXPORT = 'USER_REWARDPOSITION_EXPORT';
+

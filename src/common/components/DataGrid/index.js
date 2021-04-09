@@ -810,13 +810,13 @@ class DataGridCom extends Component {
 
                                             isShowButtonExport ?
                                                 (
-                                                    // (this.state.IsExportFile == true) ?
+                                                    (this.state.IsExportFile == true) ?
                                                         <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)}>
                                                             <span className="fa fa-file-excel-o"> Xuất file excel </span>
                                                         </button>
-                                                //         : <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" disabled title="Bạn Không có quyền!">
-                                                //             <span className="fa fa-file-excel-o"> Xuất file excel </span>
-                                                //         </button>
+                                                        : <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" disabled title="Bạn Không có quyền!">
+                                                            <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                                        </button>
                                                 )
                                                 : ""
                                         }

@@ -27,7 +27,7 @@ import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_PARTNER } from "../../../../../constants/keyCache";
-import { PARTNER_VIEW, PARTNER_DELETE } from "../../../../../constants/functionLists";
+import { PARTNER_VIEW, PARTNER_DELETE, PARTNER_EXPORT } from "../../../../../constants/functionLists";
 import { formatDate } from "../../../../../common/library/CommonLib";
 
 class SearchCom extends React.Component {
@@ -195,6 +195,7 @@ class SearchCom extends React.Component {
                         ref={this.gridref}
                         RequirePermission={PARTNER_VIEW}
                         DeletePermission={PARTNER_DELETE}
+                        ExportPermission={PARTNER_EXPORT}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                         IsExportFile={true}

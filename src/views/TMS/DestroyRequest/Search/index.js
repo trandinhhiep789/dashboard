@@ -12,7 +12,7 @@ import formatDistance from 'date-fns/formatDistance';
 import viLocale from "date-fns/locale/vi";
 import { compareAsc, format, add } from 'date-fns';
 
-import { DESTROYREQUEST_VIEW, DESTROYREQUEST_DELETE } from "../../../../constants/functionLists";
+import { DESTROYREQUEST_VIEW, DESTROYREQUEST_DELETE, DESTROYREQUEST_EXPORT } from "../../../../constants/functionLists";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 
@@ -243,7 +243,7 @@ class SearchCom extends React.Component {
     }
 
     handleExportFile(result) {
-        this.addNotification(result.Message);
+        this.addNotification(result.Message, result.IsError);
     }
 
     handleInputGridInsert(MLObjectDefinition, modalElementList, dataSource) {
@@ -286,8 +286,9 @@ class SearchCom extends React.Component {
                     RowsPerPage={10}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
-                    // RequirePermission={DESTROYREQUEST_VIEW}
+                    RequirePermission={DESTROYREQUEST_VIEW}
                     DeletePermission={DESTROYREQUEST_DELETE}
+                    ExportPermission={DESTROYREQUEST_EXPORT}
                     fileName="Danh sách yêu cầu hủy vật tư"
                     onExportFile={this.handleExportFile.bind(this)}
                 />

@@ -23,7 +23,7 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { SHIPMENTFEEPAYMENTMETHOD_VIEW, SHIPMENTFEEPAYMENTMETHOD_DELETE } from "../../../../../constants/functionLists";
+import { SHIPMENTFEEPAYMENTMETHOD_VIEW, SHIPMENTFEEPAYMENTMETHOD_DELETE, SHIPMENTFEEPAYMENTMETHOD_EXPORT } from "../../../../../constants/functionLists";
 import { formatDate } from "../../../../../common/library/CommonLib";
 class SearchCom extends React.Component {
     constructor(props) {
@@ -191,6 +191,7 @@ class SearchCom extends React.Component {
                         ref={this.gridref}
                         RequirePermission={SHIPMENTFEEPAYMENTMETHOD_VIEW}
                         DeletePermission={SHIPMENTFEEPAYMENTMETHOD_DELETE}
+                        ExportPermission={SHIPMENTFEEPAYMENTMETHOD_EXPORT}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                         IsExportFile={true}

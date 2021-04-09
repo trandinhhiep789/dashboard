@@ -26,7 +26,7 @@ import "react-notifications-component/dist/theme.css";
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { SHIPMENTSERVICETYPE_VIEW, SHIPMENTSERVICETYPE_DELETE } from "../../../../../constants/functionLists";
+import { SHIPMENTSERVICETYPE_VIEW, SHIPMENTSERVICETYPE_DELETE, SHIPMENTSERVICETYPE_EXPORT } from "../../../../../constants/functionLists";
 import { formatDate } from "../../../../../common/library/CommonLib";
 
 class SearchCom extends React.Component {
@@ -198,6 +198,7 @@ class SearchCom extends React.Component {
                         ref={this.gridref}
                         RequirePermission={SHIPMENTSERVICETYPE_VIEW}
                         DeletePermission={SHIPMENTSERVICETYPE_DELETE}
+                        ExportPermission={SHIPMENTSERVICETYPE_EXPORT}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                         IsExportFile={true}

@@ -24,7 +24,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SHIPMENTGOODSTYPE } from "../../../../../constants/keyCache";
-import { SHIPMENTGOODSTYPE_VIEW, SHIPMENTGOODSTYPE_DELETE } from "../../../../../constants/functionLists";
+import { SHIPMENTGOODSTYPE_VIEW, SHIPMENTGOODSTYPE_DELETE, SHIPMENTGOODSTYPE_EXPORT } from "../../../../../constants/functionLists";
 import { formatDate } from "../../../../../common/library/CommonLib";
 
 class SearchCom extends React.Component {
@@ -194,6 +194,7 @@ class SearchCom extends React.Component {
                         ref={this.gridref}
                         RequirePermission={SHIPMENTGOODSTYPE_VIEW}
                         DeletePermission={SHIPMENTGOODSTYPE_DELETE}
+                        ExportPermission={SHIPMENTGOODSTYPE_EXPORT}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                         IsExportFile={true}

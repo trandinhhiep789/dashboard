@@ -12,7 +12,7 @@ import formatDistance from 'date-fns/formatDistance';
 import viLocale from "date-fns/locale/vi";
 import { compareAsc, format, add } from 'date-fns';
 
-import { SERVICEAGREEMENT_VIEW, SERVICEAGREEMENT_DELETE } from "../../../../constants/functionLists";
+import { SERVICEAGREEMENT_VIEW, SERVICEAGREEMENT_DELETE, SERVICEAGREEMENT_EXPORT } from "../../../../constants/functionLists";
 
 
 import {
@@ -224,17 +224,9 @@ class SearchCom extends React.Component {
         if (!IsError) {
             cssNotification = "notification-custom-success";
             iconNotification = "fa fa-check"
-            // this.setState({
-            //     cssNotification: "notification-custom-success",
-            //     iconNotification: "fa fa-check"
-            // });
         } else {
             cssNotification = "notification-danger";
             iconNotification = "fa fa-exclamation"
-            // this.setState({
-            //     cssNotification: "notification-danger",
-            //     iconNotification: "fa fa-exclamation"
-            // });
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
@@ -256,6 +248,8 @@ class SearchCom extends React.Component {
             dismissable: { click: true }
         });
     }
+
+
 
     handleSearchSubmit(formData, MLObject) {
         const DataSearch = [
@@ -294,7 +288,7 @@ class SearchCom extends React.Component {
     }
 
     handleExportFile(result) {
-        this.addNotification(result.Message);
+        this.addNotification(result.Message, result.IsError);
     }
 
     handleImportFile(resultRows, errors) {
@@ -329,6 +323,7 @@ class SearchCom extends React.Component {
                     RowsPerPage={10}
                     RequirePermission={SERVICEAGREEMENT_VIEW}
                     DeletePermission={SERVICEAGREEMENT_DELETE}
+                    ExportPermission={SERVICEAGREEMENT_EXPORT}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
                     fileName="Danh sách hợp đồng"
