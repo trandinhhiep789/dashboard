@@ -43,6 +43,14 @@ export const InitSearchParams = [
     {
         SearchKey: "@StoreID",
         SearchValue: ""
+    },
+    {
+        SearchKey: "@PAGESIZE",
+        SearchValue: 20
+    },
+    {
+        SearchKey: "@PAGEINDEX",
+        SearchValue: 0
     }
 ];
 
@@ -63,7 +71,7 @@ export const SearchElementList = [
         ValueMember: "ShipmentOrderTypeID",
         NameMember: "ShipmentOrderTypeName",
         classNameCol: "col-custom",
-        validatonList: ["Comborequired"]
+        //validatonList: ["Comborequired"]
     },
 
     {

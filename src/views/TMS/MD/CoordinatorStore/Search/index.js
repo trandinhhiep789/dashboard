@@ -45,7 +45,8 @@ class SearchCom extends React.Component {
             cssNotification: "",
             iconNotification: "",
             IsLoadDataComplete: false,
-            dataExport: []
+            dataExport: [],
+            PageNumber: 1,
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -54,7 +55,7 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        //this.callSearchData(this.state.SearchData);
+        this.callSearchData(this.state.SearchData);
 
     }
 
@@ -82,12 +83,20 @@ class SearchCom extends React.Component {
         console.log("search", MLObject)
         const postData = [
             {
-                SearchKey: "@ShipmentOrderTypeID",
+                SearchKey: "@SHIPMENTORDERTYPEID",
                 SearchValue: MLObject.ShipmentOrderTypeID
             },
             {
-                SearchKey: "@StoreID",
+                SearchKey: "@STOREID",
                 SearchValue: MLObject.StoreID
+            },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: 20
+            },
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: 0
             }
         ];
         // if ((MLObject.ShipmentOrderTypeID == "" || MLObject.ShipmentOrderTypeID < 0) && (MLObject.StoreID == "" || MLObject.StoreID < 0)) {
@@ -108,7 +117,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            // console.log("â", searchData, apiResult)
+            console.log("â", searchData, apiResult)
             if (!apiResult.IsError) {
                 const result = apiResult.ResultObject.map((item) => {
                     item.SenderStoreNameLable = item.SenderStoreID + " - " + item.SenderStoreName;
@@ -201,6 +210,17 @@ class SearchCom extends React.Component {
         this.addNotification(result.Message);
     }
 
+    handleonChangePage(pageNum) {
+        let listMLObject = [];
+        const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
+        listMLObject = Object.assign([], this.state.SearchData, { [3]: aa });
+        // console.log(this.state.SearchData,listMLObject)
+        this.callSearchData(listMLObject)
+        this.setState({
+            PageNumber: pageNum
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -224,11 +244,15 @@ class SearchCom extends React.Component {
                     RequirePermission={COORDINATORSTORE_VIEW}
                     DeletePermission={COORDINATORSTORE_DELETE}
                     IsAutoPaging={true}
-                    RowsPerPage={10}
+                    RowsPerPage={20}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
                     fileName="Danh sách định nghĩa kho điều phối giao hàng"
                     onExportFile={this.handleExportFile.bind(this)}
+                    isPaginationServer={true}
+                    PageNumber={this.state.PageNumber}
+                    onChangePage={this.handleonChangePage.bind(this)}
+                    
                 />
             </React.Fragment>
         );
