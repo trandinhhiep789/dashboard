@@ -389,11 +389,11 @@ export const schema = {
         prop: 'DistrictName',
         type: String
     },
-    'Tên khu vực': {
+    'Tên phường/ xã': {
         prop: 'WardName',
         type: String
     },
-    'Mã khu vực': {
+    'Mã phường/ xã': {
         prop: 'WardID',
         type: String,
         required: true
@@ -409,7 +409,7 @@ export const DataTemplateExport = [{
     "Tên tỉnh": "",
     "Mã Huyện/ Quận": "",
     "Tên Huyện/ Quận": "",
-    "Mã khu vực": "",
-    "Tên khu vực": "",
+    "Mã phường/ xã": "",
+    "Tên phường/ xã": "",
     "Hệ thống": ""
 }];
