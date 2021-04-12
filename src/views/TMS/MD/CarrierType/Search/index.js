@@ -20,7 +20,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { CARRIERTYPE_VIEW, CARRIERTYPE_DELETE } from "../../../../../constants/functionLists";
+import { CARRIERTYPE_VIEW, CARRIERTYPE_DELETE, CARRIERTYPE_EXPORT } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
@@ -231,6 +231,7 @@ class SearchCom extends React.Component {
                         ref={this.gridref}
                         RequirePermission={CARRIERTYPE_VIEW}
                         DeletePermission={CARRIERTYPE_DELETE}
+                        ExportPermission={CARRIERTYPE_EXPORT}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                         IsExportFile={true}

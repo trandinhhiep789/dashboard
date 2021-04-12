@@ -25,7 +25,7 @@ import { callGetCache } from "../../../../actions/cacheAction";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 
 
-import { PARTNERPAYABLE_VIEW } from "../../../../constants/functionLists";
+import { PARTNERPAYABLEDETAIL_VIEW, PARTNERPAYABLEDETAIL_EXPORT } from "../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
@@ -81,20 +81,20 @@ class PartnerPayableDetailCom extends React.Component {
                             "Mã đơn hàng": item.PartnerSaleOrderID,
                             "Thời gian giao": item.PayableDate,
                             "Khách hàng": item.ReceiverFullName,
-                            "Sản phẩm":  item.ProductID,
+                            "Sản phẩm": item.ProductID,
                             "Nhóm hàng": item.SubGroupID,
                             "Kho xuất": item.SenderFullAddress,
                             "Kho tạo": item.StoreName,
-                            "NV điều phối": item.CoordinatorUser, 
-                            "NV giao": item.DeliveryUser, 
-                            "Số lượng": item.Quantity, 
-                            "Đơn giá": item.ServiceFee, 
-                            "Thành tiền": item.PayableAmount, 
-                            
+                            "NV điều phối": item.CoordinatorUser,
+                            "NV giao": item.DeliveryUser,
+                            "Số lượng": item.Quantity,
+                            "Đơn giá": item.ServiceFee,
+                            "Thành tiền": item.PayableAmount,
+
                         };
-    
+
                         return element;
-    
+
                     })
 
                     this.setState({
@@ -109,7 +109,7 @@ class PartnerPayableDetailCom extends React.Component {
                     this.showMessage('Không có dữ liệu cần tim.')
                     this.setState({
                         IsLoadDataComplete: true,
-                        gridDataSourcePrint : [],
+                        gridDataSourcePrint: [],
                         totalPayableAmount: 0,
                         gridDataSource: apiResult.ResultObject,
                     })
@@ -118,7 +118,7 @@ class PartnerPayableDetailCom extends React.Component {
             else {
                 this.showMessage(apiResult.Message)
             }
-           
+
         })
     }
 
@@ -151,17 +151,17 @@ class PartnerPayableDetailCom extends React.Component {
         this.callData(postData);
     }
 
-    
+
     addNotification(message1, IsError) {
         let cssNotification, iconNotification;
         if (!IsError) {
             cssNotification = "notification-custom-success";
             iconNotification = "fa fa-check"
-       
+
         } else {
             cssNotification = "notification-danger";
             iconNotification = "fa fa-exclamation"
-         
+
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
@@ -185,7 +185,7 @@ class PartnerPayableDetailCom extends React.Component {
     }
 
     handleExportFile(result) {
-        console.log("handleExportFile",result)
+        //console.log("handleExportFile", result)
         this.addNotification(result.Message, result.IsError);
     }
 
@@ -211,18 +211,19 @@ class PartnerPayableDetailCom extends React.Component {
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={true}
-                    TitlePrint="Bảng kê tổng hợp đơn hàng lắp đặt"
+                    TitlePrint="Danh sách chi tiết tiền phải trả cho nhà cung cấp dịch vụ"
                     dataPrint={this.state.gridDataSourcePrint}
                     IsPrint={true}
                     IDSelectColumnName="PartnerPayableDetailID"
                     PKColumnName="PartnerPayableDetailID"
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
-                    fileName="Bảng kê tổng hợp đơn hàng lắp đặt"
+                    fileName="Danh sách chi tiết tiền phải trả cho nhà cung cấp dịch vụ"
                     onExportFile={this.handleExportFile.bind(this)}
                     IsAutoPaging={false}
                     RowsPerPage={10}
-                    // RequirePermission={PARTNERPAYABLE_VIEW}
+                    RequirePermission={PARTNERPAYABLEDETAIL_VIEW}
+                    ExportPermission={PARTNERPAYABLEDETAIL_EXPORT}
                     ref={this.gridref}
                     totalCurrency={true}
                     totalCurrencyColSpan={13}

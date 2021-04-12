@@ -23,7 +23,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
+import { SHIPMENTORDER_REPORT_EXPORT, SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
@@ -185,23 +185,20 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -218,7 +215,7 @@ class SearchCom extends React.Component {
     }
 
     handleExportFile(result) {
-        this.addNotification(result.Message);
+        this.addNotification(result.Message, result.IsError);
     }
 
     getStatusDelivery(status) {
@@ -338,6 +335,7 @@ class SearchCom extends React.Component {
                     RowsPerPage={30}
                     ref={this.gridref}
                     RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    ExportPermission={SHIPMENTORDER_REPORT_EXPORT}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
                     fileName="Danh sách thống kê vận đơn theo kho điều phối"

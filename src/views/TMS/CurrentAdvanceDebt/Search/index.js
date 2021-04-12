@@ -9,7 +9,7 @@ import { formatDate } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { TMS_CURRENTADVANCEDEBT_VIEW } from "../../../../constants/functionLists";
+import { TMS_CURRENTADVANCEDEBT_EXPORT, TMS_CURRENTADVANCEDEBT_VIEW } from "../../../../constants/functionLists";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 
@@ -207,23 +207,20 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -240,7 +237,7 @@ class SearchCom extends React.Component {
     }
 
     handleExportFile(result) {
-        this.addNotification(result.Message);
+        this.addNotification(result.Message, result.IsError);
     }
 
     handleShowModal(data) {
@@ -353,6 +350,7 @@ class SearchCom extends React.Component {
                     fileName="Danh sách thống kê hạn mức tạm ứng"
                     onExportFile={this.handleExportFile.bind(this)}
                     RequirePermission={TMS_CURRENTADVANCEDEBT_VIEW}
+                    ExportPermission={TMS_CURRENTADVANCEDEBT_EXPORT}
                 />
             </React.Fragment>
         );
