@@ -1,23 +1,22 @@
 import React, { Component, PropTypes, Fragment } from 'react';
-import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+import { Link, withRouter } from "react-router-dom";
 import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
+import readXlsxFile from 'read-excel-file'
+import Media from "react-media";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import ReactTooltip from 'react-tooltip';
+
 import { MessageModal } from "../Modal";
 import { DEFAULT_ROW_PER_PAGE } from "../../../constants/systemVars.js";
 import GridCell from "./GridCell";
 import GridPage from "./GridPage";
-import { connect } from 'react-redux';
 import { callGetCache, callGetUserCache } from "../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../constants/functionLists";
 import { hideModal } from '../../../actions/modal';
-import Media from "react-media";
-
-import * as FileSaver from 'file-saver';
-import * as XLSX from 'xlsx';
-
 import { formatMoney } from '../../../utils/function';
 import PartnerPayaleTemplate from '../PrintTemplate/PartnerPayaleTemplate';
-import readXlsxFile from 'read-excel-file'
-import { withRouter } from 'react-router-dom';
 
 class DataGridCom extends Component {
     constructor(props) {
@@ -739,7 +738,7 @@ class DataGridCom extends Component {
         if (this.props.IsExportFile != undefined && this.props.IsExportFile == true) {
             isShowButtonExport = true;
         }
-     
+
         if (this.state.IsPermision == undefined) {
             return <p className="col-md-12">Đang kiểm tra quyền...</p>
         }
@@ -808,17 +807,19 @@ class DataGridCom extends Component {
                                         }
                                         {
 
-                                            isShowButtonExport ?
-                                                (
-                                                    (this.state.IsExportFile == true) ?
-                                                        <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)}>
+                                            isShowButtonExport &&
+                                            (
+                                                this.state.IsExportFile == true ?
+                                                    <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)}>
+                                                        <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                                    </button>
+                                                    : <React.Fragment>
+                                                        <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" data-tip="Bạn không có quyền!">
                                                             <span className="fa fa-file-excel-o"> Xuất file excel </span>
                                                         </button>
-                                                        : <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" disabled title="Bạn Không có quyền!">
-                                                            <span className="fa fa-file-excel-o"> Xuất file excel </span>
-                                                        </button>
-                                                )
-                                                : ""
+                                                        <ReactTooltip type="warning" />
+                                                    </React.Fragment>
+                                            )
                                         }
                                         {
                                             //hiển thị nút in 
