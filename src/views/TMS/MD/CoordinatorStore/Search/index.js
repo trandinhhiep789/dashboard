@@ -243,6 +243,7 @@ class SearchCom extends React.Component {
                     ref={this.gridref}
                     RequirePermission={COORDINATORSTORE_VIEW}
                     DeletePermission={COORDINATORSTORE_DELETE}
+                    // ExportPermission={}
                     IsAutoPaging={true}
                     RowsPerPage={100}
                     IsExportFile={true}
