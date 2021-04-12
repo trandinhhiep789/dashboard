@@ -92,7 +92,7 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@PAGESIZE",
-                SearchValue: 20
+                SearchValue: 100
             },
             {
                 SearchKey: "@PAGEINDEX",
@@ -244,7 +244,7 @@ class SearchCom extends React.Component {
                     RequirePermission={COORDINATORSTORE_VIEW}
                     DeletePermission={COORDINATORSTORE_DELETE}
                     IsAutoPaging={true}
-                    RowsPerPage={20}
+                    RowsPerPage={100}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
                     fileName="Danh sách định nghĩa kho điều phối giao hàng"
@@ -252,7 +252,7 @@ class SearchCom extends React.Component {
                     isPaginationServer={true}
                     PageNumber={this.state.PageNumber}
                     onChangePage={this.handleonChangePage.bind(this)}
-                    
+
                 />
             </React.Fragment>
         );
