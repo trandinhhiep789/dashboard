@@ -33,6 +33,11 @@
             }
             .image-gallery-left-nav, .image-gallery-right-nav{
                 padding: 0px 10px;
+                &:focus{
+                    outline: none;
+                    box-shadow: none;
+                    border: none;
+                }
             }
 
         }
