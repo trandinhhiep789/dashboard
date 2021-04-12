@@ -106,6 +106,17 @@ class SearchCom extends React.Component {
                 SearchValue: 0
             }
         ];
+
+        const SearchExportParams = [
+            {
+                SearchKey: "@SHIPMENTORDERTYPEID",
+                SearchValue: MLObject.ShipmentOrderTypeID
+            },
+            {
+                SearchKey: "@STOREID",
+                SearchValue: MLObject.StoreID
+            },
+        ];
         // if ((MLObject.ShipmentOrderTypeID == "" || MLObject.ShipmentOrderTypeID < 0) && (MLObject.StoreID == "" || MLObject.StoreID < 0)) {
         //     this.showMessage("Không tôn tại dữ liệu theo điều kiện tìm kiếm!");
         //     this.setState({
@@ -118,7 +129,10 @@ class SearchCom extends React.Component {
         //     this.callSearchData(postData);
         // }
 
-        this.setState({ SearchData: postData });
+        this.setState({
+            SearchData: postData,
+            paramExport: SearchExportParams
+        });
         this.callSearchData(postData);
     }
 
@@ -142,7 +156,8 @@ class SearchCom extends React.Component {
             else {
                 this.showMessage(apiResult.Message);
                 this.setState({
-                    IsLoadDataComplete: false
+                    IsLoadDataComplete: false,
+                    gridDataSource: [],
                 });
             }
 
