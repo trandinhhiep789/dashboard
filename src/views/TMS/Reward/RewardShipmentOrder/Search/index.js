@@ -19,7 +19,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { TMS_TMSREWARD_VIEW } from "../../../../../constants/functionLists";
+import { TMS_TMSREWARD_EXPORT, TMS_TMSREWARD_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { toIsoStringCus } from '../../../../../utils/function'
 class SearchCom extends React.Component {
@@ -155,23 +155,20 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -187,8 +184,10 @@ class SearchCom extends React.Component {
         });
     }
 
+
+
     handleExportFile(result) {
-        this.addNotification(result.Message);
+        this.addNotification(result.Message, result.IsError);
     }
 
 
@@ -224,6 +223,7 @@ class SearchCom extends React.Component {
                     totalCurrencyColSpan={4}
                     totalCurrencyNumber={this.state.totalAmount}
                     RequirePermission={TMS_TMSREWARD_VIEW}
+                    ExportPermission={TMS_TMSREWARD_EXPORT}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
                     fileName="Danh sách thưởng giao hàng"

@@ -20,7 +20,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { ADVANCEREQUEST_VIEW } from "../../../../../constants/functionLists";
+import { ADVANCEREQUEST_EXPORT, ADVANCEREQUEST_VIEW } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache } from "../../../../../actions/cacheAction";
@@ -224,6 +224,7 @@ class SearchCom extends React.Component {
                         //onDeleteClick={this.handleDelete}
                         ref={this.gridref}
                         RequirePermission={ADVANCEREQUEST_VIEW}
+                        ExportPermission={ADVANCEREQUEST_EXPORT}
                         //DeletePermission={CANCELDELIVERYREASON_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}

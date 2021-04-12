@@ -21,7 +21,7 @@ import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../..
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { ERPUSERCACHE_FUNCTION } from "../../../../../constants/keyCache";
-import { USERSKILL_VIEW, USERSKILL_UPDATE, GET_CACHE_USER_FUNCTION_LIST, USER_REWARDPOSITION_VIEW, USER_REWARDPOSITION_UPDATE, USER_REWARDPOSITION_ADD } from "../../../../../constants/functionLists";
+import { USERSKILL_VIEW, USERSKILL_UPDATE, GET_CACHE_USER_FUNCTION_LIST, USER_REWARDPOSITION_VIEW, USER_REWARDPOSITION_UPDATE, USER_REWARDPOSITION_ADD, USER_REWARDPOSITION_EXPORT } from "../../../../../constants/functionLists";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import readXlsxFile from 'read-excel-file'
@@ -65,6 +65,11 @@ class EditCom extends React.Component {
                 let _update = result.ResultObject.CacheData.filter(x => x.FunctionID == USER_REWARDPOSITION_ADD);
                 if (_update && _update.length > 0) {
                     this.setState({ IsAllowUpdate: true });
+                }
+
+                let _export = result.ResultObject.CacheData.filter(x => x.FunctionID == USER_REWARDPOSITION_EXPORT);
+                if (_export && _export.length > 0) {
+                    this.setState({ IsAllowExport: true });
                 }
             }
             //console.log("handleGetCache: ", result);
@@ -283,7 +288,13 @@ class EditCom extends React.Component {
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         const fileExtension = '.xlsx';
         let result;
-        if (this.state.DataExport.length == 0) {
+        if (!this.state.IsAllowExport) {
+            result = {
+                IsError: true,
+                Message: "Bạn không có quyền xuất file exel!"
+            };
+        }
+        else if (this.state.DataExport.length == 0) {
             result = {
                 IsError: true,
                 Message: "Dữ liệu không tồn tại. Không thể xuất file!"
@@ -367,7 +378,7 @@ class EditCom extends React.Component {
                                     <div className="col-md-2">
                                         <div className="btn-toolbar" style={{ position: "absolute", bottom: "-47px", right: "16px", zIndex: "1" }}>
                                             <div className="btn-group btn-group-sm">
-                                                <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file"  onClick={this.handleExportCSV}>
+                                                <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV}>
                                                     <span className="fa fa-file-excel-o"> Xuất file excel </span>
                                                 </button>
                                             </div>

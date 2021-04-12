@@ -237,7 +237,7 @@ class SearchCom extends React.Component {
     }
 
     onExportFile(result) {
-        this.addNotification(result.Message);
+        this.addNotification(result.Message, result.IsError);
     }
 
     render() {

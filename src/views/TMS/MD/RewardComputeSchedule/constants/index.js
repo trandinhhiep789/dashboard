@@ -360,10 +360,10 @@ export const DataGridColumnList = [
     // },
     {
         Name: "CreatedDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 100
+        Width: 140
     },
     {
         Name: "CreatedUserFullName",

@@ -22,7 +22,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { TMS_STAFFDEBT_VIEW } from "../../../../../constants/functionLists";
+import { TMS_STAFFDEBT_EXPORT, TMS_STAFFDEBT_VIEW } from "../../../../../constants/functionLists";
 import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
@@ -315,7 +315,7 @@ class SearchCom extends React.Component {
     }
 
     handleExportFile(result) {
-        this.addNotification(result.Message);
+        this.addNotification(result.Message, result.IsError);
     }
 
     handleExportSubmit(formData, MLObject) {
@@ -428,6 +428,7 @@ class SearchCom extends React.Component {
                     IsAutoPaging={true}
                     RowsPerPage={20}
                     RequirePermission={TMS_STAFFDEBT_VIEW}
+                    ExportPermission={TMS_STAFFDEBT_EXPORT}
                     ref={this.gridref}
                 />
             </React.Fragment>

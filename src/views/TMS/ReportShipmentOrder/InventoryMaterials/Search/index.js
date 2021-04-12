@@ -22,7 +22,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
+import { SHIPMENTORDER_REPORT_EXPORT, SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
@@ -212,17 +212,13 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
-        let cssNotification = "";
-        let iconNotification = "";
+        let cssNotification, iconNotification;
         if (!IsError) {
-
-            cssNotification = "notification-custom-success"
+            cssNotification = "notification-custom-success";
             iconNotification = "fa fa-check"
-
         } else {
-
-            cssNotification = "notification-danger",
-                iconNotification = "fa fa-exclamation"
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
@@ -244,6 +240,7 @@ class SearchCom extends React.Component {
             dismissable: { click: true }
         });
     }
+
 
     getStatusDelivery(status) {
         switch (status) {
@@ -429,6 +426,7 @@ class SearchCom extends React.Component {
                     RowsPerPage={20}
                     ref={this.gridref}
                     RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    ExportPermission={SHIPMENTORDER_REPORT_EXPORT}
                     IsExportFile={true}
                     DataExport={this.state.dataSimiliGroupExport}
                     fileName="Danh sách báo cáo tồn vật tư ống đồng"
@@ -451,6 +449,7 @@ class SearchCom extends React.Component {
                     RowsPerPage={20}
                     ref={this.gridref}
                     RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    ExportPermission={SHIPMENTORDER_REPORT_EXPORT}
                     IsExportFile={true}
                     DataExport={this.state.dataMaterialGroupExport}
                     fileName="Danh sách báo cáo tồn vật tư khác"

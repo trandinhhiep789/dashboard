@@ -180,7 +180,7 @@ export class Search extends Component {
     }
 
     handleExportFile(result) {
-        this.addNotification(result.Message);
+        this.addNotification(result.Message, result.IsError);
     }
 
 
