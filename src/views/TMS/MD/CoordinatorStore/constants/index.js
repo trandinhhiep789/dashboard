@@ -9,6 +9,7 @@ export const UpdateNewAPIPath = "api/CoordinatorStore/UpdateNew";
 export const DeleteAPIPath = "api/CoordinatorStore/Delete";
 export const DeleteNewAPIPath = "api/CoordinatorStore/DeleteNew";
 export const UpdateOrderAPIPath = "api/CoordinatorStore/UpdateOrder";
+export const APIDataExport = "api/CoordinatorStore/Export";
 export const BackLink = "/CoordinatorStore";
 export const AddLink = "/CoordinatorStore/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
@@ -52,6 +53,19 @@ export const InitSearchParams = [
         SearchKey: "@PAGEINDEX",
         SearchValue: 0
     }
+];
+
+
+export const InitSearchExportParams = [
+
+    {
+        SearchKey: "@ShipmentOrderTypeID",
+        SearchValue: ""
+    },
+    {
+        SearchKey: "@StoreID",
+        SearchValue: ""
+    },
 ];
 
 export const SearchElementList = [
