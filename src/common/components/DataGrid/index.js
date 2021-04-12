@@ -12,6 +12,7 @@ import { MessageModal } from "../Modal";
 import { DEFAULT_ROW_PER_PAGE } from "../../../constants/systemVars.js";
 import GridCell from "./GridCell";
 import GridPage from "./GridPage";
+import GridPageServer from "./getdataserver";
 import { callGetCache, callGetUserCache } from "../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../constants/functionLists";
 import { hideModal } from '../../../actions/modal';
@@ -36,6 +37,7 @@ class DataGridCom extends Component {
         this.handleOneInsertClick = this.handleOneInsertClick.bind(this);
         this.handleImportFile = this.handleImportFile.bind(this);
         this.mediaRenderDataGrid = this.mediaRenderDataGrid.bind(this);
+        this.onChangePageToServerHandle = this.onChangePageToServerHandle.bind(this)
 
         this.checkAll = this.checkAll.bind(this);
         this.getCheckList = this.getCheckList.bind(this);
@@ -178,6 +180,12 @@ class DataGridCom extends Component {
         this.setState({ PageNumber: pageNum });
         const temp = this.checkInputisAll(this.getDisplayDataPageNumber(this.props.dataSource, pageNum), this.state.GridData[this.props.IDSelectColumnName]);
         this.setState({ IsCheckAll: temp });
+    }
+
+    onChangePageToServerHandle(pageNum) {
+        this.setState({ PageNumber: pageNum });
+        if (this.props.onChangePage != null)
+            this.props.onChangePage(pageNum);
     }
 
     checkInputisAll(dataSource, gridData) {
@@ -382,6 +390,18 @@ class DataGridCom extends Component {
 
     clearData() {
         this.setState({ GridData: {}, IsCheckAll: false });
+    }
+
+    getPageCountToServer(dataRows) {
+        if (dataRows == null || dataRows.length == 0)
+            return 1;
+        let rowsPerPage = DEFAULT_ROW_PER_PAGE;
+        if (this.props.RowsPerPage != null && dataRows.length > 0)
+            rowsPerPage = this.props.RowsPerPage;
+        let pageCount = parseInt(Math.ceil(dataRows[0].TotaLRows / rowsPerPage));
+        if (pageCount < 1)
+            pageCount = 1;
+        return pageCount;
     }
 
     getPageCount(dataSource) {
@@ -703,7 +723,14 @@ class DataGridCom extends Component {
                 <input className="w-200px" type="text" name="txtKeyword" placeholder="Search" onKeyPress={this.handleKeyPress} />
             </div>;
         }
-        const pageCount = this.getPageCount(this.props.dataSource);
+        let pageCount;
+        if(this.props.isPaginationServer){
+            pageCount = this.getPageCountToServer(this.props.dataSource);
+        }
+        else{
+            pageCount = this.getPageCount(this.props.dataSource);
+        }
+
         const datagrid = this.mediaRenderDataGrid();
         let hasHeaderToolbar = true;
         if (this.props.isHideHeaderToolbar)
@@ -748,7 +775,6 @@ class DataGridCom extends Component {
         if (this.state.IsPermision === 'error') {
             return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
         }
-        // console.log("this.props", this.props)
         return (
 
             <div className="col-lg-12 SearchForm">
@@ -858,13 +884,21 @@ class DataGridCom extends Component {
                         } */}
 
                         {this.props.RowFooter ? this.props.RowFooter(this.props.dataSource) : ""}
-                        <Media query={{ minWidth: 768 }}>
-                            {matches =>
-                                matches
-                                    ? (this.props.IsAutoPaging && <GridPage numPage={pageCount} currentPage={this.state.PageNumber} maxPageShow={10} onChangePage={this.onChangePageHandle} />)
-                                    : (this.props.IsAutoPaging && <GridPage numPage={pageCount} currentPage={this.state.PageNumber} maxPageShow={5} onChangePage={this.onChangePageHandle} />)
-                            }
-                        </Media>
+
+                        {
+                            this.props.isPaginationServer == true ?
+                                (this.props.IsAutoPaging && <GridPage numPage={pageCount} currentPage={this.state.PageNumber}  onChangePage={this.onChangePageToServerHandle} />)
+                                :
+                                <Media query={{ minWidth: 768 }}>
+                                    {matches =>
+                                        matches
+                                            ? (this.props.IsAutoPaging && <GridPage numPage={pageCount} currentPage={this.state.PageNumber} maxPageShow={10} onChangePage={this.onChangePageHandle} />)
+                                            : (this.props.IsAutoPaging && <GridPage numPage={pageCount} currentPage={this.state.PageNumber} maxPageShow={5} onChangePage={this.onChangePageHandle} />)
+                                    }
+                                </Media>
+                        }
+
+
 
                         {HideHeaderToolbarGroupTextBox &&
                             <div className="flexbox mb-20 ">
