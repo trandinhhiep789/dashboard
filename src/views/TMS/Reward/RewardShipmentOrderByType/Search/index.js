@@ -51,7 +51,7 @@ class SearchCom extends React.Component {
             params: param
         })
         this.props.updatePagePath(PagePath);
-         this.handleCallData();
+        // this.handleCallData();
     }
 
    
