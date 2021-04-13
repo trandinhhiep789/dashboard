@@ -152,11 +152,10 @@ class EditCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.CoordinatorStoreID = this.props.match.params.id.trim();
-        console.log(MLObject)
-        // this.props.callFetchAPI(APIHostName, UpdateNewAPIPath, MLObject).then(apiResult => {
-        //     this.setState({ IsCallAPIError: apiResult.IsError });
-        //     this.showMessage(apiResult.Message);
-        // });
+        this.props.callFetchAPI(APIHostName, UpdateNewAPIPath, MLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
+        });
     }
 
 
@@ -265,11 +264,20 @@ class EditCom extends React.Component {
     }
 
     handleImportFile(resultRows, errors) {
-        console.log('handleImportFile', resultRows, errors)
+        const arrResultRows = resultRows.map(item => {
+            const { DistrictID, DistrictName, ProvinceID, ProvinceName, WardID, WardName } = item
+            return {
+                ...item,
+                DistrictFullName: `${DistrictID} - ${DistrictName}`,
+                ProvinceFullName: `${ProvinceID} - ${ProvinceName}`,
+                WardFullName: `${WardID} - ${WardName}`
+            }
+        })
+
         this.setState({
             DataSource: {
                 ...this.state.DataSource,
-                CoordinatorStoreWard_ItemList: [...this.state.DataSource.CoordinatorStoreWard_ItemList, ...resultRows]
+                CoordinatorStoreWard_ItemList: [...this.state.DataSource.CoordinatorStoreWard_ItemList, ...arrResultRows]
             }
         })
         // this.props.callFetchAPI(APIHostName, AddAutoAPIPath, resultRows).then(apiResult => {
