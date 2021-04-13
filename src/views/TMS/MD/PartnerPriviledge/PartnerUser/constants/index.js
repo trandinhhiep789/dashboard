@@ -471,7 +471,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtFullName",
-        label: "Họ tên đầy đủ:",
+        label: "họ tên đầy đủ:",
         value: "",
         maxSize: "400",
         placeholder: "",
@@ -479,7 +479,7 @@ export const EditElementList = [
         listoption: [],
         DataSourceMember: "FullName",
         readonly: false,
-        validatonList: []
+        validatonList: ["required"]
     },
     // {
     //     type: "text",

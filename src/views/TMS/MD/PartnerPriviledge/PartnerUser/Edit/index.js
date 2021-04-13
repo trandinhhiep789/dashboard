@@ -224,7 +224,7 @@ class EditCom extends React.Component {
 
                     this.setState({
                         DataSource: apiResult.ResultObject,
-                        PassWord: apiResult.ResultObject.PassWord,
+                        PassWordOld: apiResult.ResultObject.PassWord,
                         PassWordConfirm: apiResult.ResultObject.PassWord,
                         ListPartnerUser_IDDocument: apiResult.ResultObject.ListPartnerUser_IDDocument,
                         Birthday: apiResult.ResultObject.Birthday,
@@ -540,7 +540,7 @@ class EditCom extends React.Component {
             return false;
         }
 
-        
+
 
         MLObject.FullName = MLObject.FullName.toUpperCase();
 
@@ -581,9 +581,10 @@ class EditCom extends React.Component {
         // }
 
         if (!MLObject.PassWord) {
-            MLObject.PassWord = this.state.PassWord;
+            MLObject.PassWord = this.state.PassWordOld;
         } else {
-            MLObject.RawPass = PassWord;
+            MLObject.OldPassWord = MD5Digest(MLObject.OldPassWord);
+            MLObject.RawPass = MD5Digest(PassWord);
             MLObject.PassWord = MD5Digest(PassWord);
         }
 

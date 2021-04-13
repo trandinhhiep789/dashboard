@@ -259,7 +259,7 @@ class SearchCom extends React.Component {
 
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-                        MLObject.RawPass = PassWord;
+                        MLObject.RawPass = MD5Digest(PassWord);
                         MLObject.PassWord = MD5Digest(PassWord);
                         MLObject.FirstName = firstName.trim();
                         MLObject.LastName = lastName.trim();
@@ -282,7 +282,7 @@ class SearchCom extends React.Component {
                         }
 
 
-                        
+
 
 
 
