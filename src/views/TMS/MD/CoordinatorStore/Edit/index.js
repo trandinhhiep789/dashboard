@@ -45,6 +45,7 @@ class EditCom extends React.Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.addNotification = this.addNotification.bind(this);
+        this.convertDataCoordinatorStoreWard = this.convertDataCoordinatorStoreWard.bind(this)
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -58,7 +59,8 @@ class EditCom extends React.Component {
             SenderStoreID: "",
             SenderStoreSelect: [],
             IsSystem: false,
-            DataTemplateExport
+            DataTemplateExport,
+            DbCoordinatorStoreWard: []
         };
         this.searchref = React.createRef();
         this.gridref = React.createRef();
@@ -69,7 +71,6 @@ class EditCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
         this.callLoadData(this.props.match.params.id);
-
     }
 
     handleCloseMessage() {
@@ -105,6 +106,8 @@ class EditCom extends React.Component {
                     IsShowCustomerAddress = true
                 }
 
+                this.convertDataCoordinatorStoreWard(apiResult.ResultObject.CoordinatorStoreWard_ItemList)
+
                 this.setState({
                     DataSource: apiResult.ResultObject,
                     IsLoadDataComplete: true,
@@ -116,6 +119,23 @@ class EditCom extends React.Component {
         });
     }
 
+    convertDataCoordinatorStoreWard(CoordinatorStoreWard_ItemList) {
+        try {
+            const arrResult = CoordinatorStoreWard_ItemList.map(item => {
+                const { DistrictID, DistrictName, ProvinceID, ProvinceName, WardID, WardName } = item
+                item.DistrictFullName = `${DistrictID} - ${DistrictName}`;
+                item.ProvinceFullName = `${ProvinceID} - ${ProvinceName}`;
+                item.WardFullName = `${WardID} - ${WardName}`;
+                return item;
+            })
+
+            this.setState({
+                DbCoordinatorStoreWard: arrResult
+            })
+        } catch (error) {
+            this.showMessage("Lỗi lấy danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối")
+        }
+    }
 
     showMessage(message) {
         ModalManager.open(
@@ -132,10 +152,11 @@ class EditCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.CoordinatorStoreID = this.props.match.params.id.trim();
-        this.props.callFetchAPI(APIHostName, UpdateNewAPIPath, MLObject).then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.Message);
-        });
+        console.log(MLObject)
+        // this.props.callFetchAPI(APIHostName, UpdateNewAPIPath, MLObject).then(apiResult => {
+        //     this.setState({ IsCallAPIError: apiResult.IsError });
+        //     this.showMessage(apiResult.Message);
+        // });
     }
 
 
@@ -281,7 +302,6 @@ class EditCom extends React.Component {
                     <div className="row">
                         <div className="col-md-6">
                             <FormControl.ComboBoxSelect
-
                                 name="cbShipmentOrderTypeID"
                                 colspan="8"
                                 labelcolspan="4"
@@ -301,7 +321,6 @@ class EditCom extends React.Component {
                         </div>
                         <div className="col-md-6">
                             <FormControl.FormControlComboBox
-
                                 name="cbPartnerID"
                                 colspan="8"
                                 labelcolspan="4"
@@ -321,12 +340,10 @@ class EditCom extends React.Component {
                                 filterValue={1}
                                 filterobj="PartnerTypeID"
                             />
-
                         </div>
 
                         <div className="col-md-6">
                             <FormControl.FormControlComboBox
-
                                 name="cbStoreID"
                                 colspan="8"
                                 labelcolspan="4"
@@ -423,7 +440,7 @@ class EditCom extends React.Component {
                         IDSelectColumnName={"WardID"}
                         listColumn={DataGridColumnList}
                         PKColumnName={"WardID"}
-                        dataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
+                        dataSource={this.state.DbCoordinatorStoreWard}
                         // value={null}
                         onInsertClick={this.handleInsertNew}
                         onEditClick={this.handleEdit}
@@ -434,7 +451,7 @@ class EditCom extends React.Component {
                         onImportFile={this.handleImportFile.bind(this)}
                         isExportFileTemplate={true}
                         DataTemplateExport={this.state.DataTemplateExport}
-                        fileNameTemplate={"File mẫu"}
+                        fileNameTemplate={"Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối"}
                         onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                     />
 

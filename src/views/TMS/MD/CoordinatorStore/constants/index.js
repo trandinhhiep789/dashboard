@@ -125,26 +125,26 @@ export const SearchMLObjectDefinition = [
 export const DataGridColumnList = [
 
     {
-        Name: "ProvinceName",
+        Name: "ProvinceFullName",
         Type: "text",
         Caption: "Tỉnh/thành phố",
-        DataSourceMember: "ProvinceName",
+        DataSourceMember: "ProvinceFullName",
         Width: 200
     },
 
     {
-        Name: "DistrictName",
+        Name: "DistrictFullName",
         Type: "text",
         Caption: "Quận/huyện",
-        DataSourceMember: "DistrictName",
+        DataSourceMember: "DistrictFullName",
         Width: 200
     },
 
     {
-        Name: "WardName",
+        Name: "WardFullName",
         Type: "text",
         Caption: "Phường/xã",
-        DataSourceMember: "WardName",
+        DataSourceMember: "WardFullName",
         Width: 200
     },
 
@@ -371,12 +371,12 @@ export const DataGridCoordinatorStoreColumnList = [
 
 
 export const schema = {
-    'Mã tỉnh': {
+    'Mã Tỉnh': {
         prop: 'ProvinceID',
         type: String,
         required: true
     },
-    'Tên tỉnh': {
+    'Tên Tỉnh': {
         prop: 'ProvinceName',
         type: String
     },
@@ -389,11 +389,11 @@ export const schema = {
         prop: 'DistrictName',
         type: String
     },
-    'Tên phường/ xã': {
+    'Tên Phường/ Xã': {
         prop: 'WardName',
         type: String
     },
-    'Mã phường/ xã': {
+    'Mã Phường/ Xã': {
         prop: 'WardID',
         type: String,
         required: true
@@ -404,12 +404,23 @@ export const schema = {
     },
 }
 
-export const DataTemplateExport = [{
-    "Mã tỉnh": "",
-    "Tên tỉnh": "",
-    "Mã Huyện/ Quận": "",
-    "Tên Huyện/ Quận": "",
-    "Mã phường/ xã": "",
-    "Tên phường/ xã": "",
-    "Hệ thống": ""
-}];
+export const DataTemplateExport = [
+    {
+        "Mã Tỉnh": "102",
+        "Tên Tỉnh": "Bà Rịa - Vũng Tàu",
+        "Mã Huyện/ Quận": "887",
+        "Tên Huyện/ Quận": "Huyện Côn Đảo",
+        "Mã Phường/ Xã": "182",
+        "Tên Phường/ Xã": "Thị trấn Côn Đảo",
+        "Hệ thống": "0"
+    },
+    {
+        "Mã Tỉnh": "109",
+        "Tên Tỉnh": "Bình Dương",
+        "Mã Huyện/ Quận": "2022",
+        "Tên Huyện/ Quận": "Huyện Bắc Tân Uyên",
+        "Mã Phường/ Xã": "1112",
+        "Tên Phường/ Xã": "Xã Lạc An",
+        "Hệ thống": "1"
+    },
+];
