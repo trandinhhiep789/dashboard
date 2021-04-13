@@ -101,17 +101,17 @@ export const AddElementList = [
     //     readonly: false,
     //     validatonList: ["number"]
     // },
-    {
-        type: "checkbox",
-        name: "chkIsActived",
-        label: "Kích hoạt:",
-        value: true,
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        readonly: false,
-        validatonList: []
-    },
+    // {
+    //     type: "checkbox",
+    //     name: "chkIsActived",
+    //     label: "Kích hoạt:",
+    //     value: false,
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: {},
+    //     readonly: false,
+    //     validatonList: []
+    // },
     {
         type: "checkbox",
         name: "chkIsSystem",
