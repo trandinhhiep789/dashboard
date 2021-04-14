@@ -57,7 +57,7 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         this.callSearchData(this.state.SearchData);
-        this.testMObi();
+        //this.testMObi();
     }
 
     testMObi(){
