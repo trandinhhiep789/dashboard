@@ -640,3 +640,22 @@ $font-weight-600: 600;
         }
     }
 }
+
+.row {
+    .page-detail {
+        .Collapsible {
+
+            .card-body {
+                .form-row {
+                    .table-responsive {
+                        .table {
+                            .row-main-product {
+                                background-color: #ececec;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
