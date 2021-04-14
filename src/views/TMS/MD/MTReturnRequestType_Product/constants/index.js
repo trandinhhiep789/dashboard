@@ -184,7 +184,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Nhóm vật tư",
         DataSourceMember: "MaterialGroupName",
-        Width: 200
+        Width: 160
     },
     // {
     //     Name: "ProductID",
@@ -198,12 +198,12 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Vật tư",
         DataSourceMember: "ProductName",
-        Width: 200
+        Width: 230
     },
     {
         Name: "IsCheckMinMaxQuality",
         Type: "checkicon",
-        Caption: "Kiểm tra số lượng lớn nhất, nhỏ nhất",
+        Caption: "Kiểm tra SL lớn nhất, nhỏ nhất",
         DataSourceMember: "IsCheckMinMaxQuality",
         Width: 160
     },
@@ -212,21 +212,30 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Số lượng nhỏ nhất",
         DataSourceMember: "MinQuality",
-        Width: 120
+        Width: 100
     },
     {
         Name: "MaxQuality",
         Type: "text",
         Caption: "Số lượng lớn nhất",
         DataSourceMember: "MaxQuality",
-        Width: 120
+        Width: 100
     },
+
+    {
+        Name: "InventoryStatusName",
+        Type: "text",
+        Caption: "Trạng thái tồn kho",
+        DataSourceMember: "InventoryStatusName",
+        Width: 100
+    },
+
     {
         Name: "EditProductIDMaterialGroupID",
         Type: "edit",
         Caption: "Sửa",
         DataSourceMember: "ProductID,MaterialGroupID",
-        Width: 100
+        Width: 80
     }
 
 ];
@@ -285,5 +294,11 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "InventoryStatusID",
         DataSourceMember: "InventoryStatusID"
+    },
+    {
+        Name: "InventoryStatusName",
+        DefaultValue: "",
+        BindControlName: "InventoryStatusName",
+        DataSourceMember: "InventoryStatusName"
     },
 ];
