@@ -1011,7 +1011,16 @@ const AppMenu = [
                 LinkTo: '/InventoryMaterials',
                 MenuIcon: '',
                 SubMenu: []
+            },
+
+            {
+                MenuName: ' ComprehensiveReport',
+                MenuTitle: 'Báo cáo tổng hợp',
+                LinkTo: '/ComprehensiveReport',
+                MenuIcon: '',
+                SubMenu: []
             }
+
         ]
     },
     {
