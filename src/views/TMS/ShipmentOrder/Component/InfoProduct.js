@@ -19,6 +19,8 @@ class InfoProductCom extends Component {
             ShipmentOrder_FeeLst: [],
             ShipmentOrder_CodUpdLogLst: []
         }
+        this.treeDataShipmentOrderItemList = this.treeDataShipmentOrderItemList.bind(this)
+        this.groupArrayOfObjects = this.groupArrayOfObjects.bind(this)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -171,6 +173,67 @@ class InfoProductCom extends Component {
             },
             maxWidth: '1000px'
         });
+    }
+
+    groupArrayOfObjects(list, key) {
+        try {
+            return list.reduce(function (rv, x) {
+                (rv[x[key].trim()] = rv[x[key].trim()] || []).push(x)
+                return rv
+            }, {});
+        } catch (error) {
+            return {}
+        }
+    }
+
+
+    treeDataShipmentOrderItemList(data) {
+        const paramGroup = ['ProductID', 'ProductName', 'ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']
+
+        try {
+            const arrMainProduct = data.filter(item => item.RelateProductID.trim() == "")
+            const arrPromotionProduct = data.filter(item => item.RelateProductID.trim() != "")
+            const objGroupMainProduct = this.groupArrayOfObjects(arrMainProduct, "ProductID")
+
+            let arrResult = []
+            let clonePromotionProduct = [...arrPromotionProduct]
+
+            for (const key in objGroupMainProduct) {
+                const arrGroupMainProduct
+                    = this.groupBy(objGroupMainProduct[key], paramGroup)
+                        .sort((a, b) => (b.Price > a.Price) ? 1 : -1)
+                        .map(obj => ({ ...obj, isMainProduct: true }))
+
+
+                arrResult.push(...arrGroupMainProduct)
+
+                let arrMatch = [], arrTempPromotionProduct = []
+
+                clonePromotionProduct.forEach((promotionProduct, index) => {
+                    if (key.trim() == promotionProduct.RelateProductID.trim()) {
+                        arrTempPromotionProduct.push(promotionProduct)
+                        arrMatch.push(index)
+                    }
+                })
+
+                const arrGroupPromotionProduct
+                    = this.groupBy(arrTempPromotionProduct, paramGroup)
+                        .sort((a, b) => (b.Price > a.Price) ? 1 : -1)
+                        .map(obj => ({ ...obj, isMainProduct: false }))
+
+                arrResult.push(...arrGroupPromotionProduct)
+
+                arrMatch.sort((a, b) => b - a)
+                arrMatch.forEach(item => {
+                    clonePromotionProduct.splice(item, 1)
+                })
+            }
+
+            return arrResult
+        } catch (error) {
+            const result = this.groupBy(data, paramGroup).sort((a, b) => (b.Price > a.Price) ? 1 : -1)
+            return result
+        }
     }
 
 
@@ -359,7 +422,7 @@ class InfoProductCom extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {
+                                        {/* {
                                             this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName', 'ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).sort((a, b) => (b.Price > a.Price) ? 1 : -1).map((item, index) => {
                                                 return (
                                                     <tr key={"Product" + index}>
@@ -383,11 +446,36 @@ class InfoProductCom extends Component {
                                                     </tr>
                                                 )
                                             })
+                                        } */}
+                                        {
+                                            this.state.ShipmentOrder.ShipmentOrder_ItemList
+                                            && this.treeDataShipmentOrderItemList(this.state.ShipmentOrder.ShipmentOrder_ItemList).map((item, index) => {
+                                                return <tr key={"Product" + index} className={item.isMainProduct ? "row-main-product" : undefined}>
+                                                    <td>
+                                                        <div className="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsInstallItem} />
+                                                                <span className="cr">
+                                                                    <i className="cr-icon fa fa-check"></i>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                    <td>{item.ProductID}</td>
+                                                    <td>{item.ProductName}</td>
+                                                    <td>{item.ProductSerial}</td>
+                                                    <td>{item.PackingUnitName}</td>
+                                                    <td>{formatMoney(item.Price, 0)}đ</td>
+                                                    <td>{item.Quantity}</td>
+                                                    <td>{item.QuantityUnitName}</td>
+                                                </tr>
+                                            })
                                         }
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
                         {this.state.ShipmentOrder.ReturnItemList.length > 0 ?
                             (<div className="form-row">
                                 <div className="col-md-12">
