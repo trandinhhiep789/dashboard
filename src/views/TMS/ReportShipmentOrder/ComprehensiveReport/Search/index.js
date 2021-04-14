@@ -23,7 +23,8 @@ export class Search extends Component {
         super(props)
 
         this.state = {
-            dataSource: []
+            dataSource: [],
+            IsShowForm: false
         }
 
         this.searchref = React.createRef()
@@ -32,6 +33,7 @@ export class Search extends Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+        this.showMessage("Tính năng đang phát triển.")
     }
 
     handleCloseMessage() {
@@ -52,39 +54,49 @@ export class Search extends Component {
     render() {
 
         const { dataSource } = this.state
-
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
-
-                <SearchForm
-                    FormName="Tìm kiếm báo cáo tổng hợp"
-                    listelement={SearchElementList}
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    onSubmit={this.handleSearchSubmit.bind(this)}
-                    ref={this.searchref}
-                    className="multiple"
-                />
-
-                <DataGrid
-                    listColumn={ListColumnGrid}
-                    dataSource={dataSource}
-                    IsFixheaderTable={false}
-                    // IDSelectColumnName={}
-                    PKColumnName={""}
-                    isHideHeaderToolbar={false}
-                    IsShowButtonAdd={false}
-                    IsShowButtonDelete={false}
-                    IsShowButtonPrint={false}
-                    IsPrint={false}
-                    IsAutoPaging={true}
-                    RowsPerPage={20}
-                    ref={this.gridref}
-                    RequirePermission={SHIPMENTORDER_REPORT_VIEW}
-                />
-
-            </React.Fragment>
-        )
+        if (this.state.IsShowForm) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+    
+                    <SearchForm
+                        FormName="Tìm kiếm báo cáo tổng hợp"
+                        listelement={SearchElementList}
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        onSubmit={this.handleSearchSubmit.bind(this)}
+                        ref={this.searchref}
+                        className="multiple"
+                    />
+    
+                    <DataGrid
+                        listColumn={ListColumnGrid}
+                        dataSource={dataSource}
+                        IsFixheaderTable={false}
+                        // IDSelectColumnName={}
+                        PKColumnName={""}
+                        isHideHeaderToolbar={false}
+                        IsShowButtonAdd={false}
+                        IsShowButtonDelete={false}
+                        IsShowButtonPrint={false}
+                        IsPrint={false}
+                        IsAutoPaging={true}
+                        RowsPerPage={20}
+                        ref={this.gridref}
+                        RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    />
+    
+                </React.Fragment>
+            )
+        }
+        else{
+            return (
+                <div>
+                    <label>Đang nạp dữ liệu ......</label>
+                </div>
+            )
+        }
+        
+        
     }
 }
 
