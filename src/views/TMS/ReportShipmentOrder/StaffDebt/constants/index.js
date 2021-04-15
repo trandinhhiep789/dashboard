@@ -4,6 +4,7 @@ export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/StaffDebt/Search";
 export const SearchUnlockLogAPIPath = "api/StaffDebt_unLockLog/Search";
 export const SearchExportAPIPath = "api/StaffDebt/SearchExport";
+export const SearchWithinPaginationAPI = "api/StaffDebt/SearchNew";
 export const UpdateUnlockAPIPath = "api/StaffDebt/UpdateUnlock";
 export const SearchDetailAPIPath = "api/StaffDebtDetail/Search";
 
@@ -31,14 +32,18 @@ export const InitSearchParams = [
         SearchKey: "@STOREID",
         SearchValue: -1
     },
-    // {
-    //     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-    //     SearchValue: -1
-    // },
-    // {
-    //     SearchKey: "@RECEIVERDISTRICTID",
-    //     SearchValue: -1
-    // },
+    {
+        SearchKey: "@ISLOCKDELIVERY",
+        SearchValue: -1
+    },
+    {
+        SearchKey: "@PAGESIZE",
+        SearchValue: 20
+    },
+    {
+        SearchKey: "@PAGEINDEX",
+        SearchValue: 0
+    }
 
 ];
 

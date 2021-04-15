@@ -55,18 +55,20 @@ class DataGirdHistoryStaffDebtCom extends Component {
                     </div>
                 </div>
 
-                <DataGrid
-                    listColumn={DataGirdStaffDebtHistoryColumnList}
-                    dataSource={dataSource}
-                    IDSelectColumnName={"strunLockLogID"}
-                    PKColumnName={"strunLockLogID"}
-                    IsDelete={false}
-                    IsAutoPaging={true}
-                    IsShowButtonAdd={false}
-                    IsShowButtonDelete={false}
-                    RowsPerPage={10}
-                    IsExportFile={false}
-                />
+                {
+                    dataSource.length > 0 && <DataGrid
+                        listColumn={DataGirdStaffDebtHistoryColumnList}
+                        dataSource={dataSource}
+                        IDSelectColumnName={"strunLockLogID"}
+                        PKColumnName={"strunLockLogID"}
+                        IsDelete={false}
+                        IsAutoPaging={true}
+                        IsShowButtonAdd={false}
+                        IsShowButtonDelete={false}
+                        RowsPerPage={10}
+                        IsExportFile={false}
+                    />
+                }
             </React.Fragment>
         );
     }
