@@ -41,6 +41,7 @@ class SearchCom extends React.Component {
         // this.callSearchData = this.callSearchData.bind(this);
         this.callDataFirstPage = this.callDataFirstPage.bind(this);
         this.callDataThroughtPage = this.callDataThroughtPage.bind(this);
+        this.handleExportCSV = this.handleExportCSV.bind(this);
 
         this.state = {
             IsCallAPIError: false,
@@ -422,7 +423,7 @@ class SearchCom extends React.Component {
         ];
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log(apiResult)
+
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const tempDataExport = apiResult.ResultObject.map((item, index) => {
@@ -457,29 +458,20 @@ class SearchCom extends React.Component {
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         const fileExtension = '.xlsx';
         const fileName = 'Danh sách quản lý công nợ';
-        let result;
-        if (dataExport.length == 0) {
-            result = {
-                IsError: true,
-                Message: "Dữ liệu không tồn tại. Không thể xuất file!"
-            };
+
+        const ws = XLSX.utils.json_to_sheet(dataExport);
+        const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        const data = new Blob([excelBuffer], { type: fileType });
+
+        FileSaver.saveAs(data, fileName + fileExtension);
+
+        const result = {
+            IsError: false,
+            Message: "Xuất file thành công!"
         }
-        else {
 
-            const ws = XLSX.utils.json_to_sheet(dataExport);
-            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
-            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-            const data = new Blob([excelBuffer], { type: fileType });
-
-
-            FileSaver.saveAs(data, fileName + fileExtension);
-
-            result = {
-                IsError: false,
-                Message: "Xuất file thành công!"
-            };
-            this.addNotification(result.Message, result.IsError);
-        }
+        this.addNotification(result.Message, result.IsError);
     }
 
     render() {
