@@ -496,8 +496,8 @@ class Area_StoreCom extends React.Component {
     }
 
     render() {
-        let datasource = this.state.AreaStoreDataSource.filter(item => item.IsDeleted == undefined || item.IsDeleted == false);
-        datasource = this.initDatasource(datasource);
+        //let datasource = this.state.AreaStoreDataSource.filter(item => item.IsDeleted == undefined || item.IsDeleted == false);
+        //datasource = this.initDatasource(datasource);
 
 
         if (this.state.IsCloseForm) {
@@ -519,7 +519,7 @@ class Area_StoreCom extends React.Component {
             <div className="sub-grid detail">
                 <ReactNotification ref={this.notificationDOMRef} />
                 <DataGrid listColumn={DataGridColumnList}
-                    dataSource={datasource}
+                    dataSource={this.state.AreaStoreDataSource}
                     modalElementList={ModalColumnList_Insert}
                     MLObjectDefinition={MLObjectDefinition}
                     IDSelectColumnName={"chkSelectAreaStoreCSID"}
