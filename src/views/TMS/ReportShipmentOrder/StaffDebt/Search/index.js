@@ -98,7 +98,7 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@PAGESIZE",
-                SearchValue: 20
+                SearchValue: 50
             },
             {
                 SearchKey: "@PAGEINDEX",
@@ -398,11 +398,30 @@ class SearchCom extends React.Component {
     // }
 
     handleExportSubmit(formData, MLObject) {
-        const { SearchData } = this.state
-        const tempSearchData = [...SearchData]
-        tempSearchData.splice(5)
+        const searchData = [
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
+            },
+            {
+                SearchKey: "@USERNAME",
+                SearchValue: MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
+            },
+            {
+                SearchKey: "@STOREID",
+                SearchValue: MLObject.CoordinatorStoreID != "" ? MLObject.CoordinatorStoreID : -1
+            },
+            {
+                SearchKey: "@ISLOCKDELIVERY",
+                SearchValue: MLObject.DeliveryStatus
+            }
+        ];
 
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, tempSearchData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             console.log(apiResult)
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
@@ -499,7 +518,7 @@ class SearchCom extends React.Component {
                     fileName="Danh sách quản lý công nợ"
                     // onExportFile={this.handleExportFile.bind(this)}
                     IsAutoPaging={true}
-                    RowsPerPage={20}
+                    RowsPerPage={50}
                     RequirePermission={TMS_STAFFDEBT_VIEW}
                     ExportPermission={TMS_STAFFDEBT_EXPORT}
                     ref={this.gridref}
