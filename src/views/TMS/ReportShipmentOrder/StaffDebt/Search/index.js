@@ -16,7 +16,8 @@ import {
     InitSearchParams,
     UpdateUnlockAPIPath,
     SearchDetailAPIPath,
-    SearchExportAPIPath
+    SearchExportAPIPath,
+    SearchWithinPaginationAPI
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -37,7 +38,9 @@ class SearchCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-        this.callSearchData = this.callSearchData.bind(this);
+        // this.callSearchData = this.callSearchData.bind(this);
+        this.callDataFirstPage = this.callDataFirstPage.bind(this);
+        this.callDataThroughtPage = this.callDataThroughtPage.bind(this);
 
         this.state = {
             IsCallAPIError: false,
@@ -45,7 +48,8 @@ class SearchCom extends React.Component {
             IsLoadDataComplete: false,
             SearchData: InitSearchParams,
             widthPercent: "",
-            dataExport: []
+            dataExport: [],
+            PageNumber: 1
 
         };
         this.gridref = React.createRef();
@@ -55,7 +59,7 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        this.callSearchData(this.state.SearchData);
+        this.callDataFirstPage(this.state.SearchData)
         window.addEventListener("resize", this.updateWindowDimensions);
     }
 
@@ -92,16 +96,26 @@ class SearchCom extends React.Component {
                 SearchKey: "@ISLOCKDELIVERY",
                 SearchValue: MLObject.DeliveryStatus
             },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: 20
+            },
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: 0
+            }
 
         ];
 
-        this.callSearchData(postData)
+        this.setState({
+            SearchData: postData
+        })
+
+        this.callDataFirstPage(postData)
     }
 
-    callSearchData(searchData) {
-
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", searchData, apiResult)
+    callDataFirstPage(searchData) {
+        this.props.callFetchAPI(APIHostName, SearchWithinPaginationAPI, searchData).then(apiResult => {
             if (!apiResult.IsError) {
                 let objStaffDebtID = {}
                 const tempData = apiResult.ResultObject.map((item, index) => {
@@ -121,25 +135,8 @@ class SearchCom extends React.Component {
                     return item;
                 })
 
-                const tempDataExport = apiResult.ResultObject.map((item, index) => {
-                    let element = {
-                        "Mã NV nợ": item.FullNameMember,
-                        "Kho điều phối": item.StoreID + "-" + item.StoreName,
-                        "Tổng tiền phải thu hộ": item.TotalCOD,
-                        "Tổng tiền phải thu vật tư": item.TotlSleMaterialMoney,
-                        "Tổng tiền phải thu": item.TotalMoney,
-                        "Tổng tiền đã thu của khách hàng": item.CollectedTotalMoney,
-                        "Tổng vận đơn còn nợ": item.TotalDebtOrders,
-                        "Tổng vận đơn nợ quá hạn": item.TotALoverDueDebtOrders,
-                        "Tình trạng": item.IsLockDelivery == false ? "Hoạt động" : "Đã khóa",
-                    };
-
-                    return element;
-                })
-
                 this.setState({
-                    gridDataSource: tempData,
-                    dataExport: tempDataExport,
+                    gridDataSource: tempData
                 })
             }
             else {
@@ -148,8 +145,90 @@ class SearchCom extends React.Component {
                 })
                 this.showMessage(apiResult.MessageDetail)
             }
-        });
+        })
     }
+
+    callDataThroughtPage(PageNumber) {
+        const { SearchData } = this.state
+
+        const listMLObject = Object.assign([], SearchData, {
+            [6]: {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: PageNumber - 1
+            }
+        });
+
+        this.props.callFetchAPI(APIHostName, SearchWithinPaginationAPI, listMLObject).then(apiResult => {
+            if (!apiResult.IsError) {
+                let objStaffDebtID = {}
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                    objStaffDebtID = {
+                        UserName: item.UserName,
+                        StoreID: item.StoreID
+                    }
+                    item.StaffDebtID = Base64.encode(JSON.stringify(objStaffDebtID));
+                    item.FullNameMember = item.UserName + " - " + item.FullName
+                    item.Note = "Xem"
+                    if (item.IsLockDelivery) {
+                        item.DeliveryStatus = <span className='lblstatusLock'>Đã khóa</span>;
+                    }
+                    else {
+                        item.DeliveryStatus = <span className='lblstatusUnlock'>Hoạt động</span>;
+                    }
+                    return item;
+                })
+
+                this.setState({
+                    gridDataSource: tempData
+                })
+            }
+            else {
+                this.setState({
+                    gridDataSource: []
+                })
+                this.showMessage(apiResult.MessageDetail)
+            }
+        })
+    }
+
+    handleonChangePage(PageNumber) {
+        this.callDataThroughtPage(PageNumber)
+
+        this.setState({
+            PageNumber
+        })
+    }
+
+    // callSearchData(searchData) {
+
+    //     this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+    //         if (!apiResult.IsError) {
+
+    //             const tempDataExport = apiResult.ResultObject.map((item, index) => {
+    //                 let element = {
+    //                     "Mã NV nợ": item.FullNameMember,
+    //                     "Kho điều phối": item.StoreID + "-" + item.StoreName,
+    //                     "Tổng tiền phải thu hộ": item.TotalCOD,
+    //                     "Tổng tiền phải thu vật tư": item.TotlSleMaterialMoney,
+    //                     "Tổng tiền phải thu": item.TotalMoney,
+    //                     "Tổng tiền đã thu của khách hàng": item.CollectedTotalMoney,
+    //                     "Tổng vận đơn còn nợ": item.TotalDebtOrders,
+    //                     "Tổng vận đơn nợ quá hạn": item.TotALoverDueDebtOrders,
+    //                     "Tình trạng": item.IsLockDelivery == false ? "Hoạt động" : "Đã khóa",
+    //                 };
+
+    //                 return element;
+    //             })
+
+    //             this.setState({
+    //                 dataExport: tempDataExport
+    //             })
+    //         }
+    //         else {
+    //             this.showMessage(apiResult.MessageDetail)
+    //         }
+    //     });
+    // }
 
     showMessage(message) {
         ModalManager.open(
@@ -210,7 +289,7 @@ class SearchCom extends React.Component {
 
         this.props.callFetchAPI(APIHostName, UpdateUnlockAPIPath, objDataRequest).then(apiResult => {
             this.addNotification(apiResult.Message, apiResult.IsError)
-            this.callSearchData(this.state.SearchData)
+            this.callDataFirstPage(this.state.SearchData)
         });
     }
 
@@ -250,7 +329,7 @@ class SearchCom extends React.Component {
 
     }
 
-    onShowModalHistory(dataSource, dataItem) {
+    onShowModalHistory(dataSource = [], dataItem) {
         const { widthPercent } = this.state;
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: "Danh sách lịch sử quản lý công nợ",
@@ -314,23 +393,17 @@ class SearchCom extends React.Component {
 
     }
 
-    handleExportFile(result) {
-        this.addNotification(result.Message, result.IsError);
-    }
+    // handleExportFile() {
+    // this.addNotification(result.Message, result.IsError);
+    // }
 
     handleExportSubmit(formData, MLObject) {
-        const postData = [
-            {
-                SearchKey: "@USERNAME",
-                SearchValue: MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
-            },
-            {
-                SearchKey: "@STOREID",
-                SearchValue: MLObject.CoordinatorStoreID != "" ? MLObject.CoordinatorStoreID : -1
-            },
+        const { SearchData } = this.state
+        const tempSearchData = [...SearchData]
+        tempSearchData.splice(5)
 
-        ];
-        this.props.callFetchAPI(APIHostName, SearchExportAPIPath, postData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, tempSearchData).then(apiResult => {
+            console.log(apiResult)
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const tempDataExport = apiResult.ResultObject.map((item, index) => {
@@ -421,15 +494,18 @@ class SearchCom extends React.Component {
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={false}
                     IsPrint={false}
-                    IsExportFile={true}
-                    DataExport={this.state.dataExport}
+                    IsExportFile={false}
+                    // DataExport={[]}
                     fileName="Danh sách quản lý công nợ"
-                    onExportFile={this.handleExportFile.bind(this)}
+                    // onExportFile={this.handleExportFile.bind(this)}
                     IsAutoPaging={true}
                     RowsPerPage={20}
                     RequirePermission={TMS_STAFFDEBT_VIEW}
                     ExportPermission={TMS_STAFFDEBT_EXPORT}
                     ref={this.gridref}
+                    isPaginationServer={true}
+                    onChangePage={this.handleonChangePage.bind(this)}
+                    PageNumber={this.state.PageNumber}
                 />
             </React.Fragment>
         );
