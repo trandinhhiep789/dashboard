@@ -143,6 +143,7 @@ import DeliveryGoodsGroup from "../TMS/MD/DeliveryGoodsGroup";
 import DeliveryTimeFrame from "../TMS/MD/DeliveryTimeFrame";
 import WeekDay from "../TMS/MD/WeekDay";
 import DeliveryAbility from '../../views/TMS/DeliveryAbility';
+import CoordinatorGroup from "../TMS/MD/CoordinatorGroup";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -365,6 +366,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/SoAssessSynSchedule" component={SoAssessSynSchedule} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/DeliveryAbility" component={DeliveryAbility} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/DevTest" component={PageTest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/CoordinatorGroup" component={CoordinatorGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
