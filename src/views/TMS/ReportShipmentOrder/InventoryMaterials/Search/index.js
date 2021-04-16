@@ -81,7 +81,7 @@ class SearchCom extends React.Component {
                         ConfigValue: _configValue[0].TMSConfigValue
                     })
                 }
-                let _configValue1 = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "MTRETURNREQUEST_INPUTTYPEID");
+                let _configValue1 = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "EXCHANGEORDER_SALEORDERTYPEID");
                 if (_configValue1) {
                     this.setState({
                         ConfigValueMTReturn: _configValue1[0].TMSConfigValue
