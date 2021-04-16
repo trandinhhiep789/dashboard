@@ -174,7 +174,7 @@ class AddCom extends React.Component {
 
     GetDataByRequestTypeID(DestroyRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByRequestTypeIDPath, DestroyRequestTypeID).then(apiResult => {
-             console.log('111', apiResult)
+            // console.log('111', apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -237,9 +237,9 @@ class AddCom extends React.Component {
     prevDataSubmit(formData, MLObject) {
         const { isError, gridDestroyRequestRL, isAutoReview, isAutoOutput, gridDestroyRequestRLSort } = this.state;
 
-        // console.log("gridDestroyRequestRL", gridDestroyRequestRL, MLObject);
 
         let arrReviewLevel = [];
+
         Object.keys(gridDestroyRequestRL).map(function (key) {
             let objItem = {}
             objItem.ReviewLevelID = key;
@@ -264,7 +264,7 @@ class AddCom extends React.Component {
 
             if (isAutoReview) {
                 MLObject.IsreViewed = isAutoReview;
-                MLObject.reViewedUser = this.props.AppInfo.LoginInfo.Username; 
+                MLObject.reViewedUser = this.props.AppInfo.LoginInfo.Username;
                 MLObject.CurrentReviewLevelID = 0;
                 MLObject.reViewedDate = new Date();
             }
@@ -305,7 +305,6 @@ class AddCom extends React.Component {
 
             MLObject.lstDestroyRequestDetail = DestroyRequestDetail;
 
-            console.log("MLObject", MLObject)
             this.handleSubmit(MLObject)
 
         }
@@ -339,17 +338,17 @@ class AddCom extends React.Component {
     }
 
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
-        // console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
 
         const { DestroyRequestDetail } = this.state;
-        // console.log('111', DestroyRequestDetail[index])
         const isAllowDecimal = DestroyRequestDetail[index].IsAllowDecimal;
         let item = elementdata.Name + '_' + index;
+
+
         if (!isAllowDecimal) {
             if (elementdata.Value.toString().length > 1) {
                 if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
                     if (elementdata.Name == 'Quantity') {
-                        let Quantity = DestroyRequestDetail[index].UsableQuantity;
+                        let Quantity = DestroyRequestDetail[index].TotalQuantity;
 
                         if (!gridFormValidation[item].IsValidationError) {
                             if (elementdata.Value > Quantity) {
@@ -389,8 +388,8 @@ class AddCom extends React.Component {
                     if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
                         if (parseInt(elementdata.Value) > 0) {
                             if (elementdata.Name == 'Quantity') {
-                                let Quantity = DestroyRequestDetail[index].UsableQuantity;
-    
+                                let Quantity = DestroyRequestDetail[index].TotalQuantity;
+
                                 if (!gridFormValidation[item].IsValidationError) {
                                     if (elementdata.Value > Quantity) {
                                         gridFormValidation[item].IsValidationError = true;
@@ -441,7 +440,7 @@ class AddCom extends React.Component {
                         IsCallAPIError: false,
                     })
                 }
-                
+
             }
 
         }
@@ -450,7 +449,7 @@ class AddCom extends React.Component {
 
                 if (/^\d*\.?\d+$/.test(elementdata.Value)) {
                     if (elementdata.Name == 'Quantity') {
-                        let Quantity = DestroyRequestDetail[index].UsableQuantity;
+                        let Quantity = DestroyRequestDetail[index].TotalQuantity;
 
                         if (!gridFormValidation[item].IsValidationError) {
                             if (elementdata.Value > Quantity) {
@@ -490,7 +489,7 @@ class AddCom extends React.Component {
                     if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
                         if (parseInt(elementdata.Value) > 0) {
                             if (elementdata.Name == 'Quantity') {
-                                let Quantity = DestroyRequestDetail[index].UsableQuantity;
+                                let Quantity = DestroyRequestDetail[index].TotalQuantity;
 
                                 if (!gridFormValidation[item].IsValidationError) {
                                     if (elementdata.Value > Quantity) {
@@ -590,11 +589,8 @@ class AddCom extends React.Component {
                 "UserName": value,
                 "FullName": name,
             })
-            // console.log("element", element);
 
             const parent = Object.assign({}, gridDestroyRequestRL, { [DestroyRequestRLID]: element });
-
-            // console.log("parent", parent);
 
             this.setState({ gridDestroyRequestRL: parent })
         }

@@ -59,7 +59,7 @@ const dtFromdate = new Date();
 dtFromdate.setDate(new Date().getDate() - 30);
 
 const dtTodate = new Date();
-dtTodate.setDate(new Date().getDate() +1);
+dtTodate.setDate(new Date().getDate() + 1);
 
 export const InitSearchParams = [
 
@@ -210,7 +210,7 @@ export const SearchElementList = [
             { value: 1, label: 'Hết hạn' },
             { value: 2, label: 'Còn hạn' },
         ],
-       
+
 
     },
     {
@@ -227,7 +227,7 @@ export const SearchElementList = [
             { value: 1, label: 'Chưa Xuất hủy vật tư' },
             { value: 2, label: 'Đã xuất hủy vật tư' },
         ],
- 
+
 
     },
 ];
@@ -325,10 +325,10 @@ export const InputDestroyRequestDetailColumnList = [
         Width: 150
     },
     {
-        Name: "UsableQuantity",
+        Name: "TotalQuantity",
         Type: "textNew",
         Caption: "Số dư tạm ứng",
-        DataSourceMember: "UsableQuantity",
+        DataSourceMember: "TotalQuantity",
         Width: 150
     },
     {
@@ -343,7 +343,7 @@ export const InputDestroyRequestDetailColumnList = [
         // validatonList: [ "number"],
         IsNoneZero: false
     },
-   
+
 ];
 
 export const GridMLObjectDefinition = [
@@ -372,10 +372,10 @@ export const GridMLObjectDefinition = [
         DataSourceMember: "ProductName"
     },
     {
-        Name: "UsableQuantity",
+        Name: "TotalQuantity",
         DefaultValue: "",
-        BindControlName: "UsableQuantity",
-        DataSourceMember: "UsableQuantity"
+        BindControlName: "TotalQuantity",
+        DataSourceMember: "TotalQuantity"
     },
     {
         Name: "Quantity",
@@ -455,7 +455,7 @@ export const MLObjectDefinition = [
 
 
 export const GridDestroyRequestRLMLObjectDefinition = [
-    
+
     {
         Name: "ReviewLevelID",
         DefaultValue: "",
@@ -474,7 +474,7 @@ export const GridDestroyRequestRLMLObjectDefinition = [
         BindControlName: "cboUserName",
         DataSourceMember: "UserName"
     },
-   
+
 ];
 
 export const InputDestroyRequestRLColumnList = [
@@ -495,10 +495,10 @@ export const InputDestroyRequestRLColumnList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SERVICETYPE",
         ValueMember: "ServiceTypeID",
         NameMember: "ServiceTypeName",
-        listoption:[],
+        listoption: [],
         validatonList: ["Comborequired"],
     },
-   
+
 ];
 
 export const GirdDestroyRequestDetailColumnList = [
@@ -524,10 +524,10 @@ export const GirdDestroyRequestDetailColumnList = [
         Width: 150
     },
     {
-        Name: "UsableQuantity",
+        Name: "TotalQuantity",
         Type: "textNew",
         Caption: "Số dư tạm ứng",
-        DataSourceMember: "UsableQuantity",
+        DataSourceMember: "TotalQuantity",
         Width: 150
     },
     {
@@ -540,7 +540,7 @@ export const GirdDestroyRequestDetailColumnList = [
     },
 ]
 
-export const GirdDestroyRequestRLColumnList=[
+export const GirdDestroyRequestRLColumnList = [
     {
         Name: "ReviewLevelName",
         Type: "text",
