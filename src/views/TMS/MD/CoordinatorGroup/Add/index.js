@@ -16,7 +16,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
-import { SHIPMENTFEETYPE_ADD, DESTROYREQUESTTYPE_ADD } from "../../../../../constants/functionLists";
+import { SHIPMENTFEETYPE_ADD, DESTROYREQUESTTYPE_ADD, COORDINATORGROUP_ADD } from "../../../../../constants/functionLists";
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -86,7 +86,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                RequirePermission={DESTROYREQUESTTYPE_ADD}
+                RequirePermission={COORDINATORGROUP_ADD}
                 ref={this.searchref}
             />
         );

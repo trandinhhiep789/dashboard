@@ -17,7 +17,7 @@ import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../actions/cacheAction";
-import { GET_CACHE_USER_FUNCTION_LIST, DESTROYREQUESTTYPE_ADD, DESTROYREQUESTTYPE_DELETE, DESTROYREQUESTTYPE_UPDATE } from "../../../../constants/functionLists";
+import { GET_CACHE_USER_FUNCTION_LIST, DESTROYREQUESTTYPE_ADD, DESTROYREQUESTTYPE_DELETE, DESTROYREQUESTTYPE_UPDATE, COORDINATORGROUP_ADD, COORDINATORGROUP_UPDATE, COORDINATORGROUP_DELETE } from "../../../../constants/functionLists";
 import CoordinatorUser from "./Components/CoordinatorUser";
 
 class CoordinatorGroup_DUserCom extends React.Component {
@@ -151,17 +151,17 @@ class CoordinatorGroup_DUserCom extends React.Component {
         let IsAllowedUpdate = false;
         this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == DESTROYREQUESTTYPE_ADD);
+                let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == COORDINATORGROUP_ADD);
                 if (isAllowAdd && isAllowAdd.length > 0) {
                     IsAllowedAdd = true;
                 }
 
-                let isAllowUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == DESTROYREQUESTTYPE_UPDATE);
+                let isAllowUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == COORDINATORGROUP_UPDATE);
                 if (isAllowUpdate && isAllowUpdate.length > 0) {
                     IsAllowedUpdate = true;
                 }
 
-                let isAllowDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == DESTROYREQUESTTYPE_DELETE);
+                let isAllowDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == COORDINATORGROUP_DELETE);
                 if (isAllowDelete && isAllowDelete.length > 0) {
                     IsAllowedDelete = true;
                 }
@@ -240,7 +240,7 @@ class CoordinatorGroup_DUserCom extends React.Component {
             }
         });
 
-        console.log("_DataSource", _DataSource)
+        //console.log("_DataSource", _DataSource)
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Cập nhật trưởng nhóm thuộc nhóm điều phối',
