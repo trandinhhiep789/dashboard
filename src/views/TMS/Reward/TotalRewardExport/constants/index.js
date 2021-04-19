@@ -5,7 +5,7 @@ export const SearchByUserAPIPath = "api/TMSRewardDetail/LoadRewardUserNameByDate
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Xuất tổng thưởng" }
+    { Link: "", Title: "Tổng xuất thưởng" }
 ];
 
 const dtFromdate = new Date();

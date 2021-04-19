@@ -3,14 +3,14 @@ export const SearchAPIPath = "api/TMSRewardDetail/SearchExportRewardDetail";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Xuất chi tiết thưởng" }
+    { Link: "", Title: "Xuất tổng thưởng" }
 ];
 
 const dtFromdate = new Date();
 dtFromdate.setDate(new Date().getDate() - 30);
 
 export const SearchElementList = [
-
+    
     {
         type: "Datetime",
         name: "dtFromDate",
@@ -45,7 +45,7 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.TMSREWARDTYPE",
         ValueMember: "RewardTypeID",
         NameMember: "RewardTypeName",
-        classNameCol: "col-custom"
+        classNameCol:"col-custom"
     },
     {
         type: "ComboBoxNewChange",
@@ -61,12 +61,12 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.TMSREWARDPOSITION",
         ValueMember: "RewardPositionID",
         NameMember: "RewardPositionName",
-        classNameCol: "col-custom"
+        classNameCol:"col-custom"
     },
 
 ]
 
-export const SearchMLObjectDefinition = [
+export const  SearchMLObjectDefinition = [
     {
         Name: "FromDate",
         DefaultValue: "",
