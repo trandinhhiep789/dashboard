@@ -21,6 +21,8 @@ class InfoProductCom extends Component {
         }
         this.treeDataShipmentOrderItemList = this.treeDataShipmentOrderItemList.bind(this)
         this.groupArrayOfObjects = this.groupArrayOfObjects.bind(this)
+        this.setDataShipmentOrderItemList = this.setDataShipmentOrderItemList.bind(this);
+        this.sortDataShipmentOrderItemList = this.sortDataShipmentOrderItemList.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -229,11 +231,72 @@ class InfoProductCom extends Component {
                 })
             }
 
-            return arrResult
+            if (arrResult.length == 0) {
+                const result = this.groupBy(data, paramGroup).sort((a, b) => (b.Price > a.Price) ? 1 : -1)
+                return result
+            } else {
+                return arrResult
+            }
+
         } catch (error) {
             const result = this.groupBy(data, paramGroup).sort((a, b) => (b.Price > a.Price) ? 1 : -1)
             return result
         }
+    }
+
+    setDataShipmentOrderItemList(data) {
+
+        const result = data.reduce((acc, val, ind, array) => {
+            let childs = [];
+
+            if (val.RelateProductID.trim() === "") {
+                array.forEach((el, i) => {
+                    if (el.RelateProductID.trim() === val.ProductID.trim()) {
+                        childs.push(el);
+                    }
+                });
+
+                return [...acc, { ...val, isMainProduct: true, childs }];
+            } else {
+                let isMainProduct = true;
+
+                array.forEach((el, i) => {
+                    if (val.RelateProductID.trim() === el.ProductID.trim()) {
+                        isMainProduct = false;
+                    }
+                    if (el.RelateProductID.trim() === val.ProductID.trim()) {
+                        childs.push(el);
+                    }
+                });
+
+                return acc.concat({ ...val, isMainProduct, childs });
+            }
+
+        }, []);
+
+        return result;
+    }
+
+    sortDataShipmentOrderItemList(data) {
+
+        try {
+
+            const setData = this.setDataShipmentOrderItemList(data);
+
+            const result = setData.reduce((acc, val, ind, array) => {
+                if (val.isMainProduct == true) {
+                    return [...acc, val, ...val.childs];
+                } else {
+                    return acc;
+                }
+            }, []);
+
+            return result;
+
+        } catch (error) {
+            return data;
+        }
+
     }
 
 
