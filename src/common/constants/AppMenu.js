@@ -404,11 +404,26 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'CoordinatorStore',
-                MenuTitle: 'Kho điều phối giao hàng',
-                LinkTo: '/CoordinatorStore',
+                MenuName: 'Coordinator',
+                MenuTitle: 'Điều phối giao hàng',
+                LinkTo: '',
                 MenuIcon: '',
-                SubMenu: []
+                SubMenu: [
+                    {
+                        MenuName: 'CoordinatorStore',
+                        MenuTitle: 'Kho điều phối giao hàng',
+                        LinkTo: '/CoordinatorStore',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'CoordinatorGroup',
+                        MenuTitle: 'Nhóm điều phối',
+                        LinkTo: '/CoordinatorGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+                ]
             },
             {
                 MenuName: 'Vehicle',

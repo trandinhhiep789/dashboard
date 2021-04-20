@@ -100,8 +100,8 @@ class SearchCom extends React.Component {
                         "Tên loại hàng hóa vận chuyển": item.ShipmentGoodsTypeName,
                         "Danh mục cha": item.ParentName,
                         "Kích hoạt": item.IsActived ? "Có" : "Không",
-                        "Ngày tạo": formatDate(item.CreatedDate),
-                        "Người tạo": item.CreatedFullName
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
                     };
                     return element;
 

@@ -102,8 +102,8 @@ class SearchCom extends React.Component {
                         "Mã đối tác": item.PartnerID,
                         "Tên đối tác": item.PartnerName,
                         "Kích hoạt": item.IsActived ? "Có" : "Không",
-                        "Ngày tạo": formatDate(item.CreatedDate),
-                        "Người tạo": item.CreatedUserFullName
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
                     };
                     return element;
 
