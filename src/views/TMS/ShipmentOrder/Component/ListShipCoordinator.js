@@ -89,7 +89,7 @@ class ListShipCoordinatorCom extends Component {
             this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
                 if (!apiResult.IsError) {
                     this.state.ShipmentOrder.map((row, indexRow) => {
-                        if (!row.IsCoordinator && row.IsPermission == true)
+                        if (!row.IsCoordinator && row.IsPermission == true && row.CarrierPartnerID <= 0)
                             row["ShipmentOrder_DeliverUserList"] = objDeliverUser;
                     });
                     this.setState({ selectedOption: selectedOption1, ShipmentOrder: this.state.ShipmentOrder });
@@ -119,7 +119,7 @@ class ListShipCoordinatorCom extends Component {
             this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
                 if (!apiResult.IsError) {
                     this.state.ShipmentOrder.map((row, indexRow) => {
-                        if (!row.IsCoordinator && row.IsPermission == true)
+                        if (!row.IsCoordinator && row.IsPermission == true && row.CarrierPartnerID > 0)
                             row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser;
                     });
                     this.setState({ objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder });
@@ -169,10 +169,6 @@ class ListShipCoordinatorCom extends Component {
 
         if (this.checkInputName(elementobject) != "")
             return;
-
-
-        console.log("this.state.ShipmentOrder",this.state.ShipmentOrder)
-    
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
             if (this.props.onChangeValue != null)
                 this.props.onChangeValue(apiResult);
