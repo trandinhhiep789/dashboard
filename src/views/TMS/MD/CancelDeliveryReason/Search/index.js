@@ -103,8 +103,8 @@ class SearchCom extends React.Component {
                         "Tên lý do hủy giao hàng": item.CancelDeliveryReasonName,
                         "Mô tả": item.Description,
                         "Kích hoạt": item.IsActived ? "Có" : "Không",
-                        "Ngày tạo": formatDate(item.CreatedDate),
-                        "Người tạo": item.CreatedUserFullName
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
                     };
                     return element;
 
@@ -113,7 +113,7 @@ class SearchCom extends React.Component {
                 this.setState({
                     dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
-                    IsShowForm: true, 
+                    IsShowForm: true,
                     IsCallAPIError: false,
                 });
             } else {

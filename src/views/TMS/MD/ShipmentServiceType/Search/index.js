@@ -104,8 +104,8 @@ class SearchCom extends React.Component {
                         "Mã loại dịch vụ": item.ShipmentServiceTypeID,
                         "Tên loại dịch vụ": item.ShipmentServiceTypeName,
                         "Kích hoạt": item.IsActived ? "Có" : "Không",
-                        "Ngày tạo": formatDate(item.CreatedDate),
-                        "Người tạo": item.CreatedFullName
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
                     };
                     return element;
 

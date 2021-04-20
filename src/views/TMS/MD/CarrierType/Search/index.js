@@ -135,8 +135,8 @@ class SearchCom extends React.Component {
                         "Tên loại phương tiện vận chuyển": item.CarrierTypeName,
                         "Mô tả": item.Description,
                         "Kích hoạt": item.IsActived ? "Có" : "Không",
-                        "Ngày tạo": formatDate(item.CreatedDate),
-                        "Người tạo": item.CreatedUserFullName
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
                     };
                     return element;
 

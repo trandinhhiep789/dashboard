@@ -104,8 +104,8 @@ class SearchCom extends React.Component {
                         "Mã trạng thái yêu cầu vận chuyển": item.ShipmentOrderStatusID,
                         "Tên trạng thái yêu cầu vận chuyển": item.ShipmentOrderStatusName,
                         "Kích hoạt": item.IsActived ? "Có" : "Không",
-                        "Ngày tạo": formatDate(item.CreatedDate),
-                        "Người tạo": item.CreatedFullName
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
                     };
                     return element;
 
