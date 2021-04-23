@@ -119,7 +119,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("report", searchData, apiResult)
+
             if (apiResult && !apiResult.IsError && apiResult.ResultObject) {
 
                 const tempData = apiResult.ResultObject.filter(a => a.MaterialGroupID.trim() == this.state.ConfigValue);
@@ -259,9 +259,21 @@ class SearchCom extends React.Component {
 
     onShowModal(data, typeDataGrid) {
         const { widthPercent, MLObject, Month, ConfigValueMTReturn } = this.state;
+        let dataExcel = [];
 
         switch (typeDataGrid) {
             case 1:
+                dataExcel = data.map(item => {
+                    const result = DataGridModalQuantityHanOverDone.reduce((acc, val) => {
+                        acc[val.Caption] = item[val.DataSourceMember]
+
+                        return acc;
+                    }, {})
+
+                    return result;
+                })
+
+
                 this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
                     title: "Nhận trong kỳ",
                     content: {
@@ -270,12 +282,26 @@ class SearchCom extends React.Component {
                             Month={Month}
                             listColumn={DataGridModalQuantityHanOverDone}
                             dataSource={data}
+                            fileName={"Nhận trong kỳ"}
+                            dataExport={dataExcel}
                         />
                     },
                     maxWidth: widthPercent + 'px'
                 });
                 break;
+
             case 2:
+                dataExcel = data.map(item => {
+                    const result = DataGridModalQuantityHanOverDoing.reduce((acc, val) => {
+                        acc[val.Caption] = item[val.DataSourceMember]
+
+                        return acc;
+                    }, {})
+
+                    return result;
+                })
+
+
                 this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
                     title: "Chờ bàn giao",
                     content: {
@@ -284,12 +310,26 @@ class SearchCom extends React.Component {
                             Month={Month}
                             listColumn={DataGridModalQuantityHanOverDoing}
                             dataSource={data}
+                            fileName={"Chờ bàn giao"}
+                            dataExport={dataExcel}
                         />
                     },
                     maxWidth: widthPercent + 'px'
                 });
                 break;
+
             case 3:
+                dataExcel = data.map(item => {
+                    const result = DataGridModalQuantityReturn.reduce((acc, val) => {
+                        acc[val.Caption] = item[val.DataSourceMember]
+
+                        return acc;
+                    }, {})
+
+                    return result;
+                })
+
+
                 this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
                     title: "Nhập trả",
                     content: {
@@ -298,12 +338,26 @@ class SearchCom extends React.Component {
                             Month={Month}
                             listColumn={DataGridModalQuantityReturn}
                             dataSource={data}
+                            fileName={"Nhập trả"}
+                            dataExport={dataExcel}
                         />
                     },
                     maxWidth: widthPercent + 'px'
                 });
                 break;
+
             case 4:
+                dataExcel = data.map(item => {
+                    const result = DataGridModalChangeTotalQuantity.reduce((acc, val) => {
+                        acc[val.Caption] = item[val.DataSourceMember]
+
+                        return acc;
+                    }, {})
+
+                    return result;
+                })
+
+
                 this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
                     title: "Sử dụng trong kỳ",
                     content: {
@@ -312,11 +366,14 @@ class SearchCom extends React.Component {
                             Month={Month}
                             listColumn={DataGridModalChangeTotalQuantity}
                             dataSource={data}
+                            fileName={"Sử dụng trong kỳ"}
+                            dataExport={dataExcel}
                         />
                     },
                     maxWidth: widthPercent + 'px'
                 });
                 break;
+
             default:
                 break;
         }
@@ -371,7 +428,6 @@ class SearchCom extends React.Component {
             //this.showMessage("Tính năng đang phát triển.")
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/GetExchangeOrderByUser", objData).then(apiResult => {
                 if (!apiResult.IsError) {
-                    console.log('3:', objData, apiResult)
                     this.onShowModal(apiResult.ResultObject, status);
                 }
                 else {

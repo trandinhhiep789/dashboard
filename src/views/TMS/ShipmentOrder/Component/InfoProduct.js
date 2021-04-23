@@ -19,9 +19,8 @@ class InfoProductCom extends Component {
             ShipmentOrder_FeeLst: [],
             ShipmentOrder_CodUpdLogLst: []
         }
-        this.treeDataShipmentOrderItemList = this.treeDataShipmentOrderItemList.bind(this)
+
         this.groupArrayOfObjects = this.groupArrayOfObjects.bind(this)
-        this.setDataShipmentOrderItemList = this.setDataShipmentOrderItemList.bind(this);
         this.sortDataShipmentOrderItemList = this.sortDataShipmentOrderItemList.bind(this);
     }
 
@@ -188,115 +187,46 @@ class InfoProductCom extends Component {
         }
     }
 
-
-    treeDataShipmentOrderItemList(data) {
-        const paramGroup = ['ProductID', 'ProductName', 'ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']
-
-        try {
-            const arrMainProduct = data.filter(item => item.RelateProductID.trim() == "")
-            const arrPromotionProduct = data.filter(item => item.RelateProductID.trim() != "")
-            const objGroupMainProduct = this.groupArrayOfObjects(arrMainProduct, "ProductID")
-
-            let arrResult = []
-            let clonePromotionProduct = [...arrPromotionProduct]
-
-            for (const key in objGroupMainProduct) {
-                const arrGroupMainProduct
-                    = this.groupBy(objGroupMainProduct[key], paramGroup)
-                        .sort((a, b) => (b.Price > a.Price) ? 1 : -1)
-                        .map(obj => ({ ...obj, isMainProduct: true }))
-
-
-                arrResult.push(...arrGroupMainProduct)
-
-                let arrMatch = [], arrTempPromotionProduct = []
-
-                clonePromotionProduct.forEach((promotionProduct, index) => {
-                    if (key.trim() == promotionProduct.RelateProductID.trim()) {
-                        arrTempPromotionProduct.push(promotionProduct)
-                        arrMatch.push(index)
-                    }
-                })
-
-                const arrGroupPromotionProduct
-                    = this.groupBy(arrTempPromotionProduct, paramGroup)
-                        .sort((a, b) => (b.Price > a.Price) ? 1 : -1)
-                        .map(obj => ({ ...obj, isMainProduct: false }))
-
-                arrResult.push(...arrGroupPromotionProduct)
-
-                arrMatch.sort((a, b) => b - a)
-                arrMatch.forEach(item => {
-                    clonePromotionProduct.splice(item, 1)
-                })
-            }
-
-            if (arrResult.length == 0) {
-                const result = this.groupBy(data, paramGroup).sort((a, b) => (b.Price > a.Price) ? 1 : -1)
-                return result
-            } else {
-                return arrResult
-            }
-
-        } catch (error) {
-            const result = this.groupBy(data, paramGroup).sort((a, b) => (b.Price > a.Price) ? 1 : -1)
-            return result
-        }
-    }
-
-    setDataShipmentOrderItemList(data) {
-
-        const result = data.reduce((acc, val, ind, array) => {
-            let childs = [];
-
-            if (val.RelateProductID.trim() === "") {
-                array.forEach((el, i) => {
-                    if (el.RelateProductID.trim() === val.ProductID.trim()) {
-                        childs.push(el);
-                    }
-                });
-
-                return [...acc, { ...val, isMainProduct: true, childs }];
-            } else {
-                let isMainProduct = true;
-
-                array.forEach((el, i) => {
-                    if (val.RelateProductID.trim() === el.ProductID.trim()) {
-                        isMainProduct = false;
-                    }
-                    if (el.RelateProductID.trim() === val.ProductID.trim()) {
-                        childs.push(el);
-                    }
-                });
-
-                return acc.concat({ ...val, isMainProduct, childs });
-            }
-
-        }, []);
-
-        return result;
-    }
-
     sortDataShipmentOrderItemList(data) {
+        let tempData1 = [...data];
+        const paramGroup = ['ProductID', 'ProductName', 'ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight'];
 
         try {
+            if (data.length == 1) {
+                return data;
+            }
 
-            const setData = this.setDataShipmentOrderItemList(data);
+            tempData1.sort((a, b) => parseFloat(b.Price) - parseFloat(a.Price));
 
-            const result = setData.reduce((acc, val, ind, array) => {
-                if (val.isMainProduct == true) {
-                    return [...acc, val, ...val.childs];
+            let tempIndex = [];
+
+            const result = tempData1.reduce((acc, val, ind, arr) => {
+                if (val.Price != 0) {
+
+                    let promotionItem = tempData1.reduce((acc1, val1, ind1, arr1) => {
+                        if (val1.RelateProductID.trim() == val.ProductID.trim() && tempIndex.indexOf(ind1) == -1) {
+                            tempIndex.push(ind1);
+                            return [...acc1, val1];
+                        } else {
+                            return acc1;
+                        }
+                    }, []);
+
+                    return [...acc, val, ...promotionItem];
                 } else {
                     return acc;
                 }
             }, []);
 
-            return result;
+            if (result.length != data.length) {
+                return data;
+            } else {
+                return this.groupBy(result, paramGroup)
+            }
 
         } catch (error) {
             return data;
         }
-
     }
 
 
@@ -512,8 +442,8 @@ class InfoProductCom extends Component {
                                         } */}
                                         {
                                             this.state.ShipmentOrder.ShipmentOrder_ItemList
-                                            && this.treeDataShipmentOrderItemList(this.state.ShipmentOrder.ShipmentOrder_ItemList).map((item, index) => {
-                                                return <tr key={"Product" + index} className={item.isMainProduct ? "row-main-product" : undefined}>
+                                            && this.sortDataShipmentOrderItemList(this.state.ShipmentOrder.ShipmentOrder_ItemList).map((item, index) => {
+                                                return <tr key={"Product" + index} className={parseFloat(item.Price) != 0 ? "row-main-product" : undefined}>
                                                     <td>
                                                         <div className="checkbox">
                                                             <label>

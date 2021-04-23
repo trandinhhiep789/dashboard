@@ -1,3 +1,5 @@
+import { USER_PERMISSION_VIEW } from '../../../../../constants/functionLists';
+
 export const APIHostName = "TMSAPI";
 
 export const PagePath = [
@@ -73,36 +75,53 @@ export const SearchElementList = [
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
     },
+    // {
+    //     type: "ComboBox",
+    //     name: "bcArea",
+    //     DataSourceMember: "Area",
+    //     label: "Khu vực",
+    //     colspan: 2,
+    //     value: -1,
+    //     isMultiSelect: false,
+    //     placeholder: "---Chọn khu vực---",
+    //     listoption: [],
+    //     IsAutoLoadItemFromCache: true,
+    //     // LoadItemCacheKeyID: "",
+    //     // ValueMember: "",
+    //     // NameMember: "",
+    //     classNameCol: "col-custom"
+    // },
+    // {
+    //     type: "ComboBox",
+    //     name: "bcUserName",
+    //     DataSourceMember: "UserName",
+    //     label: "Trưởng nhóm",
+    //     colspan: 2,
+    //     value: -1,
+    //     isMultiSelect: false,
+    //     placeholder: "---Chọn trưởng nhóm---",
+    //     listoption: [],
+    //     IsAutoLoadItemFromCache: true,
+    //     // LoadItemCacheKeyID: "",
+    //     // ValueMember: "",
+    //     // NameMember: "",
+    //     classNameCol: "col-custom"
+    // },
     {
-        type: "ComboBox",
-        name: "bcArea",
-        DataSourceMember: "Area",
-        label: "Khu vực",
-        colspan: 2,
-        value: -1,
-        isMultiSelect: false,
-        placeholder: "---Chọn khu vực---",
-        listoption: [],
-        IsAutoLoadItemFromCache: true,
-        // LoadItemCacheKeyID: "",
-        // ValueMember: "",
-        // NameMember: "",
-        classNameCol: "col-custom"
-    },
-    {
-        type: "ComboBox",
+        type: "MultiSelectUser",
         name: "bcUserName",
         DataSourceMember: "UserName",
         label: "Trưởng nhóm",
-        colspan: 2,
+        colspan: 12,
+        rowspan: 3,
+        labelcolspan: 12,
+        IsLabelDiv: true,
         value: -1,
-        isMultiSelect: false,
         placeholder: "---Chọn trưởng nhóm---",
         listoption: [],
-        IsAutoLoadItemFromCache: true,
-        // LoadItemCacheKeyID: "",
-        // ValueMember: "",
-        // NameMember: "",
-        classNameCol: "col-custom"
+        IsAutoLoadItemFromCache: false,
+        isMultiSelect: true,
+        IsPermission: true,
+        PermissionKey: USER_PERMISSION_VIEW
     },
 ]
