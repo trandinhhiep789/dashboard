@@ -415,31 +415,6 @@ class InfoProductCom extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {/* {
-                                            this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName', 'ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).sort((a, b) => (b.Price > a.Price) ? 1 : -1).map((item, index) => {
-                                                return (
-                                                    <tr key={"Product" + index}>
-                                                        <td>
-                                                            <div className="checkbox">
-                                                                <label>
-                                                                    <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsInstallItem} />
-                                                                    <span className="cr">
-                                                                        <i className="cr-icon fa fa-check"></i>
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </td>
-                                                        <td>{item.ProductID}</td>
-                                                        <td>{item.ProductName}</td>
-                                                        <td>{item.ProductSerial}</td>
-                                                        <td>{item.PackingUnitName}</td>
-                                                        <td>{formatMoney(item.Price, 0)}đ</td>
-                                                        <td>{item.Quantity}</td>
-                                                        <td>{item.QuantityUnitName}</td>
-                                                    </tr>
-                                                )
-                                            })
-                                        } */}
                                         {
                                             this.state.ShipmentOrder.ShipmentOrder_ItemList
                                             && this.sortDataShipmentOrderItemList(this.state.ShipmentOrder.ShipmentOrder_ItemList).map((item, index) => {
