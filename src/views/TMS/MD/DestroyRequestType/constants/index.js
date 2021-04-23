@@ -387,7 +387,7 @@ export const DataGridColumnList = [
         Link: "/DestroyRequestType/Detail/",
         Caption: "Tên loại yêu cầu hủy vật tư",
         DataSourceMember: "DestroyRequestTypeName",
-        Width: 250
+        Width: 350
     },
     {
         Name: "Description",
@@ -404,18 +404,18 @@ export const DataGridColumnList = [
         Width: 80
     },
     {
-        Name: "CreatedDate",
+        Name: "UpdatedDate",
         Type: "date",
-        Caption: "Ngày tạo",
-        DataSourceMember: "CreatedDate",
-        Width: 150
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
+        Width: 140
     },
     {
-        Name: "CreatedUserFullName",
+        Name: "UpdatedUserFullName",
         Type: "text",
-        Caption: "Người tạo",
-        DataSourceMember: "CreatedUserFullName",
-        Width: 150
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
+        Width: 140
     },
     {
         Name: "Action",

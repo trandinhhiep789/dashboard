@@ -1308,12 +1308,20 @@ export const DataGridColumnList = [
         Width: 200
     },
     {
-        Name: "CreatedDate",
+        Name: "UpdatedDate",
         Type: "date",
-        Caption: "Ngày tạo",
-        DataSourceMember: "CreatedDate",
-        Width: 200
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
+        Width: 140
     },
+    // {
+    //     Name: "UpdatedUserFullName",
+    //     Type: "text",
+    //     Caption: "Người cập nhật",
+    //     DataSourceMember: "UpdatedUserFullName",
+    //     Width: 140
+    // },
+
     {
         Name: "Action",
         Type: "link",
