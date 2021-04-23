@@ -69,7 +69,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            // console.log("SA:", apiResult)
+            console.log("SA:", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -115,6 +115,13 @@ class SearchCom extends React.Component {
                                 item.StatusLable = <span className='lblstatus text-success'>Còn hạn</span>;
                             }
                         }
+                    }
+
+                    if(item.IsdePOSited){
+                        item.DepositedLable = "Đã ký";
+                    }
+                    else{
+                        item.DepositedLable = "Chưa ký";
                     }
                     return item;
 
