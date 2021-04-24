@@ -40,7 +40,6 @@ class SearchCom extends React.Component {
         this.initArrInputError = this.initArrInputError.bind(this);
 
         this.state = {
-            CallAPIMessage: "",
             gridDataSource: [],
             SearchData: InitSearchParamsNew,
             cssNotification: "",
@@ -135,7 +134,8 @@ class SearchCom extends React.Component {
                 IsAllowdecimalLimitValue: val.IsAllowdecimalLimitValue,
                 IsCheckRangeLimitValue: val.IsCheckRangeLimitValue,
                 MaxLimitValue: val.MaxLimitValue,
-                MinLimitValue: val.MinLimitValue
+                MinLimitValue: val.MinLimitValue,
+                IsRegister: val.IsRegister
             }
 
             if (tempItemAcc == -1) {
@@ -271,7 +271,8 @@ class SearchCom extends React.Component {
             const updateInitData = initialData.reduce((acc1, val1) => {
                 acc1.push({
                     ...val1,
-                    LimitValue: parseFloat(val[val1.LimitTypeID].LimitValue)
+                    LimitValue: parseFloat(val[val1.LimitTypeID].LimitValue),
+                    IsRegister: val[val1.LimitTypeID].IsRegister
                 })
 
                 return acc1;
@@ -311,16 +312,16 @@ class SearchCom extends React.Component {
             case 1:
                 const arr = valueInput.split(",");
                 valueInput = arr.join('');
-                cloneGridDataSource[param1][param2].LimitValue = valueInput;
                 break;
 
             default:
-                cloneGridDataSource[param1][param2].LimitValue = valueInput;
                 break;
         }
 
-        // begin validate
+        cloneGridDataSource[param1][param2].LimitValue = valueInput;
 
+
+        // begin validate
         if (pattern.test(valueInput)) {
             cloneArrInputError[param1][param2] = {
                 isError: false,
@@ -434,6 +435,8 @@ class SearchCom extends React.Component {
             })
             return;
         } else {
+            cloneGridDataSource[param1][param2].IsRegister = true;
+
             this.setState({
                 gridDataSource: cloneGridDataSource,
                 isErrorValidate: false
