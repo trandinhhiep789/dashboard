@@ -33,7 +33,7 @@ export const formatNumber = (num) => {
 
 export const toIsoStringCus = (dateTime) => {
     const dateTime1 = new Date(dateTime);
-    const a= new Date();
+    const a = new Date();
     const tzo = a.getTimezoneOffset();
     const dif = tzo >= 0 ? '+' : '-';
     const pad = function (num) {
@@ -45,7 +45,7 @@ export const toIsoStringCus = (dateTime) => {
         '-' + pad(dateTime1.getDate()) +
         'T' + pad(a.getHours()) +
         ':' + pad(a.getMinutes()) +
-        ':' + pad(a.getSeconds()) 
+        ':' + pad(a.getSeconds())
 }
 
 export const dateToLocalISO = (date) => {
@@ -55,4 +55,8 @@ export const dateToLocalISO = (date) => {
         (off > 0 ? '-' : '+') +
         (absoff / 60).toFixed(0).padStart(2, '0') + ':' +
         (absoff % 60).toString().padStart(2, '0'))
+}
+
+export const numberWithComma = (data, comma = ",") => {
+    return data.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, comma)
 }
