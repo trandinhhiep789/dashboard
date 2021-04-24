@@ -79,6 +79,31 @@ export const MLObjectDefinition = [
         BindControlName: "txtDescription",
         DataSourceMember: "Description"
     },
+   
+    {
+        Name: "IsAllowdecimalLimitValue",
+        DefaultValue: false,
+        BindControlName: "chkIsAllowdecimalLimitValue",
+        DataSourceMember: "IsAllowdecimalLimitValue"
+    },
+    {
+        Name: "IsCheckRangeLimitValue",
+        DefaultValue: true,
+        BindControlName: "chkIsCheckRangeLimitValue",
+        DataSourceMember: "IsCheckRangeLimitValue"
+    },
+    {
+        Name: "MinLimitValue",
+        DefaultValue: {},
+        BindControlName: "txtMinLimitValue",
+        DataSourceMember: "MinLimitValue"
+    },
+    {
+        Name: "MaxLimitValue",
+        DefaultValue: true,
+        BindControlName: "txtMaxLimitValue",
+        DataSourceMember: "MaxLimitValue"
+    },
     {
         Name: "IsActived",
         DefaultValue: true,
@@ -207,6 +232,42 @@ export const DataGridColumnList=[
         DataSourceMember: "LimitTypeName",
         Width: 300
     },
+   
+    {
+        Name: "UpdatedUserFullName",
+        Type: "text",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
+        Width: 140
+    },
+    {
+        Name: "IsCheckRangeLimitValue",
+        Type: "checkicon",
+        Caption: "KTGT giới hạn",
+        DataSourceMember: "IsCheckRangeLimitValue",
+        Width: 80
+    },
+    {
+        Name: "MinLimitValue",
+        Type: "text",
+        Caption: "GTGH nhỏ nhất",
+        DataSourceMember: "MinLimitValue",
+        Width: 80
+    },
+    {
+        Name: "MaxLimitValue",
+        Type: "text",
+        Caption: "GTGH lớn nhất",
+        DataSourceMember: "MaxLimitValue",
+        Width: 80
+    },
+    {
+        Name: "IsAllowdecimalLimitValue",
+        Type: "checkicon",
+        Caption: "nhập số lẻ",
+        DataSourceMember: "IsAllowdecimalLimitValue",
+        Width: 80
+    },
     {
         Name: "IsActived",
         Type: "checkicon",
@@ -219,13 +280,6 @@ export const DataGridColumnList=[
         Type: "date",
         Caption: "Ngày cập nhật",
         DataSourceMember: "UpdatedDate",
-        Width: 140
-    },
-    {
-        Name: "UpdatedUserFullName",
-        Type: "text",
-        Caption: "Người cập nhật",
-        DataSourceMember: "UpdatedUserFullName",
         Width: 140
     },
     {
