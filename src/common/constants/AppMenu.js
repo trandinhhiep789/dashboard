@@ -14,30 +14,30 @@ const AppMenu = [
         LinkTo: '',
         MenuIcon: '',
         SubMenu: [
-            {
-                MenuName: 'PartnerType',
-                MenuTitle: 'Đối tác',
-                LinkTo: '',
-                MenuIcon: '',
-                SubMenu: [
-                    {
-                        MenuName: 'PartnerType',
-                        MenuTitle: 'Danh sách loại đối tác',
-                        LinkTo: '/PartnerType',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'Partner',
-                        MenuTitle: 'Danh sách đối tác',
-                        LinkTo: '/Partner',
-                        MenuIcon: '',
-                        SubMenu: []
-                    }
+            // {
+            //     MenuName: 'PartnerType',
+            //     MenuTitle: 'Đối tác',
+            //     LinkTo: '',
+            //     MenuIcon: '',
+            //     SubMenu: [
+            //         {
+            //             MenuName: 'PartnerType',
+            //             MenuTitle: 'Danh sách loại đối tác',
+            //             LinkTo: '/PartnerType',
+            //             MenuIcon: '',
+            //             SubMenu: []
+            //         },
+            //         {
+            //             MenuName: 'Partner',
+            //             MenuTitle: 'Danh sách đối tác',
+            //             LinkTo: '/Partner',
+            //             MenuIcon: '',
+            //             SubMenu: []
+            //         }
 
 
-                ]
-            },
+            //     ]
+            // },
             {
                 MenuName: 'CarrierType',
                 MenuTitle: 'Vận chuyển',
@@ -264,36 +264,36 @@ const AppMenu = [
 
                 ]
             },
-            {
-                MenuName: 'Service',
-                MenuTitle: 'Dịch vụ',
-                LinkTo: '',
-                MenuIcon: '',
-                SubMenu: [
-                    {
-                        MenuName: 'ServiceType',
-                        MenuTitle: 'Loại dịch vụ',
-                        LinkTo: '/ServiceType',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'ServiceSeasonType',
-                        MenuTitle: 'Loại mùa dịch vụ',
-                        LinkTo: '/ServiceSeasonType',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'ServiceAgreementType',
-                        MenuTitle: 'Loại hợp đồng dịch vụ',
-                        LinkTo: '/ServiceAgreementType',
-                        MenuIcon: '',
-                        SubMenu: []
-                    }
+            // {
+            //     MenuName: 'Service',
+            //     MenuTitle: 'Dịch vụ',
+            //     LinkTo: '',
+            //     MenuIcon: '',
+            //     SubMenu: [
+            //         {
+            //             MenuName: 'ServiceType',
+            //             MenuTitle: 'Loại dịch vụ',
+            //             LinkTo: '/ServiceType',
+            //             MenuIcon: '',
+            //             SubMenu: []
+            //         },
+            //         {
+            //             MenuName: 'ServiceSeasonType',
+            //             MenuTitle: 'Loại mùa dịch vụ',
+            //             LinkTo: '/ServiceSeasonType',
+            //             MenuIcon: '',
+            //             SubMenu: []
+            //         },
+            //         {
+            //             MenuName: 'ServiceAgreementType',
+            //             MenuTitle: 'Loại hợp đồng dịch vụ',
+            //             LinkTo: '/ServiceAgreementType',
+            //             MenuIcon: '',
+            //             SubMenu: []
+            //         }
 
-                ]
-            },
+            //     ]
+            // },
             {
                 MenuName: 'grantrights',
                 MenuTitle: 'Cấp quyền',
@@ -393,13 +393,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
-                    {
-                        MenuName: 'PNServicePriceTable',
-                        MenuTitle: 'Bảng giá dịch vụ của đối tác',
-                        LinkTo: '/PNServicePriceTable',
-                        MenuIcon: '',
-                        SubMenu: []
-                    }
+                    // {
+                    //     MenuName: 'PNServicePriceTable',
+                    //     MenuTitle: 'Bảng giá dịch vụ của đối tác',
+                    //     LinkTo: '/PNServicePriceTable',
+                    //     MenuIcon: '',
+                    //     SubMenu: []
+                    // }
 
                 ]
             },
@@ -662,6 +662,67 @@ const AppMenu = [
                 MenuName: 'IDDocumentType',
                 MenuTitle: 'Loại giấy tờ tùy thân',
                 LinkTo: '/IDDocumentType',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'PartnerType',
+                MenuTitle: 'Đối tác',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'PartnerType',
+                        MenuTitle: 'Danh sách loại đối tác',
+                        LinkTo: '/PartnerType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'Partner',
+                        MenuTitle: 'Danh sách đối tác',
+                        LinkTo: '/Partner',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+
+
+                ]
+            },
+            {
+                MenuName: 'Service',
+                MenuTitle: 'Dịch vụ',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'ServiceType',
+                        MenuTitle: 'Loại dịch vụ',
+                        LinkTo: '/ServiceType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'ServiceSeasonType',
+                        MenuTitle: 'Loại mùa dịch vụ',
+                        LinkTo: '/ServiceSeasonType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'ServiceAgreementType',
+                        MenuTitle: 'Loại hợp đồng dịch vụ',
+                        LinkTo: '/ServiceAgreementType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+
+                ]
+            },
+            {
+                MenuName: 'PNServicePriceTable',
+                MenuTitle: 'Bảng giá dịch vụ của đối tác',
+                LinkTo: '/PNServicePriceTable',
                 MenuIcon: '',
                 SubMenu: []
             }
