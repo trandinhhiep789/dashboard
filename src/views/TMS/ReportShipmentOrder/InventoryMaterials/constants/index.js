@@ -122,6 +122,20 @@ export const GridColumnList = [
         DataSourceMember: "TotalQuantity",
         Width: 100
     },
+    {
+        Name: "SalePrice",
+        Type: "textCurrency",
+        Caption: "Đơn giá (giá vốn)",
+        DataSourceMember: "SalePrice",
+        Width: 100
+    },
+    {
+        Name: "TotalQuantity",
+        Type: "text",
+        Caption: "Cuối kỳ",
+        DataSourceMember: "TotalQuantity",
+        Width: 100
+    },
 
 ]
 
