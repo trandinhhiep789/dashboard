@@ -99,6 +99,7 @@ class SearchCom extends React.Component {
                 original: JSON.parse(objlst[i]).ImageFileURL,
                 thumbnail: JSON.parse(objlst[i]).ImageFileURL,
                 ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
+                ImageCaptureTime: JSON.parse(objlst[i]).ImageCaptureTime,
                 description: ""
             });
         }
