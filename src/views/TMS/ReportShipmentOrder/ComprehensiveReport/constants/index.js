@@ -9,72 +9,63 @@ export const PagePath = [
 
 export const ListColumnGrid = [
     {
-        Name: "User",
+        Name: "RequestUser",
         Type: "text",
-        Caption: "User",
-        DataSourceMember: "User",
+        Caption: "Nhân viên",
+        DataSourceMember: "RequestUser",
         Width: 100
     },
     {
-        Name: "Quantity",
+        Name: "TotalQuantity",
         Type: "text",
         Caption: "Số lượng tồn ống đồng (m)",
-        DataSourceMember: "Quantity",
+        DataSourceMember: "TotalQuantity",
         Width: 100
     },
     {
-        Name: "Costs",
+        Name: "SalePriceVAT",
         Type: "text",
         Caption: "Vật tư (tổng VND)",
-        DataSourceMember: "Costs",
+        DataSourceMember: "SalePriceVAT",
         Width: 100
     },
 ]
 
 export const SearchMLObjectDefinition = [
+
     {
-        Name: "FromDate",
+        Name: "Month",
         DefaultValue: "",
-        BindControlName: "bcFromDate"
-    },
-    {
-        Name: "ToDate",
-        DefaultValue: "",
-        BindControlName: "bcToDate"
-    },
-    {
-        Name: "Area",
-        DefaultValue: "",
-        BindControlName: "bcArea"
+        BindControlName: "dtMonth"
     },
     {
         Name: "UserName",
         DefaultValue: "",
-        BindControlName: "bcUserName"
+        BindControlName: "cbUserName"
     }
 ]
 
 export const SearchElementList = [
-    {
-        type: "Datetime",
-        name: "bcFromDate",
-        DataSourceMember: "FromDate",
-        label: "Từ Ngày",
-        value: new Date(),
-        timeFormat: false,
-        dateFormat: "DD/MM/YYYY",
-        colspan: 2,
-    },
-    {
-        type: "Datetime",
-        name: "bcToDate",
-        DataSourceMember: "ToDate",
-        label: "Đến Ngày",
-        value: new Date(),
-        timeFormat: false,
-        dateFormat: "DD/MM/YYYY",
-        colspan: 2,
-    },
+    // {
+    //     type: "Datetime",
+    //     name: "bcFromDate",
+    //     DataSourceMember: "FromDate",
+    //     label: "Từ Ngày",
+    //     value: new Date(),
+    //     timeFormat: false,
+    //     dateFormat: "DD/MM/YYYY",
+    //     colspan: 2,
+    // },
+    // {
+    //     type: "Datetime",
+    //     name: "bcToDate",
+    //     DataSourceMember: "ToDate",
+    //     label: "Đến Ngày",
+    //     value: new Date(),
+    //     timeFormat: false,
+    //     dateFormat: "DD/MM/YYYY",
+    //     colspan: 2,
+    // },
     // {
     //     type: "ComboBox",
     //     name: "bcArea",
@@ -108,16 +99,26 @@ export const SearchElementList = [
     //     classNameCol: "col-custom"
     // },
     {
+        type: "MonthPicker",
+        name: "dtMonth",
+        DataSourceMember: "Month",
+        label: "Tháng",
+        value: new Date(),
+        format: "MM-YYYY",
+        colspan: 2,
+        placeholder: "MM-YYYY",
+    },
+    {
         type: "MultiSelectUser",
-        name: "bcUserName",
+        name: "cbUserName",
         DataSourceMember: "UserName",
-        label: "Trưởng nhóm",
+        label: "Nhân viên",
         colspan: 12,
         rowspan: 3,
         labelcolspan: 12,
         IsLabelDiv: true,
         value: -1,
-        placeholder: "---Chọn trưởng nhóm---",
+        placeholder: "---Chọn nhân viên---",
         listoption: [],
         IsAutoLoadItemFromCache: false,
         isMultiSelect: true,

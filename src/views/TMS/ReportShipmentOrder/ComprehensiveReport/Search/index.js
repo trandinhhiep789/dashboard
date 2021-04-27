@@ -24,7 +24,7 @@ export class Search extends Component {
 
         this.state = {
             dataSource: [],
-            IsShowForm: false
+            IsShowForm: true
         }
 
         this.searchref = React.createRef()
@@ -33,7 +33,6 @@ export class Search extends Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        this.showMessage("Tính năng đang phát triển.")
     }
 
     handleCloseMessage() {
@@ -48,7 +47,30 @@ export class Search extends Component {
 
     handleSearchSubmit(formData, MLObject) {
         console.log("formData, MLObject", formData, MLObject)
-        this.showMessage("Tính năng đang phát triển")
+        //api/AdvanceRequest/ComprehensiveReport
+      
+        let result2;
+        if (MLObject.UserName != -1 && MLObject.UserName != null && MLObject.UserName != "") {
+            result2 = MLObject.UserName.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item.value;
+            }, '');
+            MLObject.UserName = result2
+            this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/ComprehensiveReport", MLObject).then(apiResult => {
+                console.log("apiResult",MLObject, apiResult);
+                if(apiResult.IsError){
+                    this.showMessage(apiResult.MessageDetail)
+                }
+                else{
+                    this.setState({
+                        dataSource: apiResult.ResultObject
+                    })
+                }
+            })
+        }
+        else {
+            this.showMessage("Vui lòng nhập danh sách nhân viên để xem báo cáo")
+        }
     }
 
     render() {
@@ -58,7 +80,7 @@ export class Search extends Component {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
-    
+
                     <SearchForm
                         FormName="Tìm kiếm báo cáo tổng hợp"
                         listelement={SearchElementList}
@@ -67,7 +89,7 @@ export class Search extends Component {
                         ref={this.searchref}
                         className="multiple"
                     />
-    
+
                     <DataGrid
                         listColumn={ListColumnGrid}
                         dataSource={dataSource}
@@ -84,19 +106,19 @@ export class Search extends Component {
                         ref={this.gridref}
                         RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                     />
-    
+
                 </React.Fragment>
             )
         }
-        else{
+        else {
             return (
                 <div>
                     <label>Đang nạp dữ liệu ......</label>
                 </div>
             )
         }
-        
-        
+
+
     }
 }
 
