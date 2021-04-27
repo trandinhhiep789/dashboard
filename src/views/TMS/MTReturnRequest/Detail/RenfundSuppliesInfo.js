@@ -156,7 +156,7 @@ export class RenfundSuppliesInfo extends Component {
                     <div className="form-group col-md-4">
                         <div className="checkbox customCheckbox">
                             <label className="col-form-label">
-                                {formatDate(RenfundSupplies.CreatedInputVoucherDate, true)}
+                                {formatDate(RenfundSupplies.CreatedInputVoucherDate, false)}
                             </label>
                         </div>
 

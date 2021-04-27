@@ -151,6 +151,7 @@ class AddCom extends React.Component {
 
     GetDataByRequestTypeID(MtreturnRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByMTRRequestTypeIDPath, MtreturnRequestTypeID).then(apiResult => {
+            console.log("aa", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -252,7 +253,7 @@ class AddCom extends React.Component {
 
             if (isAutoReview) {
                 MLObject.IsreViewed = isAutoReview;
-                MLObject.reViewedUser = this.props.AppInfo.LoginInfo.Username;
+                MLObject.reViewedUser =  "administrator",//this.props.AppInfo.LoginInfo.Username;
                 MLObject.CurrentReviewLevelID = 0;
                 MLObject.reViewedDate = new Date();
             }
@@ -319,6 +320,7 @@ class AddCom extends React.Component {
 
     handleSubmit(MLObject) {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+            console.log("â", MLObject, apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.MessageDetail);
         });
