@@ -22,7 +22,8 @@ import {
     UpdateCreateVocherAPIPath,
     AddAPIComment,
     AddAPIAttachment,
-    DeleteAPIAttachment
+    DeleteAPIAttachment,
+    cacheInventoryStatus
 } from '../constants';
 import InputGrid from '../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
 import Attachment from "../../../../common/components/Attachment";
@@ -32,7 +33,7 @@ import { MODAL_TYPE_COMMONTMODALS } from "../../../../constants/actionTypes";
 import {
     TMS_MTRETURNREQUEST_CREATEDVOUCHER, GET_CACHE_USER_FUNCTION_LIST
 } from "../../../../constants/functionLists";
-import { callGetUserCache } from "../../../../actions/cacheAction";
+import { callGetUserCache, callGetCache } from "../../../../actions/cacheAction";
 
 export class DetailCom extends Component {
     constructor(props) {
@@ -56,7 +57,8 @@ export class DetailCom extends Component {
             IsStatus: false,
             isHiddenButtonRV: false,
             visibleOutPut: false,
-            IsLoadDataComplete: false
+            IsLoadDataComplete: false,
+            cacheInventoryStatus: []
         }
 
         this.callLoadData = this.callLoadData.bind(this);
@@ -68,7 +70,9 @@ export class DetailCom extends Component {
         this.handleInsertDRNoteRV = this.handleInsertDRNoteRV.bind(this);
         this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
         this.checkPermission = this.checkPermission.bind(this)
-        this.handlePermissionCreatedVoucher = this.handlePermissionCreatedVoucher.bind(this)
+        this.handlePermissionCreatedVoucher = this.handlePermissionCreatedVoucher.bind(this);
+        this.handleCallGetCache = this.handleCallGetCache.bind(this);
+        this.addKeyInventoryStatusName = this.addKeyInventoryStatusName.bind(this);
 
         this.notificationDOMRef = React.createRef();
     }
@@ -80,7 +84,41 @@ export class DetailCom extends Component {
             MTReturnRequestID: this.props.match.params.id
         })
         this.callLoadData(this.props.match.params.id);
-        this.handlePermissionCreatedVoucher()
+        this.handlePermissionCreatedVoucher();
+        this.handleCallGetCache();
+    }
+
+    handleCallGetCache() {
+        try {
+            this.props.callGetCache(cacheInventoryStatus).then(result => {
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    this.setState({
+                        cacheInventoryStatus: result.ResultObject.CacheData
+                    })
+                }
+            })
+        } catch (error) {
+
+        }
+    }
+
+    addKeyInventoryStatusName(data) {
+        try {
+            const { cacheInventoryStatus } = this.state;
+
+            const result = data.map(item => {
+                const infoInventory = cacheInventoryStatus.find(({ InventoryStatusID }) => InventoryStatusID == item.InventoryStatusID)
+
+                return {
+                    ...item,
+                    InventoryStatusName: infoInventory ? infoInventory.InventoryStatusName : ""
+                }
+            })
+
+            return result;
+        } catch (error) {
+            return data;
+        }
     }
 
     callLoadData(id) {
@@ -185,7 +223,8 @@ export class DetailCom extends Component {
 
                 this.setState({
                     RenfundSupplies: apiResult.ResultObject,
-                    MTReturnRequestDetail: lstMTReturnRequestDetail,
+                    // MTReturnRequestDetail: lstMTReturnRequestDetail,
+                    MTReturnRequestDetail: this.addKeyInventoryStatusName(lstMTReturnRequestDetail),
                     MTReturnRequestReviewLevel: lstMTReturnRequestReviewLevel,
                     isAutoReview: IsreViewed,
                     MTReturnRequest_AttachmentList: apiResult.ResultObject.MTReturnRequest_AttachmentList,
@@ -622,6 +661,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetUserCache: (cacheKeyID) => {
             return dispatch(callGetUserCache(cacheKeyID));
+        },
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
         },
     };
 }

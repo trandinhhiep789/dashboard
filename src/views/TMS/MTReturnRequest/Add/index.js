@@ -21,7 +21,8 @@ import {
     LoadAPIByMtreturnRequestTypeIDPath,
     LoadAPIByRequestTypeIDPath,
     LoadAPIByMTRRequestTypeIDPath,
-    addImportMaterialModalWidth
+    addImportMaterialModalWidth,
+    cacheInventoryStatus
 } from "../constants";
 import MTReturnRequestRVList from '../Component/MTReturnRequestRVList'
 
@@ -44,6 +45,9 @@ class AddCom extends React.Component {
         this.onChangeDataMTRRequestDetail = this.onChangeDataMTRRequestDetail.bind(this);
         this.combineSameMaterial = this.combineSameMaterial.bind(this);
         this.checkValidateArrCombineSameMaterial = this.checkValidateArrCombineSameMaterial.bind(this);
+        this.handleCallGetCache = this.handleCallGetCache.bind(this);
+        this.addKeyInventoryStatusName = this.addKeyInventoryStatusName.bind(this);
+
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -58,7 +62,8 @@ class AddCom extends React.Component {
             isError: false,
             InventoryStatusID: "",
             IsAllowdUpliCatiOnProduct: false,
-            RowEditMTReturnRequestDetail: []
+            RowEditMTReturnRequestDetail: [],
+            cacheInventoryStatus: []
         };
     }
 
@@ -66,7 +71,7 @@ class AddCom extends React.Component {
         this.props.hideModal();
         this.props.updatePagePath(AddPagePath);
         this.GetDataByRequestTypeID(this.props.location.state.MtreturnRequestTypeID);
-      
+
 
         const param = [
             {
@@ -80,15 +85,49 @@ class AddCom extends React.Component {
         ];
         this.getDataMTReturnRequestRLByMTReturnRequestType(param);
 
-        const param1 ={
+        const param1 = {
             MtreturnRequestTypeID: this.props.location.state.MtreturnRequestTypeID,
             RequestStoreID: this.props.location.state.RequestStoreID
         }
         this.testGetMTReturnRequestMobile(param1)
-       
+
+        this.handleCallGetCache();
     }
 
-    testGetMTReturnRequestMobile(param){
+    handleCallGetCache() {
+        try {
+            this.props.callGetCache(cacheInventoryStatus).then(result => {
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    this.setState({
+                        cacheInventoryStatus: result.ResultObject.CacheData
+                    })
+                }
+            })
+        } catch (error) {
+
+        }
+    }
+
+    addKeyInventoryStatusName(data) {
+        try {
+            const { cacheInventoryStatus } = this.state;
+
+            const result = data.map(item => {
+                const infoInventory = cacheInventoryStatus.find(({ InventoryStatusID }) => InventoryStatusID == item.InventoryStatusID)
+
+                return {
+                    ...item,
+                    InventoryStatusName: infoInventory ? infoInventory.InventoryStatusName : ""
+                }
+            })
+
+            return result;
+        } catch (error) {
+            return data;
+        }
+    }
+
+    testGetMTReturnRequestMobile(param) {
         this.props.callFetchAPI(APIHostName, "api/MTReturnRequest/GetMTReturnRequestMobile", param).then(apiResult => {
             console.log("GetMTReturnRequestMobile", param, apiResult)
         })
@@ -145,7 +184,7 @@ class AddCom extends React.Component {
                 });
             }
 
-          
+
         })
     }
 
@@ -170,11 +209,11 @@ class AddCom extends React.Component {
                 }
 
                 this.setState({
-                    MTReturnRequestDetail: apiResult.ResultObject,
+                    MTReturnRequestDetail: this.addKeyInventoryStatusName(apiResult.ResultObject),
                     IsCallAPIError: apiResult.IsError,
                 });
 
-              
+
             }
         });
     }
@@ -253,8 +292,8 @@ class AddCom extends React.Component {
 
             if (isAutoReview) {
                 MLObject.IsreViewed = isAutoReview;
-                MLObject.reViewedUser =  "administrator",//this.props.AppInfo.LoginInfo.Username;
-                MLObject.CurrentReviewLevelID = 0;
+                MLObject.reViewedUser = "administrator",//this.props.AppInfo.LoginInfo.Username;
+                    MLObject.CurrentReviewLevelID = 0;
                 MLObject.reViewedDate = new Date();
             }
             else {
