@@ -58,8 +58,16 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         this.getCacheMTG()
-        //this.handleSearchSubmit();
+        // this.handleSearchSubmit();
         window.addEventListener("resize", this.updateWindowDimensions);
+
+        // const objDatatest = {
+        //     UserName: "0041017", //MLObject.UserName == -1 ? "" : MLObject.UserName.value,
+        //     Month: new Date()//MLObject.Month
+
+        // }
+
+        // this.callSearchData(objDatatest);
     }
 
     componentWillUnmount() {
@@ -96,12 +104,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        const objDatatest = {
-            UserName: "0041017", //MLObject.UserName == -1 ? "" : MLObject.UserName.value,
-            Month: new Date()//MLObject.Month
-
-        }
-
+       
         const objData = {
             UserName: MLObject.UserName == -1 ? "" : MLObject.UserName.value,
             Month: MLObject.Month
@@ -114,12 +117,20 @@ class SearchCom extends React.Component {
             MLObject: MLObject
         })
 
+        const objDatatest = {
+            UserName: "0041017", //MLObject.UserName == -1 ? "" : MLObject.UserName.value,
+            Month: new Date()//MLObject.Month
+
+        }
+
         this.callSearchData(objData);
     }
 
     callSearchData(searchData) {
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
 
+
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("apiResult", apiResult)
             if (apiResult && !apiResult.IsError && apiResult.ResultObject) {
 
                 const tempData = apiResult.ResultObject.filter(a => a.MaterialGroupID.trim() == this.state.ConfigValue);
