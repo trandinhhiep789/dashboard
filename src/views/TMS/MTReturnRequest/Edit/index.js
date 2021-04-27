@@ -24,7 +24,8 @@ import {
     LoadAPIByMtreturnRequestTypeIDPath,
     InputMTReturnRequestDetailColumnListNew,
     LoadAPIByMTRRequestTypeIDPath,
-    addImportMaterialModalWidth
+    addImportMaterialModalWidth,
+    cacheInventoryStatus
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -45,6 +46,9 @@ class EditCom extends React.Component {
         this.valueChangeInputGrid = this.valueChangeInputGrid.bind(this);
         this.getDataDestroyRequestRLByDestroyRequestType = this.getDataDestroyRequestRLByDestroyRequestType.bind(this);
         this.GetDataByRequestTypeID = this.GetDataByRequestTypeID.bind(this);
+        this.handleCallGetCache = this.handleCallGetCache.bind(this);
+        this.addKeyInventoryStatusName = this.addKeyInventoryStatusName.bind(this);
+
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -64,13 +68,29 @@ class EditCom extends React.Component {
             RequestUser: '',
             gridMTReturnRequestRLSort: [],
             IsAllowdUpliCatiOnProduct: false,
-            MTReturnRequestDetailNew: []
+            MTReturnRequestDetailNew: [],
+            cacheInventoryStatus: []
         };
     }
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
         this.callLoadData(this.props.match.params.id);
+        this.handleCallGetCache();
+    }
+
+    handleCallGetCache() {
+        try {
+            this.props.callGetCache(cacheInventoryStatus).then(result => {
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    this.setState({
+                        cacheInventoryStatus: result.ResultObject.CacheData
+                    })
+                }
+            })
+        } catch (error) {
+
+        }
     }
 
     getDataDestroyRequestRLByDestroyRequestType(param, MTReturnRequestTypeID) {
@@ -125,7 +145,6 @@ class EditCom extends React.Component {
 
                 let resultSort = Object.values(lstoption).sort((a, b) => a.ReviewOrderIndex - b.ReviewOrderIndex)
 
-                console.log("resultSort", lstoption, resultSort)
 
                 this.setState({
                     MTReturnRequestRL: apiResult.ResultObject,
@@ -142,7 +161,7 @@ class EditCom extends React.Component {
 
     combineSameMaterial() {
         const { MTReturnRequestDetailNew } = this.state;
-        debugger
+
         let arrUniqueMaterial = [];
 
         if (MTReturnRequestDetailNew.length > 0) {
@@ -176,14 +195,10 @@ class EditCom extends React.Component {
 
     prevDataSubmit(formData, MLObject) {
         const { isError, gridMTReturnRequestRL, isAutoReview, isAutoOutput, RequestUser, gridMTReturnRequestRLSort, MTReturnRequestDetailNew } = this.state;
-
-        console.log("prevDataSubmit", MLObject);
-
         const arrProductDetai = this.combineSameMaterial();
 
-        console.log("arrProductDetai", arrProductDetai);
-
         let arrReviewLevel = [];
+
         Object.keys(gridMTReturnRequestRL).map(function (key) {
             let objItem = {}
             objItem.ReviewLevelID = key;
@@ -255,7 +270,6 @@ class EditCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.MessageDetail);
         });
-
     }
 
 
@@ -272,6 +286,25 @@ class EditCom extends React.Component {
                 onCloseModal={this.handleCloseMessage}
             />
         );
+    }
+
+    addKeyInventoryStatusName(data) {
+        try {
+            const { cacheInventoryStatus } = this.state;
+
+            const result = data.map(item => {
+                const infoInventory = cacheInventoryStatus.find(({ InventoryStatusID }) => InventoryStatusID == item.InventoryStatusID)
+
+                return {
+                    ...item,
+                    InventoryStatusName: infoInventory ? infoInventory.InventoryStatusName : ""
+                }
+            })
+
+            return result;
+        } catch (error) {
+            return data;
+        }
     }
 
     callLoadData(id) {
@@ -327,7 +360,8 @@ class EditCom extends React.Component {
                     IsLoadDataComplete: true,
                     IsSystem: disabledControll,
                     MTReturnRequestRL: resultMTReturnRequestReviewLevel,
-                    MTReturnRequestDetailNew: apiResult.ResultObject.MTReturnRequestDetailList,
+                    // MTReturnRequestDetailNew: apiResult.ResultObject.MTReturnRequestDetailList,
+                    MTReturnRequestDetailNew: this.addKeyInventoryStatusName(apiResult.ResultObject.MTReturnRequestDetailList),
                     isAutoReview: apiResult.ResultObject.IsreViewed,
                     isCreatedInputVoucher: apiResult.ResultObject.IsOutput,
                     RequestUser: apiResult.ResultObject.RequestUser,

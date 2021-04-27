@@ -23,6 +23,8 @@ export const AddAPIComment = "api/MTReturnRequest_Comment/Add";
 export const AddAPIAttachment = "api/MTReturnRequest_Attachment/Add";
 export const DeleteAPIAttachment = "api/MTReturnRequest_Attachment/Delete";
 
+export const cacheInventoryStatus = "ERPRELATECACHE.INVENTORYSTATUS";
+
 export const TitleFormSearch = "Tìm kiếm danh sách yêu cầu nhập trả vật tư";
 export const TitleFormAdd = "Thêm yêu cầu nhập trả vật tư";
 export const TitleFormEdit = "Cập nhật nhập trả vật tư";
@@ -393,6 +395,13 @@ export const InputMTReturnRequestDetailColumnList = [
         Caption: "Tên sản phẩm",
         DataSourceMember: "ProductName",
         Width: 250
+    },
+    {
+        Name: "InventoryStatusName",
+        Type: "text",
+        Caption: "Trạng thái",
+        DataSourceMember: "InventoryStatusName",
+        Width: 150
     },
     {
         Name: "QuantityUnit",
