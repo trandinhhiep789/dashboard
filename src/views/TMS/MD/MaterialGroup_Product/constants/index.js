@@ -265,14 +265,14 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Mã sản phẩm vật tư",
         DataSourceMember: "ProductID",
-        Width: 150
+        Width: 100
     },
     {
         Name: "ProductName",
         Type: "text",
         Caption: "Tên sản phẩm vật tư",
         DataSourceMember: "ProductName",
-        Width: 150
+        Width: 300
     },
     {
         Name: "ConvertRatio",
@@ -293,14 +293,14 @@ export const DataGridColumnList = [
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 150
+        Width: 80
     },
     {
         Name: "MaterialGroupProductCSID",
         Type: "edit",
         Caption: "Sửa",
         DataSourceMember: "MaterialGroupProductCSID",
-        Width: 100
+        Width: 80
     }
 
 ];

@@ -472,7 +472,8 @@ class FormControlComboBoxCom extends Component {
                     listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                     if (!result.IsError && result.ResultObject.CacheData != null) {
                         result.ResultObject.CacheData.map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
                         }
                         );
                         this.setState({ Listoption: listOption });

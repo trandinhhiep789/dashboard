@@ -316,14 +316,14 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Mã sản phẩm vật tư",
         DataSourceMember: "MaterialProductID",
-        Width: 200
+        Width: 150
     },
     {
         Name: "MaterialProductName",
         Type: "text",
         Caption: "Tên sản phẩm vật tư",
         DataSourceMember: "MaterialProductName",
-        Width: 200
+        Width: 250
     },
     {
         Name: "ApplySubGroupName",
@@ -337,28 +337,28 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Nhà sản xuất áp dụng",
         DataSourceMember: "ApplyBrandName",
-        Width: 200
+        Width: 180
     },
     {
         Name: "ApplyTechspecsName",
         Type: "text",
         Caption: "Thông số kỹ thuật áp dụng",
         DataSourceMember: "ApplyTechspecsName",
-        Width: 200
+        Width: 180
     },
     {
         Name: "ApplyTechspecsValueName",
         Type: "text",
         Caption: "Giá trị thông số KT áp dụng",
         DataSourceMember: "ApplyTechspecsValueName",
-        Width: 200
+        Width: 180
     },
     {
         Name: "IsActived",
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 120
+        Width: 80
     },
     {
         Name: "InstallCondID",
