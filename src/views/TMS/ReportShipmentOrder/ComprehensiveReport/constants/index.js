@@ -24,7 +24,7 @@ export const ListColumnGrid = [
     },
     {
         Name: "SalePriceVAT",
-        Type: "text",
+        Type: "textCurrency",
         Caption: "Vật tư (tổng VND)",
         DataSourceMember: "SalePriceVAT",
         Width: 100
