@@ -23,6 +23,8 @@ export const AddAPIComment = "api/MTReturnRequest_Comment/Add";
 export const AddAPIAttachment = "api/MTReturnRequest_Attachment/Add";
 export const DeleteAPIAttachment = "api/MTReturnRequest_Attachment/Delete";
 
+export const cacheInventoryStatus = "ERPRELATECACHE.INVENTORYSTATUS";
+
 export const TitleFormSearch = "Tìm kiếm danh sách yêu cầu nhập trả vật tư";
 export const TitleFormAdd = "Thêm yêu cầu nhập trả vật tư";
 export const TitleFormEdit = "Cập nhật nhập trả vật tư";
@@ -395,6 +397,13 @@ export const InputMTReturnRequestDetailColumnList = [
         Width: 250
     },
     {
+        Name: "InventoryStatusName",
+        Type: "text",
+        Caption: "Trạng thái",
+        DataSourceMember: "InventoryStatusName",
+        Width: 150
+    },
+    {
         Name: "QuantityUnit",
         Type: "text",
         Caption: "Đơn vị tính",
@@ -423,42 +432,49 @@ export const InputMTReturnRequestAddColumnList = [
         Type: "text",
         Caption: "Nhóm vật tư",
         DataSourceMember: "MaterialGroupID",
-        Width: 100
+        Width: 12.5
     },
     {
         Name: "ProductID",
         Type: "text",
         Caption: "Mã sản phẩm",
         DataSourceMember: "ProductID",
-        Width: 150
+        Width: 12.5
     },
     {
         Name: "ProductName",
         Type: "text",
         Caption: "Tên sản phẩm",
         DataSourceMember: "ProductName",
-        Width: 250
+        Width: 12.5
     },
     {
         Name: "QuantityUnit",
         Type: "text",
         Caption: "Đơn vị tính",
         DataSourceMember: "QuantityUnit",
-        Width: 80
+        Width: 12.5
+    },
+    {
+        Name: "InventoryStatusName",
+        Type: "text",
+        Caption: "Trạng thái",
+        DataSourceMember: "InventoryStatusName",
+        Width: 12.5
     },
     {
         Name: "TotalQuantity",
         Type: "textNew",
         Caption: "Số dư tạm ứng",
         DataSourceMember: "TotalQuantity",
-        Width: 80
+        Width: 12.5
     },
     {
         Name: "Quantity",
         Type: "textNew",
         Caption: "Số lượng nhập trả",
         DataSourceMember: "Quantity",
-        Width: 80
+        Width: 12.5
     },
     {
         Name: "Action",
@@ -466,7 +482,7 @@ export const InputMTReturnRequestAddColumnList = [
         Type: "editnew",
         Caption: "Tác vụ",
         DataSourceMember: "MaterialGroupID",
-        Width: 70,
+        Width: 12.5,
         IsShowEdit: true,
     }
 
@@ -507,6 +523,13 @@ export const InputMTReturnRequestDetailColumnListNew = [
         Type: "text",
         Caption: "Đơn vị",
         DataSourceMember: "QuantityUnit",
+        Width: 60
+    },
+    {
+        Name: "InventoryStatusName",
+        Type: "text",
+        Caption: "Trạng thái",
+        DataSourceMember: "InventoryStatusName",
         Width: 60
     },
     {

@@ -128,7 +128,7 @@ export class RenfundSuppliesInfo extends Component {
 
                 <div className="form-row">
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Đã tạo phiếu nhập</label>
+                        <label className="col-form-label bold">Đã tạo phiếu nhập:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <div className="checkbox customCheckbox">
@@ -151,7 +151,7 @@ export class RenfundSuppliesInfo extends Component {
                         </label>
                     </div>
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Ngày tạo phiếu nhập</label>
+                        <label className="col-form-label bold">Ngày tạo phiếu nhập:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <div className="checkbox customCheckbox">
