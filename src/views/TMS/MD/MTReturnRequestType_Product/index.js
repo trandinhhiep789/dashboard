@@ -155,7 +155,7 @@ class MTReturnRequestType_ProductCom extends React.Component {
             let options = [];
             this.props.MaterialProductDataSource.map((item, index) => {
                 if (item.MaterialGroupID == elementValue) {
-                    options.push({ value: item.ProductID, name: item.ProductID + "-" + item.ProductName })
+                    options.push({ value: item.ProductID, name: item.ProductName })
                 }
             })
             const elementlist = ModalColumnList_Insert;

@@ -25,6 +25,7 @@ import { USERSKILL_VIEW, USERSKILL_UPDATE, GET_CACHE_USER_FUNCTION_LIST, USER_RE
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import readXlsxFile from 'read-excel-file'
+import { formatDate } from "../../../../../common/library/CommonLib";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -131,7 +132,7 @@ class EditCom extends React.Component {
 
     callLoadData(postData) {
         this.props.callFetchAPI(APIHostName, GetAllByUserNameAPIPath, postData).then(apiResult => {
-            //console.log("apiResult", apiResult);
+            console.log("apiResult", apiResult);
             if (!apiResult.IsError) {
                 let id = "";
                 let uniqueArray = apiResult.ResultObject;
@@ -332,13 +333,13 @@ class EditCom extends React.Component {
                             </div>
                             <div className="card-body">
                                 <div className="row">
-                                    <div className="col-md-5">
+                                    <div className="col-md-4">
                                         <div className="row">
                                             <div className="col-md-12">
                                                 <MultiSelectComboBox
                                                     name="User"
-                                                    colspan={9}
-                                                    labelcolspan={3}
+                                                    colspan={7}
+                                                    labelcolspan={4}
                                                     label="Nhập mã nhân viên"
                                                     disabled={false}
                                                     IsLabelDiv={true}
@@ -355,18 +356,40 @@ class EditCom extends React.Component {
 
                                         </div>
                                     </div>
-                                    <div className="col-md-5 container">
+                                    <div className="col-md-7">
                                         <div className="row">
-                                            <div className="col-md-12">
+                                            <div className="col-md-6">
                                                 {this.state.FullName ?
                                                     <div>
-                                                        <label className="col-form-label 6">Tên nhân viên:</label> &nbsp; &nbsp;
+                                                        <label className="col-form-label">Tên nhân viên:</label> &nbsp; &nbsp;
                                                         <b style={{ color: "blue" }}>{this.state.FullName}</b>
                                                     </div>
                                                     : ""
                                                 }
 
                                             </div>
+                                            {
+                                                this.state.DataSourceUser_RewardPosition.length > 0 && this.state.DataSourceUser_RewardPosition[0].UpdatedDate ?
+                                                    <div style={{ position: "absolute", display: "inherit", left: "39%" }}>
+                                                        <div>
+                                                            <div>
+                                                                <label className="col-form-label">Ngày cập nhật:</label> &nbsp; &nbsp;
+                                                                <span>{formatDate(this.state.DataSourceUser_RewardPosition[0].UpdatedDate)}</span>
+                                                            </div>
+                                                        </div>
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <div>
+                                                            <div>
+                                                                <label className="col-form-label">Người cập nhật:</label> &nbsp; &nbsp;
+                                                                <span>{this.state.DataSourceUser_RewardPosition[0].UpdatedUserFullName}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    : ""
+
+                                            }
+
 
                                         </div>
                                     </div>
@@ -375,7 +398,7 @@ class EditCom extends React.Component {
                                     </div> */}
 
 
-                                    <div className="col-md-2">
+                                    <div className="col-md-1">
                                         <div className="btn-toolbar" style={{ position: "absolute", bottom: "-47px", right: "16px", zIndex: "1" }}>
                                             <div className="btn-group btn-group-sm">
                                                 <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV}>
