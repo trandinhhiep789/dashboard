@@ -69,7 +69,6 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("SA:", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -80,7 +79,7 @@ class SearchCom extends React.Component {
 
                 const result = apiResult.ResultObject.map((item) => {
 
-                    item.ExtendLable = item.ExtendedDate ? formatDate(item.ExtendedDate) : 'Chưa gia hạn';
+                    item.ExtendLable = item.ExtendedDate ? formatDate(item.ExtendedDate, true) : 'Chưa gia hạn';
                     let currentDate = new Date();
                     if (item.ExtendedDate != null) {
                         const ExtendedDate = new Date(item.ExtendedDate);
@@ -117,10 +116,10 @@ class SearchCom extends React.Component {
                         }
                     }
 
-                    if(item.IsdePOSited){
+                    if (item.IsdePOSited) {
                         item.DepositedLable = "Đã ký";
                     }
-                    else{
+                    else {
                         item.DepositedLable = "Chưa ký";
                     }
                     return item;
@@ -299,9 +298,7 @@ class SearchCom extends React.Component {
     }
 
     handleImportFile(resultRows, errors) {
-        console.log('handleImportFile', resultRows, errors)
         // this.props.callFetchAPI(APIHostName, AddAutoAPIPath, resultRows).then(apiResult => {
-        //     console.log('apiResult', apiResult)
         // });
     }
 
