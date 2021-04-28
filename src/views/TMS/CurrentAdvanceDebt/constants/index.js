@@ -98,7 +98,8 @@ export const DataGridHistoryColumnList = [
         Width: 250,
         Hyperlinks: {
             AREdit: "AdvanceRequest/Edit",
-            SODetail: "ShipmentOrder/Detail"
+            SODetail: "ShipmentOrder/Detail",
+            MTRDetail: "MTReturnRequest/Detail",
         }
     },
 

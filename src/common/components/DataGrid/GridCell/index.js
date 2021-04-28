@@ -359,7 +359,16 @@ class GridCell extends Component {
                 );
             case "hyperlink":
                 const { RelatedVoucherID } = rowItem;
-                const destinationHyperlink = RelatedVoucherID.includes("AR") ? hyperLink.AREdit : hyperLink.SODetail;
+                let destinationHyperlink;
+
+                if (RelatedVoucherID.includes("AR")) {
+                    destinationHyperlink = hyperLink.AREdit
+                } else if (RelatedVoucherID.includes("RR")) {
+                    destinationHyperlink = hyperLink.MTRDetail
+                } else {
+                    destinationHyperlink = hyperLink.SODetail
+                }
+
                 const partsText = text.split(RelatedVoucherID);
                 control = <p>{partsText[0]}<Link to={`${destinationHyperlink}/${RelatedVoucherID}`} target="_blank">{RelatedVoucherID}</Link>{partsText[1]}</p>
                 break;
