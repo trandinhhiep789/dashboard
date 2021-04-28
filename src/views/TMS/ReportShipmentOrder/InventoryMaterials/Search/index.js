@@ -403,6 +403,7 @@ class SearchCom extends React.Component {
                 IsHandOverMaterial: 1 // v_ISHANDOVERMATERIAL
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
+                console.log("nhan trong ky", apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status);
                 }
@@ -420,6 +421,7 @@ class SearchCom extends React.Component {
                 IsHandOverMaterial: 0 // v_ISHANDOVERMATERIAL
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
+                console.log("n22", apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status);
                 }
@@ -438,6 +440,7 @@ class SearchCom extends React.Component {
             }
             //this.showMessage("Tính năng đang phát triển.")
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/GetExchangeOrderByUser", objData).then(apiResult => {
+                console.log("33", apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status);
                 }
@@ -453,6 +456,7 @@ class SearchCom extends React.Component {
                 ProductID: objValue[0].value
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceDebtFlow/LoadAdvanceDebtFlowUsing", objData).then(apiResult => {
+                console.log("44", apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status);
                 }
