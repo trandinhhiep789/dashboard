@@ -112,15 +112,14 @@ class SearchCom extends React.Component {
 
                 const tempDataExport = apiResult.ResultObject.map((item, index) => {
                     let element = {
-                        "Mã nhân viên": item.RewardUser,
-                        "Tên nhân viên": item.FullName,
+                        "Mã nhân viên": item.RewardUser.trim(),
+                        "Tên nhân viên": item.FullName.trim(),
                         "Tổng thưởng": item.TotalReward,
 
                     };
 
                     return element;
-
-                })
+                });
 
                 const tempData = apiResult.ResultObject.map((item, index) => {
                     item.NoteReward = "Điểm thưởng này chỉ mang tính chất tham khảo, kết quả thưởng cuối cùng sẽ được KSNB và Phòng Lao động tiền lương điều chỉnh sau khi đối chiếu với các số liệu khác";

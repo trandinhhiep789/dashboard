@@ -106,18 +106,18 @@ class SearchCom extends React.Component {
 
                 const tempDataExport = apiResult.ResultObject.map((item, index) => {
                     let element = {
-                        "Mã nhân viên": item.RewardUser,
-                        "Tên nhân viên": item.FullName,
-                        "Mã vận đơn": item.ShipmentOrderID,
-                        "Mã đơn hàng": item.PartnerSaleOrderID,
-                        "Ngày thưởng": item.RewardDate,
-                        "Mã sản phẩm": item.ProductID,
-                        "Tên sản phẩm": item.ProductName,
+                        "Mã nhân viên": item.RewardUser.trim(),
+                        "Tên nhân viên": item.FullName.trim(),
+                        "Mã vận đơn": item.ShipmentOrderID.trim(),
+                        "Mã đơn hàng": item.PartnerSaleOrderID.trim(),
+                        "Ngày thưởng": item.RewardDate.trim(),
+                        "Mã sản phẩm": item.ProductID.trim(),
+                        "Tên sản phẩm": item.ProductName.trim(),
                         "Số lượng": item.Quantity,
                         "Đơn giá thưởng": item.RewardPrice,
                         "Tỷ lệ thưởng": item.RewardRatio,
-                        "Vị trí thưởng": item.RewardPositionID + "-" + item.RewardPositionName,
-                        "Loại thưởng": item.RewardTypeID + "-" + item.RewardTypeName,
+                        "Vị trí thưởng": item.RewardPositionID + "-" + item.RewardPositionName.trim(),
+                        "Loại thưởng": item.RewardTypeID + "-" + item.RewardTypeName.trim(),
                         "Tổng thưởng": item.TotalReward,
 
                     };

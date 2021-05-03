@@ -96,8 +96,8 @@ class SearchCom extends React.Component {
 
                 const tempDataExport = apiResult.ResultObject.map((item, index) => {
                     let element = {
-                        "Mã nhân viên": item.RewardUser,
-                        "Tên nhân viên": item.FullName,
+                        "Mã nhân viên": item.RewardUser.trim(),
+                        "Tên nhân viên": item.FullName.trim(),
                         "Thưởng giao hàng": item.TotalReward1,
                         "Phụ cấp ống đồng": item.TotalReward2,
                         "Tiền xăng": item.TotalReward3,
@@ -197,7 +197,7 @@ class SearchCom extends React.Component {
             content: {
                 text: <DataGirdRewardShipmentOrder
                     dataSource={data}
-                    paramData= {paramData}
+                    paramData={paramData}
                     RowsPerPage={20}
                     IsAutoPaging={true}
                 />
@@ -234,7 +234,7 @@ class SearchCom extends React.Component {
                     IsExportFile={false}
                     IsAutoPaging={true}
                     RowsPerPage={50}
-                    RequirePermission={TMS_TMSREWARD_VIEW}            
+                    RequirePermission={TMS_TMSREWARD_VIEW}
                     ExportPermission={TMS_TMSREWARD_EXPORT}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
