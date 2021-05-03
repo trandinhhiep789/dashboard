@@ -676,3 +676,6 @@ export const USER_REWARDPOSITION_EXPORT = 'USER_REWARDPOSITION_EXPORT';
 
 // xuất dịnh nghĩa kho điều phối giao hàng
 export const COORDINATORSTORE_EXPORT = 'COORDINATORSTORE_EXPORT';
+
+// xuất danh sách vị trí thưởng theo khoảng thời gian
+export const PERIODUSERRWPOSITION_EXPORT = 'PERIODUSERRWPOSITION_EXPORT';

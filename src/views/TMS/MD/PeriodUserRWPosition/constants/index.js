@@ -317,7 +317,6 @@ export const DataGridColumnList = [
         DataSourceMember: "RewardPositionName",
         Width: 160
     },
-
     {
         Name: "ApplyFromDate",
         Type: "date",
@@ -411,7 +410,7 @@ export const DataGridColumnList = [
     // },
     {
         Name: "UpdatedDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày cập nhật",
         DataSourceMember: "UpdatedDate",
         Width: 140

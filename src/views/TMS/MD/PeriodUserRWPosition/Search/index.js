@@ -19,11 +19,12 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { PERIODUSERRWPOSITION_VIEW, PERIODUSERRWPOSITION_DELETE } from "../../../../../constants/functionLists";
+import { PERIODUSERRWPOSITION_VIEW, PERIODUSERRWPOSITION_DELETE, PERIODUSERRWPOSITION_EXPORT } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
+import { formatDate } from "../../../../../common/library/CommonLib";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -36,8 +37,7 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
-            cssNotification: "",
-            iconNotification: ""
+            dataExport: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -47,6 +47,10 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
+    }
+
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
     }
 
     handleDelete(deleteList, pkColumnName) {
@@ -86,15 +90,35 @@ class SearchCom extends React.Component {
             //this.searchref.current.changeLoadComplete();
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Người dùng": item.UserName,
+                        "Vị trí thưởng": item.RewardPositionName,
+                        "Áp dụng từ ngày": formatDate(item.ApplyFromDate),
+                        "Áp dụng đến ngày": formatDate(item.ApplyToDate),
+                        "Kích hoạt": item.IsActived ? "Có" : "Không",
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
+                    };
+                    return element;
+
+                })
+
                 this.setState({
+                    dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError,
                     IsShowForm: true
                 });
             } else {
-                this.setState({ IsShowForm: false,
-                    IsCallAPIError:!apiResult.IsError,
-                 });
-                 this.showMessage(apiResult.Message);
+                this.setState({
+                    dataExport: [],
+                    gridDataSource: [],
+                    IsShowForm: false,
+                    IsCallAPIError: !apiResult.IsError,
+                });
+                this.showMessage(apiResult.Message);
             }
         });
     }
@@ -117,23 +141,20 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -148,6 +169,7 @@ class SearchCom extends React.Component {
             dismissable: { click: true }
         });
     }
+
 
     render() {
         if (this.state.IsShowForm) {
@@ -171,8 +193,13 @@ class SearchCom extends React.Component {
                         ref={this.gridref}
                         RequirePermission={PERIODUSERRWPOSITION_VIEW}
                         DeletePermission={PERIODUSERRWPOSITION_DELETE}
+                        ExportPermission={PERIODUSERRWPOSITION_EXPORT}
                         IsAutoPaging={true}
                         RowsPerPage={30}
+                        IsExportFile={true}
+                        DataExport={this.state.dataExport}
+                        fileName="Danh sách vị trí thưởng theo khoảng thời gian"
+                        onExportFile={this.handleExportFile.bind(this)}
                     />
                 </React.Fragment>
             );
