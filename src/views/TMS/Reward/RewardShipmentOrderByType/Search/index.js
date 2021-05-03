@@ -54,7 +54,7 @@ class SearchCom extends React.Component {
         // this.handleCallData();
     }
 
-   
+
 
     handleCallData() {
         const { SearchData } = this.state;
@@ -82,7 +82,7 @@ class SearchCom extends React.Component {
                 SearchKey: "@REWARDTYPEID",
                 SearchValue: MLObject.RewardTypeID
             },
-          
+
 
         ];
         this.callSearchData(postData);
@@ -99,14 +99,13 @@ class SearchCom extends React.Component {
 
                 const tempDataExport = apiResult.ResultObject.map((item, index) => {
                     let element = {
-                        "Mã nhân viên": item.RewardUser,
-                        "Tên nhân viên": item.FullName,
+                        "Mã nhân viên": item.RewardUser.trim(),
+                        "Tên nhân viên": item.FullName.trim(),
                         "Tổng thưởng": item.TotalReward,
-                      
+
                     };
 
                     return element;
-
                 })
 
                 const tempData = apiResult.ResultObject.map((item, index) => {
