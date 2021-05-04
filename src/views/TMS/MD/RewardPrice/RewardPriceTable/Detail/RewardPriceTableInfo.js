@@ -61,10 +61,10 @@ class RewardPriceTableInfoCom extends Component {
                         </div>
                     </div>
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Người tạo:</label>
+                        <label className="col-form-label bold">Người cập nhật:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{RewardPriceTableInfo.CreatedUser + " - " + RewardPriceTableInfo.FullName}</label>
+                        <label className="col-form-label">{RewardPriceTableInfo.UpdatedUserFullName}</label>
                     </div>
                 </div>
 

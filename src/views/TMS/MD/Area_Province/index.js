@@ -38,10 +38,8 @@ class Area_ProvinceCom extends React.Component {
             IsCloseForm: false,
             cssNotification: "",
             iconNotification: "",
-            AreaStoreDataSource: this.props.AreaStoreDataSource ? this.props.AreaStoreDataSource : [],
-            AreaStoreAllDataSource: this.props.AreaStoreAllDataSource ? this.props.AreaStoreAllDataSource : [],
+            DataSource: this.props.DataSource ? this.props.DataSource : [],
             AreaID: this.props.AreaID,
-            AreaTypeID: this.props.AreaTypeID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
             ModalColumnList_Edit: ModalColumnList_Edit
@@ -57,18 +55,13 @@ class Area_ProvinceCom extends React.Component {
         if (nextProps.AreaTypeID !== this.state.AreaTypeID) {
             this.setState({ AreaTypeID: nextProps.AreaTypeID });
         }
-        if (nextProps.AreaStoreAllDataSource !== this.state.AreaStoreAllDataSource) {
-            this.setState({ AreaStoreAllDataSource: nextProps.AreaStoreAllDataSource });
-        }
-
-        if (nextProps.AreaStoreDataSource !== this.state.AreaStoreDataSource) {
-            this.setState({ AreaStoreDataSource: nextProps.AreaStoreDataSource });
-            this.initCache();
+        if (nextProps.DataSource !== this.state.DataSource) {
+            this.setState({ DataSource: nextProps.DataSource });
         }
     }
 
     componentDidMount() {
-        this.initCache();
+        //this.initCache();
         this.checkPermission();
 
     }
@@ -266,51 +259,49 @@ class Area_ProvinceCom extends React.Component {
         this.setState({ IsInsert: true });
 
 
-        modalElementList.map((item, index) => {
-            if (item.Name == "StoreID") {
-                item.listoption = this.state.StoreArea;
-            }
-        });
+        // modalElementList.map((item, index) => {
+        //     if (item.Name == "StoreID") {
+        //         item.listoption = this.state.StoreArea;
+        //     }
+        // });
 
 
 
-        //console.log("modalElementList", modalElementList, this.state.AreaStoreDataSource);
+        //console.log("modalElementList", modalElementList, this.state.DataSource);
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
-            title: 'Thêm mới kho điều phối của khu vực',
+            title: 'Thêm mới tỉnh thành của khu vực',
             autoCloseModal: false,
             //onValueChange: this.handleModalChange,
-            onClose: this.onClose,
+            //onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
-                    if (MLObject) {
-                        MLObject.AreaStoreCSID = this.state.AreaID + "," + MLObject.StoreID;
+                    if (MLObject) {               
                         MLObject.AreaID = this.state.AreaID;
-                        MLObject.AreaTypeID = this.state.AreaTypeID;
-                        MLObject.StoreID = MLObject.StoreID && Array.isArray(MLObject.StoreID) ? MLObject.StoreID[0] : MLObject.StoreID;
+                        MLObject.ProvinceID = MLObject.ProvinceID && Array.isArray(MLObject.ProvinceID) ? MLObject.ProvinceID[0] : MLObject.ProvinceID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-                        // let match = this.state.AreaStoreDataSource.filter(item =>
+                        // let match = this.state.DataSource.filter(item =>
                         //     item.AreaID == MLObject.AreaID
                         //     && item.StoreID == MLObject.StoreID);
                         // if (match.length) {
                         //     this.showMessage("Dữ liệu đã tồn tại.");
                         //     return;
                         // }
-                        // let _AreaStoreDataSource = this.state.AreaStoreDataSource;
-                        // _AreaStoreDataSource.push(MLObject);
-                        // _AreaStoreDataSource.sort((a, b) => (a.StoreID > b.StoreID) ? 1 : ((b.StoreID > a.StoreID) ? -1 : 0));
-                        // this.setState({ AreaStoreDataSource: _AreaStoreDataSource });
-                        // if (this.props.onAreaStoreChange) {
-                        //     this.props.onAreaStoreChange(_AreaStoreDataSource);
+                        // let _DataSource = this.state.DataSource;
+                        // _DataSource.push(MLObject);
+                        // _DataSource.sort((a, b) => (a.StoreID > b.StoreID) ? 1 : ((b.StoreID > a.StoreID) ? -1 : 0));
+                        // this.setState({ DataSource: _DataSource });
+                        // if (this.props.onAreaProvinceChange) {
+                        //     this.props.onAreaProvinceChange(_DataSource);
                         // }
 
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
-                                if (this.props.onAreaStoreChange) {
-                                    this.props.onAreaStoreChange();
+                                if (this.props.onAreaProvinceChange) {
+                                    this.props.onAreaProvinceChange();
                                 }
-                                this.props.callClearLocalCache(ERPCOMMONCACHE_STORE_AREA);
+                                //this.props.callClearLocalCache(ERPCOMMONCACHE_STORE_AREA);
                                 this.props.hideModal();
                             }
                             //this.showMessage(apiResult.Message);
@@ -335,8 +326,8 @@ class Area_ProvinceCom extends React.Component {
         }
 
         this.setState({ IsInsert: false });
-        let _AreaStoreDataSource = {};
-        this.state.AreaStoreDataSource.map((item, index) => {
+        let _DataSource = {};
+        this.state.DataSource.map((item, index) => {
             let isMath = false;
             for (var j = 0; j < pkColumnName.length; j++) {
                 if (item[pkColumnName[j].key] != value.pkColumnName[j].value) {
@@ -348,39 +339,37 @@ class Area_ProvinceCom extends React.Component {
                 }
             }
             if (isMath) {
-                _AreaStoreDataSource = item;
+                _DataSource = item;
             }
         });
 
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
-            title: 'Chỉnh sửa kho điều phối của khu vực',
+            title: 'Chỉnh sửa tỉnh thành của khu vực',
             //onValueChange: this.handleModalChange,
-            onClose: this.onClose,
+            //onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
-                    let MLObject = GetMLObjectData(MLObjectDefinition, formData, _AreaStoreDataSource);
+                    let MLObject = GetMLObjectData(MLObjectDefinition, formData, _DataSource);
                     if (MLObject) {
-                        MLObject.AreaStoreCSID = this.state.AreaID + "," + MLObject.StoreID;
                         MLObject.AreaID = this.state.AreaID;
-                        MLObject.AreaTypeID = this.state.AreaTypeID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-                        // let _AreaStoreDataSource = this.state.AreaStoreDataSource
+                        // let _DataSource = this.state.DataSource
                         //     .filter(item => item.AreaID != MLObject.AreaID
                         //         || item.StoreID != MLObject.StoreID);
-                        // _AreaStoreDataSource.push(MLObject);
-                        // _AreaStoreDataSource.sort((a, b) => (a.StoreID > b.StoreID) ? 1 : ((b.StoreID > a.StoreID) ? -1 : 0));
-                        // this.setState({ AreaStoreDataSource: _AreaStoreDataSource });
-                        // if (this.props.onAreaStoreChange) {
-                        //     this.props.onAreaStoreChange(_AreaStoreDataSource);
+                        // _DataSource.push(MLObject);
+                        // _DataSource.sort((a, b) => (a.StoreID > b.StoreID) ? 1 : ((b.StoreID > a.StoreID) ? -1 : 0));
+                        // this.setState({ DataSource: _DataSource });
+                        // if (this.props.onAreaProvinceChange) {
+                        //     this.props.onAreaProvinceChange(_DataSource);
                         // }
 
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
-                                if (this.props.onAreaStoreChange) {
-                                    this.props.onAreaStoreChange();
+                                if (this.props.onAreaProvinceChange) {
+                                    this.props.onAreaProvinceChange();
                                 }
-                                this.props.callClearLocalCache(ERPCOMMONCACHE_STORE_AREA);
+                                //this.props.callClearLocalCache(ERPCOMMONCACHE_STORE_AREA);
                                 this.props.hideModal();
                             }
                             //this.showMessage(apiResult.Message);
@@ -393,26 +382,26 @@ class Area_ProvinceCom extends React.Component {
                 }
             },
             modalElementList: ModalColumnList_Edit,
-            formData: _AreaStoreDataSource
+            formData: _DataSource
         });
     }
 
     handleDelete(deleteList, pkColumnName) {
-        // let _AreaStoreDataSource = this.state.AreaStoreDataSource;
+        // let _DataSource = this.state.DataSource;
         // deleteList.map((row, index) => {
         //     let MLObject = {};
         //     pkColumnName.map((pkItem, pkIndex) => {
         //         MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
         //     });
-        //     let _deleteList = _AreaStoreDataSource.filter(item => item.AreaStoreCSID == MLObject.AreaStoreCSID);
+        //     let _deleteList = _DataSource.filter(item => item.AreaStoreCSID == MLObject.AreaStoreCSID);
         //     _deleteList[0].IsDeleted = true;
-        //     _AreaStoreDataSource = _AreaStoreDataSource.filter(item => item.AreaStoreCSID != MLObject.AreaStoreCSID);
-        //     _AreaStoreDataSource.push(_deleteList[0]);
-        //     _AreaStoreDataSource.sort((a, b) => (a.StoreID > b.StoreID) ? 1 : ((b.StoreID > a.StoreID) ? -1 : 0));
+        //     _DataSource = _DataSource.filter(item => item.AreaStoreCSID != MLObject.AreaStoreCSID);
+        //     _DataSource.push(_deleteList[0]);
+        //     _DataSource.sort((a, b) => (a.StoreID > b.StoreID) ? 1 : ((b.StoreID > a.StoreID) ? -1 : 0));
         // });
-        // this.setState({ AreaStoreDataSource: _AreaStoreDataSource });
-        // if (this.props.onAreaStoreChange) {
-        //     this.props.onAreaStoreChange(_AreaStoreDataSource);
+        // this.setState({ DataSource: _DataSource });
+        // if (this.props.onAreaProvinceChange) {
+        //     this.props.onAreaProvinceChange(_DataSource);
         // }
         // if (!this.state.IsAllowedDelete) {
         //     this.showMessage("Bạn không có quyền");
@@ -434,8 +423,8 @@ class Area_ProvinceCom extends React.Component {
 
         // this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
         //     if (!apiResult.IsError) {
-        //         if (this.props.onAreaStoreChange) {
-        //             this.props.onAreaStoreChange();
+        //         if (this.props.onAreaProvinceChange) {
+        //             this.props.onAreaProvinceChange();
         //         }
         //         this.props.hideModal();
         //     }
@@ -448,14 +437,14 @@ class Area_ProvinceCom extends React.Component {
             return;
         }
         let listMLObject = [];
-        let _AreaStoreDataSource = this.state.AreaStoreDataSource;
+        let _DataSource = this.state.DataSource;
         deleteList.map((row, index) => {
             let MLObject = {};
             pkColumnName.map((pkItem, pkIndex) => {
                 MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
             });
 
-            let _deleteList = _AreaStoreDataSource.filter(item => item.AreaStoreCSID == MLObject.AreaStoreCSID);
+            let _deleteList = _DataSource.filter(item => item.AreaStoreCSID == MLObject.AreaStoreCSID);
             if (_deleteList && _deleteList.length > 0) {
                 _deleteList[0].DeletedUser = this.props.AppInfo.LoginInfo.Username;
                 listMLObject.push(_deleteList[0]);
@@ -466,10 +455,10 @@ class Area_ProvinceCom extends React.Component {
 
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
             if (!apiResult.IsError) {
-                if (this.props.onAreaStoreChange) {
-                    this.props.onAreaStoreChange();
+                if (this.props.onAreaProvinceChange) {
+                    this.props.onAreaProvinceChange();
                 }
-                this.props.callClearLocalCache(ERPCOMMONCACHE_STORE_AREA);
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_STORE_AREA);
                 this.props.hideModal();
             }
             //this.showMessage(apiResult.Message);
@@ -496,7 +485,7 @@ class Area_ProvinceCom extends React.Component {
     }
 
     render() {
-        //let datasource = this.state.AreaStoreDataSource.filter(item => item.IsDeleted == undefined || item.IsDeleted == false);
+        //let datasource = this.state.DataSource.filter(item => item.IsDeleted == undefined || item.IsDeleted == false);
         //datasource = this.initDatasource(datasource);
 
 
@@ -505,32 +494,32 @@ class Area_ProvinceCom extends React.Component {
         }
         if (!this.state.AreaID || !this.isNumeric(this.state.AreaID)) {
             return (
-                <Collapsible trigger="Danh sách các chi nhánh của khu vực" easing="ease-in" open={true}>
+                <Collapsible trigger="Danh sách tỉnh thành của khu vực" easing="ease-in" open={true}>
                     Đang nạp dữ liệu ......
                 </Collapsible>
             );
         }
 
         return (
-            // <Collapsible trigger="Danh sách các chi nhánh của khu vực" easing="ease-in" open={true}>
+            // <Collapsible trigger="Danh sách tỉnh thành của khu vực" easing="ease-in" open={true}>
 
             // </Collapsible>
 
             <div className="sub-grid detail">
                 <ReactNotification ref={this.notificationDOMRef} />
                 <DataGrid listColumn={DataGridColumnList}
-                    dataSource={this.state.AreaStoreDataSource}
+                    dataSource={this.state.DataSource}
                     modalElementList={ModalColumnList_Insert}
                     MLObjectDefinition={MLObjectDefinition}
-                    IDSelectColumnName={"chkSelectAreaStoreCSID"}
-                    PKColumnName={"AreaStoreCSID"}
+                    IDSelectColumnName={"chkSelectProvinceID"}
+                    PKColumnName={"ProvinceID"}
                     onDeleteClick={this.handleDelete}
                     onInsertClick={this.handleInsert}
                     onInsertClickEdit={this.handleEdit}
                     IsAutoPaging={true}
                     RowsPerPage={10}
                     IsCustomAddLink={true}
-                    headingTitle={"Danh sách kho điều phối của khu vực"}
+                    headingTitle={"Danh sách tỉnh thành của khu vực"}
                 />
             </div>
         );
