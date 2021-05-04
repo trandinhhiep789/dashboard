@@ -90,7 +90,7 @@ export const DataGridColumnList = [
         Caption: "Tên đơn giá",
         DataSourceMember: "RewardPriceTableName",
         Link: "/RewardPriceTable/Detail/",
-        Width: 250
+        Width: 150
     },
     {
         Name: "RewardPriceTypeName",
@@ -113,11 +113,25 @@ export const DataGridColumnList = [
         DataSourceMember: "CarrierTypeName",
         Width: 120
     },
+    // {
+    //     Name: "FullName",
+    //     Type: "text",
+    //     Caption: "Người tạo",
+    //     DataSourceMember: "FullName",
+    //     Width: 120
+    // },
     {
-        Name: "FullName",
+        Name: "UpdatedDate",
+        Type: "date",
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
+        Width: 100
+    },
+    {
+        Name: "UpdatedUserFullName",
         Type: "text",
-        Caption: "Người tạo",
-        DataSourceMember: "FullName",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
         Width: 120
     },
     {
@@ -125,7 +139,7 @@ export const DataGridColumnList = [
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "RewardPriceTableID",
-        Width: 100,
+        Width: 80,
         Link: "/RewardPriceTable/Edit/",
         LinkText: "Chỉnh sửa"
     },

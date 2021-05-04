@@ -6,40 +6,21 @@ export const DeleteAPIPath = "api/Area_Province/Delete";
 export const ModalColumnList_Insert = [
     {
         type: "multiselect",
-        Name: "AreaID",
-        label: "khu vực",
+        Name: "ProvinceID",
+        label: "tỉnh thành",
         value: -1,
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "AreaID",
+        DataSourceMember: "ProvinceID",
         readonly: false,
-        validatonList: [],
+        validatonList: ["Comborequired"],
         isMulti: false,
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
         ValueMember: "ProvinceID",
         NameMember: "ProvinceName"
     },
-    // {
-    //     type: "multiselect",
-    //     Name: "StoreID",
-    //     label: "kho điều phối",
-    //     value: -1,
-    //     placeholder: "",
-    //     icon: "",
-    //     listoption: [],
-    //     DataSourceMember: "StoreID",
-    //     readonly: false,
-    //     validatonList: ["Comborequired"],
-    //     isMulti: false,
-    //     IsAutoLoadItemFromCache: false,
-    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
-    //     ValueMember: "StoreID",
-    //     NameMember: "StoreName",
-    //     // KeyFilter: "CompanyID",
-    //     // ValueFilter: "10"
-    // },
     {
         Name: "IsSystem",
         type: "checkbox",
@@ -54,21 +35,21 @@ export const ModalColumnList_Insert = [
 export const ModalColumnList_Edit = [
     {
         type: "multiselect",
-        Name: "StoreID",
-        label: "kho điều phối",
+        Name: "ProvinceID",
+        label: "Tỉnh thành",
         value: -1,
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "StoreID",
+        DataSourceMember: "ProvinceID",
         readonly: true,
         disabled: true,
         validatonList: ["Comborequired"],
         isMulti: false,
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
-        ValueMember: "StoreID",
-        NameMember: "StoreName"
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PROVINCE",
+        ValueMember: "ProvinceID",
+        NameMember: "ProvinceName"
     },
     {
         Name: "IsSystem",
@@ -83,17 +64,17 @@ export const ModalColumnList_Edit = [
 
 export const DataGridColumnList = [
     {
-        Name: "chkSelectAreaStoreCSID",
+        Name: "chkSelectProvinceID",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "AreaStoreCSID",
+        DataSourceMember: "ProvinceID",
         Width: 60
     },
     {
-        Name: "StoreName",
+        Name: "ProvinceName",
         Type: "text",
-        Caption: "Kho điều phối",
-        DataSourceMember: "StoreName",
+        Caption: "Tỉnh thành",
+        DataSourceMember: "ProvinceName",
         Width: 350
     },
     {
@@ -104,10 +85,10 @@ export const DataGridColumnList = [
         Width: 150
     },
     {
-        Name: "AreaStoreCSID",
+        Name: "ProvinceID",
         Type: "edit",
         Caption: "Sửa",
-        DataSourceMember: "AreaStoreCSID",
+        DataSourceMember: "ProvinceID",
         Width: 100
     }
 
@@ -115,16 +96,10 @@ export const DataGridColumnList = [
 
 export const MLObjectDefinition = [
     {
-        Name: "AreaStoreCSID",
+        Name: "ProvinceID",
         DefaultValue: "",
-        BindControlName: "",
-        DataSourceMember: "AreaStoreCSID"
-    },
-    {
-        Name: "StoreID",
-        DefaultValue: "",
-        BindControlName: "StoreID",
-        DataSourceMember: "StoreID"
+        BindControlName: "ProvinceID",
+        DataSourceMember: "ProvinceID"
     },
     {
         Name: "AreaID",
@@ -133,10 +108,10 @@ export const MLObjectDefinition = [
         DataSourceMember: "AreaID"
     },
     {
-        Name: "StoreName",
+        Name: "ProvinceName",
         DefaultValue: "",
         BindControlName: "",
-        DataSourceMember: "StoreName"
+        DataSourceMember: "ProvinceName"
     },
     // {
     //     Name: "IsActived",
