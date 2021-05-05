@@ -37,7 +37,8 @@ class ShipmentOrderDetailCom extends Component {
             IsDisable: true,
             IsExpectedDeliveryDate: false,
             dtExpectedDeliveryDate: this.props.ShipmentOrderDetail.ExpectedDeliveryDate,
-            ShipmentOrder_DLDateLogItemList: []
+            ShipmentOrder_DLDateLogItemList: [],
+            HistoryTransactionItemList: []
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -456,6 +457,60 @@ class ShipmentOrderDetailCom extends Component {
     }
 
 
+    
+    handleShowHistoryTransaction() {
+        this.props.callFetchAPI(APIHostName, 'api/PartnerTransaction/GetListByShipmentOrderID', this.state.ShipmentOrder.ShipmentOrderID.Trim()).then((apiResult) => {
+            if (!apiResult.IsError) {
+                this.setState({ HistoryTransactionItemList: apiResult.ResultObject }, () => {
+                    this.showModalHistoryTransactionLog();
+                });
+            }
+        });
+    }
+    showModalHistoryTransactionLog() {
+
+        
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Lịch sử thay đổi vận đơn',
+            content: {
+                text:
+                    <div className="col-lg-12">
+                        <div className="table-responsive mt-3">
+                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                <thead className="thead-light">
+                                    <tr>
+                                        <th className="jsgrid-header-cell">Loại giao dịch với đối tác</th>
+                                        <th className="jsgrid-header-cell">Thời gian thay đổi</th>
+                                        <th className="jsgrid-header-cell">Tác vụ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        this.state.HistoryTransactionItemList && this.state.HistoryTransactionItemList.map((item, index) => {
+                                            return (
+                                                <tr key={index}>
+                                                    <td>{item.PartnerTransactionTypeID + "-" + item.PartnerTransactionTypeName}</td>
+                                                    <td>{formatDate(item.CreatedDate)}</td>
+                                                    <td>
+                                                      <Link to={"/PartnerTransaction/Edit/" + item.PartnerTransactionID} target="_blank" className="btn-link">
+                                                        {item.PartnerTransactionID}
+                                                      </Link>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })
+                                    } 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            },
+            maxWidth: '1000px'
+        });
+    }
+
+
+
     render() {
         let strShipmentOrderStepName = "";
         let IsMustCompleteCollection = false;
@@ -643,9 +698,13 @@ class ShipmentOrderDetailCom extends Component {
                                     <label className="col-form-label bold">Lịch sử giao dịch:</label>
                                 </div>
                                 <div className="form-group col-md-4">
-                                    <Link to={linkHistoryTransaction} target="_blank" className="btn-link">
+                                    {/* <Link to={linkHistoryTransaction} target="_blank" className="btn-link">
                                         <i className="fa fa-history"></i>
-                                    </Link>
+                                    </Link> */}
+
+                                    <button className="btn btn-round btn-secondary" type="button" onClick={() => this.handleShowHistoryTransaction()}>
+                                    <i className="fa fa-history"></i>
+                                            </button>
                                 </div>
                                 <div className="form-group col-md-2">
                                     <label className="col-form-label bold">Mã đơn hàng của đối tác:</label>
