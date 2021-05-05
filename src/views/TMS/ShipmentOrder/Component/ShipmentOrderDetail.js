@@ -457,7 +457,7 @@ class ShipmentOrderDetailCom extends Component {
     }
 
 
-    
+
     handleShowHistoryTransaction() {
         this.props.callFetchAPI(APIHostName, 'api/PartnerTransaction/GetListByShipmentOrderID', this.state.ShipmentOrder.ShipmentOrderID.Trim()).then((apiResult) => {
             if (!apiResult.IsError) {
@@ -469,7 +469,7 @@ class ShipmentOrderDetailCom extends Component {
     }
     showModalHistoryTransactionLog() {
 
-        
+
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Lịch sử thay đổi vận đơn',
             content: {
@@ -492,14 +492,14 @@ class ShipmentOrderDetailCom extends Component {
                                                     <td>{item.PartnerTransactionTypeID + "-" + item.PartnerTransactionTypeName}</td>
                                                     <td>{formatDate(item.CreatedDate)}</td>
                                                     <td>
-                                                      <Link to={"/PartnerTransaction/Edit/" + item.PartnerTransactionID} target="_blank" className="btn-link">
-                                                        {item.PartnerTransactionID}
-                                                      </Link>
+                                                        <Link to={"/PartnerTransaction/Edit/" + item.PartnerTransactionID} target="_blank">
+                                                            {item.PartnerTransactionID}
+                                                        </Link>
                                                     </td>
                                                 </tr>
                                             )
                                         })
-                                    } 
+                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -597,7 +597,7 @@ class ShipmentOrderDetailCom extends Component {
                                     <label className="col-form-label bold">Loại yêu cầu vận chuyển:</label>
                                 </div>
                                 <div className="form-group col-md-4">
-                                    <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentOrderTypeID + " - " +this.state.ShipmentOrder.ShipmentOrderTypeName}</label>
+                                    <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentOrderTypeID + " - " + this.state.ShipmentOrder.ShipmentOrderTypeName}</label>
                                 </div>
                             </div>
                             <div className="form-row">
@@ -611,7 +611,7 @@ class ShipmentOrderDetailCom extends Component {
                                     <label className="col-form-label bold">Kho gửi:</label>
                                 </div>
                                 <div className="form-group col-md-4">
-                                    <label className="col-form-label" >{this.state.ShipmentOrder.SenderStoreID + " - " +this.state.ShipmentOrder.SenderStoreName}</label>
+                                    <label className="col-form-label" >{this.state.ShipmentOrder.SenderStoreID + " - " + this.state.ShipmentOrder.SenderStoreName}</label>
                                 </div>
                             </div>
                             <div className="form-row">
@@ -619,7 +619,7 @@ class ShipmentOrderDetailCom extends Component {
                                     <label className="col-form-label bold">Loại dịch vụ:</label>
                                 </div>
                                 <div className="form-group col-md-4">
-                                    <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentServiceTypeID + " - " +this.state.ShipmentOrder.ShipmentServiceTypeName}</label>
+                                    <label className="col-form-label" >{this.state.ShipmentOrder.ShipmentServiceTypeID + " - " + this.state.ShipmentOrder.ShipmentServiceTypeName}</label>
                                 </div>
                                 <div className="form-group col-md-2">
                                     <label className="col-form-label bold">Trạng thái:</label>
@@ -703,8 +703,8 @@ class ShipmentOrderDetailCom extends Component {
                                     </Link> */}
 
                                     <button className="btn btn-round btn-secondary" type="button" onClick={() => this.handleShowHistoryTransaction()}>
-                                    <i className="fa fa-history"></i>
-                                            </button>
+                                        <i className="fa fa-history"></i>
+                                    </button>
                                 </div>
                                 <div className="form-group col-md-2">
                                     <label className="col-form-label bold">Mã đơn hàng của đối tác:</label>
