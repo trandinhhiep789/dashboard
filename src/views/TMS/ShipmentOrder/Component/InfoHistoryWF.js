@@ -50,7 +50,7 @@ class InfoHistoryWFCom extends Component {
                 ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
                 ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
                 ImageCaptureTime: JSON.parse(objlst[i]).ImageCaptureTime,
-                thumbnailLabel: `${JSON.parse(objlst[i]).SampleImageId} ${JSON.parse(objlst[i]).SampleImageName && '-'} ${JSON.parse(objlst[i]).SampleImageName}`
+                description: `${JSON.parse(objlst[i]).SampleImageId} ${JSON.parse(objlst[i]).SampleImageName && '-'} ${JSON.parse(objlst[i]).SampleImageName}`
             });
         }
 
