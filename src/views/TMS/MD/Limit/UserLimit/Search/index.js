@@ -25,7 +25,7 @@ import { LIMITTYPE_VIEW, LIMITTYPE_DELETE } from "../../../../../../constants/fu
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { formatMoney, numberWithComma } from '../../../../../../utils/function';
+import { numberDecimalWithComma } from '../../../../../../utils/function';
 import { ERPCOMMONCACHE_LIMITTYPE } from "../../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
@@ -381,7 +381,7 @@ class SearchCom extends React.Component {
             } else {
                 cloneArrInputError[param1][param2] = {
                     isError: true,
-                    status: `Vượt quá số lượng hạn mức (<=${numberWithComma(MaxLimitValue)})`
+                    status: `Vượt quá số lượng hạn mức (<=${numberDecimalWithComma(MaxLimitValue)})`
                 }
                 flagError = true;
             }
@@ -400,7 +400,7 @@ class SearchCom extends React.Component {
 
                         cloneArrInputError[param1][param2] = {
                             isError: true,
-                            status: `Vượt quá số lượng hạn mức (<=${numberWithComma(DefaultMaxLimitAmount)})`
+                            status: `Vượt quá số lượng hạn mức (<=${numberDecimalWithComma(DefaultMaxLimitAmount)})`
                         }
                         flagError = true;
                     }
@@ -494,7 +494,7 @@ class SearchCom extends React.Component {
                                                                     <input type="text"
                                                                         className="form-control form-control-sm"
                                                                         value={item1.dataSource == 1
-                                                                            ? numberWithComma(item[item1.dataSource].LimitValue)
+                                                                            ? numberDecimalWithComma(item[item1.dataSource].LimitValue)
                                                                             : item[item1.dataSource].LimitValue}
                                                                         onChange={(e) => this.handleChange(e, index, item1.dataSource, item[item1.dataSource])}
                                                                     />

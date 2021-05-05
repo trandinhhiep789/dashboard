@@ -57,9 +57,9 @@ export const dateToLocalISO = (date) => {
         (absoff % 60).toString().padStart(2, '0'))
 }
 
-export const numberWithComma = (data, comma = ",") => {
-    return data.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, comma)
-}
+// export const numberWithComma = (data, comma = ",") => {
+//     return data.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, comma)
+// }
 
 export const numberDecimalWithComma = (nStr) => {
     nStr += "";
