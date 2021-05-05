@@ -100,7 +100,6 @@ class SearchCom extends React.Component {
             //this.searchref.current.changeLoadComplete();
             //this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
-                console.log("apiResult",apiResult);
                 // xuất exel
                 const exelData = apiResult.ResultObject.map((item, index) => {
                     let element = {
