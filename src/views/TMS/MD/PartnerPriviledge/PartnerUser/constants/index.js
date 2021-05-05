@@ -1277,7 +1277,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Tên người dùng",
         DataSourceMember: "UserName",
-        Width: 200
+        Width: 150
     },
     {
         Name: "FullName",
@@ -1291,7 +1291,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Tên nhà cung cấp",
         DataSourceMember: "PartnerName",
-        Width: 800
+        Width: 350
     },
     {
         Name: "PhoneNumber",
@@ -1305,29 +1305,28 @@ export const DataGridColumnList = [
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 200
+        Width: 120
     },
     {
         Name: "UpdatedDate",
         Type: "date",
         Caption: "Ngày cập nhật",
         DataSourceMember: "UpdatedDate",
+        Width: 120
+    },
+    {
+        Name: "UpdatedUserFullName",
+        Type: "text",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
         Width: 140
     },
-    // {
-    //     Name: "UpdatedUserFullName",
-    //     Type: "text",
-    //     Caption: "Người cập nhật",
-    //     DataSourceMember: "UpdatedUserFullName",
-    //     Width: 140
-    // },
-
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "UserName",
-        Width: 200,
+        Width: 80,
         Link: "/PartnerUser/edit/",
         LinkText: "Chỉnh sửa"
     }
