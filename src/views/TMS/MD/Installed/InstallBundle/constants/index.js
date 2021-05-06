@@ -844,7 +844,7 @@ export const InstallBundle_MateriaColumnList = [
         label:"Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex:22,
+        OrderIndex:23,
         Colmd:12,
         hideInput: false,
         labelcolspan:2,
