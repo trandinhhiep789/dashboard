@@ -8,7 +8,7 @@ import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_IMAGE_SLIDE } from '../../../../co
 import ModelContainerMap from "../../../../common/components/Modal/ModelContainerMap";
 import { ModalManager } from 'react-dynamic-modal';
 import MapContainer from './MapContainer ';
-
+import { millisToMinutesAndSeconds } from '../../../../utils/function'
 
 
 const containerStyle = {
@@ -23,6 +23,9 @@ class InfoHistoryWFCom extends Component {
             ShipmentOrderType_WF: this.props.InfoHistoryWF,
             InfoActionLogList: this.props.InfoActionLogList
         }
+
+        this.CompareTime = this.CompareTime.bind(this);
+        this.renderItemImage = this.renderItemImage.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -39,44 +42,47 @@ class InfoHistoryWFCom extends Component {
         }
     }
 
-    CompareTime(datetimeago,datetimelater) {
-        var timeDiff = Math.abs(datetimelater - datetimeago);
-        var diffMinutes = parseInt(timeDiff / (3600 * 24));
-            return diffMinutes;
+    CompareTime(datetimeago, datetimelater) {
+        let timeDiff = Math.abs(datetimelater - datetimeago);
+        const result = millisToMinutesAndSeconds(timeDiff);
+        return result;
+    }
+
+    renderItemImage(original, description) {
+        return <div className="image-gallery-image">
+            <img src={original} title={description} />
+            <span className="image-gallery-description-custom">{description}</span>
+        </div>;
     }
 
     handleShowImage(e) {
         let images = [];
         let dtCaptureTime = "";
-        let datetimeago= 0;
-        let datetimelater =0;
+        let datetimeago = 0;
+        let datetimelater = 0;
         const objIme = e.currentTarget.dataset.id;
         const objlst = objIme.split(";");
+
         for (let i = 0; i < objlst.length; i++) {
-             if(JSON.parse(objlst[i]).SampleImageId ==25)
-             {
-                datetimeago=JSON.parse(objlst[i]).ImageCaptureTimeNumber;
-    
-             }
-             if(JSON.parse(objlst[i]).SampleImageId ==26)
-             {
-                datetimelater=JSON.parse(objlst[i]).ImageCaptureTimeNumber;
-             }
+            if (JSON.parse(objlst[i]).SampleImageId == 25) {
+                datetimeago = JSON.parse(objlst[i]).ImageCaptureTimeNumber;
+            }
+            if (JSON.parse(objlst[i]).SampleImageId == 26) {
+                datetimelater = JSON.parse(objlst[i]).ImageCaptureTimeNumber;
+            }
 
-             if(datetimeago >0 && datetimelater>0)
-             {
-                 debugger;
-                dtCaptureTime= this.CompareTime(datetimeago,datetimelater);
-             }
+            if (datetimeago > 0 && datetimelater > 0) {
+                dtCaptureTime = this.CompareTime(datetimeago, datetimelater);
+            }
 
+            const description = `${JSON.parse(objlst[i]).SampleImageId} ${JSON.parse(objlst[i]).SampleImageName && '-'} ${JSON.parse(objlst[i]).SampleImageName}${JSON.parse(objlst[i]).SampleImageId == 26 ? ", " + dtCaptureTime : ""}`;
 
             images.push({
                 original: JSON.parse(objlst[i]).ImageFileURL,
                 thumbnail: JSON.parse(objlst[i]).ImageFileURL,
                 ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
-                ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
                 ImageCaptureTime: JSON.parse(objlst[i]).ImageCaptureTime,
-                description: `${JSON.parse(objlst[i]).SampleImageId} ${JSON.parse(objlst[i]).SampleImageName && '-'} ${JSON.parse(objlst[i]).SampleImageName}:${dtCaptureTime}`
+                renderItem: () => this.renderItemImage(JSON.parse(objlst[i]).ImageFileURL, description)
             });
         }
 
