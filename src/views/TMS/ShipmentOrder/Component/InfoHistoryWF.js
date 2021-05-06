@@ -39,18 +39,42 @@ class InfoHistoryWFCom extends Component {
         }
     }
 
+    CompareTime(datetimeago,datetimelater) {
+        debugger;
+        const date = new Date(Date.parse(datetimeago));
+        let currentDate = new Date();
+        var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
+        var diffMinutes = parseInt((timeDiff / (3600 * 24)));
+     
+        const dateago = new Date(datetimeago);
+        const datelater = new Date(datetimelater);
+     
+        // var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
+        console.log("datelater.getTime() ",datetimeago.getTime() );
+        var timeDiff = datelater.getTime() - dateago.getTime();
+        var diffMinutes = parseInt(timeDiff / (3600 * 24));
+            return diffMinutes;
+    }
+
     handleShowImage(e) {
         let images = [];
+        let dtCaptureTime = "";
         const objIme = e.currentTarget.dataset.id;
         const objlst = objIme.split(";");
         for (let i = 0; i < objlst.length; i++) {
+             if(JSON.parse(objlst[i]).SampleImageId ==26)
+             {
+                 debugger;
+                 const date = new Date(Date.parse(JSON.parse(objlst[i]).ImageCaptureTime));
+                dtCaptureTime= this.CompareTime(date,JSON.parse(objlst[i]).ImageCaptureTime);
+             }
             images.push({
                 original: JSON.parse(objlst[i]).ImageFileURL,
                 thumbnail: JSON.parse(objlst[i]).ImageFileURL,
                 ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
                 ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
                 ImageCaptureTime: JSON.parse(objlst[i]).ImageCaptureTime,
-                description: `${JSON.parse(objlst[i]).SampleImageId} ${JSON.parse(objlst[i]).SampleImageName && '-'} ${JSON.parse(objlst[i]).SampleImageName}`
+                description: `${JSON.parse(objlst[i]).SampleImageId} ${JSON.parse(objlst[i]).SampleImageName && '-'} ${JSON.parse(objlst[i]).SampleImageName}:${dtCaptureTime}`
             });
         }
 
