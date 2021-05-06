@@ -533,6 +533,12 @@ export const GridInstallBundle_Materia = [
         DataSourceMember: "IsNonOutputMaterial"
     },
     {
+        Name: "IsAllowAdvance",
+        DefaultValue: false,
+        BindControlName: "IsAllowAdvance",
+        DataSourceMember: "IsAllowAdvance"
+    },
+    {
         Name: "CreatedUser",
         DefaultValue: "",
         BindControlName: "",
@@ -822,7 +828,16 @@ export const InstallBundle_MateriaColumnList = [
         Width: 70,
         OrderIndex:21
     },
-    
+    {
+        name: "IsAllowAdvance",
+        Type: "checkbox",
+        label:"Cho phép tạm ứng",
+        Caption: "Cho phép tạm ứng",
+        datasourcemember: "IsAllowAdvance",
+        hideInput: false,
+        Width: 70,
+        OrderIndex:22
+    },
     {
         name: "Note",
         Type: "TextArea",
@@ -1118,12 +1133,22 @@ export const InstallBundle_MateriaColumnListEdit = [
         OrderIndex:21
     },
     {
+        name: "IsAllowAdvance",
+        Type: "checkbox",
+        label:"Cho phép tạm ứng",
+        Caption: "Cho phép tạm ứng",
+        datasourcemember: "IsAllowAdvance",
+        hideInput: false,
+        Width: 70,
+        OrderIndex:22
+    },
+    {
         name: "Note",
         Type: "TextArea",
         label:"Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex:22,
+        OrderIndex:23,
         Colmd:12,
         hideInput: false,
         labelcolspan:2,
