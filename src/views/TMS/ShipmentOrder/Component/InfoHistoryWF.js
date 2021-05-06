@@ -40,18 +40,7 @@ class InfoHistoryWFCom extends Component {
     }
 
     CompareTime(datetimeago,datetimelater) {
-        debugger;
-        const date = new Date(Date.parse(datetimeago));
-        let currentDate = new Date();
-        var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
-        var diffMinutes = parseInt((timeDiff / (3600 * 24)));
-     
-        const dateago = new Date(datetimeago);
-        const datelater = new Date(datetimelater);
-     
-        // var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
-        console.log("datelater.getTime() ",datetimeago.getTime() );
-        var timeDiff = datelater.getTime() - dateago.getTime();
+        var timeDiff = Math.abs(datetimelater - datetimeago);
         var diffMinutes = parseInt(timeDiff / (3600 * 24));
             return diffMinutes;
     }
@@ -59,15 +48,28 @@ class InfoHistoryWFCom extends Component {
     handleShowImage(e) {
         let images = [];
         let dtCaptureTime = "";
+        let datetimeago= 0;
+        let datetimelater =0;
         const objIme = e.currentTarget.dataset.id;
         const objlst = objIme.split(";");
         for (let i = 0; i < objlst.length; i++) {
+             if(JSON.parse(objlst[i]).SampleImageId ==25)
+             {
+                datetimeago=JSON.parse(objlst[i]).ImageCaptureTimeNumber;
+    
+             }
              if(JSON.parse(objlst[i]).SampleImageId ==26)
              {
-                 debugger;
-                 const date = new Date(Date.parse(JSON.parse(objlst[i]).ImageCaptureTime));
-                dtCaptureTime= this.CompareTime(date,JSON.parse(objlst[i]).ImageCaptureTime);
+                datetimelater=JSON.parse(objlst[i]).ImageCaptureTimeNumber;
              }
+
+             if(datetimeago >0 && datetimelater>0)
+             {
+                 debugger;
+                dtCaptureTime= this.CompareTime(datetimeago,datetimelater);
+             }
+
+
             images.push({
                 original: JSON.parse(objlst[i]).ImageFileURL,
                 thumbnail: JSON.parse(objlst[i]).ImageFileURL,
