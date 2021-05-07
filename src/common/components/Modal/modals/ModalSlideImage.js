@@ -56,7 +56,9 @@ const ModalSlideImage = ({ ImageCaptureGeoLocation, afterClose, hideModal, conte
                 originalClass="img-original"
                 onSlide={handleImageCaptureTime}
             />
-                : <img src={content.lstImage[0].original} />
+                // : <img src={content.lstImage[0].original} />
+
+                : <div className="img-slider-custom" style={{ backgroundImage: `url(${content.lstImage[0].original})` }}>img</div>
             }
         </Modal>
     );

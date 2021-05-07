@@ -72,3 +72,9 @@ export const numberDecimalWithComma = (nStr) => {
     }
     return x1 + x2;
 }
+
+export const millisToMinutesAndSeconds = (millis) => {
+    var minutes = Math.floor(millis / 60000);
+    var seconds = ((millis % 60000) / 1000).toFixed(0);
+    return minutes + " phút " + (seconds < 10 ? '0' : '') + seconds;
+}

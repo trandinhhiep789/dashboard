@@ -1102,15 +1102,20 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-
             {
-                MenuName: ' ComprehensiveReport',
+                MenuName: 'ComprehensiveReport',
                 MenuTitle: 'Báo cáo tổng hợp',
                 LinkTo: '/ComprehensiveReport',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'SaleSummaryReport',
+                MenuTitle: 'Báo cáo đơn hàng',
+                LinkTo: '/SaleSummaryReport',
+                MenuIcon: '',
+                SubMenu: []
             }
-
         ]
     },
     {

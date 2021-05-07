@@ -8,7 +8,7 @@ import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_IMAGE_SLIDE } from '../../../../co
 import ModelContainerMap from "../../../../common/components/Modal/ModelContainerMap";
 import { ModalManager } from 'react-dynamic-modal';
 import MapContainer from './MapContainer ';
-
+import { millisToMinutesAndSeconds } from '../../../../utils/function'
 
 
 const containerStyle = {
@@ -23,6 +23,10 @@ class InfoHistoryWFCom extends Component {
             ShipmentOrderType_WF: this.props.InfoHistoryWF,
             InfoActionLogList: this.props.InfoActionLogList
         }
+
+        this.CompareTime = this.CompareTime.bind(this);
+        this.renderItemImage = this.renderItemImage.bind(this);
+        this.renderThumbInner = this.renderThumbInner.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -39,18 +43,51 @@ class InfoHistoryWFCom extends Component {
         }
     }
 
+    CompareTime(datetimeago, datetimelater) {
+        let timeDiff = Math.abs(datetimelater - datetimeago);
+        const result = millisToMinutesAndSeconds(timeDiff);
+        return result;
+    }
+
+    renderItemImage(original, description) {
+        return <div className="image-gallery-image image-gallery-image-custom">
+            <img src={original} title={description} />
+            <span className="image-gallery-description-custom">{description}</span>
+        </div>;
+    }
+
+    renderThumbInner(original) {
+        return <div className="image-gallery-thumbnails-custom">
+            <div className="image-thumbnails-item-custom" style={{ backgroundImage: `url(${original})` }}></div>
+        </div>
+    }
+
     handleShowImage(e) {
-        let images = [];
+        let images = [], dtCaptureTime = "", datetimeago = 0, datetimelater = 0;
         const objIme = e.currentTarget.dataset.id;
         const objlst = objIme.split(";");
+
         for (let i = 0; i < objlst.length; i++) {
+            if (JSON.parse(objlst[i]).SampleImageId == 25) {
+                datetimeago = JSON.parse(objlst[i]).ImageCaptureTimeNumber;
+            }
+            if (JSON.parse(objlst[i]).SampleImageId == 26) {
+                datetimelater = JSON.parse(objlst[i]).ImageCaptureTimeNumber;
+            }
+
+            if (datetimeago > 0 && datetimelater > 0) {
+                dtCaptureTime = this.CompareTime(datetimeago, datetimelater);
+            }
+
+            const description = `${JSON.parse(objlst[i]).SampleImageId} ${JSON.parse(objlst[i]).SampleImageName && '-'} ${JSON.parse(objlst[i]).SampleImageName}${JSON.parse(objlst[i]).SampleImageId == 26 ? ", " + dtCaptureTime : ""}`;
+
             images.push({
                 original: JSON.parse(objlst[i]).ImageFileURL,
                 thumbnail: JSON.parse(objlst[i]).ImageFileURL,
                 ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
-                ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
                 ImageCaptureTime: JSON.parse(objlst[i]).ImageCaptureTime,
-                description: `${JSON.parse(objlst[i]).SampleImageId} ${JSON.parse(objlst[i]).SampleImageName && '-'} ${JSON.parse(objlst[i]).SampleImageName}`
+                renderItem: () => this.renderItemImage(JSON.parse(objlst[i]).ImageFileURL, description),
+                renderThumbInner: () => this.renderThumbInner(JSON.parse(objlst[i]).ImageFileURL)
             });
         }
 
