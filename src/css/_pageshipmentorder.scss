@@ -666,11 +666,18 @@ $font-weight-600: 600;
     background-position: top center;
     background-repeat: no-repeat;
     text-indent: 99999px;
+    margin-bottom: 25px;
 }
 
 .image-gallery {
     .image-gallery-content {
         .image-gallery-slide-wrapper {
+            .image-gallery-image-custom {
+                .image-gallery-image {
+                    padding: 0 50px;
+                }
+            }
+
             .image-gallery-description-custom {
                 background: #ffe897d1;
                 color: #000000;
