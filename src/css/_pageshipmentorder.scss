@@ -666,16 +666,14 @@ $font-weight-600: 600;
     background-position: top center;
     background-repeat: no-repeat;
     text-indent: 99999px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .image-gallery {
     .image-gallery-content {
         .image-gallery-slide-wrapper {
             .image-gallery-image-custom {
-                .image-gallery-image {
-                    padding: 0 50px;
-                }
+                padding: 0 50px;
             }
 
             .image-gallery-description-custom {
@@ -691,11 +689,13 @@ $font-weight-600: 600;
         }
 
         .image-gallery-thumbnails-wrapper {
-            .image-gallery-thumbnail-custom {
-                & img {
-                    max-height: 50px;
-                    width: auto;
-                } 
+            .image-gallery-thumbnails-custom {
+                .image-thumbnails-item-custom {
+                    height: 60px;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                }
             }
         }
     }

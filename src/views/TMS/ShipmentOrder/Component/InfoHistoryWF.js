@@ -26,6 +26,7 @@ class InfoHistoryWFCom extends Component {
 
         this.CompareTime = this.CompareTime.bind(this);
         this.renderItemImage = this.renderItemImage.bind(this);
+        this.renderThumbInner = this.renderThumbInner.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -49,10 +50,16 @@ class InfoHistoryWFCom extends Component {
     }
 
     renderItemImage(original, description) {
-        return <div className="image-gallery-image">
+        return <div className="image-gallery-image image-gallery-image-custom">
             <img src={original} title={description} />
             <span className="image-gallery-description-custom">{description}</span>
         </div>;
+    }
+
+    renderThumbInner(original) {
+        return <div className="image-gallery-thumbnails-custom">
+            <div className="image-thumbnails-item-custom" style={{ backgroundImage: `url(${original})` }}></div>
+        </div>
     }
 
     handleShowImage(e) {
@@ -76,12 +83,11 @@ class InfoHistoryWFCom extends Component {
 
             images.push({
                 original: JSON.parse(objlst[i]).ImageFileURL,
-                originalClass: "image-gallery-image-custom",
                 thumbnail: JSON.parse(objlst[i]).ImageFileURL,
-                thumbnailClass: "image-gallery-thumbnail-custom",
                 ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
                 ImageCaptureTime: JSON.parse(objlst[i]).ImageCaptureTime,
-                renderItem: () => this.renderItemImage(JSON.parse(objlst[i]).ImageFileURL, description)
+                renderItem: () => this.renderItemImage(JSON.parse(objlst[i]).ImageFileURL, description),
+                renderThumbInner: () => this.renderThumbInner(JSON.parse(objlst[i]).ImageFileURL)
             });
         }
 
