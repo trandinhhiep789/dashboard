@@ -1,3 +1,5 @@
+import { ERPCOMMONCACHE_INPUTTYPE, ERPRELATECACHE_INVENTORYSTATUS } from "../../../../../constants/keyCache";
+
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/MTReturnRequestType/Search";
 export const LoadAPIPath = "api/MTReturnRequestType/Load";
@@ -113,6 +115,35 @@ export const AddElementList = [
         readonly: false,
         validatonList: []
     },
+    {
+        name: "InputTypeID",
+        type: "multiselect",
+        label: "hình thức nhập vật tư",
+        DataSourceMember: "InputTypeID",
+        readonly: false,
+        value: -1,
+        validatonList: [],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: ERPCOMMONCACHE_INPUTTYPE,
+        ValueMember: "InputTypeID",
+        NameMember: "InputTypeName",
+    },
+    {
+        name: "InventoryStatusID",
+        type: "multiselect",
+        label: "trạng thái tồn kho sau khi nhập vật tư",
+        DataSourceMember: "InventoryStatusID",
+        readonly: false,
+        value: -1,
+        validatonList: [],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: ERPRELATECACHE_INVENTORYSTATUS,
+        ValueMember: "InventoryStatusID",
+        NameMember: "InventoryStatusName",
+    },
+
     // {
     //     type: "checkbox",
     //     name: "IsAutoOutput",
@@ -242,6 +273,34 @@ export const EditElementList = [
         readonly: false,
         validatonList: []
     },
+    {
+        name: "InputTypeID",
+        type: "multiselect",
+        label: "hình thức nhập vật tư",
+        DataSourceMember: "InputTypeID",
+        readonly: false,
+        value: -1,
+        validatonList: [],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: ERPCOMMONCACHE_INPUTTYPE,
+        ValueMember: "InputTypeID",
+        NameMember: "InputTypeName",
+    },
+    {
+        name: "InventoryStatusID",
+        type: "multiselect",
+        label: "trạng thái tồn kho sau khi nhập vật tư",
+        DataSourceMember: "InventoryStatusID",
+        readonly: false,
+        value: -1,
+        validatonList: [],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: ERPRELATECACHE_INVENTORYSTATUS,
+        ValueMember: "InventoryStatusID",
+        NameMember: "InventoryStatusName",
+    },
     // {
     //     type: "checkbox",
     //     name: "IsAutoOutput",
@@ -351,6 +410,18 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "IsAllowDuplicationProduct",
         DataSourceMember: "IsAllowDuplicationProduct"
+    },
+    {
+        Name: "InputTypeID",
+        DefaultValue: "",
+        BindControlName: "InputTypeID",
+        DataSourceMember: "InputTypeID"
+    },
+    {
+        Name: "InventoryStatusID",
+        DefaultValue: "",
+        BindControlName: "InventoryStatusID",
+        DataSourceMember: "InventoryStatusID"
     },
     {
         Name: "Description",

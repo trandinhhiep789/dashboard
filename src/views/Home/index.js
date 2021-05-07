@@ -144,6 +144,8 @@ import DeliveryTimeFrame from "../TMS/MD/DeliveryTimeFrame";
 import WeekDay from "../TMS/MD/WeekDay";
 import DeliveryAbility from '../../views/TMS/DeliveryAbility';
 import CoordinatorGroup from "../TMS/MD/CoordinatorGroup";
+import ReportLate from "../TMS/ReportShipmentOrder/ReportLate";
+import SMSTemplate from "../TMS/MD/SMSTemplate";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -367,6 +369,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/DeliveryAbility" component={DeliveryAbility} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/DevTest" component={PageTest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/CoordinatorGroup" component={CoordinatorGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/ReportLate" component={ReportLate} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/SMSTemplate" component={SMSTemplate} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 

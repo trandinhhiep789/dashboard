@@ -620,6 +620,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'SMSTemplate',
+                MenuTitle: 'Template tin nhắn SMS',
+                LinkTo: '/SMSTemplate',
+                MenuIcon: '',
+                SubMenu: []
+            },
 
 
         ]
@@ -1030,6 +1037,13 @@ const AppMenu = [
                         MenuName: 'ReportByUser',
                         MenuTitle: 'Nhân viên',
                         LinkTo: '/ReportByUser',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'ReportLate',
+                        MenuTitle: 'Vận đơn trễ',
+                        LinkTo: '/ReportLate',
                         MenuIcon: '',
                         SubMenu: []
                     },
