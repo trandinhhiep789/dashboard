@@ -56,10 +56,7 @@ class InfoHistoryWFCom extends Component {
     }
 
     handleShowImage(e) {
-        let images = [];
-        let dtCaptureTime = "";
-        let datetimeago = 0;
-        let datetimelater = 0;
+        let images = [], dtCaptureTime = "", datetimeago = 0, datetimelater = 0;
         const objIme = e.currentTarget.dataset.id;
         const objlst = objIme.split(";");
 
