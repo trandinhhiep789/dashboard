@@ -660,20 +660,6 @@ $font-weight-600: 600;
     }
 }
 
-
-.image-gallery-image {
-    .image-gallery-description-custom {
-        background: #ffe897d1;
-        color: #000000;
-        left: 0;
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        font-size: 18px;
-        padding: 12px 0;
-    }
-}
-
 .img-slider-custom {
     height: 500px;
     background-size: contain;
@@ -681,4 +667,29 @@ $font-weight-600: 600;
     background-repeat: no-repeat;
     text-indent: 99999px;
 }
-        
+
+.image-gallery {
+    .image-gallery-content {
+        .image-gallery-slide-wrapper {
+            .image-gallery-description-custom {
+                background: #ffe897d1;
+                color: #000000;
+                left: 0;
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                font-size: 18px;
+                padding: 12px 0;
+            }
+        }
+
+        .image-gallery-thumbnails-wrapper {
+            .image-gallery-thumbnail-custom {
+                & img {
+                    max-height: 50px;
+                    width: auto;
+                } 
+            }
+        }
+    }
+}

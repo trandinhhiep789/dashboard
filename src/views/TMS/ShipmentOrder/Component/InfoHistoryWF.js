@@ -77,6 +77,7 @@ class InfoHistoryWFCom extends Component {
             images.push({
                 original: JSON.parse(objlst[i]).ImageFileURL,
                 thumbnail: JSON.parse(objlst[i]).ImageFileURL,
+                thumbnailClass: "image-gallery-thumbnail-custom",
                 ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
                 ImageCaptureTime: JSON.parse(objlst[i]).ImageCaptureTime,
                 renderItem: () => this.renderItemImage(JSON.parse(objlst[i]).ImageFileURL, description)
