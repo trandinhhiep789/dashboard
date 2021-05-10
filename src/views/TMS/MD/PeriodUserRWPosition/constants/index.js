@@ -432,3 +432,60 @@ export const DataGridColumnList = [
         LinkText: "Chỉnh sửa"
     }
 ];
+
+
+
+export const schema = {
+    'Mã Tỉnh': {
+        prop: 'ProvinceID',
+        type: String,
+        required: true
+    },
+    'Tên Tỉnh': {
+        prop: 'ProvinceName',
+        type: String
+    },
+    'Mã Huyện/ Quận': {
+        prop: 'DistrictID',
+        type: String,
+        required: true
+    },
+    'Tên Huyện/ Quận': {
+        prop: 'DistrictName',
+        type: String
+    },
+    'Tên Phường/ Xã': {
+        prop: 'WardName',
+        type: String
+    },
+    'Mã Phường/ Xã': {
+        prop: 'WardID',
+        type: String,
+        required: true
+    },
+    'Hệ thống': {
+        prop: 'IsSystem',
+        type: Number
+    },
+}
+
+export const DataTemplateExport = [
+    {
+        "Mã Tỉnh": "102",
+        "Tên Tỉnh": "Bà Rịa - Vũng Tàu",
+        "Mã Huyện/ Quận": "887",
+        "Tên Huyện/ Quận": "Huyện Côn Đảo",
+        "Mã Phường/ Xã": "182",
+        "Tên Phường/ Xã": "Thị trấn Côn Đảo",
+        "Hệ thống": "0"
+    },
+    {
+        "Mã Tỉnh": "109",
+        "Tên Tỉnh": "Bình Dương",
+        "Mã Huyện/ Quận": "2022",
+        "Tên Huyện/ Quận": "Huyện Bắc Tân Uyên",
+        "Mã Phường/ Xã": "1112",
+        "Tên Phường/ Xã": "Xã Lạc An",
+        "Hệ thống": "1"
+    },
+];

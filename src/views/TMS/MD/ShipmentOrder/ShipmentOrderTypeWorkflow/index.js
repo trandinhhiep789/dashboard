@@ -593,6 +593,10 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         hide={!this.state.FormData.ShipmentOrderTypeWorkflow.IsSetupStep}
                                         labelcolspan={4} colspan={8}
                                     />
+
+                                    <FormControl.Numeric labelcolspan={4} colspan={8} name="SendToCustomerSMSTemplateID" label="Mã template SMS gửi đến khách hàng"
+                                        datasourcemember="SendToCustomerSMSTemplateID" controltype="InputControl" maxValue={999999999}
+                                    />
                                 </div>
                                 <div className="col-sm-1"></div>
                                 <div className="col-sm-3">
@@ -702,6 +706,10 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                     />
                                     <FormControl.CheckBox labelcolspan={1} colspan={11} label="Có kiểm tra phải bàn giao hàng hóa vận chuyển cho người nhận khi chuyển bước không" name="IsCheckMustHandoverToReceiver"
                                         controltype="InputControl" datasourcemember="IsCheckMustHandoverToReceiver"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Có gửi SMS đến khách hàng" name="IsSendSMSToCustomer"
+                                        controltype="InputControl" datasourcemember="IsSendSMSToCustomer"
                                         swaplabelModal={true}
                                     />
                                 </div>
