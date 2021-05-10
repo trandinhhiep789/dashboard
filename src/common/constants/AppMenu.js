@@ -762,6 +762,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'ManagerShipmentOrder',
+                        MenuTitle: 'Quản lý vận đơn',
+                        LinkTo: '/ManagerShipmentOrder',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
                 ]
             },
             {
