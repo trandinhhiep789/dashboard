@@ -294,6 +294,18 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsCheckMustHandoverToReceiver"
     },
     {
+        Name: "IsSendSMSToCustomer",
+        DefaultValue: "",
+        BindControlName: "IsSendSMSToCustomer",
+        DataSourceMember: "IsSendSMSToCustomer"
+    },
+    {
+        Name: "SendToCustomerSMSTemplateID",
+        DefaultValue: "",
+        BindControlName: "SendToCustomerSMSTemplateID",
+        DataSourceMember: "SendToCustomerSMSTemplateID"
+    },
+    {
         Name: "OrderIndex",
         DefaultValue: "",
         BindControlName: "OrderIndex",

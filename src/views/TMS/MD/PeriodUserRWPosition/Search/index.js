@@ -15,7 +15,9 @@ import {
     IDSelectColumnName,
     PKColumnName,
     InitSearchParams,
-    PagePath
+    PagePath,
+    DataTemplateExport,
+    schema
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -37,7 +39,8 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
-            dataExport: []
+            dataExport: [],
+            DataTemplateExport
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -50,6 +53,33 @@ class SearchCom extends React.Component {
     }
 
     handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
+
+
+    handleImportFile(resultRows, errors) {
+        const arrResultRows = resultRows.map(item => {
+            const { DistrictID, DistrictName, ProvinceID, ProvinceName, WardID, WardName } = item
+            return {
+                ...item,
+                DistrictFullName: `${DistrictID} - ${DistrictName}`,
+                ProvinceFullName: `${ProvinceID} - ${ProvinceName}`,
+                WardFullName: `${WardID} - ${WardName}`
+            }
+        })
+
+        this.setState({
+            DataSource1: {
+                ...this.state.DataSource,
+                CoordinatorStoreWard_ItemList: [...this.state.DataSource.CoordinatorStoreWard_ItemList, ...arrResultRows]
+            }
+        })
+        // this.props.callFetchAPI(APIHostName, AddAutoAPIPath, resultRows).then(apiResult => {
+        //     console.log('apiResult', apiResult)
+        // });
+    }
+
+    handleExportFileTemplate(result) {
         this.addNotification(result.Message, result.IsError);
     }
 
@@ -200,6 +230,14 @@ class SearchCom extends React.Component {
                         DataExport={this.state.dataExport}
                         fileName="Danh sách vị trí thưởng theo khoảng thời gian"
                         onExportFile={this.handleExportFile.bind(this)}
+
+                        // isImportFile={true}
+                        // schemaData={schema}
+                        // onImportFile={this.handleImportFile.bind(this)}
+                        // isExportFileTemplate={true}
+                        // DataTemplateExport={this.state.DataTemplateExport}
+                        // fileNameTemplate={"Danh sách vị trí thưởng theo khoảng thời gian"}
+                        // onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                     />
                 </React.Fragment>
             );
