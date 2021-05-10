@@ -121,6 +121,9 @@ import RewardDetailExport from "../TMS/Reward/RewardDetailExport";
 import RewardPointReview from "../TMS/Reward/RewardPointReview";
 
 
+import ServicePriceTable from "../TMS/MD/ServicePriceTable";
+
+
 import UserRewardStore from "../TMS/MD/RewardStoreUser";
 import FuelPrice from "../TMS/MD/FuelPrice";
 import AppFeedBackPriority from "../TMS/MD/AppFeedBack/AppFeedBackPriority";
@@ -376,6 +379,10 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/CoordinatorGroup" component={CoordinatorGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/ReportLate" component={ReportLate} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/SMSTemplate" component={SMSTemplate} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
+                                <PrivateRoute path="/ServicePriceTable" component={ServicePriceTable} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
+                                
 
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 

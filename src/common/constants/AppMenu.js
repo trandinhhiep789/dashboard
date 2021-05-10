@@ -393,6 +393,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'ServicePriceTable',
+                        MenuTitle: 'Giá dịch vụ của Tận Tâm',
+                        LinkTo: '/ServicePriceTable',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
                     // {
                     //     MenuName: 'PNServicePriceTable',
                     //     MenuTitle: 'Bảng giá dịch vụ của đối tác',

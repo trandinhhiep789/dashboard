@@ -70,7 +70,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        // console.log("MLObject", formData,MLObject)
+        console.log("MLObject", formData,MLObject)
         const postData = [
             {
                 SearchKey: "@FROMDATE",
@@ -79,6 +79,14 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@TODATE",
                 SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) //MLObject.ToDate
+            },
+            {
+                SearchKey: "@REWARDPOSITIONID",
+                SearchValue: MLObject.RewardPositionID
+            },
+            {
+                SearchKey: "@REWARDTYPEID",
+                SearchValue: MLObject.RewardTypeID
             }
         ];
         this.setState({
@@ -91,7 +99,7 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            // console.log("apiResult",apiResult, searchData)
+            console.log("apiResult",apiResult, searchData)
             if (!apiResult.IsError) {
 
                 const tempDataExport = apiResult.ResultObject.map((item, index) => {
