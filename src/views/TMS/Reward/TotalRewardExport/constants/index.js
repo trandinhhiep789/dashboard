@@ -5,7 +5,7 @@ export const SearchByUserAPIPath = "api/TMSRewardDetail/LoadRewardUserNameByDate
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Xuất tổng thưởng" }
+    { Link: "", Title: "Tổng thưởng nhân viên - CTV" }
 ];
 
 const dtFromdate = new Date();
@@ -35,7 +35,38 @@ export const SearchElementList = [
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
     },
-
+    {
+        type: "ComboBoxNewChange",
+        name: "cbRewardPositionID",
+        DataSourceMember: "cbRewardTypeID",
+        label: "Vị trí thưởng",
+        colspan: 3,
+        value: "-1",
+        isMultiSelect: true,
+        placeholder: "---Vị trí thưởng---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.TMSREWARDPOSITION",
+        ValueMember: "RewardPositionID",
+        NameMember: "RewardPositionName",
+        classNameCol: "col-custom"
+    },
+    {
+        type: "ComboBoxNewChange",
+        name: "cbRewardTypeID",
+        DataSourceMember: "cbRewardTypeID",
+        label: "Loại thưởng",
+        colspan: 3,
+        value: "-1",
+        isMultiSelect: true,
+        placeholder: "---Loại thưởng---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.TMSREWARDTYPE",
+        ValueMember: "RewardTypeID",
+        NameMember: "RewardTypeName",
+        classNameCol: "col-custom"
+    }
 ]
 
 export const SearchMLObjectDefinition = [
@@ -49,6 +80,16 @@ export const SearchMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "dtToDate"
     },
+    {
+        Name: "RewardPositionID",
+        DefaultValue: "",
+        BindControlName: "cbRewardPositionID"
+    },
+    {
+        Name: "RewardTypeID",
+        DefaultValue: "",
+        BindControlName: "cbRewardTypeID"
+    }
 ]
 
 export const InitSearchParams = [
@@ -76,6 +117,13 @@ export const GridColumnList = [
         Type: "text",
         Caption: "Tên nhân viên",
         DataSourceMember: "FullName",
+        Width: 100
+    },
+    {
+        Name: "WorkStoreID",
+        Type: "text",
+        Caption: "Nơi làm việc",
+        DataSourceMember: "WorkStoreID",
         Width: 100
     },
     {

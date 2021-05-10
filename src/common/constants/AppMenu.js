@@ -975,7 +975,7 @@ const AppMenu = [
                 SubMenu: [
                     {
                         MenuName: 'TotalRewardExport',
-                        MenuTitle: 'Xuất tổng thưởng',
+                        MenuTitle: 'Tổng thưởng nhân viên - CTV',
                         LinkTo: '/TotalRewardExport',
                         MenuIcon: '',
                         SubMenu: []
