@@ -7,49 +7,55 @@ import { MessageModal } from "../../../../../common/components/Modal";
 import DataGrid from "../../../../../common/components/DataGrid";
 import {
     PagePath,
-    SearchMLObjectDefinition,
-    SearchElementList,
     GridColumnList,
     APIHostName,
     SearchAPIPath,
-    SearchByUserAPIPath
+    SearchReportLateDetailAPIPath
+
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { TMS_TMSREWARD_EXPORT, TMS_TMSREWARD_VIEW } from "../../../../../constants/functionLists";
+import { SHIPMENTORDER_REPORT_EXPORT, SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { toIsoStringCus } from '../../../../../utils/function'
-import DataGirdRewardShipmentOrder from '../component/DataGirdRewardShipmentOrder'
 import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 import { showModal, hideModal } from '../../../../../actions/modal';
-
+import DataGirdReportLate from '../../components/DataGirdReportLate'
+import { toIsoStringCus } from '../../../../../utils/function'
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
-        this.handleCallData = this.handleCallData.bind(this);
 
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
             IsLoadDataComplete: false,
-            dataExport: [],
             widthPercent: "",
-            fromDate: '',
-            toDate: ''
+            shipmentOrderTypeID: "",
+            coordinatorStoreID: "",
+            cssNotification: "notification-custom-success",
+            iconNotification: "fa fa-check",
+            dataExport: []
         };
-        this.gridref = React.createRef();
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
+        const postData = [
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: ""
+            },
+
+
+        ];
+        this.callSearchData(postData);
         this.props.updatePagePath(PagePath);
-        // this.handleCallData();
         this.updateWindowDimensions();
         window.addEventListener("resize", this.updateWindowDimensions);
     }
@@ -64,67 +70,84 @@ class SearchCom extends React.Component {
         })
     };
 
-    handleCallData() {
-        const { SearchData } = this.state;
-        this.callSearchData(SearchData);
-    }
-
     handleSearchSubmit(formData, MLObject) {
-        console.log("MLObject", formData,MLObject)
+        let result, result2;
+        if (MLObject.ShipmentOrderType != -1 && MLObject.ShipmentOrderType != null && MLObject.ShipmentOrderType != "") {
+            result = MLObject.ShipmentOrderType.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item;
+            }, '');
+        }
+        else {
+            result = ""
+        }
+
+        if (MLObject.CoordinatorStore != -1 && MLObject.CoordinatorStore != null && MLObject.CoordinatorStore != "") {
+            result2 = MLObject.CoordinatorStore.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item;
+            }, '');
+        }
+        else {
+            result2 = ""
+        }
+
+        this.setState({
+            shipmentOrderTypeID: result,
+            coordinatorStoreID: result2
+        })
+
         const postData = [
             {
                 SearchKey: "@FROMDATE",
-                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())//MLObject.FromDate
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString()) //MLObject.FromDate
             },
             {
                 SearchKey: "@TODATE",
                 SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) //MLObject.ToDate
             },
             {
-                SearchKey: "@REWARDPOSITIONID",
-                SearchValue: MLObject.RewardPositionID
+                SearchKey: "@SHIPMENTORDERTYPEIDLIST",
+                SearchValue: result  //MLObject.ShipmentOrderType
             },
             {
-                SearchKey: "@REWARDTYPEID",
-                SearchValue: MLObject.RewardTypeID
-            }
+                SearchKey: "@COORDINATORSTOREIDLIST",
+                SearchValue: result2  //MLObject.CoordinatorStoreID
+            },
+
         ];
-        this.setState({
-            fromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()),
-            toDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
-        })
         this.callSearchData(postData);
     }
 
     callSearchData(searchData) {
-
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult",apiResult, searchData)
             if (!apiResult.IsError) {
-
-                const tempDataExport = apiResult.ResultObject.map((item, index) => {
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
                     let element = {
-                        "Mã nhân viên": item.RewardUser.trim(),
-                        "Tên nhân viên": item.FullName.trim(),
-                        "Thưởng giao hàng": item.TotalReward1,
-                        "Phụ cấp ống đồng": item.TotalReward2,
-                        "Tiền xăng": item.TotalReward3,
-                        "Thực lãnh": item.TotalReward,
-
+                        "Mã khu vực": item.AreaID,
+                        "Tên khu vực": item.AreaName,
+                        "Tổng vận đơn trễ": item.TotalLate,
+                        "Tổng vận đơn trễ dưới 30 phút": item.TotalLate30
                     };
-
                     return element;
 
                 })
 
                 this.setState({
+                    dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
-                    IsLoadDataComplete: true,
-                    dataExport: tempDataExport
+                    IsLoadDataComplete: true
                 });
             }
             else {
+                this.setState({
+                    dataExport: [],
+                    gridDataSource: [],
+                    IsCallAPIError: apiResult.IsError,
+                    IsLoadDataComplete: true
+                });
                 this.showMessage(apiResult.MessageDetail)
             }
         });
@@ -137,6 +160,7 @@ class SearchCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
+                onCloseModal={this.handleCloseMessage}
             />
         );
     }
@@ -171,43 +195,74 @@ class SearchCom extends React.Component {
         });
     }
 
-
     handleExportFile(result) {
         this.addNotification(result.Message, result.IsError);
     }
 
-    onShowModalDetail(objValue, name) {
-        const { fromDate, toDate } = this.state;
-        //console.log("objValue, name", objValue, fromDate, toDate)
-        const postData = {
-            UserName: objValue[0].value,
-            FromDate: fromDate,
-            ToDate: toDate
+    getStatusDelivery(status) {
+        switch (status) {
+            case 'TotalLate':
+                return 1;
+            case 'TotalLate30':
+                return 2;
+            default:
+                return 0;
         }
+    }
 
-        this.props.callFetchAPI(APIHostName, SearchByUserAPIPath, postData).then(apiResult => {
+    onShowModalDetail(objValue, name) {
+        console.log("modal", objValue, name);
+        const { shipmentOrderTypeID, coordinatorStoreID } = this.state;
+        const status = this.getStatusDelivery(name);
+        const areaID = objValue[0].value
+
+        // const objData = {
+        //     CreatedOrderTime: dtmCreatedOrderTime,
+        //     StatusDelivery: status,
+        //     ShipmentOrderTypeID: shipmentOrderTypeID,
+        //     CoordinatorStoreID: coordinatorStoreID
+        // }
+        this.props.callFetchAPI(APIHostName, SearchReportLateDetailAPIPath, areaID).then(apiResult => {
+            console.log("detail", apiResult);
             if (!apiResult.IsError) {
-                this.handleShowModal(apiResult.ResultObject, postData)
+                this.handleShowModal(apiResult.ResultObject, status)
             }
             else {
                 this.showMessage(apiResult.MessageDetail)
             }
-        })
+        });
+
+
     }
 
-    handleShowModal(data, paramData) {
+    handleShowModal(data, status) {
         const { widthPercent } = this.state;
-        const titleModal = "Hiển thị chi tiết thưởng đơn thàng theo nhân viên";
+        console.log('status', status)
+        let titleModal;
+        let areaName;
+        if (data && data.length > 0) {
+            areaName = " - khu vực " + data[0].AreaName;
+        }
+
+        titleModal = "Danh sách vận đơn trễ" + areaName;
+        // if (status == 1) {
+        //     titleModal = "Danh sách vận đơn trễ" + areaName;
+        // }
+            
+        
+        // if (status == 2) {
+        //     titleModal = "Danh sách vận đơn trễ dưới 30 phút" + areaName;
+        // }
 
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: titleModal,
             content: {
-                text: <DataGirdRewardShipmentOrder
+                text: <DataGirdReportLate
                     dataSource={data}
-                    paramData={paramData}
                     RowsPerPage={20}
                     IsAutoPaging={true}
+                    Status={status}
                 />
 
             },
@@ -219,37 +274,37 @@ class SearchCom extends React.Component {
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
-                <SearchForm
-                    FormName="Tìm kiếm danh sách tổng thương giao hàng"
+                {/* <SearchForm
+                    FormName="Tìm kiếm danh sách thống kê vận đơn theo ngày"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                     className="multiple"
-                />
+                /> */}
 
                 <DataGrid
                     listColumn={GridColumnList}
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
-                    IDSelectColumnName={'RewardUser'}
-                    PKColumnName={'RewardUser'}
+                    IsFixheaderTable={true}
+                    IDSelectColumnName={'AreaID'}
+                    PKColumnName={'AreaID'}
+                    onShowModal={this.onShowModalDetail.bind(this)}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={false}
                     IsPrint={false}
-                    IsExportFile={false}
                     IsAutoPaging={true}
-                    RowsPerPage={50}
-                    RequirePermission={TMS_TMSREWARD_VIEW}
-                    ExportPermission={TMS_TMSREWARD_EXPORT}
+                    RowsPerPage={30}
+                    RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    ref={this.gridref}
+                    ExportPermission={SHIPMENTORDER_REPORT_EXPORT}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
-                    fileName="Danh sách tổng xuất thưởng"
+                    fileName="Danh sách thống kê vận đơn trễ"
                     onExportFile={this.handleExportFile.bind(this)}
-                    onShowModal={this.onShowModalDetail.bind(this)}
-                    ref={this.gridref}
                 />
             </React.Fragment>
         );

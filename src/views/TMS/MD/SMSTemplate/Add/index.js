@@ -15,8 +15,8 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_MTRETURNREQUESTTYPE, ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
-import { SHIPMENTFEETYPE_ADD, MTRETURNREQUESTTYPE_ADD } from "../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
+import { REWARDTYPE_ADD, SERVICETYPE_ADD, SMSTEMPLATE_ADD } from "../../../../../constants/functionLists";
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -36,25 +36,14 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.AddFunctionID = MLObject.AddFunctionID && Array.isArray(MLObject.AddFunctionID) ? MLObject.AddFunctionID[0] : MLObject.AddFunctionID;
-        MLObject.InputTypeID = MLObject.InputTypeID && Array.isArray(MLObject.InputTypeID) ? MLObject.InputTypeID[0] : MLObject.InputTypeID;
-        MLObject.InventoryStatusID = MLObject.InventoryStatusID && Array.isArray(MLObject.InventoryStatusID) ? MLObject.InventoryStatusID[0] : MLObject.InventoryStatusID;
-        
-        if (!MLObject.IsAutoReview && MLObject.IsAutoOutput) {
-            this.setState({ IsCallAPIError: true });
-            this.showMessage("Phải có tự động duyệt thì mới có tự động xuất.");
-        }else{
-            this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                if(!apiResult.IsError){
-                    this.props.callClearLocalCache(ERPCOMMONCACHE_MTRETURNREQUESTTYPE);
-                    //this.handleSubmitInsertLog(MLObject);
-                }            
-                this.showMessage(apiResult.Message);
-            });
-        }
-        
-        
+        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            if(!apiResult.IsError){
+                this.props.callClearLocalCache(ERPCOMMONCACHE_TMSREWARDTYPE);
+                //this.handleSubmitInsertLog(MLObject);
+            }            
+            this.showMessage(apiResult.Message);
+        });
     }
 
     handleCloseMessage() {
@@ -81,7 +70,7 @@ class AddCom extends React.Component {
         }
         return (
             <SimpleForm
-                FormName="Thêm loại yêu cầu nhập trả vật tư"
+                FormName="Thêm template tin nhắn SMS"
                 MLObjectDefinition={MLObjectDefinition} 
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
@@ -89,7 +78,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                RequirePermission={MTRETURNREQUESTTYPE_ADD}
+                RequirePermission={SMSTEMPLATE_ADD}
                 ref={this.searchref}
             />
         );

@@ -37,12 +37,28 @@ export const SearchElementList = [
     },
     {
         type: "ComboBoxNewChange",
-        name: "cbRewardPositionID",
+        name: "cbRewardTypeID",
         DataSourceMember: "cbRewardTypeID",
-        label: "Vị trí thưởng",
-        colspan: 3,
+        label: "Loại thưởng",
+        colspan: 2,
         value: "-1",
-        isMultiSelect: true,
+        isMultiSelect: false,
+        placeholder: "---Loại thưởng---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.TMSREWARDTYPE",
+        ValueMember: "RewardTypeID",
+        NameMember: "RewardTypeName",
+        classNameCol: "col-custom"
+    },
+    {
+        type: "ComboBoxNewChange",
+        name: "cbRewardPositionID",
+        DataSourceMember: "RewardPositionID",
+        label: "Vị trí thưởng",
+        colspan: 2,
+        value: "-1",
+        isMultiSelect: false,
         placeholder: "---Vị trí thưởng---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
@@ -51,22 +67,7 @@ export const SearchElementList = [
         NameMember: "RewardPositionName",
         classNameCol: "col-custom"
     },
-    {
-        type: "ComboBoxNewChange",
-        name: "cbRewardTypeID",
-        DataSourceMember: "cbRewardTypeID",
-        label: "Loại thưởng",
-        colspan: 3,
-        value: "-1",
-        isMultiSelect: true,
-        placeholder: "---Loại thưởng---",
-        listoption: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.TMSREWARDTYPE",
-        ValueMember: "RewardTypeID",
-        NameMember: "RewardTypeName",
-        classNameCol: "col-custom"
-    }
+
 ]
 
 export const SearchMLObjectDefinition = [
@@ -81,15 +82,15 @@ export const SearchMLObjectDefinition = [
         BindControlName: "dtToDate"
     },
     {
+        Name: "RewardTypeID",
+        DefaultValue: "",
+        BindControlName: "cbRewardTypeID"
+    },
+    {
         Name: "RewardPositionID",
         DefaultValue: "",
         BindControlName: "cbRewardPositionID"
     },
-    {
-        Name: "RewardTypeID",
-        DefaultValue: "",
-        BindControlName: "cbRewardTypeID"
-    }
 ]
 
 export const InitSearchParams = [
@@ -120,10 +121,11 @@ export const GridColumnList = [
         Width: 100
     },
     {
-        Name: "WorkStoreID",
+
+        Name: "WorkStoreFullName",
         Type: "text",
         Caption: "Nơi làm việc",
-        DataSourceMember: "WorkStoreID",
+        DataSourceMember: "WorkStoreFullName",
         Width: 100
     },
     {

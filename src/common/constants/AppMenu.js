@@ -393,6 +393,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'ServicePriceTable',
+                        MenuTitle: 'Giá dịch vụ của Tận Tâm',
+                        LinkTo: '/ServicePriceTable',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
                     // {
                     //     MenuName: 'PNServicePriceTable',
                     //     MenuTitle: 'Bảng giá dịch vụ của đối tác',
@@ -620,6 +627,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'SMSTemplate',
+                MenuTitle: 'Template tin nhắn SMS',
+                LinkTo: '/SMSTemplate',
+                MenuIcon: '',
+                SubMenu: []
+            },
 
 
         ]
@@ -752,6 +766,13 @@ const AppMenu = [
                         MenuName: 'ShipmentOrderControl',
                         MenuTitle: 'Kiểm soát giao hàng',
                         LinkTo: '/ShipmentOrderControl',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'ManagerShipmentOrder',
+                        MenuTitle: 'Quản lý vận đơn',
+                        LinkTo: '/ManagerShipmentOrder',
                         MenuIcon: '',
                         SubMenu: []
                     },
@@ -1030,6 +1051,13 @@ const AppMenu = [
                         MenuName: 'ReportByUser',
                         MenuTitle: 'Nhân viên',
                         LinkTo: '/ReportByUser',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'ReportLate',
+                        MenuTitle: 'Vận đơn trễ',
+                        LinkTo: '/ReportLate',
                         MenuIcon: '',
                         SubMenu: []
                     },

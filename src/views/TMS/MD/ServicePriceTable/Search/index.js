@@ -22,8 +22,8 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
-import { SHIPMENTFEETYPE_VIEW, SHIPMENTFEETYPE_DELETE, DESTROYREQUESTTYPE_VIEW, DESTROYREQUESTTYPE_DELETE, COORDINATORGROUP_VIEW, COORDINATORGROUP_DELETE } from "../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_SERVICEAGREEMENTTYPE } from "../../../../../constants/keyCache";
+import { SERVICEPRICETABLE_VIEW, SERVICEPRICETABLE_DELETE } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -37,7 +37,8 @@ class SearchCom extends React.Component {
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
-            iconNotification: ""
+            iconNotification: "",
+            IsShowForm: true
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -45,7 +46,7 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
-        this.callSearchData(this.state.SearchData);
+      //  this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
     }
 
@@ -64,7 +65,7 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                //this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTFEETYPE);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SERVICEAGREEMENTTYPE);
                 // this.handleSubmitInsertLog();
             }
         });
@@ -75,10 +76,6 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
-            },
-            {
-                SearchKey: "@AreaID",
-                SearchValue: MLObject.AreaID
             }
         ];
         this.setState({ SearchData: postData });
@@ -89,16 +86,17 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             //this.searchref.current.changeLoadComplete();
-            this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError,
                     IsShowForm: true
                 });
             } else {
                 this.showMessage(apiResult.Message);
                 this.setState({ IsShowForm: false });
             }
+
         });
     }
 
@@ -158,12 +156,11 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách nhóm điều phối"
+                        FormName="Tìm kiếm danh sách loại hợp đồng dịch vụ"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
-                        className="multiple"
                     />
                     <DataGrid
                         listColumn={DataGridColumnList}
@@ -173,15 +170,14 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={COORDINATORGROUP_VIEW}
-                        DeletePermission={COORDINATORGROUP_DELETE}
+                        // RequirePermission={SERVICEPRICETABLE_VIEW}
+                        // DeletePermission={SERVICEPRICETABLE_DELETE}
                         IsAutoPaging={true}
-                        RowsPerPage={20}
+                        RowsPerPage={10}
                     />
                 </React.Fragment>
             );
-        }
-        else {
+        } else {
             return (
                 <div>
                     <label>Đang nạp dữ liệu ......</label>

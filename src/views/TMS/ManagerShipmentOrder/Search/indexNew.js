@@ -1,9 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SearchForm from "../../../../../common/components/Form/SearchForm";
-import DataGrid from "../../../../../common/components/DataGrid";
-import { MessageModal } from "../../../../../common/components/Modal";
+import SearchForm from "../../../../common/components/FormContainer/SearchForm";
+import DataGrid from "../../../../common/components/DataGrid/getdataserver.js";
+import InputGridNew from "../../../../common/components/FormContainer/FormControl/InputGridNew";
+import { MessageModal } from "../../../../common/components/Modal";
 import {
     SearchElementList,
     SearchMLObjectDefinition,
@@ -15,15 +16,15 @@ import {
     IDSelectColumnName,
     PKColumnName,
     InitSearchParams,
-    PagePath
+    PagePath,
+    AddLogAPIPath
 } from "../constants";
-import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../actions/pageAction";
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import { updatePagePath } from "../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
-import { SHIPMENTFEETYPE_VIEW, SHIPMENTFEETYPE_DELETE, DESTROYREQUESTTYPE_VIEW, DESTROYREQUESTTYPE_DELETE, COORDINATORGROUP_VIEW, COORDINATORGROUP_DELETE } from "../../../../../constants/functionLists";
+
+import { callGetCache } from "../../../../actions/cacheAction";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -31,13 +32,17 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleonChangePage = this.handleonChangePage.bind(this);
+
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
-            iconNotification: ""
+            iconNotification: "",
+            PageNumber: 1,
+            IsLoadDataComplete: false,
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -49,24 +54,24 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
     }
 
-    handleDelete(deleteList, pkColumnName) {
-        let listMLObject = [];
-        deleteList.map((row, index) => {
-            let MLObject = {};
-            pkColumnName.map((pkItem, pkIndex) => {
-                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-            });
-            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
-            listMLObject.push(MLObject);
-        });
-        this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
+    handleDelete(id) {
+        const ShipmentOrder = { ShipmentOrderID: id, DeletedUser: this.props.AppInfo.LoginInfo.Username };
+        this.props.callFetchAPI(APIHostName, DeleteAPIPath, ShipmentOrder).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                //this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTFEETYPE);
-                // this.handleSubmitInsertLog();
             }
+        });
+    }
+
+    handleonChangePage(pageNum) {
+        let listMLObject = [];
+        const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
+        listMLObject = Object.assign([], this.state.SearchData, { [9]: aa });
+        this.callSearchData(listMLObject)
+        this.setState({
+            PageNumber: pageNum
         });
     }
 
@@ -77,27 +82,58 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.Keyword
             },
             {
-                SearchKey: "@AreaID",
-                SearchValue: MLObject.AreaID
+                SearchKey: "@REQUESTPARTNERID",
+                SearchValue: MLObject.RequestPartnerID
+            },
+            {
+                SearchKey: "@FromDate",
+                SearchValue: MLObject.CreatedOrderTimeFo
+            },
+            {
+                SearchKey: "@ToDate",
+                SearchValue: MLObject.CreatedOrderTimeTo
+            }
+            ,
+            {
+                SearchKey: "@RECEIVERPROVINCEID",
+                SearchValue: MLObject.ReceiverProvinceID
+            },
+            {
+                SearchKey: "@RECEIVERDISTRICTID",
+                SearchValue: MLObject.ReceiverDistrictID
+            },
+            {
+                SearchKey: "@SENDERSTOREID",
+                SearchValue: MLObject.SenderStoreID
+            },
+            {
+                SearchKey: "@SHIPMENTORDERSTATUSID",
+                SearchValue: MLObject.ShipmentOrderStatusID
+            },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: 10
+            },
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: 0
             }
         ];
         this.setState({ SearchData: postData });
         this.callSearchData(postData);
-        //this.gridref.current.clearData();
     }
 
     callSearchData(searchData) {
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            //this.searchref.current.changeLoadComplete();
-            this.setState({ IsCallAPIError: apiResult.IsError });
+        let objsearchData=[]
+        const objUser = { SearchKey: "@CREATEDUSERSTORE", SearchValue: this.props.AppInfo.LoginInfo.Username};
+        objsearchData = Object.assign([], searchData, { [10]: objUser });
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, objsearchData).then(apiResult => {
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
-                    IsShowForm: true
+                    IsCallAPIError: apiResult.IsError,
+                    IsLoadDataComplete: true
                 });
-            } else {
-                this.showMessage(apiResult.Message);
-                this.setState({ IsShowForm: false });
             }
         });
     }
@@ -153,17 +189,18 @@ class SearchCom extends React.Component {
     }
 
     render() {
-        if (this.state.IsShowForm) {
+        if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách nhóm điều phối"
+                        FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
                         className="multiple"
+
                     />
                     <DataGrid
                         listColumn={DataGridColumnList}
@@ -172,23 +209,36 @@ class SearchCom extends React.Component {
                         IDSelectColumnName={IDSelectColumnName}
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
-                        ref={this.gridref}
-                        RequirePermission={COORDINATORGROUP_VIEW}
-                        DeletePermission={COORDINATORGROUP_DELETE}
+                        onChangePage={this.handleonChangePage}
+                        IsDelete={false}
+                        IsAdd={false}
+                        PageNumber={this.state.PageNumber}
+                        DeletePermission={"SHIPMENTORDER_DELETE"}
+                        EditPermission={"SHIPMENTORDER_UPDATE"}
                         IsAutoPaging={true}
-                        RowsPerPage={20}
+                        RowsPerPage={10}
                     />
                 </React.Fragment>
             );
         }
-        else {
+        else
+        {
             return (
-                <div>
-                    <label>Đang nạp dữ liệu ......</label>
-                </div>
-            )
-        }
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm
+                        FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                        className="multiple"
 
+                    />
+                  <label>Đang nạp dữ liệu...</label>
+                </React.Fragment>
+            );
+        }
     }
 }
 
@@ -209,9 +259,6 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
-        },
-        callClearLocalCache: (cacheKeyID) => {
-            return dispatch(callClearLocalCache(cacheKeyID));
         }
     };
 };

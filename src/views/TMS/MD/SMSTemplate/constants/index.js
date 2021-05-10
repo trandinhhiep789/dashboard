@@ -1,43 +1,32 @@
-import { ERPCOMMONCACHE_AREATT } from "../../../../../constants/keyCache";
-
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/CoordinatorGroup/Search";
-export const LoadAPIPath = "api/CoordinatorGroup/Load";
-export const AddAPIPath = "api/CoordinatorGroup/Add";
-export const UpdateAPIPath = "api/CoordinatorGroup/Update";
-export const DeleteAPIPath = "api/CoordinatorGroup/Delete";
-export const UpdateOrderAPIPath = "api/CoordinatorGroup/UpdateOrder";
-export const BackLink = "/CoordinatorGroup";
-export const AddLink = "/CoordinatorGroup/Add";
+export const SearchAPIPath = "api/SMSTemplate/Search";
+export const LoadAPIPath = "api/SMSTemplate/Load";
+export const AddAPIPath = "api/SMSTemplate/Add";
+export const UpdateAPIPath = "api/SMSTemplate/Update";
+export const DeleteAPIPath = "api/SMSTemplate/Delete";
+export const UpdateOrderAPIPath = "api/SMSTemplate/UpdateOrder";
+export const BackLink = "/SMSTemplate";
+export const AddLink = "/SMSTemplate/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "CoordinatorGroupID";
-export const InitSearchParams = [
-    { SearchKey: "@Keyword", SearchValue: "" },
-    { SearchKey: "@AreaID", SearchValue: -1 }
-];
+export const PKColumnName = "SMSTemplateID";
+export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Nhóm điều phối" }
+    { Link: "", Title: "Danh sách template tin nhắn SMS" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/CoordinatorGroup", Title: "Nhóm điều phối" },
+    { Link: "/SMSTemplate", Title: "Danh sách template tin nhắn SMS" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/CoordinatorGroup", Title: "Nhóm điều phối" },
+    { Link: "/SMSTemplate", Title: "Danh sách template tin nhắn SMS" },
     { Link: "", Title: "Thêm" }
-];
-
-export const DetailPagePath = [
-    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/CoordinatorGroup", Title: "Nhóm điều phối" },
-    { Link: "", Title: "Chi tiết nhóm điều phối" }
 ];
 
 export const SearchElementList = [
@@ -49,73 +38,98 @@ export const SearchElementList = [
         placeholder: "",
         icon: "",
         listoption: {}
-    },
-    {
-        type: "select",
-        name: "slAreaID",
-        label: "Khu vực",
-        value: -1,
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "AreaID",
-        readonly: false,
-        validatonList: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: ERPCOMMONCACHE_AREATT,
-        ValueMember: "AreaID",
-        NameMember: "AreaName"
     }
-
 ];
 
 export const AddElementList = [
     // {
     //     type: "text",
-    //     name: "txtCoordinatorGroupID",
-    //     label: "mã nhóm điều phối",
+    //     name: "txtSMSTemplateID",
+    //     label: "mã loại",
     //     value: "",
-    //     maxSize: "9",
+    //     maxSize: "5",
     //     placeholder: "",
     //     icon: "",
     //     listoption: {},
-    //     DataSourceMember: "CoordinatorGroupID",
+    //     DataSourceMember: "SMSTemplateID",
     //     readonly: false,
     //     validatonList: ["required", "number"]
     // },
     {
         type: "text",
-        name: "txtCoordinatorGroupName",
-        label: "tên nhóm điều phối",
+        name: "txtSMSTemplateName",
+        label: "tên template tin nhắn SMS",
+        value: "",
+        maxSize: "2000",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "SMSTemplateName",
+        readonly: false,
+        validatonList: ["required"],
+    },
+    {
+        type: "textarea",
+        name: "txtSMSTemplateContent",
+        label: "nội dung template tin nhắn SMS",
+        value: "",
+        rows: "6",
+        maxSize: "500",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "SMSTemplateContent",
+        readonly: false,
+        validatonList: [],
+    },
+    {
+        type: "text",
+        name: "txtSMSServerAuthenKey",
+        label: "khóa xác thực của server SMS",
         value: "",
         maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "CoordinatorGroupName",
+        DataSourceMember: "SMSServerAuthenKey",
         readonly: false,
-        validatonList: ["required"],
+        validatonList: [],
     },
-    {
-        type: "select",
-        name: "txtAreaID",
-        label: "khu vực",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "AreaID",
-        readonly: false,
-        validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREATT",
-        ValueMember: "AreaID",
-        NameMember: "AreaName"
-    },
+    // {
+    //     type: "select",
+    //     name: "txtQualityAssessGroupID",
+    //     label: "nhóm tiêu chí",
+    //     value: "",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "QualityAssessGroupID",
+    //     readonly: false,
+    //     validatonList: [],
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.QUALITYASSESSGROUP",
+    //     ValueMember: "QualityAssessGroupID",
+    //     NameMember: "QualityAssessGroupName"
+
+    // },
+    // {
+    //     type: "select",
+    //     name: "GetFeeType",
+    //     label: "Kiểu lấy chi phí",
+    //     value: 1,
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [{ value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
+    //     DataSourceMember: "GetFeeType",
+    //     readonly: false,
+    //     disabled: false,
+    //     validatonList: [],
+    //     IsAutoLoadItemFromCache: false
+    // },
     {
         type: "textarea",
         name: "txtDescription",
-        label: "Mô tả",
+        label: "Mô tả:",
         value: "",
         maxSize: "2000",
         placeholder: "",
@@ -129,7 +143,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtOrderIndex",
-        label: "Thứ tự hiển thị",
+        label: "Thứ tự hiển thị:",
         value: "0",
         maxSize: "9",
         placeholder: "",
@@ -142,7 +156,7 @@ export const AddElementList = [
     {
         type: "checkbox",
         name: "chkIsActived",
-        label: "Kích hoạt",
+        label: "Kích hoạt:",
         value: 1,
         placeholder: "",
         icon: "",
@@ -153,7 +167,7 @@ export const AddElementList = [
     {
         type: "checkbox",
         name: "chkIsSystem",
-        label: "Hệ thống",
+        label: "Hệ thống:",
         value: 0,
         placeholder: "",
         icon: "",
@@ -166,46 +180,88 @@ export const AddElementList = [
 export const EditElementList = [
     {
         type: "text",
-        name: "txtCoordinatorGroupID",
-        label: "mã nhóm điều phối",
+        name: "txtSMSTemplateID",
+        label: "mã template tin nhắn SMS",
         value: "",
-        maxSize: "9",
+        maxSize: "10",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "CoordinatorGroupID",
+        DataSourceMember: "SMSTemplateID",
         readonly: true,
         validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtCoordinatorGroupName",
-        label: "tên nhóm điều phối",
+        name: "txtSMSTemplateName",
+        label: "tên template tin nhắn SMS",
+        value: "",
+        maxSize: "2000",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "SMSTemplateName",
+        readonly: false,
+        validatonList: ["required"],
+    },
+    {
+        type: "textarea",
+        name: "txtSMSTemplateContent",
+        label: "nội dung template tin nhắn SMS",
+        value: "",
+        rows: "6",
+        maxSize: "500",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "SMSTemplateContent",
+        readonly: false,
+        validatonList: [],
+    },
+    {
+        type: "text",
+        name: "txtSMSServerAuthenKey",
+        label: "khóa xác thực của server SMS",
         value: "",
         maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "CoordinatorGroupName",
+        DataSourceMember: "SMSServerAuthenKey",
         readonly: false,
-        validatonList: ["required"],
+        validatonList: [],
     },
-    {
-        type: "select",
-        name: "txtAreaID",
-        label: "khu vực",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "AreaID",
-        readonly: false,
-        validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREATT",
-        ValueMember: "AreaID",
-        NameMember: "AreaName"
-    },
+    // {
+    //     type: "select",
+    //     name: "txtQualityAssessGroupID",
+    //     label: "nhóm tiêu chí",
+    //     value: "",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "QualityAssessGroupID",
+    //     readonly: false,
+    //     validatonList: [],
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.QUALITYASSESSGROUP",
+    //     ValueMember: "QualityAssessGroupID",
+    //     NameMember: "QualityAssessGroupName"
+
+    // },
+    // {
+    //     type: "select",
+    //     name: "GetFeeType",
+    //     label: "Kiểu lấy chi phí",
+    //     value: "",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [{ value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
+    //     DataSourceMember: "GetFeeType",
+    //     readonly: false,
+    //     disabled: false,
+    //     validatonList: [],
+    //     IsAutoLoadItemFromCache: false
+    // },
     {
         type: "textarea",
         name: "txtDescription",
@@ -264,39 +320,33 @@ export const SearchMLObjectDefinition = [
         Name: "Keyword",
         DefaultValue: "",
         BindControlName: "txtKeyword"
-    },
-    {
-        Name: "AreaID",
-        DefaultValue: "",
-        BindControlName: "slAreaID"
     }
-
 ];
 
 export const MLObjectDefinition = [
     {
-        Name: "CoordinatorGroupID",
+        Name: "SMSTemplateID",
         DefaultValue: "",
-        BindControlName: "txtCoordinatorGroupID",
-        DataSourceMember: "CoordinatorGroupID"
+        BindControlName: "txtSMSTemplateID",
+        DataSourceMember: "SMSTemplateID"
     },
     {
-        Name: "CoordinatorGroupName",
+        Name: "SMSTemplateName",
         DefaultValue: "",
-        BindControlName: "txtCoordinatorGroupName",
-        DataSourceMember: "CoordinatorGroupName"
+        BindControlName: "txtSMSTemplateName",
+        DataSourceMember: "SMSTemplateName"
     },
     {
-        Name: "AreaID",
+        Name: "SMSTemplateContent",
         DefaultValue: "",
-        BindControlName: "txtAreaID",
-        DataSourceMember: "AreaID"
+        BindControlName: "txtSMSTemplateContent",
+        DataSourceMember: "SMSTemplateContent"
     },
     {
-        Name: "AreaName",
+        Name: "SMSServerAuthenKey",
         DefaultValue: "",
-        BindControlName: "",
-        DataSourceMember: "AreaName"
+        BindControlName: "txtSMSServerAuthenKey",
+        DataSourceMember: "SMSServerAuthenKey"
     },
     {
         Name: "Description",
@@ -347,38 +397,37 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "CoordinatorGroupID",
+        DataSourceMember: "SMSTemplateID",
         Width: 60
     },
     {
-        Name: "CoordinatorGroupID",
+        Name: "SMSTemplateID",
         Type: "text",
-        Caption: "Mã Nhóm điều phối",
-        DataSourceMember: "CoordinatorGroupID",
+        Caption: "Mã template tin nhắn SMS",
+        DataSourceMember: "SMSTemplateID",
+        Width: 150
+    },
+    {
+        Name: "SMSTemplateName",
+        Type: "text",
+        Caption: "Tên template tin nhắn SMS",
+        DataSourceMember: "SMSTemplateName",
         Width: 200
     },
     {
-        Name: "CoordinatorGroupName",
-        Type: "texttolink",
-        Link: "/CoordinatorGroup/Detail/",
-        Caption: "Tên Nhóm điều phối",
-        DataSourceMember: "CoordinatorGroupName",
-        Width: 250
-    },
-    {
-        Name: "AreaName",
+        Name: "SMSTemplateContent",
         Type: "text",
-        Caption: "Khu vực",
-        DataSourceMember: "AreaName",
-        //Width: 200
+        Caption: "Nội dung template tin nhắn SMS",
+        DataSourceMember: "SMSTemplateContent",
+        Width: 200
     },
-    {
-        Name: "Description",
-        Type: "text",
-        Caption: "Mô tả",
-        DataSourceMember: "Description",
-        //Width: 200
-    },
+    // {
+    //     Name: "Description",
+    //     Type: "text",
+    //     Caption: "Mô tả",
+    //     DataSourceMember: "Description",
+    //     //Width: 200
+    // },
     {
         Name: "IsActived",
         Type: "checkicon",
@@ -404,9 +453,9 @@ export const DataGridColumnList = [
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "CoordinatorGroupID",
+        DataSourceMember: "SMSTemplateID",
         Width: 100,
-        Link: "/CoordinatorGroup/Edit/",
+        Link: "/SMSTemplate/Edit/",
         LinkText: "Chỉnh sửa"
     }
 ];
