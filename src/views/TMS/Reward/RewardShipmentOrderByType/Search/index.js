@@ -92,10 +92,10 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI(APIHostName, SearchNewAPIPath, searchData).then(apiResult => {
             console.log("1111", searchData, apiResult)
             if (!apiResult.IsError) {
-                const totalAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
-                    sum += curValue.TotalReward
-                    return sum
-                }, 0);
+                // const totalAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
+                //     sum += curValue.TotalReward
+                //     return sum
+                // }, 0);
 
                 const tempDataExport = apiResult.ResultObject.map((item, index) => {
                     let element = {
@@ -108,17 +108,17 @@ class SearchCom extends React.Component {
                     return element;
                 })
 
-                const tempData = apiResult.ResultObject.map((item, index) => {
-                    item.NoteReward = "Điểm thưởng này chỉ mang tính chất tham khảo, kết quả thưởng cuối cùng sẽ được KSNB và Phòng Lao động tiền lương điều chỉnh sau khi đối chiếu với các số liệu khác";
+                // const tempData = apiResult.ResultObject.map((item, index) => {
+                //     item.NoteReward = "Điểm thưởng này chỉ mang tính chất tham khảo, kết quả thưởng cuối cùng sẽ được KSNB và Phòng Lao động tiền lương điều chỉnh sau khi đối chiếu với các số liệu khác";
 
-                    return item;
+                //     return item;
 
-                })
+                // })
 
                 this.setState({
-                    gridDataSource: tempData,
+                    gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
-                    totalAmount: totalAmount,
+                    totalAmount: apiResult.ResultObject[0].SumTotalReward,
                     IsLoadDataComplete: true,
                     dataExport: tempDataExport
                 });
