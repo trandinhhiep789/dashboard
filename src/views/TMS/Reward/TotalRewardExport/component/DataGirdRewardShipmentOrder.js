@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
+import ReactNotification from "react-notifications-component";
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+
 import { formatMoney } from '../../../../../utils/function';
 import GridPage from "../../../../../common/components/DataGrid/GridPage";
 import { DEFAULT_ROW_PER_PAGE } from "../../../../../constants/systemVars.js";
 import { formatDate } from "../../../../../common/library/CommonLib.js";
+import { titleModal } from '../constants'
 
 class DataGirdRewardShipmentOrderCom extends Component {
     constructor(props) {
@@ -15,6 +20,9 @@ class DataGirdRewardShipmentOrderCom extends Component {
             paramData: this.props.paramData,
             PageNumber: 1
         }
+
+        this.handleExportExcel = this.handleExportExcel.bind(this);
+        this.notificationDOMRef = React.createRef();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -92,84 +100,177 @@ class DataGirdRewardShipmentOrderCom extends Component {
         return resultData;
     }
 
+    addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
+        if (!IsError) {
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
+        } else {
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
+    handleExportExcel() {
+        const { dataSource } = this.state;
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8', fileExtension = '.xlsx';
+
+        let result;
+
+        try {
+            const dataSource = this.getDisplayData(this.props.dataSource);
+            const countTotalMoney = this.props.dataSource.reduce((a, v) => a = a + v.TotalReward, 0);
+
+            const infoStaff = [
+                {
+                    "Từ ngày": formatDate(this.state.paramData.FromDate, true),
+                    "Đến ngày": formatDate(this.state.paramData.ToDate, true),
+                    "Nhân viên": dataSource[0].RewardUser + " - " + dataSource[0].FullName,
+                    "Tổng": countTotalMoney
+                }
+            ];
+
+            const dataExport = dataSource.map(item => {
+                return {
+                    "Loại thưởng": item.RewardTypeName.trim(),
+                    "Mã sản phẩm": item.ProductID.trim(),
+                    "Tên sản phẩm": item.ProductName,
+                    "Mã vận đơn": item.ShipmentOrderID.trim(),
+                    "Số lượng": item.Quantity,
+                    "Đơn giá thưởng": item.RewardPrice,
+                    "Số tiền thưởng": item.TotalReward,
+                }
+            })
+
+            const ws = XLSX.utils.json_to_sheet(dataExport, { origin: 'A3' });
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+
+            FileSaver.saveAs(data, titleModal + fileExtension);
+
+            result = {
+                IsError: false,
+                Message: "Xuất file thành công!"
+            };
+        } catch (error) {
+            result = {
+                IsError: true,
+                Message: "Lỗi xuất file!"
+            };
+        }
+
+        this.addNotification(result.Message, result.IsError);
+    }
+
     render() {
         const { PageNumber } = this.state;
         const pageCount = this.getPageCount(this.props.dataSource);
         const dataSource = this.getDisplayData(this.props.dataSource);
         const countTotalMoney = this.props.dataSource.reduce((a, v) => a = a + v.TotalReward, 0);
         return (
-            <div className="col-12">
-                <div class="row mt-20">
+            <React.Fragment>
 
-                    <div class="col-md-2  text-left">
-                        <label class="col-form-label bold txtTotal">Từ ngày:</label>
-                    </div>
-                    <div class="col-md-4 text-left">
-                        <label class="col-form-label">{formatDate(this.state.paramData.FromDate,true)}</label>
+                <ReactNotification ref={this.notificationDOMRef} />
+
+                <div className="col-12">
+                    <div className="row mt-20">
+
+                        <div className="col-md-2  text-left">
+                            <label className="col-form-label bold txtTotal">Từ ngày:</label>
+                        </div>
+                        <div className="col-md-4 text-left">
+                            <label className="col-form-label">{formatDate(this.state.paramData.FromDate, true)}</label>
+                        </div>
+
+                        <div className="col-md-2 text-left">
+                            <label className="col-form-label bold txtTotal">Đến ngày:</label>
+                        </div>
+                        <div className="col-md-4 text-left">
+                            <label className="col-form-label">{formatDate(this.state.paramData.ToDate, true)}</label>
+                        </div>
+
+                        <div className="col-md-2 text-left">
+                            <label className="col-form-label bold txtTotal">Nhân viên:</label>
+                        </div>
+                        <div className="col-md-4  text-left">
+                            <label className="col-form-label">{dataSource[0].RewardUser + " - " + dataSource[0].FullName}</label>
+                        </div>
+
+                        <div className="col-md-2 text-left">
+                            <label className="col-form-label bold txtTotal">Tổng:</label>
+                        </div>
+                        <div className="col-md-4  text-left">
+                            <label className="col-form-label countTotal">{formatMoney(countTotalMoney, 0)}</label>
+                        </div>
                     </div>
 
-                    <div class="col-md-2 text-left">
-                        <label class="col-form-label bold txtTotal">Đến ngày:</label>
-                    </div>
-                    <div class="col-md-4 text-left">
-                        <label class="col-form-label">{formatDate(this.state.paramData.ToDate,true)}</label>
-                    </div>
+                    <div className="table-responsive  mt-20">
+                        <div className="d-flex justify-content-end mb-1">
+                            <button type="button" className="btn btn-export ml-10" onClick={this.handleExportExcel}>
+                                <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                            </button>
+                        </div>
 
-                    <div class="col-md-2 text-left">
-                        <label class="col-form-label bold txtTotal">Nhân viên:</label>
+                        <table className="table table-sm table-striped table-bordered table-hover table-condensed dataGirdReportShipment" cellSpacing="0">
+                            <thead className="thead-light">
+                                <tr>
+                                    <th className="jsgrid-header-cell " style={{ width: '15%' }}>Loại thưởng</th>
+                                    <th className="jsgrid-header-cell " style={{ width: '15%' }}>Mã sản phẩm</th>
+                                    <th className="jsgrid-header-cell " style={{ width: '25%' }}>Tên sản phẩm</th>
+                                    <th className="jsgrid-header-cell " style={{ width: '15%' }}>Mã vận đơn</th>
+                                    <th className="jsgrid-header-cell " style={{ width: '10%' }}>Số lượng</th>
+                                    <th className="jsgrid-header-cell " style={{ width: '10%' }}>Đơn giá thưởng</th>
+                                    <th className="jsgrid-header-cell " style={{ width: '10%' }}>Số tiền thưởng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    dataSource.length > 0 ?
+                                        dataSource.map((rowItem, rowIndex) => {
+                                            return (<tr key={rowIndex}>
+                                                <td style={{ width: '15%' }}>{rowItem.RewardTypeName}</td>
+                                                <td style={{ width: '15%' }}>{rowItem.ProductID}</td>
+                                                <td style={{ width: '25%' }}>{rowItem.ProductName}</td>
+                                                <td style={{ width: '15%' }}>
+                                                    <Link target="_blank" className="txtlink" to={"/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID}>{rowItem.ShipmentOrderID}</Link>
+                                                </td>
+                                                <td style={{ width: '10%' }}>{rowItem.Quantity}</td>
+                                                <td style={{ width: '10%' }}>{formatMoney(rowItem.RewardPrice, 0)}</td>
+                                                <td style={{ width: '10%' }}>{formatMoney(rowItem.TotalReward, 0)}</td>
+                                            </tr>)
+                                        })
+                                        :
+                                        <tr>
+                                            <td colSpan="6" align="center" className="text-center">Không tồn tại dữ liệu.</td>
+                                        </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="col-md-4  text-left">
-                        <label class="col-form-label">{dataSource[0].RewardUser +" - "+ dataSource[0].FullName}</label>
-                    </div>
-
-                    <div class="col-md-2 text-left">
-                        <label class="col-form-label bold txtTotal">Tổng:</label>
-                    </div>
-                    <div class="col-md-4  text-left">
-                        <label class="col-form-label countTotal">{formatMoney(countTotalMoney, 0)}</label>
-                    </div>
+                    <GridPage numPage={pageCount} currentPage={PageNumber} maxPageShow={10} onChangePage={this.onChangePageHandle.bind(this)} />
                 </div>
 
-                <div className="table-responsive  mt-20">
-                    <table className="table table-sm table-striped table-bordered table-hover table-condensed dataGirdReportShipment" cellSpacing="0">
-                        <thead className="thead-light">
-                            <tr>
-                                <th className="jsgrid-header-cell " style={{ width: '15%' }}>Loại thưởng</th>
-                                <th className="jsgrid-header-cell " style={{ width: '15%' }}>Mã sản phẩm</th>
-                                <th className="jsgrid-header-cell " style={{ width: '25%' }}>Tên sản phẩm</th>
-                                <th className="jsgrid-header-cell " style={{ width: '15%' }}>Mã vận đơn</th>
-                                <th className="jsgrid-header-cell " style={{ width: '10%' }}>Số lượng</th>
-                                <th className="jsgrid-header-cell " style={{ width: '10%' }}>Đơn giá thưởng</th>
-                                <th className="jsgrid-header-cell " style={{ width: '10%' }}>Số tiền thưởng</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                dataSource.length > 0 ?
-                                    dataSource.map((rowItem, rowIndex) => {
-                                        return (<tr key={rowIndex}>
-                                            <td style={{ width: '15%' }}>{rowItem.RewardTypeName}</td>
-                                            <td style={{ width: '15%' }}>{rowItem.ProductID}</td>
-                                            <td style={{ width: '25%' }}>{rowItem.ProductName}</td>
-                                            <td style={{ width: '15%' }}>
-                                                <Link target="_blank" className="txtlink" to={"/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID}>{rowItem.ShipmentOrderID}</Link>
-                                            </td>
-                                            <td style={{ width: '10%' }}>{rowItem.Quantity}</td>
-                                            <td style={{ width: '10%' }}>{formatMoney(rowItem.RewardPrice, 0)}</td>
-                                            <td style={{ width: '10%' }}>{formatMoney(rowItem.TotalReward, 0)}</td>
-                                        </tr>)
-                                    })
-                                    :
-                                    <tr>
-                                        <td colSpan="6" align="center" className="text-center">Không tồn tại dữ liệu.</td>
-                                    </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <GridPage numPage={pageCount} currentPage={PageNumber} maxPageShow={10} onChangePage={this.onChangePageHandle.bind(this)} />
-            </div>
-
+            </React.Fragment>
         );
     }
 }

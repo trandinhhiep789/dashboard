@@ -13,6 +13,8 @@ const dtFromdate = new Date();
 
 // dtFromdate.setDate(new Date('11/01/2020'));
 
+export const titleModal = "Hiển thị chi tiết thưởng đơn thàng theo nhân viên";
+
 export const SearchElementList = [
 
     {

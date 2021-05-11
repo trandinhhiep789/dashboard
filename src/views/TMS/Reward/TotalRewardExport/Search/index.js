@@ -12,7 +12,8 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
-    SearchByUserAPIPath
+    SearchByUserAPIPath,
+    titleModal
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -70,7 +71,6 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("MLObject", formData,MLObject)
         const postData = [
             {
                 SearchKey: "@FROMDATE",
@@ -99,7 +99,6 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult",apiResult, searchData)
             if (!apiResult.IsError) {
 
                 const tempDataExport = apiResult.ResultObject.map((item, index) => {
@@ -197,8 +196,6 @@ class SearchCom extends React.Component {
 
     handleShowModal(data, paramData) {
         const { widthPercent } = this.state;
-        const titleModal = "Hiển thị chi tiết thưởng đơn thàng theo nhân viên";
-
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: titleModal,
