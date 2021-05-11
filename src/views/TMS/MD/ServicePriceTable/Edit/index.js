@@ -8,35 +8,68 @@ import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import {
     APIHostName,
-    AddAPIPath,
+    LoadAPIPath,
     MLObjectDefinition,
     BackLink,
     AddPagePath,
+    UpdateAPIPath
+
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { SERVICEPRICETABLE_ADD } from "../../../../../constants/functionLists";
+import { SERVICEPRICETABLE_UPDATE } from "../../../../../constants/functionLists";
+import ReactNotification from "react-notifications-component";
 
-class AddCom extends React.Component {
+
+class EditCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.addNotification = this.addNotification.bind(this);
 
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
+            DataSource: [],
+            DataWard: [],
+            cssNotification: "",
+            iconNotification: "",
+            IsSystem: false,
+            IsLoadDataComplete: false
         };
         this.searchref = React.createRef();
         this.gridref = React.createRef();
+        this.notificationDOMRef = React.createRef();
     }
 
 
     componentDidMount() {
         this.props.updatePagePath(AddPagePath);
+        this.callLoadData(this.props.match.params.id);
 
+    }
+
+    callLoadData(id) {
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            console.log("edit", apiResult)
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+
+                this.setState({
+                    DataSource: apiResult.ResultObject,
+                    IsSystem: apiResult.ResultObject.IsSystem,
+                    IsLoadDataComplete: true,
+                });
+            }
+        });
     }
 
     handleCloseMessage() {
@@ -56,8 +89,9 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        console.log("123", formData, MLObject)
-        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+        console.log("121", MLObject)
+
+        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
 
@@ -65,23 +99,57 @@ class AddCom extends React.Component {
     }
 
 
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
 
 
     render() {
-
+        const { DataSource } = this.state;
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
 
         return (
             <React.Fragment>
+                <ReactNotification ref={this.notificationDOMRef} />
                 <FormContainer
                     FormName="Thêm bảng giá dịch vụ của tận tâm"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={[]}
+                    dataSource={this.state.DataSource}
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
-                // RequirePermission={SERVICEPRICETABLE_ADD}
+                // RequirePermission={SERVICEPRICETABLE_UPDATE}
                 >
 
                     <div className="row">
@@ -91,7 +159,8 @@ class AddCom extends React.Component {
                                 name="txtServicePriceTableID"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                disabled={true}
+                                readOnly={true}
                                 label="tên đơn giá thưởng"
                                 placeholder="Tên đơn giá thưởng"
                                 controltype="InputControl"
@@ -106,7 +175,8 @@ class AddCom extends React.Component {
                                 name="txtServicePriceTableName"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 label="tên đơn giá thưởng"
                                 placeholder="Tên đơn giá thưởng"
                                 controltype="InputControl"
@@ -128,6 +198,8 @@ class AddCom extends React.Component {
                                 rows={6}
                                 maxSize={500}
                                 classNameCustom="customcontrol"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                             />
                         </div>
 
@@ -136,7 +208,8 @@ class AddCom extends React.Component {
                                 name="chkIsActived"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 label="kích hoạt"
                                 controltype="InputControl"
                                 value={true}
@@ -150,7 +223,8 @@ class AddCom extends React.Component {
                                 name="chkIsSystem"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
                                 label="hệ thống"
                                 controltype="InputControl"
                                 value=""
@@ -160,6 +234,7 @@ class AddCom extends React.Component {
                         </div>
 
                     </div>
+
 
 
                 </FormContainer>
@@ -200,5 +275,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Add = connect(mapStateToProps, mapDispatchToProps)(AddCom);
-export default Add;
+const Edit = connect(mapStateToProps, mapDispatchToProps)(EditCom);
+export default Edit;
