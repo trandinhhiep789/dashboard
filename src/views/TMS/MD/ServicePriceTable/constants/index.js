@@ -8,7 +8,13 @@ export const BackLink = "/ServicePriceTable";
 export const AddLink = "/ServicePriceTable/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "ServicePriceTableID";
-export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
+
+export const InitSearchParams = [
+    { 
+        SearchKey: "@Keyword", 
+        SearchValue: "" 
+    }
+];
 
 
 export const PagePath = [
@@ -27,6 +33,13 @@ export const AddPagePath = [
     { Link: "/ServicePriceTable", Title: "Danh sách bảng giá dịch vụ" },
     { Link: "", Title: "Thêm" }
 ];
+
+export const DetailPagePath = [
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
+    { Link: "/ServicePriceTable", Title: "Danh sách bảng giá dịch vụ" },
+    { Link: "", Title: "Chi tiết" }
+];
+
 
 
 export const SearchElementList = [
@@ -54,28 +67,22 @@ export const SearchMLObjectDefinition = [
 
 export const MLObjectDefinition = [
     {
-        Name: "ServiceAgreementTypeID",
+        Name: "ServicePriceTableID",
         DefaultValue: "",
-        BindControlName: "txtServiceAgreementTypeID",
-        DataSourceMember: "ServiceAgreementTypeID"
+        BindControlName: "txtServicePriceTableID",
+        DataSourceMember: "ServicePriceTableID"
     },
     {
-        Name: "ServiceAgreementTypeName",
+        Name: "ServicePriceTableName",
         DefaultValue: "",
-        BindControlName: "txtServiceAgreementTypeName",
-        DataSourceMember: "ServiceAgreementTypeName"
+        BindControlName: "txtServicePriceTableName",
+        DataSourceMember: "ServicePriceTableName"
     },
     {
         Name: "Description",
         DefaultValue: "",
         BindControlName: "txtDescription",
         DataSourceMember: "Description"
-    },
-    {
-        Name: "OrderIndex",
-        DefaultValue: "",
-        BindControlName: "txtOrderIndex",
-        DataSourceMember: "OrderIndex"
     },
     {
         Name: "IsActived",
@@ -88,25 +95,8 @@ export const MLObjectDefinition = [
         DefaultValue: false,
         BindControlName: "chkIsSystem",
         DataSourceMember: "IsSystem"
-    },
-    {
-        Name: "CreatedUser",
-        DefaultValue: "administrator",
-        BindControlName: "",
-        DataSourceMember: "CreatedUser"
-    },
-    {
-        Name: "UpdatedUser",
-        DefaultValue: "administrator",
-        BindControlName: "",
-        DataSourceMember: "UpdatedUser"
-    },
-    {
-        Name: "LoginLogID",
-        DefaultValue: "",
-        BindControlName: "",
-        DataSourceMember: ""
     }
+ 
 ];
 
 export const DataGridColumnList = [
@@ -114,58 +104,44 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "ServiceAgreementTypeID",
-        Width: 60
+        DataSourceMember: "ServicePriceTableID",
+        Width: 100
     },
     {
-        Name: "ServiceAgreementTypeID",
-        Type: "text",
-        Caption: "Mã loại hợp đồng dịch vụ",
-        DataSourceMember: "ServiceAgreementTypeID",
-        Width: 200
+        Name: "ServicePriceTableID",
+        Type: "texttolink",
+        Caption: "Mã bảng giá dịch vụ",
+        DataSourceMember: "ServicePriceTableID",
+        Link: "/ServicePriceTable/Detail/",
+        Width: 150
     },
     {
-        Name: "ServiceAgreementTypeName",
+        Name: "ServicePriceTableName",
         Type: "text",
-        Caption: "Tên loại hợp đồng dịch vụ",
-        DataSourceMember: "ServiceAgreementTypeName",
-        Width: 250
+        Caption: "Tên bảng giá dịch vụ",
+        DataSourceMember: "ServicePriceTableName",
+        Width: 300
     },
     {
         Name: "Description",
         Type: "text",
         Caption: "Mô tả",
         DataSourceMember: "Description",
-        //Width: 200
     },
     {
         Name: "IsActived",
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 80
-    },
-    {
-        Name: "UpdatedDate",
-        Type: "date",
-        Caption: "Ngày cập nhật",
-        DataSourceMember: "UpdatedDate",
-        Width: 140
-    },
-    {
-        Name: "UpdatedUserFullName",
-        Type: "text",
-        Caption: "Người cập nhật",
-        DataSourceMember: "UpdatedUserFullName",
-        Width: 140
+        Width: 200
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "ServiceAgreementTypeID",
-        Width: 100,
-        Link: "/ServiceAgreementType/Edit/",
+        DataSourceMember: "ServicePriceTableID",
+        Width: 150,
+        Link: "/ServicePriceTable/Edit/",
         LinkText: "Chỉnh sửa"
     }
 ];
