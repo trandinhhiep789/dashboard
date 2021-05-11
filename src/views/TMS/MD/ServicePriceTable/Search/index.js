@@ -46,7 +46,7 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
-      //  this.callSearchData(this.state.SearchData);
+        this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
     }
 
@@ -85,7 +85,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            //this.searchref.current.changeLoadComplete();
+            console.log("object", apiResult, searchData)
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,

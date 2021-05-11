@@ -7,8 +7,9 @@ import {
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
-// import Add from "./Add";
-// import Edit from "./Edit";
+import Add from "./Add";
+import Detail from "./Detail";
+import Edit from "./Edit";
 import NotFound from '../../../NotFound'
 
 class ServicePriceTableCom extends React.Component {
@@ -20,8 +21,9 @@ class ServicePriceTableCom extends React.Component {
         return (
             <Switch>
                 <Route exact path="/ServicePriceTable" component={Search} />
-                {/* <Route exact path="/ServicePriceTable/Add" component={Add} />
-                <Route exact path="/ServicePriceTable/Edit/:id" component={Edit} /> */}
+                <Route exact path="/ServicePriceTable/Add" component={Add} />
+                <Route exact path="/ServicePriceTable/Edit/:id" component={Edit} /> 
+                <Route exact path="/ServicePriceTable/Detail/:id" component={Detail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
