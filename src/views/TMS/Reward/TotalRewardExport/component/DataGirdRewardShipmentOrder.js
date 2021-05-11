@@ -137,16 +137,11 @@ class DataGirdRewardShipmentOrderCom extends Component {
         let result;
 
         try {
-            const dataSource = this.getDisplayData(this.props.dataSource);
-            const countTotalMoney = this.props.dataSource.reduce((a, v) => a = a + v.TotalReward, 0);
+            const countTotalMoney = dataSource.reduce((a, v) => a = a + v.TotalReward, 0);
 
             const infoStaff = [
-                {
-                    "Từ ngày": formatDate(this.state.paramData.FromDate, true),
-                    "Đến ngày": formatDate(this.state.paramData.ToDate, true),
-                    "Nhân viên": dataSource[0].RewardUser + " - " + dataSource[0].FullName,
-                    "Tổng": countTotalMoney
-                }
+                ["Từ ngày", "Đến ngày", "Nhân viên", "Tổng"],
+                [formatDate(this.state.paramData.FromDate, true), formatDate(this.state.paramData.ToDate, true), dataSource[0].RewardUser + " - " + dataSource[0].FullName, countTotalMoney]
             ];
 
             const dataExport = dataSource.map(item => {
@@ -161,7 +156,10 @@ class DataGirdRewardShipmentOrderCom extends Component {
                 }
             })
 
-            const ws = XLSX.utils.json_to_sheet(dataExport, { origin: 'A3' });
+            let ws = XLSX.utils.json_to_sheet(dataExport, { origin: 'A4' });
+
+            XLSX.utils.sheet_add_aoa(ws, infoStaff, { origin: "A1" }); // thêm thông tin nhân viên
+
             const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
             const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
             const data = new Blob([excelBuffer], { type: fileType });
