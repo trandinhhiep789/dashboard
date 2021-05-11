@@ -63,15 +63,16 @@ class InfoHistoryWFCom extends Component {
     }
 
     handleShowImage(e) {
+        debugger;
         let images = [], dtCaptureTime = "", datetimeago = 0, datetimelater = 0;
         const objIme = e.currentTarget.dataset.id;
         const objlst = objIme.split(";");
 
         for (let i = 0; i < objlst.length; i++) {
-            if (JSON.parse(objlst[i]).SampleImageId == 25) {
+            if (JSON.parse(objlst[i]).SampleImageId == 59) {
                 datetimeago = JSON.parse(objlst[i]).ImageCaptureTimeNumber;
             }
-            if (JSON.parse(objlst[i]).SampleImageId == 26) {
+            if (JSON.parse(objlst[i]).SampleImageId == 60) {
                 datetimelater = JSON.parse(objlst[i]).ImageCaptureTimeNumber;
             }
 
@@ -79,7 +80,7 @@ class InfoHistoryWFCom extends Component {
                 dtCaptureTime = this.CompareTime(datetimeago, datetimelater);
             }
 
-            const description = `${JSON.parse(objlst[i]).SampleImageId} ${JSON.parse(objlst[i]).SampleImageName && '-'} ${JSON.parse(objlst[i]).SampleImageName}${JSON.parse(objlst[i]).SampleImageId == 26 ? ", " + dtCaptureTime : ""}`;
+            const description = `${JSON.parse(objlst[i]).SampleImageId} ${JSON.parse(objlst[i]).SampleImageName && '-'} ${JSON.parse(objlst[i]).SampleImageName}${JSON.parse(objlst[i]).SampleImageId == 60 ? ", " + dtCaptureTime : ""}`;
 
             images.push({
                 original: JSON.parse(objlst[i]).ImageFileURL,
