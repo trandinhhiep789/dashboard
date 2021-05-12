@@ -173,6 +173,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'ServiceGroup',
+                        MenuTitle: 'Nhóm dịch vụ',
+                        LinkTo: '/ServiceGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
 
 
                 ]
@@ -971,6 +978,13 @@ const AppMenu = [
                 MenuName: 'RewardShipmentOrder',
                 MenuTitle: 'Tổng thưởng giao hàng',
                 LinkTo: '/RewardShipmentOrder',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'OtherRewardTotal',
+                MenuTitle: 'Tổng thưởng khác',
+                LinkTo: '/OtherRewardTotal',
                 MenuIcon: '',
                 SubMenu: []
             },

@@ -114,6 +114,7 @@ import SaleSummaryReport from "../TMS/ReportShipmentOrder/SaleSummaryReport";
 
 import RewardShipmentOrderByType from "../TMS/Reward/RewardShipmentOrderByType";
 import RewardShipmentOrder from "../TMS/Reward/RewardShipmentOrder";
+import OtherRewardTotal from "../TMS/Reward/OtherRewardTotal";
 import RewardShipmentOrderByUser from "../TMS/Reward/RewardShipmentOrderByUser";
 import RewardCompute from "../TMS/Reward/RewardCompute";
 import TotalRewardExport from "../TMS/Reward/TotalRewardExport";
@@ -152,6 +153,7 @@ import DeliveryAbility from '../../views/TMS/DeliveryAbility';
 import CoordinatorGroup from "../TMS/MD/CoordinatorGroup";
 import ReportLate from "../TMS/ReportShipmentOrder/ReportLate";
 import SMSTemplate from "../TMS/MD/SMSTemplate";
+import ServiceGroup from "../TMS/MD/ServiceGroup";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -312,6 +314,7 @@ class HomeCom extends React.Component {
 
                                 <PrivateRoute path="/RewardShipmentOrderByType" component={RewardShipmentOrderByType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/RewardShipmentOrder" component={RewardShipmentOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/OtherRewardTotal" component={OtherRewardTotal} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/RewardShipmentOrderByUser" component={RewardShipmentOrderByUser} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/RewardCompute" component={RewardCompute} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/TotalRewardExport" component={TotalRewardExport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -321,7 +324,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-                                
+
                                 <PrivateRoute path="/ManagerShipmentOrder" component={ManagerShipmentOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/ShipmentOrderControl" component={ShipmentOrderControl} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/Maps" component={MapContainer} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -379,10 +382,11 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/CoordinatorGroup" component={CoordinatorGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/ReportLate" component={ReportLate} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/SMSTemplate" component={SMSTemplate} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/ServiceGroup" component={ServiceGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                 <PrivateRoute path="/ServicePriceTable" component={ServicePriceTable} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
-                                
+
 
                                 <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 

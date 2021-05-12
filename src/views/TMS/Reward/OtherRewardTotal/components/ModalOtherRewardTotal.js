@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import ReactNotification from "react-notifications-component";
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 
@@ -12,7 +11,7 @@ import { DEFAULT_ROW_PER_PAGE } from "../../../../../constants/systemVars.js";
 import { formatDate } from "../../../../../common/library/CommonLib.js";
 import { titleModal } from '../constants'
 
-class DataGirdRewardShipmentOrderCom extends Component {
+class ModalOtherRewardTotal extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -282,5 +281,4 @@ const mapDispatchToProps = dispatch => {
     return {
     }
 }
-const DataGirdRewardShipmentOrder = connect(mapStateToProps, mapDispatchToProps)(DataGirdRewardShipmentOrderCom);
-export default DataGirdRewardShipmentOrder;
+export default connect(mapStateToProps, mapDispatchToProps)(ModalOtherRewardTotal);

@@ -36,8 +36,9 @@ class ServicePriceTableDetailCom extends Component {
     }
 
     componentDidMount() {
+        console.log("detail", this.props)
         if (this.props.index != undefined) {
-            if (this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsSystem.ProductID != undefined && this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsSystem.ProductID.length > 0) {
+            if (this.props.dataSource.ServicePriceTableDetailList[this.props.index].ProductID != undefined && this.props.dataSource.ServicePriceTableDetailList[this.props.index].ProductID.length > 0) {
                 this.setState({
                     isDisableValue: true
                 })
@@ -48,7 +49,7 @@ class ServicePriceTableDetailCom extends Component {
                 })
             }
             this.setState({
-                IsSystem: this.props.dataSource.RewardPriceTableDetailList[this.props.index].IsSystem,
+                IsSystem: this.props.dataSource.ServicePriceTableDetailList[this.props.index].IsSystem,
                 IsUpdate: true
             })
         }
@@ -56,7 +57,7 @@ class ServicePriceTableDetailCom extends Component {
 
     handleSubmit(formData, MLObject) {
         console.log("MLObject", MLObject);
-        MLObject.RewardPriceTableID = this.props.dataSource.RewardPriceTableID;
+        MLObject.ServicePriceTableID = this.props.dataSource.ServicePriceTableID;
         MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
 
         if (MLObject.IsPriceByTechspecsValueRange || MLObject.IsPriceByTechspecsValueRange != "") {
@@ -85,7 +86,7 @@ class ServicePriceTableDetailCom extends Component {
             }
         }
 
-        if (parseFloat(MLObject.RewardPrice) < 0) {
+        if (parseFloat(MLObject.ServicePrice) < 0) {
             this.showMessage("Dữ liệu bạn nhập vào không đúng. Vui lòng nhập lại!")
             return;
         }
@@ -97,16 +98,17 @@ class ServicePriceTableDetailCom extends Component {
         
         else {
         
-            console.log("111", MLObject);
 
             if (this.props.index != undefined) {
+                MLObject.ServicePriceTableDetailID = this.props.dataSource.ServicePriceTableDetailList[this.props.index].ServicePriceTableDetailID.trim();
                 this.props.callFetchAPI(APIHostName, EditAPISPTDetailPath, MLObject).then(apiResult => {
-                    this.props.onInputChangeObj(this.props.dataSource.RewardPriceTableID, apiResult);
+
+                    this.props.onInputChangeObj(this.props.dataSource.ServicePriceTableID, apiResult);
                 });
             }
             else {
                 this.props.callFetchAPI(APIHostName, AddAPISPTDetailPath, MLObject).then(apiResult => {
-                    this.props.onInputChangeObj(this.props.dataSource.RewardPriceTableID, apiResult);
+                    this.props.onInputChangeObj(this.props.dataSource.ServicePriceTableID, apiResult);
                 });
             }
         }
@@ -246,7 +248,7 @@ class ServicePriceTableDetailCom extends Component {
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectSPTDetailItem}
-                dataSource={this.props.index != undefined ? this.props.dataSource.RewardPriceTableDetailList[this.props.index] : null}
+                dataSource={this.props.index != undefined ? this.props.dataSource.ServicePriceTableDetailList[this.props.index] : null}
                 listelement={[]}
                 onSubmit={this.handleSubmit}
                 IsCloseModal={true}
@@ -284,7 +286,8 @@ class ServicePriceTableDetailCom extends Component {
                             nameMember="ServiceGroupName"
                             controltype="InputControl"
                             value={-1}
-                            // disabled={isDisableCB}
+                            readOnly={isDisableCB}
+                            disabled={isDisableCB}
                             listoption={[]}
                             datasourcemember="ServiceGroupID"
                     
