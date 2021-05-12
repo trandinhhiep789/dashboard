@@ -15,18 +15,15 @@ import {
     IDSelectColumnName,
     PKColumnName,
     InitSearchParams,
-    PagePath,
-    DataTemplateExport,
-    schema
+    PagePath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { PERIODUSERRWPOSITION_VIEW, PERIODUSERRWPOSITION_DELETE, PERIODUSERRWPOSITION_EXPORT } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
-import { formatDate } from "../../../../../common/library/CommonLib";
+import { ERPCOMMONCACHE_QUALITYASSESSGROUP, ERPCOMMONCACHE_SERVICEGROUP, ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
+import { SERVICETYPE_VIEW, SERVICETYPE_DELETE, REWARDTYPE_VIEW, REWARDTYPE_DELETE, SERVICEGROUP_VIEW, SERVICEGROUP_DELETE } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -39,8 +36,8 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
-            dataExport: [],
-            DataTemplateExport
+            cssNotification: "",
+            iconNotification: ""
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -50,38 +47,6 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
-    }
-
-    handleExportFile(result) {
-        this.addNotification(result.Message, result.IsError);
-    }
-
-
-    handleImportFile(resultRows, errors) {
-        console.log("resultRows", resultRows);
-        const arrResultRows = resultRows.map(item => {
-            const { DistrictID, DistrictName, ProvinceID, ProvinceName, WardID, WardName } = item
-            return {
-                ...item,
-                DistrictFullName: `${DistrictID} - ${DistrictName}`,
-                ProvinceFullName: `${ProvinceID} - ${ProvinceName}`,
-                WardFullName: `${WardID} - ${WardName}`
-            }
-        })
-
-        // this.setState({
-        //     DataSource1: {
-        //         ...this.state.DataSource,
-        //         CoordinatorStoreWard_ItemList: [...this.state.DataSource.CoordinatorStoreWard_ItemList, ...arrResultRows]
-        //     }
-        // })
-        // this.props.callFetchAPI(APIHostName, AddAutoAPIPath, resultRows).then(apiResult => {
-        //     console.log('apiResult', apiResult)
-        // });
-    }
-
-    handleExportFileTemplate(result) {
-        this.addNotification(result.Message, result.IsError);
     }
 
     handleDelete(deleteList, pkColumnName) {
@@ -99,7 +64,8 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                //this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SERVICEGROUP);
+                // this.handleSubmitInsertLog();
             }
         });
     }
@@ -121,36 +87,15 @@ class SearchCom extends React.Component {
             //this.searchref.current.changeLoadComplete();
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
-                // xuất exel
-                const exelData = apiResult.ResultObject.map((item, index) => {
-                    let element = {
-                        "Người dùng": item.UserName,
-                        "Vị trí thưởng": item.RewardPositionName,
-                        "Áp dụng từ ngày": formatDate(item.ApplyFromDate),
-                        "Áp dụng đến ngày": formatDate(item.ApplyToDate),
-                        "Kích hoạt": item.IsActived ? "Có" : "Không",
-                        "Ngày cập nhật": formatDate(item.UpdatedDate),
-                        "Người cập nhật": item.UpdatedUserFullName
-                    };
-                    return element;
-
-                })
-
                 this.setState({
-                    dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
-                    IsCallAPIError: apiResult.IsError,
                     IsShowForm: true
                 });
             } else {
-                this.setState({
-                    dataExport: [],
-                    gridDataSource: [],
-                    IsShowForm: false,
-                    IsCallAPIError: !apiResult.IsError,
-                });
                 this.showMessage(apiResult.Message);
+                this.setState({ IsShowForm: false });
             }
+
         });
     }
 
@@ -172,20 +117,23 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
-        let cssNotification, iconNotification;
         if (!IsError) {
-            cssNotification = "notification-custom-success";
-            iconNotification = "fa fa-check"
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
         } else {
-            cssNotification = "notification-danger";
-            iconNotification = "fa fa-exclamation"
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={cssNotification}>
+                <div className={this.state.cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={iconNotification} />
+                        <i className={this.state.iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -201,14 +149,13 @@ class SearchCom extends React.Component {
         });
     }
 
-
     render() {
         if (this.state.IsShowForm) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm vị trí thưởng theo khoảng thời gian"
+                        FormName="Tìm kiếm danh sách nhóm dịch vụ"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
@@ -222,28 +169,14 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={PERIODUSERRWPOSITION_VIEW}
-                        DeletePermission={PERIODUSERRWPOSITION_DELETE}
-                        ExportPermission={PERIODUSERRWPOSITION_EXPORT}
+                        RequirePermission={SERVICEGROUP_VIEW}
+                        DeletePermission={SERVICEGROUP_DELETE}
                         IsAutoPaging={true}
-                        RowsPerPage={30}
-                        IsExportFile={true}
-                        DataExport={this.state.dataExport}
-                        fileName="Danh sách vị trí thưởng theo khoảng thời gian"
-                        onExportFile={this.handleExportFile.bind(this)}
-
-                        // IsImportFile={true}
-                        // SchemaData={schema}
-                        // onImportFile={this.handleImportFile.bind(this)}
-                        // isExportFileTemplate={true}
-                        // DataTemplateExport={this.state.DataTemplateExport}
-                        // fileNameTemplate={"Danh sách vị trí thưởng theo khoảng thời gian"}
-                        // onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
+                        RowsPerPage={10}
                     />
                 </React.Fragment>
             );
-        }
-        else {
+        } else {
             return (
                 <div>
                     <label>Đang nạp dữ liệu ......</label>

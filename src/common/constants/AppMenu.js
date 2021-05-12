@@ -173,6 +173,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'ServiceGroup',
+                        MenuTitle: 'Nhóm dịch vụ',
+                        LinkTo: '/ServiceGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
 
 
                 ]

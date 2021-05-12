@@ -710,6 +710,31 @@ class DataGridCom extends Component {
         this.props.onSubmitItem(listMLObject);
     }
 
+    handleExportFileTemplate() {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        let result;
+
+        try {
+            const ws = XLSX.utils.json_to_sheet(this.props.DataTemplateExport);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+            FileSaver.saveAs(data, this.props.fileNameTemplate + fileExtension);
+            result = {
+                IsError: false,
+                Message: "Xuất file thành công!"
+            };
+        } catch (error) {
+            result = {
+                IsError: true,
+                Message: "Lỗi xuất file!"
+            }
+        } finally {
+            this.props.onExportFileTemplate(result);
+        }
+    }
+
     handleImportFile() {
         const input = document.getElementById('buttonImportFile');
         input.click();
@@ -878,6 +903,11 @@ class DataGridCom extends Component {
                                                 : ""
                                         }
                                         {/* nut import file  */}
+                                        {
+                                            this.props.isExportFileTemplate && <button type="button" className="btn btn-export ml-10" onClick={this.handleExportFileTemplate.bind(this)}>
+                                                <span className="fa fa-exchange">Xuất file mẫu</span>
+                                            </button>
+                                        }
                                         {
                                             isShowButtonImport == true &&
                                             <button type="button" className="btn btn-export  ml-10" onClick={this.handleImportFile} >
