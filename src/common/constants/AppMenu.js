@@ -975,6 +975,13 @@ const AppMenu = [
                 SubMenu: []
             },
             {
+                MenuName: 'OtherRewardTotal',
+                MenuTitle: 'Tổng thưởng khác',
+                LinkTo: '/OtherRewardTotal',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
                 MenuName: 'RewardShipmentOrderByUser',
                 MenuTitle: 'Thưởng giao hàng theo NV',
                 LinkTo: '/RewardShipmentOrderByUser',
