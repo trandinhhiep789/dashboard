@@ -163,8 +163,11 @@ class SearchCom extends React.Component {
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
-                        className="multiple"
+                        proClassName={"coordinator-group d-flex flex-column justify-content-end flex-sm-row justify-content-sm-start align-items-sm-end"}
+                        proCNItem={"mb-2 mr-sm-2"}
+                        proCNBtnSubmit={"d-flex justify-content-end mb-2 mr-sm-2"}
                     />
+
                     <DataGrid
                         listColumn={DataGridColumnList}
                         dataSource={this.state.gridDataSource}
