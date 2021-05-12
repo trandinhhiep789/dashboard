@@ -85,6 +85,20 @@ export const DataGridColumnList = [
         Width: 150
     },
     {
+        Name: "UpdatedDate",
+        Type: "date",
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
+        Width: 140
+    },
+    {
+        Name: "UpdatedUserFullName",
+        Type: "text",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
+        Width: 140
+    },
+    {
         Name: "ProvinceID",
         Type: "edit",
         Caption: "Sửa",
