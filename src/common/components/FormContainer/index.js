@@ -251,7 +251,7 @@ class FormContainerCom extends Component {
     validationFormNew() {
         const FormDataContolLst = this.state.FormData;
         for (const key in FormDataContolLst) {
-            if (typeof FormDataContolLst[key].validatonList != "undefined" && typeof FormDataContolLst[key].validatonList.length > 0) {
+            if (typeof FormDataContolLst[key].validatonList != "undefined"  &&  FormDataContolLst[key].validatonList.length > 0) {
                 const validation = ValidationField(FormDataContolLst[key].validatonList, FormDataContolLst[key].value, FormDataContolLst[key].label, FormDataContolLst[key]);
                 const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
                 FormDataContolLst[key].ErrorLst = validationObject;

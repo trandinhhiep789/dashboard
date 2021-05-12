@@ -400,6 +400,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'ServicePriceTable',
+                        MenuTitle: 'Giá dịch vụ của Tận Tâm',
+                        LinkTo: '/ServicePriceTable',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
                     // {
                     //     MenuName: 'PNServicePriceTable',
                     //     MenuTitle: 'Bảng giá dịch vụ của đối tác',
@@ -769,6 +776,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'ManagerShipmentOrder',
+                        MenuTitle: 'Quản lý vận đơn',
+                        LinkTo: '/ManagerShipmentOrder',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
                 ]
             },
             {
@@ -989,7 +1003,7 @@ const AppMenu = [
                 SubMenu: [
                     {
                         MenuName: 'TotalRewardExport',
-                        MenuTitle: 'Xuất tổng thưởng',
+                        MenuTitle: 'Tổng thưởng nhân viên - CTV',
                         LinkTo: '/TotalRewardExport',
                         MenuIcon: '',
                         SubMenu: []

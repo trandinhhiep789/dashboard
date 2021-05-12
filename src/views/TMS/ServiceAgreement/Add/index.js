@@ -51,6 +51,7 @@ class AddCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
+        console.log("MLObject", MLObject)
         if (MLObject.IsExtended) {
             if (MLObject.ExtendedDate == '') {
                 formData.dtExtendedDate.ErrorLst.IsValidatonError = true;
@@ -76,7 +77,7 @@ class AddCom extends React.Component {
             }
         }
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.DeputyUserName = MLObject.ShipmentOrder_DeliverUserList[0].UserName;
+        MLObject.DeputyUserName = MLObject.ShipmentOrder_DeliverUserList != undefined ? MLObject.ShipmentOrder_DeliverUserList[0].UserName : "";
         // MLObject.SignedDate = new Date(ExportStringToDate(MLObject.SignedDate));
         // MLObject.ExpiredDate = new Date(ExportStringToDate(MLObject.ExpiredDate));
 

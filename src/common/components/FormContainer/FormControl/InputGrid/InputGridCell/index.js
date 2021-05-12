@@ -211,6 +211,14 @@ class InputGridCellCom extends Component {
                         <i className="ti-trash"></i>
                     </a>
                 );
+                case "buttonDeleteNew":
+                    return (
+                        <div className="group-action group-action-new">
+                            <a title="" className="table-action hover-danger" onClick={this.handleonClickDeleteNew} data-id={this.props.idItem} title="Delete">
+                                <i className="ti-trash"></i>
+                            </a>
+                        </div>
+                    )
             default:
                 return <label>{text}</label>;
         }
