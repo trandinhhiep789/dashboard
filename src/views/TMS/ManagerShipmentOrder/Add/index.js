@@ -16,6 +16,7 @@ import {
     MLObjectDefinition,
     BackLink,
     EditPagePath,
+    AddPagePath,
     ElementSenderQHPXList,
     ElementQHPXList,
     GridMLObjectQTQHPX,
@@ -55,43 +56,29 @@ class AddCom extends React.Component {
             IsCloseForm: false,
             EditElementList: EditElementList,
             DataSource: [],
-            ResultLanguage: [],
+            ShipmentOrder_ItemList: [],
             Files: {},
             IsDeletedFile: false
         };
     }
 
     componentDidMount() {
-        this.props.updatePagePath(EditPagePath);
-        // this.callLoadData(this.props.match.params.id);
+        this.props.updatePagePath(AddPagePath);
+     
     }
-    callLoadData(id) {
-        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            if (apiResult.IsError) {
-                this.setState({
-                    IsCallAPIError: !apiResult.IsError
-                });
-                this.showMessage(apiResult.Message);
-            }
-            else {
-                this.setState({
-                    DataSource: apiResult.ResultObject,
-                    IsLoadDataComplete: true
-                });
-            }
-        });
-    }
+
     handleInputChangeObjItem(ObjItem) {
 
-        const formData = Object.assign({}, this.state.DataSource, { ["ShipmentOrder_ItemList"]: ObjItem });
-        this.setState({ DataSource: formData });
+        const formData = Object.assign([], this.state.ShipmentOrder_ItemList, ObjItem);
+       
+        this.setState({ ShipmentOrder_ItemList: formData });
         this.props.hideModal();
 
     }
     handleItemDelete(index) {
-        let dataSourceValue = this.state.DataSource.ShipmentOrder_ItemList.filter(function (value, index1) { return index1 != index; });
-        const formData = Object.assign({}, this.state.DataSource, { ["ShipmentOrder_ItemList"]: dataSourceValue });
-        this.setState({ DataSource: formData });
+        let dataSourceValue = this.state.ShipmentOrder_ItemList.filter(function (value, index1) { return index1 != index; });
+       // const formData = Object.assign({}, this.state.ShipmentOrder_ItemList, { ["ShipmentOrder_ItemList"]: dataSourceValue });
+        this.setState({ ShipmentOrder_ItemList: dataSourceValue });
 
     }
     handleItemInsert() {
@@ -99,7 +86,7 @@ class AddCom extends React.Component {
             title: 'Cập nhật danh sách hàng hóa',
             content: {
                 text: <ShipmentOrderItemObj
-                    dataSource={this.state.DataSource}
+                    dataSource={this.state.ShipmentOrder_ItemList}
                     onInputChangeObj={this.handleInputChangeObjItem}
                 />
             },
@@ -111,26 +98,37 @@ class AddCom extends React.Component {
             title: 'Cập nhật danh sách hàng hóa',
             content: {
                 text: <ShipmentOrderItemObj
-                    dataSource={this.state.DataSource}
+                    dataSource={this.state.ShipmentOrder_ItemList}
                     index={index}
                     onInputChangeObj={this.handleInputChangeObjItem}
                 />
             },
             maxWidth: '1000px'
         });
-
     }
 
 
 
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.PartnerSaleOrderID='101SO10001'
+        let objPackingUnitList=[{
+            PackingUnitName: "Mặc định",
+            PackageTypeID: 0,
+            Weight: 0.0,
+            Length: 0.0,
+            Width: 0.0,
+            Height: 0.0,
+            Note: "",
+            ItemList: this.state.ShipmentOrder_ItemList
+    }]
+    MLObject.PackingUnitList=objPackingUnitList
+        console.log("formData",formData, MLObject);
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CreateShipmentOrder", MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
-                // this.handleClearLocalCache();
             }
         });
     }
@@ -169,7 +167,6 @@ class AddCom extends React.Component {
                     MLObjectDefinition={MLObjectDefinition}
                     dataSource={this.state.DataSource}
                     listelement={[]}
-                    RequirePermission={"SHIPMENTORDER_UPDATE"}
                     BackLink={BackLink}
                     onSubmit={this.handleSubmit}
                 >
@@ -269,7 +266,7 @@ class AddCom extends React.Component {
                                         labelcolspan="4"
                                         readOnly={true}
                                         timeFormat={false}
-                                        dateFormat="YYYY-MM-DD HH:mm"
+                                        dateFormat="DD-MM-YYYY HH:mm"
                                         label="thời gian giao hàng"
                                         placeholder="Thời gian giao hàng"
                                         controltype="InputControl"
@@ -290,7 +287,7 @@ class AddCom extends React.Component {
                                         placeholder="Lấy hàng từ"
                                         controltype="InputControl"
                                         value=""
-                                        validatonList={["required"]}
+                                        validatonList={[]}
                                         datasourcemember="EarliestPickUpTime" />
                                 </div>
                                 <div className="col-md-6">
@@ -305,7 +302,7 @@ class AddCom extends React.Component {
                                         placeholder="Đến"
                                         controltype="InputControl"
                                         value=""
-                                        validatonList={["required"]}
+                                        validatonList={[]}
                                         datasourcemember="LatestPickUpTime" />
                                 </div>
                                 <div className="col-md-6">
@@ -320,7 +317,7 @@ class AddCom extends React.Component {
                                         placeholder="Giao hàng từ"
                                         controltype="InputControl"
                                         value=""
-                                        validatonList={["required"]}
+                                        validatonList={[]}
                                         datasourcemember="EarliestDeliveryTime" />
                                 </div>
                                 <div className="col-md-6">
@@ -335,7 +332,7 @@ class AddCom extends React.Component {
                                         placeholder="Đế"
                                         controltype="InputControl"
                                         value=""
-                                        validatonList={["required"]}
+                                        validatonList={[]}
                                         datasourcemember="LatestDeliveryTime" />
                                 </div>
                             </div>
@@ -723,17 +720,18 @@ class AddCom extends React.Component {
 
                             <InputGridControl
                                 name="ShipmentOrder_ItemList"
-                                controltype="InputGridControl"
+                                controltype="InputGridControlll"
                                 title="Danh sách hàng hóa"
                                 IDSelectColumnName={"ProductID"}
                                 listColumn={DataGridColumnItemList}
+
                                 PKColumnName={"ProductID"}
-                                dataSource={this.state.DataSource.ShipmentOrder_ItemList}
+                                dataSource={this.state.ShipmentOrder_ItemList}
                                 onInsertClick={this.handleItemInsert}
                                 onEditClick={this.handleItemEdit}
                                 onDeleteClick={this.handleItemDelete}
                             />
-                            <InputGrid
+                            {/* <InputGrid
                                 name="ShipmentOrder_MaterialList"
                                 controltype="InputGridControl"
                                 title="Vật tư lắp đặt"
@@ -743,7 +741,7 @@ class AddCom extends React.Component {
                                 MLObjectDefinition={GridMLMaterialDefinition}
                                 listColumn={DataGridColumnMaterialList}
                                 dataSource={this.state.DataSource.ShipmentOrder_MaterialList}
-                            />
+                            /> */}
                         </div>
                     </div>
                    
