@@ -28,7 +28,7 @@ import { convertNodeToElement } from "react-html-parser";
 import Collapsible from 'react-collapsible';
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import {
-    ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE
+    ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_SERVICEGROUP
 } from "../../../../../../constants/keyCache";
 
 import FixShipmentFee from "../../FixShipmentFee/";
@@ -50,6 +50,7 @@ class EditCom extends React.Component {
         this.getCacheShipmentStatus = this.getCacheShipmentStatus.bind(this);
         this.changeSelecPartner = this.changeSelecPartner.bind(this);
         this.changeSelectShipmentStatus = this.changeSelectShipmentStatus.bind(this);
+        this.changeSelectServiceGroup = this.changeSelectServiceGroup.bind(this);
         this.callLoadData = this.callLoadData.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.checkValidStep = this.checkValidStep.bind(this);
@@ -259,7 +260,8 @@ class EditCom extends React.Component {
             {
                 ShipmentOrderTypeWorkflow: this.state.FormData.ShipmentOrderTypeWorkflow,
                 ListPartner: this.state.PartnerList,
-                ListStatus: this.state.ShipmentStatusList
+                ListStatus: this.state.ShipmentStatusList,
+                ListServiceGroup: this.state.ServiceGroupList
             });
         param.AddFunctionID = param.AddFunctionID && Array.isArray(param.AddFunctionID) ? param.AddFunctionID[0] : param.AddFunctionID;
         param.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
@@ -332,12 +334,23 @@ class EditCom extends React.Component {
 
     getCachePartner() {
         let PartnerList = [];
-        this.props.callGetCache("ERPCOMMONCACHE.PARTNER").then((apiResult) => {
+        this.props.callGetCache(ERPCOMMONCACHE_PARTNER).then((apiResult) => {
             if (!apiResult.IsError && apiResult.ResultObject.CacheData != null) {
                 PartnerList = apiResult.ResultObject.CacheData;
             }
             this.setState({
                 PartnerCache: PartnerList
+            });
+            //console.log("SysUserList", SysUserList);
+        });
+
+        let ServiceGroupList = [];
+        this.props.callGetCache(ERPCOMMONCACHE_SERVICEGROUP).then((apiResult) => {
+            if (!apiResult.IsError && apiResult.ResultObject.CacheData != null) {
+                ServiceGroupList = apiResult.ResultObject.CacheData;
+            }
+            this.setState({
+                ServiceGroupCache: ServiceGroupList
             });
             //console.log("SysUserList", SysUserList);
         });
@@ -363,7 +376,7 @@ class EditCom extends React.Component {
 
     getCacheShipmentStatus() {
         let ShipmentStatusList = [];
-        this.props.callGetCache("ERPCOMMONCACHE.SHIPMENTORDERSTATUS").then((apiResult) => {
+        this.props.callGetCache(ERPCOMMONCACHE_SHIPMENTORDERSTATUS).then((apiResult) => {
             if (!apiResult.IsError && apiResult.ResultObject.CacheData != null) {
                 ShipmentStatusList = apiResult.ResultObject.CacheData;
             }
@@ -427,6 +440,16 @@ class EditCom extends React.Component {
                     })
                 }
 
+                //nhóm dịch vụ
+                let selectedOptionServiceGroup = [];
+                let listServiceGroup = [];
+                if (apiResult.ResultObject.ListServiceGroup) {
+                    listServiceGroup = apiResult.ResultObject.ListServiceGroup;
+                    apiResult.ResultObject.ListServiceGroup.map(row => {
+                        selectedOptionServiceGroup.push({ value: row.ServiceGroupID, label: row.ServiceGroupName });
+                    })
+                }
+
                 //loại chi phí vận chuyển
                 let _shipmentFeeType = [];
                 if (apiResult.ResultObject.ShipmentFeeType) {
@@ -473,8 +496,10 @@ class EditCom extends React.Component {
                         },
                         SelectedPartnerList: selectedOptionPartner,
                         SelectedShipmentStatusList: selectedOptionStatus,
+                        SelectedServiceGroupList: selectedOptionServiceGroup,
                         PartnerList: listPartner,
-                        ShipmentStatusList: listStatus
+                        ShipmentStatusList: listStatus,
+                        ServiceGroupList: listServiceGroup
                     });
                 }
                 else {
@@ -488,8 +513,10 @@ class EditCom extends React.Component {
                         },
                         SelectedPartnerList: selectedOptionPartner,
                         SelectedShipmentStatusList: selectedOptionStatus,
+                        SelectedServiceGroupList: selectedOptionServiceGroup,
                         PartnerList: listPartner,
-                        ShipmentStatusList: listStatus
+                        ShipmentStatusList: listStatus,
+                        ServiceGroupList: listServiceGroup
                     });
                 }
 
@@ -535,6 +562,16 @@ class EditCom extends React.Component {
             ShipmentStatusList.push(shipmentStatusMatch[0]);
         })
         this.setState({ ShipmentStatusList });
+    }
+
+
+    changeSelectServiceGroup(name, listSelect) {
+        let ServiceGroupList = [];
+        listSelect.map(item => {
+            const itemMatch = this.state.ServiceGroupCache.filter(x => { return x.ServiceGroupID == item });
+            ServiceGroupList.push(itemMatch[0]);
+        })
+        this.setState({ ServiceGroupList });
     }
 
     addNotification(message1, IsError) {
@@ -684,6 +721,15 @@ class EditCom extends React.Component {
                                 listoption={[]} datasourcemember="ShipmentOrderStatusID"
                                 SelectedOption={this.state.SelectedShipmentStatusList ? this.state.SelectedShipmentStatusList : []}
                                 onValueChangeCus={this.changeSelectShipmentStatus}
+                            />
+
+                            <FormControl.MultiSelectComboBox name="ServiceGroupID" label="Danh sách nhóm dịch vụ"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                                IsLabelDiv={true} controltype="InputControl"
+                                isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_SERVICEGROUP} valuemember="ServiceGroupID" nameMember="ServiceGroupName"
+                                listoption={[]} datasourcemember="ServiceGroupID"
+                                SelectedOption={this.state.SelectedServiceGroupList ? this.state.SelectedServiceGroupList : []}
+                                onValueChangeCus={this.changeSelectServiceGroup}
                             />
 
                             {/* ------------------------------------------------------------------ */}
