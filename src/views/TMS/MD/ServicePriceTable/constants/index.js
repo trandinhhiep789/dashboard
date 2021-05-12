@@ -7,8 +7,9 @@ export const DeleteAPIPath = "api/ServicePriceTable/Delete";
 export const BackLink = "/ServicePriceTable";
 export const AddLink = "/ServicePriceTable/Add";
 
-export const AddAPISPTDetailPath = "/api/ServicePriceTableDetail/Add";
+export const AddAPISPTDetailPath = "/api/ServicePriceTableDetail/Add"; 
 export const EditAPISPTDetailPath = "/api/ServicePriceTableDetail/Update";
+export const DeleteAPISPTDetailPath = "/api/ServicePriceTableDetail/Delete";
 
 export const AddAPISPTAreaPath = "/api/ServicePriceTable_Area/Add";
 export const EditAPISPTAreaPath = "/api/ServicePriceTable_Area/Update";
@@ -342,10 +343,10 @@ export const MLObjectSPTDetailItem = [
     },
 
     {
-        Name: "RewardPrice",
+        Name: "ServicePrice",
         DefaultValue: {},
-        BindControlName: "txtRewardPrice",
-        DataSourceMember: "RewardPrice"
+        BindControlName: "txtServicePrice",
+        DataSourceMember: "ServicePrice"
     },
 
     {

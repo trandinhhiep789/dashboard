@@ -19,7 +19,8 @@ import {
     TitleFromSPTDetail,
     TitleFromSPTArea,
     DataGridColumnSPTAreatemList,
-    DeleteAPISPTAreaPath
+    DeleteAPISPTAreaPath,
+    DeleteAPISPTDetailPath
 
 
 } from "../constants";
@@ -54,7 +55,7 @@ class DetailCom extends React.Component {
     }
 
     componentDidMount() {
-        console.log('apiResult', this,this.props)
+        // console.log('apiResult', this,this.props)
         this.props.updatePagePath(DetailPagePath);
         this.callLoadData(this.props.match.params.id);
         this.setState({
@@ -64,7 +65,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log('apiResult', apiResult)
+            console.log('1111', apiResult, id)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError,
@@ -73,11 +74,22 @@ class DetailCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+                let ServicePriceTableDetailList = []
+                if (!!apiResult.ResultObject.ServicePriceTableDetailList && apiResult.ResultObject.ServicePriceTableDetailList.length > 0) {
+                    ServicePriceTableDetailList = apiResult.ResultObject.ServicePriceTableDetailList.map((item, index) => {
+                        item.MainGroupFullName = item.MainGroupID > 0 ? item.MainGroupID + " - " + item.MainGroupName : "";
+                        item.SubGroupFullName = item.SubGroupID > 0 ? item.SubGroupID + " - " + item.SubGroupName : "";
+                        return item;
+                    });
+                }
+
+
+
 
                 this.setState({
                     DataSource: apiResult.ResultObject,
                     ServicePriceTableArea: apiResult.ResultObject.ServicePriceTable_AreaList,
-                    ServicePriceTableDetail: apiResult.ResultObject.ServicePriceTableDetailList,
+                    ServicePriceTableDetail: ServicePriceTableDetailList,
                     IsLoadDataComplete: true,
                     IsSystem: apiResult.ResultObject.IsSystem
                 });
@@ -154,16 +166,38 @@ class DetailCom extends React.Component {
         });
     }
 
-    handleItemEditSPTDetail() {
+    handleItemEditSPTDetail(index) {
+        console.log("index", index)
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Cập nhật chi tiết bảng giá dịch vụ',
+            content: {
+                text: <ServicePriceTableDetail
+                    dataSource={this.state.DataSource}
+                    index={index}
+                    onInputChangeObj={this.handleInputChangeObjItem}
 
+                />
+            },
+            maxWidth: '1000px'
+        });
     }
 
-    handleItemDeleteSPTDetail() {
+    handleItemDeleteSPTDetail(id) {
+        const { ServicePriceTableID } = this.state;
+        let MLObject = {};
+        MLObject.ServicePriceTableDetailID = id;
+        MLObject.ServicePriceTableID = ServicePriceTableID;
 
+        this.props.callFetchAPI(APIHostName, DeleteAPISPTDetailPath, MLObject).then((apiResult) => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callLoadData(ServicePriceTableID);
+            }
+        });
     }
 
     handleInputChangeAraeObjItem(id, apiResult) {
-        console.log('handleInputChangeAraeObjItem', id, apiResult)
         if (apiResult.IsError) {
             this.showMessage(apiResult.Message);
         }
@@ -191,7 +225,7 @@ class DetailCom extends React.Component {
     }
 
     handleItemEditSPTArea(index) {
-        console.log("index", index)
+   
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Thêm khu vực áp dụng bảng giá dịch vụ',
             content: {

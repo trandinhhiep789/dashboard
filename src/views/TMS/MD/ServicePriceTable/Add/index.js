@@ -86,26 +86,11 @@ class AddCom extends React.Component {
 
                     <div className="row">
 
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                name="txtServicePriceTableID"
-                                colspan="8"
-                                labelcolspan="4"
-                                readOnly={false}
-                                label="tên đơn giá thưởng"
-                                placeholder="Tên đơn giá thưởng"
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="ServicePriceTableID"
-                                validatonList={['required', 'number']}
-                            />
-                        </div>
-
-                        <div className="col-md-6">
+                        <div className="col-md-12">
                             <FormControl.TextBox
                                 name="txtServicePriceTableName"
-                                colspan="8"
-                                labelcolspan="4"
+                                labelcolspan={2}
+                                colspan={10}
                                 readOnly={false}
                                 label="tên đơn giá thưởng"
                                 placeholder="Tên đơn giá thưởng"
@@ -113,6 +98,7 @@ class AddCom extends React.Component {
                                 value=""
                                 datasourcemember="ServicePriceTableName"
                                 validatonList={['required']}
+                                classNameCustom="customcontrol"
                             />
                         </div>
 
