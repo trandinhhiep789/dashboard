@@ -32,7 +32,9 @@ class SearchCom extends React.Component {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
-        this.handleCallData = this.handleCallData.bind(this);
+        // this.handleCallData = this.handleCallData.bind(this);
+        this.renderRewardTotalTable = this.renderRewardTotalTable.bind(this);
+        this.setExcelDataExport = this.setExcelDataExport.bind(this);
 
         this.state = {
             IsCallAPIError: false,
@@ -41,7 +43,8 @@ class SearchCom extends React.Component {
             dataExport: [],
             widthPercent: "",
             fromDate: '',
-            toDate: ''
+            toDate: '',
+            listColumn: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -65,9 +68,73 @@ class SearchCom extends React.Component {
         })
     };
 
-    handleCallData() {
-        const { SearchData } = this.state;
-        this.callSearchData(SearchData);
+    // handleCallData() {
+    //     const { SearchData } = this.state;
+    //     this.callSearchData(SearchData);
+    // }
+
+    setExcelDataExport(dataSource = [], arrColumn = []) {
+        try {
+            const tempDataExport = dataSource.map((item, index) => {
+
+                const element = arrColumn.reduce((acc, val) => {
+                    return {
+                        ...acc,
+                        [val.Caption]: typeof item[val.DataSourceMember] == "string"
+                            ? item[val.DataSourceMember].trim()
+                            : item[val.DataSourceMember]
+                    }
+                }, {})
+
+                return element;
+            });
+
+            this.setState({
+                dataExport: tempDataExport
+            });
+        } catch (error) {
+            console.log(error)
+            this.showMessage("Lỗi client, vui lòng liên hệ quản trị viên.");
+        }
+    }
+
+    renderRewardTotalTable(searchData, apiResultObject) {
+        try {
+            const objRewardTypeIDSearch = searchData.find(item => item.SearchKey == "@REWARDTYPEID");
+
+            this.props.callGetCache("ERPCOMMONCACHE.TMSREWARDTYPE").then((result) => {
+                const objRewardType = result.ResultObject.CacheData.find(item => item.RewardTypeID == parseInt(objRewardTypeIDSearch.SearchValue));
+
+                if (objRewardType == undefined || objRewardType == -1) {
+                    this.setState({
+                        listColumn: []
+                    });
+
+                    // set data export excel
+                    this.setExcelDataExport(apiResultObject, []);
+                } else {
+                    let cloneGridColumnList = [...GridColumnList];
+
+                    cloneGridColumnList[3] = {
+                        Name: "TotalReward1",
+                        Type: "textCurrency",
+                        Caption: objRewardType.RewardTypeName,
+                        DataSourceMember: "TotalReward1",
+                        Width: 100
+                    };
+
+                    this.setState({
+                        listColumn: cloneGridColumnList
+                    });
+
+                    // set data export excel
+                    this.setExcelDataExport(apiResultObject, cloneGridColumnList);
+                }
+            });
+
+        } catch (error) {
+            this.showMessage("Lỗi client, vui lòng liên hệ quản trị viên.");
+        }
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -101,26 +168,28 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
 
-                const tempDataExport = apiResult.ResultObject.map((item, index) => {
-                    let element = {
-                        "Mã nhân viên": item.RewardUser.trim(),
-                        "Tên nhân viên": item.FullName.trim(),
-                        "Thưởng giao hàng": item.TotalReward1,
-                        "Phụ cấp ống đồng": item.TotalReward2,
-                        "Tiền xăng": item.TotalReward3,
-                        "Thực lãnh": item.TotalReward,
+                this.renderRewardTotalTable(searchData, apiResult.ResultObject);
 
-                    };
+                // const tempDataExport = apiResult.ResultObject.map((item, index) => {
+                //     let element = {
+                //         "Mã nhân viên": item.RewardUser.trim(),
+                //         "Tên nhân viên": item.FullName.trim(),
+                //         "Thưởng giao hàng": item.TotalReward1,
+                //         "Phụ cấp ống đồng": item.TotalReward2,
+                //         "Tiền xăng": item.TotalReward3,
+                //         "Thực lãnh": item.TotalReward,
 
-                    return element;
+                //     };
 
-                })
+                //     return element;
+
+                // })
 
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true,
-                    dataExport: tempDataExport
+                    // dataExport: tempDataExport
                 });
             }
             else {
@@ -169,7 +238,6 @@ class SearchCom extends React.Component {
             dismissable: { click: true }
         });
     }
-
 
     handleExportFile(result) {
         this.addNotification(result.Message, result.IsError);
@@ -226,7 +294,8 @@ class SearchCom extends React.Component {
                 />
 
                 <DataGrid
-                    listColumn={GridColumnList}
+                    // listColumn={GridColumnList}
+                    listColumn={this.state.listColumn}
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
                     IDSelectColumnName={'RewardUser'}
@@ -248,6 +317,7 @@ class SearchCom extends React.Component {
                     onShowModal={this.onShowModalDetail.bind(this)}
                     ref={this.gridref}
                 />
+
             </React.Fragment>
         );
 
