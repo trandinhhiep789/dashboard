@@ -35,6 +35,7 @@ class SearchCom extends React.Component {
         // this.handleCallData = this.handleCallData.bind(this);
         this.renderRewardTotalTable = this.renderRewardTotalTable.bind(this);
         this.setExcelDataExport = this.setExcelDataExport.bind(this);
+        this.initTableHeader = this.initTableHeader.bind(this);
 
         this.state = {
             IsCallAPIError: false,
@@ -55,6 +56,7 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
         // this.handleCallData();
         this.updateWindowDimensions();
+        this.initTableHeader();
         window.addEventListener("resize", this.updateWindowDimensions);
     }
 
@@ -72,6 +74,24 @@ class SearchCom extends React.Component {
     //     const { SearchData } = this.state;
     //     this.callSearchData(SearchData);
     // }
+
+    initTableHeader() {
+        let cloneGridColumnList = [...GridColumnList];
+
+        this.props.callGetCache("ERPCOMMONCACHE.TMSREWARDTYPE").then((result) => {
+            cloneGridColumnList[3] = {
+                Name: "TotalReward1", // update sau
+                Type: "textCurrency",
+                Caption: result.ResultObject.CacheData[0].RewardTypeName,
+                DataSourceMember: "TotalReward1", // update sau
+                Width: 100
+            };
+        });
+
+        this.setState({
+            listColumn: cloneGridColumnList
+        });
+    }
 
     setExcelDataExport(dataSource = [], arrColumn = []) {
         try {
@@ -93,7 +113,6 @@ class SearchCom extends React.Component {
                 dataExport: tempDataExport
             });
         } catch (error) {
-            console.log(error)
             this.showMessage("Lỗi client, vui lòng liên hệ quản trị viên.");
         }
     }
@@ -105,31 +124,32 @@ class SearchCom extends React.Component {
             this.props.callGetCache("ERPCOMMONCACHE.TMSREWARDTYPE").then((result) => {
                 const objRewardType = result.ResultObject.CacheData.find(item => item.RewardTypeID == parseInt(objRewardTypeIDSearch.SearchValue));
 
+                let cloneGridColumnList = [...GridColumnList];
+
                 if (objRewardType == undefined || objRewardType == -1) {
-                    this.setState({
-                        listColumn: []
-                    });
-
-                    // set data export excel
-                    this.setExcelDataExport(apiResultObject, []);
-                } else {
-                    let cloneGridColumnList = [...GridColumnList];
-
                     cloneGridColumnList[3] = {
-                        Name: "TotalReward1",
+                        Name: "TotalReward1", // update sau
                         Type: "textCurrency",
-                        Caption: objRewardType.RewardTypeName,
-                        DataSourceMember: "TotalReward1",
+                        Caption: result.ResultObject.CacheData[0].RewardTypeName,
+                        DataSourceMember: "TotalReward1", // update sau
                         Width: 100
                     };
+                } else {
+                    cloneGridColumnList[3] = {
+                        Name: "TotalReward1", // update sau
+                        Type: "textCurrency",
+                        Caption: objRewardType.RewardTypeName,
+                        DataSourceMember: "TotalReward1", // update sau
+                        Width: 100
+                    };
+                };
 
-                    this.setState({
-                        listColumn: cloneGridColumnList
-                    });
+                this.setState({
+                    listColumn: cloneGridColumnList
+                });
 
-                    // set data export excel
-                    this.setExcelDataExport(apiResultObject, cloneGridColumnList);
-                }
+                // set data export excel
+                this.setExcelDataExport(apiResultObject, cloneGridColumnList);
             });
 
         } catch (error) {
@@ -245,7 +265,6 @@ class SearchCom extends React.Component {
 
     onShowModalDetail(objValue, name) {
         const { fromDate, toDate } = this.state;
-        //console.log("objValue, name", objValue, fromDate, toDate)
         const postData = {
             UserName: objValue[0].value,
             FromDate: fromDate,
