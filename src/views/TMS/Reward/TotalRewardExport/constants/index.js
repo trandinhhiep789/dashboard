@@ -130,25 +130,32 @@ export const GridColumnList = [
         DataSourceMember: "WorkStoreFullName",
         Width: 100
     },
+    // {
+    //     Name: "TotalReward1",
+    //     Type: "textCurrency",
+    //     Caption: "Thưởng giao hàng",
+    //     DataSourceMember: "TotalReward1",
+    //     Width: 100
+    // },
+    // {
+    //     Name: "TotalReward2",
+    //     Type: "textCurrency",
+    //     Caption: "Phụ cấp ống đồng",
+    //     DataSourceMember: "TotalReward2",
+    //     Width: 100
+    // },
+    // {
+    //     Name: "TotalReward3",
+    //     Type: "textCurrency",
+    //     Caption: "Tiền xăng",
+    //     DataSourceMember: "TotalReward3",
+    //     Width: 100
+    // },
     {
-        Name: "TotalReward1",
+        Name: "temporary",
         Type: "textCurrency",
-        Caption: "Thưởng giao hàng",
-        DataSourceMember: "TotalReward1",
-        Width: 100
-    },
-    {
-        Name: "TotalReward2",
-        Type: "textCurrency",
-        Caption: "Phụ cấp ống đồng",
-        DataSourceMember: "TotalReward2",
-        Width: 100
-    },
-    {
-        Name: "TotalReward3",
-        Type: "textCurrency",
-        Caption: "Tiền xăng",
-        DataSourceMember: "TotalReward3",
+        Caption: "temporary",
+        DataSourceMember: "temporary",
         Width: 100
     },
     {
