@@ -85,6 +85,7 @@ class ServicePriceTableAreaCom extends Component {
                             value={""}
                             listoption={null}
                             datasourcemember="AreaID"
+                            isCloseMenuOnSelect={false}
                         //disabled={isDisableCBTechspecsValue}
                         // isselectedOp={true}
                         />
