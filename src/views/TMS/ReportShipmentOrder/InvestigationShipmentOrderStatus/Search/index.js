@@ -13,6 +13,7 @@ import {
     GridColumnListShipmentOrder,
     APIHostName,
     SearchAPIPath,
+    SearchPartnerSaleOrderAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -29,6 +30,7 @@ class SearchCom extends React.Component {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
+        this.callSearchDataPartnerSaleOrderID = this.callSearchDataPartnerSaleOrderID.bind(this);
 
         this.state = {
             IsCallAPIError: false,
@@ -46,18 +48,29 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        console.log("search", formData, MLObject)
         const postData = [
             {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
             },
+
         ];
-        this.callSearchData(postData)
+
+        if (MLObject.Typename == 1) {
+            this.callSearchData(postData)
+        }
+        else {
+            this.callSearchDataPartnerSaleOrderID(postData)
+        }
+
+
 
     }
 
-    callSearchData(searchData) {
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+    callSearchDataPartnerSaleOrderID(searchData) {
+        this.props.callFetchAPI(APIHostName, SearchPartnerSaleOrderAPIPath, searchData).then(apiResult => {
+            console.log("222", searchData, apiResult)
             if (!apiResult.IsError) {
 
                 const tempData = apiResult.ResultObject.ShipmentOrderType_WorkFlowList.map((item, index) => {
@@ -77,7 +90,30 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message)
             }
         });
+    }
 
+    callSearchData(searchData) {
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("111", searchData, apiResult)
+            if (!apiResult.IsError) {
+
+                const tempData = apiResult.ResultObject.ShipmentOrderType_WorkFlowList.map((item, index) => {
+                    item.ProcessFullName = item.ProcessUser + "-" + item.ProcessUserName
+                    return item;
+                })
+                this.setState({
+                    gridDataSource: tempData,
+                    dataSource: apiResult.ResultObject,
+                })
+
+            }
+            else {
+                this.setState({
+                    gridDataSource: []
+                })
+                this.showMessage(apiResult.Message)
+            }
+        });
 
     }
 

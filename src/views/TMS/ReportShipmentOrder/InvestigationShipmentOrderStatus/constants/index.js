@@ -1,5 +1,8 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/ShipmentOrder/SearchInvestigationStatus";
+export const SearchPartnerSaleOrderAPIPath = "api/ShipmentOrder/SearchInvestigationByPartnerSaleOrder";
+
+
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -7,23 +10,55 @@ export const PagePath = [
 ];
 
 export const SearchElementList = [
+    // {
+    //     type: "text",
+    //     // subLabel: "Nhập mã đơn hàng/ Mã vận đơn",
+    //     name: "txtKeyword",
+    //     label: "",
+    //     value: "",
+    //     placeholder: "Nhập mã đơn hàng/ Mã vận đơn",
+    //     icon: "",
+    //     listoption: {}
+    // },
     {
-        type: "text",
-        // subLabel: "Nhập mã đơn hàng/ Mã vận đơn",
-        name: "txtKeyword",
-        label: "Mã vận đơn",
+        type: "textdropdownNew",
+        dropdownName: "txtTypename",
+        name: "txtKeywordNew",
+        colspan: 2,
+        label: "",
         value: "",
-        placeholder: "Nhập mã đơn hàng/ Mã vận đơn",
+        colspan: 4,
+        placeholder: "Từ khóa",
         icon: "",
-        listoption: {}
+        nameOption: "txtTypename",
+        labelOption: "--Vui lòng chọn--",
+        valueOption:  1,
+        // validatonList:["Comborequired"],
+        classNameCol: "col-custom",
+        classNameDropdown: "dropdown-custom",
+        listoption: [
+            { value: 1, label: 'Mã vận đơn' },
+            { value: 2, label: 'Mã ycx của đối tác' },
+
+        ]
     },
 ];
 
 export const SearchMLObjectDefinition = [
+    // {
+    //     Name: "Keyword",
+    //     DefaultValue: "",
+    //     BindControlName: "txtKeyword"
+    // },
     {
         Name: "Keyword",
         DefaultValue: "",
-        BindControlName: "txtKeyword"
+        BindControlName: "txtKeywordNew"
+    },
+    {
+        Name: "Typename",
+        DefaultValue: "",
+        BindControlName: "txtTypename"
     },
 ];
 
