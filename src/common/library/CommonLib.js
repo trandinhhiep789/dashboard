@@ -80,28 +80,28 @@ export function formatDate(dateString, notGetTime) {
     return dateString;
 }
 
-export function formatStrToDate(dateString, notGetTime) {
-    try {
-        const arrDateString = dateString.split(/[\s,-.]+/);
-        const newDate = new Date(Date.parse(dateString.split(" ")[0]))
+// export function formatStrToDate(dateString, notGetTime) {
+//     try {
+//         const arrDateString = dateString.split(/[\s,-.]+/);
+//         const newDate = new Date(Date.parse(dateString.split(" ")[0]))
 
-        const formatNumber = (data) => {
-            if (parseInt(data) < 10) {
-                return "0" + data
-            } else {
-                return data
-            }
-        }
+//         const formatNumber = (data) => {
+//             if (parseInt(data) < 10) {
+//                 return "0" + data
+//             } else {
+//                 return data
+//             }
+//         }
 
-        if (!notGetTime) {
-            return `${formatNumber(newDate.getDate())}/${formatNumber(newDate.getMonth() + 1)}/${newDate.getFullYear()} ${arrDateString[3]}:${arrDateString[4]}:${arrDateString[5]} ${arrDateString[arrDateString.length - 1]}`
-        } else {
-            return `${formatNumber(newDate.getDate())}/${formatNumber(newDate.getMonth() + 1)}/${newDate.getFullYear()}`
-        }
-    } catch (error) {
-        return dateString;
-    }
-}
+//         if (!notGetTime) {
+//             return `${formatNumber(newDate.getDate())}/${formatNumber(newDate.getMonth() + 1)}/${newDate.getFullYear()} ${arrDateString[3]}:${arrDateString[4]}:${arrDateString[5]} ${arrDateString[arrDateString.length - 1]}`
+//         } else {
+//             return `${formatNumber(newDate.getDate())}/${formatNumber(newDate.getMonth() + 1)}/${newDate.getFullYear()}`
+//         }
+//     } catch (error) {
+//         return dateString;
+//     }
+// }
 
 export function formatMonthDate(dateString, notGetTime) {
     if (dateString) {

@@ -3,36 +3,44 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import ImageGallery from 'react-image-gallery';
 
-import { formatStrToDate } from "../../../../common/library/CommonLib.js";
+import { ConvertStr } from "../../../../common/library/CommonLib.js";
 import { hideModal } from '../../../../actions/modal';
 import Modal from '../Modal';
 
+const getDateTime = (strMilliseconds) => {
+    try {
+        const d = new Date(parseInt(strMilliseconds));
+        return `${ConvertStr(d.getDate())}/${ConvertStr(d.getMonth() + 1)}/${d.getFullYear()} ${ConvertStr(d.getHours())}:${ConvertStr(d.getMinutes())}:${ConvertStr(d.getSeconds())}`;
+    } catch (error) {
+        return strMilliseconds;
+    }
+};
 
 const ModalSlideImage = ({ ImageCaptureGeoLocation, afterClose, hideModal, content, id, maxWidth }) => {
     const [timeImg, setTimeImg] = useState("")
 
     useEffect(() => {
-        if (content.lstImage[0].ImageCaptureTime) {
-            let imgCaptureTime = content.lstImage[0].ImageCaptureTime
-            setTimeImg(formatStrToDate(imgCaptureTime))
+        if (content.lstImage[0].ImageCaptureTimeNumber) {
+            let imgCaptureTimeNumber = content.lstImage[0].ImageCaptureTimeNumber;
+            setTimeImg(getDateTime(imgCaptureTimeNumber));
         }
 
-        return () => { }
+        return () => { };
     }, [])
 
     const onClose = () => {
         hideModal(id);
         if (afterClose) {
             afterClose();
-        }
+        };
     };
 
     const handleImageCaptureTime = (currentIndex) => {
         try {
-            let imgCaptureTime = content.lstImage[currentIndex].ImageCaptureTime
-            setTimeImg(formatStrToDate(imgCaptureTime))
+            let imgCaptureTimeNumber = content.lstImage[currentIndex].ImageCaptureTimeNumber;
+            setTimeImg(getDateTime(imgCaptureTimeNumber));
         } catch (error) {
-            setTimeImg("")
+            setTimeImg("");
         }
     }
 
