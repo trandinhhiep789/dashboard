@@ -17,7 +17,8 @@ import {
     InitSearchParams,
     PagePath,
     DataTemplateExport,
-    schema
+    schema,
+    AddByFileAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -27,6 +28,7 @@ import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
 import { formatDate } from "../../../../../common/library/CommonLib";
+import { toIsoStringCus } from "../../../../../utils/function";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -58,26 +60,97 @@ class SearchCom extends React.Component {
 
 
     handleImportFile(resultRows, errors) {
-        console.log("resultRows", resultRows);
-        const arrResultRows = resultRows.map(item => {
-            const { DistrictID, DistrictName, ProvinceID, ProvinceName, WardID, WardName } = item
+
+        const CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        const LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        const importData = resultRows.map(item => {
+            const { UserName, RewardPositionID, ApplyFromDate, ApplyToDate, IsActived, IsSystem } = item
             return {
                 ...item,
-                DistrictFullName: `${DistrictID} - ${DistrictName}`,
-                ProvinceFullName: `${ProvinceID} - ${ProvinceName}`,
-                WardFullName: `${WardID} - ${WardName}`
+                CreatedUser,
+                LoginLogID
+                //ProvinceFullName: `${ProvinceID} - ${ProvinceName}`,
+                //WardFullName: `${WardID} - ${WardName}`
             }
         })
 
-        // this.setState({
-        //     DataSource1: {
-        //         ...this.state.DataSource,
-        //         CoordinatorStoreWard_ItemList: [...this.state.DataSource.CoordinatorStoreWard_ItemList, ...arrResultRows]
-        //     }
-        // })
-        // this.props.callFetchAPI(APIHostName, AddAutoAPIPath, resultRows).then(apiResult => {
-        //     console.log('apiResult', apiResult)
-        // });
+        var dates = {
+            convert: function (d) {
+
+                return (
+                    d.constructor === Date ? d :
+                        d.constructor === Array ? new Date(d[0], d[1], d[2]) :
+                            d.constructor === Number ? new Date(d) :
+                                d.constructor === String ? new Date(d) :
+                                    typeof d === "object" ? new Date(d.year, d.month, d.date) :
+                                        NaN
+                );
+            },
+            compare: function (a, b) {
+                return (
+                    isFinite(a = this.convert(a).valueOf()) &&
+                        isFinite(b = this.convert(b).valueOf()) ?
+                        (a > b) - (a < b) :
+                        NaN
+                );
+            },
+            inRange: function (d, start, end) {
+                return (
+                    isFinite(d = this.convert(d).valueOf()) &&
+                        isFinite(start = this.convert(start).valueOf()) &&
+                        isFinite(end = this.convert(end).valueOf()) ?
+                        start <= d && d <= end :
+                        NaN
+                );
+            }
+        }
+        debugger;
+
+        let data = [];
+        let _isError = false;
+        importData.map((itemObject, index) => {
+
+            if ((!itemObject.ApplyFromDate || !itemObject.ApplyToDate) && _isError == false) {
+                this.addNotification("Vui lòng nhập ngày áp dụng.", true);
+                _isError = true;
+            } else if (!itemObject.UserName && _isError == false) {
+                this.addNotification("Vui lòng chọn người dùng.", true);
+                _isError = true;
+            } else if (!itemObject.RewardPositionID && _isError == false) {
+                this.addNotification("Vui lòng chọn mã vị trí thưởng.", true);
+                _isError = true;
+            }
+            else if (_isError == false) {
+                let validDate = dates.compare(itemObject.ApplyFromDate, itemObject.ApplyToDate);
+                if (validDate == 1) {
+                    this.addNotification("Ngày khai báo vị trí thưởng theo khoảng thời gian không hợp lệ. Vui lòng kiểm tra lại.", true);
+                    _isError = true;
+                } else {
+                    itemObject.ApplyFromDate = toIsoStringCus(new Date(itemObject.ApplyFromDate).toISOString());
+                    itemObject.ApplyToDate = toIsoStringCus(new Date(itemObject.ApplyToDate).toISOString());
+                    data.push(itemObject);
+                }
+
+            }
+        });
+
+
+        if (_isError) {
+            return;
+        }
+
+
+        this.props.callFetchAPI(APIHostName, AddByFileAPIPath, data).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
+                this.callSearchData(this.state.SearchData);
+            }
+
+            this.addNotification(apiResult.Message, apiResult.IsError);
+
+        });
+
     }
 
     handleExportFileTemplate(result) {
@@ -232,13 +305,13 @@ class SearchCom extends React.Component {
                         fileName="Danh sách vị trí thưởng theo khoảng thời gian"
                         onExportFile={this.handleExportFile.bind(this)}
 
-                        // IsImportFile={true}
-                        // SchemaData={schema}
-                        // onImportFile={this.handleImportFile.bind(this)}
-                        // isExportFileTemplate={true}
-                        // DataTemplateExport={this.state.DataTemplateExport}
-                        // fileNameTemplate={"Danh sách vị trí thưởng theo khoảng thời gian"}
-                        // onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
+                        IsImportFile={true}
+                        SchemaData={schema}
+                        onImportFile={this.handleImportFile.bind(this)}
+                        isExportFileTemplate={true}
+                        DataTemplateExport={this.state.DataTemplateExport}
+                        fileNameTemplate={"Danh sách vị trí thưởng theo khoảng thời gian"}
+                        onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                     />
                 </React.Fragment>
             );
