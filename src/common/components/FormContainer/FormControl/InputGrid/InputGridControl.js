@@ -254,6 +254,7 @@ class InputGridControlCom extends Component {
     }
 
     handleInsertClickEdit(index) {
+      
         if (this.props.onInsertClick === undefined) {
             let listColumnNew = this.props.listColumn.filter((person, index) => {
                 if ((this.props.listColumn[index].iputpop == true || this.props.listColumn[index].iputpop === undefined) && this.props.listColumn[index].forbiddenUpdate === undefined) { return person; }
@@ -385,6 +386,7 @@ class InputGridControlCom extends Component {
             if (listColumn[index].hideInput == true || listColumn[index].hideInput === undefined) { return person; }
         });
         let dataSource = this.props.dataSource;
+      
         if (this.props.value != null) {
             dataSource = this.props.value;
         }

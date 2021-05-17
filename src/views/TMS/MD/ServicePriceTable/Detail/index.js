@@ -31,9 +31,7 @@ import { showModal, hideModal } from '../../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
 import ReactNotification from "react-notifications-component";
 import ServicePriceTableDetail from "../ServicePriceTableDetail";
-import ServicePriceTableArea from "../ServicePriceTableArea";
-
-
+import { AddServicePriceAreaTable } from "../ServicePriceTableArea";
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -55,7 +53,6 @@ class DetailCom extends React.Component {
     }
 
     componentDidMount() {
-        // console.log('apiResult', this,this.props)
         this.props.updatePagePath(DetailPagePath);
         this.callLoadData(this.props.match.params.id);
         this.setState({
@@ -139,7 +136,6 @@ class DetailCom extends React.Component {
 
 
     handleInputChangeObjItem(id, apiResult) {
-        console.log('handleInputChangeObjItem', id, apiResult)
         if (apiResult.IsError) {
             this.showMessage(apiResult.Message);
         }
@@ -167,7 +163,6 @@ class DetailCom extends React.Component {
     }
 
     handleItemEditSPTDetail(index) {
-        console.log("index", index)
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Cập nhật chi tiết bảng giá dịch vụ',
             content: {
@@ -205,40 +200,54 @@ class DetailCom extends React.Component {
             this.props.hideModal();
             this.addNotification(apiResult.Message, apiResult.IsError);
             this.callLoadData(id);
-
         }
 
     }
 
     handleItemInsertSPTArea() {
+        const { ServicePriceTableArea } = this.state;
+
+        const objAreaID = ServicePriceTableArea.reduce((acc, val, ind, arr) => {
+            const { AreaID } = acc;
+            let arrAreaID = [...AreaID, val.AreaID]
+
+            if (ind == arr.length - 1) {
+                arrAreaID = arrAreaID.map(i => i.toString())
+            };
+
+            return {
+                AreaID: arrAreaID
+            };
+        }, { AreaID: [] })
+
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Thêm khu vực áp dụng bảng giá dịch vụ',
             content: {
-                text: <ServicePriceTableArea
+                text: <AddServicePriceAreaTable
                     dataSource={this.state.DataSource}
+                    dataSourceFormContainer={objAreaID}
                     onInputChangeObj={this.handleInputChangeAraeObjItem}
-
                 />
             },
             maxWidth: '1000px'
         });
     }
 
-    handleItemEditSPTArea(index) {
-   
-        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Thêm khu vực áp dụng bảng giá dịch vụ',
-            content: {
-                text: <ServicePriceTableArea
-                    dataSource={this.state.DataSource}
-                    index={index}
-                    onInputChangeObj={this.handleInputChangeAraeObjItem}
+    // handleItemEditSPTArea(index) {
 
-                />
-            },
-            maxWidth: '1000px'
-        });
-    }
+    //     this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+    //         title: 'Thêm khu vực áp dụng bảng giá dịch vụ',
+    //         content: {
+    //             text: <ServicePriceTableArea
+    //                 dataSource={this.state.DataSource}
+    //                 index={index}
+    //                 onInputChangeObj={this.handleInputChangeAraeObjItem}
+
+    //             />
+    //         },
+    //         maxWidth: '1000px'
+    //     });
+    // }
 
     handleItemDeleteSPTArea(index) {
         const { ServicePriceTableID, DataSource } = this.state;
@@ -299,7 +308,7 @@ class DetailCom extends React.Component {
                                 listColumn={DataGridColumnSPTAreatemList}
                                 dataSource={this.state.ServicePriceTableArea}
                                 onInsertClick={this.handleItemInsertSPTArea.bind(this)}
-                                onEditClick={this.handleItemEditSPTArea.bind(this)}
+                                // onEditClick={this.handleItemEditSPTArea.bind(this)}
                                 onDeleteClick={this.handleItemDeleteSPTArea.bind(this)}
                                 ref={this.gridref}
                                 isSystem={IsSystem}

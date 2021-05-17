@@ -17,7 +17,7 @@ class ShipmentOrderItemObjCom extends Component {
         }
     }
     handleSubmit(From, MLObject) {
-        let newShipmentOrder_ItemList = this.props.dataSource.ShipmentOrder_ItemList;
+        let newShipmentOrder_ItemList = this.props.dataSource;
         let formDatanew = [];
         MLObject.SizeItem = MLObject.Length + "x" + MLObject.Width + "x" + MLObject.Height + "cm";
         if (this.props.index != undefined) {
@@ -55,7 +55,7 @@ class ShipmentOrderItemObjCom extends Component {
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectShipmentOrderItem}
-                dataSource={this.props.index != undefined ? this.props.dataSource.ShipmentOrder_ItemList[this.props.index] : null}
+                dataSource={this.props.index != undefined ? this.props.dataSource[this.props.index] : null}
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
             >

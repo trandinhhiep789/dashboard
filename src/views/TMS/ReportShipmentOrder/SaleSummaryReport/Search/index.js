@@ -30,6 +30,7 @@ export class Search extends Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+        this.showMessage("Tính năng đang phát triển");
     };
 
     showMessage(message) {
@@ -40,7 +41,7 @@ export class Search extends Component {
     };
 
     callSearchData(searchData) {
-        this.showMessage("Tính năng đang phát triển");
+      
         // this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
         //     if (!apiResult.IsError) {
         //         this.setState({
@@ -63,9 +64,9 @@ export class Search extends Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
 
-                {this.showMessage("Tính năng đang phát triển")}
+                {/* {this.showMessage("Tính năng đang phát triển")} */}
 
-                {/* <SearchForm
+                <SearchForm
                     FormName="Tìm kiếm báo cáo đơn hàng"
                     listelement={SearchElementList}
                     MLObjectDefinition={SearchMLObjectDefinition}
@@ -111,7 +112,7 @@ export class Search extends Component {
                             </div>
                         </div>
                     </div>
-                </div> */}
+                </div>
 
             </React.Fragment>
         )

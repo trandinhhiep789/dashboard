@@ -1,19 +1,12 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/TMSRewardDetail/SearchByDate";
-export const SearchByUserAPIPath = "api/TMSRewardDetail/LoadRewardUserNameByDate";
 
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Tổng thưởng nhân viên - CTV" }
+    { Link: "", Title: "Tổng thưởng khác" }
 ];
 
-const dtFromdate = new Date();
-//dtFromdate.setDate(new Date().getDate());
-
-// dtFromdate.setDate(new Date('11/01/2020'));
-
-export const titleModal = "Hiển thị chi tiết thưởng đơn thàng theo nhân viên";
+export const titleModal = "";
 
 export const SearchElementList = [
 
@@ -98,7 +91,7 @@ export const SearchMLObjectDefinition = [
 export const InitSearchParams = [
     {
         SearchKey: "@FROMDATE",
-        SearchValue: dtFromdate
+        SearchValue: new Date()
     },
     {
         SearchKey: "@TODATE",
@@ -130,38 +123,17 @@ export const GridColumnList = [
         DataSourceMember: "WorkStoreFullName",
         Width: 100
     },
-    // {
-    //     Name: "TotalReward1",
-    //     Type: "textCurrency",
-    //     Caption: "Thưởng giao hàng",
-    //     DataSourceMember: "TotalReward1",
-    //     Width: 100
-    // },
-    // {
-    //     Name: "TotalReward2",
-    //     Type: "textCurrency",
-    //     Caption: "Phụ cấp ống đồng",
-    //     DataSourceMember: "TotalReward2",
-    //     Width: 100
-    // },
-    // {
-    //     Name: "TotalReward3",
-    //     Type: "textCurrency",
-    //     Caption: "Tiền xăng",
-    //     DataSourceMember: "TotalReward3",
-    //     Width: 100
-    // },
     {
-        Name: "temporary",
+        Name: "TotalReward1",
         Type: "textCurrency",
-        Caption: "temporary",
-        DataSourceMember: "temporary",
+        Caption: "Thưởng từng loại",
+        DataSourceMember: "TotalReward1",
         Width: 100
     },
     {
         Name: "TotalReward",
         Type: "textCurrency",
-        Caption: "Thực lãnh",
+        Caption: "Tổng thưởng",
         DataSourceMember: "TotalReward",
         Width: 100
     },

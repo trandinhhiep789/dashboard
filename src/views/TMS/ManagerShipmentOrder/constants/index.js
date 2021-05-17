@@ -788,25 +788,20 @@ export const MLObjectDefinition = [
         DataSourceMember: "objQHPX"
     },
     {
-        Name: "ShipmentOrder_MaterialList",
-        DefaultValue: {},
-        BindControlName: "ShipmentOrder_MaterialList",
-        DataSourceMember: "ShipmentOrder_MaterialList"
-    },
-    {
-        Name: "ShipmentOrder_ItemList",
-        DefaultValue: {},
-        BindControlName: "ShipmentOrder_ItemList",
-        DataSourceMember: "ShipmentOrder_ItemList"
-    },
-    {
-        Name: "ShipmentOrder_DeliverUserList",
-        DefaultValue: {},
-        BindControlName: "ShipmentOrder_DeliverUserList",
-        DataSourceMember: "ShipmentOrder_DeliverUserList"
+        Name: "PackingUnitList",
+        DefaultValue: [{
+                "PackingUnitName": "Mặc định",
+                "PackageTypeID": 0,
+                "Weight": 0.0,
+                "Length": 0.0,
+                "Width": 0.0,
+                "Height": 0.0,
+                "Note": "",
+                "ItemList": []
+        }],
+        BindControlName: "PackingUnitList",
+        DataSourceMember: "PackingUnitList"
     }
-
-
 ];
 
 export const DataGridColumnList = [
