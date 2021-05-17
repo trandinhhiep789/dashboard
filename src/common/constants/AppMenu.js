@@ -180,6 +180,7 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    
 
 
                 ]
@@ -407,6 +408,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    // {
+                    //     MenuName: 'ServicePriceApply',
+                    //     MenuTitle: 'Bảng giá dịch vụ áp dụng',
+                    //     LinkTo: '/ServicePriceApply',
+                    //     MenuIcon: '',
+                    //     SubMenu: []
+                    // },
                     // {
                     //     MenuName: 'PNServicePriceTable',
                     //     MenuTitle: 'Bảng giá dịch vụ của đối tác',

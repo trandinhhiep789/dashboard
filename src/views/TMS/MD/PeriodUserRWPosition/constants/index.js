@@ -2,6 +2,7 @@ export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/PeriodUserRWPosition/Search";
 export const LoadAPIPath = "api/PeriodUserRWPosition/Load";
 export const AddAPIPath = "api/PeriodUserRWPosition/Add";
+export const AddByFileAPIPath = "api/PeriodUserRWPosition/AddByFile";
 export const UpdateAPIPath = "api/PeriodUserRWPosition/Update";
 export const DeleteAPIPath = "api/PeriodUserRWPosition/Delete";
 export const UpdateOrderAPIPath = "api/PeriodUserRWPosition/UpdateOrder";
@@ -447,12 +448,12 @@ export const schema = {
     },
     'Áp dụng từ ngày': {
         prop: 'ApplyFromDate',
-        type: String,
+        type: Date,
         required: true
     },
     'Áp dụng đến ngày': {
         prop: 'ApplyToDate',
-        type: String,
+        type: Date,
         required: true
     },
     'Kích hoạt': {

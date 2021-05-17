@@ -13,7 +13,10 @@ import {
     PagePath,
     AddAPIPath,
     GetAllByUserNameAPIPath,
-    GetAllAPIPath
+    GetAllAPIPath,
+    DataTemplateExport,
+    schema,
+    AddByFileAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -36,6 +39,8 @@ class EditCom extends React.Component {
         this.checkAddPermission = this.checkAddPermission.bind(this);
         this.handleExportCSV = this.handleExportCSV.bind(this);
         this.getDataForExport = this.getDataForExport.bind(this);
+        // this.handleImportFile = this.handleImportFile.bind(this);
+        // this.onHandleImportFile = this.onHandleImportFile.bind(this);
         this.state = {
             Username: "",
             DepartmentName: "",
@@ -132,7 +137,7 @@ class EditCom extends React.Component {
 
     callLoadData(postData) {
         this.props.callFetchAPI(APIHostName, GetAllByUserNameAPIPath, postData).then(apiResult => {
-            console.log("apiResult", apiResult);
+            //console.log("apiResult", apiResult);
             if (!apiResult.IsError) {
                 let id = "";
                 let uniqueArray = apiResult.ResultObject;
@@ -321,6 +326,108 @@ class EditCom extends React.Component {
 
     }
 
+    //import exel file 
+    handleExportFileTemplate() {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        let result;
+
+        try {
+            const ws = XLSX.utils.json_to_sheet(DataTemplateExport);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+            FileSaver.saveAs(data, "Danh sách vị trí thưởng của 1 nhân viên" + fileExtension);
+            result = {
+                IsError: false,
+                Message: "Xuất file thành công!"
+            };
+        } catch (error) {
+            result = {
+                IsError: true,
+                Message: "Lỗi xuất file!"
+            }
+        } finally {
+            this.addNotification(result.Message, result.IsError);
+        }
+    }
+
+    handleImportFile() {
+        const input = document.getElementById('buttonImportFile');
+        input.click();
+
+        let count = 0;
+        //const schema = this.props.SchemaData;
+       
+        input.addEventListener('change', () => {
+            readXlsxFile(input.files[0], { schema }).then(({ rows, errors }) => {
+                if(count > 0){
+                    return;
+                }
+                this.onHandleImportFile(rows, errors);
+                count ++;
+                
+            }, function (error) {
+                alert("File vừa chọn lỗi. Vui lòng chọn file khác.")
+            });
+
+            setTimeout(() => {
+                input.value = '';
+            }, 1000);
+
+            
+            
+        });
+    }
+
+
+    onHandleImportFile(resultRows, errors) {
+        const CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        const LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        const importData = resultRows.map(item => {
+            const { UserName, RewardPositionID, IsSystem } = item
+            return {
+                ...item,
+                CreatedUser,
+                LoginLogID
+                //ProvinceFullName: `${ProvinceID} - ${ProvinceName}`,
+                //WardFullName: `${WardID} - ${WardName}`
+            }
+        })
+
+
+        //console.log("data", importData);
+
+        let _isError = false;
+        importData.map((itemObject, index) => {
+            if (!itemObject.UserName && _isError == false) {
+                this.addNotification("Vui lòng chọn người dùng.", true);
+                _isError = true;
+            } else if (!itemObject.RewardPositionID && _isError == false) {
+                this.addNotification("Vui lòng chọn mã vị trí thưởng.", true);
+                _isError = true;
+            }
+        });
+
+        if (_isError) {
+            return;
+        }
+
+
+        this.props.callFetchAPI(APIHostName, AddByFileAPIPath, importData).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            // if (!apiResult.IsError) {
+            //     this.callSearchData(this.state.SearchData);
+            // }
+
+            this.addNotification(apiResult.Message, apiResult.IsError);
+
+        });
+
+
+
+    }
+
     render() {
         if (this.state.IsAllowView) {
             return (
@@ -404,6 +511,15 @@ class EditCom extends React.Component {
                                                 <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV}>
                                                     <span className="fa fa-file-excel-o"> Xuất file excel </span>
                                                 </button>
+
+                                                {/* import file exel */}
+                                                <button type="button" className="btn btn-export ml-10" onClick={this.handleExportFileTemplate.bind(this)}>
+                                                    <span className="fa fa-exchange">Xuất file mẫu</span>
+                                                </button>
+                                                <button type="button" className="btn btn-export  ml-10" onClick={this.handleImportFile.bind(this)} >
+                                                    <span className="fa fa-exchange"> Import File </span>
+                                                </button>
+                                                < input type="file" id="buttonImportFile" style={{ display: "none" }} ref={input => this.inputElement = input} />
                                             </div>
                                         </div>
                                     </div>

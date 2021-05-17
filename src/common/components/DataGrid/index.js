@@ -739,17 +739,26 @@ class DataGridCom extends Component {
         const input = document.getElementById('buttonImportFile');
         input.click();
 
-
+        let count = 0;
         const schema = this.props.SchemaData;
 
         input.addEventListener('change', () => {
             readXlsxFile(input.files[0], { schema }).then(({ rows, errors }) => {
                 // errors.length === 0
+                if (count > 0) {
+                    return;
+                }
                 if (this.props.onImportFile != null)
                     this.props.onImportFile(rows, errors);
+                count++;
             }, function (error) {
                 alert("File vừa chọn lỗi. Vui lòng chọn file khác.")
-            })
+            });
+
+            setTimeout(() => {
+                input.value = '';
+            }, 1000);
+
         })
     }
 

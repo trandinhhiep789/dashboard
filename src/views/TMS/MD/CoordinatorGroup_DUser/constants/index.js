@@ -75,11 +75,18 @@ export const DataGridColumnList = [
         Width: 60
     },
     {
+        Name: "UserName",
+        Type: "text",
+        Caption: "Mã nhân viên giao hàng",
+        DataSourceMember: "UserName",
+        Width: 200
+    },
+    {
         Name: "FullName",
         Type: "text",
-        Caption: "Nhân viên giao hàng",
+        Caption: "Tên nhân viên giao hàng",
         DataSourceMember: "FullName",
-        Width: 500
+        Width: 300
     },
     {
         Name: "IsSystem",
