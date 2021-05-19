@@ -359,11 +359,25 @@ export const DataGridCoordinatorStoreColumnList = [
         Width: 250
     },
     {
+        Name: "UpdatedDate",
+        Type: "datetime",
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
+        Width: 130
+    },
+    {
+        Name: "UpdatedUserFullName",
+        Type: "text",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
+        Width: 150
+    },
+    {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "CoordinatorStoreID",
-        Width: 100,
+        Width: 80,
         Link: "/CoordinatorStore/Edit/",
         LinkText: "Chỉnh sửa"
     },
