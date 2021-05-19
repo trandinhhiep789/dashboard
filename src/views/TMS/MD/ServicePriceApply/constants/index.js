@@ -1,4 +1,4 @@
-import { ERPCOMMONCACHE_PARTNER } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SERVICEPRICETABLE } from "../../../../../constants/keyCache";
 
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/ServicePriceApply/Search";
@@ -67,14 +67,14 @@ export const AddElementList = [
         value: "",
         placeholder: "",
         icon: "",
-        listoption: [{ value: -1, label: "--Vui lòng chọn--" }, { value: 1, label: "Bảng giá dịch vụ 1" }, { value: 2, label: "Bảng giá dịch vụ 2" }],
+        listoption: [],
         DataSourceMember: "ServicePriceTableID",
         readonly: false,
         validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: false,
-        LoadItemCacheKeyID: ERPCOMMONCACHE_PARTNER,
-        ValueMember: "PartnerID",
-        NameMember: "PartnerName"
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: ERPCOMMONCACHE_SERVICEPRICETABLE,
+        ValueMember: "ServicePriceTableID",
+        NameMember: "ServicePriceTableName"
 
     },
     {
@@ -181,14 +181,14 @@ export const EditElementList = [
         value: "",
         placeholder: "",
         icon: "",
-        listoption: [{ value: -1, label: "--Vui lòng chọn--" }, { value: 1, label: "Bảng giá dịch vụ 1" }, { value: 2, label: "Bảng giá dịch vụ 2" }],
+        listoption: [],
         DataSourceMember: "ServicePriceTableID",
         readonly: false,
         validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: false,
-        LoadItemCacheKeyID: ERPCOMMONCACHE_PARTNER,
-        ValueMember: "PartnerID",
-        NameMember: "PartnerName"
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: ERPCOMMONCACHE_SERVICEPRICETABLE,
+        ValueMember: "ServicePriceTableID",
+        NameMember: "ServicePriceTableName"
 
     },
     {

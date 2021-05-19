@@ -17,6 +17,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { SERVICEPRICETABLE_ADD } from "../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_SERVICEPRICETABLE } from "../../../../../constants/keyCache";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -56,8 +57,11 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        console.log("123", formData, MLObject)
+        //console.log("123", formData, MLObject)
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SERVICEPRICETABLE);     
+            }
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
 

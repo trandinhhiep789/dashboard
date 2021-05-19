@@ -149,7 +149,7 @@ class SOPrintTemplateCom extends React.Component {
                             <div className="item btop" style={{ display: "table-cell", width: "50%", border: "1px solid", boxSizing: " border-box", padding: "6px", height: "100%", borderTop: "0px" }}>
                                 <div className="content" style={{ paddingLeft: "0px" }}>
                                     <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Người gửi:</span></p>
-                                    <p><i>{this.state.PrintDataSource.SenderStoreName}</i></p>
+                                    <p><i>{this.state.PrintDataSource.SenderFullName}</i></p>
                                     <p>{this.state.PrintDataSource.SenderFullAddress}</p>
                                 </div>
                             </div>
@@ -176,7 +176,7 @@ class SOPrintTemplateCom extends React.Component {
                                 <div className="content" style={{ paddingLeft: "0px" }}>
                                     <p><span className="bold" style={{ paddingRight: "10px", fontWeight: "bold" }}>Người mua hàng:</span></p>
                                     <p><i className="customername" style={{ marginRight: "30px" }}>{ }</i> <i>{ }</i></p>
-                                    <p><i>{ }</i></p>
+                                    <p><i>{this.state.PrintDataSource.CustomerName}</i></p>
                                 </div>
                             </div>
                         </div>
@@ -260,7 +260,7 @@ class SOPrintTemplateCom extends React.Component {
 
                         <div className="footer" style={{ display: "table", border: "1px solid", width: "100%", padding: "6px", boxSizing: "border-box" }}>
                             <div className="f-left" style={{ display: "table-cell", width: "40%", paddingLeft: "0px" }}>
-                                <p><b>TỔNG TIỀN COD: &nbsp;&nbsp;<i>{this.state.PrintDataSource.TotalCOD!=undefined? formatMoney(this.state.PrintDataSource.TotalCOD, 0):0}</i></b></p>
+                                <p><b>TỔNG TIỀN COD: &nbsp;&nbsp;<i>{this.state.PrintDataSource.TotalCOD != undefined ? formatMoney(this.state.PrintDataSource.TotalCOD, 0) : 0}</i></b></p>
                                 <p><b>Hình thức thanh toán</b></p>
                                 <p>
                                     <label><input type="checkbox" value="" defaultChecked={false} />Thanh toán thẻ</label>&nbsp;&nbsp;

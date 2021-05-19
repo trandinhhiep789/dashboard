@@ -306,6 +306,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "SendToCustomerSMSTemplateID"
     },
     {
+        Name: "IsShowPurchaseList",
+        DefaultValue: "",
+        BindControlName: "IsShowPurchaseList",
+        DataSourceMember: "IsShowPurchaseList"
+    },
+    {
         Name: "OrderIndex",
         DefaultValue: "",
         BindControlName: "OrderIndex",

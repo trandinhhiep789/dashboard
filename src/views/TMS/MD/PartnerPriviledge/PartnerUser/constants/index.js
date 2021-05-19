@@ -1062,6 +1062,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "PartnerRoleID"
     },
     {
+        Name: "PartnerRoleName",
+        DefaultValue: "",
+        BindControlName: "txtPartnerRoleName",
+        DataSourceMember: "PartnerRoleName"
+    },
+    {
         Name: "CoordinatorStoreID",
         DefaultValue: "",
         BindControlName: "txtCoordinatorStoreID",
@@ -1262,7 +1268,7 @@ export const DataGridColumnList = [
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "UserName",
-        Width: 100
+        Width: 60
     },
     // {
     //     Name: "UserName",
@@ -1277,7 +1283,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Tên người dùng",
         DataSourceMember: "UserName",
-        Width: 150
+        Width: 120
     },
     {
         Name: "FullName",
@@ -1294,6 +1300,13 @@ export const DataGridColumnList = [
         Width: 350
     },
     {
+        Name: "PartnerRoleName",
+        Type: "text",
+        Caption: "Vai trò nhà cung cấp",
+        DataSourceMember: "PartnerRoleName",
+        Width: 150
+    },
+    {
         Name: "PhoneNumber",
         Type: "text",
         Caption: "Điện thoại",
@@ -1305,7 +1318,7 @@ export const DataGridColumnList = [
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 120
+        Width: 100
     },
     {
         Name: "UpdatedDate",

@@ -280,7 +280,7 @@ class SearchCom extends React.Component {
             PrintID: id
         })
 
-        this.props.callFetchAPI("TMSAPI", "api/ShipmentOrder/LoadInfoForMobile", id).then(apiResult => {
+        this.props.callFetchAPI("TMSAPI", "api/ShipmentOrder/LoadPrintData", id).then(apiResult => {
             //this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
                 // debugger;

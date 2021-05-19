@@ -20,6 +20,7 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { SERVICEPRICETABLE_UPDATE } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
+import { ERPCOMMONCACHE_SERVICEPRICETABLE } from "../../../../../constants/keyCache";
 
 
 class EditCom extends React.Component {
@@ -89,9 +90,12 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        console.log("121", MLObject)
+        //console.log("121", MLObject)
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SERVICEPRICETABLE);     
+            }
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
 

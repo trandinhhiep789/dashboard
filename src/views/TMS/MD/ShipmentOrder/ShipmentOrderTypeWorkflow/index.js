@@ -712,6 +712,10 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         controltype="InputControl" datasourcemember="IsSendSMSToCustomer"
                                         swaplabelModal={true}
                                     />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Có hiển thị bảng kê hay không" name="IsShowPurchaseList"
+                                        controltype="InputControl" datasourcemember="IsShowPurchaseList"
+                                        swaplabelModal={true}
+                                    />
                                 </div>
                             </div>
                         </TabPage>

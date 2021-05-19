@@ -22,7 +22,7 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SERVICEAGREEMENTTYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_SERVICEAGREEMENTTYPE, ERPCOMMONCACHE_SERVICEPRICETABLE } from "../../../../../constants/keyCache";
 import { SERVICEPRICETABLE_VIEW, SERVICEPRICETABLE_DELETE } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
@@ -66,6 +66,7 @@ class SearchCom extends React.Component {
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
                 this.props.callClearLocalCache(ERPCOMMONCACHE_SERVICEAGREEMENTTYPE);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SERVICEPRICETABLE);    
                 // this.handleSubmitInsertLog();
             }
         });
