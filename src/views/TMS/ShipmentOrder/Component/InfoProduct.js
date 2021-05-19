@@ -20,7 +20,6 @@ class InfoProductCom extends Component {
             ShipmentOrder_CodUpdLogLst: []
         }
 
-        this.groupArrayOfObjects = this.groupArrayOfObjects.bind(this)
         this.sortDataShipmentOrderItemList = this.sortDataShipmentOrderItemList.bind(this);
     }
 
@@ -176,52 +175,75 @@ class InfoProductCom extends Component {
         });
     }
 
-    groupArrayOfObjects(list, key) {
-        try {
-            return list.reduce(function (rv, x) {
-                (rv[x[key].trim()] = rv[x[key].trim()] || []).push(x)
-                return rv
-            }, {});
-        } catch (error) {
-            return {}
-        }
-    }
-
     sortDataShipmentOrderItemList(data) {
-        let tempData1 = [...data];
-        const paramGroup = ['ProductID', 'ProductName', 'ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight'];
-
         try {
             if (data.length == 1) {
                 return data;
             }
 
-            tempData1.sort((a, b) => parseFloat(b.Price) - parseFloat(a.Price));
+            let cloneData = [...data], tempIndex = [];
 
-            let tempIndex = [];
-
-            const result = tempData1.reduce((acc, val, ind, arr) => {
-                if (val.Price != 0) {
-
-                    let promotionItem = tempData1.reduce((acc1, val1, ind1, arr1) => {
-                        if (val1.RelateProductID.trim() == val.ProductID.trim() && tempIndex.indexOf(ind1) == -1) {
-                            tempIndex.push(ind1);
-                            return [...acc1, val1];
-                        } else {
-                            return acc1;
-                        }
-                    }, []);
-
-                    return [...acc, val, ...promotionItem];
-                } else {
-                    return acc;
+            // lấy sản phẩm chính
+            const mainProduct = cloneData.filter((item, index) => {
+                if (item.Price != 0 || item.ProductSerial != "") {
+                    tempIndex.push(index);
+                    return true;
                 }
+                return false;
+            });
+
+            // xóa sản phẩm chính khỏi arr ban đầu
+            tempIndex.sort((a, b) => b - a);
+            for (let index = 0; index < tempIndex.length; index++) {
+                cloneData.splice(tempIndex[index], 1);
+            }
+            tempIndex.length = 0;
+
+            let result = mainProduct.reduce((acc, val) => {
+                let arrTemp = [];
+
+                // lấy danh sách sản phẩm khuyến mãi theo sp chính
+                cloneData.forEach((ele, index) => {
+                    if (val.ProductID.trim() == ele.RelateProductID.trim()) {
+                        let isExist = false;
+
+                        // không lấy trùng lặp
+                        arrTemp.forEach(ele1 => {
+                            if (ele1.ProductID == ele.ProductID) {
+                                isExist = true;
+                            }
+                        });
+                        if (isExist == false) {
+                            arrTemp.push(ele);
+                            tempIndex.push(index);
+                        }
+                    }
+                });
+
+                // remove những sp khuyến mãi khỏi mảng ban đầu
+                tempIndex.sort((a, b) => b - a);
+                for (let index = 0; index < tempIndex.length; index++) {
+                    cloneData.splice(tempIndex[index], 1);
+                }
+                tempIndex.length = 0;
+
+                // sắp xếp thứ tự sp khuyến mãi
+                arrTemp.sort((a, b) => a.ProductID.trim() - b.ProductID.trim());
+
+                return [...acc, val, ...arrTemp];
             }, []);
 
+            // push những sản phẩm không liên quan còn lại
+            if (cloneData.length > 0) {
+                cloneData.sort((a, b) => a.ProductID.trim() - b.ProductID.trim());
+                result.push(...cloneData);
+            };
+
+            // kiem tra có đúng so luong san pham
             if (result.length != data.length) {
                 return data;
             } else {
-                return this.groupBy(result, paramGroup)
+                return result;
             }
 
         } catch (error) {
@@ -418,7 +440,11 @@ class InfoProductCom extends Component {
                                         {
                                             this.state.ShipmentOrder.ShipmentOrder_ItemList
                                             && this.sortDataShipmentOrderItemList(this.state.ShipmentOrder.ShipmentOrder_ItemList).map((item, index) => {
-                                                return <tr key={"Product" + index} className={parseFloat(item.Price) != 0 ? "row-main-product" : undefined}>
+                                                return <tr
+                                                    key={"Product" + index}
+                                                    className={parseFloat(item.Price) != 0 || item.ProductSerial.trim() != ""
+                                                        ? "row-main-product" : undefined}
+                                                >
                                                     <td>
                                                         <div className="checkbox">
                                                             <label>
