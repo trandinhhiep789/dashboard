@@ -1205,7 +1205,7 @@ class ShipmentOrderAddressCom extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-1">
                                             <label className="col-form-label icon">
-                                                <i className="fa fa-mobile " aria-hidden="true"></i>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
                                             </label>
                                         </div>
                                         <div className="form-group col-md-11">

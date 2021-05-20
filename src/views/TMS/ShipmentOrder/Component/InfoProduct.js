@@ -358,7 +358,7 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label lbl-currency">{formatMoney(this.state.ShipmentOrder.TotalReturnPrice, 0)}đ</label>
                             </div>
                             <div className="form-group col-md-2">
-                                <label className="col-form-label bold">Tổng đã tiền thu khách hàng:</label>
+                                <label className="col-form-label bold">Tổng tiền đã thu khách hàng:</label>
                             </div>
                             <div className="form-group col-md-4">
                                 <label className="col-form-label">
