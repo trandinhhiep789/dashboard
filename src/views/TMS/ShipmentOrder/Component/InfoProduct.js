@@ -185,7 +185,8 @@ class InfoProductCom extends Component {
 
             // lấy sản phẩm chính
             const mainProduct = cloneData.filter((item, index) => {
-                if (item.Price != 0 || item.ProductSerial != "") {
+                // if (item.Price != 0 || item.ProductSerial != "") {
+                if (item.Price != 0) {
                     tempIndex.push(index);
                     return true;
                 }
