@@ -180,7 +180,7 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
-                    
+
 
 
                 ]
@@ -1149,6 +1149,13 @@ const AppMenu = [
                 MenuName: 'SaleSummaryReport',
                 MenuTitle: 'Báo cáo đơn hàng',
                 LinkTo: '/SaleSummaryReport',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'OverdueOrderReport',
+                MenuTitle: 'Báo cáo chi tiết vận đơn quá hạn',
+                LinkTo: '/OverdueOrderReport',
                 MenuIcon: '',
                 SubMenu: []
             }
